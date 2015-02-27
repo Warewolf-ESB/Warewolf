@@ -8,7 +8,7 @@
 @PluginService
 Scenario: Opening Plugin Service tab
 	Given I click "New Data Base Service Connector"
-	Then "New Plugin Service" tab is opened
+	And "New Plugin Service" tab is opened
 	And "Select a source" is focused
 	And "1 Select a source" is "Enabled"
 	And "2 Select a namespace" is "Disabled"
@@ -114,7 +114,7 @@ Scenario: While editing service, changing plugin source resets all the steps
 	
 	
 	
-Scenario: Creating Plugin Service by selecting existing source
+Scenario: Plugin service is not saving when test is unsuccesfull
     Given I have "New Plugin Service" tab opened
 	When I select "testingPluginSrc" as source
 	And "2 Select a namespace" is "Enabled"

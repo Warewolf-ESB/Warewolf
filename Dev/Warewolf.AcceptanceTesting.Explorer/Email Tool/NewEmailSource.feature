@@ -56,8 +56,7 @@ Scenario: Creating Email Source with valid credentials
 
 
 Scenario: Not allowing to save email source with test connection is unsuccessful
-	Given I have New Email Source tab 
-	opened
+	Given I have New Email Source tab opened
 	And "Host Textbox" is focussed 
 	When I enter host as "smtp.gmail.com"
 	Then User Name is "visible"

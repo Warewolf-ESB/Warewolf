@@ -449,6 +449,95 @@ Scenario: Workflow with Assigns and DataSplit executing against the server
 
 
 
+
+
+Scenario: Workflow with Assign and Decision tools executing against the server
+	  Given I have a workflow "WorkflowWithAssignandDecision12"
+	  And "WorkflowWithAssignandDecision" contains an Assign "Recordss" as
+	  | variable    | value |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[a]]       | 2     |
+	 #And "WorkflowWithAssignandDecision" contains a Decision "Decision" as
+	 #| Statements   |   |   |
+	 #| [[rec(*).a]] | = | 1 |
+	 #| [[a]]        | = | 2 |
+	  When "WorkflowWithAssignandDecision12" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Recordss' in WorkFlow 'WorkflowWithAssignandDecision12' debug inputs as
+	  | #  | Variable      | New Value |
+	  | 1  | [[rec().a]] = | 1         |
+	  | 2  | [[rec().a]] = | 1         |
+	  | 3  | [[rec().a]] = | 1         |
+	  | 4  | [[rec().a]] = | 1         |
+	  | 5  | [[rec().a]] = | 1         |
+	  | 6  | [[rec().a]] = | 1         |
+	  | 7  | [[rec().a]] = | 1         |
+	  | 8  | [[rec().a]] = | 1         |
+	  | 9  | [[rec().a]] = | 1         |
+	  | 10 | [[rec().a]] = | 1         |
+	  | 11 | [[rec().a]] = | 1         |
+	  | 12 | [[rec().a]] = | 1         |
+	  | 13 | [[rec().a]] = | 1         |
+	  | 14 | [[rec().a]] = | 1         |
+	  | 15 | [[rec().a]] = | 1         |
+	  | 16 | [[a]]       = | 2         |
+      And the 'Recordss' in Workflow 'WorkflowWithAssignandDecision12' debug outputs as  
+	  | #  |                   |
+	  | 1  | [[rec(1).a]] = 1  |
+	  | 2  | [[rec(2).a]] = 1  |
+	  | 3  | [[rec(3).a]] = 1  |
+	  | 4  | [[rec(4).a]] = 1  |
+	  | 5  | [[rec(5).a]] = 1  |
+	  | 6  | [[rec(6).a]] = 1  |
+	  | 7  | [[rec(7).a]] = 1  |
+	  | 8  | [[rec(8).a]] = 1  |
+	  | 9  | [[rec(9).a]] = 1  |
+	  | 10 | [[rec(10).a]] = 1 |
+	  | 11 | [[rec(11).a]] = 1 |
+	  | 12 | [[rec(12).a]] = 1 |
+	  | 13 | [[rec(13).a]] = 1 |
+	  | 14 | [[rec(14).a]] = 1 |
+	  | 15 | [[rec(15).a]] = 1 |
+	  | 16 | [[a]]       = 2   |
+	#  And the 'Decision' in WorkFlow 'WorkflowWithAssignandDecision' debug inputs as
+	#  |                   | Statement | Require All decisions to be True |
+	#  | [[rec(1).a]] = 1  |           |                                  |
+	#  | [[rec(2).a]] = 1  |           |                                  |
+	#  | [[rec(3).a]] = 1  |           |                                  |
+	#  | [[rec(4).a]] = 1  |           |                                  |
+	#  | [[rec(5).a]] = 1  |           |                                  |
+	#  | [[rec(6).a]] = 1  |           |                                  |
+	#  | [[rec(7).a]] = 1  |           |                                  |
+	#  | [[rec(8).a]] = 1  |           |                                  |
+	#  | [[rec(9).a]] = 1  |           |                                  |
+	#  | [[rec(10).a]] = 1 |           |                                  |
+	#  | [[rec(11).a]] = 1 |           |                                  |
+	#  | [[rec(12).a]] = 1 |           |                                  |
+	#  | [[rec(13).a]] = 1 |           |                                  |
+	#  | [[rec(14).a]] = 1 |           |                                  |
+	#  | [[rec(15).a]] = 1 |           |                                  |
+	#  | [[a]] = 2         |           |                                  |
+	#  |                   | String    | YES                              |
+	#  And the 'Decision' in Workflow 'WorkflowWithAssignandDecision' debug outputs as  
+	#  |      |
+	#  | True |
+
+
+
 Scenario: Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Index and Replace) executing against the server
       Given I have a workflow "workflowithAssignandsequence"
        And "workflowithAssignandsequence" contains an Assign "Assign for sequence" as
