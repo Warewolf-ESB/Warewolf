@@ -316,6 +316,8 @@
                                                     <ig:XamMenuItem Name="ServerVersion"
                                                                  Header="Server Version"
                                                                 Command="{Binding Path=Data.ShowServerVersionCommand}"
+                                                                         Visibility="{Binding Path=Data.CanShowServerVersion,
+                                                                                     Converter={StaticResource BoolToVisibilityConverter}}"
                                                                 >
                                                     </ig:XamMenuItem>
 

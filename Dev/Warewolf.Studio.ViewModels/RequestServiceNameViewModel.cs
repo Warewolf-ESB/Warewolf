@@ -13,167 +13,168 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class RequestServiceNameViewModel : BindableBase, IRequestServiceNameViewModel
-    {
-        private string _name;
-        private string _errorMessage;
-        private ResourceName _resourceName;
-        private IRequestServiceNameView _view;
-        readonly Guid _selectedGuid;
-        public MessageBoxResult ViewResult { get; private set; }
+	public class RequestServiceNameViewModel : BindableBase, IRequestServiceNameViewModel
+	{
+		private string _name;
+		private string _errorMessage;
+		private ResourceName _resourceName;
+		private readonly IRequestServiceNameView _view;
+		readonly Guid _selectedGuid;
+		public MessageBoxResult ViewResult { get; private set; }
 
-        public RequestServiceNameViewModel(IEnvironmentViewModel environmentViewModel,IRequestServiceNameView view,Guid selectedGuid)
-        {
-            if (environmentViewModel == null)
-            {
-                throw new ArgumentNullException("environmentViewModel");
-            }
-            if (view == null)
-            {
-                throw new ArgumentNullException("view");
-            }
-            environmentViewModel.Connect();
-            _selectedGuid = selectedGuid;
-            environmentViewModel.LoadDialog(_selectedGuid);
-            _view = view;
-           
-            OkCommand = new DelegateCommand(SetServiceName,() => String.IsNullOrEmpty(ErrorMessage));            
-            CancelCommand = new DelegateCommand(CloseView);
-            SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(environmentViewModel);
-            _view.DataContext = this;
-            Name = "";
-        }
+		public RequestServiceNameViewModel(IEnvironmentViewModel environmentViewModel, IRequestServiceNameView view, Guid selectedGuid)
+		{
+			if (environmentViewModel == null)
+			{
+				throw new ArgumentNullException("environmentViewModel");
+			}
+			if (view == null)
+			{
+				throw new ArgumentNullException("view");
+			}
+			environmentViewModel.Connect();
+			_selectedGuid = selectedGuid;
+			environmentViewModel.LoadDialog(_selectedGuid);
+			_view = view;
 
-        private void CloseView()
-        {
-            _view.RequestClose();
-        }
+			OkCommand = new DelegateCommand(SetServiceName, () => String.IsNullOrEmpty(ErrorMessage));
+			CancelCommand = new DelegateCommand(CloseView);
+			SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(environmentViewModel);
+			_view.DataContext = this;
+			Name = "";
+			environmentViewModel.CanShowServerVersion = false;
+		}
 
-        private void SetServiceName()
-        {
-            var path = GetPath();
-            if (!string.IsNullOrEmpty(path))
-            {
-                path = path.TrimStart('\\') + "\\";
-            }
-            _resourceName = new ResourceName(path, Name);
-            ViewResult = MessageBoxResult.OK;
-            _view.RequestClose();
-        }
+		private void CloseView()
+		{
+			_view.RequestClose();
+		}
 
-        private string GetPath()
-        {
-            if(SingleEnvironmentExplorerViewModel.SelectedItem != null)
-            {
-                var parent = SingleEnvironmentExplorerViewModel.SelectedItem.Parent;
-                var parentNames = new List<string>();
-                while (parent != null)
-                {
-                    parentNames.Add(parent.ResourceName);
-                    parent = parent.Parent;
-                }
-                var path = "";
-                if (parentNames.Count > 0)
-                {
-                    for (var index = parentNames.Count; index > 0; index--)
-                    {
-                        var parentName = parentNames[index - 1];
-                        path = path + "\\" + parentName;
-                    }
-                }
-                if (SingleEnvironmentExplorerViewModel.SelectedItem.ResourceType == ResourceType.Folder)
-                {
-                    path = path + "\\" + SingleEnvironmentExplorerViewModel.SelectedItem.ResourceName;
-                }
-                return path;
-            }
-            return "";
-        }
+		private void SetServiceName()
+		{
+			var path = GetPath();
+			if (!string.IsNullOrEmpty(path))
+			{
+				path = path.TrimStart('\\') + "\\";
+			}
+			_resourceName = new ResourceName(path, Name);
+			ViewResult = MessageBoxResult.OK;
+			_view.RequestClose();
+		}
 
-        private void RaiseCanExecuteChanged()
-        {
-            var command = OkCommand as DelegateCommand;
-            if (command != null)
-            {
-                command.RaiseCanExecuteChanged();                
-            }
-        }
+		private string GetPath()
+		{
+			if (SingleEnvironmentExplorerViewModel.SelectedItem != null)
+			{
+				var parent = SingleEnvironmentExplorerViewModel.SelectedItem.Parent;
+				var parentNames = new List<string>();
+				while (parent != null)
+				{
+					parentNames.Add(parent.ResourceName);
+					parent = parent.Parent;
+				}
+				var path = "";
+				if (parentNames.Count > 0)
+				{
+					for (var index = parentNames.Count; index > 0; index--)
+					{
+						var parentName = parentNames[index - 1];
+						path = path + "\\" + parentName;
+					}
+				}
+				if (SingleEnvironmentExplorerViewModel.SelectedItem.ResourceType == ResourceType.Folder)
+				{
+					path = path + "\\" + SingleEnvironmentExplorerViewModel.SelectedItem.ResourceName;
+				}
+				return path;
+			}
+			return "";
+		}
 
-        public MessageBoxResult ShowSaveDialog()
-        {
-            SingleEnvironmentExplorerViewModel.SelectItem(_selectedGuid);
-            _view.ShowView();
-            
-            return ViewResult;
-        }
+		private void RaiseCanExecuteChanged()
+		{
+			var command = OkCommand as DelegateCommand;
+			if (command != null)
+			{
+				command.RaiseCanExecuteChanged();
+			}
+		}
 
-        public ResourceName ResourceName
-        {
-            get { return _resourceName; }
-        }
+		public MessageBoxResult ShowSaveDialog()
+		{
+			SingleEnvironmentExplorerViewModel.SelectItem(_selectedGuid);
+			_view.ShowView();
 
-        public string Name
-        {
-            get { return _name; }
-            set
-            {
-                _name = value;
-                OnPropertyChanged(() => Name);
-                if (String.IsNullOrEmpty(Name))
-                {
-                    ErrorMessage = "'Name' cannot be empty.";
-                }
-                else if (NameHasInvalidCharacters(Name))
-                {
-                    ErrorMessage = "'Name' contains invalid characters.";
-                }
-                else if (Name.Trim() != Name)
-                {
-                    ErrorMessage = "'Name' contains leading or trailing whitespace characters.";
-                }
-                else if (HasDuplicateName(Name))
-                {
-                    ErrorMessage = string.Format("Service with name '{0}' already exists.", Name);
-                }
-                else
-                {
-                    ErrorMessage = "";
-                }
-            }
-        }
+			return ViewResult;
+		}
 
-        private bool HasDuplicateName(string requestedServiceName)
-        {
-            var explorerTreeItem = SingleEnvironmentExplorerViewModel.SelectedItem;
-            if (explorerTreeItem != null)
-            {
-                return explorerTreeItem.Children.Any(model => model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType!=ResourceType.Folder);
-            }
-            if (SingleEnvironmentExplorerViewModel.Environments.First() != null)
-                return SingleEnvironmentExplorerViewModel.Environments.First().Children.Any(model => model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
-            return false;
-        }
+		public ResourceName ResourceName
+		{
+			get { return _resourceName; }
+		}
 
-        private bool NameHasInvalidCharacters(string name)
-        {
-            return Regex.IsMatch(name, @"[^a-zA-Z0-9._\s-]") ;
-        }
+		public string Name
+		{
+			get { return _name; }
+			set
+			{
+				_name = value;
+				OnPropertyChanged(() => Name);
+				if (String.IsNullOrEmpty(Name))
+				{
+					ErrorMessage = "'Name' cannot be empty.";
+				}
+				else if (NameHasInvalidCharacters(Name))
+				{
+					ErrorMessage = "'Name' contains invalid characters.";
+				}
+				else if (Name.Trim() != Name)
+				{
+					ErrorMessage = "'Name' contains leading or trailing whitespace characters.";
+				}
+				else if (HasDuplicateName(Name))
+				{
+					ErrorMessage = string.Format("Service with name '{0}' already exists.", Name);
+				}
+				else
+				{
+					ErrorMessage = "";
+				}
+			}
+		}
 
-        public string ErrorMessage
-        {
-            get { return _errorMessage; }
-            set
-            {
-                _errorMessage = value;
-                OnPropertyChanged(() => ErrorMessage);
-                RaiseCanExecuteChanged();
-            }
-        }
+		private bool HasDuplicateName(string requestedServiceName)
+		{
+			var explorerTreeItem = SingleEnvironmentExplorerViewModel.SelectedItem;
+			if (explorerTreeItem != null)
+			{
+				return explorerTreeItem.Children.Any(model => model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
+			}
+			if (SingleEnvironmentExplorerViewModel.Environments.First() != null)
+				return SingleEnvironmentExplorerViewModel.Environments.First().Children.Any(model => model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
+			return false;
+		}
 
-        public ICommand OkCommand { get; set; }
+		private bool NameHasInvalidCharacters(string name)
+		{
+			return Regex.IsMatch(name, @"[^a-zA-Z0-9._\s-]");
+		}
 
-        public ICommand CancelCommand { get; private set; }
+		public string ErrorMessage
+		{
+			get { return _errorMessage; }
+			set
+			{
+				_errorMessage = value;
+				OnPropertyChanged(() => ErrorMessage);
+				RaiseCanExecuteChanged();
+			}
+		}
 
-        public IExplorerViewModel SingleEnvironmentExplorerViewModel { get; private set; }
-    }
+		public ICommand OkCommand { get; set; }
+
+		public ICommand CancelCommand { get; private set; }
+
+		public IExplorerViewModel SingleEnvironmentExplorerViewModel { get; private set; }
+	}
 }

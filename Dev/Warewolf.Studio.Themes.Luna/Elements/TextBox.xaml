@@ -24,9 +24,12 @@
     <!--  DO NOT make TextBoxHoverBackgroundBrush transparent!  -->
     <SolidColorBrush x:Key="TextBoxHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
     <SolidColorBrush x:Key="ClearSearchButtonHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="ClearSearchButtonHoverBorderBrushSelected" Color="{StaticResource WarewolfButtonGrey}" />
     <SolidColorBrush x:Key="TextBoxFocusedBrush" Color="{StaticResource WarewolfOrange}" />
     <SolidColorBrush x:Key="TextBoxReadOnlyBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
     <SolidColorBrush x:Key="SearchBoxWatermarkTextForeground" Color="#FFD4D3D3"/>
+    <SolidColorBrush x:Key="SearchBoxButtonForeground" Color="{StaticResource WarewolfButtonGrey}"/>
+    <SolidColorBrush x:Key="SearchBoxButtonForegroundEmpty" Color="#FFD4D3D3"/>
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
     <!--Images-->
@@ -456,12 +459,15 @@
                       VerticalAlignment="Stretch"
                       HorizontalAlignment="Stretch" Margin="0,0,0,0" Padding="0,1,0,0"
                       >
-                            <Button Command="{Binding RelativeSource={RelativeSource TemplatedParent},
+                            <Grid>
+
+                                <fa:ImageAwesome Foreground="{StaticResource SearchBoxButtonForegroundEmpty }" x:Name="ClearSearchDisabled" Visibility="Visible"  Icon="Times" Width="10" Height="10"  HorizontalAlignment="Left"/>
+                                <Button Command="{Binding RelativeSource={RelativeSource TemplatedParent},
                                        Path=ClearSearchCommand}"
                                     x:Name="ClearSearchButton"
                                     HorizontalContentAlignment="Left"
                                     HorizontalAlignment="Left" 
-                                   
+                                    Visibility="Hidden"
                                     >
                                 <Button.Template>
                                     <ControlTemplate TargetType="{x:Type Button}">
@@ -470,20 +476,25 @@
                                                 <RowDefinition Height="*">                                                    
                                                 </RowDefinition>
                                             </Grid.RowDefinitions>
-                                            <fa:ImageAwesome x:Name="ClearSearch"  Icon="Times" Width="10" Height="10"  HorizontalAlignment="Left"/>
-                                        </Grid>
+                                            <fa:ImageAwesome x:Name="ClearSearch" Visibility="Visible"  Icon="Times" Width="10" Height="10"  HorizontalAlignment="Left"/>
+                                                       </Grid>
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsMouseOver" Value="False">
-                                                <Setter TargetName="ClearSearch"  Property="Foreground" Value="{StaticResource SearchBoxWatermarkTextForeground}"/>
-                                            </Trigger> 
+                                                <Setter TargetName="ClearSearch"  Property="Foreground" Value="{StaticResource SearchBoxButtonForeground}"/>
+                                                    <Setter TargetName="ClearSearch"  Property="Foreground" Value="{StaticResource SearchBoxButtonForeground}"/>
+
+                                                </Trigger> 
                                             <Trigger Property="IsMouseOver" Value="True">
                                                 <Setter  TargetName="ClearSearch" Property="Foreground" Value="{StaticResource ClearSearchButtonHoverBorderBrush}"/>
-                                            </Trigger>
+                                                    <Setter  TargetName="ClearSearch" Property="Foreground" Value="{StaticResource ClearSearchButtonHoverBorderBrush}"/>
+
+                                                </Trigger>
                                             
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>
                                 </Button.Template>
                             </Button>
+                            </Grid>
                         </Border>                        
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -493,9 +504,13 @@
                         </Trigger>
                         <Trigger Property="HasText" Value="True">
                             <Setter Property="Visibility" TargetName="LabelText" Value="Hidden" />
+                            <Setter Property="Visibility" TargetName="ClearSearchDisabled" Value="Hidden" />
+                            <Setter Property="Visibility" TargetName="ClearSearchButton" Value="Visible" />
                         </Trigger>
+                        
                         <Trigger Property="IsFocused" Value="True">
                             <Setter Property="Visibility" TargetName="LabelText" Value="Hidden" />
+             
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -503,6 +518,8 @@
                                 <Condition Property="HasText" Value="False"/>
                             </MultiTrigger.Conditions>
                             <Setter Property="Visibility" TargetName="LabelText" Value="Visible" />
+                            <Setter Property="Visibility" TargetName="ClearSearchDisabled" Value="Visible" />
+                            <Setter Property="Visibility" TargetName="ClearSearchButton" Value="Hidden" />
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
 
