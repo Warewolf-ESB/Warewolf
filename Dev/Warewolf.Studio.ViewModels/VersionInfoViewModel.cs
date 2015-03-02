@@ -21,12 +21,6 @@ namespace Warewolf.Studio.ViewModels
         string _reason;
         bool _canRollback;
         IExplorerTreeItem _parent;
-        ICommand _renameCommand;
-        ICommand _deleteCommand;
-        IServer _server;
-        bool _isExpanderVisible;
-        bool _isExpanded;
-        private string _resourceName;
 
         #region Implementation of IVersionInfoViewModel
 
@@ -54,11 +48,7 @@ namespace Warewolf.Studio.ViewModels
         public string DisplayName { get; set; }
         public ResourceType ResourceType { get; set; }
 
-        public string ResourceName
-        {
-            get { return _resourceName; }
-            set { _resourceName = value; }
-        }
+        public string ResourceName { get; set; }
 
         public bool AreVersionsVisible { get; set; }
         public string VersionName
@@ -113,17 +103,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand OpenCommand { get; set; }
         public ICommand ShowVersionHistory { get; set; }
         public ICommand RollbackCommand { get; set; }
-        public IServer Server
-        {
-            get
-            {
-                return _server;
-            }
-            set
-            {
-                _server = value;
-            }
-        }
+        public IServer Server { get; set; }
 
         public ICommand Expand
         {
@@ -157,17 +137,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => CanRollBack);
             }
         }
-        public bool IsExpanderVisible
-        {
-            get
-            {
-                return _isExpanderVisible;
-            }
-            set
-            {
-                _isExpanderVisible = value;
-            }
-        }
+        public bool IsExpanderVisible { get; set; }
         public ICommand NewCommand { get; set; }
         public ICommand DeployCommand { get; set; }
         public bool CanCreateDbService { get; set; }
@@ -194,43 +164,14 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(()=>CanRollback);
             }
         }
-        public bool IsExpanded
-        {
-            get
-            {
-                return _isExpanded;
-            }
-            set
-            {
-                _isExpanded = value;
-            }
-        }
+        public bool IsExpanded { get; set; }
 
         public bool IsSelected { get; set; }
+        public bool CanShowServerVersion { get; set; }
 
-        public ICommand RenameCommand
-        {
-            get
-            {
-                return _renameCommand;
-            }
-            set
-            {
-                _renameCommand = value;
-            }
-        }
+        public ICommand RenameCommand { get; set; }
         public ICommand CreateFolderCommand { get; set; }
-        public ICommand DeleteCommand
-        {
-            get
-            {
-                return _deleteCommand;
-            }
-            set
-            {
-                _deleteCommand = value;
-            }
-        }
+        public ICommand DeleteCommand { get; set; }
         public string VersionHeader
         {
             get

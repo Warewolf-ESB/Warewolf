@@ -19,6 +19,7 @@ namespace Warewolf.Studio.Views
 	    {
 	        InitializeComponent();
 	        _explorerViewTestClass = new ExplorerViewTestClass(this);
+        
 	    }
 
 

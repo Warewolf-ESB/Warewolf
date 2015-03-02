@@ -5,7 +5,6 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Explorer;
-using Dev2.Common.Interfaces.ServerDialogue;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Prism.Commands;

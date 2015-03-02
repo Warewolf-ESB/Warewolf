@@ -98,6 +98,7 @@ namespace Warewolf.Studio.ViewModels
             CanCreateFolder = true;
             CanView = true;
             DeleteVersionCommand = new DelegateCommand(DeleteVersion);
+            CanShowServerVersion = false;
         }
 
         void DeleteVersion()
@@ -428,6 +429,7 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
         }
+        public bool CanShowServerVersion { get; set; }
 
         public ICommand RenameCommand { get; set; }
         public bool CanCreateDbService { get; set; }

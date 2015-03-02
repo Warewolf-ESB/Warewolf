@@ -31,6 +31,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _isExpanded;
         private bool _isSelected;
         bool _canCreateFolder;
+        bool _canShowServerVersion;
 
         public EnvironmentViewModel(IServer server, IShellViewModel shellViewModel)
         {
@@ -60,6 +61,7 @@ namespace Warewolf.Studio.ViewModels
             Parent = null;
             ResourceType = ResourceType.ServerSource;
             ResourceName = DisplayName;
+            CanShowServerVersion = true;
         }
 
         void ServerItemAddedEvent(IExplorerItem args)
@@ -69,7 +71,7 @@ namespace Warewolf.Studio.ViewModels
                 Children.Add(new ExplorerItemViewModel(_shellViewModel, Server, new Mock<IExplorerHelpDescriptorBuilder>().Object, null));
                 return;
             }
-           var found = Find(args.ResourcePath.Substring(0,args.ResourcePath.LastIndexOf("\\", System.StringComparison.Ordinal)));
+           var found = Find(args.ResourcePath.Substring(0,args.ResourcePath.LastIndexOf("\\", StringComparison.Ordinal)));
             if(found != null)
             {
                 if(found.Children.All(a => a.ResourceName != args.DisplayName))
@@ -309,7 +311,18 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => IsSelected);
             }
         }
-
+        public bool CanShowServerVersion
+        {
+            get
+            {
+                return _canShowServerVersion;
+            }
+            set
+            {
+                _canShowServerVersion = value;
+                OnPropertyChanged(() => CanShowServerVersion);
+            }
+        }
 
         void ShowServerVersionAbout()
         {

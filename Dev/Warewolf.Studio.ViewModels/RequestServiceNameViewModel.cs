@@ -18,7 +18,7 @@ namespace Warewolf.Studio.ViewModels
         private string _name;
         private string _errorMessage;
         private ResourceName _resourceName;
-        private IRequestServiceNameView _view;
+        private readonly IRequestServiceNameView _view;
         readonly Guid _selectedGuid;
         public MessageBoxResult ViewResult { get; private set; }
 
@@ -42,6 +42,7 @@ namespace Warewolf.Studio.ViewModels
             SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(environmentViewModel);
             _view.DataContext = this;
             Name = "";
+            environmentViewModel.CanShowServerVersion = false;
         }
 
         private void CloseView()
