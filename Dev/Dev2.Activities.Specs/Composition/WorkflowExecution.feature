@@ -449,6 +449,95 @@ Scenario: Workflow with Assigns and DataSplit executing against the server
 
 
 
+
+
+Scenario: Workflow with Assign and Decision tools executing against the server
+	  Given I have a workflow "WorkflowWithAssignandDecision12"
+	  And "WorkflowWithAssignandDecision" contains an Assign "Recordss" as
+	  | variable    | value |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 1     |
+	  | [[a]]       | 2     |
+	 #And "WorkflowWithAssignandDecision" contains a Decision "Decision" as
+	 #| Statements   |   |   |
+	 #| [[rec(*).a]] | = | 1 |
+	 #| [[a]]        | = | 2 |
+	  When "WorkflowWithAssignandDecision12" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Recordss' in WorkFlow 'WorkflowWithAssignandDecision12' debug inputs as
+	  | #  | Variable      | New Value |
+	  | 1  | [[rec().a]] = | 1         |
+	  | 2  | [[rec().a]] = | 1         |
+	  | 3  | [[rec().a]] = | 1         |
+	  | 4  | [[rec().a]] = | 1         |
+	  | 5  | [[rec().a]] = | 1         |
+	  | 6  | [[rec().a]] = | 1         |
+	  | 7  | [[rec().a]] = | 1         |
+	  | 8  | [[rec().a]] = | 1         |
+	  | 9  | [[rec().a]] = | 1         |
+	  | 10 | [[rec().a]] = | 1         |
+	  | 11 | [[rec().a]] = | 1         |
+	  | 12 | [[rec().a]] = | 1         |
+	  | 13 | [[rec().a]] = | 1         |
+	  | 14 | [[rec().a]] = | 1         |
+	  | 15 | [[rec().a]] = | 1         |
+	  | 16 | [[a]]       = | 2         |
+      And the 'Recordss' in Workflow 'WorkflowWithAssignandDecision12' debug outputs as  
+	  | #  |                   |
+	  | 1  | [[rec(1).a]] = 1  |
+	  | 2  | [[rec(2).a]] = 1  |
+	  | 3  | [[rec(3).a]] = 1  |
+	  | 4  | [[rec(4).a]] = 1  |
+	  | 5  | [[rec(5).a]] = 1  |
+	  | 6  | [[rec(6).a]] = 1  |
+	  | 7  | [[rec(7).a]] = 1  |
+	  | 8  | [[rec(8).a]] = 1  |
+	  | 9  | [[rec(9).a]] = 1  |
+	  | 10 | [[rec(10).a]] = 1 |
+	  | 11 | [[rec(11).a]] = 1 |
+	  | 12 | [[rec(12).a]] = 1 |
+	  | 13 | [[rec(13).a]] = 1 |
+	  | 14 | [[rec(14).a]] = 1 |
+	  | 15 | [[rec(15).a]] = 1 |
+	  | 16 | [[a]]       = 2   |
+	#  And the 'Decision' in WorkFlow 'WorkflowWithAssignandDecision' debug inputs as
+	#  |                   | Statement | Require All decisions to be True |
+	#  | [[rec(1).a]] = 1  |           |                                  |
+	#  | [[rec(2).a]] = 1  |           |                                  |
+	#  | [[rec(3).a]] = 1  |           |                                  |
+	#  | [[rec(4).a]] = 1  |           |                                  |
+	#  | [[rec(5).a]] = 1  |           |                                  |
+	#  | [[rec(6).a]] = 1  |           |                                  |
+	#  | [[rec(7).a]] = 1  |           |                                  |
+	#  | [[rec(8).a]] = 1  |           |                                  |
+	#  | [[rec(9).a]] = 1  |           |                                  |
+	#  | [[rec(10).a]] = 1 |           |                                  |
+	#  | [[rec(11).a]] = 1 |           |                                  |
+	#  | [[rec(12).a]] = 1 |           |                                  |
+	#  | [[rec(13).a]] = 1 |           |                                  |
+	#  | [[rec(14).a]] = 1 |           |                                  |
+	#  | [[rec(15).a]] = 1 |           |                                  |
+	#  | [[a]] = 2         |           |                                  |
+	#  |                   | String    | YES                              |
+	#  And the 'Decision' in Workflow 'WorkflowWithAssignandDecision' debug outputs as  
+	#  |      |
+	#  | True |
+
+
+
 Scenario: Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Index and Replace) executing against the server
       Given I have a workflow "workflowithAssignandsequence"
        And "workflowithAssignandsequence" contains an Assign "Assign for sequence" as
@@ -4732,6 +4821,96 @@ Scenario: Executing Control Flow - Switch example workflow
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  When "Control Flow - Switch Test" is executed
 	  Then the workflow execution has "NO" error
+
+
+##My category workflows
+Scenario: Executing My category diceroll example workflow
+	  Given I have a workflow "Dice Roll Test"
+	    | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "Dice Rol Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Random' in WorkFlow 'Dice Roll' debug inputs as
+	   | Random  | From | To |
+	   | Numbers | 1    | 8  |
+	  And the 'Random' in Workflow 'Dice Roll' debug outputs as
+	  |                      |
+	  | [[DiceRoll]] = Int32 |
+
+##My category workflows
+Scenario: Executing My category Double Roll and Check  workflow
+	  Given I have a workflow "Double Roll and Check Test"
+	   | Input to Service | From Variable | Output from Service | To Variable     |
+	   |                  |               | IsDouble            | [[IsDouble]]    |
+	   |                  |               | DoubleValue         | [[DoubleValue]] |
+	  When "Double Roll and Check Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the debug out put has 2 nested inputs and outputs
+	  And the 'Random' in WorkFlow 'Dice Roll' debug inputs as
+	   | Random  | From | To |
+	   | Numbers | 1    | 8  |
+	  And the 'Random' in Workflow 'Dice Roll' debug outputs as
+	   |                      |
+	   | [[DiceRoll]] = Int32 |
+	   And the 'Random' in WorkFlow 'Dice Roll' debug inputs as
+	   | Random  | From | To |
+	   | Numbers | 1    | 8  |
+	  And the 'Random' in Workflow 'Dice Roll' debug outputs as
+	   |                      |
+	   | [[DiceRoll]] = Int32 |
+	  And the "Decision" in workflow "Double Roll and Check" debug input as
+	   |                   | Statement | Require All decisions to be True |
+	   | [[Dice1]] = Int32 |           |                                  |
+	   | [[Dice1]] = Int32 |           |                                  |
+	   |                   | String    | YES                              |
+	   And the "Decision" in workflow "Double Roll and Check" debug output as 
+	   |    |
+	   | NO |
+	   And the 'Assign1' in WorkFlow 'Double Roll and Check' debug inputs as
+	   | # | Variable        | New Value |
+	   | 1 | [[IsDouble]] = | String    |
+	    And the 'Assign1' in Workflow 'Double Roll and Check' debug outputs as   
+	   | # |                               |
+	   | 1 | [[IsDouble]         =  String |
+	
+	
+##My category workflows   
+	   ##This Spec is not completed because the webservice used in this workflow is not working
+	   ## so I can't assume how the outputs needs to come.
+Scenario: Executing My category Roll Dice for Players  workflow
+	  Given I have a workflow "Roll Dice for Players Test"
+	  And "Roll Dice for Players" contains a "DBservice" service "FetchPlayersTest" with mappings
+	   | Input to Service | From Variable   | Output from Service | To Variable            |
+	   | pplCnt           | [[PlayerCount]] | People(*).ID        | [[Players().ID]]       |
+	   |                  |                 | People(*).Name      | [[Players().Name]]     |
+	   |                  |                 | People(*).Surname   | [[Players().Surname]]  |
+	   |                  |                 | People(*).Username  | [[Players().Username]] |
+	 And "Roll Dice for Players" contains a Foreach "ForEachTest" as "In Recordset" executions "[[Players()]]"
+	 And "ForEachTest" contains workflow "Double Roll and Check" with mapping as
+	   | Input to Service | From Variable | Output from Service | To Variable              |
+	   |                  |               | IsDouble            | [[Players(*).IsDouble]]  |
+	   |                  |               | DoubleValue         | [[Players(*).DiceValue]] |
+	 And "workflowithAssignandsortrec" contains an Sort "sortRec" as
+	  | Sort Field | Sort Order |
+	  | [[rs(*).a  | Forward    |
+	  When "Double Roll and Check Test" is executed
+	  Then the workflow execution has "NO" error
+
+
+	    And the 'Inputs' in WorkFlow 'FetchPlayers' debug inputs as
+	  | # | Variable          | New Value |
+	  | 1 | [[PlayerCount]] = |           |
+	  And the 'Outputs' in Workflow 'FetchPlayers' debug outputs as    
+	  | # |                         |
+	  | 1 | [[Players().ID]]      = |
+	  | 2 | [[Players().Name]]    = |
+	  | 3 | [[Players().Surname]] = |
+	  | 4 | [[Players().Username]]= |
+	  And the 'FEach' in WorkFlow 'WFWithForEachInrecordsetTesting' has  "2" nested children
+	   And the 'sortRec' in WorkFlow 'workflowithAssignandsortrec' debug inputs as
+	  | Sort Field       | Sort Order | 
+	  And the 'sortRec' in Workflow 'workflowithAssignandsortrec' debug outputs as
+	  |                  |
+	 
 
 
 #Scenario: Executing File and Folder - Create example workflow
