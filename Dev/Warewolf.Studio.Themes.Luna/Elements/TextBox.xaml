@@ -460,7 +460,8 @@
                                        Path=ClearSearchCommand}"
                                     x:Name="ClearSearchButton"
                                     HorizontalContentAlignment="Left"
-                                    HorizontalAlignment="Left"                                    
+                                    HorizontalAlignment="Left" 
+                                   
                                     >
                                 <Button.Template>
                                     <ControlTemplate TargetType="{x:Type Button}">

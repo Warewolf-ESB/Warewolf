@@ -87,10 +87,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 return path;
             }
-            else
-            {
-                return "";
-            }
+            return "";
         }
 
         private void RaiseCanExecuteChanged()
@@ -130,6 +127,10 @@ namespace Warewolf.Studio.ViewModels
                 {
                     ErrorMessage = "'Name' contains invalid characters.";
                 }
+                else if (Name.Trim() != Name)
+                {
+                    ErrorMessage = "'Name' contains leading or trailing whitespace characters.";
+                }
                 else if (HasDuplicateName(Name))
                 {
                     ErrorMessage = string.Format("Service with name '{0}' already exists.", Name);
@@ -148,12 +149,14 @@ namespace Warewolf.Studio.ViewModels
             {
                 return explorerTreeItem.Children.Any(model => model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType!=ResourceType.Folder);
             }
+            if (SingleEnvironmentExplorerViewModel.Environments.First() != null)
+                return SingleEnvironmentExplorerViewModel.Environments.First().Children.Any(model => model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
             return false;
         }
 
         private bool NameHasInvalidCharacters(string name)
         {
-            return Regex.IsMatch(name, @"[^a-zA-Z0-9._\s-]");
+            return Regex.IsMatch(name, @"[^a-zA-Z0-9._\s-]") ;
         }
 
         public string ErrorMessage
