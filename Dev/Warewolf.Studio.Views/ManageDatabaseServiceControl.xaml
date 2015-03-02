@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:dialogues="clr-namespace:Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;assembly=Dev2.Common.Interfaces"
              xmlns:db="clr-namespace:Dev2.Common.Interfaces.DB;assembly=Dev2.Common.Interfaces"
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
              mc:Ignorable="d" 
@@ -20,12 +19,12 @@
         </Grid.RowDefinitions>
 
     
-            <Grid Grid.Row="0" HorizontalAlignment="Left" >  <!-- Choose data Source -->
+            <!--<Grid Grid.Row="0" HorizontalAlignment="Left">  --><!-- Choose data Source --><!--
 
                 <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Left" Orientation="Horizontal">
                     <TextBlock  Text="1" ></TextBlock>
                     <TextBlock  Text="{Binding DataSourceHeader}" ></TextBlock>
-                    <!-- Choose data source header-->
+                    --><!-- Choose data source header--><!--
                 </StackPanel>
                 <Grid.RowDefinitions>
                     <RowDefinition />
@@ -38,15 +37,15 @@
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-               <ComboBox Grid.Column="0" Grid.Row="1" ItemsSource="{Binding Sources}" DisplayMemberPath="Name"></ComboBox>
+               <ComboBox Grid.Column="0" Grid.Row="1" ItemsSource="{Binding Sources}" DisplayMemberPath="Name"/>
                 <Button Grid.Column="1" Grid.Row="1" Command="{Binding EditSourceCommand}" IsEnabled="{Binding CanEditSource}" Content=" ... "></Button>
                 <TextBlock Grid.Column="2"  Grid.Row="1" Text="or"></TextBlock>
                 <Button Grid.Column="3"  Grid.Row="1" Content="{Binding NewButtonLabel}"></Button>
-                <views:ManageDatabaseSourceControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Visibility="{Binding EditDbSourceVisible}">
+                --><!--<views:ManageDatabaseSourceControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Visibility="{Binding EditDbSourceVisible}">
                     
-                </views:ManageDatabaseSourceControl>
+                </views:ManageDatabaseSourceControl>--><!--
                 
-            </Grid>
+            </Grid>-->
 
         <Grid Grid.Row="1" Grid.Column="0">
             <!-- Select an Action-->

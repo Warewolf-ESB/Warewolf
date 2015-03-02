@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
+using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -13,7 +14,7 @@ namespace Warewolf.Studio.ViewModels
 
     }
 
-    public abstract class SourceBaseImpl<T> : ISourceBase<T>
+    public abstract class SourceBaseImpl<T> : BindableBase, ISourceBase<T>
     {
         #region Implementation of ISourceBase<T>
 
@@ -29,7 +30,7 @@ namespace Warewolf.Studio.ViewModels
     {
     }
 
-    public class ManageDatabaseServiceViewModel : ISourceBase<IDatabaseService>, IManageDbServiceViewModel
+    public class ManageDatabaseServiceViewModel : SourceBaseImpl<IDatabaseService>, IManageDbServiceViewModel
     {
         ICollection<IManageDatabaseSourceViewModel> _sources;
         IManageDatabaseSourceViewModel _selectedSource;
@@ -155,10 +156,9 @@ namespace Warewolf.Studio.ViewModels
 
         #region Implementation of ISourceBase<IDatabaseService>
 
-        public IDatabaseService Item { get; set; }
-        public bool HasChanged { get { return true; } }
 
-        public IDatabaseService ToModel()
+
+        public override IDatabaseService ToModel()
         {
             return null;
         }
