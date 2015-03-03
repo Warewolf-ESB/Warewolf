@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Input;
+using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 
 namespace Dev2.Common.Interfaces.DB
 {
     public interface IManageDbServiceViewModel
     {
-        ICollection<IManageDatabaseSourceViewModel> Sources { get; set; }
+        ICollection<IDbSource> Sources { get; set; }
         IManageDatabaseSourceViewModel SelectedSource { get; set; }
         IDbAction SelectedAction { get; set; }
         ICollection<IDbAction> AvalaibleActions { get; set; }
@@ -23,10 +24,18 @@ namespace Dev2.Common.Interfaces.DB
         string InspectLabel { get; }
         string OutputsLabel { get; }
         string MappingNamesHeader { get; }
+        ICollection<IDbInput> Inputs { get; }
+        ICommand CreateNewSourceCommand { get; set; }
+        ICommand TestProcedureCommand { get; set; }
     }
 
     public interface IDbOutput
     {
+    }
+    public interface IDbInput
+    {
+        string Name{ get; set; }
+        string Value { get; set; }
     }
 
     public interface IDbAction

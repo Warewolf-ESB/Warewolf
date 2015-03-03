@@ -73,7 +73,7 @@ namespace Warewolf.Studio.ViewModels
 
             _handler = _unityContainer.Resolve<IExceptionHandler>();
            
-            _handler.AddHandler(typeof(WarewolfInvalidPermissionsException), () => { PopupController.Show(PopupMessages.GetInvalidPermissionException()); });
+            _handler.AddHandler(typeof(WarewolfInvalidPermissionsException), () => PopupController.Show(PopupMessages.GetInvalidPermissionException()));
 
         }
 
@@ -170,14 +170,7 @@ namespace Warewolf.Studio.ViewModels
             });
             if (foundViewModel == null)
             {
-                if (resource.ResourceType == ResourceType.WorkflowService)
-                {
-                    foundViewModel = new WorkflowServiceDesignerViewModel(resource, _aggregator);
-                }
-                else
-                {
-                    foundViewModel = _unityContainer.Resolve<IServiceDesignerViewModel>(new ParameterOverrides { { "resource", resource } });
-                }
+                foundViewModel = resource.ResourceType == ResourceType.WorkflowService ? new WorkflowServiceDesignerViewModel(resource, _aggregator) : _unityContainer.Resolve<IServiceDesignerViewModel>(new ParameterOverrides { { "resource", resource } });
                 region.Add(foundViewModel); //add the viewModel
             }
             region.Activate(foundViewModel); //active the viewModel
@@ -254,8 +247,8 @@ namespace Warewolf.Studio.ViewModels
 
         void CreateDbService()
         {
-            var selectedId = Guid.NewGuid();
-            var dbSourceViewModel = new ManageDatabaseSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.ResourceName), new RequestServiceNameViewModel(new EnvironmentViewModel(LocalhostServer, this), _unityContainer.Resolve<IRequestServiceNameView>(), selectedId), _aggregator);
+
+            var dbSourceViewModel = new ManageDatabaseServiceViewModel(false,new List<string>());
             GetRegion("Workspace").Add(dbSourceViewModel);
         }
 
@@ -276,7 +269,7 @@ namespace Warewolf.Studio.ViewModels
         void CreateNewServerSource(Guid selectedId)
         {
             var server = new NewServerViewModel(new ServerSource { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" }, ActiveServer.UpdateRepository, new RequestServiceNameViewModel(new EnvironmentViewModel(LocalhostServer, this), _unityContainer.Resolve<IRequestServiceNameView>(), selectedId), this,
-                ActiveServer.ResourceName.Substring(0,ActiveServer.ResourceName.IndexOf("(", StringComparison.Ordinal)),selectedId) { ServerSource = new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" } };
+                ActiveServer.ResourceName.Substring(0,ActiveServer.ResourceName.IndexOf("(", StringComparison.Ordinal)),selectedId) { ServerSource = new ServerSource { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" } };
             GetRegion("Workspace").Add(server);
 
         }
