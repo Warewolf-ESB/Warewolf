@@ -322,5 +322,10 @@ namespace Warewolf.Studio.ViewModels
         }
 
         #endregion
+
+        public void UpdateHelpDescriptor(string helpText)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
