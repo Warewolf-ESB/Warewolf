@@ -158,6 +158,397 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Opening Saved DB Service")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DB Service")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DBService")]
+        public virtual void OpeningSavedDBService()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening Saved DB Service", ((string[])(null)));
+#line 42
+this.ScenarioSetup(scenarioInfo);
+#line 43
+   testRunner.Given("I open \"InsertDummyUser\" service", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 44
+   testRunner.And("\"InsertDummyUser\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 45
+   testRunner.And("Data Source is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 46
+   testRunner.And("\"DemoDB\" is selected as the data source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 47
+   testRunner.And("\"dbo.InsertDummyUser\" is selected as the action", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 48
+   testRunner.And("\"1 Data Source\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 49
+   testRunner.And("\"2 Select Action\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 50
+   testRunner.And("\"3 Test Connector and Calculate Outputs\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "fname",
+                        "lname",
+                        "username",
+                        "password",
+                        "lastAccessDate"});
+            table5.AddRow(new string[] {
+                        "Test",
+                        "Ware",
+                        "wolf",
+                        "Dev",
+                        "12/1/1990"});
+#line 51
+   testRunner.And("inputs are", ((string)(null)), table5, "And ");
+#line 54
+   testRunner.And("\"Test\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 55
+   testRunner.And("\"4 Edit Default and Mapping Names\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Inputs",
+                        "Default Value",
+                        "Required Field",
+                        "Empty is Null"});
+            table6.AddRow(new string[] {
+                        "fname",
+                        "",
+                        "",
+                        ""});
+            table6.AddRow(new string[] {
+                        "iname",
+                        "",
+                        "",
+                        ""});
+            table6.AddRow(new string[] {
+                        "username",
+                        "",
+                        "",
+                        ""});
+            table6.AddRow(new string[] {
+                        "password",
+                        "",
+                        "",
+                        ""});
+            table6.AddRow(new string[] {
+                        "lastAccessDate",
+                        "",
+                        "",
+                        ""});
+#line 56
+   testRunner.And("input mappings are", ((string)(null)), table6, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Output",
+                        "Output Alias",
+                        "Recordset Name"});
+            table7.AddRow(new string[] {
+                        "UserID",
+                        "UserID",
+                        "dbo_InsertDummyUser"});
+#line 63
+   testRunner.And("output mappings are", ((string)(null)), table7, "And ");
+#line 66
+   testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Editing Saved DB Service By selecting Source")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DB Service")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DBService")]
+        public virtual void EditingSavedDBServiceBySelectingSource()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Editing Saved DB Service By selecting Source", ((string[])(null)));
+#line 68
+this.ScenarioSetup(scenarioInfo);
+#line 69
+   testRunner.Given("I open \"InsertDummyUser\" service", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 70
+   testRunner.And("\"InsertDummyUser\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 71
+   testRunner.And("Data Source is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 72
+   testRunner.And("\"DemoDB\" is selected as the data source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 73
+   testRunner.And("\"dbo.InsertDummyUser\" is selected as the action", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 74
+   testRunner.And("\"1 Data Source\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 75
+   testRunner.And("\"2 Select Action\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 76
+   testRunner.And("\"3 Test Connector and Calculate Outputs\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 77
+   testRunner.And("\"Test\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 78
+   testRunner.And("\"4 Edit Default and Mapping Names\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 79
+   testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 80
+   testRunner.When("I select \"DemoDB\" as data source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 81
+   testRunner.And("\"2 Select Action\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 82
+   testRunner.And("\"3 Test Connector and Calculate Outputs\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 83
+   testRunner.And("\"Test\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 84
+   testRunner.And("\"4 Edit Default and Mapping Names\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 85
+   testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 86
+   testRunner.Then("I select \"dbo.ConverToint\" as the action", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 87
+   testRunner.Then("\"3 Test Connector and Calculate Outputs\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 88
+   testRunner.And("Inspect Data Connector hyper link is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 89
+   testRunner.And("\"Test\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        "charValue"});
+            table8.AddRow(new string[] {
+                        "1"});
+#line 90
+   testRunner.And("inputs are", ((string)(null)), table8, "And ");
+#line 93
+   testRunner.And("\"4 Edit Default and Mapping Names\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 94
+   testRunner.When("I test the action", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Recordset Name",
+                        "Result"});
+            table9.AddRow(new string[] {
+                        "dbo_ConverToInt(1)",
+                        "1"});
+#line 95
+   testRunner.Then("outputs are", ((string)(null)), table9, "Then ");
+#line 98
+   testRunner.And("\"4 Edit Default and Mapping Names\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 99
+   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                        "charValue",
+                        "Required Field",
+                        "Empty is Null"});
+            table10.AddRow(new string[] {
+                        "",
+                        "",
+                        ""});
+#line 100
+   testRunner.And("input mappings are", ((string)(null)), table10, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Output",
+                        "Output Alias",
+                        "Recordset Name"});
+            table11.AddRow(new string[] {
+                        "result",
+                        "result",
+                        "dbo_ConverToInt"});
+#line 103
+   testRunner.And("output mappings are", ((string)(null)), table11, "And ");
+#line 106
+   testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 107
+   testRunner.Then("\"InsertDummyUser\" is saved", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 108
+   testRunner.And("Save Dialog is not opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Editing DB Service Mappings")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DB Service")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DBService")]
+        public virtual void EditingDBServiceMappings()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Editing DB Service Mappings", ((string[])(null)));
+#line 110
+ this.ScenarioSetup(scenarioInfo);
+#line 111
+   testRunner.Given("I open \"InsertDummyUser\" service", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 112
+   testRunner.And("\"InsertDummyUser\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 113
+   testRunner.And("Data Source is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 114
+   testRunner.And("\"DemoDB\" is selected as the data source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 115
+   testRunner.And("\"dbo.InsertDummyUser\" is selected as the action", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 116
+   testRunner.And("\"1 Data Source\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 117
+   testRunner.And("\"2 Select Action\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 118
+   testRunner.And("\"3 Test Connector and Calculate Outputs\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 119
+   testRunner.And("Inspect Data Connector hyper link is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 120
+   testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                        "fname",
+                        "lname",
+                        "username",
+                        "password",
+                        "lastAccessDate"});
+            table12.AddRow(new string[] {
+                        "Change",
+                        "Test",
+                        "wolf",
+                        "Dev",
+                        "10/1/1990"});
+#line 121
+   testRunner.When("inputs are", ((string)(null)), table12, "When ");
+#line 124
+   testRunner.And("\"Test\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 125
+   testRunner.When("I test the action", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 126
+   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Recordset Name",
+                        "UserID"});
+            table13.AddRow(new string[] {
+                        "ddo_InsertDummyUser(1)",
+                        "14378"});
+#line 127
+   testRunner.Then("outputs are", ((string)(null)), table13, "Then ");
+#line 130
+   testRunner.And("\"4 Edit Default and Mapping Names\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Inputs",
+                        "Default Value",
+                        "Required Field",
+                        "Empty is Null"});
+            table14.AddRow(new string[] {
+                        "fname",
+                        "",
+                        "Yes",
+                        ""});
+            table14.AddRow(new string[] {
+                        "iname",
+                        "",
+                        "",
+                        ""});
+            table14.AddRow(new string[] {
+                        "username",
+                        "",
+                        "",
+                        ""});
+            table14.AddRow(new string[] {
+                        "password",
+                        "",
+                        "",
+                        ""});
+            table14.AddRow(new string[] {
+                        "lastAccessDate",
+                        "",
+                        "",
+                        ""});
+#line 131
+   testRunner.When("input mappings are", ((string)(null)), table14, "When ");
+#line 138
+   testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Output",
+                        "Output Alias",
+                        "Recordset Name"});
+            table15.AddRow(new string[] {
+                        "UserID",
+                        "UserID",
+                        "dbo_InsertDummyUser"});
+#line 139
+   testRunner.And("output mappings are", ((string)(null)), table15, "And ");
+#line 142
+   testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 143
+   testRunner.Then("\"InsertDummyUser\" is saved", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 144
+   testRunner.And("Save Dialog is not opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Editing DB Service and Test Execution is unsuccesful")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DB Service")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DBService")]
+        public virtual void EditingDBServiceAndTestExecutionIsUnsuccesful()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Editing DB Service and Test Execution is unsuccesful", ((string[])(null)));
+#line 148
+ this.ScenarioSetup(scenarioInfo);
+#line 149
+   testRunner.Given("I open \"InsertDummyUser\" service", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 150
+   testRunner.And("\"InsertDummyUser\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 151
+   testRunner.And("Data Source is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 152
+   testRunner.And("\"DemoDB\" is selected as the data source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 153
+   testRunner.And("\"dbo.InsertDummyUser\" is selected as the action", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 154
+   testRunner.And("\"1 Data Source\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 155
+   testRunner.And("\"2 Select Action\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 156
+   testRunner.And("\"3 Test Connector and Calculate Outputs\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 157
+   testRunner.And("Inspect Data Connector hyper link is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+                        "fname",
+                        "Iname",
+                        "usernam",
+                        "password",
+                        "lastAccessDate"});
+            table16.AddRow(new string[] {
+                        "Test",
+                        "Ware",
+                        "wolf",
+                        "Dev",
+                        "12/1/1990"});
+#line 158
+   testRunner.And("inputs are", ((string)(null)), table16, "And ");
+#line 161
+   testRunner.And("\"Test\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 162
+   testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 163
+   testRunner.When("I test the action", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 164
+   testRunner.And("Execution fails", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 165
+   testRunner.And("\"4 Edit Default and Mapping Names\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Inputs",
+                        "Default Value",
+                        "Required Field",
+                        "Empty is Null"});
+#line 166
+   testRunner.And("input mappings are", ((string)(null)), table17, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Output",
+                        "Output Alias",
+                        "Recordset Name"});
+#line 168
+ testRunner.And("output mappings are", ((string)(null)), table18, "And ");
+#line 170
+ testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

@@ -43,7 +43,9 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             ScenarioContext.Current.Pending();
         }
 
+        [Given(@"I select ""(.*)"" as the action")]
         [When(@"I select ""(.*)"" as the action")]
+        [Then(@"I select ""(.*)"" as the action")]
         public void WhenISelectAsTheAction(string p0)
         {
             ScenarioContext.Current.Pending();
@@ -61,38 +63,94 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             ScenarioContext.Current.Pending();
         }
 
+        [Given(@"""(.*)"" tab is opened")]
+        [When(@"""(.*)"" tab is opened")]
         [Then(@"""(.*)"" tab is opened")]
         public void ThenTabIsOpened(string p0)
         {
             ScenarioContext.Current.Pending();
         }
 
+        [Given(@"Data Source is focused")]
+        [When(@"Data Source is focused")]
         [Then(@"Data Source is focused")]
         public void ThenDataSourceIsFocused()
         {
             ScenarioContext.Current.Pending();
         }
 
+        [Given(@"inputs are")]
+        [When(@"inputs are")]
         [Then(@"inputs are")]
         public void ThenInputsAre(Table table)
         {
             ScenarioContext.Current.Pending();
         }
 
+        [Given(@"outputs are")]
+        [When(@"outputs are")]
         [Then(@"outputs are")]
         public void ThenOutputsAre(Table table)
         {
             ScenarioContext.Current.Pending();
         }
 
+        [Given(@"input mappings are")]
+        [When(@"input mappings are")]
         [Then(@"input mappings are")]
         public void ThenInputMappingsAre(Table table)
         {
             ScenarioContext.Current.Pending();
         }
 
+        [Given(@"output mappings are")]
+        [When(@"output mappings are")]
         [Then(@"output mappings are")]
         public void ThenOutputMappingsAre(Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"I open ""(.*)"" service")]
+        public void GivenIOpenService(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"""(.*)"" is selected as the data source")]
+        public void GivenIsSelectedAsTheDataSource(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"Inspect Data Connector hyper link is ""(.*)""")]
+        [When(@"Inspect Data Connector hyper link is ""(.*)""")]
+        [Then(@"Inspect Data Connector hyper link is ""(.*)""")]
+        public void ThenInspectDataConnectorHyperLinkIs(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"""(.*)"" is saved")]
+        public void ThenIsSaved(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"Save Dialog is not opened")]
+        public void ThenSaveDialogIsNotOpened()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"Execution fails")]
+        public void WhenExecutionFails()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"""(.*)"" is selected as the action")]
+        public void GivenIsSelectedAsTheAction(string p0)
         {
             ScenarioContext.Current.Pending();
         }
