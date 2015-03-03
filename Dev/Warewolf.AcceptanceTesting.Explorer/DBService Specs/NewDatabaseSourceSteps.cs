@@ -8,6 +8,7 @@ using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
+using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -32,25 +33,13 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             var mockEventAggregator = new Mock<IEventAggregator>();
             var manageDatabaseSourceControlViewModel = new ManageDatabaseSourceViewModel(mockStudioUpdateManager.Object, mockEventAggregator.Object);
             databaseSourceControlView.DataContext = manageDatabaseSourceControlViewModel;
-            var window = new Window { Content = databaseSourceControlView };
-            var app = Application.Current;
-            app.MainWindow = window;
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
-            {
-                var manageDatabaseSourceControl = (ManageDatabaseSourceControl)Application.Current.MainWindow.Content;
-                Assert.IsNotNull(manageDatabaseSourceControl);
-                Assert.IsNotNull(manageDatabaseSourceControl.DataContext);
-                Assert.IsInstanceOfType(manageDatabaseSourceControl.DataContext, typeof(IManageDatabaseSourceViewModel));
-                Application.Current.Shutdown();
-            }));
-
-            Application.Current.Run(Application.Current.MainWindow);
+            Utils.ShowTheViewForTesting(databaseSourceControlView);
             FeatureContext.Current.Add("databaseView", databaseSourceControlView);
             FeatureContext.Current.Add("viewModel", manageDatabaseSourceControlViewModel);
             FeatureContext.Current.Add("updateManager", mockStudioUpdateManager);
             FeatureContext.Current.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
         }
-        
+
         [BeforeScenario("CreatingNewDBSource")]
         public void SetupForDatabaseSource()
         {

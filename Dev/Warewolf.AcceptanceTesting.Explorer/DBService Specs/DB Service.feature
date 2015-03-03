@@ -42,7 +42,9 @@ Scenario: Creating DB Service
 Scenario: Opening Saved DB Service
    Given I open "InsertDummyUser" service
    And "InsertDummyUser" tab is opened
-   And "" is focused
+   And Data Source is focused
+   And "DemoDB" is selected as the data source
+   And "dbo.InsertDummyUser" is selected as the action
    And "1 Data Source" is "Enabled"
    And "2 Select Action" is "Enabled"
    And "3 Test Connector and Calculate Outputs" is "Enabled" 
@@ -62,13 +64,13 @@ Scenario: Opening Saved DB Service
 	| Output | Output Alias | Recordset Name      |
 	| UserID | UserID       | dbo_InsertDummyUser |
    And "Save" is "Disabled"
-   
-  
 
 Scenario: Editing Saved DB Service By selecting Source
    Given I open "InsertDummyUser" service
    And "InsertDummyUser" tab is opened
-   And "" is focused
+   And Data Source is focused
+   And "DemoDB" is selected as the data source
+   And "dbo.InsertDummyUser" is selected as the action
    And "1 Data Source" is "Enabled"
    And "2 Select Action" is "Enabled"
    And "3 Test Connector and Calculate Outputs" is "Enabled" 
@@ -101,14 +103,16 @@ Scenario: Editing Saved DB Service By selecting Source
    And output mappings are
    | Output | Output Alias | Recordset Name  |
    | result | result       | dbo_ConverToInt |
-   When I "Save"
+   When I save
    Then "InsertDummyUser" is saved
    And Save Dialog is not opened 
 
  Scenario: Editing DB Service Mappings
    Given I open "InsertDummyUser" service
    And "InsertDummyUser" tab is opened
-   And "" is focused
+   And Data Source is focused
+   And "DemoDB" is selected as the data source
+   And "dbo.InsertDummyUser" is selected as the action
    And "1 Data Source" is "Enabled"
    And "2 Select Action" is "Enabled"
    And "3 Test Connector and Calculate Outputs" is "Enabled" 
@@ -135,7 +139,7 @@ Scenario: Editing Saved DB Service By selecting Source
    And output mappings are
 	  | Output | Output Alias | Recordset Name      |
 	  | UserID | UserID       | dbo_InsertDummyUser |
-   When I "Save"
+   When I save
    Then "InsertDummyUser" is saved
    And Save Dialog is not opened 
 
@@ -144,11 +148,13 @@ Scenario: Editing Saved DB Service By selecting Source
  Scenario: Editing DB Service and Test Execution is unsuccesful
    Given I open "InsertDummyUser" service
    And "InsertDummyUser" tab is opened
-   And "" is focused
+   And Data Source is focused
+   And "DemoDB" is selected as the data source
+   And "dbo.InsertDummyUser" is selected as the action
    And "1 Data Source" is "Enabled"
    And "2 Select Action" is "Enabled"
    And "3 Test Connector and Calculate Outputs" is "Enabled" 
-   And "Inspect Data Connector" hyper link is "Visible"
+   And Inspect Data Connector hyper link is "Visible"
    And inputs are
    | fname | Iname | usernam | password | lastAccessDate |
    | Test  | Ware  | wolf    | Dev      | 12/1/1990      |
