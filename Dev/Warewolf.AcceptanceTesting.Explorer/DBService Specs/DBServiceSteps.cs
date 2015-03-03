@@ -19,13 +19,16 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             var viewModel = new ManageDatabaseServiceViewModel(true, new[] {""});
             view.DataContext = viewModel;
             Utils.ShowTheViewForTesting(view);
+            FeatureContext.Current.Add("view", view);
+            FeatureContext.Current.Add("viewModel", viewModel);
            
         }
 
         [BeforeScenario("DBService")]
         public void SetupForDatabaseService()
         {
-
+            ScenarioContext.Current.Add("view", FeatureContext.Current.Get<ManageDatabaseServiceControl>("view"));
+            ScenarioContext.Current.Add("viewModel", FeatureContext.Current.Get<ManageDatabaseServiceViewModel>("viewModel"));
         }
 
         [Given(@"I click New Data Base Service Connector")]
