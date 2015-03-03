@@ -41,6 +41,10 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+
+
+
     </UserControl.Resources>
     <Grid Margin="{StaticResource ContainerBorder}">
         <Grid.RowDefinitions>
@@ -129,7 +133,10 @@
                 <Button Grid.Column="1" HorizontalAlignment="Left" Command="{Binding TestProcedureCommand}" Width="100">Test</Button>
             </Grid>
            <TextBlock Grid.Row="4" Text="{Binding OutputsLabel}" FontWeight="Bold"></TextBlock>
-            <DataGrid Grid.Row="5"></DataGrid>
+            <DataGrid Grid.Row="5" ItemsSource="{Binding TestResults}"  CellStyle="{StaticResource MyDataGridCell}"   GridLinesVisibility="Vertical" CanUserSortColumns="True" ColumnWidth="*" AutoGenerateColumns="True"  BorderBrush="Transparent" 
+                  CanUserResizeColumns="True" CanUserReorderColumns="True"  VerticalGridLinesBrush="Transparent" >
+
+            </DataGrid>
         </Grid>
         
         <Grid Grid.Row="4" Grid.Column="0">
@@ -141,16 +148,84 @@
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" HorizontalAlignment="Left" Orientation="Horizontal">
-                <TextBlock  Text="2" ></TextBlock>
-                <TextBlock  Text="{Binding MappingNamesHeader, Mode=OneWay}" ></TextBlock>
-                <!-- Choose data source header-->
+            <StackPanel  Grid.Row="0" Grid.Column="0"  Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" Orientation="Horizontal">
+                <TextBlock Margin="10" Text="{Binding TestHeader, Mode=OneWay}" Style="{StaticResource SourceHeader}" ></TextBlock>
             </StackPanel>
-       
+
+            <DataGrid Grid.Row="2" ItemsSource="{Binding Inputs}"    GridLinesVisibility="Vertical" CanUserSortColumns="True"  AutoGenerateColumns="False"  BorderBrush="Transparent" 
+                  CanUserResizeColumns="True" CanUserReorderColumns="True" VerticalGridLinesBrush="Transparent">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Input" CanUserResize="True" Width="150" SortMemberPath="Name">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" Margin="5,5,5,5"></TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Default Value" CanUserResize="True" Width="*" SortMemberPath="Name">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding DefaultValue}" Margin="5,5,5,5"></TextBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Required Field" CanUserResize="True" Width="150" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding Path=Required, Mode=TwoWay}" Margin="5,5,5,5" HorizontalAlignment="Center"></CheckBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Empty is Null" CanUserResize="True" Width="150" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding Path=EmptyIsNull, Mode=TwoWay}" Margin="5,5,5,5"></CheckBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                </DataGrid.Columns>
+            </DataGrid>
+
             <!-- Choose data Source Action-->
             <TextBlock Grid.Row="1" Text="{Binding InputsLabel}"></TextBlock>
-            <TextBlock Grid.Row="2" Text="{Binding InputsLabel}"></TextBlock>
-            <DataGrid Grid.Row="3" ></DataGrid>
+            <TextBlock Grid.Row="3" Text="{Binding InputsLabel}"></TextBlock>
+            <DataGrid Grid.Row="4" ItemsSource="{Binding OutputMapping}"    GridLinesVisibility="Vertical" CanUserSortColumns="True"  AutoGenerateColumns="False"  BorderBrush="Transparent" 
+                  CanUserResizeColumns="True" CanUserReorderColumns="True" VerticalGridLinesBrush="Transparent">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Input" CanUserResize="True" Width="150" SortMemberPath="Name">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" Margin="5,5,5,5"></TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Default Value" CanUserResize="True" Width="*" SortMemberPath="Name">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding DefaultValue}" Margin="5,5,5,5"></TextBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Required Field" CanUserResize="True" Width="150" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding Path=Required, Mode=TwoWay}" Margin="5,5,5,5" HorizontalAlignment="Center"></CheckBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Empty is Null" CanUserResize="True" Width="150" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding Path=EmptyIsNull, Mode=TwoWay}" Margin="5,5,5,5"></CheckBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                </DataGrid.Columns>
+            </DataGrid>
         </Grid>
 
     </Grid>

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
@@ -25,8 +26,16 @@ namespace Dev2.Common.Interfaces.DB
         string OutputsLabel { get; }
         string MappingNamesHeader { get; }
         ICollection<IDbInput> Inputs { get; }
+        DataTable TestResults { get; set; }
         ICommand CreateNewSourceCommand { get; set; }
         ICommand TestProcedureCommand { get; set; }
+        IDbOutputMapping OutputMapping { get; set; }
+    }
+
+    public interface IDbOutputMapping
+    {
+        string Name { get; set; }
+        string OutputName { get; set; }
     }
 
     public interface IDbOutput
@@ -36,6 +45,9 @@ namespace Dev2.Common.Interfaces.DB
     {
         string Name{ get; set; }
         string Value { get; set; }
+        string DefaultValue { get; set; }
+        bool RequiredField { get; set; }
+        bool EmptyIsNull { get; set; }
     }
 
     public interface IDbAction

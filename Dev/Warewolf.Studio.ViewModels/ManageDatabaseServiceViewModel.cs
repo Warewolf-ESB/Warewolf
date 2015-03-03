@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Data;
@@ -54,6 +55,8 @@ namespace Warewolf.Studio.ViewModels
         IManageDatabaseSourceViewModel _selectedSource;
         IDbAction _selectedAction;
         ICollection<IDbInput> _inputs;
+        DataTable _testResults;
+        IDbOutputMapping _outputMapping;
 
         public ManageDatabaseServiceViewModel( bool canEditSource, ICollection<string> actions):base(ResourceType.DbService)
         {
@@ -66,6 +69,14 @@ namespace Warewolf.Studio.ViewModels
             Inputs = new Collection<IDbInput> { new DbInput("bob", "the"), new DbInput("dora", "eplorer"), new DbInput("Zummy", "Gummy") };
             CreateNewSourceCommand = new DelegateCommand(()=>{});
             TestProcedureCommand = new DelegateCommand(()=>{});
+            TestResults = new DataTable("Results");
+            TestResults.Columns.Add(new DataColumn("Record Name"));
+            TestResults.Columns.Add(new DataColumn("Windows Group"));
+            TestResults.Columns.Add(new DataColumn("Response"));
+            TestResults.Columns.Add(new DataColumn("Bob"));
+            TestResults.Rows.Add(new object[] { "dbo_Save_person(1)", "asdasd", "dasdasd", "111" });
+            TestResults.Rows.Add(new object[] { "dbo_Save_person(2)", "qweqwe", "dasfghfgdasd", "111" });
+            TestResults.Rows.Add(new object[] { "dbo_Save_person(3)", "fghfhf", "fgh", "111" });
         }
 
         #region Implementation of IManageDbServiceViewModel
@@ -188,8 +199,32 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(()=>Inputs);
             }
         }
+        public DataTable TestResults
+        {
+            get
+            {
+                return _testResults;
+            }
+            set
+            {
+                _testResults = value;
+                OnPropertyChanged(()=>TestResults);
+            }
+        }
         public ICommand CreateNewSourceCommand { get; set; }
         public ICommand TestProcedureCommand { get;  set; }
+        public IDbOutputMapping OutputMapping
+        {
+            get
+            {
+                return _outputMapping;
+            }
+            set
+            {
+                _outputMapping = value;
+                OnPropertyChanged(()=>OutputMapping);
+            }
+        }
 
         #endregion
 
