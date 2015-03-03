@@ -191,7 +191,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inputs.
+        ///   Looks up a localized string similar to Inspect Data Connector.
         /// </summary>
         public static string DatabaseServiceInspectHeader {
             get {
@@ -218,7 +218,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to g.
+        ///   Looks up a localized string similar to Outputs.
         /// </summary>
         public static string DatabaseServiceOutputsLabel {
             get {
