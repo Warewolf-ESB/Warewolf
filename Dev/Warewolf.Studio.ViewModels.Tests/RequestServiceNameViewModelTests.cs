@@ -123,7 +123,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             viewModel.Name = "Service 1";
             //---------------Test Result -----------------------
-            Assert.AreEqual("Service with name 'Service 1' already exists.", viewModel.ErrorMessage);
+            Assert.AreEqual("An item with name 'Service 1' already exists in this folder.", viewModel.ErrorMessage);
         }
 
         [TestMethod]

@@ -722,16 +722,16 @@ You need Administrator permission.</value>
     <value>&lt;body&gt;&lt;p&gt;WindowsAuthenticationHelp&lt;/p&gt;&lt;/body&gt;</value>
   </data>
   <data name="DatabaseServiceActionHeader" xml:space="preserve">
-    <value>b</value>
+    <value>Select an Action</value>
   </data>
   <data name="DatabaseServiceDBSourceHeader" xml:space="preserve">
-    <value>a</value>
+    <value>Data Source</value>
   </data>
   <data name="DatabaseServiceInputsHeader" xml:space="preserve">
     <value>e</value>
   </data>
   <data name="DatabaseServiceInspectHeader" xml:space="preserve">
-    <value>f</value>
+    <value>Inspect Data Connector</value>
   </data>
   <data name="DatabaseServiceMappingsHeader" xml:space="preserve">
     <value>c</value>
@@ -740,9 +740,12 @@ You need Administrator permission.</value>
     <value>h</value>
   </data>
   <data name="DatabaseServiceOutputsLabel" xml:space="preserve">
-    <value>g</value>
+    <value>Outputs</value>
   </data>
   <data name="DatabaseServiceTestHeader" xml:space="preserve">
-    <value>d</value>
+    <value>Test Connector and Calculate Outputs</value>
+  </data>
+  <data name="New" xml:space="preserve">
+    <value>New</value>
   </data>
 </root>

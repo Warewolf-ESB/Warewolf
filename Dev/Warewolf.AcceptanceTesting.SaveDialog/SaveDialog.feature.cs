@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Warewolf.AcceptanceTesting.Explorer
+namespace Warewolf.AcceptanceTesting.SaveDialog
 {
     using TechTalk.SpecFlow;
     
@@ -49,7 +49,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "SaveDialog")))
             {
-                Warewolf.AcceptanceTesting.Explorer.SaveDialogFeature.FeatureSetup(null);
+                Warewolf.AcceptanceTesting.SaveDialog.SaveDialogFeature.FeatureSetup(null);
             }
         }
         
@@ -212,7 +212,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 64
  testRunner.Then("save button is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 65
- testRunner.And("validation message is \"Service with name \'Folder 2 Child 1\' already exists.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("validation message is \"An item with name \'Folder 2 Child 1\' already exists in thi" +
+                    "s folder.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

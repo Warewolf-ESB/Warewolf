@@ -164,7 +164,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to b.
+        ///   Looks up a localized string similar to Select an Action.
         /// </summary>
         public static string DatabaseServiceActionHeader {
             get {
@@ -173,7 +173,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to a.
+        ///   Looks up a localized string similar to Data Source.
         /// </summary>
         public static string DatabaseServiceDBSourceHeader {
             get {
@@ -191,7 +191,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to f.
+        ///   Looks up a localized string similar to Inspect Data Connector.
         /// </summary>
         public static string DatabaseServiceInspectHeader {
             get {
@@ -218,7 +218,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to g.
+        ///   Looks up a localized string similar to Outputs.
         /// </summary>
         public static string DatabaseServiceOutputsLabel {
             get {
@@ -227,7 +227,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to d.
+        ///   Looks up a localized string similar to Test Connector and Calculate Outputs.
         /// </summary>
         public static string DatabaseServiceTestHeader {
             get {
@@ -996,6 +996,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string Navigation_Category_Unassigned {
             get {
                 return ResourceManager.GetString("Navigation_Category_Unassigned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        public static string New {
+            get {
+                return ResourceManager.GetString("New", resourceCulture);
             }
         }
         

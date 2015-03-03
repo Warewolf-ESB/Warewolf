@@ -613,5 +613,9 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public void UpdateHelpDescriptor(string helpText)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
