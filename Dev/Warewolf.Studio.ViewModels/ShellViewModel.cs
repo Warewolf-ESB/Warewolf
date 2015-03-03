@@ -248,7 +248,7 @@ namespace Warewolf.Studio.ViewModels
         void CreateDbService()
         {
 
-            var dbSourceViewModel = new ManageDatabaseServiceViewModel(false,new List<string>());
+            var dbSourceViewModel = new ManageDatabaseServiceViewModel(new DbServiceModel());
             GetRegion("Workspace").Add(dbSourceViewModel);
         }
 

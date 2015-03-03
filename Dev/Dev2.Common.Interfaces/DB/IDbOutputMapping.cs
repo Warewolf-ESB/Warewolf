@@ -1,0 +1,8 @@
+﻿namespace Dev2.Common.Interfaces.DB
+{
+    public interface IDbOutputMapping
+    {
+        string Name { get; set; }
+        string OutputName { get; set; }
+    }
+}

@@ -182,7 +182,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to e.
+        ///   Looks up a localized string similar to Inputs.
         /// </summary>
         public static string DatabaseServiceInputsHeader {
             get {

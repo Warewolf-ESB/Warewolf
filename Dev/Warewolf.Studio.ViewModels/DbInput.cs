@@ -8,6 +8,9 @@ namespace Warewolf.Studio.ViewModels
         {
             Name = name;
             Value = value;
+            DefaultValue = "";
+            RequiredField = true;
+            EmptyIsNull = true;
         }
 
         #region Implementation of IDbInput
@@ -15,6 +18,9 @@ namespace Warewolf.Studio.ViewModels
         public string Name { get; set; }
 
         public string Value { get; set; }
+        public string DefaultValue { get; set; }
+        public bool RequiredField { get; set; }
+        public bool EmptyIsNull { get; set; }
 
         #endregion
     }
