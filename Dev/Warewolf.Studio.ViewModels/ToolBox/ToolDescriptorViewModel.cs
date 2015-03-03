@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Activities;
+using System.Activities.Presentation;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Media;
 using Dev2;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Toolbox;
 using Microsoft.Practices.Prism.Mvvm;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -19,14 +15,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         IToolDescriptor _tool;
         bool _isEnabled;
 
-              static ResourceDictionary Resources;
         private DataObject _activityType;
-
-        static ToolDescriptorViewModel()
-        {
-            
-
-        }
 
         public ToolDescriptorViewModel(IToolDescriptor tool, bool isEnabled)
         {
@@ -38,30 +27,20 @@ namespace Warewolf.Studio.ViewModels.ToolBox
 
         private void UpdateToolActualType(IToolDescriptor tool)
         {
-            try
+            var type = typeof (DsfNativeActivity<>);
+            var assembly = type.Assembly;
             {
-                //_activityType = new DataObject(System.Activities.Presentation.DragDropHelper.WorkflowItemTypeNameFormat, tool.Activity.FullyQualifiedName);
-                var type = typeof(DsfNativeActivity<>);
-                var assembly = type.Assembly;
+                foreach (var exportedType in assembly.GetTypes())
                 {
-                    foreach (var exportedType in assembly.GetTypes())
+                    if (exportedType.FullName == tool.Activity.FullyQualifiedName)
                     {
-                        if (exportedType.FullName == tool.Activity.FullyQualifiedName)
-                        {
-                            _activityType = new DataObject(System.Activities.Presentation.DragDropHelper.WorkflowItemTypeNameFormat,exportedType);
-                            return;
-                        }
+                        if (exportedType.AssemblyQualifiedName != null)
+                            _activityType = new DataObject(DragDropHelper.WorkflowItemTypeNameFormat,
+                                exportedType.AssemblyQualifiedName);
+                        return;
                     }
-                }                
-            }
-            catch (Exception e)
-            {
-                if (e != null)
-                {
-                    
                 }
             }
-            //tool.Designer.ActualType = Assembly.Load(tool.Designer.FullyQualifiedName).GetType();
         }
 
         #region Implementation of IToolDescriptorViewModel
