@@ -18,11 +18,11 @@ namespace Warewolf.Studio.ViewModels
         private string _name;
         private string _errorMessage;
         private ResourceName _resourceName;
-        private readonly IRequestServiceNameView _view;
+		private readonly IRequestServiceNameView _view;
         readonly Guid _selectedGuid;
         public MessageBoxResult ViewResult { get; private set; }
 
-        public RequestServiceNameViewModel(IEnvironmentViewModel environmentViewModel,IRequestServiceNameView view,Guid selectedGuid)
+		public RequestServiceNameViewModel(IEnvironmentViewModel environmentViewModel, IRequestServiceNameView view, Guid selectedGuid)
         {
             if (environmentViewModel == null)
             {
@@ -37,12 +37,12 @@ namespace Warewolf.Studio.ViewModels
             environmentViewModel.LoadDialog(_selectedGuid);
             _view = view;
            
-            OkCommand = new DelegateCommand(SetServiceName,() => String.IsNullOrEmpty(ErrorMessage));            
+			OkCommand = new DelegateCommand(SetServiceName, () => String.IsNullOrEmpty(ErrorMessage));
             CancelCommand = new DelegateCommand(CloseView);
             SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(environmentViewModel);
             _view.DataContext = this;
             Name = "";
-            environmentViewModel.CanShowServerVersion = false;
+			environmentViewModel.CanShowServerVersion = false;
         }
 
         private void CloseView()
@@ -64,7 +64,7 @@ namespace Warewolf.Studio.ViewModels
 
         private string GetPath()
         {
-            if(SingleEnvironmentExplorerViewModel.SelectedItem != null)
+			if (SingleEnvironmentExplorerViewModel.SelectedItem != null)
             {
                 var parent = SingleEnvironmentExplorerViewModel.SelectedItem.Parent;
                 var parentNames = new List<string>();
@@ -148,7 +148,7 @@ namespace Warewolf.Studio.ViewModels
             var explorerTreeItem = SingleEnvironmentExplorerViewModel.SelectedItem;
             if (explorerTreeItem != null)
             {
-                return explorerTreeItem.Children.Any(model => model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType!=ResourceType.Folder);
+				return explorerTreeItem.Children.Any(model => model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
             }
             if (SingleEnvironmentExplorerViewModel.Environments.First() != null)
                 return SingleEnvironmentExplorerViewModel.Environments.First().Children.Any(model => model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
@@ -157,7 +157,7 @@ namespace Warewolf.Studio.ViewModels
 
         private bool NameHasInvalidCharacters(string name)
         {
-            return Regex.IsMatch(name, @"[^a-zA-Z0-9._\s-]") ;
+			return Regex.IsMatch(name, @"[^a-zA-Z0-9._\s-]");
         }
 
         public string ErrorMessage

@@ -19,7 +19,7 @@ using Warewolf.Studio.Core.Popup;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class EnvironmentViewModel:BindableBase, IEnvironmentViewModel
+	public class EnvironmentViewModel : BindableBase, IEnvironmentViewModel
     {
         readonly IShellViewModel _shellViewModel;
         ICollection<IExplorerItemViewModel> _children;
@@ -31,11 +31,11 @@ namespace Warewolf.Studio.ViewModels
         private bool _isExpanded;
         private bool _isSelected;
         bool _canCreateFolder;
-        bool _canShowServerVersion;
+		bool _canShowServerVersion;
 
         public EnvironmentViewModel(IServer server, IShellViewModel shellViewModel)
         {
-            if(server==null) throw new ArgumentNullException("server");
+			if (server == null) throw new ArgumentNullException("server");
             if (shellViewModel == null) throw new ArgumentNullException("shellViewModel");
             _shellViewModel = shellViewModel;
             Server = server;
@@ -61,12 +61,12 @@ namespace Warewolf.Studio.ViewModels
             Parent = null;
             ResourceType = ResourceType.ServerSource;
             ResourceName = DisplayName;
-            CanShowServerVersion = true;
+			CanShowServerVersion = true;
         }
 
         void ServerItemAddedEvent(IExplorerItem args)
         {
-            if(args.ResourcePath == args.DisplayName)
+			if (args.ResourcePath == args.DisplayName)
             {
                 Children.Add(new ExplorerItemViewModel(_shellViewModel, Server, new Mock<IExplorerHelpDescriptorBuilder>().Object, null));
                 return;
@@ -74,9 +74,9 @@ namespace Warewolf.Studio.ViewModels
            var found = Find(args.ResourcePath.Substring(0,args.ResourcePath.LastIndexOf("\\", StringComparison.Ordinal)));
             if(found != null)
             {
-                if(found.Children.All(a => a.ResourceName != args.DisplayName))
-                    _shellViewModel.ExecuteOnDispatcher(()=>
-                    found.AddChild(new ExplorerItemViewModel(_shellViewModel,Server,new Mock<IExplorerHelpDescriptorBuilder>().Object,found)
+				if (found.Children.All(a => a.ResourceName != args.DisplayName))
+					_shellViewModel.ExecuteOnDispatcher(() =>
+					found.AddChild(new ExplorerItemViewModel(_shellViewModel, Server, new Mock<IExplorerHelpDescriptorBuilder>().Object, found)
                     {
                         ResourceId = args.ResourceId,
                         ResourceName = args.DisplayName,
@@ -99,7 +99,7 @@ namespace Warewolf.Studio.ViewModels
                 IsExpanded = true;
                 var id = Guid.NewGuid();
                 var name = GetChildNameFromChildren();
-                 Server.ExplorerRepository.CreateFolder(GlobalConstants.ServerWorkspaceID,name,id);
+			Server.ExplorerRepository.CreateFolder(GlobalConstants.ServerWorkspaceID, name, id);
                 var child = new ExplorerItemViewModel(ShellViewModel, Server, new Mock<IExplorerHelpDescriptorBuilder>().Object, null)
                {
                    ResourceName = name,
@@ -193,8 +193,8 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if(_children == null) return _children;
-                return new ObservableCollection<IExplorerItemViewModel>( _children.Where(a=>a.IsVisible));
+				if (_children == null) return _children;
+				return new ObservableCollection<IExplorerItemViewModel>(_children.Where(a => a.IsVisible));
             }
             set
             {
@@ -230,7 +230,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return Children.Count>0;
+				return Children.Count > 0;
             }
             set
             {
@@ -270,7 +270,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return Server.Permissions.Any(a=>(a.Contribute || a.Administrator) && a.IsServer);
+				return Server.Permissions.Any(a => (a.Contribute || a.Administrator) && a.IsServer);
             }
             set
             {
@@ -310,19 +310,19 @@ namespace Warewolf.Studio.ViewModels
                 _isSelected = value;
                 OnPropertyChanged(() => IsSelected);
             }
+		}
+		public bool CanShowServerVersion
+		{
+			get
+			{
+				return _canShowServerVersion;
         }
-        public bool CanShowServerVersion
-        {
-            get
-            {
-                return _canShowServerVersion;
-            }
-            set
-            {
-                _canShowServerVersion = value;
-                OnPropertyChanged(() => CanShowServerVersion);
-            }
-        }
+			set
+			{
+				_canShowServerVersion = value;
+				OnPropertyChanged(() => CanShowServerVersion);
+			}
+		}
 
         void ShowServerVersionAbout()
         {
@@ -372,7 +372,7 @@ namespace Warewolf.Studio.ViewModels
 
         public async Task<bool> Connect()
         {
-            if(Server != null)
+			if (Server != null)
             {
                 IsConnecting = true;
                 IsConnected = false;
@@ -395,7 +395,7 @@ namespace Warewolf.Studio.ViewModels
                IsServerIconVisible = !value;
                IsServerUnavailableIconVisible = !value;
 
-                OnPropertyChanged(()=>IsConnecting);
+				OnPropertyChanged(() => IsConnecting);
        
             }
         }
@@ -412,7 +412,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsConnecting = true;
                 var explorerItems = await Server.LoadExplorer();
-                var explorerItemViewModels = CreateExplorerItems(explorerItems.Children, Server, null,selectedId!=null);
+				var explorerItemViewModels = CreateExplorerItems(explorerItems.Children, Server, null, selectedId != null);
                 Children = explorerItemViewModels;
                 IsLoaded = true;
                 IsConnecting = false;
@@ -447,8 +447,8 @@ namespace Warewolf.Studio.ViewModels
         }
         public void SetItemCheckedState(Guid id, bool state)
         {
-           var resource= AsList().FirstOrDefault(a => a.ResourceId == id);
-            if(resource!=null)
+			var resource = AsList().FirstOrDefault(a => a.ResourceId == id);
+			if (resource != null)
             {
                 resource.Checked = state;
             }
@@ -456,13 +456,13 @@ namespace Warewolf.Studio.ViewModels
 
         public void RemoveItem(IExplorerItemViewModel vm)
         {
-            if(vm.ResourceType != ResourceType.Server)
+			if (vm.ResourceType != ResourceType.Server)
             {
-                var res = AsList(_children).FirstOrDefault(a => a.Children!= null && a.Children.Any(b=>b.ResourceId==vm.ResourceId));
-                if(res != null)
+				var res = AsList(_children).FirstOrDefault(a => a.Children != null && a.Children.Any(b => b.ResourceId == vm.ResourceId));
+				if (res != null)
                 {
                     res.RemoveChild(res.Children.FirstOrDefault(a => a.ResourceId == vm.ResourceId));
-                    OnPropertyChanged(()=>Children);
+					OnPropertyChanged(() => Children);
                 }
             }
         }
@@ -472,12 +472,12 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _isServerIconVisible&&IsConnected;
+				return _isServerIconVisible && IsConnected;
             }
             set
             {
                 _isServerIconVisible = value;
-                OnPropertyChanged(()=>IsServerIconVisible);
+				OnPropertyChanged(() => IsServerIconVisible);
             }
         }
         public bool IsServerUnavailableIconVisible
@@ -494,7 +494,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         // ReSharper disable ParameterTypeCanBeEnumerable.Local
-        ObservableCollection<IExplorerItemViewModel> CreateExplorerItems(IList<IExplorerItem> explorerItems, IServer server,IExplorerItemViewModel parent,bool isDialog = false)
+		ObservableCollection<IExplorerItemViewModel> CreateExplorerItems(IList<IExplorerItem> explorerItems, IServer server, IExplorerItemViewModel parent, bool isDialog = false)
         // ReSharper restore ParameterTypeCanBeEnumerable.Local
         {
             if (explorerItems == null) return new ObservableCollection<IExplorerItemViewModel>();
@@ -502,7 +502,7 @@ namespace Warewolf.Studio.ViewModels
             // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var explorerItem in explorerItems)
             {
-                var itemCreated = new ExplorerItemViewModel(ShellViewModel, server, new Mock<IExplorerHelpDescriptorBuilder>().Object,parent)
+				var itemCreated = new ExplorerItemViewModel(ShellViewModel, server, new Mock<IExplorerHelpDescriptorBuilder>().Object, parent)
                 {
                     ResourceName = explorerItem.DisplayName,
                     ResourceId = explorerItem.ResourceId,
@@ -511,15 +511,15 @@ namespace Warewolf.Studio.ViewModels
                     Outputs = explorerItem.Outputs
                 };
                 itemCreated.SetPermissions(server.Permissions);
-                if(isDialog)
+				if (isDialog)
                 {
                     SetPropertiesForDialog(itemCreated);
                 }
-                itemCreated.Children = CreateExplorerItems(explorerItem.Children, server, itemCreated,isDialog);
+				itemCreated.Children = CreateExplorerItems(explorerItem.Children, server, itemCreated, isDialog);
                 explorerItemModels.Add(itemCreated);
                 
             }
-            return  explorerItemModels;
+			return explorerItemModels;
         }
 
         private static void SetPropertiesForDialog(ExplorerItemViewModel itemCreated)

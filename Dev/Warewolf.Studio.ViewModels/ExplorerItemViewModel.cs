@@ -17,7 +17,7 @@ using Warewolf.Studio.Core.Popup;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ExplorerItemViewModel : BindableBase,IExplorerItemViewModel
+	public class ExplorerItemViewModel : BindableBase, IExplorerItemViewModel
     {
         readonly IShellViewModel _shellViewModel;
         string _resourceName;
@@ -56,7 +56,7 @@ namespace Warewolf.Studio.ViewModels
             });
             _canShowVersions = true;
             Parent = parent;
-            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "shellViewModel", shellViewModel }, { "server", server }, { "builder", builder } , });
+			VerifyArgument.AreNotNull(new Dictionary<string, object> { { "shellViewModel", shellViewModel }, { "server", server }, { "builder", builder }, });
             _shellViewModel = shellViewModel;
             LostFocus = new DelegateCommand(LostFocusCommand);
 
@@ -98,7 +98,7 @@ namespace Warewolf.Studio.ViewModels
             CanCreateFolder = true;
             CanView = true;
             DeleteVersionCommand = new DelegateCommand(DeleteVersion);
-            CanShowServerVersion = false;
+			CanShowServerVersion = false;
         }
 
         void DeleteVersion()
@@ -118,7 +118,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void AddSibling(IExplorerItemViewModel sibling)
         {
-            if( Parent != null)
+			if (Parent != null)
             {
                 Parent.AddChild(sibling);
             }
@@ -129,7 +129,7 @@ namespace Warewolf.Studio.ViewModels
             var tempChildren = new ObservableCollection<IExplorerItemViewModel>(_children);
             tempChildren.Add(child);
             _children = tempChildren;
-            OnPropertyChanged(()=>Children);
+			OnPropertyChanged(() => Children);
         }
 
         public void RemoveChild(IExplorerItemViewModel child)
@@ -137,19 +137,19 @@ namespace Warewolf.Studio.ViewModels
             var tempChildren = new ObservableCollection<IExplorerItemViewModel>(_children);
             tempChildren.Remove(child);
             _children = tempChildren;
-            OnPropertyChanged(()=>Children);
+			OnPropertyChanged(() => Children);
         }
 
 
 
         public void CreateNewFolder()
         {
-            if(ResourceType == ResourceType.Folder)
+			if (ResourceType == ResourceType.Folder)
             {
                IsExpanded = true;
                 var id = Guid.NewGuid();
                 var name = GetChildNameFromChildren();
-                _explorerRepository.CreateFolder(ResourceId,name,id);
+				_explorerRepository.CreateFolder(ResourceId, name, id);
                 var child = new ExplorerItemViewModel(ShellViewModel, Server, Builder, this)
                {
                    ResourceName = name,
@@ -168,7 +168,7 @@ namespace Warewolf.Studio.ViewModels
                    CanCreateWorkflowService = CanCreateWorkflowService 
                   
                };
-               child.SetFromServer(Server.Permissions.FirstOrDefault(a=>a.IsServer));     
+				child.SetFromServer(Server.Permissions.FirstOrDefault(a => a.IsServer));
                
                AddChild(child);
                 child.IsSelected = true;
@@ -180,9 +180,9 @@ namespace Warewolf.Studio.ViewModels
         public void Apply(Action<IExplorerItemViewModel> action)
         {
             action(this);
-            if(Children != null)
+			if (Children != null)
             {
-                foreach(var explorerItemViewModel in Children)
+				foreach (var explorerItemViewModel in Children)
                 {
                     explorerItemViewModel.Apply(action);
                 }
@@ -191,11 +191,11 @@ namespace Warewolf.Studio.ViewModels
 
         public IExplorerItemViewModel Find(string resourcePath)
         {
-            if (!resourcePath.Contains("\\") && resourcePath==ResourceName)
+			if (!resourcePath.Contains("\\") && resourcePath == ResourceName)
                 return this;
             if (Children != null && resourcePath.Contains("\\"))
             {
-                string name = resourcePath.Substring(1+resourcePath.IndexOf("\\", StringComparison.Ordinal));
+				string name = resourcePath.Substring(1 + resourcePath.IndexOf("\\", StringComparison.Ordinal));
                 return Children.Select(explorerItemViewModel => explorerItemViewModel.Find(name)).FirstOrDefault(item => item != null);
             }
             return null;
@@ -206,10 +206,10 @@ namespace Warewolf.Studio.ViewModels
             const string newFolder = "New Folder";
             int count = 0;
             string folderName = newFolder;
-            while(Children.Any(a=>a.ResourceName == folderName ))
+			while (Children.Any(a => a.ResourceName == folderName))
             {
                 count++;
-                folderName = newFolder + " "+ count;
+				folderName = newFolder + " " + count;
             }
             return folderName;
         }
@@ -226,7 +226,7 @@ namespace Warewolf.Studio.ViewModels
             if (ShellViewModel.ShowPopup(PopupMessages.GetDeleteConfirmation(ResourceName)))
             {
                 _explorerRepository.Delete(this);
-                if(Parent!= null)
+				if (Parent != null)
                 {
                    Parent.RemoveChild(this); 
                 }
@@ -271,7 +271,7 @@ namespace Warewolf.Studio.ViewModels
             CanView = serverPermission.View || serverPermission.Contribute || serverPermission.Administrator;
             CanRename = serverPermission.Contribute || serverPermission.Administrator;
             CanDelete = serverPermission.Contribute || serverPermission.Administrator;
-            CanCreateFolder =  (serverPermission.Contribute || serverPermission.Administrator);
+			CanCreateFolder = (serverPermission.Contribute || serverPermission.Administrator);
 
         }
 
@@ -336,14 +336,14 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                if(Parent != null && Parent.Children.Any(a=>a.ResourceName == value))
+				if (Parent != null && Parent.Children.Any(a => a.ResourceName == value))
                 {
                     _shellViewModel.ShowPopup(PopupMessages.GetDuplicateMessage(value));
 
                 }
                 else
                 {
-                    if (IsRenaming  && _explorerRepository.Rename(this, value)  )
+					if (IsRenaming && _explorerRepository.Rename(this, value))
                     {
                 _resourceName = value;
                 }
@@ -360,7 +360,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return String.IsNullOrEmpty(_filter) ?_children: new ObservableCollection<IExplorerItemViewModel>(_children.Where(a=>a.IsVisible));
+				return String.IsNullOrEmpty(_filter) ? _children : new ObservableCollection<IExplorerItemViewModel>(_children.Where(a => a.IsVisible));
             }
             set
             {
@@ -391,9 +391,9 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _resourceType = value;
-                IsVersion =  _resourceType == ResourceType.Version;
+				IsVersion = _resourceType == ResourceType.Version;
                 OnPropertyChanged(() => CanView);
-                OnPropertyChanged(()=>CanShowVersions);
+				OnPropertyChanged(() => CanShowVersions);
             }
         }
         public ICommand OpenCommand
@@ -404,12 +404,12 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return Children.Count>0 && !AreVersionsVisible;
+				return Children.Count > 0 && !AreVersionsVisible;
             }
             set
             {
                 _isVisible = value;
-                OnPropertyChanged(()=>IsExpanderVisible);
+				OnPropertyChanged(() => IsExpanderVisible);
             }
         }
         public ICommand NewCommand { get; set; }
@@ -429,7 +429,7 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
         }
-        public bool CanShowServerVersion { get; set; }
+		public bool CanShowServerVersion { get; set; }
 
         public ICommand RenameCommand { get; set; }
         public bool CanCreateDbService { get; set; }
@@ -464,7 +464,7 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                OnPropertyChanged(()=>CanRename);
+				OnPropertyChanged(() => CanRename);
                 _canRename = value;
             }
         }
@@ -476,7 +476,7 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                OnPropertyChanged(()=>CanDelete);
+				OnPropertyChanged(() => CanDelete);
                 _canDelete = value;
             }
         }
@@ -484,7 +484,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return (ResourceType== ResourceType.Folder || ResourceType == ResourceType.Server) && _canCreateFolder;
+				return (ResourceType == ResourceType.Folder || ResourceType == ResourceType.Server) && _canCreateFolder;
             }
             set
             {
@@ -534,13 +534,13 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _canView    && ResourceType<ResourceType.Folder && ResourceType != ResourceType.Version;
+				return _canView && ResourceType < ResourceType.Folder && ResourceType != ResourceType.Version;
             }
             set
             {
                 if (_canView != value)
                 {
-                    _canView = value ;
+					_canView = value;
                     OnPropertyChanged(() => CanView);
                 }
             }
@@ -579,19 +579,20 @@ namespace Warewolf.Studio.ViewModels
                 VersionHeader = !value ? "Show Version History" : "Hide Version History";
                 if (value)
                 {
-                    _children = new ObservableCollection<IExplorerItemViewModel>(_explorerRepository.GetVersions(ResourceId).Select(a => new ExplorerItemViewModel(ShellViewModel,Server,Builder,this)
+					_children = new ObservableCollection<IExplorerItemViewModel>(_explorerRepository.GetVersions(ResourceId).Select(a => new ExplorerItemViewModel(ShellViewModel, Server, Builder, this)
                     {
-                        ResourceName = "v."+a.VersionNumber +" "+ a.DateTimeStamp.ToString(CultureInfo.InvariantCulture)+" " + a.Reason,
+						ResourceName = "v." + a.VersionNumber + " " + a.DateTimeStamp.ToString(CultureInfo.InvariantCulture) + " " + a.Reason,
                         VersionNumber = a.VersionNumber,
-                        ResourceId =  ResourceId,
+						ResourceId = ResourceId,
                          IsVersion = true,
                          CanCreatePluginSource = false,
-                         CanCreateWebService =  false,
+						CanCreateWebService = false,
                          CanCreateDbService = false,
                          CanCreateDbSource = false,
                          CanCreatePluginService = false,
                          CanCreateWebSource = false
-                         ,ResourceType =  ResourceType.Version
+						 ,
+						ResourceType = ResourceType.Version
                     }
                     ));
                     OnPropertyChanged(() => Children);
@@ -602,7 +603,7 @@ namespace Warewolf.Studio.ViewModels
                     _children = new ObservableCollection<IExplorerItemViewModel>();
                     OnPropertyChanged(() => Children);
                 }
-                OnPropertyChanged(()=>AreVersionsVisible);
+				OnPropertyChanged(() => AreVersionsVisible);
                 
             }
         }
@@ -615,7 +616,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _versionNumber = value;
-                OnPropertyChanged(()=>VersionNumber);
+				OnPropertyChanged(() => VersionNumber);
             }
         }
         public string VersionHeader
@@ -650,7 +651,7 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                OnPropertyChanged(()=>AllowEditing);
+				OnPropertyChanged(() => AllowEditing);
                 _allowEditing = value;
             }
         }
@@ -679,7 +680,7 @@ namespace Warewolf.Studio.ViewModels
                  }
                  return true;
             }
-            catch(Exception err)
+			catch (Exception err)
             {
                 ShellViewModel.Handle(err);
                 return false;
@@ -690,7 +691,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return ResourceType != ResourceType.Version  ;
+				return ResourceType != ResourceType.Version;
             }
 
             set
@@ -701,7 +702,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return ResourceType<ResourceType.Server && ResourceType!= ResourceType.Version;
+				return ResourceType < ResourceType.Server && ResourceType != ResourceType.Version;
             }
 
             set
@@ -719,12 +720,12 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                if(Parent != null && Parent.IsExpanded != value)
+				if (Parent != null && Parent.IsExpanded != value)
                 {
                     Parent.IsExpanded = value;
                 }
                 _isExpanded = value;
-                OnPropertyChanged(()=>IsExpanded);
+				OnPropertyChanged(() => IsExpanded);
             }
         }
         public ICommand Expand { get; set; }
@@ -742,7 +743,7 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
-                if (!String.IsNullOrEmpty(ResourceName) && ResourceType!= ResourceType.Version)
+				if (!String.IsNullOrEmpty(ResourceName) && ResourceType != ResourceType.Version)
                 {
                     IsVisible = ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant());
                 }
@@ -752,7 +753,7 @@ namespace Warewolf.Studio.ViewModels
 
         // ReSharper disable UnusedAutoPropertyAccessor.Global
         // ReSharper disable MemberCanBePrivate.Global
-        public  IResource Resource { get; set; }
+		public IResource Resource { get; set; }
         // ReSharper restore MemberCanBePrivate.Global
         // ReSharper restore UnusedAutoPropertyAccessor.Global
         public string Inputs { get; set; }

@@ -19,7 +19,7 @@ namespace Warewolf.Studio.Views
 	    {
 	        InitializeComponent();
 	        _explorerViewTestClass = new ExplorerViewTestClass(this);
-        
+
 	    }
 
 
@@ -91,7 +91,7 @@ namespace Warewolf.Studio.Views
 
 	    public void AddResources(int resourceNumber, string path, string type, string name)
 	    {
-            ExplorerViewTestClass.AddChildren(resourceNumber, path,type,name);
+			ExplorerViewTestClass.AddChildren(resourceNumber, path, type, name);
 	    }
 
 	    public int GetResourcesVisible(string path)

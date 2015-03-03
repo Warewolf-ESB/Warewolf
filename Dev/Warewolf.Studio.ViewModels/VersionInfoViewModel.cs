@@ -11,7 +11,7 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class VersionInfoViewModel: BindableBase, IVersionInfoViewModel
+	public class VersionInfoViewModel : BindableBase, IVersionInfoViewModel
     {
         string _versionName;
         string _version;
@@ -24,7 +24,7 @@ namespace Warewolf.Studio.ViewModels
 
         #region Implementation of IVersionInfoViewModel
 
-        public  VersionInfoViewModel(IVersionInfo version, IExplorerRepository repository, IExplorerItemViewModel explorerItemViewModel)
+		public VersionInfoViewModel(IVersionInfo version, IExplorerRepository repository, IExplorerItemViewModel explorerItemViewModel)
         {
             VersionName = version.VersionNumber;
             VersionDate = version.DateTimeStamp;
@@ -48,7 +48,7 @@ namespace Warewolf.Studio.ViewModels
         public string DisplayName { get; set; }
         public ResourceType ResourceType { get; set; }
 
-        public string ResourceName { get; set; }
+		public string ResourceName { get; set; }
 
         public bool AreVersionsVisible { get; set; }
         public string VersionName
@@ -60,7 +60,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _versionName = value;
-                OnPropertyChanged(()=>VersionName);
+				OnPropertyChanged(() => VersionName);
             }
         }
         public Guid ResourceId { get; set; }
@@ -103,7 +103,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand OpenCommand { get; set; }
         public ICommand ShowVersionHistory { get; set; }
         public ICommand RollbackCommand { get; set; }
-        public IServer Server { get; set; }
+		public IServer Server { get; set; }
 
         public ICommand Expand
         {
@@ -137,7 +137,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => CanRollBack);
             }
         }
-        public bool IsExpanderVisible { get; set; }
+		public bool IsExpanderVisible { get; set; }
         public ICommand NewCommand { get; set; }
         public ICommand DeployCommand { get; set; }
         public bool CanCreateDbService { get; set; }
@@ -167,16 +167,16 @@ namespace Warewolf.Studio.ViewModels
         public bool IsExpanded { get; set; }
 
         public bool IsSelected { get; set; }
-        public bool CanShowServerVersion { get; set; }
+		public bool CanShowServerVersion { get; set; }
 
-        public ICommand RenameCommand { get; set; }
+		public ICommand RenameCommand { get; set; }
         public ICommand CreateFolderCommand { get; set; }
-        public ICommand DeleteCommand { get; set; }
+		public ICommand DeleteCommand { get; set; }
         public string VersionHeader
         {
             get
             {
-                return  string.Format("{0} {1} {2}", Version, VersionDate.ToLongDateString(), Reason);
+				return string.Format("{0} {1} {2}", Version, VersionDate.ToLongDateString(), Reason);
             }            
         }
         public string Reason
