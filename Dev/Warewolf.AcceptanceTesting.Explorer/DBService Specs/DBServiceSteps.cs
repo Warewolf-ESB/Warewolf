@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using TechTalk.SpecFlow;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
@@ -16,6 +17,9 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             bootStrapper.Run();
             var view = new ManageDatabaseServiceControl();
             var viewModel = new ManageDatabaseServiceViewModel(true, new[] {""});
+            view.DataContext = viewModel;
+            Utils.ShowTheViewForTesting(view);
+           
         }
 
         [BeforeScenario("DBService")]

@@ -215,6 +215,7 @@
       <DependentUpon>New Database Source.feature</DependentUpon>
     </Compile>
     <Compile Include="DBService Specs\NewDatabaseSourceSteps.cs" />
+    <Compile Include="DBService Specs\Utils.cs" />
     <Compile Include="Design Surface.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
