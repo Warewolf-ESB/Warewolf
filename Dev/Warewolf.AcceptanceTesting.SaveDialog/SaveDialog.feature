@@ -62,7 +62,7 @@ Scenario: Save with duplicate name and expect validation
 	When I open "Folder 2" in save dialog 
 	When I enter name "Folder 2 Child 1"
 	Then save button is "Disabled"
-	And validation message is "Service with name 'Folder 2 Child 1' already exists."
+	And validation message is "An item with name 'Folder 2 Child 1' already exists in this folder."
 
 Scenario: Save resource names with special character expect validation
     Given the Save Dialog is opened

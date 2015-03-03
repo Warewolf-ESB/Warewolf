@@ -36,6 +36,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         ICommand Expand { get; set; }
         ICollection<IExplorerItemViewModel> Children { get; set; }
         IExplorerTreeItem Parent { get; set; }
+        bool CanCreateWorkflowService { get; set; }
         void AddChild(IExplorerItemViewModel child);
         void RemoveChild(IExplorerItemViewModel child);
 

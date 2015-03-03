@@ -613,12 +613,9 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        #region Implementation of IUpdatesHelp
-
         public void UpdateHelpDescriptor(string helpText)
         {
+            throw new NotImplementedException();
         }
-
-        #endregion
     }
 }

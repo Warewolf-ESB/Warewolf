@@ -1,6 +1,7 @@
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Toolbox;
+using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Unity;
 using Moq;
 using Warewolf.AcceptanceTesting.Core;
@@ -16,7 +17,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
         {
             base.ConfigureContainer();
 
-            Container.RegisterInstance<IToolboxViewModel>(new ToolboxViewModel(new ToolboxModel(Container.Resolve<IServer>(), Container.Resolve<IServer>(), new Mock<IPluginProxy>().Object), new ToolboxModel(Container.Resolve<IServer>(), Container.Resolve<IServer>(), new Mock<IPluginProxy>().Object)));
+            Container.RegisterInstance<IToolboxViewModel>(new ToolboxViewModel(new ToolboxModel(Container.Resolve<IServer>(), Container.Resolve<IServer>(), new Mock<IPluginProxy>().Object), new ToolboxModel(Container.Resolve<IServer>(), Container.Resolve<IServer>(), new Mock<IPluginProxy>().Object), new Mock<IEventAggregator>().Object));
 
             var toolboxView = new ToolboxView();
             toolboxView.DataContext = Container.Resolve<IToolboxViewModel>();
