@@ -731,7 +731,7 @@ You need Administrator permission.</value>
     <value>e</value>
   </data>
   <data name="DatabaseServiceInspectHeader" xml:space="preserve">
-    <value>Inputs</value>
+    <value>Inspect Data Connector</value>
   </data>
   <data name="DatabaseServiceMappingsHeader" xml:space="preserve">
     <value>c</value>
@@ -740,7 +740,7 @@ You need Administrator permission.</value>
     <value>h</value>
   </data>
   <data name="DatabaseServiceOutputsLabel" xml:space="preserve">
-    <value>g</value>
+    <value>Outputs</value>
   </data>
   <data name="DatabaseServiceTestHeader" xml:space="preserve">
     <value>Test Connector and Calculate Outputs</value>

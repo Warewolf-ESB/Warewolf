@@ -68,7 +68,7 @@ namespace Warewolf.Studio.ViewModels
             Sources = new ObservableCollection<IDbSource> { new DbSourceDefinition() { Name = "bob" }, new DbSourceDefinition() { Name = "dora" }, new DbSourceDefinition() { Name = "foo large" } };
             Actions = new ObservableCollection<string> {"sp_bob","sp_the_quick_brown_fox","sp_fetchPeople"};
             Header = "New DB Service";
-            Inputs = new Collection<IDbInput> { new DbInput("bob", "the"), new DbInput("dora", "eplorer") };
+            Inputs = new Collection<IDbInput> { new DbInput("bob", "the"), new DbInput("dora", "eplorer"), new DbInput("Zummy", "Gummy") };
             CreateNewSourceCommand = new DelegateCommand(()=>{});
             TestProcedureCommand = new DelegateCommand(()=>{});
         }
