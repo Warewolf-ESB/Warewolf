@@ -18,766 +18,766 @@ using Warewolf.Studio.Core.Popup;
 namespace Warewolf.Studio.ViewModels
 {
 	public class ExplorerItemViewModel : BindableBase, IExplorerItemViewModel
-	{
-		readonly IShellViewModel _shellViewModel;
-		string _resourceName;
-		private bool _isVisible;
-		bool _allowEditing;
-		bool _isRenaming;
-		private readonly IExplorerRepository _explorerRepository;
-		bool _canRename;
-		bool _canExecute;
-		bool _canEdit;
-		bool _canView;
-		bool _canDelete;
-		bool _areVersionsVisible;
-		string _versionHeader;
-		ResourceType _resourceType;
-		bool _userShouldEditValueNow;
-		string _versionNumber;
-		ICollection<IExplorerItemViewModel> _children;
-		Guid _resourceId;
-		bool _isExpanded;
-		bool _canCreateServerSource;
-		bool _canCreateFolder;
-		string _filter;
-		private bool _isSelected;
-		bool _canShowVersions;
+    {
+        readonly IShellViewModel _shellViewModel;
+        string _resourceName;
+        private bool _isVisible;
+        bool _allowEditing;
+        bool _isRenaming;
+        private readonly IExplorerRepository _explorerRepository;
+        bool _canRename;
+        bool _canExecute;
+        bool _canEdit;
+        bool _canView;
+        bool _canDelete;
+        bool _areVersionsVisible;
+        string _versionHeader;
+        ResourceType _resourceType;
+        bool _userShouldEditValueNow;
+        string _versionNumber;
+        ICollection<IExplorerItemViewModel> _children;
+        Guid _resourceId;
+        bool _isExpanded;
+        bool _canCreateServerSource;
+        bool _canCreateFolder;
+        string _filter;
+        private bool _isSelected;
+        bool _canShowVersions;
 
-		// ReSharper disable TooManyDependencies
-		public ExplorerItemViewModel(IShellViewModel shellViewModel, IServer server, IExplorerHelpDescriptorBuilder builder, IExplorerItemViewModel parent)
-		// ReSharper restore TooManyDependencies
-		{
-			RollbackCommand = new DelegateCommand(() =>
-			{
-				var output = _explorerRepository.Rollback(ResourceId, VersionNumber);
-				parent.AreVersionsVisible = true;
-				parent.ResourceName = output.DisplayName;
-			});
-			_canShowVersions = true;
-			Parent = parent;
+        // ReSharper disable TooManyDependencies
+        public ExplorerItemViewModel(IShellViewModel shellViewModel, IServer server, IExplorerHelpDescriptorBuilder builder, IExplorerItemViewModel parent)
+            // ReSharper restore TooManyDependencies
+        {
+            RollbackCommand = new DelegateCommand(() =>
+            {
+                var output = _explorerRepository.Rollback(ResourceId, VersionNumber);
+                parent.AreVersionsVisible = true;
+                parent.ResourceName = output.DisplayName;
+            });
+            _canShowVersions = true;
+            Parent = parent;
 			VerifyArgument.AreNotNull(new Dictionary<string, object> { { "shellViewModel", shellViewModel }, { "server", server }, { "builder", builder }, });
-			_shellViewModel = shellViewModel;
-			LostFocus = new DelegateCommand(LostFocusCommand);
+            _shellViewModel = shellViewModel;
+            LostFocus = new DelegateCommand(LostFocusCommand);
 
-			Children = new ObservableCollection<IExplorerItemViewModel>();
-			OpenCommand = new DelegateCommand(() => shellViewModel.AddService(ResourceId, Server));
-			DeployCommand = new DelegateCommand(() => shellViewModel.DeployService(this));
-			RenameCommand = new DelegateCommand(() => IsRenaming = true);
-			Server = server;
-			NewCommand = new DelegateCommand<ResourceType?>(type => shellViewModel.NewResource(type, ResourceId));
-			CanCreateDbService = true; //todo:remove
-			CanCreateWorkflowService = true; //todo:remove
-			CanCreateServerSource = true; //todo:remove
-			CanCreateDbSource = true; //todo:remove
-			CanRename = true; //todo:remove
-			CanDelete = true; //todo:remove
-			CanCreatePluginService = true;
-			_explorerRepository = server.ExplorerRepository;
-			Server.PermissionsChanged += UpdatePermissions;
-			ShowVersionHistory = new DelegateCommand((() => AreVersionsVisible = (!AreVersionsVisible)));
-			DeleteCommand = new DelegateCommand(Delete);
-			OpenVersionCommand = new DelegateCommand(() => { if (ResourceType == ResourceType.Version) ShellViewModel.OpenVersion(ResourceId, VersionNumber); });
-			VersionHeader = "Show Version History";
-			Builder = builder;
-			IsVisible = true;
-			IsVersion = false;
-			Expand = new DelegateCommand<int?>(clickCount =>
-			{
-				if (clickCount != null && clickCount == 2 && ResourceType == ResourceType.Folder)
-				{
-					IsExpanded = !IsExpanded;
-				}
-				if (clickCount != null && clickCount == 1 && ResourceType == ResourceType.WorkflowService && IsExpanded)
-				{
-					IsExpanded = false;
-				}
+            Children = new ObservableCollection<IExplorerItemViewModel>();
+            OpenCommand = new DelegateCommand(() => shellViewModel.AddService(ResourceId, Server));
+            DeployCommand = new DelegateCommand(() => shellViewModel.DeployService(this));
+            RenameCommand = new DelegateCommand(() => IsRenaming = true);
+            Server = server;
+            NewCommand = new DelegateCommand<ResourceType?>(type => shellViewModel.NewResource(type, ResourceId));
+            CanCreateDbService = true; //todo:remove
+            CanCreateWorkflowService = true; //todo:remove
+            CanCreateServerSource = true; //todo:remove
+            CanCreateDbSource = true; //todo:remove
+            CanRename = true; //todo:remove
+            CanDelete = true; //todo:remove
+            CanCreatePluginService = true;
+            _explorerRepository = server.ExplorerRepository;
+            Server.PermissionsChanged += UpdatePermissions;
+            ShowVersionHistory = new DelegateCommand((() => AreVersionsVisible = (!AreVersionsVisible)));
+            DeleteCommand = new DelegateCommand(Delete);
+            OpenVersionCommand = new DelegateCommand(() => { if (ResourceType == ResourceType.Version) ShellViewModel.OpenVersion(ResourceId, VersionNumber); });
+            VersionHeader = "Show Version History";
+            Builder = builder;
+            IsVisible = true;
+            IsVersion = false;
+            Expand = new DelegateCommand<int?>(clickCount =>
+            {
+                if (clickCount != null && clickCount == 2 && ResourceType == ResourceType.Folder)
+                {
+                    IsExpanded = !IsExpanded;
+                }
+                if (clickCount != null && clickCount == 1 && ResourceType == ResourceType.WorkflowService && IsExpanded)
+                {
+                    IsExpanded = false;
+                }
 
-			});
-			CreateFolderCommand = new DelegateCommand(CreateNewFolder);
-			CanCreateFolder = true;
-			CanView = true;
-			DeleteVersionCommand = new DelegateCommand(DeleteVersion);
+            });
+            CreateFolderCommand = new DelegateCommand(CreateNewFolder);
+            CanCreateFolder = true;
+            CanView = true;
+            DeleteVersionCommand = new DelegateCommand(DeleteVersion);
 			CanShowServerVersion = false;
-		}
+        }
 
-		void DeleteVersion()
-		{
-			if (ShellViewModel.ShowPopup(PopupMessages.GetDeleteVersionMessage(ResourceName)))
-			{
-				_explorerRepository.Delete(this);
-				if (Parent != null)
-				{
-					Parent.RemoveChild(this);
-				}
+        void DeleteVersion()
+        {
+            if (ShellViewModel.ShowPopup(PopupMessages.GetDeleteVersionMessage(ResourceName)))
+            {
+                _explorerRepository.Delete(this);
+                if (Parent != null)
+                {
+                    Parent.RemoveChild(this);
+                }
 
-			}
-		}
+            }
+        }
 
-		public IExplorerTreeItem Parent { get; set; }
+        public IExplorerTreeItem Parent { get; set; }
 
-		public void AddSibling(IExplorerItemViewModel sibling)
-		{
+        public void AddSibling(IExplorerItemViewModel sibling)
+        {
 			if (Parent != null)
-			{
-				Parent.AddChild(sibling);
-			}
-		}
+            {
+                Parent.AddChild(sibling);
+            }
+        }
 
-		public void AddChild(IExplorerItemViewModel child)
-		{
-			var tempChildren = new ObservableCollection<IExplorerItemViewModel>(_children);
-			tempChildren.Add(child);
-			_children = tempChildren;
+        public void AddChild(IExplorerItemViewModel child)
+        {
+            var tempChildren = new ObservableCollection<IExplorerItemViewModel>(_children);
+            tempChildren.Add(child);
+            _children = tempChildren;
 			OnPropertyChanged(() => Children);
-		}
+        }
 
-		public void RemoveChild(IExplorerItemViewModel child)
-		{
-			var tempChildren = new ObservableCollection<IExplorerItemViewModel>(_children);
-			tempChildren.Remove(child);
-			_children = tempChildren;
+        public void RemoveChild(IExplorerItemViewModel child)
+        {
+            var tempChildren = new ObservableCollection<IExplorerItemViewModel>(_children);
+            tempChildren.Remove(child);
+            _children = tempChildren;
 			OnPropertyChanged(() => Children);
-		}
+        }
 
 
 
-		public void CreateNewFolder()
-		{
+        public void CreateNewFolder()
+        {
 			if (ResourceType == ResourceType.Folder)
-			{
-				IsExpanded = true;
-				var id = Guid.NewGuid();
-				var name = GetChildNameFromChildren();
+            {
+               IsExpanded = true;
+                var id = Guid.NewGuid();
+                var name = GetChildNameFromChildren();
 				_explorerRepository.CreateFolder(ResourceId, name, id);
-				var child = new ExplorerItemViewModel(ShellViewModel, Server, Builder, this)
-				{
-					ResourceName = name,
-					ResourceId = id,
-					ResourceType = ResourceType.Folder,
-					CanCreateDbService = CanCreateDbService,
-					CanCreateFolder = CanCreateFolder,
-					CanCreateDbSource = CanCreateDbSource,
-					CanCreatePluginService = CanCreatePluginService,
-					CanShowVersions = CanShowVersions,
-					CanRename = CanRename,
-					CanCreatePluginSource = CanCreatePluginSource,
-					CanCreateServerSource = CanCreateServerSource,
-					CanCreateWebService = CanCreateWebService,
-					CanCreateWebSource = CanCreateDbService,
-					CanCreateWorkflowService = CanCreateWorkflowService
-
-				};
+                var child = new ExplorerItemViewModel(ShellViewModel, Server, Builder, this)
+               {
+                   ResourceName = name,
+                   ResourceId = id,
+                   ResourceType = ResourceType.Folder,
+                   CanCreateDbService = CanCreateDbService,
+                   CanCreateFolder = CanCreateFolder,
+                   CanCreateDbSource = CanCreateDbSource,
+                   CanCreatePluginService = CanCreatePluginService,
+                   CanShowVersions = CanShowVersions,
+                   CanRename = CanRename,
+                   CanCreatePluginSource = CanCreatePluginSource,
+                   CanCreateServerSource = CanCreateServerSource,
+                   CanCreateWebService = CanCreateWebService,
+                   CanCreateWebSource = CanCreateDbService,
+                   CanCreateWorkflowService = CanCreateWorkflowService 
+                  
+               };
 				child.SetFromServer(Server.Permissions.FirstOrDefault(a => a.IsServer));
+               
+               AddChild(child);
+                child.IsSelected = true;
+               child.IsRenaming = true;
+            }
 
-				AddChild(child);
-				child.IsSelected = true;
-				child.IsRenaming = true;
-			}
+        }
 
-		}
-
-		public void Apply(Action<IExplorerItemViewModel> action)
-		{
-			action(this);
+        public void Apply(Action<IExplorerItemViewModel> action)
+        {
+            action(this);
 			if (Children != null)
-			{
+            {
 				foreach (var explorerItemViewModel in Children)
-				{
-					explorerItemViewModel.Apply(action);
-				}
-			}
-		}
+                {
+                    explorerItemViewModel.Apply(action);
+                }
+            }
+        }
 
-		public IExplorerItemViewModel Find(string resourcePath)
-		{
+        public IExplorerItemViewModel Find(string resourcePath)
+        {
 			if (!resourcePath.Contains("\\") && resourcePath == ResourceName)
-				return this;
-			if (Children != null && resourcePath.Contains("\\"))
-			{
+                return this;
+            if (Children != null && resourcePath.Contains("\\"))
+            {
 				string name = resourcePath.Substring(1 + resourcePath.IndexOf("\\", StringComparison.Ordinal));
-				return Children.Select(explorerItemViewModel => explorerItemViewModel.Find(name)).FirstOrDefault(item => item != null);
-			}
-			return null;
-		}
+                return Children.Select(explorerItemViewModel => explorerItemViewModel.Find(name)).FirstOrDefault(item => item != null);
+            }
+            return null;
+        }
 
-		string GetChildNameFromChildren()
-		{
-			const string newFolder = "New Folder";
-			int count = 0;
-			string folderName = newFolder;
+        string GetChildNameFromChildren()
+        {
+            const string newFolder = "New Folder";
+            int count = 0;
+            string folderName = newFolder;
 			while (Children.Any(a => a.ResourceName == folderName))
-			{
-				count++;
+            {
+                count++;
 				folderName = newFolder + " " + count;
-			}
-			return folderName;
-		}
+            }
+            return folderName;
+        }
 
-		void LostFocusCommand()
-		{
-			IsRenaming = false;
-		}
+        void LostFocusCommand()
+        {
+            IsRenaming = false;
+        }
 
-		IExplorerHelpDescriptorBuilder Builder { get; set; }
+        IExplorerHelpDescriptorBuilder Builder { get; set; }
 
-		void Delete()
-		{
-			if (ShellViewModel.ShowPopup(PopupMessages.GetDeleteConfirmation(ResourceName)))
-			{
-				_explorerRepository.Delete(this);
+        void Delete()
+        {
+            if (ShellViewModel.ShowPopup(PopupMessages.GetDeleteConfirmation(ResourceName)))
+            {
+                _explorerRepository.Delete(this);
 				if (Parent != null)
-				{
-					Parent.RemoveChild(this);
-				}
-				else
-					ShellViewModel.RemoveServiceFromExplorer(this);
-			}
-		}
+                {
+                   Parent.RemoveChild(this); 
+                }
+                else
+                ShellViewModel.RemoveServiceFromExplorer(this);
+            }
+        }
 
-		public void UpdatePermissions(PermissionsChangedArgs args)
-		{
-			SetPermissions(args.Permissions);
-		}
+        public void UpdatePermissions(PermissionsChangedArgs args)
+        {
+            SetPermissions(args.Permissions);
+        }
 
-		public void SetPermissions(List<IWindowsGroupPermission> permissions)
-		{
-			if (ResourceType == ResourceType.Folder)
-			{
-				CanEdit = false;
-				CanExecute = false;
-				return;
-			}
-			var resourcePermission = permissions.FirstOrDefault(permission => permission.ResourceID == ResourceId);
-			if (resourcePermission != null)
-			{
-				SetFromPermission(resourcePermission);
-			}
-			else
-			{
-				var serverPermission =
-					permissions.FirstOrDefault(permission => permission.IsServer && permission.ResourceID == Guid.Empty);
-				if (serverPermission != null)
-				{
-					SetFromServer(serverPermission);
-				}
-			}
-		}
+        public void SetPermissions(List<IWindowsGroupPermission> permissions)
+        {
+            if (ResourceType == ResourceType.Folder)
+            {
+                CanEdit = false;
+                CanExecute = false;
+                return;
+            }
+            var resourcePermission = permissions.FirstOrDefault(permission => permission.ResourceID == ResourceId);
+            if (resourcePermission != null)
+            {
+                SetFromPermission(resourcePermission);
+            }
+            else
+            {
+                var serverPermission =
+                    permissions.FirstOrDefault(permission => permission.IsServer && permission.ResourceID == Guid.Empty);
+                if (serverPermission != null)
+                {
+                    SetFromServer(serverPermission);
+                }
+            }
+        }
 
-		void SetFromServer(IWindowsGroupPermission serverPermission)
-		{
-			CanEdit = serverPermission.Contribute;
-			CanExecute = serverPermission.Contribute || serverPermission.Execute;
-			CanView = serverPermission.View || serverPermission.Contribute || serverPermission.Administrator;
-			CanRename = serverPermission.Contribute || serverPermission.Administrator;
-			CanDelete = serverPermission.Contribute || serverPermission.Administrator;
+        void SetFromServer(IWindowsGroupPermission serverPermission)
+        {
+            CanEdit = serverPermission.Contribute;
+            CanExecute = serverPermission.Contribute || serverPermission.Execute;
+            CanView = serverPermission.View || serverPermission.Contribute || serverPermission.Administrator;
+            CanRename = serverPermission.Contribute || serverPermission.Administrator;
+            CanDelete = serverPermission.Contribute || serverPermission.Administrator;
 			CanCreateFolder = (serverPermission.Contribute || serverPermission.Administrator);
 
-		}
+        }
 
-		void SetFromPermission(IWindowsGroupPermission resourcePermission)
-		{
-			CanEdit = resourcePermission.Contribute;
-			CanExecute = resourcePermission.Contribute || resourcePermission.Execute;
-			CanView = resourcePermission.View || resourcePermission.Contribute || resourcePermission.Administrator;
-			CanRename = resourcePermission.Contribute || resourcePermission.Administrator;
-			CanDelete = resourcePermission.Contribute || resourcePermission.Administrator;
+        void SetFromPermission(IWindowsGroupPermission resourcePermission)
+        {
+            CanEdit = resourcePermission.Contribute;
+            CanExecute = resourcePermission.Contribute || resourcePermission.Execute;
+            CanView = resourcePermission.View || resourcePermission.Contribute || resourcePermission.Administrator; 
+            CanRename = resourcePermission.Contribute || resourcePermission.Administrator;
+            CanDelete = resourcePermission.Contribute || resourcePermission.Administrator;
 
 
+            
+        }
 
-		}
+        bool UserShouldEditValueNow
+        {
+            get
+            {
+                return _userShouldEditValueNow;
+            }
+            set
+            {
+                _userShouldEditValueNow = value;
+                OnPropertyChanged(() => UserShouldEditValueNow);
+            }
+        }
 
-		bool UserShouldEditValueNow
-		{
-			get
-			{
-				return _userShouldEditValueNow;
-			}
-			set
-			{
-				_userShouldEditValueNow = value;
-				OnPropertyChanged(() => UserShouldEditValueNow);
-			}
-		}
+        public ICommand CreateFolderCommand { get; set; }
+        public ICommand DeleteCommand { get; set; }
+        public ICommand ShowVersionHistory { get; set; }
+        public ICommand RollbackCommand { get; set; }
+        public bool IsRenaming
+        {
+            get
+            {
+                return _isRenaming;
+            }
+            set
+            {
 
-		public ICommand CreateFolderCommand { get; set; }
-		public ICommand DeleteCommand { get; set; }
-		public ICommand ShowVersionHistory { get; set; }
-		public ICommand RollbackCommand { get; set; }
-		public bool IsRenaming
-		{
-			get
-			{
-				return _isRenaming;
-			}
-			set
-			{
+                _isRenaming = value;
+                UserShouldEditValueNow = _isRenaming;
+                OnPropertyChanged(() => IsRenaming);
+                OnPropertyChanged(() => IsNotRenaming);
+            }
+        }
 
-				_isRenaming = value;
-				UserShouldEditValueNow = _isRenaming;
-				OnPropertyChanged(() => IsRenaming);
-				OnPropertyChanged(() => IsNotRenaming);
-			}
-		}
-
-		public bool IsNotRenaming
-		{
-			get
-			{
-				return !_isRenaming;
-			}
-
-		}
-		public string ResourceName
-		{
-			get
-			{
-				return _resourceName;
-			}
-			set
-			{
+        public bool IsNotRenaming
+        {
+            get
+            {
+                return !_isRenaming;
+            }
+    
+        }
+        public string ResourceName
+        {
+            get
+            {
+                return _resourceName;
+            }
+            set
+            {
 				if (Parent != null && Parent.Children.Any(a => a.ResourceName == value))
-				{
-					_shellViewModel.ShowPopup(PopupMessages.GetDuplicateMessage(value));
+                {
+                    _shellViewModel.ShowPopup(PopupMessages.GetDuplicateMessage(value));
 
-				}
-				else
-				{
+                }
+                else
+                {
 					if (IsRenaming && _explorerRepository.Rename(this, value))
-					{
-						_resourceName = value;
-					}
-					if (!IsRenaming)
-					{
-						_resourceName = value;
-					}
-					IsRenaming = false;
-					OnPropertyChanged(() => ResourceName);
-				}
-			}
-		}
-		public ICollection<IExplorerItemViewModel> Children
-		{
-			get
-			{
+                    {
+                _resourceName = value;
+                }
+                if (!IsRenaming)
+                {
+                    _resourceName = value;
+                }
+                IsRenaming = false;
+                OnPropertyChanged(() => ResourceName);
+            }
+        }
+        }
+        public ICollection<IExplorerItemViewModel> Children
+        {
+            get
+            {
 				return String.IsNullOrEmpty(_filter) ? _children : new ObservableCollection<IExplorerItemViewModel>(_children.Where(a => a.IsVisible));
-			}
-			set
-			{
+            }
+            set
+            {
+                
+                _children = value;
+                OnPropertyChanged(() => Children);
+            }
+        }
+        public bool Checked { get; set; }
+        public Guid ResourceId
+        {
+            get
+            {
+                return _resourceId;
+            }
+            set
+            {
+                _resourceId = value;
 
-				_children = value;
-				OnPropertyChanged(() => Children);
-			}
-		}
-		public bool Checked { get; set; }
-		public Guid ResourceId
-		{
-			get
-			{
-				return _resourceId;
-			}
-			set
-			{
-				_resourceId = value;
-
-			}
-		}
-		public ResourceType ResourceType
-		{
-			get
-			{
-				return _resourceType;
-			}
-			set
-			{
-				_resourceType = value;
+            }
+        }
+        public ResourceType ResourceType
+        {
+            get
+            {
+                return _resourceType;
+            }
+            set
+            {
+                _resourceType = value;
 				IsVersion = _resourceType == ResourceType.Version;
-				OnPropertyChanged(() => CanView);
+                OnPropertyChanged(() => CanView);
 				OnPropertyChanged(() => CanShowVersions);
-			}
-		}
-		public ICommand OpenCommand
-		{
-			get; set;
-		}
-		public bool IsExpanderVisible
-		{
-			get
-			{
+            }
+        }
+        public ICommand OpenCommand
+        {
+            get; set;
+        }
+        public bool IsExpanderVisible
+        {
+            get
+            {
 				return Children.Count > 0 && !AreVersionsVisible;
-			}
-			set
-			{
-				_isVisible = value;
+            }
+            set
+            {
+                _isVisible = value;
 				OnPropertyChanged(() => IsExpanderVisible);
-			}
-		}
-		public ICommand NewCommand { get; set; }
-		public ICommand DeployCommand { get; set; }
+            }
+        }
+        public ICommand NewCommand { get; set; }
+        public ICommand DeployCommand { get; set; }
 
-		public bool IsSelected
-		{
-			get { return _isSelected; }
-			set
-			{
-				_isSelected = value;
-				OnPropertyChanged(() => IsSelected);
-				if (_isSelected)
-				{
-					var helpDescriptor = new HelpDescriptor("", string.Format("<body><H1>{0}</H1><a href=\"http://warewolf.io\">Warewolf</a><p>Inputs: {1}</p><p>Outputs: {2}</p></body>", ResourceName, Inputs, Outputs), null);
-					_shellViewModel.UpdateHelpDescriptor(helpDescriptor);
-				}
-			}
-		}
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                _isSelected = value;
+                OnPropertyChanged(() => IsSelected);
+                if (_isSelected)
+                {
+                    var helpDescriptor = new HelpDescriptor("", string.Format("<body><H1>{0}</H1><a href=\"http://warewolf.io\">Warewolf</a><p>Inputs: {1}</p><p>Outputs: {2}</p></body>", ResourceName, Inputs, Outputs), null);
+                    _shellViewModel.UpdateHelpDescriptor(helpDescriptor);
+                }
+            }
+        }
 		public bool CanShowServerVersion { get; set; }
 
-		public ICommand RenameCommand { get; set; }
-		public bool CanCreateDbService { get; set; }
-		public bool CanCreateDbSource { get; set; }
-		public bool CanCreateServerSource
-		{
-			get
-			{
-				return _canCreateServerSource;
-			}
-			set
-			{
-				_canCreateServerSource = value;
-				OnPropertyChanged(() => CanCreateServerSource);
-			}
-		}
-		public bool CanCreateWebService { get; set; }
-		public bool CanCreateWebSource { get; set; }
-		public bool CanCreatePluginService { get; set; }
-		public bool CanCreatePluginSource { get; set; }
-		// ReSharper disable MemberCanBePrivate.Global
-		public bool CanCreateWorkflowService { get; set; }
-		// ReSharper restore MemberCanBePrivate.Global
+        public ICommand RenameCommand { get; set; }
+        public bool CanCreateDbService { get; set; }
+        public bool CanCreateDbSource { get; set; }
+        public bool CanCreateServerSource
+        {
+            get
+            {
+                return _canCreateServerSource;
+            }
+            set
+            {
+                _canCreateServerSource = value;
+                OnPropertyChanged(() => CanCreateServerSource);
+            }
+        }
+        public bool CanCreateWebService { get; set; }
+        public bool CanCreateWebSource { get; set; }
+        public bool CanCreatePluginService { get; set; }
+        public bool CanCreatePluginSource { get; set; }
+        // ReSharper disable MemberCanBePrivate.Global
+        public bool CanCreateWorkflowService { get; set; }
+        // ReSharper restore MemberCanBePrivate.Global
 
 
 
-		public bool CanRename
-		{
-			get
-			{
-				return _canRename;
-			}
-			set
-			{
+        public bool CanRename
+        {
+            get
+            {
+                return _canRename;
+            }
+            set
+            {
 				OnPropertyChanged(() => CanRename);
-				_canRename = value;
-			}
-		}
-		public bool CanDelete
-		{
-			get
-			{
-				return _canDelete;
-			}
-			set
-			{
+                _canRename = value;
+            }
+        }
+        public bool CanDelete
+        {
+            get
+            {
+                return _canDelete;
+            }
+            set
+            {
 				OnPropertyChanged(() => CanDelete);
-				_canDelete = value;
-			}
-		}
-		public bool CanCreateFolder
-		{
-			get
-			{
+                _canDelete = value;
+            }
+        }
+        public bool CanCreateFolder
+        {
+            get
+            {
 				return (ResourceType == ResourceType.Folder || ResourceType == ResourceType.Server) && _canCreateFolder;
-			}
-			set
-			{
-				_canCreateFolder = value;
-				OnPropertyChanged(() => CanCreateFolder);
-			}
-		}
-		public bool CanDeploy { get; set; }
-		public IServer Server
-		{
-			get;
-			set;
-		}
-		public ICommand ItemSelectedCommand { get; set; }
-		public ICommand LostFocus { get; set; }
-		public bool CanExecute
-		{
-			get
-			{
-				return _canExecute;
-			}
-			set
-			{
-				if (_canExecute != value)
-				{
-					_canExecute = value;
-					OnPropertyChanged(() => CanExecute);
-				}
-			}
-		}
-		public bool CanEdit
-		{
-			get
-			{
-				return _canEdit;
-			}
-			set
-			{
-				if (_canEdit != value)
-				{
-					_canEdit = value;
-					OnPropertyChanged(() => CanEdit);
-				}
-			}
-		}
-		public bool CanView
-		{
-			get
-			{
+            }
+            set
+            {
+                _canCreateFolder = value;
+                OnPropertyChanged(() => CanCreateFolder);
+            }
+        }
+        public bool CanDeploy { get; set; }
+        public IServer Server
+        {
+            get;
+            set;
+        }
+        public ICommand ItemSelectedCommand { get; set; }
+        public ICommand LostFocus { get; set; }
+        public bool CanExecute
+        {
+            get
+            {
+                return _canExecute;
+            }
+            set
+            {
+                if (_canExecute != value)
+                {
+                    _canExecute = value;
+                    OnPropertyChanged(() => CanExecute);
+                }
+            }
+        }
+        public bool CanEdit
+        {
+            get
+            {
+                return _canEdit;
+            }
+            set
+            {
+                if (_canEdit != value)
+                {
+                    _canEdit = value;
+                    OnPropertyChanged(() => CanEdit);
+                }
+            }
+        }
+        public bool CanView
+        {
+            get
+            {
 				return _canView && ResourceType < ResourceType.Folder && ResourceType != ResourceType.Version;
-			}
-			set
-			{
-				if (_canView != value)
-				{
+            }
+            set
+            {
+                if (_canView != value)
+                {
 					_canView = value;
-					OnPropertyChanged(() => CanView);
-				}
-			}
-		}
+                    OnPropertyChanged(() => CanView);
+                }
+            }
+        }
 
-		public bool IsVersion { get; set; }
-		public bool CanShowVersions
-		{
-			get
-			{
-				return ResourceType == ResourceType.WorkflowService && _canShowVersions;
-			}
-			set
-			{
-				_canShowVersions = value;
-				OnPropertyChanged(() => CanShowVersions);
-			}
-		}
-		public bool CanRollback
-		{
-			get
-			{
-				return ResourceType == ResourceType.Version;
-			}
-		}
-		public bool AreVersionsVisible
-		{
-			get
-			{
-				return _areVersionsVisible;
-			}
-			set
-			{
-
-				_areVersionsVisible = value;
-				VersionHeader = !value ? "Show Version History" : "Hide Version History";
-				if (value)
-				{
+        public bool IsVersion { get; set; }
+        public bool CanShowVersions
+        {
+            get
+            {
+                return ResourceType == ResourceType.WorkflowService && _canShowVersions;
+            }
+            set
+            {
+                _canShowVersions = value;
+                OnPropertyChanged(() => CanShowVersions);
+            }
+        }
+        public bool CanRollback
+        {
+            get
+            {
+                return ResourceType == ResourceType.Version;
+            }
+        }
+        public bool AreVersionsVisible
+        {
+            get
+            {
+                return _areVersionsVisible;
+            }
+            set
+            {
+               
+                _areVersionsVisible = value;
+                VersionHeader = !value ? "Show Version History" : "Hide Version History";
+                if (value)
+                {
 					_children = new ObservableCollection<IExplorerItemViewModel>(_explorerRepository.GetVersions(ResourceId).Select(a => new ExplorerItemViewModel(ShellViewModel, Server, Builder, this)
-					{
+                    {
 						ResourceName = "v." + a.VersionNumber + " " + a.DateTimeStamp.ToString(CultureInfo.InvariantCulture) + " " + a.Reason,
-						VersionNumber = a.VersionNumber,
+                        VersionNumber = a.VersionNumber,
 						ResourceId = ResourceId,
-						IsVersion = true,
-						CanCreatePluginSource = false,
+                         IsVersion = true,
+                         CanCreatePluginSource = false,
 						CanCreateWebService = false,
-						CanCreateDbService = false,
-						CanCreateDbSource = false,
-						CanCreatePluginService = false,
-						CanCreateWebSource = false
+                         CanCreateDbService = false,
+                         CanCreateDbSource = false,
+                         CanCreatePluginService = false,
+                         CanCreateWebSource = false
 						 ,
 						ResourceType = ResourceType.Version
-					}
-					));
-					OnPropertyChanged(() => Children);
-					if (Children.Count > 0) IsExpanded = true;
-				}
-				else
-				{
-					_children = new ObservableCollection<IExplorerItemViewModel>();
-					OnPropertyChanged(() => Children);
-				}
+                    }
+                    ));
+                    OnPropertyChanged(() => Children);
+                    if (Children.Count > 0) IsExpanded = true;
+                }
+                else
+                {
+                    _children = new ObservableCollection<IExplorerItemViewModel>();
+                    OnPropertyChanged(() => Children);
+                }
 				OnPropertyChanged(() => AreVersionsVisible);
-
-			}
-		}
-		public string VersionNumber
-		{
-			get
-			{
-				return _versionNumber;
-			}
-			set
-			{
-				_versionNumber = value;
+                
+            }
+        }
+        public string VersionNumber
+        {
+            get
+            {
+                return _versionNumber;
+            }
+            set
+            {
+                _versionNumber = value;
 				OnPropertyChanged(() => VersionNumber);
-			}
-		}
-		public string VersionHeader
-		{
-			get
-			{
-				return _versionHeader;
-			}
-			set
-			{
-				_versionHeader = value;
-				OnPropertyChanged(() => VersionHeader);
-			}
-		}
-		public bool IsVisible
-		{
-			get { return _isVisible; }
-			set
-			{
-				if (_isVisible != value)
-				{
-					_isVisible = value;
-					OnPropertyChanged(() => IsVisible);
-				}
-			}
-		}
-		public bool AllowEditing
-		{
-			get
-			{
-				return _allowEditing;
-			}
-			set
-			{
+            }
+        }
+        public string VersionHeader
+        {
+            get
+            {
+                return _versionHeader;
+            }
+            set
+            {
+                _versionHeader = value;
+                OnPropertyChanged(() => VersionHeader);
+            }
+        }
+        public bool IsVisible
+        {
+            get { return _isVisible; }
+            set
+            {
+                if (_isVisible != value)
+                {
+                    _isVisible = value;
+                    OnPropertyChanged(() => IsVisible);
+                }
+            }
+        }
+        public bool AllowEditing
+        {
+            get
+            {
+                return _allowEditing;
+            }
+            set
+            {
 				OnPropertyChanged(() => AllowEditing);
-				_allowEditing = value;
-			}
-		}
+                _allowEditing = value;
+            }
+        }
 
-		public bool Move(IExplorerItemViewModel destination)
-		{
-			try
-			{
+        public bool Move(IExplorerItemViewModel destination)
+        {
+            try
+            {
 
-				_explorerRepository.Move(this, destination);
-
-				if (destination.ResourceType == ResourceType.Folder)
-				{
-					destination.AddChild(this);
-					Parent.RemoveChild(this);
-				}
-				else if (destination.ResourceType <= ResourceType.Folder)
-				{
-					destination.AddSibling(this);
-					Parent.RemoveChild(this);
-				}
-				else if (destination.Parent == null)
-				{
-					destination.AddSibling(this);
-					Parent.RemoveChild(this);
-				}
-				return true;
-			}
+                 _explorerRepository.Move(this, destination);
+                
+                 if (destination.ResourceType == ResourceType.Folder)
+                 {
+                     destination.AddChild(this);
+                     Parent.RemoveChild(this);
+                 }
+                 else if (destination.ResourceType <= ResourceType.Folder)
+                 {
+                     destination.AddSibling(this);
+                     Parent.RemoveChild(this);
+                 }
+                 else if (destination.Parent == null)
+                 {
+                     destination.AddSibling(this);
+                     Parent.RemoveChild(this);
+                 }
+                 return true;
+            }
 			catch (Exception err)
-			{
-				ShellViewModel.Handle(err);
-				return false;
-			}
-		}
+            {
+                ShellViewModel.Handle(err);
+                return false;
+            }
+        }
 
-		public bool CanDrop
-		{
-			get
-			{
+        public bool CanDrop
+        {
+            get
+            {
 				return ResourceType != ResourceType.Version;
-			}
+            }
 
-			set
-			{
-			}
-		}
-		public bool CanDrag
-		{
-			get
-			{
+            set
+            {
+            }
+        }
+        public bool CanDrag
+        {
+            get
+            {
 				return ResourceType < ResourceType.Server && ResourceType != ResourceType.Version;
-			}
+            }
 
-			set
-			{
-			}
-		}
+            set
+            {
+            }
+        }
 
-		public ICommand OpenVersionCommand { get; set; }
-		public ICommand DeleteVersionCommand { get; set; }
-		public bool IsExpanded
-		{
-			get
-			{
-				return _isExpanded;
-			}
-			set
-			{
+        public ICommand OpenVersionCommand { get; set; }
+        public ICommand DeleteVersionCommand { get; set; }
+        public bool IsExpanded
+        {
+            get
+            {
+                return _isExpanded;
+            }
+            set
+            {
 				if (Parent != null && Parent.IsExpanded != value)
-				{
-					Parent.IsExpanded = value;
-				}
-				_isExpanded = value;
+                {
+                    Parent.IsExpanded = value;
+                }
+                _isExpanded = value;
 				OnPropertyChanged(() => IsExpanded);
-			}
-		}
-		public ICommand Expand { get; set; }
+            }
+        }
+        public ICommand Expand { get; set; }
 
-		public void Filter(string filter)
-		{
-			_filter = filter;
-			foreach (var explorerItemViewModel in _children)
-			{
-				explorerItemViewModel.Filter(filter);
-			}
-			if (String.IsNullOrEmpty(filter) || (_children.Count > 0 && _children.Any(model => model.IsVisible && model.ResourceType != ResourceType.Version)))
-			{
-				IsVisible = true;
-			}
-			else
-			{
+        public void Filter(string filter)
+        {
+            _filter = filter;
+            foreach (var explorerItemViewModel in _children)
+            {
+                explorerItemViewModel.Filter(filter);
+            }
+            if (String.IsNullOrEmpty(filter) || (_children.Count > 0 && _children.Any(model => model.IsVisible && model.ResourceType != ResourceType.Version)))
+            {
+                IsVisible = true;
+            }
+            else
+            {
 				if (!String.IsNullOrEmpty(ResourceName) && ResourceType != ResourceType.Version)
-				{
-					IsVisible = ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant());
-				}
-			}
-			OnPropertyChanged(() => Children);
-		}
+                {
+                    IsVisible = ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant());
+                }
+            }
+            OnPropertyChanged(() => Children);
+        }
 
-		// ReSharper disable UnusedAutoPropertyAccessor.Global
-		// ReSharper disable MemberCanBePrivate.Global
+        // ReSharper disable UnusedAutoPropertyAccessor.Global
+        // ReSharper disable MemberCanBePrivate.Global
 		public IResource Resource { get; set; }
-		// ReSharper restore MemberCanBePrivate.Global
-		// ReSharper restore UnusedAutoPropertyAccessor.Global
-		public string Inputs { get; set; }
-		public string Outputs { get; set; }
-		public string ExecuteToolTip
-		{
-			get
-			{
-				return Resources.Languages.Core.ExplorerItemExecuteToolTip;
-			}
-		}
-		public string EditToolTip
-		{
-			get
-			{
-				return Resources.Languages.Core.ExplorerItemEditToolTip;
-			}
-		}
-		public IShellViewModel ShellViewModel
-		{
-			get
-			{
-				return _shellViewModel;
-			}
-		}
-	}
+        // ReSharper restore MemberCanBePrivate.Global
+        // ReSharper restore UnusedAutoPropertyAccessor.Global
+        public string Inputs { get; set; }
+        public string Outputs { get; set; }
+        public string ExecuteToolTip
+        {
+            get
+            {
+                return Resources.Languages.Core.ExplorerItemExecuteToolTip;
+            }
+        }
+        public string EditToolTip
+        {
+            get
+            {
+                return Resources.Languages.Core.ExplorerItemEditToolTip;
+            }
+        }
+        public IShellViewModel ShellViewModel
+        {
+            get
+            {
+                return _shellViewModel;
+            }
+        }
+    }
 }

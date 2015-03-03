@@ -67,6 +67,13 @@
         <Thickness.Right>0</Thickness.Right>
         <Thickness.Top>5</Thickness.Top>
     </Thickness>
+    <Thickness x:Key="ElementBorderLeft">
+        <Thickness.Bottom>0</Thickness.Bottom>
+        <Thickness.Left>5</Thickness.Left>
+        <Thickness.Right>0</Thickness.Right>
+        <Thickness.Top>0</Thickness.Top>
+    </Thickness>
+
     <Thickness x:Key="ElementBorderLeftTopRight">
         <Thickness.Bottom>0</Thickness.Bottom>
         <Thickness.Left>5</Thickness.Left>

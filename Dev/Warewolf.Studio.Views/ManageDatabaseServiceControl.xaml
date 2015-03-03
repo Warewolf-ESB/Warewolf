@@ -9,86 +9,60 @@
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance Type=db:IManageDbServiceViewModel,
                                               IsDesignTimeCreatable=False}">
-    <Grid>
+    <Grid Margin="{StaticResource ContainerBorder}">
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto" ></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto" ></RowDefinition>
+            <RowDefinition Height="Auto" ></RowDefinition>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
 
-    
-            <!--<Grid Grid.Row="0" HorizontalAlignment="Left">  --><!-- Choose data Source --><!--
 
-                <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Left" Orientation="Horizontal">
-                    <TextBlock  Text="1" ></TextBlock>
-                    <TextBlock  Text="{Binding DataSourceHeader}" ></TextBlock>
-                    --><!-- Choose data source header--><!--
-                </StackPanel>
+        <Grid Grid.Row="0" HorizontalAlignment="Stretch"  >  
+
                 <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-               <ComboBox Grid.Column="0" Grid.Row="1" ItemsSource="{Binding Sources}" DisplayMemberPath="Name"/>
-                <Button Grid.Column="1" Grid.Row="1" Command="{Binding EditSourceCommand}" IsEnabled="{Binding CanEditSource}" Content=" ... "></Button>
-                <TextBlock Grid.Column="2"  Grid.Row="1" Text="or"></TextBlock>
-                <Button Grid.Column="3"  Grid.Row="1" Content="{Binding NewButtonLabel}"></Button>
-                --><!--<views:ManageDatabaseSourceControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Visibility="{Binding EditDbSourceVisible}">
-                    
-                </views:ManageDatabaseSourceControl>--><!--
-                
-            </Grid>-->
+                    <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" ></RowDefinition>
+                <RowDefinition Height="Auto" ></RowDefinition>
+                <RowDefinition Height="40" ></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel  Grid.Row="0" Grid.Column="0"  Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" Orientation="Horizontal">
+                <TextBlock Margin="10"  Text="{Binding DataSourceHeader, Mode=OneWay}" Style="{StaticResource SourceHeader}"></TextBlock>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+                <ComboBox  ItemsSource="{Binding Sources}" DisplayMemberPath="Name" Width="200" Margin="{StaticResource ElementBorderTop}"  />
+                <Button  Command="{Binding EditSourceCommand}" IsEnabled="{Binding CanEditSource}" Content=" ... " Margin="{StaticResource ElementBorderLeftTop}"></Button>
+                <TextBlock Text="or" Margin="{StaticResource ElementBorderLeftTop}"></TextBlock>
+                <Button  Content="{Binding NewButtonLabel}" Margin="{StaticResource ElementBorderLeftTop}" Command="{Binding CreateNewSourceCommand}" Width="100" ></Button>
+            </StackPanel>
+        </Grid>
 
         <Grid Grid.Row="1" Grid.Column="0">
-            <!-- Select an Action-->
+            <!-- Select an Source-->
             <Grid.RowDefinitions>
+                <RowDefinition ></RowDefinition>
                 <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-
+                <RowDefinition Height="40" ></RowDefinition>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" HorizontalAlignment="Left" Orientation="Horizontal">
-                <TextBlock  Text="2" ></TextBlock>
-                <TextBlock  Text="{Binding DataSourceActionHeader}" ></TextBlock>
-                <!-- Choose data source header-->
-            </StackPanel>
-            <StackPanel Grid.Row="1" HorizontalAlignment="Left" >
-                <!-- Choose data Source Action-->
-     
-                <ComboBox ItemsSource="{Binding Actions}" Text="Choose"></ComboBox>
-
-            </StackPanel>
-        </Grid>
-
-        <Grid Grid.Row="2" Grid.Column="0">
-            <!-- Select an Action-->
-            <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-
-            </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" HorizontalAlignment="Left" Orientation="Horizontal">
-                <TextBlock  Text="2" ></TextBlock>
-                <TextBlock  Text="{Binding DataSourceActionHeader}" ></TextBlock>
+            <StackPanel  Grid.Row="0" Grid.Column="0"  Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" Orientation="Horizontal">
+                <TextBlock Margin="10" Text="{Binding DataSourceActionHeader, Mode=OneWay}" Style="{StaticResource SourceHeader}" ></TextBlock>
                 <!-- Choose data source header-->
             </StackPanel>
             <StackPanel Grid.Row="1" HorizontalAlignment="Left" >
                 <!-- Choose data Source Action-->
 
-                <ComboBox ItemsSource="{Binding Actions}" Text="Choose"></ComboBox>
+                <ComboBox Width="200" ItemsSource="{Binding Actions}" Text="Choose" Margin="{StaticResource ElementBorderTop}"></ComboBox>
 
             </StackPanel>
         </Grid>
+
 
         <Grid Grid.Row="3" Grid.Column="0">
-            <!-- Select an Action-->
+            <!-- Test-->
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
@@ -96,32 +70,37 @@
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" HorizontalAlignment="Left" Orientation="Horizontal">
-                <TextBlock  Text="2" ></TextBlock>
-                <TextBlock  Text="{Binding TestHeader}" ></TextBlock>
-                <!-- Choose data source header-->
+            <StackPanel  Grid.Row="0" Grid.Column="0"  Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" Orientation="Horizontal">
+                <TextBlock Margin="10" Text="{Binding TestHeader, Mode=OneWay}" Style="{StaticResource SourceHeader}" ></TextBlock>
             </StackPanel>
-            <!-- Choose data Source Action-->
-            <TextBlock Grid.Row="1" Text="{Binding InputsLabel}"></TextBlock>
-            <StackPanel Grid.Row="2" Orientation="Horizontal">
-                <TextBlock Text="FirtName" MinWidth="120"></TextBlock>
-                <TextBox Text="" MinWidth="120"></TextBox>
-                <TextBlock Text="Surname" MinWidth="120"></TextBlock>
-                <TextBox Text="" MinWidth="120"></TextBox>
-            </StackPanel>
+                <ListBox Width="200" Grid.Row="1"   BorderBrush="Transparent"   DataContext="{Binding Inputs}" >
+                    <ListBox.ItemTemplate>
+                  
+                            <DataTemplate DataType="db:IDbInput">
+                                
+                                <StackPanel Orientation="Horizontal">
+                                <TextBlock  Text="{Binding Path=Name }"></TextBlock>
+                                <TextBox Text="{Binding Path=Value}"></TextBox>
+                                </StackPanel>
+                            </DataTemplate>
+
+                    </ListBox.ItemTemplate>
+                </ListBox>
+    
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" HorizontalAlignment="Left" Text="{Binding InspectLabel}"></TextBox>
-                <Button Grid.Column="1" HorizontalAlignment="Right">Test</Button>
+                <TextBlock Grid.Column="0" HorizontalAlignment="Left" Text="{Binding InspectLabel}"></TextBlock>
+                <Button Grid.Column="1" HorizontalAlignment="Right" Command="{Binding TestProcedureCommand}">Test</Button>
             </Grid>
            <TextBlock Grid.Row="3" Text="{Binding OutputsLabel}"></TextBlock>
             <DataGrid Grid.Row="4" ></DataGrid>
         </Grid>
+        
         <Grid Grid.Row="4" Grid.Column="0">
-            <!-- Select an Action-->
+            <!-- Mappings-->
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
@@ -131,7 +110,7 @@
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" HorizontalAlignment="Left" Orientation="Horizontal">
                 <TextBlock  Text="2" ></TextBlock>
-                <TextBlock  Text="{Binding MappingNamesHeader}" ></TextBlock>
+                <TextBlock  Text="{Binding MappingNamesHeader, Mode=OneWay}" ></TextBlock>
                 <!-- Choose data source header-->
             </StackPanel>
        

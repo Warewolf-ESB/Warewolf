@@ -100,6 +100,7 @@
     <Compile Include="Conflict.cs" />
     <Compile Include="ConflictHandlerViewModel.cs" />
     <Compile Include="ConnectControlViewModel.cs" />
+    <Compile Include="DbInput.cs" />
     <Compile Include="DeployItemMessage.cs" />
     <Compile Include="DummyModels\DummyVariableListViewModel.cs" />
     <Compile Include="IDockViewModel.cs" />
