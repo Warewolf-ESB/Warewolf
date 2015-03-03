@@ -728,7 +728,7 @@ You need Administrator permission.</value>
     <value>Data Source</value>
   </data>
   <data name="DatabaseServiceInputsHeader" xml:space="preserve">
-    <value>e</value>
+    <value>Inputs</value>
   </data>
   <data name="DatabaseServiceInspectHeader" xml:space="preserve">
     <value>Inspect Data Connector</value>

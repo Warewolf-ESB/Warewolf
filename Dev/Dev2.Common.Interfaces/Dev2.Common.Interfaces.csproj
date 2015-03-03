@@ -203,10 +203,17 @@
     <Compile Include="Data\IUpgradePath.cs" />
     <Compile Include="Data\ResourceType.cs" />
     <Compile Include="Data\TO\IErrorResultTO.cs" />
+    <Compile Include="DB\IDatabaseService.cs" />
     <Compile Include="DB\IDataProviderSanitizer.cs" />
+    <Compile Include="DB\IDbAction.cs" />
     <Compile Include="DB\IDBHelper.cs" />
     <Compile Include="DB\IDbHelpText.cs" />
+    <Compile Include="DB\IDbInput.cs" />
+    <Compile Include="DB\IDbOutputMapping.cs" />
+    <Compile Include="DB\IDbServiceModel.cs" />
     <Compile Include="DB\IDbServiceViewModel.cs" />
+    <Compile Include="DB\IServiceInput.cs" />
+    <Compile Include="DB\ISourceBase.cs" />
     <Compile Include="Deploy\IConflict.cs" />
     <Compile Include="Deploy\IConflictHandlerViewModel.cs" />
     <Compile Include="Deploy\IDeployModel.cs" />

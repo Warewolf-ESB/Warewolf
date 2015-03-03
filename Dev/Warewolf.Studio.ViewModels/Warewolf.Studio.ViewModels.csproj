@@ -100,7 +100,10 @@
     <Compile Include="Conflict.cs" />
     <Compile Include="ConflictHandlerViewModel.cs" />
     <Compile Include="ConnectControlViewModel.cs" />
+    <Compile Include="DatabaseService.cs" />
     <Compile Include="DbInput.cs" />
+    <Compile Include="DbOutputMapping.cs" />
+    <Compile Include="DbServiceModel.cs" />
     <Compile Include="DeployItemMessage.cs" />
     <Compile Include="DummyModels\DummyVariableListViewModel.cs" />
     <Compile Include="IDockViewModel.cs" />
@@ -112,6 +115,7 @@
     <Compile Include="NewServerViewModel.cs" />
     <Compile Include="RequestServiceNameViewModel.cs" />
     <Compile Include="ServerAddedEvent.cs" />
+    <Compile Include="SourceBaseImpl.cs" />
     <Compile Include="TestConnection.cs" />
     <Compile Include="VariableList\VariableListColumnViewModel.cs" />
     <Compile Include="VariableList\VariableListViewRecordSetViewModel.cs" />

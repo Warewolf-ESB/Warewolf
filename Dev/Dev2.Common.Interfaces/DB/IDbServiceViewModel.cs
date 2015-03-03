@@ -29,41 +29,14 @@ namespace Dev2.Common.Interfaces.DB
         DataTable TestResults { get; set; }
         ICommand CreateNewSourceCommand { get; set; }
         ICommand TestProcedureCommand { get; set; }
-        IDbOutputMapping OutputMapping { get; set; }
-    }
-
-    public interface IDbOutputMapping
-    {
-        string Name { get; set; }
-        string OutputName { get; set; }
+        IList<IDbOutputMapping> OutputMapping { get; set; }
+        ICommand SaveCommand { get; set; }
+        bool CanSelectProcedure { get; set; }
+        bool CanEditMappings { get; set; }
+        bool CanTest { get; set; }
     }
 
     public interface IDbOutput
     {
     }
-    public interface IDbInput
-    {
-        string Name{ get; set; }
-        string Value { get; set; }
-        string DefaultValue { get; set; }
-        bool RequiredField { get; set; }
-        bool EmptyIsNull { get; set; }
-    }
-
-    public interface IDbAction
-    {
-        IList<IServiceInput> Inputs { get; set; }
-        string Name { get; set; }
-        IDictionary<string, List<string>> Test();
-    }
-
-    public interface IServiceInput
-    {
-        string Name { get; set; }
-        string Value { get; set; }
-        bool Required { get; set; }
-        bool EmptyIsNull { get; set; }
-    }
-
-
 }

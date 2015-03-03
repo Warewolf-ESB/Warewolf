@@ -3,73 +3,37 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Windows.Input;
-using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Microsoft.Practices.Prism.Commands;
-using Microsoft.Practices.Prism.Mvvm;
-using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public interface ISourceBase<T> 
-    {
-        T Item { get; set; }
-        bool HasChanged { get; }
-        T ToModel();
-
-    }
-
-    public abstract class SourceBaseImpl<T> : BindableBase, ISourceBase<T>, IDockViewModel
-    {
-        public SourceBaseImpl(ResourceType? image)
-        {
-            Image = image;
-        }
-
-        #region Implementation of ISourceBase<T>
-
-        public T Item { get; set; }
-        public bool HasChanged { get { return Item.Equals(ToModel()); } }
-
-        abstract  public T ToModel();
-
-        #endregion
-
-        #region Implementation of IDockAware
-
-        public string Header { get; set; }
-        public ResourceType? Image { get; private set; }
-
-        #endregion
-
-        public bool IsActive { get; set; }
-        public event EventHandler IsActiveChanged;
-        public abstract void UpdateHelpDescriptor(string helpText);
-    }
-
-    public interface IDatabaseService
-    {
-    }
-
     public class ManageDatabaseServiceViewModel : SourceBaseImpl<IDatabaseService>, IManageDbServiceViewModel
     {
+        readonly IDbServiceModel _model;
         ICollection<IDbSource> _sources;
         IManageDatabaseSourceViewModel _selectedSource;
         IDbAction _selectedAction;
         ICollection<IDbInput> _inputs;
         DataTable _testResults;
-        IDbOutputMapping _outputMapping;
+        IList<IDbOutputMapping> _outputMapping;
+        bool _canSelectProcedure;
+        bool _canEditMappings;
+        bool _canTest;
 
-        public ManageDatabaseServiceViewModel( bool canEditSource, ICollection<string> actions):base(ResourceType.DbService)
+        
+        public ManageDatabaseServiceViewModel(IDbServiceModel model):base(ResourceType.DbService)
         {
-            Actions = actions;
-            CanEditSource = canEditSource;
+            _model = model;
+            CanEditSource = true;
+            CreateNewSourceCommand = new DelegateCommand(model.CreateNewSource);
+            EditSourceCommand = new DelegateCommand(()=>model.EditSource(SelectedSource));
             EditSourceCommand = new DelegateCommand(()=>{});
-            Sources = new ObservableCollection<IDbSource> { new DbSourceDefinition() { Name = "bob" }, new DbSourceDefinition() { Name = "dora" }, new DbSourceDefinition() { Name = "foo large" } };
-            Actions = new ObservableCollection<string> {"sp_bob","sp_the_quick_brown_fox","sp_fetchPeople"};
+            Sources = model.RetrieveSources();
+            Item = new DatabaseService();
             Header = "New DB Service";
             Inputs = new Collection<IDbInput> { new DbInput("bob", "the"), new DbInput("dora", "eplorer"), new DbInput("Zummy", "Gummy") };
             CreateNewSourceCommand = new DelegateCommand(()=>{});
@@ -82,6 +46,8 @@ namespace Warewolf.Studio.ViewModels
             TestResults.Rows.Add(new object[] { "dbo_Save_person(1)", "asdasd", "dasdasd", "111" });
             TestResults.Rows.Add(new object[] { "dbo_Save_person(2)", "qweqwe", "dasfghfgdasd", "111" });
             TestResults.Rows.Add(new object[] { "dbo_Save_person(3)", "fghfhf", "fgh", "111" });
+            OutputMapping = new List<IDbOutputMapping>() { new DbOutputMapping("bob", "The"), new DbOutputMapping("dora", "The"), new DbOutputMapping("Tree", "The") };
+            SaveCommand = new DelegateCommand(()=>{});
         }
 
         #region Implementation of IManageDbServiceViewModel
@@ -95,6 +61,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _sources = value;
+      
                 OnPropertyChanged(()=>Sources);
                 
             }
@@ -108,6 +75,8 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _selectedSource = value;
+                CanSelectProcedure = value != null;
+                Actions = new ObservableCollection<string> { "sp_bob", "sp_the_quick_brown_fox", "sp_fetchPeople" };
                 OnPropertyChanged(() => Sources);
             }
         }
@@ -218,7 +187,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public ICommand CreateNewSourceCommand { get; set; }
         public ICommand TestProcedureCommand { get;  set; }
-        public IDbOutputMapping OutputMapping
+        public IList<IDbOutputMapping> OutputMapping
         {
             get
             {
@@ -228,6 +197,43 @@ namespace Warewolf.Studio.ViewModels
             {
                 _outputMapping = value;
                 OnPropertyChanged(()=>OutputMapping);
+            }
+        }
+        public ICommand SaveCommand { get;  set; }
+        public bool CanSelectProcedure
+        {
+            get
+            {
+                return _canSelectProcedure;
+            }
+            set
+            {
+                _canSelectProcedure = value;
+                OnPropertyChanged(() => CanSelectProcedure);
+            }
+        }
+        public bool CanEditMappings
+        {
+            get
+            {
+                return _canEditMappings;
+            }
+            set
+            {
+                _canEditMappings = value;
+                OnPropertyChanged(() => CanEditMappings);
+            }
+        }
+        public bool CanTest
+        {
+            get
+            {
+                return _canTest;
+            }
+            set
+            {
+                _canTest = value;
+                OnPropertyChanged(()=>CanTest);
             }
         }
 
@@ -251,6 +257,4 @@ namespace Warewolf.Studio.ViewModels
 
 
     }
-
-
 }
