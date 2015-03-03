@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Data;
@@ -9,7 +10,6 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
-using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -53,6 +53,7 @@ namespace Warewolf.Studio.ViewModels
     {
     }
 
+    [ComVisible(false)]
     public class ManageDatabaseServiceViewModel : SourceBaseImpl<IDatabaseService>, IManageDbServiceViewModel
     {
         ICollection<IDbSource> _sources;

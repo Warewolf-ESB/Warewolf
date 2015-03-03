@@ -134,7 +134,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 else if (HasDuplicateName(Name))
                 {
-                    ErrorMessage = string.Format("Service with name '{0}' already exists.", Name);
+                    ErrorMessage = string.Format("An item with name '{0}' already exists in this folder.", Name);
                 }
                 else
                 {
@@ -151,7 +151,10 @@ namespace Warewolf.Studio.ViewModels
 				return explorerTreeItem.Children.Any(model => model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
             }
             if (SingleEnvironmentExplorerViewModel.Environments.First() != null)
-                return SingleEnvironmentExplorerViewModel.Environments.First().Children.Any(model => model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
+            {
+                var explorerItemViewModels = SingleEnvironmentExplorerViewModel.Environments.First().Children;
+                return explorerItemViewModels != null && explorerItemViewModels.Any(model => requestedServiceName != null && (model.ResourceName != null && (model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder)));
+            }
             return false;
         }
 

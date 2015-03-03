@@ -7,7 +7,6 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Dev2;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
@@ -23,7 +22,7 @@ using Warewolf.Studio.Models.Help;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ManageDatabaseSourceViewModel : BindableBase, IManageDatabaseSourceViewModel, IDockViewModel
+    public class ManageDatabaseSourceViewModel : BindableBase, IManageDatabaseSourceViewModel, IDockViewModel,IDisposable
     {
         private enSourceType _serverType;
         private AuthenticationType _authenticationType;
@@ -45,6 +44,7 @@ namespace Warewolf.Studio.ViewModels
         IList<string> _computerNames;
         string _warewolfserverName;
         string _headerText;
+        private bool _isDisposed;
 
         public ManageDatabaseSourceViewModel(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator)
         {
@@ -77,7 +77,7 @@ namespace Warewolf.Studio.ViewModels
 
         bool CanCancelTest()
         {
-            return Testing == true;
+            return Testing;
         }
 
         void CancelTest()
@@ -630,6 +630,43 @@ namespace Warewolf.Studio.ViewModels
         public ResourceType? Image
         {
             get { return ResourceType.DbSource; }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+
+            // This object will be cleaned up by the Dispose method.
+            // Therefore, you should call GC.SupressFinalize to
+            // take this object off the finalization queue
+            // and prevent finalization code for this object
+            // from executing a second time.
+            GC.SuppressFinalize(this);
+        }
+
+        // Dispose(bool disposing) executes in two distinct scenarios.
+        // If disposing equals true, the method has been called directly
+        // or indirectly by a user's code. Managed and unmanaged resources
+        // can be disposed.
+        // If disposing equals false, the method has been called by the
+        // runtime from inside the finalizer and you should not reference
+        // other objects. Only unmanaged resources can be disposed.
+        void Dispose(bool disposing)
+        {
+            // Check to see if Dispose has already been called.
+            if (!_isDisposed)
+            {
+                // If disposing equals true, dispose all managed
+                // and unmanaged resources.
+                if (disposing)
+                {
+                    // Dispose managed resources.
+                   _token.Dispose();
+                }
+
+                // Dispose unmanaged resources.
+                _isDisposed = true;
+            }
         }
     }
 }
