@@ -170,11 +170,11 @@ namespace Dev2.Utilities
             // NOTE: DO NOT set properties or variables!
             SetNamespaces(dynamicActivity);
             // MS Memory Leak ;(
-            //var chart = WorkflowInspectionServices.GetActivities(dynamicActivity).FirstOrDefault() as Flowchart;
-            //if(chart != null)
-            //{
-            //    FixExpressions(chart, true);
-            //}
+            var chart = WorkflowInspectionServices.GetActivities(dynamicActivity).FirstOrDefault() as Flowchart;
+            if (chart != null)
+            {
+                FixExpressions(chart, true);
+            }
             Dev2Logger.Log.Info("Fix Expressions");
            CompileExpressionsImpl(dynamicActivity,resourceID);
         }
@@ -340,20 +340,19 @@ namespace Dev2.Utilities
                 if(fd != null)
                 {
                     var decisionActivity = fd.Condition as DsfFlowDecisionActivity;
-                    TryFixExpression(decisionActivity, GlobalConstants.InjectedDecisionHandlerOld, GlobalConstants.InjectedDecisionHandler);
+                    //TryFixExpression(decisionActivity, GlobalConstants.InjectedDecisionHandlerOld, GlobalConstants.InjectedDecisionHandler);
                     if(isServerInvocation)
                     {
                         // CompileExpressionsImpl will strip out backslashes!!
                         TryFixExpression(decisionActivity, "\\", "\\\\");
                     }
-                    continue;
                 }
 
-                var fs = node as FlowSwitch<string>;
-                if(fs != null)
-                {
-                    TryFixExpression(fs.Expression as DsfFlowSwitchActivity, GlobalConstants.InjectedSwitchDataFetchOld, GlobalConstants.InjectedSwitchDataFetch);
-                }
+                //var fs = node as FlowSwitch<string>;
+                //if(fs != null)
+                //{
+                //    TryFixExpression(fs.Expression as DsfFlowSwitchActivity, GlobalConstants.InjectedSwitchDataFetchOld, GlobalConstants.InjectedSwitchDataFetch);
+                //}
             }
         }
 
