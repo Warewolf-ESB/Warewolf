@@ -232,7 +232,6 @@ namespace Warewolf.Studio.ViewModels
 				environmentViewModel
 			};
 			ShowConnectControl = false;
-
 		}
 	}
 }

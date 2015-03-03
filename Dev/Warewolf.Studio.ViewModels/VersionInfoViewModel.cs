@@ -43,6 +43,7 @@ namespace Warewolf.Studio.ViewModels
             CanShowVersions = false;
             CanRollBack = true;
             Expand = new DelegateCommand(() => { });
+		    CanCreateWorkflowService = false;
         }
 
         public string DisplayName { get; set; }
@@ -117,7 +118,9 @@ namespace Warewolf.Studio.ViewModels
             set { _parent = value; }
         }
 
-        public void AddChild(IExplorerItemViewModel child)
+	    public bool CanCreateWorkflowService { get; set; }
+
+	    public void AddChild(IExplorerItemViewModel child)
         {            
         }
 

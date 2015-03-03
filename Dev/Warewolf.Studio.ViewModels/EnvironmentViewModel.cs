@@ -8,7 +8,6 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
-using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Microsoft.Practices.Prism.Commands;
@@ -32,8 +31,9 @@ namespace Warewolf.Studio.ViewModels
         private bool _isSelected;
         bool _canCreateFolder;
 		bool _canShowServerVersion;
+	    private bool _canCreateWorkflowService;
 
-        public EnvironmentViewModel(IServer server, IShellViewModel shellViewModel)
+	    public EnvironmentViewModel(IServer server, IShellViewModel shellViewModel)
         {
 			if (server == null) throw new ArgumentNullException("server");
             if (shellViewModel == null) throw new ArgumentNullException("shellViewModel");
@@ -62,9 +62,20 @@ namespace Warewolf.Studio.ViewModels
             ResourceType = ResourceType.ServerSource;
             ResourceName = DisplayName;
 			CanShowServerVersion = true;
+            
         }
 
-        void ServerItemAddedEvent(IExplorerItem args)
+	    public bool CanCreateWorkflowService
+	    {
+	        get { return _canCreateWorkflowService; }
+	        set
+	        {
+	            _canCreateWorkflowService = value;
+                OnPropertyChanged(() => CanCreateWorkflowService);
+	        }
+	    }
+
+	    void ServerItemAddedEvent(IExplorerItem args)
         {
 			if (args.ResourcePath == args.DisplayName)
             {
@@ -145,7 +156,8 @@ namespace Warewolf.Studio.ViewModels
             CanDeploy = false;
             CanRename = true;
             CanRollback = false;
-            CanShowVersions = false;            
+            CanShowVersions = false;
+            CanCreateWorkflowService = false;
         }
 
         void Server_NetworkStateChanged(INetworkStateChangedEventArgs args)
@@ -311,20 +323,18 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => IsSelected);
             }
 		}
-		public bool CanShowServerVersion
-		{
-			get
-			{
-				return _canShowServerVersion;
-        }
-			set
-			{
-				_canShowServerVersion = value;
-				OnPropertyChanged(() => CanShowServerVersion);
-			}
-		}
 
-        void ShowServerVersionAbout()
+	    public bool CanShowServerVersion
+	    {
+	        get { return _canShowServerVersion; }
+	        set
+	        {
+	            _canShowServerVersion = value;
+	            OnPropertyChanged(() => CanShowServerVersion);
+	        }
+	    }
+
+	    void ShowServerVersionAbout()
         {
             var serverVersion = Server.GetServerVersion();
             var studioVersion = Utils.FetchVersionInfo();
@@ -535,6 +545,7 @@ namespace Warewolf.Studio.ViewModels
             itemCreated.CanDeploy = false;
             itemCreated.CanShowVersions = false;
             itemCreated.CanEdit = false;
+            itemCreated.CanView = false;
             itemCreated.CanExecute = false;
         }
 
