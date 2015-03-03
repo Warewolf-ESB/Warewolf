@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Core;
@@ -20,7 +21,7 @@ namespace Warewolf.Studio.ViewModels
 
     }
 
-    public abstract class SourceBaseImpl<T> : BindableBase, ISourceBase<T>, IDockAware
+    public abstract class SourceBaseImpl<T> : BindableBase, ISourceBase<T>, IDockViewModel
     {
         public SourceBaseImpl(ResourceType? image)
         {
@@ -42,6 +43,10 @@ namespace Warewolf.Studio.ViewModels
         public ResourceType? Image { get; private set; }
 
         #endregion
+
+        public bool IsActive { get; set; }
+        public event EventHandler IsActiveChanged;
+        public abstract void UpdateHelpDescriptor(string helpText);
     }
 
     public interface IDatabaseService
@@ -200,6 +205,11 @@ namespace Warewolf.Studio.ViewModels
         public override IDatabaseService ToModel()
         {
             return null;
+        }
+
+        public override void UpdateHelpDescriptor(string helpText)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

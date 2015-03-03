@@ -208,6 +208,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DBService Inspector.feature</DependentUpon>
     </Compile>
+    <Compile Include="DBService Specs\DBServiceSteps.cs" />
     <Compile Include="DBService Specs\New Database Source.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
