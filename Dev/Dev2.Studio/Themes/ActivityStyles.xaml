@@ -191,7 +191,6 @@
     <Style x:Key="ActivityMultiLineIntellisenseTextBoxStyle"
            BasedOn="{StaticResource {x:Type ui:IntellisenseTextBox}}"
            TargetType="{x:Type ui:IntellisenseTextBox}">
-        <!--  <Setter Property="attachedProperties:WizardEngineAttachedProperties.DontOpenWizard" Value="true"/>  -->
         <Setter Property="AllowUserInsertLine" Value="True" />
         <Setter Property="AllowMultilinePaste" Value="True" />
         <Setter Property="Width" Value="Auto" />

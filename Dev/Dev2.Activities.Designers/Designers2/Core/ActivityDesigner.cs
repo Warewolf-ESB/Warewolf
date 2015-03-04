@@ -54,7 +54,7 @@ namespace Dev2.Activities.Designers2.Core
 
             _helpAdorner = new HelpAdorner(this);
             _errorsAdorner = new ErrorsAdorner(this);
-
+            Resources.MergedDictionaries.Add(new ResourceDictionary{Source = new Uri("pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml")});
             Loaded += OnRoutedEventHandler;
             Unloaded += ActivityDesignerUnloaded;
             AllowDrop = true;

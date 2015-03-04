@@ -44,6 +44,6 @@
         <ResourceDictionary Source="Elements/xamDialogWindow.xaml" />
         <ResourceDictionary Source="Elements/HyperLink.xaml" />
         <ResourceDictionary Source="Elements/xamNetworkNode.xaml" />
-
+        
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
