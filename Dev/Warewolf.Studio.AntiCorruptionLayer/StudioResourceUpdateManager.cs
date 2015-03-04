@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.ServerDialogue;
 using Dev2.Common.Interfaces.ServerProxyLayer;
@@ -58,6 +59,11 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         {
             UpdateManagerProxy.SaveDbSource( toDbSource, GlobalConstants.ServerWorkspaceID);
 
+        }
+
+        public void Save(IDatabaseService toDbSource)
+        {
+            UpdateManagerProxy.SaveDbService(toDbSource);
         }
     }
 }

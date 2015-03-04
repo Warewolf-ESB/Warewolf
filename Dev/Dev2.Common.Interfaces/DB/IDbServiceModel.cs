@@ -10,6 +10,7 @@ namespace Dev2.Common.Interfaces.DB
         void CreateNewSource();
         void EditSource(IDbSource selectedSource);
         DataTable TestService(IList<IDbInput> inputValues );
-        ICollection<IDbOutputMapping> GetDbOutputMappings(IDbAction action);
+        IEnumerable<IDbOutputMapping> GetDbOutputMappings(IDbAction action);
+        void SaveService(IDatabaseService toModel);
     }
 }

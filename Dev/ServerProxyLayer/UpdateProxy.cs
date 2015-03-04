@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ErrorHandling;
 using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Common.Interfaces.ServerDialogue;
@@ -144,6 +145,17 @@ namespace Warewolf.Studio.ServerProxyLayer
             if(output.HasError)
                 throw  new WarewolfSaveException(output.Message.ToString(),null);
             
+        }
+
+        public void SaveDbService(IDatabaseService dbService)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("SaveDbServiceService");
+            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("DbService", serialiser.SerializeToBuilder(dbService));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output.HasError)
+                throw new WarewolfSaveException(output.Message.ToString(), null);
         }
 
         #endregion

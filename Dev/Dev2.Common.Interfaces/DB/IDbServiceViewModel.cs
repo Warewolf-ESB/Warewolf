@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.ServerProxyLayer;
@@ -31,6 +32,9 @@ namespace Dev2.Common.Interfaces.DB
         bool CanSelectProcedure { get; set; }
         bool CanEditMappings { get; set; }
         bool CanTest { get; set; }
+        string Path { get; set; }
+        string Name { get; set; }
+       Guid Id{get;set;}
     }
 
     public interface IDbOutput

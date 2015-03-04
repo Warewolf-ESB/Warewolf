@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerDialogue;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.ViewModels;
@@ -32,5 +33,7 @@ namespace Dev2.Common.Interfaces.Explorer
         IList<string> TestDbConnection(IDbSource serverSource);
 
         void Save(IDbSource toDbSource);
+
+        void Save(IDatabaseService toDbSource);
     }
 }

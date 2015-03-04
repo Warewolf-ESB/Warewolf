@@ -4,6 +4,7 @@ using System.Data;
 using System.Text;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.ServerDialogue;
 
@@ -58,5 +59,7 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         IList<string> TestDbConnection(IDbSource resource);
 
         void  SaveDbSource(IDbSource toDbSource, Guid serverWorkspaceID);
+
+        void SaveDbService(IDatabaseService dbService);
     }
 }
