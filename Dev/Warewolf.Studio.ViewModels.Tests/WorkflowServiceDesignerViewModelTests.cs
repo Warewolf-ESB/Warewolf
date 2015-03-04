@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text;
 using Dev2.Common.Interfaces;
-using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -19,7 +18,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             
             //------------Execute Test---------------------------
-           new WorkflowServiceDesignerViewModel(null, new Mock<IEventAggregator>().Object);
+            // ReSharper disable once ObjectCreationAsStatement
+           new WorkflowServiceDesignerViewModel(null);
             //------------Assert Results-------------------------
         }
 
@@ -31,7 +31,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             
             //------------Execute Test---------------------------
-            var viewModel = new WorkflowServiceDesignerViewModel(new Mock<IXamlResource>().Object, new Mock<IEventAggregator>().Object);
+            var viewModel = new WorkflowServiceDesignerViewModel(new Mock<IXamlResource>().Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.DesignerView);
         }
@@ -46,7 +46,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockResource.Setup(resource => resource.Xaml).Returns((StringBuilder)null);
             mockResource.Setup(resource => resource.ResourceName).Returns("NewWF");
             //------------Execute Test---------------------------
-            var viewModel = new WorkflowServiceDesignerViewModel(mockResource.Object, new Mock<IEventAggregator>().Object);
+            var viewModel = new WorkflowServiceDesignerViewModel(mockResource.Object);
             //------------Assert Results-------------------------
             Assert.IsTrue(viewModel.IsNewWorkflow);
         }
@@ -61,7 +61,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockResource.Setup(resource => resource.Xaml).Returns(new StringBuilder("This is my WF"));
             mockResource.Setup(resource => resource.ResourceName).Returns("NewWF");
             //------------Execute Test---------------------------
-            var viewModel = new WorkflowServiceDesignerViewModel(mockResource.Object, new Mock<IEventAggregator>().Object);
+            var viewModel = new WorkflowServiceDesignerViewModel(mockResource.Object);
             //------------Assert Results-------------------------
             Assert.IsFalse(viewModel.IsNewWorkflow);
             Assert.AreEqual("This is my WF",viewModel.DesignerText);

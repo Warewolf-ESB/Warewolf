@@ -37,11 +37,6 @@ namespace Warewolf.Studio.ViewModels.ToolBox
 
         public ICommand ClearFilterCommand { get; set; }
 
-        public void SendDragDrop(DropEventArgs dropEventArgs, IToolDescriptorViewModel item)
-        {
-            _aggregator.GetEvent<ToolDropped>().Publish(item.Tool);
-        }
-
         #region Implementation of IToolboxViewModel
 
         /// <summary>

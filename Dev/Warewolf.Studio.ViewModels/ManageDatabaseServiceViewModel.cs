@@ -11,6 +11,7 @@ using Microsoft.Practices.Prism.Commands;
 
 namespace Warewolf.Studio.ViewModels
 {
+    [assembly:ComVisible(false)]
     public class ManageDatabaseServiceViewModel : SourceBaseImpl<IDatabaseService>, IManageDbServiceViewModel
     {
         readonly IDbServiceModel _model;

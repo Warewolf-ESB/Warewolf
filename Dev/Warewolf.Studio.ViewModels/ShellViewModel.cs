@@ -170,7 +170,7 @@ namespace Warewolf.Studio.ViewModels
             });
             if (foundViewModel == null)
             {
-                foundViewModel = resource.ResourceType == ResourceType.WorkflowService ? new WorkflowServiceDesignerViewModel(resource, _aggregator) : _unityContainer.Resolve<IServiceDesignerViewModel>(new ParameterOverrides { { "resource", resource } });
+                foundViewModel = resource.ResourceType == ResourceType.WorkflowService ? new WorkflowServiceDesignerViewModel(resource) : _unityContainer.Resolve<IServiceDesignerViewModel>(new ParameterOverrides { { "resource", resource } });
                 region.Add(foundViewModel); //add the viewModel
             }
             region.Activate(foundViewModel); //active the viewModel
@@ -254,7 +254,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void CreateWorkflowService()
         {
-            var viewModel = new WorkflowServiceDesignerViewModel(new Mock<IXamlResource>().Object, _aggregator);
+            var viewModel = new WorkflowServiceDesignerViewModel(new Mock<IXamlResource>().Object);
             GetRegion(RegionNames.Workspace).Add(viewModel);
         }
 

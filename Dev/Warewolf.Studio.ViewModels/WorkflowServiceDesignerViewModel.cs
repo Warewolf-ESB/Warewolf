@@ -42,6 +42,7 @@ using Dev2.Activities.Designers2.RecordsLength;
 using Dev2.Activities.Designers2.Rename;
 using Dev2.Activities.Designers2.Replace;
 using Dev2.Activities.Designers2.Script;
+using Dev2.Activities.Designers2.Sequence;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Activities.Designers2.SortRecords;
 using Dev2.Activities.Designers2.SqlBulkInsert;
@@ -52,35 +53,24 @@ using Dev2.Activities.Designers2.XPath;
 using Dev2.Activities.Designers2.Zip;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Utilities;
 using Microsoft.Practices.Prism.Mvvm;
-using Microsoft.Practices.Prism.PubSubEvents;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Warewolf.Studio.Models.Help;
 
 namespace Warewolf.Studio.ViewModels
 {
     public class WorkflowServiceDesignerViewModel : BindableBase, IWorkflowServiceDesignerViewModel, IDockViewModel
     {
-        readonly IEventAggregator _aggregator;
         bool _isActive;
         string _header;
         readonly WorkflowDesigner _wd;
-
-        public  void ToolDropped(IToolDescriptor tool)
+        
+        public WorkflowServiceDesignerViewModel(IXamlResource resource)
         {
-         
-        }
-
-        public WorkflowServiceDesignerViewModel(IXamlResource resource,IEventAggregator aggregator)
-        {
-            _aggregator = aggregator;
             if(resource == null)
             {
                 throw new ArgumentNullException("resource");
             }
-            _aggregator.GetEvent<ToolDropped>().Subscribe((a=>ToolDropped(a)));
 
             Resource = resource;
             _wd = new WorkflowDesigner();
@@ -145,23 +135,11 @@ namespace Warewolf.Studio.ViewModels
         }
 
         private void ViewOnPreviewDragEnter(object sender, DragEventArgs dragEventArgs)
-        {
-//            if (dragEventArgs != null)
-//            {
-//                if(!DragDropHelper.AllowDrop(dragEventArgs.Data,_wd.Context,typeof(IDev2Activity)))
-//                {
-//                    dragEventArgs.Effects = (DragDropEffects.Move & dragEventArgs.AllowedEffects);
-//                    dragEventArgs.Handled = true;
-//                }
-//            }            
+        {     
         }
 
         private void ViewPreviewDrop(object sender, DragEventArgs e)
         {
-            if (e != null)
-            {
-                
-            }
         }
 
         public Dictionary<Type, Type> GetTools()
@@ -193,7 +171,7 @@ namespace Warewolf.Studio.ViewModels
                 { typeof(DsfZip), typeof(ZipDesigner) },
                 { typeof(DsfExecuteCommandLineActivity), typeof(CommandLineDesigner) },
                 { typeof(DsfCommentActivity), typeof(CommentDesigner) },
-                { typeof(DsfSequenceActivity), typeof(Dev2.Activities.Designers2.Sequence.SequenceDesigner) },
+                { typeof(DsfSequenceActivity), typeof(SequenceDesigner) },
                 { typeof(DsfDateTimeDifferenceActivity), typeof(DateTimeDifferenceDesigner) },
                 { typeof(DsfSendEmailActivity), typeof(EmailDesigner) },
                 { typeof(DsfIndexActivity), typeof(FindIndexDesigner) },

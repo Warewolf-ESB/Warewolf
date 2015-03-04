@@ -51,6 +51,7 @@ namespace Dev2.Activities.Designers2.Core
             //This line is bad it causes the overall designer to not get focus when clicking on it
             //Please be very careful about putting this line in.
             //FocusManager.SetIsFocusScope(this , true);
+
             _helpAdorner = new HelpAdorner(this);
             _errorsAdorner = new ErrorsAdorner(this);
 

@@ -17,10 +17,11 @@
                                d:DesignWidth="250"
                                d:DataContext="{d:DesignInstance local:CommentDesignerViewModel}">
 
-    <core:ActivityDesignerTemplate.Resources>
-        <ResourceDictionary x:Name="TheResources"
-                            Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
-    </core:ActivityDesignerTemplate.Resources>
+<!--    <core:ActivityDesignerTemplate.Resources>-->
+<!--        <ResourceDictionary x:Name="TheResources"-->
+<!--                            Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />-->
+<!--    </core:ActivityDesignerTemplate.Resources>-->
+    
     <ui:IntellisenseTextBox x:Name="InitialFocusElement"
              Text="{Binding Path=ModelItem.Text, UpdateSourceTrigger=PropertyChanged}"
              ScrollViewer.VerticalScrollBarVisibility="Auto"

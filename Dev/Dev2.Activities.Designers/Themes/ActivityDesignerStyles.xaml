@@ -243,8 +243,6 @@
         <Setter Property="FrameworkElement.HorizontalAlignment" Value="Center" />
         <Setter Property="FrameworkElement.VerticalAlignment" Value="Center" />
         <Setter Property="UIElement.Focusable" Value="True" />
-        <Setter Property="Control.Background" Value="{DynamicResource DesignerViewBackground}" />
-        <Setter Property="Control.BorderBrush" Value="{DynamicResource WorkflowViewElementBorderBrush}" />
         <Setter Property="FrameworkElement.MinWidth" Value="200" />
         <Setter Property="FrameworkElement.MinHeight" Value="20" />
         <Setter Property="Control.BorderThickness" Value="2" />
