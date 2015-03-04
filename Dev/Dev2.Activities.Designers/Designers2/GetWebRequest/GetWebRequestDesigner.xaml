@@ -14,8 +14,7 @@
     <sap:ActivityDesigner.Icon>
         <DrawingBrush Stretch="Uniform">
             <DrawingBrush.Drawing>
-                <!--<ImageDrawing Rect="0, 0, 16, 16" ImageSource="{StaticResource ToolGetWebRequest-32}"/>-->
-                <ImageDrawing Rect="0, 0, 16, 16" ImageSource="pack://application:,,,/Dev2.Activities.Designers;component/Images/ToolGetWebRequest-32.png" />
+                <ImageDrawing Rect="0, 0, 16, 16" ImageSource="{StaticResource Utility-GetWebRequest}"/>
             </DrawingBrush.Drawing>
         </DrawingBrush>
     </sap:ActivityDesigner.Icon>
