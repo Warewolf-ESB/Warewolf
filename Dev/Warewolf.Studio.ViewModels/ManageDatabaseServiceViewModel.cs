@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Microsoft.Practices.Prism.Commands;
 
 namespace Warewolf.Studio.ViewModels
 {
-    [assembly:ComVisible(false)]
+
     public class ManageDatabaseServiceViewModel : SourceBaseImpl<IDatabaseService>, IManageDbServiceViewModel
     {
         readonly IDbServiceModel _model;
+        readonly IRequestServiceNameViewModel _saveDialog;
         ICollection<IDbSource> _sources;
         IDbSource _selectedSource;
         IDbAction _selectedAction;
@@ -26,9 +29,10 @@ namespace Warewolf.Studio.ViewModels
         bool _canTest;
         ICollection<IDbAction> _avalaibleActions;
 
-        public ManageDatabaseServiceViewModel(IDbServiceModel model):base(ResourceType.DbService)
+        public ManageDatabaseServiceViewModel(IDbServiceModel model,IRequestServiceNameViewModel saveDialog):base(ResourceType.DbService)
         {
             _model = model;
+            _saveDialog = saveDialog;
             CanEditSource = true;
             CreateNewSourceCommand = new DelegateCommand(model.CreateNewSource);
             EditSourceCommand = new DelegateCommand(()=>model.EditSource(SelectedSource));
@@ -50,9 +54,35 @@ namespace Warewolf.Studio.ViewModels
                 
             });
             Inputs = new ObservableCollection<IDbInput>();
-             SaveCommand = new DelegateCommand(()=>{});
+            SaveCommand = new DelegateCommand(Save);
              Header = "New DB Service";
         }
+
+        private void Save()
+        {
+            if (Item == null)
+            {
+                var saveOutPut = _saveDialog.ShowSaveDialog();
+                if (saveOutPut == MessageBoxResult.OK || saveOutPut == MessageBoxResult.Yes)
+                {
+                    Name = _saveDialog.ResourceName.Name;
+                    Path = _saveDialog.ResourceName.Path;
+                    Id = Guid.NewGuid();
+                    _model.SaveService(ToModel());
+                    Item = ToModel();
+                }
+            }
+            else
+            {
+                _model.SaveService(ToModel());
+            }
+        }
+
+        public Guid Id { get; set; }
+
+        public string Path { get; set; }
+
+        public string Name { get; set; }
 
         IList<IDbInput> GetInputValues()
         {
@@ -264,7 +294,9 @@ namespace Warewolf.Studio.ViewModels
                     Action = SelectedAction,
                     Inputs = Inputs==null? new List<IDbInput>(): Inputs.ToList(),
                     OutputMappings = OutputMapping,
-                    Source = SelectedSource
+                    Source = SelectedSource,
+                    Path = Item.Path,
+                    Id = Id
                 };
             }
             return new DatabaseService
@@ -272,7 +304,10 @@ namespace Warewolf.Studio.ViewModels
                 Action = SelectedAction,
                 Inputs = Inputs == null ? new List<IDbInput>() : Inputs.ToList(),
                 OutputMappings = OutputMapping,
-                Source = SelectedSource
+                Source = SelectedSource,
+                Name=Name,
+                Path = Path,
+                Id = Id
             };
         }
 

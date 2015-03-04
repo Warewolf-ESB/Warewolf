@@ -1,22 +1,15 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.ServerProxyLayer;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class DatabaseService : IDatabaseService, IEquatable<DatabaseService>
+    public class  DbAction:IDbAction, IEquatable<DbAction>
     {
-        
-        #region Implementation of IDatabaseService
+        #region Implementation of IDbAction
 
-        public string Path { get; set; }
-        public IDbSource Source { get; set; }
-        public IDbAction Action { get; set; }
         public IList<IDbInput> Inputs { get; set; }
-        public IList<IDbOutputMapping> OutputMappings { get; set; }
         public string Name { get; set; }
-        public Guid Id { get; set; }
 
         #endregion
 
@@ -29,17 +22,17 @@ namespace Warewolf.Studio.ViewModels
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
         /// <param name="other">An object to compare with this object.</param>
-        public bool Equals(DatabaseService other)
+        public bool Equals(DbAction other)
         {
-            if (ReferenceEquals(null, other))
+            if(ReferenceEquals(null, other))
             {
                 return false;
             }
-            if (ReferenceEquals(this, other))
+            if(ReferenceEquals(this, other))
             {
                 return true;
             }
-            return Equals(Source, other.Source) && string.Equals(Action, other.Action) && Equals(Inputs, other.Inputs) && Equals(OutputMappings, other.OutputMappings);
+            return Equals(Inputs, other.Inputs) && string.Equals(Name, other.Name);
         }
 
         /// <summary>
@@ -51,19 +44,19 @@ namespace Warewolf.Studio.ViewModels
         /// <param name="obj">The object to compare with the current object. </param>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if(ReferenceEquals(null, obj))
             {
                 return false;
             }
-            if (ReferenceEquals(this, obj))
+            if(ReferenceEquals(this, obj))
             {
                 return true;
             }
-            if (obj.GetType() != GetType())
+            if(obj.GetType() != GetType())
             {
                 return false;
             }
-            return Equals((DatabaseService)obj);
+            return Equals((DbAction)obj);
         }
 
         /// <summary>
@@ -76,22 +69,16 @@ namespace Warewolf.Studio.ViewModels
         {
             unchecked
             {
-                var hashCode = (Source != null ? Source.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Name != null ? Name.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Path != null ? Path.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Action != null ? Action.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Inputs != null ? Inputs.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (OutputMappings != null ? OutputMappings.GetHashCode() : 0);
-                return hashCode;
+                return ((Inputs != null ? Inputs.GetHashCode() : 0) * 397) ^ (Name != null ? Name.GetHashCode() : 0);
             }
         }
 
-        public static bool operator ==(DatabaseService left, DatabaseService right)
+        public static bool operator ==(DbAction left, DbAction right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(DatabaseService left, DatabaseService right)
+        public static bool operator !=(DbAction left, DbAction right)
         {
             return !Equals(left, right);
         }
