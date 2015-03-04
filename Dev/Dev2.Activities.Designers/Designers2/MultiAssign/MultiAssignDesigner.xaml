@@ -15,7 +15,7 @@
     <sap:ActivityDesigner.Icon>
         <DrawingBrush Stretch="Uniform">
             <DrawingBrush.Drawing>
-                <ImageDrawing Rect="0, 0, 16, 16" ImageSource="{StaticResource ToolAssign-32}"/>
+                <ImageDrawing Rect="0, 0, 16, 16" ImageSource="{StaticResource Data-Assign}"/>
             </DrawingBrush.Drawing>
         </DrawingBrush>
     </sap:ActivityDesigner.Icon>

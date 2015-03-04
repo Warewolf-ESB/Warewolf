@@ -14,9 +14,7 @@
     <sap:ActivityDesigner.Icon>
         <DrawingBrush Stretch="Uniform">
             <DrawingBrush.Drawing>
-                <ImageDrawing Rect="0, 0, 16, 16"
-                              ImageSource="pack://application:,,,/Warewolf Studio;component/Images/ToolUniqueRecord-32.png" />
-                <!--<ImageDrawing Rect="0, 0, 16, 16" ImageSource="{StaticResource ToolUniqueRecord-32}"/>-->
+                <ImageDrawing Rect="0, 0, 16, 16" ImageSource="{StaticResource RecordSet-UniqueRecords}"/>
             </DrawingBrush.Drawing>
         </DrawingBrush>
     </sap:ActivityDesigner.Icon>

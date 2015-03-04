@@ -16,7 +16,7 @@
     <sap:ActivityDesigner.Icon>
         <DrawingBrush  Stretch="Uniform">
             <DrawingBrush.Drawing>
-                <ImageDrawing ImageSource="{StaticResource ToolBaseConversion-32}">
+                <ImageDrawing ImageSource="{StaticResource Data-BaseConversion}">
                     <ImageDrawing.Rect>
                         <Rect Location="0,0"
                               Size="16,16" />

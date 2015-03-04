@@ -15,8 +15,7 @@
     <sap:ActivityDesigner.Icon>
         <DrawingBrush Stretch="Uniform">
             <DrawingBrush.Drawing>
-                <!--<ImageDrawing Rect="0, 0, 16, 16" ImageSource="{StaticResource ToolSqlBulkInsert-32}"/>-->
-                <ImageDrawing Rect="0, 0, 16, 16" ImageSource="pack://application:,,,/Dev2.Activities.Designers;component/Images/ToolSqlBulkInsert-32.png"/>
+                <ImageDrawing Rect="0, 0, 16, 16" ImageSource="{StaticResource RecordSet-SQLBulkInsert}"/>
             </DrawingBrush.Drawing>
         </DrawingBrush>
     </sap:ActivityDesigner.Icon>

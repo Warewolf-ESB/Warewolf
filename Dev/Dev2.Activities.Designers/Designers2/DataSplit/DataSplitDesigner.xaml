@@ -16,7 +16,7 @@
         <DrawingBrush Stretch="Uniform">
             <DrawingBrush.Drawing>
                 <ImageDrawing Rect="0, 0, 16, 16"
-                              ImageSource="{StaticResource ToolDataSplit-32}" />
+                              ImageSource="{StaticResource Data-DataSplit}" />
             </DrawingBrush.Drawing>
         </DrawingBrush>
     </sap:ActivityDesigner.Icon>

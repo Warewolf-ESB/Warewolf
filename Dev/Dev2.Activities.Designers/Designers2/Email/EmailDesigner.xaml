@@ -14,7 +14,7 @@
     <sap:ActivityDesigner.Icon>
         <DrawingBrush Stretch="Uniform">
             <DrawingBrush.Drawing>
-                <ImageDrawing Rect="0, 0, 16, 16" ImageSource="{StaticResource ToolSendEmail-32}"/>
+                <ImageDrawing Rect="0, 0, 16, 16" ImageSource="{StaticResource Utility-SendMail}"/>
             </DrawingBrush.Drawing>
         </DrawingBrush>
     </sap:ActivityDesigner.Icon>

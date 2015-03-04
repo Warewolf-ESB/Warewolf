@@ -15,7 +15,7 @@
         <DrawingBrush Stretch="Uniform">
             <DrawingBrush.Drawing>
                 <ImageDrawing Rect="0, 0, 16, 16"
-                              ImageSource="{StaticResource ToolFileFolderRead-32}" />
+                              ImageSource="{StaticResource FileFolder-Read}" />
             </DrawingBrush.Drawing>
         </DrawingBrush>
     </sap:ActivityDesigner.Icon>
