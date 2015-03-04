@@ -105,7 +105,6 @@
     <Compile Include="DbOutputMapping.cs" />
     <Compile Include="DbServiceModel.cs" />
     <Compile Include="DeployItemMessage.cs" />
-    <Compile Include="DummyModels\DummyVariableListViewModel.cs" />
     <Compile Include="IDockViewModel.cs" />
     <Compile Include="ExplorerItemNodeViewModel.cs" />
     <Compile Include="ManageDatabaseServiceViewModel.cs" />
@@ -121,8 +120,6 @@
     <Compile Include="VariableList\VariableListViewRecordSetViewModel.cs" />
     <Compile Include="ShellViewModel.cs" />
     <Compile Include="DeployViewModel.cs" />
-    <Compile Include="DummyModels\DummyHelpViewModel.cs" />
-    <Compile Include="DummyModels\DummyToolboxViewModel.cs" />
     <Compile Include="EnvironmentViewModel.cs" />
     <Compile Include="ExplorerItemViewModel.cs" />
     <Compile Include="ExplorerViewModel.cs" />

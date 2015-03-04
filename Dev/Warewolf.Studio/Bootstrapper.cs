@@ -10,8 +10,6 @@ using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
-using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
-using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Util;
 using Infragistics.Windows.DockManager;
 using Microsoft.Practices.Prism.PubSubEvents;
@@ -25,13 +23,11 @@ using Warewolf.Studio.Core;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.Models.Help;
-using Warewolf.Studio.Models.Toolbox;
 using Warewolf.Studio.ViewModels;
-using Warewolf.Studio.ViewModels.DummyModels;
 using Warewolf.Studio.ViewModels.Help;
-using Warewolf.Studio.ViewModels.ToolBox;
 using Warewolf.Studio.ViewModels.VariableList;
 using Warewolf.Studio.Views;
+using IVariableListViewModel = Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel;
 
 namespace Warewolf.Studio
 {
@@ -75,19 +71,19 @@ namespace Warewolf.Studio
 
      
             ICollection<IVariableListViewColumnViewModel> colls = new ObservableCollection<IVariableListViewColumnViewModel>();
-            colls.Add(new VariableListColumnViewModel("col", "bob", new Mock<Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel>().Object, colls) { Input = true });
+            colls.Add(new VariableListColumnViewModel("col", "bob", new Mock<IVariableListViewModel>().Object, colls) { Input = true });
 
-            var convertedRecset = new VariableListViewRecordSetViewModel("bob", colls, new Mock<Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel>().Object, new List<IVariablelistViewRecordSetViewModel>());
-            var convertedRecset2 = new VariableListViewRecordSetViewModel("dave", new VariableListColumnViewModel[0], new Mock<Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel>().Object, new List<IVariablelistViewRecordSetViewModel>());
-            var convertedScalar = new VariableListItemViewScalarViewModel("martha", new Mock<Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel>().Object, new List<IVariableListViewScalarViewModel>());
-            var convertedScalar2 = new VariableListItemViewScalarViewModel("stewart", new Mock<Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel>().Object, new List<IVariableListViewScalarViewModel>()) { Used = false };
+            var convertedRecset = new VariableListViewRecordSetViewModel("bob", colls, new Mock<IVariableListViewModel>().Object, new List<IVariablelistViewRecordSetViewModel>());
+            var convertedRecset2 = new VariableListViewRecordSetViewModel("dave", new VariableListColumnViewModel[0], new Mock<IVariableListViewModel>().Object, new List<IVariablelistViewRecordSetViewModel>());
+            var convertedScalar = new VariableListItemViewScalarViewModel("martha", new Mock<IVariableListViewModel>().Object, new List<IVariableListViewScalarViewModel>());
+            var convertedScalar2 = new VariableListItemViewScalarViewModel("stewart", new Mock<IVariableListViewModel>().Object, new List<IVariableListViewScalarViewModel>()) { Used = false };
             var expressions = new List<IDataExpression> { new Mock<IDataExpression>().Object, new Mock<IDataExpression>().Object, new Mock<IDataExpression>().Object, new Mock<IDataExpression>().Object };
             var convertor = new Mock<IDatalistViewExpressionConvertor>();
             convertor.Setup(a => a.Create(expressions[0])).Returns(convertedRecset);
             convertor.Setup(a => a.Create(expressions[1])).Returns(convertedRecset2);
             convertor.Setup(a => a.Create(expressions[2])).Returns(convertedScalar);
             convertor.Setup(a => a.Create(expressions[3])).Returns(convertedScalar2);
-            Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel vm = new VariableListViewModel(expressions, convertor.Object);
+            IVariableListViewModel vm = new VariableListViewModel(expressions, convertor.Object);
             Container.RegisterInstance<IVariableListView>(new VariableListView());
             Container.RegisterInstance(vm);
             Container.RegisterInstance<IPopupController>(new PopupController(new PopupMessageBoxFactory(),new PopupView()));
