@@ -74,7 +74,7 @@
                     <TextBlock Margin="10"  Text="{Binding DataSourceHeader, Mode=OneWay}" Style="{StaticResource SourceHeader}"></TextBlock>
                 </StackPanel>
                 <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
-                    <ComboBox  ItemsSource="{Binding Sources}" DisplayMemberPath="Name" Width="250" Margin="{StaticResource ElementBorderTop}"  />
+                    <ComboBox  ItemsSource="{Binding Sources}" DisplayMemberPath="Name" Width="250" Margin="{StaticResource ElementBorderTop}"  SelectedItem="{Binding SelectedSource}" />
                     <Button  Command="{Binding EditSourceCommand}" IsEnabled="{Binding CanEditSource}" Width="25" Content=" ... " Margin="{StaticResource ElementBorderLeftTop}"></Button>
                     <TextBlock Text="or" Margin="{StaticResource ElementBorderLeftTop}"></TextBlock>
                     <Button  Content="{Binding NewButtonLabel}" Margin="{StaticResource ElementBorderLeftTop}" Command="{Binding CreateNewSourceCommand}" Width="100" ></Button>
@@ -95,7 +95,7 @@
                 <StackPanel Grid.Row="1" HorizontalAlignment="Left" >
                     <!-- Choose data Source Action-->
 
-                    <ComboBox Width="280" ItemsSource="{Binding Actions}" Text="Choose" Margin="{StaticResource ElementBorderTop}"></ComboBox>
+                    <ComboBox Width="280" ItemsSource="{Binding AvalaibleActions}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedAction}" Text="Choose" Margin="{StaticResource ElementBorderTop}"></ComboBox>
 
                 </StackPanel>
             </Grid>
@@ -157,7 +157,7 @@
                     <RowDefinition Height="7" ></RowDefinition>
                 </Grid.RowDefinitions>
                 <StackPanel  Grid.Row="0" Grid.Column="0"  Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" Orientation="Horizontal">
-                    <TextBlock Margin="10" Text="{Binding TestHeader, Mode=OneWay}" Style="{StaticResource SourceHeader}" ></TextBlock>
+                    <TextBlock Margin="10" Text="{Binding MappingsHeader, Mode=OneWay}" Style="{StaticResource SourceHeader}" ></TextBlock>
                 </StackPanel>
                 <TextBlock FontWeight="Bold" Grid.Row="1" Margin="{StaticResource ElementBorderTop}" Text="{Binding InputsLabel}"></TextBlock>
                 <DataGrid Grid.Row="2" ItemsSource="{Binding Inputs}" Margin="{StaticResource ElementBorderTop}" HorizontalScrollBarVisibility="Disabled"    GridLinesVisibility="Vertical" CanUserSortColumns="True"  AutoGenerateColumns="False"  BorderBrush="Transparent" 

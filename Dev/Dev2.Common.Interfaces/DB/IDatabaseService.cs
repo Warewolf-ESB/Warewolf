@@ -5,8 +5,9 @@ namespace Dev2.Common.Interfaces.DB
 {
     public interface IDatabaseService
     {
+        string Name { get; set; }
         IDbSource Source { get; set; }
-        string Action { get; set; }
+        IDbAction Action { get; set; }
         IList<IDbInput> Inputs { get; set; }
         IList<IDbOutputMapping> OutputMappings { get; set; }
     }

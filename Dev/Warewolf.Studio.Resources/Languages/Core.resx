@@ -734,7 +734,7 @@ You need Administrator permission.</value>
     <value>Inspect Data Connector</value>
   </data>
   <data name="DatabaseServiceMappingsHeader" xml:space="preserve">
-    <value>c</value>
+    <value>Edit Defaults and Mapping Names</value>
   </data>
   <data name="DatabaseServiceMappingsNameHeader" xml:space="preserve">
     <value>h</value>
