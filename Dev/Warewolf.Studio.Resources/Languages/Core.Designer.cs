@@ -200,7 +200,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to c.
+        ///   Looks up a localized string similar to Edit Defaults and Mapping Names.
         /// </summary>
         public static string DatabaseServiceMappingsHeader {
             get {

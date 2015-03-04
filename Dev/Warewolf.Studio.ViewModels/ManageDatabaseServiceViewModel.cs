@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Runtime.InteropServices;
+using System.Linq;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
-using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Microsoft.Practices.Prism.Commands;
 
 namespace Warewolf.Studio.ViewModels
@@ -17,7 +16,7 @@ namespace Warewolf.Studio.ViewModels
     {
         readonly IDbServiceModel _model;
         ICollection<IDbSource> _sources;
-        IManageDatabaseSourceViewModel _selectedSource;
+        IDbSource _selectedSource;
         IDbAction _selectedAction;
         ICollection<IDbInput> _inputs;
         DataTable _testResults;
@@ -25,8 +24,8 @@ namespace Warewolf.Studio.ViewModels
         bool _canSelectProcedure;
         bool _canEditMappings;
         bool _canTest;
+        ICollection<IDbAction> _avalaibleActions;
 
-        
         public ManageDatabaseServiceViewModel(IDbServiceModel model):base(ResourceType.DbService)
         {
             _model = model;
@@ -39,17 +38,25 @@ namespace Warewolf.Studio.ViewModels
             Header = "New DB Service";
             Inputs = new Collection<IDbInput> { new DbInput("bob", "the"), new DbInput("dora", "eplorer"), new DbInput("Zummy", "Gummy") };
             CreateNewSourceCommand = new DelegateCommand(()=>{});
-            TestProcedureCommand = new DelegateCommand(()=>{});
-            TestResults = new DataTable("Results");
-            TestResults.Columns.Add(new DataColumn("Record Name"));
-            TestResults.Columns.Add(new DataColumn("Windows Group"));
-            TestResults.Columns.Add(new DataColumn("Response"));
-            TestResults.Columns.Add(new DataColumn("Bob"));
-            TestResults.Rows.Add(new object[] { "dbo_Save_person(1)", "asdasd", "dasdasd", "111" });
-            TestResults.Rows.Add(new object[] { "dbo_Save_person(2)", "qweqwe", "dasfghfgdasd", "111" });
-            TestResults.Rows.Add(new object[] { "dbo_Save_person(3)", "fghfhf", "fgh", "111" });
-            OutputMapping = new List<IDbOutputMapping>() { new DbOutputMapping("bob", "The"), new DbOutputMapping("dora", "The"), new DbOutputMapping("Tree", "The") };
-            SaveCommand = new DelegateCommand(()=>{});
+            TestProcedureCommand = new DelegateCommand(() =>
+            {
+                TestResults = model.TestService(GetInputValues());
+                if (TestResults != null)
+                {
+                    CanEditMappings = true;
+                    OutputMapping = new ObservableCollection<IDbOutputMapping>( _model.GetDbOutputMappings(SelectedAction));
+                }
+
+                
+            });
+            Inputs = new ObservableCollection<IDbInput>();
+             SaveCommand = new DelegateCommand(()=>{});
+             Header = "New DB Service";
+        }
+
+        IList<IDbInput> GetInputValues()
+        {
+            return Inputs.ToList();
         }
 
         #region Implementation of IManageDbServiceViewModel
@@ -68,7 +75,7 @@ namespace Warewolf.Studio.ViewModels
                 
             }
         }
-        public IManageDatabaseSourceViewModel SelectedSource
+        public IDbSource SelectedSource
         {
             get
             {
@@ -78,7 +85,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _selectedSource = value;
                 CanSelectProcedure = value != null;
-                Actions = new ObservableCollection<string> { "sp_bob", "sp_the_quick_brown_fox", "sp_fetchPeople" };
+                AvalaibleActions = _model.GetActions();
                 OnPropertyChanged(() => Sources);
             }
         }
@@ -91,11 +98,25 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _selectedAction = value;
+
+                CanTest = _selectedAction != null;
+                Inputs = _selectedAction != null ? _selectedAction.Inputs : new Collection<IDbInput>();
                 OnPropertyChanged(() => Sources);
             }
         }
-        public ICollection<IDbAction> AvalaibleActions { get; set; }
-        public IDbOutput Outputs { get; set; }
+        public ICollection<IDbAction> AvalaibleActions
+        {
+            get
+            {
+                return _avalaibleActions;
+            }
+            set
+            {
+                _avalaibleActions = value;
+                OnPropertyChanged(()=>AvalaibleActions);
+            }
+        }
+
         public string DataSourceHeader
         {
             get
@@ -120,7 +141,7 @@ namespace Warewolf.Studio.ViewModels
                 return Resources.Languages.Core.New;
             }
         }
-        public ICollection<string> Actions { get; private set; }
+
         public string MappingsHeader
         {
             get
@@ -142,13 +163,7 @@ namespace Warewolf.Studio.ViewModels
                 return Resources.Languages.Core.DatabaseServiceInputsHeader;
             }
         }
-        public string InspectLabel
-        {
-            get
-            {
-                return Resources.Languages.Core.DatabaseServiceInspectHeader;
-            }
-        }
+
         public string OutputsLabel
         {
             get
@@ -156,13 +171,7 @@ namespace Warewolf.Studio.ViewModels
                 return Resources.Languages.Core.DatabaseServiceOutputsLabel;
             }
         }
-        public string MappingNamesHeader
-        {
-            get
-            {
-                return Resources.Languages.Core.DatabaseServiceMappingsNameHeader;
-            }
-        }
+
         public ICollection<IDbInput> Inputs
         {
             get
@@ -247,7 +256,24 @@ namespace Warewolf.Studio.ViewModels
 
         public override IDatabaseService ToModel()
         {
-            return null;
+            if(Item!= null)
+            {
+                return new DatabaseService
+                {
+                    Name= Item.Name,
+                    Action = SelectedAction,
+                    Inputs = Inputs==null? new List<IDbInput>(): Inputs.ToList(),
+                    OutputMappings = OutputMapping,
+                    Source = SelectedSource
+                };
+            }
+            return new DatabaseService
+            {
+                Action = SelectedAction,
+                Inputs = Inputs == null ? new List<IDbInput>() : Inputs.ToList(),
+                OutputMappings = OutputMapping,
+                Source = SelectedSource
+            };
         }
 
         public override void UpdateHelpDescriptor(string helpText)

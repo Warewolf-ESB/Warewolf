@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using Dev2.Common.Interfaces.ServerProxyLayer;
-using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 
 namespace Dev2.Common.Interfaces.DB
 {
     public interface IDbServiceModel {
         ICollection<IDbSource> RetrieveSources();
-
+        ICollection<IDbAction> GetActions(); 
         void CreateNewSource();
-
-        void EditSource(IManageDatabaseSourceViewModel selectedSource);
+        void EditSource(IDbSource selectedSource);
+        DataTable TestService(IList<IDbInput> inputValues );
+        ICollection<IDbOutputMapping> GetDbOutputMappings(IDbAction action);
     }
 }

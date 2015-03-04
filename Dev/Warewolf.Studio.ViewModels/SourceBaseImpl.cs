@@ -7,6 +7,8 @@ namespace Warewolf.Studio.ViewModels
 {
     public abstract class SourceBaseImpl<T> : BindableBase, ISourceBase<T>, IDockViewModel
     {
+        string _header;
+
         public SourceBaseImpl(ResourceType? image)
         {
             Image = image;
@@ -23,7 +25,21 @@ namespace Warewolf.Studio.ViewModels
 
         #region Implementation of IDockAware
 
-        public string Header { get; set; }
+        public string Header
+        {
+            get
+            {
+                return _header;
+            }
+            set
+            {
+                _header = value;
+                if (!ToModel().Equals(Item))
+                    _header = "*" + _header;
+                
+                OnPropertyChanged(() => Header);
+            }
+        }
         public ResourceType? Image { get; private set; }
 
         #endregion

@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
+using System.Security.RightsManagement;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
-using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -13,16 +14,39 @@ namespace Warewolf.Studio.ViewModels
 
         public ICollection<IDbSource> RetrieveSources()
         {
-            return new ObservableCollection<IDbSource> { new DbSourceDefinition() { Name = "bob" }, new DbSourceDefinition() { Name = "dora" }, new DbSourceDefinition() { Name = "foo large" } };
+            return new ObservableCollection<IDbSource> { new DbSourceDefinition { Name = "bob" }, new DbSourceDefinition() { Name = "dora" }, new DbSourceDefinition() { Name = "foo large" } };
 
+        }
+
+        public ICollection<IDbAction> GetActions()
+        {
+            return new ObservableCollection<IDbAction> {new DbAction {Name = "sp_bob",Inputs =  new List<IDbInput>(){new DbInput("Bob","Dave"),new DbInput("moo","cow")}}};
         }
 
         public void CreateNewSource()
         {
         }
 
-        public void EditSource(IManageDatabaseSourceViewModel selectedSource)
+        public void EditSource(IDbSource selectedSource)
         {
+        }
+
+        public  DataTable TestService(IList<IDbInput> inputValues)
+        {
+           var testResults = new DataTable("Results");
+            testResults.Columns.Add(new DataColumn("Record Name"));
+            testResults.Columns.Add(new DataColumn("Windows Group"));
+            testResults.Columns.Add(new DataColumn("Response"));
+            testResults.Columns.Add(new DataColumn("Bob"));
+            testResults.Rows.Add(new object[] { "dbo_Save_person(1)", "asdasd", "dasdasd", "111" });
+            testResults.Rows.Add(new object[] { "dbo_Save_person(2)", "qweqwe", "dasfghfgdasd", "111" });
+            testResults.Rows.Add(new object[] { "dbo_Save_person(3)", "fghfhf", "fgh", "111" });
+            return testResults;
+        }
+
+        public ICollection<IDbOutputMapping> GetDbOutputMappings(IDbAction action)
+        {
+            return new List<IDbOutputMapping> { new DbOutputMapping("bob", "The"), new DbOutputMapping("dora", "The"), new DbOutputMapping("Tree", "The") }; 
         }
 
         #endregion
