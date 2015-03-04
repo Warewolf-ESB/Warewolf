@@ -46,7 +46,6 @@ namespace Warewolf.Studio.ViewModels
             DisplayName = server.ResourceName;
             RefreshCommand = new DelegateCommand(async () => await Load());
             IsServerIconVisible = true;
-            //CanCreateFolder = server.UserPermissions.HasFlag(Permissions.Administrator) || server.UserPermissions.HasFlag(Permissions.Contribute);
             Expand = new DelegateCommand<int?>(clickCount =>
             {
                 if (clickCount != null && clickCount == 2)
@@ -191,6 +190,11 @@ namespace Warewolf.Studio.ViewModels
                     });
                 }
                     break;
+                default:
+                {
+                    
+                }
+                    break;
             }
         }
 
@@ -228,12 +232,6 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => Children);
         }
 
-        //public void RemoveChild(IExplorerItemViewModel child)
-        //{
-        //    Children.Remove(child);
-        //    OnPropertyChanged(() => Children);
-        //}
-
         public ResourceType ResourceType { get; set; }
 
         public string ResourceName { get; set; }
@@ -270,6 +268,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _canCreateServerSource = value;
+                OnPropertyChanged(()=>CanCreateServerSource);
             }
         }
         public bool CanCreateWebService { get; set; }
