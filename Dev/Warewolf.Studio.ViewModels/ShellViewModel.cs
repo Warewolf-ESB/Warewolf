@@ -77,7 +77,7 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
-        IPopupController PopupController { get;  set; }
+        public IPopupController PopupController { get;  set; }
 
         void InitializeRegion<T,TU>(string regionName) where T:IView
         {
