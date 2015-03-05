@@ -33,7 +33,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             var mockEventAggregator = new Mock<IEventAggregator>();
             var manageDatabaseSourceControlViewModel = new ManageDatabaseSourceViewModel(mockStudioUpdateManager.Object, mockEventAggregator.Object);
             databaseSourceControlView.DataContext = manageDatabaseSourceControlViewModel;
-            Utils.ShowTheViewForTesting(databaseSourceControlView);
+            //Warewolf.Studio.Core.Utils.ShowTheViewForTesting(databaseSourceControlView);
             FeatureContext.Current.Add("databaseView", databaseSourceControlView);
             FeatureContext.Current.Add("viewModel", manageDatabaseSourceControlViewModel);
             FeatureContext.Current.Add("updateManager", mockStudioUpdateManager);

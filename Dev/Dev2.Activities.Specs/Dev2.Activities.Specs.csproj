@@ -173,12 +173,12 @@
       <DependentUpon>Language Parser.feature</DependentUpon>
     </Compile>
     <Compile Include="Language Parser\LanguageParserSteps.cs" />
-    <Compile Include="Permissions\Settings Permissions1.feature.cs">
+    <Compile Include="Settings\Settings Permissions1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Settings Permissions.feature</DependentUpon>
     </Compile>
-    <Compile Include="Permissions\SettingsPermissionsSteps.cs" />
+    <Compile Include="Settings\SettingsPermissionsSteps.cs" />
     <Compile Include="Scheduler\SchedulerSteps.cs" />
     <Compile Include="Scheduler\Scheduler.feature.cs">
       <AutoGen>True</AutoGen>
@@ -458,7 +458,7 @@
       <LastGenOutput>Language Parser.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
-    <None Include="Permissions\Settings Permissions.feature">
+    <None Include="Settings\Settings Permissions.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Settings Permissions1.feature.cs</LastGenOutput>
     </None>
