@@ -208,14 +208,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DBService Inspector.feature</DependentUpon>
     </Compile>
-    <Compile Include="DBService Specs\DBServiceSteps.cs" />
     <Compile Include="DBService Specs\New Database Source.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>New Database Source.feature</DependentUpon>
     </Compile>
     <Compile Include="DBService Specs\NewDatabaseSourceSteps.cs" />
-    <Compile Include="DBService Specs\Utils.cs" />
+    <Compile Include="DeployTab.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DeployTab.feature</DependentUpon>
+    </Compile>
     <Compile Include="Design Surface.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -243,6 +246,16 @@
       <DependentUpon>PluginService.feature</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scheduler.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Scheduler.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Settings Tab.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Settings Tab.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -277,6 +290,10 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>New Database Source.feature.cs</LastGenOutput>
     </None>
+    <None Include="DeployTab.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DeployTab.feature.cs</LastGenOutput>
+    </None>
     <None Include="Design Surface.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Design Surface.feature.cs</LastGenOutput>
@@ -299,6 +316,14 @@
     <None Include="PluginService.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PluginService.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Scheduler.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Scheduler.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Settings Tab.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Settings Tab.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
