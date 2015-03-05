@@ -32,6 +32,7 @@ namespace Warewolf.Studio.ViewModels
         ICollection<IDbAction> _avalaibleActions;
         bool _testSuccessful;
         bool _testResultsAvailable;
+        string _errorText;
 
         public ManageDatabaseServiceViewModel(IDbServiceModel model,IRequestServiceNameViewModel saveDialog):base(ResourceType.DbService)
         {
@@ -59,11 +60,11 @@ namespace Warewolf.Studio.ViewModels
                         TestResultsAvailable = true;
                        
                     }
-
+                    ErrorText = "";
                 }
-                catch(Exception)
+                catch(Exception e)
                 {
-
+                    ErrorText = e.Message;
                     TestSuccessful = false;
                 }
     
@@ -118,6 +119,18 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(()=>TestResultsAvailable);
             }
         }
+        public string ErrorText
+        {
+            get
+            {
+                return _errorText;
+            }
+            set
+            {
+                _errorText = value;
+                OnPropertyChanged(()=>ErrorText);
+            }
+        }
 
         List<IDbOutputMapping> GetDbOutputMappingsFromTable(DataTable testResults)
         {
@@ -134,23 +147,34 @@ namespace Warewolf.Studio.ViewModels
 
         private void Save()
         {
-            if (Item == null)
+            try
             {
-                var saveOutPut = _saveDialog.ShowSaveDialog();
-                if (saveOutPut == MessageBoxResult.OK || saveOutPut == MessageBoxResult.Yes)
+
+
+                if (Item == null)
                 {
-                    Name = _saveDialog.ResourceName.Name;
-                    Path = _saveDialog.ResourceName.Path;
-                    Id = Guid.NewGuid();
-                    _model.SaveService(ToModel());
-                    Item = ToModel();
-                    Header = "Edit:"+Path+ Name;
-                    
+                    var saveOutPut = _saveDialog.ShowSaveDialog();
+                    if (saveOutPut == MessageBoxResult.OK || saveOutPut == MessageBoxResult.Yes)
+                    {
+                        Name = _saveDialog.ResourceName.Name;
+                        Path = _saveDialog.ResourceName.Path;
+                        Id = Guid.NewGuid();
+                        _model.SaveService(ToModel());
+                        Item = ToModel();
+                        Header = "Edit:" + Path + Name;
+
+                    }
                 }
+                else
+                {
+                    _model.SaveService(ToModel());
+                }
+                ErrorText = "";
             }
-            else
+            catch (Exception err)
             {
-                _model.SaveService(ToModel());
+
+                ErrorText = err.Message;
             }
         }
 
@@ -186,7 +210,18 @@ namespace Warewolf.Studio.ViewModels
             {
                 _selectedSource = value;
                 CanSelectProcedure = value != null;
+                try
+                {
+
+           
                 AvalaibleActions = _model.GetActions(SelectedSource);
+                ErrorText = "";
+                }
+                catch (Exception e)
+                {
+
+                    ErrorText = e.Message;
+                }
                 OnPropertyChanged(() => Sources);
             }
         }

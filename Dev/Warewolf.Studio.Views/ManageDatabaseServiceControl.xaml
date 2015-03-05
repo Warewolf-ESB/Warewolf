@@ -223,8 +223,14 @@
                 </DataGrid>
             </Grid>
             <Grid Grid.Row="5" Grid.Column="0">
-                <Button  Margin="{StaticResource ElementBorderTop}" HorizontalAlignment="Right" Command="{Binding SaveCommand}" VerticalAlignment="Bottom"  Width="100">Save</Button>
-
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                
+                    <TextBlock Grid.Column="0" Text="{Binding ErrorText}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow" x:Name="ErrorTextBlock" ></TextBlock>
+                    <Button  Grid.Column="1" Margin="{StaticResource ElementBorderTop}" HorizontalAlignment="Right" Command="{Binding SaveCommand}" VerticalAlignment="Bottom"  Width="100">Save</Button>
+               
             </Grid>
         </Grid>
     </ScrollViewer>
