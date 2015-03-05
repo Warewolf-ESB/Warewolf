@@ -623,8 +623,7 @@ namespace Dev2.Runtime.Hosting
                 path = path.Remove(0, 1);
             }
 
-            return path.Replace("\\\\", "\\")
-                 .Replace("\\\\", "\\");
+            return path.TrimEnd('\\');
         }
 
         #endregion
