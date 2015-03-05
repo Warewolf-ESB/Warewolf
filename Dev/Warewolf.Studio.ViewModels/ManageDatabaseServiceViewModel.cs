@@ -30,6 +30,8 @@ namespace Warewolf.Studio.ViewModels
         bool _canEditMappings;
         bool _canTest;
         ICollection<IDbAction> _avalaibleActions;
+        bool _testSuccessful;
+        bool _testResultsAvailable;
 
         public ManageDatabaseServiceViewModel(IDbServiceModel model,IRequestServiceNameViewModel saveDialog):base(ResourceType.DbService)
         {
@@ -46,18 +48,75 @@ namespace Warewolf.Studio.ViewModels
             CreateNewSourceCommand = new DelegateCommand(()=>{});
             TestProcedureCommand = new DelegateCommand(() =>
             {
-                TestResults = model.TestService(ToModel());
-                if (TestResults != null)
+                try
                 {
-                    CanEditMappings = true;
-                    OutputMapping = new ObservableCollection<IDbOutputMapping>( GetDbOutputMappingsFromTable(TestResults));
-                }
+                    TestResults = model.TestService(ToModel());
+                    if (TestResults != null)
+                    {
+                        CanEditMappings = true;
+                        OutputMapping = new ObservableCollection<IDbOutputMapping>(GetDbOutputMappingsFromTable(TestResults));
+                        TestSuccessful = true;
+                    
+                       
+                    }
 
+                }
+                catch(Exception)
+                {
+
+                    TestSuccessful = false;
+                }
+    
                 
-            });
+            },CanTestProcedure);
             Inputs = new ObservableCollection<IDbInput>();
-            SaveCommand = new DelegateCommand(Save);
+            SaveCommand = new DelegateCommand(Save,CanSave);
              Header = "New DB Service";
+        }
+
+        bool CanTestProcedure()
+        {
+            return SelectedAction != null;
+        }
+
+        bool CanSave()
+        {
+            return TestSuccessful;
+        }
+        private void RaiseCanExecuteChanged(ICommand commandForCanExecuteChange)
+        {
+            var command = commandForCanExecuteChange as DelegateCommand;
+            if (command != null)
+            {
+                command.RaiseCanExecuteChanged();
+            }
+        }
+
+        public bool TestSuccessful
+        {
+            get
+            {
+                return _testSuccessful;
+            }
+            set
+            {
+                _testSuccessful = value;
+                RaiseCanExecuteChanged(SaveCommand);
+
+                OnPropertyChanged(()=>TestSuccessful);
+            }
+        }
+        public bool TestResultsAvailable
+        {
+            get
+            {
+                return _testResultsAvailable;
+            }
+            set
+            {
+                _testResultsAvailable = value;
+                OnPropertyChanged(()=>TestResultsAvailable);
+            }
         }
 
         List<IDbOutputMapping> GetDbOutputMappingsFromTable(DataTable testResults)
@@ -91,6 +150,8 @@ namespace Warewolf.Studio.ViewModels
                     Id = Guid.NewGuid();
                     _model.SaveService(ToModel());
                     Item = ToModel();
+                    Header = "Edit:"+Path+ Name;
+                    
                 }
             }
             else
@@ -148,10 +209,16 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
+                if(!Equals(value, _selectedAction) && _selectedAction!= null)
+                {
+                    TestResultsAvailable = false;
+                    CanEditMappings = false;
+                }
                 _selectedAction = value;
 
                 CanTest = _selectedAction != null;
                 Inputs = _selectedAction != null ? _selectedAction.Inputs : new Collection<IDbInput>();
+                RaiseCanExecuteChanged(TestProcedureCommand);
                 OnPropertyChanged(() => Sources);
             }
         }

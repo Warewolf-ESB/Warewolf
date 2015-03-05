@@ -35,6 +35,8 @@ namespace Dev2.Common.Interfaces.DB
         string Path { get; set; }
         string Name { get; set; }
        Guid Id{get;set;}
+       bool TestSuccessful { get; set; }
+       bool TestResultsAvailable { get; set; }
     }
 
     public interface IDbOutput

@@ -155,8 +155,8 @@ namespace Warewolf.Studio.ServerProxyLayer
             Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("DbService", serialiser.SerializeToBuilder(dbService));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
-            if (output.HasError)
-                throw new WarewolfSaveException(output.Message.ToString(), null);
+            //if (output.HasError)
+            //    throw new WarewolfSaveException(output.Message.ToString(), null);
         }
 
         public DataTable TestDbService(IDatabaseService service)
