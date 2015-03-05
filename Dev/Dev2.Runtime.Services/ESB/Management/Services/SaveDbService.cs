@@ -43,7 +43,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var source = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, src.Source.Id);
                 var output = new List<MethodOutput>(src.OutputMappings.Select(a => new MethodOutput(a.Name, a.OutputName, "", false, a.RecordSetName, false, "", false, "", false)));
                 var recset = new Recordset();
-                recset.Fields.AddRange( new List<RecordsetField>(src.OutputMappings.Select(a=> new RecordsetField(){Name = a.Name, Alias = a.OutputName,RecordsetAlias = a.RecordSetName, Path = new DataTablePath( a.RecordSetName,a.Name)})));
+                recset.Fields.AddRange( new List<RecordsetField>(src.OutputMappings.Select(a=> new RecordsetField{Name = a.Name, Alias = a.OutputName,RecordsetAlias = a.RecordSetName, Path = new DataTablePath( a.RecordSetName,a.Name)})));
                 recset.Name = "bob";
                 var res = new DbService
                 {
