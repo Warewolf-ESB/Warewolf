@@ -347,6 +347,188 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Warewolf is not allowing to save Duplicate server permissions")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Tab")]
+        public virtual void WarewolfIsNotAllowingToSaveDuplicateServerPermissions()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Warewolf is not allowing to save Duplicate server permissions", ((string[])(null)));
+#line 65
+this.ScenarioSetup(scenarioInfo);
+#line 66
+ testRunner.Given("I have settings tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 67
+ testRunner.And("server selected as \"localhost (Connected)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 68
+ testRunner.And("Save is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 69
+ testRunner.And("Security is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 70
+ testRunner.And("Logging is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Windows Group",
+                        "Edit Group",
+                        "Deploy To",
+                        "Deploy From",
+                        "Administrator",
+                        "View",
+                        "Execute",
+                        "Contribute",
+                        "Delete Row",
+                        "Row"});
+            table6.AddRow(new string[] {
+                        "Warewolf Administrator",
+                        "Disabeled",
+                        "Yes",
+                        "Yes",
+                        "Yes",
+                        "Yes",
+                        "Yes",
+                        "Yes",
+                        "Disabled",
+                        "Disabled"});
+            table6.AddRow(new string[] {
+                        "Public",
+                        "Disabeled",
+                        "Yes",
+                        "Yes",
+                        "Yes",
+                        "Yes",
+                        "Yes",
+                        "Yes",
+                        "Disabled",
+                        "Disabled"});
+            table6.AddRow(new string[] {
+                        "Public",
+                        "Enabled",
+                        "Yes",
+                        "Yes",
+                        "Yes",
+                        "Yes",
+                        "Yes",
+                        "Yes",
+                        "Disabled",
+                        "Enabled"});
+#line 71
+ testRunner.And("Server Permissions is \"Visible\"", ((string)(null)), table6, "And ");
+#line 76
+ testRunner.And("Resource Permissions is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 77
+    testRunner.Then("Save is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 78
+ testRunner.When("I save the settings", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 79
+ testRunner.Then("settings saved \"UnSuccessfull\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 80
+ testRunner.And("the \"Settings\" has validation error \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Warewolf is not allowing to save Duplicate Resource permissions")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Tab")]
+        public virtual void WarewolfIsNotAllowingToSaveDuplicateResourcePermissions()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Warewolf is not allowing to save Duplicate Resource permissions", ((string[])(null)));
+#line 82
+this.ScenarioSetup(scenarioInfo);
+#line 83
+ testRunner.Given("I have settings tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 84
+ testRunner.And("server selected as \"localhost (Connected)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 85
+ testRunner.And("Save is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 86
+ testRunner.And("Security is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 87
+ testRunner.And("Logging is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 88
+ testRunner.And("Server Permissions is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Resources",
+                        "REdit",
+                        "Windows Group",
+                        "WEdit",
+                        "View",
+                        "Execute",
+                        "Contribute"});
+            table7.AddRow(new string[] {
+                        "WORKFLOWS\\My Category\\Dice Roll",
+                        "Enabled",
+                        "Public",
+                        "Enabled",
+                        "Yes",
+                        "Yes",
+                        "Yes"});
+            table7.AddRow(new string[] {
+                        "WORKFLOWS\\My Category\\Dice Roll",
+                        "Enabled",
+                        "Public",
+                        "Enabled",
+                        "Yes",
+                        "Yes",
+                        "Yes"});
+#line 89
+ testRunner.When("i select resource \"Resource Permissions\"", ((string)(null)), table7, "When ");
+#line 93
+ testRunner.And("Resource Permissions is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 94
+    testRunner.Then("Save is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 95
+ testRunner.When("I save the settings", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 96
+ testRunner.Then("settings saved \"UnSuccessfull\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 97
+ testRunner.And("the \"Settings\" has validation error \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Selecting Logging is showing Server and Studio log settings")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Tab")]
+        public virtual void SelectingLoggingIsShowingServerAndStudioLogSettings()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Selecting Logging is showing Server and Studio log settings", ((string[])(null)));
+#line 100
+this.ScenarioSetup(scenarioInfo);
+#line 101
+ testRunner.Given("I have settings tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 102
+ testRunner.And("server selected as \"localhost (Connected)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 103
+ testRunner.And("Server edit is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 104
+ testRunner.And("server connection is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 105
+ testRunner.And("Save is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 106
+ testRunner.And("Security is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 107
+ testRunner.And("Logging is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 108
+ testRunner.And("Server Permissions is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 109
+ testRunner.And("Resource Permissions is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 110
+ testRunner.When("I select \"Logging\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 111
+ testRunner.Then("Server System Logs is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 112
+ testRunner.And("Studio Logs is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 113
+ testRunner.And("Server Permissions is \"InVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 114
+ testRunner.And("Resource Permissions is \"InVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 115
+ testRunner.And("Save is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
