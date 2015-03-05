@@ -1,18 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using Dev2.Common.Interfaces.DB;
 
-namespace Warewolf.Studio.ViewModels
+namespace Warewolf.Core
 {
-    public class  DbAction:IDbAction, IEquatable<DbAction>
+    public class DbInput:IDbInput, IEquatable<DbInput>
     {
-        #region Implementation of IDbAction
-
-        public IList<IDbInput> Inputs { get; set; }
-        public string Name { get; set; }
-
-        #endregion
-
         #region Equality members
 
         /// <summary>
@@ -22,7 +14,7 @@ namespace Warewolf.Studio.ViewModels
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
         /// <param name="other">An object to compare with this object.</param>
-        public bool Equals(DbAction other)
+        public bool Equals(DbInput other)
         {
             if(ReferenceEquals(null, other))
             {
@@ -32,7 +24,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return true;
             }
-            return Equals(Inputs, other.Inputs) && string.Equals(Name, other.Name);
+            return string.Equals(Name, other.Name) && string.Equals(Value, other.Value) && string.Equals(DefaultValue, other.DefaultValue) && RequiredField.Equals(other.RequiredField) && EmptyIsNull.Equals(other.EmptyIsNull);
         }
 
         /// <summary>
@@ -56,7 +48,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return false;
             }
-            return Equals((DbAction)obj);
+            return Equals((DbInput)obj);
         }
 
         /// <summary>
@@ -69,19 +61,44 @@ namespace Warewolf.Studio.ViewModels
         {
             unchecked
             {
-                return ((Inputs != null ? Inputs.GetHashCode() : 0) * 397) ^ (Name != null ? Name.GetHashCode() : 0);
+                var hashCode = (Name != null ? Name.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Value != null ? Value.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DefaultValue != null ? DefaultValue.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ RequiredField.GetHashCode();
+                hashCode = (hashCode * 397) ^ EmptyIsNull.GetHashCode();
+                return hashCode;
             }
         }
 
-        public static bool operator ==(DbAction left, DbAction right)
+        public static bool operator ==(DbInput left, DbInput right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(DbAction left, DbAction right)
+        public static bool operator !=(DbInput left, DbInput right)
         {
             return !Equals(left, right);
         }
+
+        #endregion
+
+        public DbInput(string name, string value)
+        {
+            Name = name;
+            Value = value;
+            DefaultValue = "";
+            RequiredField = true;
+            EmptyIsNull = true;
+        }
+
+        #region Implementation of IDbInput
+
+        public string Name { get; set; }
+
+        public string Value { get; set; }
+        public string DefaultValue { get; set; }
+        public bool RequiredField { get; set; }
+        public bool EmptyIsNull { get; set; }
 
         #endregion
     }

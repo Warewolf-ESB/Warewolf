@@ -8,16 +8,16 @@
     </ResourceDictionary.MergedDictionaries>-->
     
     <!-- *********************************  TextBox Style  ********************************* -->
-    <Style x:Key="TextBoxStyle" TargetType="TextBox">
+    <!--<Style x:Key="TextBoxStyle" TargetType="TextBox">
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Foreground" Value="Black" />
         <Setter Property="FontSize" Value="12" />
-        <!--<Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />-->
-        <!--<Setter Property="Background" Value="{StaticResource TextBoxBackgroundBrush}" />-->
-        <!--<Setter Property="BorderBrush" Value="{StaticResource TextBoxBorderBrush}" />-->
+        --><!--<Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />--><!--
+        <Setter Property="Background" Value="{StaticResource TextBoxBackgroundBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource ButtonNormalBorder}" />
         <Setter Property="Height" Value="24"/>
         <Setter Property="Padding" Value="3,1,3,1" />
-        <!--<Setter Property="SelectionBrush" Value="{StaticResource TextBoxFocusedBrush}" />-->
+        --><!--<Setter Property="SelectionBrush" Value="{StaticResource TextBoxFocusedBrush}" />--><!--
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -105,7 +105,7 @@
                         </Border>
                         <Border x:Name="DisabledVisualElement" BorderBrush="Black" BorderThickness="{TemplateBinding BorderThickness}" Background="Gray" IsHitTestVisible="False" Opacity="0" />
                         <Border x:Name="FocusVisualElement" BorderBrush="Black" BorderThickness="{TemplateBinding BorderThickness}" IsHitTestVisible="False" Opacity="0" />
-                        <!--<Border x:Name="ValidationErrorElement" BorderBrush="Black" BorderThickness="{TemplateBinding BorderThickness}" Visibility="Collapsed">
+                        --><!--<Border x:Name="ValidationErrorElement" BorderBrush="Black" BorderThickness="{TemplateBinding BorderThickness}" Visibility="Collapsed">
                             <ToolTipService.ToolTip>
                                 <ToolTip x:Name="validationTooltip" DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}" Placement="Right" PlacementTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}" Template="{StaticResource ValidationToolTipTemplate}">
                                     <ToolTip.Triggers>
@@ -125,13 +125,13 @@
                                     </ToolTip.Triggers>
                                 </ToolTip>
                             </ToolTipService.ToolTip>
-                        </Border>-->
+                        </Border>--><!--
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
-    <!-- *********************************  Implicit Styles  ********************************* -->
-    <Style BasedOn="{StaticResource TextBoxStyle}" TargetType="{x:Type TextBox}" />
+    --><!-- *********************************  Implicit Styles  ********************************* --><!--
+    <Style BasedOn="{StaticResource TextBoxStyle}" TargetType="{x:Type TextBox}" />-->
 </ResourceDictionary>

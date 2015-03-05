@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Data;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -182,7 +183,33 @@ namespace Dev2.Runtime.ServiceModel
                 return new Recordset { HasErrors = true, ErrorMessage = ex.Message };
             }
         }
+        // POST: Service/Services/DbTest
+        public Recordset DbTest(DbService args, Guid workspaceId, Guid dataListId)
+        {
+            try
+            {
+                var service = args;
+          
+                if (string.IsNullOrEmpty(service.Recordset.Name))
+                {
+                    service.Recordset.Name = service.Method.Name;
+                }
 
+                var addFields = service.Recordset.Fields.Count == 0;
+                if (addFields)
+                {
+                    service.Recordset.Fields.Clear();
+                }
+                service.Recordset.Records.Clear();
+
+                return FetchRecordset(service, addFields);
+            }
+            catch (Exception ex)
+            {
+                RaiseError(ex);
+                return new Recordset { HasErrors = true, ErrorMessage = ex.Message };
+            }
+        }
         #endregion
 
         #region FetchRecordset
@@ -210,14 +237,20 @@ namespace Dev2.Runtime.ServiceModel
             // so that we don't lose the user-defined aliases.
             //
 
-            dbService.Recordset.Name = dbService.Recordset.Name.Replace(".", "_");
-            dbService.Recordset.Fields.Clear();
+            if(dbService.Recordset != null)
+            {
+                if(dbService.Recordset.Name != null)
+                {
+                    dbService.Recordset.Name = dbService.Recordset.Name.Replace(".", "_");
+                }
+                dbService.Recordset.Fields.Clear();
 
-            ServiceMappingHelper smh = new ServiceMappingHelper();
+                ServiceMappingHelper smh = new ServiceMappingHelper();
 
-            smh.MapDbOutputs(outputDescription, ref dbService, addFields);
-
-            return dbService.Recordset;
+                smh.MapDbOutputs(outputDescription, ref dbService, addFields);
+            }
+                return dbService.Recordset;
+           
         }
 
         public virtual RecordsetList FetchRecordset(PluginService pluginService, bool addFields)

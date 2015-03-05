@@ -6,6 +6,7 @@ using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Warewolf.Core;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -26,13 +27,14 @@ namespace Warewolf.Studio.ViewModels
 
         public ICollection<IDbSource> RetrieveSources()
         {
-            return new ObservableCollection<IDbSource> { new DbSourceDefinition { Name = "bob" }, new DbSourceDefinition() { Name = "dora" }, new DbSourceDefinition() { Name = "foo large" } };
+
+           return _queryProxy.FetchDbSources();
 
         }
 
-        public ICollection<IDbAction> GetActions()
+        public ICollection<IDbAction> GetActions(IDbSource source)
         {
-            return new ObservableCollection<IDbAction> {new DbAction {Name = "sp_bob",Inputs =  new List<IDbInput>(){new DbInput("Bob","Dave"),new DbInput("moo","cow")}}};
+            return _queryProxy.FetchDbActions(source);
         }
 
         public void CreateNewSource()
@@ -43,17 +45,18 @@ namespace Warewolf.Studio.ViewModels
         {
         }
 
-        public  DataTable TestService(IList<IDbInput> inputValues)
+        public  DataTable TestService(IDatabaseService inputValues)
         {
-           var testResults = new DataTable("Results");
-            testResults.Columns.Add(new DataColumn("Record Name"));
-            testResults.Columns.Add(new DataColumn("Windows Group"));
-            testResults.Columns.Add(new DataColumn("Response"));
-            testResults.Columns.Add(new DataColumn("Bob"));
-            testResults.Rows.Add(new object[] { "dbo_Save_person(1)", "asdasd", "dasdasd", "111" });
-            testResults.Rows.Add(new object[] { "dbo_Save_person(2)", "qweqwe", "dasfghfgdasd", "111" });
-            testResults.Rows.Add(new object[] { "dbo_Save_person(3)", "fghfhf", "fgh", "111" });
-            return testResults;
+           return _updateRepository.TestDbService(inputValues);
+           //var testResults = new DataTable("Results");
+           // testResults.Columns.Add(new DataColumn("Record Name"));
+           // testResults.Columns.Add(new DataColumn("Windows Group"));
+           // testResults.Columns.Add(new DataColumn("Response"));
+           // testResults.Columns.Add(new DataColumn("Bob"));
+           // testResults.Rows.Add(new object[] { "dbo_Save_person(1)", "asdasd", "dasdasd", "111" });
+           // testResults.Rows.Add(new object[] { "dbo_Save_person(2)", "qweqwe", "dasfghfgdasd", "111" });
+           // testResults.Rows.Add(new object[] { "dbo_Save_person(3)", "fghfhf", "fgh", "111" });
+           // return testResults;
         }
 
         public IEnumerable<IDbOutputMapping> GetDbOutputMappings(IDbAction action)

@@ -13,15 +13,16 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Caliburn.Micro;
+using Dev2.Common.Interfaces;
 using Dev2.Data.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Interfaces.DataList
 {
-    public interface IDataListViewModel : IScreen, IChild, IDisposable
+    public interface IDataListViewModel : IDisposable
     {
-        IResourceModel Resource { get; }
+        IResourceDefinition Resource { get; }
         RelayCommand FindUnusedAndMissingCommand { get; }
 
         ObservableCollection<IDataListItemModel> ScalarCollection { get; }

@@ -1,9 +1,9 @@
 ﻿using System;
 using Dev2.Common.Interfaces.DB;
 
-namespace Warewolf.Studio.ViewModels
+namespace Warewolf.Core
 {
-    public class DbInput:IDbInput, IEquatable<DbInput>
+    public class DbOutputMapping : IDbOutputMapping, IEquatable<DbOutputMapping>
     {
         #region Equality members
 
@@ -14,17 +14,9 @@ namespace Warewolf.Studio.ViewModels
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
         /// <param name="other">An object to compare with this object.</param>
-        public bool Equals(DbInput other)
+        public bool Equals(DbOutputMapping other)
         {
-            if(ReferenceEquals(null, other))
-            {
-                return false;
-            }
-            if(ReferenceEquals(this, other))
-            {
-                return true;
-            }
-            return string.Equals(Name, other.Name) && string.Equals(Value, other.Value) && string.Equals(DefaultValue, other.DefaultValue) && RequiredField.Equals(other.RequiredField) && EmptyIsNull.Equals(other.EmptyIsNull);
+            return false;
         }
 
         /// <summary>
@@ -48,7 +40,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return false;
             }
-            return Equals((DbInput)obj);
+            return Equals((DbOutputMapping)obj);
         }
 
         /// <summary>
@@ -59,46 +51,32 @@ namespace Warewolf.Studio.ViewModels
         /// </returns>
         public override int GetHashCode()
         {
-            unchecked
-            {
-                var hashCode = (Name != null ? Name.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Value != null ? Value.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (DefaultValue != null ? DefaultValue.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ RequiredField.GetHashCode();
-                hashCode = (hashCode * 397) ^ EmptyIsNull.GetHashCode();
-                return hashCode;
-            }
+            return 397 ^ Name.GetHashCode() ^ OutputName.GetHashCode();
         }
 
-        public static bool operator ==(DbInput left, DbInput right)
+        public static bool operator ==(DbOutputMapping left, DbOutputMapping right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(DbInput left, DbInput right)
+        public static bool operator !=(DbOutputMapping left, DbOutputMapping right)
         {
             return !Equals(left, right);
         }
 
         #endregion
 
-        public DbInput(string name, string value)
+        public DbOutputMapping(string name, string mapping)
         {
             Name = name;
-            Value = value;
-            DefaultValue = "";
-            RequiredField = true;
-            EmptyIsNull = true;
+            OutputName = mapping;
         }
 
-        #region Implementation of IDbInput
+        #region Implementation of IDbOutputMapping
 
         public string Name { get; set; }
-
-        public string Value { get; set; }
-        public string DefaultValue { get; set; }
-        public bool RequiredField { get; set; }
-        public bool EmptyIsNull { get; set; }
+        public string OutputName { get; set; }
+        public string RecordSetName { get; set; }
 
         #endregion
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 
-namespace Warewolf.Studio.ViewModels
+namespace Warewolf.Core
 {
     public class DatabaseService : IDatabaseService, IEquatable<DatabaseService>
     {

@@ -11,6 +11,7 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Microsoft.Practices.Prism.Commands;
+using Warewolf.Core;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -39,17 +40,17 @@ namespace Warewolf.Studio.ViewModels
             EditSourceCommand = new DelegateCommand(()=>model.EditSource(SelectedSource));
             EditSourceCommand = new DelegateCommand(()=>{});
             Sources = model.RetrieveSources();
-            Item = new DatabaseService();
+           
             Header = "New DB Service";
             Inputs = new Collection<IDbInput> { new DbInput("bob", "the"), new DbInput("dora", "eplorer"), new DbInput("Zummy", "Gummy") };
             CreateNewSourceCommand = new DelegateCommand(()=>{});
             TestProcedureCommand = new DelegateCommand(() =>
             {
-                TestResults = model.TestService(GetInputValues());
+                TestResults = model.TestService(ToModel());
                 if (TestResults != null)
                 {
                     CanEditMappings = true;
-                    OutputMapping = new ObservableCollection<IDbOutputMapping>( _model.GetDbOutputMappings(SelectedAction));
+                    OutputMapping = new ObservableCollection<IDbOutputMapping>( GetDbOutputMappingsFromTable(TestResults));
                 }
 
                 
@@ -57,6 +58,25 @@ namespace Warewolf.Studio.ViewModels
             Inputs = new ObservableCollection<IDbInput>();
             SaveCommand = new DelegateCommand(Save);
              Header = "New DB Service";
+        }
+
+        List<IDbOutputMapping> GetDbOutputMappingsFromTable(DataTable testResults)
+        {
+            List<IDbOutputMapping> mappings = new List<IDbOutputMapping>();
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            for(int i = 0; i < testResults.Columns.Count; i++)
+            {
+                var column = testResults.Columns[i];
+                if (i == 0)
+                {
+                    mappings.Add(new DbOutputMapping("Recordset Name",SelectedAction.Name));
+                }
+                else
+                mappings.Add(new DbOutputMapping(column.ToString(), column.ToString())); 
+            }
+           
+               
+            return mappings;
         }
 
         private void Save()
@@ -116,7 +136,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _selectedSource = value;
                 CanSelectProcedure = value != null;
-                AvalaibleActions = _model.GetActions();
+                AvalaibleActions = _model.GetActions(SelectedSource);
                 OnPropertyChanged(() => Sources);
             }
         }

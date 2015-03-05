@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerDialogue;
@@ -35,5 +36,7 @@ namespace Dev2.Common.Interfaces.Explorer
         void Save(IDbSource toDbSource);
 
         void Save(IDatabaseService toDbSource);
+
+        DataTable TestDbService(IDatabaseService inputValues);
     }
 }

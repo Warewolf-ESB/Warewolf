@@ -20,12 +20,10 @@ using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 
 namespace Warewolf.AcceptanceTesting.Explorer
-{
-    
+{    
     [Binding]    
     // ReSharper disable UnusedMember.Global
-    public class ExplorerSteps
-      
+    public class ExplorerSteps      
     {
         [BeforeFeature("Explorer")]
         public static void SetupExplorerDependencies()
@@ -50,15 +48,13 @@ namespace Warewolf.AcceptanceTesting.Explorer
             
             Application.Current.Run(Application.Current.MainWindow);
         }
-
- 
+         
         [BeforeScenario("Explorer")]
         public void SetupForExplorer()
         {
             var container = FeatureContext.Current.Get<IUnityContainer>("container");
             var explorerView = container.Resolve<IExplorerView>();
-            ScenarioContext.Current.Add("explorerView", explorerView);
-            
+            ScenarioContext.Current.Add("explorerView", explorerView);           
         }
 
         [Given(@"the explorer is visible")]
@@ -77,12 +73,8 @@ namespace Warewolf.AcceptanceTesting.Explorer
             IExplorerViewModel explorerViewModel = (IExplorerViewModel)explorerView.DataContext;
             var server = new ServerForTesting(new Mock<IExplorerRepository>());
             server.ResourceName = name;
-            explorerViewModel.ConnectControlViewModel.Connect(server);
-
-            
+            explorerViewModel.ConnectControlViewModel.Connect(server);            
         }
-
-
 
         [Given(@"I open ""(.*)"" server")]
         [When(@"I open ""(.*)"" server")]
@@ -125,9 +117,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
         public void WhenIRenameTo(string originalFolderName, string newFolderName)
         {
             var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
-            explorerView.PerformFolderRename(originalFolderName,newFolderName);
-
-            
+            explorerView.PerformFolderRename(originalFolderName,newFolderName);            
         }
 
         [Then(@"Conflict error message is occurs")]
@@ -135,7 +125,6 @@ namespace Warewolf.AcceptanceTesting.Explorer
         {
             var boot = FeatureContext.Current.Get<UnityBootstrapperForExplorerTesting>("bootstrapper");
             boot.PopupController.Verify(a => a.Show(It.IsAny<PopupMessage>()));
-
         }
 
 
@@ -155,9 +144,6 @@ namespace Warewolf.AcceptanceTesting.Explorer
             Assert.IsNotNull(environmentViewModel);
         }
 
-
-
-
         [Then(@"I should see ""(.*)"" resources in ""(.*)""")]
         public void ThenIShouldSeeResourcesIn(int numberOfresources, string path)
         {
@@ -165,7 +151,6 @@ namespace Warewolf.AcceptanceTesting.Explorer
             var explorerItemViewModels = explorerView.GetResourcesVisible(path);
             Assert.AreEqual(numberOfresources, explorerItemViewModels);
         }
-
 
         [When(@"I search for ""(.*)""")]
         public void WhenISearchFor(string searchTerm)
@@ -213,8 +198,6 @@ namespace Warewolf.AcceptanceTesting.Explorer
            Assert.IsTrue(found);
         }
 
-
-
         [Then(@"I setup (.*) resources in ""(.*)""")]
         public void ThenISetupResourcesIn(int resourceNumber, string path)
         {
@@ -236,8 +219,6 @@ namespace Warewolf.AcceptanceTesting.Explorer
             explorerView.AddResources(count, path, type,name);
         }
 
-
-
         [Then(@"""(.*)"" Context menu  should be ""(.*)"" for ""(.*)""")]
         public void ThenContextMenuShouldBeFor(string option, string visibility, string path)
         {
@@ -246,7 +227,6 @@ namespace Warewolf.AcceptanceTesting.Explorer
             explorerView.ExplorerViewTestClass.VerifyContextMenu(option, visibility, path);
             // ReSharper restore PossibleNullReferenceException
         }
-
 
         [Then(@"I Create ""(.*)"" resources of Type ""(.*)"" in ""(.*)""")]
         public void ThenICreateResourcesOfTypeIn(int resourceNumber, string type, string path)
@@ -259,8 +239,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
         public void WhenIShowVersionHistoryFor(string path)
         {
             var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView") as ExplorerView;
-            var boot = FeatureContext.Current.Get<UnityBootstrapperForExplorerTesting>("bootstrapper");
-            
+            var boot = FeatureContext.Current.Get<UnityBootstrapperForExplorerTesting>("bootstrapper");            
           
             if(explorerView != null)
             {
@@ -275,7 +254,6 @@ namespace Warewolf.AcceptanceTesting.Explorer
                 explorerView.ExplorerViewTestClass.ShowVersionHistory(path);
             }
         }
-
 
         [Then(@"I should see ""(.*)"" versions with ""(.*)"" Icons in ""(.*)""")]
         public void ThenIShouldSeeVersionsWithIconsIn(int count, string iconVisible, string path)
@@ -296,6 +274,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
                 }
             }
         }
+
         [When(@"I Make ""(.*)"" the current version of ""(.*)""")]
         public void WhenIMakeTheCurrentVersionOf(string versionPath, string resourcePath)
         {
@@ -323,7 +302,6 @@ namespace Warewolf.AcceptanceTesting.Explorer
             }
         }
 
-
         [When(@"I Delete Version ""(.*)""")]
         public void WhenIDeleteVersion(string versionPath)
         {
@@ -344,12 +322,8 @@ namespace Warewolf.AcceptanceTesting.Explorer
             {
                 var tester = explorerView.ExplorerViewTestClass;
                 tester.PerformVersionDelete(versionPath);
-            }
-
-    
+            }    
         }
-
-
 
         [Then(@"I Setup  ""(.*)"" Versions to be returned for ""(.*)""")]
         public void ThenISetupVersionsToBeReturnedFor(int count, string path)
@@ -361,14 +335,11 @@ namespace Warewolf.AcceptanceTesting.Explorer
             ScenarioContext.Current.Add("versions", count);
         }
 
-
         [Then(@"I Setup  ""(.*)"" resources of Type ""(.*)"" in ""(.*)""")]
         public void ThenISetupResourcesOfTypeIn(int count, string path, string type)
         {
             ScenarioContext.Current.Pending();
         }
-
-
 
         [When(@"I delete ""(.*)"" in ""(.*)"" server")]
         public void WhenIDeleteInServer(string p0, string p1)
@@ -396,12 +367,6 @@ namespace Warewolf.AcceptanceTesting.Explorer
             else
                 // ReSharper disable once MaximumChainedReferences
                 boot.PopupController.Setup(a => a.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.OK);
-           
-            
-            
-            // ReSharper disable MaximumChainedReferences
-      
-            // ReSharper restore MaximumChainedReferences
             explorerView.DeletePath(path);
         }
 

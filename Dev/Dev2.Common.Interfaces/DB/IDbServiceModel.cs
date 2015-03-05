@@ -6,10 +6,10 @@ namespace Dev2.Common.Interfaces.DB
 {
     public interface IDbServiceModel {
         ICollection<IDbSource> RetrieveSources();
-        ICollection<IDbAction> GetActions(); 
+        ICollection<IDbAction> GetActions(IDbSource source); 
         void CreateNewSource();
         void EditSource(IDbSource selectedSource);
-        DataTable TestService(IList<IDbInput> inputValues );
+        DataTable TestService(IDatabaseService inputValues);
         IEnumerable<IDbOutputMapping> GetDbOutputMappings(IDbAction action);
         void SaveService(IDatabaseService toModel);
     }

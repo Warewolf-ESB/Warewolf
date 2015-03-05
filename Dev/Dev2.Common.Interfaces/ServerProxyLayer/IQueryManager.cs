@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Toolbox;
@@ -63,6 +64,10 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         IList<IToolDescriptor> FetchTools();
 
 
-        IList<string> GetComputerNames(); 
+        IList<string> GetComputerNames();
+
+        IList<IDbSource> FetchDbSources();
+
+        IList<IDbAction> FetchDbActions(IDbSource source);
     }
 }
