@@ -100,10 +100,6 @@
     <Compile Include="Conflict.cs" />
     <Compile Include="ConflictHandlerViewModel.cs" />
     <Compile Include="ConnectControlViewModel.cs" />
-    <Compile Include="DatabaseService.cs" />
-    <Compile Include="DbAction.cs" />
-    <Compile Include="DbInput.cs" />
-    <Compile Include="DbOutputMapping.cs" />
     <Compile Include="DbServiceModel.cs" />
     <Compile Include="DeployItemMessage.cs" />
     <Compile Include="IDockViewModel.cs" />

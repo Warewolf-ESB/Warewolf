@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
@@ -150,12 +151,26 @@ namespace Warewolf.Studio.ServerProxyLayer
         public void SaveDbService(IDatabaseService dbService)
         {
             var con = Connection;
-            var comsController = CommunicationControllerFactory.CreateController("SaveDbServiceService");
+            var comsController = CommunicationControllerFactory.CreateController("SaveDbService");
             Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("DbService", serialiser.SerializeToBuilder(dbService));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
                 throw new WarewolfSaveException(output.Message.ToString(), null);
+        }
+
+        public DataTable TestDbService(IDatabaseService service)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("TestDbService");
+            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("DbService", serialiser.SerializeToBuilder(service));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output == null)
+                throw new WarewolfTestException("Unable to contact Server", null);
+            if (output.HasError)
+                throw new WarewolfTestException(output.Message.ToString(), null);
+            return serialiser.Deserialize<DataTable>(output.Message);
         }
 
         #endregion

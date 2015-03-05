@@ -80,6 +80,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DatabaseService.cs" />
+    <Compile Include="DbAction.cs" />
+    <Compile Include="DbInput.cs" />
+    <Compile Include="DbOutputMapping.cs" />
     <Compile Include="HelpDescriptor.cs" />
     <Compile Include="ToolDescriptor.cs">
       <SubType>Code</SubType>
@@ -98,10 +102,6 @@
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
-      <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
-      <Name>Warewolf.Studio.Resources</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

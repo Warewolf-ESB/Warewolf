@@ -213,7 +213,7 @@
                         <DataGridTemplateColumn Header="Alias" CanUserResize="True" Width="*" SortMemberPath="Name">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBox Text="{Binding DefaultValue}" Margin="1,1,1,1"></TextBox>
+                                    <TextBox Text="{Binding Path=OutputName}" Margin="1,1,1,1"></TextBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
