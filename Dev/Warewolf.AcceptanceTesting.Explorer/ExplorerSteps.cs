@@ -20,12 +20,10 @@ using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 
 namespace Warewolf.AcceptanceTesting.Explorer
-{
-    
+{    
     [Binding]    
     // ReSharper disable UnusedMember.Global
-    public class ExplorerSteps
-      
+    public class ExplorerSteps      
     {
         [BeforeFeature("Explorer")]
         public static void SetupExplorerDependencies()
@@ -50,8 +48,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
             
             Application.Current.Run(Application.Current.MainWindow);
         }
-
- 
+         
         [BeforeScenario("Explorer")]
         public void SetupForExplorer()
         {
