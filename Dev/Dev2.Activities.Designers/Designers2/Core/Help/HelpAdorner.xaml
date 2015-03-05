@@ -11,11 +11,12 @@
                          d:DataContext="{d:DesignInstance core:ActivityDesignerViewModel}">
     
     <adorners:AdornerControl.Resources>
-        <!--<ResourceDictionary x:Name="TheResources"
-                            Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />-->
+        <ResourceDictionary x:Name="TheResources"
+                            Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
+        
     </adorners:AdornerControl.Resources>
  
-    <Border >
+    <Border Style="{StaticResource HelpAdornerBorderStyle}">
 
         <Grid>
             <Grid.RowDefinitions>
@@ -33,7 +34,7 @@
                     VerticalAlignment="Top"
                     Command="{Binding ShowHelpToggleCommand}"
                     ToolTip="Close Help"
-                    
+                    Style="{StaticResource CloseButtonStyle}"
                     AutomationProperties.AutomationId="UI_CloseHelp_AutoID" />
             <TextBlock Grid.Row="1"
                        Margin="0,5,0,0"
