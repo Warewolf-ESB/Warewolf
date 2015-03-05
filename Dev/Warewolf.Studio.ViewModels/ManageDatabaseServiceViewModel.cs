@@ -40,12 +40,12 @@ namespace Warewolf.Studio.ViewModels
             CanEditSource = true;
             CreateNewSourceCommand = new DelegateCommand(model.CreateNewSource);
             EditSourceCommand = new DelegateCommand(()=>model.EditSource(SelectedSource));
-            EditSourceCommand = new DelegateCommand(()=>{});
+
             Sources = model.RetrieveSources();
            
             Header = "New DB Service";
             Inputs = new Collection<IDbInput> { new DbInput("bob", "the"), new DbInput("dora", "eplorer"), new DbInput("Zummy", "Gummy") };
-            CreateNewSourceCommand = new DelegateCommand(()=>{});
+            CreateNewSourceCommand = new DelegateCommand(model.CreateNewSource);
             TestProcedureCommand = new DelegateCommand(() =>
             {
                 try
@@ -56,7 +56,7 @@ namespace Warewolf.Studio.ViewModels
                         CanEditMappings = true;
                         OutputMapping = new ObservableCollection<IDbOutputMapping>(GetDbOutputMappingsFromTable(TestResults));
                         TestSuccessful = true;
-                    
+                        TestResultsAvailable = true;
                        
                     }
 
@@ -126,15 +126,9 @@ namespace Warewolf.Studio.ViewModels
             for(int i = 0; i < testResults.Columns.Count; i++)
             {
                 var column = testResults.Columns[i];
-                if (i == 0)
-                {
-                    mappings.Add(new DbOutputMapping("Recordset Name",SelectedAction.Name));
-                }
-                else
-                mappings.Add(new DbOutputMapping(column.ToString(), column.ToString())); 
+                mappings.Add(i == 0 ? new DbOutputMapping("Recordset Name", SelectedAction.Name) : new DbOutputMapping(column.ToString(), column.ToString()));
             }
-           
-               
+
             return mappings;
         }
 
@@ -165,11 +159,6 @@ namespace Warewolf.Studio.ViewModels
         public string Path { get; set; }
 
         public string Name { get; set; }
-
-        IList<IDbInput> GetInputValues()
-        {
-            return Inputs.ToList();
-        }
 
         #region Implementation of IManageDbServiceViewModel
 
