@@ -9,7 +9,7 @@
     <Color x:Key="WarewolfOrange">#F3700D</Color>
     <Color x:Key="WarewolfWhite">#FFFFFF</Color>
     <Color x:Key="WarewolfBlack">#000000</Color>
-    
+    <Color x:Key="WarewolfPanelGrey">#FFF4F2EE</Color>
     <!--Base Colors-->
     <Color x:Key="Color_000b">#FF282828</Color>
     <Color x:Key="Color_001b">#FF3F3F3F</Color>

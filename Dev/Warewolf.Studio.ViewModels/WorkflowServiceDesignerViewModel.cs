@@ -51,8 +51,11 @@ using Dev2.Activities.Designers2.Unzip;
 using Dev2.Activities.Designers2.WriteFile;
 using Dev2.Activities.Designers2.XPath;
 using Dev2.Activities.Designers2.Zip;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Studio.Core;
+using Dev2.Studio.ViewModels.DataList;
 using Dev2.Utilities;
 using Microsoft.Practices.Prism.Mvvm;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -64,7 +67,8 @@ namespace Warewolf.Studio.ViewModels
         bool _isActive;
         string _header;
         readonly WorkflowDesigner _wd;
-        
+        private DataListViewModel _dataListViewModel;
+
         public WorkflowServiceDesignerViewModel(IXamlResource resource)
         {
             if(resource == null)
@@ -74,22 +78,79 @@ namespace Warewolf.Studio.ViewModels
 
             Resource = resource;
             _wd = new WorkflowDesigner();
+            OldIntellisenseStuff();
+            DesignerSetup();
+            if (resource.Xaml == null)
+            {
+                IsNewWorkflow = true;
+                var helper = new WorkflowHelper();
+                _wd.Load(helper.CreateWorkflow("Untitled 1"));
+                Header = "Untitled 1";
+            }
+            else
+            {
+                IsNewWorkflow = false;
+                _wd.Text = resource.Xaml.ToString();
+                _wd.Load();
+                Header = resource.ResourceName;
+            }
+          
+            _wd.Context.Services.Subscribe<DesignerView>(DesigenrViewSubscribe);
+            _wd.View.PreviewDrop += ViewPreviewDrop;
+            _wd.View.PreviewDragEnter+=ViewOnPreviewDragEnter;
+            
+        }
+
+        private void OldIntellisenseStuff()
+        {
+            _dataListViewModel = new DataListViewModel();
+            if (!String.IsNullOrEmpty(Resource.DataList))
+            {
+                Resource.DataList = Resource.DataList.Replace(GlobalConstants.SerializableResourceQuote, "\"")
+                    .Replace(GlobalConstants.SerializableResourceSingleQuote, "'");
+            }
+            _dataListViewModel.InitializeDataListViewModel(Resource);
+            DataListSingleton.SetDataList(_dataListViewModel);
+        }
+
+        private void DesignerSetup()
+        {
             var hashTable = new Hashtable
+            {
+                {WorkflowDesignerColors.FontFamilyKey, Application.Current.Resources["DefaultFontFamily"]},
+                {WorkflowDesignerColors.FontSizeKey, Application.Current.Resources["FontSize-Normal"]},
+                {WorkflowDesignerColors.FontWeightKey, Application.Current.Resources["DefaultFontWeight"]},
+                {WorkflowDesignerColors.RubberBandRectangleColorKey, Application.Current.Resources["DesignerBackground"]},
                 {
-                    {WorkflowDesignerColors.FontFamilyKey, Application.Current.Resources["DefaultFontFamily"]},
-                    {WorkflowDesignerColors.FontSizeKey, Application.Current.Resources["FontSize-Normal"]},
-                    {WorkflowDesignerColors.FontWeightKey, Application.Current.Resources["DefaultFontWeight"]},
-                    {WorkflowDesignerColors.RubberBandRectangleColorKey, Application.Current.Resources["DesignerBackground"]},
-                    {WorkflowDesignerColors.WorkflowViewElementBackgroundColorKey, Application.Current.Resources["WorkflowBackgroundBrush"]},
-                    {WorkflowDesignerColors.WorkflowViewElementSelectedBackgroundColorKey, Application.Current.Resources["WorkflowBackgroundBrush"]},
-                    {WorkflowDesignerColors.WorkflowViewElementSelectedBorderColorKey, Application.Current.Resources["WorkflowSelectedBorderBrush"]},
-                    {WorkflowDesignerColors.DesignerViewShellBarControlBackgroundColorKey, Application.Current.Resources["ShellBarViewBackground"]},
-                    {WorkflowDesignerColors.DesignerViewShellBarColorGradientBeginKey, Application.Current.Resources["ShellBarViewBackground"]},
-                    {WorkflowDesignerColors.DesignerViewShellBarColorGradientEndKey, Application.Current.Resources["ShellBarViewBackground"]},
-                    {WorkflowDesignerColors.OutlineViewItemSelectedTextColorKey, Application.Current.Resources["SolidWhite"]},
-                    {WorkflowDesignerColors.OutlineViewItemHighlightBackgroundColorKey, Application.Current.Resources["DesignerBackground"]},
-                    
-                };
+                    WorkflowDesignerColors.WorkflowViewElementBackgroundColorKey,
+                    Application.Current.Resources["WorkflowBackgroundBrush"]
+                },
+                {
+                    WorkflowDesignerColors.WorkflowViewElementSelectedBackgroundColorKey,
+                    Application.Current.Resources["WorkflowBackgroundBrush"]
+                },
+                {
+                    WorkflowDesignerColors.WorkflowViewElementSelectedBorderColorKey,
+                    Application.Current.Resources["WorkflowSelectedBorderBrush"]
+                },
+                {
+                    WorkflowDesignerColors.DesignerViewShellBarControlBackgroundColorKey,
+                    Application.Current.Resources["ShellBarViewBackground"]
+                },
+                {
+                    WorkflowDesignerColors.DesignerViewShellBarColorGradientBeginKey,
+                    Application.Current.Resources["ShellBarViewBackground"]
+                },
+                {
+                    WorkflowDesignerColors.DesignerViewShellBarColorGradientEndKey,
+                    Application.Current.Resources["ShellBarViewBackground"]
+                },
+                {WorkflowDesignerColors.OutlineViewItemSelectedTextColorKey, Application.Current.Resources["SolidWhite"]},
+                {
+                    WorkflowDesignerColors.OutlineViewItemHighlightBackgroundColorKey,
+                    Application.Current.Resources["DesignerBackground"]
+                },
+            };
             _wd.PropertyInspectorFontAndColorData = XamlServices.Save(hashTable);
             var designerConfigService = _wd.Context.Services.GetService<DesignerConfigurationService>();
             if (designerConfigService != null)
@@ -100,7 +161,8 @@ namespace Warewolf.Studio.ViewModels
                 designerConfigService.AutoSplitEnabled = true;
                 designerConfigService.PanModeEnabled = true;
                 designerConfigService.RubberBandSelectionEnabled = true;
-                designerConfigService.BackgroundValidationEnabled = true; // prevent design-time background validation from blocking UI thread
+                designerConfigService.BackgroundValidationEnabled = true;
+                    // prevent design-time background validation from blocking UI thread
                 // Disabled for now
                 designerConfigService.AnnotationEnabled = false;
                 designerConfigService.AutoSurroundWithSequenceEnabled = false;
@@ -115,23 +177,6 @@ namespace Warewolf.Studio.ViewModels
             }
 
             MetadataStore.AddAttributeTable(builder.CreateTable());
-            if (resource.Xaml == null)
-            {
-                IsNewWorkflow = true;
-                var helper = new WorkflowHelper();
-                _wd.Load(helper.CreateWorkflow("Untitled 1"));
-                Header = "Untitled 1";
-            }
-            else
-            {
-                IsNewWorkflow = false;
-                _wd.Text = resource.Xaml.ToString();
-                _wd.Load();
-            }
-          
-            _wd.Context.Services.Subscribe<DesignerView>(DesigenrViewSubscribe);
-            _wd.View.PreviewDrop += ViewPreviewDrop;
-            _wd.View.PreviewDragEnter+=ViewOnPreviewDragEnter;
         }
 
         private void ViewOnPreviewDragEnter(object sender, DragEventArgs dragEventArgs)
@@ -264,6 +309,10 @@ namespace Warewolf.Studio.ViewModels
             {
                 _isActive = value;
                 OnPropertyChanged(() => IsActive);
+                if (_isActive)
+                {
+                    DataListSingleton.SetDataList(_dataListViewModel);
+                }
             }
         }
         public event EventHandler IsActiveChanged;

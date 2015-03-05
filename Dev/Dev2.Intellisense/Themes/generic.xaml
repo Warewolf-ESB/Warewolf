@@ -4,34 +4,42 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Dev2.Intellisense;component/Themes/IntellisenseStyles.xaml"></ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
+    <SolidColorBrush x:Key="TextBoxBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
 
+    <SolidColorBrush x:Key="TextBoxBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="TextBoxHoverBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
+    <SolidColorBrush x:Key="TextBoxForegroundBrush" Color="Black" />
+    <!--  DO NOT make TextBoxHoverBackgroundBrush transparent!  -->
+    <SolidColorBrush x:Key="TextBoxHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="TextBoxFocusedBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="TextBoxReadOnlyBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
     <Style TargetType="{x:Type local:IntellisenseTextBox}">
         <Setter Property="BorderThickness"
                 Value="1" />
-        <Setter Property="Foreground"
-                Value="{StaticResource ForegroundBrush}" />
-        <Setter Property="FontSize"
-                Value="{StaticResource FontSize-Normal}" />
-        <Setter Property="FontFamily"
-                Value="{StaticResource DefaultFontFamily}" />
-        <Setter Property="Background"
-                Value="{StaticResource TextBoxBackgroundBrush}" />
+<!--        <Setter Property="Foreground"-->
+<!--                Value="{StaticResource ForegroundBrush}" />-->
+<!--        <Setter Property="FontSize"-->
+<!--                Value="{StaticResource FontSize-Normal}" />-->
+<!--        <Setter Property="FontFamily"-->
+<!--                Value="{StaticResource DefaultFontFamily}" />-->
+<!--        <Setter Property="Background"-->
+<!--                Value="{StaticResource TextBoxBackgroundBrush}" />-->
         <Setter Property="BorderBrush"
                 Value="{StaticResource TextBoxBorderBrush}" />
-        <Setter Property="Padding"
-                Value="3,2,3,2" />
+<!--        <Setter Property="Padding"-->
+<!--                Value="3,2,3,2" />-->
         <Setter Property="SelectionBrush"
                 Value="{StaticResource TextBoxFocusedBrush}" />
-        <Setter Property="AllowDrop"
-                Value="true" />
-        <Setter Property="MinHeight"
-                Value="23" />
-        <Setter Property="FocusVisualStyle"
-                Value="{x:Null}" />
-        <Setter Property="ScrollViewer.PanningMode"
-                Value="VerticalFirst" />
-        <Setter Property="Stylus.IsFlicksEnabled"
-                Value="False" />
+<!--        <Setter Property="AllowDrop"-->
+<!--                Value="true" />-->
+<!--        <Setter Property="MinHeight"-->
+<!--                Value="23" />-->
+<!--        <Setter Property="FocusVisualStyle"-->
+<!--                Value="{x:Null}" />-->
+<!--        <Setter Property="ScrollViewer.PanningMode"-->
+<!--                Value="VerticalFirst" />-->
+<!--        <Setter Property="Stylus.IsFlicksEnabled"-->
+<!--                Value="False" />-->
         <Setter Property="DefaultTextTemplate"
                 Value="{StaticResource DefaultDefaultTextTemplate}" />
         <Setter Property="VerticalScrollBarVisibility"
