@@ -109,7 +109,9 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// <summary>
         /// Tooltip for the Database Server Type
         /// </summary>
+        // ReSharper disable UnusedMember.Global
         string ServerTypeTool { get; }
+        // ReSharper restore UnusedMember.Global
 
         /// <summary>
         /// List of database names for the user to choose from based on the server entered
@@ -122,12 +124,12 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// <summary>
         /// Has test passed
         /// </summary>
-        bool TestPassed { get; }
+        bool TestPassed { get; set; }
 
         /// <summary>
         /// has test failed
         /// </summary>
-        bool TestFailed { get; }
+        bool TestFailed { get; set; }
         /// <summary>
         /// IsTesting
         /// </summary>
@@ -139,7 +141,9 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// <summary>
         /// The name of the resource
         /// </summary>
+        // ReSharper disable UnusedMemberInSuper.Global
         string ResourceName { get; set; }
+        // ReSharper restore UnusedMemberInSuper.Global
 
         /// <summary>
         /// The authentications Type

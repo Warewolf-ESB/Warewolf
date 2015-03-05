@@ -13,11 +13,11 @@
 
 
     </ResourceDictionary.MergedDictionaries>
-
+   
     <customControlsConverters:EmptyStringToBoolConverter x:Key="EmptyStringToBoolConverter" />
     <customControlsConverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" TrueValue="Visible" FalseValue="Collapsed"/>
     <customControlsConverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterInverse" TrueValue="Collapsed" FalseValue="Visible"/>
-
+    <studioConverters:ErrorTypeToImageConverter x:Key="ErrorTypeToImageConverter" />
     <converters:CollectionToVisibilityConverter x:Key="CollectionToVisibilityConverterPositive" TrueValue="Visible" FalseValue="Collapsed" />
     <converters:CollectionToVisibilityConverter x:Key="CollectionToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible" />
     <studioConverters:ForEachTypeToVisibilityConverter x:Key="ForEachTypeToVisibilityConverter" />
@@ -39,7 +39,7 @@
         <interfaceImplementors:DefaultIntellisenseProvider />
         <interfaceImplementors:CalculateIntellisenseProvider />
     </interfaceImplementors:CompositeIntellisenseProvider>
-
+    <SolidColorBrush x:Key="ValidationErrorElement" Color="#FFA60013" />
     <Style x:Key="DatagridIntellisenseTextBoxStyle"
            TargetType="{x:Type ui:IntellisenseTextBox}"
            BasedOn="{StaticResource ActivityIntellisenseTextBoxStyle}">
@@ -179,4 +179,23 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
+    <DataTemplate x:Key="ErrorListTemplate">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Image Grid.Column="0"
+                   Source="{Binding Path=ErrorType, Converter={StaticResource ErrorTypeToImageConverter}}"
+                   Margin="2"
+                   Height="16"
+                   Width="16" />
+            <TextBlock Grid.Column="1"
+                       Margin="2"
+                       Text="{Binding Path=Message}" />
+        </Grid>
+    </DataTemplate>
 </ResourceDictionary>

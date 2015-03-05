@@ -195,6 +195,5 @@
         <Setter Property="AllowMultilinePaste" Value="True" />
         <Setter Property="Width" Value="Auto" />
     </Style>
-
     
 </ResourceDictionary>

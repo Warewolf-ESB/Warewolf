@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.DB;
@@ -64,6 +65,11 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public void Save(IDatabaseService toDbSource)
         {
             UpdateManagerProxy.SaveDbService(toDbSource);
+        }
+
+        public DataTable TestDbService(IDatabaseService inputValues)
+        {
+            return UpdateManagerProxy.TestDbService(inputValues);
         }
     }
 }

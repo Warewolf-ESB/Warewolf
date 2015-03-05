@@ -1,10 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using Dev2.Common.Interfaces.DB;
 
-namespace Warewolf.Studio.ViewModels
+namespace Warewolf.Core
 {
-    public class DbOutputMapping : IDbOutputMapping, IEquatable<DbOutputMapping>
+    public class  DbAction:IDbAction, IEquatable<DbAction>
     {
+        #region Implementation of IDbAction
+
+        public IList<IDbInput> Inputs { get; set; }
+        public string Name { get; set; }
+
+        #endregion
+
         #region Equality members
 
         /// <summary>
@@ -14,9 +22,17 @@ namespace Warewolf.Studio.ViewModels
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
         /// <param name="other">An object to compare with this object.</param>
-        public bool Equals(DbOutputMapping other)
+        public bool Equals(DbAction other)
         {
-            return false;
+            if(ReferenceEquals(null, other))
+            {
+                return false;
+            }
+            if(ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            return Equals(Inputs, other.Inputs) && string.Equals(Name, other.Name);
         }
 
         /// <summary>
@@ -40,7 +56,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return false;
             }
-            return Equals((DbOutputMapping)obj);
+            return Equals((DbAction)obj);
         }
 
         /// <summary>
@@ -51,31 +67,21 @@ namespace Warewolf.Studio.ViewModels
         /// </returns>
         public override int GetHashCode()
         {
-            return 397 ^ Name.GetHashCode() ^ OutputName.GetHashCode();
+            unchecked
+            {
+                return ((Inputs != null ? Inputs.GetHashCode() : 0) * 397) ^ (Name != null ? Name.GetHashCode() : 0);
+            }
         }
 
-        public static bool operator ==(DbOutputMapping left, DbOutputMapping right)
+        public static bool operator ==(DbAction left, DbAction right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(DbOutputMapping left, DbOutputMapping right)
+        public static bool operator !=(DbAction left, DbAction right)
         {
             return !Equals(left, right);
         }
-
-        #endregion
-
-        public DbOutputMapping(string name, string mapping)
-        {
-            Name = name;
-            OutputName = mapping;
-        }
-
-        #region Implementation of IDbOutputMapping
-
-        public string Name { get; set; }
-        public string OutputName { get; set; }
 
         #endregion
     }

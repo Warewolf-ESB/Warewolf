@@ -61,5 +61,7 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         void  SaveDbSource(IDbSource toDbSource, Guid serverWorkspaceID);
 
         void SaveDbService(IDatabaseService dbService);
+
+        DataTable TestDbService(IDatabaseService inputValues);
     }
 }

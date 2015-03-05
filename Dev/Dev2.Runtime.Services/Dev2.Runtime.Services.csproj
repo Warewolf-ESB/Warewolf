@@ -173,6 +173,8 @@
     <Compile Include="Compiler\CompileRules\PluginService_IsRequiredChangeRule.cs" />
     <Compile Include="Compiler\CompileRules\WebService_IsRequiredChangeRule.cs" />
     <Compile Include="ESB\Management\Services\AddFolderService.cs" />
+    <Compile Include="ESB\Management\Services\FetchDbActions.cs" />
+    <Compile Include="ESB\Management\Services\FetchDbSources.cs" />
     <Compile Include="ESB\Management\Services\FindResourceByID.cs" />
     <Compile Include="ESB\Management\Services\GetComputeNames.cs" />
     <Compile Include="ESB\Management\Services\SaveDbService.cs" />
@@ -227,6 +229,7 @@
     <Compile Include="ESB\Management\Services\SettingsRead.cs" />
     <Compile Include="ESB\Management\Services\SettingsWrite.cs" />
     <Compile Include="ESB\Management\Services\TestConnectionService.cs" />
+    <Compile Include="ESB\Management\Services\TestDbService.cs" />
     <Compile Include="Execution\ExecutionToken.cs" />
     <Compile Include="Execution\IExecutionToken.cs" />
     <Compile Include="Hosting\CompileMessageRepo.cs" />

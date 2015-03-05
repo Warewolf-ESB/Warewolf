@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.ServerProxyLayer;
@@ -148,6 +149,32 @@ namespace Warewolf.Studio.ServerProxyLayer
             }
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             return serializer.Deserialize<IList<string>>(result.Message.ToString());
+        }
+
+        public IList<IDbSource> FetchDbSources()
+        {
+            var comsController = CommunicationControllerFactory.CreateController("FetchDbSources");
+
+            var workspaceId = Connection.WorkspaceID;
+            var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
+            if (result.HasError)
+            {
+                throw new WarewolfSupportServiceException(result.Message.ToString(), null);
+            }
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            return serializer.Deserialize<IList<IDbSource>>(result.Message.ToString());
+        }
+
+        public IList<IDbAction> FetchDbActions(IDbSource source)
+        {
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var comsController = CommunicationControllerFactory.CreateController("FetchDbActions");
+            comsController.AddPayloadArgument("source", serializer.SerializeToBuilder(source));
+            var workspaceId = Connection.WorkspaceID;
+            var payload = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
+            if(payload.HasError)
+                throw new WarewolfTestException(payload.Message.ToString(),null);
+            return serializer.Deserialize<IList<IDbAction>>( payload.Message);
         }
     }
          
