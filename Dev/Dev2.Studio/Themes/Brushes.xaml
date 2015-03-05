@@ -41,7 +41,7 @@
     <SolidColorBrush x:Key="TransparentBrush" Color="{StaticResource Color_016b}" />
     <SolidColorBrush x:Key="DisabledVisualElement" Color="{StaticResource Color_012b}" />
     <SolidColorBrush x:Key="ValidationErrorElement" Color="{StaticResource Color_028b}" />
-
+    <SolidColorBrush x:Key="TextBoxBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
     <!-- Visual Glyphs brushes -->
     <SolidColorBrush x:Key="GlyphBackgroundBrush" Color="{StaticResource Color_003b}" />
     <SolidColorBrush x:Key="GlyphHoverBackgroundBrush" Color="{StaticResource Color_002b}" />

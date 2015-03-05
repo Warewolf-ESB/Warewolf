@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Data;
@@ -14,7 +15,7 @@ using Warewolf.Core;
 
 namespace Warewolf.Studio.ViewModels
 {
-
+    [ComVisible(false)]
     public class ManageDatabaseServiceViewModel : SourceBaseImpl<IDatabaseService>, IManageDbServiceViewModel
     {
         readonly IDbServiceModel _model;

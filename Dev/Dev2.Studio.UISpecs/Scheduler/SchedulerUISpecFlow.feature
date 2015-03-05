@@ -4,6 +4,9 @@
 	I want to be able to Create Tasks in Warewolf Scheduler Tab
 
 @Scheduler
+
+## This test is written in general acceptance tests
+
 Scenario: Creating Scheduler Task Without password and expected error
      Given I have Warewolf running
      Given all tabs are closed

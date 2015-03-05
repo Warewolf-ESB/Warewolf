@@ -16,7 +16,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             var bootStrapper = new UnityBootstrapperForDatabaseServiceConnectorTesting();
             bootStrapper.Run();
             var view = new ManageDatabaseServiceControl();
-            var viewModel = new ManageDatabaseServiceViewModel(true, new[] {""});
+            var viewModel = new ManageDatabaseServiceViewModel(null, null);
             view.DataContext = viewModel;
             Utils.ShowTheViewForTesting(view);
             FeatureContext.Current.Add("view", view);

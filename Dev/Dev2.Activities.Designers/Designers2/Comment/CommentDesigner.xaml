@@ -15,6 +15,7 @@
         <local:Small x:Key="Small" AutomationProperties.AutomationId="SmallViewContent" />
 
         <Style x:Key="ContentViewStyle"
+               BasedOn="{StaticResource ActivityDesignerStyle}"
                TargetType="{x:Type sap:ActivityDesigner}">
             <Setter Property="Content"
                     Value="{DynamicResource Small}" />
