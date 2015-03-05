@@ -16,29 +16,26 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
-using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
-using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
-using Dev2.Studio.Core.ViewModels.Base;
 using ServiceStack.Common.Extensions;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.DataList
 {
-    public class DataListViewModel : BaseViewModel, IDataListViewModel
+    public class DataListViewModel : IDataListViewModel
     {
         #region Fields
 
@@ -68,7 +65,7 @@ namespace Dev2.Studio.ViewModels.DataList
             set
             {
                 _baseCollection = value;
-                NotifyOfPropertyChange(() => BaseCollection);
+                //NotifyOfPropertyChange(() => BaseCollection);
             }
         }
 
@@ -79,11 +76,11 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 _searchText = value;
                 FilterItems();
-                NotifyOfPropertyChange(() => SearchText);
+                //NotifyOfPropertyChange(() => SearchText);
             }
         }
 
-        public IResourceModel Resource { get; private set; }
+        public IResourceDefinition Resource { get; private set; }
 
         public ObservableCollection<IDataListItemModel> DataList
         {
@@ -184,20 +181,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         #endregion Properties
 
-        #region Ctor
-
-        public DataListViewModel()
-            : this(EventPublishers.Aggregator)
-        {
-        }
-
-        public DataListViewModel(IEventAggregator eventPublisher)
-            : base(eventPublisher)
-        {
-        }
-
-        #endregion
-
+      
         #region Commands
 
         public ICommand AddRecordsetCommand
@@ -252,7 +236,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
 
             WriteToResourceModel();
-            EventPublisher.Publish(new UpdateIntellisenseMessage());
+            //EventPublisher.Publish(new UpdateIntellisenseMessage());
         }
 
         void SetRecordSetPartIsUsed(IDataListVerifyPart part, bool isUsed)
@@ -330,7 +314,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
 
             WriteToResourceModel();
-            EventPublisher.Publish(new UpdateIntellisenseMessage());
+            //EventPublisher.Publish(new UpdateIntellisenseMessage());
             FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
         }
 
@@ -412,7 +396,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
 
             WriteToResourceModel();
-            EventPublisher.Publish(new UpdateIntellisenseMessage());
+            //EventPublisher.Publish(new UpdateIntellisenseMessage());
             RemoveBlankScalars();
             RemoveBlankRecordsets();
             RemoveBlankRecordsetFields();
@@ -428,8 +412,21 @@ namespace Dev2.Studio.ViewModels.DataList
         #region Methods
         public void InitializeDataListViewModel(IResourceModel resourceModel)
         {
-            Resource = resourceModel;
+            //Resource = resourceModel;
             if(Resource == null) return;
+
+            string errorString;
+            CreateListsOfIDataListItemModelToBindTo(out errorString);
+            if(!string.IsNullOrEmpty(errorString))
+            {
+                throw new Exception(errorString);
+            }
+        }
+        
+        public void InitializeDataListViewModel(IResourceDefinition resourceDefinition)
+        {
+            Resource = resourceDefinition;
+            if (Resource == null) return;
 
             string errorString;
             CreateListsOfIDataListItemModelToBindTo(out errorString);
@@ -604,7 +601,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
                 recsetCount++;
             }
-            NotifyOfPropertyChange(() => DataList);
+            //NotifyOfPropertyChange(() => DataList);
         }
 
         public void ValidateNames(IDataListItemModel item)
@@ -903,7 +900,7 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             errorString = string.Empty;
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            if(!string.IsNullOrEmpty(Resource.DataList))
+            if (!string.IsNullOrEmpty(Resource.DataList))
             {
                 ErrorResultTO errors = new ErrorResultTO();
                 try
@@ -1099,7 +1096,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         #region Override Methods
 
-        protected override void OnDispose()
+        protected void OnDispose()
         {
             ClearCollections();
             Resource = null;
@@ -1375,6 +1372,11 @@ namespace Dev2.Studio.ViewModels.DataList
         static string BuildErrorMessage(IDataListItemModel model)
         {
             return DataListUtil.AddBracketsToValueIfNotExist(model.DisplayName) + " : " + model.ErrorMessage;
+        }
+
+        public void Dispose()
+        {
+            OnDispose();
         }
     }
 }
