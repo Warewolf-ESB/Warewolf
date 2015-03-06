@@ -88,6 +88,7 @@
     <Reference Include="System.Activities.Core.Presentation" />
     <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Linq.Expressions" />
     <Reference Include="System.ObjectModel" />
     <Reference Include="System.Runtime" />
     <Reference Include="System.Xaml" />
