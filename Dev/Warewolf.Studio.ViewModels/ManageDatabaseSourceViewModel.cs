@@ -42,7 +42,7 @@ namespace Warewolf.Studio.ViewModels
         string _resourceName;
         CancellationTokenSource _token;
         IList<string> _computerNames;
-        string _warewolfserverName;
+        readonly string _warewolfserverName;
         string _headerText;
         private bool _isDisposed;
 
@@ -121,7 +121,7 @@ namespace Warewolf.Studio.ViewModels
             Header = "Edit Database Service - " +((_dbSource==null?ResourceName:_dbSource.Name));
         }
 
-        public bool CanSave()
+        bool CanSave()
         {
             return TestPassed && !String.IsNullOrEmpty(DatabaseName);
         }
@@ -204,14 +204,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     ResourceName = RequestServiceNameViewModel.ResourceName.Name;
                     var src = ToDbSource();
-                    if(RequestServiceNameViewModel.ResourceName.Path != null)
-                    {
-                        src.Path = RequestServiceNameViewModel.ResourceName.Path;
-                    }
-                    else
-                    {
-                        src.Path = RequestServiceNameViewModel.ResourceName.Name;
-                    }
+                    src.Path = RequestServiceNameViewModel.ResourceName.Path ?? RequestServiceNameViewModel.ResourceName.Name;
                     Save(src);
                     _dbSource = src;
                     SetupHeaderTextFromExisting();
@@ -323,7 +316,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         IRequestServiceNameViewModel RequestServiceNameViewModel { get; set; }
-        public bool Haschanged
+        bool Haschanged
         {
             get { return !ToNewDbSource().Equals(_dbSource) ; }
         }

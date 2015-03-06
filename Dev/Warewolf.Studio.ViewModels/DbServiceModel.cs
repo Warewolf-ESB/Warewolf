@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Security.RightsManagement;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.ServerProxyLayer;
@@ -14,15 +17,18 @@ namespace Warewolf.Studio.ViewModels
     {
         readonly IStudioUpdateManager _updateRepository;
         readonly IQueryManager _queryProxy;
+        readonly IShellViewModel _shell;
         readonly string _serverName;
 
         #region Implementation of IDbServiceModel
 
-        public DbServiceModel(IStudioUpdateManager updateRepository, IQueryManager queryProxy, string serverName)
+        public DbServiceModel(IStudioUpdateManager updateRepository, IQueryManager queryProxy,IShellViewModel shell, string serverName)
         {
             _updateRepository = updateRepository;
             _queryProxy = queryProxy;
+            _shell = shell;
             _serverName = serverName;
+
         }
 
         public ICollection<IDbSource> RetrieveSources()
@@ -39,10 +45,13 @@ namespace Warewolf.Studio.ViewModels
 
         public void CreateNewSource()
         {
+            _shell.NewResource(ResourceType.DbSource, Guid.NewGuid());
         }
 
         public void EditSource(IDbSource selectedSource)
         {
+            _shell.EditResource(selectedSource);
+
         }
 
         public  DataTable TestService(IDatabaseService inputValues)

@@ -328,7 +328,7 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
             var services = new TestDbServices();
 
             //------------Execute Test---------------------------
-            var result = services.DbTest((string)null, Guid.Empty, Guid.Empty);
+            var result = services.DbTest(string.Empty, Guid.Empty, Guid.Empty);
 
             // Assert Recordset With Error
             Assert.IsTrue(result.HasErrors);

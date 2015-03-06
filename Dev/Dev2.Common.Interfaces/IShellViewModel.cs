@@ -5,6 +5,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.ServerDialogue;
+using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 
 namespace Dev2.Common.Interfaces
@@ -40,5 +41,7 @@ namespace Dev2.Common.Interfaces
         void ExecuteOnDispatcher(Action action);
 
         void ServerSourceAdded(IServerSource source);
+
+        void EditResource(IDbSource selectedSource);
     }
 }

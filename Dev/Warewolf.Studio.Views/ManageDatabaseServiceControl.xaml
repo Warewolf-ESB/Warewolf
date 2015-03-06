@@ -89,7 +89,7 @@
                     <RowDefinition Height="7" ></RowDefinition>
                 </Grid.RowDefinitions>
                 <StackPanel  Grid.Row="0" Grid.Column="0"  Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" Orientation="Horizontal">
-                    <TextBlock Margin="10" Text="{Binding DataSourceActionHeader, Mode=OneWay}" Style="{StaticResource SourceHeader}" ></TextBlock>                    
+                    <TextBlock Margin="10" Text="{Binding DataSourceActionHeader, Mode=OneWay}" Style="{StaticResource SourceHeader}" ></TextBlock>
                 </StackPanel>
                 <StackPanel Grid.Row="1" HorizontalAlignment="Left" >
                     <!-- Choose data Source Action-->
@@ -138,8 +138,8 @@
                     <Button x:Name="TestActionButton" Grid.Column="0" Grid.Row="1" Margin="{StaticResource ElementBorderTop}" HorizontalAlignment="Right" Command="{Binding TestProcedureCommand}" VerticalAlignment="Bottom"  Width="100">Test</Button>
                 </Grid>
 
-                <TextBlock Grid.Row="4" Text="{Binding OutputsLabel}" Margin="{StaticResource ElementBorderTop}" FontWeight="Bold"></TextBlock>
-                <DataGrid x:Name="OutputsDataGrid" Grid.Row="5" Margin="{StaticResource ElementBorderTop}"  HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding TestResults}"   GridLinesVisibility="Vertical" CanUserSortColumns="True" ColumnWidth="*" AutoGenerateColumns="True"  BorderBrush="Transparent" 
+                <TextBlock Grid.Row="4" Text="{Binding OutputsLabel}" Margin="{StaticResource ElementBorderTop}" FontWeight="Bold" Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}"></TextBlock>
+                <DataGrid x:Name="OutputsDataGrid" Grid.Row="5" Margin="{StaticResource ElementBorderTop}"  HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding TestResults}"  Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}"  GridLinesVisibility="Vertical" CanUserSortColumns="True" ColumnWidth="*" AutoGenerateColumns="True"  BorderBrush="Transparent" 
                   CanUserResizeColumns="True" CanUserReorderColumns="True"  VerticalGridLinesBrush="Transparent" >
 
                 </DataGrid>
@@ -221,7 +221,13 @@
                 </DataGrid>
             </Grid>
             <Grid Grid.Row="5" Grid.Column="0">
-                <Button x:Name="SaveButton"  Margin="{StaticResource ElementBorderTop}" HorizontalAlignment="Right" Command="{Binding SaveCommand}" VerticalAlignment="Bottom"  Width="100">Save</Button>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                
+                    <TextBlock Grid.Column="0" Text="{Binding ErrorText}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow" x:Name="ErrorTextBlock" ></TextBlock>
+                    <Button x:Name="SaveButton" Grid.Column="1" Margin="{StaticResource ElementBorderTop}" HorizontalAlignment="Right" Command="{Binding SaveCommand}" VerticalAlignment="Bottom"  Width="100">Save</Button>
 
             </Grid>
         </Grid>

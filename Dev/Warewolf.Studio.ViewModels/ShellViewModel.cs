@@ -78,7 +78,8 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public IPopupController PopupController { get;  set; }
-        public void InitializeRegion<T,TU>(string regionName) where T:IView
+
+        void InitializeRegion<T,TU>(string regionName) where T:IView
         {
             var region = _regionManager.Regions[regionName];
             var view = _unityContainer.Resolve<T>();
@@ -127,6 +128,13 @@ namespace Warewolf.Studio.ViewModels
             {
                 _aggregator.GetEvent<ServerAddedEvent>().Publish(source); 
             }
+        }
+
+        public void EditResource(IDbSource selectedSource)
+        {
+            Guid.NewGuid();
+            var dbSourceViewModel = new ManageDatabaseSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.ResourceName), _aggregator,selectedSource);
+            GetRegion("Workspace").Add(dbSourceViewModel);
         }
 
         public IViewsCollection GetRegionViews(string regionName)
@@ -248,7 +256,7 @@ namespace Warewolf.Studio.ViewModels
         void CreateDbService()
         {
 
-            var dbServiceViewModel = new ManageDatabaseServiceViewModel(new DbServiceModel(ActiveServer.UpdateRepository,ActiveServer.QueryProxy,ActiveServer.ResourceName), new RequestServiceNameViewModel(new EnvironmentViewModel(LocalhostServer, this), _unityContainer.Resolve<IRequestServiceNameView>(), Guid.NewGuid()) );
+            var dbServiceViewModel = new ManageDatabaseServiceViewModel(new DbServiceModel(ActiveServer.UpdateRepository,ActiveServer.QueryProxy,this,ActiveServer.ResourceName), new RequestServiceNameViewModel(new EnvironmentViewModel(LocalhostServer, this), _unityContainer.Resolve<IRequestServiceNameView>(), Guid.NewGuid()) );
             GetRegion("Workspace").Add(dbServiceViewModel);
         }
 
