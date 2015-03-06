@@ -6,7 +6,7 @@
 @Settings
 Scenario: Settings Opened
 	Given I have settings tab opened
-	And server selected as "localhost (Connected)"
+	And "server" selected as "localhost (Connected)"
 	And Server edit is "Disabled"
 	And server connection is "Disabled"
 	And Security is "Selected"
@@ -24,7 +24,7 @@ Scenario: Settings Opened
 
 Scenario: Selecting Admin rights for public
 	Given I have settings tab opened
-	And server selected as "localhost (Connected)"
+	And "server" selected as "localhost (Connected)"
 	And Security is "Selected"
 	And Save is "Disabled"
 	And Server Permissions is "Visible"
@@ -42,7 +42,7 @@ Scenario: Selecting Admin rights for public
 
 Scenario: Selecting Resource Permissions
 	Given I have settings tab opened
-	And server selected as "localhost (Connected)"
+	And "server" selected as "localhost (Connected)"
 	And Save is "Disabled"
 	And Security is "Selected"
 	And Logging is "Unselected"
@@ -64,7 +64,7 @@ Scenario: Selecting Resource Permissions
 
 Scenario: Warewolf is not allowing to save Duplicate server permissions 
 	Given I have settings tab opened
-	And server selected as "localhost (Connected)"
+	And "server" selected as "localhost (Connected)"
 	And Save is "Disabled"
 	And Security is "Selected"
 	And Logging is "Unselected"
@@ -81,7 +81,7 @@ Scenario: Warewolf is not allowing to save Duplicate server permissions
 
 Scenario: Warewolf is not allowing to save Duplicate Resource permissions 
 	Given I have settings tab opened
-	And server selected as "localhost (Connected)"
+	And "server" selected as "localhost (Connected)"
 	And Save is "Disabled"
 	And Security is "Selected"
 	And Logging is "Unselected"
@@ -99,7 +99,7 @@ Scenario: Warewolf is not allowing to save Duplicate Resource permissions
 
 Scenario: Selecting Logging is showing Server and Studio log settings
 	Given I have settings tab opened
-	And server selected as "localhost (Connected)"
+	And "server" selected as "localhost (Connected)"
 	And Server edit is "Disabled"
 	And server connection is "Disabled"
 	And Save is "Disabled"
