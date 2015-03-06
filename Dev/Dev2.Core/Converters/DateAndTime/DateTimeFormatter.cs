@@ -165,30 +165,30 @@ namespace Dev2.Converters.DateAndTime
         /// </summary>
         private static void CreateDateTimeFormatParts()
         {
-            _dateTimeFormatParts.Add("yy", Format_yy);
-            _dateTimeFormatParts.Add("yyyy", Format_yyyy);
-            _dateTimeFormatParts.Add("mm", Format_mm);
-            _dateTimeFormatParts.Add("m", Format_m);
-            _dateTimeFormatParts.Add("M", Format_M);
-            _dateTimeFormatParts.Add("MM", Format_MM);
-            _dateTimeFormatParts.Add("d", Format_d);
-            _dateTimeFormatParts.Add("dd", Format_dd);
-            _dateTimeFormatParts.Add("DW", Format_DW);
-            _dateTimeFormatParts.Add("dW", Format_dW);
-            _dateTimeFormatParts.Add("dw", Format_dw);
-            _dateTimeFormatParts.Add("dy", Format_dy);
-            _dateTimeFormatParts.Add("w", Format_w);
-            _dateTimeFormatParts.Add("ww", Format_ww);
-            _dateTimeFormatParts.Add("24h", Format_24h);
-            _dateTimeFormatParts.Add("12h", Format_12h);
-            _dateTimeFormatParts.Add("min", Format_min);
-            _dateTimeFormatParts.Add("ss", Format_ss);
-            _dateTimeFormatParts.Add("sp", Format_sp);
-            _dateTimeFormatParts.Add("am/pm", Format_am_pm);
-            _dateTimeFormatParts.Add("Z", Format_Z);
-            _dateTimeFormatParts.Add("ZZ", Format_ZZ);
-            _dateTimeFormatParts.Add("ZZZ", Format_ZZZ);
-            _dateTimeFormatParts.Add("Era", Format_Era);
+            _dateTimeFormatParts.Add("yy", Formatyy);
+            _dateTimeFormatParts.Add("yyyy", Formatyyyy);
+            _dateTimeFormatParts.Add("mm", Formatmm);
+            _dateTimeFormatParts.Add("m", Formatm);
+            _dateTimeFormatParts.Add("M", FormatM);
+            _dateTimeFormatParts.Add("MM", FormatMm);
+            _dateTimeFormatParts.Add("d", Formatd);
+            _dateTimeFormatParts.Add("dd", Formatdd);
+            _dateTimeFormatParts.Add("DW", FormatDw);
+            _dateTimeFormatParts.Add("dW", FormatdW);
+            _dateTimeFormatParts.Add("dw", Formatdw);
+            _dateTimeFormatParts.Add("dy", Formatdy);
+            _dateTimeFormatParts.Add("w", Formatw);
+            _dateTimeFormatParts.Add("ww", Formatww);
+            _dateTimeFormatParts.Add("24h", Format24H);
+            _dateTimeFormatParts.Add("12h", Format12H);
+            _dateTimeFormatParts.Add("min", Formatmin);
+            _dateTimeFormatParts.Add("ss", Formatss);
+            _dateTimeFormatParts.Add("sp", Formatsp);
+            _dateTimeFormatParts.Add("am/pm", Formatampm);
+            _dateTimeFormatParts.Add("Z", FormatZ);
+            _dateTimeFormatParts.Add("ZZ", FormatZz);
+            _dateTimeFormatParts.Add("ZZZ", FormatZzz);
+            _dateTimeFormatParts.Add("Era", FormatEra);
         }
 
         //2012.09.27: massimo.guerrera - Added for the new functionality for the time modification
@@ -211,67 +211,67 @@ namespace Dev2.Converters.DateAndTime
 
         #region Format Methods
 
-        private static string Format_yy(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        private static string Formatyy(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("yy");
         }
 
-        private static string Format_yyyy(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        private static string Formatyyyy(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("yyyy");
         }
 
-        private static string Format_mm(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        private static string Formatmm(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("MM");
         }
 
-        private static string Format_m(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        private static string Formatm(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("%M");
         }
 
-        private static string Format_MM(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        private static string FormatMm(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("MMMM");
         }
 
-        private static string Format_M(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        private static string FormatM(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("MMM");
         }
 
-        private static string Format_d(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        private static string Formatd(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("%d");
         }
 
-        private static string Format_dd(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        private static string Formatdd(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("dd");
         }
 
-        private static string Format_DW(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        private static string FormatDw(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("dddd");
         }
 
-        private static string Format_dW(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        private static string FormatdW(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("ddd");
         }
 
-        private static string Format_dw(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        private static string Formatdw(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return DateTimeParser.GetDayOfWeekInt(dateTime.DayOfWeek).ToString(CultureInfo.InvariantCulture);
         }
 
-        private static string Format_dy(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        private static string Formatdy(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.DayOfYear.ToString(CultureInfo.InvariantCulture);
         }
 
-        private static string Format_w(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        private static string Formatw(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             //27.09.2012: massimo.guerrera - Gets the week of the year according to the rule specified
             return
@@ -279,7 +279,7 @@ namespace Dev2.Converters.DateAndTime
                     .ToString(CultureInfo.InvariantCulture);
         }
 
-        private static string Format_ww(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        private static string Formatww(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             //27.09.2012: massimo.guerrera - Gets the week of the year according to the rule specified with a padding of 0 if needed.
             return
@@ -288,53 +288,53 @@ namespace Dev2.Converters.DateAndTime
                     .PadLeft(2, '0');
         }
 
-        private static string Format_24h(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        private static string Format24H(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("HH");
         }
 
-        private static string Format_12h(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        private static string Format12H(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("hh");
         }
 
-        private static string Format_min(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        private static string Formatmin(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("mm");
         }
 
-        private static string Format_ss(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        private static string Formatss(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("ss");
         }
 
-        private static string Format_sp(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        private static string Formatsp(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             //2013.02.12: Ashley Lewis - Bug 8725, Task 8840 - The "FFF" format has a tenancy to shave trailing zeros off milliseconds
             return dateTime.Millisecond.ToString(CultureInfo.InvariantCulture);
         }
 
-        private static string Format_am_pm(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        private static string Formatampm(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("tt");
         }
 
-        private static string Format_Z(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        private static string FormatZ(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTimeResultTO.TimeZone.ShortName;
         }
 
-        private static string Format_ZZ(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        private static string FormatZz(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTimeResultTO.TimeZone.Name;
         }
 
-        private static string Format_ZZZ(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        private static string FormatZzz(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTimeResultTO.TimeZone.LongName;
         }
 
-        private static string Format_Era(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        private static string FormatEra(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("gg");
         }
