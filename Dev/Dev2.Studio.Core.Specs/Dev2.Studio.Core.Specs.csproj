@@ -164,17 +164,9 @@
       <Project>{9c43d5a2-fefd-4632-9bf2-ee0e4c05bebc}</Project>
       <Name>Dev2.Runtime.Configuration</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Studio.Core.Tests\Dev2.Studio.Core.Tests.csproj">
-      <Project>{1fd73e36-fc73-4bdf-bcba-278a44f06550}</Project>
-      <Name>Dev2.Studio.Core.Tests</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
       <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>
       <Name>Dev2.Studio.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Studio\Dev2.Studio.csproj">
-      <Project>{62247a80-2266-4295-a8f6-a05507e2796e}</Project>
-      <Name>Dev2.Studio</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -179,12 +179,6 @@
       <DependentUpon>Settings Permissions.feature</DependentUpon>
     </Compile>
     <Compile Include="Settings\SettingsPermissionsSteps.cs" />
-    <Compile Include="Scheduler\SchedulerSteps.cs" />
-    <Compile Include="Scheduler\Scheduler.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Scheduler.feature</DependentUpon>
-    </Compile>
     <Compile Include="Toolbox\ControlFlow\Decision\Decision.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -463,10 +457,6 @@
       <LastGenOutput>Settings Permissions1.feature.cs</LastGenOutput>
     </None>
     <None Include="runtests.cmd" />
-    <None Include="Scheduler\Scheduler.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Scheduler.feature.cs</LastGenOutput>
-    </None>
     <None Include="SpecRunTestProfile.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -704,10 +694,6 @@
     <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
       <Project>{A58B157B-960B-4E84-8957-24E4884C5C77}</Project>
       <Name>Dev2.Studio.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Studio\Dev2.Studio.csproj">
-      <Project>{62247A80-2266-4295-A8F6-A05507E2796E}</Project>
-      <Name>Dev2.Studio</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.TaskScheduler.Wrappers\Dev2.TaskScheduler.Wrappers.csproj">
       <Project>{1b229665-1631-4275-afbd-cb5b7775e4ca}</Project>
