@@ -327,14 +327,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get { return !ToNewDbSource().Equals(_dbSource) ; }
         }
-        private void RaiseCanExecuteChanged(ICommand commandForCanExecuteChange)
-        {
-            var command = commandForCanExecuteChange as DelegateCommand;
-            if (command != null)
-            {
-                command.RaiseCanExecuteChanged();
-            }
-        }
+
         public IList<enSourceType> Types { get; set; }
 
         public enSourceType ServerType
@@ -360,8 +353,8 @@ namespace Warewolf.Studio.ViewModels
                     OnPropertyChanged(() => Header);
                     OnPropertyChanged(() => UserAuthenticationSelected);
                     TestPassed = false;
-                    RaiseCanExecuteChanged(TestCommand);
-                    RaiseCanExecuteChanged(OkCommand);
+                    ViewModelUtils.RaiseCanExecuteChanged(TestCommand);
+                    ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
                 }
             }
         }
@@ -377,8 +370,8 @@ namespace Warewolf.Studio.ViewModels
                     OnPropertyChanged(() => ServerName);
                     OnPropertyChanged(() => Header);
                     TestPassed = false;
-                    RaiseCanExecuteChanged(TestCommand);
-                    RaiseCanExecuteChanged(OkCommand);
+                    ViewModelUtils.RaiseCanExecuteChanged(TestCommand);
+                    ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
                 }
             }
         }
@@ -392,7 +385,7 @@ namespace Warewolf.Studio.ViewModels
                 _databaseName = value;
                 OnPropertyChanged(() => DatabaseName);
                 OnPropertyChanged(() => Header);
-                RaiseCanExecuteChanged(OkCommand);
+                ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
             }
         }
 
@@ -405,8 +398,8 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => UserName);
                 OnPropertyChanged(() => Header);
                 TestPassed = false;
-                RaiseCanExecuteChanged(TestCommand);
-                RaiseCanExecuteChanged(OkCommand);
+                ViewModelUtils.RaiseCanExecuteChanged(TestCommand);
+                ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
             }
         }
 
@@ -419,8 +412,8 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Password);
                 OnPropertyChanged(() => Header);
                 TestPassed = false;
-                RaiseCanExecuteChanged(TestCommand);
-                RaiseCanExecuteChanged(OkCommand);
+                ViewModelUtils.RaiseCanExecuteChanged(TestCommand);
+                ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
             }
         }
 
@@ -449,7 +442,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _testPassed = value;
                 OnPropertyChanged(()=>TestPassed);
-                RaiseCanExecuteChanged(OkCommand);
+                ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
            
             }
         
@@ -536,8 +529,8 @@ namespace Warewolf.Studio.ViewModels
                 _testing = value;
                
                 OnPropertyChanged(()=>Testing);
-                RaiseCanExecuteChanged(CancelTestCommand);
-                RaiseCanExecuteChanged(TestCommand);
+                ViewModelUtils.RaiseCanExecuteChanged(CancelTestCommand);
+                ViewModelUtils.RaiseCanExecuteChanged(TestCommand);
             }
         }
 

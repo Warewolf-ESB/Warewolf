@@ -38,12 +38,9 @@ namespace Warewolf.Studio.ViewModels
             CanEditSource = true;
             CreateNewSourceCommand = new DelegateCommand(model.CreateNewSource);
             EditSourceCommand = new DelegateCommand(()=>model.EditSource(SelectedSource));
-            EditSourceCommand = new DelegateCommand(()=>{});
             Sources = model.RetrieveSources();
            
             Header = "New DB Service";
-            Inputs = new Collection<IDbInput> { new DbInput("bob", "the"), new DbInput("dora", "eplorer"), new DbInput("Zummy", "Gummy") };
-            CreateNewSourceCommand = new DelegateCommand(()=>{});
             TestProcedureCommand = new DelegateCommand(() =>
             {
                 TestResults = model.TestService(ToModel());
@@ -52,12 +49,14 @@ namespace Warewolf.Studio.ViewModels
                     CanEditMappings = true;
                     OutputMapping = new ObservableCollection<IDbOutputMapping>( GetDbOutputMappingsFromTable(TestResults));
                 }
-
-                
             });
             Inputs = new ObservableCollection<IDbInput>();
-            SaveCommand = new DelegateCommand(Save);
-             Header = "New DB Service";
+            SaveCommand = new DelegateCommand(Save,CanSave);
+        }
+
+        private bool CanSave()
+        {
+            return OutputMapping != null && OutputMapping.Count > 0;
         }
 
         List<IDbOutputMapping> GetDbOutputMappingsFromTable(DataTable testResults)
@@ -105,11 +104,6 @@ namespace Warewolf.Studio.ViewModels
 
         public string Name { get; set; }
 
-        IList<IDbInput> GetInputValues()
-        {
-            return Inputs.ToList();
-        }
-
         #region Implementation of IManageDbServiceViewModel
 
         public ICollection<IDbSource> Sources
@@ -137,7 +131,7 @@ namespace Warewolf.Studio.ViewModels
                 _selectedSource = value;
                 CanSelectProcedure = value != null;
                 AvalaibleActions = _model.GetActions(SelectedSource);
-                OnPropertyChanged(() => Sources);
+                OnPropertyChanged(() => SelectedSource);
             }
         }
         public IDbAction SelectedAction
@@ -152,7 +146,7 @@ namespace Warewolf.Studio.ViewModels
 
                 CanTest = _selectedAction != null;
                 Inputs = _selectedAction != null ? _selectedAction.Inputs : new Collection<IDbInput>();
-                OnPropertyChanged(() => Sources);
+                OnPropertyChanged(() => SelectedAction);
             }
         }
         public ICollection<IDbAction> AvalaibleActions
@@ -259,6 +253,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _outputMapping = value;
                 OnPropertyChanged(()=>OutputMapping);
+                ViewModelUtils.RaiseCanExecuteChanged(SaveCommand);
             }
         }
         public ICommand SaveCommand { get;  set; }

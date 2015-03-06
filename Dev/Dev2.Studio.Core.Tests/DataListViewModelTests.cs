@@ -60,7 +60,7 @@ namespace Dev2.Core.Tests
 
             //_mockMediatorRepo.Setup(c => c.addKey(It.IsAny<Int32>(), It.IsAny<MediatorMessages>(), It.IsAny<String>()));
             //_mockMediatorRepo.Setup(c => c.deregisterAllItemMessages(It.IsAny<Int32>()));
-            _dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            _dataListViewModel = new DataListViewModel();
             _dataListViewModel.InitializeDataListViewModel(_mockResourceModel.Object);
             //Mock<IMainViewModel> _mockMainViewModel = Dev2MockFactory.SetupMainViewModel();
             _dataListViewModel.RecsetCollection.Clear();
@@ -414,7 +414,7 @@ namespace Dev2.Core.Tests
 
             _mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
 
-            _dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            _dataListViewModel = new DataListViewModel();
             _dataListViewModel.InitializeDataListViewModel(_mockResourceModel.Object);
             _dataListViewModel.RecsetCollection.Clear();
             _dataListViewModel.ScalarCollection.Clear();
@@ -445,7 +445,7 @@ namespace Dev2.Core.Tests
 
             _mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
 
-            _dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            _dataListViewModel = new DataListViewModel();
             _dataListViewModel.InitializeDataListViewModel(_mockResourceModel.Object);
             _dataListViewModel.RecsetCollection.Clear();
             _dataListViewModel.ScalarCollection.Clear();
@@ -476,7 +476,7 @@ namespace Dev2.Core.Tests
 
             _mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
 
-            _dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            _dataListViewModel = new DataListViewModel();
             _dataListViewModel.InitializeDataListViewModel(_mockResourceModel.Object);
             _dataListViewModel.RecsetCollection.Clear();
             _dataListViewModel.ScalarCollection.Clear();
@@ -506,7 +506,7 @@ namespace Dev2.Core.Tests
 
             _mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
 
-            _dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            _dataListViewModel = new DataListViewModel();
             _dataListViewModel.InitializeDataListViewModel(_mockResourceModel.Object);
             _dataListViewModel.RecsetCollection.Clear();
             _dataListViewModel.ScalarCollection.Clear();
@@ -542,7 +542,7 @@ namespace Dev2.Core.Tests
 
             _mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
 
-            _dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            _dataListViewModel = new DataListViewModel();
             _dataListViewModel.InitializeDataListViewModel(_mockResourceModel.Object);
             _dataListViewModel.RecsetCollection.Clear();
             _dataListViewModel.ScalarCollection.Clear();
@@ -572,7 +572,7 @@ namespace Dev2.Core.Tests
 
             _mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
 
-            _dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            _dataListViewModel = new DataListViewModel();
             _dataListViewModel.InitializeDataListViewModel(_mockResourceModel.Object);
             _dataListViewModel.RecsetCollection.Clear();
             _dataListViewModel.ScalarCollection.Clear();
@@ -1477,7 +1477,7 @@ namespace Dev2.Core.Tests
         public void DataListViewModel_SetUnusedDataListItems_HasRecsetsWithFieldsThatMatchParts_ShouldSetChildrenIsUsedFalse()
         {
             //------------Setup for test--------------------------
-            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            var dataListViewModel = new DataListViewModel();
             const string recsetName = "recset";
             const string firstFieldName = "f1";
             var recSetDataModel = CreateRecsetDataListModelWithTwoFields(recsetName, firstFieldName, "f2");
@@ -1498,7 +1498,7 @@ namespace Dev2.Core.Tests
         public void DataListViewModel_RemoveDataListItem_WithNullItem_ShouldDoNothing()
         {
             //------------Setup for test--------------------------
-            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            var dataListViewModel = new DataListViewModel();
             const string recsetName = "recset";
             const string firstFieldName = "f1";
             var recSetDataModel = CreateRecsetDataListModelWithTwoFields(recsetName, firstFieldName, "f2");
@@ -1520,7 +1520,7 @@ namespace Dev2.Core.Tests
         public void DataListViewModel_RemoveDataListItem_WithScalarItem_ShouldRemoveFromScalarCollection()
         {
             //------------Setup for test--------------------------
-            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            var dataListViewModel = new DataListViewModel();
             var scalarItem = new DataListItemModel("scalar");
             dataListViewModel.ScalarCollection.Add(scalarItem);
             //----------------------Precondition----------------------------
@@ -1537,7 +1537,7 @@ namespace Dev2.Core.Tests
         public void DataListViewModel_RemoveDataListItem_WithRecsetItem_ShouldRemoveFromRecsetCollection()
         {
             //------------Setup for test--------------------------
-            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            var dataListViewModel = new DataListViewModel();
             const string recsetName = "recset";
             const string firstFieldName = "f1";
             var recSetDataModel = CreateRecsetDataListModelWithTwoFields(recsetName, firstFieldName, "f2");
@@ -1559,7 +1559,7 @@ namespace Dev2.Core.Tests
         public void DataListViewModel_RemoveDataListItem_WithRecsetFieldItem_ShouldRemoveFromRecsetChildrenCollection()
         {
             //------------Setup for test--------------------------
-            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            var dataListViewModel = new DataListViewModel();
             const string recsetName = "recset";
             const string firstFieldName = "f1";
             IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
@@ -1584,7 +1584,7 @@ namespace Dev2.Core.Tests
         public void DataListViewModel_MissingDataListParts_ScalarPartNotInDataList_ShouldReturnPartInList()
         {
             //------------Setup for test--------------------------
-            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            var dataListViewModel = new DataListViewModel();
             const string scalarName = "scalar";
             var parts = new List<IDataListVerifyPart> { CreateScalarPart(scalarName).Object };
             //----------------------Precondition----------------------------
@@ -1601,7 +1601,7 @@ namespace Dev2.Core.Tests
         public void DataListViewModel_MissingDataListParts_ScalarPartInDataList_ShouldNotReturnPartInList()
         {
             //------------Setup for test--------------------------
-            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            var dataListViewModel = new DataListViewModel();
             const string scalarName = "scalar";
             var scalarItem = new DataListItemModel(scalarName);
             dataListViewModel.ScalarCollection.Add(scalarItem);
@@ -1621,7 +1621,7 @@ namespace Dev2.Core.Tests
         public void DataListViewModel_MissingDataListParts_WithRecsetPartNotInDataList_ShouldReturnPartInList()
         {
             //------------Setup for test--------------------------
-            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            var dataListViewModel = new DataListViewModel();
             const string recsetName = "recset";
             const string firstFieldName = "f1";
             var dataListParts = new List<IDataListVerifyPart>();
@@ -1640,7 +1640,7 @@ namespace Dev2.Core.Tests
         public void DataListViewModel_MissingDataListParts_WithRecsetFieldPartNotInDataList_ShouldReturnPartInList()
         {
             //------------Setup for test--------------------------
-            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            var dataListViewModel = new DataListViewModel();
             const string recsetName = "recset";
             const string firstFieldName = "f1";
             IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
@@ -1664,7 +1664,7 @@ namespace Dev2.Core.Tests
         public void DataListViewModel_MissingDataListParts_WithRecsetPartInDataList_ShouldNotReturnPartInList()
         {
             //------------Setup for test--------------------------
-            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            var dataListViewModel = new DataListViewModel();
             const string recsetName = "recset";
             const string firstFieldName = "f1";
             IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
@@ -1689,7 +1689,7 @@ namespace Dev2.Core.Tests
         public void DataListViewModel_MissingDataListParts_WithRecsetFieldPartInDataList_ShouldNotReturnPartInList()
         {
             //------------Setup for test--------------------------
-            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            var dataListViewModel = new DataListViewModel();
             const string recsetName = "recset";
             const string firstFieldName = "f1";
             IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
@@ -1715,7 +1715,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             IResourceModel resourceModel = new Mock<IResourceModel>().Object;
-            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel);
             const string scalarName = "scalar";
             var scalarItem = new DataListItemModel(scalarName) { IsUsed = false };
@@ -1734,7 +1734,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             IResourceModel resourceModel = new Mock<IResourceModel>().Object;
-            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel);
             const string recsetName = "recset";
             const string firstFieldName = "f1";
@@ -1759,7 +1759,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             IResourceModel resourceModel = new Mock<IResourceModel>().Object;
-            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel);
             const string recsetName = "recset";
             const string firstFieldName = "f1";
@@ -1784,7 +1784,7 @@ namespace Dev2.Core.Tests
         public void DataListViewModel_SearchText_NoMatchingScalars_ShouldSetScalarNotVisible()
         {
             //------------Setup for test--------------------------
-            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            var dataListViewModel = new DataListViewModel();
             const string scalarName = "scalar";
             var scalarItem = new DataListItemModel(scalarName) { IsVisable = true };
             dataListViewModel.ScalarCollection.Add(scalarItem);
@@ -1800,7 +1800,7 @@ namespace Dev2.Core.Tests
         public void DataListViewModel_SearchText_MatchingScalars_ShouldSetScalarVisible()
         {
             //------------Setup for test--------------------------
-            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            var dataListViewModel = new DataListViewModel();
             const string scalarName = "scalar";
             var scalarItem = new DataListItemModel(scalarName) { IsVisable = false };
             dataListViewModel.ScalarCollection.Add(scalarItem);
@@ -1817,7 +1817,7 @@ namespace Dev2.Core.Tests
         public void DataListViewModel_SearchText_WithMatchingRecset_ShouldSetRecsetVisible()
         {
             //------------Setup for test--------------------------
-            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            var dataListViewModel = new DataListViewModel();
             const string recsetName = "recset";
             const string firstFieldName = "f1";
             IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
@@ -1837,7 +1837,7 @@ namespace Dev2.Core.Tests
         public void DataListViewModel_SearchText_WithNoMatchingRecset_ShouldSetRecsetNotVisible()
         {
             //------------Setup for test--------------------------
-            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            var dataListViewModel = new DataListViewModel();
             const string recsetName = "recset";
             const string firstFieldName = "f1";
             IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
@@ -1857,7 +1857,7 @@ namespace Dev2.Core.Tests
         public void DataListViewModel_SearchText_WithMatchingRecsetField_ShouldSetRecsetFieldVisible()
         {
             //------------Setup for test--------------------------
-            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            var dataListViewModel = new DataListViewModel();
             const string recsetName = "recset";
             const string firstFieldName = "f1";
             IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
@@ -1878,7 +1878,7 @@ namespace Dev2.Core.Tests
         public void DataListViewModel_SearchText_WithNoMatchingRecsetField_ShouldSetRecsetFieldNotVisible()
         {
             //------------Setup for test--------------------------
-            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            var dataListViewModel = new DataListViewModel();
             const string recsetName = "recset";
             const string firstFieldName = "f1";
             IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
@@ -1901,7 +1901,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             IResourceModel resourceModel = new Mock<IResourceModel>().Object;
             Mock<IEventAggregator> eventAggregator = new Mock<IEventAggregator>();
-            var dataListViewModel = new DataListViewModel(eventAggregator.Object);
+            var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel);
             eventAggregator.Setup(c => c.Publish(It.IsAny<UpdateIntellisenseMessage>())).Verifiable();
             var dataListParts = new List<IDataListVerifyPart>();

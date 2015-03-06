@@ -1231,7 +1231,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         {
             var mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
 
-            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(mockResourceModel.Object);
             dataListViewModel.RecsetCollection.Clear();
             dataListViewModel.ScalarCollection.Clear();

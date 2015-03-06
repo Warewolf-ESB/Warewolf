@@ -4013,7 +4013,7 @@ namespace Dev2.Core.Tests.Workflows
 
         static IDataListViewModel CreateDataListViewModel(Mock<IContextualResourceModel> mockResourceModel, IEventAggregator eventAggregator = null)
         {
-            var dataListViewModel = new DataListViewModel(eventAggregator ?? new Mock<IEventAggregator>().Object);
+            var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(mockResourceModel.Object);
             return dataListViewModel;
         }

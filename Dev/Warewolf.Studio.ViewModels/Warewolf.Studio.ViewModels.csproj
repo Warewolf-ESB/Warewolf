@@ -129,6 +129,7 @@
     <Compile Include="VariableList\DatalistViewScalarViewModel.cs" />
     <Compile Include="VariableList\VariableListViewModel.cs" />
     <Compile Include="VersionInfoViewModel.cs" />
+    <Compile Include="ViewModelUtils.cs" />
     <Compile Include="WarewolfInvalidTypeException.cs" />
     <Compile Include="WorkflowServiceDesignerViewModel.cs" />
   </ItemGroup>
@@ -197,12 +198,6 @@
       <Project>{c4ac2140-5663-4d3c-9fcd-6d65004cd54e}</Project>
       <Name>Warewolf.Studio.Themes.Luna</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="DummyModels\Icons.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

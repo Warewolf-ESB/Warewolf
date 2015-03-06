@@ -66,7 +66,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
     {
         #region private fields
 
-        IDataListViewModel _dataListViewModel;
+        //IDataListViewModel _dataListViewModel;
         IWorkSurfaceViewModel _workSurfaceViewModel;
         DebugOutputViewModel _debugOutputViewModel;
         IContextualResourceModel _contextualResourceModel;
@@ -124,23 +124,11 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             get
             {
-                return _dataListViewModel;
+                return null;
             }
             set
             {
-                if(_dataListViewModel == value)
-                {
-                    return;
-                }
-
-                _dataListViewModel = value;
-                if(_dataListViewModel != null)
-                {
-                    _dataListViewModel.ConductWith(this);
-                    _dataListViewModel.Parent = this;
-                }
-
-                NotifyOfPropertyChange(() => DataListViewModel);
+                
             }
         }
 
@@ -798,7 +786,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             var model = DataListViewModel as SimpleBaseViewModel;
             if(model != null)
             {
-                DataListViewModel.Parent = null;
+                //DataListViewModel.Parent = null;
                 model.Dispose();
                 DataListViewModel.Dispose();
             }

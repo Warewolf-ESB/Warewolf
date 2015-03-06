@@ -63,7 +63,7 @@
 
 
             <Grid Grid.Row="0" HorizontalAlignment="Stretch"  >
-
+                <!-- Select an Source-->
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" ></RowDefinition>
@@ -74,34 +74,33 @@
                     <TextBlock Margin="10"  Text="{Binding DataSourceHeader, Mode=OneWay}" Style="{StaticResource SourceHeader}"></TextBlock>
                 </StackPanel>
                 <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
-                    <ComboBox  ItemsSource="{Binding Sources}" DisplayMemberPath="Name" Width="250" Margin="{StaticResource ElementBorderTop}"  SelectedItem="{Binding SelectedSource}" />
+                    <ComboBox x:Name="SourcesComboBox" ItemsSource="{Binding Sources}" DisplayMemberPath="Name" Width="250" Margin="{StaticResource ElementBorderTop}"  SelectedItem="{Binding SelectedSource}" />
                     <Button  Command="{Binding EditSourceCommand}" IsEnabled="{Binding CanEditSource}" Width="25" Content=" ... " Margin="{StaticResource ElementBorderLeftTop}"></Button>
                     <TextBlock Text="or" Margin="{StaticResource ElementBorderLeftTop}"></TextBlock>
                     <Button  Content="{Binding NewButtonLabel}" Margin="{StaticResource ElementBorderLeftTop}" Command="{Binding CreateNewSourceCommand}" Width="100" ></Button>
                 </StackPanel>
             </Grid>
 
-            <Grid Grid.Row="1" Grid.Column="0" Visibility="{Binding Path=CanSelectProcedure, Converter={StaticResource BoolToVis}}">
-                <!-- Select an Source-->
+            <Grid x:Name="SelectAnActionGrid" Grid.Row="1" Grid.Column="0" Visibility="{Binding Path=CanSelectProcedure, Converter={StaticResource BoolToVis}}">
+                
                 <Grid.RowDefinitions>
                     <RowDefinition ></RowDefinition>
                     <RowDefinition></RowDefinition>
                     <RowDefinition Height="7" ></RowDefinition>
                 </Grid.RowDefinitions>
                 <StackPanel  Grid.Row="0" Grid.Column="0"  Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" Orientation="Horizontal">
-                    <TextBlock Margin="10" Text="{Binding DataSourceActionHeader, Mode=OneWay}" Style="{StaticResource SourceHeader}" ></TextBlock>
-                    <!-- Choose data source header-->
+                    <TextBlock Margin="10" Text="{Binding DataSourceActionHeader, Mode=OneWay}" Style="{StaticResource SourceHeader}" ></TextBlock>                    
                 </StackPanel>
                 <StackPanel Grid.Row="1" HorizontalAlignment="Left" >
                     <!-- Choose data Source Action-->
 
-                    <ComboBox Width="280" ItemsSource="{Binding AvalaibleActions}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedAction}" Text="Choose" Margin="{StaticResource ElementBorderTop}"></ComboBox>
+                    <ComboBox x:Name="ActionsComboBox" Width="280" ItemsSource="{Binding AvalaibleActions}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedAction}" Text="Choose" Margin="{StaticResource ElementBorderTop}"></ComboBox>
 
                 </StackPanel>
             </Grid>
 
 
-            <Grid Grid.Row="3" Grid.Column="0" Visibility="{Binding Path=CanTest, Converter={StaticResource BoolToVis}}">
+            <Grid x:Name="TestActionGrid" Grid.Row="3" Grid.Column="0" Visibility="{Binding Path=CanTest, Converter={StaticResource BoolToVis}}">
                 <!-- Test-->
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
@@ -125,7 +124,7 @@
                         <RowDefinition Height="Auto"></RowDefinition>
                         <RowDefinition Height="Auto"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <ListBox  Style="{x:Null}" ItemsSource="{Binding Inputs}" BorderBrush="Transparent" >
+                    <ListBox x:Name="InputsList" Style="{x:Null}" ItemsSource="{Binding Inputs}" BorderBrush="Transparent" >
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="db:IDbInput">
                                 <StackPanel Orientation="Horizontal" Style="{x:Null}" >
@@ -136,17 +135,17 @@
                         </ListBox.ItemTemplate>
 
                     </ListBox>
-                    <Button Grid.Column="0" Grid.Row="1" Margin="{StaticResource ElementBorderTop}" HorizontalAlignment="Right" Command="{Binding TestProcedureCommand}" VerticalAlignment="Bottom"  Width="100">Test</Button>
+                    <Button x:Name="TestActionButton" Grid.Column="0" Grid.Row="1" Margin="{StaticResource ElementBorderTop}" HorizontalAlignment="Right" Command="{Binding TestProcedureCommand}" VerticalAlignment="Bottom"  Width="100">Test</Button>
                 </Grid>
 
                 <TextBlock Grid.Row="4" Text="{Binding OutputsLabel}" Margin="{StaticResource ElementBorderTop}" FontWeight="Bold"></TextBlock>
-                <DataGrid Grid.Row="5" Margin="{StaticResource ElementBorderTop}"  HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding TestResults}"   GridLinesVisibility="Vertical" CanUserSortColumns="True" ColumnWidth="*" AutoGenerateColumns="True"  BorderBrush="Transparent" 
+                <DataGrid x:Name="OutputsDataGrid" Grid.Row="5" Margin="{StaticResource ElementBorderTop}"  HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding TestResults}"   GridLinesVisibility="Vertical" CanUserSortColumns="True" ColumnWidth="*" AutoGenerateColumns="True"  BorderBrush="Transparent" 
                   CanUserResizeColumns="True" CanUserReorderColumns="True"  VerticalGridLinesBrush="Transparent" >
 
                 </DataGrid>
             </Grid>
 
-            <Grid Grid.Row="4" Grid.Column="0" Visibility="{Binding Path=CanEditMappings,Converter={StaticResource BoolToVis}}">
+            <Grid x:Name="MappingsGrid" Grid.Row="4" Grid.Column="0" Visibility="{Binding Path=CanEditMappings,Converter={StaticResource BoolToVis}}">
                 <!-- Mappings-->
                 <Grid.RowDefinitions>
                     <RowDefinition></RowDefinition>
@@ -160,7 +159,7 @@
                     <TextBlock Margin="10" Text="{Binding MappingsHeader, Mode=OneWay}" Style="{StaticResource SourceHeader}" ></TextBlock>
                 </StackPanel>
                 <TextBlock FontWeight="Bold" Grid.Row="1" Margin="{StaticResource ElementBorderTop}" Text="{Binding InputsLabel}"></TextBlock>
-                <DataGrid Grid.Row="2" ItemsSource="{Binding Inputs}" Margin="{StaticResource ElementBorderTop}" HorizontalScrollBarVisibility="Disabled"    GridLinesVisibility="Vertical" CanUserSortColumns="True"  AutoGenerateColumns="False"  BorderBrush="Transparent" 
+                <DataGrid x:Name="InputsMappingDataGrid" Grid.Row="2" ItemsSource="{Binding Inputs}" Margin="{StaticResource ElementBorderTop}" HorizontalScrollBarVisibility="Disabled"    GridLinesVisibility="Vertical" CanUserSortColumns="True"  AutoGenerateColumns="False"  BorderBrush="Transparent" 
                   CanUserResizeColumns="True" CanUserReorderColumns="True" VerticalGridLinesBrush="Transparent">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Header="Input" CanUserResize="True" Width="150" SortMemberPath="Name">
@@ -196,10 +195,9 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
-                <!-- Choose data Source Action-->
 
                 <TextBlock Grid.Row="3" FontWeight="Bold" Text="{Binding OutputsLabel}" Margin="{StaticResource ElementBorderTop}" ></TextBlock>
-                <DataGrid Grid.Row="4" ItemsSource="{Binding OutputMapping}"  Margin="{StaticResource ElementBorderTop}" HorizontalScrollBarVisibility="Disabled"    GridLinesVisibility="Vertical" CanUserSortColumns="True"  AutoGenerateColumns="False"  BorderBrush="Transparent" 
+                <DataGrid x:Name="OutputsMappingDataGrid" Grid.Row="4" ItemsSource="{Binding OutputMapping}"  Margin="{StaticResource ElementBorderTop}" HorizontalScrollBarVisibility="Disabled"    GridLinesVisibility="Vertical" CanUserSortColumns="True"  AutoGenerateColumns="False"  BorderBrush="Transparent" 
                   CanUserResizeColumns="True" CanUserReorderColumns="True" VerticalGridLinesBrush="Transparent">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Header="Output" CanUserResize="True" Width="150" SortMemberPath="Name">
@@ -223,7 +221,7 @@
                 </DataGrid>
             </Grid>
             <Grid Grid.Row="5" Grid.Column="0">
-                <Button  Margin="{StaticResource ElementBorderTop}" HorizontalAlignment="Right" Command="{Binding SaveCommand}" VerticalAlignment="Bottom"  Width="100">Save</Button>
+                <Button x:Name="SaveButton"  Margin="{StaticResource ElementBorderTop}" HorizontalAlignment="Right" Command="{Binding SaveCommand}" VerticalAlignment="Bottom"  Width="100">Save</Button>
 
             </Grid>
         </Grid>

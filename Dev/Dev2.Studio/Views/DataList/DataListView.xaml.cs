@@ -159,16 +159,16 @@ namespace Dev2.Studio.Views.DataList
 
         private void UIElement_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            var vm = DataContext as IDataListViewModel;
-            if(vm != null)
-            {
-                var model = vm.Parent as WorkSurfaceContextViewModel;
-                if(model != null)
-                {
-                    model.FindMissing();
-                }
-
-            }
+//            var vm = DataContext as IDataListViewModel;
+//            if(vm != null)
+//            {
+//                var model = vm.Parent as WorkSurfaceContextViewModel;
+//                if(model != null)
+//                {
+//                    model.FindMissing();
+//                }
+//
+//            }
         }
 
     }

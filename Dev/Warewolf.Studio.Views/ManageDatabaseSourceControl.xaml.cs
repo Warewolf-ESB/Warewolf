@@ -10,7 +10,7 @@ namespace Warewolf.Studio.Views
     /// <summary>
     /// Interaction logic for ManageServerControl.xaml
     /// </summary>
-    public partial class ManageDatabaseSourceControl:IManageDatabaseSourceView
+    public partial class ManageDatabaseSourceControl:IManageDatabaseSourceView,ICheckControlEnabledView
     {
         public ManageDatabaseSourceControl()
         {
@@ -20,7 +20,7 @@ namespace Warewolf.Studio.Views
 
         public void EnterServerName(string serverName)
         {
-            //ServerTextBox.Text = serverName;
+            ServerTextBox.Text = serverName;
         }
 
         public Visibility GetDatabaseDropDownVisibility()
@@ -33,15 +33,14 @@ namespace Warewolf.Studio.Views
             return DatabaseComboxContainer.Visibility;
         }
 
-        public bool GetControlEnable(string controlName)
+        public bool GetControlEnabled(string controlName)
         {
-            if (controlName == "Save")
+            switch (controlName)
             {
-                return SaveButton.Command.CanExecute(null);
-            }
-            if (controlName == "Test Connection")
-            {
-                return TestConnectionButton.Command.CanExecute(null);
+                case "Save":
+                    return SaveButton.Command.CanExecute(null);
+                case "Test Connection":
+                    return TestConnectionButton.Command.CanExecute(null);
             }
             return false;
         }

@@ -192,6 +192,15 @@ namespace Dev2.Core.Tests
 
             return mockResourceModel;
         }
+    
+        static public Mock<IResourceDefinition> SetupResourceDefMock()
+        {
+            var mockResourceModel = new Mock<IResourceDefinition>();
+            mockResourceModel.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataList);
+            mockResourceModel.Setup(resModel => resModel.ResourceName).Returns("Test");
+
+            return mockResourceModel;
+        }
 
         static public Mock<IContextualResourceModel> SetupResourceModelMock(Studio.Core.AppResources.Enums.ResourceType resourceType, Guid resourceID = new Guid())
         {

@@ -15,6 +15,7 @@ using System.Globalization;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Core.Tests.Utils;
 using Dev2.DataList.Contract;
@@ -42,7 +43,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         public void MyTestInitialize()
         {
             var mockDataListViewModel = new Mock<IDataListViewModel>();
-            mockDataListViewModel.Setup(model => model.Resource).Returns(new Mock<IResourceModel>().Object);
+            mockDataListViewModel.Setup(model => model.Resource).Returns(new Mock<IResourceDefinition>().Object);
             DataListSingleton.SetDataList(mockDataListViewModel.Object);
             SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
             CustomContainer.Register(new Mock<IPopupController>().Object);
@@ -179,7 +180,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         public void InsertItemExpectedTextboxTextChangedAndErrorStatusUpdated()
         {
             var mockDataListViewModel = new Mock<IDataListViewModel>();
-            mockDataListViewModel.Setup(model => model.Resource).Returns(new Mock<IResourceModel>().Object);
+            mockDataListViewModel.Setup(model => model.Resource).Returns(new Mock<IResourceDefinition>().Object);
             DataListSingleton.SetDataList(mockDataListViewModel.Object);
             const string ExpectedText = "[[City()";
             Mock<IIntellisenseProvider> intellisenseProvider = new Mock<IIntellisenseProvider>();

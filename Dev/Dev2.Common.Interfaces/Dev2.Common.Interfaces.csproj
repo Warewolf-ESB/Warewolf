@@ -244,6 +244,7 @@
     <Compile Include="Hosting\ExecStatus.cs" />
     <Compile Include="Hosting\IHostContext.cs" />
     <Compile Include="IAsyncWorker.cs" />
+    <Compile Include="ICheckControlEnabledView.cs" />
     <Compile Include="IConnectControlEnvironment.cs" />
     <Compile Include="IConnectControlSingleton.cs" />
     <Compile Include="IConnectControlViewModel.cs" />
