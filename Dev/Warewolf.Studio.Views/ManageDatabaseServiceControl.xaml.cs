@@ -63,6 +63,11 @@ namespace Warewolf.Studio.Views
 
         public ItemCollection GetInputs()
         {
+            BindingExpression be = InputsList.GetBindingExpression(ItemsControl.ItemsSourceProperty);
+            if (be != null)
+            {
+                be.UpdateTarget();
+            }
             return InputsList.Items;
         }
 
