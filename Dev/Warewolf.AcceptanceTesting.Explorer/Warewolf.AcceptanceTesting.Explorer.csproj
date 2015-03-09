@@ -216,6 +216,11 @@
       <DependentUpon>New Database Source.feature</DependentUpon>
     </Compile>
     <Compile Include="DBService Specs\NewDatabaseSourceSteps.cs" />
+    <Compile Include="Decision.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Decision.feature</DependentUpon>
+    </Compile>
     <Compile Include="DeployTab.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -292,6 +297,10 @@
     <None Include="DBService Specs\New Database Source.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>New Database Source.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Decision.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Decision.feature.cs</LastGenOutput>
     </None>
     <None Include="DeployTab.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
