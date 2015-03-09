@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.SaveDialog;
@@ -69,7 +70,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             {
                 _dbAction
             });
-            var dataTable = new DataTable("dbo_ConverrToInt");
+            var dataTable = new DataTable("dbo_ConverToInt");
             dataTable.Columns.Add("Result",typeof(int));
             dataTable.LoadDataRow(new object[] {"1"}, true);
             mockDbServiceModel.Setup(model => model.TestService(It.IsAny<IDatabaseService>()))
@@ -188,6 +189,14 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         {
             var view = GetView();
             var outputs = view.GetOutputs();
+            foreach (var output in outputs.SourceCollection)
+            {
+                var rowOutput = output as DataRowView;
+                if (rowOutput != null)
+                {
+                    Assert.AreEqual(rowOutput[0].ToString(),table.Rows[0][1]);
+                }
+            }
         }
 
         [Given(@"input mappings are")]
@@ -197,6 +206,14 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         {
             var view = GetView();
             var inputMappings = view.GetInputMappings();
+            foreach (var input in inputMappings.SourceCollection)
+            {
+                var inputMapping = input as IDbInput;
+                if (inputMapping != null)
+                {
+                    Assert.AreEqual(inputMapping.Name, table.Header.ToList()[0]);
+                }
+            }
         }
 
         [Given(@"output mappings are")]
@@ -206,6 +223,13 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         {
             var view = GetView();
             var outputMappings = view.GetOutputMappings();
+            foreach (var output in outputMappings.SourceCollection)
+            {
+                var outputMapping = output as IDbOutputMapping;
+                if (outputMapping != null)
+                {
+                }
+            }
         }
 
         [Given(@"I open ""(.*)"" service")]
