@@ -13,7 +13,8 @@
 
 
     </ResourceDictionary.MergedDictionaries>
-   
+
+    <studioConverters:ModelItemToActivityConverter x:Key="ModelItemToActivityConverter"/>
     <customControlsConverters:EmptyStringToBoolConverter x:Key="EmptyStringToBoolConverter" />
     <customControlsConverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" TrueValue="Visible" FalseValue="Collapsed"/>
     <customControlsConverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterInverse" TrueValue="Collapsed" FalseValue="Visible"/>

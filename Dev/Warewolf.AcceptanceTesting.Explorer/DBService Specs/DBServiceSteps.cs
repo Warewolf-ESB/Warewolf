@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.SaveDialog;
@@ -7,6 +8,7 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
+using Warewolf.AcceptanceTesting.Explorer.DBServiceSpecs;
 using Warewolf.Core;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
@@ -60,12 +62,18 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             });
             _dbAction = new DbAction
             {
-                Name = "dbo.ConverToint"
+                Name = "dbo.ConverToint",
+                Inputs = new List<IDbInput>{new DbInput("charValue","1")}
             };
             mockDbServiceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction>
             {
                 _dbAction
             });
+            var dataTable = new DataTable("dbo_ConverrToInt");
+            dataTable.Columns.Add("Result",typeof(int));
+            dataTable.LoadDataRow(new object[] {"1"}, true);
+            mockDbServiceModel.Setup(model => model.TestService(It.IsAny<IDatabaseService>()))
+                .Returns(dataTable);
         }
 
         [BeforeScenario("DBService")]
@@ -163,9 +171,13 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         {
             var view = GetView();
             var inputs = view.GetInputs();
-            foreach (var input in inputs)
+            foreach (var input in inputs.SourceCollection)
             {
-                
+                var dbInput = input as IDbInput;
+                if (dbInput != null)
+                {
+                    Assert.AreEqual(dbInput.Value,table.Rows[0][dbInput.Name]);
+                }
             }
         }
 

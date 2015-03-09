@@ -17,12 +17,14 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Data.ServiceModel;
 using Dev2.Util;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
 using Moq;
+using Warewolf.Core;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.Models.Help;
@@ -262,7 +264,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void CreateWorkflowService()
         {
-            var viewModel = new WorkflowServiceDesignerViewModel(new Mock<IXamlResource>().Object);
+            var viewModel = new WorkflowServiceDesignerViewModel(new XamlResource(new SerializableResource(),null));
             GetRegion(RegionNames.Workspace).Add(viewModel);
         }
 

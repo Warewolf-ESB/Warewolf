@@ -48,24 +48,25 @@ namespace Warewolf.Studio.ViewModels
             {
                 try
                 {
-                TestResults = model.TestService(ToModel());
-                if (TestResults != null)
-                {
-                    CanEditMappings = true;
-                        OutputMapping = new ObservableCollection<IDbOutputMapping>(GetDbOutputMappingsFromTable(TestResults));
+                    TestResults = model.TestService(ToModel());
+                    if (TestResults != null)
+                    {
+                        CanEditMappings = true;
+                        OutputMapping =
+                            new ObservableCollection<IDbOutputMapping>(GetDbOutputMappingsFromTable(TestResults));
                         TestSuccessful = true;
                         TestResultsAvailable = true;
-                       
+
                     }
                     ErrorText = "";
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     ErrorText = e.Message;
                     TestSuccessful = false;
                 }
-    
-                
+
+
             },CanTestProcedure);
             Inputs = new ObservableCollection<IDbInput>();
             SaveCommand = new DelegateCommand(Save,CanSave);
@@ -81,15 +82,7 @@ namespace Warewolf.Studio.ViewModels
         {
             return TestSuccessful;
         }
-        private void RaiseCanExecuteChanged(ICommand commandForCanExecuteChange)
-        {
-            var command = commandForCanExecuteChange as DelegateCommand;
-            if (command != null)
-            {
-                command.RaiseCanExecuteChanged();
-            }
-        }
-
+       
         public bool TestSuccessful
         {
             get
@@ -99,7 +92,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _testSuccessful = value;
-                RaiseCanExecuteChanged(SaveCommand);
+                ViewModelUtils.RaiseCanExecuteChanged(SaveCommand);
 
                 OnPropertyChanged(()=>TestSuccessful);
             }
@@ -133,12 +126,14 @@ namespace Warewolf.Studio.ViewModels
         {
             List<IDbOutputMapping> mappings = new List<IDbOutputMapping>();
             // ReSharper disable once LoopCanBeConvertedToQuery
-            for(int i = 0; i < testResults.Columns.Count; i++)
+            for (int i = 0; i < testResults.Columns.Count; i++)
             {
                 var column = testResults.Columns[i];
-                mappings.Add(i == 0 ? new DbOutputMapping("Recordset Name", SelectedAction.Name) : new DbOutputMapping(column.ToString(), column.ToString()));
-                }
-           
+                mappings.Add(i == 0
+                    ? new DbOutputMapping("Recordset Name", SelectedAction.Name)
+                    : new DbOutputMapping(column.ToString(), column.ToString()));
+            }
+
             return mappings;
         }
 
@@ -158,7 +153,7 @@ namespace Warewolf.Studio.ViewModels
                     Id = Guid.NewGuid();
                     _model.SaveService(ToModel());
                     Item = ToModel();
-                        Header = "Edit:" + Path + Name;
+                    Header = "Edit:" + Path + Name;
 
                 }
             }
@@ -219,7 +214,7 @@ namespace Warewolf.Studio.ViewModels
 
                     ErrorText = e.Message;
                 }
-                OnPropertyChanged(() => Sources);
+                OnPropertyChanged(() => SelectedSource);
             }
         }
         public IDbAction SelectedAction
@@ -239,8 +234,8 @@ namespace Warewolf.Studio.ViewModels
 
                 CanTest = _selectedAction != null;
                 Inputs = _selectedAction != null ? _selectedAction.Inputs : new Collection<IDbInput>();
-                RaiseCanExecuteChanged(TestProcedureCommand);
-                OnPropertyChanged(() => Sources);
+                ViewModelUtils.RaiseCanExecuteChanged(TestProcedureCommand);
+                OnPropertyChanged(() => SelectedAction);
             }
         }
         public ICollection<IDbAction> AvalaibleActions
