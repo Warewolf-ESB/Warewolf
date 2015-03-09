@@ -97,66 +97,14 @@
     <Reference Include="AdornedControl">
       <HintPath>..\Binaries\AdornedControl.dll</HintPath>
     </Reference>
-    <Reference Include="Caliburn.Micro, Version=1.4.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
-    </Reference>
     <Reference Include="DEV2.MultiPartFormPasser">
       <HintPath>..\Binaries\DEV2.MultiPartFormPasser.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.AvalonEdit">
-      <HintPath>..\Binaries\ICSharpCode.AvalonEdit.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v12.1, Version=12.1.20121.2059, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.DockManager.v12.1, Version=12.1.20121.2107, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.DockManager.v12.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.Math.Calculators.v12.1">
-      <HintPath>..\Binaries\InfragisticsWPF4.Math.Calculators.v12.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.Math.v12.1">
-      <HintPath>..\Binaries\InfragisticsWPF4.Math.v12.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.v12.1, Version=12.1.20121.2059, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.v12.1.dll</HintPath>
     </Reference>
     <Reference Include="Ionic.Zip.Reduced">
       <HintPath>..\Binaries\Ionic.Zip.Reduced.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.Client, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.0.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Expression.Interactions">
-      <HintPath>..\Binaries\Microsoft.Expression.Interactions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.JScript" />
-    <Reference Include="Microsoft.mshtml, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>Test References\Microsoft.mshtml.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin">
-      <HintPath>..\packages\Microsoft.Owin.2.0.2\lib\net45\Microsoft.Owin.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security">
-      <HintPath>..\packages\Microsoft.Owin.Security.2.0.2\lib\net45\Microsoft.Owin.Security.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Windows.Shell, Version=3.5.41019.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Microsoft.Windows.Shell.dll</HintPath>
-    </Reference>
     <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Moq.dll</HintPath>
@@ -182,35 +130,13 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Management" />
-    <Reference Include="System.Net.Http.WebRequest" />
-    <Reference Include="System.Reactive, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\System.Reactive.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\System.Reactive.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Interfaces, Version=2.1.30214.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\System.Reactive.Interfaces.dll</HintPath>
-    </Reference>
     <Reference Include="System.Runtime.DurableInstancing" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Interactivity">
-      <HintPath>..\Binaries\System.Windows.Interactivity.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xaml" />
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
@@ -385,10 +311,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ConsoleAppToTestExecuteCommandLineActivity\ConsoleAppToTestExecuteCommandLineActivity.csproj">
-      <Project>{df3ca7cd-16b7-465e-a7db-91951dfc330f}</Project>
-      <Name>ConsoleAppToTestExecuteCommandLineActivity</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
       <Project>{0a369a8b-0906-47eb-8eee-ca20e9d4f151}</Project>
       <Name>Dev2.Activities</Name>
@@ -413,10 +335,6 @@
       <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>
       <Name>Dev2.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Development.Languages\Dev2.Development.Languages.csproj">
-      <Project>{33896c15-e182-4c09-ba33-99ff9a8bb44a}</Project>
-      <Name>Dev2.Development.Languages</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
       <Project>{a7d9da27-f023-4588-aa64-ac2de44c0b82}</Project>
       <Name>Dev2.Diagnostics</Name>
@@ -424,18 +342,6 @@
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615eae6d-040c-4364-b708-63dc8755cd4f}</Project>
       <Name>Dev2.Infrastructure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Network\Dev2.Network.csproj">
-      <Project>{14f1e4aa-b9a8-45dd-af2a-059eff29201b}</Project>
-      <Name>Dev2.Network</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.OuputConfigFiles\Dev2.OuputConfigFiles.csproj">
-      <Project>{c8270a0a-7921-43f9-8f59-cad2861cf6f6}</Project>
-      <Name>Dev2.OuputConfigFiles</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.OutputLibraries\Dev2.OutputLibraries.csproj">
-      <Project>{38650e4e-90e2-44de-a32f-30f3c4d1438b}</Project>
-      <Name>Dev2.OutputLibraries</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
       <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
@@ -445,17 +351,9 @@
       <Project>{9623c7dd-85ee-41ab-89b1-1a9784a97da7}</Project>
       <Name>Dev2.Runtime</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Server\Dev2.Server.csproj">
-      <Project>{87aefd04-29f3-45b6-a7c6-4161f9190876}</Project>
-      <Name>Dev2.Server</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Services.Sql\Dev2.Services.Sql.csproj">
       <Project>{ff3115b2-370e-4e40-99c5-7d239bc28679}</Project>
       <Name>Dev2.Services.Sql</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Sql\Dev2.Sql.csproj">
-      <Project>{2b734597-c85d-4295-9782-c722f4645ed9}</Project>
-      <Name>Dev2.Sql</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
       <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>
