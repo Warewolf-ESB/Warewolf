@@ -4,9 +4,9 @@
   <Deployment>
       <!--Project specific outputs-->
     <DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
-    <DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
+      <!--Being re-written: <DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />-->
 
-    <!--Dynamicly loaded when initializing a view-->
+      <!--Dynamicly loaded when initializing a view-->
     <DeploymentItem filename="Binaries\InfragisticsWPF4.Controls.Menus.XamMenu.v14.2.dll" />
     <DeploymentItem filename="Binaries\InfragisticsWPF4.Data.AnnotationsDataManager.v14.2.dll" />
     <DeploymentItem filename="Binaries\InfragisticsWPF4.DataVisualization.v14.2.dll" />
