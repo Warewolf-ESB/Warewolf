@@ -24,13 +24,7 @@
                   Grid.Column="0"
                   ToolTip="{Binding Path=ConnectionsToolTip}"
                   ItemsSource="{Binding Servers}"
-                  SelectedItem="{Binding SelectedConnection}">
-            
-            <ComboBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VirtualizingStackPanel Orientation="Vertical" />
-                </ItemsPanelTemplate>
-            </ComboBox.ItemsPanel>
+                  SelectedItem="{Binding SelectedConnection}">            
         </ComboBox>
 
 

@@ -12,8 +12,6 @@
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
-             xmlns:system="clr-namespace:System;assembly=mscorlib"
-             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              x:Name="ExplorerViewControl"
              d:DataContext="{d:DesignInstance Type=viewModels:IExplorerViewModel,
                                               IsDesignTimeCreatable=False}"
@@ -67,7 +65,7 @@
                      Text="{Binding SearchText,
                                     Delay=300,
                                     UpdateSourceTrigger=PropertyChanged}"
-                      ToolTip="{Binding Path=SearchToolTip}"/>
+                      />
                 <Button Grid.Row="0"
                     Grid.Column="1"
                     Width="25"
@@ -75,7 +73,6 @@
                     Command="{Binding RefreshCommand}"
                     Margin="4,0,0,0"
                     Padding="2.5"
-                    ToolTip="{Binding Path=RefreshToolTip}"
                     Visibility="{Binding Path=IsRefreshing,
                                          Converter={StaticResource NotConverter}}">
                     <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="16" Icon="Refresh" VerticalAlignment="Top" HorizontalAlignment="Center"/>
@@ -148,7 +145,6 @@
                                         BorderThickness="0"
                                         Command="{Binding Path=Data.RefreshCommand}"
                                         Padding="-4"
-                                        ToolTip="{Binding Path=RefreshToolTip}"
                                         Style="{StaticResource ExplorerTreeButtonStyle}">
                                         <Grid>
                                             <Image Width="18"
@@ -562,6 +558,12 @@
                                                                 CommandParameter="{Binding Path=Data}"
                                                                 Header="Deploy"
                                                                 Visibility="{Binding Path=Data.CanDeploy,
+                                                                                     Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                    <ig:XamMenuItem Name="Dependencies"
+																Command="{Binding Path=Data.ShowDependenciesCommand}"
+                                                                CommandParameter="{Binding Data}"
+                                                                Header="Show Dependencies"
+                                                                Visibility="{Binding Path=Data.CanShowDependencies,
                                                                                      Converter={StaticResource BoolToVisibilityConverter}}" />
 
                                                     <ig:XamMenuSeparator 

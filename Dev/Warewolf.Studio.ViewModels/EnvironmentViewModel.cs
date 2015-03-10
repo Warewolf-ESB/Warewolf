@@ -61,7 +61,8 @@ namespace Warewolf.Studio.ViewModels
             ResourceType = ResourceType.ServerSource;
             ResourceName = DisplayName;
 			CanShowServerVersion = true;
-            
+	        AreVersionsVisible = false;
+
         }
 
 	    public bool CanCreateWorkflowService
@@ -73,6 +74,8 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => CanCreateWorkflowService);
 	        }
 	    }
+
+	    public bool AreVersionsVisible { get; set; }
 
 	    void ServerItemAddedEvent(IExplorerItem args)
         {
@@ -421,7 +424,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsConnecting = true;
                 var explorerItems = await Server.LoadExplorer();
-				var explorerItemViewModels = CreateExplorerItems(explorerItems.Children, Server, null, selectedId != null);
+				var explorerItemViewModels = CreateExplorerItems(explorerItems.Children, Server, this, selectedId != null);
                 Children = explorerItemViewModels;
                 IsLoaded = true;
                 IsConnecting = false;
@@ -503,7 +506,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         // ReSharper disable ParameterTypeCanBeEnumerable.Local
-		ObservableCollection<IExplorerItemViewModel> CreateExplorerItems(IList<IExplorerItem> explorerItems, IServer server, IExplorerItemViewModel parent, bool isDialog = false)
+        ObservableCollection<IExplorerItemViewModel> CreateExplorerItems(IList<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog = false)
         // ReSharper restore ParameterTypeCanBeEnumerable.Local
         {
             if (explorerItems == null) return new ObservableCollection<IExplorerItemViewModel>();
