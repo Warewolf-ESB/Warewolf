@@ -30,7 +30,6 @@ Scenario: Creating DB Service
     And "Save" is "Enabled"
 	And input mappings are
 	| charValue | Required Field | Empty is Null |
-	|           |                |               |
 	And output mappings are
 	| Output | Output Alias | Recordset Name  |
 	| result | result       | dbo_ConverToInt |

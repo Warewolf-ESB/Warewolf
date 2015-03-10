@@ -73,16 +73,31 @@ namespace Warewolf.Studio.Views
 
         public ItemCollection GetOutputs()
         {
+            BindingExpression be = OutputsDataGrid.GetBindingExpression(ItemsControl.ItemsSourceProperty);
+            if (be != null)
+            {
+                be.UpdateTarget();
+            }
             return OutputsDataGrid.Items;
         }
 
         public ItemCollection GetInputMappings()
         {
+            BindingExpression be = InputsMappingDataGrid.GetBindingExpression(ItemsControl.ItemsSourceProperty);
+            if (be != null)
+            {
+                be.UpdateTarget();
+            }
             return InputsMappingDataGrid.Items;
         }
 
         public ItemCollection GetOutputMappings()
         {
+            BindingExpression be = OutputsMappingDataGrid.GetBindingExpression(ItemsControl.ItemsSourceProperty);
+            if (be != null)
+            {
+                be.UpdateTarget();
+            }
             return OutputsMappingDataGrid.Items;
         }
 
