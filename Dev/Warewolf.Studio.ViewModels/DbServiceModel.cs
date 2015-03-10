@@ -56,16 +56,7 @@ namespace Warewolf.Studio.ViewModels
 
         public  DataTable TestService(IDatabaseService inputValues)
         {
-           return _updateRepository.TestDbService(inputValues);
-           //var testResults = new DataTable("Results");
-           // testResults.Columns.Add(new DataColumn("Record Name"));
-           // testResults.Columns.Add(new DataColumn("Windows Group"));
-           // testResults.Columns.Add(new DataColumn("Response"));
-           // testResults.Columns.Add(new DataColumn("Bob"));
-           // testResults.Rows.Add(new object[] { "dbo_Save_person(1)", "asdasd", "dasdasd", "111" });
-           // testResults.Rows.Add(new object[] { "dbo_Save_person(2)", "qweqwe", "dasfghfgdasd", "111" });
-           // testResults.Rows.Add(new object[] { "dbo_Save_person(3)", "fghfhf", "fgh", "111" });
-           // return testResults;
+           return _updateRepository.TestDbService(inputValues);          
         }
 
         public IEnumerable<IDbOutputMapping> GetDbOutputMappings(IDbAction action)

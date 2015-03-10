@@ -84,6 +84,10 @@ namespace Warewolf.Studio.ViewModels
             IsVersion = false;
             Expand = new DelegateCommand<int?>(clickCount =>
             {
+                if (clickCount == 1)
+                {
+                    IsSelected = true;
+                }
                 if (clickCount != null && clickCount == 2 && ResourceType == ResourceType.Folder)
                 {
                     IsExpanded = !IsExpanded;
@@ -336,23 +340,23 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-				if (Parent != null && Parent.Children.Any(a => a.ResourceName == value))
+				if (Parent != null && Parent.Children.Any(a => a.ResourceName == value) && value!=_resourceName)
                 {
                     _shellViewModel.ShowPopup(PopupMessages.GetDuplicateMessage(value));
 
                 }
                 else
                 {
-					if (IsRenaming && _explorerRepository.Rename(this, value))
+                    if (IsRenaming && _explorerRepository.Rename(this, value))
                     {
-                _resourceName = value;
-                }
-                if (!IsRenaming)
-                {
-                    _resourceName = value;
-                }
-                IsRenaming = false;
-                OnPropertyChanged(() => ResourceName);
+                        _resourceName = value;
+                    }
+                    if (!IsRenaming)
+                    {
+                        _resourceName = value;
+                    }
+                    IsRenaming = false;
+                    OnPropertyChanged(() => ResourceName);
             }
         }
         }

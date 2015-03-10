@@ -274,6 +274,7 @@
     <Compile Include="ManageServerControl.xaml.cs">
       <DependentUpon>ManageServerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RenameTreeNode.cs" />
     <Compile Include="RequestServiceNameView.xaml.cs">
       <DependentUpon>RequestServiceNameView.xaml</DependentUpon>
     </Compile>

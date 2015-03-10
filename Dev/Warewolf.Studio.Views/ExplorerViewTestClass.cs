@@ -171,33 +171,6 @@ namespace Warewolf.Studio.Views
                 throw new Exception("Server Not found in explorer");
         }
 
-        //public void PerformFolderAdd(string folder, string server)
-        //{
-        //    var node = _explorerView.ExplorerTree.Nodes.FirstOrDefault(a => ((IEnvironmentViewModel)a.Data).DisplayName.Contains(server));
-           
-        //    if(node != null)
-        //    {
-        //        var env = (node.Data as IEnvironmentViewModel);
-        //        if(env != null)
-        //        {
-        //            env.CreateFolderCommand.Execute(null);
-        //            var explorerItemViewModel  = env.Children.FirstOrDefault(a => a.IsRenaming);
-        //            if(explorerItemViewModel != null)
-        //            {
-        //                explorerItemViewModel.ResourceName = folder;
-        //                explorerItemViewModel.IsRenaming = false;
-
-        //            }
-        //            else
-        //            throw  new Exception("Folder was not found after adding");
-                   
-        //        }
-                
-        //    }
-        //    else
-        //    throw  new Exception("Server Not found in explorer");
-        //}
-
         public XamDataTreeNode VerifyItemExists(string path)
         {
             if(!path.Contains("/"))

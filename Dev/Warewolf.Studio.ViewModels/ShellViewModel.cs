@@ -166,9 +166,7 @@ namespace Warewolf.Studio.ViewModels
         public void AddService(Guid resourceId, IServer server )
         {
 
-           
             var region = GetRegion(RegionNames.Workspace);
-            var resource = server.QueryProxy.FetchResourceWithXaml(resourceId);
             var foundViewModel = region.Views.FirstOrDefault(o =>
             {
                 var viewModel = o as IServiceDesignerViewModel;
@@ -176,10 +174,11 @@ namespace Warewolf.Studio.ViewModels
                 {
                     return false;
                 }
-                return Equals(viewModel.Resource, resource);
+                return Equals(viewModel.Resource.ResourceID, resourceId);
             });
             if (foundViewModel == null)
             {
+                var resource = server.QueryProxy.FetchResourceWithXaml(resourceId);
                 foundViewModel = resource.ResourceType == ResourceType.WorkflowService ? new WorkflowServiceDesignerViewModel(resource) : _unityContainer.Resolve<IServiceDesignerViewModel>(new ParameterOverrides { { "resource", resource } });
                 region.Add(foundViewModel); //add the viewModel
             }

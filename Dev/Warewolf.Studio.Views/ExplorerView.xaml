@@ -335,13 +335,19 @@
                     <ig:NodeLayout Key="Children"
                                DisplayMemberPath="ResourceName"
                                IsExpandedMemberPath="IsExpanded"
-                               TargetTypeName="IExplorerItemViewModel"
-                               
-                               Visibility="{Binding Path=Data.IsVisible,
-                               
+                               TargetTypeName="IExplorerItemViewModel"                               
+                               Visibility="{Binding Path=Data.IsVisible,                               
                                                     Converter={StaticResource BoolToVisibilityConverter}}">
 
-                        <ig:NodeLayout.ItemTemplate>
+                        <ig:NodeLayout.EditorTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <TextBox MaxWidth="200"
+                                         Text="{Binding Data.ResourceName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"></TextBox>
+                                </Grid>
+                            </DataTemplate>
+                        </ig:NodeLayout.EditorTemplate>
+                    <ig:NodeLayout.ItemTemplate>
                             <DataTemplate>
                                 <DataTemplate.Triggers>
                                     <EventTrigger RoutedEvent="ig:XamDataTreeNodeControl.MouseEnter">
@@ -536,7 +542,11 @@
                                                                 CommandParameter="{Binding Data}"
                                                                 Header="Rename"
                                                                 Visibility="{Binding Path=Data.CanRename,
-                                                                                     Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                                                     Converter={StaticResource BoolToVisibilityConverter}}" >
+                                                        <i:Interaction.Behaviors>
+                                                            <views:RenameTreeNode DataContext="{Binding Data}" Node="{Binding Node}"  Tree="{Binding Path=Node.Manager.NodeLayout.Tree}"/>
+                                                        </i:Interaction.Behaviors>
+                                                    </ig:XamMenuItem>
 
 
                                                     <ig:XamMenuItem Name="Delete"
@@ -731,7 +741,7 @@
                             </DataTemplate>
                         </ig:NodeLayout.CollapsedIconTemplate>
                     </ig:NodeLayout>
-                </ig:XamDataTree.GlobalNodeLayouts>
+                </ig:XamDataTree.GlobalNodeLayouts>                
             </ig:XamDataTree>
         </Grid>
     </Grid>
