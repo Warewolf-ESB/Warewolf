@@ -381,10 +381,7 @@
                                     </EventTrigger>
                                 </DataTemplate.Triggers>
                                 <DockPanel x:Name="ItemDockPanel"
-                                       Height="Auto"
-                                      
-                                       >
-
+                                       Height="Auto">
                                     <DockPanel.Width>
                                         <MultiBinding Converter="{StaticResource WidthConverter}">
                                             <Binding RelativeSource="{RelativeSource AncestorType={x:Type ig:XamDataTreeNodeControl}}" />
@@ -619,7 +616,6 @@
                                                                     Converter={StaticResource BoolToVisibilityConverter}}"
                                         >
                                         <Image x:Name="ExecutePermissionImage"
-                                           MaxWidth="14"
                                            Stretch="Uniform"
                                            Source="{StaticResource System-Spacer}" >
                                             <Image.Triggers>
@@ -633,7 +629,6 @@
                                                         </Storyboard>
                                                     </BeginStoryboard>
                                                 </EventTrigger>
-
                                                 <EventTrigger RoutedEvent="Button.MouseLeave">
                                                     <BeginStoryboard>
                                                         <Storyboard>
@@ -648,7 +643,7 @@
                                         </Image>
                                     </Button>
                                     <Button Width="14"
-                                        Margin="0,0,5,0"
+                                        Margin="0,0,3,0"
                                         Background="Transparent"
                                         BorderBrush="Transparent"
                                         DockPanel.Dock="Right"
@@ -656,7 +651,7 @@
                                         Visibility="{Binding Data.CanEdit,
                                                                     Converter={StaticResource BoolToVisibilityConverter}}"
                                         ToolTip="{Binding Path=Data.EditToolTip}">
-                                        <Image x:Name="EditPermissionImage"
+                                        <Image x:Name="EditPermissionImage"                                               
                                            Stretch="Uniform"
                                            Source="{StaticResource System-Spacer}" >
                                             <Image.Triggers>
@@ -685,26 +680,21 @@
 
                                     </Button>
 
-                                    <StackPanel Name="Panel" VerticalAlignment="Center">
-
                                         <TextBlock x:Name="ResourceNameTextBlock"
                                                MinWidth="5"
+                                               Height="20"
                                                Focusable="True"
-                                               Text="{Binding Path=Data.ResourceName}"
-                                               >
-                                                                            <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="MouseLeftButtonDown">
-                                                <interactivity:InvokeCommandAction Command="{Binding Path=Data.Expand}" TriggerParameterPath="ClickCount" />
-                                            </i:EventTrigger>
-                                           
+                                               DockPanel.Dock="Left"
+                                                   VerticalAlignment="Center"
+                                               HorizontalAlignment="Stretch"                                                  
+                                               Text="{Binding Path=Data.ResourceName}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="MouseLeftButtonDown">
+                                                    <interactivity:InvokeCommandAction Command="{Binding Path=Data.Expand}" TriggerParameterPath="ClickCount" />
+                                                </i:EventTrigger>
                                             </i:Interaction.Triggers>
-
                                         </TextBlock>
-
-                                    </StackPanel>
-
                                 </DockPanel>
-
                             </DataTemplate>
                         </ig:NodeLayout.ItemTemplate>
                         <ig:NodeLayout.ExpandedIconTemplate>
@@ -729,7 +719,7 @@
                             <DataTemplate>
                                 <Image x:Name="ResourceImage"
                                            Width="14"
-                                           Height="14"
+                                           Height="15"
                                            Margin="-37,0,0,0"
                                            Source="{Binding Data.ResourceType,
                                                             Converter={StaticResource ResourceTypeToIconConverter}}"

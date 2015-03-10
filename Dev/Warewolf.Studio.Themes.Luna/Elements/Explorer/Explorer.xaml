@@ -133,9 +133,10 @@
                             <Rectangle Margin="-3,0" Fill="{StaticResource TransparentBrush}" />
                             <Path x:Name="ExpansionIndicatorCollapsed"
                                   Width="6"
+                                  Margin="0,1,-10,5"
                                   Height="10"
                                   HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
+                                  VerticalAlignment="Top"
                                   Data="M0,0 L6,5 L0,10 z"
                                   Fill="{StaticResource ExpansionIndicatorGlyphBackgroundBrush}"
                                   RenderTransformOrigin="0.5,0.5"
@@ -144,8 +145,9 @@
                             <Path x:Name="ExpansionIndicatorExpanded"
                                   Width="10"
                                   Height="6"
+                                  Margin="0,1,-10,5"
                                   HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
+                                  VerticalAlignment="Top"
                                   Data="M0,0 L10,0 L5,6 z"
                                   Fill="{StaticResource ExpansionIndicatorGlyphExpandedBackgroundBrush}"
                                   RenderTransformOrigin="0.5,0.5"
@@ -155,7 +157,6 @@
                         </Grid>
                         <ContentPresenter x:Name="contentPresenter"
                                           Grid.Column="2"
-                                          Margin="{TemplateBinding Padding}"
                                           HorizontalAlignment="Left"
                                           VerticalAlignment="Center" />
                     </Grid>
