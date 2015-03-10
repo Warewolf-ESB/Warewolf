@@ -56,7 +56,7 @@
                     <ColumnDefinition Width="30" />
                 </Grid.ColumnDefinitions>
 
-                <customControls:SearchTextBox Grid.Row="0"
+                <customControls:SearchTextBox Grid.Row="0" Margin="{StaticResource ElementBorderRight}"
                      Grid.Column="0"
                      x:Name="SearchTextBox"     
                                           Style="{StaticResource SearchTextboxStyle}"
@@ -71,8 +71,6 @@
                     Width="25"
                     Height="25"
                     Command="{Binding RefreshCommand}"
-                    Margin="4,0,0,0"
-                    Padding="2.5"
                     Visibility="{Binding Path=IsRefreshing,
                                          Converter={StaticResource NotConverter}}">
                     <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="16" Icon="Refresh" VerticalAlignment="Top" HorizontalAlignment="Center"/>
@@ -90,7 +88,7 @@
             </Grid>
             <!--  EXPLORER TREE  -->
 
-            <ig:XamDataTree x:Name="ExplorerTree"
+            <ig:XamDataTree Margin="{StaticResource ElementBorderTop}" x:Name="ExplorerTree"
                         Grid.Row="2"
                         ActiveDataItem="{Binding SelectedItem, Mode=TwoWay}"
                         IsSelectedMemberPath="IsSelected"
@@ -275,16 +273,6 @@
                                                                Source="{StaticResource Explorer-DLL}" />
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
-                                                    <ig:XamMenuItem Name="NewFolder"
-                                                                InputGestureText="[Ctrl+Shift+F]"
-                                                                Command="{Binding Path=Data.CreateFolderCommand}"
-                                                                CommandParameter="{x:Static data:ResourceType.PluginService}"
-                                                                Header="New Folder"
-                                                                Visibility="{Binding Path=Data.CanCreateFolder,
-                                                                                     Converter={StaticResource BoolToVisibilityConverter}}">
-
-                                                    </ig:XamMenuItem>
-                                                    <ig:XamMenuSeparator />
                                                     <ig:XamMenuItem Name="NewPluginSource"
                                                                 Command="{Binding Path=Data.NewCommand}"
                                                                 CommandParameter="{x:Static data:ResourceType.PluginSource}"
@@ -298,6 +286,18 @@
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
 
+                                                    <ig:XamMenuItem Name="NewFolder"
+                                                                InputGestureText="[Ctrl+Shift+F]"
+                                                                Command="{Binding Path=Data.CreateFolderCommand}"
+                                                                CommandParameter="{x:Static data:ResourceType.PluginService}"
+                                                                Header="New Folder"
+                                                                Visibility="{Binding Path=Data.CanCreateFolder,
+                                                                                     Converter={StaticResource BoolToVisibilityConverter}}">
+
+                                                    </ig:XamMenuItem>
+                                                    <ig:XamMenuSeparator  Visibility="{Binding Path=Data.CanDeploy,
+                                                                                     Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                    
                                                     <ig:XamMenuItem Name="Deploy"
 																Command="{Binding Path=Data.DeployCommand}"
                                                                 CommandParameter="{Binding Path=Data}"
@@ -305,7 +305,8 @@
                                                                 Visibility="{Binding Path=Data.CanDeploy,
                                                                                      Converter={StaticResource BoolToVisibilityConverter}}" />
 
-                                                    <ig:XamMenuSeparator                                                     
+                                                    <ig:XamMenuSeparator   Visibility="{Binding Path=Data.CanShowServerVersion,
+                                                                                     Converter={StaticResource BoolToVisibilityConverter}}"                                                  
                                                     />
 
 
