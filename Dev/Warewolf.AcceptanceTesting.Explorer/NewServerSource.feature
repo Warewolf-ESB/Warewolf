@@ -174,12 +174,54 @@ Scenario: Connecting to server which has no permissions
 
 
 
+   
+Scenario: Editing server source 
+   Given I have New Server Source opened
+   And I entered "SANDBOX-1" as remote server name
+   And I selcted prtocall as "http" from dropdown
+   And I server port as "3142" 
+   And Save is "Disabled"
+   And I Select Authentication Type as
+    | Windows  | User | Public |
+    | Selected |      |        |
+   When I Test Connection
+   Then Test Connecton is "Successful"
+   And Save is "Enabled"
+   When I save the source
+   Then the save dialog is opened
 
 
 
 
-
-
-
+Scenario: Editing Server Source 
+   Given I Open server source "ServerSource"
+   And tab is opened with name as "Edit - ServerSource"
+   And remote server name as "SANDBOX-1" is visible
+   And I selcted prtocall as "http" from dropdown is visible
+   And I server port as "3142" 
+   And Authentication Type selected as
+    | Windows | User     | Public |
+    |         | Selected |        |
+   Then Username field is "Visible"
+   And Password field is "Visible"
+   And Username as "Integrationtester"
+   And Password as is "I73573r0"
+   And the test is "Enabled"
+   And Test Connecton is "Successful"
+   And Save is "Disabled"
+   When I edit Authentication Type as
+   | Windows | User | Public   |
+   |         |      | Selected |
+   Then Username field is "InVisible"
+   And Password field is "InVisible"
+   And the test is "Enabled"
+   And Test Connecton is ""
+   When I click Test Connection
+   Then Test Connecton is "Successfull"
+   Then tab is opened with name as "Edit - ServerSource" with star
+   And Save is "Enabled"
+   When I save the source
+   Then the save dialog is "Not opened"
+   And server source "ServerSource" is saved
 
 
