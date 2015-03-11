@@ -20,24 +20,20 @@
             <ColumnDefinition Width="30" />
         </Grid.ColumnDefinitions>
 
-        <ComboBox Grid.Row="0"
+        <ComboBox Margin="{StaticResource ElementBorderRight}"
+            Grid.Row="0"
                   Grid.Column="0"
                   ToolTip="{Binding Path=ConnectionsToolTip}"
                   ItemsSource="{Binding Servers}"
-                  SelectedItem="{Binding SelectedConnection}">
-            
-            <ComboBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VirtualizingStackPanel Orientation="Vertical" />
-                </ItemsPanelTemplate>
-            </ComboBox.ItemsPanel>
+                  SelectedItem="{Binding SelectedConnection}">            
         </ComboBox>
 
 
-        <Button Grid.Row="0"
+        <Button Margin="{StaticResource ElementBorderRight}"
+            Grid.Row="0"
                 Grid.Column="1"
-                Width="26"
-                Height="26"
+                Width="25"
+                Height="25"
                 Command="{Binding EditConnectionCommand}"
                 Padding="4"
                 VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left"
@@ -51,8 +47,8 @@
         </Button>
         <Button Grid.Row="0"
                 Grid.Column="2"
-                Width="26"
-                Height="26"
+                Width="25"
+                Height="25"
                 Command="{Binding ToggleConnectionStateCommand}"
                 ToolTip ="{Binding Path=ToggleConnectionToolTip}"
                 Padding="4"

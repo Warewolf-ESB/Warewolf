@@ -53,14 +53,14 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0"  Margin="{StaticResource ElementBorder}" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <TextBlock Grid.Column="0"  Margin="{StaticResource ElementBorderLeftRight}" HorizontalAlignment="Left" VerticalAlignment="Center">
                 Name:
             </TextBlock>
             <TextBox Grid.Column="1"
                      HorizontalAlignment="Stretch"
                      VerticalAlignment="Center"
-                     Margin="{StaticResource ElementBorder}"
                      x:Name="ServiceNameTextBox"
+                      Margin="{StaticResource ElementBorderRight}"
                      Text="{Binding Name,
                                     UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
@@ -71,7 +71,7 @@
             <TextBlock HorizontalAlignment="Right"
                            VerticalAlignment="Center"
                            x:Name="ErrorMessageTextBlock"
-                       Margin="{StaticResource ElementBorder}"
+                       Margin="{StaticResource ElementBorderRight}"
                            Style="{StaticResource ErrorTextBlockStyle}"
                            Text="{Binding Path=ErrorMessage}"
                            TextAlignment="Right" />
@@ -79,14 +79,14 @@
             <Button x:Name="OkButton"
                     Width="60"
                     Command="{Binding Path=OkCommand}"
-                   Margin="{StaticResource ElementBorder}"
+                   Margin="{StaticResource ElementBorderRight}"
                     Content="Ok"
                     Style="{StaticResource ButtonStyle}" />
             <Button x:Name="CancelButton"
                     Width="60"
-                    Margin="{StaticResource ElementBorder}"
                     Command="{Binding Path=CancelCommand}"
                     Content="Cancel"
+                    Margin="{StaticResource ElementBorderRight}"
                     Style="{StaticResource ButtonStyle}" />
         </DockPanel>
     </Grid>

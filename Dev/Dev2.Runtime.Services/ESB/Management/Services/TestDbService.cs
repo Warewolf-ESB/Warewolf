@@ -82,7 +82,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 var row = output.Records[i];
 
-                List<object> data = new List<object>(){output.Name+"("+ i.ToString(CultureInfo.InvariantCulture)+")"};
+                var colNumber = i++;
+                List<object> data = new List<object>{output.Name+"("+ colNumber.ToString(CultureInfo.InvariantCulture)+")"};
                 data.AddRange( row.Cells.Select(a => a.Value));
                 dt.Rows.Add(data.ToArray());
             }

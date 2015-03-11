@@ -69,8 +69,7 @@
                      customControls:PasswordBoxAssistant.BindPassword="true"
                      customControls:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
         </PasswordBox>
-        <TextBox Style="{StaticResource SearchTextboxStyle}"></TextBox>
-        <TextBox Style="{StaticResource VariableListTextBox}"></TextBox>
+        <customControls:SearchTextBox Style="{StaticResource SearchTextboxStyle}"></customControls:SearchTextBox>
         <TextBox Style="{StaticResource MultiLineTextBoxStyle}" ToolTip="Bob the builder" TextWrapping="Wrap" Height="90" AcceptsReturn="True"  VerticalScrollBarVisibility="Auto"> Multi Line </TextBox>
         <TextBox ToolTip="Bob the builder">ToolTip</TextBox>
        
@@ -114,11 +113,10 @@
         <ProgressBar Name="ProgressBar" Height="30" Width="200"  Minimum="0" Maximum="100" Value="0"></ProgressBar>
 
 
-
-        <TextBox AutomationProperties.AutomationId="Testing_SearchTextBox" Style="{StaticResource SearchTextboxStyle}"></TextBox>
+        <customControls:SearchTextBox AutomationProperties.AutomationId="Testing_SearchTextBox" Style="{StaticResource SearchTextboxStyle}"></customControls:SearchTextBox>
         <TextBox AutomationProperties.AutomationId="Testing_VariableListTextBox" Style="{StaticResource VariableListTextBox}"></TextBox>
         <TextBox AutomationProperties.AutomationId="Testing_TextBox"></TextBox>
-        <GroupBox Width="200" AutomationProperties.AutomationId="Testing_GroupBox" Header="My Group Box" Height="100"></GroupBox>
+        <GroupBox Width="100" AutomationProperties.AutomationId="Testing_GroupBox" Header="My Group Box" Height="100"></GroupBox>
         <ListBox x:Name="TestingListBox" Style="{StaticResource ListBoxStyle}" ItemsSource="{Binding}" AutomationProperties.AutomationId="Testing_ListBox"></ListBox>
        
         

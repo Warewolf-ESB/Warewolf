@@ -18,9 +18,9 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         bool CanExecute { get; set; }
         bool CanEdit { get; set; }
         bool CanView { get; set; }
+        bool CanShowDependencies { get; set; }
 
         bool IsVersion { get; set; }
-        bool AreVersionsVisible { get; set; }
         string VersionNumber { get; set; }
         string VersionHeader { get; set; }
         void Filter(string filter);
@@ -29,6 +29,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         bool CanDrag { get; set; }
         ICommand OpenVersionCommand { get; set; }
         ICommand DeleteVersionCommand { get; set; }
+        ICommand ShowDependenciesCommand { get; set; }
         
         string Inputs { get; set; }
         string Outputs { get; set; }
