@@ -122,7 +122,7 @@ namespace Warewolf.Studio
 
         private void Shell_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.X && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            if (e.Key == Key.Home && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
                 var testingWindow = new ControlStyleTestingWindow();
                 testingWindow.Show();
