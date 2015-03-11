@@ -263,6 +263,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Settings Tab.feature</DependentUpon>
     </Compile>
+    <Compile Include="Switch.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Switch.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -336,6 +341,10 @@
     <None Include="Settings Tab.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Settings Tab.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Switch.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Switch.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
