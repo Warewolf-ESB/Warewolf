@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,7 +18,7 @@ using System.Reflection;
 
 [assembly: AssemblyCompany("Warewolf")]
 [assembly: AssemblyProduct("Warewolf ESB")]
-[assembly: AssemblyCopyright("Copyright Warewolf 2013")]
+[assembly: AssemblyCopyright("Copyright Warewolf 2015")]
 
 
 // Version information for an assembly consists of the following four values:
