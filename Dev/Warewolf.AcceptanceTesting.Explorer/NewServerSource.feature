@@ -193,7 +193,7 @@ Scenario: Editing server source
 
 
 
-Scenario: Editing Server Source 
+Scenario: Editing Server Source Twice
    Given I Open server source "ServerSource"
    And tab is opened with name as "Edit - ServerSource"
    And remote server name as "SANDBOX-1" is visible
