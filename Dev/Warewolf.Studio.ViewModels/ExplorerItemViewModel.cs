@@ -45,7 +45,7 @@ namespace Warewolf.Studio.ViewModels
         bool _canShowVersions;
 
         // ReSharper disable TooManyDependencies
-        public ExplorerItemViewModel(IShellViewModel shellViewModel, IServer server, IExplorerHelpDescriptorBuilder builder, IExplorerItemViewModel parent)
+        public ExplorerItemViewModel(IShellViewModel shellViewModel, IServer server, IExplorerHelpDescriptorBuilder builder, IExplorerTreeItem parent)
             // ReSharper restore TooManyDependencies
         {
             RollbackCommand = new DelegateCommand(() =>
@@ -72,6 +72,7 @@ namespace Warewolf.Studio.ViewModels
             CanCreateDbSource = true; //todo:remove
             CanRename = true; //todo:remove
             CanDelete = true; //todo:remove
+            CanShowDependencies = true;
             CanCreatePluginService = true;
             _explorerRepository = server.ExplorerRepository;
             Server.PermissionsChanged += UpdatePermissions;
@@ -88,7 +89,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     IsExpanded = !IsExpanded;
                 }
-                if (clickCount != null && clickCount == 1 && ResourceType == ResourceType.WorkflowService && IsExpanded)
+                if (clickCount != null && clickCount == 2 && ResourceType == ResourceType.WorkflowService && IsExpanded)
                 {
                     IsExpanded = false;
                 }
@@ -336,23 +337,23 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-				if (Parent != null && Parent.Children.Any(a => a.ResourceName == value))
+				if (Parent != null && Parent.Children.Any(a => a.ResourceName == value) && value!=_resourceName)
                 {
                     _shellViewModel.ShowPopup(PopupMessages.GetDuplicateMessage(value));
 
                 }
                 else
                 {
-					if (IsRenaming && _explorerRepository.Rename(this, value))
+                    if (IsRenaming && _explorerRepository.Rename(this, value))
                     {
-                _resourceName = value;
-                }
-                if (!IsRenaming)
-                {
-                    _resourceName = value;
-                }
-                IsRenaming = false;
-                OnPropertyChanged(() => ResourceName);
+                        _resourceName = value;
+                    }
+                    if (!IsRenaming)
+                    {
+                        _resourceName = value;
+                    }
+                    IsRenaming = false;
+                    OnPropertyChanged(() => ResourceName);
             }
         }
         }
@@ -546,7 +547,9 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool IsVersion { get; set; }
+	    public bool CanShowDependencies { get; set; }
+
+	    public bool IsVersion { get; set; }
         public bool CanShowVersions
         {
             get
@@ -581,7 +584,7 @@ namespace Warewolf.Studio.ViewModels
                 {
 					_children = new ObservableCollection<IExplorerItemViewModel>(_explorerRepository.GetVersions(ResourceId).Select(a => new ExplorerItemViewModel(ShellViewModel, Server, Builder, this)
                     {
-						ResourceName = "v." + a.VersionNumber + " " + a.DateTimeStamp.ToString(CultureInfo.InvariantCulture) + " " + a.Reason,
+						ResourceName = "v." + a.VersionNumber + " " + a.DateTimeStamp.ToString(CultureInfo.InvariantCulture) + " " + a.Reason.Replace(".xml",""),
                         VersionNumber = a.VersionNumber,
 						ResourceId = ResourceId,
                          IsVersion = true,
@@ -666,17 +669,17 @@ namespace Warewolf.Studio.ViewModels
                  if (destination.ResourceType == ResourceType.Folder)
                  {
                      destination.AddChild(this);
-                     Parent.RemoveChild(this);
+                     RemoveChildFromParent();
                  }
                  else if (destination.ResourceType <= ResourceType.Folder)
                  {
                      destination.AddSibling(this);
-                     Parent.RemoveChild(this);
+                     RemoveChildFromParent();
                  }
                  else if (destination.Parent == null)
                  {
                      destination.AddSibling(this);
-                     Parent.RemoveChild(this);
+                     RemoveChildFromParent();
                  }
                  return true;
             }
@@ -687,7 +690,15 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool CanDrop
+	    private void RemoveChildFromParent()
+	    {
+	        if (Parent != null)
+	        {
+	            Parent.RemoveChild(this);
+	        }	        
+	    }
+
+	    public bool CanDrop
         {
             get
             {
@@ -712,18 +723,16 @@ namespace Warewolf.Studio.ViewModels
 
         public ICommand OpenVersionCommand { get; set; }
         public ICommand DeleteVersionCommand { get; set; }
-        public bool IsExpanded
+	    public ICommand ShowDependenciesCommand { get; set; }
+
+	    public bool IsExpanded
         {
             get
             {
                 return _isExpanded;
             }
             set
-            {
-				if (Parent != null && Parent.IsExpanded != value)
-                {
-                    Parent.IsExpanded = value;
-                }
+            {				
                 _isExpanded = value;
 				OnPropertyChanged(() => IsExpanded);
             }

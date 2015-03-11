@@ -169,7 +169,6 @@ namespace Warewolf.Studio.Core.Popup
                 Buttons = MessageBoxButton.OK,
                 Header = Resources.Languages.Core.InvalidPermissionHeader,
                 Description = String.Format("The name {0} already exists. Please choose a different name.", name),
-                Image = MessageBoxImage.Warning,
 
             };
         }

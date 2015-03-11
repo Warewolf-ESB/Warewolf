@@ -40,6 +40,13 @@
         <Thickness.Right>5</Thickness.Right>
         <Thickness.Top>5</Thickness.Top>
     </Thickness>
+    <Thickness x:Key="ElementBorderBottom">
+        <Thickness.Bottom>5</Thickness.Bottom>
+        <Thickness.Left>0</Thickness.Left>
+        <Thickness.Right>0</Thickness.Right>
+        <Thickness.Top>0</Thickness.Top>
+    </Thickness>
+    
     <Thickness x:Key="ElementBottomRightBorder">
         <Thickness.Bottom>0</Thickness.Bottom>
         <Thickness.Left>0</Thickness.Left>
@@ -71,6 +78,13 @@
         <Thickness.Bottom>0</Thickness.Bottom>
         <Thickness.Left>5</Thickness.Left>
         <Thickness.Right>0</Thickness.Right>
+        <Thickness.Top>0</Thickness.Top>
+    </Thickness>
+    
+    <Thickness x:Key="ElementBorderRight">
+        <Thickness.Bottom>0</Thickness.Bottom>
+        <Thickness.Left>0</Thickness.Left>
+        <Thickness.Right>5</Thickness.Right>
         <Thickness.Top>0</Thickness.Top>
     </Thickness>
 

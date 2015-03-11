@@ -257,7 +257,9 @@
     <Compile Include="ManageDatabaseServiceControl.xaml.cs">
       <DependentUpon>ManageDatabaseServiceControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ManageDatabaseSourceControl.xaml.cs" />
+    <Compile Include="ManageDatabaseSourceControl.xaml.cs">
+      <DependentUpon>ManageDatabaseSourceControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MenuView.xaml.cs">
       <DependentUpon>MenuView.xaml</DependentUpon>
     </Compile>
@@ -274,6 +276,7 @@
     <Compile Include="ManageServerControl.xaml.cs">
       <DependentUpon>ManageServerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RenameTreeNode.cs" />
     <Compile Include="RequestServiceNameView.xaml.cs">
       <DependentUpon>RequestServiceNameView.xaml</DependentUpon>
     </Compile>
