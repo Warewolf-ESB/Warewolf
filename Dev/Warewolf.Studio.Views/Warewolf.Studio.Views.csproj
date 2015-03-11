@@ -257,7 +257,9 @@
     <Compile Include="ManageDatabaseServiceControl.xaml.cs">
       <DependentUpon>ManageDatabaseServiceControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ManageDatabaseSourceControl.xaml.cs" />
+    <Compile Include="ManageDatabaseSourceControl.xaml.cs">
+      <DependentUpon>ManageDatabaseSourceControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MenuView.xaml.cs">
       <DependentUpon>MenuView.xaml</DependentUpon>
     </Compile>
