@@ -328,3 +328,20 @@ Scenario: Clear filter
   Then I should see the path "localhost/Folder 2"
 
 
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -49,3 +49,24 @@ Scenario: Resizing Toolbox
 	 When the toolbox is resized "Horizontaly"
      Then the tools are refreshed
      And they appear from a "left to right" 
+
+
+
+
+
+
+
+	  
+
+
+
+
+
+
+
+
+
+
+
+
+
