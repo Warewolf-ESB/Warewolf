@@ -3888,17 +3888,6 @@ Scenario: Workflow with Replace Tool is replacing recordset numbers
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 #Scenario: Workflow with Assigns Replace and testing variables that hasn't been assigned2
 #      Given I have a workflow "workflowithAssignandReplaceTestingUnassignedvariablevalues2"
 #      And "workflowithAssignandReplaceTestingUnassignedvariablevalues2" contains an Assign "Assign34" as
@@ -5307,3 +5296,48 @@ Scenario: Error from workflow service is expected to buble out
 	  | 2 | [[values(1).upper]] = HELLO |
 	  | 3 | [[values(1).lower]] = hello |	  	 
 	 
+
+
+#Wolf - 675
+#Scenario: Workflow with Assigns Decision and Delete to test decision with slash in it
+#      Given I have a workflow "workflocontainsDecisioninit"
+#      And "workflocontainsDecisioninit" contains an Assign "AssignVal" as
+#      | variable    | value |
+#      | [[a]]       | 1     |
+#      | [[rec().a]] | test  |
+#	  And "workflocontainsDecisioninit" contains an Decision "Decide" as
+#	  | statements |   |   |
+#	  | [[a]]      | = | \ |
+#	  And "workflocontainsDecisioninit" contains an Delete Record "Deletes" as
+#	  | Recordset | Result  |
+#	  | [[rec()]] | [[res]] |
+#	  When "workflocontainsDecisioninit" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'AssignVal' in WorkFlow 'workflocontainsDecisioninit' debug inputs as
+#	  | # | Variable      | New Value |
+#	  | 1 | [[a]] =       | 1         |
+#	  | 2 | [[rec().a]] = | test      |
+#	   And the 'AssignVal' in Workflow 'workflocontainsDecisioninit' debug outputs as    
+#	  | # |                     |
+#	  | 1 | [[Val]] = test      |
+#	  | 2 | [[rec(1).a]] = test |
+#	 And the 'Decide' in WorkFlow 'workflocontainsDecisioninit' debug inputs as
+#	  |  | Statement | Require All decisions to be True |
+#	  |  | String    | YES                              |
+#	  And the 'Decide' in Workflow 'workflocontainsDecisioninit' debug outputs as  
+#	  | Output |
+#	  | False  |
+#	   And the 'Deletes' in WorkFlow 'workflocontainsDecisioninit' debug inputs as
+#	  | Records             |
+#	  | [[rec(1).a]] = test |
+#	  And the 'Deletes' in Workflow 'workflocontainsDecisioninit' debug outputs as    
+#	  |                   |
+#	  | [[res]] = Success |
+
+
+
+
+
+
+
+
