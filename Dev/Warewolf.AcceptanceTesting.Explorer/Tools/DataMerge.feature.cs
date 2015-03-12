@@ -70,12 +70,12 @@ namespace Warewolf.AcceptanceTesting.Explorer.Tools
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add two numbers")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("DataMerge Large View")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DataMerge")]
-        public virtual void AddTwoNumbers()
+        public virtual void DataMergeLargeView()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add two numbers", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("DataMerge Large View", new string[] {
                         "DataMerge"});
 #line 7
 this.ScenarioSetup(scenarioInfo);

@@ -41,6 +41,50 @@ Scenario: Passing Variables in small view
 	And Done button is "Visible"
 	And Quick Variable Input button is "Visible"
 
+Scenario: Focus is at row1 when I drag assign
+	Given I have Assign small view on design surface
+	And "Row 1" is focused
+	When I open Assign large view
+	Then "Row 1" is focused
+	
+Scenario: Assigning long string to a variable in Assign small view
+	Given I have Assign small view on design surface
+	When I pass variables in Small view grid as
+	| # | Variable    | = | New Value                           |
+	| 1 | [[a]]       | = | Test  warewolf at dev2 for Business |
+	| 2 |             | = |                                     |
+	Then scroll bar is appeard at "Row1" NewValue
+	And Scroll bar is "Disabled"
+
+
+
+Scenario: Assigning long string to a variable in Assign Large view
+	Given I have Assign Large view on design surface
+	When I pass variables in Large view grid as
+	| # | Variable | = | New Value                                                                                                                                                             |
+	| 1 | [[a]]    | = | Test  warewolf at dev2 by using Acceptance test is a wonderfull experience.  So here I am actually tesrting whether scroll bar is appearing for this long text or not |
+	| 2 |          | = |                                                                                                                                                                       |
+	Then scroll bar is appeard at "Row1" NewValue
+	And Scroll bar is "Disabled"
+
+
+##Enter it's in MSWord and copy and paste here and expect validation
+Scenario: Pasting words which is not a latin character is thrown a validation
+	Given I have Assign small view on design surface
+    When I pass variables in Small view grid as
+	| # | Variable | = | New Value |
+	| 1 | [[a]]    | = | It’s      |
+	| 2 |          | = |           |
+	Then "Invalid text" popup is visible
+
+#Copy and Paste text which contains tab space in it and expect validation
+Scenario: Pasting a sentence with tabs is thorwn a validation
+	Given I have Assign Large view on design surface
+	When I pass variables in Large view grid as
+	| # | Variable | = | New Value             |
+	| 1 | [[a]]    | = | Test	warewolf	at dev2 |
+	| 2 |          | = |                       |
+	Then "Tabs Pasted" popup is visible
 
 Scenario: Done Button Is validating Invalid Scalar Variables
 	Given I have Assign small view on design surface
@@ -206,6 +250,7 @@ Scenario: Opening Assign Quick Variable Input
 	And Add button is "Dsiabled"
 
 
+
 Scenario: Adding Variables by using QVI
     Given I have Assign small view on design surface
 	When I select "QVI"
@@ -301,7 +346,7 @@ Scenario: Adding Variables by using QVI and split on Tab
 	| 4 | [[d]]    | = |           |
 	
 
-Scenario: Adding Variables by using QVI and split on chars
+Scenario: Adding Variables by using QVI and split on Index
     Given I have Assign Large view on design surface
 	When I select "QVI"
 	Then "Quick Variable Input" large view is opened
