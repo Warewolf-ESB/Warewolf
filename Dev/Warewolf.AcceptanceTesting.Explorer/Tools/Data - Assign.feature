@@ -301,7 +301,7 @@ Scenario: Adding Variables by using QVI and split on Tab
 	| 4 | [[d]]    | = |           |
 	
 
-Scenario: Adding Variables by using QVI and split on chars
+Scenario: Adding Variables by using QVI and split on indices
     Given I have Assign Large view on design surface
 	When I select "QVI"
 	Then "Quick Variable Input" large view is opened
