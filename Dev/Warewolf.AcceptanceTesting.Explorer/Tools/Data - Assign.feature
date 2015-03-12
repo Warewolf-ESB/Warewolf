@@ -371,3 +371,48 @@ Scenario Outline:  QVI Prefix and Suffix
 	| No | Prefix | Suffix | Append   | Replace    |
 	| 1  | a      | ""     | Selected | Unselected |
 	| 2  | ""     | a      | Selected | Unselected |
+
+
+Scenario:  QVI Replace is Replacing Variables
+    Given I have Assign Large view on design surface
+	And Large view grid as
+	| # | Variable | = | New Value |
+	| 1 | [[a]]    | = |           |
+	| 2 | [[b]]    | = |           |
+	| 3 | [[c]]    | = |           |
+	When I select "QVI"
+	Then "Quick Variable Input" large view is opened
+	And Variable list text box is "Visible"
+	And I enter variables 
+	| [[rec().a]],[[rec().b]] |
+	And Split List On selected as "Char" with ","
+	And Prefix as ""
+	And Suffix as ""
+	And Append is 'Unselected'
+	And Replace is 'Selected'
+	And Preview button is "Enabled"	
+	When I click on "Preview"
+	Then preview as
+	| 1 [[rec().a]] |
+	| 2 [[rec().b]] |
+	And Add button is "Enabbled"
+	When I click on "Add"
+	Then Assign Large view is "Visible" 
+	And Small view grid as
+	| # | Variable    | = | New Value |
+	| 1 | [[rec().a]] | = |           |
+	| 2 | [[rec().b]] | = |           |
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
