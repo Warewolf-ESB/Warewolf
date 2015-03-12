@@ -274,10 +274,15 @@
       <DependentUpon>Toolbox.feature</DependentUpon>
     </Compile>
     <Compile Include="ToolboxSteps.cs" />
-    <Compile Include="Tools\Date - Assign.feature.cs">
+    <Compile Include="Tools\Data - Assign.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Date - Assign.feature</DependentUpon>
+      <DependentUpon>Data - Assign.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\DataMerge.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataMerge.feature</DependentUpon>
     </Compile>
     <Compile Include="UnityBootstrapperForDatabaseSourceConnectorTesting.cs" />
     <Compile Include="UnityBootstrapperForExplorerTesting.cs" />
@@ -355,9 +360,13 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Toolbox.feature.cs</LastGenOutput>
     </None>
-    <None Include="Tools\Date - Assign.feature">
+    <None Include="Tools\Data - Assign.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Date - Assign.feature.cs</LastGenOutput>
+      <LastGenOutput>Data - Assign.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\DataMerge.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DataMerge.feature.cs</LastGenOutput>
     </None>
     <None Include="VariableList.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
