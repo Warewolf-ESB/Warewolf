@@ -31,8 +31,8 @@ namespace Warewolf.AcceptanceTesting.Explorer.Tools
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "DataMerge", "In order to avoid silly mistakes\nAs a math idiot\nI want to be told the sum of two" +
-                    " numbers", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "DataMerge", "In order to merege to values\r\nAs a Warewolf User\r\nI want to mere variable vaules " +
+                    "are values", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -70,23 +70,1931 @@ namespace Warewolf.AcceptanceTesting.Explorer.Tools
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("DataMerge Large View")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("DataMerge Small View")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DataMerge")]
-        public virtual void DataMergeLargeView()
+        public virtual void DataMergeSmallView()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("DataMerge Large View", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("DataMerge Small View", new string[] {
                         "DataMerge"});
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 8
- testRunner.Given("I have entered 50 into the calculator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have DataMerge Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Recordset",
+                        "With",
+                        "Using"});
+            table1.AddRow(new string[] {
+                        "1",
+                        "",
+                        "Index",
+                        ""});
+            table1.AddRow(new string[] {
+                        "2",
+                        "",
+                        "Index",
+                        ""});
 #line 9
- testRunner.And("I have entered 70 into the calculator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 10
- testRunner.When("I press add", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 11
- testRunner.Then("the result should be 120 on the screen", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("DataMerge Small View grid as", ((string)(null)), table1, "And ");
+#line 13
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 14
+ testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("DataMerge Large View")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        public virtual void DataMergeLargeView()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("DataMerge Large View", ((string[])(null)));
+#line 16
+this.ScenarioSetup(scenarioInfo);
+#line 17
+ testRunner.Given("I have DataMerge Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Recordset",
+                        "With",
+                        "Using"});
+            table2.AddRow(new string[] {
+                        "1",
+                        "",
+                        "Index",
+                        ""});
+            table2.AddRow(new string[] {
+                        "2",
+                        "",
+                        "Index",
+                        ""});
+#line 18
+ testRunner.And("DataMerge Small View grid as", ((string)(null)), table2, "And ");
+#line 22
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 23
+ testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Put error in this variable",
+                        "Call this web service"});
+            table3.AddRow(new string[] {
+                        "",
+                        ""});
+#line 24
+ testRunner.And("On Error box consists", ((string)(null)), table3, "And ");
+#line 27
+ testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 28
+ testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Passing Variables in Small View and inserting row")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        public virtual void PassingVariablesInSmallViewAndInsertingRow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Passing Variables in Small View and inserting row", ((string[])(null)));
+#line 30
+this.ScenarioSetup(scenarioInfo);
+#line 31
+ testRunner.Given("I have DataMerge Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Data",
+                        "With",
+                        "Using"});
+            table4.AddRow(new string[] {
+                        "1",
+                        "Test",
+                        "Index",
+                        "1"});
+            table4.AddRow(new string[] {
+                        "2",
+                        "Ware",
+                        "Index",
+                        "2"});
+#line 32
+ testRunner.When("I Enter  DataMerge Small View grid as", ((string)(null)), table4, "When ");
+#line 36
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 37
+ testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 38
+ testRunner.When("I Insert Row at \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Data",
+                        "With",
+                        "Using"});
+            table5.AddRow(new string[] {
+                        "1",
+                        "Test",
+                        "Index",
+                        "1"});
+            table5.AddRow(new string[] {
+                        "2",
+                        "",
+                        "Index",
+                        ""});
+            table5.AddRow(new string[] {
+                        "3",
+                        "Ware",
+                        "Index",
+                        "2"});
+#line 39
+ testRunner.Then("DataMerge Small View grid as", ((string)(null)), table5, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deleting rows in Small View")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        public virtual void DeletingRowsInSmallView()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deleting rows in Small View", ((string[])(null)));
+#line 45
+this.ScenarioSetup(scenarioInfo);
+#line 46
+ testRunner.Given("I have DataMerge Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Data",
+                        "With",
+                        "Using"});
+            table6.AddRow(new string[] {
+                        "1",
+                        "Test",
+                        "Index",
+                        "1"});
+            table6.AddRow(new string[] {
+                        "2",
+                        "Ware",
+                        "Index",
+                        "2"});
+#line 47
+ testRunner.When("I Enter  DataMerge Small View grid as", ((string)(null)), table6, "When ");
+#line 51
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 52
+ testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 53
+ testRunner.When("I delete Row at \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Data",
+                        "With",
+                        "Using"});
+            table7.AddRow(new string[] {
+                        "1",
+                        "Test",
+                        "Index",
+                        "1"});
+            table7.AddRow(new string[] {
+                        "2",
+                        "",
+                        "Index",
+                        ""});
+#line 54
+ testRunner.Then("DataMerge Small View grid as", ((string)(null)), table7, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Passing Variables in Large View and inserting row")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        public virtual void PassingVariablesInLargeViewAndInsertingRow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Passing Variables in Large View and inserting row", ((string[])(null)));
+#line 60
+this.ScenarioSetup(scenarioInfo);
+#line 61
+ testRunner.Given("I have DataMerge Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Data",
+                        "With",
+                        "Using",
+                        "Padding",
+                        "Align"});
+            table8.AddRow(new string[] {
+                        "1",
+                        "Test",
+                        "Index",
+                        "1",
+                        "",
+                        "Left"});
+            table8.AddRow(new string[] {
+                        "2",
+                        "Ware",
+                        "Index",
+                        "2",
+                        "",
+                        "Right"});
+#line 62
+ testRunner.When("I Enter  DataMerge Large View grid as", ((string)(null)), table8, "When ");
+#line 66
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 67
+ testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 68
+ testRunner.When("I Insert Row at \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Data",
+                        "With",
+                        "Using",
+                        "Padding",
+                        "Align"});
+            table9.AddRow(new string[] {
+                        "1",
+                        "Test",
+                        "Index",
+                        "1",
+                        "",
+                        "Left"});
+            table9.AddRow(new string[] {
+                        "2",
+                        "",
+                        "Index",
+                        "",
+                        "",
+                        "Right"});
+            table9.AddRow(new string[] {
+                        "3",
+                        "Ware",
+                        "Index",
+                        "2",
+                        "",
+                        ""});
+#line 69
+ testRunner.Then("DataMerge Small View grid as", ((string)(null)), table9, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deleting rows in Large View")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        public virtual void DeletingRowsInLargeView()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deleting rows in Large View", ((string[])(null)));
+#line 76
+this.ScenarioSetup(scenarioInfo);
+#line 77
+ testRunner.Given("I have DataMerge Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Data",
+                        "With",
+                        "Using",
+                        "Padding",
+                        "Align"});
+            table10.AddRow(new string[] {
+                        "1",
+                        "Test",
+                        "Index",
+                        "1",
+                        "",
+                        "Left"});
+            table10.AddRow(new string[] {
+                        "2",
+                        "Ware",
+                        "Index",
+                        "2",
+                        "",
+                        "Right"});
+#line 78
+ testRunner.When("I Enter  DataMerge Large View grid as", ((string)(null)), table10, "When ");
+#line 82
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 83
+ testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 84
+ testRunner.When("I delete Row at \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Data",
+                        "With",
+                        "Using",
+                        "Padding",
+                        "Align"});
+            table11.AddRow(new string[] {
+                        "1",
+                        "Test",
+                        "Index",
+                        "1",
+                        "",
+                        "Left"});
+#line 85
+ testRunner.Then("DataMerge Small View grid as", ((string)(null)), table11, "Then ");
+#line 88
+ testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        public virtual void DataMergeLargeViewUsingAndPaddingIsEnabledAndDisabled(string no, string with, string @using, string padding, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Data Merge Large View using and padding is enabled and disabled", exampleTags);
+#line 92
+this.ScenarioSetup(scenarioInfo);
+#line 93
+ testRunner.Given("I have DataMerge Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 94
+ testRunner.When(string.Format("I select \"Row 1\"  with as \'{0}\' then using is \'{1}\' and padding is \'{2}\'", with, @using, padding), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Data Merge Large View using and padding is enabled and disabled")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:With", "None")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Using", "Disabled")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Padding", "Disabled")]
+        public virtual void DataMergeLargeViewUsingAndPaddingIsEnabledAndDisabled_1()
+        {
+            this.DataMergeLargeViewUsingAndPaddingIsEnabledAndDisabled("1", "None", "Disabled", "Disabled", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Data Merge Large View using and padding is enabled and disabled")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:With", "Index")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Using", "Enabled")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Padding", "Enabled")]
+        public virtual void DataMergeLargeViewUsingAndPaddingIsEnabledAndDisabled_2()
+        {
+            this.DataMergeLargeViewUsingAndPaddingIsEnabledAndDisabled("2", "Index", "Enabled", "Enabled", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Data Merge Large View using and padding is enabled and disabled")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:With", "New Line")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Using", "Enabled")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Padding", "Enabled")]
+        public virtual void DataMergeLargeViewUsingAndPaddingIsEnabledAndDisabled_3()
+        {
+            this.DataMergeLargeViewUsingAndPaddingIsEnabledAndDisabled("3", "New Line", "Enabled", "Enabled", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Data Merge Large View using and padding is enabled and disabled")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:With", "Chars")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Using", "Enabled")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Padding", "Disabled")]
+        public virtual void DataMergeLargeViewUsingAndPaddingIsEnabledAndDisabled_4()
+        {
+            this.DataMergeLargeViewUsingAndPaddingIsEnabledAndDisabled("4", "Chars", "Enabled", "Disabled", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Data Merge Large View using and padding is enabled and disabled")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:With", "Tab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Using", "Disabled")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Padding", "Disabled")]
+        public virtual void DataMergeLargeViewUsingAndPaddingIsEnabledAndDisabled_5()
+        {
+            this.DataMergeLargeViewUsingAndPaddingIsEnabledAndDisabled("5", "Tab", "Disabled", "Disabled", ((string[])(null)));
+        }
+        
+        public virtual void DataMergeSmallViewUsingIsEnabledAndDisabled(string no, string with, string @using, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Data Merge Small View using is enabled and disabled", exampleTags);
+#line 104
+this.ScenarioSetup(scenarioInfo);
+#line 105
+ testRunner.Given("I have DataMerge Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 106
+ testRunner.When(string.Format("I select \"Row 1\"  with as \'{0}\' then using is \'{1}\'", with, @using), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Data Merge Small View using is enabled and disabled")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:With", "None")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Using", "Disabled")]
+        public virtual void DataMergeSmallViewUsingIsEnabledAndDisabled_1()
+        {
+            this.DataMergeSmallViewUsingIsEnabledAndDisabled("1", "None", "Disabled", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Data Merge Small View using is enabled and disabled")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:With", "Index")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Using", "Enabled")]
+        public virtual void DataMergeSmallViewUsingIsEnabledAndDisabled_2()
+        {
+            this.DataMergeSmallViewUsingIsEnabledAndDisabled("2", "Index", "Enabled", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Data Merge Small View using is enabled and disabled")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:With", "New Line")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Using", "Enabled")]
+        public virtual void DataMergeSmallViewUsingIsEnabledAndDisabled_3()
+        {
+            this.DataMergeSmallViewUsingIsEnabledAndDisabled("3", "New Line", "Enabled", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Data Merge Small View using is enabled and disabled")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:With", "Chars")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Using", "Enabled")]
+        public virtual void DataMergeSmallViewUsingIsEnabledAndDisabled_4()
+        {
+            this.DataMergeSmallViewUsingIsEnabledAndDisabled("4", "Chars", "Enabled", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Data Merge Small View using is enabled and disabled")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:With", "Tab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Using", "Disabled")]
+        public virtual void DataMergeSmallViewUsingIsEnabledAndDisabled_5()
+        {
+            this.DataMergeSmallViewUsingIsEnabledAndDisabled("5", "Tab", "Disabled", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Data Merge Large View is validating invalid variables on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        public virtual void DataMergeLargeViewIsValidatingInvalidVariablesOnDone()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Data Merge Large View is validating invalid variables on done", ((string[])(null)));
+#line 117
+this.ScenarioSetup(scenarioInfo);
+#line 118
+ testRunner.Given("I have DataMerge Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Data",
+                        "With",
+                        "Using",
+                        "Padding",
+                        "Align"});
+            table12.AddRow(new string[] {
+                        "1",
+                        "[[a#]]",
+                        "Index",
+                        "",
+                        "",
+                        "Left"});
+            table12.AddRow(new string[] {
+                        "2",
+                        "",
+                        "Index",
+                        "",
+                        "",
+                        "Left"});
+#line 119
+ testRunner.When("I Enter DataMerge Large View grid as", ((string)(null)), table12, "When ");
+#line 123
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 124
+ testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 125
+ testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 126
+ testRunner.Then("Validation message is thrown \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 127
+ testRunner.Then("DataMerge Small View is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Data",
+                        "With",
+                        "Using",
+                        "Padding",
+                        "Align"});
+            table13.AddRow(new string[] {
+                        "1",
+                        "[[a]]",
+                        "Index",
+                        "",
+                        "",
+                        "Left"});
+            table13.AddRow(new string[] {
+                        "2",
+                        "",
+                        "Index",
+                        "",
+                        "",
+                        "Left"});
+#line 128
+ testRunner.When("I Edit DataMerge Large View grid as", ((string)(null)), table13, "When ");
+#line 132
+ testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 133
+ testRunner.Then("Validation message is thrown \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 134
+ testRunner.And("DataMerge Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Data Merge Large View is validating invalid recordsets on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        public virtual void DataMergeLargeViewIsValidatingInvalidRecordsetsOnDone()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Data Merge Large View is validating invalid recordsets on done", ((string[])(null)));
+#line 136
+this.ScenarioSetup(scenarioInfo);
+#line 137
+ testRunner.Given("I have DataMerge Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Data",
+                        "With",
+                        "Using",
+                        "Padding",
+                        "Align"});
+            table14.AddRow(new string[] {
+                        "1",
+                        "[[rec().a.]]",
+                        "Index",
+                        "",
+                        "",
+                        "Left"});
+            table14.AddRow(new string[] {
+                        "2",
+                        "",
+                        "Index",
+                        "",
+                        "",
+                        "Left"});
+#line 138
+ testRunner.When("I Enter DataMerge Large View grid as", ((string)(null)), table14, "When ");
+#line 142
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 143
+ testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 144
+ testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 145
+ testRunner.Then("Validation message is thrown \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 146
+ testRunner.Then("DataMerge Small View is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Data",
+                        "With",
+                        "Using",
+                        "Padding",
+                        "Align"});
+            table15.AddRow(new string[] {
+                        "1",
+                        "[[rec().a]]",
+                        "Index",
+                        "",
+                        "",
+                        "Left"});
+            table15.AddRow(new string[] {
+                        "2",
+                        "",
+                        "Index",
+                        "",
+                        "",
+                        "Left"});
+#line 147
+ testRunner.When("I Edit DataMerge Large View grid as", ((string)(null)), table15, "When ");
+#line 151
+ testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 152
+ testRunner.Then("Validation message is thrown \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 153
+ testRunner.And("DataMerge Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        public virtual void DataMergeLargeViewIsValidatingInvalidVariables(string no, string var, string validation, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Data Merge Large View is validating invalid variables", exampleTags);
+#line 156
+this.ScenarioSetup(scenarioInfo);
+#line 157
+ testRunner.Given("I have DataMerge Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Data",
+                        "With",
+                        "Using",
+                        "Padding",
+                        "Align"});
+            table16.AddRow(new string[] {
+                        "1",
+                        string.Format("\'{0}\'", var),
+                        "Index",
+                        "",
+                        "",
+                        "Left"});
+            table16.AddRow(new string[] {
+                        "2",
+                        "",
+                        "Index",
+                        "",
+                        "",
+                        "Left"});
+#line 158
+ testRunner.When("I Enter DataMerge Large View grid as", ((string)(null)), table16, "When ");
+#line 162
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 163
+ testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 164
+ testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 165
+ testRunner.Then(string.Format("Validation message is thrown \'{0}\'", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Data Merge Large View is validating invalid variables")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "[[rec(@).a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
+        public virtual void DataMergeLargeViewIsValidatingInvalidVariables_1()
+        {
+            this.DataMergeLargeViewIsValidatingInvalidVariables("1", "[[rec(@).a]]", "True", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Data Merge Large View is validating invalid variables")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "[[[rec().a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
+        public virtual void DataMergeLargeViewIsValidatingInvalidVariables_2()
+        {
+            this.DataMergeLargeViewIsValidatingInvalidVariables("2", "[[[rec().a]]", "True", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Data Merge Large View is validating invalid variables")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "[[[[a]]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
+        public virtual void DataMergeLargeViewIsValidatingInvalidVariables_3()
+        {
+            this.DataMergeLargeViewIsValidatingInvalidVariables("3", "[[[[a]]]", "True", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Data Merge Large View is validating invalid variables")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "[[a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
+        public virtual void DataMergeLargeViewIsValidatingInvalidVariables_4()
+        {
+            this.DataMergeLargeViewIsValidatingInvalidVariables("4", "[[a]]", "False", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Data Merge Large View is validating invalid variables")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "merge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
+        public virtual void DataMergeLargeViewIsValidatingInvalidVariables_5()
+        {
+            this.DataMergeLargeViewIsValidatingInvalidVariables("5", "merge", "False", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Data Merge Large View is validating invalid variables")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "[[a]][[rec().a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
+        public virtual void DataMergeLargeViewIsValidatingInvalidVariables_6()
+        {
+            this.DataMergeLargeViewIsValidatingInvalidVariables("6", "[[a]][[rec().a]]", "False", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Data Merge Large View is validating invalid variables")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "[[rec([[a]]).a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
+        public virtual void DataMergeLargeViewIsValidatingInvalidVariables_7()
+        {
+            this.DataMergeLargeViewIsValidatingInvalidVariables("7", "[[rec([[a]]).a]]", "True", ((string[])(null)));
+        }
+        
+        public virtual void InvalidVariablesInUsingIsValidatingOnDone(string no, string var, string validation, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Invalid variables in using is validating on done", exampleTags);
+#line 177
+this.ScenarioSetup(scenarioInfo);
+#line 178
+ testRunner.Given("I have DataMerge Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Data",
+                        "With",
+                        "Using",
+                        "Padding",
+                        "Align"});
+            table17.AddRow(new string[] {
+                        "1",
+                        "abcdef\'",
+                        "Index",
+                        string.Format("\'{0}\'", var),
+                        "",
+                        "Left"});
+            table17.AddRow(new string[] {
+                        "2",
+                        "",
+                        "Index",
+                        "",
+                        "",
+                        "Left"});
+#line 179
+ testRunner.When("I Enter DataMerge Large View grid as", ((string)(null)), table17, "When ");
+#line 183
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 184
+ testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 185
+ testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 186
+ testRunner.Then(string.Format("Validation message is thrown \'{0}\'", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in using is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "[[rec(@).a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
+        public virtual void InvalidVariablesInUsingIsValidatingOnDone_1()
+        {
+            this.InvalidVariablesInUsingIsValidatingOnDone("1", "[[rec(@).a]]", "True", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in using is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "[[[rec().a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
+        public virtual void InvalidVariablesInUsingIsValidatingOnDone_2()
+        {
+            this.InvalidVariablesInUsingIsValidatingOnDone("2", "[[[rec().a]]", "True", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in using is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "[[[[a]]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
+        public virtual void InvalidVariablesInUsingIsValidatingOnDone_3()
+        {
+            this.InvalidVariablesInUsingIsValidatingOnDone("3", "[[[[a]]]", "True", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in using is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "[[a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
+        public virtual void InvalidVariablesInUsingIsValidatingOnDone_4()
+        {
+            this.InvalidVariablesInUsingIsValidatingOnDone("4", "[[a]]", "False", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in using is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "merge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
+        public virtual void InvalidVariablesInUsingIsValidatingOnDone_5()
+        {
+            this.InvalidVariablesInUsingIsValidatingOnDone("5", "merge", "True", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in using is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "[[a]][[rec().a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
+        public virtual void InvalidVariablesInUsingIsValidatingOnDone_6()
+        {
+            this.InvalidVariablesInUsingIsValidatingOnDone("6", "[[a]][[rec().a]]", "False", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in using is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "[[rec([[a]]).a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
+        public virtual void InvalidVariablesInUsingIsValidatingOnDone_7()
+        {
+            this.InvalidVariablesInUsingIsValidatingOnDone("7", "[[rec([[a]]).a]]", "False", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in using is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "12")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
+        public virtual void InvalidVariablesInUsingIsValidatingOnDone_8()
+        {
+            this.InvalidVariablesInUsingIsValidatingOnDone("8", "12", "False", ((string[])(null)));
+        }
+        
+        public virtual void InvalidVariablesInPaddingIsValidatingOnDone(string no, string var, string validation, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Invalid variables in Padding is validating on done", exampleTags);
+#line 199
+this.ScenarioSetup(scenarioInfo);
+#line 200
+ testRunner.Given("I have DataMerge Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Data",
+                        "With",
+                        "Using",
+                        "Padding",
+                        "Align"});
+            table18.AddRow(new string[] {
+                        "1",
+                        "abcdef\'",
+                        "Index",
+                        "1",
+                        string.Format("\'{0}\'", var),
+                        "Left"});
+            table18.AddRow(new string[] {
+                        "2",
+                        "",
+                        "Index",
+                        "",
+                        "",
+                        "Left"});
+#line 201
+ testRunner.When("I Enter DataMerge Large View grid as", ((string)(null)), table18, "When ");
+#line 205
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 206
+ testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 207
+ testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 208
+ testRunner.Then(string.Format("Validation message is thrown \'{0}\'", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in Padding is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "[[rec(@).a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
+        public virtual void InvalidVariablesInPaddingIsValidatingOnDone_1()
+        {
+            this.InvalidVariablesInPaddingIsValidatingOnDone("1", "[[rec(@).a]]", "True", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in Padding is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "[[[rec().a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
+        public virtual void InvalidVariablesInPaddingIsValidatingOnDone_2()
+        {
+            this.InvalidVariablesInPaddingIsValidatingOnDone("2", "[[[rec().a]]", "True", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in Padding is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "[[[[a]]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
+        public virtual void InvalidVariablesInPaddingIsValidatingOnDone_3()
+        {
+            this.InvalidVariablesInPaddingIsValidatingOnDone("3", "[[[[a]]]", "True", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in Padding is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "[[a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
+        public virtual void InvalidVariablesInPaddingIsValidatingOnDone_4()
+        {
+            this.InvalidVariablesInPaddingIsValidatingOnDone("4", "[[a]]", "False", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in Padding is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "merge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
+        public virtual void InvalidVariablesInPaddingIsValidatingOnDone_5()
+        {
+            this.InvalidVariablesInPaddingIsValidatingOnDone("5", "merge", "True", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in Padding is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "[[a]][[rec().a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
+        public virtual void InvalidVariablesInPaddingIsValidatingOnDone_6()
+        {
+            this.InvalidVariablesInPaddingIsValidatingOnDone("6", "[[a]][[rec().a]]", "False", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in Padding is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "[[rec([[a]]).a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
+        public virtual void InvalidVariablesInPaddingIsValidatingOnDone_7()
+        {
+            this.InvalidVariablesInPaddingIsValidatingOnDone("7", "[[rec([[a]]).a]]", "False", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in Padding is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "12")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
+        public virtual void InvalidVariablesInPaddingIsValidatingOnDone_8()
+        {
+            this.InvalidVariablesInPaddingIsValidatingOnDone("8", "12", "False", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in Padding is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "a")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
+        public virtual void InvalidVariablesInPaddingIsValidatingOnDone_9()
+        {
+            this.InvalidVariablesInPaddingIsValidatingOnDone("9", "a", "False", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in Padding is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", ",")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
+        public virtual void InvalidVariablesInPaddingIsValidatingOnDone_10()
+        {
+            this.InvalidVariablesInPaddingIsValidatingOnDone("10", ",", "False", ((string[])(null)));
+        }
+        
+        public virtual void InvalidVariablesInResultIsValidatingOnDone(string no, string var, string validation, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Invalid variables in Result is validating on done", exampleTags);
+#line 222
+this.ScenarioSetup(scenarioInfo);
+#line 223
+ testRunner.Given("I have DataMerge Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Data",
+                        "With",
+                        "Using",
+                        "Padding",
+                        "Align"});
+            table19.AddRow(new string[] {
+                        "1",
+                        "abcdef\'",
+                        "Index",
+                        "1",
+                        ",",
+                        "Left"});
+            table19.AddRow(new string[] {
+                        "2",
+                        "",
+                        "Index",
+                        "",
+                        "",
+                        "Left"});
+#line 224
+ testRunner.When("I Enter DataMerge Large View grid as", ((string)(null)), table19, "When ");
+#line 228
+ testRunner.And(string.Format("result is as \'{0}\'", var), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 229
+ testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 230
+ testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 231
+ testRunner.Then(string.Format("Validation message is thrown \'{0}\'", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in Result is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "[[rec(@).a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
+        public virtual void InvalidVariablesInResultIsValidatingOnDone_1()
+        {
+            this.InvalidVariablesInResultIsValidatingOnDone("1", "[[rec(@).a]]", "True", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in Result is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "[[[rec().a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
+        public virtual void InvalidVariablesInResultIsValidatingOnDone_2()
+        {
+            this.InvalidVariablesInResultIsValidatingOnDone("2", "[[[rec().a]]", "True", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in Result is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "[[[[a]]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
+        public virtual void InvalidVariablesInResultIsValidatingOnDone_3()
+        {
+            this.InvalidVariablesInResultIsValidatingOnDone("3", "[[[[a]]]", "True", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in Result is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "[[a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
+        public virtual void InvalidVariablesInResultIsValidatingOnDone_4()
+        {
+            this.InvalidVariablesInResultIsValidatingOnDone("4", "[[a]]", "False", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in Result is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "merge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
+        public virtual void InvalidVariablesInResultIsValidatingOnDone_5()
+        {
+            this.InvalidVariablesInResultIsValidatingOnDone("5", "merge", "False", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in Result is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "[[a]][[rec().a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
+        public virtual void InvalidVariablesInResultIsValidatingOnDone_6()
+        {
+            this.InvalidVariablesInResultIsValidatingOnDone("6", "[[a]][[rec().a]]", "True", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in Result is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "[[rec([[a]]).a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
+        public virtual void InvalidVariablesInResultIsValidatingOnDone_7()
+        {
+            this.InvalidVariablesInResultIsValidatingOnDone("7", "[[rec([[a]]).a]]", "True", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in Result is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "12")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
+        public virtual void InvalidVariablesInResultIsValidatingOnDone_8()
+        {
+            this.InvalidVariablesInResultIsValidatingOnDone("8", "12", "True", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in Result is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", "a")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
+        public virtual void InvalidVariablesInResultIsValidatingOnDone_9()
+        {
+            this.InvalidVariablesInResultIsValidatingOnDone("9", "a", "False", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid variables in Result is validating on done")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var", ",")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
+        public virtual void InvalidVariablesInResultIsValidatingOnDone_10()
+        {
+            this.InvalidVariablesInResultIsValidatingOnDone("10", ",", "True", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Collapse largeview is closing large view")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        public virtual void CollapseLargeviewIsClosingLargeView()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Collapse largeview is closing large view", ((string[])(null)));
+#line 246
+this.ScenarioSetup(scenarioInfo);
+#line 247
+ testRunner.Given("I have DataMerge Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 248
+ testRunner.When("I open DataMerge large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 249
+ testRunner.Then("DataMerge Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Data",
+                        "With",
+                        "Using",
+                        "Padding",
+                        "Align"});
+            table20.AddRow(new string[] {
+                        "1",
+                        "[[a#]]",
+                        "Index",
+                        "1",
+                        "",
+                        "Left"});
+            table20.AddRow(new string[] {
+                        "2",
+                        "",
+                        "Index",
+                        "",
+                        "",
+                        "Left"});
+#line 250
+ testRunner.When("I Enter DataMerge Large View grid as", ((string)(null)), table20, "When ");
+#line 254
+ testRunner.When("I collapse large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 255
+ testRunner.And("Validation message is thrown \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 256
+ testRunner.Then("DataMerge Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Opening DataMerge Quick Variable Input")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        public virtual void OpeningDataMergeQuickVariableInput()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening DataMerge Quick Variable Input", ((string[])(null)));
+#line 259
+this.ScenarioSetup(scenarioInfo);
+#line 260
+ testRunner.Given("I have DataMerge Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 261
+ testRunner.When("I select \"QVI\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 262
+ testRunner.Then("\"Quick Variable Input\" large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 263
+ testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 264
+ testRunner.And("Split List On selected as \"Chars\" with \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 265
+ testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 266
+ testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 267
+ testRunner.And("Append is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 268
+ testRunner.And("Replace is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+#line 269
+ testRunner.And("Preview as", ((string)(null)), table21, "And ");
+#line 271
+ testRunner.And("Preview button is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 272
+ testRunner.And("Add button is \"Dsiabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Adding DataMerge Variables by using QVI")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        public virtual void AddingDataMergeVariablesByUsingQVI()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding DataMerge Variables by using QVI", ((string[])(null)));
+#line 275
+this.ScenarioSetup(scenarioInfo);
+#line 276
+    testRunner.Given("I have DataMerge Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 277
+ testRunner.When("I select \"QVI\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 278
+ testRunner.Then("\"Quick Variable Input\" large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 279
+ testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
+                        "[[a]]"});
+            table22.AddRow(new string[] {
+                        "[[b]]"});
+            table22.AddRow(new string[] {
+                        "[[c]]"});
+            table22.AddRow(new string[] {
+                        "[[d]]"});
+#line 280
+ testRunner.And("I enter variables", ((string)(null)), table22, "And ");
+#line 285
+ testRunner.And("Split List On selected as \"NewLine\" with \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 286
+ testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 287
+ testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 288
+ testRunner.And("Append is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 289
+ testRunner.And("Replace is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 290
+ testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 291
+ testRunner.When("I click on \"Preview\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
+                        "1 [[a]]"});
+            table23.AddRow(new string[] {
+                        "2 [[b]]"});
+            table23.AddRow(new string[] {
+                        "3 [[c]]"});
+            table23.AddRow(new string[] {
+                        "4 [[d]]"});
+#line 292
+ testRunner.Then("preview as", ((string)(null)), table23, "Then ");
+#line 297
+ testRunner.And("Add button is \"Enabbled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 298
+ testRunner.When("I click on \"Add\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 299
+ testRunner.Then("DataMerge Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Data",
+                        "With",
+                        "Using"});
+            table24.AddRow(new string[] {
+                        "1",
+                        "[[a]]",
+                        "Index",
+                        ""});
+            table24.AddRow(new string[] {
+                        "2",
+                        "[[b]]",
+                        "Index",
+                        ""});
+            table24.AddRow(new string[] {
+                        "3",
+                        "[[c]]",
+                        "Index",
+                        ""});
+            table24.AddRow(new string[] {
+                        "4",
+                        "[[d]]",
+                        "Index",
+                        ""});
+#line 300
+ testRunner.When("I Enter  DataMerge Small View grid as", ((string)(null)), table24, "When ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Adding DataMerge Variables by using QVI and split on chars")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        public virtual void AddingDataMergeVariablesByUsingQVIAndSplitOnChars()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding DataMerge Variables by using QVI and split on chars", ((string[])(null)));
+#line 308
+this.ScenarioSetup(scenarioInfo);
+#line 309
+    testRunner.Given("I have DataMerge Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 310
+ testRunner.When("I select \"QVI\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 311
+ testRunner.Then("\"Quick Variable Input\" large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 312
+ testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
+                        "[[a]],[[b]],[[c]],[[d]]"});
+#line 313
+ testRunner.And("I enter variables", ((string)(null)), table25, "And ");
+#line 315
+ testRunner.And("Split List On selected as \"Chars\" with \",\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 316
+ testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 317
+ testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 318
+ testRunner.And("Append is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 319
+ testRunner.And("Replace is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 320
+ testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 321
+ testRunner.When("I click on \"Preview\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
+                        "1 [[a]]"});
+            table26.AddRow(new string[] {
+                        "2 [[b]]"});
+            table26.AddRow(new string[] {
+                        "3 [[c]]"});
+            table26.AddRow(new string[] {
+                        "4 [[d]]"});
+#line 322
+ testRunner.Then("preview as", ((string)(null)), table26, "Then ");
+#line 327
+ testRunner.And("Add button is \"Enabbled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 328
+ testRunner.When("I click on \"Add\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 329
+ testRunner.Then("DataMerge Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 330
+ testRunner.And("Large View grid as", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Data",
+                        "With",
+                        "Using",
+                        "Padding",
+                        "Align"});
+            table27.AddRow(new string[] {
+                        "1",
+                        "[[a]]",
+                        "Index",
+                        "",
+                        "",
+                        "Left"});
+            table27.AddRow(new string[] {
+                        "2",
+                        "[[b]]",
+                        "Index",
+                        "",
+                        "",
+                        "Left"});
+            table27.AddRow(new string[] {
+                        "3",
+                        "[[c]]",
+                        "Index",
+                        "",
+                        "",
+                        "Left"});
+            table27.AddRow(new string[] {
+                        "4",
+                        "[[d]]",
+                        "Index",
+                        "",
+                        "",
+                        "Left"});
+#line 331
+ testRunner.When("I Enter DataMerge Large View grid as", ((string)(null)), table27, "When ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Adding DataMerge Variables by using QVI and split on Tab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        public virtual void AddingDataMergeVariablesByUsingQVIAndSplitOnTab()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding DataMerge Variables by using QVI and split on Tab", ((string[])(null)));
+#line 340
+this.ScenarioSetup(scenarioInfo);
+#line 341
+    testRunner.Given("I have DataMerge Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 342
+ testRunner.When("I select \"QVI\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 343
+ testRunner.Then("\"Quick Variable Input\" large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 344
+ testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
+                        "[[a]]\t[[b]]\t[[c]]\t[[d]]"});
+#line 345
+ testRunner.And("I enter variables", ((string)(null)), table28, "And ");
+#line 347
+ testRunner.And("Split List On selected as \"Tab\" with \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 348
+ testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 349
+ testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 350
+ testRunner.And("Append is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 351
+ testRunner.And("Replace is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 352
+ testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 353
+ testRunner.When("I click on \"Preview\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
+                        "1 [[a]]"});
+            table29.AddRow(new string[] {
+                        "2 [[b]]"});
+            table29.AddRow(new string[] {
+                        "3 [[c]]"});
+            table29.AddRow(new string[] {
+                        "4 [[d]]"});
+#line 354
+ testRunner.Then("preview as", ((string)(null)), table29, "Then ");
+#line 359
+ testRunner.And("Add button is \"Enabbled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 360
+ testRunner.When("I click on \"Add\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 361
+ testRunner.Then("DataMerge Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Data",
+                        "With",
+                        "Using",
+                        "Padding",
+                        "Align"});
+            table30.AddRow(new string[] {
+                        "1",
+                        "[[a]]",
+                        "Index",
+                        "",
+                        "",
+                        "Left"});
+            table30.AddRow(new string[] {
+                        "2",
+                        "[[b]]",
+                        "Index",
+                        "",
+                        "",
+                        "Left"});
+            table30.AddRow(new string[] {
+                        "3",
+                        "[[c]]",
+                        "Index",
+                        "",
+                        "",
+                        "Left"});
+            table30.AddRow(new string[] {
+                        "4",
+                        "[[d]]",
+                        "Index",
+                        "",
+                        "",
+                        "Left"});
+#line 362
+ testRunner.And("Large View grid as", ((string)(null)), table30, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Adding Variables in Datamerge QVI and split on chars")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        public virtual void AddingVariablesInDatamergeQVIAndSplitOnChars()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding Variables in Datamerge QVI and split on chars", ((string[])(null)));
+#line 370
+this.ScenarioSetup(scenarioInfo);
+#line 371
+    testRunner.Given("I have DataMerge Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 372
+ testRunner.When("I select \"QVI\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 373
+ testRunner.Then("\"Quick Variable Input\" large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 374
+ testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
+                        "abcdefgh"});
+#line 375
+ testRunner.And("I enter variables", ((string)(null)), table31, "And ");
+#line 377
+ testRunner.And("Split List On selected as \"Index\" with \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 378
+ testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 379
+ testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 380
+ testRunner.And("Append is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 381
+ testRunner.And("Replace is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 382
+ testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 383
+ testRunner.When("I click on \"Preview\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
+                        "1 [[a]]"});
+            table32.AddRow(new string[] {
+                        "2 [[b]]"});
+            table32.AddRow(new string[] {
+                        "3 [[c]]"});
+            table32.AddRow(new string[] {
+                        "4 [[d]]"});
+            table32.AddRow(new string[] {
+                        "5 [[e]]"});
+            table32.AddRow(new string[] {
+                        "6 [[f]]"});
+            table32.AddRow(new string[] {
+                        "7 [[g]]"});
+            table32.AddRow(new string[] {
+                        "8 [[h]]"});
+#line 384
+ testRunner.Then("preview as", ((string)(null)), table32, "Then ");
+#line 393
+ testRunner.And("Add button is \"Enabbled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 394
+ testRunner.When("I click on \"Add\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Data",
+                        "With",
+                        "Using"});
+            table33.AddRow(new string[] {
+                        "1",
+                        "[[a]]",
+                        "Index",
+                        ""});
+            table33.AddRow(new string[] {
+                        "2",
+                        "[[b]]",
+                        "Index",
+                        ""});
+            table33.AddRow(new string[] {
+                        "3",
+                        "[[c]]",
+                        "Index",
+                        ""});
+            table33.AddRow(new string[] {
+                        "4",
+                        "[[d]]",
+                        "Index",
+                        ""});
+            table33.AddRow(new string[] {
+                        "5",
+                        "[[e]]",
+                        "Index",
+                        ""});
+            table33.AddRow(new string[] {
+                        "6",
+                        "[[f]]",
+                        "Index",
+                        ""});
+            table33.AddRow(new string[] {
+                        "7",
+                        "[[g]]",
+                        "Index",
+                        ""});
+            table33.AddRow(new string[] {
+                        "8",
+                        "[[h]]",
+                        "Index",
+                        ""});
+#line 395
+ testRunner.Then("DataMerge Large view is \"Visible\"", ((string)(null)), table33, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        public virtual void DataMergeQVIPrefixAndSuffix(string no, string prefix, string suffix, string append, string replace, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("DataMerge QVI Prefix and Suffix", exampleTags);
+#line 406
+this.ScenarioSetup(scenarioInfo);
+#line 407
+    testRunner.Given("I have DataMerge Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 408
+ testRunner.When("I select \"QVI\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 409
+ testRunner.Then("\"Quick Variable Input\" large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 410
+ testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
+                        "aaaa"});
+#line 411
+ testRunner.And("I enter variables", ((string)(null)), table34, "And ");
+#line 413
+ testRunner.And("Split List On selected as \"Index\" with \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 414
+ testRunner.And(string.Format("Prefix as \'{0}\'", prefix), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 415
+ testRunner.And(string.Format("Suffix as \'{0}\'", suffix), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 416
+ testRunner.And(string.Format("Append is \'{0}\'", append), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 417
+ testRunner.And(string.Format("Replace is \'{0}\'", replace), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 418
+ testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 419
+ testRunner.When("I click on \"Preview\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
+                        "1 [[aa]]"});
+            table35.AddRow(new string[] {
+                        "2 [[aa]]"});
+            table35.AddRow(new string[] {
+                        "3 [[aa]]"});
+            table35.AddRow(new string[] {
+                        "4 [[aa]]"});
+#line 420
+ testRunner.Then("preview as", ((string)(null)), table35, "Then ");
+#line 425
+ testRunner.And("Add button is \"Enabbled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 426
+ testRunner.When("I click on \"Add\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 427
+ testRunner.Then("DataMerge Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Data",
+                        "With",
+                        "Using",
+                        "Padding",
+                        "Align"});
+            table36.AddRow(new string[] {
+                        "1",
+                        "[[aa]]",
+                        "Index",
+                        "",
+                        "",
+                        "Left"});
+            table36.AddRow(new string[] {
+                        "2",
+                        "[[aa]]",
+                        "Index",
+                        "",
+                        "",
+                        "Left"});
+            table36.AddRow(new string[] {
+                        "3",
+                        "[[aa]]",
+                        "Index",
+                        "",
+                        "",
+                        "Left"});
+            table36.AddRow(new string[] {
+                        "4",
+                        "[[aa]]",
+                        "Index",
+                        "",
+                        "",
+                        "Left"});
+#line 428
+ testRunner.And("Large View grid as", ((string)(null)), table36, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("DataMerge QVI Prefix and Suffix")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Prefix", "a")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Suffix", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Append", "Selected")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Replace", "Unselected")]
+        public virtual void DataMergeQVIPrefixAndSuffix_1()
+        {
+            this.DataMergeQVIPrefixAndSuffix("1", "a", "\"\"", "Selected", "Unselected", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("DataMerge QVI Prefix and Suffix")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Prefix", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Suffix", "a")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Append", "Selected")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Replace", "Unselected")]
+        public virtual void DataMergeQVIPrefixAndSuffix_2()
+        {
+            this.DataMergeQVIPrefixAndSuffix("2", "\"\"", "a", "Selected", "Unselected", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("DataMerge QVI Replace is Replacing Variables")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        public virtual void DataMergeQVIReplaceIsReplacingVariables()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("DataMerge QVI Replace is Replacing Variables", ((string[])(null)));
+#line 440
+this.ScenarioSetup(scenarioInfo);
+#line 441
+    testRunner.Given("I have DataMerge Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "=",
+                        "New Value"});
+            table37.AddRow(new string[] {
+                        "1",
+                        "[[a]]",
+                        "=",
+                        ""});
+            table37.AddRow(new string[] {
+                        "2",
+                        "[[b]]",
+                        "=",
+                        ""});
+            table37.AddRow(new string[] {
+                        "3",
+                        "[[c]]",
+                        "=",
+                        ""});
+#line 442
+ testRunner.And("Large view grid as", ((string)(null)), table37, "And ");
+#line 447
+ testRunner.When("I select \"QVI\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 448
+ testRunner.Then("\"Quick Variable Input\" large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 449
+ testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
+                        "[[rec().a]],[[rec().b]]"});
+#line 450
+ testRunner.And("I enter variables", ((string)(null)), table38, "And ");
+#line 452
+ testRunner.And("Split List On selected as \"Char\" with \",\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 453
+ testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 454
+ testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 455
+ testRunner.And("Append is \'Unselected\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 456
+ testRunner.And("Replace is \'Selected\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 457
+ testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 458
+ testRunner.When("I click on \"Preview\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
+                        "1 [[rec().a]]"});
+            table39.AddRow(new string[] {
+                        "2 [[rec().b]]"});
+#line 459
+ testRunner.Then("preview as", ((string)(null)), table39, "Then ");
+#line 462
+ testRunner.And("Add button is \"Enabbled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 463
+ testRunner.When("I click on \"Add\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 464
+ testRunner.Then("DataMerge Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Data",
+                        "With",
+                        "Using"});
+            table40.AddRow(new string[] {
+                        "1",
+                        "[[rec().a]",
+                        "Index",
+                        ""});
+            table40.AddRow(new string[] {
+                        "2",
+                        "[[rec().b]]",
+                        "Index",
+                        ""});
+#line 465
+ testRunner.And("Large View grid as", ((string)(null)), table40, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

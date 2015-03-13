@@ -110,21 +110,21 @@ this.ScenarioSetup(scenarioInfo);
 #line 19
  testRunner.Then("Switch large view is closed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 20
- testRunner.And("Switch small view is visible with display text as \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Switch Small View is visible with display text as \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change Display Text is updating in small view")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change Display Text is updating in Small View")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Switch")]
         public virtual void ChangeDisplayTextIsUpdatingInSmallView()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change Display Text is updating in small view", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change Display Text is updating in Small View", ((string[])(null)));
 #line 22
 this.ScenarioSetup(scenarioInfo);
 #line 23
- testRunner.Given("Switch small view is visible with display text as \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Switch Small View is visible with display text as \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 24
  testRunner.When("I open largeview", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 25
