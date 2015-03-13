@@ -549,6 +549,7 @@ namespace Warewolf.Studio.ViewModels
             itemCreated.CanEdit = false;
             itemCreated.CanView = false;
             itemCreated.CanExecute = false;
+            itemCreated.CanShowDependencies = false;
         }
 
 

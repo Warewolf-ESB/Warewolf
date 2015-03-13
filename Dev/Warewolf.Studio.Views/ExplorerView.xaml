@@ -339,7 +339,7 @@
                         <ig:NodeLayout.EditorTemplate>
                             <DataTemplate>
                                 <Grid>
-                                    <TextBox MaxWidth="200"
+                                    <TextBox MaxWidth="200" Height="15"
                                          Text="{Binding Data.ResourceName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"></TextBox>
                                 </Grid>
                             </DataTemplate>
@@ -606,9 +606,7 @@
                                     </ig:ContextMenuService.Manager>
 
                                     <Button x:Name="ExecuteButton"
-                                        Width="14"
-                                        Background="Transparent"
-                                        BorderBrush="Transparent"
+                                            Width="17"
                                         DockPanel.Dock="Right"
                                         Style="{StaticResource ExplorerTreeButtonStyle}"
                                         ToolTip="{Binding Path=Data.ExecuteToolTip}"
@@ -617,9 +615,11 @@
                                         >
                                         <Image x:Name="ExecutePermissionImage"
                                            Stretch="Uniform"
+                                               Width="14"
+                                               Margin="3,0,0,0"
                                            Source="{StaticResource System-Spacer}" >
                                             <Image.Triggers>
-                                                <EventTrigger RoutedEvent="Image.MouseEnter">
+                                                <EventTrigger RoutedEvent="Button.MouseEnter">
                                                     <BeginStoryboard>
                                                         <Storyboard>
                                                             <ObjectAnimationUsingKeyFrames Duration="0"
@@ -641,21 +641,20 @@
                                                 </EventTrigger>
                                             </Image.Triggers>
                                         </Image>
-                                    </Button>
-                                    <Button Width="14"
-                                        Margin="0,0,3,0"
-                                        Background="Transparent"
-                                        BorderBrush="Transparent"
+                                    </Button>                                    
+                                    <Button x:Name="EditButton"
+                                        Width="14"
                                         DockPanel.Dock="Right"
                                         Style="{StaticResource ExplorerTreeButtonStyle}"
                                         Visibility="{Binding Data.CanEdit,
                                                                     Converter={StaticResource BoolToVisibilityConverter}}"
                                         ToolTip="{Binding Path=Data.EditToolTip}">
-                                        <Image x:Name="EditPermissionImage"                                               
+                                        <Image x:Name="EditPermissionImage"    
+                                               Width="14"
                                            Stretch="Uniform"
                                            Source="{StaticResource System-Spacer}" >
                                             <Image.Triggers>
-                                                <EventTrigger RoutedEvent="Image.MouseEnter">
+                                                <EventTrigger RoutedEvent="Button.MouseEnter">
                                                     <BeginStoryboard>
                                                         <Storyboard>
                                                             <ObjectAnimationUsingKeyFrames Duration="0"
