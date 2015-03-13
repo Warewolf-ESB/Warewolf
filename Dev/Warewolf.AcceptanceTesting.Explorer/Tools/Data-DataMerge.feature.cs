@@ -24,7 +24,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.Tools
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "DataMerge.feature"
+#line 1 "Data-DataMerge.feature"
 #line hidden
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
@@ -98,7 +98,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Index",
                         ""});
 #line 9
- testRunner.And("DataMerge Small View grid as", ((string)(null)), table1, "And ");
+ testRunner.And("DataMerge Small View grid has", ((string)(null)), table1, "And ");
 #line 13
  testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 14
@@ -134,7 +134,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Index",
                         ""});
 #line 18
- testRunner.And("DataMerge Small View grid as", ((string)(null)), table2, "And ");
+ testRunner.And("DataMerge Small View grid has", ((string)(null)), table2, "And ");
 #line 22
  testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 23
@@ -157,14 +157,34 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("DataMerge Small View focus is at row1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        public virtual void DataMergeSmallViewFocusIsAtRow1()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("DataMerge Small View focus is at row1", ((string[])(null)));
+#line 30
+this.ScenarioSetup(scenarioInfo);
+#line 31
+ testRunner.Given("I have DataMerge Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 32
+ testRunner.And("\"Row 1\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 33
+ testRunner.When("I open largeview", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 34
+ testRunner.Then("\"Row1\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Passing Variables in Small View and inserting row")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
         public virtual void PassingVariablesInSmallViewAndInsertingRow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Passing Variables in Small View and inserting row", ((string[])(null)));
-#line 30
+#line 36
 this.ScenarioSetup(scenarioInfo);
-#line 31
+#line 37
  testRunner.Given("I have DataMerge Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -182,13 +202,13 @@ this.ScenarioSetup(scenarioInfo);
                         "Ware",
                         "Index",
                         "2"});
-#line 32
- testRunner.When("I Enter  DataMerge Small View grid as", ((string)(null)), table4, "When ");
-#line 36
- testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 37
- testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 38
+ testRunner.When("I Enter  DataMerge Small View grid has", ((string)(null)), table4, "When ");
+#line 42
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 43
+ testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 44
  testRunner.When("I Insert Row at \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -211,8 +231,8 @@ this.ScenarioSetup(scenarioInfo);
                         "Ware",
                         "Index",
                         "2"});
-#line 39
- testRunner.Then("DataMerge Small View grid as", ((string)(null)), table5, "Then ");
+#line 45
+ testRunner.Then("DataMerge Small View grid has", ((string)(null)), table5, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -223,9 +243,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DeletingRowsInSmallView()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deleting rows in Small View", ((string[])(null)));
-#line 45
+#line 51
 this.ScenarioSetup(scenarioInfo);
-#line 46
+#line 52
  testRunner.Given("I have DataMerge Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -248,13 +268,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Index",
                         ""});
-#line 47
- testRunner.When("I Enter  DataMerge Small View grid as", ((string)(null)), table6, "When ");
-#line 52
- testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 53
+ testRunner.When("I Enter  DataMerge Small View grid has", ((string)(null)), table6, "When ");
+#line 58
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 59
  testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 54
+#line 60
  testRunner.When("I delete Row at \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -272,8 +292,8 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Index",
                         ""});
-#line 55
- testRunner.Then("DataMerge Small View grid as", ((string)(null)), table7, "Then ");
+#line 61
+ testRunner.Then("DataMerge Small View grid has", ((string)(null)), table7, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -284,9 +304,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void PassingVariablesInLargeViewAndInsertingRow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Passing Variables in Large View and inserting row", ((string[])(null)));
-#line 61
+#line 67
 this.ScenarioSetup(scenarioInfo);
-#line 62
+#line 68
  testRunner.Given("I have DataMerge Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -317,13 +337,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "Left"});
-#line 63
- testRunner.When("I Enter  DataMerge Large View grid as", ((string)(null)), table8, "When ");
-#line 68
- testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 69
+ testRunner.When("I Enter  DataMerge Large View grid has", ((string)(null)), table8, "When ");
+#line 74
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 75
  testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 70
+#line 76
  testRunner.When("I Insert Row at \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -354,9 +374,9 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "",
                         ""});
-#line 71
- testRunner.Then("DataMerge Small View grid as", ((string)(null)), table9, "Then ");
-#line 76
+#line 77
+ testRunner.Then("DataMerge Small View grid has", ((string)(null)), table9, "Then ");
+#line 82
  testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -368,9 +388,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DeletingRowsInLargeView()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deleting rows in Large View", ((string[])(null)));
-#line 78
+#line 84
 this.ScenarioSetup(scenarioInfo);
-#line 79
+#line 85
  testRunner.Given("I have DataMerge Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -394,13 +414,13 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "",
                         "Right"});
-#line 80
- testRunner.When("I Enter  DataMerge Large View grid as", ((string)(null)), table10, "When ");
-#line 84
- testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 85
- testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 86
+ testRunner.When("I Enter  DataMerge Large View grid has", ((string)(null)), table10, "When ");
+#line 90
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 91
+ testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 92
  testRunner.When("I delete Row at \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
@@ -424,9 +444,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 87
- testRunner.Then("DataMerge Small View grid as", ((string)(null)), table11, "Then ");
-#line 91
+#line 93
+ testRunner.Then("DataMerge Small View grid has", ((string)(null)), table11, "Then ");
+#line 97
  testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -435,11 +455,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DataMergeLargeViewUsingAndPaddingIsEnabledAndDisabled(string no, string with, string @using, string padding, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Data Merge Large View using and padding is enabled and disabled", exampleTags);
-#line 95
+#line 101
 this.ScenarioSetup(scenarioInfo);
-#line 96
+#line 102
  testRunner.Given("I have DataMerge Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 97
+#line 103
  testRunner.When(string.Format("I select \"Row 1\"  with as \'{0}\' then using is \'{1}\' and padding is \'{2}\'", with, @using, padding), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
@@ -513,11 +533,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DataMergeSmallViewUsingIsEnabledAndDisabled(string no, string with, string @using, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Data Merge Small View using is enabled and disabled", exampleTags);
-#line 107
+#line 113
 this.ScenarioSetup(scenarioInfo);
-#line 108
+#line 114
  testRunner.Given("I have DataMerge Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 109
+#line 115
  testRunner.When(string.Format("I select \"Row 1\"  with as \'{0}\' then using is \'{1}\'", with, @using), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
@@ -589,9 +609,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DataMergeLargeViewIsValidatingInvalidVariablesOnDone()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Data Merge Large View is validating invalid variables on done", ((string[])(null)));
-#line 120
+#line 126
 this.ScenarioSetup(scenarioInfo);
-#line 121
+#line 127
  testRunner.Given("I have DataMerge Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
@@ -615,17 +635,17 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "Left"});
-#line 122
- testRunner.When("I Enter DataMerge Large View grid as", ((string)(null)), table12, "When ");
-#line 126
- testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 127
- testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 128
+ testRunner.When("I Enter DataMerge Large View grid has", ((string)(null)), table12, "When ");
+#line 132
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 133
+ testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 134
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 129
+#line 135
  testRunner.Then("Validation message is thrown \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 130
+#line 136
  testRunner.Then("DataMerge Small View is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
@@ -649,13 +669,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "Left"});
-#line 131
- testRunner.When("I Edit DataMerge Large View grid as", ((string)(null)), table13, "When ");
-#line 135
- testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 136
- testRunner.Then("Validation message is thrown \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 137
+ testRunner.When("I Edit DataMerge Large View grid has", ((string)(null)), table13, "When ");
+#line 141
+ testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 142
+ testRunner.Then("Validation message is thrown \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 143
  testRunner.And("DataMerge Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -667,9 +687,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DataMergeLargeViewIsValidatingInvalidRecordsetsOnDone()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Data Merge Large View is validating invalid recordsets on done", ((string[])(null)));
-#line 139
+#line 145
 this.ScenarioSetup(scenarioInfo);
-#line 140
+#line 146
  testRunner.Given("I have DataMerge Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
@@ -693,17 +713,17 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "Left"});
-#line 141
- testRunner.When("I Enter DataMerge Large View grid as", ((string)(null)), table14, "When ");
-#line 145
- testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 146
- testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 147
+ testRunner.When("I Enter DataMerge Large View grid has", ((string)(null)), table14, "When ");
+#line 151
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 152
+ testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 153
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 148
+#line 154
  testRunner.Then("Validation message is thrown \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 149
+#line 155
  testRunner.Then("DataMerge Small View is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
@@ -727,13 +747,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "Left"});
-#line 150
- testRunner.When("I Edit DataMerge Large View grid as", ((string)(null)), table15, "When ");
-#line 154
- testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 155
- testRunner.Then("Validation message is thrown \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 156
+ testRunner.When("I Edit DataMerge Large View grid has", ((string)(null)), table15, "When ");
+#line 160
+ testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 161
+ testRunner.Then("Validation message is thrown \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 162
  testRunner.And("DataMerge Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -742,9 +762,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DataMergeLargeViewIsValidatingInvalidVariables(string no, string var, string validation, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Data Merge Large View is validating invalid variables", exampleTags);
-#line 159
+#line 165
 this.ScenarioSetup(scenarioInfo);
-#line 160
+#line 166
  testRunner.Given("I have DataMerge Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -768,15 +788,15 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "Left"});
-#line 161
- testRunner.When("I Enter DataMerge Large View grid as", ((string)(null)), table16, "When ");
-#line 165
- testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 166
- testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 167
+ testRunner.When("I Enter DataMerge Large View grid has", ((string)(null)), table16, "When ");
+#line 171
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 172
+ testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 173
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 168
+#line 174
  testRunner.Then(string.Format("Validation message is thrown \'{0}\'", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -869,9 +889,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void InvalidVariablesInUsingIsValidatingOnDone(string no, string var, string validation, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Invalid variables in using is validating on done", exampleTags);
-#line 180
+#line 186
 this.ScenarioSetup(scenarioInfo);
-#line 181
+#line 187
  testRunner.Given("I have DataMerge Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
@@ -895,15 +915,15 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "Left"});
-#line 182
- testRunner.When("I Enter DataMerge Large View grid as", ((string)(null)), table17, "When ");
-#line 186
- testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 187
- testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 188
+ testRunner.When("I Enter DataMerge Large View grid has", ((string)(null)), table17, "When ");
+#line 192
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 193
+ testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 194
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 189
+#line 195
  testRunner.Then(string.Format("Validation message is thrown \'{0}\'", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1008,9 +1028,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void InvalidVariablesInPaddingIsValidatingOnDone(string no, string var, string validation, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Invalid variables in Padding is validating on done", exampleTags);
-#line 202
+#line 208
 this.ScenarioSetup(scenarioInfo);
-#line 203
+#line 209
  testRunner.Given("I have DataMerge Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1034,15 +1054,15 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "Left"});
-#line 204
- testRunner.When("I Enter DataMerge Large View grid as", ((string)(null)), table18, "When ");
-#line 208
- testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 209
- testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 210
+ testRunner.When("I Enter DataMerge Large View grid has", ((string)(null)), table18, "When ");
+#line 214
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 215
+ testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 216
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 211
+#line 217
  testRunner.Then(string.Format("Validation message is thrown \'{0}\'", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1171,9 +1191,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void InvalidVariablesInResultIsValidatingOnDone(string no, string var, string validation, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Invalid variables in Result is validating on done", exampleTags);
-#line 225
+#line 231
 this.ScenarioSetup(scenarioInfo);
-#line 226
+#line 232
  testRunner.Given("I have DataMerge Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1197,15 +1217,15 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "Left"});
-#line 227
- testRunner.When("I Enter DataMerge Large View grid as", ((string)(null)), table19, "When ");
-#line 231
- testRunner.And(string.Format("result is as \'{0}\'", var), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 232
- testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 233
+ testRunner.When("I Enter DataMerge Large View grid has", ((string)(null)), table19, "When ");
+#line 237
+ testRunner.And(string.Format("result is as \'{0}\'", var), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 238
+ testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 239
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 234
+#line 240
  testRunner.Then(string.Format("Validation message is thrown \'{0}\'", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1337,13 +1357,13 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CollapseLargeviewIsClosingLargeView()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Collapse largeview is closing large view", ((string[])(null)));
-#line 249
+#line 255
 this.ScenarioSetup(scenarioInfo);
-#line 250
+#line 256
  testRunner.Given("I have DataMerge Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 251
+#line 257
  testRunner.When("I open DataMerge large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 252
+#line 258
  testRunner.Then("DataMerge Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1367,13 +1387,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "Left"});
-#line 253
- testRunner.When("I Enter DataMerge Large View grid as", ((string)(null)), table20, "When ");
-#line 257
- testRunner.When("I collapse large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 258
- testRunner.And("Validation message is thrown \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 259
+ testRunner.When("I Enter DataMerge Large View grid has", ((string)(null)), table20, "When ");
+#line 263
+ testRunner.When("I collapse large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 264
+ testRunner.And("Validation message is thrown \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 265
  testRunner.Then("DataMerge Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1385,34 +1405,34 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void OpeningDataMergeQuickVariableInput()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening DataMerge Quick Variable Input", ((string[])(null)));
-#line 262
-this.ScenarioSetup(scenarioInfo);
-#line 263
- testRunner.Given("I have DataMerge Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 264
- testRunner.When("I select \"QVI\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 265
- testRunner.Then("\"Quick Variable Input\" large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 266
- testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 267
- testRunner.And("Split List On selected as \"Chars\" with \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 268
- testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 269
- testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have DataMerge Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 270
- testRunner.And("Append is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I select \"QVI\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 271
+ testRunner.Then("\"Quick Variable Input\" large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 272
+ testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 273
+ testRunner.And("Split List On selected as \"Chars\" with \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 274
+ testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 275
+ testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 276
+ testRunner.And("Append is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 277
  testRunner.And("Replace is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-#line 272
+#line 278
  testRunner.And("Preview as", ((string)(null)), table21, "And ");
-#line 274
+#line 280
  testRunner.And("Preview button is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 275
+#line 281
  testRunner.And("Add button is \"Dsiabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1424,15 +1444,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AddingDataMergeVariablesByUsingQVI()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding DataMerge Variables by using QVI", ((string[])(null)));
-#line 278
+#line 284
 this.ScenarioSetup(scenarioInfo);
-#line 279
+#line 285
     testRunner.Given("I have DataMerge Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 280
+#line 286
  testRunner.When("I select \"QVI\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 281
+#line 287
  testRunner.Then("\"Quick Variable Input\" large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 282
+#line 288
  testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1443,21 +1463,21 @@ this.ScenarioSetup(scenarioInfo);
                         "[[c]]"});
             table22.AddRow(new string[] {
                         "[[d]]"});
-#line 283
- testRunner.And("I enter variables", ((string)(null)), table22, "And ");
-#line 288
- testRunner.And("Split List On selected as \"NewLine\" with \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 289
- testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 290
- testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 291
- testRunner.And("Append is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 292
- testRunner.And("Replace is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 293
- testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I enter variables", ((string)(null)), table22, "And ");
 #line 294
+ testRunner.And("Split List On selected as \"NewLine\" with \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 295
+ testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 296
+ testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 297
+ testRunner.And("Append is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 298
+ testRunner.And("Replace is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 299
+ testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 300
  testRunner.When("I click on \"Preview\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1468,13 +1488,13 @@ this.ScenarioSetup(scenarioInfo);
                         "3 [[c]]"});
             table23.AddRow(new string[] {
                         "4 [[d]]"});
-#line 295
- testRunner.Then("preview as", ((string)(null)), table23, "Then ");
-#line 300
- testRunner.And("Add button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 301
+ testRunner.Then("preview as", ((string)(null)), table23, "Then ");
+#line 306
+ testRunner.And("Add button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 307
  testRunner.When("I click on \"Add\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 302
+#line 308
  testRunner.Then("DataMerge Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1507,9 +1527,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Index",
                         ""});
-#line 303
- testRunner.When("I Enter  DataMerge Small View grid as", ((string)(null)), table24, "When ");
-#line 310
+#line 309
+ testRunner.When("I Enter  DataMerge Small View grid has", ((string)(null)), table24, "When ");
+#line 316
  testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1521,34 +1541,34 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AddingDataMergeVariablesByUsingQVIAndSplitOnChars()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding DataMerge Variables by using QVI and split on chars", ((string[])(null)));
-#line 312
+#line 318
 this.ScenarioSetup(scenarioInfo);
-#line 313
+#line 319
     testRunner.Given("I have DataMerge Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 314
+#line 320
  testRunner.When("I select \"QVI\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 315
+#line 321
  testRunner.Then("\"Quick Variable Input\" large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 316
+#line 322
  testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[a]],[[b]],[[c]],[[d]]"});
-#line 317
- testRunner.And("I enter variables", ((string)(null)), table25, "And ");
-#line 319
- testRunner.And("Split List On selected as \"Chars\" with \",\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 320
- testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 321
- testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 322
- testRunner.And("Append is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 323
- testRunner.And("Replace is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 324
- testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I enter variables", ((string)(null)), table25, "And ");
 #line 325
+ testRunner.And("Split List On selected as \"Chars\" with \",\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 326
+ testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 327
+ testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 328
+ testRunner.And("Append is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 329
+ testRunner.And("Replace is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 330
+ testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 331
  testRunner.When("I click on \"Preview\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1559,16 +1579,16 @@ this.ScenarioSetup(scenarioInfo);
                         "3 [[c]]"});
             table26.AddRow(new string[] {
                         "4 [[d]]"});
-#line 326
- testRunner.Then("preview as", ((string)(null)), table26, "Then ");
-#line 331
- testRunner.And("Add button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 332
+ testRunner.Then("preview as", ((string)(null)), table26, "Then ");
+#line 337
+ testRunner.And("Add button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 338
  testRunner.When("I click on \"Add\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 333
+#line 339
  testRunner.Then("DataMerge Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 334
- testRunner.And("Large View grid as", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 340
+ testRunner.And("Large View grid has", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -1612,9 +1632,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "Left"});
-#line 335
- testRunner.Then("DataMerge Large View grid as", ((string)(null)), table27, "Then ");
-#line 342
+#line 341
+ testRunner.Then("DataMerge Large View grid has", ((string)(null)), table27, "Then ");
+#line 348
  testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1626,34 +1646,34 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AddingDataMergeVariablesByUsingQVIAndSplitOnTab()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding DataMerge Variables by using QVI and split on Tab", ((string[])(null)));
-#line 346
+#line 352
 this.ScenarioSetup(scenarioInfo);
-#line 347
+#line 353
     testRunner.Given("I have DataMerge Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 348
+#line 354
  testRunner.When("I select \"QVI\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 349
+#line 355
  testRunner.Then("\"Quick Variable Input\" large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 350
+#line 356
  testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[a]]\t[[b]]\t[[c]]\t[[d]]"});
-#line 351
- testRunner.And("I enter variables", ((string)(null)), table28, "And ");
-#line 353
- testRunner.And("Split List On selected as \"Tab\" with \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 354
- testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 355
- testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 356
- testRunner.And("Append is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 357
- testRunner.And("Replace is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 358
- testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I enter variables", ((string)(null)), table28, "And ");
 #line 359
+ testRunner.And("Split List On selected as \"Tab\" with \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 360
+ testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 361
+ testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 362
+ testRunner.And("Append is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 363
+ testRunner.And("Replace is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 364
+ testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 365
  testRunner.When("I click on \"Preview\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1664,13 +1684,13 @@ this.ScenarioSetup(scenarioInfo);
                         "3 [[c]]"});
             table29.AddRow(new string[] {
                         "4 [[d]]"});
-#line 360
- testRunner.Then("preview as", ((string)(null)), table29, "Then ");
-#line 365
- testRunner.And("Add button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 366
+ testRunner.Then("preview as", ((string)(null)), table29, "Then ");
+#line 371
+ testRunner.And("Add button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 372
  testRunner.When("I click on \"Add\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 367
+#line 373
  testRunner.Then("DataMerge Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1715,9 +1735,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "Left"});
-#line 368
- testRunner.And("Large View grid as", ((string)(null)), table30, "And ");
-#line 375
+#line 374
+ testRunner.And("Large View grid has", ((string)(null)), table30, "And ");
+#line 381
  testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1729,34 +1749,34 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AddingVariablesInDatamergeQVIAndSplitOnChars()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding Variables in Datamerge QVI and split on chars", ((string[])(null)));
-#line 377
+#line 383
 this.ScenarioSetup(scenarioInfo);
-#line 378
+#line 384
     testRunner.Given("I have DataMerge Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 379
+#line 385
  testRunner.When("I select \"QVI\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 380
+#line 386
  testRunner.Then("\"Quick Variable Input\" large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 381
+#line 387
  testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
                         "abcdefgh"});
-#line 382
- testRunner.And("I enter variables", ((string)(null)), table31, "And ");
-#line 384
- testRunner.And("Split List On selected as \"Index\" with \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 385
- testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 386
- testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 387
- testRunner.And("Append is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 388
- testRunner.And("Replace is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 389
- testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I enter variables", ((string)(null)), table31, "And ");
 #line 390
+ testRunner.And("Split List On selected as \"Index\" with \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 391
+ testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 392
+ testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 393
+ testRunner.And("Append is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 394
+ testRunner.And("Replace is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 395
+ testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 396
  testRunner.When("I click on \"Preview\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1775,11 +1795,11 @@ this.ScenarioSetup(scenarioInfo);
                         "7 [[g]]"});
             table32.AddRow(new string[] {
                         "8 [[h]]"});
-#line 391
+#line 397
  testRunner.Then("preview as", ((string)(null)), table32, "Then ");
-#line 400
+#line 406
  testRunner.And("Add button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 401
+#line 407
  testRunner.When("I click on \"Add\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1832,9 +1852,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Index",
                         ""});
-#line 402
+#line 408
  testRunner.Then("DataMerge Large view is \"Visible\"", ((string)(null)), table33, "Then ");
-#line 413
+#line 419
  testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1843,34 +1863,34 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DataMergeQVIPrefixAndSuffix(string no, string prefix, string suffix, string append, string replace, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("DataMerge QVI Prefix and Suffix", exampleTags);
-#line 415
+#line 421
 this.ScenarioSetup(scenarioInfo);
-#line 416
+#line 422
     testRunner.Given("I have DataMerge Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 417
+#line 423
  testRunner.When("I select \"QVI\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 418
+#line 424
  testRunner.Then("\"Quick Variable Input\" large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 419
+#line 425
  testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
                         "aaaa"});
-#line 420
- testRunner.And("I enter variables", ((string)(null)), table34, "And ");
-#line 422
- testRunner.And("Split List On selected as \"Index\" with \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 423
- testRunner.And(string.Format("Prefix as \'{0}\'", prefix), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 424
- testRunner.And(string.Format("Suffix as \'{0}\'", suffix), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 425
- testRunner.And(string.Format("Append is \'{0}\'", append), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 426
- testRunner.And(string.Format("Replace is \'{0}\'", replace), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 427
- testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I enter variables", ((string)(null)), table34, "And ");
 #line 428
+ testRunner.And("Split List On selected as \"Index\" with \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 429
+ testRunner.And(string.Format("Prefix as \'{0}\'", prefix), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 430
+ testRunner.And(string.Format("Suffix as \'{0}\'", suffix), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 431
+ testRunner.And(string.Format("Append is \'{0}\'", append), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 432
+ testRunner.And(string.Format("Replace is \'{0}\'", replace), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 433
+ testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 434
  testRunner.When("I click on \"Preview\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1881,13 +1901,13 @@ this.ScenarioSetup(scenarioInfo);
                         "3 [[aa]]"});
             table35.AddRow(new string[] {
                         "4 [[aa]]"});
-#line 429
- testRunner.Then("preview as", ((string)(null)), table35, "Then ");
-#line 434
- testRunner.And("Add button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 435
+ testRunner.Then("preview as", ((string)(null)), table35, "Then ");
+#line 440
+ testRunner.And("Add button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 441
  testRunner.When("I click on \"Add\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 436
+#line 442
  testRunner.Then("DataMerge Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1932,9 +1952,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "Left"});
-#line 437
- testRunner.And("Large View grid as", ((string)(null)), table36, "And ");
-#line 444
+#line 443
+ testRunner.And("Large View grid has", ((string)(null)), table36, "And ");
+#line 450
  testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1974,9 +1994,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DataMergeQVIReplaceIsReplacingVariables()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("DataMerge QVI Replace is Replacing Variables", ((string[])(null)));
-#line 451
+#line 457
 this.ScenarioSetup(scenarioInfo);
-#line 452
+#line 458
     testRunner.Given("I have DataMerge Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1999,45 +2019,45 @@ this.ScenarioSetup(scenarioInfo);
                         "[[c]]",
                         "=",
                         ""});
-#line 453
- testRunner.And("Large view grid as", ((string)(null)), table37, "And ");
-#line 458
- testRunner.When("I select \"QVI\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 459
+ testRunner.And("Large view grid has", ((string)(null)), table37, "And ");
+#line 464
+ testRunner.When("I select \"QVI\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 465
  testRunner.Then("\"Quick Variable Input\" large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 460
+#line 466
  testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[rec().a]],[[rec().b]]"});
-#line 461
- testRunner.And("I enter variables", ((string)(null)), table38, "And ");
-#line 463
- testRunner.And("Split List On selected as \"Char\" with \",\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 464
- testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 465
- testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 466
- testRunner.And("Append is \'Unselected\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 467
- testRunner.And("Replace is \'Selected\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 468
- testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I enter variables", ((string)(null)), table38, "And ");
 #line 469
+ testRunner.And("Split List On selected as \"Char\" with \",\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 470
+ testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 471
+ testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 472
+ testRunner.And("Append is \'Unselected\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 473
+ testRunner.And("Replace is \'Selected\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 474
+ testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 475
  testRunner.When("I click on \"Preview\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
                         "1 [[rec().a]]"});
             table39.AddRow(new string[] {
                         "2 [[rec().b]]"});
-#line 470
+#line 476
  testRunner.Then("preview as", ((string)(null)), table39, "Then ");
-#line 473
+#line 479
  testRunner.And("Add button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 474
+#line 480
  testRunner.When("I click on \"Add\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 475
+#line 481
  testRunner.Then("DataMerge Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2060,9 +2080,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Index",
                         ""});
-#line 476
- testRunner.And("Large View grid as", ((string)(null)), table40, "And ");
-#line 481
+#line 482
+ testRunner.And("Large View grid has", ((string)(null)), table40, "And ");
+#line 487
  testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

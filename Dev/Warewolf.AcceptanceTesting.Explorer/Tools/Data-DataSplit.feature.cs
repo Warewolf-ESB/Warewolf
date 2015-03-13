@@ -24,7 +24,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.Tools
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "DataSplit.feature"
+#line 1 "Data-DataSplit.feature"
 #line hidden
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
@@ -100,7 +100,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Index",
                         ""});
 #line 11
- testRunner.And("DataSplit Small View grid as", ((string)(null)), table1, "And ");
+ testRunner.And("DataSplit Small View grid has", ((string)(null)), table1, "And ");
 #line 15
  testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -148,7 +148,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         ""});
 #line 23
- testRunner.And("DataSplit Large View grid as", ((string)(null)), table2, "And ");
+ testRunner.And("DataSplit Large View grid has", ((string)(null)), table2, "And ");
 #line 27
  testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -169,16 +169,36 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Passing Variables in Datasplit Small View and inserting row")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("DataSplit Small View and large view focus is at row1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        public virtual void PassingVariablesInDatasplitSmallViewAndInsertingRow()
+        public virtual void DataSplitSmallViewAndLargeViewFocusIsAtRow1()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Passing Variables in Datasplit Small View and inserting row", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("DataSplit Small View and large view focus is at row1", ((string[])(null)));
 #line 34
 this.ScenarioSetup(scenarioInfo);
 #line 35
  testRunner.Given("I have DataSplit Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 36
+ testRunner.And("\"Row 1\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 37
+ testRunner.When("I have LargeView on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 38
+ testRunner.Then("\"Row1\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Passing Variables in Datasplit Small View and inserting row")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
+        public virtual void PassingVariablesInDatasplitSmallViewAndInsertingRow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Passing Variables in Datasplit Small View and inserting row", ((string[])(null)));
+#line 41
+this.ScenarioSetup(scenarioInfo);
+#line 42
+ testRunner.Given("I have DataSplit Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 43
  testRunner.And("I enter String to Split as \"Test Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -201,13 +221,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Index",
                         ""});
-#line 37
- testRunner.When("I Enter  DataSplit Small View grid as", ((string)(null)), table4, "When ");
-#line 42
- testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 43
- testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 44
+ testRunner.When("I Enter  DataSplit Small View grid has", ((string)(null)), table4, "When ");
+#line 49
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 50
+ testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 51
  testRunner.When("I Insert Row at \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -235,9 +255,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Index",
                         ""});
-#line 45
- testRunner.Then("DataSplit Small View grid as", ((string)(null)), table5, "Then ");
-#line 51
+#line 52
+ testRunner.Then("DataSplit Small View grid has", ((string)(null)), table5, "Then ");
+#line 58
  testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -249,11 +269,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DeletingRowsInDatasplitSmallView()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deleting rows in Datasplit Small View", ((string[])(null)));
-#line 53
+#line 60
 this.ScenarioSetup(scenarioInfo);
-#line 54
+#line 61
  testRunner.Given("I have DataSplit Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 55
+#line 62
  testRunner.And("I enter String to Split as \"Test Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -276,13 +296,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Index",
                         ""});
-#line 56
- testRunner.When("I Enter  DataSplit Small View grid as", ((string)(null)), table6, "When ");
-#line 61
- testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 62
- testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 63
+ testRunner.When("I Enter  DataSplit Small View grid has", ((string)(null)), table6, "When ");
+#line 68
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 69
+ testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 70
  testRunner.When("I delete Row at \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -300,9 +320,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Index",
                         ""});
-#line 64
- testRunner.Then("DataSplit Small View grid as", ((string)(null)), table7, "Then ");
-#line 68
+#line 71
+ testRunner.Then("DataSplit Small View grid has", ((string)(null)), table7, "Then ");
+#line 75
  testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -314,11 +334,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void PassingVariablesInDatasplitLargeViewAndInsertingRow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Passing Variables in Datasplit Large View and inserting row", ((string[])(null)));
-#line 70
+#line 77
 this.ScenarioSetup(scenarioInfo);
-#line 71
+#line 78
  testRunner.Given("I have DataSplit Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 72
+#line 79
  testRunner.And("I enter String to Split as \"Test Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -349,13 +369,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Unselected",
                         ""});
-#line 73
- testRunner.When("I Enter  DataSplit Large View grid as", ((string)(null)), table8, "When ");
-#line 78
- testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 79
- testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 80
+ testRunner.When("I Enter  DataSplit Large View grid has", ((string)(null)), table8, "When ");
+#line 85
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 86
+ testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 87
  testRunner.When("I Insert Row at \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -393,9 +413,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Unselected",
                         ""});
-#line 81
- testRunner.Then("DataSplit Small View grid as", ((string)(null)), table9, "Then ");
-#line 87
+#line 88
+ testRunner.Then("DataSplit Small View grid has", ((string)(null)), table9, "Then ");
+#line 94
  testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -407,11 +427,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DeletingRowsInDatasplitLargeView()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deleting rows in Datasplit Large View", ((string[])(null)));
-#line 89
+#line 96
 this.ScenarioSetup(scenarioInfo);
-#line 90
+#line 97
  testRunner.Given("I have DataSplit Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 91
+#line 98
  testRunner.And("I enter String to Split as \"Test Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -442,13 +462,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Unselected",
                         ""});
-#line 92
- testRunner.When("I Enter  DataSplit Large View grid as", ((string)(null)), table10, "When ");
-#line 97
- testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 98
- testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 99
+ testRunner.When("I Enter  DataSplit Large View grid has", ((string)(null)), table10, "When ");
+#line 104
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 105
+ testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 106
  testRunner.When("I delete Row at \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
@@ -472,9 +492,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Unselected",
                         ""});
-#line 100
- testRunner.Then("DataSplit Small View grid as", ((string)(null)), table11, "Then ");
-#line 104
+#line 107
+ testRunner.Then("DataSplit Small View grid has", ((string)(null)), table11, "Then ");
+#line 111
  testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -486,11 +506,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DeletingRowsInDatasplitIsAdjustingNumberSequenceCorrectly()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deleting rows in Datasplit is adjusting number sequence correctly", ((string[])(null)));
-#line 106
+#line 113
 this.ScenarioSetup(scenarioInfo);
-#line 107
+#line 114
  testRunner.Given("I have DataSplit Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 108
+#line 115
  testRunner.And("I enter String to Split as \"Test Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
@@ -535,13 +555,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Unselected",
                         ""});
-#line 109
- testRunner.When("I Enter  DataSplit Large View grid as", ((string)(null)), table12, "When ");
 #line 116
+ testRunner.When("I Enter  DataSplit Large View grid has", ((string)(null)), table12, "When ");
+#line 123
  testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 117
+#line 124
  testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 118
+#line 125
  testRunner.When("I delete Row at \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
@@ -579,9 +599,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Unselected",
                         ""});
-#line 119
- testRunner.Then("DataSplit Small View grid as", ((string)(null)), table13, "Then ");
-#line 125
+#line 126
+ testRunner.Then("DataSplit Small View grid has", ((string)(null)), table13, "Then ");
+#line 132
  testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -590,17 +610,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DataSplitLargeViewIsValidatingIncorrectStringVariable(string no, string var, string validation, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("DataSplit Large View is validating incorrect string variable", exampleTags);
-#line 129
+#line 136
 this.ScenarioSetup(scenarioInfo);
-#line 130
+#line 137
  testRunner.Given("I have DataSplit Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 131
+#line 138
  testRunner.And(string.Format("String To Split \'{0}\' is visible", var), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 132
+#line 139
  testRunner.And("Process Direction is \"Selected\" as \"Forward\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 133
+#line 140
  testRunner.And("Process Direction is \"UnSelected\" as \"Backward\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 134
+#line 141
  testRunner.And("Skip blank rows \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
@@ -624,15 +644,15 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 135
- testRunner.And("DataSplit Large View grid as", ((string)(null)), table14, "And ");
-#line 139
- testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 140
- testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 141
- testRunner.Then(string.Format("Validation message is thrown \'{0}\'", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 142
+ testRunner.And("DataSplit Large View grid has", ((string)(null)), table14, "And ");
+#line 146
+ testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 147
+ testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 148
+ testRunner.Then(string.Format("Validation message is thrown \'{0}\'", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 149
  testRunner.Then("DataSplit Small View is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -749,13 +769,13 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DataSplitLargeViewUsingAndEscapeIsEnabledAndDisabled(string no, string with, string @using, string escape, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Data Split Large View using and Escape is enabled and disabled", exampleTags);
-#line 158
+#line 165
 this.ScenarioSetup(scenarioInfo);
-#line 159
+#line 166
  testRunner.Given("I have DataSplit Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 160
+#line 167
  testRunner.And("I enter String to Split as \"Test Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 161
+#line 168
  testRunner.When(string.Format("I select \"Row 1\"  with as \'{0}\' then using is \'{1}\' and Escape is \'{2}\'", with, @using, escape), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
@@ -842,13 +862,13 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DataSplitSmallViewUsingIsEnabledAndDisabled(string no, string with, string @using, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Data Split Small View using is enabled and disabled", exampleTags);
-#line 172
+#line 179
 this.ScenarioSetup(scenarioInfo);
-#line 173
+#line 180
  testRunner.Given("I have DataSplit Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 174
+#line 181
  testRunner.And("I enter String to Split as \"Test Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 175
+#line 182
  testRunner.When(string.Format("I select \"Row 1\"  with as \'{0}\' then using is \'{1}\'", with, @using), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
@@ -932,11 +952,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DataSplitLargeViewIsValidatingInvalidVariablesOnDone()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Data Split Large View is validating invalid variables on done", ((string[])(null)));
-#line 186
+#line 193
 this.ScenarioSetup(scenarioInfo);
-#line 187
+#line 194
  testRunner.Given("I have DataSplit Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 188
+#line 195
  testRunner.And("I enter String to Split as \"Test Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
@@ -960,15 +980,15 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Unselected",
                         ""});
-#line 189
- testRunner.When("I Enter DataSplit Large View grid as", ((string)(null)), table15, "When ");
-#line 193
- testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 194
- testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 195
- testRunner.Then("Validation message is thrown \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 196
+ testRunner.When("I Enter DataSplit Large View grid has", ((string)(null)), table15, "When ");
+#line 200
+ testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 201
+ testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 202
+ testRunner.Then("Validation message is thrown \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 203
  testRunner.Then("DataSplit Small View is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -992,13 +1012,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "Left"});
-#line 197
- testRunner.When("I Edit DataSplit Large View grid as", ((string)(null)), table16, "When ");
-#line 201
+#line 204
+ testRunner.When("I Edit DataSplit Large View grid has", ((string)(null)), table16, "When ");
+#line 208
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 202
+#line 209
  testRunner.Then("Validation message is thrown \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 203
+#line 210
  testRunner.And("DataSplit Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1010,11 +1030,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DataSplitLargeViewIsValidatingInvalidRecordsetsOnDone()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Data Split Large View is validating invalid recordsets on done", ((string[])(null)));
-#line 205
+#line 212
 this.ScenarioSetup(scenarioInfo);
-#line 206
+#line 213
  testRunner.Given("I have DataSplit Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 207
+#line 214
  testRunner.And("I enter String to Split as \"Test Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1038,17 +1058,17 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Unselected",
                         ""});
-#line 208
- testRunner.When("I Enter DataSplit Large View grid as", ((string)(null)), table17, "When ");
-#line 212
- testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 213
- testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 214
- testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 215
+ testRunner.When("I Enter DataSplit Large View grid has", ((string)(null)), table17, "When ");
+#line 219
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 220
+ testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 221
+ testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 222
  testRunner.Then("Validation message is thrown \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 216
+#line 223
  testRunner.Then("DataSplit Small View is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1072,13 +1092,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Unselected",
                         ""});
-#line 217
- testRunner.When("I Edit DataSplit Large View grid as", ((string)(null)), table18, "When ");
-#line 221
+#line 224
+ testRunner.When("I Edit DataSplit Large View grid has", ((string)(null)), table18, "When ");
+#line 228
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 222
+#line 229
  testRunner.Then("Validation message is thrown \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 223
+#line 230
  testRunner.And("DataSplit Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1087,11 +1107,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DataSplitLargeViewIsValidatingInvalidVariables(string no, string var, string validation, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Data Split Large View is validating invalid variables", exampleTags);
-#line 226
+#line 233
 this.ScenarioSetup(scenarioInfo);
-#line 227
+#line 234
  testRunner.Given("I have DataSplit Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 228
+#line 235
  testRunner.And("I enter String to Split as \"Test Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1115,15 +1135,15 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Unselected",
                         ""});
-#line 229
- testRunner.When("I Enter DataSplit Large View grid as", ((string)(null)), table19, "When ");
-#line 233
- testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 234
- testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 235
- testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 236
+ testRunner.When("I Enter DataSplit Large View grid has", ((string)(null)), table19, "When ");
+#line 240
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 241
+ testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 242
+ testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 243
  testRunner.Then(string.Format("Validation message is thrown \'{0}\'", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1216,11 +1236,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void InvalidVariablesInUsingIsValidatingOnDone(string no, string var, string validation, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Invalid variables in using is validating on done", exampleTags);
-#line 248
+#line 255
 this.ScenarioSetup(scenarioInfo);
-#line 249
+#line 256
  testRunner.Given("I have DataSplit Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 250
+#line 257
  testRunner.And("I enter String to Split as \"Test Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1251,15 +1271,15 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 251
- testRunner.When("I Enter DataSplit Large View grid as", ((string)(null)), table20, "When ");
-#line 256
- testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 257
- testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 258
+ testRunner.When("I Enter DataSplit Large View grid has", ((string)(null)), table20, "When ");
+#line 263
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 264
+ testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 265
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 259
+#line 266
  testRunner.Then(string.Format("Validation message is thrown \'{0}\'", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1364,11 +1384,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void InvalidVariablesInEscapeIsValidatingOnDone(string no, string var, string validation, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Invalid variables in Escape is validating on done", exampleTags);
-#line 272
+#line 279
 this.ScenarioSetup(scenarioInfo);
-#line 273
+#line 280
  testRunner.Given("I have DataSplit Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 274
+#line 281
  testRunner.And("I enter String to Split as \"Test Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1399,15 +1419,15 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 275
- testRunner.When("I Enter DataSplit Large View grid as", ((string)(null)), table21, "When ");
-#line 280
- testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 281
- testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 282
+ testRunner.When("I Enter DataSplit Large View grid has", ((string)(null)), table21, "When ");
+#line 287
+ testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 288
+ testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 289
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 283
+#line 290
  testRunner.Then(string.Format("Validation message is thrown \'{0}\'", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1539,15 +1559,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CollapseLargeviewIsClosingLargeView()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Collapse largeview is closing large view", ((string[])(null)));
-#line 299
+#line 306
 this.ScenarioSetup(scenarioInfo);
-#line 300
+#line 307
  testRunner.Given("I have DataSplit Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 301
+#line 308
  testRunner.And("I enter String to Split as \"Test Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 302
+#line 309
  testRunner.When("I open DataSplit large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 303
+#line 310
  testRunner.Then("DataSplit Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1578,13 +1598,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 304
- testRunner.When("I Enter DataSplit Large View grid as", ((string)(null)), table22, "When ");
-#line 309
- testRunner.When("I collapse large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 310
- testRunner.And("Validation message is thrown \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 311
+ testRunner.When("I Enter DataSplit Large View grid has", ((string)(null)), table22, "When ");
+#line 316
+ testRunner.When("I collapse large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 317
+ testRunner.And("Validation message is thrown \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 318
  testRunner.Then("DataSplit Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1596,34 +1616,34 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void OpeningDataSplitQuickVariableInput()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening DataSplit Quick Variable Input", ((string[])(null)));
-#line 314
-this.ScenarioSetup(scenarioInfo);
-#line 315
- testRunner.Given("I have DataSplit Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 316
- testRunner.When("I select \"QVI\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 317
- testRunner.Then("\"Quick Variable Input\" large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 318
- testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 319
- testRunner.And("Split List On selected as \"Chars\" with \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 320
- testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 321
- testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 322
- testRunner.And("Append is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have DataSplit Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 323
+ testRunner.When("I select \"QVI\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 324
+ testRunner.Then("\"Quick Variable Input\" large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 325
+ testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 326
+ testRunner.And("Split List On selected as \"Chars\" with \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 327
+ testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 328
+ testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 329
+ testRunner.And("Append is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 330
  testRunner.And("Replace is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-#line 324
+#line 331
  testRunner.And("Preview as", ((string)(null)), table23, "And ");
-#line 326
+#line 333
  testRunner.And("Preview button is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 327
+#line 334
  testRunner.And("Add button is \"Dsiabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1635,15 +1655,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AddingDataSplitVariablesByUsingQVI()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding DataSplit Variables by using QVI", ((string[])(null)));
-#line 330
+#line 337
 this.ScenarioSetup(scenarioInfo);
-#line 331
+#line 338
     testRunner.Given("I have DataSplit Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 332
+#line 339
  testRunner.When("I select \"QVI\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 333
+#line 340
  testRunner.Then("\"Quick Variable Input\" large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 334
+#line 341
  testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1654,21 +1674,21 @@ this.ScenarioSetup(scenarioInfo);
                         "c"});
             table24.AddRow(new string[] {
                         "d"});
-#line 335
- testRunner.And("I enter variables", ((string)(null)), table24, "And ");
-#line 340
- testRunner.And("Split List On selected as \"NewLine\" with \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 341
- testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 342
+ testRunner.And("I enter variables", ((string)(null)), table24, "And ");
+#line 347
+ testRunner.And("Split List On selected as \"NewLine\" with \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 348
+ testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 349
  testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 343
+#line 350
  testRunner.And("Append is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 344
+#line 351
  testRunner.And("Replace is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 345
+#line 352
  testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 346
+#line 353
  testRunner.When("I click on \"Preview\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1679,13 +1699,13 @@ this.ScenarioSetup(scenarioInfo);
                         "3 [[c]]"});
             table25.AddRow(new string[] {
                         "4 [[d]]"});
-#line 347
- testRunner.Then("preview as", ((string)(null)), table25, "Then ");
-#line 352
- testRunner.And("Add button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 353
- testRunner.When("I click on \"Add\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 354
+ testRunner.Then("preview as", ((string)(null)), table25, "Then ");
+#line 359
+ testRunner.And("Add button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 360
+ testRunner.When("I click on \"Add\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 361
  testRunner.Then("DataSplit Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1713,9 +1733,9 @@ this.ScenarioSetup(scenarioInfo);
                         "[[d]]",
                         "Index",
                         ""});
-#line 355
- testRunner.When("I Enter  DataSplit Small View grid as", ((string)(null)), table26, "When ");
-#line 361
+#line 362
+ testRunner.When("I Enter  DataSplit Small View grid has", ((string)(null)), table26, "When ");
+#line 368
  testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1727,34 +1747,34 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AddingDataSplitVariablesByUsingQVIAndSplitOnChars()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding DataSplit Variables by using QVI and split on chars", ((string[])(null)));
-#line 363
+#line 370
 this.ScenarioSetup(scenarioInfo);
-#line 364
+#line 371
     testRunner.Given("I have DataSplit Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 365
+#line 372
  testRunner.When("I select \"QVI\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 366
+#line 373
  testRunner.Then("\"Quick Variable Input\" large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 367
+#line 374
  testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[a]],[[b]],[[c]],[[d]]"});
-#line 368
- testRunner.And("I enter variables", ((string)(null)), table27, "And ");
-#line 370
- testRunner.And("Split List On selected as \"Chars\" with \",\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 371
- testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 372
- testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 373
- testRunner.And("Append is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 374
- testRunner.And("Replace is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 375
+ testRunner.And("I enter variables", ((string)(null)), table27, "And ");
+#line 377
+ testRunner.And("Split List On selected as \"Chars\" with \",\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 378
+ testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 379
+ testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 380
+ testRunner.And("Append is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 381
+ testRunner.And("Replace is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 382
  testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 376
+#line 383
  testRunner.When("I click on \"Preview\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1765,16 +1785,16 @@ this.ScenarioSetup(scenarioInfo);
                         "3 [[c]]"});
             table28.AddRow(new string[] {
                         "4 [[d]]"});
-#line 377
- testRunner.Then("preview as", ((string)(null)), table28, "Then ");
-#line 382
- testRunner.And("Add button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 383
- testRunner.When("I click on \"Add\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 384
+ testRunner.Then("preview as", ((string)(null)), table28, "Then ");
+#line 389
+ testRunner.And("Add button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 390
+ testRunner.When("I click on \"Add\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 391
  testRunner.Then("DataSplit Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 385
- testRunner.And("Large View grid as", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 392
+ testRunner.And("Large View grid has", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -1818,9 +1838,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 386
- testRunner.When("I Enter DataSplit Large View grid as", ((string)(null)), table29, "When ");
 #line 393
+ testRunner.When("I Enter DataSplit Large View grid has", ((string)(null)), table29, "When ");
+#line 400
  testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1832,34 +1852,34 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AddingDataSplitVariablesByUsingQVIAndSplitOnTab()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding DataSplit Variables by using QVI and split on Tab", ((string[])(null)));
-#line 399
+#line 406
 this.ScenarioSetup(scenarioInfo);
-#line 400
+#line 407
     testRunner.Given("I have DataSplit Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 401
+#line 408
  testRunner.When("I select \"QVI\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 402
+#line 409
  testRunner.Then("\"Quick Variable Input\" large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 403
+#line 410
  testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[a]]\t[[b]]\t[[c]]\t[[d]]"});
-#line 404
- testRunner.And("I enter variables", ((string)(null)), table30, "And ");
-#line 406
- testRunner.And("Split List On selected as \"Tab\" with \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 407
- testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 408
- testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 409
- testRunner.And("Append is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 410
- testRunner.And("Replace is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 411
+ testRunner.And("I enter variables", ((string)(null)), table30, "And ");
+#line 413
+ testRunner.And("Split List On selected as \"Tab\" with \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 414
+ testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 415
+ testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 416
+ testRunner.And("Append is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 417
+ testRunner.And("Replace is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 418
  testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 412
+#line 419
  testRunner.When("I click on \"Preview\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1870,13 +1890,13 @@ this.ScenarioSetup(scenarioInfo);
                         "3 [[c]]"});
             table31.AddRow(new string[] {
                         "4 [[d]]"});
-#line 413
- testRunner.Then("preview as", ((string)(null)), table31, "Then ");
-#line 418
- testRunner.And("Add button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 419
- testRunner.When("I click on \"Add\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 420
+ testRunner.Then("preview as", ((string)(null)), table31, "Then ");
+#line 425
+ testRunner.And("Add button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 426
+ testRunner.When("I click on \"Add\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 427
  testRunner.Then("DataSplit Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1921,9 +1941,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 421
- testRunner.And("Large View grid as", ((string)(null)), table32, "And ");
 #line 428
+ testRunner.And("Large View grid has", ((string)(null)), table32, "And ");
+#line 435
  testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1935,34 +1955,34 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AddingVariablesInDataSplitQVIAndSplitOnChars()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding Variables in DataSplit QVI and split on chars", ((string[])(null)));
-#line 430
+#line 437
 this.ScenarioSetup(scenarioInfo);
-#line 431
+#line 438
     testRunner.Given("I have DataSplit Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 432
+#line 439
  testRunner.When("I select \"QVI\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 433
+#line 440
  testRunner.Then("\"Quick Variable Input\" large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 434
+#line 441
  testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
                         "abcdefgh"});
-#line 435
- testRunner.And("I enter variables", ((string)(null)), table33, "And ");
-#line 437
- testRunner.And("Split List On selected as \"Index\" with \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 438
- testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 439
- testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 440
- testRunner.And("Append is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 441
- testRunner.And("Replace is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 442
+ testRunner.And("I enter variables", ((string)(null)), table33, "And ");
+#line 444
+ testRunner.And("Split List On selected as \"Index\" with \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 445
+ testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 446
+ testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 447
+ testRunner.And("Append is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 448
+ testRunner.And("Replace is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 449
  testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 443
+#line 450
  testRunner.When("I click on \"Preview\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1981,11 +2001,11 @@ this.ScenarioSetup(scenarioInfo);
                         "7 [[g]]"});
             table34.AddRow(new string[] {
                         "8 [[h]]"});
-#line 444
+#line 451
  testRunner.Then("preview as", ((string)(null)), table34, "Then ");
-#line 453
+#line 460
  testRunner.And("Add button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 454
+#line 461
  testRunner.When("I click on \"Add\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2058,9 +2078,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 455
+#line 462
  testRunner.Then("DataSplit Large view is \"Visible\"", ((string)(null)), table35, "Then ");
-#line 466
+#line 473
  testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2069,34 +2089,34 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DataSplitQVIPrefixAndSuffix(string no, string prefix, string suffix, string append, string replace, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("DataSplit QVI Prefix and Suffix", exampleTags);
-#line 468
+#line 475
 this.ScenarioSetup(scenarioInfo);
-#line 469
+#line 476
     testRunner.Given("I have DataSplit Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 470
+#line 477
  testRunner.When("I select \"QVI\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 471
+#line 478
  testRunner.Then("\"Quick Variable Input\" large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 472
+#line 479
  testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
                         "aaaa"});
-#line 473
- testRunner.And("I enter variables", ((string)(null)), table36, "And ");
-#line 475
- testRunner.And("Split List On selected as \"Index\" with \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 476
- testRunner.And(string.Format("Prefix as \'{0}\'", prefix), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 477
- testRunner.And(string.Format("Suffix as \'{0}\'", suffix), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 478
- testRunner.And(string.Format("Append is \'{0}\'", append), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 479
- testRunner.And(string.Format("Replace is \'{0}\'", replace), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 480
+ testRunner.And("I enter variables", ((string)(null)), table36, "And ");
+#line 482
+ testRunner.And("Split List On selected as \"Index\" with \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 483
+ testRunner.And(string.Format("Prefix as \'{0}\'", prefix), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 484
+ testRunner.And(string.Format("Suffix as \'{0}\'", suffix), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 485
+ testRunner.And(string.Format("Append is \'{0}\'", append), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 486
+ testRunner.And(string.Format("Replace is \'{0}\'", replace), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 487
  testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 481
+#line 488
  testRunner.When("I click on \"Preview\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2107,16 +2127,16 @@ this.ScenarioSetup(scenarioInfo);
                         "3 [[aa]]"});
             table37.AddRow(new string[] {
                         "4 [[aa]]"});
-#line 482
- testRunner.Then("preview as", ((string)(null)), table37, "Then ");
-#line 487
- testRunner.And("Add button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 488
- testRunner.When("I click on \"Add\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 489
+ testRunner.Then("preview as", ((string)(null)), table37, "Then ");
+#line 494
+ testRunner.And("Add button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 495
+ testRunner.When("I click on \"Add\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 496
  testRunner.Then("DataSplit Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 490
- testRunner.And("Large View grid as", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 497
+ testRunner.And("Large View grid has", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -2160,9 +2180,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Unselected",
                         ""});
-#line 491
+#line 498
  testRunner.Then("DataSplit Large view is \"Visible\"", ((string)(null)), table38, "Then ");
-#line 502
+#line 509
  testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2202,9 +2222,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DataSplitQVIReplaceIsReplacingVariables()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("DataSplit QVI Replace is Replacing Variables", ((string[])(null)));
-#line 504
+#line 511
 this.ScenarioSetup(scenarioInfo);
-#line 505
+#line 512
     testRunner.Given("I have DataSplit Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2242,45 +2262,45 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "unselected",
                         ""});
-#line 506
- testRunner.And("Large view grid as", ((string)(null)), table39, "And ");
-#line 512
- testRunner.When("I select \"QVI\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 513
+ testRunner.And("Large view grid has", ((string)(null)), table39, "And ");
+#line 519
+ testRunner.When("I select \"QVI\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 520
  testRunner.Then("\"Quick Variable Input\" large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 514
+#line 521
  testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[rec().a]],[[rec().b]]"});
-#line 515
- testRunner.And("I enter variables", ((string)(null)), table40, "And ");
-#line 517
- testRunner.And("Split List On selected as \"Char\" with \",\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 518
- testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 519
- testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 520
- testRunner.And("Append is \'Unselected\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 521
- testRunner.And("Replace is \'Selected\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 522
+ testRunner.And("I enter variables", ((string)(null)), table40, "And ");
+#line 524
+ testRunner.And("Split List On selected as \"Char\" with \",\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 525
+ testRunner.And("Prefix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 526
+ testRunner.And("Suffix as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 527
+ testRunner.And("Append is \'Unselected\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 528
+ testRunner.And("Replace is \'Selected\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 529
  testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 523
+#line 530
  testRunner.When("I click on \"Preview\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
                         "1 [[rec().a]]"});
             table41.AddRow(new string[] {
                         "2 [[rec().b]]"});
-#line 524
+#line 531
  testRunner.Then("preview as", ((string)(null)), table41, "Then ");
-#line 527
+#line 534
  testRunner.And("Add button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 528
+#line 535
  testRunner.When("I click on \"Add\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 529
+#line 536
  testRunner.Then("DataSplit Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2318,9 +2338,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "unselected",
                         ""});
-#line 530
- testRunner.And("Large View grid as", ((string)(null)), table42, "And ");
-#line 536
+#line 537
+ testRunner.And("Large View grid has", ((string)(null)), table42, "And ");
+#line 543
  testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

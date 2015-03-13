@@ -6,7 +6,7 @@
 @DataMerge
 Scenario: DataMerge Small View
 	Given I have DataMerge Small View on design surface
-	And DataMerge Small View grid as
+	And DataMerge Small View grid has
 	| # | Recordset | With  | Using |
 	| 1 |           | Index |       |
 	| 2 |           | Index |       |
@@ -15,7 +15,7 @@ Scenario: DataMerge Small View
 
 Scenario: DataMerge Large View
 	Given I have DataMerge Large View on design surface
-	And DataMerge Small View grid as
+	And DataMerge Small View grid has
 	| # | Recordset | With  | Using |
 	| 1 |           | Index |       |
 	| 2 |           | Index |       |
@@ -27,16 +27,22 @@ Scenario: DataMerge Large View
 	And End this workflow is "Unselected"
 	And Done button is "Visible"
 
+Scenario: DataMerge Small View focus is at row1
+	Given I have DataMerge Small View on design surface
+	And "Row 1" is focused
+	When I open largeview
+	Then "Row1" is focused
+
 Scenario: Passing Variables in Small View and inserting row
 	Given I have DataMerge Small View on design surface
-	When I Enter  DataMerge Small View grid as
+	When I Enter  DataMerge Small View grid has
 	| # | Data | With  | Using |
 	| 1 | Test | Index | 1     |
 	| 2 | Ware | Index | 2     |
 	And result is as ""
 	And Scroll bar is "Enabled"
 	When I Insert Row at "2"
-	Then DataMerge Small View grid as
+	Then DataMerge Small View grid has
 	| # | Data | With  | Using |
 	| 1 | Test | Index | 1     |
 	| 2 |      | Index |       |
@@ -44,7 +50,7 @@ Scenario: Passing Variables in Small View and inserting row
 
 Scenario: Deleting rows in Small View
 	Given I have DataMerge Small View on design surface
-	When I Enter  DataMerge Small View grid as
+	When I Enter  DataMerge Small View grid has
 	| # | Data | With  | Using |
 	| 1 | Test | Index | 1     |
 	| 2 | Ware | Index | 2     |
@@ -52,7 +58,7 @@ Scenario: Deleting rows in Small View
 	And result is as ""
 	And Scroll bar is "Enabled"
 	When I delete Row at "2"
-	Then DataMerge Small View grid as
+	Then DataMerge Small View grid has
 	| # | Data | With  | Using |
 	| 1 | Test | Index | 1     |
 	| 2 |      | Index |       |
@@ -60,7 +66,7 @@ Scenario: Deleting rows in Small View
 
 Scenario: Passing Variables in Large View and inserting row
 	Given I have DataMerge Large View on design surface
-	When I Enter  DataMerge Large View grid as
+	When I Enter  DataMerge Large View grid has
 	| # | Data | With  | Using | Padding | Align |
 	| 1 | Test | Index | 1     |         | Left  |
 	| 2 | Ware | Index | 2     |         | Right |
@@ -68,7 +74,7 @@ Scenario: Passing Variables in Large View and inserting row
 	And result is as ""
 	And Scroll bar is "Enabled"
 	When I Insert Row at "2"
-	Then DataMerge Small View grid as
+	Then DataMerge Small View grid has
 	| # | Data | With  | Using | Padding | Align |
 	| 1 | Test | Index | 1     |         | Left  |
 	| 2 |      | Index |       |         | Right |
@@ -77,14 +83,14 @@ Scenario: Passing Variables in Large View and inserting row
 
 Scenario: Deleting rows in Large View
 	Given I have DataMerge Large View on design surface
-	When I Enter  DataMerge Large View grid as
+	When I Enter  DataMerge Large View grid has
 	| # | Data | With  | Using |Padding | Align |
 	| 1 | Test | Index | 1     |        | Left  |
 	| 2 | Ware | Index | 2     |        | Right |
 	And result is as ""			       
 	And Scroll bar is "Enabled"
 	When I delete Row at "2"
-	Then DataMerge Small View grid as
+	Then DataMerge Small View grid has
 	| # | Data | With  | Using | Padding | Align |
 	| 1 | Test | Index | 1     |         | Left  |
 	| 2 |      | Index |       |         |       |
@@ -119,7 +125,7 @@ Examples:
 	
 Scenario: Data Merge Large View is validating invalid variables on done
 	Given I have DataMerge Large View on design surface
-	When I Enter DataMerge Large View grid as
+	When I Enter DataMerge Large View grid has
 	| # | Data   | With  | Using | Padding | Align |
 	| 1 | [[a#]] | Index |       |         | Left  |
 	| 2 |        | Index |       |         | Left  |
@@ -128,7 +134,7 @@ Scenario: Data Merge Large View is validating invalid variables on done
 	When I click on "Done"
 	Then Validation message is thrown "True"
 	Then DataMerge Small View is "NotVisible"
-	When I Edit DataMerge Large View grid as
+	When I Edit DataMerge Large View grid has
 	| # | Data  | With  | Using | Padding | Align |
 	| 1 | [[a]] | Index |       |         | Left  |
 	| 2 |       | Index |       |         | Left  |
@@ -138,7 +144,7 @@ Scenario: Data Merge Large View is validating invalid variables on done
 
 Scenario: Data Merge Large View is validating invalid recordsets on done
 	Given I have DataMerge Large View on design surface
-	When I Enter DataMerge Large View grid as
+	When I Enter DataMerge Large View grid has
 	| # | Data         | With  | Using | Padding | Align |
 	| 1 | [[rec().a.]] | Index |       |         | Left  |
 	| 2 |              | Index |       |         | Left  |
@@ -147,7 +153,7 @@ Scenario: Data Merge Large View is validating invalid recordsets on done
 	When I click on "Done"
 	Then Validation message is thrown "True"
 	Then DataMerge Small View is "NotVisible"
-	When I Edit DataMerge Large View grid as
+	When I Edit DataMerge Large View grid has
 	| # | Data        | With  | Using | Padding | Align |
 	| 1 | [[rec().a]] | Index |       |         | Left  |
 	| 2 |             | Index |       |         | Left  |
@@ -158,7 +164,7 @@ Scenario: Data Merge Large View is validating invalid recordsets on done
 
 Scenario Outline: Data Merge Large View is validating invalid variables
 	Given I have DataMerge Large View on design surface
-	When I Enter DataMerge Large View grid as
+	When I Enter DataMerge Large View grid has
 	| # | Data    | With  | Using | Padding | Align |
 	| 1 | '<Var>' | Index |       |         | Left  |
 	| 2 |         | Index |       |         | Left  |
@@ -179,7 +185,7 @@ Examples:
 
 Scenario Outline: Invalid variables in using is validating on done
 	Given I have DataMerge Large View on design surface
-	When I Enter DataMerge Large View grid as
+	When I Enter DataMerge Large View grid has
 	| # | Data    | With  | Using   | Padding | Align |
 	| 1 | abcdef' | Index | '<Var>' |         | Left  |
 	| 2 |         | Index |         |         | Left  |
@@ -201,7 +207,7 @@ Examples:
 
 Scenario Outline: Invalid variables in Padding is validating on done
 	Given I have DataMerge Large View on design surface
-	When I Enter DataMerge Large View grid as
+	When I Enter DataMerge Large View grid has
 	| # | Data    | With  | Using | Padding | Align |
 	| 1 | abcdef' | Index | 1     | '<Var>' | Left  |
 	| 2 |         | Index |       |         | Left  |
@@ -224,7 +230,7 @@ Examples:
 
 Scenario Outline: Invalid variables in Result is validating on done
 	Given I have DataMerge Large View on design surface
-	When I Enter DataMerge Large View grid as
+	When I Enter DataMerge Large View grid has
 	| # | Data    | With  | Using | Padding | Align |
 	| 1 | abcdef' | Index | 1     | ,       | Left  |
 	| 2 |         | Index |       |         | Left  |
@@ -250,7 +256,7 @@ Scenario: Collapse largeview is closing large view
 	Given I have DataMerge Small View on design surface
 	When I open DataMerge large view
 	Then DataMerge Large view is "Visible"
-	When I Enter DataMerge Large View grid as
+	When I Enter DataMerge Large View grid has
 	| # | Data   | With  | Using | Padding | Align |
 	| 1 | [[a#]] | Index | 1     |         | Left  |
 	| 2 |        | Index |       |         | Left  |
@@ -300,7 +306,7 @@ Scenario: Adding DataMerge Variables by using QVI
 	And Add button is "Enabled"
 	When I click on "Add"
 	Then DataMerge Small View is "Visible" 
-	When I Enter  DataMerge Small View grid as
+	When I Enter  DataMerge Small View grid has
 	| # | Data  | With  | Using |
 	| 1 | [[a]] | Index |       |
 	| 2 | [[b]] | Index |       |
@@ -331,8 +337,8 @@ Scenario: Adding DataMerge Variables by using QVI and split on chars
 	And Add button is "Enabled"
 	When I click on "Add"
 	Then DataMerge Large view is "Visible" 
-	And Large View grid as
-	Then DataMerge Large View grid as
+	And Large View grid has
+	Then DataMerge Large View grid has
 	| # | Data  | With  | Using | Padding | Align |
 	| 1 | [[a]] | Index |       |         | Left  |
 	| 2 | [[b]] | Index |       |         | Left  |
@@ -365,7 +371,7 @@ Scenario: Adding DataMerge Variables by using QVI and split on Tab
 	And Add button is "Enabled"
 	When I click on "Add"
 	Then DataMerge Large view is "Visible" 
-	And Large View grid as
+	And Large View grid has
 	| # | Data  | With  | Using | Padding | Align |
 	| 1 | [[a]] | Index |       |         | Left  |
 	| 2 | [[b]] | Index |       |         | Left  |
@@ -434,7 +440,7 @@ Scenario Outline: DataMerge QVI Prefix and Suffix
 	And Add button is "Enabled"
 	When I click on "Add"
 	Then DataMerge Large view is "Visible" 
-	And Large View grid as
+	And Large View grid has
 	| # | Data   | With  | Using | Padding | Align |
 	| 1 | [[aa]] | Index |       |         | Left  |
 	| 2 | [[aa]] | Index |       |         | Left  |
@@ -450,7 +456,7 @@ Scenario Outline: DataMerge QVI Prefix and Suffix
 
 Scenario:  DataMerge QVI Replace is Replacing Variables
     Given I have DataMerge Large view on design surface
-	And Large view grid as
+	And Large view grid has
 	| # | Variable | = | New Value |
 	| 1 | [[a]]    | = |           |
 	| 2 | [[b]]    | = |           |
@@ -473,7 +479,7 @@ Scenario:  DataMerge QVI Replace is Replacing Variables
 	And Add button is "Enabled"
 	When I click on "Add"
 	Then DataMerge Large view is "Visible" 
-	And Large View grid as
+	And Large View grid has
 	| # | Data        | With  | Using |
 	| 1 | [[rec().a]  | Index |       |
 	| 2 | [[rec().b]] | Index |       |
