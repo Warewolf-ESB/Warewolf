@@ -22,7 +22,7 @@
                 Key="Escape" 
                 />
     </ig:XamDialogWindow.InputBindings>
-    <Grid Margin="{StaticResource ContainerBorder}">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="40" />
@@ -46,7 +46,7 @@
                                 DataContext="{Binding SingleEnvironmentExplorerViewModel}" />
 
         </DockPanel>
-        <Grid Grid.Row="1"
+        <Grid Margin="0,-15,0,0" Grid.Row="1"
               HorizontalAlignment="Stretch"
               VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>
