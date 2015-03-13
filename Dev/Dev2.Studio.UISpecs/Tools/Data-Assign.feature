@@ -2,7 +2,7 @@
 	In order to avoid silly mistakes
 	As a math idiot
 	I want to be told the sum of two numbers
-
+##This Spec is migrated 
 @Assign
 Scenario: AssignCheckVariableAddBadVariableLargeViewValidationErrorSmallViewNoDrillDownInForEach
 	Given I have Warewolf running
@@ -48,7 +48,7 @@ Scenario: AssignCheckVariableAddBadVariableLargeViewValidationErrorSmallViewNoDr
 	#Then "WORKSURFACE,StartSymbol" is visible within "1" seconds
 	#And "WORKSURFACE,For Each(ForeachDesigner),SmallViewContent,UI__DropPoint_AutoID,Assign (2)(MultiAssignDesigner)" is visible
 		
-
+##This is migrated
 #Bug 17468
 Scenario: Testing Assign Tool large view Validation Messages for Incorrect Variable
 	Given I have Warewolf running
