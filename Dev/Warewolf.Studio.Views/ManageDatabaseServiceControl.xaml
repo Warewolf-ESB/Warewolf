@@ -153,6 +153,7 @@
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
                     <RowDefinition Height="7" ></RowDefinition>
                 </Grid.RowDefinitions>
                 <StackPanel  Grid.Row="0" Grid.Column="0"  Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" Orientation="Horizontal">
@@ -200,25 +201,27 @@
                 <DataGrid x:Name="OutputsMappingDataGrid" Grid.Row="4" ItemsSource="{Binding OutputMapping}"  Margin="{StaticResource ElementBorderTop}" HorizontalScrollBarVisibility="Disabled"    GridLinesVisibility="Vertical" CanUserSortColumns="True"  AutoGenerateColumns="False"  BorderBrush="Transparent" 
                   CanUserResizeColumns="True" CanUserReorderColumns="True" VerticalGridLinesBrush="Transparent">
                     <DataGrid.Columns>
-                        <DataGridTemplateColumn Header="Output" CanUserResize="True" Width="150" SortMemberPath="Name">
+                        <DataGridTemplateColumn Header="Output" CanUserResize="True" Width="350" SortMemberPath="Name">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Name}" Margin="1,1,1,1"></TextBlock>
+                                    <TextBlock Text="{Binding CompleteName}" Margin="1,1,1,1"></TextBlock>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
 
-                        <DataGridTemplateColumn Header="Alias" CanUserResize="True" Width="*" SortMemberPath="Name">
+                        <DataGridTemplateColumn Header="Alias" CanUserResize="True" Width="*" SortMemberPath="OutputName">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBox Text="{Binding Path=OutputName}" Margin="1,1,1,1"></TextBox>
+                                    <TextBox Text="{Binding Path=OutputName, UpdateSourceTrigger=PropertyChanged}" Margin="1,1,1,1"></TextBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-
-
                     </DataGrid.Columns>
                 </DataGrid>
+                <StackPanel Orientation="Horizontal" Grid.Row="5" Margin="{StaticResource ElementBorderTop}">
+                    <TextBlock Text="Recordset Name:" Margin="{StaticResource ElementBorderRight}"></TextBlock>
+                    <TextBox MinWidth="100" Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}" Margin="{StaticResource ElementBorderRight}"></TextBox>
+                </StackPanel>
             </Grid>
             <Grid Grid.Row="5" Grid.Column="0">
                 <Grid.ColumnDefinitions>

@@ -33,6 +33,7 @@ namespace Warewolf.Studio.ViewModels
         bool _testSuccessful;
         bool _testResultsAvailable;
         string _errorText;
+        string _recordsetName;
 
         public ManageDatabaseServiceViewModel(IDbServiceModel model,IRequestServiceNameViewModel saveDialog):base(ResourceType.DbService)
         {
@@ -122,6 +123,26 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public string RecordsetName
+        {
+            get
+            {
+                return _recordsetName;
+            }
+            set
+            {
+                _recordsetName = value;
+                if (OutputMapping != null && OutputMapping.Count > 0)
+                {
+                    foreach(var dbOutputMapping in OutputMapping)
+                    {
+                        dbOutputMapping.RecordSetName = _recordsetName;
+                    }
+                }
+                OnPropertyChanged(() => RecordsetName);
+            }
+        }
+
         List<IDbOutputMapping> GetDbOutputMappingsFromTable(DataTable testResults)
         {
             List<IDbOutputMapping> mappings = new List<IDbOutputMapping>();
@@ -129,9 +150,15 @@ namespace Warewolf.Studio.ViewModels
             for (int i = 0; i < testResults.Columns.Count; i++)
             {
                 var column = testResults.Columns[i];
-                mappings.Add(i == 0
-                    ? new DbOutputMapping("Recordset Name", SelectedAction.Name)
-                    : new DbOutputMapping(column.ToString(), column.ToString()));
+                if (i == 0)
+                {
+                    RecordsetName = SelectedAction.Name;
+                }
+                else
+                {
+                    var dbOutputMapping = new DbOutputMapping(column.ToString(), column.ToString()) { RecordSetName = RecordsetName };
+                    mappings.Add(dbOutputMapping);
+                }
             }
 
             return mappings;
@@ -200,23 +227,28 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                _selectedSource = value;
-                CanSelectProcedure = value != null;
-                try
+                if (!Equals(_selectedSource, value))
                 {
-
-           
-                AvalaibleActions = _model.GetActions(SelectedSource);
-                ErrorText = "";
+                    _selectedSource = value;
+                    CanSelectProcedure = value != null;
+                    try
+                    {
+                        AvalaibleActions = _model.GetActions(SelectedSource);
+                        ErrorText = "";
+                    }
+                    catch (Exception e)
+                    {
+                        ErrorText = e.Message;
+                        AvalaibleActions = null;
+                    }
+                    SelectedAction = null;
+                    OnPropertyChanged(() => SelectedSource); 
+                    ViewModelUtils.RaiseCanExecuteChanged(SaveCommand);
                 }
-                catch (Exception e)
-                {
 
-                    ErrorText = e.Message;
-                }
-                OnPropertyChanged(() => SelectedSource);
             }
         }
+
         public IDbAction SelectedAction
         {
             get
@@ -225,13 +257,15 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                if(!Equals(value, _selectedAction) && _selectedAction!= null)
+                if((!Equals(value, _selectedAction) && _selectedAction!= null) || _selectedAction == null)
                 {
                     TestResultsAvailable = false;
                     CanEditMappings = false;
+                    TestSuccessful = false;
+                    OutputMapping = null;
                 }
+                
                 _selectedAction = value;
-
                 CanTest = _selectedAction != null;
                 Inputs = _selectedAction != null ? _selectedAction.Inputs : new Collection<IDbInput>();
                 ViewModelUtils.RaiseCanExecuteChanged(TestProcedureCommand);

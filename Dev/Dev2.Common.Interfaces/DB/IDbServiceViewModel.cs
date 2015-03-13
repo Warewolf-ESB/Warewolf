@@ -38,6 +38,7 @@ namespace Dev2.Common.Interfaces.DB
        bool TestSuccessful { get; set; }
        bool TestResultsAvailable { get; set; }
        string ErrorText { get; set; }
+       string RecordsetName { get; set; }
     }
 
     public interface IDbOutput

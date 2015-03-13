@@ -1,10 +1,14 @@
 ﻿using System;
 using Dev2.Common.Interfaces.DB;
+using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Core
 {
-    public class DbOutputMapping : IDbOutputMapping, IEquatable<DbOutputMapping>
+    public class DbOutputMapping : BindableBase,IDbOutputMapping, IEquatable<DbOutputMapping>
     {
+        string _outputName;
+        string _recordSetName;
+
         #region Equality members
 
         /// <summary>
@@ -75,8 +79,39 @@ namespace Warewolf.Core
         #region Implementation of IDbOutputMapping
 
         public string Name { get; set; }
-        public string OutputName { get; set; }
-        public string RecordSetName { get; set; }
+        public string OutputName
+        {
+            get
+            {
+                return _outputName;
+            }
+            set
+            {
+                _outputName = value;
+                OnPropertyChanged(() => OutputName);
+                OnPropertyChanged(() => CompleteName);
+            }
+        }
+        public string RecordSetName
+        {
+            get
+            {
+                return _recordSetName;
+            }
+            set
+            {
+                _recordSetName = value;
+                OnPropertyChanged(() => RecordSetName);
+                OnPropertyChanged(() => CompleteName);
+            }
+        }
+        public string CompleteName
+        {
+            get
+            {
+                return RecordSetName + "." + OutputName;
+            }
+        }
 
         #endregion
     }
