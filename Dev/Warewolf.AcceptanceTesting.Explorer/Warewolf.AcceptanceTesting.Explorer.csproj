@@ -284,6 +284,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataMerge.feature</DependentUpon>
     </Compile>
+    <Compile Include="Tools\DataSplit.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSplit.feature</DependentUpon>
+    </Compile>
     <Compile Include="UnityBootstrapperForDatabaseSourceConnectorTesting.cs" />
     <Compile Include="UnityBootstrapperForExplorerTesting.cs" />
     <Compile Include="UnityBootstrapperForToolboxTesting.cs" />
@@ -367,6 +372,10 @@
     <None Include="Tools\DataMerge.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DataMerge.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\DataSplit.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DataSplit.feature.cs</LastGenOutput>
     </None>
     <None Include="VariableList.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
