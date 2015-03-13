@@ -34,7 +34,7 @@ Scenario: Passing Variables in Small View and inserting row
 	| 1 | Test | Index | 1     |
 	| 2 | Ware | Index | 2     |
 	And result is as ""
-	And Scroll bar is "Disabled"
+	And Scroll bar is "Enabled"
 	When I Insert Row at "2"
 	Then DataMerge Small View grid as
 	| # | Data | With  | Using |
@@ -48,8 +48,9 @@ Scenario: Deleting rows in Small View
 	| # | Data | With  | Using |
 	| 1 | Test | Index | 1     |
 	| 2 | Ware | Index | 2     |
+	| 3 |      | Index |       |
 	And result is as ""
-	And Scroll bar is "Disabled"
+	And Scroll bar is "Enabled"
 	When I delete Row at "2"
 	Then DataMerge Small View grid as
 	| # | Data | With  | Using |
@@ -63,6 +64,7 @@ Scenario: Passing Variables in Large View and inserting row
 	| # | Data | With  | Using | Padding | Align |
 	| 1 | Test | Index | 1     |         | Left  |
 	| 2 | Ware | Index | 2     |         | Right |
+	| 3 |      | Index |       |         | Left  |
 	And result is as ""
 	And Scroll bar is "Enabled"
 	When I Insert Row at "2"
@@ -71,7 +73,7 @@ Scenario: Passing Variables in Large View and inserting row
 	| 1 | Test | Index | 1     |         | Left  |
 	| 2 |      | Index |       |         | Right |
 	| 3 | Ware | Index | 2     |         |       |
-
+	And Scroll bar is "Enabled"
 
 Scenario: Deleting rows in Large View
 	Given I have DataMerge Large View on design surface
@@ -83,8 +85,9 @@ Scenario: Deleting rows in Large View
 	And Scroll bar is "Enabled"
 	When I delete Row at "2"
 	Then DataMerge Small View grid as
-	| # | Data | With  | Using |Padding | Align |
-	| 1 | Test | Index | 1     |        | Left  |
+	| # | Data | With  | Using | Padding | Align |
+	| 1 | Test | Index | 1     |         | Left  |
+	| 2 |      | Index |       |         |       |
 	And Scroll bar is "Enabled"
 							
 
@@ -294,7 +297,7 @@ Scenario: Adding DataMerge Variables by using QVI
 	| 2 [[b]] |
 	| 3 [[c]] |
 	| 4 [[d]] |
-	And Add button is "Enabbled"
+	And Add button is "Enabled"
 	When I click on "Add"
 	Then DataMerge Small View is "Visible" 
 	When I Enter  DataMerge Small View grid as
@@ -303,7 +306,8 @@ Scenario: Adding DataMerge Variables by using QVI
 	| 2 | [[b]] | Index |       |
 	| 3 | [[c]] | Index |       |
 	| 4 | [[d]] | Index |       |
-
+	| 5 |       | Index |       |
+	And Scroll bar is "Enabled"
 
 Scenario: Adding DataMerge Variables by using QVI and split on chars
     Given I have DataMerge Large view on design surface
@@ -324,16 +328,18 @@ Scenario: Adding DataMerge Variables by using QVI and split on chars
 	| 2 [[b]] |
 	| 3 [[c]] |
 	| 4 [[d]] |
-	And Add button is "Enabbled"
+	And Add button is "Enabled"
 	When I click on "Add"
 	Then DataMerge Large view is "Visible" 
 	And Large View grid as
-	When I Enter DataMerge Large View grid as
+	Then DataMerge Large View grid as
 	| # | Data  | With  | Using | Padding | Align |
 	| 1 | [[a]] | Index |       |         | Left  |
 	| 2 | [[b]] | Index |       |         | Left  |
 	| 3 | [[c]] | Index |       |         | Left  |
 	| 4 | [[d]] | Index |       |         | Left  |
+	| 5 |       | Index |       |         | Left  |
+	And Scroll bar is "Enabled"
 
 ##This split by using 'Tab' is not working because I can't use tab while entering variable list but I can paste 
 ## So option must work as expected.
@@ -356,7 +362,7 @@ Scenario: Adding DataMerge Variables by using QVI and split on Tab
 	| 2 [[b]] |
 	| 3 [[c]] |
 	| 4 [[d]] |
-	And Add button is "Enabbled"
+	And Add button is "Enabled"
 	When I click on "Add"
 	Then DataMerge Large view is "Visible" 
 	And Large View grid as
@@ -365,7 +371,8 @@ Scenario: Adding DataMerge Variables by using QVI and split on Tab
 	| 2 | [[b]] | Index |       |         | Left  |
 	| 3 | [[c]] | Index |       |         | Left  |
 	| 4 | [[d]] | Index |       |         | Left  |
-	
+	| 5 |       | Index |       |         | Left  |
+	And Scroll bar is "Enabled"
 
 Scenario: Adding Variables in Datamerge QVI and split on chars
     Given I have DataMerge Large view on design surface
@@ -390,7 +397,7 @@ Scenario: Adding Variables in Datamerge QVI and split on chars
 	| 6 [[f]] |
 	| 7 [[g]] |
 	| 8 [[h]] |
-	And Add button is "Enabbled"
+	And Add button is "Enabled"
 	When I click on "Add"
 	Then DataMerge Large view is "Visible" 
 	| # | Data  | With  | Using |
@@ -402,6 +409,8 @@ Scenario: Adding Variables in Datamerge QVI and split on chars
 	| 6 | [[f]] | Index |       |
 	| 7 | [[g]] | Index |       |
 	| 8 | [[h]] | Index |       |
+	| 9 |       | Index |       |
+	And Scroll bar is "Enabled"
 
 Scenario Outline: DataMerge QVI Prefix and Suffix
     Given I have DataMerge Large view on design surface
@@ -422,7 +431,7 @@ Scenario Outline: DataMerge QVI Prefix and Suffix
 	| 2 [[aa]] |
 	| 3 [[aa]] |
 	| 4 [[aa]] |
-	And Add button is "Enabbled"
+	And Add button is "Enabled"
 	When I click on "Add"
 	Then DataMerge Large view is "Visible" 
 	And Large View grid as
@@ -431,6 +440,8 @@ Scenario Outline: DataMerge QVI Prefix and Suffix
 	| 2 | [[aa]] | Index |       |         | Left  |
 	| 3 | [[aa]] | Index |       |         | Left  |
 	| 4 | [[aa]] | Index |       |         | Left  |
+	| 5 |        | Index |       |         | Left  |
+	And Scroll bar is "Enabled"
 	Examples: 
 	| No | Prefix | Suffix | Append   | Replace    |
 	| 1  | a      | ""     | Selected | Unselected |
@@ -459,15 +470,17 @@ Scenario:  DataMerge QVI Replace is Replacing Variables
 	Then preview as
 	| 1 [[rec().a]] |
 	| 2 [[rec().b]] |
-	And Add button is "Enabbled"
+	And Add button is "Enabled"
 	When I click on "Add"
 	Then DataMerge Large view is "Visible" 
 	And Large View grid as
 	| # | Data        | With  | Using |
 	| 1 | [[rec().a]  | Index |       |
 	| 2 | [[rec().b]] | Index |       |
+	| 3 |             | Index |       |
+	And Scroll bar is "Enabled"
 
 
 
 
-	
+	 
