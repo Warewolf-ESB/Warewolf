@@ -2,10 +2,8 @@ using System;
 using System.Windows;
 using System.Windows.Threading;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.Studio.Views;
 
 namespace Warewolf.AcceptanceTesting.Explorer
 {

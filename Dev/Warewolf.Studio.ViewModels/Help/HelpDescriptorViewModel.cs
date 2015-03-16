@@ -1,4 +1,5 @@
-﻿using System.Windows.Media;
+﻿using System;
+using System.Windows.Media;
 using Dev2.Common.Interfaces.Help;
 using Microsoft.Practices.Prism.Mvvm;
 
@@ -6,11 +7,15 @@ namespace Warewolf.Studio.ViewModels.Help
 {
     public class HelpDescriptorViewModel: BindableBase,IHelpDescriptorViewModel
     {
-        IHelpDescriptor _descriptor;
+        readonly IHelpDescriptor _descriptor;
         bool _isEnabled;
 
         public HelpDescriptorViewModel(IHelpDescriptor descriptor)
         {
+            if(descriptor == null)
+            {
+                throw new ArgumentNullException("descriptor");
+            }
             _descriptor = descriptor;
         }
 

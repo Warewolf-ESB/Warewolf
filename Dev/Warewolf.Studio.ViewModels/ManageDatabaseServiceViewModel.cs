@@ -71,7 +71,56 @@ namespace Warewolf.Studio.ViewModels
             },CanTestProcedure);
             Inputs = new ObservableCollection<IDbInput>();
             SaveCommand = new DelegateCommand(Save,CanSave);
-             Header = "New DB Service";
+        }
+
+        public ManageDatabaseServiceViewModel(IDbServiceModel model,IRequestServiceNameViewModel saveDialog,IDatabaseService service):base(ResourceType.DbService)
+        {
+            _model = model;
+            _saveDialog = saveDialog;
+            FromService(service);
+            CanEditSource = true;
+            CreateNewSourceCommand = new DelegateCommand(model.CreateNewSource);
+            EditSourceCommand = new DelegateCommand(()=>model.EditSource(SelectedSource));
+            Sources = model.RetrieveSources();
+           
+            TestProcedureCommand = new DelegateCommand(() =>
+            {
+                try
+                {
+                    TestResults = model.TestService(ToModel());
+                    if (TestResults != null)
+                    {
+                        CanEditMappings = true;
+                        OutputMapping =
+                            new ObservableCollection<IDbOutputMapping>(GetDbOutputMappingsFromTable(TestResults));
+                        TestSuccessful = true;
+                        TestResultsAvailable = true;
+
+                    }
+                    ErrorText = "";
+                }
+                catch (Exception e)
+                {
+                    ErrorText = e.Message;
+                    TestSuccessful = false;
+                }
+
+
+            },CanTestProcedure);
+            SaveCommand = new DelegateCommand(Save,CanSave);
+        }
+
+        void FromService(IDatabaseService service)
+        {
+            Item = service;
+            Id = service.Id;
+            Name=service.Name;
+            Path = service.Path;
+            SelectedSource = service.Source;
+            SelectedAction = service.Action;
+            Inputs = service.Inputs;
+            OutputMapping = service.OutputMappings;
+            Header = "Edit:" + Name;
         }
 
         bool CanTestProcedure()

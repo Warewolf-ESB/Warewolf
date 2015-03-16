@@ -12,11 +12,12 @@ using Moq;
 using Warewolf.Studio.Core;
 #pragma warning disable 4014
 
+// ReSharper disable InconsistentNaming
+
 namespace Warewolf.Studio.ViewModels.Tests
 {
     [TestClass]
-    public class 
-        EnvironmentViewModelTests
+    public class EnvironmentViewModelTests
     {
         [TestMethod]
         [Owner("Hagashen Naidu")]
