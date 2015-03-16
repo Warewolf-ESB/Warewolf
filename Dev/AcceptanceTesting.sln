@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40121.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.22609.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server", "Dev2.Server\Dev2.Server.csproj", "{87AEFD04-29F3-45B6-A7C6-4161F9190876}"
 EndProject
@@ -117,6 +117,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio", "Warewolf.Studio\Warewolf.Studio.csproj", "{6F16414C-99A2-444D-93F0-34EAB82A2FF0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.SaveDialog", "Warewolf.AcceptanceTesting.SaveDialog\Warewolf.AcceptanceTesting.SaveDialog.csproj", "{5F815BEC-AA7C-4510-8C97-2FE52E16D3A8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Load Test Settings", "Load Test Settings", "{67DAA57F-5D7F-48DA-8CDF-16537B0058A6}"
+	ProjectSection(SolutionItems) = preProject
+		TestSettings\Load\High Spec Test Rig.testsettings = TestSettings\Load\High Spec Test Rig.testsettings
+		TestSettings\Load\Long Running Warewolf Test Rig.testsettings = TestSettings\Load\Long Running Warewolf Test Rig.testsettings
+		TestSettings\Load\Low Spec Test Rig.testsettings = TestSettings\Load\Low Spec Test Rig.testsettings
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -2416,6 +2423,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C6750CCC-03BB-42BF-8EB7-0D9ACB927923} = {20848FEE-00A7-4B96-9FA1-80F2890E37AB}
+		{67DAA57F-5D7F-48DA-8CDF-16537B0058A6} = {20848FEE-00A7-4B96-9FA1-80F2890E37AB}
 	EndGlobalSection
 	GlobalSection(CodealikeProperties) = postSolution
 		SolutionGuid = 5a0c3994-6f1d-461d-8c94-696b3470e61c
