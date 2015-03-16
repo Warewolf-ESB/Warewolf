@@ -19,7 +19,6 @@
     <DeploymentItem filename="Binaries\InfragisticsWPF4.Math.Calculators.v14.2.dll" />
     <DeploymentItem filename="packages\FontAwesome.WPF.4.2.0.2\lib\FontAwesome.WPF.dll" />
     <DeploymentItem filename="packages\Prism.Interactivity.5.0.0\lib\NET45\Microsoft.Practices.Prism.Interactivity.dll" />
-    <DeploymentItem filename="Binaries\System.Windows.Interactivity.dll" />
     <DeploymentItem filename="Warewolf.Studio.CustomControls\bin\Debug\Warewolf.Studio.CustomControls.dll" />
   </Deployment>
   <NamingScheme baseName="UT" />
