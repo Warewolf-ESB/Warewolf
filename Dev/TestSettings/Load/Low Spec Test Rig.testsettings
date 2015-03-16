@@ -3,16 +3,20 @@
   <Description>These are default test settings for a remote load test run in a low spec'd environment.</Description>
 	<Deployment>
             <!--For Visual Studio-->
-		    <DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
-		    <DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
+		<DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
         
             <!--For Build Agents-->
-        <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
-        <DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
+		<DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
+		<DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
 		
 			<!--For UI Load Specs-->
-        <DeploymentItem filename="..\bin\Dev2.UI.Tests\" />
-		    <DeploymentItem filename="Dev2.Studio.UISpecs\bin\Debug\" />
+		<!--Being re-written: 	<DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
+		<DeploymentItem filename="..\bin\Dev2.UI.Tests\" />
+		<DeploymentItem filename="Dev2.Studio.UISpecs\bin\Debug\" />-->
+
+			<!--Dynamicly loaded by Warewolf server-->
+		<DeploymentItem filename="packages\Microsoft.Owin.2.0.2\lib\net45\Microsoft.Owin.dll" />
+		<DeploymentItem filename="packages\Microsoft.Owin.Security.2.0.2\lib\net45\Microsoft.Owin.Security.dll" />
 	</Deployment>
   <Scripts setupScript="..\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\Dev\TestScripts\Acceptance\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld" />

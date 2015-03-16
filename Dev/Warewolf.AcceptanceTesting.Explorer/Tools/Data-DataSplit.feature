@@ -8,7 +8,7 @@
 Scenario: DataSplit Small View
 	Given I have DataSplit Small View on design surface
 	And String To Split "" is visible
-	And DataSplit Small View grid as
+	And DataSplit Small View grid has
 	| # | Result | With  | Using |
 	| 1 |        | Index |       |
 	| 2 |        | Index |       |
@@ -20,7 +20,7 @@ Scenario: DataSplit Large View
 	And Process Direction is "Selected" as "Forward" 
 	And Process Direction is "UnSelected" as "Backward" 
 	And Skip blank rows "Unselected"
-	And DataSplit Large View grid as
+	And DataSplit Large View grid has
 	| # | Result | With  | Using | Include | Escape |
 	| 1 |        | Index |       |         |        |
 	| 2 |        | Index |       |         |        |
@@ -31,10 +31,17 @@ Scenario: DataSplit Large View
 	And End this workflow is "Unselected"
 	And Done button is "Visible"
 
+Scenario: DataSplit Small View and large view focus is at row1
+	Given I have DataSplit Small View on design surface
+	And "Row 1" is focused
+	When I have LargeView on design surface
+	Then "Row1" is focused
+
+
 Scenario: Passing Variables in Datasplit Small View and inserting row
 	Given I have DataSplit Small View on design surface
 	And I enter String to Split as "Test Warewolf" 
-	When I Enter  DataSplit Small View grid as
+	When I Enter  DataSplit Small View grid has
 	| # | Results | With  | Using |
 	| 1 | [[a]]   | Index | 1     |
 	| 2 | [[b]]   | Index | 2     |
@@ -42,7 +49,7 @@ Scenario: Passing Variables in Datasplit Small View and inserting row
 	And result is as ""
 	And Scroll bar is "Disabled"
 	When I Insert Row at "2"
-	Then DataSplit Small View grid as
+	Then DataSplit Small View grid has
 	| # | Results | With  | Using |
 	| 1 | [[a]]   | Index | 1     |
 	| 2 |         | Index |       |
@@ -53,7 +60,7 @@ Scenario: Passing Variables in Datasplit Small View and inserting row
 Scenario: Deleting rows in Datasplit Small View
 	Given I have DataSplit Small View on design surface
 	And I enter String to Split as "Test Warewolf" 
-	When I Enter  DataSplit Small View grid as
+	When I Enter  DataSplit Small View grid has
 	| # | Results | With  | Using |
 	| 1 | [[a]]   | Index | 1     |
 	| 2 | [[b]]   | Index | 2     |
@@ -61,7 +68,7 @@ Scenario: Deleting rows in Datasplit Small View
 	And result is as ""
 	And Scroll bar is "Enabled"
 	When I delete Row at "2"
-	Then DataSplit Small View grid as
+	Then DataSplit Small View grid has
 	| # | Results | With  | Using |
 	| 1 | [[a]]   | Index | 1     |
 	| 2 |         | Index |       |
@@ -70,7 +77,7 @@ Scenario: Deleting rows in Datasplit Small View
 Scenario: Passing Variables in Datasplit Large View and inserting row
 	Given I have DataSplit Large View on design surface
 	And I enter String to Split as "Test Warewolf" 
-	When I Enter  DataSplit Large View grid as
+	When I Enter  DataSplit Large View grid has
 	| # | Results | With  | Using | Include    | Escape |
 	| 1 | [[a]]   | Index | 1     | Unselected |        |
 	| 2 | [[b]]   | Index | 2     | Unselected |        |
@@ -78,7 +85,7 @@ Scenario: Passing Variables in Datasplit Large View and inserting row
 	And result is as ""				
 	And Scroll bar is "Enabled"
 	When I Insert Row at "2"
-	Then DataSplit Small View grid as
+	Then DataSplit Small View grid has
 	| # | Results | With  | Using | Include    | Escape |
 	| 1 | [[a]]   | Index | 1     | Unselected |        |
 	| 2 |         | Index |       | Unselected |        |
@@ -89,7 +96,7 @@ Scenario: Passing Variables in Datasplit Large View and inserting row
 Scenario: Deleting rows in Datasplit Large View
 	Given I have DataSplit Large View on design surface
 	And I enter String to Split as "Test Warewolf" 
-	When I Enter  DataSplit Large View grid as
+	When I Enter  DataSplit Large View grid has
 	| # | Results | With  | Using | Include    | Escape |
 	| 1 | [[a]]   | Index | 1     | Unselected |        |
 	| 2 | [[b]]   | Index | 2     | Unselected |        |
@@ -97,7 +104,7 @@ Scenario: Deleting rows in Datasplit Large View
 	And result is as ""			       
 	And Scroll bar is "Enabled"
 	When I delete Row at "2"
-	Then DataSplit Small View grid as
+	Then DataSplit Small View grid has
 	| # | Results | With  | Using | Include    | Escape |
 	| 1 | [[a]]   | Index | 1     | Unselected |        |
 	| 2 |         | Index |       | Unselected |        |
@@ -106,7 +113,7 @@ Scenario: Deleting rows in Datasplit Large View
 Scenario: Deleting rows in Datasplit is adjusting number sequence correctly
 	Given I have DataSplit Large View on design surface
 	And I enter String to Split as "Test Warewolf" 
-	When I Enter  DataSplit Large View grid as
+	When I Enter  DataSplit Large View grid has
 	| # | Results | With  | Using | Include    | Escape |
 	| 1 | [[a]]   | Index | 1     | Unselected |        |
 	| 2 | [[b]]   | Index | 2     | Unselected |        |
@@ -116,7 +123,7 @@ Scenario: Deleting rows in Datasplit is adjusting number sequence correctly
 	And result is as ""			       
 	And Scroll bar is "Enabled"
 	When I delete Row at "2"
-	Then DataSplit Small View grid as
+	Then DataSplit Small View grid has
 	| # | Results | With  | Using | Include    | Escape |
 	| 1 | [[a]]   | Index | 1     | Unselected |        |
 	| 2 | [[a]]   | Index | 1     | Unselected |        |
@@ -132,7 +139,7 @@ Scenario Outline: DataSplit Large View is validating incorrect string variable
 	And Process Direction is "Selected" as "Forward" 
 	And Process Direction is "UnSelected" as "Backward" 
 	And Skip blank rows "Unselected"
-	And DataSplit Large View grid as
+	And DataSplit Large View grid has
 	| # | Result | With  | Using | Include | Escape |
 	| 1 | [[a]]  | Index | 1     |         |        |
 	| 2 |        | Index |       |         |        |
@@ -186,7 +193,7 @@ Examples:
 Scenario: Data Split Large View is validating invalid variables on done
 	Given I have DataSplit Large View on design surface
 	And I enter String to Split as "Test Warewolf" 
-	When I Enter DataSplit Large View grid as
+	When I Enter DataSplit Large View grid has
 	| # | Results | With  | Using | Include    | Escape |
 	| 1 | [[a#]]  | Index | 1     | Unselected |        |
 	| 2 |         | Index |       | Unselected |        |
@@ -194,7 +201,7 @@ Scenario: Data Split Large View is validating invalid variables on done
 	When I click on "Done"
 	Then Validation message is thrown "True"
 	Then DataSplit Small View is "NotVisible"
-	When I Edit DataSplit Large View grid as
+	When I Edit DataSplit Large View grid has
 	| # | Data  | With  | Using | Padding | Align |
 	| 1 | [[a]] | Index | 1     |         | Left  |
 	| 2 |       | Index |       |         | Left  |
@@ -205,7 +212,7 @@ Scenario: Data Split Large View is validating invalid variables on done
 Scenario: Data Split Large View is validating invalid recordsets on done
 	Given I have DataSplit Large View on design surface
 	And I enter String to Split as "Test Warewolf" 
-	When I Enter DataSplit Large View grid as
+	When I Enter DataSplit Large View grid has
 	| # | Results      | With  | Using | Include    | Escape |
 	| 1 | [[rec().a.]] | Index | 1     | Unselected |        |
 	| 2 |              | Index |       | Unselected |        |
@@ -214,7 +221,7 @@ Scenario: Data Split Large View is validating invalid recordsets on done
 	When I click on "Done"
 	Then Validation message is thrown "True"
 	Then DataSplit Small View is "NotVisible"
-	When I Edit DataSplit Large View grid as
+	When I Edit DataSplit Large View grid has
 	| # | Results     | With  | Using | Include    | Escape |
 	| 1 | [[rec().a]] | Index | 1     | Unselected |        |
 	| 2 |             | Index |       | Unselected |        |
@@ -226,7 +233,7 @@ Scenario: Data Split Large View is validating invalid recordsets on done
 Scenario Outline: Data Split Large View is validating invalid variables
 	Given I have DataSplit Large View on design surface
 	And I enter String to Split as "Test Warewolf" 
-	When I Enter DataSplit Large View grid as
+	When I Enter DataSplit Large View grid has
 	| # | Results | With  | Using | Include    | Escape |
 	| 1 | '<Var>' | Index | 1     | Unselected |        |
 	| 2 |         | Index |       | Unselected |        |
@@ -248,7 +255,7 @@ Examples:
 Scenario Outline: Invalid variables in using is validating on done
 	Given I have DataSplit Large View on design surface
 	And I enter String to Split as "Test Warewolf" 
-	When I Enter DataSplit Large View grid as
+	When I Enter DataSplit Large View grid has
 	| # | Results | With  | Using   | Include    | Escape |
 	| 1 | [[a]]   | Index | '<Var>' | Unselected |        |
 	| 2 | [[b]]   | Index | 2       | Unselected |        |
@@ -272,7 +279,7 @@ Examples:
 Scenario Outline: Invalid variables in Escape is validating on done
 	Given I have DataSplit Large View on design surface
 	And I enter String to Split as "Test Warewolf" 
-	When I Enter DataSplit Large View grid as
+	When I Enter DataSplit Large View grid has
 	| # | Results | With  | Using | Include    | Escape  |
 	| 1 | [[a]]   | Chars | 2     | Unselected | '<Var>' |
 	| 2 | [[b]]   | Index | 2     | Unselected |         |
@@ -301,7 +308,7 @@ Scenario: Collapse largeview is closing large view
 	And I enter String to Split as "Test Warewolf" 
 	When I open DataSplit large view
 	Then DataSplit Large view is "Visible"
-	When I Enter DataSplit Large View grid as
+	When I Enter DataSplit Large View grid has
 	| # | Results | With  | Using | Include    | Escape |
 	| 1 | [[a]]   | Chars | 2     | Unselected |        |
 	| 2 | [[b]]   | Index | 2     | Unselected |        |
@@ -352,7 +359,7 @@ Scenario: Adding DataSplit Variables by using QVI
 	And Add button is "Enabled"
 	When I click on "Add"
 	Then DataSplit Small View is "Visible" 
-	When I Enter  DataSplit Small View grid as
+	When I Enter  DataSplit Small View grid has
 	| # | Data  | With  | Using |
 	| 1 | [[a]] | Index |       |
 	| 2 | [[b]] | Index |       |
@@ -382,8 +389,8 @@ Scenario: Adding DataSplit Variables by using QVI and split on chars
 	And Add button is "Enabled"
 	When I click on "Add"
 	Then DataSplit Large view is "Visible" 
-	And Large View grid as
-	When I Enter DataSplit Large View grid as
+	And Large View grid has
+	When I Enter DataSplit Large View grid has
 	| # | Results | With  | Using | Include    | Escape |
 	| 1 | [[a]]   | Index |       | Unselected |        |
 	| 2 | [[b]]   | Index |       | Unselected |        |
@@ -418,7 +425,7 @@ Scenario: Adding DataSplit Variables by using QVI and split on Tab
 	And Add button is "Enabled"
 	When I click on "Add"
 	Then DataSplit Large view is "Visible" 
-	And Large View grid as
+	And Large View grid has
 	| # | Results | With  | Using | Include    | Escape |
 	| 1 | [[a]]   | Index |       | Unselected |        |
 	| 2 | [[b]]   | Index |       | Unselected |        |
@@ -487,7 +494,7 @@ Scenario Outline: DataSplit QVI Prefix and Suffix
 	And Add button is "Enabled"
 	When I click on "Add"
 	Then DataSplit Large view is "Visible" 
-	And Large View grid as
+	And Large View grid has
 	Then DataSplit Large view is "Visible" 
 	| # | Results | With  | Using | Include    | Escape |
 	| 1 | [[aa]]  | Index |       | Unselected |        |
@@ -503,7 +510,7 @@ Scenario Outline: DataSplit QVI Prefix and Suffix
 
 Scenario:  DataSplit QVI Replace is Replacing Variables
     Given I have DataSplit Large view on design surface
-	And Large view grid as
+	And Large view grid has
 	| # | Results | With  | Using | Include    | Escape |
 	| 1 | [[a]]   | Index |       | Unselected |        |
 	| 2 | [[b]]   | Index |       | Unselected |        |
@@ -527,7 +534,7 @@ Scenario:  DataSplit QVI Replace is Replacing Variables
 	And Add button is "Enabled"
 	When I click on "Add"
 	Then DataSplit Large view is "Visible" 
-	And Large View grid as
+	And Large View grid has
 	| # | Results     | With  | Using | Include    | Escape |
 	| 1 | [[rec().a]] | Index |       | Unselected |        |
 	| 2 | [[rec().b]] | Index |       | Unselected |        |

@@ -279,15 +279,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Data - Assign.feature</DependentUpon>
     </Compile>
-    <Compile Include="Tools\DataMerge.feature.cs">
+    <Compile Include="Tools\Data-DataMerge.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DataMerge.feature</DependentUpon>
+      <DependentUpon>Data-DataMerge.feature</DependentUpon>
     </Compile>
-    <Compile Include="Tools\DataSplit.feature.cs">
+    <Compile Include="Tools\Data-DataSplit.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DataSplit.feature</DependentUpon>
+      <DependentUpon>Data-DataSplit.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\FileAndFolder-Copy.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FileAndFolder-Copy.feature</DependentUpon>
     </Compile>
     <Compile Include="UnityBootstrapperForDatabaseSourceConnectorTesting.cs" />
     <Compile Include="UnityBootstrapperForExplorerTesting.cs" />
@@ -369,13 +374,17 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Data - Assign.feature.cs</LastGenOutput>
     </None>
-    <None Include="Tools\DataMerge.feature">
+    <None Include="Tools\Data-DataMerge.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>DataMerge.feature.cs</LastGenOutput>
+      <LastGenOutput>Data-DataMerge.feature.cs</LastGenOutput>
     </None>
-    <None Include="Tools\DataSplit.feature">
+    <None Include="Tools\Data-DataSplit.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>DataSplit.feature.cs</LastGenOutput>
+      <LastGenOutput>Data-DataSplit.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\FileAndFolder-Copy.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FileAndFolder-Copy.feature.cs</LastGenOutput>
     </None>
     <None Include="VariableList.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

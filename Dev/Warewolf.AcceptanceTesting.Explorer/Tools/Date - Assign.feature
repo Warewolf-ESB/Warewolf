@@ -6,14 +6,14 @@
 @Assign
 Scenario: Opening Assign Lare View
 	Given I have Assign Small View on design surface
-	And Assign Small View grid as
+	And Assign Small View grid has
 	| # | Variable | = | New Value |
 	| 1 |          | = |           |
 	| 2 |          | = |           |
 	And Scroll bar is "Disabled"
 	When I open Assign large view
 	Then Assign Large view is "Visible"
-	And Assign Larege view grid as
+	And Assign Larege view grid has
 	| # | Variable | = | New Value |
 	| 1 |          | = |           |
 	| 2 |          | = |           |
@@ -24,7 +24,7 @@ Scenario: Opening Assign Lare View
 	
 Scenario: Passing Variables in Small View 
 	Given I have Assign Small View on design surface
-	When I pass variables in Small View grid as
+	When I pass variables in Small View grid has
 	| # | Variable    | = | New Value |
 	| 1 | [[a]]       | = | Test      |
 	| 2 | [[rec().a]] | = | Record    |
@@ -32,7 +32,7 @@ Scenario: Passing Variables in Small View
 	Then Scroll bar is "Enabled"
 	When I open Assign large view
 	Then Assign Large view is "Visible"
-	And Assign Larege view grid as
+	And Assign Larege view grid has
 	| # | Variable    | = | New Value |
 	| 1 | [[a]]       | = | Test      |
 	| 2 | [[rec().a]] | = | Record    |
@@ -46,7 +46,7 @@ Scenario: Done Button Is validating Invalid Scalar Variables
 	Given I have Assign Small View on design surface
 	When I open Assign large view
 	Then Assign Large view is "Visible"
-	And I pass variables in Assign Larege view grid as
+	And I pass variables in Assign Larege view grid has
 	| # | Variable    | = | New Value |
 	| 1 | [[a$]]      | = | Test      |
 	| 2 | [[rec().a]] | = | Record    |
@@ -56,7 +56,7 @@ Scenario: Done Button Is validating Invalid Scalar Variables
 	When I click on "Done"
 	Then Assign Small View is "Not Visible"
 	And Validation message is thrown "True"
-	When I Edit variables in Assign Larege view grid as
+	When I Edit variables in Assign Larege view grid has
 	| # | Variable    | = | New Value |
 	| 1 | [[a]]       | = | Test      |
 	| 2 | [[rec().a]] | = | Record    |
@@ -70,7 +70,7 @@ Scenario: Done Button Is validating Invalid Recordset Variables
 	Given I have Assign Small View on design surface
 	When I open Assign large view
 	Then Assign Large view is "Visible"
-	And I pass variables in Assign Larege view grid as
+	And I pass variables in Assign Larege view grid has
 	| # | Variable     | = | New Value |
 	| 1 | [[a]]        | = | Test      |
 	| 2 | [[rec()..a]] | = | Record    |
@@ -80,7 +80,7 @@ Scenario: Done Button Is validating Invalid Recordset Variables
 	When I click on "Done"
 	Then Assign Small View is "Not Visible"
 	And Validation message is thrown "True"
-	When I Edit variables in Assign Larege view grid as
+	When I Edit variables in Assign Larege view grid has
 	| # | Variable    | = | New Value |
 	| 1 | [[a]]       | = | Test      |
 	| 2 | [[rec().a]] | = | Record    |
@@ -94,7 +94,7 @@ Scenario: Done Button Is validating Invalid Variables In New Value
 	Given I have Assign Small View on design surface
 	When I open Assign large view
 	Then Assign Large view is "Visible"
-	And I pass variables in Assign Larege view grid as
+	And I pass variables in Assign Larege view grid has
 	| # | Variable    | = | New Value  |
 	| 1 | [[a$]]      | = | Test[[b*]] |
 	| 2 | [[rec().a]] | = | Record     |
@@ -104,7 +104,7 @@ Scenario: Done Button Is validating Invalid Variables In New Value
 	When I click on "Done"
 	Then Assign Small View is "Not Visible"
 	And Validation message is thrown "True"
-	When I Edit variables in Assign Larege view grid as
+	When I Edit variables in Assign Larege view grid has
 	| # | Variable    | = | New Value |
 	| 1 | [[a]]       | = | Test[[b]] |
 	| 2 | [[rec().a]] | = | Record    |
@@ -118,7 +118,7 @@ Scenario: Done Button Is validating Invalid Variables In expression
 	Given I have Assign Small View on design surface
 	When I open Assign large view
 	Then Assign Large view is "Visible"
-	And I pass variables in Assign Larege view grid as
+	And I pass variables in Assign Larege view grid has
 	| # | Variable    | = | New Value           |
 	| 1 | [[a$]]      | = | 1                   |
 	| 2 | [[rec().a]] | = | 2                   |
@@ -129,7 +129,7 @@ Scenario: Done Button Is validating Invalid Variables In expression
 	When I click on "Done"
 	Then Assign Small View is "Not Visible"
 	And Validation message is thrown "True"
-	When I Edit variables in Assign Larege view grid as
+	When I Edit variables in Assign Larege view grid has
 	| # | Variable    | = | New Value          |
 	| 1 | [[a$]]      | = | 1                  |
 	| 2 | [[rec().a]] | = | 2                  |
@@ -145,7 +145,7 @@ Scenario: Inserting Rows in large view
 	Given I have Assign Small View on design surface
 	When I open Assign large view
 	Then Assign Large view is "Visible"
-	And I pass variables in Assign Larege view grid as
+	And I pass variables in Assign Larege view grid has
 	| # | Variable    | = | New Value |
 	| 1 | [[a]]       | = | 1         |
 	| 2 | [[rec().a]] | = | 2         |
@@ -153,7 +153,7 @@ Scenario: Inserting Rows in large view
 	| 4 |             | = |           |
 	And Scroll bar is "Disabled"
 	When I Insert Row at "3"
-	Then Assign Larege view grid as
+	Then Assign Larege view grid has
 	| # | Variable    | = | New Value |
 	| 1 | [[a]]       | = | 1         |
 	| 2 | [[rec().a]] | = | 2         |
@@ -166,7 +166,7 @@ Scenario: Deleting Rows in large view
 	Given I have Assign Small View on design surface
 	When I open Assign large view
 	Then Assign Large view is "Visible"
-	And I pass variables in Assign Larege view grid as
+	And I pass variables in Assign Larege view grid has
 	| # | Variable    | = | New Value |
 	| 1 | [[a]]       | = | 1         |
 	| 2 | [[rec().a]] | = | 2         |
@@ -174,7 +174,7 @@ Scenario: Deleting Rows in large view
 	| 4 |             | = |           |
 	And Scroll bar is "Disabled"
 	When I Delete "Row 2"
-	Then Assign Larege view grid as
+	Then Assign Larege view grid has
 	| # | Variable    | = | New Value |
 	| 1 | [[a]]       | = | 1         |
 	| 2 | [[total]]   | = | 87        |
@@ -186,7 +186,7 @@ Scenario: Collapse largeview is closing large view
 	Given I have Assign Small View on design surface
 	When I open Assign large view
 	Then Assign Large view is "Visible"
-	And I pass variables in Assign Larege view grid as
+	And I pass variables in Assign Larege view grid has
 	| # | Variable    | = | New Value  |
 	| 1 | [[a$]]      | = | Test[[b*]] |
 	| 2 | [[rec().a]] | = | Record     |
@@ -237,7 +237,7 @@ Scenario: Adding Variables by using QVI
 	And Add button is "Enabbled"
 	When I click on "Add"
 	Then Assign Small View is "Visible" 
-	And Small View grid as
+	And Small View grid has
 	| # | Variable | = | New Value |
 	| 1 | [[a]]    | = |           |
 	| 2 | [[b]]    | = |           |
@@ -268,7 +268,7 @@ Scenario: Adding Variables by using QVI and split on chars
 	And Add button is "Enabbled"
 	When I click on "Add"
 	Then Assign Large view is "Visible" 
-	And Large View grid as
+	And Large View grid has
 	| # | Variable | = | New Value |
 	| 1 | [[a]]    | = |           |
 	| 2 | [[b]]    | = |           |
@@ -299,7 +299,7 @@ Scenario: Adding Variables by using QVI and split on Tab
 	And Add button is "Enabbled"
 	When I click on "Add"
 	Then Assign Large view is "Visible" 
-	And Large View grid as
+	And Large View grid has
 	| # | Variable | = | New Value |
 	| 1 | [[a]]    | = |           |
 	| 2 | [[b]]    | = |           |
@@ -333,7 +333,7 @@ Scenario: Adding Variables by using QVI and split on chars
 	And Add button is "Enabbled"
 	When I click on "Add"
 	Then Assign Large view is "Visible" 
-	And Large View grid as
+	And Large View grid has
 	| # | Variable | = | New Value |
 	| 1 | [[a]]    | = |           |
 	| 2 | [[b]]    | = |           |
@@ -367,7 +367,7 @@ Scenario Outline:  QVI Prefix and Suffix
 	And Add button is "Enabbled"
 	When I click on "Add"
 	Then Assign Large view is "Visible" 
-	And Large View grid as
+	And Large View grid has
 	| # | Variable | = | New Value |
 	| 1 | [[aa]]   | = |           |
 	| 2 | [[aa]]   | = |           |
@@ -381,7 +381,7 @@ Scenario Outline:  QVI Prefix and Suffix
 
 Scenario:  QVI Replace is Replacing Variables
     Given I have Assign Large view on design surface
-	And Large view grid as
+	And Large view grid has
 	| # | Variable | = | New Value |
 	| 1 | [[a]]    | = |           |
 	| 2 | [[b]]    | = |           |
@@ -404,7 +404,7 @@ Scenario:  QVI Replace is Replacing Variables
 	And Add button is "Enabbled"
 	When I click on "Add"
 	Then Assign Large view is "Visible" 
-	And Large View grid as
+	And Large View grid has
 	| # | Variable    | = | New Value |
 	| 1 | [[rec().a]] | = |           |
 	| 2 | [[rec().b]] | = |           |
