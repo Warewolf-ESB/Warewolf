@@ -294,6 +294,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FileAndFolder-Copy.feature</DependentUpon>
     </Compile>
+    <Compile Include="Tools\FileAndFolder-Move.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FileAndFolder-Move.feature</DependentUpon>
+    </Compile>
     <Compile Include="UnityBootstrapperForDatabaseSourceConnectorTesting.cs" />
     <Compile Include="UnityBootstrapperForExplorerTesting.cs" />
     <Compile Include="UnityBootstrapperForToolboxTesting.cs" />
@@ -385,6 +390,10 @@
     <None Include="Tools\FileAndFolder-Copy.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>FileAndFolder-Copy.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\FileAndFolder-Move.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FileAndFolder-Move.feature.cs</LastGenOutput>
     </None>
     <None Include="VariableList.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
