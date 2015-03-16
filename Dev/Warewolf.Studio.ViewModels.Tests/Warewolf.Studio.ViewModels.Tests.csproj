@@ -81,7 +81,7 @@
   <ItemGroup>
     <Compile Include="DeployViewModelTests.cs" />
     <Compile Include="EnvironmentViewModelTests.cs" />
-    <Compile Include="Help\HelpDescriptoViewModelTests.cs" />
+    <Compile Include="Help\HelpDescriptorViewModelTests.cs" />
     <Compile Include="Help\HelpViewModelTest.cs" />
     <Compile Include="ManageDatabaseSourceViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

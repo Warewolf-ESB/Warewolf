@@ -23,6 +23,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         private static DbSourceDefinition _demoDbSourceDefinition;
         private static DbSourceDefinition _testDbSourceDefinition;
         private static DbAction _dbAction;
+        private static DbAction _dbInsertDummyAction;
 
         [BeforeFeature("DBService")]
         public static void SetupForSystem()
@@ -36,7 +37,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             SetupModel(mockDbServiceModel);
             var viewModel = new ManageDatabaseServiceViewModel(mockDbServiceModel.Object, mockRequestServiceNameViewModel.Object);
             view.DataContext = viewModel;
-            Utils.ShowTheViewForTesting(view);
+            
             FeatureContext.Current.Add(Utils.ViewNameKey, view);
             FeatureContext.Current.Add("viewModel", viewModel);
             FeatureContext.Current.Add("model",mockDbServiceModel);
@@ -66,9 +67,23 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
                 Name = "dbo.ConverToint",
                 Inputs = new List<IDbInput>{new DbInput("charValue","1")}
             };
+            var dbInputs = new List<IDbInput>
+            {
+                new DbInput("fname","Test"),
+                new DbInput("lname","Ware"),
+                new DbInput("username","wolf"),
+                new DbInput("password","Dev"),
+                new DbInput("lastAccessDate","12/1/1990"),
+            };
+            _dbInsertDummyAction = new DbAction
+            {
+                Name = "dbo.InsertDummyUser",
+                Inputs = dbInputs
+            };
             mockDbServiceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction>
             {
-                _dbAction
+                _dbAction,
+                _dbInsertDummyAction
             });
             var dataTable = new DataTable("dbo_ConverToInt");
             dataTable.Columns.Add("Result",typeof(int));
@@ -91,6 +106,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         public void GivenIClickNewDataBaseServiceConnector()
         {
             var view = GetView();
+            Utils.ShowTheViewForTesting(view);
             Assert.IsNotNull(view);
             Assert.IsNotNull(view.DataContext);
             Assert.IsInstanceOfType(view.DataContext,typeof(ManageDatabaseServiceViewModel));
@@ -235,7 +251,19 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         [Given(@"I open ""(.*)"" service")]
         public void GivenIOpenService(string serviceName)
         {
-            ScenarioContext.Current.Pending();
+            var databaseService = new DatabaseService();
+            databaseService.Name = serviceName;
+            databaseService.Source = _demoDbSourceDefinition;
+            databaseService.Action = _dbInsertDummyAction;
+            var dbOutputMapping = new DbOutputMapping("UserID","UserID");
+            dbOutputMapping.RecordSetName = "dbo_InsertDummyUser";
+            databaseService.OutputMappings = new List<IDbOutputMapping>{dbOutputMapping};
+            ScenarioContext.Current.Remove("viewModel");
+            var viewModel = new ManageDatabaseServiceViewModel(ScenarioContext.Current.Get<Mock<IDbServiceModel>>("model").Object, ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel").Object,databaseService);
+            ScenarioContext.Current.Add("viewModel",viewModel);
+            var view = GetView();
+            view.DataContext = viewModel;
+            Utils.ShowTheViewForTesting(view);
         }
 
         [Given(@"""(.*)"" is selected as the data source")]

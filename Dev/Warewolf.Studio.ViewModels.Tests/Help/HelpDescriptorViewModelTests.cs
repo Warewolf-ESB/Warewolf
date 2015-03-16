@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Windows.Media;
-using Dev2.Common.Interfaces.Help;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Warewolf.Core;
-using Warewolf.Studio.Models.Help;
 using Warewolf.Studio.ViewModels.Help;
 
 namespace Warewolf.Studio.ViewModels.Tests.Help
 {
     [TestClass]
-    public class HelpDescriptoViewModelTests
+    public class HelpDescriptorViewModelTests
     {
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -21,7 +18,8 @@ namespace Warewolf.Studio.ViewModels.Tests.Help
         
         {
             //------------Setup for test--------------------------
-            var helpDescriptorViewModel = new HelpDescriptorViewModel(null);
+            // ReSharper disable once ObjectCreationAsStatement
+            new HelpDescriptorViewModel(null);
             
             //------------Execute Test---------------------------
             
@@ -30,7 +28,6 @@ namespace Warewolf.Studio.ViewModels.Tests.Help
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("HelpDescriptorViewModel_Ctor")]
-        [ExpectedException(typeof(ArgumentNullException))]
         // ReSharper disable InconsistentNaming
         public void HelpDescriptorViewModel_Ctor_ValidParams_VerifyProperties()
         {
@@ -44,7 +41,6 @@ namespace Warewolf.Studio.ViewModels.Tests.Help
             Assert.AreEqual("desc",helpDescriptorViewModel.Description);
             Assert.AreEqual("name",helpDescriptorViewModel.Name);
             Assert.AreEqual(image,helpDescriptorViewModel.Icon);
-            Assert.IsTrue(helpDescriptorViewModel.IsEnabled);
         }
 
         // ReSharper restore InconsistentNaming
