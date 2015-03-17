@@ -1,4 +1,5 @@
-﻿Feature: WebService
+﻿@WebService
+Feature: WebService
 	In order to create New Web Service in Warewolf
 	As a Warewolf User
 	I want to Create or Edit Warewolf Web Service.
@@ -42,51 +43,51 @@
 
 ##Test Cases
 
-@WebService
+
 Scenario: Opening Web Service
-	Given I click "New Web Service Connector"
+	Given I click New Web Service Connector
 	Then "New Web Service" tab is opened
-	And "Select Request Method & Source" is focused
-	And "New" button is "Enabled"
+	And Select Request Method & Source is focused
+	And "New" is "Enabled"
 	And "1 Select Request Method & Source" is "Enabled"
-	And "Edit" button is "Disabled"
+	And "Edit" is "Disabled"
 	And "2 Request headers" is "Disabled"
 	And "3 Request URL" is "Disabled" 
 	And "4 Request Body" is "Disabled" 
 	And "5 Request Variables" is "Disabled" 
-	And "Test" button is "Disabled"
+	And "Test" is "Disabled"
 	And "6 Response" is "Disabled" 
-	And "7 Edit Dfault and Mapping Names" is "Disabled"
+	And "7 Edit Default and Mapping Names" is "Disabled"
 	And "Save" is "Disabled"
 	
 	
 Scenario: Creating Web Service
-	Given I click "New Web Service Connector"
+	Given I click New Web Service Connector
 	Then "New Web Service" tab is opened	
 	When I select "GET" as Method
 	And I select "Dev2CountriesWebService" as data source
-	And "New" button is "Enabled"
-	And "Edit" button is "Enabled"
+	And "New" is "Enabled"
+	And "Edit" is "Enabled"
 	Then "2 Request headers" is "Enabled"
 	And "3 Request URL" is "Enabled" 
 	And "4 Request Body" is "Disabled" 
 	And "5 Request Variables" is "Enabled" 
 	And "6 Response" is "Disabled" 
-	And "7 Edit Dfault and Mapping Names" is "Enabled"
+	And "7 Edit Default and Mapping Names" is "Enabled"
 	When I Test Connection
-	Then the response is loaded as "String"
+	Then response is loaded
 	And "Save" is "Disabled"
 	When Test Connecton is "Successful"
-	Then "7 Edit Dfault and Mapping Names" inputs looks like
+	Then input mappings are
 	| Input        | Default Value | Required Field | Empty is Null |
 	| Country Name | US            |                |               |
-	And "7 Edit Dfault and Mapping Names" Outputs looks like
+	And output mappings are
 	| Output                           | Output Alias                                       |
 	| Pr_CitiesGetCountriesCountryID   | DocumentElement().Pr_CitiesGetCountriesCountryID   |
 	| Pr_CitiesGetCountriesDescription | DocumentElement().Pr_CitiesGetCountriesDescription |
 	And "Save" is "Enabled" 
 	When I save the webservice
-	Then "save" dialogbox is opened
+	Then Save Dialog is opened
 
 	
 	
@@ -95,174 +96,173 @@ Scenario: Creating Web Service with method as POST
 	Then "New Web Service" tab is opened	
 	When I select "POST" as Method
 	And I select "Dev2CountriesWebService" as data source
-	And "Edit" button is "Enabled"
+	And "Edit" is "Enabled"
 	Then "2 Request headers" is "Enabled"
 	And "3 Request URL" is "Enabled" 
 	And "4 Request Body" is "Enabled" 
 	And "5 Request Variables" is "Enabled" 
-	And "5 Request Variables" looks like
+	And "5 Request Variables" are
 	|                  |
 	| extension = json |
 	| prefix  = a      |
 	And "6 Response" is "Disabled" 
-	And "7 Edit Dfault and Mapping Names" is "Enabled"
-	And "Test" button is "Enabled"
+	And "7 Edit Default and Mapping Names" is "Enabled"
+	And "Test" is "Enabled"
 	And "Save" is "Disabled"
 	When I Test Connection
-	Then the response is loaded as "String"
-	Then "7 Edit Dfault and Mapping Names" inputs looks like
+	Then response is loaded
+	Then input mappings are
 	| Input     | Default Value | Required Field | Empty is Null |
 	| extension | json          |                |               |
 	| prefix    | a             |                |               |
-	And "7 Edit Dfault and Mapping Names" Outputs looks like
+	And output mappings are
 	| Output      | Output Alias                   |
 	| CountryID   | UnnamedArrayData().CountryID   |
 	| Description | UnnamedArrayData().Description |
 	And "Save" is "Enabled" 
 	When I save the webservice
-	Then "save" dialogbox is opened
+	Then Save Dialog is opened
 	
 	
 Scenario: Creating Web Service with method as PUT
 	Given I click "New Web Service Connector"
 	Then "New Web Service" tab is opened	
-	When I select "POST" as Method
+	When I select "PUT" as Method
 	And I select "Dev2CountriesWebService" as data source
-	And "New" button is "Enabled"
-	And "Edit" button is "Enabled"
+	And "New" is "Enabled"
+	And "Edit" is "Enabled"
 	Then "2 Request headers" is "Enabled"
 	And "3 Request URL" is "Enabled" 
 	And "4 Request Body" is "Enabled" 
 	And "5 Request Variables" is "Enabled" 
-	And "5 Request Variables" looks like
+	And "5 Request Variables" are
 	|                  |
 	| extension = json |
 	| prefix  = a      |
 	And "6 Response" is "Disabled" 
-	And "7 Edit Dfault and Mapping Names" is "Enabled"
-	And "Test" button is "Enabled"
+	And "7 Edit Default and Mapping Names" is "Enabled"
+	And "Test" is "Enabled"
 	And "Save" is "Disabled"
 	When I Test Connection
-	Then the response is loaded as "String"
-	Then "7 Edit Dfault and Mapping Names" inputs looks like
+	Then response is loaded
+	Then input mappings are
 	| Input     | Default Value | Required Field | Empty is Null |
-	And "7 Edit Dfault and Mapping Names" Outputs looks like
+	And output mappings are
 	| Output      | Output Alias                   |
 	And "Save" is "Enabled" 
 	When I save the webservice
-	Then "save" dialogbox is opened	
+	Then Save Dialog is opened 
 	
 Scenario: Creating Web Service with method as DELETE
 	Given I click "New Web Service Connector"
 	Then "New Web Service" tab is opened	
 	When I select "DELETE" as Method
 	And I select "Dev2CountriesWebService" as data source
-	And "New" button is "Enabled"
-	And "Edit" button is "Enabled"
+	And "New" is "Enabled"
+	And "Edit" is "Enabled"
 	Then "2 Request headers" is "Enabled"
 	And "3 Request URL" is "Enabled" 
 	And "4 Request Body" is "Enabled" 
 	And "5 Request Variables" is "Enabled" 
-	And "5 Request Variables" looks like
+	And "5 Request Variables" are
 	|                  |
 	| extension = json |
 	| prefix  = a      |
 	And "6 Response" is "Disabled" 
-	And "7 Edit Dfault and Mapping Names" is "Enabled"
-	And "Test" button is "Enabled"
+	And "7 Edit Default and Mapping Names" is "Enabled"
+	And "Test" is "Enabled"
 	And "Save" is "Disabled"
 	When I Test Connection
-	Then the response is loaded as "String"
-	Then "7 Edit Dfault and Mapping Names" inputs looks like
+	Then response is loaded
+	Then input mappings are
 	| Input     | Default Value | Required Field | Empty is Null |
-	And "7 Edit Dfault and Mapping Names" Outputs looks like
+	And output mappings are
 	| Output      | Output Alias                   |
 	And "Save" is "Enabled" 
 	When I save the webservice
-	Then "save" dialogbox is opened	
+	Then Save Dialog is opened	
 		
 Scenario: Creating Web Service with method as TRACE
 	Given I click "New Web Service Connector"
 	Then "New Web Service" tab is opened	
-	When I select "DELETE" as Method
+	When I select "TRACE" as Method
 	And I select "Dev2CountriesWebService" as data source
-	And "New" button is "Enabled"
-	And "Edit" button is "Enabled"
+	And "New" is "Enabled"
+	And "Edit" is "Enabled"
 	Then "2 Request headers" is "Enabled"
 	And "3 Request URL" is "Enabled" 
 	And "4 Request Body" is "Enabled" 
 	And "5 Request Variables" is "Enabled" 
-	And "5 Request Variables" looks like
+	And "5 Request Variables" are
 	|                  |
 	| extension = json |
 	| prefix  = a      |
 	And "6 Response" is "Disabled" 
-	And "7 Edit Dfault and Mapping Names" is "Enabled"
-	And "Test" button is "Enabled"
+	And "7 Edit Default and Mapping Names" is "Enabled"
+	And "Test" is "Enabled"
 	And "Save" is "Disabled"
 	When I Test Connection
-	Then the response is loaded as "String"
-	Then "7 Edit Dfault and Mapping Names" inputs looks like
+	Then response is loaded
+	Then input mappings are
 	| Input     | Default Value | Required Field | Empty is Null |
-	And "7 Edit Dfault and Mapping Names" Outputs looks like
+	And output mappings are
 	| Output      | Output Alias                   |
 	And "Save" is "Enabled" 
 	When I save the webservice
-	Then "save" dialogbox is opened		
-	
-
- 
+	Then Save Dialog is opened		
+		 
  Scenario: Editing Web Service
-	Given I open "GetCountries"
+	Given I open "GetCountries" webservice
 	Then "Edit Web Service - GetCountries" tab is opened	
 	And method is selected as "GET"
 	And "Dev2CountriesWebService" selected as data source
-	And "New" button is "Enabled"
-	And "Edit" button is "Enabled"
+	And "New" is "Enabled"
+	And "Edit" is "Enabled"
 	Then "2 Request headers" is "Enabled"
 	And "3 Request URL" is "Enabled" 
 	And "4 Request Body" is "Disabled" 
 	And "5 Request Variables" is "Enabled" 
 	And "6 Response" is "Disabled" 
-	And "7 Edit Dfault and Mapping Names" is "Enabled"
+	And "7 Edit Default and Mapping Names" is "Enabled"
 	When I Test Connection
-	Then the response is loaded as "String"
+	Then response is loaded
 	And "Save" is "Disabled"
 	When Test Connecton is "Successful"
-	Then "7 Edit Dfault and Mapping Names" inputs looks like
+	Then input mappings are
 	| Input        | Default Value | Required Field | Empty is Null |
 	| Country Name | US            |                |               |
-	And "7 Edit Dfault and Mapping Names" Outputs looks like
+	And output mappings are
 	| Output                           | Output Alias                                       |
 	| Pr_CitiesGetCountriesCountryID   | DocumentElement().Pr_CitiesGetCountriesCountryID   |
 	| Pr_CitiesGetCountriesDescription | DocumentElement().Pr_CitiesGetCountriesDescription |
 	And "Save" is "Enabled" 
 	When I save the webservice
-	Then "save" dialogbox is opened
+	Then Save Dialog is opened
 
  
 Scenario: Adding perameters in request headers is updating variables 
-	Given I click "New Web Service Connector"
+	Given I click "New Web Service Connector" webservice
 	Then "New Web Service" tab is opened	
 	When I select "GET" as Method
 	And I select "Dev2CountriesWebService" as data source
-	And "New" button is "Enabled"
-	And "Edit" button is "Enabled"
+	And "New" is "Enabled"
+	And "Edit" is "Enabled"
 	Then "2 Request headers" is "Enabled"
-	When i type "Request Headers" as
-	|[[test]]|
+	When I type "Request Headers" as
+	|          |
+	| [[test]] |
 	And "3 Request URL" is "Enabled" 
 	And "4 Request Body" is "Disabled" 
 	And "5 Request Variables" is "Enabled" 
-	And "5 Request Variables" looks like
+	And "5 Request Variables" are
 	|                  |
 	| extension = json |
 	| prefix  = a      |
 	| [[test]]         |
 	And "6 Response" is "Disabled" 
-	And "7 Edit Dfault and Mapping Names" is "Enabled"
-	And "Test" button is "Enabled"
-    Then "7 Edit Dfault and Mapping Names" inputs looks like
+	And "7 Edit Default and Mapping Names" is "Enabled"
+	And "Test" is "Enabled"
+    Then input mappings are
 	| Input     | Default Value | Required Field | Empty is Null |
 	| extension | json          |                |               |
 	| prefix    | a             |                |               |
@@ -275,24 +275,24 @@ Scenario: Adding perameters in request headers is updating variables
 	Then "New Web Service" tab is opened	
 	When I select "GET" as Method
 	And I select "Dev2CountriesWebService" as data source
-	And "New" button is "Enabled"
-	And "Edit" button is "Enabled"
+	And "New" is "Enabled"
+	And "Edit" is "Enabled"
 	Then "2 Request headers" is "Enabled"
 	And "3 Request URL" is "Enabled" 
 	And request URL has "http://rsaklfsvrtfsbld/integrationTestSite/GetCountries.ashx" and "?extension=[[extension]]&prefix=[[prefix]]"
-	When I change source in request URL "[[variable1]] [[var2]]"
+	When I change request url to "?extension=[[variable1]]&prefix=[[variable2]]"
 	And "5 Request Variables" is "Enabled" 
-	And "5 Request Variables" looks like
+	And "5 Request Variables" are
 	|                 |
 	| [[variable1]] = |
-	| [[var2]] =      |
+	| [[variable2]] =      |
 	And "6 Response" is "Disabled" 
-	And "7 Edit Dfault and Mapping Names" is "Enabled"
-	And "Test" button is "Enabled"
-    Then "7 Edit Dfault and Mapping Names" inputs looks like
+	And "7 Edit Default and Mapping Names" is "Enabled"
+	And "Test" is "Enabled"
+    Then input mappings are
 	| Input         | Default Value | Required Field | Empty is Null |
 	| [[variable1]] | json          |                |               |
-	| [[var2]]      | a             |                |               |
+	| [[variable2]]      | a             |                |               |
 
 	
  
@@ -303,8 +303,8 @@ Scenario: Adding perameters in request headers is updating variables
 	Then "New Web Service" tab is opened	
 	When I select "DELETE" as Method
 	And I select "Dev2CountriesWebService" as data source
-	And "New" button is "Enabled"
-	And "Edit" button is "Enabled"
+	And "New" is "Enabled"
+	And "Edit" is "Enabled"
 	Then "2 Request headers" is "Enabled"
 	And "3 Request URL" is "Enabled" 
 	And "4 Request Body" is "Enabled" 
@@ -313,20 +313,20 @@ Scenario: Adding perameters in request headers is updating variables
 	| [[a]] |
 	| [[b]] |
 	And "5 Request Variables" is "Enabled" 
-	And "5 Request Variables" looks like
+	And "5 Request Variables" are
 	|                  |
 	| extension = json |
 	| prefix  = a      |
 	| [[a]]            |
 	| [[b]]            |
 	And "6 Response" is "Disabled" 
-	Then "7 Edit Dfault and Mapping Names" inputs looks like
+	Then input mappings are
 	| Input     | Default Value | Required Field | Empty is Null |
 	| extension |               |                |               |
 	| prefix    |               |                |               |
 	| a         |               |                |               |
 	| b         |               |                |               |
-	And "7 Edit Dfault and Mapping Names" Outputs looks like
+	And output mappings are
 	| Output      | Output Alias                   |
 	And "Save" is "Enabled" 
 	
