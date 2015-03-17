@@ -1,13 +1,11 @@
-﻿Feature: PluginService
-	In order to avoid silly mistakes
-	As a math idiot
-	I want to be told the sum of two numbers
+﻿@PluginService
+Feature: PluginService
+	In order to use .net dlls
+	As a warewolf user
+	I want to be able to create plugin services
 
-	I want to be told the sum of two numbers
-
-@PluginService
 Scenario: Opening Plugin Service tab
-	Given I click "New Data Base Service Connector"
+	Given I click "New Plugin Service"
 	And "New Plugin Service" tab is opened
 	And "Select a source" is focused
 	And "1 Select a source" is "Enabled"
