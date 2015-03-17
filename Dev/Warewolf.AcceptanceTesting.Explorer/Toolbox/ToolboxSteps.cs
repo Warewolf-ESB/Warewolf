@@ -39,7 +39,8 @@ namespace Warewolf.AcceptanceTesting.Explorer
         [Given(@"""(.*)"" Toolbox is loaded")]
         public void GivenToolboxIsLoaded(string p0)
         {
-            ScenarioContext.Current.Pending();
+            var view = Utils.GetView<IToolboxView>();
+            Utils.ShowTheViewForTesting(view);
         }
 
 

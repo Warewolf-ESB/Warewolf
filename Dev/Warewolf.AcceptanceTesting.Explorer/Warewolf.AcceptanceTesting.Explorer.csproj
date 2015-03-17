@@ -247,11 +247,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>NewServerSource.feature</DependentUpon>
     </Compile>
-    <Compile Include="PluginService.feature.cs">
+    <Compile Include="Plugins\PluginService.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PluginService.feature</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\PluginServiceSteps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scheduler.feature.cs">
       <AutoGen>True</AutoGen>
@@ -268,12 +269,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Switch.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox.feature.cs">
+    <Compile Include="Toolbox\Toolbox.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Toolbox.feature</DependentUpon>
     </Compile>
-    <Compile Include="ToolboxSteps.cs" />
+    <Compile Include="Toolbox\ToolboxSteps.cs" />
     <Compile Include="Tools\Data - Assign.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -370,7 +371,7 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="PluginService.feature">
+    <None Include="Plugins\PluginService.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PluginService.feature.cs</LastGenOutput>
     </None>
@@ -386,7 +387,7 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Switch.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox.feature">
+    <None Include="Toolbox\Toolbox.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Toolbox.feature.cs</LastGenOutput>
     </None>

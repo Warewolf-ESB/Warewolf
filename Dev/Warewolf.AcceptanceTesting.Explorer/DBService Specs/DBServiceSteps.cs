@@ -104,7 +104,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         [Given(@"I click New Data Base Service Connector")]
         public void GivenIClickNewDataBaseServiceConnector()
         {
-            var view = Utils.GetView();
+            var view = Utils.GetView<ManageDatabaseServiceControl>();
             Utils.ShowTheViewForTesting(view);
             Assert.IsNotNull(view);
             Assert.IsNotNull(view.DataContext);
@@ -114,9 +114,9 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         [When(@"I select ""(.*)"" as data source")]
         public void WhenISelectAsDataSource(string dbSourceName)
         {
-            var view = Utils.GetView();
+            var view = Utils.GetView<ManageDatabaseServiceControl>();
             view.SelectDbSource(_demoDbSourceDefinition);
-            var viewModel = Utils.GetViewModel();
+            var viewModel = Utils.GetViewModel<ManageDatabaseServiceViewModel>();
             Assert.AreEqual(dbSourceName,viewModel.SelectedSource.Name);
         }
 
@@ -125,9 +125,9 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         [Then(@"I select ""(.*)"" as the action")]
         public void WhenISelectAsTheAction(string actionName)
         {
-            var view = Utils.GetView();
+            var view = Utils.GetView<ManageDatabaseServiceControl>();
             view.SelectDbAction(_dbAction);
-            var viewModel = Utils.GetViewModel();
+            var viewModel = Utils.GetViewModel<ManageDatabaseServiceViewModel>();
             Assert.AreEqual(actionName,viewModel.SelectedAction.Name);
         }
 
@@ -136,9 +136,9 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         [When(@"I test the action")]
         public void WhenITestTheAction()
         {
-            var view = Utils.GetView();
+            var view = Utils.GetView<ManageDatabaseServiceControl>();
             view.TestAction();
-            var viewModel = Utils.GetViewModel();
+            var viewModel = Utils.GetViewModel<ManageDatabaseServiceViewModel>();
             Assert.IsNotNull(viewModel.TestResults);
             
         }
@@ -146,7 +146,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         [When(@"I save")]
         public void WhenISave()
         {
-            var view = Utils.GetView();
+            var view = Utils.GetView<ManageDatabaseServiceControl>();
             view.Save();
            
         }
@@ -156,7 +156,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         [Then(@"""(.*)"" tab is opened")]
         public void ThenTabIsOpened(string tabName)
         {
-            var viewModel = Utils.GetViewModel();
+            var viewModel = Utils.GetViewModel<ManageDatabaseServiceViewModel>();
             Assert.AreEqual("*"+tabName,viewModel.Header);
         }
 
@@ -165,7 +165,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         [Then(@"Data Source is focused")]
         public void ThenDataSourceIsFocused()
         {
-            var view = Utils.GetView();
+            var view = Utils.GetView<ManageDatabaseServiceControl>();
             var isDataSourceFocused = view.IsDataSourceFocused();
             Assert.IsTrue(isDataSourceFocused);
         }
@@ -175,7 +175,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         [Then(@"inputs are")]
         public void ThenInputsAre(Table table)
         {
-            var view = Utils.GetView();
+            var view = Utils.GetView<ManageDatabaseServiceControl>();
             var inputs = view.GetInputs();
             foreach (var input in inputs.SourceCollection)
             {
@@ -192,7 +192,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         [Then(@"outputs are")]
         public void ThenOutputsAre(Table table)
         {
-            var view = Utils.GetView();
+            var view = Utils.GetView<ManageDatabaseServiceControl>();
             var outputs = view.GetOutputs();
             foreach (var output in outputs.SourceCollection)
             {
@@ -209,7 +209,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         [Then(@"input mappings are")]
         public void ThenInputMappingsAre(Table table)
         {
-            var view = Utils.GetView();
+            var view = Utils.GetView<ManageDatabaseServiceControl>();
             var inputMappings = view.GetInputMappings();
             foreach (var input in inputMappings.SourceCollection)
             {
@@ -226,7 +226,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         [Then(@"output mappings are")]
         public void ThenOutputMappingsAre(Table table)
         {
-            var view = Utils.GetView();
+            var view = Utils.GetView<ManageDatabaseServiceControl>();
             var outputMappings = view.GetOutputMappings();
             foreach (var output in outputMappings.SourceCollection)
             {
@@ -250,7 +250,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             ScenarioContext.Current.Remove("viewModel");
             var viewModel = new ManageDatabaseServiceViewModel(ScenarioContext.Current.Get<Mock<IDbServiceModel>>("model").Object, ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel").Object,databaseService);
             ScenarioContext.Current.Add("viewModel",viewModel);
-            var view = GetView();
+            var view = Utils.GetView<ManageDatabaseServiceControl>();
             view.DataContext = viewModel;
             Utils.ShowTheViewForTesting(view);
         }
@@ -258,7 +258,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         [Given(@"""(.*)"" is selected as the data source")]
         public void GivenIsSelectedAsTheDataSource(string selectedDataSourceName)
         {
-            var view = Utils.GetView();
+            var view = Utils.GetView<ManageDatabaseServiceControl>();
             var selectedDataSource = view.GetSelectedDataSource();
             Assert.AreEqual(selectedDataSourceName,selectedDataSource.Name);
         }
@@ -294,7 +294,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         [Given(@"""(.*)"" is selected as the action")]
         public void GivenIsSelectedAsTheAction(string selectedActionName)
         {
-            var view = Utils.GetView();
+            var view = Utils.GetView<ManageDatabaseServiceControl>();
             var selectedAction = view.GetSelectedAction();
             Assert.AreEqual(selectedActionName,selectedAction.Name);
 

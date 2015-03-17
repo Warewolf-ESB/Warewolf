@@ -9,4 +9,8 @@ namespace Warewolf.AcceptanceTesting.Explorer
     internal class UnityBootstrapperForDatabaseServiceConnectorTesting : UnityBootstrapperForTesting
     {
     }
+    
+    internal class UnityBootstrapperForPluginServiceConnectorTesting : UnityBootstrapperForTesting
+    {
+    }
 }

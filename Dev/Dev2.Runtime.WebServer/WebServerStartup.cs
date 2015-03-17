@@ -80,7 +80,7 @@ namespace Dev2.Runtime.WebServer
             {
                 return AuthenticationSchemes.Anonymous;
             }
-            return AuthenticationSchemes.Negotiate;
+            return AuthenticationSchemes.Ntlm;
         }
     }
 
