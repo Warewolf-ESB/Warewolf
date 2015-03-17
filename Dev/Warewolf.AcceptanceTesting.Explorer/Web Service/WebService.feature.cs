@@ -77,35 +77,35 @@ namespace Warewolf.AcceptanceTesting.Explorer.WebService
         public virtual void OpeningWebService()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening Web Service", ((string[])(null)));
-#line 47
+#line 42
 this.ScenarioSetup(scenarioInfo);
-#line 48
+#line 43
  testRunner.Given("I click New Web Service Connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 49
+#line 44
  testRunner.Then("\"New Web Service\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 50
+#line 45
  testRunner.And("Select Request Method & Source is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 51
+#line 46
  testRunner.And("\"New\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 52
+#line 47
  testRunner.And("\"1 Select Request Method & Source\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 53
+#line 48
  testRunner.And("\"Edit\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 54
+#line 49
  testRunner.And("\"2 Request headers\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 55
+#line 50
  testRunner.And("\"3 Request URL\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 56
+#line 51
  testRunner.And("\"4 Request Body\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 57
+#line 52
  testRunner.And("\"5 Request Variables\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 58
+#line 53
  testRunner.And("\"Test\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 59
+#line 54
  testRunner.And("\"6 Response\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 60
+#line 55
  testRunner.And("\"7 Edit Default and Mapping Names\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
+#line 56
  testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -118,39 +118,39 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CreatingWebService()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating Web Service", ((string[])(null)));
-#line 64
+#line 59
 this.ScenarioSetup(scenarioInfo);
-#line 65
+#line 60
  testRunner.Given("I click New Web Service Connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 66
+#line 61
  testRunner.Then("\"New Web Service\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 67
+#line 62
  testRunner.When("I select \"GET\" as Method", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 68
+#line 63
  testRunner.And("I select \"Dev2CountriesWebService\" as data source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 69
+#line 64
  testRunner.And("\"New\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 70
+#line 65
  testRunner.And("\"Edit\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 71
+#line 66
  testRunner.Then("\"2 Request headers\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 72
+#line 67
  testRunner.And("\"3 Request URL\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 73
+#line 68
  testRunner.And("\"4 Request Body\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 74
+#line 69
  testRunner.And("\"5 Request Variables\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 75
+#line 70
  testRunner.And("\"6 Response\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 76
+#line 71
  testRunner.And("\"7 Edit Default and Mapping Names\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 77
+#line 72
  testRunner.When("I Test Connection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 78
+#line 73
  testRunner.Then("response is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 79
+#line 74
  testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 80
+#line 75
  testRunner.When("Test Connecton is \"Successful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -163,7 +163,7 @@ this.ScenarioSetup(scenarioInfo);
                         "US",
                         "",
                         ""});
-#line 81
+#line 76
  testRunner.Then("input mappings are", ((string)(null)), table1, "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -175,13 +175,13 @@ this.ScenarioSetup(scenarioInfo);
             table2.AddRow(new string[] {
                         "Pr_CitiesGetCountriesDescription",
                         "DocumentElement().Pr_CitiesGetCountriesDescription"});
-#line 84
+#line 79
  testRunner.And("output mappings are", ((string)(null)), table2, "And ");
-#line 88
+#line 83
  testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 89
+#line 84
  testRunner.When("I save the webservice", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 90
+#line 85
  testRunner.Then("Save Dialog is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -194,25 +194,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CreatingWebServiceWithMethodAsPOST()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating Web Service with method as POST", ((string[])(null)));
-#line 94
+#line 89
 this.ScenarioSetup(scenarioInfo);
-#line 95
+#line 90
  testRunner.Given("I click \"New Web Service Connector\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 96
+#line 91
  testRunner.Then("\"New Web Service\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 97
+#line 92
  testRunner.When("I select \"POST\" as Method", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 98
+#line 93
  testRunner.And("I select \"Dev2CountriesWebService\" as data source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 99
+#line 94
  testRunner.And("\"Edit\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 100
+#line 95
  testRunner.Then("\"2 Request headers\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 101
+#line 96
  testRunner.And("\"3 Request URL\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 102
+#line 97
  testRunner.And("\"4 Request Body\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 103
+#line 98
  testRunner.And("\"5 Request Variables\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -221,19 +221,19 @@ this.ScenarioSetup(scenarioInfo);
                         "extension = json"});
             table3.AddRow(new string[] {
                         "prefix  = a"});
-#line 104
+#line 99
  testRunner.And("\"5 Request Variables\" are", ((string)(null)), table3, "And ");
-#line 108
+#line 103
  testRunner.And("\"6 Response\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 109
+#line 104
  testRunner.And("\"7 Edit Default and Mapping Names\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 110
+#line 105
  testRunner.And("\"Test\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 111
+#line 106
  testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 112
+#line 107
  testRunner.When("I Test Connection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 113
+#line 108
  testRunner.Then("response is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -251,7 +251,7 @@ this.ScenarioSetup(scenarioInfo);
                         "a",
                         "",
                         ""});
-#line 114
+#line 109
  testRunner.Then("input mappings are", ((string)(null)), table4, "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -263,13 +263,13 @@ this.ScenarioSetup(scenarioInfo);
             table5.AddRow(new string[] {
                         "Description",
                         "UnnamedArrayData().Description"});
-#line 118
+#line 113
  testRunner.And("output mappings are", ((string)(null)), table5, "And ");
-#line 122
+#line 117
  testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 123
+#line 118
  testRunner.When("I save the webservice", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 124
+#line 119
  testRunner.Then("Save Dialog is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -282,27 +282,27 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CreatingWebServiceWithMethodAsPUT()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating Web Service with method as PUT", ((string[])(null)));
-#line 127
+#line 122
 this.ScenarioSetup(scenarioInfo);
-#line 128
+#line 123
  testRunner.Given("I click \"New Web Service Connector\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 129
+#line 124
  testRunner.Then("\"New Web Service\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 130
+#line 125
  testRunner.When("I select \"PUT\" as Method", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 131
+#line 126
  testRunner.And("I select \"Dev2CountriesWebService\" as data source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 132
+#line 127
  testRunner.And("\"New\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 133
+#line 128
  testRunner.And("\"Edit\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 134
+#line 129
  testRunner.Then("\"2 Request headers\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 135
+#line 130
  testRunner.And("\"3 Request URL\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 136
+#line 131
  testRunner.And("\"4 Request Body\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 137
+#line 132
  testRunner.And("\"5 Request Variables\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -311,19 +311,19 @@ this.ScenarioSetup(scenarioInfo);
                         "extension = json"});
             table6.AddRow(new string[] {
                         "prefix  = a"});
-#line 138
+#line 133
  testRunner.And("\"5 Request Variables\" are", ((string)(null)), table6, "And ");
-#line 142
+#line 137
  testRunner.And("\"6 Response\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 143
+#line 138
  testRunner.And("\"7 Edit Default and Mapping Names\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 144
+#line 139
  testRunner.And("\"Test\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 145
+#line 140
  testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 146
+#line 141
  testRunner.When("I Test Connection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 147
+#line 142
  testRunner.Then("response is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -331,19 +331,19 @@ this.ScenarioSetup(scenarioInfo);
                         "Default Value",
                         "Required Field",
                         "Empty is Null"});
-#line 148
+#line 143
  testRunner.Then("input mappings are", ((string)(null)), table7, "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
-#line 150
+#line 145
  testRunner.And("output mappings are", ((string)(null)), table8, "And ");
-#line 152
+#line 147
  testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 153
+#line 148
  testRunner.When("I save the webservice", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 154
+#line 149
  testRunner.Then("Save Dialog is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -356,27 +356,27 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CreatingWebServiceWithMethodAsDELETE()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating Web Service with method as DELETE", ((string[])(null)));
-#line 156
+#line 151
 this.ScenarioSetup(scenarioInfo);
-#line 157
+#line 152
  testRunner.Given("I click \"New Web Service Connector\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 158
+#line 153
  testRunner.Then("\"New Web Service\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 159
+#line 154
  testRunner.When("I select \"DELETE\" as Method", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 160
+#line 155
  testRunner.And("I select \"Dev2CountriesWebService\" as data source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 161
+#line 156
  testRunner.And("\"New\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 162
+#line 157
  testRunner.And("\"Edit\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 163
+#line 158
  testRunner.Then("\"2 Request headers\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 164
+#line 159
  testRunner.And("\"3 Request URL\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 165
+#line 160
  testRunner.And("\"4 Request Body\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 166
+#line 161
  testRunner.And("\"5 Request Variables\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -385,19 +385,19 @@ this.ScenarioSetup(scenarioInfo);
                         "extension = json"});
             table9.AddRow(new string[] {
                         "prefix  = a"});
-#line 167
+#line 162
  testRunner.And("\"5 Request Variables\" are", ((string)(null)), table9, "And ");
-#line 171
+#line 166
  testRunner.And("\"6 Response\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 172
+#line 167
  testRunner.And("\"7 Edit Default and Mapping Names\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 173
+#line 168
  testRunner.And("\"Test\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 174
+#line 169
  testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 175
+#line 170
  testRunner.When("I Test Connection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 176
+#line 171
  testRunner.Then("response is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -405,19 +405,19 @@ this.ScenarioSetup(scenarioInfo);
                         "Default Value",
                         "Required Field",
                         "Empty is Null"});
-#line 177
+#line 172
  testRunner.Then("input mappings are", ((string)(null)), table10, "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
-#line 179
+#line 174
  testRunner.And("output mappings are", ((string)(null)), table11, "And ");
-#line 181
+#line 176
  testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 182
+#line 177
  testRunner.When("I save the webservice", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 183
+#line 178
  testRunner.Then("Save Dialog is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -430,27 +430,27 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CreatingWebServiceWithMethodAsTRACE()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating Web Service with method as TRACE", ((string[])(null)));
-#line 185
+#line 180
 this.ScenarioSetup(scenarioInfo);
-#line 186
+#line 181
  testRunner.Given("I click \"New Web Service Connector\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 187
+#line 182
  testRunner.Then("\"New Web Service\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 188
+#line 183
  testRunner.When("I select \"TRACE\" as Method", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 189
+#line 184
  testRunner.And("I select \"Dev2CountriesWebService\" as data source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 190
+#line 185
  testRunner.And("\"New\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 191
+#line 186
  testRunner.And("\"Edit\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 192
+#line 187
  testRunner.Then("\"2 Request headers\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 193
+#line 188
  testRunner.And("\"3 Request URL\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 194
+#line 189
  testRunner.And("\"4 Request Body\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 195
+#line 190
  testRunner.And("\"5 Request Variables\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
@@ -459,19 +459,19 @@ this.ScenarioSetup(scenarioInfo);
                         "extension = json"});
             table12.AddRow(new string[] {
                         "prefix  = a"});
-#line 196
+#line 191
  testRunner.And("\"5 Request Variables\" are", ((string)(null)), table12, "And ");
-#line 200
+#line 195
  testRunner.And("\"6 Response\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 201
+#line 196
  testRunner.And("\"7 Edit Default and Mapping Names\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 202
+#line 197
  testRunner.And("\"Test\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 203
+#line 198
  testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 204
+#line 199
  testRunner.When("I Test Connection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 205
+#line 200
  testRunner.Then("response is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
@@ -479,19 +479,19 @@ this.ScenarioSetup(scenarioInfo);
                         "Default Value",
                         "Required Field",
                         "Empty is Null"});
-#line 206
+#line 201
  testRunner.Then("input mappings are", ((string)(null)), table13, "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
-#line 208
+#line 203
  testRunner.And("output mappings are", ((string)(null)), table14, "And ");
-#line 210
+#line 205
  testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 211
+#line 206
  testRunner.When("I save the webservice", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 212
+#line 207
  testRunner.Then("Save Dialog is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -504,39 +504,39 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EditingWebService()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Editing Web Service", ((string[])(null)));
-#line 214
+#line 209
  this.ScenarioSetup(scenarioInfo);
-#line 215
+#line 210
  testRunner.Given("I open \"GetCountries\" webservice", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 216
+#line 211
  testRunner.Then("\"Edit Web Service - GetCountries\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 217
+#line 212
  testRunner.And("method is selected as \"GET\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 218
+#line 213
  testRunner.And("\"Dev2CountriesWebService\" selected as data source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 219
+#line 214
  testRunner.And("\"New\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 220
+#line 215
  testRunner.And("\"Edit\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 221
+#line 216
  testRunner.Then("\"2 Request headers\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 222
+#line 217
  testRunner.And("\"3 Request URL\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 223
+#line 218
  testRunner.And("\"4 Request Body\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 224
+#line 219
  testRunner.And("\"5 Request Variables\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 225
+#line 220
  testRunner.And("\"6 Response\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 226
+#line 221
  testRunner.And("\"7 Edit Default and Mapping Names\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 227
+#line 222
  testRunner.When("I Test Connection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 228
+#line 223
  testRunner.Then("response is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 229
+#line 224
  testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 230
+#line 225
  testRunner.When("Test Connecton is \"Successful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
@@ -549,7 +549,7 @@ this.ScenarioSetup(scenarioInfo);
                         "US",
                         "",
                         ""});
-#line 231
+#line 226
  testRunner.Then("input mappings are", ((string)(null)), table15, "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -561,13 +561,13 @@ this.ScenarioSetup(scenarioInfo);
             table16.AddRow(new string[] {
                         "Pr_CitiesGetCountriesDescription",
                         "DocumentElement().Pr_CitiesGetCountriesDescription"});
-#line 234
+#line 229
  testRunner.And("output mappings are", ((string)(null)), table16, "And ");
-#line 238
+#line 233
  testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 239
+#line 234
  testRunner.When("I save the webservice", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 240
+#line 235
  testRunner.Then("Save Dialog is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -580,34 +580,34 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AddingPerametersInRequestHeadersIsUpdatingVariables()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding perameters in request headers is updating variables", ((string[])(null)));
-#line 243
+#line 238
 this.ScenarioSetup(scenarioInfo);
-#line 244
+#line 239
  testRunner.Given("I click \"New Web Service Connector\" webservice", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 245
+#line 240
  testRunner.Then("\"New Web Service\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 246
+#line 241
  testRunner.When("I select \"GET\" as Method", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 247
+#line 242
  testRunner.And("I select \"Dev2CountriesWebService\" as data source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 248
+#line 243
  testRunner.And("\"New\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 249
+#line 244
  testRunner.And("\"Edit\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 250
+#line 245
  testRunner.Then("\"2 Request headers\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table17.AddRow(new string[] {
                         "[[test]]"});
-#line 251
+#line 246
  testRunner.When("I type \"Request Headers\" as", ((string)(null)), table17, "When ");
-#line 254
+#line 249
  testRunner.And("\"3 Request URL\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 255
+#line 250
  testRunner.And("\"4 Request Body\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 256
+#line 251
  testRunner.And("\"5 Request Variables\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
@@ -618,13 +618,13 @@ this.ScenarioSetup(scenarioInfo);
                         "prefix  = a"});
             table18.AddRow(new string[] {
                         "[[test]]"});
-#line 257
+#line 252
  testRunner.And("\"5 Request Variables\" are", ((string)(null)), table18, "And ");
-#line 262
+#line 257
  testRunner.And("\"6 Response\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 263
+#line 258
  testRunner.And("\"7 Edit Default and Mapping Names\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 264
+#line 259
  testRunner.And("\"Test\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
@@ -647,7 +647,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 265
+#line 260
     testRunner.Then("input mappings are", ((string)(null)), table19, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -660,30 +660,30 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AddingPerametersInRequestURL()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding perameters in request URL", ((string[])(null)));
-#line 273
+#line 268
  this.ScenarioSetup(scenarioInfo);
-#line 274
+#line 269
  testRunner.Given("I click \"New Web Service Connector\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 275
+#line 270
  testRunner.Then("\"New Web Service\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 276
+#line 271
  testRunner.When("I select \"GET\" as Method", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 277
+#line 272
  testRunner.And("I select \"Dev2CountriesWebService\" as data source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 278
+#line 273
  testRunner.And("\"New\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 279
+#line 274
  testRunner.And("\"Edit\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 280
+#line 275
  testRunner.Then("\"2 Request headers\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 281
+#line 276
  testRunner.And("\"3 Request URL\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 282
+#line 277
  testRunner.And("request URL has \"http://rsaklfsvrtfsbld/integrationTestSite/GetCountries.ashx\" an" +
                     "d \"?extension=[[extension]]&prefix=[[prefix]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 283
+#line 278
  testRunner.When("I change request url to \"?extension=[[variable1]]&prefix=[[variable2]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 284
+#line 279
  testRunner.And("\"5 Request Variables\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
@@ -692,13 +692,13 @@ this.ScenarioSetup(scenarioInfo);
                         "[[variable1]] ="});
             table20.AddRow(new string[] {
                         "[[variable2]] ="});
-#line 285
+#line 280
  testRunner.And("\"5 Request Variables\" are", ((string)(null)), table20, "And ");
-#line 289
+#line 284
  testRunner.And("\"6 Response\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 290
+#line 285
  testRunner.And("\"7 Edit Default and Mapping Names\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 291
+#line 286
  testRunner.And("\"Test\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
@@ -716,7 +716,7 @@ this.ScenarioSetup(scenarioInfo);
                         "a",
                         "",
                         ""});
-#line 292
+#line 287
     testRunner.Then("input mappings are", ((string)(null)), table21, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -729,25 +729,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AddingVariablesAtRequestBody()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding variables at request body", ((string[])(null)));
-#line 301
+#line 296
  this.ScenarioSetup(scenarioInfo);
-#line 302
+#line 297
  testRunner.Given("I click \"New Web Service Connector\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 303
+#line 298
  testRunner.Then("\"New Web Service\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 304
+#line 299
  testRunner.When("I select \"DELETE\" as Method", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 305
+#line 300
  testRunner.And("I select \"Dev2CountriesWebService\" as data source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 306
+#line 301
  testRunner.And("\"New\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 307
+#line 302
  testRunner.And("\"Edit\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 308
+#line 303
  testRunner.Then("\"2 Request headers\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 309
+#line 304
  testRunner.And("\"3 Request URL\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 310
+#line 305
  testRunner.And("\"4 Request Body\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
@@ -756,9 +756,9 @@ this.ScenarioSetup(scenarioInfo);
                         "[[a]]"});
             table22.AddRow(new string[] {
                         "[[b]]"});
-#line 311
+#line 306
  testRunner.When("I type \"Request Body\" as", ((string)(null)), table22, "When ");
-#line 315
+#line 310
  testRunner.And("\"5 Request Variables\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
@@ -771,9 +771,9 @@ this.ScenarioSetup(scenarioInfo);
                         "[[a]]"});
             table23.AddRow(new string[] {
                         "[[b]]"});
-#line 316
+#line 311
  testRunner.And("\"5 Request Variables\" are", ((string)(null)), table23, "And ");
-#line 322
+#line 317
  testRunner.And("\"6 Response\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
@@ -801,15 +801,15 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 323
+#line 318
  testRunner.Then("input mappings are", ((string)(null)), table24, "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
-#line 329
+#line 324
  testRunner.And("output mappings are", ((string)(null)), table25, "And ");
-#line 331
+#line 326
  testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

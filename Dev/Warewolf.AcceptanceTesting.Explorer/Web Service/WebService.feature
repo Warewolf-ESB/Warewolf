@@ -39,11 +39,6 @@ Feature: WebService
 ## Ensure changing parameters to Step 4 changes them in Step 5
 ## Ensure changing Source in Step 1 changes Request URL in Step 3
 
-
-
-##Test Cases
-
-
 Scenario: Opening Web Service
 	Given I click New Web Service Connector
 	Then "New Web Service" tab is opened

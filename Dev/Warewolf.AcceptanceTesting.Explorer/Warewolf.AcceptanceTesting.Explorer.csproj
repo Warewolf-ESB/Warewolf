@@ -335,6 +335,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WebService.feature</DependentUpon>
     </Compile>
+    <Compile Include="Web Service\WebServiceSteps.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
