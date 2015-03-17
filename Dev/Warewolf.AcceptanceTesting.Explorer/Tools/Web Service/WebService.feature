@@ -44,7 +44,7 @@
 
 @WebService
 Scenario: Opening Web Service
-	Given I click "New Data Base Service Connector"
+	Given I click "New Web Service Connector"
 	Then "New Web Service" tab is opened
 	And "Select Request Method & Source" is focused
 	And "New" button is "Enabled"
@@ -61,7 +61,7 @@ Scenario: Opening Web Service
 	
 	
 Scenario: Creating Web Service
-	Given I click "New Data Base Service Connector"
+	Given I click "New Web Service Connector"
 	Then "New Web Service" tab is opened	
 	When I select "GET" as Method
 	And I select "Dev2CountriesWebService" as data source
@@ -91,7 +91,7 @@ Scenario: Creating Web Service
 	
 	
 Scenario: Creating Web Service with method as POST
-	Given I click "New Data Base Service Connector"
+	Given I click "New Web Service Connector"
 	Then "New Web Service" tab is opened	
 	When I select "POST" as Method
 	And I select "Dev2CountriesWebService" as data source
@@ -124,7 +124,7 @@ Scenario: Creating Web Service with method as POST
 	
 	
 Scenario: Creating Web Service with method as PUT
-	Given I click "New Data Base Service Connector"
+	Given I click "New Web Service Connector"
 	Then "New Web Service" tab is opened	
 	When I select "POST" as Method
 	And I select "Dev2CountriesWebService" as data source
@@ -153,7 +153,7 @@ Scenario: Creating Web Service with method as PUT
 	Then "save" dialogbox is opened	
 	
 Scenario: Creating Web Service with method as DELETE
-	Given I click "New Data Base Service Connector"
+	Given I click "New Web Service Connector"
 	Then "New Web Service" tab is opened	
 	When I select "DELETE" as Method
 	And I select "Dev2CountriesWebService" as data source
@@ -182,7 +182,7 @@ Scenario: Creating Web Service with method as DELETE
 	Then "save" dialogbox is opened	
 		
 Scenario: Creating Web Service with method as TRACE
-	Given I click "New Data Base Service Connector"
+	Given I click "New Web Service Connector"
 	Then "New Web Service" tab is opened	
 	When I select "DELETE" as Method
 	And I select "Dev2CountriesWebService" as data source
@@ -242,7 +242,7 @@ Scenario: Creating Web Service with method as TRACE
 
  
 Scenario: Adding perameters in request headers is updating variables 
-	Given I click "New Data Base Service Connector"
+	Given I click "New Web Service Connector"
 	Then "New Web Service" tab is opened	
 	When I select "GET" as Method
 	And I select "Dev2CountriesWebService" as data source
@@ -271,7 +271,7 @@ Scenario: Adding perameters in request headers is updating variables
  
  
  Scenario: Adding perameters in request URL 
-	Given I click "New Data Base Service Connector"
+	Given I click "New Web Service Connector"
 	Then "New Web Service" tab is opened	
 	When I select "GET" as Method
 	And I select "Dev2CountriesWebService" as data source
@@ -299,7 +299,7 @@ Scenario: Adding perameters in request headers is updating variables
  
  
  Scenario: Adding variables at request body
-	Given I click "New Data Base Service Connector"
+	Given I click "New Web Service Connector"
 	Then "New Web Service" tab is opened	
 	When I select "DELETE" as Method
 	And I select "Dev2CountriesWebService" as data source
