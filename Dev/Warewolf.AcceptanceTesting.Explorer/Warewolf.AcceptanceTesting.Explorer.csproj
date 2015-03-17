@@ -312,7 +312,7 @@
     </Compile>
     <Compile Include="UnityBootstrapperForDatabaseSourceConnectorTesting.cs" />
     <Compile Include="UnityBootstrapperForExplorerTesting.cs" />
-    <Compile Include="UnityBootstrapperForToolboxTesting.cs" />
+    <Compile Include="Toolbox\UnityBootstrapperForToolboxTesting.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="VariableList.feature.cs">
       <AutoGen>True</AutoGen>

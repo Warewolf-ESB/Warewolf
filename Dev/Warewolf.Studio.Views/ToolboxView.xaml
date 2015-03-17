@@ -120,6 +120,7 @@
                 Grid.Column="0" 
                 Grid.Row="0"  
                 LabelText="Filter"
+                x:Name="SearchTextBox"
                 Style="{StaticResource SearchTextboxStyle}"
                 Text="{Binding SearchTerm,
                                     Delay=300,

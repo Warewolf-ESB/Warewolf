@@ -5,11 +5,9 @@ using System.Linq;
 using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Interfaces.Toolbox;
-using Infragistics.DragDrop;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
-using Warewolf.Studio.Models.Help;
 
 namespace Warewolf.Studio.ViewModels.ToolBox
 {

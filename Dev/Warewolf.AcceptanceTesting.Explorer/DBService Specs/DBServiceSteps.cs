@@ -9,7 +9,6 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
-using Warewolf.AcceptanceTesting.Explorer.DBServiceSpecs;
 using Warewolf.Core;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
@@ -17,6 +16,7 @@ using Warewolf.Studio.Views;
 namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
 {
     [Binding]
+    // ReSharper disable once InconsistentNaming
     public class DBServiceSteps
     {
         private static DbSourceDefinition _demoDbSourceDefinition;
@@ -240,12 +240,8 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         [Given(@"I open ""(.*)"" service")]
         public void GivenIOpenService(string serviceName)
         {
-            var databaseService = new DatabaseService();
-            databaseService.Name = serviceName;
-            databaseService.Source = _demoDbSourceDefinition;
-            databaseService.Action = _dbInsertDummyAction;
-            var dbOutputMapping = new DbOutputMapping("UserID","UserID");
-            dbOutputMapping.RecordSetName = "dbo_InsertDummyUser";
+            var databaseService = new DatabaseService { Name = serviceName, Source = _demoDbSourceDefinition, Action = _dbInsertDummyAction };
+            var dbOutputMapping = new DbOutputMapping("UserID", "UserID") { RecordSetName = "dbo_InsertDummyUser" };
             databaseService.OutputMappings = new List<IDbOutputMapping>{dbOutputMapping};
             ScenarioContext.Current.Remove("viewModel");
             var viewModel = new ManageDatabaseServiceViewModel(ScenarioContext.Current.Get<Mock<IDbServiceModel>>("model").Object, ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel").Object,databaseService);
