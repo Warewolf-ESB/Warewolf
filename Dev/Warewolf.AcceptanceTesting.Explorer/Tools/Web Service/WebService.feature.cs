@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Warewolf.AcceptanceTesting.Explorer
+namespace Warewolf.AcceptanceTesting.Explorer.Tools.WebService
 {
     using TechTalk.SpecFlow;
     
@@ -49,7 +49,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "WebService")))
             {
-                Warewolf.AcceptanceTesting.Explorer.WebServiceFeature.FeatureSetup(null);
+                Warewolf.AcceptanceTesting.Explorer.Tools.WebService.WebServiceFeature.FeatureSetup(null);
             }
         }
         
