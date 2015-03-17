@@ -11,6 +11,7 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Moq;
+using Warewolf.Core;
 
 namespace Warewolf.AcceptanceTesting.Core
 {
@@ -113,7 +114,18 @@ namespace Warewolf.AcceptanceTesting.Core
 
         public IList<IToolDescriptor> LoadTools()
         {
-            throw new NotImplementedException();
+            return new List<IToolDescriptor>
+            {
+                new ToolDescriptor(Guid.NewGuid(), new Mock<IWarewolfType>().Object,new Mock<IWarewolfType>().Object,"Decision","",new Version(),true,"Controlflow",ToolType.Native, "" ),
+                new ToolDescriptor(Guid.NewGuid(), new Mock<IWarewolfType>().Object,new Mock<IWarewolfType>().Object,"Data Merge","",new Version(),true,"Controlflow",ToolType.Native, "" ),
+                new ToolDescriptor(Guid.NewGuid(), new Mock<IWarewolfType>().Object,new Mock<IWarewolfType>().Object,"Data Split","",new Version(),true,"Controlflow",ToolType.Native, "" ),
+                new ToolDescriptor(Guid.NewGuid(), new Mock<IWarewolfType>().Object,new Mock<IWarewolfType>().Object,"Delete","",new Version(),true,"Controlflow",ToolType.Native, "" ),
+                new ToolDescriptor(Guid.NewGuid(), new Mock<IWarewolfType>().Object,new Mock<IWarewolfType>().Object,"Base Conversion","",new Version(),true,"Data",ToolType.Native, "" ),
+                new ToolDescriptor(Guid.NewGuid(), new Mock<IWarewolfType>().Object,new Mock<IWarewolfType>().Object,"Drop box","",new Version(),true,"Dropbox",ToolType.Native, "" ),
+                new ToolDescriptor(Guid.NewGuid(), new Mock<IWarewolfType>().Object,new Mock<IWarewolfType>().Object,"SQL Bulk Insert","",new Version(),true,"Recordset",ToolType.Native, "" ),
+                new ToolDescriptor(Guid.NewGuid(), new Mock<IWarewolfType>().Object,new Mock<IWarewolfType>().Object,"Web Request","",new Version(),true,"Recordset",ToolType.Native, "" ),
+                new ToolDescriptor(Guid.NewGuid(), new Mock<IWarewolfType>().Object,new Mock<IWarewolfType>().Object,"Format Number","",new Version(),true,"Utility",ToolType.Native, "" )
+            };
         }
 
         public IExplorerRepository ExplorerRepository

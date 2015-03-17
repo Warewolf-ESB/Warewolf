@@ -19,8 +19,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
 
             Container.RegisterInstance<IToolboxViewModel>(new ToolboxViewModel(new ToolboxModel(Container.Resolve<IServer>(), Container.Resolve<IServer>(), new Mock<IPluginProxy>().Object), new ToolboxModel(Container.Resolve<IServer>(), Container.Resolve<IServer>(), new Mock<IPluginProxy>().Object), new Mock<IEventAggregator>().Object));
 
-            var toolboxView = new ToolboxView();
-            toolboxView.DataContext = Container.Resolve<IToolboxViewModel>();
+            var toolboxView = new ToolboxView { DataContext = Container.Resolve<IToolboxViewModel>() };
             Container.RegisterInstance<IToolboxView>(toolboxView);
         }
     }
