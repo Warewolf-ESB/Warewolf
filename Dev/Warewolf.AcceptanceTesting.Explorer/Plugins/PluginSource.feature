@@ -1,64 +1,59 @@
-﻿Feature: PluginSource
-	In order to avoid silly mistakes
-	As a math idiot
-	I want to be told the sum of two numbers
+﻿@Plugin
+Feature: PluginSource
+	In order to create plugins
+	As a Warewolf User
+	I want to be able to select dlls as a source to be used
 
-@Plugin
 Scenario: Default New Plugin Source
 	Given I open New Plugin Source
-	And file is "Selected" 
-	And local drive "C" is visible in "File" window
-	When I open "C" in "File" window
-	Then scroll bar is Visible
-	And GAC is "UnSelected"
+	And file is selected
+	And local drive "C" is visible in File window
+	When I open "C" in File window
+	And GAC is not selected
 	And Assembly is ""
-	And Save Plugin source is "Disabled"
+	And "Save" is "Disabled"
 
 Scenario: Creating New Plugin by selecting from local system
 	Given I open New Plugin Source
-	And file is "Selected" 
+	And file is selected
 	And local drive "C" is visible in "File" window
-	When I open "C" in "File" window
-	Then files in c is opened
-	Then scroll bar is Visible
-	And GAC is "UnSelected"
+	When I open "C" in File window
+	Then files in "C" is opened
+	And GAC is not selected
 	And Assembly is ""
-	And Save Plugin source is "Disabled"
-	When I select a dll "c\Development\Dev\Binaries\MS Fakes\Microsoft QualityTools.Testing.Fakes.dll"
+	And "Save" is "Disabled"
+	When I select "C:\Development\Dev\Binaries\MS Fakes\Microsoft QualityTools.Testing.Fakes.dll"
 	Then Assembly is "C:\Development\Dev\Binaries\MS Fakes\Microsoft.QualityTools.Testing.Fakes.dll"
-	And Save Plugin source is "Enabled"
+	And "Save" is "Enabled"
 	When I save Plugin source
-	Then "save" dialogbox is opened
+	Then Save Dialog is opened
 
 
 Scenario: Creating New Plugin by selecting from GAC
 	Given I open New Plugin Source
-	And file is "Selected" 
+	And file is selected
 	And local drive "C" is visible in "File" window
-	And GAC is "Selected"
-	Then scroll bar is Visible
-	And file is "UnSelected"
+	And GAC is selected
+	And file is not selected
 	And Assembly is ""
-	And Save Plugin source is "Disabled"
+	And "Save" is "Disabled"
 	When I Search for "AuditPolicyGPMan"
 	And I select "AuditPolicyGPManagedStubs.Interop, Version=6.1.0.0"
 	Then Assembly is "GAC:CppCodeProvider, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
-	And Save Plugin source is "Enabled"
+	And "Save" is "Enabled"
 	When I save Plugin source
-	Then "save" dialogbox is opened
+	Then Save Dialog is opened
 
 
 Scenario: Editing Plugin Source
-	Given I open "Edit Plugin Source - Test"
-	And file is "Selected" 
+	Given I open "Edit Plugin Source - Test" plugin source
+	And file is selected
 	And local drive "C" is visible in "File" window
-	And GAC is "UnSelected"
-	Then scroll bar is Visible
-	And file is "UnSelected"
+	And GAC is not selected
 	And Assembly is "Plugins/Unlimited.Email.Plugin.dll"
-	And Save Plugin source is "Disabled"	
+	And "Save" is "Disabled"
 	When I select "PrimativesTestDLL - Copy.dll"
 	Then Assembly is "Z:\Plugins\PrimativesTestDLL - Copy.dll"
-	And Save Plugin source is "Enabled"
+	And "Save" is "Enabled"
 	When I save Plugin source
-	Then "save" dialogbox is opened
+	Then Save Dialog is opened
