@@ -132,14 +132,14 @@ Scenario: Data Merge Large View is validating invalid variables on done
 	And result is as ""			   
 	And Scroll bar is "Enabled"
 	When I click on "Done"
-	Then Validation message is thrown "True"
+	Then Validation message is thrown
 	Then DataMerge Small View is "NotVisible"
 	When I Edit DataMerge Large View grid has
 	| # | Data  | With  | Using | Padding | Align |
 	| 1 | [[a]] | Index |       |         | Left  |
 	| 2 |       | Index |       |         | Left  |
 	When I click on "Done"
-	Then Validation message is thrown "False"
+	Then Validation message is not thrown
 	And DataMerge Small View is "Visible"
 
 Scenario: Data Merge Large View is validating invalid recordsets on done
@@ -151,14 +151,14 @@ Scenario: Data Merge Large View is validating invalid recordsets on done
 	And result is as ""			    
 	And Scroll bar is "Enabled"
 	When I click on "Done"
-	Then Validation message is thrown "True"
+	Then Validation message is thrown
 	Then DataMerge Small View is "NotVisible"
 	When I Edit DataMerge Large View grid has
 	| # | Data        | With  | Using | Padding | Align |
 	| 1 | [[rec().a]] | Index |       |         | Left  |
 	| 2 |             | Index |       |         | Left  |
 	When I click on "Done"
-	Then Validation message is thrown "False"
+	Then Validation message is not thrown
 	And DataMerge Small View is "Visible"
 
 
@@ -261,7 +261,7 @@ Scenario: Collapse largeview is closing large view
 	| 1 | [[a#]] | Index | 1     |         | Left  |
 	| 2 |        | Index |       |         | Left  |
 	When I collapse large view
-	And Validation message is thrown "False"
+	And Validation message is not thrown
 	Then DataMerge Small View is "Visible"
 
 

@@ -199,14 +199,14 @@ Scenario: Data Split Large View is validating invalid variables on done
 	| 2 |         | Index |       | Unselected |        |
 	And Scroll bar is "Disabled"
 	When I click on "Done"
-	Then Validation message is thrown "True"
+	Then Validation message is thrown
 	Then DataSplit Small View is "NotVisible"
 	When I Edit DataSplit Large View grid has
 	| # | Data  | With  | Using | Padding | Align |
 	| 1 | [[a]] | Index | 1     |         | Left  |
 	| 2 |       | Index |       |         | Left  |
 	When I click on "Done"
-	Then Validation message is thrown "False"
+	Then Validation message is not thrown
 	And DataSplit Small View is "Visible"
 
 Scenario: Data Split Large View is validating invalid recordsets on done
@@ -219,14 +219,14 @@ Scenario: Data Split Large View is validating invalid recordsets on done
 	And result is as ""			    
 	And Scroll bar is "Disabled"
 	When I click on "Done"
-	Then Validation message is thrown "True"
+	Then Validation message is thrown
 	Then DataSplit Small View is "NotVisible"
 	When I Edit DataSplit Large View grid has
 	| # | Results     | With  | Using | Include    | Escape |
 	| 1 | [[rec().a]] | Index | 1     | Unselected |        |
 	| 2 |             | Index |       | Unselected |        |
 	When I click on "Done"
-	Then Validation message is thrown "False"
+	Then Validation message is not thrown
 	And DataSplit Small View is "Visible"
 
 
@@ -314,7 +314,7 @@ Scenario: Collapse largeview is closing large view
 	| 2 | [[b]]   | Index | 2     | Unselected |        |
 	| 3 |         |       |       |            |        |
 	When I collapse large view
-	And Validation message is thrown "False"
+	And Validation message is not thrown
 	Then DataSplit Small View is "Visible"
 
 

@@ -137,3 +137,97 @@ Scenario: Testing as Windows and swaping it resets the test connection
       And "Test Connection" is "Enabled"
       And "Save" is "Disabled"
 	  Then Database dropdown is "InVisible"
+
+
+
+Scenario: Editing saved DB Source 
+    Given I open "Edit Database Source - Test" 
+    And Server as "RSAKLFSVRGENDEV"
+    And Database dropdown is "Invisible"
+    And "Save" is "Disabled"
+    And "Test Connection" is "Enabled"
+    And Authentication Type is selected as "User"
+    And Username field is "testuser"
+    And Password field is "******"
+    And "Test Connection" is "Enabled"
+	And Database "Dev2TestingDB" is selected 
+    And "Save" is "Disabled"
+ 
+
+
+Scenario: Editing saved DB Source auth type
+	Given I open "Edit Database Source - Test" 
+    And Server as "RSAKLFSVRGENDEV"
+    And "Save" is "Disabled"
+    And "Test Connection" is "Enabled"
+    And Authentication Type is selected as "User"
+    And Username field is "testuser"
+    And Password field is "******"
+    And "Test Connection" is "Enabled"
+	And Database "Dev2TestingDB" is selected 
+    And "Save" is "Disabled"
+	When I edit Authentication Type is selected as "Windows"
+    Then "Test Connection" is "Enabled" 
+    And "Save" is "Disabled"
+    And Database dropdown is "InVisible"
+    And "Test Connection" is "Enabled"
+    And Test Connecton is "Successful"
+    And "Save" is "Disabled"
+    And Database dropdown is "Visible"
+    And I select "Dev2TestingDB" as Database
+    And "Save" is "Enabled" 
+    When I save the source
+    Then the save dialog is Not opened
+
+
+Scenario: Editing saved DB Source server
+	Given I open "Edit Database Source - Test" 
+    And Server as "RSAKLFSVRGENDEV"
+    And "Save" is "Disabled"
+    And "Test Connection" is "Enabled"
+    And Authentication Type is selected as "User"
+    Then Username field is "testuser"
+    And Password field is "******"
+    And "Test Connection" is "Enabled"
+	And Database "Dev2TestingDB" is selected 
+    And "Save" is "Disabled"
+	When I Edit Server as "RSAKLFSVRV"
+	Then Authentication Type is selected as "User"
+    Then Username field is "testuser"
+    And Password field is "******"
+    Then "Test Connection" is "Enabled" 
+    And "Save" is "Disabled"
+    Then Database dropdown is "InVisible"
+    And "Test Connection" is "Enabled"
+    When Test Connecton is "Successful"
+    
+Scenario: Editing saved DB Source and canceling without saving
+	Given I open "Edit Database Source - Test" 
+    And Server as "RSAKLFSVRGENDEV"
+    And "Save" is "Disabled"
+    And "Test Connection" is "Enabled"
+    And Authentication Type is selected as "User"
+    And Username field is "testuser"
+    And Password field is "******"
+    And "Test Connection" is "Enabled"
+	And Database "Dev2TestingDB" is selected 
+    And "Save" is "Disabled"
+	When I edit Authentication Type is selected as "Windows"
+    Then "Test Connection" is "Enabled" 
+    And "Save" is "Disabled"
+    And Database dropdown is "InVisible"
+    And "Test Connection" is "Enabled"
+    And Test Connecton is "Successful"
+    And "Save" is "Disabled"
+    And Database dropdown is "Visible"
+    And I select "Dev2TestingDB" as Database
+    And "Save" is "Enabled" 
+    When I Cancel the source
+    Then "Edit Database Source - Test"  is closed
+	And I open "Edit Database Source - Test" 
+	And Authentication Type is selected as "User"
+	And Username field is "testuser"
+	And Password field is "******"
+	Then "Test Connection" is "Enabled" 
+    And "Save" is "Disabled"
+	And Database "Dev2TestingDB" is selected 

@@ -370,7 +370,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 84
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 85
-       testRunner.Then("Validation message is thrown \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+       testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 86
        testRunner.And("Move Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -395,7 +395,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 90
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 91
-       testRunner.Then("Validation message is thrown \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+       testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 92
        testRunner.And("Move Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -458,7 +458,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 108
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 109
-       testRunner.Then("Validation message is thrown \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+       testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 110
        testRunner.And("Move Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 111

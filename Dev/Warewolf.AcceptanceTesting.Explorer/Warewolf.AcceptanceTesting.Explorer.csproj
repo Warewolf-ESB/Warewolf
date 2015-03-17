@@ -299,6 +299,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FileAndFolder-Move.feature</DependentUpon>
     </Compile>
+    <Compile Include="Tools\FileAndFolder-Rename.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FileAndFolder-Rename.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Web Service\Web Source.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Web Source.feature</DependentUpon>
+    </Compile>
     <Compile Include="UnityBootstrapperForDatabaseSourceConnectorTesting.cs" />
     <Compile Include="UnityBootstrapperForExplorerTesting.cs" />
     <Compile Include="UnityBootstrapperForToolboxTesting.cs" />
@@ -394,6 +404,14 @@
     <None Include="Tools\FileAndFolder-Move.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>FileAndFolder-Move.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\FileAndFolder-Rename.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FileAndFolder-Rename.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\Web Service\Web Source.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Web Source.feature.cs</LastGenOutput>
     </None>
     <None Include="VariableList.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

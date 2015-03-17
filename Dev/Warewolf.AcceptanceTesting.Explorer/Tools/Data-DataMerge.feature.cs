@@ -644,7 +644,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 134
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 135
- testRunner.Then("Validation message is thrown \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 136
  testRunner.Then("DataMerge Small View is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -674,7 +674,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 141
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 142
- testRunner.Then("Validation message is thrown \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 143
  testRunner.And("DataMerge Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -722,7 +722,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 153
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 154
- testRunner.Then("Validation message is thrown \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 155
  testRunner.Then("DataMerge Small View is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -752,7 +752,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 160
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 161
- testRunner.Then("Validation message is thrown \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 162
  testRunner.And("DataMerge Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1392,7 +1392,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 263
  testRunner.When("I collapse large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 264
- testRunner.And("Validation message is thrown \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 265
  testRunner.Then("DataMerge Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

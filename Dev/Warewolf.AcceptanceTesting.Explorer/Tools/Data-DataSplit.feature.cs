@@ -987,7 +987,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 201
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 202
- testRunner.Then("Validation message is thrown \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 203
  testRunner.Then("DataSplit Small View is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -1017,7 +1017,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 208
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 209
- testRunner.Then("Validation message is thrown \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 210
  testRunner.And("DataSplit Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1067,7 +1067,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 221
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 222
- testRunner.Then("Validation message is thrown \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 223
  testRunner.Then("DataSplit Small View is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -1097,7 +1097,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 228
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 229
- testRunner.Then("Validation message is thrown \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 230
  testRunner.And("DataSplit Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1603,7 +1603,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 316
  testRunner.When("I collapse large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 317
- testRunner.And("Validation message is thrown \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 318
  testRunner.Then("DataSplit Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

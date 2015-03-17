@@ -81,13 +81,13 @@ Scenario: After correcting incorrect variable done button is closing large view
        |                            |                       |
        And End this workflow is "Unselected"
        And Done button is "Visible"
-       Then Validation message is thrown "True"
+       Then Validation message is thrown
        And Copy Small View is "Not Visible"
        When I edit Copy Large View
        | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password | Result   |
        | C:\[[a]]       |                 |                 | D:\         |               |               | [[copy]] |
        When I click on "Done"
-       Then Validation message is thrown "False"
+       Then Validation message is not thrown
        And Copy Small View is "Visible"
        And Copy small view as
        | File or Folder | Destination | Result   |
@@ -105,7 +105,7 @@ Scenario: Close large view is closing large view without validating
        |                            |                       |
        And End this workflow is "Unselected"
        And Done button is "Visible"
-       Then Validation message is thrown "True"
+       Then Validation message is thrown
        And Copy Small View is "Not Visible"
        When collapse "Copy" large view
        Then Copy Small View is "Visible"

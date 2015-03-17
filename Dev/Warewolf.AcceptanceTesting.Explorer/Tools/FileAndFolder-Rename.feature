@@ -1,21 +1,21 @@
 ﻿
-Feature: FileAndFolder-Move
+Feature: FileAndFolder-Rename
 	In order to avoid silly mistakes
 	As a math idiot
 	I want to be told the sum of two numbers
 
-@Move
-Scenario: Move tool Small View
-       Given I have Move Small View on design surface
-       Then Move small view has
-       | File or Folder | Destination | Result |
-       |                |             |        |
+@Rename
+Scenario: Rename tool Small View
+       Given I have Rename Small View on design surface
+       Then Rename small view has
+       | File or Folder | New Name | Result |
+       |                |          |        |
 
-Scenario: Move tool Large View
-       Given I have Move Large View on design surface
-       Then Move Large View has
-       | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password | Result |
-       |                |                 |                 |             |               |               |        |
+Scenario: Rename tool Large View
+       Given I have Rename Large View on design surface
+       Then Rename Large View has
+       | File or Folder | File Username | File Password | New Name | Dest Username | Dest Password | Result |
+       |                |               |               |          |               |               |        |
        And If it exists Overwrite is "Unselected"      
        And On Error box consists
        | Put error in this variable | Call this web service |
@@ -23,17 +23,17 @@ Scenario: Move tool Large View
        And End this workflow is "Unselected"
        And Done button is "Visible"
 
-Scenario: Move tool Small View water marks
-       Given I have Move Small View on design surface
-       Then Move small view watermarks are
-       | File or Folder | Destination    | Result      |
-       | [[PathToMove]] | [[MoveToPath]] | [[Success]] |
+Scenario: Rename tool Small View water marks
+       Given I have Rename Small View on design surface
+       Then Rename small view watermarks are
+       | File or Folder   | New Name             | Result      |
+       | [[PathToRename]] | [[FileOrFolderName]] | [[Success]] |
 
-Scenario: Move tool Large View Water marks
-       Given I have Move Large View on design surface
-       Then Move Large View watermarks are
-       | File or Folder | Source Username | Source Password | Destination    | Dest Username | Dest Password | Result      |
-       | [[PathToMove]] | [[Username]]    |                 | [[MoveToPath]] | [[Username]]  |               | [[Success]] |
+Scenario: Rename tool Large View Water marks
+       Given I have Rename Large View on design surface
+       Then Rename Large View watermarks are
+       | File or Folder   | File Username | File Password | New Name             | Dest Username | Dest Password | Result      |
+       | [[PathToRename]] | [[Username]]  |               | [[FileOrFolderName]] | [[Username]]  |               | [[Success]] |
        And If it exists Overwrite is "Unselected"      
        And On Error box consists
        | Put error in this variable | Call this web service |
@@ -41,22 +41,22 @@ Scenario: Move tool Large View Water marks
        And End this workflow is "Unselected"
        And Done button is "Visible"
 
-Scenario: Move Large View is validating when clicking on done with blank fields
-       Given I have Move Large View on design surface
+Scenario: Rename Large View is validating when clicking on done with blank fields
+       Given I have Rename Large View on design surface
        And "File or Folder" is focused
-       And Move Large View has
-       | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password | Result |
-       |                |                 |                 |             |               |               |        |
+       And Rename Large View has
+       | File or Folder | File Username | File Password | New Name | Dest Username | Dest Password | Result |
+       |                |               |               |          |               |               |        |
        And If it exists Overwrite is "Unselected"      
        When I click "Done"
        Then Validation message is thrown
-       And Move Small View is "Not Visible"
+       And Rename Small View is "Not Visible"
 	     
-Scenario: Move tool Large View to small view persisting data correctly
-       Given I have Move Large View on design surface
-       And Move Large View has
-       | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password | Result   |
-       | C:\            |                 |                 | D:\         |               |               | [[Move]] |
+Scenario: Rename tool Large View to small view persisting data correctly
+       Given I have Rename Large View on design surface
+       And Rename Large View has
+       | File or Folder | File Username | File Password | New Name   | Dest Username | Dest Password | Result     |
+       | C:\ Test       |               |               | C:\ Rename |               |               | [[Rename]] |
        And If it exists Overwrite is "Unselected"      
        And On Error box consists
        | Put error in this variable | Call this web service |
@@ -65,17 +65,17 @@ Scenario: Move tool Large View to small view persisting data correctly
        And Done button is "Visible"
        When I click "Done"
        Then Validation message is not thrown
-       And Move Small View is "Visible"
-       And Move small view has
-       | File or Folder | Destination | Result   |
-       | C:\            | D:\         | [[Move]] |
+       And Rename Small View is "Visible"
+       And Rename small view has
+       | File or Folder | New Name   | Result     |
+       | C:\ Test       | C:\ Rename | [[Rename]] |
 
 
 Scenario: After correcting incorrect variable done button is closing large view
-       Given I have Move Large View on design surface
-       When Move Large View has
-       | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password | Result   |
-       | C:\[[a]        |                 |                 | D:\         |               |               | [[Move]] |
+       Given I have Rename Large View on design surface
+       When Rename Large View has
+       | File or Folder | File Username | File Password | New Name   | Dest Username | Dest Password | Result     |
+       | C:\[[a]        |               |               | C:\ Rename |               |               | [[Rename]] |
        And If it exists Overwrite is "Unselected"      
        And On Error box consists
        | Put error in this variable | Call this web service |
@@ -83,23 +83,23 @@ Scenario: After correcting incorrect variable done button is closing large view
        And End this workflow is "Unselected"
        And Done button is "Visible"
        Then Validation message is thrown
-       And Move Small View is "Not Visible"
-       When I edit Move Large View
-       | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password | Result   |
-       | C:\[[a]]       |                 |                 | D:\         |               |               | [[Move]] |
+       And Rename Small View is "Not Visible"
+       When I edit Rename Large View
+       | File or Folder | File Username | File Password | New Name   | Dest Username | Dest Password | Result     |
+       | C:\[[a]]       |               |               | C:\ Rename |               |               | [[Rename]] |
        When I click on "Done"
        Then Validation message is not thrown
-       And Move Small View is "Visible"
-       And Move small view as
-       | File or Folder | Destination | Result   |
-       | C:\[[a]]       | D:\         | [[Move]] |
+       And Rename Small View is "Visible"
+       And Rename small view as
+       | File or Folder | New Name   | Result     |
+       | C:\[[a]]       | C:\ Rename | [[Rename]] |
 
 
 Scenario: Close large view is closing large view without validating
-       Given I have Move Large View on design surface
-       And Move Large View has
-       | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password | Result   |
-       | C:\[[a]        |                 |                 | D:\         |               |               | [[Move]] |
+       Given I have Rename Large View on design surface
+       And Rename Large View has
+       | File or Folder | File Username | File Password | New Name   | Dest Username | Dest Password | Result     |
+       | C:\[[a]        |               |               | C:\ Rename |               |               | [[Rename]] |
        And If it exists Overwrite is "Unselected"      
        And On Error box consists
        | Put error in this variable | Call this web service |
@@ -107,20 +107,20 @@ Scenario: Close large view is closing large view without validating
        And End this workflow is "Unselected"
        And Done button is "Visible"
        Then Validation message is thrown
-       And Move Small View is "Not Visible"
-       When collapse "Move" large view
-       Then Move Small View is "Visible"
-       And Move small view as
-       | File or Folder | Destination | Result   |
-       | C:\[[a]        | D:\         | [[Move]] |
+       And Rename Small View is "Not Visible"
+       When collapse "Rename" large view
+       Then Rename Small View is "Visible"
+       And Rename small view as
+       | File or Folder | New Name   | Result     |
+       | C:\[[a]        | C:\ Rename | [[Rename]] |
 
 
-Scenario Outline: Move Large View is validating incorrect source path
-       Given I have Move Large View on design surface
+Scenario Outline: Rename Large View is validating incorrect source path
+       Given I have Rename Large View on design surface
        And "File or Folder" is focused
-       And Move Large View has
-       | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password | Result   |
-       | '<SPath>'      |                 |                 | D:\         |               |               | [[Move]] |
+       And Rename Large View has
+       | File or Folder | File Username | File Password | New Name   | Dest Username | Dest Password | Result     |
+       | '<SPath>'      |               |               | C:\ Rename |               |               | [[Rename]] |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
        Then Validation message is thrown '<Validation>'
@@ -139,12 +139,12 @@ Examples:
     | 11 | [[[rec().a]]      | True       |
 
 
-Scenario Outline: Move Large View is validating incorrect Destination path
-       Given I have Move Large View on design surface
+Scenario Outline: Rename Large View is validating incorrect New Name path
+       Given I have Rename Large View on design surface
        And "File or Folder" is focused
-       And Move Large View has
-       | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password | Result   |
-       | C:/Test.txt    |                 |                 | '<DPath>'   |               |               | [[Move]] |
+       And Rename Large View has
+       | File or Folder | File Username | File Password | New Name  | Dest Username | Dest Password | Result     |
+       | C:/Test.txt    |               |               | '<DPath>' |               |               | [[Rename]] |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
        Then Validation message is thrown '<Validation>'
@@ -164,12 +164,12 @@ Examples:
 
 
 
-Scenario Outline: Move Large View is validating incorrect variable in source username field
-       Given I have Move Large View on design surface
+Scenario Outline: Rename Large View is validating incorrect variable in File Username field
+       Given I have Rename Large View on design surface
        And "File or Folder" is focused
-       And Move Large View has
-       | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password | Result   |
-       | C:/Test.txt    | '<Variable>'    | sas             | D:/         |               |               | [[Move]] |
+       And Rename Large View has
+       | File or Folder | File Username | File Password | New Name | Dest Username | Dest Password | Result     |
+       | C:/Test.txt    | '<Variable>'  | sas           | D:/      |               |               | [[Rename]] |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
        Then Validation message is thrown '<Validation>'
@@ -190,12 +190,12 @@ Examples:
 
 
 
-Scenario Outline: Move Large View is validating incorrect variable in Destination username field
-       Given I have Move Large View on design surface
+Scenario Outline: Rename Large View is validating incorrect variable in New Name username field
+       Given I have Rename Large View on design surface
        And "File or Folder" is focused
-       And Move Large View has
-       | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password | Result   |
-       | C:/Test.txt    |                 |                 | D:/         | '<Username>'  | abc           | [[Move]] |
+       And Rename Large View has
+       | File or Folder | File Username | File Password | New Name | Dest Username | Dest Password | Result     |
+       | C:/Test.txt    |               |               | D:/      | '<Username>'  | abc           | [[Rename]] |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
        Then Validation message is thrown '<Validation>'
@@ -215,12 +215,12 @@ Examples:
 
 
 
-Scenario Outline: Move Large View is validating incorrect variable in Result field
-       Given I have Move Large View on design surface
+Scenario Outline: Rename Large View is validating incorrect variable in Result field
+       Given I have Rename Large View on design surface
        And "File or Folder" is focused
-       And Move Large View has
-       | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password | Result       |
-       | C:/Test.txt    |                 |                 | D:/         |               |               | '<Result>'   |
+       And Rename Large View has
+       | File or Folder | File Username | File Password | New Name | Dest Username | Dest Password | Result     |
+       | C:/Test.txt    |               |               | D:/      |               |               | '<Result>' |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
        Then Validation message is thrown '<Validation>'
@@ -235,11 +235,11 @@ Examples:
     | 7  | [[rec().a@]]     | True       |
 
 
-Scenario Outline: Move On error fields incorrect variables are validating
-       Given I have Move Large View on design surface
-       And Move Large View with water marks has
-       | File or Folder | Source Username | Source Password | Destination    | Dest Username | Dest Password | Result      |
-       | [[PathToMove]] | [[Username]]    |                 | [[MoveToPath]] | [[Username]]  |               | [[Success]] |
+Scenario Outline: Rename On error fields incorrect variables are validating
+       Given I have Rename Large View on design surface
+       And Rename Large View with water marks has
+       | File or Folder   | File Username | File Password | New Name         | Dest Username | Dest Password | Result      |
+       | [[PathToRename]] | [[Username]]  |               | [[RenameToPath]] | [[Username]]  |               | [[Success]] |
        And If it exists Overwrite is "Unselected"      
        And On Error box consists
        | Put error in this variable | Call this web service |

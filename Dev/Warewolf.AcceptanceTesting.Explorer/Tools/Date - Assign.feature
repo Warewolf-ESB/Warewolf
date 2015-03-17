@@ -55,7 +55,7 @@ Scenario: Done Button Is validating Invalid Scalar Variables
 	And Done button is "Visible"
 	When I click on "Done"
 	Then Assign Small View is "Not Visible"
-	And Validation message is thrown "True"
+	And Validation message is thrown
 	When I Edit variables in Assign Larege view grid has
 	| # | Variable    | = | New Value |
 	| 1 | [[a]]       | = | Test      |
@@ -63,7 +63,7 @@ Scenario: Done Button Is validating Invalid Scalar Variables
 	| 3 |             | = |           |
 	And I click on "Done"
 	Then Assign Small View is "Visible"
-	And Validation message is thrown "False"
+	And Validation message is not thrown
 
 
 Scenario: Done Button Is validating Invalid Recordset Variables
@@ -79,7 +79,7 @@ Scenario: Done Button Is validating Invalid Recordset Variables
 	And Done button is "Visible"
 	When I click on "Done"
 	Then Assign Small View is "Not Visible"
-	And Validation message is thrown "True"
+	And Validation message is thrown
 	When I Edit variables in Assign Larege view grid has
 	| # | Variable    | = | New Value |
 	| 1 | [[a]]       | = | Test      |
@@ -87,7 +87,7 @@ Scenario: Done Button Is validating Invalid Recordset Variables
 	| 3 |             | = |           |
 	And I click on "Done"
 	Then Assign Small View is "Visible"
-	And Validation message is thrown "False"
+	And Validation message is not thrown
 
 
 Scenario: Done Button Is validating Invalid Variables In New Value
@@ -103,7 +103,7 @@ Scenario: Done Button Is validating Invalid Variables In New Value
 	And Done button is "Visible"
 	When I click on "Done"
 	Then Assign Small View is "Not Visible"
-	And Validation message is thrown "True"
+	And Validation message is thrown
 	When I Edit variables in Assign Larege view grid has
 	| # | Variable    | = | New Value |
 	| 1 | [[a]]       | = | Test[[b]] |
@@ -111,7 +111,7 @@ Scenario: Done Button Is validating Invalid Variables In New Value
 	| 3 |             | = |           |
 	And I click on "Done"
 	Then Assign Small View is "Visible"
-	And Validation message is thrown "False"
+	And Validation message is not thrown
 
 
 Scenario: Done Button Is validating Invalid Variables In expression
@@ -128,7 +128,7 @@ Scenario: Done Button Is validating Invalid Variables In expression
 	And Done button is "Visible"
 	When I click on "Done"
 	Then Assign Small View is "Not Visible"
-	And Validation message is thrown "True"
+	And Validation message is thrown
 	When I Edit variables in Assign Larege view grid has
 	| # | Variable    | = | New Value          |
 	| 1 | [[a$]]      | = | 1                  |
@@ -137,7 +137,7 @@ Scenario: Done Button Is validating Invalid Variables In expression
 	| 4 |             | = |                    |
 	And I click on "Done"
 	Then Assign Small View is "Visible"
-	And Validation message is thrown "False"
+	And Validation message is not thrown
 
 
 
@@ -192,7 +192,7 @@ Scenario: Collapse largeview is closing large view
 	| 2 | [[rec().a]] | = | Record     |
 	| 3 |             | = |            |
 	When I collapse large view
-	And Validation message is thrown "False"
+	And Validation message is not thrown
 	Then Assign Small View is "Visible"
 
 
