@@ -253,6 +253,11 @@
       <DependentUpon>PluginService.feature</DependentUpon>
     </Compile>
     <Compile Include="Plugins\PluginServiceSteps.cs" />
+    <Compile Include="Plugins\PluginSource.feature.cs">
+      <DependentUpon>PluginSource.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scheduler.feature.cs">
       <AutoGen>True</AutoGen>
@@ -310,7 +315,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PluginSource.feature</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Web Service\Web Source.feature.cs">
+    <Compile Include="Web Service\Web Source.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Web Source.feature</DependentUpon>
@@ -324,7 +329,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>VariableList.feature</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Web Service\WebService.feature.cs">
+    <Compile Include="Web Service\WebService.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>WebService.feature</DependentUpon>
@@ -375,6 +380,10 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PluginService.feature.cs</LastGenOutput>
     </None>
+    <None Include="Plugins\PluginSource.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>PluginSource.feature.cs</LastGenOutput>
+    </None>
     <None Include="Scheduler.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Scheduler.feature.cs</LastGenOutput>
@@ -419,7 +428,7 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PluginSource.feature.cs</LastGenOutput>
     </None>
-    <None Include="Tools\Web Service\Web Source.feature">
+    <None Include="Web Service\Web Source.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Web Source.feature.cs</LastGenOutput>
     </None>
@@ -427,7 +436,7 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>VariableList.feature.cs</LastGenOutput>
     </None>
-    <None Include="Tools\Web Service\WebService.feature">
+    <None Include="Web Service\WebService.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>WebService.feature.cs</LastGenOutput>
     </None>
