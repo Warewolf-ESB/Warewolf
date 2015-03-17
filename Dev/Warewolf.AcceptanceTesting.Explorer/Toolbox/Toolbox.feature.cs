@@ -79,7 +79,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.Toolbox
 #line 8
 this.ScenarioSetup(scenarioInfo);
 #line 9
-     testRunner.Given("\"Localhost\" Toolbox is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+     testRunner.Given("Toolbox is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 10
   testRunner.When("I search for \"Decision\" in the toolbox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 11
@@ -104,9 +104,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 17
 this.ScenarioSetup(scenarioInfo);
 #line 18
-     testRunner.Given("\"Localhost\" Toolbox is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+     testRunner.Given("Toolbox is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 19
-     testRunner.When("I search for \"B\" in toolbox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+     testRunner.When("I search for \"B\" in the toolbox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 20
   testRunner.Then("\"Data\\Base Conversion\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 21
@@ -131,11 +131,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 26
 this.ScenarioSetup(scenarioInfo);
 #line 27
-     testRunner.Given("\"Localhost\" Toolbox is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+     testRunner.Given("Toolbox is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 28
-     testRunner.When("I search for \"gang\" in toolbox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+     testRunner.When("I search for \"gang\" in the toolbox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 29
-  testRunner.Then("all tools are \"Invisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.Then("all tools are not visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -150,9 +150,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 31
 this.ScenarioSetup(scenarioInfo);
 #line 32
-     testRunner.Given("\"Localhost\" Toolbox is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+     testRunner.Given("Toolbox is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 33
-  testRunner.When("I search for \"Decision\" in toolbox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.When("I search for \"Decision\" in the toolbox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 34
   testRunner.Then("\"Controlflow\\Decision\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 35
@@ -162,11 +162,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 37
   testRunner.And("\"Controlflow\\Delete\" is not visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 38
-  testRunner.Then("I clear the toolbox filter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.When("I clear the toolbox filter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 39
-  testRunner.Then("toolbox filter textbox is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 40
-  testRunner.And("all tools are \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Then("all tools are visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

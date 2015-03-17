@@ -24,8 +24,7 @@ namespace Warewolf.AcceptanceTesting.Core
             ResourceName = "localhost";
         }
 
-        private IExplorerRepository _explorerProxy;
-        Mock<IExplorerRepository> _mockExplorerRepo;
+        private readonly IExplorerRepository _explorerProxy;
 
         public ServerForTesting(IResource copy) : base(copy)
         {
@@ -65,7 +64,7 @@ namespace Warewolf.AcceptanceTesting.Core
             return mockExplorerItem.Object;
         }
 
-        private IEnumerable<IExplorerItem> CreateFolders(string[] names)
+        private IEnumerable<IExplorerItem> CreateFolders(IEnumerable<string> names)
         {
             var folders = new List<IExplorerItem>();
             foreach (var name in names)
@@ -80,7 +79,7 @@ namespace Warewolf.AcceptanceTesting.Core
             return folders;
         }
 
-        private void CreateChildrenForFolder(IExplorerItem explorerItem, string[] childNames)
+        private void CreateChildrenForFolder(IExplorerItem explorerItem, IEnumerable<string> childNames)
         {
             int i = 1;
             var resourceType = ResourceType.EmailSource;
@@ -187,17 +186,7 @@ namespace Warewolf.AcceptanceTesting.Core
         {
             get { throw new NotImplementedException(); }
         }
-        public Mock<IExplorerRepository> MockExplorerRepo
-        {
-            get
-            {
-                return _mockExplorerRepo;
-            }
-            set
-            {
-                _mockExplorerRepo = value;
-            }
-        }
+        public Mock<IExplorerRepository> MockExplorerRepo { get; set; }
 
         public string GetServerVersion()
         {

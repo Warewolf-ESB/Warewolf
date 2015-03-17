@@ -9,7 +9,7 @@ using Warewolf.Studio.Models.Toolbox;
 using Warewolf.Studio.ViewModels.ToolBox;
 using Warewolf.Studio.Views;
 
-namespace Warewolf.AcceptanceTesting.Explorer
+namespace Warewolf.AcceptanceTesting.Explorer.Toolbox
 {
     internal class UnityBootstrapperForToolboxTesting : UnityBootstrapperForTesting
     {
