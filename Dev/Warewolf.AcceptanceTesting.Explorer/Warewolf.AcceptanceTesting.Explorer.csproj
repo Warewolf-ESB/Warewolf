@@ -247,11 +247,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>NewServerSource.feature</DependentUpon>
     </Compile>
-    <Compile Include="PluginService.feature.cs">
+    <Compile Include="Plugins\PluginService.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PluginService.feature</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\PluginServiceSteps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scheduler.feature.cs">
       <AutoGen>True</AutoGen>
@@ -365,7 +366,7 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="PluginService.feature">
+    <None Include="Plugins\PluginService.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PluginService.feature.cs</LastGenOutput>
     </None>
