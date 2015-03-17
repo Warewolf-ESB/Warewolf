@@ -4,12 +4,14 @@ using System.Windows.Threading;
 using Dev2.Common.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TechTalk.SpecFlow;
 
 namespace Warewolf.AcceptanceTesting.Explorer
 {
     public class Utils
     {
         public const string ViewNameKey = "view";
+        public const string ViewModelNameKey = "viewModel";
 
         public static void ShowTheViewForTesting(IView view)
         {
@@ -25,6 +27,18 @@ namespace Warewolf.AcceptanceTesting.Explorer
             }));
 
             Application.Current.Run(Application.Current.MainWindow);
+        }
+
+        public static T GetViewModel<T>()
+        {
+            var viewModel = ScenarioContext.Current.Get<T>(ViewModelNameKey);
+            return viewModel;
+        }
+
+        public static T GetView<T>()
+        {
+            var view = ScenarioContext.Current.Get<T>(ViewNameKey);
+            return view;
         }
 
         public static void CheckControlEnabled(string controlName, string enabledString, ICheckControlEnabledView view)

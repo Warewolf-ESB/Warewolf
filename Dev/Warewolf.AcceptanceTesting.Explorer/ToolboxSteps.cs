@@ -21,31 +21,27 @@ namespace Warewolf.AcceptanceTesting.Explorer
             bootstrapper.Run();
             FeatureContext.Current.Add("container", bootstrapper.Container);
             var view = bootstrapper.Container.Resolve<IToolboxView>();
-            var window = new Window();
-            window.Content = view;
-            var app = Application.Current;
-            app.MainWindow = window;
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
-            {
-                var viewWindow = (ExplorerView)Application.Current.MainWindow.Content;
-                Assert.IsNotNull(viewWindow);
-                Assert.IsNotNull(viewWindow.DataContext);
-                Assert.IsInstanceOfType(viewWindow.DataContext, typeof(IToolboxViewModel));
-                Application.Current.Shutdown();
-            }));
-            
-            Application.Current.Run(Application.Current.MainWindow);
+            var viewModel = bootstrapper.Container.Resolve<IToolboxViewModel>();
+
+            FeatureContext.Current.Add(Utils.ViewNameKey, view);
+            FeatureContext.Current.Add(Utils.ViewModelNameKey, viewModel);
         }
 
 
         [BeforeScenario("Toolbox")]
-        public void SetupForExplorer()
+        public void SetupForToolbox()
         {
-            var container = FeatureContext.Current.Get<IUnityContainer>("container");
-            var view = container.Resolve<IToolboxView>();
-            ScenarioContext.Current.Add("toolBoxView", view);
+            ScenarioContext.Current.Add(Utils.ViewNameKey, FeatureContext.Current.Get<IToolboxView>(Utils.ViewNameKey));
+            ScenarioContext.Current.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<IToolboxViewModel>(Utils.ViewModelNameKey));
             
         }
+
+        [Given(@"""(.*)"" Toolbox is loaded")]
+        public void GivenToolboxIsLoaded(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
 
     }
 }
