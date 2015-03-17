@@ -269,12 +269,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Switch.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox.feature.cs">
+    <Compile Include="Toolbox\Toolbox.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Toolbox.feature</DependentUpon>
     </Compile>
-    <Compile Include="ToolboxSteps.cs" />
+    <Compile Include="Toolbox\ToolboxSteps.cs" />
     <Compile Include="Tools\Data - Assign.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -382,7 +382,7 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Switch.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox.feature">
+    <None Include="Toolbox\Toolbox.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Toolbox.feature.cs</LastGenOutput>
     </None>
