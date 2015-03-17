@@ -336,6 +336,7 @@
       <DependentUpon>WebService.feature</DependentUpon>
     </Compile>
     <Compile Include="Web Service\WebServiceSteps.cs" />
+    <Compile Include="Web Service\WebSourceSteps.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
