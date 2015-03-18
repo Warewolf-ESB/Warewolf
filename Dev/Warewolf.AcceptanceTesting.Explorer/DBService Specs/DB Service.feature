@@ -40,7 +40,7 @@ Scenario: Creating DB Service
 
 Scenario: Opening Saved DB Service
    Given I open "InsertDummyUser" service
-   And "InsertDummyUser" tab is opened
+   And "Edit:InsertDummyUser" tab is opened
    And Data Source is focused
    And "DemoDB" is selected as the data source
    And "dbo.InsertDummyUser" is selected as the action
@@ -66,7 +66,7 @@ Scenario: Opening Saved DB Service
 
 Scenario: Editing Saved DB Service By selecting Source
    Given I open "InsertDummyUser" service
-   And "InsertDummyUser" tab is opened
+   And "Edit:InsertDummyUser" tab is opened
    And Data Source is focused
    And "DemoDB" is selected as the data source
    And "dbo.InsertDummyUser" is selected as the action
@@ -108,7 +108,7 @@ Scenario: Editing Saved DB Service By selecting Source
 
  Scenario: Editing DB Service Mappings
    Given I open "InsertDummyUser" service
-   And "InsertDummyUser" tab is opened
+   And "Edit:InsertDummyUser" tab is opened
    And Data Source is focused
    And "DemoDB" is selected as the data source
    And "dbo.InsertDummyUser" is selected as the action
