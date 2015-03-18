@@ -41,16 +41,7 @@ Scenario: Deploy Tab
 	 Then the validation message is "Source and Destination cannot be the same"
 	 And "Deploy" is "Disabled"
 	 And "Select All Dependencies" is "Disabled"	 
-
-Scenario: Connect control Edit and Connect buttons are enabling 
-     Given I have deploy tab opened
-	 And selected Source Server is "localhost"
-     When selected Destination Server is "Remote"
-	 Then Destination Server edit is "Enabled"
-	 And the validation message as ""
-	 And "Deploy" is "Disabled"
-	 And "Select All Dependencies" is "Disabled"
-
+	 
 Scenario: Deploy button is enabling when selecting resource in source side
      Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -76,10 +67,10 @@ Scenario: Conflicting resources on Source and Destination server
      And selected Destination Server is "Remote"
 	 And I select "Examples\Utility - Date and Time" from Source Server
 	 And I deploy 
-	 Then "Resource exists in the destination server" popup is shown
+	 Then Resource exists in the destination server popup is shown
 	 | # | Source Resource         | Destination Resource    |
 	 | 1 | Utility - Date and Time | Utility - Date and Time |
-	 When I click OK on "Resource exists in the destination server" popup
+	 When I click OK on Resource exists in the destination server popup
 	 Then deploy is successfull
 	 And the validation message is "Items deployed successfully"
 
@@ -89,10 +80,10 @@ Scenario: Conflicting resources on Source and Destination server
      And selected Destination Server is "Remote"
 	 And I select "Examples\Utility - Date and Time" from Source Server
 	 And I deploy 
-	 Then "Resource exists in the destination server" popup is shown
+	 Then Resource exists in the destination server popup is shown
 	 | # | Source Resource         | Destination Resource    |
 	 | 1 | Utility - Date and Time | Utility - Date and Time |
-	 When I click Cancel on "Resource exists in the destination server" popup
+	 When I click Cancel on Resource exists in the destination server popup
 	 Then deploy is not successfull
 	 And the validation message is ""
 
@@ -104,7 +95,7 @@ Scenario: Select all Dependecies is selecting dependecies
 	 When I select "My Category\Double Roll and Check" from Source Server
 	 Then "Deploy" is "Enabled" 
 	 And "Select All Dependencies" is "Enabled"
-	 When I click "Select All Dependecies" 
+	 When I Select All Dependecies
 	 Then "My Category\Double Roll" from Source Server is "Selected"
 
 #coded ui
@@ -115,7 +106,7 @@ Scenario: Mouse right click select Dependecies is selecting dependecies
      And selected Destination Server is "Remote"
 	 When I select "My Category\Double Roll and Check" from Source Server
 	 Then "Deploy" is "Enabled" 
-	 When I Select All Dependecies"
+	 When I Select All Dependecies
 	 Then "My Category\Double Roll" is "Selected"
 	 And "Deploy" is "Enabled" 
 
@@ -166,10 +157,10 @@ Scenario: Deploy is successfull when filter is on on both sides
 	 Then "Examples\Utility - Date and Time" from Destination Server is "Visible"
 	 And "Deploy" is "Enabled"
 	 When I deploy 
-	 Then "Resource exists in the destination server" popup is shown
+	 Then Resource exists in the destination server popup is shown
 	 | # | Source Resource         | Destination Resource    |
 	 | 1 | Utility - Date and Time | Utility - Date and Time |
-	 When I click OK on "Resource exists in the destination server" popup
+	 When I click OK on Resource exists in the destination server popup
 	 Then deploy is successfull
 	 And the validation message is "Items deployed successfully"
 
