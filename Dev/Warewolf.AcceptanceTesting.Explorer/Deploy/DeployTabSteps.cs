@@ -1,6 +1,8 @@
 ﻿using System.Linq;
+using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Deploy;
+using Dev2.Common.Interfaces.PopupController;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
@@ -76,71 +78,70 @@ namespace Warewolf.AcceptanceTesting.Explorer.Deploy
             var view = Utils.GetView<IDeployViewControl>();
             view.Deploy();
         }
-             
-        [When(@"I click OK on ""(.*)"" popup")]
-        public void WhenIClickOKOnPopup(string p0)
+
+        [When(@"I click OK on Resource exists in the destination server popup")]
+        public void WhenIClickOKOnPopup()
         {
-            ScenarioContext.Current.Pending();
+            var mockPopupController = ScenarioContext.Current.Get<Mock<IPopupController>>();
+            mockPopupController.Setup(controller => controller.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.OK);
         }
 
-        [When(@"I click Cancel on ""(.*)"" popup")]
-        public void WhenIClickCancelOnPopup(string p0)
+        [When(@"I click Cancel on Resource exists in the destination server popup")]
+        public void WhenIClickCancelOnPopup()
         {
-            ScenarioContext.Current.Pending();
+            var mockPopupController = ScenarioContext.Current.Get<Mock<IPopupController>>();
+            mockPopupController.Setup(controller => controller.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.OK);
         }
-
-        [When(@"I click ""(.*)""")]
-        public void WhenIClick(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"I Select All Dependecies""")]
+        
+        [When(@"I Select All Dependecies")]
         public void WhenISelectAllDependecies()
         {
-            ScenarioContext.Current.Pending();
+            var view = Utils.GetView<IDeployViewControl>();
+            view.SelectAllDependencies();
         }
 
         [When(@"I type ""(.*)"" in Destination Server filter")]
-        public void WhenITypeInDestinationServerFilter(string p0)
+        public void WhenITypeInDestinationServerFilter(string filterTerm)
         {
-            ScenarioContext.Current.Pending();
+            var view = Utils.GetView<IDeployViewControl>();
+            view.EnterDestinationFilter(filterTerm);
+            var viewModel = Utils.GetViewModel<IDeployViewModel>();
+            Assert.AreEqual(filterTerm,viewModel.Destination.SearchText);
         }
 
         [When(@"I clear filter on Destination Server")]
         public void WhenIClearFilterOnDestinationServer()
         {
-            ScenarioContext.Current.Pending();
+            var view = Utils.GetView<IDeployViewControl>();
+            view.ClearDestinationFilter();
+            var viewModel = Utils.GetViewModel<IDeployViewModel>();
+            Assert.AreEqual(string.Empty, viewModel.Destination.SearchText);
         }
 
         [When(@"I type ""(.*)"" in Source Server filter")]
-        public void WhenITypeInSourceServerFilter(string p0)
+        public void WhenITypeInSourceServerFilter(string filterTerm)
         {
-            ScenarioContext.Current.Pending();
+            var view = Utils.GetView<IDeployViewControl>();
+            view.EnterSourceFilter(filterTerm);
+            var viewModel = Utils.GetViewModel<IDeployViewModel>();
+            Assert.AreEqual(filterTerm, viewModel.Source.SearchText);
         }
 
         [When(@"I clear filter on Source Server")]
         public void WhenIClearFilterOnSourceServer()
         {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Then(@"Destination Server edit is ""(.*)""")]
-        public void ThenDestinationServerEditIs(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Then(@"""(.*)"" is visibe")]
-        public void ThenIsVisibe(string p0)
-        {
-            ScenarioContext.Current.Pending();
+            var view = Utils.GetView<IDeployViewControl>();
+            view.ClearSourceFilter();
+            var viewModel = Utils.GetViewModel<IDeployViewModel>();
+            Assert.AreEqual(string.Empty, viewModel.Source.SearchText);
         }
 
         [Then(@"the validation message as ""(.*)""")]
-        public void ThenTheValidationMessageAs(string p0)
+        public void ThenTheValidationMessageAs(string validationMessage)
         {
-            ScenarioContext.Current.Pending();
+            var view = Utils.GetView<IDeployViewControl>();
+            string currentValidationMessage = view.GetCurrentValidationMessage();
+            Assert.AreEqual(validationMessage,currentValidationMessage);
         }
 
         [Then(@"deploy is successfull")]
@@ -150,14 +151,16 @@ namespace Warewolf.AcceptanceTesting.Explorer.Deploy
         }
 
         [Then(@"""(.*)"" is visible on Destination Server")]
-        public void ThenIsVisibleOnDestinationServer(string p0)
+        public void ThenIsVisibleOnDestinationServer(string resourceName)
         {
+            //Is this going to be mocked?
             ScenarioContext.Current.Pending();
         }
 
-        [Then(@"""(.*)"" popup is shown")]
-        public void ThenPopupIsShown(string p0, Table table)
+        [Then(@"Resource exists in the destination server popup is shown")]
+        public void ThenPopupIsShown(Table table)
         {
+            //Get Pop?
             ScenarioContext.Current.Pending();
         }
 
@@ -168,15 +171,35 @@ namespace Warewolf.AcceptanceTesting.Explorer.Deploy
         }
 
         [Then(@"""(.*)"" from Source Server is ""(.*)""")]
-        public void ThenFromSourceServerIs(string p0, string p1)
+        public void ThenFromSourceServerIs(string resourceName, string state)
         {
-            ScenarioContext.Current.Pending();
+            var view = Utils.GetView<IDeployViewControl>();
+            if (state.ToLowerInvariant() == "visible")
+            {
+                bool isVisible = view.IsSourceResourceIsVisible(resourceName);
+                Assert.IsTrue(isVisible);
+            }
+            else if(state.ToLowerInvariant() == "selected")
+            {
+                bool isSelected = view.IsSourceResourceSelected(resourceName);
+                Assert.IsTrue(isSelected);
+            }
         }
 
         [Then(@"""(.*)"" from Destination Server is ""(.*)""")]
-        public void ThenFromDestinationServerIs(string p0, string p1)
+        public void ThenFromDestinationServerIs(string resourceName, string state)
         {
-            ScenarioContext.Current.Pending();
+            var view = Utils.GetView<IDeployViewControl>();
+            if (state.ToLowerInvariant() == "visible")
+            {
+                bool isVisible = view.IsDestinationResourceIsVisible(resourceName);
+                Assert.IsTrue(isVisible);
+            }
+            else if (state.ToLowerInvariant() == "selected")
+            {
+                bool isSelected = view.IsDestinationResourceSelected(resourceName);
+                Assert.IsTrue(isSelected);
+            }
         }
 
         [Then(@"I select ""(.*)"" from Destination Server")]
