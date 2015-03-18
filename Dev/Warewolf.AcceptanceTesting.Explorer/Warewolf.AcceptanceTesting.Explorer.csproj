@@ -242,7 +242,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>NewEmailSource.feature</DependentUpon>
     </Compile>
-    <Compile Include="NewServerSource.feature.cs">
+    <Compile Include="Server Source\NewServerSource.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>NewServerSource.feature</DependentUpon>
@@ -372,7 +372,7 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>NewEmailSource.feature.cs</LastGenOutput>
     </None>
-    <None Include="NewServerSource.feature">
+    <None Include="Server Source\NewServerSource.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>NewServerSource.feature.cs</LastGenOutput>
     </None>
