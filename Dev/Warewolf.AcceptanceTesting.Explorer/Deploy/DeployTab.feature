@@ -37,9 +37,7 @@ Feature: DeployTab
 Scenario: Deploy Tab
      Given I have deploy tab opened
 	 And selected Source Server is "localhost"
-	 And "localhost" is visible
 	 When selected Destination Server is "localhost"
-	 And "localhost" is visible
 	 Then the validation message is "Source and Destination cannot be the same"
 	 And "Deploy" is "Disabled"
 	 And "Select All Dependencies" is "Disabled"	 
@@ -49,7 +47,6 @@ Scenario: Connect control Edit and Connect buttons are enabling
 	 And selected Source Server is "localhost"
      When selected Destination Server is "Remote"
 	 Then Destination Server edit is "Enabled"
-	 And "localhost" is visibe
 	 And the validation message as ""
 	 And "Deploy" is "Disabled"
 	 And "Select All Dependencies" is "Disabled"
@@ -114,8 +111,8 @@ Scenario: Select all Dependecies is selecting dependecies
 @ignore
 Scenario: Mouse right click select Dependecies is selecting dependecies
      Given I have deploy tab opened
-	 And selected "Source Server" is "localhost"
-     And selected "Destination Server" is "Remote"
+	 And selected Source Server is "localhost"
+     And selected Destination Server is "Remote"
 	 When I select "My Category\Double Roll and Check" from Source Server
 	 Then "Deploy" is "Enabled" 
 	 When I Select All Dependecies"

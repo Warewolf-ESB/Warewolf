@@ -1,76 +1,82 @@
-﻿using TechTalk.SpecFlow;
+﻿using System.Linq;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Deploy;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using TechTalk.SpecFlow;
 
 namespace Warewolf.AcceptanceTesting.Explorer.Deploy
 {
     [Binding]
     public class DeployTabSteps
     {
+        [BeforeFeature("Deploy")]
+        public static void SetupForSystem()
+        {
+            var bootStrapper = new UnityBootstrapperForDatabaseSourceConnectorTesting();
+            bootStrapper.Run();
+            var databaseSourceControlView = new Mock<IDeployViewControl>();
+            var manageDatabaseSourceControlViewModel = new Mock<IDeployViewModel>();
+            databaseSourceControlView.Object.DataContext = manageDatabaseSourceControlViewModel;
+            Utils.ShowTheViewForTesting(databaseSourceControlView.Object);
+            FeatureContext.Current.Add(Utils.ViewNameKey, databaseSourceControlView.Object);
+            FeatureContext.Current.Add(Utils.ViewModelNameKey, manageDatabaseSourceControlViewModel.Object);
+        }
+
+        [BeforeScenario("Deploy")]
+        public void SetupForDatabaseSource()
+        {
+            ScenarioContext.Current.Add(Utils.ViewNameKey, FeatureContext.Current.Get<IDeployViewControl>(Utils.ViewNameKey));
+            ScenarioContext.Current.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<IDeployViewModel>(Utils.ViewModelNameKey));
+        }
+
         [Given(@"I have deploy tab opened")]
         public void GivenIHaveDeployTabOpened()
         {
-            ScenarioContext.Current.Pending();
+            var view = Utils.GetView<IDeployViewControl>();
+            Assert.IsNotNull(view);
         }
 
         [Given(@"selected Source Server is ""(.*)""")]
-        public void GivenSelectedSourceServerIs(string p0)
+        [When(@"selected Source Server is ""(.*)""")]
+        public void GivenSelectedSourceServerIs(string sourceServerName)
         {
-            ScenarioContext.Current.Pending();
+            var view = Utils.GetView<IDeployViewControl>();
+            view.SelectSourceServer(sourceServerName);
+            var viewModel = Utils.GetViewModel<IDeployViewModel>();
+            Assert.AreEqual(viewModel.SelectedSourceModel.Server.ResourceName,sourceServerName);
         }
 
-        [Given(@"""(.*)"" is visible")]
-        public void GivenIsVisible(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
 
         [Given(@"selected Destination Server is ""(.*)""")]
-        public void GivenSelectedDestinationServerIs(string p0)
+        [When(@"selected Destination Server is ""(.*)""")]
+        public void GivenSelectedDestinationServerIs(string destinationServer)
         {
-            ScenarioContext.Current.Pending();
+            var view = Utils.GetView<IDeployViewControl>();
+            view.SelectDestinationServer(destinationServer);
+            var viewModel = Utils.GetViewModel<IDeployViewModel>();
+            Assert.AreEqual(viewModel.SelectedDestinationModel.Server.ResourceName, destinationServer);
         }
 
         [Given(@"I select ""(.*)"" from Source Server")]
-        public void GivenISelectFromSourceServer(string p0)
+        [When(@"I select ""(.*)"" from Source Server")]
+        public void GivenISelectFromSourceServer(string resourceName)
         {
-            ScenarioContext.Current.Pending();
+            var view = Utils.GetView<IDeployViewControl>();
+            view.SelectSourceResource(resourceName);
+            var viewModel = Utils.GetViewModel<IDeployViewModel>();
+            var selectedItems = viewModel.SelectedSourceModel.SelectedItems;
+            Assert.AreEqual(1,selectedItems.Count());
         }
 
         [Given(@"I deploy")]
+        [When(@"I deploy")]
         public void GivenIDeploy()
         {
-            ScenarioContext.Current.Pending();
+            var view = Utils.GetView<IDeployViewControl>();
+            view.Deploy();
         }
-
-        [Given(@"selected ""(.*)"" is ""(.*)""")]
-        public void GivenSelectedIs(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"selected Destination Server is ""(.*)""")]
-        public void WhenSelectedDestinationServerIs(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"""(.*)"" is visible")]
-        public void WhenIsVisible(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"I select ""(.*)"" from Source Server")]
-        public void WhenISelectFromSourceServer(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"I deploy")]
-        public void WhenIDeploy()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
+             
         [When(@"I click OK on ""(.*)"" popup")]
         public void WhenIClickOKOnPopup(string p0)
         {

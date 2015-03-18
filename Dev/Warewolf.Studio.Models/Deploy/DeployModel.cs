@@ -25,6 +25,7 @@ namespace Warewolf.Studio.Models.Deploy
         #region Implementation of IDeployModel
 
         public IServer Server { get; private set; }
+        public object[] SelectedItems { get; set; }
         public IUpdateManager UpdateManager
         {
             get
