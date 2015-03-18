@@ -1,0 +1,64 @@
+﻿%{
+    open LanguageAST
+    open DataASTMutable
+%}
+
+
+
+// Regular tokens
+%token OPENLANGUAGE CLOSELANGAUGE OPENBRACKET CLOSEDBRACKET STAR DOT 
+%token <int> INT   
+%token <float> FLOAT
+%token <string> STRING    
+
+// Misc tokens
+%token EOF
+
+// This is the type of the data produced by a successful reduction of the 'start'
+// symbol:
+%start start   
+%type <LanguageAST.LanguageExpression> start  
+%type <LanguageAST.LanguageExpression> langExpression   
+%type <LanguageAST.RecordSetIdentifier> recset 
+%type <DataASTMutable.WarewolfAtom> atom   
+%type <LanguageAST.ScalarIdentifier> scalar
+
+%%
+
+// These are the rules of the grammar along with the F# code of the 
+// actions executed as rules are reduced.  
+start: langExpression	{$1}
+
+langExpression : 
+	| atom {WarewolfAtomAtomExpression $1}
+	| scalar {  ScalarExpression $1 }	
+	| recset { RecordSetExpression $1 }
+	| recsetName { RecordSetNameExpression $1 }
+	| variableExpression { ComplexExpression $1 }
+	| OPENLANGUAGE {WarewolfAtomAtomExpression (DataString "[[")}
+	| CLOSELANGAUGE {WarewolfAtomAtomExpression (DataString "]]")}
+	| OPENBRACKET {WarewolfAtomAtomExpression (DataString "(")}
+	| CLOSEDBRACKET {WarewolfAtomAtomExpression (DataString ")")}
+	| STAR {WarewolfAtomAtomExpression (DataString "*")}
+	| DOT {WarewolfAtomAtomExpression (DataString ".")}
+variableExpression 	:
+	| langExpression  variableExpression   {   $1::$2}
+	| atom {[WarewolfAtomAtomExpression $1]}
+	| scalar {  [ScalarExpression $1] }	
+	| recset { [RecordSetExpression $1] }
+	| EOF {[]}
+recset : 
+    |OPENLANGUAGE STRING OPENBRACKET index CLOSEDBRACKET DOT STRING CLOSELANGAUGE {{Name = $2; Column = $7; Index =$4 ;}}
+	|OPENLANGUAGE STRING OPENBRACKET STAR CLOSEDBRACKET DOT STRING CLOSELANGAUGE {{Name = $2; Column = $7; Index =Star ;}}
+    |OPENLANGUAGE STRING OPENBRACKET CLOSEDBRACKET DOT STRING CLOSELANGAUGE {{Name = $2; Column = $6; Index =Last ;}}
+	|OPENLANGUAGE STRING OPENBRACKET langExpression CLOSEDBRACKET DOT STRING CLOSELANGAUGE {{Name = $2; Column = $7; Index = IndexExpression $4 ;}}
+recsetName : 
+    |OPENLANGUAGE STRING OPENBRACKET CLOSEDBRACKET{{Name = $2;}}
+index :
+	| INT {IntIndex $1}
+scalar : 
+	|OPENLANGUAGE STRING CLOSELANGAUGE {$2}
+atom :
+	| FLOAT {   Float $1 }
+	| INT {  Int $1 }  	   
+	| STRING {  DataString $1 } 
