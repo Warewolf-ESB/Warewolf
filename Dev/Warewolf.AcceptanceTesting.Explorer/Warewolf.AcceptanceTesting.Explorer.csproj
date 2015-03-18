@@ -260,12 +260,12 @@
     </Compile>
     <Compile Include="Plugins\PluginSourceSteps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scheduler.feature.cs">
+    <Compile Include="Scheduler\Scheduler.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Scheduler.feature</DependentUpon>
     </Compile>
-    <Compile Include="Settings Tab.feature.cs">
+    <Compile Include="Settings\Settings Tab.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Settings Tab.feature</DependentUpon>
@@ -325,7 +325,7 @@
     <Compile Include="UnityBootstrapperForExplorerTesting.cs" />
     <Compile Include="Toolbox\UnityBootstrapperForToolboxTesting.cs" />
     <Compile Include="Utils.cs" />
-    <Compile Include="VariableList.feature.cs">
+    <Compile Include="Variable List\VariableList.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>VariableList.feature</DependentUpon>
@@ -387,11 +387,11 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PluginSource.feature.cs</LastGenOutput>
     </None>
-    <None Include="Scheduler.feature">
+    <None Include="Scheduler\Scheduler.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Scheduler.feature.cs</LastGenOutput>
     </None>
-    <None Include="Settings Tab.feature">
+    <None Include="Settings\Settings Tab.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Settings Tab.feature.cs</LastGenOutput>
     </None>
@@ -435,7 +435,7 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Web Source.feature.cs</LastGenOutput>
     </None>
-    <None Include="VariableList.feature">
+    <None Include="Variable List\VariableList.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>VariableList.feature.cs</LastGenOutput>
     </None>
