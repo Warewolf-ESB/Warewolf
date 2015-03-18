@@ -36,11 +36,9 @@ Feature: DeployTab
 
 Scenario: Deploy Tab
      Given I have deploy tab opened
-	#Source Server Side
-	 And selected "Source Server" is "localhost"
+	 And selected Source Server is "localhost"
 	 And "localhost" is visible
-	#Destination Server Side
-	 When selected "Destination Server" is "localhost"
+	 When selected Destination Server is "localhost"
 	 And "localhost" is visible
 	 Then the validation message is "Source and Destination cannot be the same"
 	 And "Deploy" is "Disabled"
@@ -48,28 +46,26 @@ Scenario: Deploy Tab
 
 Scenario: Connect control Edit and Connect buttons are enabling 
      Given I have deploy tab opened
-	 And selected "Source Server" is "localhost"
-     When selected "Destination Server" is "Remote"
+	 And selected Source Server is "localhost"
+     When selected Destination Server is "Remote"
 	 Then Destination Server edit is "Enabled"
 	 And "localhost" is visibe
 	 And the validation message as ""
 	 And "Deploy" is "Disabled"
 	 And "Select All Dependencies" is "Disabled"
-	 
-	 
 
 Scenario: Deploy button is enabling when selecting resource in source side
      Given I have deploy tab opened
-	 And selected "Source Server" is "localhost"
-     And selected "Destination Server" is "Remote"
+	 And selected Source Server is "localhost"
+     And selected Destination Server is "Remote"
 	 When I select "Examples\Utility - Date and Time" from Source Server
 	 Then "Deploy" is "Enabled" 
 
 
 Scenario: Deploy is successfull
      Given I have deploy tab opened
-	 And selected "Source Server" is "localhost"
-     And selected "Destination Server" is "Remote"
+	 And selected Source Server is "localhost"
+     And selected Destination Server is "Remote"
 	 And I select "Examples\Utility - Date and Time" from Source Server
 	 When I deploy 
 	 Then deploy is successfull
@@ -79,8 +75,8 @@ Scenario: Deploy is successfull
 
 Scenario: Conflicting resources on Source and Destination server
      Given I have deploy tab opened
-	 And selected "Source Server" is "localhost"
-     And selected "Destination Server" is "Remote"
+	 And selected Source Server is "localhost"
+     And selected Destination Server is "Remote"
 	 And I select "Examples\Utility - Date and Time" from Source Server
 	 And I deploy 
 	 Then "Resource exists in the destination server" popup is shown
@@ -92,8 +88,8 @@ Scenario: Conflicting resources on Source and Destination server
 
 Scenario: Conflicting resources on Source and Destination server
      Given I have deploy tab opened
-	 And selected "Source Server" is "localhost"
-     And selected "Destination Server" is "Remote"
+	 And selected Source Server is "localhost"
+     And selected Destination Server is "Remote"
 	 And I select "Examples\Utility - Date and Time" from Source Server
 	 And I deploy 
 	 Then "Resource exists in the destination server" popup is shown
@@ -104,17 +100,18 @@ Scenario: Conflicting resources on Source and Destination server
 	 And the validation message is ""
 
 
-
 Scenario: Select all Dependecies is selecting dependecies
      Given I have deploy tab opened
-	 And selected "Source Server" is "localhost"
-     And selected "Destination Server" is "Remote"
+	 And selected Source Server is "localhost"
+     And selected Destination Server is "Remote"
 	 When I select "My Category\Double Roll and Check" from Source Server
 	 Then "Deploy" is "Enabled" 
 	 And "Select All Dependencies" is "Enabled"
 	 When I click "Select All Dependecies" 
-	 Then "My Category\Double Roll" is "Selected"
+	 Then "My Category\Double Roll" from Source Server is "Selected"
 
+#coded ui
+@ignore
 Scenario: Mouse right click select Dependecies is selecting dependecies
      Given I have deploy tab opened
 	 And selected "Source Server" is "localhost"
@@ -126,24 +123,15 @@ Scenario: Mouse right click select Dependecies is selecting dependecies
 	 And "Deploy" is "Enabled" 
 
 
-Scenario: Select all Dependecies button is disabled when resources has no dependencies
-     Given I have deploy tab opened
-	 And selected "Source Server" is "localhost"
-     And selected "Destination Server" is "Remote"
-	 When I select "Examples\Utility - Date and Time" from Source Server
-	 Then "Deploy" is "Enabled" 
-	 And "Select All Dependencies" is "Disabled"
-
-
 
 Scenario: Filtering Resources on Destination side
      Given I have deploy tab opened
-	 And selected "Destination Server" is "localhost"
-     When I type "Utility - Date and Time" in Destination filter
+	 And selected Destination Server is "localhost"
+     When I type "Utility - Date and Time" in Destination Server filter
 	 Then "Examples\Utility - Date and Time" from Destination Server is "Visible"
 	 And "Examples\Utility - Date and Time Difference" from Destination Server is "Visible"
 	 And I select "Examples\Utility - Date and Time" from Destination Server
-	  When I clear filter on Destination server
+	  When I clear filter on Destination Server
 	 Then "Examples\Utility - Date and Time" from Destination Server is "Visible"
 	 And "Examples\Data - Data - Data Split" from Destination Server is "Visible"
 	 And "Examples\Control Flow - Switch" from Destination Server is "Visible"
@@ -153,15 +141,15 @@ Scenario: Filtering Resources on Destination side
 
 Scenario: Filtering and clearing filter on source side
      Given I have deploy tab opened
-	 And selected "Source Server" is "localhost"
-     When I type "Utility - Date and Time" in source filter
+	 And selected Source Server is "localhost"
+     When I type "Utility - Date and Time" in Source Server filter
 	 Then "Examples\Utility - Date and Time" from Source Server is "Visible"
 	 And "Examples\Data - Data - Data Split" from Source Server is "Not Visible"
 	 And "Examples\Control Flow - Switch" from Source Server is "Not Visible"
 	 And "Examples\Control Flow - Sequence" from Source Server is "Not Visible"
 	 And "Examples\File and Folder - Copy" from Source Server is "Not Visible"
 	 And "Examples\File and Folder - Create" from Source Server is "Not Visible"
-	 When I clear filter on source server
+	 When I clear filter on Source Server
 	 Then "Examples\Utility - Date and Time" from Source Server is "Visible"
 	 And "Examples\Data - Data - Data Split" from Source Server is "Visible"
 	 And "Examples\Control Flow - Switch" from Source Server is "Visible"
@@ -172,12 +160,12 @@ Scenario: Filtering and clearing filter on source side
 
 Scenario: Deploy is successfull when filter is on on both sides
      Given I have deploy tab opened
-	 And selected "Destination Server" is "localhost"
-	 And selected "Destination Server" is "Remote"
-     When I type "Utility - Date and Time" in Destination filter
+	 And selected Destination Server is "localhost"
+	 And selected Destination Server is "Remote"
+     When I type "Utility - Date and Time" in Destination Server filter
 	 Then "Examples\Utility - Date and Time" from Source Server is "Visible"
 	 And I select "Examples\Utility - Date and Time" from Source Server
-	 When I type "Utility - Date and Time" in Destination filter
+	 When I type "Utility - Date and Time" in Destination Server filter
 	 Then "Examples\Utility - Date and Time" from Destination Server is "Visible"
 	 And "Deploy" is "Enabled"
 	 When I deploy 
@@ -185,7 +173,7 @@ Scenario: Deploy is successfull when filter is on on both sides
 	 | # | Source Resource         | Destination Resource    |
 	 | 1 | Utility - Date and Time | Utility - Date and Time |
 	 When I click OK on "Resource exists in the destination server" popup
-	 Then deploy is "Successfull"
+	 Then deploy is successfull
 	 And the validation message is "Items deployed successfully"
 
 
