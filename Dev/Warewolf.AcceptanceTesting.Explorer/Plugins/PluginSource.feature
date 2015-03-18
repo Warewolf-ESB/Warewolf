@@ -43,7 +43,7 @@ Scenario: Creating New Plugin by selecting from GAC
 	And "Save" is "Enabled"
 	When I save Plugin source
 	Then Save Dialog is opened
-
+	 
 
 Scenario: Editing Plugin Source
 	Given I open "Edit Plugin Source - Test" plugin source

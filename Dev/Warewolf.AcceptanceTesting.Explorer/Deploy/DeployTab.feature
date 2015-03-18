@@ -165,3 +165,26 @@ Scenario: Deploy is successfull when filter is on on both sides
 	 And the validation message is "Items deployed successfully"
 
 
+Scenario: Selected for deploy items type is showing on deploy tab
+     Given I have deploy tab opened
+	 And selected Destination Server is "localhost"
+	 When I select "Examples\Utility - Date and Time" from Source Server
+	 And I select "DB Service\FetchPlayers" from Source Server
+	 And I select "Remote\Source" from Source Server
+	 Then Data Connectors is "1"
+	 And Services is "1"
+	 And Sources is "1"
+
+
+Scenario: Deploy Summary is showing new and overiding resources 
+     Given I have deploy tab opened
+	 And selected Destination Server is "localhost"
+	 And selected Destination Server is "Remote"
+	 When I select "Examples\Utility - Date and Time" from Source Server
+	 Then New Resource is "0"
+	 And Override is "1"
+	 When I select "New\New" from Source Server
+	 Then New Resource is "1"
+	 And Override is "1"
+	 When I Unselect "Examples\Utility - Date and Time" from Source Server
+	 And Override is "0"
