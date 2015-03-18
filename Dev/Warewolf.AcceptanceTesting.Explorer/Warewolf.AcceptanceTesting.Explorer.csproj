@@ -221,7 +221,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Decision.feature</DependentUpon>
     </Compile>
-    <Compile Include="DeployTab.feature.cs">
+    <Compile Include="Deploy\DeployTab.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DeployTab.feature</DependentUpon>
@@ -356,7 +356,7 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Decision.feature.cs</LastGenOutput>
     </None>
-    <None Include="DeployTab.feature">
+    <None Include="Deploy\DeployTab.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DeployTab.feature.cs</LastGenOutput>
     </None>

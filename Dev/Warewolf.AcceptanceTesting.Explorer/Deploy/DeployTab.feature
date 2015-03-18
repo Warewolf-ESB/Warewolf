@@ -1,4 +1,5 @@
-﻿Feature: DeployTab
+﻿@Deploy
+Feature: DeployTab
 	In order to Deploy resource.
 	As a warewolf user
 	I want to Deploy aresource from one server to another server.
@@ -33,78 +34,74 @@
 #Ensure user is able to see how many new resources are selected and how many resources are overriding.
 #Ensure Save button us disabled when Deploy ta is active.
 
-
-##Test Cases
-@Deploy
 Scenario: Deploy Tab
      Given I have deploy tab opened
 	#Source Server Side
-	 And "Source Server" selected as "localhost (Connected)"
-	 And Source Server edit is "Disabled"
-	 And Source server connection is "Disabled"
-	 And "localhost (http://rsaklfmurali:3142/)" is visibe
+	 And selected "Source Server" is "localhost"
+	 And "localhost" is visible
 	#Destination Server Side
-	 And "Destination Server" selected as "localhost (Connected)"
-	 And Destination Server edit is "Disabled"
-	 And Destination server connection is "Disabled"
-	 And "localhost (http://rsaklfmurali:3142/)" is visibe
-	 And 'Deploy' has validation "True"
-	 And the validation message as "Source and Destination cannot be the same"
-	 And 'Deploy' button is "Disabled"
-	 And "Select All Dependencies" button is "Disabled"
-	 And deploy has a validation message "True"
-	 And the message as "Source and Destination cannot be the same" 
-
-
+	 When selected "Destination Server" is "localhost"
+	 And "localhost" is visible
+	 Then the validation message is "Source and Destination cannot be the same"
+	 And "Deploy" is "Disabled"
+	 And "Select All Dependencies" is "Disabled"	 
 
 Scenario: Connect control Edit and Connect buttons are enabling 
      Given I have deploy tab opened
-	 And "Source Server" selected as "localhost (Connected)"
-     When "Destination Server" selected as "Remote (Connected)"
-	 Then Destination Server edit is "Enabeled"
-	 And Destination server connection is "Enabeled"
-	 And "localhost (http://rsaklfmurali:3142/)" is visibe
-	 And 'Deploy' has validation "False"
+	 And selected "Source Server" is "localhost"
+     When selected "Destination Server" is "Remote"
+	 Then Destination Server edit is "Enabled"
+	 And "localhost" is visibe
 	 And the validation message as ""
-	 And 'Deploy' button is "Disabled"
-	 And "Select All Dependencies" button is "Disabled"
+	 And "Deploy" is "Disabled"
+	 And "Select All Dependencies" is "Disabled"
 	 
 	 
 
 Scenario: Deploy button is enabling when selecting resource in source side
      Given I have deploy tab opened
-	 And "Source Server" selected as "localhost (Connected)"
-     When "Destination Server" selected as "Remote (Connected)"
-	 Then I select a resource "Examples\Utility - Date and Time"
-	 And 'Deploy' button is "Enabled" 
+	 And selected "Source Server" is "localhost"
+     And selected "Destination Server" is "Remote"
+	 When I select "Examples\Utility - Date and Time" from Source Server
+	 Then "Deploy" is "Enabled" 
 
 
-Scenario: Resource Deploy is successfull
+Scenario: Deploy is successfull
      Given I have deploy tab opened
-	 And "Source Server" selected as "localhost (Connected)"
-     When "Destination Server" selected as "Remote (Connected)"
-	 Then I select a resource "Examples\Utility - Date and Time"
-	 And 'Deploy' button is "Enabled" 
+	 And selected "Source Server" is "localhost"
+     And selected "Destination Server" is "Remote"
+	 And I select "Examples\Utility - Date and Time" from Source Server
 	 When I deploy 
-	 Then deploy is "successfull"
-	 And the validation message as "Items deployed successfully"
-	 And "Examples\Utility - Date and Time" is visible in destination side
+	 Then deploy is successfull
+	 And the validation message is "Items deployed successfully"
+	 And "Examples\Utility - Date and Time" is visible on Destination Server
 
 
-Scenario: Deploy is showing conflicting resources while deploy
+Scenario: Conflicting resources on Source and Destination server
      Given I have deploy tab opened
-	 And "Source Server" selected as "localhost (Connected)"
-     When "Destination Server" selected as "Remote (Connected)"
-	 Then I select a resource "Examples\Utility - Date and Time"
-	 And 'Deploy' button is "Enabled" 
-	 When I deploy 
+	 And selected "Source Server" is "localhost"
+     And selected "Destination Server" is "Remote"
+	 And I select "Examples\Utility - Date and Time" from Source Server
+	 And I deploy 
 	 Then "Resource exists in the destination server" popup is shown
 	 | # | Source Resource         | Destination Resource    |
 	 | 1 | Utility - Date and Time | Utility - Date and Time |
-	 When I select ok in "Resource exists in the destination server" 
-	 Then deploy is "successfull"
-	 And the validation message as "Items deployed successfully"
-	 And "Examples\Utility - Date and Time" is visible in destination side
+	 When I click OK on "Resource exists in the destination server" popup
+	 Then deploy is successfull
+	 And the validation message is "Items deployed successfully"
+
+Scenario: Conflicting resources on Source and Destination server
+     Given I have deploy tab opened
+	 And selected "Source Server" is "localhost"
+     And selected "Destination Server" is "Remote"
+	 And I select "Examples\Utility - Date and Time" from Source Server
+	 And I deploy 
+	 Then "Resource exists in the destination server" popup is shown
+	 | # | Source Resource         | Destination Resource    |
+	 | 1 | Utility - Date and Time | Utility - Date and Time |
+	 When I click Cancel on "Resource exists in the destination server" popup
+	 Then deploy is not successfull
+	 And the validation message is ""
 
 
 
