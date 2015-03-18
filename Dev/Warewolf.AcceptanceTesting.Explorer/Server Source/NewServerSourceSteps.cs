@@ -1,11 +1,11 @@
-﻿using System;
-using TechTalk.SpecFlow;
+﻿using TechTalk.SpecFlow;
 
 namespace Warewolf.AcceptanceTesting.Explorer.Server_Source
 {
     [Binding]
     public class NewServerSourceSteps
     {
+
         [Given(@"I have New Server Source opened")]
         public void GivenIHaveNewServerSourceOpened()
         {
