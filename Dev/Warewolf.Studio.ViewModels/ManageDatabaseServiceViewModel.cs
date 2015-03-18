@@ -45,32 +45,35 @@ namespace Warewolf.Studio.ViewModels
             Sources = model.RetrieveSources();
            
             Header = "New DB Service";
-            TestProcedureCommand = new DelegateCommand(() =>
-            {
-                try
-                {
-                    TestResults = model.TestService(ToModel());
-                    if (TestResults != null)
-                    {
-                        CanEditMappings = true;
-                        OutputMapping =
-                            new ObservableCollection<IDbOutputMapping>(GetDbOutputMappingsFromTable(TestResults));
-                        TestSuccessful = true;
-                        TestResultsAvailable = true;
-
-                    }
-                    ErrorText = "";
-                }
-                catch (Exception e)
-                {
-                    ErrorText = e.Message;
-                    TestSuccessful = false;
-                }
-
-
-            },CanTestProcedure);
+            TestProcedureCommand = new DelegateCommand(TestAction,CanTestProcedure);
             Inputs = new ObservableCollection<IDbInput>();
             SaveCommand = new DelegateCommand(Save,CanSave);
+        }
+
+        void TestAction()
+        {
+            try
+            {
+                TestResults = _model.TestService(ToModel());
+                if(TestResults != null)
+                {
+                    CanEditMappings = true;
+                    OutputMapping =
+                        new ObservableCollection<IDbOutputMapping>(GetDbOutputMappingsFromTable(TestResults));
+                    TestSuccessful = true;
+                    TestResultsAvailable = true;
+                }
+                ErrorText = "";
+            }
+            catch(Exception e)
+            {
+                ErrorText = e.Message;
+                OutputMapping = null;
+                TestResultsAvailable = false;
+                CanEditMappings = false;
+                Inputs = null;
+                TestSuccessful = false;
+            }
         }
 
         public ManageDatabaseServiceViewModel(IDbServiceModel model,IRequestServiceNameViewModel saveDialog,IDatabaseService service):base(ResourceType.DbService)
@@ -82,31 +85,8 @@ namespace Warewolf.Studio.ViewModels
             CreateNewSourceCommand = new DelegateCommand(model.CreateNewSource);
             EditSourceCommand = new DelegateCommand(()=>model.EditSource(SelectedSource));
             Sources = model.RetrieveSources();
-           
-            TestProcedureCommand = new DelegateCommand(() =>
-            {
-                try
-                {
-                    TestResults = model.TestService(ToModel());
-                    if (TestResults != null)
-                    {
-                        CanEditMappings = true;
-                        OutputMapping =
-                            new ObservableCollection<IDbOutputMapping>(GetDbOutputMappingsFromTable(TestResults));
-                        TestSuccessful = true;
-                        TestResultsAvailable = true;
 
-                    }
-                    ErrorText = "";
-                }
-                catch (Exception e)
-                {
-                    ErrorText = e.Message;
-                    TestSuccessful = false;
-                }
-
-
-            },CanTestProcedure);
+            TestProcedureCommand = new DelegateCommand(TestAction, CanTestProcedure);
             SaveCommand = new DelegateCommand(Save,CanSave);
         }
 
@@ -121,6 +101,7 @@ namespace Warewolf.Studio.ViewModels
             Inputs = service.Inputs;
             OutputMapping = service.OutputMappings;
             Header = "Edit:" + Name;
+            CanEditMappings = true;
         }
 
         bool CanTestProcedure()

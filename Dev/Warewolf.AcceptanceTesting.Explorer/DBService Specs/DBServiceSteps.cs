@@ -70,11 +70,11 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             };
             var dbInputs = new List<IDbInput>
             {
-                new DbInput("fname","Test"),
-                new DbInput("lname","Ware"),
+                new DbInput("fname","Change"),
+                new DbInput("lname","Test"),
                 new DbInput("username","wolf"),
                 new DbInput("password","Dev"),
-                new DbInput("lastAccessDate","12/1/1990"),
+                new DbInput("lastAccessDate","10/1/1990"),
             };
             _dbInsertDummyAction = new DbAction
             {
@@ -137,6 +137,8 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         [When(@"I test the action")]
         public void WhenITestTheAction()
         {
+            var dbServiceModel = ScenarioContext.Current.Get<Mock<IDbServiceModel>>("model");
+            SetupModel(dbServiceModel);
             var view = Utils.GetView<ManageDatabaseServiceControl>();
             view.TestAction();
             var viewModel = Utils.GetViewModel<ManageDatabaseServiceViewModel>();
@@ -212,12 +214,21 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         {
             var view = Utils.GetView<ManageDatabaseServiceControl>();
             var inputMappings = view.GetInputMappings();
-            foreach (var input in inputMappings.SourceCollection)
+            var i = 0;
+            if (inputMappings.SourceCollection == null)
             {
-                var inputMapping = input as IDbInput;
-                if (inputMapping != null)
+                Assert.AreEqual(0,table.RowCount);
+            }
+            else
+            {
+                foreach (var input in inputMappings.SourceCollection)
                 {
-                    Assert.AreEqual(inputMapping.Name, table.Header.ToList()[0]);
+                    var inputMapping = input as IDbInput;
+                    if (inputMapping != null)
+                    {
+                        Assert.AreEqual(inputMapping.Name, table.Rows.ToList()[i][0]);
+                    }
+                    i++;
                 }
             }
         }
@@ -229,11 +240,18 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         {
             var view = Utils.GetView<ManageDatabaseServiceControl>();
             var outputMappings = view.GetOutputMappings();
-            foreach (var output in outputMappings.SourceCollection)
+            if (outputMappings.SourceCollection == null)
             {
-                var outputMapping = output as IDbOutputMapping;
-                if (outputMapping != null)
+                Assert.AreEqual(0, table.RowCount);
+            }
+            else
+            {
+                foreach (var output in outputMappings.SourceCollection)
                 {
+                    var outputMapping = output as IDbOutputMapping;
+                    if (outputMapping != null)
+                    {
+                    }
                 }
             }
         }
@@ -241,11 +259,14 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         [Given(@"I open ""(.*)"" service")]
         public void GivenIOpenService(string serviceName)
         {
-            var databaseService = new DatabaseService { Name = serviceName, Source = _demoDbSourceDefinition, Action = _dbInsertDummyAction };
+            var databaseService = new DatabaseService { Name = serviceName, Source = _demoDbSourceDefinition, Action = _dbInsertDummyAction,Inputs = _dbInsertDummyAction.Inputs};
             var dbOutputMapping = new DbOutputMapping("UserID", "UserID") { RecordSetName = "dbo_InsertDummyUser" };
             databaseService.OutputMappings = new List<IDbOutputMapping>{dbOutputMapping};
             ScenarioContext.Current.Remove("viewModel");
-            var viewModel = new ManageDatabaseServiceViewModel(ScenarioContext.Current.Get<Mock<IDbServiceModel>>("model").Object, ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel").Object,databaseService);
+            ScenarioContext.Current.Remove("requestServiceNameViewModel");
+            var requestServiceNameViewModelMock = new Mock<IRequestServiceNameViewModel>();
+            ScenarioContext.Current.Add("requestServiceNameViewModel", requestServiceNameViewModelMock);
+            var viewModel = new ManageDatabaseServiceViewModel(ScenarioContext.Current.Get<Mock<IDbServiceModel>>("model").Object, requestServiceNameViewModelMock.Object, databaseService);
             ScenarioContext.Current.Add("viewModel",viewModel);
             var view = Utils.GetView<ManageDatabaseServiceControl>();
             try
@@ -288,12 +309,16 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             mockRequestServiceNameViewModel.Verify(model => model.ShowSaveDialog(),Times.Never());
         }
 
-        [When(@"Execution fails")]
+        [When(@"testing the action fails")]
         public void WhenExecutionFails()
         {
             var dbServiceModel = ScenarioContext.Current.Get<Mock<IDbServiceModel>>("model");
             dbServiceModel.Setup(model => model.TestService(It.IsAny<IDatabaseService>()))
                 .Throws(new Exception("Test Failed"));
+            var view = Utils.GetView<ManageDatabaseServiceControl>();
+            view.TestAction();
+            var viewModel = Utils.GetViewModel<ManageDatabaseServiceViewModel>();
+            Assert.IsNull(viewModel.TestResults);
         }
 
         [Given(@"""(.*)"" is selected as the action")]

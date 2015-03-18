@@ -103,32 +103,43 @@ namespace Warewolf.Studio.Views
 
         public IDbSource GetSelectedDataSource()
         {
-            BindingExpression be = SourcesComboBox.GetBindingExpression(ItemsControl.ItemsSourceProperty);
-            if (be != null)
-            {
-                be.UpdateTarget();
-            }
+            IDbSource selectedDataSource = null;
             BindingExpression bindingExpression = SourcesComboBox.GetBindingExpression(Selector.SelectedItemProperty);
             if (bindingExpression != null)
             {
                 bindingExpression.UpdateTarget();
+                var manageDbServiceViewModel = bindingExpression.DataItem as IManageDbServiceViewModel;
+                selectedDataSource = SourcesComboBox.SelectedItem as IDbSource;
+                if (manageDbServiceViewModel != null)
+                {
+                    if (selectedDataSource == null)
+                    {
+                        selectedDataSource = manageDbServiceViewModel.SelectedSource;
+                    }
+                }
+                
             }
-            return SourcesComboBox.SelectedItem as IDbSource;
+            return selectedDataSource;
         }
 
         public IDbAction GetSelectedAction()
         {
-            BindingExpression be = ActionsComboBox.GetBindingExpression(ItemsControl.ItemsSourceProperty);
-            if (be != null)
-            {
-                be.UpdateTarget();
-            }
+            IDbAction selectedAction = null;
             BindingExpression bindingExpression = ActionsComboBox.GetBindingExpression(Selector.SelectedItemProperty);
             if (bindingExpression != null)
             {
                 bindingExpression.UpdateTarget();
+                var manageDbServiceViewModel = bindingExpression.DataItem as IManageDbServiceViewModel;
+                selectedAction = ActionsComboBox.SelectedItem as IDbAction;
+                if (manageDbServiceViewModel != null)
+                {
+                    if (selectedAction == null)
+                    {
+                        selectedAction = manageDbServiceViewModel.SelectedAction;
+                    }
+                }
             }
-            return ActionsComboBox.SelectedItem as IDbAction;
+            return selectedAction;
         }
 
         public bool GetControlEnabled(string controlName)
