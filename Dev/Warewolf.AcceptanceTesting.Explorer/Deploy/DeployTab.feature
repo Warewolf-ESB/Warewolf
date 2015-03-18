@@ -128,7 +128,7 @@ Scenario: Filtering Resources on Destination side
 	 Then "Examples\Utility - Date and Time" from Destination Server is "Visible"
 	 And "Examples\Utility - Date and Time Difference" from Destination Server is "Visible"
 	 And I select "Examples\Utility - Date and Time" from Destination Server
-	  When I clear filter on Destination Server
+	 When I clear filter on Destination Server
 	 Then "Examples\Utility - Date and Time" from Destination Server is "Visible"
 	 And "Examples\Data - Data - Data Split" from Destination Server is "Visible"
 	 And "Examples\Control Flow - Switch" from Destination Server is "Visible"
@@ -197,3 +197,48 @@ Scenario: Deploy Summary is showing new and overiding resources
 	 And Override is "1"
 	 When I Unselect "Examples\Utility - Date and Time" from Source Server
 	 And Override is "0"
+
+
+Scenario: Not allowing to deploy when source and destination servers are same 
+     Given I have deploy tab opened
+	 And selected Destination Server is "localhost"
+	 And selected Destination Server is "localhost"
+	 When I select "Examples\Utility - Date and Time" from Source Server
+	 Then "Deploy" is "Disabled" 
+	 And the validation message is "Source and Destination cannot be the same"
+
+
+Scenario: One server with different names in both sides not allow to deploy
+     Given I have deploy tab opened
+	 And selected Destination Server is "Remote"
+	 And selected Destination Server is "Duplicate"
+	 When I select "Examples\Utility - Date and Time" from Source Server
+	 Then "Deploy" is "Disabled" 
+	 And the validation message is "Source and Destination cannot be the same"
+
+
+Scenario: Deploy is enabled when I change server after validation thrown
+     Given I have deploy tab opened
+	 And selected Destination Server is "localhost"
+	 And selected Destination Server is "localhost"
+	 When I select "Examples\Utility - Date and Time" from Source Server
+	 Then "Deploy" is "Disabled" 
+	 And the validation message is "Source and Destination cannot be the same"
+	 When selected Destination Server is "Remote"
+	 Then "Deploy" is "Enabled" 
+	  And the validation message is ""
+
+Scenario: Deploy a resource without dependency is showing popup
+     Given I have deploy tab opened
+	 And selected Destination Server is "localhost"
+	 And selected Destination Server is "localhost"
+	 When I select "DB Services/FetchPlayers" from Source Server
+	 Then "Deploy" is "Enabled" 
+	 And "Select All Dependencies" is "Enabled"
+	 When I deploy
+	 Then "Resource Dependencyr" popup is shown 
+	 When I click "Select All Dependecies" 
+	 Then "DB Services/Dependency" from Source Server is "Selected"
+	 When I deploy
+	 Then deploy is successfull
+	
