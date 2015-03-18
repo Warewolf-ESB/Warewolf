@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
@@ -102,11 +103,31 @@ namespace Warewolf.Studio.Views
 
         public IDbSource GetSelectedDataSource()
         {
+            BindingExpression be = SourcesComboBox.GetBindingExpression(ItemsControl.ItemsSourceProperty);
+            if (be != null)
+            {
+                be.UpdateTarget();
+            }
+            BindingExpression bindingExpression = SourcesComboBox.GetBindingExpression(Selector.SelectedItemProperty);
+            if (bindingExpression != null)
+            {
+                bindingExpression.UpdateTarget();
+            }
             return SourcesComboBox.SelectedItem as IDbSource;
         }
 
         public IDbAction GetSelectedAction()
         {
+            BindingExpression be = ActionsComboBox.GetBindingExpression(ItemsControl.ItemsSourceProperty);
+            if (be != null)
+            {
+                be.UpdateTarget();
+            }
+            BindingExpression bindingExpression = ActionsComboBox.GetBindingExpression(Selector.SelectedItemProperty);
+            if (bindingExpression != null)
+            {
+                bindingExpression.UpdateTarget();
+            }
             return ActionsComboBox.SelectedItem as IDbAction;
         }
 

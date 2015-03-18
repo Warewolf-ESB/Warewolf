@@ -265,6 +265,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Scheduler.feature</DependentUpon>
     </Compile>
+    <Compile Include="Server Source\NewServerSourceSteps.cs" />
     <Compile Include="Settings\Settings Tab.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

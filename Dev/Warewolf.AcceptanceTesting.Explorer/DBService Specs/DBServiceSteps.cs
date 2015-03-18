@@ -36,7 +36,9 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             SetupModel(mockDbServiceModel);
             var viewModel = new ManageDatabaseServiceViewModel(mockDbServiceModel.Object, mockRequestServiceNameViewModel.Object);
             view.DataContext = viewModel;
-            
+
+            Utils.ShowTheViewForTesting(view);
+
             FeatureContext.Current.Add(Utils.ViewNameKey, view);
             FeatureContext.Current.Add("viewModel", viewModel);
             FeatureContext.Current.Add("model",mockDbServiceModel);
@@ -89,6 +91,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             dataTable.LoadDataRow(new object[] {"1"}, true);
             mockDbServiceModel.Setup(model => model.TestService(It.IsAny<IDatabaseService>()))
                 .Returns(dataTable);
+           
         }
 
         [BeforeScenario("DBService")]
@@ -97,15 +100,13 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             ScenarioContext.Current.Add("view", FeatureContext.Current.Get<ManageDatabaseServiceControl>(Utils.ViewNameKey));
             ScenarioContext.Current.Add("viewModel", FeatureContext.Current.Get<ManageDatabaseServiceViewModel>("viewModel"));
             ScenarioContext.Current.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
-            ScenarioContext.Current.Add("model", FeatureContext.Current.Get<Mock<IDbServiceModel>>("model"));
-
+            ScenarioContext.Current.Add("model", FeatureContext.Current.Get<Mock<IDbServiceModel>>("model"));            
         }
 
         [Given(@"I click New Data Base Service Connector")]
         public void GivenIClickNewDataBaseServiceConnector()
         {
             var view = Utils.GetView<ManageDatabaseServiceControl>();
-            Utils.ShowTheViewForTesting(view);
             Assert.IsNotNull(view);
             Assert.IsNotNull(view.DataContext);
             Assert.IsInstanceOfType(view.DataContext,typeof(ManageDatabaseServiceViewModel));
@@ -247,8 +248,16 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             var viewModel = new ManageDatabaseServiceViewModel(ScenarioContext.Current.Get<Mock<IDbServiceModel>>("model").Object, ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel").Object,databaseService);
             ScenarioContext.Current.Add("viewModel",viewModel);
             var view = Utils.GetView<ManageDatabaseServiceControl>();
-            view.DataContext = viewModel;
-            Utils.ShowTheViewForTesting(view);
+            try
+            {
+                view.DataContext = null;
+                view.DataContext = viewModel;
+            }
+            catch
+            {
+                //Do nothing
+            }
+            
         }
 
         [Given(@"""(.*)"" is selected as the data source")]

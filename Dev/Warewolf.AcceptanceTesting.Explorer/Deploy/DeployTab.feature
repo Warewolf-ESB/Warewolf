@@ -81,28 +81,26 @@ Scenario: Conflicting resources on Source and Destination server
      Given I have deploy tab opened
 	 And selected "Source Server" is "localhost"
      And selected "Destination Server" is "Remote"
-	 When I select "Examples\Utility - Date and Time" from Source Server
-	 Then "Examples\Utility - Date and Time" is "highligted"
-	 When I deploy 
+	 And I select "Examples\Utility - Date and Time" from Source Server
+	 And I deploy 
 	 Then "Resource exists in the destination server" popup is shown
 	 | # | Source Resource         | Destination Resource    |
 	 | 1 | Utility - Date and Time | Utility - Date and Time |
 	 When I click OK on "Resource exists in the destination server" popup
-	 Then deploy is "Successfull"
+	 Then deploy is successfull
 	 And the validation message is "Items deployed successfully"
 
-Scenario: Conflicting resources and caceling Deploy
+Scenario: Conflicting resources on Source and Destination server
      Given I have deploy tab opened
 	 And selected "Source Server" is "localhost"
      And selected "Destination Server" is "Remote"
-	 When I select "Examples\Utility - Date and Time" from Source Server
-	 Then "Examples\Utility - Date and Time" is "highligted"
-	 When I deploy 
+	 And I select "Examples\Utility - Date and Time" from Source Server
+	 And I deploy 
 	 Then "Resource exists in the destination server" popup is shown
 	 | # | Source Resource         | Destination Resource    |
 	 | 1 | Utility - Date and Time | Utility - Date and Time |
 	 When I click Cancel on "Resource exists in the destination server" popup
-	 Then deploy is "UnSuccessfull"
+	 Then deploy is not successfull
 	 And the validation message is ""
 
 
@@ -116,7 +114,7 @@ Scenario: Select all Dependecies is selecting dependecies
 	 And "Select All Dependencies" is "Enabled"
 	 When I click "Select All Dependecies" 
 	 Then "My Category\Double Roll" is "Selected"
-	   
+
 Scenario: Mouse right click select Dependecies is selecting dependecies
      Given I have deploy tab opened
 	 And selected "Source Server" is "localhost"
@@ -135,8 +133,8 @@ Scenario: Select all Dependecies button is disabled when resources has no depend
 	 When I select "Examples\Utility - Date and Time" from Source Server
 	 Then "Deploy" is "Enabled" 
 	 And "Select All Dependencies" is "Disabled"
-	
-	   	 
+
+
 
 Scenario: Filtering Resources on Destination side
      Given I have deploy tab opened
@@ -190,4 +188,4 @@ Scenario: Deploy is successfull when filter is on on both sides
 	 Then deploy is "Successfull"
 	 And the validation message is "Items deployed successfully"
 
-	 
+
