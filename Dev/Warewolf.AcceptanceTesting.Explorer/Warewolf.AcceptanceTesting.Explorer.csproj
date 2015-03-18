@@ -312,11 +312,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FileAndFolder-Rename.feature</DependentUpon>
     </Compile>
-    <Compile Include="Tools\PluginSource.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PluginSource.feature</DependentUpon>
-    </Compile>
     <Compile Include="Web Service\Web Source.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -427,10 +422,6 @@
     <None Include="Tools\FileAndFolder-Rename.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>FileAndFolder-Rename.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\PluginSource.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>PluginSource.feature.cs</LastGenOutput>
     </None>
     <None Include="Web Service\Web Source.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
