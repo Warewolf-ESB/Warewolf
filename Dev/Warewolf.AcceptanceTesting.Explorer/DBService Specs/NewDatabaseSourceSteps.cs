@@ -20,8 +20,6 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
     [Binding]
     public class NewDatabaseSourceSteps
     {
-        
-
         [BeforeFeature("CreatingNewDBSource")]
         public static void SetupForSystem()
         {
@@ -35,7 +33,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             databaseSourceControlView.DataContext = manageDatabaseSourceControlViewModel;
             Utils.ShowTheViewForTesting(databaseSourceControlView);
             FeatureContext.Current.Add(Utils.ViewNameKey, databaseSourceControlView);
-            FeatureContext.Current.Add("viewModel", manageDatabaseSourceControlViewModel);
+            FeatureContext.Current.Add(Utils.ViewModelNameKey, manageDatabaseSourceControlViewModel);
             FeatureContext.Current.Add("updateManager", mockStudioUpdateManager);
             FeatureContext.Current.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
         }
@@ -46,7 +44,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             ScenarioContext.Current.Add(Utils.ViewNameKey, FeatureContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey));
             ScenarioContext.Current.Add("updateManager", FeatureContext.Current.Get<Mock<IStudioUpdateManager>>("updateManager"));
             ScenarioContext.Current.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
-            ScenarioContext.Current.Add("viewModel", FeatureContext.Current.Get<ManageDatabaseSourceViewModel>("viewModel"));
+            ScenarioContext.Current.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<ManageDatabaseSourceViewModel>(Utils.ViewModelNameKey));
         }
 
         [Given(@"I open New Database Source")]

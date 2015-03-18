@@ -251,6 +251,7 @@
     <Compile Include="IConnectedServerChangedEvent.cs" />
     <Compile Include="IConnection.cs" />
     <Compile Include="IConnectionStatusChangedEventArg.cs" />
+    <Compile Include="IDeployViewControl.cs" />
     <Compile Include="IDev2Activity.cs" />
     <Compile Include="IExplorerView.cs" />
     <Compile Include="IHelpView.cs" />

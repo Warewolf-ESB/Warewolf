@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.Studio.ViewModels;
 
 namespace Dev2.Common.Interfaces.Deploy
 {
@@ -12,6 +10,7 @@ namespace Dev2.Common.Interfaces.Deploy
         /// The connected Server        
         /// /// </summary>
         IServer Server { get; }
+        object[] SelectedItems { get; set; }
 
         /// <summary>
         /// Deploy a resource to a connected server
