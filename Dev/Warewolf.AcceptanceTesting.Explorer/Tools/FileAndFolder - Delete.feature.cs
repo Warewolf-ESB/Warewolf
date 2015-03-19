@@ -19,19 +19,19 @@ namespace Warewolf.AcceptanceTesting.Explorer.Tools
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
-    public partial class FileAndFolder_CreateFeature
+    public partial class FileAndFolder_DeleteFeature
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "FileAndFolder - Create.feature"
+#line 1 "FileAndFolder - Delete.feature"
 #line hidden
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FileAndFolder-Create", "In order to avoid silly mistakes\r\nAs a math idiot\r\nI want to be told the sum of t" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FileAndFolder-Delete", "In order to avoid silly mistakes\r\nAs a math idiot\r\nI want to be told the sum of t" +
                     "wo numbers", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -47,9 +47,9 @@ namespace Warewolf.AcceptanceTesting.Explorer.Tools
         public virtual void TestInitialize()
         {
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
-                        && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "FileAndFolder-Create")))
+                        && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "FileAndFolder-Delete")))
             {
-                Warewolf.AcceptanceTesting.Explorer.Tools.FileAndFolder_CreateFeature.FeatureSetup(null);
+                Warewolf.AcceptanceTesting.Explorer.Tools.FileAndFolder_DeleteFeature.FeatureSetup(null);
             }
         }
         
@@ -70,17 +70,17 @@ namespace Warewolf.AcceptanceTesting.Explorer.Tools
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create tool Small View")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Create")]
-        public virtual void CreateToolSmallView()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete tool Small View")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Delete")]
+        public virtual void DeleteToolSmallView()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create tool Small View", new string[] {
-                        "Create"});
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete tool Small View", new string[] {
+                        "Delete"});
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 8
-       testRunner.Given("I have Create Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+       testRunner.Given("I have Delete Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
@@ -89,21 +89,21 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         ""});
 #line 9
-       testRunner.Then("Create small view has", ((string)(null)), table1, "Then ");
+       testRunner.Then("Delete small view has", ((string)(null)), table1, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create tool Large View")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
-        public virtual void CreateToolLargeView()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete tool Large View")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
+        public virtual void DeleteToolLargeView()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create tool Large View", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete tool Large View", ((string[])(null)));
 #line 13
 this.ScenarioSetup(scenarioInfo);
 #line 14
-       testRunner.Given("I have Create Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+       testRunner.Given("I have Delete Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
@@ -116,7 +116,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         ""});
 #line 15
-       testRunner.Then("Create Large View has", ((string)(null)), table2, "Then ");
+       testRunner.Then("Delete Large View has", ((string)(null)), table2, "Then ");
 #line 18
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -129,46 +129,44 @@ this.ScenarioSetup(scenarioInfo);
 #line 19
        testRunner.And("On Error box consists", ((string)(null)), table3, "And ");
 #line 22
-       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 23
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create tool Small View water marks")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
-        public virtual void CreateToolSmallViewWaterMarks()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete tool Small View water marks")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
+        public virtual void DeleteToolSmallViewWaterMarks()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create tool Small View water marks", ((string[])(null)));
-#line 25
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete tool Small View water marks", ((string[])(null)));
+#line 24
 this.ScenarioSetup(scenarioInfo);
-#line 26
-       testRunner.Given("I have Create Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 25
+       testRunner.Given("I have Delete Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
                         "Result"});
             table4.AddRow(new string[] {
-                        "[[PathToCreate]]",
+                        "[[PathToDelete]]",
                         "[[Success]]"});
-#line 27
-       testRunner.Then("Create small view watermarks are", ((string)(null)), table4, "Then ");
+#line 26
+       testRunner.Then("Delete small view watermarks are", ((string)(null)), table4, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create tool Large View Water marks")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
-        public virtual void CreateToolLargeViewWaterMarks()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete tool Large View Water marks")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
+        public virtual void DeleteToolLargeViewWaterMarks()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create tool Large View Water marks", ((string[])(null)));
-#line 31
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete tool Large View Water marks", ((string[])(null)));
+#line 30
 this.ScenarioSetup(scenarioInfo);
-#line 32
-       testRunner.Given("I have Create Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 31
+       testRunner.Given("I have Delete Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
@@ -176,43 +174,39 @@ this.ScenarioSetup(scenarioInfo);
                         "Password",
                         "Result"});
             table5.AddRow(new string[] {
-                        "[[PathToCreate]]",
+                        "[[PathToDelete]]",
                         "[[Username]]",
                         "",
                         "[[Success]]"});
-#line 33
-       testRunner.Then("Create Large View watermarks are", ((string)(null)), table5, "Then ");
-#line 36
+#line 32
+       testRunner.Then("Delete Large View watermarks are", ((string)(null)), table5, "Then ");
+#line 35
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         "Put error in this variable",
                         "Call this web service"});
             table6.AddRow(new string[] {
-                        "",
-                        ""});
-#line 37
+                        "[[Error().Message]]",
+                        "http://lcl:3142/services/err"});
+#line 36
        testRunner.And("On Error box consists", ((string)(null)), table6, "And ");
-#line 40
-       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 41
+#line 39
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating when clicking on done with blank fields")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
-        public virtual void CreateLargeViewIsValidatingWhenClickingOnDoneWithBlankFields()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Removing Data in the field brings back water marks")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
+        public virtual void RemovingDataInTheFieldBringsBackWaterMarks()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create Large View is validating when clicking on done with blank fields", ((string[])(null)));
-#line 43
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Removing Data in the field brings back water marks", ((string[])(null)));
+#line 41
 this.ScenarioSetup(scenarioInfo);
-#line 44
-       testRunner.Given("I have Create Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 45
-       testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 42
+       testRunner.Given("I have Delete Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
@@ -220,91 +214,63 @@ this.ScenarioSetup(scenarioInfo);
                         "Password",
                         "Result"});
             table7.AddRow(new string[] {
+                        "C:\\Test",
                         "",
                         "",
-                        "",
-                        ""});
-#line 46
-       testRunner.And("Create Large View has", ((string)(null)), table7, "And ");
-#line 49
-       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 50
-       testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 51
-       testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 52
-       testRunner.And("Create Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create tool Large View to small view persisting data correctly")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
-        public virtual void CreateToolLargeViewToSmallViewPersistingDataCorrectly()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create tool Large View to small view persisting data correctly", ((string[])(null)));
-#line 54
-this.ScenarioSetup(scenarioInfo);
-#line 55
-       testRunner.Given("I have Create Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+                        "[[FolderDeleted]]"});
+#line 43
+       testRunner.And("Delete Large View has", ((string)(null)), table7, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Put error in this variable",
+                        "Call this web service"});
+            table8.AddRow(new string[] {
+                        "[[a]]",
+                        "dsf"});
+#line 46
+    testRunner.And("On Error box consists", ((string)(null)), table8, "And ");
+#line 49
+    testRunner.When("I remove data in fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
                         "Username",
                         "Password",
                         "Result"});
-            table8.AddRow(new string[] {
-                        "C:\\Test",
-                        "",
-                        "",
-                        "[[FolderCreated]]"});
-#line 56
-       testRunner.And("Create Large View has", ((string)(null)), table8, "And ");
-#line 59
-       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Put error in this variable",
-                        "Call this web service"});
             table9.AddRow(new string[] {
+                        "[[PathToDelete]]",
+                        "[[Username]]",
                         "",
-                        ""});
-#line 60
-       testRunner.And("On Error box consists", ((string)(null)), table9, "And ");
-#line 63
-       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 64
-       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 65
-       testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 66
-       testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 67
-       testRunner.And("Create Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        "[[Success]]"});
+#line 50
+    testRunner.Then("Delete Large View watermarks are", ((string)(null)), table9, "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
-                        "File or Folder",
-                        "Result"});
+                        "Put error in this variable",
+                        "Call this web service"});
             table10.AddRow(new string[] {
-                        "C:\\Test",
-                        "[[FolderCreated]]"});
-#line 68
-       testRunner.And("Create small view has", ((string)(null)), table10, "And ");
+                        "[[Error().Message]]",
+                        "http://lcl:3142/services/err"});
+#line 53
+       testRunner.And("On Error box consists", ((string)(null)), table10, "And ");
+#line 56
+       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("After correcting incorrect variable done button is closing large view")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
-        public virtual void AfterCorrectingIncorrectVariableDoneButtonIsClosingLargeView()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating when clicking on done with blank fields")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
+        public virtual void DeleteLargeViewIsValidatingWhenClickingOnDoneWithBlankFields()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("After correcting incorrect variable done button is closing large view", ((string[])(null)));
-#line 73
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Large View is validating when clicking on done with blank fields", ((string[])(null)));
+#line 59
 this.ScenarioSetup(scenarioInfo);
-#line 74
-       testRunner.Given("I have Create Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 60
+       testRunner.Given("I have Delete Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 61
+       testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
@@ -312,73 +278,87 @@ this.ScenarioSetup(scenarioInfo);
                         "Password",
                         "Result"});
             table11.AddRow(new string[] {
-                        "C:\\[[a2@]]",
                         "",
                         "",
-                        "[[FolderCreated]]"});
-#line 75
-       testRunner.When("Create Large View has", ((string)(null)), table11, "When ");
-#line 78
-       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Put error in this variable",
-                        "Call this web service"});
-            table12.AddRow(new string[] {
                         "",
                         ""});
-#line 79
-       testRunner.And("On Error box consists", ((string)(null)), table12, "And ");
-#line 82
-       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 83
-       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 84
+#line 62
+       testRunner.And("Delete Large View has", ((string)(null)), table11, "And ");
+#line 65
+       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 66
+       testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 67
        testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 85
-       testRunner.And("Create Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
-                        "File or Folder",
-                        "Username",
-                        "Password",
-                        "Result"});
-            table13.AddRow(new string[] {
-                        "C:\\[[a]]",
-                        "",
-                        "",
-                        "[[FolderCreated]]"});
-#line 86
-       testRunner.When("I edit Create Large View", ((string)(null)), table13, "When ");
-#line 89
-       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 90
-       testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 91
-       testRunner.And("Create Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
-                        "File or Folder",
-                        "Result"});
-            table14.AddRow(new string[] {
-                        "C:\\[[a]]",
-                        "[[FolderCreated]]"});
-#line 92
-       testRunner.And("Create small view as", ((string)(null)), table14, "And ");
+#line 68
+       testRunner.And("Delete Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Close large view is closing large view without validating")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
-        public virtual void CloseLargeViewIsClosingLargeViewWithoutValidating()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete tool Large View to small view persisting data correctly")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
+        public virtual void DeleteToolLargeViewToSmallViewPersistingDataCorrectly()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Close large view is closing large view without validating", ((string[])(null)));
-#line 97
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete tool Large View to small view persisting data correctly", ((string[])(null)));
+#line 70
 this.ScenarioSetup(scenarioInfo);
-#line 98
-       testRunner.Given("I have Create Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 71
+       testRunner.Given("I have Delete Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                        "File or Folder",
+                        "Username",
+                        "Password",
+                        "Result"});
+            table12.AddRow(new string[] {
+                        "C:\\Test",
+                        "",
+                        "",
+                        "[[FolderDeleted]]"});
+#line 72
+       testRunner.And("Delete Large View has", ((string)(null)), table12, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Put error in this variable",
+                        "Call this web service"});
+            table13.AddRow(new string[] {
+                        "",
+                        ""});
+#line 75
+       testRunner.And("On Error box consists", ((string)(null)), table13, "And ");
+#line 78
+       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 79
+       testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 80
+       testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 81
+       testRunner.And("Delete Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                        "File or Folder",
+                        "Result"});
+            table14.AddRow(new string[] {
+                        "C:\\Test",
+                        "[[FolderDeleted]]"});
+#line 82
+       testRunner.And("Delete small view has", ((string)(null)), table14, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("After correcting incorrect variable done button is closing large view")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
+        public virtual void AfterCorrectingIncorrectVariableDoneButtonIsClosingLargeView()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("After correcting incorrect variable done button is closing large view", ((string[])(null)));
+#line 87
+this.ScenarioSetup(scenarioInfo);
+#line 88
+       testRunner.Given("I have Delete Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
@@ -389,10 +369,10 @@ this.ScenarioSetup(scenarioInfo);
                         "C:\\[[a2@]]",
                         "",
                         "",
-                        "[[FolderCreated]]"});
-#line 99
-       testRunner.And("Create Large View has", ((string)(null)), table15, "And ");
-#line 102
+                        "[[FolderDeleted]]"});
+#line 89
+       testRunner.When("Delete Large View has", ((string)(null)), table15, "When ");
+#line 92
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -401,206 +381,56 @@ this.ScenarioSetup(scenarioInfo);
             table16.AddRow(new string[] {
                         "",
                         ""});
-#line 103
+#line 93
        testRunner.And("On Error box consists", ((string)(null)), table16, "And ");
-#line 106
-       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 107
+#line 96
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 108
+#line 97
        testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 109
-       testRunner.And("Create Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 110
-       testRunner.When("collapse \"Create\" large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 111
-       testRunner.Then("Create Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 98
+       testRunner.And("Delete Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
-                        "File or Folder",
-                        "Result"});
-            table17.AddRow(new string[] {
-                        "C:\\[[a2@]]",
-                        "[[FolderCreated]]"});
-#line 112
-       testRunner.And("Create small view as", ((string)(null)), table17, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        public virtual void CreateLargeViewIsValidatingIncorrectPath(string no, string sPath, string validation, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create Large View is validating incorrect path", exampleTags);
-#line 117
-this.ScenarioSetup(scenarioInfo);
-#line 118
-       testRunner.Given("I have Create Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 119
-       testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
                         "Username",
                         "Password",
                         "Result"});
-            table18.AddRow(new string[] {
-                        string.Format("{0}", sPath),
+            table17.AddRow(new string[] {
+                        "C:\\[[a]]",
                         "",
                         "",
-                        "[[FolderCreated]]"});
-#line 120
-       testRunner.And("Create Large View has", ((string)(null)), table18, "And ");
-#line 123
-       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 124
+                        "[[FolderDeleted]]"});
+#line 99
+       testRunner.When("I edit Delete Large View", ((string)(null)), table17, "When ");
+#line 102
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 125
-       testRunner.Then(string.Format("Validation message is thrown \'{0}\'", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 103
+       testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 104
+       testRunner.And("Delete Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+                        "File or Folder",
+                        "Result"});
+            table18.AddRow(new string[] {
+                        "C:\\[[a]]",
+                        "[[FolderDeleted]]"});
+#line 105
+       testRunner.And("Delete small view as", ((string)(null)), table18, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect path")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "D:\\Test.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void CreateLargeViewIsValidatingIncorrectPath_1()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Close large view is closing large view without validating")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
+        public virtual void CloseLargeViewIsClosingLargeViewWithoutValidating()
         {
-            this.CreateLargeViewIsValidatingIncorrectPath("1", "D:\\Test.txt", "False", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect path")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "[[a]]:\\Test.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void CreateLargeViewIsValidatingIncorrectPath_2()
-        {
-            this.CreateLargeViewIsValidatingIncorrectPath("2", "[[a]]:\\Test.txt", "False", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect path")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "D:[[rec().a]].txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void CreateLargeViewIsValidatingIncorrectPath_3()
-        {
-            this.CreateLargeViewIsValidatingIncorrectPath("3", "D:[[rec().a]].txt", "False", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect path")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "[[rec(1).a]].txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void CreateLargeViewIsValidatingIncorrectPath_4()
-        {
-            this.CreateLargeViewIsValidatingIncorrectPath("4", "[[rec(1).a]].txt", "False", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect path")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "abc")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void CreateLargeViewIsValidatingIncorrectPath_5()
-        {
-            this.CreateLargeViewIsValidatingIncorrectPath("5", "abc", "True", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect path")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "123")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void CreateLargeViewIsValidatingIncorrectPath_6()
-        {
-            this.CreateLargeViewIsValidatingIncorrectPath("6", "123", "True", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect path")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "\\abc")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void CreateLargeViewIsValidatingIncorrectPath_7()
-        {
-            this.CreateLargeViewIsValidatingIncorrectPath("7", "\\abc", "False", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect path")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "[[a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void CreateLargeViewIsValidatingIncorrectPath_8()
-        {
-            this.CreateLargeViewIsValidatingIncorrectPath("8", "[[a]]", "False", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect path")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "[[a#]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void CreateLargeViewIsValidatingIncorrectPath_9()
-        {
-            this.CreateLargeViewIsValidatingIncorrectPath("9", "[[a#]]", "True", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect path")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "[[rec(@).a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void CreateLargeViewIsValidatingIncorrectPath_10()
-        {
-            this.CreateLargeViewIsValidatingIncorrectPath("10", "[[rec(@).a]]", "True", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect path")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "[[[rec().a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void CreateLargeViewIsValidatingIncorrectPath_11()
-        {
-            this.CreateLargeViewIsValidatingIncorrectPath("11", "[[[rec().a]]", "True", ((string[])(null)));
-        }
-        
-        public virtual void CreateLargeViewIsValidatingIncorrectVariableInUsernameField(string no, string variable, string validation, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create Large View is validating incorrect variable in  username field", exampleTags);
-#line 142
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Close large view is closing large view without validating", ((string[])(null)));
+#line 110
 this.ScenarioSetup(scenarioInfo);
-#line 143
-       testRunner.Given("I have Create Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 144
-       testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 111
+       testRunner.Given("I have Delete Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
@@ -608,397 +438,607 @@ this.ScenarioSetup(scenarioInfo);
                         "Password",
                         "Result"});
             table19.AddRow(new string[] {
-                        "D:\\Test.txt",
-                        string.Format("{0}", variable),
+                        "C:\\[[a2@]]",
                         "",
-                        "[[FolderCreated]]"});
-#line 145
-       testRunner.And("Create Large View has", ((string)(null)), table19, "And ");
-#line 148
+                        "",
+                        "[[FolderDeleted]]"});
+#line 112
+       testRunner.And("Delete Large View has", ((string)(null)), table19, "And ");
+#line 115
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 149
+#line hidden
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Put error in this variable",
+                        "Call this web service"});
+            table20.AddRow(new string[] {
+                        "",
+                        ""});
+#line 116
+       testRunner.And("On Error box consists", ((string)(null)), table20, "And ");
+#line 119
+       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 120
+       testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 121
+       testRunner.And("Delete Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 122
+       testRunner.When("collapse \"Delete\" large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 123
+       testRunner.Then("Delete Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
+                        "File or Folder",
+                        "Result"});
+            table21.AddRow(new string[] {
+                        "C:\\[[a2@]]",
+                        "[[FolderDeleted]]"});
+#line 124
+       testRunner.And("Delete small view as", ((string)(null)), table21, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        public virtual void DeleteLargeViewIsValidatingIncorrectPath(string no, string sPath, string validation, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Large View is validating incorrect path", exampleTags);
+#line 129
+this.ScenarioSetup(scenarioInfo);
+#line 130
+       testRunner.Given("I have Delete Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 131
+       testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
+                        "File or Folder",
+                        "Username",
+                        "Password",
+                        "Result"});
+            table22.AddRow(new string[] {
+                        string.Format("{0}", sPath),
+                        "",
+                        "",
+                        "[[FolderDeleted]]"});
+#line 132
+       testRunner.And("Delete Large View has", ((string)(null)), table22, "And ");
+#line 135
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 150
+#line 136
        testRunner.Then(string.Format("Validation message is thrown \'{0}\'", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect variable in  username field")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect path")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "D:\\Test.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
+        public virtual void DeleteLargeViewIsValidatingIncorrectPath_1()
+        {
+            this.DeleteLargeViewIsValidatingIncorrectPath("1", "D:\\Test.txt", "False", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect path")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "[[a]]:\\Test.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
+        public virtual void DeleteLargeViewIsValidatingIncorrectPath_2()
+        {
+            this.DeleteLargeViewIsValidatingIncorrectPath("2", "[[a]]:\\Test.txt", "False", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect path")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "D:[[rec().a]].txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
+        public virtual void DeleteLargeViewIsValidatingIncorrectPath_3()
+        {
+            this.DeleteLargeViewIsValidatingIncorrectPath("3", "D:[[rec().a]].txt", "False", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect path")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "[[rec(1).a]].txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
+        public virtual void DeleteLargeViewIsValidatingIncorrectPath_4()
+        {
+            this.DeleteLargeViewIsValidatingIncorrectPath("4", "[[rec(1).a]].txt", "False", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect path")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "abc")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
+        public virtual void DeleteLargeViewIsValidatingIncorrectPath_5()
+        {
+            this.DeleteLargeViewIsValidatingIncorrectPath("5", "abc", "True", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect path")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
+        public virtual void DeleteLargeViewIsValidatingIncorrectPath_6()
+        {
+            this.DeleteLargeViewIsValidatingIncorrectPath("6", "123", "True", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect path")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "\\abc")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
+        public virtual void DeleteLargeViewIsValidatingIncorrectPath_7()
+        {
+            this.DeleteLargeViewIsValidatingIncorrectPath("7", "\\abc", "False", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect path")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "[[a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
+        public virtual void DeleteLargeViewIsValidatingIncorrectPath_8()
+        {
+            this.DeleteLargeViewIsValidatingIncorrectPath("8", "[[a]]", "False", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect path")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "[[a#]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
+        public virtual void DeleteLargeViewIsValidatingIncorrectPath_9()
+        {
+            this.DeleteLargeViewIsValidatingIncorrectPath("9", "[[a#]]", "True", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect path")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "[[rec(@).a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
+        public virtual void DeleteLargeViewIsValidatingIncorrectPath_10()
+        {
+            this.DeleteLargeViewIsValidatingIncorrectPath("10", "[[rec(@).a]]", "True", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect path")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "[[[rec().a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
+        public virtual void DeleteLargeViewIsValidatingIncorrectPath_11()
+        {
+            this.DeleteLargeViewIsValidatingIncorrectPath("11", "[[[rec().a]]", "True", ((string[])(null)));
+        }
+        
+        public virtual void DeleteLargeViewIsValidatingIncorrectVariableInUsernameField(string no, string variable, string validation, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Large View is validating incorrect variable in  username field", exampleTags);
+#line 153
+this.ScenarioSetup(scenarioInfo);
+#line 154
+       testRunner.Given("I have Delete Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 155
+       testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
+                        "File or Folder",
+                        "Username",
+                        "Password",
+                        "Result"});
+            table23.AddRow(new string[] {
+                        "D:\\Test.txt",
+                        string.Format("{0}", variable),
+                        "",
+                        "[[FolderDeleted]]"});
+#line 156
+       testRunner.And("Delete Large View has", ((string)(null)), table23, "And ");
+#line 159
+       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 160
+       testRunner.Then(string.Format("Validation message is thrown \'{0}\'", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect variable in  username field")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "testing")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void CreateLargeViewIsValidatingIncorrectVariableInUsernameField_1()
+        public virtual void DeleteLargeViewIsValidatingIncorrectVariableInUsernameField_1()
         {
-            this.CreateLargeViewIsValidatingIncorrectVariableInUsernameField("1", "testing", "False", ((string[])(null)));
+            this.DeleteLargeViewIsValidatingIncorrectVariableInUsernameField("1", "testing", "False", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect variable in  username field")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect variable in  username field")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "test@dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void CreateLargeViewIsValidatingIncorrectVariableInUsernameField_2()
+        public virtual void DeleteLargeViewIsValidatingIncorrectVariableInUsernameField_2()
         {
-            this.CreateLargeViewIsValidatingIncorrectVariableInUsernameField("2", "test@dev2", "False", ((string[])(null)));
+            this.DeleteLargeViewIsValidatingIncorrectVariableInUsernameField("2", "test@dev2", "False", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect variable in  username field")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect variable in  username field")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "test1234")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void CreateLargeViewIsValidatingIncorrectVariableInUsernameField_3()
+        public virtual void DeleteLargeViewIsValidatingIncorrectVariableInUsernameField_3()
         {
-            this.CreateLargeViewIsValidatingIncorrectVariableInUsernameField("3", "test1234", "False", ((string[])(null)));
+            this.DeleteLargeViewIsValidatingIncorrectVariableInUsernameField("3", "test1234", "False", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect variable in  username field")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect variable in  username field")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "test12@dev2.co.za")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void CreateLargeViewIsValidatingIncorrectVariableInUsernameField_4()
+        public virtual void DeleteLargeViewIsValidatingIncorrectVariableInUsernameField_4()
         {
-            this.CreateLargeViewIsValidatingIncorrectVariableInUsernameField("4", "test12@dev2.co.za", "False", ((string[])(null)));
+            this.DeleteLargeViewIsValidatingIncorrectVariableInUsernameField("4", "test12@dev2.co.za", "False", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect variable in  username field")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect variable in  username field")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "test@@dev2.co.za")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void CreateLargeViewIsValidatingIncorrectVariableInUsernameField_5()
+        public virtual void DeleteLargeViewIsValidatingIncorrectVariableInUsernameField_5()
         {
-            this.CreateLargeViewIsValidatingIncorrectVariableInUsernameField("5", "test@@dev2.co.za", "True", ((string[])(null)));
+            this.DeleteLargeViewIsValidatingIncorrectVariableInUsernameField("5", "test@@dev2.co.za", "True", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect variable in  username field")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect variable in  username field")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "test12@dev2,co,za")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void CreateLargeViewIsValidatingIncorrectVariableInUsernameField_6()
+        public virtual void DeleteLargeViewIsValidatingIncorrectVariableInUsernameField_6()
         {
-            this.CreateLargeViewIsValidatingIncorrectVariableInUsernameField("6", "test12@dev2,co,za", "True", ((string[])(null)));
+            this.DeleteLargeViewIsValidatingIncorrectVariableInUsernameField("6", "test12@dev2,co,za", "True", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect variable in  username field")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect variable in  username field")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[a]]@dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void CreateLargeViewIsValidatingIncorrectVariableInUsernameField_7()
+        public virtual void DeleteLargeViewIsValidatingIncorrectVariableInUsernameField_7()
         {
-            this.CreateLargeViewIsValidatingIncorrectVariableInUsernameField("7", "[[a]]@dev2", "False", ((string[])(null)));
+            this.DeleteLargeViewIsValidatingIncorrectVariableInUsernameField("7", "[[a]]@dev2", "False", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect variable in  username field")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect variable in  username field")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[Username]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void CreateLargeViewIsValidatingIncorrectVariableInUsernameField_8()
+        public virtual void DeleteLargeViewIsValidatingIncorrectVariableInUsernameField_8()
         {
-            this.CreateLargeViewIsValidatingIncorrectVariableInUsernameField("8", "[[Username]]", "False", ((string[])(null)));
+            this.DeleteLargeViewIsValidatingIncorrectVariableInUsernameField("8", "[[Username]]", "False", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect variable in  username field")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect variable in  username field")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[User]][[name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void CreateLargeViewIsValidatingIncorrectVariableInUsernameField_9()
+        public virtual void DeleteLargeViewIsValidatingIncorrectVariableInUsernameField_9()
         {
-            this.CreateLargeViewIsValidatingIncorrectVariableInUsernameField("9", "[[User]][[name]]", "False", ((string[])(null)));
+            this.DeleteLargeViewIsValidatingIncorrectVariableInUsernameField("9", "[[User]][[name]]", "False", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect variable in  username field")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect variable in  username field")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(@).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void CreateLargeViewIsValidatingIncorrectVariableInUsernameField_10()
+        public virtual void DeleteLargeViewIsValidatingIncorrectVariableInUsernameField_10()
         {
-            this.CreateLargeViewIsValidatingIncorrectVariableInUsernameField("10", "[[rec(@).a]]", "True", ((string[])(null)));
+            this.DeleteLargeViewIsValidatingIncorrectVariableInUsernameField("10", "[[rec(@).a]]", "True", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect variable in  username field")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect variable in  username field")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[[rec().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void CreateLargeViewIsValidatingIncorrectVariableInUsernameField_11()
+        public virtual void DeleteLargeViewIsValidatingIncorrectVariableInUsernameField_11()
         {
-            this.CreateLargeViewIsValidatingIncorrectVariableInUsernameField("11", "[[[rec().a]]", "True", ((string[])(null)));
+            this.DeleteLargeViewIsValidatingIncorrectVariableInUsernameField("11", "[[[rec().a]]", "True", ((string[])(null)));
         }
         
-        public virtual void CreateLargeViewIsValidatingIncorrectVariableInResultField(string no, string result, string validation, string[] exampleTags)
+        public virtual void DeleteLargeViewIsValidatingIncorrectVariableInResultField(string no, string result, string validation, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create Large View is validating incorrect variable in Result field", exampleTags);
-#line 167
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Large View is validating incorrect variable in Result field", exampleTags);
+#line 177
 this.ScenarioSetup(scenarioInfo);
-#line 168
-       testRunner.Given("I have Create Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 169
+#line 178
+       testRunner.Given("I have Delete Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 179
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
                         "Username",
                         "Password",
                         "Result"});
-            table20.AddRow(new string[] {
+            table24.AddRow(new string[] {
                         "D:\\Test.txt",
                         "",
                         "",
                         string.Format("{0}", result)});
-#line 170
-       testRunner.And("Create Large View has", ((string)(null)), table20, "And ");
-#line 173
-       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 174
+#line 180
+       testRunner.And("Delete Large View has", ((string)(null)), table24, "And ");
+#line 183
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 175
+#line 184
        testRunner.Then(string.Format("Validation message is thrown \'{0}\'", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect variable in Result field")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect variable in Result field")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "result")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void CreateLargeViewIsValidatingIncorrectVariableInResultField_1()
+        public virtual void DeleteLargeViewIsValidatingIncorrectVariableInResultField_1()
         {
-            this.CreateLargeViewIsValidatingIncorrectVariableInResultField("1", "result", "False", ((string[])(null)));
+            this.DeleteLargeViewIsValidatingIncorrectVariableInResultField("1", "result", "False", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect variable in Result field")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect variable in Result field")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void CreateLargeViewIsValidatingIncorrectVariableInResultField_2()
+        public virtual void DeleteLargeViewIsValidatingIncorrectVariableInResultField_2()
         {
-            this.CreateLargeViewIsValidatingIncorrectVariableInResultField("2", "[[result]]", "False", ((string[])(null)));
+            this.DeleteLargeViewIsValidatingIncorrectVariableInResultField("2", "[[result]]", "False", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect variable in Result field")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect variable in Result field")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "[[a]][[b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void CreateLargeViewIsValidatingIncorrectVariableInResultField_3()
+        public virtual void DeleteLargeViewIsValidatingIncorrectVariableInResultField_3()
         {
-            this.CreateLargeViewIsValidatingIncorrectVariableInResultField("3", "[[a]][[b]]", "True", ((string[])(null)));
+            this.DeleteLargeViewIsValidatingIncorrectVariableInResultField("3", "[[a]][[b]]", "True", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect variable in Result field")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect variable in Result field")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "[[rec([[a]]).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void CreateLargeViewIsValidatingIncorrectVariableInResultField_4()
+        public virtual void DeleteLargeViewIsValidatingIncorrectVariableInResultField_4()
         {
-            this.CreateLargeViewIsValidatingIncorrectVariableInResultField("4", "[[rec([[a]]).a]]", "True", ((string[])(null)));
+            this.DeleteLargeViewIsValidatingIncorrectVariableInResultField("4", "[[rec([[a]]).a]]", "True", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect variable in Result field")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect variable in Result field")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "[[[[a]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void CreateLargeViewIsValidatingIncorrectVariableInResultField_5()
+        public virtual void DeleteLargeViewIsValidatingIncorrectVariableInResultField_5()
         {
-            this.CreateLargeViewIsValidatingIncorrectVariableInResultField("5", "[[[[a]]]]", "True", ((string[])(null)));
+            this.DeleteLargeViewIsValidatingIncorrectVariableInResultField("5", "[[[[a]]]]", "True", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect variable in Result field")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect variable in Result field")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "[[rec(*).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void CreateLargeViewIsValidatingIncorrectVariableInResultField_6()
+        public virtual void DeleteLargeViewIsValidatingIncorrectVariableInResultField_6()
         {
-            this.CreateLargeViewIsValidatingIncorrectVariableInResultField("6", "[[rec(*).a]]", "False", ((string[])(null)));
+            this.DeleteLargeViewIsValidatingIncorrectVariableInResultField("6", "[[rec(*).a]]", "False", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Large View is validating incorrect variable in Result field")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Large View is validating incorrect variable in Result field")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "[[rec().a@]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void CreateLargeViewIsValidatingIncorrectVariableInResultField_7()
+        public virtual void DeleteLargeViewIsValidatingIncorrectVariableInResultField_7()
         {
-            this.CreateLargeViewIsValidatingIncorrectVariableInResultField("7", "[[rec().a@]]", "True", ((string[])(null)));
+            this.DeleteLargeViewIsValidatingIncorrectVariableInResultField("7", "[[rec().a@]]", "True", ((string[])(null)));
         }
         
-        public virtual void CreateOnErrorFieldsIncorrectVariablesAreValidating(string no, string variable, string validation, string[] exampleTags)
+        public virtual void DeleteOnErrorFieldsIncorrectVariablesAreValidating(string no, string variable, string validation, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create On error fields incorrect variables are validating", exampleTags);
-#line 187
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete On error fields incorrect variables are validating", exampleTags);
+#line 196
 this.ScenarioSetup(scenarioInfo);
-#line 188
-       testRunner.Given("I have Create Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 189
-       testRunner.And("Create Large View with water marks has", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 197
+       testRunner.Given("I have Delete Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 198
+       testRunner.And("Delete Large View with water marks has", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
                         "Username",
                         "Password",
                         "Result"});
-            table21.AddRow(new string[] {
+            table25.AddRow(new string[] {
                         "D:\\Test.txt",
                         "",
                         "",
                         "[[Result]]"});
-#line 190
-        testRunner.And("Create Large View has", ((string)(null)), table21, "And ");
-#line 193
-       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 199
+        testRunner.And("Delete Large View has", ((string)(null)), table25, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
                         "Put error in this variable",
                         "Call this web service"});
-            table22.AddRow(new string[] {
+            table26.AddRow(new string[] {
                         string.Format("\'{0}\'", variable),
                         string.Format("\'{0}\'", variable)});
-#line 194
-       testRunner.And("On Error box consists", ((string)(null)), table22, "And ");
-#line 197
-       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 198
+#line 202
+       testRunner.And("On Error box consists", ((string)(null)), table26, "And ");
+#line 206
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 199
+#line 207
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 200
+#line 208
        testRunner.Then(string.Format("Validation message is thrown \'{0}\'", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create On error fields incorrect variables are validating")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete On error fields incorrect variables are validating")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void CreateOnErrorFieldsIncorrectVariablesAreValidating_1()
+        public virtual void DeleteOnErrorFieldsIncorrectVariablesAreValidating_1()
         {
-            this.CreateOnErrorFieldsIncorrectVariablesAreValidating("1", "[[a]]", "False", ((string[])(null)));
+            this.DeleteOnErrorFieldsIncorrectVariablesAreValidating("1", "[[a]]", "False", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create On error fields incorrect variables are validating")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete On error fields incorrect variables are validating")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[a]][[b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void CreateOnErrorFieldsIncorrectVariablesAreValidating_2()
+        public virtual void DeleteOnErrorFieldsIncorrectVariablesAreValidating_2()
         {
-            this.CreateOnErrorFieldsIncorrectVariablesAreValidating("2", "[[a]][[b]]", "False", ((string[])(null)));
+            this.DeleteOnErrorFieldsIncorrectVariablesAreValidating("2", "[[a]][[b]]", "False", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create On error fields incorrect variables are validating")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete On error fields incorrect variables are validating")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void CreateOnErrorFieldsIncorrectVariablesAreValidating_3()
+        public virtual void DeleteOnErrorFieldsIncorrectVariablesAreValidating_3()
         {
-            this.CreateOnErrorFieldsIncorrectVariablesAreValidating("3", "\"\"", "False", ((string[])(null)));
+            this.DeleteOnErrorFieldsIncorrectVariablesAreValidating("3", "\"\"", "False", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create On error fields incorrect variables are validating")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete On error fields incorrect variables are validating")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void CreateOnErrorFieldsIncorrectVariablesAreValidating_4()
+        public virtual void DeleteOnErrorFieldsIncorrectVariablesAreValidating_4()
         {
-            this.CreateOnErrorFieldsIncorrectVariablesAreValidating("4", "[[rec().a]]", "False", ((string[])(null)));
+            this.DeleteOnErrorFieldsIncorrectVariablesAreValidating("4", "[[rec().a]]", "False", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create On error fields incorrect variables are validating")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete On error fields incorrect variables are validating")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[a]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void CreateOnErrorFieldsIncorrectVariablesAreValidating_5()
+        public virtual void DeleteOnErrorFieldsIncorrectVariablesAreValidating_5()
         {
-            this.CreateOnErrorFieldsIncorrectVariablesAreValidating("5", "[[a]]]]", "True", ((string[])(null)));
+            this.DeleteOnErrorFieldsIncorrectVariablesAreValidating("5", "[[a]]]]", "True", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create On error fields incorrect variables are validating")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete On error fields incorrect variables are validating")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(**).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void CreateOnErrorFieldsIncorrectVariablesAreValidating_6()
+        public virtual void DeleteOnErrorFieldsIncorrectVariablesAreValidating_6()
         {
-            this.CreateOnErrorFieldsIncorrectVariablesAreValidating("6", "[[rec(**).a]]", "True", ((string[])(null)));
+            this.DeleteOnErrorFieldsIncorrectVariablesAreValidating("6", "[[rec(**).a]]", "True", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create On error fields incorrect variables are validating")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete On error fields incorrect variables are validating")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void CreateOnErrorFieldsIncorrectVariablesAreValidating_7()
+        public virtual void DeleteOnErrorFieldsIncorrectVariablesAreValidating_7()
         {
-            this.CreateOnErrorFieldsIncorrectVariablesAreValidating("7", "[[rec()]]", "True", ((string[])(null)));
+            this.DeleteOnErrorFieldsIncorrectVariablesAreValidating("7", "[[rec()]]", "True", ((string[])(null)));
         }
     }
 }

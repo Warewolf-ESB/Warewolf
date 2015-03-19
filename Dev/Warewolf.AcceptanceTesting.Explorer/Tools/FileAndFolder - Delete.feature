@@ -1,126 +1,137 @@
-﻿Feature: FileAndFolder-Create
+﻿Feature: FileAndFolder-Delete
 	In order to avoid silly mistakes
 	As a math idiot
 	I want to be told the sum of two numbers
 
-@Create
-Scenario: Create tool Small View
-       Given I have Create Small View on design surface
-       Then Create small view has
+@Delete
+Scenario: Delete tool Small View
+       Given I have Delete Small View on design surface
+       Then Delete small view has
        | File or Folder |  Result |
        |                |         |
 
-Scenario: Create tool Large View
-       Given I have Create Large View on design surface
-       Then Create Large View has
+Scenario: Delete tool Large View
+       Given I have Delete Large View on design surface
+       Then Delete Large View has
        | File or Folder | Username | Password | Result |
        |                |          |          |        |
        And If it exists Overwrite is "Unselected"      
        And On Error box consists
        | Put error in this variable | Call this web service |
-       |                            |                       |
-       And End this workflow is "Unselected"
+       |                            |                       |      
        And Done button is "Visible"
 
-Scenario: Create tool Small View water marks
-       Given I have Create Small View on design surface
-       Then Create small view watermarks are
+Scenario: Delete tool Small View water marks
+       Given I have Delete Small View on design surface
+       Then Delete small view watermarks are
        | File or Folder   |Result      |
-       | [[PathToCreate]] |[[Success]] |
+       | [[PathToDelete]] |[[Success]] |
 
-Scenario: Create tool Large View Water marks
-       Given I have Create Large View on design surface
-       Then Create Large View watermarks are
+Scenario: Delete tool Large View Water marks
+       Given I have Delete Large View on design surface
+       Then Delete Large View watermarks are
        | File or Folder   | Username     | Password |  Result      |
-       | [[PathToCreate]] | [[Username]] |          |  [[Success]] |
+       | [[PathToDelete]] | [[Username]] |          |  [[Success]] |
        And If it exists Overwrite is "Unselected"      
        And On Error box consists
-       | Put error in this variable | Call this web service |
-       |                            |                       |
-       And End this workflow is "Unselected"
+       | Put error in this variable | Call this web service        |
+       | [[Error().Message]]        | http://lcl:3142/services/err |     
        And Done button is "Visible"
 
-Scenario: Create Large View is validating when clicking on done with blank fields
-       Given I have Create Large View on design surface
+Scenario: Removing Data in the field brings back water marks
+       Given I have Delete Large View on design surface
+       And Delete Large View has
+       | File or Folder | Username | Password | Result            |
+       | C:\Test        |          |          | [[FolderDeleted]] |
+	   And On Error box consists
+       | Put error in this variable | Call this web service |
+       | [[a]]                      | dsf                   |      
+	   When I remove data in fields
+	   Then Delete Large View watermarks are
+       | File or Folder   | Username     | Password |  Result      |
+       | [[PathToDelete]] | [[Username]] |          |  [[Success]] |   
+       And On Error box consists
+       | Put error in this variable | Call this web service        |
+       | [[Error().Message]]        | http://lcl:3142/services/err |     
+       And Done button is "Visible"
+
+
+Scenario: Delete Large View is validating when clicking on done with blank fields
+       Given I have Delete Large View on design surface
        And "File or Folder" is focused
-       And Create Large View has
+       And Delete Large View has
        | File or Folder | Username | Password |Result |
        |                |          |          |       |
        And If it exists Overwrite is "Unselected"      
        When I click "Done"
        Then Validation message is thrown
-       And Create Small View is "Not Visible"
+       And Delete Small View is "Not Visible"
 
-Scenario: Create tool Large View to small view persisting data correctly
-       Given I have Create Large View on design surface
-       And Create Large View has
+Scenario: Delete tool Large View to small view persisting data correctly
+       Given I have Delete Large View on design surface
+       And Delete Large View has
        | File or Folder | Username | Password | Result            |
-       | C:\Test        |          |          | [[FolderCreated]] |
-       And If it exists Overwrite is "Unselected"      
+       | C:\Test        |          |          | [[FolderDeleted]] | 
        And On Error box consists
        | Put error in this variable | Call this web service |
-       |                            |                       |
-       And End this workflow is "Unselected"
+       |                            |                       |      
        And Done button is "Visible"
        When I click "Done"
        Then Validation message is not thrown
-       And Create Small View is "Visible"
-       And Create small view has
+       And Delete Small View is "Visible"
+       And Delete small view has
        | File or Folder |  Result            |
-       | C:\Test        |  [[FolderCreated]] |
+       | C:\Test        |  [[FolderDeleted]] |
 
 
 Scenario: After correcting incorrect variable done button is closing large view
-       Given I have Create Large View on design surface
-       When Create Large View has
+       Given I have Delete Large View on design surface
+       When Delete Large View has
         | File or Folder | Username | Password | Result            |
-        | C:\[[a2@]]     |          |          | [[FolderCreated]] |
+        | C:\[[a2@]]     |          |          | [[FolderDeleted]] |
        And If it exists Overwrite is "Unselected"      
        And On Error box consists
        | Put error in this variable | Call this web service |
-       |                            |                       |
-       And End this workflow is "Unselected"
+       |                            |                       |      
        And Done button is "Visible"
        Then Validation message is thrown
-       And Create Small View is "Not Visible"
-       When I edit Create Large View
+       And Delete Small View is "Not Visible"
+       When I edit Delete Large View
         | File or Folder | Username | Password | Result            |
-        | C:\[[a]]       |          |          | [[FolderCreated]] |
+        | C:\[[a]]       |          |          | [[FolderDeleted]] |
        When I click on "Done"
        Then Validation message is not thrown
-       And Create Small View is "Visible"
-       And Create small view as
+       And Delete Small View is "Visible"
+       And Delete small view as
        | File or Folder | Result            |
-       | C:\[[a]]       | [[FolderCreated]] |
+       | C:\[[a]]       | [[FolderDeleted]] |
 
 
 Scenario: Close large view is closing large view without validating
-       Given I have Create Large View on design surface
-       And Create Large View has
+       Given I have Delete Large View on design surface
+       And Delete Large View has
        | File or Folder | Username | Password | Result            |
-       | C:\[[a2@]]     |          |          | [[FolderCreated]] |
+       | C:\[[a2@]]     |          |          | [[FolderDeleted]] |
        And If it exists Overwrite is "Unselected"      
        And On Error box consists
        | Put error in this variable | Call this web service |
-       |                            |                       |
-       And End this workflow is "Unselected"
+       |                            |                       |      
        And Done button is "Visible"
        Then Validation message is thrown
-       And Create Small View is "Not Visible"
-       When collapse "Create" large view
-       Then Create Small View is "Visible"
-       And Create small view as
+       And Delete Small View is "Not Visible"
+       When collapse "Delete" large view
+       Then Delete Small View is "Visible"
+       And Delete small view as
         | File or Folder | Result            |
-        | C:\[[a2@]]     | [[FolderCreated]] |
+        | C:\[[a2@]]     | [[FolderDeleted]] |
 
 
-Scenario Outline: Create Large View is validating incorrect path
-       Given I have Create Large View on design surface
+Scenario Outline: Delete Large View is validating incorrect path
+       Given I have Delete Large View on design surface
        And "File or Folder" is focused
-       And Create Large View has
+       And Delete Large View has
        | File or Folder | Username | Password | Result            |
-       | <SPath>        |          |          | [[FolderCreated]] |
-       And If it exists Overwrite is "Unselected"      
+       | <SPath>        |          |          | [[FolderDeleted]] |
        When I click on "Done"
        Then Validation message is thrown '<Validation>'
 Examples: 
@@ -139,13 +150,12 @@ Examples:
 
 
 
-Scenario Outline: Create Large View is validating incorrect variable in  username field
-       Given I have Create Large View on design surface
+Scenario Outline: Delete Large View is validating incorrect variable in  username field
+       Given I have Delete Large View on design surface
        And "File or Folder" is focused
-       And Create Large View has
+       And Delete Large View has
         | File or Folder | Username   | Password | Result            |
-        | D:\Test.txt    | <Variable> |          | [[FolderCreated]] |
-       And If it exists Overwrite is "Unselected"      
+        | D:\Test.txt    | <Variable> |          | [[FolderDeleted]] |    
        When I click on "Done"
        Then Validation message is thrown '<Validation>'
 Examples: 
@@ -164,13 +174,12 @@ Examples:
 
 
 
-Scenario Outline: Create Large View is validating incorrect variable in Result field
-       Given I have Create Large View on design surface
+Scenario Outline: Delete Large View is validating incorrect variable in Result field
+       Given I have Delete Large View on design surface
        And "File or Folder" is focused
-       And Create Large View has
+       And Delete Large View has
        | File or Folder | Username | Password | Result   |
-       | D:\Test.txt    |          |          | <Result> |
-       And If it exists Overwrite is "Unselected"      
+       | D:\Test.txt    |          |          | <Result> | 
        When I click on "Done"
        Then Validation message is thrown '<Validation>'
 Examples: 
@@ -184,17 +193,16 @@ Examples:
     | 7  | [[rec().a@]]     | True       |
 
 
-Scenario Outline: Create On error fields incorrect variables are validating
-       Given I have Create Large View on design surface
-       And Create Large View with water marks has
-        And Create Large View has
+Scenario Outline: Delete On error fields incorrect variables are validating
+       Given I have Delete Large View on design surface
+       And Delete Large View with water marks has
+        And Delete Large View has
        | File or Folder | Username | Password | Result     |
        | D:\Test.txt    |          |          | [[Result]] |
-       And If it exists Overwrite is "Unselected"      
        And On Error box consists
        | Put error in this variable | Call this web service |
        | '<Variable>'               | '<Variable>'          |
-       And End this workflow is "Unselected"
+       
        And Done button is "Visible"
        When I click on "Done"
        Then Validation message is thrown '<Validation>'
