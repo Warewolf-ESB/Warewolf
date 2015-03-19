@@ -314,6 +314,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FileAndFolder - Read.feature</DependentUpon>
     </Compile>
+    <Compile Include="Tools\FileAndFolder - Unzip.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FileAndFolder - Unzip.feature</DependentUpon>
+    </Compile>
     <Compile Include="Tools\FileAndFolder-Copy.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -439,6 +444,10 @@
     <None Include="Tools\FileAndFolder - Read.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>FileAndFolder - Read.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\FileAndFolder - Unzip.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FileAndFolder - Unzip.feature.cs</LastGenOutput>
     </None>
     <None Include="Tools\FileAndFolder-Copy.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
