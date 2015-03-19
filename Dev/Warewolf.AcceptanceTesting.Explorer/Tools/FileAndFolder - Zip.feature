@@ -69,7 +69,7 @@ Scenario: Zip tool Large View to small view persisting data correctly
        | File or Folder | Destination | Result  |
        | C:\Test.zip    | D:\         | [[Zip]] |
 
-Scenario: Zip  Compression is not changing by opening and closing large view
+Scenario Outline: Zip  Compression is not changing by opening and closing large view
        Given I have Zip Large View on design surface
        And Zip Large View has
        | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password | Archive Password | Compression   | Result |
