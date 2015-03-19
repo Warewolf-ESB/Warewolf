@@ -37,7 +37,7 @@
 #       Given I send "Deployrem" to "EXPLORERFILTER"
 #	   And I right click "EXPLORERFOLDERS,UI_Deployrem_AutoID"
 #	   And I send "{TAB}{TAB}{TAB}{TAB}{ENTER}" to ""
-#	   And I click "UI_MessageBox_AutoID,UI_YesButton_AutoID"
+#	   And I click "UI_MessageBox_AutoID,UI_YesButton_AutoID" 
 
 
 

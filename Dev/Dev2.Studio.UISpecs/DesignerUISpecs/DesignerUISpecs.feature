@@ -119,7 +119,7 @@ Scenario: Testing NewWorkflow ShortcutKey Works as Expected
 	Then "WebBrowserWindow" is visible within "2" seconds
 	Given I send "{ESC}" to "WebBrowserWindow"
 	Given I send "{CTRL}{SHIFT}P" to "WORKFLOWDESIGNER"
-	Then "WebBrowserWindow" is visible within "2" seconds
+	Then "WebBrowserWindow" is visible within "2" seconds 
 	Given I send "{ESC}" to "WebBrowserWindow"
 	Given I send "{CTRL}S" to ""
 	Then "WebBrowserWindow" is visible within "2" seconds
@@ -132,15 +132,6 @@ Scenario: Testing NewWorkflow ShortcutKey Works as Expected
 
 
 
-
-
-
-
-
-
-	
-
-	
 
 
 
