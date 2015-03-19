@@ -1,6 +1,5 @@
 ﻿using System;
 using Dev2.Common.Interfaces;
-using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
@@ -145,37 +144,5 @@ namespace Warewolf.AcceptanceTesting.Explorer.Scheduler
                 //Compare scheduled tasks to the tableRow
             }
         }
-    }
-
-    public interface ISchedulerViewModel
-    {
-        void AddNewSchedule(string s, string s1);
-    }
-
-    public interface ISchedulerView:IView
-    {
-        string GetSelectedServerName();
-
-        void GetCurrentSchedule();
-
-        void EnterUsername(string userName);
-
-        void EnterPassword(string password);
-
-        void SelectTask(string taskName);
-
-        void CreateNewTask();
-
-        void Save();
-
-        void DeleteTask(string taskName);
-
-        void UpdateTask(string taskName, string status, string workflowName, string edit);
-
-        string GetUsername();
-
-        string GetPassword();
-
-        void GetScheduledTasks();
     }
 }
