@@ -293,7 +293,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                         }
                     }
                 }
-
+                dataObject.Environment = null;
                 // else handle the format requested ;)
                 return new StringResponseWriter(executePayload, formatter.ContentType);
             }

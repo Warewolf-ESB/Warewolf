@@ -5,7 +5,7 @@ open LanguageAST
 open Microsoft.FSharp.Text.Lexing
 open DataASTMutable
 open WarewolfDataEvaluationCommon
-
+open Dev2.Common.Interfaces
 let PositionColumn = "WarewolfPositionColumn#"
 
 let CreateDataSet (a:string) =
@@ -83,7 +83,7 @@ let rec AddToRecordSetFramed (env:WarewolfEnvironment) (name:RecordSetIdentifier
         let envwithRecset = AddRecsetToEnv name.Name env
         AddToRecordSetFramed envwithRecset name value
 
-let EvalMultiAssignOp  (env:WarewolfEnvironment)  (value :WarewolfParserInterop.IAssignValue ) =
+let EvalMultiAssignOp  (env:WarewolfEnvironment)  (value :IAssignValue ) =
     let left = WarewolfDataEvaluationCommon.ParseLanguageExpression value.Name 
     let right = WarewolfDataEvaluationCommon.Eval env value.Value
     let x = match right with 
@@ -96,7 +96,9 @@ let EvalMultiAssignOp  (env:WarewolfEnvironment)  (value :WarewolfParserInterop.
     |   _ -> failwith "input must be recordset or value"
 
 
-let EvalMultiAssign (values :WarewolfParserInterop.IAssignValue seq) (env:WarewolfEnvironment) =
+let EvalMultiAssign (values :IAssignValue seq) (env:WarewolfEnvironment) =
         let env = Seq.fold EvalMultiAssignOp env values
         let recsets = Map.map (fun a b -> {b with Frame = 0 }) env.RecordSets
         {env with RecordSets = recsets}
+
+let AtomtoString a = WarewolfDataEvaluationCommon.AtomtoString a;

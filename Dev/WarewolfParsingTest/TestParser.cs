@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WarewolfParserInterop;
 namespace WarewolfParsingTest
@@ -124,6 +125,26 @@ namespace WarewolfParsingTest
             Assert.IsTrue(val.IsInt);
             var intval = val as DataASTMutable.WarewolfAtom.Int;
             Assert.AreEqual(2,intval.Item);
+            // ReSharper restore PossibleNullReferenceException
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_RecsetEmpty_ExpectAnAtom()
+        {
+
+            var env = WarewolfTestData.CreateTestEnvWithData;
+
+            var ast = PublicFunctions.EvalEnvExpression("[[rec().a]]", env);
+            Assert.IsTrue(ast.IsWarewolfAtomListresult);
+            var x = ast as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+            // ReSharper disable PossibleNullReferenceException
+            var val = x.Item.First();
+
+            Assert.IsTrue(val.IsInt);
+            var intval = val as DataASTMutable.WarewolfAtom.Int;
+            Assert.AreEqual(2, intval.Item);
             // ReSharper restore PossibleNullReferenceException
         }
 

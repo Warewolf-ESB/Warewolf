@@ -67,6 +67,11 @@
     <Compile Include="WarewolfTestData.fs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Name>Dev2.Common.Interfaces</Name>
+      <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\WarewolfParserInterop\WarewolfParserInterop.csproj">
       <Name>WarewolfParserInterop</Name>
       <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>

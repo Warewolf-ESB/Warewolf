@@ -1,13 +1,9 @@
 ﻿
 
+using Dev2.Common.Interfaces;
+
 namespace WarewolfParserInterop
 {
-
-    public interface IAssignValue
-    {
-        string Name { get; }
-        string Value { get;  }
-    }
     public class AssignValue : IAssignValue
     {
         public AssignValue(string name, string value)

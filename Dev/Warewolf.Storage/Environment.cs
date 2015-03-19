@@ -1,11 +1,19 @@
 ﻿using System.Collections.Generic;
+using Dev2.Common.Interfaces;
 using WarewolfParserInterop;
 
 namespace Warewolf.Storage
 {
 
+    public interface IEnvironment
+    {
+        WarewolfDataEvaluationCommon.WarewolfEvalResult Eval(string exp);
 
-    public class  Environment
+        bool Assign(string exp, string value);
+
+        bool MultiAssign(IEnumerable<IAssignValue> values);
+    }
+    public class  Environment : IEnvironment
     {
         DataASTMutable.WarewolfEnvironment _env;
 
@@ -27,11 +35,16 @@ namespace Warewolf.Storage
         }
 
 
-        public bool MultiAssign(IList<IAssignValue> values  )
+        public bool MultiAssign(IEnumerable<IAssignValue> values  )
         {
             var envTemp = PublicFunctions.EvalMultiAssign(values, _env);
             _env = envTemp;
             return true; //todo : decide on whether to catch here of just send exceptions on
+        }
+
+        public static  string WarewolfAtomToString(DataASTMutable.WarewolfAtom a)
+        {
+            return PublicFunctions.AtomtoString(a);
         }
     }
 }

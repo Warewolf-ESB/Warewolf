@@ -53,13 +53,15 @@ let evalRecordSetIndex (recset:WarewolfRecordset) (identifier:RecordSetIdentifie
     let index = getRecordSetIndex recset position
     match index with 
     | IndexFoundPosition a -> recset.Data.[identifier.Column].[a]
-    | IndexDoesNotExist -> failwith (sprintf "%s does not have the row %i" identifier.Name position )
+    | IndexDoesNotExist -> Nothing
 
 let evalRecordSetStarIndex (recset:WarewolfRecordset) (identifier:RecordSetIdentifier)  =
     recset.Data.[identifier.Column]
 
 let evalRecordSetLastIndex (recset:WarewolfRecordset) (identifier:RecordSetIdentifier)  =
-    recset.Data.[identifier.Column].[recset.LastIndex]
+    let data = Seq.max recset.Data.[PositionColumn] 
+    let index = Seq.findIndex (fun a -> a=data) recset.Data.[PositionColumn] 
+    recset.Data.[identifier.Column].[index]
 
 
 
@@ -72,7 +74,7 @@ let evalRecordSetLastIndex (recset:WarewolfRecordset) (identifier:RecordSetIdent
 let evalScalar (scalarName:ScalarIdentifier) (env:WarewolfEnvironment) =
     if env.Scalar.ContainsKey scalarName
     then     ( env.Scalar.[scalarName])
-    else failwith ( sprintf "the scalar %s does not exist" scalarName)
+    else Nothing
 
 let rec IndexToString (x:Index) =
     match x with 
@@ -101,12 +103,16 @@ and  LanguageExpressionToString  (x:LanguageExpression) =
         | ComplexExpression a -> List.fold (fun c d -> c + LanguageExpressionToString d ) "" a
 
 and evalRecordsSet (recset:RecordSetIdentifier) (env: WarewolfEnvironment)  =
-        match recset.Index with
-            | IntIndex a -> new System.Collections.Generic.List<WarewolfAtomRecord>([ evalRecordSetIndex env.RecordSets.[recset.Name] recset a])
-            | Star ->  evalRecordSetStarIndex env.RecordSets.[recset.Name] recset
-            | Last -> new System.Collections.Generic.List<WarewolfAtomRecord>([evalRecordSetLastIndex env.RecordSets.[recset.Name] recset])
-            | IndexExpression a -> new System.Collections.Generic.List<WarewolfAtomRecord>([ evalRecordSetIndex env.RecordSets.[recset.Name] recset ( LanguageExpressionToString a|>(EvalIndex env)) ])
-            | _ -> failwith "Unknown evaluation type"
+    if  not (env.RecordSets.ContainsKey recset.Name)       then 
+        new System.Collections.Generic.List<WarewolfAtom>([Nothing])
+            
+    else
+            match recset.Index with
+                | IntIndex a -> new System.Collections.Generic.List<WarewolfAtomRecord>([ evalRecordSetIndex env.RecordSets.[recset.Name] recset a])
+                | Star ->  evalRecordSetStarIndex env.RecordSets.[recset.Name] recset
+                | Last -> new System.Collections.Generic.List<WarewolfAtomRecord>([evalRecordSetLastIndex env.RecordSets.[recset.Name] recset])
+                | IndexExpression a -> new System.Collections.Generic.List<WarewolfAtomRecord>([ evalRecordSetIndex env.RecordSets.[recset.Name] recset ( LanguageExpressionToString a|>(EvalIndex env)) ])
+                | _ -> failwith "Unknown evaluation type"
 
 and evalRecordSetAsString (env: WarewolfEnvironment) (a:RecordSetIdentifier) = 
     match a.Index with
@@ -159,7 +165,7 @@ and  Eval  (env: WarewolfEnvironment) (lang:string) : WarewolfEvalResult=
         | WarewolfAtomAtomExpression a -> WarewolfAtomResult a
         | ComplexExpression  a -> WarewolfAtomResult (EvalComplex ( List.filter (fun b -> "" <> (LanguageExpressionToString b)) a)) 
 
-let b = ParseLanguageExpression "[[a]]"
+
 
 
 // assigns happen here all tools will use these functions to do assigns. Must be wrapped in c# class

@@ -22,6 +22,7 @@ using Dev2.DataList.Contract;
 using Dev2.Diagnostics.Logging;
 using Dev2.DynamicServices.Objects;
 using Dev2.Web;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 
@@ -46,10 +47,12 @@ namespace Dev2.DynamicServices
 
         private DsfDataObject()
         {
+            Environment = new Warewolf.Storage.Environment(); ;
         }
 
         public DsfDataObject(string xmldata, Guid dataListId, string rawPayload = "")
         {
+            Environment = new Warewolf.Storage.Environment(); ;
             ThreadsToDispose = new Dictionary<int, List<Guid>>();
 
             if (xmldata != null)
@@ -209,6 +212,8 @@ namespace Dev2.DynamicServices
 
             return false;
         }
+
+        public IEnvironment Environment { get; set; }
 
         public int ForEachNestingLevel { get; set; }
 

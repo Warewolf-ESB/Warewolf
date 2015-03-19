@@ -15,7 +15,9 @@ using System.Text;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
+using Dev2.Server.Datalist;
 using Dev2.Web;
+using Warewolf.Storage;
 
 namespace Dev2
 {
@@ -87,5 +89,6 @@ namespace Dev2
         IDSFDataObject Clone();
         bool IsDebugMode();
         bool IsRemoteWorkflow();
+        IEnvironment Environment { get; set; }
     }
 }
