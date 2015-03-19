@@ -32,24 +32,24 @@ Feature: VariableList
 Scenario: Variables adding in variable list 
 	Given I open workflow "VariableTest1"
 	And workflow "VariableTest1" contains
-    | Variable    | Note              | Inputs | Outputs | Unassigned |
-    | [[rec().a]] | This is recordset |        |         |            |
-    | [[rec().a]] | This is recordset |        |         |            |
-    | [[mr().a]]  |                   |        |         |            |
-    | [[mr().a]]  |                   |        |         |            |
-    | [[Var]]     |                   |        |         |            |
-    | [[a]]       |                   |        |         | Yes        |
-    | [[lr().a]]  |                   |        |         | Yes        |
-	Then Variables box is "Enabled"
+    | Variable    | Note              | Input | Output | Not Used |
+    | [[rec().a]] | This is recordset |       |        |          |
+    | [[rec().a]] | This is recordset |       |        |          |
+    | [[mr().a]]  |                   |       |        |          |
+    | [[mr().a]]  |                   |       |        |          |
+    | [[Var]]     |                   |       |        |          |
+    | [[a]]       |                   |       |        | Yes      |
+    | [[lr().a]]  |                   |       |        | Yes      |
+	Then "Variables" is "Enabled"
 	And variables filter box is "Visible"
 	And Filter Clear button is "Disabled"
-	And Delete  unassigned variables button is "Disabled"
-	And Sort variables order button is "Enabled" 
-	And the Variables Names look like 
+	And "Delete Variables" is "Disabled"
+	And "Sort Variables" is "Enabled" 
+	And the Variable Names are
 	| Variable Name | Delete Visible | Note Visible | Note Highlighted | Input | Output |
 	| Var           | NO             | Yes          | No               |       |        |
 	|               | NO             | NO           | NO               |       |        |
-	And the Recordset Name look like 
+	And the Recordset Names are
 	| Recordset Name | Delete Visible | Note Visible | Note Highlighted | Input | Output |
 	| rec()          | NO             | Yes          | Yes              |       |        |
 	| rec().a        | NO             | Yes          | Yes              |       |        |
@@ -57,132 +57,133 @@ Scenario: Variables adding in variable list
 	| mr().a         | NO             | Yes          |                  |       |        |
 	|                | No             | No           |                  |       |        |  
 								
-
-
 Scenario: Deleting Unassigned Variables on variable list
 	Given I open workflow "VariableTest2"
 	And "VariableTest" variable contains
-	 | Variable    | Note              | Inputs | Outputs | Unassigned |
-	 | [[rec().a]] | This is recordset |        |         |            |
-	 | [[rec().a]] | This is recordset |        |         |            |
-	 | [[mr().a]]  |                   |        |         |            |
-	 | [[mr().a]]  |                   |        |         |            |
-	 | [[Var]]     |                   |        |         |            |
-	 | [[a]]       |                   |        |         | Yes        |
-	 | [[lr().a]]  |                   |        |         | Yes        |
-	Then Variables box is "Enabled"
+	 | Variable    | Note              | Inputs | Outputs | Not Used |
+	 | [[rec().a]] | This is recordset |        |         |          |
+	 | [[rec().a]] | This is recordset |        |         |          |
+	 | [[mr().a]]  |                   |        |         |          |
+	 | [[mr().a]]  |                   |        |         |          |
+	 | [[Var]]     |                   |        |         |          |
+	 | [[a]]       |                   |        |         | Yes      |
+	 | [[lr().a]]  |                   |        |         | Yes      |
+	Then "Variables" is "Enabled"
 	And variables filter box is "Visible"
 	And Filter Clear button is "Disabled"
-	And Delete  unassigned variables button is "Enabled"
-	And Sort variables order button is "Enabled" 
-	And the Variables Names look like 
+	And "Delete Variables" is "Enabled"
+	And "Sort Variables" is "Enabled" 
+	And the Variable Names are
 	| Variable Name | Delete Visible | Note Visible | Note Highlighted | Input | Output |
 	| Var           | NO             | Yes          | No               |       |        |
 	| [[a]]         | Yes            | NO           | NO               |       |        |
-	And the Recordset Name look like 
+	|               | NO             | NO           | NO               |       |        |
+	And the Recordset Names are
 	| Recordset Name | Delete Visible | Note Visible | Note Highlighted | Input | Output |
 	| rec()          | NO             | Yes          | Yes              |       |        |
 	| rec().a        | NO             | Yes          | Yes              |       |        |
 	| mr()           | NO             | Yes          | No               |       |        |
 	| mr().a         | NO             | Yes          | No               |       |        |
-	| [[lr().a]]     | Yes            | NO           | No               |       |        |  
+	| [[lr().a]]     | Yes            | NO           | No               |       |        |
+	|                | NO             | NO           | NO               |       |        | 
 	When I delete unassigned variables
-	Then the Variable Names look like
+	Then the Variable Names are
 	| Variable Name | Delete Visible | Note Visible | Note Highlighted | Input       | Output      |
 	| Var           | Yes            | Yes          | No               |             |             |
-	And the Recordset Name look like 
-	| Recordset Name | Delete Visible | Note Visible | Note Highlighted | Input       | Output      |
-	| rec()          | Yes            | Yes          | No               |             |             |
-	| rec().a        | Yes            | Yes          | Yes              |             |             |
-	| mr()           | Yes            | Yes          | No               |             |             |
-	| mr().a         | Yes            | Yes          | No               |             |             |
-
-
+	|               | NO             | NO           | NO               |       |        |
+	And the Recordset Names are 
+	| Recordset Name | Delete Visible | Note Visible | Note Highlighted | Input | Output |
+	| rec()          | Yes            | Yes          | No               |       |        |
+	| rec().a        | Yes            | Yes          | Yes              |       |        |
+	| mr()           | Yes            | Yes          | No               |       |        |
+	| mr().a         | Yes            | Yes          | No               |       |        |
+	|                | NO             | NO           | NO               |       |        |
 
 Scenario: Searching Variables in Variable list
 	Given I open workflow "VariableTest1"
 	And "VariableTest" variable contains
-	 | Variable    | Note              | Inputs | Outputs | Unassigned |
-	 | [[rec().a]] | This is recordset |        |         |            |
-	 | [[rec().a]] | This is recordset |        |         |            |
-	 | [[mr().a]]  |                   |        |         |            |
-	 | [[mr().a]]  |                   |        |         |            |
-	 | [[Var]]     |                   |        |         |            |
-	 | [[a]]       |                   |        |         | Yes        |
-	 | [[lr().a]]  |                   |        |         | Yes        |
-	Then Variables box is "Enabled"
+	 | Variable    | Note              | Inputs | Outputs | Not Used |
+	 | [[rec().a]] | This is recordset |        |         |          |
+	 | [[rec().a]] | This is recordset |        |         |          |
+	 | [[mr().a]]  |                   |        |         |          |
+	 | [[mr().a]]  |                   |        |         |          |
+	 | [[Var]]     |                   |        |         |          |
+	 | [[a]]       |                   |        |         | Yes      |
+	 | [[lr().a]]  |                   |        |         | Yes      |
+	Then "Variables" is "Enabled"
 	And variables filter box is "Visible"
-	And Filter Clear button is "Disabled"
-	And Delete  unassigned variables button is "Disabled"
-	And Sort variables order button is "Enabled" 
+	And "Filter Clear" is "Disabled"
+	And "Delete Variables" is "Disabled"
+	And "Sort Variables" is "Enabled" 
 	When I search for variable "[[mr().a]]"
-	Then the Variables Names look like 
+	Then the Variable Names are
 	| Variable Name | Delete Visible | Note Visible | Note Highlighted | Input       | Output      |
-	And the Recordset Name look like 
+	And the Recordset Names are 
 	| Recordset Name | Delete Visible | Note Visible | Note Highlighted | Input       | Output      |
 	| mr()           | Yes            | Yes          | No               |             |             |
 	| mr().a         | Yes            | Yes          | No               |             |             |
 	When I clear the filter 
-	Then the Variables Names look like 
+	Then the Variable Names are
 	| Variable Name | Delete Visible | Note Visible | Note Highlighted | Input       | Output      |
 	| Var           | Yes            | Yes          | No               |             |             |
 	| [[a]]         | NO             | NO           | NO               | Not Visible | Not Visible |
-	And the Recordset Name look like 
+	|               | NO             | NO           | NO               |             |             |
+	And the Recordset Names are
 	| Recordset Name | Delete Visible | Note Visible | Note Highlighted | Input       | Output      |
 	| rec()          | Yes            | Yes          | No               |             |             |
 	| rec().a        | Yes            | Yes          | Yes              |             |             |
 	| mr()           | Yes            | Yes          | No               |             |             |
 	| mr().a         | Yes            | Yes          | No               |             |             |
-	| [[lr().a]]     | Yes            | No           | No               | Not Visible | Not Visible |  
+	| [[lr().a]]     | Yes            | No           | No               | Not Visible | Not Visible |
+	|                | NO             | NO           | NO               |             |             |  
 
 
 
 Scenario: Sorting Variables in Variable list
 	Given I open workflow "VariableTest1"
 	And "VariableTest" variable contains
-	 | Variable    | Note              | Inputs | Outputs | Unassigned |
-	 | [[rec().a]] | This is recordset |        |         |            |
-	 | [[rec().a]] | This is recordset |        |         |            |
-	 | [[mr().a]]  |                   |        |         |            |
-	 | [[mr().a]]  |                   |        |         |            |
-	 | [[Var]]     |                   |        |         |            |
-	 | [[a]]       |                   |        |         | Yes        |
-	 | [[lr().a]]  |                   |        |         | Yes        |
-	Then Variables box is "Enabled"
+	 | Variable    | Note              | Inputs | Outputs | Not Used |
+	 | [[rec().a]] | This is recordset |        |         |          |
+	 | [[rec().a]] | This is recordset |        |         |          |
+	 | [[mr().a]]  |                   |        |         |          |
+	 | [[mr().a]]  |                   |        |         |          |
+	 | [[Var]]     |                   |        |         |          |
+	 | [[a]]       |                   |        |         | Yes      |
+	 | [[lr().a]]  |                   |        |         | Yes      |
+	Then "Variables" is "Enabled"
 	And variables filter box is "Visible"
-	And Filter Clear button is "Disabled"
-	And Delete  unassigned variables button is "Disabled"
-	And Sort variables order button is "Enabled" 
+	And "Filter Clear" is "Disabled"
+	And "Delete Variables" is "Disabled"
+	And "Sort Variables" order is "Enabled" 
 	When I Sort the variables 
-	Then the Variables Names look like 
+	Then the Variable Names are
 	| Variable Name | Delete Visible | Note Visible | Note Highlighted | Input       | Output      |
 	| [[a]]         | NO             | NO           | NO               | Not Visible | Not Visible |
 	| Var           | Yes            | Yes          | No               |             |             |
-	And the Recordset Name look like 
+	|                | NO             | NO           | NO               |             |             |  
+	And the Recordset Names are
 	| Recordset Name | Delete Visible | Note Visible | Note Highlighted | Input       | Output      |
 	| [[lr().a]]     | Yes            | No           | No               | Not Visible | Not Visible |
 	| mr()           | Yes            | Yes          | No               |             |             |
 	| mr().a         | Yes            | Yes          | No               |             |             |
 	| rec()          | Yes            | Yes          | No               |             |             |
 	| rec().a        | Yes            | Yes          | Yes              |             |             |
+	|                | NO             | NO           | NO               |             |             |  
 	When I Sort the variables 
-	Then the Variables Names look like 
+	Then the Variable Names are
 	| Variable Name | Delete Visible | Note Visible | Note Highlighted | Input       | Output      |
 	| Var           | Yes            | Yes          | No               |             |             |
 	| [[a]]         | NO             | NO           | NO               | Not Visible | Not Visible |
-	And the Recordset Name look like 
+	|                | NO             | NO           | NO               |             |             |  
+	And the Recordset Names are
 	| Recordset Name | Delete Visible | Note Visible | Note Highlighted | Input       | Output      |
 	| rec()          | Yes            | Yes          | No               |             |             |
 	| rec().a        | Yes            | Yes          | Yes              |             |             |
 	| mr()           | Yes            | Yes          | No               |             |             |
 	| mr().a         | Yes            | Yes          | No               |             |             |
 	| [[lr().a]]     | Yes            | No           | No               | Not Visible | Not Visible |
+	|                | NO             | NO           | NO               |             |             |  
 
-
-
-Scenario: Variablebox is enabled for design surface
-	Given I have "New Workflow Service"
-	Then Variables box is "Enabled"
 
 Scenario: Variablebox is Disabled for Server Source
 	Given I have "Server Source" tab
@@ -196,19 +197,6 @@ Scenario: Variablebox is Disabled for Database Source
 	Given I have "Database Source" tab
 	Then Variables box is "Disabled"
 
-
 Scenario: Variablebox is Disabled for New Plugin Service
 	Given I have "New Plugin Service" tab
 	Then Variables box is "Disabled"
-
-
-
-
-
-
-
-
-
-
-
-
