@@ -17,12 +17,12 @@ namespace Warewolf.AcceptanceTesting.Explorer.Deploy
         {
             var bootStrapper = new UnityBootstrapperForDatabaseSourceConnectorTesting();
             bootStrapper.Run();
-            var databaseSourceControlView = new Mock<IDeployViewControl>();
-            var manageDatabaseSourceControlViewModel = new Mock<IDeployViewModel>();
-            databaseSourceControlView.Object.DataContext = manageDatabaseSourceControlViewModel;
-            Utils.ShowTheViewForTesting(databaseSourceControlView.Object);
-            FeatureContext.Current.Add(Utils.ViewNameKey, databaseSourceControlView.Object);
-            FeatureContext.Current.Add(Utils.ViewModelNameKey, manageDatabaseSourceControlViewModel.Object);
+            var view = new Mock<IDeployViewControl>();
+            var viewModel = new Mock<IDeployViewModel>();
+            view.Object.DataContext = viewModel;
+            Utils.ShowTheViewForTesting(view.Object);
+            FeatureContext.Current.Add(Utils.ViewNameKey, view.Object);
+            FeatureContext.Current.Add(Utils.ViewModelNameKey, viewModel.Object);
         }
 
         [BeforeScenario("Deploy")]
