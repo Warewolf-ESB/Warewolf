@@ -3,7 +3,7 @@
 	As a math idiot
 	I want to be told the sum of two numbers
 
-@Read Folder
+@ReadFolder
 Scenario: Read Folder tool Small View
        Given I have Read Folder Small View on design surface
        Then Read Folder small view has
@@ -62,8 +62,7 @@ Scenario: Removing Data in the field brings back water marks
        | [[Error().Message]]        | http://lcl:3142/services/err |     
        And Done button is "Visible"
 
-
-Scenario: Read selected is not changing when I open and close large view
+Scenario Outline: Read selected is not changing when I open and close large view
        Given I have Read Folder Large View on design surface
        And Read Folder Large View has
        | Directory   | Username | Password | Result     |

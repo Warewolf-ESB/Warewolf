@@ -1,10 +1,9 @@
-﻿@Settings
-Feature: Settings Tab
-	In order to manage various server settings
+﻿Feature: Settings Tab
+	In order to manage various server settingsss
 	As a Warewolf User
 	I want to be shown and allowed to edit the server settings
 
-
+@Settings
 Scenario: Settings Opened
 	Given I have settings tab opened
 	And selected server is "localhost"
@@ -113,14 +112,14 @@ Scenario: Selecting Logging is showing Server and Studio log settings
 	And Save is "Disabled"
 
 
-Scenario: Save enables when I change server logs
+Scenario Outline: Save enables when I change server logs
 	Given I have settings tab opened	
 	And Logging is "Selected"
 	Then Server System Logs is "Visible"
 	And Studio Logs is "Visible"
 	And Server Permissions is "InVisible"
 	And Resource Permissions is "InVisible"
-	When Server System Logs selected 'Serverlogs>'
+	When Server System Logs selected '<Serverlogs>'
 	And Save is "Enabled"
 Examples: 
      | No | Serverlogs                                                                        |
@@ -132,14 +131,14 @@ Examples:
      | 7  | Trace: Log detailed system information, Includes events from all the levels above |
      
 
-Scenario: Save enables when I change studio logs
+Scenario Outline: Save enables when I change studio logs
 	Given I have settings tab opened	
 	And Logging is "Selected"
 	Then Server System Logs is "Visible"
 	And Studio Logs is "Visible"
 	And Server Permissions is "InVisible"
 	And Resource Permissions is "InVisible"
-	When Studio System Logs selected 'Studiologs>'
+	When Studio System Logs selected '<Studiologs>'
 	And Save is "Enabled"
 Examples: 
      | No | Studiologs                                                                        |
