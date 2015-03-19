@@ -1,9 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server", "Dev2.Server\Dev2.Server.csproj", "{87AEFD04-29F3-45B6-A7C6-4161F9190876}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E0F7C709-A61B-4829-A659-D7780052326A} = {E0F7C709-A61B-4829-A659-D7780052326A}
+		{B3D070E0-11C1-4C1C-81A5-E680C1494945} = {B3D070E0-11C1-4C1C-81A5-E680C1494945}
+		{6EB59EEE-4E16-4F29-B1B0-715E56E9139D} = {6EB59EEE-4E16-4F29-B1B0-715E56E9139D}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{655E2790-0EB1-4CB3-AB86-67CA0AFF9803}"
 	ProjectSection(SolutionItems) = preProject
@@ -672,9 +677,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Server.vsmdi
