@@ -1,0 +1,1 @@
+﻿#error Feature file already contains a scenario with name 'Conflicting resources on Source and Destination server'
