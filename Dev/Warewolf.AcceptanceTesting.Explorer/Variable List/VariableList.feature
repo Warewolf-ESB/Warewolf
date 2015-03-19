@@ -1,7 +1,8 @@
-﻿Feature: VariableList
-	In order to avoid silly mistakes
-	As a math idiot
-	I want to be told the sum of two numbers
+﻿@VariableList
+Feature: VariableList
+	In order to manage my variables
+	As a Warewolf user
+	I want to be told shown all variables in my workflow service
 
 
 ## System Requirements for Variable List
@@ -28,10 +29,6 @@
 #Ensure next variable textboxe appears only when user has a variable in previous box.
 
 
-
-
-
-@VariableList
 Scenario: Variables adding in variable list 
 	Given I open workflow "VariableTest1"
 	And workflow "VariableTest1" contains
