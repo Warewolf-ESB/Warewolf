@@ -110,23 +110,6 @@ Scenario: Mouse right click select Dependecies is selecting dependecies
 	 Then "My Category\Double Roll" is "Selected"
 	 And "Deploy" is "Enabled" 
 
-
-
-Scenario: Filtering Resources on Destination side
-     Given I have deploy tab opened
-	 And selected Destination Server is "localhost"
-     When I type "Utility - Date and Time" in Destination Server filter
-	 Then "Examples\Utility - Date and Time" from Destination Server is "Visible"
-	 And "Examples\Utility - Date and Time Difference" from Destination Server is "Visible"
-	 And I select "Examples\Utility - Date and Time" from Destination Server
-	 When I clear filter on Destination Server
-	 Then "Examples\Utility - Date and Time" from Destination Server is "Visible"
-	 And "Examples\Data - Data - Data Split" from Destination Server is "Visible"
-	 And "Examples\Control Flow - Switch" from Destination Server is "Visible"
-	 And "Examples\Control Flow - Sequence" from Destination Server is "Visible"
-	 And "Examples\File and Folder - Copy" from Destination Server is "Visible"
-	 And "Examples\File and Folder - Create" from Destination Server is "Visible"
-
 Scenario: Filtering and clearing filter on source side
      Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -219,6 +202,8 @@ Scenario: Deploy is enabled when I change server after validation thrown
 	 Then "Deploy" is "Enabled" 
 	  And the validation message is ""
 
+#new feature?
+@ignore
 Scenario: Deploy a resource without dependency is showing popup
      Given I have deploy tab opened
 	 And selected Destination Server is "localhost"
@@ -227,8 +212,8 @@ Scenario: Deploy a resource without dependency is showing popup
 	 Then "Deploy" is "Enabled" 
 	 And "Select All Dependencies" is "Enabled"
 	 When I deploy
-	 Then "Resource Dependencyr" popup is shown 
-	 When I click "Select All Dependecies" 
+	 Then "Resource has Dependency" popup is shown 
+	 When I Select All Dependecies
 	 Then "DB Services/Dependency" from Source Server is "Selected"
 	 When I deploy
 	 Then deploy is successfull

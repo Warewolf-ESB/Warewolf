@@ -344,6 +344,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FileAndFolder-Rename.feature</DependentUpon>
     </Compile>
+    <Compile Include="Variable List\VariableListSteps.cs" />
     <Compile Include="Web Service\Web Source.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
