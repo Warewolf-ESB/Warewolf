@@ -30,8 +30,7 @@ Feature: VariableList
 
 
 Scenario: Variables adding in variable list 
-	Given I open workflow "VariableTest1"
-	And workflow "VariableTest1" contains
+	Given I have variables as
     | Variable    | Note              | Input | Output | Not Used |
     | [[rec().a]] | This is recordset |       |        |          |
     | [[rec().a]] | This is recordset |       |        |          |
@@ -42,7 +41,7 @@ Scenario: Variables adding in variable list
     | [[lr().a]]  |                   |       |        | Yes      |
 	Then "Variables" is "Enabled"
 	And variables filter box is "Visible"
-	And Filter Clear button is "Disabled"
+	And "Filter Clear" is "Disabled"
 	And "Delete Variables" is "Disabled"
 	And "Sort Variables" is "Enabled" 
 	And the Variable Names are
@@ -58,8 +57,7 @@ Scenario: Variables adding in variable list
 	|                | No             | No           |                  |       |        |  
 								
 Scenario: Deleting Unassigned Variables on variable list
-	Given I open workflow "VariableTest2"
-	And "VariableTest" variable contains
+	Given I have variables as
 	 | Variable    | Note              | Inputs | Outputs | Not Used |
 	 | [[rec().a]] | This is recordset |        |         |          |
 	 | [[rec().a]] | This is recordset |        |         |          |
@@ -70,7 +68,7 @@ Scenario: Deleting Unassigned Variables on variable list
 	 | [[lr().a]]  |                   |        |         | Yes      |
 	Then "Variables" is "Enabled"
 	And variables filter box is "Visible"
-	And Filter Clear button is "Disabled"
+	And "Filter Clear" is "Disabled"
 	And "Delete Variables" is "Enabled"
 	And "Sort Variables" is "Enabled" 
 	And the Variable Names are
@@ -100,8 +98,7 @@ Scenario: Deleting Unassigned Variables on variable list
 	|                | NO             | NO           | NO               |       |        |
 
 Scenario: Searching Variables in Variable list
-	Given I open workflow "VariableTest1"
-	And "VariableTest" variable contains
+	Given I have variables as
 	 | Variable    | Note              | Inputs | Outputs | Not Used |
 	 | [[rec().a]] | This is recordset |        |         |          |
 	 | [[rec().a]] | This is recordset |        |         |          |
@@ -140,8 +137,7 @@ Scenario: Searching Variables in Variable list
 
 
 Scenario: Sorting Variables in Variable list
-	Given I open workflow "VariableTest1"
-	And "VariableTest" variable contains
+	Given I have variables as
 	 | Variable    | Note              | Inputs | Outputs | Not Used |
 	 | [[rec().a]] | This is recordset |        |         |          |
 	 | [[rec().a]] | This is recordset |        |         |          |
@@ -154,7 +150,7 @@ Scenario: Sorting Variables in Variable list
 	And variables filter box is "Visible"
 	And "Filter Clear" is "Disabled"
 	And "Delete Variables" is "Disabled"
-	And "Sort Variables" order is "Enabled" 
+	And "Sort Variables" is "Enabled" 
 	When I Sort the variables 
 	Then the Variable Names are
 	| Variable Name | Delete Visible | Note Visible | Note Highlighted | Input       | Output      |
@@ -183,20 +179,3 @@ Scenario: Sorting Variables in Variable list
 	| mr().a         | Yes            | Yes          | No               |             |             |
 	| [[lr().a]]     | Yes            | No           | No               | Not Visible | Not Visible |
 	|                | NO             | NO           | NO               |             |             |  
-
-
-Scenario: Variablebox is Disabled for Server Source
-	Given I have "Server Source" tab
-	Then Variables box is "Disabled"
-
-Scenario: Variablebox is Disabled for Database Service
-	Given I have "Database Service" tab
-	Then Variables box is "Disabled"
-
-Scenario: Variablebox is Disabled for Database Source
-	Given I have "Database Source" tab
-	Then Variables box is "Disabled"
-
-Scenario: Variablebox is Disabled for New Plugin Service
-	Given I have "New Plugin Service" tab
-	Then Variables box is "Disabled"

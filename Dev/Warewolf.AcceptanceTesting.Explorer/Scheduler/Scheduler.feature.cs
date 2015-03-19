@@ -105,7 +105,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Enabled",
                         "Int"});
 #line 17
- testRunner.Then("the settings are", ((string)(null)), table1, "Then ");
+ testRunner.Then("task settings are", ((string)(null)), table1, "Then ");
 #line 20
  testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 21
@@ -160,7 +160,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Enabled",
                         "Int"});
 #line 32
- testRunner.Then("the settings are", ((string)(null)), table3, "Then ");
+ testRunner.Then("task settings are", ((string)(null)), table3, "Then ");
 #line 35
  testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 36
@@ -185,9 +185,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 37
  testRunner.Then("task settings are", ((string)(null)), table4, "Then ");
 #line 40
- testRunner.And("username is as \"IntegrationTester\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("username is \"IntegrationTester\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 41
- testRunner.And("Password is as \"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Password is \"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 42
     testRunner.When("I save the Task", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 43
@@ -415,7 +415,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 97
  testRunner.When("I save the Task", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 98
- testRunner.Then("\"Dice Roll\" task is saved", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Task \"Dice Roll\" is saved", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",

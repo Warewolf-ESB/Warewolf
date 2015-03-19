@@ -14,7 +14,7 @@ Scenario: Scheduler Tab
 	And "Edit" is "Disabled"
 	And "Connect" is "Disabled"
 	When I create new schedule
-	Then the settings are
+	Then task settings are
 	| Name        | Status  | Next Execution |
 	| New Task 1* | Enabled | Int            |
 	And "Save" is "Enabled"
@@ -29,7 +29,7 @@ Scenario: Scheduler Tab
 Scenario: Saving New Schedule
 	Given I have Scheduler tab opened
 	When I create new schedule
-	Then the settings are
+	Then task settings are
 	| Name        | Status  | Next Execution |
 	| New Task 1* | Enabled | Int            |
 	And "Save" is "Enabled"
@@ -37,8 +37,8 @@ Scenario: Saving New Schedule
 	Then task settings are
 	| Name      | Status Selected | Workflow              | Edit    | Run Task as soon as | History |Edit Trigger |
 	| Dice Roll | Enabled         | My Category\Dice Roll | Enabled |                     |         |Enabled      |
-	And username is as "IntegrationTester"
-	And Password is as "I73573r0"
+	And username is "IntegrationTester"
+	And Password is "I73573r0"
     When I save the Task
 	Then Task "Dice Roll" is saved 
 	And Save is "Disabled"
@@ -95,7 +95,7 @@ Scenario: Editing scheduled task is prompting to save
 	| Dice Roll | Disabled        | My Category\Dice Roll | Enabled |                     |         | Enabled      |
 	Then "Save" is "Enabled"
 	When I save the Task
-	Then "Dice Roll" task is saved
+	Then Task "Dice Roll" is saved
 	And the saved tasks are
 	| Name                  | Status   | Next Execution |
 	| Dice Roll             | Disabled | Int            |
