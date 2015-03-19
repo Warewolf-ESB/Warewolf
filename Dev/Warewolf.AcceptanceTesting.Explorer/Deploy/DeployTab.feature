@@ -74,7 +74,7 @@ Scenario: Conflicting resources on Source and Destination server
 	 Then deploy is successfull
 	 And the validation message is "Items deployed successfully"
 
-Scenario: Conflicting resources on Source and Destination server
+Scenario: Conflicting resources on Source and Destination server deploy is not successful
      Given I have deploy tab opened
 	 And selected Source Server is "localhost"
      And selected Destination Server is "Remote"
