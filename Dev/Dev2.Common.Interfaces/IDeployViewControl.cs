@@ -31,5 +31,9 @@ namespace Dev2.Common.Interfaces
         bool IsDestinationResourceIsVisible(string resourceName);
 
         bool IsDestinationResourceSelected(string resourceName);
+
+        void SelectSourceServerResource(string resourceName);
+
+        void DeselectSourceServerResource(string resourceName);
     }
 }

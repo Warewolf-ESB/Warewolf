@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.PopupController;
+using Dev2.Studio.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
@@ -202,16 +204,77 @@ namespace Warewolf.AcceptanceTesting.Explorer.Deploy
             }
         }
 
-        [Then(@"I select ""(.*)"" from Destination Server")]
-        public void ThenISelectFromDestinationServer(string p0)
+        [Then(@"I select ""(.*)"" from Source Server")]
+        public void ThenISelectFromSourceServer(string resourceName)
+        {
+            var view = Utils.GetView<IDeployViewControl>();
+            var viewModel = Utils.GetViewModel<IDeployViewModel>();
+            view.SelectSourceServerResource(resourceName);
+            Assert.AreEqual(resourceName,viewModel.SelectedSourceModel.SelectedItems);
+        }
+
+
+        [Then(@"Data Connectors is ""(.*)""")]
+        public void ThenDataConnectorsIs(int numberOfDataConnectors)
+        {
+            var viewModel = Utils.GetViewModel<IDeployViewModel>();
+            var deployStatsTos = viewModel.Stats.FirstOrDefault(to => to.Name == "Data Connector");         
+            Assert.IsNotNull(deployStatsTos);
+            Assert.AreEqual(numberOfDataConnectors,deployStatsTos.Description);
+        }
+
+        [Then(@"Services is ""(.*)""")]
+        public void ThenServicesIs(int numberOfServices)
+        {
+            var viewModel = Utils.GetViewModel<IDeployViewModel>();
+            var deployStatsTos = viewModel.Stats.FirstOrDefault(to => to.Name == "Services");
+            Assert.IsNotNull(deployStatsTos);
+            Assert.AreEqual(numberOfServices, deployStatsTos.Description);
+        }
+
+        [Then(@"Sources is ""(.*)""")]
+        public void ThenSourcesIs(int numberOfSources)
+        {
+            var viewModel = Utils.GetViewModel<IDeployViewModel>();
+            var deployStatsTos = viewModel.Stats.FirstOrDefault(to => to.Name == "Sources");
+            Assert.IsNotNull(deployStatsTos);
+            Assert.AreEqual(numberOfSources, deployStatsTos.Description);
+        }
+
+        [Then(@"New Resource is ""(.*)""")]
+        public void ThenNewResourceIs(int numberOfNewResources)
+        {
+            var viewModel = Utils.GetViewModel<IDeployViewModel>();
+            var deployStatsTos = viewModel.Stats.FirstOrDefault(to => to.Name == "New Resource");
+            Assert.IsNotNull(deployStatsTos);
+            Assert.AreEqual(numberOfNewResources, deployStatsTos.Description);
+        }
+
+        [Given(@"Override is ""(.*)""")]
+        [When(@"Override is ""(.*)""")]
+        [Then(@"Override is ""(.*)""")]
+        public void ThenOverrideIs(int numberOfOverridingResources)
+        {
+            var viewModel = Utils.GetViewModel<IDeployViewModel>();
+            var deployStatsTos = viewModel.Stats.FirstOrDefault(to => to.Name == "Override");
+            Assert.IsNotNull(deployStatsTos);
+            Assert.AreEqual(numberOfOverridingResources, deployStatsTos.Description);
+        }
+
+        [When(@"I Unselect ""(.*)"" from Source Server")]
+        public void WhenIUnselectFromSourceServer(string resourceName)
+        {
+            var view = Utils.GetView<IDeployViewControl>();
+            var viewModel = Utils.GetViewModel<IDeployViewModel>();
+            view.DeselectSourceServerResource(resourceName);
+            Assert.AreNotEqual(resourceName, viewModel.SelectedSourceModel.SelectedItems);
+        }
+
+        [Then(@"""(.*)"" popup is shown")]
+        public void ThenPopupIsShown(string p0)
         {
             ScenarioContext.Current.Pending();
         }
 
-        [Then(@"I select ""(.*)"" from Source Server")]
-        public void ThenISelectFromSourceServer(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
     }
 }
