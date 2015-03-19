@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.PopupController;
-using Dev2.Studio.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
@@ -15,7 +13,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.Deploy
     public class DeployTabSteps
     {
         [BeforeFeature("Deploy")]
-        public static void SetupForSystem()
+        public static void SetupForFeature()
         {
             var bootStrapper = new UnityBootstrapperForDatabaseSourceConnectorTesting();
             bootStrapper.Run();
@@ -28,7 +26,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.Deploy
         }
 
         [BeforeScenario("Deploy")]
-        public void SetupForDatabaseSource()
+        public void SetupForScenerio()
         {
             ScenarioContext.Current.Add(Utils.ViewNameKey, FeatureContext.Current.Get<IDeployViewControl>(Utils.ViewNameKey));
             ScenarioContext.Current.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<IDeployViewModel>(Utils.ViewModelNameKey));
