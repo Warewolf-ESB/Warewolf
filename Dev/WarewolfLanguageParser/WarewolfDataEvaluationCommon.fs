@@ -43,11 +43,14 @@ type PositionValue =
     | IndexDoesNotExist
 
 let getRecordSetIndex (recset:WarewolfRecordset) (position:int) =
-    let indexes = recset.Data.[PositionColumn]
-    let positionAsAtom = Int position
-    try  Seq.findIndex (fun a->  a=positionAsAtom) indexes |> IndexFoundPosition
-    with     
-    | :? System.Collections.Generic.KeyNotFoundException as ex -> IndexDoesNotExist
+    match recset.Optimisations with
+    | Ordinal -> IndexFoundPosition (position-1)
+    | _->
+            let indexes = recset.Data.[PositionColumn]
+            let positionAsAtom = Int position
+            try  Seq.findIndex (fun a->  a=positionAsAtom) indexes |> IndexFoundPosition
+            with     
+            | :? System.Collections.Generic.KeyNotFoundException as ex -> IndexDoesNotExist
 
 let evalRecordSetIndex (recset:WarewolfRecordset) (identifier:RecordSetIdentifier) (position:int) =
     let index = getRecordSetIndex recset position
