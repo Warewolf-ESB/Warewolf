@@ -111,3 +111,92 @@ Scenario: Selecting Logging is showing Server and Studio log settings
 	And Server Permissions is "InVisible"
 	And Resource Permissions is "InVisible"
 	And Save is "Disabled"
+
+
+Scenario: Save enables when I change server logs
+	Given I have settings tab opened	
+	And Logging is "Selected"
+	Then Server System Logs is "Visible"
+	And Studio Logs is "Visible"
+	And Server Permissions is "InVisible"
+	And Resource Permissions is "InVisible"
+	When Server System Logs selected 'Serverlogs>'
+	And Save is "Enabled"
+Examples: 
+     | No | Serverlogs                                                                        |
+     | 1  | None:No logging                                                                   |
+     | 2  | Fatal: Only log events that are fatal                                             |
+     | 3  | Error: Log fatal and warning events                                               |
+     | 4  | Warn: Log error, fatal and warning events                                         |
+     | 6  | Info: Log system info incluing pulse data, fatal, error and warning events        |
+     | 7  | Trace: Log detailed system information, Includes events from all the levels above |
+     
+
+Scenario: Save enables when I change studio logs
+	Given I have settings tab opened	
+	And Logging is "Selected"
+	Then Server System Logs is "Visible"
+	And Studio Logs is "Visible"
+	And Server Permissions is "InVisible"
+	And Resource Permissions is "InVisible"
+	When Studio System Logs selected 'Studiologs>'
+	And Save is "Enabled"
+Examples: 
+     | No | Studiologs                                                                        |
+     | 1  | None:No logging                                                                   |
+     | 2  | Fatal: Only log events that are fatal                                             |
+     | 3  | Error: Log fatal and warning events                                               |
+     | 4  | Warn: Log error, fatal and warning events                                         |
+     | 6  | Info: Log system info incluing pulse data, fatal, error and warning events        |
+     | 7  | Trace: Log detailed system information, Includes events from all the levels above |
+
+	
+Scenario: Server Log File hyper link is opening log file
+	Given I have settings tab opened	
+	And Logging is "Selected"
+	Then Server System Logs is "Visible"
+	And Studio Logs is "Visible"
+	And Server Log File hyper link is "Visible"
+	And Studio Log File hyper link is "Visible"
+	When I click "Server Log File"
+	Then "Localhost server Log.txt - Notepad" is opened
+	
+	
+	
+Scenario: Studio Log File hyper link is opening log file
+	Given I have settings tab opened	
+	And Logging is "Selected"
+	Then Server System Logs is "Visible"
+	And Studio Logs is "Visible"
+	And Server Log File hyper link is "Visible"
+	And Studio Log File hyper link is "Visible"
+	When I click "Studio Log File"
+	Then "Warewolf Studio.log - Notepad" is opened	
+	
+	
+Scenario: Server and studio default file size 
+	Given I have settings tab opened	
+	And Logging is "Selected"
+	Then Server System Logs is "Visible"
+	And Studio Logs is "Visible"	
+	And Max Log file Size for Server default is "200" MB
+	And Max Log file Size for Studio default is "200" MB
+
+
+Scenario: Server and studio size not accepts alphabets
+	Given I have settings tab opened	
+	And Logging is "Selected"
+	Then Server System Logs is "Visible"
+	And Studio Logs is "Visible"	
+	When I edit Max Log file Size for Server "abc" MB
+	Then Max Log file Size for Server default is "200" MB 
+	When I edit Max Log file Size for Studio "abc" MB
+	Then Max Log file Size for Studio default is "200" MB
+	And "Save" is "Disabled"
+	When I edit Max Log file Size for Server "100" MB
+	Then Max Log file Size for Server default is "100" MB 
+	And "Save" is "Enabled"
+
+
+
+
