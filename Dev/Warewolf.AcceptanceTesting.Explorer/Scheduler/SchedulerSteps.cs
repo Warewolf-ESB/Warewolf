@@ -131,11 +131,5 @@ public void ThenTheSavedTasksAre(Table table)
 {
     ScenarioContext.Current.Pending();
 }
-
-        [Then(@"""(.*)"" task is saved")]
-public void ThenTaskIsSaved(string p0)
-{
-    ScenarioContext.Current.Pending();
-}
     }
 }

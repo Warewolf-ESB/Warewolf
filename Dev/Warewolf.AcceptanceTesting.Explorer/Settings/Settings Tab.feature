@@ -1,100 +1,98 @@
-﻿Feature: Settings Tab
-	In order to avoid silly mistakes
-	As a math idiot
-	I want to be told the sum of two numbers
+﻿@Settings
+Feature: Settings Tab
+	In order to manage various server settings
+	As a Warewolf User
+	I want to be shown and allowed to edit the server settings
 
-@Settings
+
 Scenario: Settings Opened
 	Given I have settings tab opened
-	And "server" selected as "localhost (Connected)"
-	And Server edit is "Disabled"
-	And server connection is "Disabled"
-	And Security is "Selected"
-	And Logging is "Unselected"
-	And Server Permissions is "Visible"
-	| Windows Group          | Edit Group | Deploy To | Deploy From | Administrator | View | Execute | Contribute | Delete Row | Row      |
-	| Warewolf Administrator | Disabeled  | Yes       | Yes         | Yes           | Yes  | Yes     | Yes        | Disabled   | Disabled |
-	| Public                 | Disabeled  | ""        | ""          | ""            | ""   | ""      | ""         | ""         | Enabled  |
-	|                        | Enabled    |           |             |               |      |         |            |            | Enabled  |
-	And Resource Permissions is "Visible"
-	| Resources | REdit   | Windows Group | WEdit   | View | Execute | Contribute |
-	|           | Enabled |               | Enabled |      |         |            |
-	And Save is "Disabled"
+	And selected server is "localhost"
+	And Security is selected
+	And Logging is not selected
+	And Server Permissions are "Visible" as
+	| Windows Group          | Can Edit Windows Group | Deploy To | Deploy From | Administrator | View | Execute | Contribute | Delete Row |
+	| Warewolf Administrator | No                     | Yes       | Yes         | Yes           | Yes  | Yes     | Yes        | Disabled   |
+	| Public                 | No                     | No        | No          | No            | No   | No      | No         | Enabled    |
+	|                        | Yes                    |           |             |               |      |         |            |            |
+	And Resource Permissions are "Visible" as
+	| Resource | Can Edit Resource | Windows Group | Can Edit Windows Group | View | Execute | Contribute |
+	|          | Yes               |               | Yes                    |      |         |            |
+	And "Save" is "Disabled"
 
 
 Scenario: Selecting Admin rights for public
 	Given I have settings tab opened
-	And "server" selected as "localhost (Connected)"
-	And Security is "Selected"
-	And Save is "Disabled"
-	And Server Permissions is "Visible"
-	And Resource Permissions is "Visible"
-	When i select server "Public" as "Administrator"
-	| Windows Group          | Edit Group | Deploy To | Deploy From | Administrator | View | Execute | Contribute | Delete Row | Row      |
-	| Warewolf Administrator | Disabeled  | Yes       | Yes         | Yes           | Yes  | Yes     | Yes        | Disabled   | Disabled |
-	| Public                 | Disabeled  | Yes       | Yes         | Yes           | Yes  | Yes     | Yes        | Disabled   | Enabled  |
-	|                        | Enabled    |           |             |               |      |         |            |            | Enabled  |
+	And selected server as "localhost"
+	And Security is selected
+	And "Save" is "Disabled"
+	When I select "Administrator" permission for server permission "Public"
+	Then Server Permissions are "Visible" as
+	| Windows Group          | Can Edit Windows Group | Deploy To | Deploy From | Administrator | View | Execute | Contribute | Delete Row | 
+	| Warewolf Administrator | No                     | Yes       | Yes         | Yes           | Yes  | Yes     | Yes        | Disabled   | 
+	| Public                 | No                     | Yes       | Yes         | Yes           | Yes  | Yes     | Yes        | Disabled   | 
+	|                        | Yes                    |           |             |               |      |         |            |            | 
 	Then Save is "Enabled"
 	When I save the settings
-	Then settings saved "Successfull"
-	And the "Settings" has validation error "False"
+	Then settings saved successfully
+	And the validation message is ""
 
 
 Scenario: Selecting Resource Permissions
 	Given I have settings tab opened
-	And "server" selected as "localhost (Connected)"
-	And Save is "Disabled"
-	And Security is "Selected"
-	And Logging is "Unselected"
-	And Server Permissions is "Visible"
-	| Windows Group          | Edit Group | Deploy To | Deploy From | Administrator | View | Execute | Contribute | Delete Row | Row      |
-	| Warewolf Administrator | Disabeled  | Yes       | Yes         | Yes           | Yes  | Yes     | Yes        | Disabled   | Disabled |
-	| Public                 | Disabeled  | ""        | ""          | ""            | ""   | ""      | ""         | ""         | Enabled  |
-	|                        | Enabled    |           |             |               |      |         |            |            | Enabled  |
-	And Resource Permissions is "Visible"
-	When i select resource "Resource Permissions" 
-	| Resources                       | REdit   | Windows Group | WEdit   | View | Execute | Contribute |
-	| WORKFLOWS\My Category\Dice Roll | Enabled | Public        | Enabled | Yes  | Yes     | Yes        |
-	|                                 | Enabled |               | Enabled |      |         |            |  
+	And selected server is "localhost"
+	And "Save" is "Disabled"
+	And Security is selected
+	And Logging is not selected
+	And Server Permissions are "Visible" as 
+	| Windows Group          | Can Edit Windows Group | Deploy To | Deploy From | Administrator | View | Execute | Contribute | Delete Row |
+	| Warewolf Administrator | No                     | Yes       | Yes         | Yes           | Yes  | Yes     | Yes        | Disabled   |
+	| Public                 | No                     | Yes       | Yes         | Yes           | Yes  | Yes     | Yes        | Disabled   |
+	|                        | Yes                    |           |             |               |      |         |            |            |
+	
+	When I add resource permission
+	| Resource                        | Windows Group | View | Execute | Contribute |
+	| WORKFLOWS\My Category\Dice Roll | Public        | Yes  | Yes     | Yes        |
+	Then Resource Permissions are "Visible" as
+	| Resource                        | Can Edit Resource | Windows Group | Can Edit Windows Group | View | Execute | Contribute |
+	| WORKFLOWS\My Category\Dice Roll | Yes               | Public        | Yes                    | Yes  | Yes     | Yes        |
+	|                                 | Yes               |               | Yes                    |      |         |            |
     Then Save is "Enabled"
 	When I save the settings
-	Then settings saved "Successfull"
-	And the "Settings" has validation error "False"
+	Then settings saved successfully
+	And the validation message is ""
 
 
-Scenario: Warewolf is not allowing to save Duplicate server permissions 
+Scenario: Duplicate server permissions cannot be saved
 	Given I have settings tab opened
-	And "server" selected as "localhost (Connected)"
-	And Save is "Disabled"
-	And Security is "Selected"
-	And Logging is "Unselected"
-	And Server Permissions is "Visible"
-	| Windows Group          | Edit Group | Deploy To | Deploy From | Administrator | View | Execute | Contribute | Delete Row | Row      |
-	| Warewolf Administrator | Disabeled  | Yes       | Yes         | Yes           | Yes  | Yes     | Yes        | Disabled   | Disabled |
-	| Public                 | Disabeled  | Yes       | Yes         | Yes           | Yes  | Yes     | Yes        | Disabled   | Disabled |
-	| Public                 | Enabled    | Yes       | Yes         | Yes           | Yes  | Yes     | Yes        | Disabled   | Enabled  |
-	And Resource Permissions is "Visible"
+	And selected server is "localhost"
+	And "Save" is "Disabled"
+	And Security is selected
+	And Logging is not selected
+	And Server Permissions are "Visible" as
+	| Windows Group          | Can Edit Windows Group | Deploy To | Deploy From | Administrator | View | Execute | Contribute | Delete Row |
+	| Warewolf Administrator | Yes                    | Yes       | Yes         | Yes           | Yes  | Yes     | Yes        | Disabled   |
+	| Public                 | Yes                    | Yes       | Yes         | Yes           | Yes  | Yes     | Yes        | Enabled    |
+	| Public                 | Yes                    | Yes       | Yes         | Yes           | Yes  | Yes     | Yes        | Enabled    | 
     Then Save is "Enabled"
 	When I save the settings
-	Then settings saved "UnSuccessfull"
-	And the "Settings" has validation error "True"
+	Then settings not successfully saved
+	And the validation message is "Duplicate server permission"
 
-Scenario: Warewolf is not allowing to save Duplicate Resource permissions 
+Scenario: Duplicate resource permissions cannot be saved
 	Given I have settings tab opened
-	And "server" selected as "localhost (Connected)"
-	And Save is "Disabled"
-	And Security is "Selected"
-	And Logging is "Unselected"
-	And Server Permissions is "Visible"
-	When i select resource "Resource Permissions" 
-	| Resources                       | REdit   | Windows Group | WEdit   | View | Execute | Contribute |
-	| WORKFLOWS\My Category\Dice Roll | Enabled | Public        | Enabled | Yes  | Yes     | Yes        |
-	| WORKFLOWS\My Category\Dice Roll | Enabled | Public        | Enabled | Yes  | Yes     | Yes        |
-	And Resource Permissions is "Visible"
+	And selected server is "localhost"
+	And "Save" is "Disabled"
+	And Security is selected
+	And Logging is not selected
+	When Resource Permissions are "Visible" as
+	| Resources                       | Can Edit Resource | Windows Group | Can Edit Windows Group | View | Execute | Contribute |
+	| WORKFLOWS\My Category\Dice Roll | Yes               | Public        | Yes                    | Yes  | Yes     | Yes        |
+	| WORKFLOWS\My Category\Dice Roll | Yes               | Public        | Yes                    | Yes  | Yes     | Yes        |
     Then Save is "Enabled"
 	When I save the settings
-	Then settings saved "UnSuccessfull"
-	And the "Settings" has validation error "True"
+	Then settings not successfully saved
+	And the validation message is "Duplicate resource permission"
 
 
 Scenario: Selecting Logging is showing Server and Studio log settings
@@ -113,16 +111,3 @@ Scenario: Selecting Logging is showing Server and Studio log settings
 	And Server Permissions is "InVisible"
 	And Resource Permissions is "InVisible"
 	And Save is "Disabled"
-
-
-
-
-
-
-
-
-
-
-
-
-
