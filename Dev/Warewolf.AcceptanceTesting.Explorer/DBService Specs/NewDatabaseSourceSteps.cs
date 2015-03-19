@@ -201,8 +201,6 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         [AfterScenario("CreatingNewDBSource")]
         public void Cleanup()
         {
-            
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
             var mockEventAggregator = new Mock<IEventAggregator>();
             var viewModel = new ManageDatabaseSourceViewModel(mockUpdateManager.Object, mockEventAggregator.Object);
