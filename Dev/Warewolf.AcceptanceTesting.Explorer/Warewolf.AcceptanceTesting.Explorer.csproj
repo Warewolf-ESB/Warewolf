@@ -243,6 +243,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>NewEmailSource.feature</DependentUpon>
     </Compile>
+    <Compile Include="Scheduler\SchedulerSteps.cs" />
     <Compile Include="Server Source\NewServerSource.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

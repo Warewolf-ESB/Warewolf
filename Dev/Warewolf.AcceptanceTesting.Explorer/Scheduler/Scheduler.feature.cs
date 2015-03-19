@@ -31,8 +31,8 @@ namespace Warewolf.AcceptanceTesting.Explorer.Scheduler
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Scheduler", "In order to avoid silly mistakes\r\nAs a math idiot\r\nI want to be told the sum of t" +
-                    "wo numbers", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Scheduler", "In order to schedule warewolf workflows\r\nAs a Warewolf user\r\nI want to be able to" +
+                    " add scheduled tasks to the windows scheduler that run workflows", ProgrammingLanguage.CSharp, new string[] {
                         "Scheduler"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -298,6 +298,8 @@ this.ScenarioSetup(scenarioInfo);
                         "Int"});
 #line 70
  testRunner.And("the saved tasks are", ((string)(null)), table8, "And ");
+#line 74
+ testRunner.And("\"Dice Roll\" task is selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
@@ -315,10 +317,8 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "Enabled"});
-#line 74
- testRunner.And("settings as", ((string)(null)), table9, "And ");
-#line 77
- testRunner.And("\"Dice Roll\" task is selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 75
+ testRunner.Then("task settings are", ((string)(null)), table9, "Then ");
 #line 78
  testRunner.When("I select \"Double Roll and Check\" task", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
@@ -331,7 +331,7 @@ this.ScenarioSetup(scenarioInfo);
                         "History",
                         "Edit Trigger"});
             table10.AddRow(new string[] {
-                        "Dice Roll",
+                        "Double Roll and Check",
                         "Enabled",
                         "My Category\\Double Roll and Check",
                         "Enabled",
@@ -339,7 +339,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Enabled"});
 #line 79
- testRunner.Then("settings as", ((string)(null)), table10, "Then ");
+ testRunner.Then("task settings are", ((string)(null)), table10, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -351,9 +351,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EditingScheduledTaskIsPromptingToSave()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Editing scheduled task is prompting to save", ((string[])(null)));
-#line 85
+#line 83
 this.ScenarioSetup(scenarioInfo);
-#line 86
+#line 84
  testRunner.Given("I have Scheduler tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
@@ -368,9 +368,9 @@ this.ScenarioSetup(scenarioInfo);
                         "Double Roll and Check",
                         "Enabled",
                         "Int"});
-#line 87
+#line 85
  testRunner.And("the saved tasks are", ((string)(null)), table11, "And ");
-#line 91
+#line 89
  testRunner.And("\"Dice Roll\" task is selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
@@ -389,8 +389,8 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "Enabled"});
-#line 92
- testRunner.And("settings as", ((string)(null)), table12, "And ");
+#line 90
+ testRunner.And("task settings are", ((string)(null)), table12, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
@@ -408,14 +408,14 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "Enabled"});
-#line 95
- testRunner.When("I edit the settings as", ((string)(null)), table13, "When ");
-#line 98
- testRunner.Then("\"save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 99
+#line 93
+ testRunner.When("I edit the task settings to", ((string)(null)), table13, "When ");
+#line 96
+ testRunner.Then("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 97
  testRunner.When("I save the Task", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 100
- testRunner.Then("\"Dice Roll\" is saved", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 98
+ testRunner.Then("\"Dice Roll\" task is saved", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
@@ -429,7 +429,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Double Roll and Check",
                         "Enabled",
                         "Int"});
-#line 101
+#line 99
  testRunner.And("the saved tasks are", ((string)(null)), table14, "And ");
 #line hidden
             this.ScenarioCleanup();
