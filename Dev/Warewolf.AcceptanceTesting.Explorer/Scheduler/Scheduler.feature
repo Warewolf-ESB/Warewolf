@@ -58,8 +58,7 @@ Scenario: Deleting a schedule in Scheduler
 	And username is as "IntegrationTester"
 	And Password is as "I73573r0"
     When I Delete "Dice Roll"
-	Then Task "Dice Roll" is Deleted 
-	And Save is "Disabled"
+	Then "Save" is "Disabled"
 	And the saved tasks are
 	| Name                  | Status  | Next Execution |
 	| Double Roll and Check | Enabled | Int            |	
@@ -95,8 +94,7 @@ Scenario: Editing scheduled task is prompting to save
 	| Dice Roll | Disabled        | My Category\Dice Roll | Enabled |                     |         | Enabled      |
 	Then "Save" is "Enabled"
 	When I save the Task
-	Then Task "Dice Roll" is saved
-	And the saved tasks are
+	Then the saved tasks are
 	| Name                  | Status   | Next Execution |
 	| Dice Roll             | Disabled | Int            |
 	| Double Roll and Check | Enabled  | Int            |

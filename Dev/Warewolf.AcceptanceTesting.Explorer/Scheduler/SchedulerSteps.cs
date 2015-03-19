@@ -1,6 +1,5 @@
 ﻿using System;
 using Dev2.Common.Interfaces;
-using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
@@ -110,62 +109,40 @@ namespace Warewolf.AcceptanceTesting.Explorer.Scheduler
         [When(@"I edit the task settings to")]
         public void WhenIEditTheTaskSettingsTo(Table table)
         {
-            ScenarioContext.Current.Pending();
+            var view = Utils.GetView<ISchedulerView>();
+            var rows = table.Rows;
+            foreach(var tableRow in rows)
+            {
+                view.UpdateTask(tableRow["Name"], tableRow["Status Selected"], tableRow["Workflow"], tableRow["Edit"]);
+            }
         }
         
         [Then(@"username is ""(.*)""")]
-        public void ThenUsernameIs(string p0)
+        public void ThenUsernameIs(string expectedUsername)
         {
-            ScenarioContext.Current.Pending();
+            var view = Utils.GetView<ISchedulerView>();
+            var userName = view.GetUsername();
+            Assert.AreEqual(expectedUsername,userName);
         }
 
         [Then(@"Password is ""(.*)""")]
-        public void ThenPasswordIs(string p0)
+        public void ThenPasswordIs(string expectedPassword)
         {
-            ScenarioContext.Current.Pending();
-        }
-       
-
-        [Then(@"Task ""(.*)"" is saved")]
-        public void ThenTaskIsSaved(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Then(@"Task ""(.*)"" is Deleted")]
-        public void ThenTaskIsDeleted(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
+            var view = Utils.GetView<ISchedulerView>();
+            var password = view.GetPassword();
+            Assert.AreEqual(expectedPassword, password);
+        }      
+        
         [Then(@"the saved tasks are")]
         public void ThenTheSavedTasksAre(Table table)
         {
-            ScenarioContext.Current.Pending();
+            var view = Utils.GetView<ISchedulerView>();
+            view.GetScheduledTasks();
+            var rows = table.Rows;
+            foreach(var tableRow in rows)
+            {
+                //Compare scheduled tasks to the tableRow
+            }
         }
-    }
-
-    public interface ISchedulerViewModel
-    {
-        void AddNewSchedule(string s, string s1);
-    }
-
-    public interface ISchedulerView:IView
-    {
-        string GetSelectedServerName();
-
-        void GetCurrentSchedule();
-
-        void EnterUsername(string userName);
-
-        void EnterPassword(string password);
-
-        void SelectTask(string taskName);
-
-        void CreateNewTask();
-
-        void Save();
-
-        void DeleteTask(string taskName);
     }
 }
