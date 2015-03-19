@@ -27,6 +27,7 @@ using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.ViewModels.Help;
 using Warewolf.Studio.ViewModels.VariableList;
 using Warewolf.Studio.Views;
+using Warewolf.Studio.Views.Variable_List;
 using IVariableListViewModel = Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel;
 
 namespace Warewolf.Studio
