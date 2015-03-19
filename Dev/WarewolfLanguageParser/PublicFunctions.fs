@@ -34,6 +34,8 @@ let AddRecsetToEnv (name:string) (env:WarewolfEnvironment) =
        a
 let EvalEnvExpression (exp:string) (env:WarewolfEnvironment) =
      WarewolfDataEvaluationCommon.Eval env exp
+let EvalRecordSetIndexes (exp:string) (env:WarewolfEnvironment) =
+     WarewolfDataEvaluationCommon.Eval env exp
 
 let AddToScalars (env:WarewolfEnvironment) (name:string) (value:WarewolfAtom)  =
     let rem = Map.remove name env.Scalar |> Map.add name value 
@@ -102,3 +104,6 @@ let EvalMultiAssign (values :IAssignValue seq) (env:WarewolfEnvironment) =
         {env with RecordSets = recsets}
 
 let AtomtoString a = WarewolfDataEvaluationCommon.AtomtoString a;
+
+
+let getIndexes (name:string) (env:WarewolfEnvironment) = WarewolfDataEvaluationCommon.EvalIndexes  env name

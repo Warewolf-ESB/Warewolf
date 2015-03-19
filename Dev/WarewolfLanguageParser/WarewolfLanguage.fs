@@ -104,11 +104,14 @@ let prodIdxToNonTerminal (prodIdx:int) =
     | 20 -> NONTERM_recset 
     | 21 -> NONTERM_recset 
     | 22 -> NONTERM_recsetName 
-    | 23 -> NONTERM_index 
-    | 24 -> NONTERM_scalar 
-    | 25 -> NONTERM_atom 
-    | 26 -> NONTERM_atom 
-    | 27 -> NONTERM_atom 
+    | 23 -> NONTERM_recsetName 
+    | 24 -> NONTERM_recsetName 
+    | 25 -> NONTERM_recsetName 
+    | 26 -> NONTERM_index 
+    | 27 -> NONTERM_scalar 
+    | 28 -> NONTERM_atom 
+    | 29 -> NONTERM_atom 
+    | 30 -> NONTERM_atom 
     | _ -> failwith "prodIdxToNonTerminal: bad production index"
 
 let _fsyacc_endOfInputTag = 12 
@@ -143,16 +146,16 @@ let _fsyacc_dataOfToken (t:token) =
   | DOT  -> (null : System.Object) 
 let _fsyacc_gotos = [| 0us; 65535us; 1us; 65535us; 0us; 1us; 5us; 65535us; 0us; 2us; 2us; 18us; 18us; 18us; 19us; 18us; 22us; 19us; 5us; 65535us; 0us; 7us; 2us; 8us; 18us; 8us; 19us; 8us; 22us; 7us; 5us; 65535us; 0us; 5us; 2us; 5us; 18us; 5us; 19us; 5us; 22us; 5us; 5us; 65535us; 0us; 6us; 2us; 6us; 18us; 6us; 19us; 6us; 22us; 6us; 1us; 65535us; 22us; 23us; 5us; 65535us; 0us; 4us; 2us; 4us; 18us; 4us; 19us; 4us; 22us; 4us; 5us; 65535us; 0us; 3us; 2us; 3us; 18us; 3us; 19us; 3us; 22us; 3us; |]
 let _fsyacc_sparseGotoTableRowOffsets = [|0us; 1us; 3us; 9us; 15us; 21us; 27us; 29us; 35us; |]
-let _fsyacc_stateToProdIdxsTableElements = [| 1us; 0us; 1us; 0us; 2us; 1us; 13us; 2us; 2us; 14us; 2us; 3us; 15us; 2us; 4us; 16us; 1us; 5us; 1us; 6us; 2us; 6us; 13us; 7us; 7us; 18us; 19us; 20us; 21us; 22us; 24us; 1us; 8us; 1us; 9us; 1us; 10us; 3us; 10us; 20us; 22us; 2us; 10us; 21us; 1us; 11us; 2us; 11us; 19us; 1us; 12us; 1us; 13us; 2us; 13us; 21us; 1us; 17us; 6us; 18us; 19us; 20us; 21us; 22us; 24us; 5us; 18us; 19us; 20us; 21us; 22us; 1us; 18us; 1us; 18us; 1us; 18us; 1us; 18us; 1us; 18us; 1us; 19us; 1us; 19us; 1us; 19us; 1us; 19us; 1us; 20us; 1us; 20us; 1us; 20us; 1us; 21us; 1us; 21us; 1us; 21us; 2us; 23us; 26us; 1us; 24us; 1us; 25us; 1us; 26us; 1us; 27us; |]
-let _fsyacc_stateToProdIdxsTableRowOffsets = [|0us; 2us; 4us; 7us; 10us; 13us; 16us; 18us; 20us; 23us; 31us; 33us; 35us; 37us; 41us; 44us; 46us; 49us; 51us; 53us; 56us; 58us; 65us; 71us; 73us; 75us; 77us; 79us; 81us; 83us; 85us; 87us; 89us; 91us; 93us; 95us; 97us; 99us; 101us; 104us; 106us; 108us; 110us; |]
-let _fsyacc_action_rows = 43
-let _fsyacc_actionTableElements = [|10us; 32768us; 0us; 20us; 1us; 42us; 2us; 40us; 3us; 41us; 4us; 9us; 5us; 10us; 6us; 11us; 7us; 12us; 8us; 15us; 9us; 17us; 0us; 49152us; 10us; 16385us; 0us; 20us; 1us; 42us; 2us; 40us; 3us; 41us; 4us; 9us; 5us; 10us; 6us; 11us; 7us; 12us; 8us; 15us; 9us; 17us; 0us; 16386us; 0us; 16387us; 0us; 16388us; 0us; 16389us; 0us; 16390us; 1us; 16390us; 12us; 16397us; 1us; 16391us; 1us; 21us; 0us; 16392us; 0us; 16393us; 0us; 16394us; 2us; 16394us; 9us; 32us; 12us; 16406us; 1us; 16394us; 9us; 35us; 0us; 16395us; 1us; 16395us; 7us; 28us; 0us; 16396us; 10us; 32768us; 0us; 20us; 1us; 42us; 2us; 40us; 3us; 41us; 4us; 9us; 5us; 10us; 6us; 11us; 7us; 12us; 8us; 15us; 9us; 17us; 10us; 32768us; 0us; 20us; 1us; 42us; 2us; 40us; 3us; 41us; 4us; 9us; 5us; 10us; 6us; 11us; 7us; 14us; 8us; 15us; 9us; 17us; 0us; 16401us; 2us; 32768us; 5us; 39us; 6us; 22us; 10us; 32768us; 0us; 20us; 1us; 42us; 2us; 40us; 3us; 38us; 4us; 9us; 5us; 10us; 6us; 11us; 7us; 13us; 8us; 16us; 9us; 17us; 1us; 32768us; 7us; 24us; 1us; 32768us; 9us; 25us; 1us; 32768us; 1us; 26us; 1us; 32768us; 5us; 27us; 0us; 16402us; 1us; 32768us; 9us; 29us; 1us; 32768us; 1us; 30us; 1us; 32768us; 5us; 31us; 0us; 16403us; 1us; 32768us; 1us; 33us; 1us; 32768us; 5us; 34us; 0us; 16404us; 1us; 32768us; 1us; 36us; 1us; 32768us; 5us; 37us; 0us; 16405us; 4us; 16410us; 7us; 16407us; 10us; 16407us; 11us; 16407us; 12us; 16407us; 0us; 16408us; 0us; 16409us; 0us; 16410us; 0us; 16411us; |]
-let _fsyacc_actionTableRowOffsets = [|0us; 11us; 12us; 23us; 24us; 25us; 26us; 27us; 28us; 30us; 32us; 33us; 34us; 35us; 38us; 40us; 41us; 43us; 44us; 55us; 66us; 67us; 70us; 81us; 83us; 85us; 87us; 89us; 90us; 92us; 94us; 96us; 97us; 99us; 101us; 102us; 104us; 106us; 107us; 112us; 113us; 114us; 115us; |]
-let _fsyacc_reductionSymbolCounts = [|1us; 1us; 1us; 1us; 1us; 1us; 1us; 1us; 1us; 1us; 1us; 1us; 1us; 2us; 1us; 1us; 1us; 1us; 8us; 8us; 7us; 8us; 4us; 1us; 3us; 1us; 1us; 1us; |]
-let _fsyacc_productionToNonTerminalTable = [|0us; 1us; 2us; 2us; 2us; 2us; 2us; 2us; 2us; 2us; 2us; 2us; 2us; 3us; 3us; 3us; 3us; 3us; 4us; 4us; 4us; 4us; 5us; 6us; 7us; 8us; 8us; 8us; |]
-let _fsyacc_immediateActions = [|65535us; 49152us; 65535us; 65535us; 65535us; 65535us; 16389us; 16390us; 65535us; 65535us; 16392us; 16393us; 16394us; 65535us; 65535us; 16395us; 65535us; 16396us; 65535us; 65535us; 16401us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 16402us; 65535us; 65535us; 65535us; 16403us; 65535us; 65535us; 16404us; 65535us; 65535us; 16405us; 65535us; 16408us; 16409us; 16410us; 16411us; |]
+let _fsyacc_stateToProdIdxsTableElements = [| 1us; 0us; 1us; 0us; 2us; 1us; 13us; 2us; 2us; 14us; 2us; 3us; 15us; 2us; 4us; 16us; 1us; 5us; 1us; 6us; 2us; 6us; 13us; 10us; 7us; 18us; 19us; 20us; 21us; 22us; 23us; 24us; 25us; 27us; 1us; 8us; 1us; 9us; 1us; 10us; 3us; 10us; 20us; 22us; 3us; 10us; 21us; 25us; 1us; 11us; 3us; 11us; 19us; 24us; 1us; 12us; 1us; 13us; 3us; 13us; 21us; 25us; 1us; 17us; 9us; 18us; 19us; 20us; 21us; 22us; 23us; 24us; 25us; 27us; 8us; 18us; 19us; 20us; 21us; 22us; 23us; 24us; 25us; 2us; 18us; 23us; 2us; 18us; 23us; 1us; 18us; 1us; 18us; 1us; 18us; 2us; 19us; 24us; 1us; 19us; 1us; 19us; 1us; 19us; 1us; 20us; 1us; 20us; 1us; 20us; 1us; 21us; 1us; 21us; 1us; 21us; 1us; 22us; 1us; 23us; 1us; 24us; 1us; 25us; 2us; 26us; 29us; 1us; 27us; 1us; 28us; 1us; 29us; 1us; 30us; |]
+let _fsyacc_stateToProdIdxsTableRowOffsets = [|0us; 2us; 4us; 7us; 10us; 13us; 16us; 18us; 20us; 23us; 34us; 36us; 38us; 40us; 44us; 48us; 50us; 54us; 56us; 58us; 62us; 64us; 74us; 83us; 86us; 89us; 91us; 93us; 95us; 98us; 100us; 102us; 104us; 106us; 108us; 110us; 112us; 114us; 116us; 118us; 120us; 122us; 124us; 127us; 129us; 131us; 133us; |]
+let _fsyacc_action_rows = 47
+let _fsyacc_actionTableElements = [|10us; 32768us; 0us; 20us; 1us; 46us; 2us; 44us; 3us; 45us; 4us; 9us; 5us; 10us; 6us; 11us; 7us; 12us; 8us; 15us; 9us; 17us; 0us; 49152us; 10us; 16385us; 0us; 20us; 1us; 46us; 2us; 44us; 3us; 45us; 4us; 9us; 5us; 10us; 6us; 11us; 7us; 12us; 8us; 15us; 9us; 17us; 0us; 16386us; 0us; 16387us; 0us; 16388us; 0us; 16389us; 0us; 16390us; 1us; 16390us; 12us; 16397us; 1us; 16391us; 1us; 21us; 0us; 16392us; 0us; 16393us; 0us; 16394us; 2us; 16394us; 5us; 38us; 9us; 32us; 2us; 16394us; 5us; 41us; 9us; 35us; 0us; 16395us; 1us; 16395us; 7us; 28us; 0us; 16396us; 10us; 32768us; 0us; 20us; 1us; 46us; 2us; 44us; 3us; 45us; 4us; 9us; 5us; 10us; 6us; 11us; 7us; 12us; 8us; 15us; 9us; 17us; 10us; 32768us; 0us; 20us; 1us; 46us; 2us; 44us; 3us; 45us; 4us; 9us; 5us; 10us; 6us; 11us; 7us; 14us; 8us; 15us; 9us; 17us; 0us; 16401us; 2us; 32768us; 5us; 43us; 6us; 22us; 10us; 32768us; 0us; 20us; 1us; 46us; 2us; 44us; 3us; 42us; 4us; 9us; 5us; 10us; 6us; 11us; 7us; 13us; 8us; 16us; 9us; 17us; 1us; 32768us; 7us; 24us; 2us; 32768us; 5us; 39us; 9us; 25us; 1us; 32768us; 1us; 26us; 1us; 32768us; 5us; 27us; 0us; 16402us; 2us; 32768us; 5us; 40us; 9us; 29us; 1us; 32768us; 1us; 30us; 1us; 32768us; 5us; 31us; 0us; 16403us; 1us; 32768us; 1us; 33us; 1us; 32768us; 5us; 34us; 0us; 16404us; 1us; 32768us; 1us; 36us; 1us; 32768us; 5us; 37us; 0us; 16405us; 0us; 16406us; 0us; 16407us; 0us; 16408us; 0us; 16409us; 4us; 16413us; 7us; 16410us; 10us; 16410us; 11us; 16410us; 12us; 16410us; 0us; 16411us; 0us; 16412us; 0us; 16413us; 0us; 16414us; |]
+let _fsyacc_actionTableRowOffsets = [|0us; 11us; 12us; 23us; 24us; 25us; 26us; 27us; 28us; 30us; 32us; 33us; 34us; 35us; 38us; 41us; 42us; 44us; 45us; 56us; 67us; 68us; 71us; 82us; 84us; 87us; 89us; 91us; 92us; 95us; 97us; 99us; 100us; 102us; 104us; 105us; 107us; 109us; 110us; 111us; 112us; 113us; 114us; 119us; 120us; 121us; 122us; |]
+let _fsyacc_reductionSymbolCounts = [|1us; 1us; 1us; 1us; 1us; 1us; 1us; 1us; 1us; 1us; 1us; 1us; 1us; 2us; 1us; 1us; 1us; 1us; 8us; 8us; 7us; 8us; 5us; 6us; 6us; 6us; 1us; 3us; 1us; 1us; 1us; |]
+let _fsyacc_productionToNonTerminalTable = [|0us; 1us; 2us; 2us; 2us; 2us; 2us; 2us; 2us; 2us; 2us; 2us; 2us; 3us; 3us; 3us; 3us; 3us; 4us; 4us; 4us; 4us; 5us; 5us; 5us; 5us; 6us; 7us; 8us; 8us; 8us; |]
+let _fsyacc_immediateActions = [|65535us; 49152us; 65535us; 65535us; 65535us; 65535us; 16389us; 16390us; 65535us; 65535us; 16392us; 16393us; 16394us; 65535us; 65535us; 16395us; 65535us; 16396us; 65535us; 65535us; 16401us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 16402us; 65535us; 65535us; 65535us; 16403us; 65535us; 65535us; 16404us; 65535us; 65535us; 16405us; 16406us; 16407us; 16408us; 16409us; 65535us; 16411us; 16412us; 16413us; 16414us; |]
 let _fsyacc_reductions ()  =    [| 
-# 155 "WarewolfLanguage.fs"
+# 158 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : LanguageAST.LanguageExpression)) in
             Microsoft.FSharp.Core.Operators.box
@@ -161,7 +164,7 @@ let _fsyacc_reductions ()  =    [|
                       raise (Microsoft.FSharp.Text.Parsing.Accept(Microsoft.FSharp.Core.Operators.box _1))
                    )
                  : '_startstart));
-# 164 "WarewolfLanguage.fs"
+# 167 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : LanguageAST.LanguageExpression)) in
             Microsoft.FSharp.Core.Operators.box
@@ -172,7 +175,7 @@ let _fsyacc_reductions ()  =    [|
                    )
 # 30 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.LanguageExpression));
-# 175 "WarewolfLanguage.fs"
+# 178 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : DataASTMutable.WarewolfAtom)) in
             Microsoft.FSharp.Core.Operators.box
@@ -183,7 +186,7 @@ let _fsyacc_reductions ()  =    [|
                    )
 # 33 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.LanguageExpression));
-# 186 "WarewolfLanguage.fs"
+# 189 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : LanguageAST.ScalarIdentifier)) in
             Microsoft.FSharp.Core.Operators.box
@@ -194,7 +197,7 @@ let _fsyacc_reductions ()  =    [|
                    )
 # 34 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.LanguageExpression));
-# 197 "WarewolfLanguage.fs"
+# 200 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : LanguageAST.RecordSetIdentifier)) in
             Microsoft.FSharp.Core.Operators.box
@@ -205,7 +208,7 @@ let _fsyacc_reductions ()  =    [|
                    )
 # 35 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.LanguageExpression));
-# 208 "WarewolfLanguage.fs"
+# 211 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'recsetName)) in
             Microsoft.FSharp.Core.Operators.box
@@ -216,7 +219,7 @@ let _fsyacc_reductions ()  =    [|
                    )
 # 36 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.LanguageExpression));
-# 219 "WarewolfLanguage.fs"
+# 222 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'variableExpression)) in
             Microsoft.FSharp.Core.Operators.box
@@ -227,7 +230,7 @@ let _fsyacc_reductions ()  =    [|
                    )
 # 37 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.LanguageExpression));
-# 230 "WarewolfLanguage.fs"
+# 233 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             Microsoft.FSharp.Core.Operators.box
                 (
@@ -237,7 +240,7 @@ let _fsyacc_reductions ()  =    [|
                    )
 # 38 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.LanguageExpression));
-# 240 "WarewolfLanguage.fs"
+# 243 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             Microsoft.FSharp.Core.Operators.box
                 (
@@ -247,7 +250,7 @@ let _fsyacc_reductions ()  =    [|
                    )
 # 39 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.LanguageExpression));
-# 250 "WarewolfLanguage.fs"
+# 253 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             Microsoft.FSharp.Core.Operators.box
                 (
@@ -257,7 +260,7 @@ let _fsyacc_reductions ()  =    [|
                    )
 # 40 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.LanguageExpression));
-# 260 "WarewolfLanguage.fs"
+# 263 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             Microsoft.FSharp.Core.Operators.box
                 (
@@ -267,7 +270,7 @@ let _fsyacc_reductions ()  =    [|
                    )
 # 41 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.LanguageExpression));
-# 270 "WarewolfLanguage.fs"
+# 273 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             Microsoft.FSharp.Core.Operators.box
                 (
@@ -277,7 +280,7 @@ let _fsyacc_reductions ()  =    [|
                    )
 # 42 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.LanguageExpression));
-# 280 "WarewolfLanguage.fs"
+# 283 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             Microsoft.FSharp.Core.Operators.box
                 (
@@ -287,7 +290,7 @@ let _fsyacc_reductions ()  =    [|
                    )
 # 43 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.LanguageExpression));
-# 290 "WarewolfLanguage.fs"
+# 293 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : LanguageAST.LanguageExpression)) in
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : 'variableExpression)) in
@@ -299,7 +302,7 @@ let _fsyacc_reductions ()  =    [|
                    )
 # 45 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : 'variableExpression));
-# 302 "WarewolfLanguage.fs"
+# 305 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : DataASTMutable.WarewolfAtom)) in
             Microsoft.FSharp.Core.Operators.box
@@ -310,7 +313,7 @@ let _fsyacc_reductions ()  =    [|
                    )
 # 46 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : 'variableExpression));
-# 313 "WarewolfLanguage.fs"
+# 316 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : LanguageAST.ScalarIdentifier)) in
             Microsoft.FSharp.Core.Operators.box
@@ -321,7 +324,7 @@ let _fsyacc_reductions ()  =    [|
                    )
 # 47 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : 'variableExpression));
-# 324 "WarewolfLanguage.fs"
+# 327 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : LanguageAST.RecordSetIdentifier)) in
             Microsoft.FSharp.Core.Operators.box
@@ -332,7 +335,7 @@ let _fsyacc_reductions ()  =    [|
                    )
 # 48 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : 'variableExpression));
-# 335 "WarewolfLanguage.fs"
+# 338 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             Microsoft.FSharp.Core.Operators.box
                 (
@@ -342,7 +345,7 @@ let _fsyacc_reductions ()  =    [|
                    )
 # 49 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : 'variableExpression));
-# 345 "WarewolfLanguage.fs"
+# 348 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
             let _4 = (let data = parseState.GetInput(4) in (Microsoft.FSharp.Core.Operators.unbox data : 'index)) in
@@ -355,7 +358,7 @@ let _fsyacc_reductions ()  =    [|
                    )
 # 51 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.RecordSetIdentifier));
-# 358 "WarewolfLanguage.fs"
+# 361 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
             let _7 = (let data = parseState.GetInput(7) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
@@ -367,7 +370,7 @@ let _fsyacc_reductions ()  =    [|
                    )
 # 52 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.RecordSetIdentifier));
-# 370 "WarewolfLanguage.fs"
+# 373 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
             let _6 = (let data = parseState.GetInput(6) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
@@ -379,7 +382,7 @@ let _fsyacc_reductions ()  =    [|
                    )
 # 53 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.RecordSetIdentifier));
-# 382 "WarewolfLanguage.fs"
+# 385 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
             let _4 = (let data = parseState.GetInput(4) in (Microsoft.FSharp.Core.Operators.unbox data : LanguageAST.LanguageExpression)) in
@@ -392,74 +395,109 @@ let _fsyacc_reductions ()  =    [|
                    )
 # 54 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.RecordSetIdentifier));
-# 395 "WarewolfLanguage.fs"
+# 398 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
 # 56 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                                                                        {Name = _2;}
+                                                                                      {Name = _2;Index = Last;}
                    )
 # 56 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : 'recsetName));
-# 406 "WarewolfLanguage.fs"
+# 409 "WarewolfLanguage.fs"
+        (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
+            let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
+            let _4 = (let data = parseState.GetInput(4) in (Microsoft.FSharp.Core.Operators.unbox data : 'index)) in
+            Microsoft.FSharp.Core.Operators.box
+                (
+                   (
+# 57 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
+                                                                                         {Name = _2; Index = _4;}
+                   )
+# 57 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
+                 : 'recsetName));
+# 421 "WarewolfLanguage.fs"
+        (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
+            let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
+            Microsoft.FSharp.Core.Operators.box
+                (
+                   (
+# 58 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
+                                                                                        {Name = _2; Index = Last;}
+                   )
+# 58 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
+                 : 'recsetName));
+# 432 "WarewolfLanguage.fs"
+        (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
+            let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
+            let _4 = (let data = parseState.GetInput(4) in (Microsoft.FSharp.Core.Operators.unbox data : LanguageAST.LanguageExpression)) in
+            Microsoft.FSharp.Core.Operators.box
+                (
+                   (
+# 59 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
+                                                                                                  {Name = _2;Index = IndexExpression _4;}
+                   )
+# 59 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
+                 : 'recsetName));
+# 444 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : int)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 58 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
+# 61 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                              IntIndex _1
                    )
-# 58 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
+# 61 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : 'index));
-# 417 "WarewolfLanguage.fs"
+# 455 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 60 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
+# 63 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                                                           _2
                    )
-# 60 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
+# 63 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.ScalarIdentifier));
-# 428 "WarewolfLanguage.fs"
+# 466 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : float)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 62 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
+# 65 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                                   Float _1 
                    )
-# 62 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
+# 65 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : DataASTMutable.WarewolfAtom));
-# 439 "WarewolfLanguage.fs"
+# 477 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : int)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 63 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
+# 66 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                                Int _1 
                    )
-# 63 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
+# 66 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : DataASTMutable.WarewolfAtom));
-# 450 "WarewolfLanguage.fs"
+# 488 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 64 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
+# 67 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                                   DataString _1 
                    )
-# 64 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
+# 67 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : DataASTMutable.WarewolfAtom));
 |]
-# 462 "WarewolfLanguage.fs"
+# 500 "WarewolfLanguage.fs"
 let tables () : Microsoft.FSharp.Text.Parsing.Tables<_> = 
   { reductions= _fsyacc_reductions ();
     endOfInputTag = _fsyacc_endOfInputTag;

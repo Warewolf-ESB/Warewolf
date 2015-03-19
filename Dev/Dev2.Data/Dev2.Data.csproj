@@ -133,6 +133,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WarewolfLanguageParser">
+      <HintPath>..\WarewolfLanguageParser\bin\Debug\WarewolfLanguageParser.dll</HintPath>
+    </Reference>
     <Reference Include="Weave">
       <HintPath>..\Binaries\Weave.dll</HintPath>
     </Reference>
@@ -150,6 +153,7 @@
     <Compile Include="Binary Objects\BinaryDataListEntry.cs" />
     <Compile Include="Binary Objects\BinaryDataListItem.cs" />
     <Compile Include="Binary Objects\DataListRegistar.cs" />
+    <Compile Include="Binary Objects\EnvironmentIndexIterator.cs" />
     <Compile Include="Binary Objects\ListOfIndex.cs" />
     <Compile Include="Binary Objects\ReverseIndexIterator.cs" />
     <Compile Include="Binary Objects\ListIndexIterator.cs" />
@@ -454,6 +458,10 @@
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
+      <Project>{b3d070e0-11c1-4c1c-81a5-e680c1494945}</Project>
+      <Name>Warewolf.Storage</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

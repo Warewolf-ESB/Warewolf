@@ -292,6 +292,7 @@
     </Compile>
     <Compile Include="Validation\VariableUtils.cs" />
     <Compile Include="Value Objects\ForEachBootstrapTO.cs" />
+    <Compile Include="Value Objects\ForEachBootstrapTOEnvironment.cs" />
     <Compile Include="Value Objects\ForEachInnerActivityTO.cs" />
   </ItemGroup>
   <ItemGroup>

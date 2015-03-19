@@ -17,6 +17,7 @@ and RecordSetIdentifier =
 and RecordSetName = 
     {
         Name : string;
+        Index : Index;
     }
 and ScalarIdentifier = string
 and LanguageExpression = 

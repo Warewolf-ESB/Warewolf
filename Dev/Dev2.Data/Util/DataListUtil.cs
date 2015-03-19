@@ -23,6 +23,7 @@ using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
+using Warewolf.Storage;
 
 namespace Dev2.Data.Util
 {
@@ -1531,6 +1532,26 @@ namespace Dev2.Data.Util
             }
             return result;
         }
+
+        public static IList<string> GetAllPossibleExpressionsForFunctionOperations(string expression, IExecutionEnvironment env, out ErrorResultTO errors)
+        {
+            IList<string> result = new List<string>();
+            errors = new ErrorResultTO();
+            try
+            {
+                result = env.EvalAsListOfStrings(expression);
+                
+            }
+            catch(Exception err)
+            {
+                errors.AddError(err.Message);
+               
+            }
+            
+
+            return result;
+        }
+
 
         /// <summary>
         /// Gets the regions from expression.

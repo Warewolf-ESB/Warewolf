@@ -34,6 +34,7 @@ using Dev2.Simulation;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Hosting;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
@@ -447,11 +448,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return DebugItem.EmptyList;
         }
 
-        public virtual List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public virtual List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
         {
             return DebugItem.EmptyList;
         }
 
+        public virtual List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        {
+            return DebugItem.EmptyList;
+        }
+        public virtual List<DebugItem> GetDebugOutputs(IExecutionEnvironment env)
+        {
+            return DebugItem.EmptyList;
+        }
         #endregion
 
         #region DispatchDebugState
@@ -488,7 +497,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     //End Bug 8595
                     try
                     {
-                        Copy(GetDebugInputs(dataList), _debugState.Inputs);
+                        Copy(GetDebugInputs(dataObject.Environment), _debugState.Inputs);
                     }
                     catch (Exception err)
                     {
@@ -547,7 +556,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            Copy(GetDebugOutputs(dataList), _debugState.Outputs);
+                            Copy(GetDebugOutputs(dataObject.Environment), _debugState.Outputs);
                         }
                     }
                     catch(Exception e)

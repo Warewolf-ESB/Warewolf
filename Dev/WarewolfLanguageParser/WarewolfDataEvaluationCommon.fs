@@ -8,7 +8,7 @@ open DataASTMutable
 
 // this method will given a language string return an AST based on FSLex and FSYacc
 
-let ParseCache = new System.Collections.Generic.Dictionary<string,LanguageExpression>()
+let mutable ParseCache = Map.empty : Map<string,LanguageExpression>
 
 let PositionColumn = "WarewolfPositionColumn#"
 
@@ -104,6 +104,7 @@ and  LanguageExpressionToString  (x:LanguageExpression) =
         | ScalarExpression a -> sprintf "[[%s]]" a
         | WarewolfAtomAtomExpression a -> AtomtoString a
         | ComplexExpression a -> List.fold (fun c d -> c + LanguageExpressionToString d ) "" a
+        | RecordSetNameExpression a -> sprintf "[[%s(%s)]]" a.Name (IndexToString a.Index ) 
 
 and evalRecordsSet (recset:RecordSetIdentifier) (env: WarewolfEnvironment)  =
     if  not (env.RecordSets.ContainsKey recset.Name)       then 
@@ -126,19 +127,20 @@ and  Clean (buffer :LanguageExpression) =
     match buffer with
         | RecordSetExpression a -> RecordSetExpression a
         | ScalarExpression a -> ScalarExpression a
+        | RecordSetNameExpression a -> RecordSetNameExpression a
         | WarewolfAtomAtomExpression a -> WarewolfAtomAtomExpression a
         | ComplexExpression  a ->  (List.filter (fun b -> "" <> (LanguageExpressionToString b)) a) |> (fun a -> if (List.length a) =1 then Clean a.[0] else ComplexExpression a)
 
 and ParseLanguageExpression  (lang:string) : LanguageExpression=
-    if ParseCache.ContainsKey lang 
-    then ParseCache.[lang]
-    else
-
-        let lexbuf = LexBuffer<string>.FromString lang 
-        let buffer = Parser.start Lexer.tokenstream lexbuf
-        let res = buffer |> Clean
-        ParseCache.Add(lang,res)
-        res
+    let exp = ParseCache.TryFind lang
+    match exp with 
+    | Some a ->  a
+    | None -> 
+                let lexbuf = LexBuffer<string>.FromString lang 
+                let buffer = Parser.start Lexer.tokenstream lexbuf
+                let res = buffer |> Clean
+                ParseCache<-ParseCache.Add(lang,res)
+                res
 
         
 and  Eval  (env: WarewolfEnvironment) (lang:string) : WarewolfEvalResult=
@@ -155,20 +157,52 @@ and  Eval  (env: WarewolfEnvironment) (lang:string) : WarewolfEvalResult=
             if( evaled = start) then
                 DataString evaled
             else DataString (Eval env evaled|>  EvalResultToString)
-    let buffer = 
-        if ParseCache.ContainsKey lang 
-        then 
-            ParseCache.[lang]
-        else
-            let temp = ParseLanguageExpression lang
-            temp
+    
+    let exp = ParseCache.TryFind lang
+    let buffer =  match exp with 
+                    | Some a ->  a
+                    | _->    
+                        let temp = ParseLanguageExpression lang
+                        temp
     match buffer with
         | RecordSetExpression a -> WarewolfAtomListresult(  (evalRecordsSet a env) )
         | ScalarExpression a -> WarewolfAtomResult (evalScalar a env)
         | WarewolfAtomAtomExpression a -> WarewolfAtomResult a
         | ComplexExpression  a -> WarewolfAtomResult (EvalComplex ( List.filter (fun b -> "" <> (LanguageExpressionToString b)) a)) 
 
+and getRecordSetPositionsAsInts (recset:WarewolfRecordset) =
+    let AtomToInt (a:WarewolfAtom) =
+        match a with
+            | Int a -> a
+            | _->failwith "the position column contains non ints"
+    let positions = recset.Data.[PositionColumn];
+    Seq.map AtomToInt positions |> Seq.sort
 
+and evalRecordSetIndexes (env:WarewolfEnvironment) (recset:RecordSetName) : int seq =
+    match recset.Index with
+    | IntIndex a -> {1..1}
+    | Star -> getRecordSetPositionsAsInts env.RecordSets.[recset.Name]
+    | Last -> getRecordSetPositionsAsInts env.RecordSets.[recset.Name]
+    | IndexExpression a -> {1..1}
+
+and  EvalIndexes  (env: WarewolfEnvironment) (lang:string) =
+    let EvalComplex (exp:LanguageExpression list) = 
+        if((List.length exp) =1) then
+            match exp.[0] with
+                | RecordSetNameExpression a -> evalRecordSetIndexes env a
+                | _ ->failwith "not a recordset"
+        else    
+            failwith "not a recordset"
+    let exp = ParseCache.TryFind lang
+    let buffer =  match exp with 
+                    | Some a ->  a
+                    | _->    
+                        let temp = ParseLanguageExpression lang
+                        temp
+    match buffer with
+        | ComplexExpression  a ->  EvalComplex ( List.filter (fun b -> "" <> (LanguageExpressionToString b)) a)
+        | RecordSetNameExpression a -> evalRecordSetIndexes env a
+        | _ ->failwith "not a recordset"
 
 
 // assigns happen here all tools will use these functions to do assigns. Must be wrapped in c# class
@@ -210,10 +244,10 @@ let AddToList (lst:System.Collections.Generic.List<'t>) (value:'t) =
 
 
 let AddAtomToRecordSet (rset:WarewolfRecordset) (columnName:string) (value: WarewolfAtom) (position:int) =
-    let rsAdded = if rset.Data.ContainsKey( columnName) 
-                  then  rset
-                  else 
-                       { rset with Data=  Map.add columnName (CreateEmpty rset.Count)  rset.Data    }
+    let col = rset.Data.TryFind columnName
+    let rsAdded= match col with 
+                    | Some a -> rset
+                    | None-> { rset with Data=  Map.add columnName (CreateEmpty rset.Count)  rset.Data    }
     if position = rsAdded.Count+1    
         then
                   
@@ -247,7 +281,7 @@ let AddAtomToRecordSet (rset:WarewolfRecordset) (columnName:string) (value: Ware
 
 let getPositionFromRecset (rset:WarewolfRecordset) (columnName:string) =
     if rset.Data.ContainsKey( columnName) then
-        let posValue = Seq.last rset.Data.[columnName]
+        let posValue =  rset.Data.[columnName].[rset.Data.[columnName].Count-1]
         match posValue with
             |   Nothing -> rset.Frame
             | _-> (rset.LastIndex+1)        

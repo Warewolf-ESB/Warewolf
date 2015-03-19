@@ -47,12 +47,12 @@ namespace Dev2.DynamicServices
 
         private DsfDataObject()
         {
-            Environment = new Warewolf.Storage.Environment(); ;
+            Environment = new Warewolf.Storage.ExecutionEnvironment(); ;
         }
 
         public DsfDataObject(string xmldata, Guid dataListId, string rawPayload = "")
         {
-            Environment = new Warewolf.Storage.Environment(); ;
+            Environment = new Warewolf.Storage.ExecutionEnvironment(); ;
             ThreadsToDispose = new Dictionary<int, List<Guid>>();
 
             if (xmldata != null)
@@ -213,7 +213,7 @@ namespace Dev2.DynamicServices
             return false;
         }
 
-        public IEnvironment Environment { get; set; }
+        public IExecutionEnvironment Environment { get; set; }
 
         public int ForEachNestingLevel { get; set; }
 

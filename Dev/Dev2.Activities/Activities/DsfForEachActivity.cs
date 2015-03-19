@@ -27,6 +27,7 @@ using Dev2.Enums;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -211,7 +212,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             InitializeDebug(dataObject);
             try
             {
-                ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, executionId, compiler, out errors);
+                ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, executionId, dataObject.Environment,compiler, out errors);
 
                 if(errors.HasErrors())
                 {
@@ -484,10 +485,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary>        
         /// <param name="dataObject">The data object.</param>
         /// <param name="dlId">The dl ID.</param>
+        /// <param name="environment"></param>
         /// <param name="compiler">The compiler.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>                
-        private ForEachBootstrapTO FetchExecutionType(IDSFDataObject dataObject, Guid dlId, IDataListCompiler compiler, out ErrorResultTO errors)
+        private ForEachBootstrapTO FetchExecutionType(IDSFDataObject dataObject, Guid dlId, IExecutionEnvironment environment, IDataListCompiler compiler, out ErrorResultTO errors)
         {
             if(dataObject.IsDebugMode())
             {
@@ -495,34 +497,41 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddDebugItem(new DebugItemStaticDataParams(ForEachType.GetDescription(), ""), debugItem);
                 if(ForEachType == enForEachType.NumOfExecution && !string.IsNullOrEmpty(NumOfExections))
                 {
-                    IBinaryDataListEntry numOfExectionsEntry = compiler.Evaluate(dlId, enActionType.User, NumOfExections, false, out errors);
-                    AddDebugItem(new DebugItemVariableParams(NumOfExections, "Number", numOfExectionsEntry, dlId), debugItem);
+                    var numberofExecs = environment.GetEvaluationResultAsInt(NumOfExections);
+
+                    AddDebugItem(new DebugItemWarewolfAtomResult(NumOfExections, numberofExecs.ToString(CultureInfo.InvariantCulture), "Number of Executes"), debugItem);
                 }
                 if(ForEachType == enForEachType.InCSV && !string.IsNullOrEmpty(CsvIndexes))
                 {
-                    IBinaryDataListEntry csvIndexesEntry = compiler.Evaluate(dlId, enActionType.User, CsvIndexes, false, out errors);
-                    AddDebugItem(new DebugItemVariableParams(CsvIndexes, "Csv Indexes", csvIndexesEntry, dlId), debugItem);
+                    var evalledCSV = Warewolf.Storage.ExecutionEnvironment.WarewolfEvalResultToString( environment.Eval(CsvIndexes));
+                    AddDebugItem(new DebugItemWarewolfAtomResult(NumOfExections, evalledCSV, "Number of Executes"), debugItem);
+     
                 }
                 if(ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(From))
                 {
-                    IBinaryDataListEntry fromEntry = compiler.Evaluate(dlId, enActionType.User, From, false, out errors);
-                    AddDebugItem(new DebugItemVariableParams(From, "From", fromEntry, dlId), debugItem);
+                    var from = environment.GetEvaluationResultAsInt(From);
+
+                    AddDebugItem(new DebugItemWarewolfAtomResult(NumOfExections, from.ToString(CultureInfo.InvariantCulture), "Number of Executes"), debugItem);
+ 
                 }
                 if(ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(To))
                 {
-                    IBinaryDataListEntry toEntry = compiler.Evaluate(dlId, enActionType.User, To, false, out errors);
-                    AddDebugItem(new DebugItemVariableParams(To, "To", toEntry, dlId), debugItem);
+                    var to = environment.GetEvaluationResultAsInt(To);
+
+                    AddDebugItem(new DebugItemWarewolfAtomResult(NumOfExections, to.ToString(CultureInfo.InvariantCulture), "Number of Executes"), debugItem);
+
                 }
                 if(ForEachType == enForEachType.InRecordset && !string.IsNullOrEmpty(Recordset))
                 {
-                    var toEmit = Recordset.Replace("()", "(*)");
-                    IBinaryDataListEntry toEntry = compiler.Evaluate(dlId, enActionType.User, toEmit, false, out errors);
-                    AddDebugItem(new DebugItemVariableParams(toEmit, "Recordset", toEntry, dlId), debugItem);
+                    //var to = environment.GetEvaluationResultAsInt(Recordset);
+
+                    //AddDebugItem(new DebugItemWarewolfAtomResult(NumOfExections, to.ToString(CultureInfo.InvariantCulture), "Number of Executes"), debugItem);
+
                 }
                 _debugInputs.Add(debugItem);
             }
 
-            var result = new ForEachBootstrapTO(ForEachType, From, To, CsvIndexes, NumOfExections, Recordset, dlId, compiler, out errors);
+            var result = new ForEachBootstrapTO(ForEachType, From, To, CsvIndexes, NumOfExections, Recordset, dlId, environment, out errors);
 
             return result;
 
@@ -720,7 +729,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -729,7 +738,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             return DebugItem.EmptyList;
         }

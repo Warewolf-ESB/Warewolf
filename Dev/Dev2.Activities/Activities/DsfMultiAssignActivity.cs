@@ -204,7 +204,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        void AddPreAssignDebug(IEnvironment environment,IEnumerable<IAssignValue> assignValues)
+        void AddPreAssignDebug(IExecutionEnvironment environment,IEnumerable<IAssignValue> assignValues)
         {
             var innerCount = 1;
             const string VariableLabelText = "Variable";
@@ -223,7 +223,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        var value = Warewolf.Storage.Environment.WarewolfAtomToString(scalarResult.Item);
+                        var value = Warewolf.Storage.ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item);
                         AddDebugItem(new DebugItemWarewolfAtomResult(value, assignValue.Name, VariableLabelText, NewFieldLabelText), debugItem);
                     }
                 }
@@ -237,7 +237,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        void AddDebugAfterAssign(IEnvironment environment, IEnumerable<IAssignValue> assignValues)
+        void AddDebugAfterAssign(IExecutionEnvironment environment, IEnumerable<IAssignValue> assignValues)
         {
             var innerCount = 1;
             const string VariableLabelText = "Variable";
@@ -255,7 +255,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        var value = Warewolf.Storage.Environment.WarewolfAtomToString(scalarResult.Item);
+                        var value = Warewolf.Storage.ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item);
                         AddDebugItem(new DebugItemWarewolfAtomResult(value, assignValue.Name, VariableLabelText, "="), debugItem);
                     }
                 }
@@ -349,12 +349,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             return _debugOutputs;
         }

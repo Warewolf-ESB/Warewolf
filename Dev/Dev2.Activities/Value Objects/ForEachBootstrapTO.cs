@@ -23,7 +23,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
     /// <summary>
     /// Used with the ForEach Activity
     /// </summary>
-    public class ForEachBootstrapTO : DynamicObject
+    public class ForEachBootstrapTOOld : DynamicObject
     {
         public enForEachExecutionType ExeType { get; private set; }
         public int MaxExecutions { get; private set; }
@@ -34,7 +34,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
         public enForEachType ForEachType { get; private set; }
 
 
-        public ForEachBootstrapTO(enForEachExecutionType typeOf, int maxExe, IBinaryDataListEntry data)
+        public ForEachBootstrapTOOld(enForEachExecutionType typeOf, int maxExe, IBinaryDataListEntry data)
         {
             ExeType = typeOf;
             MaxExecutions = maxExe;
@@ -49,7 +49,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
         }
 
         //MO - Changed : new ctor that accepts the new arguments
-        public ForEachBootstrapTO(enForEachType forEachType, string from, string to, string csvNumbers, string numberOfExecutes, string recordsetName, Guid dlID, IDataListCompiler compiler, out ErrorResultTO errors)
+        public ForEachBootstrapTOOld(enForEachType forEachType, string from, string to, string csvNumbers, string numberOfExecutes, string recordsetName, Guid dlID, IDataListCompiler compiler, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             ForEachType = forEachType;

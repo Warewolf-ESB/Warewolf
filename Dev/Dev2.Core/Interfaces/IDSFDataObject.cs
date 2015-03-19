@@ -89,6 +89,6 @@ namespace Dev2
         IDSFDataObject Clone();
         bool IsDebugMode();
         bool IsRemoteWorkflow();
-        IEnvironment Environment { get; set; }
+        IExecutionEnvironment Environment { get; set; }
     }
 }

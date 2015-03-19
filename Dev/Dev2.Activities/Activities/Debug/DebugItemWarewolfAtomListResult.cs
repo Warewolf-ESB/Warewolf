@@ -104,7 +104,7 @@ namespace Dev2.Activities.Debug
                     Variable = displayExpression,
                     Operator = debugOperator,
                     GroupName = groupName,
-                    Value = Warewolf.Storage.Environment.WarewolfAtomToString(item),
+                    Value = Warewolf.Storage.ExecutionEnvironment.WarewolfAtomToString(item),
                     GroupIndex = grpIdx
                 });
             }
