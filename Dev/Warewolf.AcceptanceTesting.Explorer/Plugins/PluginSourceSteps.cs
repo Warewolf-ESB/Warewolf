@@ -78,11 +78,6 @@ public void WhenAssemblyIs(string p0)
     ScenarioContext.Current.Pending();
 }
 
-        [When(@"I select ""(.*)""")]
-public void WhenISelect(string p0)
-{
-    ScenarioContext.Current.Pending();
-}
 
         [When(@"I save Plugin source")]
 public void WhenISavePluginSource()
