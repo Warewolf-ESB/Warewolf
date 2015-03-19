@@ -7,8 +7,8 @@
 Scenario: Read tool Small View
        Given I have Read Small View on design surface
        Then Read small view has
-       | File Name |  Result |
-       |                |         |
+       | File Name | Result |
+       |           |        |
 
 Scenario: Read tool Large View
        Given I have Read Large View on design surface
