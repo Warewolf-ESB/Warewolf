@@ -299,6 +299,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Data-DataSplit.feature</DependentUpon>
     </Compile>
+    <Compile Include="Tools\FileAndFolder - Create.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FileAndFolder - Create.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\FileAndFolder - Delete.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FileAndFolder - Delete.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\FileAndFolder - Read.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FileAndFolder - Read.feature</DependentUpon>
+    </Compile>
     <Compile Include="Tools\FileAndFolder-Copy.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -412,6 +427,18 @@
     <None Include="Tools\Data-DataSplit.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Data-DataSplit.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\FileAndFolder - Create.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FileAndFolder - Create.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\FileAndFolder - Delete.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FileAndFolder - Delete.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\FileAndFolder - Read.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FileAndFolder - Read.feature.cs</LastGenOutput>
     </None>
     <None Include="Tools\FileAndFolder-Copy.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
