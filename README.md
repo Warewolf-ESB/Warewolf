@@ -45,6 +45,7 @@ Use the [Community](http://community.warewolf.io) site for:
 Release notes are available at http://warewolf.io/release-notes.php
 
 You can download the latest compiled release from http://warewolf.io
+
 Please note that Warewolf is built for Windows 7 and Windows Server 2008.
 
 
