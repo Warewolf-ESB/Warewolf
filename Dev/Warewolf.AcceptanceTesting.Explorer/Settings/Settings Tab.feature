@@ -93,33 +93,12 @@ Scenario: Duplicate resource permissions cannot be saved
 	Then settings not successfully saved
 	And the validation message is "Duplicate resource permission"
 
-
-Scenario: Selecting Logging is showing Server and Studio log settings
-	Given I have settings tab opened
-	And "server" selected as "localhost (Connected)"
-	And Server edit is "Disabled"
-	And server connection is "Disabled"
-	And Save is "Disabled"
-	And Security is "Selected"
-	And Logging is "Unselected"
-	And Server Permissions is "Visible"
-	And Resource Permissions is "Visible"
-	When I select "Logging"
-	Then Server System Logs is "Visible"
-	And Studio Logs is "Visible"
-	And Server Permissions is "InVisible"
-	And Resource Permissions is "InVisible"
-	And Save is "Disabled"
-
-
 Scenario Outline: Save enables when I change server logs
 	Given I have settings tab opened	
-	And Logging is "Selected"
+	And Logging is selected
 	Then Server System Logs is "Visible"
 	And Studio Logs is "Visible"
-	And Server Permissions is "InVisible"
-	And Resource Permissions is "InVisible"
-	When Server System Logs selected '<Serverlogs>'
+	When Server System Logs setup as '<Serverlogs>'
 	And Save is "Enabled"
 Examples: 
      | No | Serverlogs                                                                        |
@@ -133,11 +112,9 @@ Examples:
 
 Scenario Outline: Save enables when I change studio logs
 	Given I have settings tab opened	
-	And Logging is "Selected"
+	And Logging is selected
 	Then Server System Logs is "Visible"
 	And Studio Logs is "Visible"
-	And Server Permissions is "InVisible"
-	And Resource Permissions is "InVisible"
 	When Studio System Logs selected '<Studiologs>'
 	And Save is "Enabled"
 Examples: 
@@ -152,7 +129,7 @@ Examples:
 	
 Scenario: Server Log File hyper link is opening log file
 	Given I have settings tab opened	
-	And Logging is "Selected"
+	And Logging is selected
 	Then Server System Logs is "Visible"
 	And Studio Logs is "Visible"
 	And Server Log File hyper link is "Visible"
@@ -161,10 +138,9 @@ Scenario: Server Log File hyper link is opening log file
 	Then "Localhost server Log.txt - Notepad" is opened
 	
 	
-	
 Scenario: Studio Log File hyper link is opening log file
 	Given I have settings tab opened	
-	And Logging is "Selected"
+	And Logging is selected
 	Then Server System Logs is "Visible"
 	And Studio Logs is "Visible"
 	And Server Log File hyper link is "Visible"
@@ -175,16 +151,16 @@ Scenario: Studio Log File hyper link is opening log file
 	
 Scenario: Server and studio default file size 
 	Given I have settings tab opened	
-	And Logging is "Selected"
+	And Logging is selected
 	Then Server System Logs is "Visible"
 	And Studio Logs is "Visible"	
 	And Max Log file Size for Server default is "200" MB
 	And Max Log file Size for Studio default is "200" MB
 
 
-Scenario: Server and studio size not accepts alphabets
+Scenario: Server and studio log file size only accepts numbers
 	Given I have settings tab opened	
-	And Logging is "Selected"
+	And Logging is selected
 	Then Server System Logs is "Visible"
 	And Studio Logs is "Visible"	
 	When I edit Max Log file Size for Server "abc" MB
@@ -195,7 +171,3 @@ Scenario: Server and studio size not accepts alphabets
 	When I edit Max Log file Size for Server "100" MB
 	Then Max Log file Size for Server default is "100" MB 
 	And "Save" is "Enabled"
-
-
-
-
