@@ -44,7 +44,10 @@ type PositionValue =
 
 let getRecordSetIndex (recset:WarewolfRecordset) (position:int) =
     match recset.Optimisations with
-    | Ordinal -> IndexFoundPosition (position-1)
+    | Ordinal -> if recset.LastIndex <  position then
+                    IndexDoesNotExist
+                 else
+                    IndexFoundPosition (position-1)
     | _->
             let indexes = recset.Data.[PositionColumn]
             let positionAsAtom = Int position
@@ -56,15 +59,18 @@ let evalRecordSetIndex (recset:WarewolfRecordset) (identifier:RecordSetIdentifie
     let index = getRecordSetIndex recset position
     match index with 
     | IndexFoundPosition a -> recset.Data.[identifier.Column].[a]
-    | IndexDoesNotExist -> Nothing
+    | IndexDoesNotExist -> raise (new Dev2.Common.Common.NullValueInVariableException("index not found",identifier.Name))
 
 let evalRecordSetStarIndex (recset:WarewolfRecordset) (identifier:RecordSetIdentifier)  =
     recset.Data.[identifier.Column]
 
 let evalRecordSetLastIndex (recset:WarewolfRecordset) (identifier:RecordSetIdentifier)  =
-    let data = Seq.max recset.Data.[PositionColumn] 
-    let index = Seq.findIndex (fun a -> a=data) recset.Data.[PositionColumn] 
-    recset.Data.[identifier.Column].[index]
+    if Seq.isEmpty recset.Data.[PositionColumn] then
+        Nothing
+    else
+        let data = Seq.max recset.Data.[PositionColumn] 
+        let index = Seq.findIndex (fun a -> a=data) recset.Data.[PositionColumn] 
+        recset.Data.[identifier.Column].[index]
 
 
 
@@ -108,7 +114,7 @@ and  LanguageExpressionToString  (x:LanguageExpression) =
 
 and evalRecordsSet (recset:RecordSetIdentifier) (env: WarewolfEnvironment)  =
     if  not (env.RecordSets.ContainsKey recset.Name)       then 
-        new System.Collections.Generic.List<WarewolfAtom>([Nothing])
+        raise (new Dev2.Common.Common.NullValueInVariableException(recset.Index.ToString(),recset.Name))
             
     else
             match recset.Index with
@@ -291,11 +297,12 @@ let getPositionFromRecset (rset:WarewolfRecordset) (columnName:string) =
         |_ ->max (rset.LastIndex) rset.Frame
         
 
+
 let AddAtomToRecordSetWithFraming (rset:WarewolfRecordset) (columnName:string) (value: WarewolfAtom) (position:int) (isFramed:bool) =
-    let rsAdded = if rset.Data.ContainsKey( columnName) 
-                  then  rset
-                  else 
-                       { rset with Data=  Map.add columnName (CreateEmpty rset.Data.[PositionColumn].Count)  rset.Data    }
+    let col = rset.Data.TryFind columnName
+    let rsAdded= match col with 
+                    | Some a -> rset
+                    | None-> { rset with Data=  Map.add columnName (CreateEmpty rset.Count)  rset.Data    }
     let frame = if isFramed then position else 0;
     if position = rsAdded.Count+1    
         then                  
@@ -311,7 +318,7 @@ let AddAtomToRecordSetWithFraming (rset:WarewolfRecordset) (columnName:string) (
                 let len = addedAtEnd.[PositionColumn].Count 
             
                 addedAtEnd.[PositionColumn].[len-1] <- Int position
-                { rsAdded with Data=addedAtEnd ; LastIndex = position; Frame = frame ; Count = len+1 ; Optimisations = if  rsAdded.Optimisations = WarewolfAttribute.Ordinal then WarewolfAttribute.Sorted else rsAdded.Optimisations }
+                { rsAdded with Data=addedAtEnd ; LastIndex = position; Frame = frame ; Count = len ; Optimisations = if  rsAdded.Optimisations = WarewolfAttribute.Ordinal then WarewolfAttribute.Sorted else rsAdded.Optimisations }
 
             else
                 let lstval = rsAdded.Data.[PositionColumn]
@@ -343,6 +350,17 @@ let UpdateColumnWithValue (rset:WarewolfRecordset) (columnName:string) (value: W
         rset 
     else 
     {rset with Data=  Map.add columnName ( CreateFilled rset.Count value)  rset.Data    }
+
+//let UpdateColumnWithValues (rset:WarewolfRecordset) (columnName:string) (value: WarewolfAtom list)=
+//    let maxindex =  List.length value   
+//    if rset.Data.ContainsKey( columnName) 
+//    then
+//        let x = rset.Data.[columnName];
+//        for i in [0..x.Count-1] do                         
+//            x.[i]<-value;    
+//        rset 
+//    else 
+//    {rset with Data=  Map.add columnName ( CreateFilled rset.Count value)  rset.Data    }
 
 
 

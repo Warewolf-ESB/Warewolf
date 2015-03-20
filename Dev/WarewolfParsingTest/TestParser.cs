@@ -144,7 +144,7 @@ namespace WarewolfParsingTest
 
             Assert.IsTrue(val.IsInt);
             var intval = val as DataASTMutable.WarewolfAtom.Int;
-            Assert.AreEqual(2, intval.Item);
+            Assert.AreEqual(3, intval.Item);
             // ReSharper restore PossibleNullReferenceException
         }
 
@@ -180,7 +180,9 @@ namespace WarewolfParsingTest
             var x = ast as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
             // ReSharper disable PossibleNullReferenceException
             // ReSharper disable PossibleNullReferenceException
+            // ReSharper disable PossibleNullReferenceException
             Assert.IsTrue(x.Item.IsInt);
+            // ReSharper restore PossibleNullReferenceException
             // ReSharper restore PossibleNullReferenceException
             var val = x.Item as DataASTMutable.WarewolfAtom.Int;
             // ReSharper disable PossibleNullReferenceException
@@ -238,8 +240,10 @@ namespace WarewolfParsingTest
             var env = WarewolfTestData.CreateTestEnvWithData;
             try
             {
-                PublicFunctions.EvalEnvExpression("[[xyz]]", env);
-                Assert.Fail("bob should have thrown an exception if i try to get a value that does not exist");
+                var a = PublicFunctions.EvalEnvExpression("[[xyz]]", env);
+                Assert.IsTrue(a.IsWarewolfAtomResult);
+                var res = (a as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult);
+                Assert.IsTrue(res.Item.IsNothing);
             }
             catch (Exception e)
             {
@@ -251,20 +255,14 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WarewolfParse_Eval")]
+        [ExpectedException(typeof(Dev2.Common.Common.NullValueInVariableException))]
         public void WarewolfParse_Eval_Recset_NoIndex_ExpectAnException()
         {
 
             var env = WarewolfTestData.CreateTestEnvWithData;
-            try
-            {
-                PublicFunctions.EvalEnvExpression("[[rec(4).a]]", env);
-                Assert.Fail("bob should have thrown an exception if i try to get a value that does not exist");
-            }
-            catch(Exception e)
-            {
+            var a = PublicFunctions.EvalEnvExpression("[[rec(4).a]]", env);
 
-                Assert.IsTrue(e.Message.Contains("does not have the row"));
-            }
+       
       
             // ReSharper restore PossibleNullReferenceException
         }
@@ -538,6 +536,121 @@ namespace WarewolfParsingTest
 
         }
 
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_FramedAssign_With_StarOnBothSides()
+        {
+
+
+            var assigns = new List<IAssignValue>
+             {
+                 new AssignValue("[[rec().a]]", "25"),
+                 new AssignValue("[[rec().b]]", "33"),
+                 new AssignValue("[[rec().a]]", "26"),
+                 new AssignValue("[[rec().b]]", "27"),
+
+             };
+
+            var assigns2 = new List<IAssignValue>
+             {
+                 new AssignValue("[[rec(*).a]]", "[[rec(*).b]]"),
+
+
+             };
+            var env = WarewolfTestData.CreateTestEnvEmpty(""); ;
+
+            var envx = PublicFunctions.EvalMultiAssign(assigns, env);
+            var env2 = PublicFunctions.EvalMultiAssign(assigns2, envx);
+            var recordSet = env2.RecordSets["rec"];
+            Assert.IsTrue(recordSet.Data.ContainsKey("a"));
+            Assert.AreEqual(recordSet.Data["a"].Count, 2);
+            Assert.IsTrue(recordSet.Data["a"][0].IsInt);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 33);
+            Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 27);
+
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_FramedAssign_With_StarOnOneSideAndLastOnOther()
+        {
+
+
+            var assigns = new List<IAssignValue>
+             {
+                 new AssignValue("[[rec().a]]", "25"),
+                 new AssignValue("[[rec().b]]", "33"),
+                 new AssignValue("[[rec().a]]", "26"),
+                 new AssignValue("[[rec().b]]", "27"),
+
+             };
+
+            var assigns2 = new List<IAssignValue>
+             {
+                 new AssignValue("[[rec(*).a]]", "[[rec().b]]"),
+
+
+             };
+            var env = WarewolfTestData.CreateTestEnvEmpty(""); ;
+
+            var envx = PublicFunctions.EvalMultiAssign(assigns, env);
+            var env2 = PublicFunctions.EvalMultiAssign(assigns2, envx);
+            var recordSet = env2.RecordSets["rec"];
+            Assert.IsTrue(recordSet.Data.ContainsKey("a"));
+            Assert.AreEqual(recordSet.Data["a"].Count, 2);
+            Assert.IsTrue(recordSet.Data["a"][0].IsInt);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 27);
+            Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 27);
+
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
+
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_FramedAssign_With_StarOnOneSideAndIndexOnOther()
+        {
+
+
+            var assigns = new List<IAssignValue>
+             {
+                 new AssignValue("[[rec().a]]", "25"),
+                 new AssignValue("[[rec().b]]", "33"),
+                 new AssignValue("[[rec().a]]", "26"),
+                 new AssignValue("[[rec().b]]", "27"),
+
+             };
+
+            var assigns2 = new List<IAssignValue>
+             {
+                 new AssignValue("[[rec(*).a]]", "[[rec(1).b]]"),
+
+
+             };
+            var env = WarewolfTestData.CreateTestEnvEmpty(""); ;
+
+            var envx = PublicFunctions.EvalMultiAssign(assigns, env);
+            var env2 = PublicFunctions.EvalMultiAssign(assigns2, envx);
+            var recordSet = env2.RecordSets["rec"];
+            Assert.IsTrue(recordSet.Data.ContainsKey("a"));
+            Assert.AreEqual(recordSet.Data["a"].Count, 2);
+            Assert.IsTrue(recordSet.Data["a"][0].IsInt);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 33);
+            Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 33);
+
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
+
+        }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]

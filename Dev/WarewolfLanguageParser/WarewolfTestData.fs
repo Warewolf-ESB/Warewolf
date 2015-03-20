@@ -21,5 +21,5 @@ let CreateTestEnvWithData =
     let positionColumn =  (PositionColumn, new System.Collections.Generic.List<WarewolfAtomRecord>( [ Int 1; Int 2; Int 3 ]))
     let aColumn = ( "a",  new System.Collections.Generic.List<WarewolfAtomRecord>( [ Int 2; Int 4; Int 3 ]))
     let data = [positionColumn;aColumn] |> Map.ofList
-    let recordsets =[ ("rec", {PublicFunctions.CreateDataSet "a" with Data= data;} )] |> Map.ofList
+    let recordsets =[ ("rec", {PublicFunctions.CreateDataSet "a" with Data= data; Count=3; LastIndex=3} )] |> Map.ofList
     {RecordSets=recordsets;Scalar=vars}

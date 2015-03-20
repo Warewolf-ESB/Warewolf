@@ -15,10 +15,9 @@ using System.Text;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
-using Dev2.Server.Datalist;
+
 using Dev2.Web;
 using Warewolf.Storage;
-
 namespace Dev2
 {
     public interface IDSFDataObject
@@ -90,5 +89,8 @@ namespace Dev2
         bool IsDebugMode();
         bool IsRemoteWorkflow();
         IExecutionEnvironment Environment { get; set; }
+
+        void PopEnvironment();
+        void PushEnvironment(IExecutionEnvironment env);
     }
 }

@@ -18,12 +18,15 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
+using log4net.Appender;
 using Warewolf.Storage;
+using WarewolfParserInterop;
 
 namespace Dev2.Data.Util
 {
@@ -951,6 +954,72 @@ namespace Dev2.Data.Util
             }
 
             return result;
+        }
+        
+        /// <summary>
+        /// Shapes the definitions to data list.
+        /// </summary>
+        /// <returns></returns>
+        public static IExecutionEnvironment InputsToEnvironment(IExecutionEnvironment outerEnvironment,string inputDefs)
+        {
+            var env = new ExecutionEnvironment();
+
+            
+            var inputs = DataListFactory.CreateInputParser().Parse(inputDefs);
+
+            IRecordSetCollection inputRecSets = DataListFactory.CreateRecordSetCollection(inputs, false);
+
+            IList<IDev2Definition> inputScalarList = DataListFactory.CreateScalarList(inputs, false);
+
+            foreach (var recordSetDefinition in inputRecSets.RecordSets)
+            {
+                var outPutRecSet = inputs.FirstOrDefault(definition => definition.IsRecordSet && ExtractRecordsetNameFromValue(definition.MapsTo) == recordSetDefinition.SetName);
+                if(outPutRecSet != null)
+                {
+                    var warewolfEvalResult = outerEnvironment.Eval(outPutRecSet.RawValue);
+                    if (warewolfEvalResult.IsWarewolfAtomListresult)
+                    {
+                        var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                        var inputRecSet = inputs.FirstOrDefault(definition => definition.MapsTo == outPutRecSet.Value);
+                        if (inputRecSet != null && inputRecSet.IsRecordSet)
+                        {
+                            var enRecordsetIndexType = GetRecordsetIndexType(inputRecSet.Value);
+                            if (enRecordsetIndexType == enRecordsetIndexType.Star)
+                            {
+                                if(recsetResult != null)
+                                {
+                                    var correctRecSet = "[[" + inputRecSet.RecordSetName + "()." + inputRecSet.Name + "]]";
+                                    env.EvalAssignFromNestedStar(correctRecSet, recsetResult);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            foreach (var dev2Definition in inputScalarList)
+            {
+                if (!dev2Definition.IsRecordSet)
+                {
+                    var warewolfEvalResult = outerEnvironment.Eval(dev2Definition.RawValue);
+                    if (warewolfEvalResult.IsWarewolfAtomListresult)
+                    {
+                        var data = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                        if (data != null && data.Item.Any())
+                        {
+                            env.MultiAssign(new List<IAssignValue> { new AssignValue("[[" + dev2Definition.Name + "]]", ExecutionEnvironment.WarewolfAtomToString(data.Item.Last())) });
+                        }
+                    }
+                    else
+                    {
+                        var data = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                        if (data != null)
+                        {
+                            env.MultiAssign(new List<IAssignValue> { new AssignValue("[[" + dev2Definition.Name + "]]", ExecutionEnvironment.WarewolfAtomToString(data.Item)) });
+                        }
+                    }
+                }
+            }
+            return env;
         }
 
 
@@ -1966,6 +2035,84 @@ namespace Dev2.Data.Util
             {
                 observablePair.Key = observablePair.Key.Replace(" ", "");
             }
+        }
+
+        public static void OutputsToEnvironment(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, string outputDefs)
+        {
+
+            var outputs = DataListFactory.CreateOutputParser().Parse(outputDefs);
+
+            IRecordSetCollection outputRecSets = DataListFactory.CreateRecordSetCollection(outputs, true);
+
+            IList<IDev2Definition> outputScalarList = DataListFactory.CreateScalarList(outputs, true);
+
+            foreach (var recordSetDefinition in outputRecSets.RecordSets)
+            {
+                var outPutRecSet = outputs.FirstOrDefault(definition => definition.IsRecordSet && definition.RecordSetName == recordSetDefinition.SetName);
+                if(outPutRecSet != null)
+                {
+                    var correctRecSet = "[[" + outPutRecSet.RecordSetName + "(*)." + outPutRecSet.Name + "]]";
+                    var warewolfEvalResult = innerEnvironment.Eval(correctRecSet);
+                    if (warewolfEvalResult.IsWarewolfAtomListresult)
+                    {
+                        var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                        if (outPutRecSet.IsRecordSet)
+                        {
+                            var enRecordsetIndexType = GetRecordsetIndexType(outPutRecSet.RawValue);
+                            if (enRecordsetIndexType == enRecordsetIndexType.Star)
+                            {
+                                if(recsetResult != null)
+                                {
+
+                                    environment.EvalAssignFromNestedStar(outPutRecSet.RawValue, recsetResult);
+                                }
+                            }
+                            if (enRecordsetIndexType == enRecordsetIndexType.Blank)
+                            {
+                                if (recsetResult != null)
+                                {
+
+                                    environment.EvalAssignFromNestedLast(outPutRecSet.RawValue, recsetResult);
+                                }
+                            }
+                            if (enRecordsetIndexType == enRecordsetIndexType.Numeric)
+                            {
+                                if (recsetResult != null)
+                                {
+
+                                    environment.EvalAssignFromNestedNumeric(outPutRecSet.RawValue, recsetResult);
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            foreach(var dev2Definition in outputScalarList)
+            {
+                if(!dev2Definition.IsRecordSet)
+                {
+                    var warewolfEvalResult = innerEnvironment.Eval(dev2Definition.RawValue);
+                    if(warewolfEvalResult.IsWarewolfAtomListresult)
+                    {
+                        var data = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                        if(data != null && data.Item.Any())
+                        {
+                            environment.MultiAssign(new List<IAssignValue>{ new AssignValue( "[[" + dev2Definition.Value + "]]", ExecutionEnvironment.WarewolfAtomToString( data.Item.Last()))});
+                        }
+                    }
+                    else
+                    {
+                        var data = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                        if(data != null)
+                        {
+                            environment.MultiAssign(new List<IAssignValue> { new AssignValue("[[" + dev2Definition.Value + "]]", ExecutionEnvironment.WarewolfAtomToString(data.Item)) });
+                        }
+                    }
+                }
+            }
+
         }
     }
 }

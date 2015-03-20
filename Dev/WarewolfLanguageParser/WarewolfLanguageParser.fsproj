@@ -72,6 +72,11 @@
       <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
+      <Name>Dev2.Common</Name>
+      <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\WarewolfParserInterop\WarewolfParserInterop.csproj">
       <Name>WarewolfParserInterop</Name>
       <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>

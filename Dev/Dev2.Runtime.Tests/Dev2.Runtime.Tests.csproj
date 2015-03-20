@@ -401,6 +401,10 @@
       <Project>{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}</Project>
       <Name>Dev2.UnitTestUtils</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
+      <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
+      <Name>Warewolf.Storage</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

@@ -30,6 +30,7 @@ using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -326,9 +327,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                             dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
                             dataObject.ResourceID = ResourceID.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
-
+                            
                             // Execute Request
                             ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors);
+                            
                             allErrors.MergeErrors(tmpErrors);
 
                             AfterExecutionCompleted(tmpErrors);
@@ -432,8 +434,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             var resultId = esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors);
             Dev2Logger.Log.Info("POST-SUB_EXECUTE SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb().ToString("####.####") + " MBs ]");
-
-            return resultId;
+            GetDebugOutputsFromEnv(resultId);
+            return Guid.NewGuid();
         }
 
         public override IList<DsfForEachItem> GetForEachInputs()
@@ -532,31 +534,52 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion Overridden ActivityAbstact Methods
 
         #region Debug IO
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
         {
             IDev2LanguageParser parser = DataListFactory.CreateInputParser();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            return GetDebugInputs(dataList, compiler, parser).Select(a => (DebugItem)a).ToList();
+            return GetDebugInputs(env, parser).Select(a => (DebugItem)a).ToList();
 
         }
-        public List<IDebugItem> GetDebugInputs(IBinaryDataList dataList, IDataListCompiler compiler, IDev2LanguageParser parser)
+        public List<IDebugItem> GetDebugInputs( IExecutionEnvironment env, IDev2LanguageParser parser)
         {
             IList<IDev2Definition> inputs = parser.Parse(InputMapping);
 
             var results = new List<IDebugItem>();
             foreach(IDev2Definition dev2Definition in inputs)
             {
-                ErrorResultTO errors;
-                IBinaryDataListEntry tmpEntry = compiler.Evaluate(dataList.UID, enActionType.User, dev2Definition.RawValue, false, out errors);
+               
+                var tmpEntry = env.Eval( dev2Definition.RawValue);
 
                 DebugItem itemToAdd = new DebugItem();
-                AddDebugItem(new DebugItemVariableParams(dev2Definition.RawValue, "", tmpEntry, dataList.UID), itemToAdd);
-
-                if(errors.HasErrors())
+                if (tmpEntry.IsWarewolfAtomResult)
                 {
-                    itemToAdd.FlushStringBuilder();
-                    throw new DebugCopyException(errors.MakeDisplayReady(), itemToAdd);
+        
+                    var warewolfAtomResult = tmpEntry as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                    if (warewolfAtomResult != null)
+                    {
+                        AddDebugItem(new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfAtomToString(warewolfAtomResult.Item), dev2Definition.RawValue, "="), itemToAdd);
+                    }
+                    results.Add(itemToAdd);
                 }
+                else
+                {
+                   
+                    var warewolfAtomListResult = tmpEntry as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                    if (warewolfAtomListResult != null)
+                    {
+                        foreach (var result in warewolfAtomListResult.Item)
+                        {
+                            AddDebugItem(new DebugItemWarewolfAtomResult(dev2Definition.RawValue, ExecutionEnvironment.WarewolfAtomToString(result), "="), itemToAdd);
+                        }
+
+                    }
+                    results.Add(itemToAdd);
+                }
+
+            
+
+           
                 results.Add(itemToAdd);
 
             }
@@ -569,30 +592,49 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return results;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        #region Overrides of DsfNativeActivity<bool>
+
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env)
+        {
+            return _debugOutputs;
+        }
+
+        #endregion
+
+        public void  GetDebugOutputsFromEnv(IExecutionEnvironment environment)
         {
             IDev2LanguageParser parser = DataListFactory.CreateOutputParser();
             IList<IDev2Definition> inputs = parser.Parse(OutputMapping);
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+
 
             var results = new List<DebugItem>();
             foreach(IDev2Definition dev2Definition in inputs)
             {
-                ErrorResultTO errors;
-                IBinaryDataListEntry tmpEntry = compiler.Evaluate(dataList.UID, enActionType.User, dev2Definition.RawValue, false, out errors);
+                var tmpEntry = environment.Eval(dev2Definition.RawValue);
 
-                if(tmpEntry != null)
+                if(tmpEntry.IsWarewolfAtomResult)
                 {
                     DebugItem itemToAdd = new DebugItem();
-                    AddDebugItem(new DebugItemVariableParams(dev2Definition.RawValue, "", tmpEntry, dataList.UID), itemToAdd);
+                    var warewolfAtomResult = tmpEntry as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                    if(warewolfAtomResult != null)
+                    {
+                        AddDebugItem(new DebugItemWarewolfAtomResult(  ExecutionEnvironment.WarewolfAtomToString( warewolfAtomResult.Item),dev2Definition.RawValue, "="), itemToAdd);
+                    }
                     results.Add(itemToAdd);
                 }
                 else
                 {
-                    if(errors.HasErrors())
+                    DebugItem itemToAdd = new DebugItem();
+                    var warewolfAtomListResult = tmpEntry as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                    if (warewolfAtomListResult != null)
                     {
-                        throw new Exception(errors.MakeDisplayReady());
+                        foreach (var result in warewolfAtomListResult.Item)
+                        {
+                            AddDebugItem(new DebugItemWarewolfAtomResult(dev2Definition.RawValue, ExecutionEnvironment.WarewolfAtomToString(result), "="), itemToAdd);
+                        }
+                       
                     }
+                    results.Add(itemToAdd);
                 }
             }
 
@@ -601,7 +643,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 debugOutput.FlushStringBuilder();
             }
 
-            return results;
+            _debugOutputs = results;
         }
 
         #endregion

@@ -14,6 +14,7 @@ using System.Text;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.DataList.Contract;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 
@@ -52,7 +53,7 @@ namespace Dev2
         /// <param name="outputDefs">The output defs.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        Guid ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs,
+        IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs,
             out ErrorResultTO errors);
 
         /// <summary>

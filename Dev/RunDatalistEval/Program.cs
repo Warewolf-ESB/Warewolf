@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Dev2.Common.Interfaces;
 using WarewolfParserInterop;
 
@@ -11,6 +12,8 @@ namespace RunDatalistEval
     {
         static void Main(string[] args)
         {
+            Stopwatch st = new Stopwatch();
+            st.Start();
             var env = new Warewolf.Storage.ExecutionEnvironment();
             while (true)
             {
@@ -25,6 +28,7 @@ namespace RunDatalistEval
 
                     });
                 }
+                var x = st.ElapsedMilliseconds; 
                 Console.WriteLine("finished");
                 Console.ReadLine();
             }

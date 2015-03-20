@@ -19,6 +19,7 @@ using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Factories;
@@ -213,6 +214,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 var debugItem = new DebugItem();
                 AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
+                try
+                {
+
+     
                 var evalResult = environment.Eval(assignValue.Name);
                 if (evalResult.IsWarewolfAtomResult)
                 {
@@ -227,10 +232,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         AddDebugItem(new DebugItemWarewolfAtomResult(value, assignValue.Name, VariableLabelText, NewFieldLabelText), debugItem);
                     }
                 }
+
                 else if (evalResult.IsWarewolfAtomListresult)
                 {
                     var listResult = evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
                     AddDebugItem(new DebugItemWarewolfAtomListResult(listResult,assignValue.Name,VariableLabelText,"="),debugItem);
+                }
+                }
+                catch (NullValueInVariableException )
+                {
+                    AddDebugItem(new DebugItemWarewolfAtomResult("", assignValue.Name, VariableLabelText, NewFieldLabelText), debugItem);
                 }
                innerCount++;
                _debugInputs.Add(debugItem);               

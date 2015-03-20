@@ -78,7 +78,6 @@ namespace Dev2.Data.Decision
 
                 return scalar.TheValue;
             }
-
             return string.Empty;
         }
 

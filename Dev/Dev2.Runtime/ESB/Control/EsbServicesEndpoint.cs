@@ -32,6 +32,7 @@ using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
+using Warewolf.Storage;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Runtime.ESB.Control
@@ -312,7 +313,7 @@ namespace Dev2.Runtime.ESB.Control
         /// <param name="outputDefs">The output defs.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public Guid ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs, out ErrorResultTO errors)
+        public IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs, out ErrorResultTO errors)
         {
             var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
             var invoker = CreateEsbServicesInvoker(theWorkspace);
@@ -321,7 +322,7 @@ namespace Dev2.Runtime.ESB.Control
             var compiler = DataListFactory.CreateDataListCompiler();
 
             var remainingMappings = ShapeForSubRequest(dataObject, inputDefs, outputDefs, out errors);
-
+            CreateNewEnvironmentFromInputMappings(dataObject, inputDefs);
             // local non-scoped execution ;)
             var isLocal = !dataObject.IsRemoteWorkflow();
 
@@ -349,7 +350,8 @@ namespace Dev2.Runtime.ESB.Control
                     if (!errors.HasErrors())
                     {
                         executionContainer.InstanceOutputDefinition = outputDefs;
-                        result = executionContainer.Execute(out invokeErrors);
+                         executionContainer.Execute(out invokeErrors);
+                        var env = UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObject, outputDefs);
                         errors.MergeErrors(invokeErrors);
                         string errorString = compiler.FetchErrors(dataObject.DataListID, true);
                         invokeErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
@@ -393,12 +395,26 @@ namespace Dev2.Runtime.ESB.Control
                         // ReSharper restore UnusedVariable
 #pragma warning restore 168
 
-                        return result;
+                        return env;
                     }
                     errors.AddError("Null container returned");
                 }
             }
-            return result;
+            return new ExecutionEnvironment();
+        }
+
+        IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs)
+        {
+            var innerEnvironment = dataObject.Environment;
+            dataObject.PopEnvironment();
+            DataListUtil.OutputsToEnvironment(innerEnvironment, dataObject.Environment, outputDefs);
+            return innerEnvironment;
+        }
+
+        void CreateNewEnvironmentFromInputMappings(IDSFDataObject dataObject, string inputDefs)
+        {
+            var shapeDefinitionsToEnvironment = DataListUtil.InputsToEnvironment(dataObject.Environment, inputDefs);
+            dataObject.PushEnvironment(shapeDefinitionsToEnvironment);
         }
 
         static void SetRemoteExecutionDataList(IDSFDataObject dataObject, EsbExecutionContainer executionContainer, ErrorResultTO errors)

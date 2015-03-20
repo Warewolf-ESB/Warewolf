@@ -13,7 +13,7 @@ let newline (lexbuf: LexBuffer<_>) =
 // Regular expressions
 let whitespace = [' ' '\t' ]
 let newline = ('\n' | '\r' '\n')
-let char        = ['a'-'z'' ''\t' ',' ]
+let char        = ['a'-'z''A'-'Z'' ''\t' ',' ]
 let tilde        = ['~']
 let string      = char+   
 let column      = char+ '.' char+

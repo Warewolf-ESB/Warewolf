@@ -243,6 +243,10 @@
       <Project>{019A92B9-9209-4930-BC96-381CB8B1C0EA}</Project>
       <Name>Dev2.Services.Execution</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
+      <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
+      <Name>Warewolf.Storage</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

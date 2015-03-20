@@ -21,6 +21,12 @@ namespace Warewolf.Storage
         bool HasRecordSet(string recordsetName);
 
         IList<string> EvalAsListOfStrings(string expression);
+
+        void EvalAssignFromNestedStar(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult);
+
+        void EvalAssignFromNestedLast(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult);
+
+        void EvalAssignFromNestedNumeric(string rawValue, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult);
     }
     public class ExecutionEnvironment : IExecutionEnvironment
     {
@@ -161,5 +167,27 @@ namespace Warewolf.Storage
             }
         }
 
+        public void EvalAssignFromNestedStar(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult)
+        {
+            for(int index = 0; index < recsetResult.Item.Count; index++)
+            {
+                var warewolfAtom = recsetResult.Item[index];
+                Assign(exp.Replace("*", (index+1).ToString()), WarewolfAtomToString(warewolfAtom));
+            }
+        }
+
+        public void EvalAssignFromNestedLast(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult)
+        {
+            foreach(var warewolfAtom in recsetResult.Item)
+            {
+                Assign(exp.Replace("*", ""), WarewolfAtomToString(warewolfAtom));
+            }
+        }
+
+        public void EvalAssignFromNestedNumeric(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult)
+        {
+            if( recsetResult.Item.Any())
+            Assign(exp, WarewolfAtomToString(recsetResult.Item.Last()));
+        }
     }
 }
