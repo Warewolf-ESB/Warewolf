@@ -1337,7 +1337,7 @@ namespace Dev2.Data.Util
         /// </returns>
         public static bool IsEvaluated(string payload)
         {
-            bool result = payload.IndexOf(OpeningSquareBrackets, StringComparison.Ordinal) >= 0;
+            bool result = payload != null && payload.IndexOf(OpeningSquareBrackets, StringComparison.Ordinal) >= 0;
 
             return result;
         }

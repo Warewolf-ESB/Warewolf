@@ -17,6 +17,7 @@ namespace Dev2.Activities.Debug
         readonly string _leftLabel;
         readonly WarewolfDataEvaluationCommon.WarewolfEvalResult _oldValue;
         readonly string _assignedToVariableName;
+        readonly string _newValue;
 
         public DebugItemWarewolfAtomListResult(WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, WarewolfDataEvaluationCommon.WarewolfEvalResult oldResult, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand)
         {
@@ -28,6 +29,20 @@ namespace Dev2.Activities.Debug
             _leftLabel = leftLabelText;
             _warewolfAtomListresult = warewolfAtomListresult;
             _oldValue = oldResult;
+            _assignedToVariableName = assignedToVariableName;
+        }
+
+        public DebugItemWarewolfAtomListResult(WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, string newValue, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand)
+        {
+            _labelText = "";
+            _operand = operand;
+            _variable = variable;
+            _type = DebugItemResultType.Variable;
+            _rightLabel = rightLabelText;
+            _leftLabel = leftLabelText;
+            _warewolfAtomListresult = warewolfAtomListresult;
+            _newValue = newValue;
+            _oldValue = null;
             _assignedToVariableName = assignedToVariableName;
         }
 
@@ -136,79 +151,165 @@ namespace Dev2.Activities.Debug
 
             if (!string.IsNullOrEmpty(_rightLabel))
             {
-                if (_oldValue.IsWarewolfAtomResult)
+                if (_oldValue != null)
                 {
-                    var scalarResult = _oldValue as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
-                    if(scalarResult != null)
+                    if (_oldValue.IsWarewolfAtomResult)
                     {
-                        results.Add(new DebugItemResult
+                        var scalarResult = _oldValue as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                        if (scalarResult != null)
                         {
-                            Type = DebugItemResultType.Variable,
-                            Label = _rightLabel,
-                            Variable = DataListUtil.IsEvaluated(_assignedToVariableName)?_assignedToVariableName:null,
-                            Operator = string.IsNullOrEmpty(_operand) ? "" : "=",
-                            GroupName = Variable,
-                            Value = Warewolf.Storage.ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item),
-                            GroupIndex = 0
-                        });
-                    }
-                }
-                if (_oldValue.IsWarewolfAtomListresult)
-                {
-                    var recSetResult = _oldValue as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
-                    string groupName = null;
-                    int grpIdx = 0;
-                    if(recSetResult != null)
-                    {
-                        foreach (var item in recSetResult.Item)
-                        {
-                            string displayExpression = _assignedToVariableName;
-                            string rawExpression = _assignedToVariableName;
-                            if (displayExpression.Contains("().") || displayExpression.Contains("(*)."))
-                            {
-                                grpIdx++;
-                                groupName = rawExpression;
-                                displayExpression = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(_assignedToVariableName), DataListUtil.ExtractFieldNameFromValue(_assignedToVariableName), grpIdx.ToString()));
-                            }
-                            else
-                            {
-
-                                string indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(displayExpression);
-                                int indexForRecset;
-                                int.TryParse(indexRegionFromRecordset, out indexForRecset);
-
-                                if (indexForRecset > 0)
-                                {
-                                    int indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
-                                    string group = displayExpression.Substring(0, indexOfOpenningBracket) + "*" + displayExpression.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
-                                    grpIdx++;
-                                    groupName = @group;
-                                }
-                            }
-
-                            var debugOperator = "";
-                            var debugType = DebugItemResultType.Value;
-                            if (DataListUtil.IsEvaluated(displayExpression))
-                            {
-                                debugOperator = "=";
-                                debugType = DebugItemResultType.Variable;
-                            }
-                            else
-                            {
-                                displayExpression = null;
-                            }
                             results.Add(new DebugItemResult
                             {
-                                Type = debugType,
+                                Type = DebugItemResultType.Variable,
                                 Label = _rightLabel,
-                                Variable = DataListUtil.IsEvaluated(displayExpression) ? displayExpression : null,
-                                Operator = debugOperator,
-                                GroupName = groupName,
-                                Value = Warewolf.Storage.ExecutionEnvironment.WarewolfAtomToString(item),
-                                GroupIndex = grpIdx
+                                Variable = DataListUtil.IsEvaluated(_assignedToVariableName) ? _assignedToVariableName : null,
+                                Operator = string.IsNullOrEmpty(_operand) ? "" : "=",
+                                GroupName = Variable,
+                                Value = Warewolf.Storage.ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item),
+                                GroupIndex = 0
                             });
                         }
                     }
+                    else if (_oldValue.IsWarewolfAtomListresult)
+                    {
+                        var recSetResult = _oldValue as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                        string groupName = null;
+                        int grpIdx = 0;
+                        if (recSetResult != null)
+                        {
+                            foreach (var item in recSetResult.Item)
+                            {
+                                string displayExpression = _assignedToVariableName;
+                                string rawExpression = _assignedToVariableName;
+                                if (displayExpression.Contains("().") || displayExpression.Contains("(*)."))
+                                {
+                                    grpIdx++;
+                                    groupName = rawExpression;
+                                    displayExpression = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(_assignedToVariableName), DataListUtil.ExtractFieldNameFromValue(_assignedToVariableName), grpIdx.ToString()));
+                                }
+                                else
+                                {
+
+                                    string indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(displayExpression);
+                                    int indexForRecset;
+                                    int.TryParse(indexRegionFromRecordset, out indexForRecset);
+
+                                    if (indexForRecset > 0)
+                                    {
+                                        int indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
+                                        string group = displayExpression.Substring(0, indexOfOpenningBracket) + "*" + displayExpression.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
+                                        grpIdx++;
+                                        groupName = @group;
+                                    }
+                                }
+
+                                var debugOperator = "";
+                                var debugType = DebugItemResultType.Value;
+                                if (DataListUtil.IsEvaluated(displayExpression))
+                                {
+                                    debugOperator = "=";
+                                    debugType = DebugItemResultType.Variable;
+                                }
+                                else
+                                {
+                                    displayExpression = null;
+                                }
+                                var debugItemResult = new DebugItemResult
+                                {
+                                    Type = debugType,
+                                    Label = _rightLabel,
+                                    Variable = DataListUtil.IsEvaluated(displayExpression) ? displayExpression : null,
+                                    Operator = debugOperator,
+                                    GroupName = groupName,
+                                    Value = Warewolf.Storage.ExecutionEnvironment.WarewolfAtomToString(item),
+                                    GroupIndex = grpIdx
+                                };
+                                results.Add(debugItemResult);
+                            }
+                        }
+                    }
+                }
+                if (_oldValue == null)
+                {
+                    var debugItemResult = new DebugItemResult
+                    {
+                        Type = DebugItemResultType.Variable,
+                        Label = _rightLabel,
+                        Variable = null,
+                        Operator = "=",
+                        GroupName = null,
+                        Value = _newValue,
+                        GroupIndex = 0
+                    };
+                    results.Add(debugItemResult);
+                }
+            }
+
+            if (string.IsNullOrEmpty(_rightLabel) && string.IsNullOrEmpty(_leftLabel))
+            {
+                string groupName = null;
+                int grpIdx = 0;
+                if (_warewolfAtomListresult != null)
+                {
+                    foreach (var item in _warewolfAtomListresult.Item)
+                    {
+                        string displayExpression = _variable;
+                        string rawExpression = _variable;
+                        if (displayExpression.Contains("().") || displayExpression.Contains("(*)."))
+                        {
+                            grpIdx++;
+                            groupName = rawExpression;
+                            displayExpression = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(_variable), DataListUtil.ExtractFieldNameFromValue(_variable), grpIdx.ToString()));
+                        }
+                        else
+                        {
+
+                            string indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(displayExpression);
+                            int indexForRecset;
+                            int.TryParse(indexRegionFromRecordset, out indexForRecset);
+
+                            if (indexForRecset > 0)
+                            {
+                                int indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
+                                string group = displayExpression.Substring(0, indexOfOpenningBracket) + "*" + displayExpression.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
+                                grpIdx++;
+                                groupName = @group;
+                            }
+                        }
+
+                        var debugOperator = "";
+                        var debugType = DebugItemResultType.Value;
+                        if (DataListUtil.IsEvaluated(displayExpression))
+                        {
+                            debugOperator = "=";
+                            debugType = DebugItemResultType.Variable;
+                        }
+                        else
+                        {
+                            displayExpression = null;
+                        }
+                        results.Add(new DebugItemResult
+                        {
+                            Type = debugType,
+                            Variable = DataListUtil.IsEvaluated(displayExpression) ? displayExpression : null,
+                            Operator = debugOperator,
+                            GroupName = groupName,
+                            Value = Warewolf.Storage.ExecutionEnvironment.WarewolfAtomToString(item),
+                            GroupIndex = grpIdx
+                        });
+                    }
+                }
+                else
+                {
+                    results.Add(new DebugItemResult
+                    {
+                        Type = DebugItemResultType.Variable,
+                        Variable = DataListUtil.IsEvaluated(Variable) ? Variable : null,
+                        Operator = _operand,
+                        GroupName = null,
+                        Value = "",
+                        GroupIndex = grpIdx
+                    });
                 }
             }
             return results;

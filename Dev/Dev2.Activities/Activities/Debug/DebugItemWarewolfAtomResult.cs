@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Data.Util;
 using Dev2.Diagnostics;
 
 namespace Dev2.Activities.Debug
@@ -8,10 +8,12 @@ namespace Dev2.Activities.Debug
     public class DebugItemWarewolfAtomResult : DebugOutputBase
     {
         readonly string _value;
+        readonly string _newValue;
         readonly string _leftLabel;
         readonly string _rightLabel;
         readonly string _operand;
         readonly string _variable;
+        readonly string _assignFromVariable;
         readonly DebugItemResultType _type;
 
         public DebugItemWarewolfAtomResult(string value, string leftLabel)
@@ -29,13 +31,15 @@ namespace Dev2.Activities.Debug
             _type = DebugItemResultType.Variable;
         }
 
-        public DebugItemWarewolfAtomResult(string value, string variable, string leftLabel, string rightLabel, string operand)
+        public DebugItemWarewolfAtomResult(string value, string newValue, string variable, string assignFromVariable, string leftLabel, string rightLabel, string operand)
         {
             _value = value;
+            _newValue = newValue;
             _leftLabel = leftLabel;
             _rightLabel = rightLabel;
             _operand = operand;
             _variable = variable;
+            _assignFromVariable = assignFromVariable;
             _type = DebugItemResultType.Variable;
         }
 
@@ -80,7 +84,7 @@ namespace Dev2.Activities.Debug
                 var debugItem = new DebugItemResult
                 {
                     Type = Type,
-                    Value = String.IsNullOrEmpty(_leftLabel)?_value: "",
+                    Value = _value,
                     Label = _leftLabel,
                     Variable = Variable,
                     Operator = string.IsNullOrWhiteSpace(_operand) ? "" : "="
@@ -92,8 +96,7 @@ namespace Dev2.Activities.Debug
                 var debugItem = new DebugItemResult
                 {
                     Type = Type,
-                    Value = String.IsNullOrEmpty(_leftLabel) ? _value : "",
-                    Label = _leftLabel,
+                    Value = _value,
                     Variable = Variable,
                     Operator = string.IsNullOrWhiteSpace(_operand) ? "" : "="
                 };
@@ -104,10 +107,11 @@ namespace Dev2.Activities.Debug
                 var debugItem =
                 new DebugItemResult
                 {
-                    Type = Type, 
-                    Value = Value,
+                    Type = Type,
+                    Value = _newValue,
+                    Variable = DataListUtil.IsEvaluated(_assignFromVariable)?_assignFromVariable:null,
                     Label = _rightLabel,
-                    Operator = ""
+                    Operator = DataListUtil.IsEvaluated(_assignFromVariable) ? "=" : ""
                 };
                 debugItemsResults.Add(debugItem);
             }
