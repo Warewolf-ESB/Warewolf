@@ -746,16 +746,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Create Debug Item
 
-        //The Plan muahahaha
-        // DebugController
-        //    AddInput
-        //    AddOutput
-        //    AddItem
-        //    GetOutputs
-        //    GetInputs
-        //    AddError
-        //    DispatchDebug
-
         protected void AddDebugInputItem(DebugOutputBase parameters)
         {
             IDebugItem itemToAdd = new DebugItem();
