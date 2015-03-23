@@ -16,6 +16,7 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Xml.Linq;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Common.Interfaces.Data;
@@ -26,6 +27,7 @@ using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage;
 
 namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
 {
@@ -349,7 +351,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
 
         #endregion
 
-        public Guid ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceID, string inputDefs, string outputDefs,
+        public IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceID, string inputDefs, string outputDefs,
                                       out ErrorResultTO errors)
         {
             List<string> inputList;
@@ -371,7 +373,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             outputList.Add(outputDefs);
 
             errors = new ErrorResultTO();
-            return Guid.NewGuid();
+            return dataObject.Environment;
         }
     }
 }
