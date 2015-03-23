@@ -13,7 +13,6 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using Dev2;
 using Dev2.Activities;
@@ -24,7 +23,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Factories;
 using Dev2.Data.TO;
-using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
@@ -115,7 +113,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
-            Guid executionId = DataListExecutionID.Get(context);
 
             try
             {
@@ -170,10 +167,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 //                    compiler.Upsert(executionId, toUpsert, out errors);
 //                    allErrors.MergeErrors(errors);
 
-                    if(dataObject.IsDebugMode() && !allErrors.HasErrors())
-                    {
-                        AddDebugTos(toUpsert, executionId);
-                    }
+                    
                     allErrors.MergeErrors(errors);
                 }
 
@@ -193,11 +187,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
                 if(dataObject.IsDebugMode())
-                {
-                    if(hasErrors)
-                    {
-                        AddDebugTos(toUpsert, executionId);
-                    }
+                {                   
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
@@ -237,7 +227,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     else
                     {
                         var value = ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item);
-                        AddDebugItem(new DebugItemWarewolfAtomResult(value, assignValue.Name, VariableLabelText, NewFieldLabelText,"="), debugItem);
+                        if (evalResult2.IsWarewolfAtomListresult)
+                        {
+                            AddDebugItem(new DebugItemWarewolfAtomListResult(null, evalResult2,assignValue.Value, assignValue.Name, VariableLabelText, NewFieldLabelText, "="), debugItem);
+                        }
+                        else
+                        {
+                            AddDebugItem(new DebugItemWarewolfAtomResult(value, assignValue.Name, VariableLabelText, NewFieldLabelText, "="), debugItem);
+                        }
 
                     
                     }
@@ -247,7 +244,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 else if (evalResult.IsWarewolfAtomListresult)
                 {
                     var listResult = evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
-                    AddDebugItem(new DebugItemWarewolfAtomListResult(listResult,assignValue.Name,VariableLabelText,"="),debugItem);
+                    AddDebugItem(new DebugItemWarewolfAtomListResult(listResult, evalResult2,assignValue.Value, assignValue.Name, VariableLabelText, NewFieldLabelText, "="), debugItem);
                 }
                 }
                 catch (NullValueInVariableException )
@@ -284,7 +281,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 else if (evalResult.IsWarewolfAtomListresult)
                 {
                     var listResult = evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
-                    AddDebugItem(new DebugItemWarewolfAtomListResult(listResult, assignValue.Name, VariableLabelText, "="), debugItem);
+                    AddDebugItem(new DebugItemWarewolfAtomListResult(listResult,null,assignValue.Value, assignValue.Name, VariableLabelText,"", "="), debugItem);
                 }
                 innerCount++;
                 _debugOutputs.Add(debugItem);
@@ -384,6 +381,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
          {
              return _debugOutputs;
          }
+
+         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+         {
+             return _debugInputs;
+         }
         #endregion Get Inputs/Outputs
 
         #region GetForEachInputs/Outputs
@@ -404,34 +406,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-        #region Methods
-
-        #endregion
-
-        #region Private Method
-
-        private string GetEnviromentVariable(IDSFDataObject dataObject, NativeActivityContext context, string eval)
-        {
-            if(dataObject != null)
-            {
-                string bookmarkName = Guid.NewGuid().ToString();
-                eval = eval.Replace("@Service", dataObject.ServiceName).Replace("@Instance", context.WorkflowInstanceId.ToString()).Replace("@Bookmark", bookmarkName).Replace("@AppPath", Directory.GetCurrentDirectory());
-                Uri hostUri;
-                if(Uri.TryCreate(ServiceHost, UriKind.Absolute, out hostUri))
-                {
-                    eval = eval.Replace("@Host", ServiceHost);
-                }
-                eval = DataListUtil.BindEnvironmentVariables(eval, dataObject.ServiceName);
-            }
-            return eval;
-        }
-
-
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
-        {
-            return _debugInputs;
-        }
-        #endregion
+       
     }
 
 }
