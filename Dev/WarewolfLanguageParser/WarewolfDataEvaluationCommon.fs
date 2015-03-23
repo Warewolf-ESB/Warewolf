@@ -16,6 +16,7 @@ type WarewolfEvalResult =
     | WarewolfAtomResult of WarewolfAtom
     | WarewolfAtomListresult of WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord> 
     | WarewolfRecordSetResult of WarewolfRecordset
+
 let AtomtoString (x:WarewolfAtom )=
     match x with 
         | Float a -> a.ToString()

@@ -218,18 +218,30 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
      
                 var evalResult = environment.Eval(assignValue.Name);
+                var evalResult2 = environment.Eval(assignValue.Value);
+                if (evalResult2.IsWarewolfAtomResult)
+                {
+                    var valueResult = evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                    if (valueResult != null)
+                    {
+                        AddDebugItem(new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfAtomToString(valueResult.Item), assignValue.Name, VariableLabelText, NewFieldLabelText, "="), debugItem);
+                    }
+                }
                 if (evalResult.IsWarewolfAtomResult)
                 {
                     var scalarResult = evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
                     if (scalarResult == null || scalarResult.Item.IsNothing)
                     {
-                        AddDebugItem(new DebugItemWarewolfAtomResult("", assignValue.Name, VariableLabelText, NewFieldLabelText), debugItem);
+                        AddDebugItem(new DebugItemWarewolfAtomResult(assignValue.Value, assignValue.Name, VariableLabelText, NewFieldLabelText,"="), debugItem);
                     }
                     else
                     {
                         var value = ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item);
-                        AddDebugItem(new DebugItemWarewolfAtomResult(value, assignValue.Name, VariableLabelText, NewFieldLabelText), debugItem);
+                        AddDebugItem(new DebugItemWarewolfAtomResult(value, assignValue.Name, VariableLabelText, NewFieldLabelText,"="), debugItem);
+
+                    
                     }
+
                 }
 
                 else if (evalResult.IsWarewolfAtomListresult)
@@ -240,7 +252,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 catch (NullValueInVariableException )
                 {
-                    AddDebugItem(new DebugItemWarewolfAtomResult("", assignValue.Name, VariableLabelText, NewFieldLabelText), debugItem);
+                    AddDebugItem(new DebugItemWarewolfAtomResult("", assignValue.Name, VariableLabelText, NewFieldLabelText,"="), debugItem);
                 }
                innerCount++;
                _debugInputs.Add(debugItem);               
@@ -266,7 +278,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     else
                     {
                         var value = ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item);
-                        AddDebugItem(new DebugItemWarewolfAtomResult(value, assignValue.Name, VariableLabelText, "="), debugItem);
+                        AddDebugItem(new DebugItemWarewolfAtomResult(value, assignValue.Name,"", "", "="), debugItem);
                     }
                 }
                 else if (evalResult.IsWarewolfAtomListresult)
@@ -368,7 +380,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             return _debugOutputs;
         }
-
+         public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+         {
+             return _debugOutputs;
+         }
         #endregion Get Inputs/Outputs
 
         #region GetForEachInputs/Outputs
