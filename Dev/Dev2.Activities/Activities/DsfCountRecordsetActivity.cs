@@ -114,7 +114,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             var count = dataObject.Environment.GetCount(rs);
                             var value = count.ToString();
                             dataObject.Environment.Assign(CountNumber, value);
-                            AddDebugOutputItem(new DebugItemWarewolfAtomResult(value,CountNumber,"","="));
+                            //AddDebugOutputItem(new DebugItemWarewolfAtomResult(value,CountNumber,"","="));
                         }
                     }
                     catch(Exception e)
@@ -122,7 +122,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         AddDebugInputItem(new DebugItemStaticDataParams("",RecordsetName,"Recordset","="));
                         allErrors.AddError(e.Message);
                         dataObject.Environment.Assign(CountNumber, "0");
-                        AddDebugOutputItem(new DebugItemStaticDataParams("0", CountNumber, "", "="));
+                        //AddDebugOutputItem(new DebugItemStaticDataParams("0", CountNumber, "", "="));
                     }
                 }
             }

@@ -14,6 +14,8 @@ namespace Warewolf.Storage
 
         bool MultiAssign(IEnumerable<IAssignValue> values);
 
+        bool AssignWithFrame(IAssignValue values);
+
         int GetEvaluationResultAsInt(string exp);
         int GetLength(string recordSetName);
         int GetCount(string recordSetName);
@@ -28,6 +30,10 @@ namespace Warewolf.Storage
         void EvalAssignFromNestedLast(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult);
 
         void EvalAssignFromNestedNumeric(string rawValue, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult);
+
+        void EvalDelete(string exp);
+
+        void CommitAssign();
     }
     public class ExecutionEnvironment : IExecutionEnvironment
     {
@@ -54,6 +60,13 @@ namespace Warewolf.Storage
         public bool MultiAssign(IEnumerable<IAssignValue> values  )
         {
             var envTemp = PublicFunctions.EvalMultiAssign(values, _env);
+            _env = envTemp;
+            return true; //todo : decide on whether to catch here of just send exceptions on
+        }
+
+        public bool AssignWithFrame(IAssignValue values)
+        {
+            var envTemp = PublicFunctions.EvalAssignWithFrame(values, _env);
             _env = envTemp;
             return true; //todo : decide on whether to catch here of just send exceptions on
         }
@@ -199,6 +212,16 @@ namespace Warewolf.Storage
         {
             if( recsetResult.Item.Any())
             Assign(exp, WarewolfAtomToString(recsetResult.Item.Last()));
+        }
+
+        public void EvalDelete(string exp)
+        {
+            _env =  PublicFunctions.EvalDelete(exp, _env);
+        }
+
+        public void CommitAssign()
+        {
+            _env = PublicFunctions.RemoveFraming(_env);
         }
     }
 }

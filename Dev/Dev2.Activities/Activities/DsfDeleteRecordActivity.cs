@@ -11,6 +11,7 @@
 
 using System;
 using System.Activities;
+using System.Activities.Expressions;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2;
@@ -73,38 +74,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
                 ValidateRecordsetName(RecordsetName, errors);
-                allErrors.MergeErrors(errors);
 
-                if(!allErrors.HasErrors())
+                if (dataObject.IsDebugMode())
                 {
-                    var tmpRecsetIndex = DataListUtil.ExtractIndexRegionFromRecordset(RecordsetName);
-                    IBinaryDataListEntry indexEntry = compiler.Evaluate(executionId, enActionType.User, tmpRecsetIndex, false, out errors);
-
-                    IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(indexEntry);
-                    IDev2IteratorCollection collection = Dev2ValueObjectFactory.CreateIteratorCollection();
-                    collection.AddIterator(itr);
-
-                    while(collection.HasMoreData())
+                  var res=   dataObject.Environment.Eval(RecordsetName);
+                    if(res.IsWarewolfRecordSetResult)
                     {
-                        var evaluatedRecordset = RecordsetName.Remove(RecordsetName.IndexOf("(", StringComparison.Ordinal) + 1) + collection.FetchNextRow(itr).TheValue + ")]]";
-                        if(dataObject.IsDebugMode())
+                        // ReSharper disable PossibleNullReferenceException
+                        var recset = (res as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult).Item;
+                        // ReSharper restore PossibleNullReferenceException
+                        if (recset != null)
                         {
-                            IBinaryDataListEntry tmpentry = compiler.Evaluate(executionId, enActionType.User, evaluatedRecordset, false, out errors);
-                            AddDebugInputItem(new DebugItemVariableParams(RecordsetName, "Records", tmpentry, executionId));
+                            AddDebugInputItem(new DebugItemWarewolfRecordset(recset, RecordsetName, "Recordset", "="));
                         }
-
-                        IBinaryDataListEntry entry = compiler.Evaluate(executionId, enActionType.Internal, evaluatedRecordset, false, out errors);
-
-                        allErrors.MergeErrors(errors);
-                        compiler.Upsert(executionId, Result, entry.FetchScalar().TheValue, out errors);
-
-                        if(dataObject.IsDebugMode() && !allErrors.HasErrors())
-                        {
-                            AddDebugOutputItem(new DebugItemVariableParams(Result, "", entry, executionId));
-                        }
-                        allErrors.MergeErrors(errors);
                     }
                 }
+                dataObject.Environment.EvalDelete(RecordsetName);
+
+                dataObject.Environment.Assign(Result, "Success");
+
             }
             catch(Exception e)
             {

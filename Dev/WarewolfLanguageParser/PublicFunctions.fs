@@ -70,6 +70,11 @@ let EvalAssign (exp:string) (value:string) (env:WarewolfEnvironment) =
     |   AtomExpression a -> env
     |   _ -> failwith "input must be recordset or value"
 
+
+
+                                
+    |   _ -> failwith "input must be recordset or value"
+
 let rec AddToRecordSetFramed (env:WarewolfEnvironment) (name:RecordSetIdentifier) (value:WarewolfAtom)  =
     if(env.RecordSets.ContainsKey name.Name)
     then
@@ -156,7 +161,18 @@ let EvalMultiAssign (values :IAssignValue seq) (env:WarewolfEnvironment) =
         let recsets = Map.map (fun a b -> {b with Frame = 0 }) env.RecordSets
         {env with RecordSets = recsets}
 
+let EvalAssignWithFrame (value :IAssignValue ) (env:WarewolfEnvironment) =
+        let env = EvalMultiAssignOp env value
+        let recsets = env.RecordSets
+        {env with RecordSets = recsets}
+
+let RemoveFraming  (env:WarewolfEnvironment) =
+        let recsets = Map.map (fun a b -> {b with Frame = 0 }) env.RecordSets
+        {env with RecordSets = recsets}
+
 let AtomtoString a = WarewolfDataEvaluationCommon.AtomtoString a;
 
 
 let getIndexes (name:string) (env:WarewolfEnvironment) = WarewolfDataEvaluationCommon.EvalIndexes  env name
+
+let EvalDelete (exp:string)  (env:WarewolfEnvironment) = WarewolfDataEvaluationCommon.EvalDelete exp env
