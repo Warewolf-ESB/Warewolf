@@ -14,7 +14,7 @@ let PositionColumn = "WarewolfPositionColumn#"
 
 type WarewolfEvalResult = 
     | WarewolfAtomResult of WarewolfAtom
-    | WarewolfAtomListresult of System.Collections.Generic.List<WarewolfAtomRecord> 
+    | WarewolfAtomListresult of WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord> 
 
 let AtomtoString (x:WarewolfAtom )=
     match x with 
@@ -118,10 +118,10 @@ and evalRecordsSet (recset:RecordSetIdentifier) (env: WarewolfEnvironment)  =
             
     else
             match recset.Index with
-                | IntIndex a -> new System.Collections.Generic.List<WarewolfAtomRecord>([ evalRecordSetIndex env.RecordSets.[recset.Name] recset a])
+                | IntIndex a -> new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing,[ evalRecordSetIndex env.RecordSets.[recset.Name] recset a])
                 | Star ->  evalRecordSetStarIndex env.RecordSets.[recset.Name] recset
-                | Last -> new System.Collections.Generic.List<WarewolfAtomRecord>([evalRecordSetLastIndex env.RecordSets.[recset.Name] recset])
-                | IndexExpression a -> new System.Collections.Generic.List<WarewolfAtomRecord>([ evalRecordSetIndex env.RecordSets.[recset.Name] recset ( LanguageExpressionToString a|>(EvalIndex env)) ])
+                | Last -> new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing,[evalRecordSetLastIndex env.RecordSets.[recset.Name] recset])
+                | IndexExpression a -> new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing,[ evalRecordSetIndex env.RecordSets.[recset.Name] recset ( LanguageExpressionToString a|>(EvalIndex env)) ])
                 | _ -> failwith "Unknown evaluation type"
 
 and evalRecordSetAsString (env: WarewolfEnvironment) (a:RecordSetIdentifier) = 
@@ -226,9 +226,9 @@ let AddToRecordSets (env:WarewolfEnvironment) (name:string) (value:WarewolfRecor
             RecordSets = rem
     }
 
-let AddColumnValueToRecordset (destination:WarewolfRecordset) (name:string) (values: System.Collections.Generic.List<WarewolfAtomRecord>) =
+let AddColumnValueToRecordset (destination:WarewolfRecordset) (name:string) (values: WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>) =
      let data = destination.Data
-     let columnData = WarewolfColumnData values
+     let columnData =  values
      let added = data.Add( name, columnData  )
      {
         Data = added
@@ -238,14 +238,16 @@ let AddColumnValueToRecordset (destination:WarewolfRecordset) (name:string) (val
         Frame = 0;
      }
 
-let CreateEmpty (count:int) =
-   new System.Collections.Generic.List<WarewolfAtomRecord> (seq {for x in 1 .. count do yield Nothing });
+let CreateEmpty (length:int) (count:int) =
+   new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord> (WarewolfAtomRecord.Nothing,seq {for x in 1 .. length do yield Nothing },count);
 
-let AddToList (lst:System.Collections.Generic.List<'t>) (value:'t) =
-    lst.Add value
+let AddToList (lst:WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>) (value:WarewolfAtomRecord) =
+    lst.AddSomething value
     lst    
 
-
+let AddNothingToList (lst:WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>) (value:WarewolfAtomRecord) =
+    lst.AddNothing()
+    lst    
 
 
 
@@ -253,11 +255,11 @@ let AddAtomToRecordSet (rset:WarewolfRecordset) (columnName:string) (value: Ware
     let col = rset.Data.TryFind columnName
     let rsAdded= match col with 
                     | Some a -> rset
-                    | None-> { rset with Data=  Map.add columnName (CreateEmpty rset.Count)  rset.Data    }
+                    | None-> { rset with Data=  Map.add columnName (CreateEmpty rset.Data.[PositionColumn].Length rset.Data.[PositionColumn].Count)  rset.Data    }
     if position = rsAdded.Count+1    
         then
                   
-            let addedAtEnd =  Map.map (fun k v -> if k=columnName then  ( WarewolfColumnData (AddToList v value)) else (WarewolfColumnData(AddToList v Nothing))) rsAdded.Data
+            let addedAtEnd =  Map.map (fun k v -> if k=columnName then  ( AddToList v value) else (AddNothingToList v Nothing)) rsAdded.Data
             let len = addedAtEnd.[PositionColumn].Count 
             
             addedAtEnd.[PositionColumn].[len-1] <- Int position
@@ -265,7 +267,7 @@ let AddAtomToRecordSet (rset:WarewolfRecordset) (columnName:string) (value: Ware
         else
             if position > rsAdded.Count+1
                 then
-                let addedAtEnd =  Map.map (fun k v -> if k=columnName then  ( WarewolfColumnData (AddToList v value)) else (WarewolfColumnData(AddToList v Nothing))) rsAdded.Data
+                let addedAtEnd =  Map.map (fun k v -> if k=columnName then  ( AddToList v value) else (AddNothingToList v Nothing)) rsAdded.Data
                 let len = addedAtEnd.[PositionColumn].Count 
             
                 addedAtEnd.[PositionColumn].[len-1] <- Int position
@@ -278,7 +280,7 @@ let AddAtomToRecordSet (rset:WarewolfRecordset) (columnName:string) (value: Ware
                     lstval.[index] <- value
                     rsAdded
                 else 
-                      let addedAtEnd =  Map.map (fun k v -> if k=columnName then  ( WarewolfColumnData (AddToList v value)) else (WarewolfColumnData(AddToList v Nothing))) rsAdded.Data
+                      let addedAtEnd =  Map.map (fun k v -> if k=columnName then  ( AddToList v value) else (AddNothingToList v Nothing)) rsAdded.Data
                       let len = addedAtEnd.[PositionColumn].Count 
             
                       addedAtEnd.[PositionColumn].[len-1] <- Int position
@@ -290,35 +292,41 @@ let getPositionFromRecset (rset:WarewolfRecordset) (columnName:string) =
         let posValue =  rset.Data.[columnName].[rset.Data.[columnName].Count-1]
         match posValue with
             |   Nothing -> rset.Frame
-            | _-> (rset.LastIndex+1)        
+            | _-> rset.LastIndex  + 1    
     else
         match rset.Frame with
-        | 0 ->(rset.LastIndex+1)
-        |_ ->max (rset.LastIndex) rset.Frame
+        | 0 ->(rset.LastIndex)+1
+        |_ ->max (rset.LastIndex) (rset.Frame)
         
 
-
-let AddAtomToRecordSetWithFraming (rset:WarewolfRecordset) (columnName:string) (value: WarewolfAtom) (position:int) (isFramed:bool) =
-    let col = rset.Data.TryFind columnName
-    let rsAdded= match col with 
-                    | Some a -> rset
-                    | None-> { rset with Data=  Map.add columnName (CreateEmpty rset.Count)  rset.Data    }
+let AddAtomToRecordSetWithFraming (rset:WarewolfRecordset) (columnName:string) (value: WarewolfAtom) (pos:int) (isFramed:bool) =
+    let  position = pos
+    let rsAdded = if rset.Data.ContainsKey( columnName) 
+                  then  rset
+                  else 
+                       { rset with Data=  Map.add columnName (CreateEmpty rset.Data.[PositionColumn].Length rset.Data.[PositionColumn].Count )  rset.Data    }
     let frame = if isFramed then position else 0;
-    if position = rsAdded.Count+1    
+    if (position = rsAdded.Count+1)    
         then                  
-            let addedAtEnd =  Map.map (fun k v -> if k=columnName then  ( WarewolfColumnData (AddToList v value)) else (WarewolfColumnData(AddToList v Nothing))) rsAdded.Data
+            let addedAtEnd =  Map.map (fun k v -> if k=columnName then  ( AddToList v value) else (AddNothingToList v Nothing)) rsAdded.Data
             let len = addedAtEnd.[PositionColumn].Count 
             
             addedAtEnd.[PositionColumn].[len-1] <- Int position
             { rsAdded with Data=addedAtEnd ; LastIndex = rsAdded.LastIndex+1; Count = rsAdded.Count+1; Frame = frame ; Optimisations = if rsAdded.Count = rsAdded.LastIndex &&  rsAdded.Optimisations <> WarewolfAttribute.Fragmented &&  rsAdded.Optimisations <> WarewolfAttribute.Sorted then WarewolfAttribute.Ordinal else rsAdded.Optimisations  }
         else
-            if position > rsAdded.Count+1
+            if (position = rsAdded.Count+1) || (position = rsAdded.Frame && isFramed)   
+            then                  
+                let len = rsAdded.Data.[PositionColumn].Count 
+                rsAdded.Data.[columnName].[len-1] <- value
+                rsAdded
+            else
+            if position > rsAdded.Count
                 then
-                let addedAtEnd =  Map.map (fun k v -> if k=columnName then  ( WarewolfColumnData (AddToList v value)) else (WarewolfColumnData(AddToList v Nothing))) rsAdded.Data
+                let addedAtEnd =  Map.map (fun k v -> if k=columnName then  ( AddToList v value) else (AddNothingToList v Nothing)) rsAdded.Data
                 let len = addedAtEnd.[PositionColumn].Count 
             
                 addedAtEnd.[PositionColumn].[len-1] <- Int position
-                { rsAdded with Data=addedAtEnd ; LastIndex = position; Frame = frame ; Count = len ; Optimisations = if  rsAdded.Optimisations = WarewolfAttribute.Ordinal then WarewolfAttribute.Sorted else rsAdded.Optimisations }
+                { rsAdded with Data=addedAtEnd ; LastIndex = position; Frame = frame ; Count = len+1 ; Optimisations = if  rsAdded.Optimisations = WarewolfAttribute.Ordinal then WarewolfAttribute.Sorted else rsAdded.Optimisations }
 
             else
                 let lstval = rsAdded.Data.[PositionColumn]
@@ -327,7 +335,7 @@ let AddAtomToRecordSetWithFraming (rset:WarewolfRecordset) (columnName:string) (
                     rsAdded.Data.[columnName].[index] <- value
                     rsAdded
                 else 
-                      let addedAtEnd =  Map.map (fun k v -> if k=columnName then  ( WarewolfColumnData (AddToList v value)) else (WarewolfColumnData(AddToList v Nothing))) rsAdded.Data
+                      let addedAtEnd =  Map.map (fun k v -> if k=columnName then  ( AddToList v value) else (AddNothingToList v Nothing)) rsAdded.Data
                       let len = addedAtEnd.[PositionColumn].Count 
             
                       addedAtEnd.[PositionColumn].[len-1] <- Int position
@@ -338,7 +346,7 @@ let AddAtomToRecordSetWithFraming (rset:WarewolfRecordset) (columnName:string) (
 
 
 let CreateFilled (count:int) (value: WarewolfAtom):WarewolfColumnData=
-   new System.Collections.Generic.List<WarewolfAtomRecord> (seq {for x in 1 .. count do yield value }) 
+   new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord> (WarewolfAtomRecord.Nothing,seq {for x in 1 .. count do yield value }) 
 
 
 let UpdateColumnWithValue (rset:WarewolfRecordset) (columnName:string) (value: WarewolfAtom)=

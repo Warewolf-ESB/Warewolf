@@ -18,8 +18,8 @@ let CreateTestEnvEmpty (a:string) =
 
 let CreateTestEnvWithData =     
     let vars = Map.ofList  [("a", DataString "a"); ("b", Int 2344);("c", DataString "a");("d", Int 1) ]
-    let positionColumn =  (PositionColumn, new System.Collections.Generic.List<WarewolfAtomRecord>( [ Int 1; Int 2; Int 3 ]))
-    let aColumn = ( "a",  new System.Collections.Generic.List<WarewolfAtomRecord>( [ Int 2; Int 4; Int 3 ]))
+    let positionColumn =  (PositionColumn, new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>( WarewolfAtomRecord.Nothing, ([| Int 1; Int 2; Int 3|]),3))
+    let aColumn = ( "a",  new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing,  [ Int 2; Int 4; Int 3 ]))
     let data = [positionColumn;aColumn] |> Map.ofList
-    let recordsets =[ ("rec", {PublicFunctions.CreateDataSet "a" with Data= data; Count=3; LastIndex=3} )] |> Map.ofList
+    let recordsets =[ ("rec", {PublicFunctions.CreateDataSet "a" with Data= data;} )] |> Map.ofList
     {RecordSets=recordsets;Scalar=vars}

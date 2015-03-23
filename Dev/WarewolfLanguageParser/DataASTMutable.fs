@@ -15,7 +15,7 @@ type WarewolfAtom =
 
 type WarewolfAtomRecord = WarewolfAtom
 
-type WarewolfColumnData = System.Collections.Generic.List<WarewolfAtomRecord>
+type WarewolfColumnData = WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>
 
 type WarewolfColumnHeader = string
 

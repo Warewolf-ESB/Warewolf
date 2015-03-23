@@ -9,7 +9,7 @@ open Dev2.Common.Interfaces
 let PositionColumn = "WarewolfPositionColumn#"
 
 let CreateDataSet (a:string) =
-    let col = new System.Collections.Generic.List<WarewolfAtomRecord>()
+    let col = new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing)
     {
         Data = [(PositionColumn,col) ] |> Map.ofList
         Optimisations = Ordinal;

@@ -27,6 +27,7 @@ using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -273,7 +274,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             dl.Setup(a => a.UID).Returns(guid);
             try
             {
-                act.GetDebugInputs(dl.Object, compiler.Object, parser.Object);
+                act.GetDebugInputs(new ExecutionEnvironment());
             }
             catch(Exception err)
             {

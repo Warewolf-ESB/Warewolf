@@ -114,7 +114,7 @@ namespace WarewolfParsingTest
         public void WarewolfParse_Eval_Recset_ExpectAnAtom()
         {
 
-            var env = WarewolfTestData.CreateTestEnvWithData;
+            var env = CreateTestEnvWithData();
 
             var ast = PublicFunctions.EvalEnvExpression( "[[rec(1).a]]",env);
             Assert.IsTrue(ast.IsWarewolfAtomListresult);
@@ -134,7 +134,7 @@ namespace WarewolfParsingTest
         public void WarewolfParse_Eval_RecsetEmpty_ExpectAnAtom()
         {
 
-            var env = WarewolfTestData.CreateTestEnvWithData;
+            var env = CreateTestEnvWithData();
 
             var ast = PublicFunctions.EvalEnvExpression("[[rec().a]]", env);
             Assert.IsTrue(ast.IsWarewolfAtomListresult);
@@ -146,6 +146,26 @@ namespace WarewolfParsingTest
             var intval = val as DataASTMutable.WarewolfAtom.Int;
             Assert.AreEqual(3, intval.Item);
             // ReSharper restore PossibleNullReferenceException
+        }
+
+        private DataASTMutable.WarewolfEnvironment CreateTestEnvWithData()
+        {
+
+            var assigns = new List<IAssignValue>
+             {
+                 new AssignValue("[[rec().a]]", "2"),
+                 new AssignValue("[[rec().a]]", "4"),
+                 new AssignValue("[[rec().a]]", "3"),
+                 new AssignValue("[[a]]", "a"),
+                 new AssignValue("[[b]]", "2344"),
+                 new AssignValue("[[c]]", "a"),
+                 new AssignValue("[[d]]", "1")
+
+             };
+            var env = WarewolfTestData.CreateTestEnvEmpty(""); ;
+
+            var env2 = PublicFunctions.EvalMultiAssign(assigns, env);
+            return env2;
         }
 
         [TestMethod]
@@ -173,7 +193,7 @@ namespace WarewolfParsingTest
         public void WarewolfParse_Eval_Scalar_ExpectAnAtomInt()
         {
 
-            var env = WarewolfTestData.CreateTestEnvWithData;
+            var env = CreateTestEnvWithData();
 
             var ast = PublicFunctions.EvalEnvExpression("[[b]]", env);
             Assert.IsTrue(ast.IsWarewolfAtomResult);
@@ -197,7 +217,7 @@ namespace WarewolfParsingTest
         public void WarewolfParse_Eval_NestedScalar_Exists()
         {
 
-            var env = WarewolfTestData.CreateTestEnvWithData;
+            var env = CreateTestEnvWithData();
 
             var ast = PublicFunctions.EvalEnvExpression("[[[[c]]]]", env);
             Assert.IsTrue(ast.IsWarewolfAtomResult);
@@ -237,13 +257,11 @@ namespace WarewolfParsingTest
         public void WarewolfParse_Eval_Scalar_NonExistent_ExpectException()
         {
 
-            var env = WarewolfTestData.CreateTestEnvWithData;
+            var env = CreateTestEnvWithData();
             try
             {
-                var a = PublicFunctions.EvalEnvExpression("[[xyz]]", env);
-                Assert.IsTrue(a.IsWarewolfAtomResult);
-                var res = (a as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult);
-                Assert.IsTrue(res.Item.IsNothing);
+                PublicFunctions.EvalEnvExpression("[[xyz]]", env);
+                Assert.Fail("bob should have thrown an exception if i try to get a value that does not exist");
             }
             catch (Exception e)
             {
@@ -260,9 +278,16 @@ namespace WarewolfParsingTest
         {
 
             var env = WarewolfTestData.CreateTestEnvWithData;
-            var a = PublicFunctions.EvalEnvExpression("[[rec(4).a]]", env);
+            try
+            {
+                PublicFunctions.EvalEnvExpression("[[rec(4).a]]", env);
+                Assert.Fail("bob should have thrown an exception if i try to get a value that does not exist");
+            }
+            catch(Exception e)
+            {
 
-       
+                Assert.IsTrue(e.Message.Contains("does not have the row"));
+            }
       
             // ReSharper restore PossibleNullReferenceException
         }

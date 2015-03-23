@@ -24,7 +24,7 @@ namespace RunDatalistEval
                     {
                         new AssignValue("[[a]]","aa"),
                         new AssignValue("[[rec().a]]","25"),
-                        new AssignValue("[[rec().a]]","the quick brown fox"),
+                        new AssignValue("[[rec().b]]","the quick brown fox"),
 
                     });
                 }
