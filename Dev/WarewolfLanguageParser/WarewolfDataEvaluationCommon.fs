@@ -5,6 +5,7 @@ open LanguageAST
 //open LanguageEval
 open Microsoft.FSharp.Text.Lexing
 open DataASTMutable
+open WarewolfParserInterop
 
 // this method will given a language string return an AST based on FSLex and FSYacc
 
@@ -367,39 +368,42 @@ let UpdateColumnWithValue (rset:WarewolfRecordset) (columnName:string) (value: W
     else 
     {rset with Data=  Map.add columnName ( CreateFilled rset.Count value)  rset.Data    }
 
-//let UpdateColumnWithValues (rset:WarewolfRecordset) (columnName:string) (value: WarewolfAtom list)=
-//    let maxindex =  List.length value   
-//    if rset.Data.ContainsKey( columnName) 
-//    then
-//        let x = rset.Data.[columnName];
-//        for i in [0..x.Count-1] do                         
-//            x.[i]<-value;    
-//        rset 
-//    else 
-//    {rset with Data=  Map.add columnName ( CreateFilled rset.Count value)  rset.Data    }
 
+let DeleteValues (exp:string)  (env:WarewolfEnvironment) =
+    let rset = env.RecordSets.TryFind exp
+    match rset with 
+    | Some x -> {x with Data = Map.map (fun a b -> new WarewolfAtomList<WarewolfAtom>(WarewolfAtom.Nothing)) x.Data  } 
+    | None->failwith "recordset does not exist"
 
+let DeleteValue  (exp:string) (index:int)   (env:WarewolfEnvironment) =
+    let rset = env.RecordSets.TryFind exp
+    match rset with 
+    | Some values -> let pos = Seq.find ( fun a-> AtomtoString a = index.ToString())  values.Data.[PositionColumn]
+                     let posAsInt = match pos with
+                                    | Nothing -> failwith "index does not exist"
+                                    | Int a -> a
+                                    | _  -> failwith "index does not exist"
+                     {values  with Data = Map.map (fun (a:string) (b:WarewolfAtomList<WarewolfAtom>) -> b.DeletePosition( posAsInt ) ) values.Data  } 
+    | None->failwith "recordset does not exist"
 
-//let AddAtomToRecordSet (destination:WarewolfEnvironment)(rsetName:string) (rset:WarewolfRecordset) (name:string) (value: WarewolfAtom) (position:int) =
-//    let rsAdded = if rset.Data.ContainsKey( name) 
-//                  then  rset
-//                  else 
-//                       { rset with Data=  Map.add name (CreateEmpty rset.Count)  rset.Data    }
-//    // add the index
-//    match position with                                  
-//    rsAdded.Data.["wsIndex"].Add(Int position)        
-//    let addedAtEnd =  Map.map (fun k v -> if k=name then (k ,(AddToList v value)) else (k ,(AddToList v Nothing) ) rsAdded.Data
-//
-//    
-//    if position > rsAdded.LastIndex
-//    then
-//        let col =rsAdded.Data.[name]
-//        let recset = Map.remove name rsAdded |> Map.add name col
-//        AddToRecordSets destination rsetName recset 
-//    else
-//        let col = (value,position)::List.filter (fun a -> position <>  (snd a)) (fst rsAdded.[name])
-//        let recset = Map.remove name rsAdded |> Map.add name (col, 1+snd rsAdded.[name])
-//        AddToRecordSets destination rsetName recset 
-//
-//  let maxColumn (col:WarewolfColumnData) =
-//    snd col
+let GetLastIndexFromRecordSet (exp:string)  (env:WarewolfEnvironment)  =
+    let rset = env.RecordSets.TryFind exp
+    match rset with 
+    | Some values -> values.LastIndex                    
+    | None->failwith "recordset does not exist"
+
+let rec DeleteExpressionIndex (exp:RecordSetName) (ind: LanguageExpression)  (env:WarewolfEnvironment)  =
+    let data = LanguageExpressionToString ind |> (Eval env) |> EvalResultToString
+    EvalDelete( (sprintf "[[%s(%s)]]" exp.Name data)) env
+
+and EvalDelete (exp:string)  (env:WarewolfEnvironment) =
+    let left = ParseLanguageExpression exp 
+    match left with 
+                |   RecordSetNameExpression b ->  match b.Index with
+                                                                 | Star -> DeleteValues  b.Name env |> (fun upd-> {env with RecordSets = Map.map (fun ax bx -> if ax=b.Name then upd else bx ) env.RecordSets} )
+                                                                 | Last ->  DeleteValue  b.Name (GetLastIndexFromRecordSet  b.Name env) env |> (fun upd-> {env with RecordSets = Map.map (fun ax bx -> if ax=b.Name then upd else bx ) env.RecordSets} )
+                                                                 | IntIndex a -> DeleteValue  b.Name a env |> (fun upd-> {env with RecordSets = Map.map (fun ax bx -> if ax=b.Name then upd else bx ) env.RecordSets} )
+                                                                 | IndexExpression exp ->  DeleteExpressionIndex b exp env
+                                                               
+
+                |_-> failwith "only recordsets can be deleted"

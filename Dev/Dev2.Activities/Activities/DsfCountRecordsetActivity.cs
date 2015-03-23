@@ -122,7 +122,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         AddDebugInputItem(new DebugItemStaticDataParams("",RecordsetName,"Recordset","="));
                         allErrors.AddError(e.Message);
                         dataObject.Environment.Assign(CountNumber, "0");
-                        AddDebugOutputItem(new DebugItemStaticDataParams("0", CountNumber, "", "="));
+                        //AddDebugOutputItem(new DebugItemStaticDataParams("0", CountNumber, "", "="));
                     }
                 }
             }
