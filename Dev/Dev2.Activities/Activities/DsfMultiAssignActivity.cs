@@ -236,7 +236,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(NullValueInVariableException)
             {
-                AddDebugItem(new DebugItemWarewolfAtomResult(assignValue.Value, assignValue.Value, assignValue.Name,"", VariableLabelText, NewFieldLabelText, "="), debugItem);
+                AddDebugItem(new DebugItemWarewolfAtomResult("", assignValue.Value, assignValue.Name,"", VariableLabelText, NewFieldLabelText, "="), debugItem);
             }
             _debugInputs.Add(debugItem);
         }

@@ -78,7 +78,6 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
             }
 
             fieldCollection.Add(new ActivityDTO(variable, value, 1, true));
-            variableList.Add(new Tuple<string, string>(variable, ""));
         }
 
         [When(@"the assign tool is executed")]
