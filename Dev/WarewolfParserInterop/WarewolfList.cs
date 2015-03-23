@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WarewolfParserInterop
 {
@@ -10,7 +8,7 @@ namespace WarewolfParserInterop
     {
         private T[] _values;
         private int _count;
-        private T _defaultValue;
+        private readonly T _defaultValue;
         public WarewolfAtomList(T defaultValue)
         {
            _count= 32;
@@ -22,11 +20,11 @@ namespace WarewolfParserInterop
 
         public WarewolfAtomList(T defaultValue,IEnumerable<T> values)
         {
-
-            if (values.Any())
+            IEnumerable<T> enumerable = values as T[] ?? values.ToArray();
+            if (enumerable.Any())
             {
-                _values = values.ToArray();
-                _count = values.Count();
+                _values = enumerable.ToArray();
+                _count = enumerable.Count();
                 
 
             }
@@ -38,15 +36,14 @@ namespace WarewolfParserInterop
                 _count = 0;
                 _defaultValue = defaultValue;
             }
-
         }
 
-        public WarewolfAtomList(T defaultValue, IEnumerable<T> values, int count)
-        {
-
-            if (values.Any())
+      public WarewolfAtomList(T defaultValue, IEnumerable<T> values, int count)
+      {
+          IEnumerable<T> enumerable = values as T[] ?? values.ToArray();
+          if (enumerable.Any())
             {
-                _values = values.ToArray();
+                _values = enumerable.ToArray();
 
                 _count = count;
                 _defaultValue = defaultValue;
@@ -56,13 +53,12 @@ namespace WarewolfParserInterop
                 count = 32;
                 _values = new T[32];
                 for (int a = 0; a < count; a++) _values[a] = defaultValue;
-                count = 0;
                 _defaultValue = defaultValue;
+                _count = 0;
             }
+      }
 
-        }
-
-        public void AddNothing()
+      public void AddNothing()
         {
             ResizeToCount();
             _count++;
@@ -83,11 +79,10 @@ namespace WarewolfParserInterop
             {
                 return _defaultValue;
             }
-            else
-                return _values[position];
+            return _values[position];
         }
 
-        private void ResizeToCount()
+      private void ResizeToCount()
         {
             if (_count >= _values.Length - 1)
             {
@@ -115,11 +110,11 @@ namespace WarewolfParserInterop
 
         public T this[int i]
         {
-            get {
+            get
+            {
                 if (i < _count)
                     return _values[i];
-                else throw new Dev2.Common.Common.NullValueInVariableException("the recordset does not have the row"+i,"");
-            
+                throw new Dev2.Common.Common.NullValueInVariableException("the recordset does not have the row"+i,"");
             }
             set {
                 if (i < _count)
@@ -131,7 +126,7 @@ namespace WarewolfParserInterop
             }
         }
 
-        public int Count { get { return this._count; } }
+        public int Count { get { return _count; } }
 
         public int Length { get { return _values.Length; } }
     }
