@@ -15,7 +15,7 @@ let PositionColumn = "WarewolfPositionColumn#"
 type WarewolfEvalResult = 
     | WarewolfAtomResult of WarewolfAtom
     | WarewolfAtomListresult of WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord> 
-
+    | WarewolfRecordSetResult of WarewolfRecordset
 let AtomtoString (x:WarewolfAtom )=
     match x with 
         | Float a -> a.ToString()
@@ -148,7 +148,13 @@ and ParseLanguageExpression  (lang:string) : LanguageExpression=
                 ParseCache<-ParseCache.Add(lang,res)
                 res
 
-        
+and EvalDataSetExpression (env: WarewolfEnvironment)  (name:string) =
+    if env.RecordSets.ContainsKey( name) then
+        WarewolfRecordSetResult env.RecordSets.[name]
+    else
+        raise (new Dev2.Common.Common.NullValueInVariableException("Recordset not found",name))
+
+          
 and  Eval  (env: WarewolfEnvironment) (lang:string) : WarewolfEvalResult=
     let EvalComplex (exp:LanguageExpression list) = 
         if((List.length exp) =1) then
@@ -174,6 +180,7 @@ and  Eval  (env: WarewolfEnvironment) (lang:string) : WarewolfEvalResult=
         | RecordSetExpression a -> WarewolfAtomListresult(  (evalRecordsSet a env) )
         | ScalarExpression a -> WarewolfAtomResult (evalScalar a env)
         | WarewolfAtomAtomExpression a -> WarewolfAtomResult a
+        | RecordSetNameExpression x ->EvalDataSetExpression env x.Name
         | ComplexExpression  a -> WarewolfAtomResult (EvalComplex ( List.filter (fun b -> "" <> (LanguageExpressionToString b)) a)) 
 
 and getRecordSetPositionsAsInts (recset:WarewolfRecordset) =

@@ -779,6 +779,30 @@ namespace WarewolfParsingTest
         }
 
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_RecordSet()
+        {
+
+
+            var assigns = new List<IAssignValue>
+             {
+                 new AssignValue("[[rec(25).a]]", "25"),
+                 new AssignValue("[[rec().b]]", "33"),
+                 new AssignValue("[[rec().b]]", "26"),
+
+
+             };
+            var testEnv = WarewolfTestData.CreateTestEnvEmpty(""); ;
+            var testEnv3 = PublicFunctions.EvalMultiAssign(assigns, testEnv);
+            var testEnv2 = PublicFunctions.EvalEnvExpression("[[rec()]]", testEnv3);
+
+
+
+
+        }
+
 
 
         [TestMethod]

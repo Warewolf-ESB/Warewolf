@@ -30,7 +30,6 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 using Dev2.Enums;
-using Dev2.Validation;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 
@@ -228,7 +227,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        var value = Warewolf.Storage.ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item);
+                        var value = ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item);
                         AddDebugItem(new DebugItemWarewolfAtomResult(value, assignValue.Name, VariableLabelText, NewFieldLabelText), debugItem);
                     }
                 }
@@ -266,7 +265,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        var value = Warewolf.Storage.ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item);
+                        var value = ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item);
                         AddDebugItem(new DebugItemWarewolfAtomResult(value, assignValue.Name, VariableLabelText, "="), debugItem);
                     }
                 }
@@ -410,6 +409,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 eval = DataListUtil.BindEnvironmentVariables(eval, dataObject.ServiceName);
             }
             return eval;
+        }
+
+
+        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        {
+            return _debugInputs;
         }
         #endregion
     }
