@@ -117,7 +117,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
             {
                 string actualValue;
                 value = value.Replace('"', ' ').Trim();
-                GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
+                GetScalarValueFromEnvironment(variable,
                                            out actualValue, out error);
                 actualValue = actualValue.Replace('"', ' ').Trim();
                 Assert.AreEqual(value, actualValue);

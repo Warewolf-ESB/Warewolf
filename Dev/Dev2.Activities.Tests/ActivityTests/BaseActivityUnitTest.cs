@@ -35,6 +35,7 @@ using Microsoft.VisualBasic.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace ActivityUnitTests
@@ -48,7 +49,7 @@ namespace ActivityUnitTests
         public IEsbWorkspaceChannel DsfChannel;
         public Mock<IEsbWorkspaceChannel> MockChannel;
         public static IDataListCompiler Compiler;
-
+        public IExecutionEnvironment CurrentExecutionEnvironment;
         public BaseActivityUnitTest()
         {
             CallBackData = "Default Data";
@@ -56,6 +57,7 @@ namespace ActivityUnitTests
             {
                 Action = new DsfCommentActivity()
             };
+            CurrentExecutionEnvironment = new ExecutionEnvironment();
         }
 
         public Guid ExecutionId { get; set; }
@@ -210,7 +212,7 @@ namespace ActivityUnitTests
 
                 errors.ClearErrors();
                 dataObject.DataListID = wfec.Execute(out errors);
-
+                CurrentExecutionEnvironment = dataObject.Environment;
             return dataObject;
         }
 
@@ -439,6 +441,44 @@ namespace ActivityUnitTests
 
             return true;
         }
+
+        public bool GetScalarValueFromEnvironment(IExecutionEnvironment env, string fieldToRetrieve, out string result, out string error)
+        {
+
+            error = "";
+            result = null;
+            try
+            {
+                result = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(fieldToRetrieve));
+            }
+            catch( Exception err)
+            {
+                error = err.Message;
+            }
+
+            
+            return true;
+        }
+
+        public bool GetScalarValueFromEnvironment( string fieldToRetrieve, out string result, out string error)
+        {
+
+            error = "";
+            result = null;
+            try
+            {
+                result = ExecutionEnvironment.WarewolfEvalResultToString(CurrentExecutionEnvironment.Eval(fieldToRetrieve));
+            }
+            catch (Exception err)
+            {
+                error = err.Message;
+            }
+
+
+            return true;
+        }
+
+
 
         public bool GetRecordSetFieldValueFromDataList(Guid dataListId, string recordSet, string fieldNameToRetrieve, out IList<IBinaryDataListItem> result, out string error)
         {
