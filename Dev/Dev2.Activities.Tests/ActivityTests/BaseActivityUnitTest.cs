@@ -208,12 +208,12 @@ namespace ActivityUnitTests
                 {
                     esbChannel = channel;
                 }
-                CurrentExecutionEnvironment = dataObject.Environment;
+                dataObject.Environment = CurrentExecutionEnvironment;
                 WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, esbChannel);
 
                 errors.ClearErrors();
                 dataObject.DataListID = wfec.Execute(out errors);
-               
+                CurrentExecutionEnvironment = dataObject.Environment;
             return dataObject;
         }
 

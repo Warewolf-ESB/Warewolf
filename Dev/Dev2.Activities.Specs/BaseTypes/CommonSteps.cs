@@ -30,6 +30,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Specs.Toolbox.FileAndFolder;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Warewolf.Storage;
 
 namespace Dev2.Activities.Specs.BaseTypes
 {
@@ -55,8 +56,10 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             bool expected = anError.Equals("NO");
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            
             var comiler = DataListFactory.CreateDataListCompiler();
             // 06.01.2014 Line Below is Causing Compile Errors ;)
+           // string fetchErrors = ExecutionEnvironment.WarewolfEvalResultToString(CurrentExecutionEnvironment.Eval(DataListUtil.AddBracketsToValueIfNotExist(enSystemTag.Dev2Error.ToString())));
             string fetchErrors = comiler.FetchErrors(result.DataListID);
             //string fetchErrors = RecordSetBases.FetchErrors(result.DataListID);
             bool actual = string.IsNullOrEmpty(fetchErrors);
