@@ -12,7 +12,6 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using Dev2;
 using Dev2.Activities;
@@ -84,78 +83,58 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 ValidateRecordsetName(RecordsetName, errors);
                 allErrors.MergeErrors(errors);
 
-                IBinaryDataList bdl = compiler.FetchBinaryDataList(executionId, out errors);
                 allErrors.MergeErrors(errors);
                 if(!allErrors.HasErrors())
                 {
                     try
                     {
-                        string err;
-                        IBinaryDataListEntry recset;
+                        //string err;
+                        //IBinaryDataListEntry recset;
 
                         string rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);
 
-                        bdl.TryGetEntry(rs, out recset, out err);
-                        allErrors.AddError(err);
-                        try
+                        //bdl.TryGetEntry(rs, out recset, out err);
+                        //allErrors.AddError(err);      
+                        if (CountNumber == string.Empty)
                         {
-                            // ReSharper disable UnusedVariable
-                            var hasValue = recset.FetchScalar().TheValue;
-                            // ReSharper restore UnusedVariable
-                        }
-                        catch(Exception e)
-                        {
-                            allErrors.AddError(e.Message);
+                            allErrors.AddError("Blank result variable");
                         }
                         if(dataObject.IsDebugMode())
                         {
-                            AddDebugInputItem(new DebugItemVariableParams(RecordsetName, "Recordset", recset, executionId));
+                            AddDebugInputItem(new DebugItemWarewolfAtomListResult(dataObject.Environment.Eval(RecordsetName) as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult, RecordsetName, "Recordset","="));
                         }
                         var rule = new IsSingleValueRule(() => CountNumber);
                         var single = rule.Check();
-                        if(single != null)
+                        if (single != null)
                         {
                             allErrors.AddError(single.Message);
                         }
                         else
                         {
-                            if(recset != null)
-                            {
-                                if(recset.Columns != null && CountNumber != string.Empty)
-                                {
-                                    if(recset.IsEmpty())
-                                    {
-                                        compiler.Upsert(executionId, CountNumber, "0", out errors);
-                                        if(dataObject.IsDebugMode())
-                                        {
-                                            AddDebugOutputItem(new DebugOutputParams(CountNumber, "0", executionId, 0));
-                                        }
-                                        allErrors.MergeErrors(errors);
-                                    }
-                                    else
-                                    {
-                                        int cnt = recset.ItemCollectionSize();
-                                        compiler.Upsert(executionId, CountNumber, cnt.ToString(CultureInfo.InvariantCulture), out errors);
-                                        if(dataObject.IsDebugMode())
-                                        {
-                                            AddDebugOutputItem(new DebugOutputParams(CountNumber, cnt.ToString(CultureInfo.InvariantCulture), executionId, 0));
-                                        }
-                                        allErrors.MergeErrors(errors);
+                            var count = dataObject.Environment.GetCount(rs);
+                            dataObject.Environment.Assign(CountNumber, count.ToString());
+                            //                                    if(recset.IsEmpty())
+                            //                                    {
+                            //                                        compiler.Upsert(executionId, CountNumber, "0", out errors);
+                            //                                        if(dataObject.IsDebugMode())
+                            //                                        {
+                            //                                            AddDebugOutputItem(new DebugOutputParams(CountNumber, "0", executionId, 0));
+                            //                                        }
+                            //                                        allErrors.MergeErrors(errors);
+                            //                                    }
+                            //                                    else
+                            //                                    {
+                            //                                        int cnt = recset.ItemCollectionSize();
+                            //                                        compiler.Upsert(executionId, CountNumber, cnt.ToString(CultureInfo.InvariantCulture), out errors);
+                            //                                        if(dataObject.IsDebugMode())
+                            //                                        {
+                            //                                            AddDebugOutputItem(new DebugOutputParams(CountNumber, cnt.ToString(CultureInfo.InvariantCulture), executionId, 0));
+                            //                                        }
+                            //                                        allErrors.MergeErrors(errors);
+                            //
+                            //
+                            //                                    }
 
-
-                                    }
-
-                                    allErrors.MergeErrors(errors);
-                                }
-                                else if(recset.Columns == null)
-                                {
-                                    allErrors.AddError(RecordsetName + " is not a recordset");
-                                }
-                                else if(CountNumber == string.Empty)
-                                {
-                                    allErrors.AddError("Blank result variable");
-                                }
-                            }
                             allErrors.MergeErrors(errors);
                         }
                     }
