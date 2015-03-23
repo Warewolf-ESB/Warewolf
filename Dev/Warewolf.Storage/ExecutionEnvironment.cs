@@ -15,7 +15,8 @@ namespace Warewolf.Storage
         bool MultiAssign(IEnumerable<IAssignValue> values);
 
         int GetEvaluationResultAsInt(string exp);
-
+        int GetLength(string recordSetName);
+        int GetCount(string recordSetName);
         IList<int> EvalRecordSetIndexes(string recordsetName);
 
         bool HasRecordSet(string recordsetName);
@@ -89,6 +90,16 @@ namespace Warewolf.Storage
                 }
                 return 0;
             }
+        }
+
+        public int GetLength(string recordSetName)
+        {
+            return _env.RecordSets[recordSetName].LastIndex;
+        }
+
+        public int GetCount(string recordSetName)
+        {
+            return _env.RecordSets[recordSetName].Count;
         }
 
         public IList<int> EvalRecordSetIndexes(string recordsetName)

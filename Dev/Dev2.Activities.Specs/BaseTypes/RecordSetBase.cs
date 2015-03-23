@@ -58,30 +58,31 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 foreach(dynamic variable in variableList)
                 {
-                    Build(variable, shape, data, row);
+                    CurrentExecutionEnvironment.Assign(DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), variable.Item2);
+                    //Build(variable, shape, data, row);
                     row++;
                 }
             }
 
-            List<Tuple<string, string>> emptyRecordset;
-            bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
-            if(isAdded)
-            {
-                foreach(Tuple<string, string> emptyRecord in emptyRecordset)
-                {
-                    var recSetElement = shape
-                                      .Descendants(emptyRecord.Item1)
-                                      .FirstOrDefault();
-                    if(recSetElement == null)
-                    {
-                        shape.Add(new XElement(emptyRecord.Item1, new XElement(emptyRecord.Item2)));
-                    }
-                    else
-                    {
-                        recSetElement.Add(new XElement(emptyRecord.Item2));
-                    }
-                }
-            }
+//            List<Tuple<string, string>> emptyRecordset;
+//            bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
+//            if(isAdded)
+//            {
+//                foreach(Tuple<string, string> emptyRecord in emptyRecordset)
+//                {
+//                    var recSetElement = shape
+//                                      .Descendants(emptyRecord.Item1)
+//                                      .FirstOrDefault();
+//                    if(recSetElement == null)
+//                    {
+//                        shape.Add(new XElement(emptyRecord.Item1, new XElement(emptyRecord.Item2)));
+//                    }
+//                    else
+//                    {
+//                        recSetElement.Add(new XElement(emptyRecord.Item2));
+//                    }
+//                }
+//            }
 
             CurrentDl = shape.ToString();
             TestData = data.ToString();
@@ -119,7 +120,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                                             .FirstOrDefault();
                     if(recordSetElement == null)
                     {
-                        shape.Add(new XElement(recordset, new XElement(recordField)));
+                        shape.Add(new XElement(recordset, new XElement(recordField)));                        
                     }
                     else
                     {
