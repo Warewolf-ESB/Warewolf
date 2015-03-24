@@ -101,7 +101,7 @@
     </Otherwise>
   </Choose>
   <Import Project="$(FSharpTargetsPath)" Condition="Exists('$(FSharpTargetsPath)')" />
-  <Import Project="..\packages\FsLexYacc.6.0.1\bin\FsLexYacc.targets" />
+  <Import Project="..\packages\FsLexYacc.6.0.1\bin\FsLexYacc.targets" Condition="Exists('..\packages\FsLexYacc.6.0.1\bin\FsLexYacc.targets')" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
