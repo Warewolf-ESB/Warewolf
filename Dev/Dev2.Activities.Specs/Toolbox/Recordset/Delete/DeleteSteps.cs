@@ -20,6 +20,7 @@ using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage;
 
 namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
 {
@@ -135,12 +136,12 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
             string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+            GetScalarValueFromEnvironment(CurrentExecutionEnvironment, ResultVariable,
                                        out actualValue, out error);
-            if(string.IsNullOrEmpty(expectedResult))
-            {
-                expectedResult = null;
-            }
+            //if(string.IsNullOrEmpty(expectedResult))
+            //{
+            //    expectedResult = null;
+            //}
             Assert.AreEqual(expectedResult, actualValue);
         }
 
@@ -148,17 +149,23 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
         public void ThenTheRecordsetWillBeAsFollows(string recordset, Table table)
         {
             List<TableRow> tableRows = table.Rows.ToList();
-            string error;
-            string recordsetName = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, recordset);
-            string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, recordset);
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordsetName,
-                                                                           column, out error);
-            Assert.AreEqual(tableRows.Count, recordSetValues.Count);
-
-            for(int i = 0; i < tableRows.Count; i++)
+         
+            var recordSets  = CurrentExecutionEnvironment.Eval(recordset);
+            if (recordSets.IsWarewolfAtomListresult)
             {
-                Assert.AreEqual(tableRows[i][1], recordSetValues[i]);
+                // ReSharper disable PossibleNullReferenceException
+                var recordSetValues = (recordSets as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult).Item.ToList();
+                // ReSharper restore PossibleNullReferenceException
+                Assert.AreEqual(tableRows.Count, recordSetValues.Count);
+
+                for (int i = 0; i < tableRows.Count; i++)
+                {
+                    Assert.AreEqual(tableRows[i][1], ExecutionEnvironment.WarewolfAtomToString( recordSetValues[i]));
+                }
+            }
+            else
+            {
+                Assert.Fail("evaluation resulted in a scalar or a atom");
             }
         }
 

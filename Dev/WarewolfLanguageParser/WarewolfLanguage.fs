@@ -425,7 +425,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 58 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                                                                                        {Name = _2; Index = Last;}
+                                                                                        {Name = _2; Index = Star;}
                    )
 # 58 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : 'recsetName));

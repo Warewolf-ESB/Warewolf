@@ -25,6 +25,7 @@ using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -75,28 +76,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 ValidateRecordsetName(RecordsetName, errors);
 
-                if (dataObject.IsDebugMode())
-                {
-                  var res=   dataObject.Environment.Eval(RecordsetName);
-                    if(res.IsWarewolfRecordSetResult)
-                    {
-                        // ReSharper disable PossibleNullReferenceException
-                        var recset = (res as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult).Item;
-                        // ReSharper restore PossibleNullReferenceException
-                        if (recset != null)
-                        {
-                            AddDebugInputItem(new DebugItemWarewolfRecordset(recset, RecordsetName, "Recordset", "="));
-                        }
-                    }
-                }
+                GetDebug(dataObject);
                 dataObject.Environment.EvalDelete(RecordsetName);
 
                 dataObject.Environment.Assign(Result, "Success");
-
+                AddDebugOutputItem(new DebugItemWarewolfAtomResult("Success", Result, "","", "="));
             }
             catch(Exception e)
             {
                 allErrors.AddError(e.Message);
+                dataObject.Environment.Assign(Result, "");
             }
             finally
             {
@@ -118,6 +107,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
+            }
+        }
+
+        void GetDebug(IDSFDataObject dataObject)
+        {
+            try
+            {
+
+
+                if (dataObject.IsDebugMode() && ExecutionEnvironment.IsRecordSetName(RecordsetName))
+                {
+                    var res = dataObject.Environment.Eval(RecordsetName);
+                    if (res.IsWarewolfRecordSetResult)
+                    {
+                        // ReSharper disable PossibleNullReferenceException
+                        var recset = (res as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult).Item;
+                        // ReSharper restore PossibleNullReferenceException
+                        if (recset != null)
+                        {
+                            AddDebugInputItem(new DebugItemWarewolfRecordset(recset, RecordsetName, "Recordset", "="));
+                        }
+                    }
+                }
+
+            }
+             
+            catch(Exception)
+            {
+                
+                     AddDebugInputItem(new DebugItemWarewolfAtomResult("", RecordsetName, "Recordset","", "="));
             }
         }
 
@@ -150,6 +169,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion
 
         #endregion Get Inputs/Outputs
+
+
+
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
+        {
+            return _debugInputs;
+        }
+
+   
+
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env)
+        {
+            return _debugOutputs;
+        }
+
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {

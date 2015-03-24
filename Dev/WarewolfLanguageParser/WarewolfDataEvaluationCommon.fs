@@ -11,7 +11,7 @@ open WarewolfParserInterop
 
 let mutable ParseCache = Map.empty : Map<string,LanguageExpression>
 
-let PositionColumn = "WarewolfPositionColumn#"
+let PositionColumn = "WarewolfPositionColumn"
 
 type WarewolfEvalResult = 
     | WarewolfAtomResult of WarewolfAtom
@@ -56,6 +56,19 @@ let getRecordSetIndex (recset:WarewolfRecordset) (position:int) =
             try  Seq.findIndex (fun a->  a=positionAsAtom) indexes |> IndexFoundPosition
             with     
             | :? System.Collections.Generic.KeyNotFoundException as ex -> IndexDoesNotExist
+
+let getRecordSetIndexAsInt (recset:WarewolfRecordset) (position:int) =
+    match recset.Optimisations with
+    | Ordinal -> if recset.LastIndex <  position then
+                    failwith "row does not exist"
+                 else
+                    position
+    | _->
+            let indexes = recset.Data.[PositionColumn]
+            let positionAsAtom = Int position
+            try  Seq.findIndex (fun a->  a=positionAsAtom) indexes 
+            with     
+            | :? System.Collections.Generic.KeyNotFoundException as ex ->  failwith "row does not exist"
 
 let evalRecordSetIndex (recset:WarewolfRecordset) (identifier:RecordSetIdentifier) (position:int) =
     let index = getRecordSetIndex recset position
@@ -122,7 +135,11 @@ and evalRecordsSet (recset:RecordSetIdentifier) (env: WarewolfEnvironment)  =
             match recset.Index with
                 | IntIndex a -> new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing,[ evalRecordSetIndex env.RecordSets.[recset.Name] recset a])
                 | Star ->  evalRecordSetStarIndex env.RecordSets.[recset.Name] recset
-                | Last -> new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing,[evalRecordSetLastIndex env.RecordSets.[recset.Name] recset])
+                | Last -> let value = evalRecordSetLastIndex env.RecordSets.[recset.Name] recset 
+                          let data = match value with
+                                  | Nothing ->List.empty
+                                  | _ ->  [ value]
+                          new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing,data)
                 | IndexExpression a -> new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing,[ evalRecordSetIndex env.RecordSets.[recset.Name] recset ( LanguageExpressionToString a|>(EvalIndex env)) ])
                 | _ -> failwith "Unknown evaluation type"
 
@@ -150,11 +167,22 @@ and ParseLanguageExpression  (lang:string) : LanguageExpression=
                 ParseCache<-ParseCache.Add(lang,res)
                 res
 
-and EvalDataSetExpression (env: WarewolfEnvironment)  (name:string) =
-    if env.RecordSets.ContainsKey( name) then
-        WarewolfRecordSetResult env.RecordSets.[name]
+and evalARow  ( index:int) (recset:WarewolfRecordset) (name:string) (env:WarewolfEnvironment)=
+    let blank = Map.map (fun a b -> new WarewolfAtomList<WarewolfAtom>(WarewolfAtom.Nothing, [ EvalResultToString (Eval env (sprintf "[[%s(%i).%s]]" name index a) ) |> DataString])) recset.Data
+    {recset with Data = blank}
+
+and EvalDataSetExpression (env: WarewolfEnvironment)  (name:RecordSetName) =
+    if env.RecordSets.ContainsKey( name.Name) then
+        let recset =  env.RecordSets.[name.Name]        
+        let data =  recset.Data 
+        match name.Index with
+            | Star -> WarewolfRecordSetResult env.RecordSets.[name.Name]
+            | IntIndex a -> WarewolfRecordSetResult (evalARow (getRecordSetIndexAsInt recset a) recset name.Name env)
+            | Last  -> WarewolfRecordSetResult ( evalARow  recset.LastIndex recset  name.Name env)
+            | IndexExpression b -> let res = Eval env (LanguageExpressionToString b) |> EvalResultToString
+                                   Eval env ( sprintf "[[%s(%s)]]" name.Name res)
     else
-        raise (new Dev2.Common.Common.NullValueInVariableException("Recordset not found",name))
+        raise (new Dev2.Common.Common.NullValueInVariableException("Recordset not found",name.Name))
 
           
 and  Eval  (env: WarewolfEnvironment) (lang:string) : WarewolfEvalResult=
@@ -182,7 +210,7 @@ and  Eval  (env: WarewolfEnvironment) (lang:string) : WarewolfEvalResult=
         | RecordSetExpression a -> WarewolfAtomListresult(  (evalRecordsSet a env) )
         | ScalarExpression a -> WarewolfAtomResult (evalScalar a env)
         | WarewolfAtomAtomExpression a -> WarewolfAtomResult a
-        | RecordSetNameExpression x ->EvalDataSetExpression env x.Name
+        | RecordSetNameExpression x ->EvalDataSetExpression env x
         | ComplexExpression  a -> WarewolfAtomResult (EvalComplex ( List.filter (fun b -> "" <> (LanguageExpressionToString b)) a)) 
 
 and getRecordSetPositionsAsInts (recset:WarewolfRecordset) =
@@ -372,7 +400,7 @@ let UpdateColumnWithValue (rset:WarewolfRecordset) (columnName:string) (value: W
 let DeleteValues (exp:string)  (env:WarewolfEnvironment) =
     let rset = env.RecordSets.TryFind exp
     match rset with 
-    | Some x -> {x with Data = Map.map (fun a b -> new WarewolfAtomList<WarewolfAtom>(WarewolfAtom.Nothing)) x.Data  } 
+    | Some x -> {x with Data = Map.map (fun a b -> new WarewolfAtomList<WarewolfAtom>(WarewolfAtom.Nothing)) x.Data ;LastIndex=0;Count=0;  } 
     | None->failwith "recordset does not exist"
 
 let DeleteValue  (exp:string) (index:int)   (env:WarewolfEnvironment) =
@@ -383,9 +411,16 @@ let DeleteValue  (exp:string) (index:int)   (env:WarewolfEnvironment) =
                                     | Nothing -> failwith "index does not exist"
                                     | Int a -> a
                                     | _  -> failwith "index does not exist"
-                     {values  with Data = Map.map (fun (a:string) (b:WarewolfAtomList<WarewolfAtom>) -> b.DeletePosition( posAsInt ) ) values.Data  } 
+                     {values  with Data = Map.map (fun (a:string) (b:WarewolfAtomList<WarewolfAtom>) -> b.DeletePosition( posAsInt ) ) values.Data ;  LastIndex= values.LastIndex-1 ;Count=values.Count-1;} 
     | None->failwith "recordset does not exist"
 
+let DeleteIndex  (exp:string) (index:int)   (env:WarewolfEnvironment) =
+    let rset = env.RecordSets.TryFind exp
+    match rset with 
+    | Some values -> let pos = Seq.findIndex ( fun a-> AtomtoString a = index.ToString())  values.Data.[PositionColumn]
+                     let posAsInt = pos
+                     {values  with Data = Map.map (fun (a:string) (b:WarewolfAtomList<WarewolfAtom>) -> b.DeletePosition( posAsInt ) ) values.Data ;LastIndex= values.LastIndex-1 ;Count=values.Count-1 } 
+    | None->failwith "recordset does not exist"
 let GetLastIndexFromRecordSet (exp:string)  (env:WarewolfEnvironment)  =
     let rset = env.RecordSets.TryFind exp
     match rset with 
@@ -401,8 +436,8 @@ and EvalDelete (exp:string)  (env:WarewolfEnvironment) =
     match left with 
                 |   RecordSetNameExpression b ->  match b.Index with
                                                                  | Star -> DeleteValues  b.Name env |> (fun upd-> {env with RecordSets = Map.map (fun ax bx -> if ax=b.Name then upd else bx ) env.RecordSets} )
-                                                                 | Last ->  DeleteValue  b.Name (GetLastIndexFromRecordSet  b.Name env) env |> (fun upd-> {env with RecordSets = Map.map (fun ax bx -> if ax=b.Name then upd else bx ) env.RecordSets} )
-                                                                 | IntIndex a -> DeleteValue  b.Name a env |> (fun upd-> {env with RecordSets = Map.map (fun ax bx -> if ax=b.Name then upd else bx ) env.RecordSets} )
+                                                                 | Last ->  DeleteIndex  b.Name (GetLastIndexFromRecordSet  b.Name env) env |> (fun upd-> {env with RecordSets = Map.map (fun ax bx -> if ax=b.Name then upd else bx ) env.RecordSets} )
+                                                                 | IntIndex a -> DeleteIndex  b.Name a env |> (fun upd-> {env with RecordSets = Map.map (fun ax bx -> if ax=b.Name then upd else bx ) env.RecordSets} )
                                                                  | IndexExpression exp ->  DeleteExpressionIndex b exp env
                                                                
 

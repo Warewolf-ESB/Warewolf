@@ -5,7 +5,7 @@ open WarewolfDataEvaluationCommon
 open Microsoft.FSharp.Text.Lexing
 open DataASTMutable
 
-let PositionColumn = "WarewolfPositionColumn#"
+let PositionColumn = "WarewolfPositionColumn"
 
 let CreateTestEnv =     
     let vars = Map.ofList  [("a", DataString "a"); ("b", Int 2344);("c", DataString "a") ] 

@@ -6,7 +6,7 @@ open Microsoft.FSharp.Text.Lexing
 open DataASTMutable
 open WarewolfDataEvaluationCommon
 open Dev2.Common.Interfaces
-let PositionColumn = "WarewolfPositionColumn#"
+let PositionColumn = "WarewolfPositionColumn"
 
 let CreateDataSet (a:string) =
     let col = new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing)
@@ -162,8 +162,8 @@ let EvalMultiAssign (values :IAssignValue seq) (env:WarewolfEnvironment) =
         {env with RecordSets = recsets}
 
 let EvalAssignWithFrame (value :IAssignValue ) (env:WarewolfEnvironment) =
-        let env = EvalMultiAssignOp env value
-        let recsets = env.RecordSets
+        let envass = EvalMultiAssignOp env value
+        let recsets = envass.RecordSets
         {env with RecordSets = recsets}
 
 let RemoveFraming  (env:WarewolfEnvironment) =

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
@@ -59,14 +60,17 @@ namespace Dev2.Activities.Debug
             var grpIdx = 0;
             foreach (var item in _warewolfRecordset.Data)
             {
-                if (item.Key == "WarewolfPositionColumn#")
+                if (item.Key == "WarewolfPositionColumn")
                 {
                     continue;
                 }
+                
                 foreach (var warewolfAtom in item.Value)
                 {
                     grpIdx++;
-                    string displayExpression = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(_variable),item.Key,grpIdx.ToString()));
+                    var index = _warewolfRecordset.Data["WarewolfPositionColumn"][grpIdx-1];
+                    var position = ExecutionEnvironment.WarewolfAtomToString(index);
+                    string displayExpression = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(_variable),item.Key,position));
                     var debugType = DebugItemResultType.Value;
                     if (DataListUtil.IsEvaluated(displayExpression))
                     {

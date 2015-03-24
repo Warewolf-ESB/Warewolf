@@ -132,15 +132,21 @@ namespace WarewolfParserInterop
 
       public WarewolfAtomList<T> DeletePosition(int position)
       {
-          T[] dest = new T[_values.Length - 1];
-          if (position > 0)
-              Array.Copy(_values, 0, dest, 0, position);
+          var lst = new WarewolfAtomList<T>(_defaultValue);
+          for(int i = 0;i< Count;i++)
+          {
+              if(i!= position)
+                  lst.AddSomething(this[i]);
+          }
+          //T[] dest = new T[_values.Length - 1];
+          //if (position > 0)
+          //    Array.Copy(_values, 0, dest, 0, position);
 
-          if (position < _values.Length - 1)
-              Array.Copy(_values, position + 1, dest, position, _values.Length - position - 1);
-          _count--;
-         
-          return this;
+          //if (position < _values.Length - 1)
+          //    Array.Copy(_values, position + 1, dest, position, _values.Length - position - 1);
+          //_count--;
+
+          return lst;
       }
     }
 }

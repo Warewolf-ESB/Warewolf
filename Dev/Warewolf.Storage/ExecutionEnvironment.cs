@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Dev2.Common.Interfaces;
@@ -158,6 +159,20 @@ namespace Warewolf.Storage
         public static  string WarewolfAtomToString(DataASTMutable.WarewolfAtom a)
         {
             return PublicFunctions.AtomtoString(a);
+        }
+
+        public static bool IsRecordSetName(string a)
+        {
+            try
+            {
+                var x = WarewolfDataEvaluationCommon.ParseLanguageExpression(a);
+                return x.IsRecordSetNameExpression;
+            }
+            catch(Exception)
+            {
+                return false;
+                throw;
+            }
         }
 
         public static string WarewolfEvalResultToString(WarewolfDataEvaluationCommon.WarewolfEvalResult result)
