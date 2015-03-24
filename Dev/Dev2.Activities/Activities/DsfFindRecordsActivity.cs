@@ -17,6 +17,7 @@ using System.Linq;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
+using Dev2.Common;
 using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Factories;
@@ -145,13 +146,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ErrorResultTO errors;
             ErrorResultTO allErrors = new ErrorResultTO();
             Guid executionId = dataObject.DataListID;
-
+            var env = dataObject.Environment;
             InitializeDebug(dataObject);
             try
             {
+               
                 IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
                 // Fetch all fields to search....
-                IList<string> toSearch = FieldsToSearch.Split(',');
+      
                 // now process each field for entire evaluated Where expression....
                 IBinaryDataListEntry bdle = compiler.Evaluate(executionId, enActionType.User, SearchCriteria, false, out errors);
                 if(dataObject.IsDebugMode())
@@ -161,7 +163,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     _debugInputs.Add(itemToAdd);
                 }
                 allErrors.MergeErrors(errors);
-
+                IList<string> toSearch = FieldsToSearch.Split(',');
+                foreach (var exp in toSearch)
+                {
+                    var val = env.EvalAsListOfStrings(exp);
+                    foreach(var atom in val)
+                    {
+                        
+                    }
+                }
                 if(bdle != null)
                 {
                     IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(bdle);
@@ -188,7 +198,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             foreach(IBinaryDataListItem c in cols)
                             {
                                 IRecsetSearch searchTo = ConvertToSearchTo(c.TheValue, idx.ToString(CultureInfo.InvariantCulture));
-                                IList<string> results = RecordsetInterrogator.FindRecords(toSearchList, searchTo, out errors);
+                                IList<string> results = RecordsetInterrogator.FindRecords(new RecordSetSearchPayload[0], searchTo, out errors);
                                 allErrors.MergeErrors(errors);
                                 string concatRes = string.Empty;
 

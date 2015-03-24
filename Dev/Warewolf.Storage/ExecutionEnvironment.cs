@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 
 namespace Warewolf.Storage
@@ -18,8 +19,11 @@ namespace Warewolf.Storage
         bool AssignWithFrame(IAssignValue values);
 
         int GetEvaluationResultAsInt(string exp);
+
         int GetLength(string recordSetName);
+
         int GetCount(string recordSetName);
+
         IList<int> EvalRecordSetIndexes(string recordsetName);
 
         bool HasRecordSet(string recordsetName);
@@ -39,6 +43,9 @@ namespace Warewolf.Storage
         void SortRecordSet(string SortField, bool descOrder);
 
         string ToStar(string expression);
+
+        IEnumerable<RecordSetSearchPayload> EvalWithPositionsForSearch(string exp);
+
     }
     public class ExecutionEnvironment : IExecutionEnvironment
     {
@@ -175,7 +182,7 @@ namespace Warewolf.Storage
             catch(Exception)
             {
                 return false;
-                throw;
+                
             }
         }
 
@@ -257,10 +264,12 @@ namespace Warewolf.Storage
                 var rec = exp as LanguageAST.LanguageExpression.RecordSetExpression;
                 return "[["+rec.Item.Name+"(*)."+rec.Item.Column+"]]";
             }
-            else
-            {
-                return expression;
-            }
+            return expression;
+        }
+
+        public IEnumerable<RecordSetSearchPayload> EvalWithPositionsForSearch(string exp)
+        {
+            return PublicFunctions.EvalEnvExpressionWithPositions(exp, _env);
         }
     }
 }

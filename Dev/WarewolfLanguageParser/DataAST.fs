@@ -5,7 +5,7 @@ type Atom =
     | Int of int
     | DataString of string
     | Nothing
-
+    
 type Record = Atom * int
 
 type ColumnData = Record list * int

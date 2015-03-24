@@ -403,7 +403,6 @@
     <Compile Include="TO\ParseTO.cs" />
     <Compile Include="TO\RecordSetCollection.cs" />
     <Compile Include="TO\RecordSetDefinition.cs" />
-    <Compile Include="TO\RecordSetSearchPayload.cs" />
     <Compile Include="TO\SearchTO.cs" />
     <Compile Include="TO\StringSegments.cs" />
     <Compile Include="TO\SystemTag.cs" />

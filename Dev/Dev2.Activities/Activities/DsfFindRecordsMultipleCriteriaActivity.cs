@@ -191,8 +191,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                                                           itrCollection.FetchNextRow(toItr).TheValue);
                                 ValidateRequiredFields(searchTo, out errorResultTo);
                                 allErrors.MergeErrors(errorResultTo);
+
                                 // ReSharper disable ConvertClosureToMethodGroup
-                                (RecordsetInterrogator.FindRecords(toSearchList, searchTo, out errorResultTo)).ToList().ForEach(it => iterationResults.Add(it));
+                                (RecordsetInterrogator.FindRecords(new RecordSetSearchPayload[0], searchTo, out errorResultTo)).ToList().ForEach(it => iterationResults.Add(it));
                                 // ReSharper restore ConvertClosureToMethodGroup
 
                                 if(RequireAllFieldsToMatch)
@@ -218,7 +219,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                             ValidateRequiredFields(searchTo, out errorResultTo);
                             allErrors.MergeErrors(errorResultTo);
-                            resultsDuringSearch = RecordsetInterrogator.FindRecords(toSearchList, searchTo, out errorResultTo);
+                            resultsDuringSearch = RecordsetInterrogator.FindRecords(new RecordSetSearchPayload[0], searchTo, out errorResultTo);
 
                         }
 

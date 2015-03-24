@@ -34,6 +34,31 @@ let AddRecsetToEnv (name:string) (env:WarewolfEnvironment) =
        a
 let EvalEnvExpression (exp:string) (env:WarewolfEnvironment) =
      WarewolfDataEvaluationCommon.Eval env exp
+
+let EvalWithPositions (exp:string) (env:WarewolfEnvironment) = WarewolfDataEvaluationCommon.EvalWithPositions env exp
+
+let innerConvert  (i:int) (a: WarewolfAtom) =
+        match a with
+        | PositionedValue (a,b) -> new Dev2.Common.RecordSetSearchPayload( a,AtomtoString b)
+        | b->  new Dev2.Common.RecordSetSearchPayload( i,AtomtoString b)
+
+let AtomListToSearchTo (atoms :WarewolfAtom seq) =
+    
+    Seq.mapi innerConvert atoms
+
+let RecordsetToSearchTo (recordset:WarewolfRecordset) =
+    let cols = recordset.Data
+    let data = Seq.map AtomToInt cols.[PositionColumn] 
+    let dataToWorkWith  = (Map.filter (fun a b-> a= PositionColumn) cols)|>Map.toSeq 
+    Seq.map snd dataToWorkWith  |> Seq.map (Seq.zip data)  |> Seq.collect (fun a -> a) |> Seq.map (fun (a,b) -> innerConvert a b )
+
+let EvalEnvExpressionWithPositions (exp:string) (env:WarewolfEnvironment) =
+     let data = WarewolfDataEvaluationCommon.EvalWithPositions env exp
+     match data with
+     | WarewolfAtomListresult  a -> AtomListToSearchTo a
+     | WarewolfRecordSetResult b -> RecordsetToSearchTo b
+     | WarewolfAtomResult a -> Seq.ofList [new Dev2.Common.RecordSetSearchPayload( 1,AtomtoString a)]
+
 let EvalRecordSetIndexes (exp:string) (env:WarewolfEnvironment) =
      WarewolfDataEvaluationCommon.Eval env exp
 

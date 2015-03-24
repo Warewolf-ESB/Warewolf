@@ -12,7 +12,7 @@ type WarewolfAtom =
     | Int of int
     | DataString of string
     | Nothing
-    
+    | PositionedValue of (int * WarewolfAtom)
     override x.ToString() = match x with 
                             | Float a -> a.ToString()
                             | Int a -> a.ToString()

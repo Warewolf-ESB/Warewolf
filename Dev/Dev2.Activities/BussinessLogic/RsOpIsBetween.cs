@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using Dev2.Common;
 using Dev2.DataList;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -22,13 +23,13 @@ namespace Dev2.BussinessLogic
 {
     public class RsOpIsBetween : AbstractRecsetSearchValidation
     {
-        public override Func<IList<string>> BuildSearchExpression(IBinaryDataList scopingObj, IRecsetSearch to)
+        public override Func<IList<string>> BuildSearchExpression(IList<RecordSetSearchPayload> operationRange, IRecsetSearch to)
         {
 
             Func<IList<string>> result = () =>
                 {
-                    ErrorResultTO err;
-                    IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
+      
+                     
 
                     DateTime fromDt;
                     if(DateTime.TryParse(to.From, out fromDt))

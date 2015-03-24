@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using Dev2.Common;
 using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.DataList.Contract
@@ -20,7 +21,7 @@ namespace Dev2.DataList.Contract
     /// </summary>
     public interface IFindRecsetOptions
     {
-        Func<IList<string>> BuildSearchExpression(IBinaryDataList scopingObj, IRecsetSearch to);
+        Func<IList<string>> BuildSearchExpression(IList<RecordSetSearchPayload> operationRange, IRecsetSearch to);
 
         string HandlesType();
 
