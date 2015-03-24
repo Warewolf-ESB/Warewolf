@@ -442,3 +442,38 @@ and EvalDelete (exp:string)  (env:WarewolfEnvironment) =
                                                                
 
                 |_-> failwith "only recordsets can be deleted"
+
+let getIndexes (name:string) (env:WarewolfEnvironment) = EvalIndexes  env name
+
+let ApplyIndexes (data:WarewolfParserInterop.WarewolfAtomList<WarewolfAtom>) (indexes : int[]) (name:string) =
+    let newdata = new WarewolfParserInterop.WarewolfAtomList<WarewolfAtom>(WarewolfAtom.Nothing)
+    if name = PositionColumn then
+        for x in [1..data.Count] do
+            newdata.AddSomething ( Int x)
+        newdata
+    else        
+        for x in indexes do
+            newdata.AddSomething data.[x]
+        newdata
+
+
+let rec sortRecst (recset:WarewolfRecordset) (colName:string)=
+    let data = recset.Data.[colName]
+    let positions = [1..recset.Data.[PositionColumn].Count]
+    let interpolated = Seq.map2 (fun a b -> AtomtoString a,  b) data positions
+    let sorted = Seq.sortBy (fun x -> fst x   ) interpolated 
+    let indexes = Seq.map snd sorted  |> Array.ofSeq
+    let data = Map.map (fun a b -> ApplyIndexes b indexes a) recset.Data
+    {recset with Data = data; Optimisations =Ordinal ; LastIndex = positions.Length ;Count = positions.Length }
+
+//and SortRecset (exp:string)  (env:WarewolfEnvironment) =
+//    let left = ParseLanguageExpression exp 
+//    match left with 
+//                |   RecordSetExpression b ->  let recsetopt = env.RecordSets.TryFind b.Name
+//                                              match recsetopt with
+//                                              | None -> failwith "record set does not exist"  
+//                                              | Some a -> let sorted =  sortRecst a 
+//                                                          let recset = Map.remove b.Name env.RecordSets  
+//                                                          let recsets =   Map.add  b.Name sorted recset        
+//                                                          {env with RecordSets = recsets }
+//                |_-> failwith "only recordsets can be sorted"

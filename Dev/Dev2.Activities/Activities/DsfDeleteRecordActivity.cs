@@ -80,7 +80,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.Environment.EvalDelete(RecordsetName);
 
                 dataObject.Environment.Assign(Result, "Success");
-                AddDebugOutputItem(new DebugItemWarewolfAtomResult("Success", Result, "","", "="));
+                AddDebugOutputItem(new DebugItemWarewolfAtomResult("Success", Result, "","","","", "="));
             }
             catch(Exception e)
             {
@@ -135,8 +135,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
              
             catch(Exception)
             {
-                
-                     AddDebugInputItem(new DebugItemWarewolfAtomResult("", RecordsetName, "Recordset","", "="));
+
+                AddDebugInputItem(new DebugItemWarewolfAtomResult("", RecordsetName, "Recordset", "", "", "", "="));
             }
         }
 

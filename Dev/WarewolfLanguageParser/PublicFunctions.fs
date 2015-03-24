@@ -164,7 +164,7 @@ let EvalMultiAssign (values :IAssignValue seq) (env:WarewolfEnvironment) =
 let EvalAssignWithFrame (value :IAssignValue ) (env:WarewolfEnvironment) =
         let envass = EvalMultiAssignOp env value
         let recsets = envass.RecordSets
-        {env with RecordSets = recsets}
+        {envass with RecordSets = recsets}
 
 let RemoveFraming  (env:WarewolfEnvironment) =
         let recsets = Map.map (fun a b -> {b with Frame = 0 }) env.RecordSets
