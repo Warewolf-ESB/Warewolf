@@ -284,6 +284,11 @@
       <DependentUpon>Toolbox.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\ToolboxSteps.cs" />
+    <Compile Include="Tools\ControlFlow - Sequence.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ControlFlow - Sequence.feature</DependentUpon>
+    </Compile>
     <Compile Include="Tools\Data - Assign.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -343,6 +348,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>FileAndFolder-Rename.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Recordset - FindRecordIndex.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Recordset - FindRecordIndex.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\SQLBulkInsert.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SQLBulkInsert.feature</DependentUpon>
     </Compile>
     <Compile Include="Variable List\VariableListSteps.cs" />
     <Compile Include="Web Service\Web Source.feature.cs">
@@ -432,6 +447,10 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Toolbox.feature.cs</LastGenOutput>
     </None>
+    <None Include="Tools\ControlFlow - Sequence.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ControlFlow - Sequence.feature.cs</LastGenOutput>
+    </None>
     <None Include="Tools\Data - Assign.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Data - Assign.feature.cs</LastGenOutput>
@@ -479,6 +498,14 @@
     <None Include="Tools\FileAndFolder-Rename.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>FileAndFolder-Rename.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\Recordset - FindRecordIndex.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Recordset - FindRecordIndex.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\SQLBulkInsert.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SQLBulkInsert.feature.cs</LastGenOutput>
     </None>
     <None Include="Web Service\Web Source.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

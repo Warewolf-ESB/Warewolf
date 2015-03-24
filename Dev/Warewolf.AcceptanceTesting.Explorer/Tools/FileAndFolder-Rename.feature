@@ -36,8 +36,8 @@ Scenario: Rename tool Large View Water marks
        | [[PathToRename]] | [[Username]]  |               | [[FileOrFolderName]] | [[Username]]  |               | [[Success]] |
        And If it exists Overwrite is "Unselected"      
        And On Error box consists
-       | Put error in this variable | Call this web service |
-       |                            |                       |
+       | Put error in this variable | Call this web service       |
+       | [[Errors().Message         | http://lcl:3142/service/err |
        And End this workflow is "Unselected"
        And Done button is "Visible"
 

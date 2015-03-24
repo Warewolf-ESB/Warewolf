@@ -205,8 +205,8 @@ this.ScenarioSetup(scenarioInfo);
                         "Put error in this variable",
                         "Call this web service"});
             table6.AddRow(new string[] {
-                        "",
-                        ""});
+                        "[[Errors().Message",
+                        "http://lcl:3142/service/err"});
 #line 38
        testRunner.And("On Error box consists", ((string)(null)), table6, "And ");
 #line 41
