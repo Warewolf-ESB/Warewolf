@@ -457,23 +457,31 @@ let ApplyIndexes (data:WarewolfParserInterop.WarewolfAtomList<WarewolfAtom>) (in
         newdata
 
 
-let rec sortRecst (recset:WarewolfRecordset) (colName:string)=
+let compare (left:WarewolfAtom) (right:WarewolfAtom) =
+    match (left,right) with
+    | (Nothing,Nothing) -> 0
+    | ( Int a, Int b ) -> a.CompareTo(b)
+    | (Float a, Float b ) -> a.CompareTo(b)
+    | (a,b) -> (AtomtoString a).CompareTo(AtomtoString b)
+
+
+let rec sortRecst (recset:WarewolfRecordset) (colName:string) (desc:bool)=
     let data = recset.Data.[colName]
-    let positions = [1..recset.Data.[PositionColumn].Count]
-    let interpolated = Seq.map2 (fun a b -> AtomtoString a,  b) data positions
-    let sorted = Seq.sortBy (fun x -> fst x   ) interpolated 
+    let positions = [0..recset.Data.[PositionColumn].Count-1]
+    let interpolated = Seq.map2 (fun a b ->  a,  b) data positions
+    let sorted = if not desc then Seq.sortBy (fun x ->  (fst x)  ) interpolated else Seq.sortBy (fun x ->  (fst x)   ) interpolated |> List.ofSeq |>List.rev |> Seq.ofList
     let indexes = Seq.map snd sorted  |> Array.ofSeq
     let data = Map.map (fun a b -> ApplyIndexes b indexes a) recset.Data
     {recset with Data = data; Optimisations =Ordinal ; LastIndex = positions.Length ;Count = positions.Length }
 
-//and SortRecset (exp:string)  (env:WarewolfEnvironment) =
-//    let left = ParseLanguageExpression exp 
-//    match left with 
-//                |   RecordSetExpression b ->  let recsetopt = env.RecordSets.TryFind b.Name
-//                                              match recsetopt with
-//                                              | None -> failwith "record set does not exist"  
-//                                              | Some a -> let sorted =  sortRecst a 
-//                                                          let recset = Map.remove b.Name env.RecordSets  
-//                                                          let recsets =   Map.add  b.Name sorted recset        
-//                                                          {env with RecordSets = recsets }
-//                |_-> failwith "only recordsets can be sorted"
+and SortRecset (exp:string) (desc:bool)  (env:WarewolfEnvironment) =
+    let left = ParseLanguageExpression exp 
+    match left with 
+                |   RecordSetExpression b ->  let recsetopt = env.RecordSets.TryFind b.Name
+                                              match recsetopt with
+                                              | None -> failwith "record set does not exist"  
+                                              | Some a -> let sorted =  sortRecst a b.Column desc
+                                                          let recset = Map.remove b.Name env.RecordSets  
+                                                          let recsets =   Map.add  b.Name sorted recset        
+                                                          {env with RecordSets = recsets }
+                |_-> failwith "only recordsets can be sorted"

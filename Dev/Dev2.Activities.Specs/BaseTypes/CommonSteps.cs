@@ -72,7 +72,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Then(@"the debug inputs as")]
         public void ThenTheDebugInputsAs(Table table)
         {
-            var inputDebugItems = GetInputDebugItems();
+            var inputDebugItems = GetInputDebugItems(null,CurrentExecutionEnvironment);
             ThenTheDebugInputsAs(table, inputDebugItems);
         }
 
@@ -85,7 +85,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Then(@"the debug output as")]
         public void ThenTheDebugOutputAs(Table table)
         {
-            var outputDebugItems = GetOutputDebugItems();
+            var outputDebugItems = GetOutputDebugItems(null,CurrentExecutionEnvironment);
             ThenTheDebugOutputAs(table, outputDebugItems);
         }
 
@@ -473,7 +473,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             return objRef;
         }
 
-        public static List<IDebugItemResult> GetInputDebugItems(Activity act = null)
+        public static List<IDebugItemResult> GetInputDebugItems(Activity act,IExecutionEnvironment env)
         {
             ErrorResultTO errors;
             var comiler = DataListFactory.CreateDataListCompiler();
@@ -493,7 +493,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     return DebugItemResults(dsfActivityAbstractBool, dl);
                 }
                 var activity = ScenarioContext.Current.Get<DsfActivityAbstract<string>>("activity");
-                return DebugItemResults(activity, dl);
+                return DebugItemResults(activity, env);
             }
             catch
             {
@@ -510,13 +510,17 @@ namespace Dev2.Activities.Specs.BaseTypes
                 .SelectMany(r => r.ResultsList)
                 .ToList();
         }
-
-        public static List<IDebugItemResult> GetOutputDebugItems(Activity act = null)
+        static List<IDebugItemResult> DebugItemResults<T>(DsfActivityAbstract<T> dsfActivityAbstractString, IExecutionEnvironment dl)
         {
-            ErrorResultTO errors;
-            var comiler = DataListFactory.CreateDataListCompiler();
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            IBinaryDataList dl = comiler.FetchBinaryDataList(result.DataListID, out errors);
+            return dsfActivityAbstractString.GetDebugInputs(dl)
+                .SelectMany(r => r.ResultsList)
+                .ToList();
+        }
+        public static List<IDebugItemResult> GetOutputDebugItems(Activity act , IExecutionEnvironment dl)
+        {
+      
+
+
 
             try
             {
@@ -673,7 +677,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             for(int i = 0; i < expectedDebugItems.Count; i++)
             {
-                Verify(expectedDebugItems[i].Label, inputDebugItems[i].Label, "Labels", i);
+                Verify(expectedDebugItems[i].Label, inputDebugItems[i].Label??"", "Labels", i);
                 Verify(expectedDebugItems[i].Value, inputDebugItems[i].Value, "Values", i);
                 Verify(expectedDebugItems[i].Variable, inputDebugItems[i].Variable, "Variables", i);
             }

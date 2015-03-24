@@ -35,6 +35,10 @@ namespace Warewolf.Storage
         void EvalDelete(string exp);
 
         void CommitAssign();
+
+        void SortRecordSet(string SortField, bool descOrder);
+
+        string ToStar(string expression);
     }
     public class ExecutionEnvironment : IExecutionEnvironment
     {
@@ -237,6 +241,26 @@ namespace Warewolf.Storage
         public void CommitAssign()
         {
             _env = PublicFunctions.RemoveFraming(_env);
+        }
+
+        public void SortRecordSet(string sortField, bool descOrder)
+        {
+
+            _env = PublicFunctions.SortRecset(sortField, descOrder, _env);
+        }
+
+        public string ToStar(string expression)
+        {
+            var exp = WarewolfDataEvaluationCommon.ParseLanguageExpression(expression);
+            if(exp.IsRecordSetExpression)
+            {
+                var rec = exp as LanguageAST.LanguageExpression.RecordSetExpression;
+                return "[["+rec.Item.Name+"(*)."+rec.Item.Column+"]]";
+            }
+            else
+            {
+                return expression;
+            }
         }
     }
 }

@@ -23,6 +23,7 @@ using Dev2.Diagnostics;
 using Dev2.Util;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -75,50 +76,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
 
-                string rawRecsetName = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, SortField);
-                string sortField = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, SortField);
+               
 
                 bool descOrder = String.IsNullOrEmpty(SelectedSort) || SelectedSort.Equals("Backwards");
-
-                // Travis.Frisinger : New Stuff....
-                if(!string.IsNullOrEmpty(rawRecsetName))
+                if (dataObject.IsDebugMode())
                 {
-                    IBinaryDataList bdl = compiler.FetchBinaryDataList(executionId, out errors);
-                    IBinaryDataListEntry rsData;
-                    string error;
-                    bdl.TryGetEntry(rawRecsetName, out rsData, out error);
-                    if(dataObject.IsDebugMode())
-                    {
-                        AddDebugInputItem(SortField, "Sort Field", rsData, executionId);
-                    }
+                    AddDebugInputItem(SortField, "Sort Field", dataObject.Environment, executionId);
+                }
+                // Travis.Frisinger : New Stuff....
+                if (!string.IsNullOrEmpty(SortField))
+                {
+                    dataObject.Environment.SortRecordSet(SortField, descOrder);
 
-                    allErrors.AddError(error);
-                    IsSingleRecordSetRule rule = new IsSingleRecordSetRule(() => SortField);
-                    var single = rule.Check();
-                    if(single != null)
-                        allErrors.AddError(single.Message);
-
-                    // Check for fields
-                    if(rsData != null && rsData.HasField(sortField))
-                    {
-                        rsData.Sort(sortField, descOrder, out error);
-                        errors.AddError(error);
-
-                        // Push back against the datalist
-                        compiler.PushBinaryDataList(executionId, bdl, out errors);
-                        allErrors.MergeErrors(errors);
-                        if(dataObject.IsDebugMode())
-                        {
-                            bdl.TryGetEntry(rawRecsetName, out rsData, out error);
-                            //Added for Bug 9479 
-                            string tmpExpression = SortField;
-                            if(tmpExpression.Contains("()."))
-                            {
-                                tmpExpression = tmpExpression.Replace("().", "(*).");
-                            }
-                            AddDebugOutputItem(new DebugItemVariableParams(tmpExpression, "", rsData, executionId));
-                        }
-                    }
+                    DebugOutputs(dataObject);
                 }
                 else
                 {
@@ -143,20 +113,30 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // End Travis.Frisinger New Stuff
         }
 
-        #region Private Methods
-
-        private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
+        void DebugOutputs(IDSFDataObject dataObject)
         {
-            if(valueEntry != null)
+            if(dataObject.IsDebugMode())
             {
-                //Added for Bug 9479 - Massimo Guerrera
-                if(expression.Contains("()."))
+                var data = dataObject.Environment.Eval(dataObject.Environment.ToStar(SortField));
+                if(data.IsWarewolfAtomListresult)
                 {
-                    expression = expression.Replace("().", "(*).");
+                    var lst = data as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                    AddDebugOutputItem(new DebugItemWarewolfAtomListResult(lst, "", "", SortField, "", "", "="));
                 }
             }
-            AddDebugInputItem(new DebugItemVariableParams(expression, labelText, valueEntry, executionId));
-            AddDebugInputItem(new DebugItemStaticDataParams(SelectedSort, "Sort Order"));
+        }
+
+        #region Private Methods
+
+        private void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment env, Guid executionId)
+        {
+            var data =  env.Eval(env.ToStar( expression));
+            if (data.IsWarewolfAtomListresult)
+            {
+                var lst = data as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                AddDebugInputItem(new DebugItemWarewolfAtomListResult(lst,"","",expression, labelText,"","="));
+                AddDebugInputItem(new DebugItemStaticDataParams(SelectedSort, "Sort Order"));
+            }
         }
 
         private string RetrieveItemForEvaluation(enIntellisensePartType partType, string value)
@@ -228,25 +208,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDebugInputs
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
         {
-            foreach(IDebugItem debugInput in _debugInputs)
-            {
-                debugInput.FlushStringBuilder();
-            }
             return _debugInputs;
         }
 
-        #endregion
 
-        #region GetDebugOutputs
-
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env)
         {
-            foreach(IDebugItem debugOutput in _debugOutputs)
-            {
-                debugOutput.FlushStringBuilder();
-            }
             return _debugOutputs;
         }
 

@@ -19,6 +19,7 @@ using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage;
 
 namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
 {
@@ -112,21 +113,22 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
         [Then(@"the sorted recordset ""(.*)""  will be")]
         public void ThenTheSortedRecordsetWillBe(string variable, Table table)
         {
-            string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
-            string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
-
-            string error;
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column,
-                                                                           out error);
-            recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
-
             List<TableRow> tableRows = table.Rows.ToList();
-            Assert.AreEqual(tableRows.Count, recordSetValues.Count);
-            for(int i = 0; i < tableRows.Count; i++)
+            var recordSets = CurrentExecutionEnvironment.Eval(variable);
+            if (recordSets.IsWarewolfAtomListresult)
             {
-                Assert.AreEqual(tableRows[i][1], recordSetValues[i]);
+                // ReSharper disable PossibleNullReferenceException
+                var recordSetValues = (recordSets as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult).Item.ToList();
+                // ReSharper restore PossibleNullReferenceException
+                Assert.AreEqual(tableRows.Count, recordSetValues.Count);
+
+                for (int i = 0; i < tableRows.Count; i++)
+                {
+                    Assert.AreEqual(tableRows[i][1], ExecutionEnvironment.WarewolfAtomToString(recordSetValues[i]));
+                }
             }
+
+
         }
     }
 }

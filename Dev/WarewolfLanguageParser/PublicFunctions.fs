@@ -176,3 +176,6 @@ let AtomtoString a = WarewolfDataEvaluationCommon.AtomtoString a;
 let getIndexes (name:string) (env:WarewolfEnvironment) = WarewolfDataEvaluationCommon.EvalIndexes  env name
 
 let EvalDelete (exp:string)  (env:WarewolfEnvironment) = WarewolfDataEvaluationCommon.EvalDelete exp env
+
+
+let SortRecset (exp:string) (desc:bool) (env:WarewolfEnvironment)  = WarewolfDataEvaluationCommon.SortRecset exp desc env 

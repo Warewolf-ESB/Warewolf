@@ -36,12 +36,12 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         protected virtual List<IDebugItemResult> GetDebugInputItemResults(Activity activity)
         {
-            return CommonSteps.GetInputDebugItems(activity);
+            return CommonSteps.GetInputDebugItems(activity,CurrentExecutionEnvironment);
         }
 
         protected virtual List<IDebugItemResult> GetDebugOutputItemResults(Activity activity)
         {
-            return CommonSteps.GetOutputDebugItems(activity);
+            return CommonSteps.GetOutputDebugItems(activity,CurrentExecutionEnvironment);
         }
 
         protected void BuildShapeAndTestData()
