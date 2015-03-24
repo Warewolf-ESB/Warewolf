@@ -106,27 +106,6 @@ Scenario: Assign multiple variables to the end of a recordset
     | 3 | [[rec(3).set]] = 30 |
     | 4 | [[value]] = 30      |
 
-Scenario: Assign scalars to 
-	Given I assign the value 10 to a variable "[[rec().set]]"	
-	And I assign the value 20 to a variable "[[rec().set]]"
-	And I assign the value 30 to a variable "[[rec().set]]"
-	And I assign the value [[rec(3).set]] to a variable "[[value]]"
-	When the assign tool is executed
-	Then the value of "[[value]]" equals 30
-	And the execution has "NO" error
-	And the debug inputs as
-	| # | Variable        | New Value           |
-	| 1 | [[rec().set]] = | 10                  |
-	| 2 | [[rec().set]] = | 20                  |
-	| 3 | [[rec().set]] = | 30                  |
-	| 4 | [[value]]     = | [[rec(3).set]] = 30 |
-	And the debug output as
-    | # |                     |
-    | 1 | [[rec(1).set]] = 10 |
-    | 2 | [[rec(2).set]] = 20 |
-    | 3 | [[rec(3).set]] = 30 |
-    | 4 | [[value]] = 30      |
-
 Scenario: Assign all recordset values to a single variable
 	Given I assign the value 10 to a variable "[[rec(1).set]]"	
 	And I assign the value 20 to a variable "[[rec(2).set]]"
@@ -448,7 +427,7 @@ Scenario: Assign a variable equal to a group calculation with scalar and records
 	| 5 | [[Result]] = 3   |
 #
 #The following 3 Scenarios should be passed after the bug 12132 is fixed
-Scenario: Evaluating recursive variable in a group calculation.
+Scenario: Evaluating recursive variable in a group calculation
 	Given I assign the value 1 to a variable "[[a]]"
 	And I assign the value "a" to a variable "[[b]]"
 	And I assign the value "=SUM([[[[b]]]],1)" to a variable "[[Result]]"

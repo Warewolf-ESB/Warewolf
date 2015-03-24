@@ -46,6 +46,7 @@ namespace Dev2.Activities.Debug
             _assignedToVariableName = assignedToVariableName;
         }
 
+
         public override string LabelText
         {
             get
