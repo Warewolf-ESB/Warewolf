@@ -22,6 +22,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Data.Decision;
 using Dev2.Data.Storage;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -426,6 +427,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected virtual void AfterExecutionCompleted(ErrorResultTO tmpErrors)
         {
+            Dev2DataListDecisionHandler.Instance.RemoveEnvironment(DataObject.DataListID);
         }
 
         protected virtual Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors)

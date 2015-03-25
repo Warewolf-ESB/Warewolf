@@ -203,13 +203,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(JsonSerializationException)
             {
-                //Dev2Switch ds = new Dev2Switch { SwitchVariable = val.ToString() };
-                //DebugItem itemToAdd = new DebugItem();
-                //ErrorResultTO errors;
-                //IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dataList.UID, enActionType.User, ds.SwitchVariable, false, out errors);
-                //var debugResult = new DebugItemVariableParams(ds.SwitchVariable, "Switch on", expressionsEntry, dataList.UID);
-                //itemToAdd.AddRange(debugResult.GetDebugItemResult());
-                //result.Add(itemToAdd);
+                Dev2Switch ds = new Dev2Switch { SwitchVariable = val.ToString() };
+                DebugItem itemToAdd = new DebugItem();
+        
+                var a = env.Eval(ds.SwitchVariable);
+                var debugResult = new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfEvalResultToString(a), ds.SwitchVariable, "Switch on");
+                itemToAdd.AddRange(debugResult.GetDebugItemResult());
+                result.Add(itemToAdd);
             }
             catch(Exception e)
             {
@@ -274,7 +274,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         // Travis.Frisinger - 28.01.2013 : Amended for Debug
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             var result = new List<DebugItem>();
             string resultString = _theResult.ToString();
@@ -298,13 +298,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
                 result.Add(itemToAdd);
             }
+                // ReSharper disable EmptyGeneralCatchClause
             catch(Exception)
+                // ReSharper restore EmptyGeneralCatchClause
             {
-                if(!dataList.HasErrors())
-                {
-                    itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
-                    result.Add(itemToAdd);
-                }
+                //if(!dataList.HasErrors())
+                //{
+                //    itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
+                //    result.Add(itemToAdd);
+                //}
             }
 
             return result;

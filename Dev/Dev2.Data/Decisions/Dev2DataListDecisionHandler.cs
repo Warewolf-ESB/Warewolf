@@ -56,27 +56,16 @@ namespace Dev2.Data.Decision
         /// <returns></returns>
         public string FetchSwitchData(string variableName, IList<string> oldAmbientData)
         {
-            ErrorResultTO errors;
+       
+
+      
             Guid dlId = FetchDataListID(oldAmbientData);
-            IBinaryDataListEntry tmp = EvaluateForSwitch(variableName, dlId, out errors);
-            if(errors.HasErrors())
-            {
-                Compiler.UpsertSystemTag(dlId, enSystemTag.Dev2Error, errors.MakeDataListReady(), out errors);
-            }
 
-            if(tmp != null)
-            {
-                if(tmp.IsRecordset)
-                {
-                    string error;
-                    return tmp.TryFetchLastIndexedRecordsetUpsertPayload(out error).TheValue;
-                }
+            var env = _environments[dlId];
+            var output = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(variableName));
+        
+            return output;
 
-                var scalar = tmp.FetchScalar();
-
-                return scalar.TheValue;
-            }
-            return string.Empty;
         }
 
         // Guid dlID

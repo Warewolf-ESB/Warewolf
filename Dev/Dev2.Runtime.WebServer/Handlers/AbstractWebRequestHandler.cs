@@ -24,6 +24,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.Decision;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -293,6 +294,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                         }
                     }
                 }
+                Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
                 dataObject.Environment = null;
                 // else handle the format requested ;)
                 return new StringResponseWriter(executePayload, formatter.ContentType);
