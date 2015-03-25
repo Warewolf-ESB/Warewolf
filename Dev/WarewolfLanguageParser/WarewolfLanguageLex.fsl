@@ -13,7 +13,7 @@ let newline (lexbuf: LexBuffer<_>) =
 // Regular expressions
 let whitespace = [' ' '\t' ]
 let newline = ('\n' | '\r' '\n')
-let char        = ['a'-'z''A'-'Z'' ''\t' ',' '!' '-' '=' '+' '/' '*']
+let char        = ['a'-'z''A'-'Z'' ''\t' ',' '!' '-' '=' '+' '/' '*' '$' '#' '@' '<' '>' '\\']
 let tilde        = ['~']
 let varStart = ['a'-'z''A'-'Z']
 let varEnd = ['a'-'z''A'-'Z''0'-'9''_''-']
@@ -34,7 +34,7 @@ rule tokenstream = parse
 | ")" 		{ CLOSEDBRACKET }
 | "." 		{ DOT }
 | "*" 		{ STAR }
-| int           { INT( System.Int32.Parse( LexBuffer<char>.LexemeString(lexbuf)) ) }
+| int           { INT( LexBuffer<char>.LexemeString(lexbuf) ) }
 | float         { FLOAT(System.Double.Parse(LexBuffer<char>.LexemeString(lexbuf))) }
 | variableName       { VARNAME (LexBuffer<char>.LexemeString(lexbuf) )}
 | string        { STRING (LexBuffer<char>.LexemeString(lexbuf) )}

@@ -15,6 +15,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Dev2.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 
@@ -57,7 +58,13 @@ namespace Dev2.DataList
 
             return result;
         }
+        public override Func<DataASTMutable.WarewolfAtom, bool> CreateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> warewolfAtoms, IEnumerable<DataASTMutable.WarewolfAtom> to, bool all)
+        {
 
+
+            return (a) => values.All(x => a.ToString().IsHex());
+
+        }
         public override string HandlesType()
         {
             return "Not Regex";

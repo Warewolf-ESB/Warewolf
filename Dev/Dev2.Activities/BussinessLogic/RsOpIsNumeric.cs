@@ -55,6 +55,13 @@ namespace Dev2.DataList
             return result;
         }
 
+
+        public override Func<DataASTMutable.WarewolfAtom, bool> CreateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> warewolfAtoms, IEnumerable<DataASTMutable.WarewolfAtom> to, bool all)
+        {
+
+            return (a) => values.All(x => a.ToString().IsNumeric());
+
+        }
         public override string HandlesType()
         {
             return "Is Numeric";

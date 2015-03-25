@@ -238,7 +238,7 @@ namespace WarewolfParsingTest
         public void WarewolfParse_Eval_RecsetWithNestedIndex_Exists()
         {
 
-            var env = WarewolfTestData.CreateTestEnvWithData;
+            var env = CreateTestEnvWithData(); ;
 
             var ast = PublicFunctions.EvalEnvExpression("[[rec([[d]]).a]]", env);
             Assert.IsTrue(ast.IsWarewolfAtomListresult);
@@ -287,7 +287,7 @@ namespace WarewolfParsingTest
             catch(Exception e)
             {
 
-                Assert.IsTrue(e.Message.Contains("does not have the row"));
+                Assert.IsTrue(e.Message.Contains("index not found"));
             }
       
             // ReSharper restore PossibleNullReferenceException

@@ -7,7 +7,7 @@
 
 // Regular tokens
 %token OPENLANGUAGE CLOSELANGAUGE OPENBRACKET CLOSEDBRACKET STAR DOT 
-%token <int> INT   
+%token <string> INT   
 %token <float> FLOAT
 %token <string> STRING    
 %token <string> VARNAME    
@@ -59,13 +59,13 @@ recsetName :
 	|OPENLANGUAGE VARNAME OPENBRACKET STAR CLOSEDBRACKET CLOSELANGAUGE{{Name = $2; Index = Last;}}
 	|OPENLANGUAGE VARNAME OPENBRACKET langExpression CLOSEDBRACKET CLOSELANGAUGE{{Name = $2;Index = IndexExpression $4;}}
 index :
-	| INT {IntIndex $1}
+	| INT {IndexExpression ( WarewolfAtomAtomExpression ( tryParseAtom $1))}
 scalar : 
 	|OPENLANGUAGE VARNAME CLOSELANGAUGE {$2}
 atom :
 	| FLOAT {   Float $1 }
-	| INT {  Int $1 }  	 
-	| VARNAME {  DataString $1 }  
+	|  INT {  tryParseAtom $1 }
+	| VARNAME {  DataString $1 }   	   
 	| STRING {  DataString $1 } 
 	
 	

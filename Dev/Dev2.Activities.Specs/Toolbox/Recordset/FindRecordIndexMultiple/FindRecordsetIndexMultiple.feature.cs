@@ -572,66 +572,6 @@ this.ScenarioSetup(scenarioInfo);
 #line 143
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table17.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table17.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table17.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table17.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = d2FyZXdvbGY=",
-                        "1",
-                        "Is Base64",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 144
- testRunner.And("the debug inputs as", ((string)(null)), table17, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table18.AddRow(new string[] {
-                        "[[result]] = 4"});
-#line 150
- testRunner.And("the debug output as", ((string)(null)), table18, "And ");
-#line hidden
             this.ScenarioCleanup();
         }
         
@@ -644,23 +584,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 154
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table19.AddRow(new string[] {
+            table17.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table19.AddRow(new string[] {
+            table17.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table19.AddRow(new string[] {
+            table17.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table19.AddRow(new string[] {
+            table17.AddRow(new string[] {
                         "rs().field",
                         "101011110010"});
 #line 155
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table19, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table17, "Given ");
 #line 161
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 162
@@ -671,66 +611,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("the find records index multiple result should be 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 165
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table20.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table20.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table20.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table20.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = 101011110010",
-                        "1",
-                        "Is Binary",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 166
- testRunner.And("the debug inputs as", ((string)(null)), table20, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table21.AddRow(new string[] {
-                        "[[result]] = 4"});
-#line 172
- testRunner.And("the debug output as", ((string)(null)), table21, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -744,23 +624,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 176
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table22.AddRow(new string[] {
+            table18.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table22.AddRow(new string[] {
+            table18.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table22.AddRow(new string[] {
+            table18.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table22.AddRow(new string[] {
+            table18.AddRow(new string[] {
                         "rs().field",
                         "77617265776f6c66"});
 #line 177
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table22, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table18, "Given ");
 #line 183
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 184
@@ -771,66 +651,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("the find records index multiple result should be 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 187
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table23.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table23.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table23.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table23.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = 77617265776f6c66",
-                        "1",
-                        "Is Hex",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 188
- testRunner.And("the debug inputs as", ((string)(null)), table23, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table24.AddRow(new string[] {
-                        "[[result]] = 4"});
-#line 194
- testRunner.And("the debug output as", ((string)(null)), table24, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -844,23 +664,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 198
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table25.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "rs().field",
                         "d2FyZXdvbGY="});
-            table25.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "rs().field",
                         "d2FyZXdvbGY="});
-            table25.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "rs().field",
                         "d2FyZXdvbGY="});
-            table25.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "rs().field",
                         "You"});
 #line 199
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table25, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table19, "Given ");
 #line 205
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 206
@@ -871,66 +691,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("the find records index multiple result should be 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 209
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table26.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = d2FyZXdvbGY=",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table26.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = d2FyZXdvbGY=",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table26.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = d2FyZXdvbGY=",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table26.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = You",
-                        "1",
-                        "Not Base64",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 210
- testRunner.And("the debug inputs as", ((string)(null)), table26, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table27.AddRow(new string[] {
-                        "[[result]] = 4"});
-#line 216
- testRunner.And("the debug output as", ((string)(null)), table27, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -944,23 +704,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 220
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table28.AddRow(new string[] {
+            table20.AddRow(new string[] {
                         "rs().field",
                         "2/3/2013"});
-            table28.AddRow(new string[] {
+            table20.AddRow(new string[] {
                         "rs().field",
                         "7/3/2013"});
-            table28.AddRow(new string[] {
+            table20.AddRow(new string[] {
                         "rs().field",
                         "2/3/2013"});
-            table28.AddRow(new string[] {
+            table20.AddRow(new string[] {
                         "rs().field",
                         "2/3/2013"});
 #line 221
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table28, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table20, "Given ");
 #line 227
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 228
@@ -971,6 +731,288 @@ this.ScenarioSetup(scenarioInfo);
 #line 230
  testRunner.Then("the find records index multiple result should be 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 231
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "",
+                        "#",
+                        "",
+                        "",
+                        "",
+                        "And",
+                        "Require All Fields To Match",
+                        "Require All Matches To Be True"});
+            table21.AddRow(new string[] {
+                        "In Field(s)",
+                        "[[rs(1).field]] = 2/3/2013",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table21.AddRow(new string[] {
+                        "",
+                        "[[rs(2).field]] = 7/3/2013",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table21.AddRow(new string[] {
+                        "",
+                        "[[rs(3).field]] = 2/3/2013",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table21.AddRow(new string[] {
+                        "",
+                        "[[rs(4).field]] = 2/3/2013",
+                        "1",
+                        "Not Between",
+                        "",
+                        "1/3/2013",
+                        "3/3/2013",
+                        "NO",
+                        "NO"});
+#line 232
+ testRunner.And("the debug inputs as", ((string)(null)), table21, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table22.AddRow(new string[] {
+                        "[[result]] = 2"});
+#line 238
+ testRunner.And("the debug output as", ((string)(null)), table22, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset with Not Between numeric")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetWithNotBetweenNumeric()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset with Not Between numeric", ((string[])(null)));
+#line 242
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table23.AddRow(new string[] {
+                        "rs().field",
+                        "17"});
+            table23.AddRow(new string[] {
+                        "rs().field",
+                        "22"});
+            table23.AddRow(new string[] {
+                        "rs().field",
+                        "400"});
+            table23.AddRow(new string[] {
+                        "rs().field",
+                        "31"});
+#line 243
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table23, "Given ");
+#line 249
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 250
+ testRunner.And("is between search the recordset with type \"Not Between\" and criteria is \"16\" and " +
+                    "\"33\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 251
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 252
+ testRunner.Then("the find records index multiple result should be 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 253
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "",
+                        "#",
+                        "",
+                        "",
+                        "",
+                        "And",
+                        "Require All Fields To Match",
+                        "Require All Matches To Be True"});
+            table24.AddRow(new string[] {
+                        "In Field(s)",
+                        "[[rs(1).field]] = 17",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table24.AddRow(new string[] {
+                        "",
+                        "[[rs(2).field]] = 22",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table24.AddRow(new string[] {
+                        "",
+                        "[[rs(3).field]] = 400",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table24.AddRow(new string[] {
+                        "",
+                        "[[rs(4).field]] = 31",
+                        "1",
+                        "Not Between",
+                        "",
+                        "16",
+                        "33",
+                        "NO",
+                        "NO"});
+#line 254
+ testRunner.And("the debug inputs as", ((string)(null)), table24, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table25.AddRow(new string[] {
+                        "[[result]] = 3"});
+#line 260
+ testRunner.And("the debug output as", ((string)(null)), table25, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset with Not Binary")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetWithNotBinary()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset with Not Binary", ((string[])(null)));
+#line 264
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table26.AddRow(new string[] {
+                        "rs().field",
+                        "101011110010"});
+            table26.AddRow(new string[] {
+                        "rs().field",
+                        "101011110010"});
+            table26.AddRow(new string[] {
+                        "rs().field",
+                        "101011110010"});
+            table26.AddRow(new string[] {
+                        "rs().field",
+                        "warewolf"});
+#line 265
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table26, "Given ");
+#line 271
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 272
+ testRunner.And("search the recordset with type \"Not Binary\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 273
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 274
+ testRunner.Then("the find records index multiple result should be 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 275
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset with Not Hex")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetWithNotHex()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset with Not Hex", ((string[])(null)));
+#line 286
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table27.AddRow(new string[] {
+                        "rs().field",
+                        "77617265776f6c66"});
+            table27.AddRow(new string[] {
+                        "rs().field",
+                        "77617265776f6c66"});
+            table27.AddRow(new string[] {
+                        "rs().field",
+                        "77617265776f6c66"});
+            table27.AddRow(new string[] {
+                        "rs().field",
+                        "warewolf"});
+#line 287
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table27, "Given ");
+#line 293
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 294
+ testRunner.And("search the recordset with type \"Not Hex\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 295
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 296
+ testRunner.Then("the find records index multiple result should be 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 297
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset with Not Regex")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetWithNotRegex()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset with Not Regex", ((string[])(null)));
+#line 308
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table28.AddRow(new string[] {
+                        "rs().field",
+                        "999.999.999.999"});
+            table28.AddRow(new string[] {
+                        "rs().field",
+                        "999.999.999.999"});
+            table28.AddRow(new string[] {
+                        "rs().field",
+                        "999.999.999.999"});
+            table28.AddRow(new string[] {
+                        "rs().field",
+                        "warewolf"});
+#line 309
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table28, "Given ");
+#line 315
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 316
+ testRunner.And("search the recordset with type \"Not Regex\" and criteria is \"\\b\\d{1,3}\\.\\d{1,3}\\.\\" +
+                    "d{1,3}\\.\\d{1,3}\\b\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 317
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 318
+ testRunner.Then("the find records index multiple result should be 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 319
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
@@ -985,7 +1027,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Require All Matches To Be True"});
             table29.AddRow(new string[] {
                         "In Field(s)",
-                        "[[rs(1).field]] = 2/3/2013",
+                        "[[rs(1).field]] = 999.999.999.999",
                         "",
                         "",
                         "",
@@ -995,7 +1037,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table29.AddRow(new string[] {
                         "",
-                        "[[rs(2).field]] = 7/3/2013",
+                        "[[rs(2).field]] = 999.999.999.999",
                         "",
                         "",
                         "",
@@ -1005,7 +1047,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table29.AddRow(new string[] {
                         "",
-                        "[[rs(3).field]] = 2/3/2013",
+                        "[[rs(3).field]] = 999.999.999.999",
                         "",
                         "",
                         "",
@@ -1015,34 +1057,34 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table29.AddRow(new string[] {
                         "",
-                        "[[rs(4).field]] = 2/3/2013",
+                        "[[rs(4).field]] = warewolf",
                         "1",
-                        "Not Between",
+                        "Not Regex",
+                        "\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b",
                         "",
-                        "1/3/2013",
-                        "3/3/2013",
+                        "",
                         "NO",
                         "NO"});
-#line 232
+#line 320
  testRunner.And("the debug inputs as", ((string)(null)), table29, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table30.AddRow(new string[] {
-                        "[[result]] = 2"});
-#line 238
+                        "[[result]] = 4"});
+#line 326
  testRunner.And("the debug output as", ((string)(null)), table30, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset with Not Between numeric")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset with Doesn\'t Start With")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetWithNotBetweenNumeric()
+        public virtual void FindAnIndexOfDataInARecordsetWithDoesnTStartWith()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset with Not Between numeric", ((string[])(null)));
-#line 242
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset with Doesn\'t Start With", ((string[])(null)));
+#line 330
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1050,28 +1092,24 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table31.AddRow(new string[] {
                         "rs().field",
-                        "17"});
+                        "what"});
             table31.AddRow(new string[] {
                         "rs().field",
-                        "22"});
+                        "why"});
             table31.AddRow(new string[] {
                         "rs().field",
-                        "400"});
-            table31.AddRow(new string[] {
-                        "rs().field",
-                        "31"});
-#line 243
+                        "yay"});
+#line 331
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table31, "Given ");
-#line 249
+#line 336
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 250
- testRunner.And("is between search the recordset with type \"Not Between\" and criteria is \"16\" and " +
-                    "\"33\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 251
+#line 337
+ testRunner.And("search the recordset with type \"Doesn\'t Start With\" and criteria is \"w\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 338
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 252
+#line 339
  testRunner.Then("the find records index multiple result should be 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 253
+#line 340
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1086,7 +1124,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Require All Matches To Be True"});
             table32.AddRow(new string[] {
                         "In Field(s)",
-                        "[[rs(1).field]] = 17",
+                        "[[rs(1).field]] = what",
                         "",
                         "",
                         "",
@@ -1096,7 +1134,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table32.AddRow(new string[] {
                         "",
-                        "[[rs(2).field]] = 22",
+                        "[[rs(2).field]] = why",
                         "",
                         "",
                         "",
@@ -1106,44 +1144,34 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table32.AddRow(new string[] {
                         "",
-                        "[[rs(3).field]] = 400",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table32.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = 31",
+                        "[[rs(3).field]] = yay",
                         "1",
-                        "Not Between",
+                        "Doesn\'t Start With",
+                        "w",
                         "",
-                        "16",
-                        "33",
+                        "",
                         "NO",
                         "NO"});
-#line 254
+#line 341
  testRunner.And("the debug inputs as", ((string)(null)), table32, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table33.AddRow(new string[] {
                         "[[result]] = 3"});
-#line 260
+#line 346
  testRunner.And("the debug output as", ((string)(null)), table33, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset with Not Binary")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset with Doesn\'t End With")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetWithNotBinary()
+        public virtual void FindAnIndexOfDataInARecordsetWithDoesnTEndWith()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset with Not Binary", ((string[])(null)));
-#line 264
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset with Doesn\'t End With", ((string[])(null)));
+#line 350
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1151,27 +1179,27 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table34.AddRow(new string[] {
                         "rs().field",
-                        "101011110010"});
+                        "arev"});
             table34.AddRow(new string[] {
                         "rs().field",
-                        "101011110010"});
+                        "v"});
             table34.AddRow(new string[] {
                         "rs().field",
-                        "101011110010"});
+                        "modev"});
             table34.AddRow(new string[] {
                         "rs().field",
-                        "warewolf"});
-#line 265
+                        "yay"});
+#line 351
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table34, "Given ");
-#line 271
+#line 357
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 272
- testRunner.And("search the recordset with type \"Not Binary\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 273
+#line 358
+ testRunner.And("search the recordset with type \"Doesn\'t End With\" and criteria is \"v\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 359
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 274
+#line 360
  testRunner.Then("the find records index multiple result should be 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 275
+#line 361
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1186,7 +1214,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Require All Matches To Be True"});
             table35.AddRow(new string[] {
                         "In Field(s)",
-                        "[[rs(1).field]] = 101011110010",
+                        "[[rs(1).field]] = arev",
                         "",
                         "",
                         "",
@@ -1196,7 +1224,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table35.AddRow(new string[] {
                         "",
-                        "[[rs(2).field]] = 101011110010",
+                        "[[rs(2).field]] = v",
                         "",
                         "",
                         "",
@@ -1206,7 +1234,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table35.AddRow(new string[] {
                         "",
-                        "[[rs(3).field]] = 101011110010",
+                        "[[rs(3).field]] = modev",
                         "",
                         "",
                         "",
@@ -1216,34 +1244,34 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table35.AddRow(new string[] {
                         "",
-                        "[[rs(4).field]] = warewolf",
+                        "[[rs(4).field]] = yay",
                         "1",
-                        "Not Binary",
-                        "",
+                        "Doesn\'t End With",
+                        "v",
                         "",
                         "",
                         "NO",
                         "NO"});
-#line 276
+#line 362
  testRunner.And("the debug inputs as", ((string)(null)), table35, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table36.AddRow(new string[] {
                         "[[result]] = 4"});
-#line 282
+#line 368
  testRunner.And("the debug output as", ((string)(null)), table36, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset with Not Hex")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Equal To")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetWithNotHex()
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsEqualTo()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset with Not Hex", ((string[])(null)));
-#line 286
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Equal To", ((string[])(null)));
+#line 372
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1251,99 +1279,140 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table37.AddRow(new string[] {
                         "rs().field",
-                        "77617265776f6c66"});
+                        "You"});
             table37.AddRow(new string[] {
                         "rs().field",
-                        "77617265776f6c66"});
+                        "are"});
             table37.AddRow(new string[] {
                         "rs().field",
-                        "77617265776f6c66"});
+                        "the"});
             table37.AddRow(new string[] {
                         "rs().field",
-                        "warewolf"});
-#line 287
+                        "best"});
+            table37.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table37.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+#line 373
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table37, "Given ");
-#line 293
+#line 381
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 294
- testRunner.And("search the recordset with type \"Not Hex\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 295
+#line 382
+ testRunner.And("search the recordset with type \"=\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 383
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 296
- testRunner.Then("the find records index multiple result should be 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 297
+#line 384
+ testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 385
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table38.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = 77617265776f6c66",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table38.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = 77617265776f6c66",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table38.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = 77617265776f6c66",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table38.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = warewolf",
-                        "1",
-                        "Not Hex",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 298
- testRunner.And("the debug inputs as", ((string)(null)), table38, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table39.AddRow(new string[] {
-                        "[[result]] = 4"});
-#line 304
- testRunner.And("the debug output as", ((string)(null)), table39, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset with Not Regex")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Equal To multiple results")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetWithNotRegex()
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsEqualToMultipleResults()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset with Not Regex", ((string[])(null)));
-#line 308
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Equal To multiple results", ((string[])(null)));
+#line 398
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table38.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table38.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table38.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table38.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table38.AddRow(new string[] {
+                        "rs().field",
+                        "best"});
+            table38.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table38.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+#line 399
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table38, "Given ");
+#line 408
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 409
+ testRunner.And("search the recordset with type \"=\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 410
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 411
+ testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 412
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Equal To result doesnt exist")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsEqualToResultDoesntExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Equal To result doesnt exist", ((string[])(null)));
+#line 426
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table39.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table39.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table39.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table39.AddRow(new string[] {
+                        "rs().field",
+                        "best"});
+            table39.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table39.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+#line 427
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table39, "Given ");
+#line 435
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 436
+ testRunner.And("search the recordset with type \"=\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 437
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 438
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 439
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Greater Than")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsGreaterThan()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Greater Than", ((string[])(null)));
+#line 452
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1351,28 +1420,33 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table40.AddRow(new string[] {
                         "rs().field",
-                        "999.999.999.999"});
+                        "4"});
             table40.AddRow(new string[] {
                         "rs().field",
-                        "999.999.999.999"});
+                        "are"});
             table40.AddRow(new string[] {
                         "rs().field",
-                        "999.999.999.999"});
+                        "the"});
             table40.AddRow(new string[] {
                         "rs().field",
-                        "warewolf"});
-#line 309
+                        "2"});
+            table40.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table40.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+#line 453
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table40, "Given ");
-#line 315
+#line 461
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 316
- testRunner.And("search the recordset with type \"Not Regex\" and criteria is \"\\b\\d{1,3}\\.\\d{1,3}\\.\\" +
-                    "d{1,3}\\.\\d{1,3}\\b\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 317
+#line 462
+ testRunner.And("search the recordset with type \">\" and criteria is \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 463
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 318
- testRunner.Then("the find records index multiple result should be 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 319
+#line 464
+ testRunner.Then("the find records index multiple result should be 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 465
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1387,690 +1461,6 @@ this.ScenarioSetup(scenarioInfo);
                         "Require All Matches To Be True"});
             table41.AddRow(new string[] {
                         "In Field(s)",
-                        "[[rs(1).field]] = 999.999.999.999",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table41.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = 999.999.999.999",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table41.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = 999.999.999.999",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table41.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = warewolf",
-                        "1",
-                        "Not Regex",
-                        "\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 320
- testRunner.And("the debug inputs as", ((string)(null)), table41, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table42.AddRow(new string[] {
-                        "[[result]] = 4"});
-#line 326
- testRunner.And("the debug output as", ((string)(null)), table42, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset with Doesn\'t Start With")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetWithDoesnTStartWith()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset with Doesn\'t Start With", ((string[])(null)));
-#line 330
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table43 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table43.AddRow(new string[] {
-                        "rs().field",
-                        "what"});
-            table43.AddRow(new string[] {
-                        "rs().field",
-                        "why"});
-            table43.AddRow(new string[] {
-                        "rs().field",
-                        "yay"});
-#line 331
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table43, "Given ");
-#line 336
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 337
- testRunner.And("search the recordset with type \"Doesn\'t Start With\" and criteria is \"w\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 338
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 339
- testRunner.Then("the find records index multiple result should be 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 340
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table44 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table44.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = what",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table44.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = why",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table44.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = yay",
-                        "1",
-                        "Doesn\'t Start With",
-                        "w",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 341
- testRunner.And("the debug inputs as", ((string)(null)), table44, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table45.AddRow(new string[] {
-                        "[[result]] = 3"});
-#line 346
- testRunner.And("the debug output as", ((string)(null)), table45, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset with Doesn\'t End With")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetWithDoesnTEndWith()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset with Doesn\'t End With", ((string[])(null)));
-#line 350
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table46 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table46.AddRow(new string[] {
-                        "rs().field",
-                        "arev"});
-            table46.AddRow(new string[] {
-                        "rs().field",
-                        "v"});
-            table46.AddRow(new string[] {
-                        "rs().field",
-                        "modev"});
-            table46.AddRow(new string[] {
-                        "rs().field",
-                        "yay"});
-#line 351
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table46, "Given ");
-#line 357
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 358
- testRunner.And("search the recordset with type \"Doesn\'t End With\" and criteria is \"v\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 359
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 360
- testRunner.Then("the find records index multiple result should be 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 361
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table47 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table47.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = arev",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table47.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = v",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table47.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = modev",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table47.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = yay",
-                        "1",
-                        "Doesn\'t End With",
-                        "v",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 362
- testRunner.And("the debug inputs as", ((string)(null)), table47, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table48 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table48.AddRow(new string[] {
-                        "[[result]] = 4"});
-#line 368
- testRunner.And("the debug output as", ((string)(null)), table48, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Equal To")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsEqualTo()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Equal To", ((string[])(null)));
-#line 372
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table49 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table49.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table49.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table49.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table49.AddRow(new string[] {
-                        "rs().field",
-                        "best"});
-            table49.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table49.AddRow(new string[] {
-                        "rs().field",
-                        "user"});
-#line 373
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table49, "Given ");
-#line 381
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 382
- testRunner.And("search the recordset with type \"=\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 383
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 384
- testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 385
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table50 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table50.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table50.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table50.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table50.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table50.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table50.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = user",
-                        "1",
-                        "=",
-                        "Warewolf",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 386
- testRunner.And("the debug inputs as", ((string)(null)), table50, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table51 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table51.AddRow(new string[] {
-                        "[[result]] = 5"});
-#line 394
- testRunner.And("the debug output as", ((string)(null)), table51, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Equal To multiple results")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsEqualToMultipleResults()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Equal To multiple results", ((string[])(null)));
-#line 398
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table52 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table52.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table52.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table52.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table52.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table52.AddRow(new string[] {
-                        "rs().field",
-                        "best"});
-            table52.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table52.AddRow(new string[] {
-                        "rs().field",
-                        "user"});
-#line 399
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table52, "Given ");
-#line 408
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 409
- testRunner.And("search the recordset with type \"=\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 410
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 411
- testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 412
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table53 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table53.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table53.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table53.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table53.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table53.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table53.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table53.AddRow(new string[] {
-                        "",
-                        "[[rs(7).field]] = user",
-                        "1",
-                        "=",
-                        "Warewolf",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 413
- testRunner.And("the debug inputs as", ((string)(null)), table53, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table54 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table54.AddRow(new string[] {
-                        "[[result]] = 1,6"});
-#line 422
- testRunner.And("the debug output as", ((string)(null)), table54, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Equal To result doesnt exist")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsEqualToResultDoesntExist()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Equal To result doesnt exist", ((string[])(null)));
-#line 426
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table55 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table55.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table55.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table55.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table55.AddRow(new string[] {
-                        "rs().field",
-                        "best"});
-            table55.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table55.AddRow(new string[] {
-                        "rs().field",
-                        "user"});
-#line 427
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table55, "Given ");
-#line 435
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 436
- testRunner.And("search the recordset with type \"=\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 437
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 438
- testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 439
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table56 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table56.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table56.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table56.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table56.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table56.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table56.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = user",
-                        "1",
-                        "=",
-                        "Mars",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 440
- testRunner.And("the debug inputs as", ((string)(null)), table56, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table57 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table57.AddRow(new string[] {
-                        "[[result]] = -1"});
-#line 448
- testRunner.And("the debug output as", ((string)(null)), table57, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Greater Than")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsGreaterThan()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Greater Than", ((string[])(null)));
-#line 452
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table58 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table58.AddRow(new string[] {
-                        "rs().field",
-                        "4"});
-            table58.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table58.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table58.AddRow(new string[] {
-                        "rs().field",
-                        "2"});
-            table58.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table58.AddRow(new string[] {
-                        "rs().field",
-                        "user"});
-#line 453
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table58, "Given ");
-#line 461
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 462
- testRunner.And("search the recordset with type \">\" and criteria is \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 463
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 464
- testRunner.Then("the find records index multiple result should be 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 465
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table59 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table59.AddRow(new string[] {
-                        "In Field(s)",
                         "[[rs(1).field]] = 4",
                         "",
                         "",
@@ -2079,7 +1469,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table59.AddRow(new string[] {
+            table41.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -2089,7 +1479,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table59.AddRow(new string[] {
+            table41.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -2099,7 +1489,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table59.AddRow(new string[] {
+            table41.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = 2",
                         "",
@@ -2109,7 +1499,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table59.AddRow(new string[] {
+            table41.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -2119,7 +1509,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table59.AddRow(new string[] {
+            table41.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -2130,14 +1520,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 466
- testRunner.And("the debug inputs as", ((string)(null)), table59, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table41, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table60 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table60.AddRow(new string[] {
+            table42.AddRow(new string[] {
                         "[[result]] = 1"});
 #line 474
- testRunner.And("the debug output as", ((string)(null)), table60, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table42, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2153,32 +1543,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 478
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table61 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table43 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table61.AddRow(new string[] {
+            table43.AddRow(new string[] {
                         "rs().field",
                         "4"});
-            table61.AddRow(new string[] {
+            table43.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table61.AddRow(new string[] {
+            table43.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table61.AddRow(new string[] {
+            table43.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table61.AddRow(new string[] {
+            table43.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table61.AddRow(new string[] {
+            table43.AddRow(new string[] {
                         "rs().field",
                         "8"});
-            table61.AddRow(new string[] {
+            table43.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 479
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table61, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table43, "Given ");
 #line 488
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 489
@@ -2190,7 +1580,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 492
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table62 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table44 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -2200,7 +1590,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table62.AddRow(new string[] {
+            table44.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 4",
                         "",
@@ -2210,7 +1600,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table62.AddRow(new string[] {
+            table44.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = You",
                         "",
@@ -2220,7 +1610,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table62.AddRow(new string[] {
+            table44.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = are",
                         "",
@@ -2230,7 +1620,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table62.AddRow(new string[] {
+            table44.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = the",
                         "",
@@ -2240,7 +1630,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table62.AddRow(new string[] {
+            table44.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = best",
                         "",
@@ -2250,7 +1640,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table62.AddRow(new string[] {
+            table44.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = 8",
                         "",
@@ -2260,7 +1650,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table62.AddRow(new string[] {
+            table44.AddRow(new string[] {
                         "",
                         "[[rs(7).field]] = user",
                         "1",
@@ -2271,14 +1661,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 493
- testRunner.And("the debug inputs as", ((string)(null)), table62, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table44, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table63 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table63.AddRow(new string[] {
+            table45.AddRow(new string[] {
                         "[[result]] = 1,6"});
 #line 502
- testRunner.And("the debug output as", ((string)(null)), table63, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table45, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2294,29 +1684,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 506
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table64 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table46 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table64.AddRow(new string[] {
+            table46.AddRow(new string[] {
                         "rs().field",
                         "4"});
-            table64.AddRow(new string[] {
+            table46.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table64.AddRow(new string[] {
+            table46.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table64.AddRow(new string[] {
+            table46.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table64.AddRow(new string[] {
+            table46.AddRow(new string[] {
                         "rs().field",
                         "8"});
-            table64.AddRow(new string[] {
+            table46.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 507
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table64, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table46, "Given ");
 #line 515
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 516
@@ -2328,7 +1718,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 519
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table65 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table47 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -2338,7 +1728,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table65.AddRow(new string[] {
+            table47.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 4",
                         "",
@@ -2348,7 +1738,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table65.AddRow(new string[] {
+            table47.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -2358,7 +1748,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table65.AddRow(new string[] {
+            table47.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -2368,7 +1758,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table65.AddRow(new string[] {
+            table47.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -2378,7 +1768,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table65.AddRow(new string[] {
+            table47.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = 8",
                         "",
@@ -2388,7 +1778,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table65.AddRow(new string[] {
+            table47.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -2399,14 +1789,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 520
- testRunner.And("the debug inputs as", ((string)(null)), table65, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table47, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table66 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table48 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table66.AddRow(new string[] {
+            table48.AddRow(new string[] {
                         "[[result]] = -1"});
 #line 528
- testRunner.And("the debug output as", ((string)(null)), table66, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table48, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2420,29 +1810,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 532
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table67 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table49 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table67.AddRow(new string[] {
+            table49.AddRow(new string[] {
                         "rs().field",
                         "4"});
-            table67.AddRow(new string[] {
+            table49.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table67.AddRow(new string[] {
+            table49.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table67.AddRow(new string[] {
+            table49.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table67.AddRow(new string[] {
+            table49.AddRow(new string[] {
                         "rs().field",
                         "8"});
-            table67.AddRow(new string[] {
+            table49.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 533
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table67, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table49, "Given ");
 #line 541
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 542
@@ -2454,7 +1844,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 545
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table68 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table50 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -2464,7 +1854,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table68.AddRow(new string[] {
+            table50.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 4",
                         "",
@@ -2474,7 +1864,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table68.AddRow(new string[] {
+            table50.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -2484,7 +1874,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table68.AddRow(new string[] {
+            table50.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -2494,7 +1884,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table68.AddRow(new string[] {
+            table50.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -2504,7 +1894,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table68.AddRow(new string[] {
+            table50.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = 8",
                         "",
@@ -2514,7 +1904,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table68.AddRow(new string[] {
+            table50.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -2525,14 +1915,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 546
- testRunner.And("the debug inputs as", ((string)(null)), table68, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table50, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table69 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table51 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table69.AddRow(new string[] {
+            table51.AddRow(new string[] {
                         "[[result]] = 1"});
 #line 554
- testRunner.And("the debug output as", ((string)(null)), table69, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table51, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2546,32 +1936,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 558
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table70 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table52 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table70.AddRow(new string[] {
+            table52.AddRow(new string[] {
                         "rs().field",
                         "4"});
-            table70.AddRow(new string[] {
+            table52.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table70.AddRow(new string[] {
+            table52.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table70.AddRow(new string[] {
+            table52.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table70.AddRow(new string[] {
+            table52.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table70.AddRow(new string[] {
+            table52.AddRow(new string[] {
                         "rs().field",
                         "2"});
-            table70.AddRow(new string[] {
+            table52.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 559
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table70, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table52, "Given ");
 #line 568
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 569
@@ -2583,7 +1973,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 572
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table71 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table53 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -2593,7 +1983,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table71.AddRow(new string[] {
+            table53.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 4",
                         "",
@@ -2603,7 +1993,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table71.AddRow(new string[] {
+            table53.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = You",
                         "",
@@ -2613,7 +2003,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table71.AddRow(new string[] {
+            table53.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = are",
                         "",
@@ -2623,7 +2013,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table71.AddRow(new string[] {
+            table53.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = the",
                         "",
@@ -2633,7 +2023,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table71.AddRow(new string[] {
+            table53.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = best",
                         "",
@@ -2643,7 +2033,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table71.AddRow(new string[] {
+            table53.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = 2",
                         "",
@@ -2653,7 +2043,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table71.AddRow(new string[] {
+            table53.AddRow(new string[] {
                         "",
                         "[[rs(7).field]] = user",
                         "1",
@@ -2664,14 +2054,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 573
- testRunner.And("the debug inputs as", ((string)(null)), table71, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table53, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table72 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table54 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table72.AddRow(new string[] {
+            table54.AddRow(new string[] {
                         "[[result]] = 1,6"});
 #line 582
- testRunner.And("the debug output as", ((string)(null)), table72, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table54, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2687,29 +2077,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 586
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table73 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table55 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table73.AddRow(new string[] {
+            table55.AddRow(new string[] {
                         "rs().field",
                         "2"});
-            table73.AddRow(new string[] {
+            table55.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table73.AddRow(new string[] {
+            table55.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table73.AddRow(new string[] {
+            table55.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table73.AddRow(new string[] {
+            table55.AddRow(new string[] {
                         "rs().field",
                         "5"});
-            table73.AddRow(new string[] {
+            table55.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 587
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table73, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table55, "Given ");
 #line 595
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 596
@@ -2719,6 +2109,770 @@ this.ScenarioSetup(scenarioInfo);
 #line 598
  testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 599
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table56 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "",
+                        "#",
+                        "",
+                        "",
+                        "",
+                        "And",
+                        "Require All Fields To Match",
+                        "Require All Matches To Be True"});
+            table56.AddRow(new string[] {
+                        "In Field(s)",
+                        "[[rs(1).field]] = 2",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table56.AddRow(new string[] {
+                        "",
+                        "[[rs(2).field]] = are",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table56.AddRow(new string[] {
+                        "",
+                        "[[rs(3).field]] = the",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table56.AddRow(new string[] {
+                        "",
+                        "[[rs(4).field]] = best",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table56.AddRow(new string[] {
+                        "",
+                        "[[rs(5).field]] = 5",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table56.AddRow(new string[] {
+                        "",
+                        "[[rs(6).field]] = user",
+                        "1",
+                        "<",
+                        "1",
+                        "",
+                        "",
+                        "NO",
+                        "NO"});
+#line 600
+ testRunner.And("the debug inputs as", ((string)(null)), table56, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table57 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table57.AddRow(new string[] {
+                        "[[result]] = -1"});
+#line 608
+ testRunner.And("the debug output as", ((string)(null)), table57, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Not Equal To")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsNotEqualTo()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not Equal To", ((string[])(null)));
+#line 612
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table58 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table58.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table58.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table58.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table58.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table58.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table58.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+#line 613
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table58, "Given ");
+#line 621
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 622
+ testRunner.And("search the recordset with type \"<> (Not Equal)\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 623
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 624
+ testRunner.Then("the find records index multiple result should be 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 625
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table59 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "",
+                        "#",
+                        "",
+                        "",
+                        "",
+                        "And",
+                        "Require All Fields To Match",
+                        "Require All Matches To Be True"});
+            table59.AddRow(new string[] {
+                        "In Field(s)",
+                        "[[rs(1).field]] = You",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table59.AddRow(new string[] {
+                        "",
+                        "[[rs(2).field]] = Warewolf",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table59.AddRow(new string[] {
+                        "",
+                        "[[rs(3).field]] = Warewolf",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table59.AddRow(new string[] {
+                        "",
+                        "[[rs(4).field]] = Warewolf",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table59.AddRow(new string[] {
+                        "",
+                        "[[rs(5).field]] = Warewolf",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table59.AddRow(new string[] {
+                        "",
+                        "[[rs(6).field]] = Warewolf",
+                        "1",
+                        "<> (Not Equal)",
+                        "Warewolf",
+                        "",
+                        "",
+                        "NO",
+                        "NO"});
+#line 626
+ testRunner.And("the debug inputs as", ((string)(null)), table59, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table60 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table60.AddRow(new string[] {
+                        "[[result]] =  1"});
+#line 634
+ testRunner.And("the debug output as", ((string)(null)), table60, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Not Equal To multiple results" +
+            "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsNotEqualToMultipleResults()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not Equal To multiple results" +
+                    "", ((string[])(null)));
+#line 638
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table61 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table61.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table61.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table61.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table61.AddRow(new string[] {
+                        "rs().field",
+                        "best"});
+            table61.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table61.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+#line 639
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table61, "Given ");
+#line 647
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 648
+ testRunner.And("search the recordset with type \"<> (Not Equal)\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 649
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 650
+ testRunner.Then("the find records index multiple result should be 1,2,3,4,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 651
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table62 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "",
+                        "#",
+                        "",
+                        "",
+                        "",
+                        "And",
+                        "Require All Fields To Match",
+                        "Require All Matches To Be True"});
+            table62.AddRow(new string[] {
+                        "In Field(s)",
+                        "[[rs(1).field]] = You",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table62.AddRow(new string[] {
+                        "",
+                        "[[rs(2).field]] = are",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table62.AddRow(new string[] {
+                        "",
+                        "[[rs(3).field]] = the",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table62.AddRow(new string[] {
+                        "",
+                        "[[rs(4).field]] = best",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table62.AddRow(new string[] {
+                        "",
+                        "[[rs(5).field]] = Warewolf",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table62.AddRow(new string[] {
+                        "",
+                        "[[rs(6).field]] = user",
+                        "1",
+                        "<> (Not Equal)",
+                        "Warewolf",
+                        "",
+                        "",
+                        "NO",
+                        "NO"});
+#line 652
+ testRunner.And("the debug inputs as", ((string)(null)), table62, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table63 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table63.AddRow(new string[] {
+                        "[[result]] = 1,2,3,4,6"});
+#line 660
+ testRunner.And("the debug output as", ((string)(null)), table63, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Not Equal To result doesnt ex" +
+            "ist")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsNotEqualToResultDoesntExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not Equal To result doesnt ex" +
+                    "ist", ((string[])(null)));
+#line 664
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table64 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table64.AddRow(new string[] {
+                        "rs().field",
+                        "Mars"});
+            table64.AddRow(new string[] {
+                        "rs().field",
+                        "Mars"});
+            table64.AddRow(new string[] {
+                        "rs().field",
+                        "Mars"});
+            table64.AddRow(new string[] {
+                        "rs().field",
+                        "Mars"});
+            table64.AddRow(new string[] {
+                        "rs().field",
+                        "Mars"});
+            table64.AddRow(new string[] {
+                        "rs().field",
+                        "Mars"});
+#line 665
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table64, "Given ");
+#line 673
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 674
+ testRunner.And("search the recordset with type \"<> (Not Equal)\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 675
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 676
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 677
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table65 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "",
+                        "#",
+                        "",
+                        "",
+                        "",
+                        "And",
+                        "Require All Fields To Match",
+                        "Require All Matches To Be True"});
+            table65.AddRow(new string[] {
+                        "In Field(s)",
+                        "[[rs(1).field]] = Mars",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table65.AddRow(new string[] {
+                        "",
+                        "[[rs(2).field]] = Mars",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table65.AddRow(new string[] {
+                        "",
+                        "[[rs(3).field]] = Mars",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table65.AddRow(new string[] {
+                        "",
+                        "[[rs(4).field]] = Mars",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table65.AddRow(new string[] {
+                        "",
+                        "[[rs(5).field]] = Mars",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table65.AddRow(new string[] {
+                        "",
+                        "[[rs(6).field]] = Mars",
+                        "1",
+                        "<> (Not Equal)",
+                        "Mars",
+                        "",
+                        "",
+                        "NO",
+                        "NO"});
+#line 678
+ testRunner.And("the debug inputs as", ((string)(null)), table65, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table66 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table66.AddRow(new string[] {
+                        "[[result]] = -1"});
+#line 686
+ testRunner.And("the debug output as", ((string)(null)), table66, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Greater Or Equal To")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsGreaterOrEqualTo()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Greater Or Equal To", ((string[])(null)));
+#line 690
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table67 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table67.AddRow(new string[] {
+                        "rs().field",
+                        "2"});
+            table67.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table67.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table67.AddRow(new string[] {
+                        "rs().field",
+                        "best"});
+            table67.AddRow(new string[] {
+                        "rs().field",
+                        "4"});
+            table67.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+#line 691
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table67, "Given ");
+#line 699
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 700
+ testRunner.And("search the recordset with type \">=\" and criteria is \"4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 701
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 702
+ testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 703
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table68 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "",
+                        "#",
+                        "",
+                        "",
+                        "",
+                        "And",
+                        "Require All Fields To Match",
+                        "Require All Matches To Be True"});
+            table68.AddRow(new string[] {
+                        "In Field(s)",
+                        "[[rs(1).field]] = 2",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table68.AddRow(new string[] {
+                        "",
+                        "[[rs(2).field]] = are",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table68.AddRow(new string[] {
+                        "",
+                        "[[rs(3).field]] = the",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table68.AddRow(new string[] {
+                        "",
+                        "[[rs(4).field]] = best",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table68.AddRow(new string[] {
+                        "",
+                        "[[rs(5).field]] = 4",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table68.AddRow(new string[] {
+                        "",
+                        "[[rs(6).field]] = user",
+                        "1",
+                        ">=",
+                        "4",
+                        "",
+                        "",
+                        "NO",
+                        "NO"});
+#line 704
+ testRunner.And("the debug inputs as", ((string)(null)), table68, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table69 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table69.AddRow(new string[] {
+                        "[[result]] = 5"});
+#line 712
+ testRunner.And("the debug output as", ((string)(null)), table69, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Greater Or Equal To multiple " +
+            "results")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsGreaterOrEqualToMultipleResults()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Greater Or Equal To multiple " +
+                    "results", ((string[])(null)));
+#line 716
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table70 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table70.AddRow(new string[] {
+                        "rs().field",
+                        "50"});
+            table70.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table70.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table70.AddRow(new string[] {
+                        "rs().field",
+                        "best"});
+            table70.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table70.AddRow(new string[] {
+                        "rs().field",
+                        "4"});
+#line 717
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table70, "Given ");
+#line 725
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 726
+ testRunner.And("search the recordset with type \">=\" and criteria is \"4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 727
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 728
+ testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 729
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table71 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "",
+                        "#",
+                        "",
+                        "",
+                        "",
+                        "And",
+                        "Require All Fields To Match",
+                        "Require All Matches To Be True"});
+            table71.AddRow(new string[] {
+                        "In Field(s)",
+                        "[[rs(1).field]] = 50",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table71.AddRow(new string[] {
+                        "",
+                        "[[rs(2).field]] = are",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table71.AddRow(new string[] {
+                        "",
+                        "[[rs(3).field]] = the",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table71.AddRow(new string[] {
+                        "",
+                        "[[rs(4).field]] = best",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table71.AddRow(new string[] {
+                        "",
+                        "[[rs(5).field]] = Warewolf",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table71.AddRow(new string[] {
+                        "",
+                        "[[rs(6).field]] = 4",
+                        "1",
+                        ">=",
+                        "4",
+                        "",
+                        "",
+                        "NO",
+                        "NO"});
+#line 730
+ testRunner.And("the debug inputs as", ((string)(null)), table71, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table72 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table72.AddRow(new string[] {
+                        "[[result]] = 1,6"});
+#line 738
+ testRunner.And("the debug output as", ((string)(null)), table72, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Greater Or Equal To result do" +
+            "esnt exist")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsGreaterOrEqualToResultDoesntExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Greater Or Equal To result do" +
+                    "esnt exist", ((string[])(null)));
+#line 742
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table73 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table73.AddRow(new string[] {
+                        "rs().field",
+                        "1"});
+            table73.AddRow(new string[] {
+                        "rs().field",
+                        "2"});
+            table73.AddRow(new string[] {
+                        "rs().field",
+                        "3"});
+            table73.AddRow(new string[] {
+                        "rs().field",
+                        "1"});
+            table73.AddRow(new string[] {
+                        "rs().field",
+                        "2"});
+            table73.AddRow(new string[] {
+                        "rs().field",
+                        "3"});
+#line 743
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table73, "Given ");
+#line 751
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 752
+ testRunner.And("search the recordset with type \">=\" and criteria is \"4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 753
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 754
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 755
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table74 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2733,7 +2887,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Require All Matches To Be True"});
             table74.AddRow(new string[] {
                         "In Field(s)",
-                        "[[rs(1).field]] = 2",
+                        "[[rs(1).field]] = 1",
                         "",
                         "",
                         "",
@@ -2743,7 +2897,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table74.AddRow(new string[] {
                         "",
-                        "[[rs(2).field]] = are",
+                        "[[rs(2).field]] = 2",
                         "",
                         "",
                         "",
@@ -2753,7 +2907,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table74.AddRow(new string[] {
                         "",
-                        "[[rs(3).field]] = the",
+                        "[[rs(3).field]] = 3",
                         "",
                         "",
                         "",
@@ -2763,7 +2917,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table74.AddRow(new string[] {
                         "",
-                        "[[rs(4).field]] = best",
+                        "[[rs(4).field]] = 1",
                         "",
                         "",
                         "",
@@ -2773,7 +2927,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table74.AddRow(new string[] {
                         "",
-                        "[[rs(5).field]] = 5",
+                        "[[rs(5).field]] = 2",
                         "",
                         "",
                         "",
@@ -2783,34 +2937,34 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table74.AddRow(new string[] {
                         "",
-                        "[[rs(6).field]] = user",
+                        "[[rs(6).field]] = 3",
                         "1",
-                        "<",
-                        "1",
+                        ">=",
+                        "4",
                         "",
                         "",
                         "NO",
                         "NO"});
-#line 600
+#line 756
  testRunner.And("the debug inputs as", ((string)(null)), table74, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table75 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table75.AddRow(new string[] {
                         "[[result]] = -1"});
-#line 608
+#line 764
  testRunner.And("the debug output as", ((string)(null)), table75, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Not Equal To")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Less Or Equal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsNotEqualTo()
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsLessOrEqual()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not Equal To", ((string[])(null)));
-#line 612
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Less Or Equal", ((string[])(null)));
+#line 768
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table76 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2821,30 +2975,30 @@ this.ScenarioSetup(scenarioInfo);
                         "You"});
             table76.AddRow(new string[] {
                         "rs().field",
-                        "Warewolf"});
+                        "are"});
             table76.AddRow(new string[] {
                         "rs().field",
-                        "Warewolf"});
+                        "the"});
             table76.AddRow(new string[] {
                         "rs().field",
-                        "Warewolf"});
+                        "best"});
             table76.AddRow(new string[] {
                         "rs().field",
-                        "Warewolf"});
+                        "5"});
             table76.AddRow(new string[] {
                         "rs().field",
-                        "Warewolf"});
-#line 613
+                        "user"});
+#line 769
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table76, "Given ");
-#line 621
+#line 777
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 622
- testRunner.And("search the recordset with type \"<> (Not Equal)\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 623
+#line 778
+ testRunner.And("search the recordset with type \"<=\" and criteria is \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 779
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 624
- testRunner.Then("the find records index multiple result should be 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 625
+#line 780
+ testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 781
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table77 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2869,7 +3023,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table77.AddRow(new string[] {
                         "",
-                        "[[rs(2).field]] = Warewolf",
+                        "[[rs(2).field]] = are",
                         "",
                         "",
                         "",
@@ -2879,7 +3033,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table77.AddRow(new string[] {
                         "",
-                        "[[rs(3).field]] = Warewolf",
+                        "[[rs(3).field]] = the",
                         "",
                         "",
                         "",
@@ -2889,7 +3043,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table77.AddRow(new string[] {
                         "",
-                        "[[rs(4).field]] = Warewolf",
+                        "[[rs(4).field]] = best",
                         "",
                         "",
                         "",
@@ -2898,770 +3052,6 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         ""});
             table77.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table77.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = Warewolf",
-                        "1",
-                        "<> (Not Equal)",
-                        "Warewolf",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 626
- testRunner.And("the debug inputs as", ((string)(null)), table77, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table78 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table78.AddRow(new string[] {
-                        "[[result]] =  1"});
-#line 634
- testRunner.And("the debug output as", ((string)(null)), table78, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Not Equal To multiple results" +
-            "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsNotEqualToMultipleResults()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not Equal To multiple results" +
-                    "", ((string[])(null)));
-#line 638
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table79 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table79.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table79.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table79.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table79.AddRow(new string[] {
-                        "rs().field",
-                        "best"});
-            table79.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table79.AddRow(new string[] {
-                        "rs().field",
-                        "user"});
-#line 639
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table79, "Given ");
-#line 647
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 648
- testRunner.And("search the recordset with type \"<> (Not Equal)\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 649
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 650
- testRunner.Then("the find records index multiple result should be 1,2,3,4,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 651
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table80 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table80.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table80.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table80.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table80.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table80.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table80.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = user",
-                        "1",
-                        "<> (Not Equal)",
-                        "Warewolf",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 652
- testRunner.And("the debug inputs as", ((string)(null)), table80, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table81 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table81.AddRow(new string[] {
-                        "[[result]] = 1,2,3,4,6"});
-#line 660
- testRunner.And("the debug output as", ((string)(null)), table81, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Not Equal To result doesnt ex" +
-            "ist")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsNotEqualToResultDoesntExist()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not Equal To result doesnt ex" +
-                    "ist", ((string[])(null)));
-#line 664
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table82 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table82.AddRow(new string[] {
-                        "rs().field",
-                        "Mars"});
-            table82.AddRow(new string[] {
-                        "rs().field",
-                        "Mars"});
-            table82.AddRow(new string[] {
-                        "rs().field",
-                        "Mars"});
-            table82.AddRow(new string[] {
-                        "rs().field",
-                        "Mars"});
-            table82.AddRow(new string[] {
-                        "rs().field",
-                        "Mars"});
-            table82.AddRow(new string[] {
-                        "rs().field",
-                        "Mars"});
-#line 665
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table82, "Given ");
-#line 673
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 674
- testRunner.And("search the recordset with type \"<> (Not Equal)\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 675
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 676
- testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 677
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table83 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table83.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = Mars",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table83.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = Mars",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table83.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = Mars",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table83.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = Mars",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table83.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = Mars",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table83.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = Mars",
-                        "1",
-                        "<> (Not Equal)",
-                        "Mars",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 678
- testRunner.And("the debug inputs as", ((string)(null)), table83, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table84 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table84.AddRow(new string[] {
-                        "[[result]] = -1"});
-#line 686
- testRunner.And("the debug output as", ((string)(null)), table84, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Greater Or Equal To")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsGreaterOrEqualTo()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Greater Or Equal To", ((string[])(null)));
-#line 690
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table85 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table85.AddRow(new string[] {
-                        "rs().field",
-                        "2"});
-            table85.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table85.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table85.AddRow(new string[] {
-                        "rs().field",
-                        "best"});
-            table85.AddRow(new string[] {
-                        "rs().field",
-                        "4"});
-            table85.AddRow(new string[] {
-                        "rs().field",
-                        "user"});
-#line 691
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table85, "Given ");
-#line 699
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 700
- testRunner.And("search the recordset with type \">=\" and criteria is \"4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 701
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 702
- testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 703
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table86 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table86.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = 2",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table86.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table86.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table86.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table86.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = 4",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table86.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = user",
-                        "1",
-                        ">=",
-                        "4",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 704
- testRunner.And("the debug inputs as", ((string)(null)), table86, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table87 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table87.AddRow(new string[] {
-                        "[[result]] = 5"});
-#line 712
- testRunner.And("the debug output as", ((string)(null)), table87, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Greater Or Equal To multiple " +
-            "results")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsGreaterOrEqualToMultipleResults()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Greater Or Equal To multiple " +
-                    "results", ((string[])(null)));
-#line 716
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table88 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table88.AddRow(new string[] {
-                        "rs().field",
-                        "50"});
-            table88.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table88.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table88.AddRow(new string[] {
-                        "rs().field",
-                        "best"});
-            table88.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table88.AddRow(new string[] {
-                        "rs().field",
-                        "4"});
-#line 717
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table88, "Given ");
-#line 725
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 726
- testRunner.And("search the recordset with type \">=\" and criteria is \"4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 727
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 728
- testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 729
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table89 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table89.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = 50",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table89.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table89.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table89.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table89.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table89.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = 4",
-                        "1",
-                        ">=",
-                        "4",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 730
- testRunner.And("the debug inputs as", ((string)(null)), table89, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table90 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table90.AddRow(new string[] {
-                        "[[result]] = 1,6"});
-#line 738
- testRunner.And("the debug output as", ((string)(null)), table90, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Greater Or Equal To result do" +
-            "esnt exist")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsGreaterOrEqualToResultDoesntExist()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Greater Or Equal To result do" +
-                    "esnt exist", ((string[])(null)));
-#line 742
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table91 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table91.AddRow(new string[] {
-                        "rs().field",
-                        "1"});
-            table91.AddRow(new string[] {
-                        "rs().field",
-                        "2"});
-            table91.AddRow(new string[] {
-                        "rs().field",
-                        "3"});
-            table91.AddRow(new string[] {
-                        "rs().field",
-                        "1"});
-            table91.AddRow(new string[] {
-                        "rs().field",
-                        "2"});
-            table91.AddRow(new string[] {
-                        "rs().field",
-                        "3"});
-#line 743
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table91, "Given ");
-#line 751
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 752
- testRunner.And("search the recordset with type \">=\" and criteria is \"4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 753
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 754
- testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 755
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table92 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table92.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = 1",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table92.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = 2",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table92.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = 3",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table92.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = 1",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table92.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = 2",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table92.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = 3",
-                        "1",
-                        ">=",
-                        "4",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 756
- testRunner.And("the debug inputs as", ((string)(null)), table92, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table93 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table93.AddRow(new string[] {
-                        "[[result]] = -1"});
-#line 764
- testRunner.And("the debug output as", ((string)(null)), table93, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Less Or Equal")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsLessOrEqual()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Less Or Equal", ((string[])(null)));
-#line 768
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table94 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table94.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table94.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table94.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table94.AddRow(new string[] {
-                        "rs().field",
-                        "best"});
-            table94.AddRow(new string[] {
-                        "rs().field",
-                        "5"});
-            table94.AddRow(new string[] {
-                        "rs().field",
-                        "user"});
-#line 769
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table94, "Given ");
-#line 777
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 778
- testRunner.And("search the recordset with type \"<=\" and criteria is \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 779
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 780
- testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 781
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table95 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table95.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table95.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table95.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table95.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table95.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = 5",
                         "",
@@ -3671,7 +3061,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table95.AddRow(new string[] {
+            table77.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -3682,14 +3072,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 782
- testRunner.And("the debug inputs as", ((string)(null)), table95, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table77, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table96 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table78 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table96.AddRow(new string[] {
+            table78.AddRow(new string[] {
                         "[[result]] = 5"});
 #line 790
- testRunner.And("the debug output as", ((string)(null)), table96, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table78, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3705,29 +3095,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 794
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table97 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table79 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table97.AddRow(new string[] {
+            table79.AddRow(new string[] {
                         "rs().field",
                         "1"});
-            table97.AddRow(new string[] {
+            table79.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table97.AddRow(new string[] {
+            table79.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table97.AddRow(new string[] {
+            table79.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table97.AddRow(new string[] {
+            table79.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table97.AddRow(new string[] {
+            table79.AddRow(new string[] {
                         "rs().field",
                         "5"});
 #line 795
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table97, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table79, "Given ");
 #line 803
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 804
@@ -3739,7 +3129,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 807
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table98 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table80 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -3749,7 +3139,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table98.AddRow(new string[] {
+            table80.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 1",
                         "",
@@ -3759,7 +3149,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table98.AddRow(new string[] {
+            table80.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -3769,7 +3159,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table98.AddRow(new string[] {
+            table80.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -3779,7 +3169,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table98.AddRow(new string[] {
+            table80.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -3789,7 +3179,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table98.AddRow(new string[] {
+            table80.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -3799,7 +3189,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table98.AddRow(new string[] {
+            table80.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = 5",
                         "1",
@@ -3810,14 +3200,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 808
- testRunner.And("the debug inputs as", ((string)(null)), table98, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table80, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table99 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table81 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table99.AddRow(new string[] {
+            table81.AddRow(new string[] {
                         "[[result]] = 1,6"});
 #line 816
- testRunner.And("the debug output as", ((string)(null)), table99, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table81, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3833,29 +3223,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 820
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table100 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table82 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table100.AddRow(new string[] {
+            table82.AddRow(new string[] {
                         "rs().field",
                         "2"});
-            table100.AddRow(new string[] {
+            table82.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table100.AddRow(new string[] {
+            table82.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table100.AddRow(new string[] {
+            table82.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table100.AddRow(new string[] {
+            table82.AddRow(new string[] {
                         "rs().field",
                         "5"});
-            table100.AddRow(new string[] {
+            table82.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 821
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table100, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table82, "Given ");
 #line 829
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 830
@@ -3867,7 +3257,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 833
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table101 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table83 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -3877,7 +3267,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table101.AddRow(new string[] {
+            table83.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 2",
                         "",
@@ -3887,7 +3277,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table101.AddRow(new string[] {
+            table83.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -3897,7 +3287,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table101.AddRow(new string[] {
+            table83.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -3907,7 +3297,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table101.AddRow(new string[] {
+            table83.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -3917,7 +3307,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table101.AddRow(new string[] {
+            table83.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = 5",
                         "",
@@ -3927,7 +3317,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table101.AddRow(new string[] {
+            table83.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -3938,14 +3328,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 834
- testRunner.And("the debug inputs as", ((string)(null)), table101, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table83, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table102 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table84 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table102.AddRow(new string[] {
+            table84.AddRow(new string[] {
                         "[[result]] = -1"});
 #line 842
- testRunner.And("the debug output as", ((string)(null)), table102, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table84, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3958,6 +3348,863 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Starts With", ((string[])(null)));
 #line 846
 this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table85 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table85.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table85.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table85.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table85.AddRow(new string[] {
+                        "rs().field",
+                        "best"});
+            table85.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table85.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+#line 847
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table85, "Given ");
+#line 855
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 856
+ testRunner.And("search the recordset with type \"Starts With\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 857
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 858
+ testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 859
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Starts With multiple results")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsStartsWithMultipleResults()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Starts With multiple results", ((string[])(null)));
+#line 872
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table86 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table86.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table86.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table86.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table86.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table86.AddRow(new string[] {
+                        "rs().field",
+                        "best"});
+            table86.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table86.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+#line 873
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table86, "Given ");
+#line 882
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 883
+ testRunner.And("search the recordset with type \"Starts With\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 884
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 885
+ testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 886
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Starts With result doesnt exi" +
+            "st")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsStartsWithResultDoesntExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Starts With result doesnt exi" +
+                    "st", ((string[])(null)));
+#line 900
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table87 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table87.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table87.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table87.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table87.AddRow(new string[] {
+                        "rs().field",
+                        "best"});
+            table87.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table87.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+#line 901
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table87, "Given ");
+#line 909
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 910
+ testRunner.And("search the recordset with type \"Starts With\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 911
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 912
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 913
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Ends With")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsEndsWith()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Ends With", ((string[])(null)));
+#line 926
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table88 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table88.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table88.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table88.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table88.AddRow(new string[] {
+                        "rs().field",
+                        "best"});
+            table88.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table88.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+#line 927
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table88, "Given ");
+#line 935
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 936
+ testRunner.And("search the recordset with type \"Ends With\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 937
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 938
+ testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 939
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Ends With multiple results")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsEndsWithMultipleResults()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Ends With multiple results", ((string[])(null)));
+#line 952
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table89 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table89.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table89.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table89.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table89.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table89.AddRow(new string[] {
+                        "rs().field",
+                        "best"});
+            table89.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table89.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+#line 953
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table89, "Given ");
+#line 962
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 963
+ testRunner.And("search the recordset with type \"Ends With\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 964
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 965
+ testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 966
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Ends With result doesnt exist" +
+            "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsEndsWithResultDoesntExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Ends With result doesnt exist" +
+                    "", ((string[])(null)));
+#line 980
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table90 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table90.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table90.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table90.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table90.AddRow(new string[] {
+                        "rs().field",
+                        "best"});
+            table90.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table90.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+#line 981
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table90, "Given ");
+#line 989
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 990
+ testRunner.And("search the recordset with type \"Ends With\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 991
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 992
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 993
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Contains")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsContains()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Contains", ((string[])(null)));
+#line 1006
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table91 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table91.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table91.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table91.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table91.AddRow(new string[] {
+                        "rs().field",
+                        "best"});
+            table91.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table91.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+#line 1007
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table91, "Given ");
+#line 1015
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1016
+ testRunner.And("search the recordset with type \"Contains\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1017
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1018
+ testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1019
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Contains multiple results")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsContainsMultipleResults()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Contains multiple results", ((string[])(null)));
+#line 1032
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table92 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table92.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table92.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table92.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table92.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table92.AddRow(new string[] {
+                        "rs().field",
+                        "best"});
+            table92.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table92.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+#line 1033
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table92, "Given ");
+#line 1042
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1043
+ testRunner.And("search the recordset with type \"Contains\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1044
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1045
+ testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1046
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Contains result doesnt exist")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsContainsResultDoesntExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Contains result doesnt exist", ((string[])(null)));
+#line 1060
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table93 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table93.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table93.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table93.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table93.AddRow(new string[] {
+                        "rs().field",
+                        "best"});
+            table93.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table93.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+#line 1061
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table93, "Given ");
+#line 1069
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1070
+ testRunner.And("search the recordset with type \"Contains\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1071
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1072
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1073
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Doesn\'t Contain")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsDoesnTContain()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Doesn\'t Contain", ((string[])(null)));
+#line 1087
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table94 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table94.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table94.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table94.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table94.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table94.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+            table94.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+#line 1088
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table94, "Given ");
+#line 1096
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1097
+ testRunner.And("search the recordset with type \"Doesn\'t Contain\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1098
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1099
+ testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1100
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Doesn\'t Contain multiple resu" +
+            "lts")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsDoesnTContainMultipleResults()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Doesn\'t Contain multiple resu" +
+                    "lts", ((string[])(null)));
+#line 1113
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table95 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table95.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table95.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table95.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table95.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table95.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+            table95.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+#line 1114
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table95, "Given ");
+#line 1122
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1123
+ testRunner.And("search the recordset with type \"Doesn\'t Contain\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1124
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1125
+ testRunner.Then("the find records index multiple result should be 1,5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1126
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Doesn\'t Contain result doesnt" +
+            " exist")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsDoesnTContainResultDoesntExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Doesn\'t Contain result doesnt" +
+                    " exist", ((string[])(null)));
+#line 1140
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table96 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table96.AddRow(new string[] {
+                        "rs().field",
+                        "Mars"});
+            table96.AddRow(new string[] {
+                        "rs().field",
+                        "Mars"});
+            table96.AddRow(new string[] {
+                        "rs().field",
+                        "Mars"});
+            table96.AddRow(new string[] {
+                        "rs().field",
+                        "Mars"});
+            table96.AddRow(new string[] {
+                        "rs().field",
+                        "Mars"});
+            table96.AddRow(new string[] {
+                        "rs().field",
+                        "Mars"});
+#line 1141
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table96, "Given ");
+#line 1149
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1150
+ testRunner.And("search the recordset with type \"Doesn\'t Contain\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1151
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1152
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1153
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Alphanumeric")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsAlphanumeric()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Alphanumeric", ((string[])(null)));
+#line 1166
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table97 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table97.AddRow(new string[] {
+                        "rs().field",
+                        "$$"});
+            table97.AddRow(new string[] {
+                        "rs().field",
+                        "$$"});
+            table97.AddRow(new string[] {
+                        "rs().field",
+                        "$$"});
+            table97.AddRow(new string[] {
+                        "rs().field",
+                        "$$"});
+            table97.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table97.AddRow(new string[] {
+                        "rs().field",
+                        "$$"});
+#line 1167
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table97, "Given ");
+#line 1175
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1176
+ testRunner.And("search the recordset with type \"Is Alphanumeric\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1177
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1178
+ testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1179
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Alphanumeric multiple resu" +
+            "lts")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsAlphanumericMultipleResults()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Alphanumeric multiple resu" +
+                    "lts", ((string[])(null)));
+#line 1192
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table98 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table98.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table98.AddRow(new string[] {
+                        "rs().field",
+                        "$$"});
+            table98.AddRow(new string[] {
+                        "rs().field",
+                        "$$"});
+            table98.AddRow(new string[] {
+                        "rs().field",
+                        "$$"});
+            table98.AddRow(new string[] {
+                        "rs().field",
+                        "$$"});
+            table98.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table98.AddRow(new string[] {
+                        "rs().field",
+                        "$$"});
+#line 1193
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table98, "Given ");
+#line 1202
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1203
+ testRunner.And("search the recordset with type \"Is Alphanumeric\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1204
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1205
+ testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1206
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Alphanumeric result doesnt" +
+            " exist")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsAlphanumericResultDoesntExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Alphanumeric result doesnt" +
+                    " exist", ((string[])(null)));
+#line 1220
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table99 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table99.AddRow(new string[] {
+                        "rs().field",
+                        "$$"});
+            table99.AddRow(new string[] {
+                        "rs().field",
+                        "$$"});
+            table99.AddRow(new string[] {
+                        "rs().field",
+                        "$$"});
+            table99.AddRow(new string[] {
+                        "rs().field",
+                        "$$"});
+            table99.AddRow(new string[] {
+                        "rs().field",
+                        "$$"});
+            table99.AddRow(new string[] {
+                        "rs().field",
+                        "$$"});
+#line 1221
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table99, "Given ");
+#line 1229
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1230
+ testRunner.And("search the recordset with type \"Is Alphanumeric\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1231
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1232
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1233
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Base64")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsBase64()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Base64", ((string[])(null)));
+#line 1246
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table100 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table100.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table100.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table100.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table100.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table100.AddRow(new string[] {
+                        "rs().field",
+                        "d2FyZXdvbGY="});
+            table100.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+#line 1247
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table100, "Given ");
+#line 1255
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1256
+ testRunner.And("search the recordset with type \"Is Base64\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1257
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1258
+ testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1259
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Base64 multiple results")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsBase64MultipleResults()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Base64 multiple results", ((string[])(null)));
+#line 1272
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table101 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table101.AddRow(new string[] {
+                        "rs().field",
+                        "d2FyZXdvbGY="});
+            table101.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table101.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table101.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table101.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table101.AddRow(new string[] {
+                        "rs().field",
+                        "d2FyZXdvbGY="});
+            table101.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+#line 1273
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table101, "Given ");
+#line 1282
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1283
+ testRunner.And("search the recordset with type \"Is Base64\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1284
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1285
+ testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1286
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Base64 result doesnt exist" +
+            "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsBase64ResultDoesntExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Base64 result doesnt exist" +
+                    "", ((string[])(null)));
+#line 1300
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table102 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table102.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table102.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table102.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table102.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table102.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table102.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+#line 1301
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table102, "Given ");
+#line 1309
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1310
+ testRunner.And("search the recordset with type \"Is Base64\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1311
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1312
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1313
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Date")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsDate()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Date", ((string[])(null)));
+#line 1326
+ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table103 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
@@ -3976,121 +4223,133 @@ this.ScenarioSetup(scenarioInfo);
                         "best"});
             table103.AddRow(new string[] {
                         "rs().field",
-                        "Warewolf"});
+                        "12/10/2013"});
             table103.AddRow(new string[] {
                         "rs().field",
                         "user"});
-#line 847
+#line 1327
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table103, "Given ");
-#line 855
+#line 1335
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 856
- testRunner.And("search the recordset with type \"Starts With\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 857
+#line 1336
+ testRunner.And("search the recordset with type \"Is Date\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1337
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 858
+#line 1338
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 859
+#line 1339
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table104 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table104.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table104.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table104.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table104.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table104.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table104.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = user",
-                        "1",
-                        "Starts With",
-                        "Warewolf",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 860
- testRunner.And("the debug inputs as", ((string)(null)), table104, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table105 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table105.AddRow(new string[] {
-                        "[[result]] = 5"});
-#line 868
- testRunner.And("the debug output as", ((string)(null)), table105, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Starts With multiple results")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Date multiple results")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsStartsWithMultipleResults()
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsDateMultipleResults()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Starts With multiple results", ((string[])(null)));
-#line 872
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Date multiple results", ((string[])(null)));
+#line 1352
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table104 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table104.AddRow(new string[] {
+                        "rs().field",
+                        "12/10/2013"});
+            table104.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table104.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table104.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table104.AddRow(new string[] {
+                        "rs().field",
+                        "best"});
+            table104.AddRow(new string[] {
+                        "rs().field",
+                        "12/10/2013"});
+            table104.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+#line 1353
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table104, "Given ");
+#line 1362
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1363
+ testRunner.And("search the recordset with type \"Is Date\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1364
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1365
+ testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1366
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Date result doesnt exist")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsDateResultDoesntExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Date result doesnt exist", ((string[])(null)));
+#line 1380
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table105 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table105.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table105.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table105.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table105.AddRow(new string[] {
+                        "rs().field",
+                        "best"});
+            table105.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table105.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+#line 1381
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table105, "Given ");
+#line 1389
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1390
+ testRunner.And("search the recordset with type \"Is Date\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1391
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1392
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1393
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsEmail()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Email", ((string[])(null)));
+#line 1406
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table106 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table106.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
             table106.AddRow(new string[] {
                         "rs().field",
                         "You"});
@@ -4105,125 +4364,128 @@ this.ScenarioSetup(scenarioInfo);
                         "best"});
             table106.AddRow(new string[] {
                         "rs().field",
-                        "Warewolf"});
+                        "test@testEmail.co.za"});
             table106.AddRow(new string[] {
                         "rs().field",
                         "user"});
-#line 873
+#line 1407
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table106, "Given ");
-#line 882
+#line 1415
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 883
- testRunner.And("search the recordset with type \"Starts With\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 884
+#line 1416
+ testRunner.And("search the recordset with type \"Is Email\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1417
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 885
- testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 886
+#line 1418
+ testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1419
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table107 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table107.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table107.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table107.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table107.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table107.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table107.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table107.AddRow(new string[] {
-                        "",
-                        "[[rs(7).field]] = user",
-                        "1",
-                        "Starts With",
-                        "Warewolf",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 887
- testRunner.And("the debug inputs as", ((string)(null)), table107, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table108 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table108.AddRow(new string[] {
-                        "[[result]] = 1,6"});
-#line 896
- testRunner.And("the debug output as", ((string)(null)), table108, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Starts With result doesnt exi" +
-            "st")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Email multiple results")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsStartsWithResultDoesntExist()
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsEmailMultipleResults()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Starts With result doesnt exi" +
-                    "st", ((string[])(null)));
-#line 900
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Email multiple results", ((string[])(null)));
+#line 1432
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table107 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table107.AddRow(new string[] {
+                        "rs().field",
+                        "test@testEmail.co.za"});
+            table107.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table107.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table107.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table107.AddRow(new string[] {
+                        "rs().field",
+                        "best"});
+            table107.AddRow(new string[] {
+                        "rs().field",
+                        "test@testEmail.co.za"});
+            table107.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+#line 1433
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table107, "Given ");
+#line 1442
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1443
+ testRunner.And("search the recordset with type \"Is Email\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1444
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1445
+ testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1446
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Email result doesnt exist")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsEmailResultDoesntExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Email result doesnt exist", ((string[])(null)));
+#line 1460
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table108 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table108.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table108.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table108.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table108.AddRow(new string[] {
+                        "rs().field",
+                        "best"});
+            table108.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table108.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+#line 1461
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table108, "Given ");
+#line 1469
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1470
+ testRunner.And("search the recordset with type \"Is Email\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1471
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1472
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1473
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Numeric")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsNumeric()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Numeric", ((string[])(null)));
+#line 1486
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table109 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4243,113 +4505,130 @@ this.ScenarioSetup(scenarioInfo);
                         "best"});
             table109.AddRow(new string[] {
                         "rs().field",
-                        "Warewolf"});
+                        "45"});
             table109.AddRow(new string[] {
                         "rs().field",
                         "user"});
-#line 901
+#line 1487
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table109, "Given ");
-#line 909
+#line 1495
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 910
- testRunner.And("search the recordset with type \"Starts With\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 911
+#line 1496
+ testRunner.And("search the recordset with type \"Is Numeric\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1497
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 912
- testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 913
+#line 1498
+ testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1499
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table110 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table110.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table110.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table110.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table110.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table110.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table110.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = user",
-                        "1",
-                        "Starts With",
-                        "Mars",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 914
- testRunner.And("the debug inputs as", ((string)(null)), table110, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table111 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table111.AddRow(new string[] {
-                        "[[result]] = -1"});
-#line 922
- testRunner.And("the debug output as", ((string)(null)), table111, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Ends With")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Numeric multiple results")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsEndsWith()
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsNumericMultipleResults()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Ends With", ((string[])(null)));
-#line 926
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Numeric multiple results", ((string[])(null)));
+#line 1512
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table110 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table110.AddRow(new string[] {
+                        "rs().field",
+                        "41"});
+            table110.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table110.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table110.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table110.AddRow(new string[] {
+                        "rs().field",
+                        "best"});
+            table110.AddRow(new string[] {
+                        "rs().field",
+                        "54"});
+            table110.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+#line 1513
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table110, "Given ");
+#line 1522
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1523
+ testRunner.And("search the recordset with type \"Is Numeric\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1524
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1525
+ testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1526
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Numeric result doesnt exis" +
+            "t")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsNumericResultDoesntExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Numeric result doesnt exis" +
+                    "t", ((string[])(null)));
+#line 1540
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table111 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table111.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table111.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table111.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table111.AddRow(new string[] {
+                        "rs().field",
+                        "best"});
+            table111.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table111.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+#line 1541
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table111, "Given ");
+#line 1549
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1550
+ testRunner.And("search the recordset with type \"Is Numeric\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1551
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1552
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1553
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Regex")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsRegex()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Regex", ((string[])(null)));
+#line 1566
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table112 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4373,109 +4652,124 @@ this.ScenarioSetup(scenarioInfo);
             table112.AddRow(new string[] {
                         "rs().field",
                         "user"});
-#line 927
+#line 1567
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table112, "Given ");
-#line 935
+#line 1575
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 936
- testRunner.And("search the recordset with type \"Ends With\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 937
+#line 1576
+ testRunner.And("search the recordset with type \"Is Regex\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1577
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 938
+#line 1578
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 939
+#line 1579
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table113 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table113.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table113.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table113.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table113.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table113.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table113.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = user",
-                        "1",
-                        "Ends With",
-                        "Warewolf",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 940
- testRunner.And("the debug inputs as", ((string)(null)), table113, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table114 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table114.AddRow(new string[] {
-                        "[[result]] = 5"});
-#line 948
- testRunner.And("the debug output as", ((string)(null)), table114, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Ends With multiple results")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Regex multiple results")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsEndsWithMultipleResults()
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsRegexMultipleResults()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Ends With multiple results", ((string[])(null)));
-#line 952
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Regex multiple results", ((string[])(null)));
+#line 1592
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table113 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table113.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table113.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table113.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table113.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table113.AddRow(new string[] {
+                        "rs().field",
+                        "best"});
+            table113.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table113.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+#line 1593
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table113, "Given ");
+#line 1602
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1603
+ testRunner.And("search the recordset with type \"Is Regex\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1604
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1605
+ testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1606
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Regex result doesnt exist")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsRegexResultDoesntExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Regex result doesnt exist", ((string[])(null)));
+#line 1620
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table114 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table114.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table114.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table114.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table114.AddRow(new string[] {
+                        "rs().field",
+                        "best"});
+            table114.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table114.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+#line 1621
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table114, "Given ");
+#line 1629
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1630
+ testRunner.And("search the recordset with type \"Is Regex\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1631
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1632
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1633
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Text")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsText()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Text", ((string[])(null)));
+#line 1646
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table115 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4483,140 +4777,140 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table115.AddRow(new string[] {
                         "rs().field",
-                        "Warewolf"});
+                        "15"});
             table115.AddRow(new string[] {
                         "rs().field",
-                        "You"});
+                        "56"});
             table115.AddRow(new string[] {
                         "rs().field",
-                        "are"});
+                        "45"});
             table115.AddRow(new string[] {
                         "rs().field",
-                        "the"});
-            table115.AddRow(new string[] {
-                        "rs().field",
-                        "best"});
+                        "7"});
             table115.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
             table115.AddRow(new string[] {
                         "rs().field",
-                        "user"});
-#line 953
+                        "16"});
+#line 1647
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table115, "Given ");
-#line 962
+#line 1655
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 963
- testRunner.And("search the recordset with type \"Ends With\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 964
+#line 1656
+ testRunner.And("search the recordset with type \"Is Text\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1657
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 965
- testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 966
+#line 1658
+ testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1659
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table116 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table116.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table116.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table116.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table116.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table116.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table116.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table116.AddRow(new string[] {
-                        "",
-                        "[[rs(7).field]] = user",
-                        "1",
-                        "Ends With",
-                        "Warewolf",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 967
- testRunner.And("the debug inputs as", ((string)(null)), table116, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table117 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table117.AddRow(new string[] {
-                        "[[result]] = 1,6"});
-#line 976
- testRunner.And("the debug output as", ((string)(null)), table117, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Ends With result doesnt exist" +
-            "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Text multiple results")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsEndsWithResultDoesntExist()
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsTextMultipleResults()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Ends With result doesnt exist" +
-                    "", ((string[])(null)));
-#line 980
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Text multiple results", ((string[])(null)));
+#line 1672
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table116 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table116.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table116.AddRow(new string[] {
+                        "rs().field",
+                        "45"});
+            table116.AddRow(new string[] {
+                        "rs().field",
+                        "54"});
+            table116.AddRow(new string[] {
+                        "rs().field",
+                        "51"});
+            table116.AddRow(new string[] {
+                        "rs().field",
+                        "86"});
+            table116.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table116.AddRow(new string[] {
+                        "rs().field",
+                        "8"});
+#line 1673
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table116, "Given ");
+#line 1682
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1683
+ testRunner.And("search the recordset with type \"Is Text\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1684
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1685
+ testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1686
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Text result doesnt exist")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsTextResultDoesntExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Text result doesnt exist", ((string[])(null)));
+#line 1700
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table117 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table117.AddRow(new string[] {
+                        "rs().field",
+                        "1"});
+            table117.AddRow(new string[] {
+                        "rs().field",
+                        "2"});
+            table117.AddRow(new string[] {
+                        "rs().field",
+                        "3"});
+            table117.AddRow(new string[] {
+                        "rs().field",
+                        "4"});
+            table117.AddRow(new string[] {
+                        "rs().field",
+                        "6"});
+            table117.AddRow(new string[] {
+                        "rs().field",
+                        "5"});
+#line 1701
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table117, "Given ");
+#line 1709
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1710
+ testRunner.And("search the recordset with type \"Is Text\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1711
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1712
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1713
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is XML")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsXML()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is XML", ((string[])(null)));
+#line 1726
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table118 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4636,113 +4930,128 @@ this.ScenarioSetup(scenarioInfo);
                         "best"});
             table118.AddRow(new string[] {
                         "rs().field",
-                        "Warewolf"});
+                        "<test></test>"});
             table118.AddRow(new string[] {
                         "rs().field",
                         "user"});
-#line 981
+#line 1727
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table118, "Given ");
-#line 989
+#line 1735
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 990
- testRunner.And("search the recordset with type \"Ends With\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 991
+#line 1736
+ testRunner.And("search the recordset with type \"Is XML\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1737
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 992
- testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 993
+#line 1738
+ testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1739
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table119 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table119.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table119.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table119.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table119.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table119.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table119.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = user",
-                        "1",
-                        "Ends With",
-                        "Mars",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 994
- testRunner.And("the debug inputs as", ((string)(null)), table119, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table120 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table120.AddRow(new string[] {
-                        "[[result]] = -1"});
-#line 1002
- testRunner.And("the debug output as", ((string)(null)), table120, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Contains")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is XML multiple results")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsContains()
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsXMLMultipleResults()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Contains", ((string[])(null)));
-#line 1006
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is XML multiple results", ((string[])(null)));
+#line 1752
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table119 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table119.AddRow(new string[] {
+                        "rs().field",
+                        "<test></test>"});
+            table119.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table119.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table119.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table119.AddRow(new string[] {
+                        "rs().field",
+                        "best"});
+            table119.AddRow(new string[] {
+                        "rs().field",
+                        "<test></test>"});
+            table119.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+#line 1753
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table119, "Given ");
+#line 1762
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1763
+ testRunner.And("search the recordset with type \"Is XML\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1764
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1765
+ testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1766
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is XML result doesnt exist")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsXMLResultDoesntExist()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is XML result doesnt exist", ((string[])(null)));
+#line 1780
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table120 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table120.AddRow(new string[] {
+                        "rs().field",
+                        "You"});
+            table120.AddRow(new string[] {
+                        "rs().field",
+                        "are"});
+            table120.AddRow(new string[] {
+                        "rs().field",
+                        "the"});
+            table120.AddRow(new string[] {
+                        "rs().field",
+                        "best"});
+            table120.AddRow(new string[] {
+                        "rs().field",
+                        "Warewolf"});
+            table120.AddRow(new string[] {
+                        "rs().field",
+                        "user"});
+#line 1781
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table120, "Given ");
+#line 1789
+ testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1790
+ testRunner.And("search the recordset with type \"Is XML\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1791
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1792
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1793
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Not Alphanumeric")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsNotAlphanumeric()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not Alphanumeric", ((string[])(null)));
+#line 1806
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table121 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4762,3928 +5071,12 @@ this.ScenarioSetup(scenarioInfo);
                         "best"});
             table121.AddRow(new string[] {
                         "rs().field",
-                        "Warewolf"});
+                        "$$"});
             table121.AddRow(new string[] {
                         "rs().field",
                         "user"});
-#line 1007
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table121, "Given ");
-#line 1015
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1016
- testRunner.And("search the recordset with type \"Contains\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1017
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1018
- testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1019
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table122 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table122.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table122.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table122.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table122.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table122.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table122.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = user",
-                        "1",
-                        "Contains",
-                        "Warewolf",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1020
- testRunner.And("the debug inputs as", ((string)(null)), table122, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table123 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table123.AddRow(new string[] {
-                        "[[result]] = 5"});
-#line 1028
- testRunner.And("the debug output as", ((string)(null)), table123, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Contains multiple results")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsContainsMultipleResults()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Contains multiple results", ((string[])(null)));
-#line 1032
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table124 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table124.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table124.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table124.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table124.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table124.AddRow(new string[] {
-                        "rs().field",
-                        "best"});
-            table124.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table124.AddRow(new string[] {
-                        "rs().field",
-                        "user"});
-#line 1033
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table124, "Given ");
-#line 1042
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1043
- testRunner.And("search the recordset with type \"Contains\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1044
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1045
- testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1046
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table125 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table125.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table125.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table125.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table125.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table125.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table125.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table125.AddRow(new string[] {
-                        "",
-                        "[[rs(7).field]] = user",
-                        "1",
-                        "Contains",
-                        "Warewolf",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1047
- testRunner.And("the debug inputs as", ((string)(null)), table125, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table126 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table126.AddRow(new string[] {
-                        "[[result]] = 1,6"});
-#line 1056
- testRunner.And("the debug output as", ((string)(null)), table126, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Contains result doesnt exist")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsContainsResultDoesntExist()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Contains result doesnt exist", ((string[])(null)));
-#line 1060
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table127 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table127.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table127.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table127.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table127.AddRow(new string[] {
-                        "rs().field",
-                        "best"});
-            table127.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table127.AddRow(new string[] {
-                        "rs().field",
-                        "user"});
-#line 1061
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table127, "Given ");
-#line 1069
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1070
- testRunner.And("search the recordset with type \"Contains\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1071
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1072
- testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1073
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table128 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table128.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table128.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table128.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table128.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table128.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table128.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = user",
-                        "1",
-                        "Contains",
-                        "Mars",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1074
- testRunner.And("the debug inputs as", ((string)(null)), table128, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table129 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table129.AddRow(new string[] {
-                        "[[result]] = -1"});
-#line 1082
- testRunner.And("the debug output as", ((string)(null)), table129, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Doesn\'t Contain")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsDoesnTContain()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Doesn\'t Contain", ((string[])(null)));
-#line 1087
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table130 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table130.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table130.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table130.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table130.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table130.AddRow(new string[] {
-                        "rs().field",
-                        "user"});
-            table130.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-#line 1088
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table130, "Given ");
-#line 1096
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1097
- testRunner.And("search the recordset with type \"Doesn\'t Contain\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1098
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1099
- testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1100
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table131 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table131.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table131.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table131.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table131.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table131.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = user",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table131.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = Warewolf",
-                        "1",
-                        "Doesn\'t Contain",
-                        "Warewolf",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1101
- testRunner.And("the debug inputs as", ((string)(null)), table131, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table132 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table132.AddRow(new string[] {
-                        "[[result]] = 5"});
-#line 1109
- testRunner.And("the debug output as", ((string)(null)), table132, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Doesn\'t Contain multiple resu" +
-            "lts")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsDoesnTContainMultipleResults()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Doesn\'t Contain multiple resu" +
-                    "lts", ((string[])(null)));
-#line 1113
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table133 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table133.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table133.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table133.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table133.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table133.AddRow(new string[] {
-                        "rs().field",
-                        "user"});
-            table133.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-#line 1114
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table133, "Given ");
-#line 1122
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1123
- testRunner.And("search the recordset with type \"Doesn\'t Contain\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1124
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1125
- testRunner.Then("the find records index multiple result should be 1,5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1126
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table134 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table134.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table134.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table134.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table134.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table134.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = user",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table134.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = Warewolf",
-                        "1",
-                        "Doesn\'t Contain",
-                        "Warewolf",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1127
- testRunner.And("the debug inputs as", ((string)(null)), table134, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table135 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table135.AddRow(new string[] {
-                        "[[result]] = 1,5"});
-#line 1135
- testRunner.And("the debug output as", ((string)(null)), table135, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Doesn\'t Contain result doesnt" +
-            " exist")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsDoesnTContainResultDoesntExist()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Doesn\'t Contain result doesnt" +
-                    " exist", ((string[])(null)));
-#line 1140
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table136 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table136.AddRow(new string[] {
-                        "rs().field",
-                        "Mars"});
-            table136.AddRow(new string[] {
-                        "rs().field",
-                        "Mars"});
-            table136.AddRow(new string[] {
-                        "rs().field",
-                        "Mars"});
-            table136.AddRow(new string[] {
-                        "rs().field",
-                        "Mars"});
-            table136.AddRow(new string[] {
-                        "rs().field",
-                        "Mars"});
-            table136.AddRow(new string[] {
-                        "rs().field",
-                        "Mars"});
-#line 1141
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table136, "Given ");
-#line 1149
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1150
- testRunner.And("search the recordset with type \"Doesn\'t Contain\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1151
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1152
- testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1153
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table137 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table137.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = Mars",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table137.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = Mars",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table137.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = Mars",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table137.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = Mars",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table137.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = Mars",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table137.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = Mars",
-                        "1",
-                        "Doesn\'t Contain",
-                        "Mars",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1154
- testRunner.And("the debug inputs as", ((string)(null)), table137, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table138 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table138.AddRow(new string[] {
-                        "[[result]] = -1"});
-#line 1162
- testRunner.And("the debug output as", ((string)(null)), table138, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Alphanumeric")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsAlphanumeric()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Alphanumeric", ((string[])(null)));
-#line 1166
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table139 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table139.AddRow(new string[] {
-                        "rs().field",
-                        "$$"});
-            table139.AddRow(new string[] {
-                        "rs().field",
-                        "$$"});
-            table139.AddRow(new string[] {
-                        "rs().field",
-                        "$$"});
-            table139.AddRow(new string[] {
-                        "rs().field",
-                        "$$"});
-            table139.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table139.AddRow(new string[] {
-                        "rs().field",
-                        "$$"});
-#line 1167
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table139, "Given ");
-#line 1175
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1176
- testRunner.And("search the recordset with type \"Is Alphanumeric\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1177
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1178
- testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1179
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table140 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table140.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = $$",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table140.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = $$",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table140.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = $$",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table140.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = $$",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table140.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table140.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = $$",
-                        "1",
-                        "Is Alphanumeric",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1180
- testRunner.And("the debug inputs as", ((string)(null)), table140, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table141 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table141.AddRow(new string[] {
-                        "[[result]] = 5"});
-#line 1188
- testRunner.And("the debug output as", ((string)(null)), table141, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Alphanumeric multiple resu" +
-            "lts")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsAlphanumericMultipleResults()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Alphanumeric multiple resu" +
-                    "lts", ((string[])(null)));
-#line 1192
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table142 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table142.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table142.AddRow(new string[] {
-                        "rs().field",
-                        "$$"});
-            table142.AddRow(new string[] {
-                        "rs().field",
-                        "$$"});
-            table142.AddRow(new string[] {
-                        "rs().field",
-                        "$$"});
-            table142.AddRow(new string[] {
-                        "rs().field",
-                        "$$"});
-            table142.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table142.AddRow(new string[] {
-                        "rs().field",
-                        "$$"});
-#line 1193
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table142, "Given ");
-#line 1202
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1203
- testRunner.And("search the recordset with type \"Is Alphanumeric\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1204
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1205
- testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1206
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table143 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table143.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table143.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = $$",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table143.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = $$",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table143.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = $$",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table143.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = $$",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table143.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table143.AddRow(new string[] {
-                        "",
-                        "[[rs(7).field]] = $$",
-                        "1",
-                        "Is Alphanumeric",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1207
- testRunner.And("the debug inputs as", ((string)(null)), table143, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table144 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table144.AddRow(new string[] {
-                        "[[result]] = 1,6"});
-#line 1216
- testRunner.And("the debug output as", ((string)(null)), table144, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Alphanumeric result doesnt" +
-            " exist")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsAlphanumericResultDoesntExist()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Alphanumeric result doesnt" +
-                    " exist", ((string[])(null)));
-#line 1220
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table145 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table145.AddRow(new string[] {
-                        "rs().field",
-                        "$$"});
-            table145.AddRow(new string[] {
-                        "rs().field",
-                        "$$"});
-            table145.AddRow(new string[] {
-                        "rs().field",
-                        "$$"});
-            table145.AddRow(new string[] {
-                        "rs().field",
-                        "$$"});
-            table145.AddRow(new string[] {
-                        "rs().field",
-                        "$$"});
-            table145.AddRow(new string[] {
-                        "rs().field",
-                        "$$"});
-#line 1221
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table145, "Given ");
-#line 1229
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1230
- testRunner.And("search the recordset with type \"Is Alphanumeric\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1231
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1232
- testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1233
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table146 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table146.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = $$",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table146.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = $$",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table146.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = $$",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table146.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = $$",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table146.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = $$",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table146.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = $$",
-                        "1",
-                        "Is Alphanumeric",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1234
- testRunner.And("the debug inputs as", ((string)(null)), table146, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table147 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table147.AddRow(new string[] {
-                        "[[result]] = -1"});
-#line 1242
- testRunner.And("the debug output as", ((string)(null)), table147, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Base64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsBase64()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Base64", ((string[])(null)));
-#line 1246
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table148 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table148.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table148.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table148.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table148.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table148.AddRow(new string[] {
-                        "rs().field",
-                        "d2FyZXdvbGY="});
-            table148.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-#line 1247
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table148, "Given ");
-#line 1255
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1256
- testRunner.And("search the recordset with type \"Is Base64\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1257
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1258
- testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1259
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table149 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table149.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table149.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table149.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table149.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table149.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = d2FyZXdvbGY=",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table149.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = You",
-                        "1",
-                        "Is Base64",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1260
- testRunner.And("the debug inputs as", ((string)(null)), table149, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table150 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table150.AddRow(new string[] {
-                        "[[result]] = 5"});
-#line 1268
- testRunner.And("the debug output as", ((string)(null)), table150, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Base64 multiple results")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsBase64MultipleResults()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Base64 multiple results", ((string[])(null)));
-#line 1272
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table151 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table151.AddRow(new string[] {
-                        "rs().field",
-                        "d2FyZXdvbGY="});
-            table151.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table151.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table151.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table151.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table151.AddRow(new string[] {
-                        "rs().field",
-                        "d2FyZXdvbGY="});
-            table151.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-#line 1273
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table151, "Given ");
-#line 1282
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1283
- testRunner.And("search the recordset with type \"Is Base64\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1284
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1285
- testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1286
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table152 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table152.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = d2FyZXdvbGY=",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table152.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table152.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table152.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table152.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table152.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = d2FyZXdvbGY=",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table152.AddRow(new string[] {
-                        "",
-                        "[[rs(7).field]] = You",
-                        "1",
-                        "Is Base64",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1287
- testRunner.And("the debug inputs as", ((string)(null)), table152, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table153 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table153.AddRow(new string[] {
-                        "[[result]] = 1,6"});
-#line 1296
- testRunner.And("the debug output as", ((string)(null)), table153, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Base64 result doesnt exist" +
-            "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsBase64ResultDoesntExist()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Base64 result doesnt exist" +
-                    "", ((string[])(null)));
-#line 1300
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table154 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table154.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table154.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table154.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table154.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table154.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table154.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-#line 1301
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table154, "Given ");
-#line 1309
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1310
- testRunner.And("search the recordset with type \"Is Base64\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1311
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1312
- testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1313
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table155 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table155.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table155.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table155.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table155.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table155.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table155.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = You",
-                        "1",
-                        "Is Base64",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1314
- testRunner.And("the debug inputs as", ((string)(null)), table155, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table156 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table156.AddRow(new string[] {
-                        "[[result]] = -1"});
-#line 1322
- testRunner.And("the debug output as", ((string)(null)), table156, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Date")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsDate()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Date", ((string[])(null)));
-#line 1326
- this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table157 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table157.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table157.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table157.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table157.AddRow(new string[] {
-                        "rs().field",
-                        "best"});
-            table157.AddRow(new string[] {
-                        "rs().field",
-                        "12/10/2013"});
-            table157.AddRow(new string[] {
-                        "rs().field",
-                        "user"});
-#line 1327
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table157, "Given ");
-#line 1335
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1336
- testRunner.And("search the recordset with type \"Is Date\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1337
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1338
- testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1339
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table158 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table158.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table158.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table158.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table158.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table158.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = 12/10/2013",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table158.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = user",
-                        "1",
-                        "Is Date",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1340
- testRunner.And("the debug inputs as", ((string)(null)), table158, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table159 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table159.AddRow(new string[] {
-                        "[[result]] = 5"});
-#line 1348
- testRunner.And("the debug output as", ((string)(null)), table159, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Date multiple results")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsDateMultipleResults()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Date multiple results", ((string[])(null)));
-#line 1352
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table160 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table160.AddRow(new string[] {
-                        "rs().field",
-                        "12/10/2013"});
-            table160.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table160.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table160.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table160.AddRow(new string[] {
-                        "rs().field",
-                        "best"});
-            table160.AddRow(new string[] {
-                        "rs().field",
-                        "12/10/2013"});
-            table160.AddRow(new string[] {
-                        "rs().field",
-                        "user"});
-#line 1353
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table160, "Given ");
-#line 1362
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1363
- testRunner.And("search the recordset with type \"Is Date\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1364
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1365
- testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1366
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table161 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table161.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = 12/10/2013",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table161.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table161.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table161.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table161.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table161.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = 12/10/2013",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table161.AddRow(new string[] {
-                        "",
-                        "[[rs(7).field]] = user",
-                        "1",
-                        "Is Date",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1367
- testRunner.And("the debug inputs as", ((string)(null)), table161, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table162 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table162.AddRow(new string[] {
-                        "[[result]] = 1,6"});
-#line 1376
- testRunner.And("the debug output as", ((string)(null)), table162, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Date result doesnt exist")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsDateResultDoesntExist()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Date result doesnt exist", ((string[])(null)));
-#line 1380
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table163 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table163.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table163.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table163.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table163.AddRow(new string[] {
-                        "rs().field",
-                        "best"});
-            table163.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table163.AddRow(new string[] {
-                        "rs().field",
-                        "user"});
-#line 1381
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table163, "Given ");
-#line 1389
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1390
- testRunner.And("search the recordset with type \"Is Date\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1391
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1392
- testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1393
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table164 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table164.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table164.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table164.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table164.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table164.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table164.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = user",
-                        "1",
-                        "Is Date",
-                        "Mars",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1394
- testRunner.And("the debug inputs as", ((string)(null)), table164, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table165 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table165.AddRow(new string[] {
-                        "[[result]] = -1"});
-#line 1402
- testRunner.And("the debug output as", ((string)(null)), table165, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Email")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsEmail()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Email", ((string[])(null)));
-#line 1406
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table166 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table166.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table166.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table166.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table166.AddRow(new string[] {
-                        "rs().field",
-                        "best"});
-            table166.AddRow(new string[] {
-                        "rs().field",
-                        "test@testEmail.co.za"});
-            table166.AddRow(new string[] {
-                        "rs().field",
-                        "user"});
-#line 1407
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table166, "Given ");
-#line 1415
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1416
- testRunner.And("search the recordset with type \"Is Email\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1417
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1418
- testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1419
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table167 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table167.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table167.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table167.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table167.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table167.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = test@testEmail.co.za",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table167.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = user",
-                        "1",
-                        "Is Email",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1420
- testRunner.And("the debug inputs as", ((string)(null)), table167, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table168 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table168.AddRow(new string[] {
-                        "[[result]] = 5"});
-#line 1428
- testRunner.And("the debug output as", ((string)(null)), table168, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Email multiple results")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsEmailMultipleResults()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Email multiple results", ((string[])(null)));
-#line 1432
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table169 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table169.AddRow(new string[] {
-                        "rs().field",
-                        "test@testEmail.co.za"});
-            table169.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table169.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table169.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table169.AddRow(new string[] {
-                        "rs().field",
-                        "best"});
-            table169.AddRow(new string[] {
-                        "rs().field",
-                        "test@testEmail.co.za"});
-            table169.AddRow(new string[] {
-                        "rs().field",
-                        "user"});
-#line 1433
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table169, "Given ");
-#line 1442
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1443
- testRunner.And("search the recordset with type \"Is Email\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1444
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1445
- testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1446
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table170 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table170.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = test@testEmail.co.za",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table170.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table170.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table170.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table170.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table170.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = test@testEmail.co.za",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table170.AddRow(new string[] {
-                        "",
-                        "[[rs(7).field]] = user",
-                        "1",
-                        "Is Email",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1447
- testRunner.And("the debug inputs as", ((string)(null)), table170, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table171 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table171.AddRow(new string[] {
-                        "[[result]] = 1,6"});
-#line 1456
- testRunner.And("the debug output as", ((string)(null)), table171, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Email result doesnt exist")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsEmailResultDoesntExist()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Email result doesnt exist", ((string[])(null)));
-#line 1460
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table172 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table172.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table172.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table172.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table172.AddRow(new string[] {
-                        "rs().field",
-                        "best"});
-            table172.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table172.AddRow(new string[] {
-                        "rs().field",
-                        "user"});
-#line 1461
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table172, "Given ");
-#line 1469
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1470
- testRunner.And("search the recordset with type \"Is Email\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1471
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1472
- testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1473
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table173 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table173.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table173.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table173.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table173.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table173.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table173.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = user",
-                        "1",
-                        "Is Email",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1474
- testRunner.And("the debug inputs as", ((string)(null)), table173, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table174 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table174.AddRow(new string[] {
-                        "[[result]] = -1"});
-#line 1482
- testRunner.And("the debug output as", ((string)(null)), table174, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Numeric")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsNumeric()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Numeric", ((string[])(null)));
-#line 1486
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table175 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table175.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table175.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table175.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table175.AddRow(new string[] {
-                        "rs().field",
-                        "best"});
-            table175.AddRow(new string[] {
-                        "rs().field",
-                        "45"});
-            table175.AddRow(new string[] {
-                        "rs().field",
-                        "user"});
-#line 1487
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table175, "Given ");
-#line 1495
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1496
- testRunner.And("search the recordset with type \"Is Numeric\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1497
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1498
- testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1499
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table176 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table176.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table176.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table176.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table176.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table176.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = 45",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table176.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = user",
-                        "1",
-                        "Is Numeric",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1500
- testRunner.And("the debug inputs as", ((string)(null)), table176, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table177 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table177.AddRow(new string[] {
-                        "[[result]] = 5"});
-#line 1508
- testRunner.And("the debug output as", ((string)(null)), table177, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Numeric multiple results")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsNumericMultipleResults()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Numeric multiple results", ((string[])(null)));
-#line 1512
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table178 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table178.AddRow(new string[] {
-                        "rs().field",
-                        "41"});
-            table178.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table178.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table178.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table178.AddRow(new string[] {
-                        "rs().field",
-                        "best"});
-            table178.AddRow(new string[] {
-                        "rs().field",
-                        "54"});
-            table178.AddRow(new string[] {
-                        "rs().field",
-                        "user"});
-#line 1513
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table178, "Given ");
-#line 1522
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1523
- testRunner.And("search the recordset with type \"Is Numeric\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1524
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1525
- testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1526
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table179 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table179.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = 41",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table179.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table179.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table179.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table179.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table179.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = 54",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table179.AddRow(new string[] {
-                        "",
-                        "[[rs(7).field]] = user",
-                        "1",
-                        "Is Numeric",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1527
- testRunner.And("the debug inputs as", ((string)(null)), table179, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table180 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table180.AddRow(new string[] {
-                        "[[result]] = 1,6"});
-#line 1536
- testRunner.And("the debug output as", ((string)(null)), table180, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Numeric result doesnt exis" +
-            "t")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsNumericResultDoesntExist()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Numeric result doesnt exis" +
-                    "t", ((string[])(null)));
-#line 1540
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table181 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table181.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table181.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table181.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table181.AddRow(new string[] {
-                        "rs().field",
-                        "best"});
-            table181.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table181.AddRow(new string[] {
-                        "rs().field",
-                        "user"});
-#line 1541
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table181, "Given ");
-#line 1549
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1550
- testRunner.And("search the recordset with type \"Is Numeric\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1551
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1552
- testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1553
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table182 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table182.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table182.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table182.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table182.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table182.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table182.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = user",
-                        "1",
-                        "",
-                        "Is Numeric",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1554
- testRunner.And("the debug inputs as", ((string)(null)), table182, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table183 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table183.AddRow(new string[] {
-                        "[[result]] = -1"});
-#line 1562
- testRunner.And("the debug output as", ((string)(null)), table183, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Regex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsRegex()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Regex", ((string[])(null)));
-#line 1566
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table184 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table184.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table184.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table184.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table184.AddRow(new string[] {
-                        "rs().field",
-                        "best"});
-            table184.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table184.AddRow(new string[] {
-                        "rs().field",
-                        "user"});
-#line 1567
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table184, "Given ");
-#line 1575
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1576
- testRunner.And("search the recordset with type \"Is Regex\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1577
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1578
- testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1579
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table185 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table185.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table185.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table185.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table185.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table185.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table185.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = user",
-                        "1",
-                        "Is Regex",
-                        "Warewolf",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1580
- testRunner.And("the debug inputs as", ((string)(null)), table185, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table186 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table186.AddRow(new string[] {
-                        "[[result]] = 5"});
-#line 1588
- testRunner.And("the debug output as", ((string)(null)), table186, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Regex multiple results")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsRegexMultipleResults()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Regex multiple results", ((string[])(null)));
-#line 1592
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table187 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table187.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table187.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table187.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table187.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table187.AddRow(new string[] {
-                        "rs().field",
-                        "best"});
-            table187.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table187.AddRow(new string[] {
-                        "rs().field",
-                        "user"});
-#line 1593
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table187, "Given ");
-#line 1602
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1603
- testRunner.And("search the recordset with type \"Is Regex\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1604
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1605
- testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1606
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table188 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table188.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table188.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table188.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table188.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table188.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table188.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table188.AddRow(new string[] {
-                        "",
-                        "[[rs(7).field]] = user",
-                        "1",
-                        "Is Regex",
-                        "Warewolf",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1607
- testRunner.And("the debug inputs as", ((string)(null)), table188, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table189 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table189.AddRow(new string[] {
-                        "[[result]] = 1,6"});
-#line 1616
- testRunner.And("the debug output as", ((string)(null)), table189, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Regex result doesnt exist")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsRegexResultDoesntExist()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Regex result doesnt exist", ((string[])(null)));
-#line 1620
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table190 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table190.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table190.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table190.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table190.AddRow(new string[] {
-                        "rs().field",
-                        "best"});
-            table190.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table190.AddRow(new string[] {
-                        "rs().field",
-                        "user"});
-#line 1621
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table190, "Given ");
-#line 1629
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1630
- testRunner.And("search the recordset with type \"Is Regex\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1631
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1632
- testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1633
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table191 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table191.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table191.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table191.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table191.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table191.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table191.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = user",
-                        "1",
-                        "Is Regex",
-                        "Mars",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1634
- testRunner.And("the debug inputs as", ((string)(null)), table191, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table192 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table192.AddRow(new string[] {
-                        "[[result]] = -1"});
-#line 1642
- testRunner.And("the debug output as", ((string)(null)), table192, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsText()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Text", ((string[])(null)));
-#line 1646
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table193 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table193.AddRow(new string[] {
-                        "rs().field",
-                        "15"});
-            table193.AddRow(new string[] {
-                        "rs().field",
-                        "56"});
-            table193.AddRow(new string[] {
-                        "rs().field",
-                        "45"});
-            table193.AddRow(new string[] {
-                        "rs().field",
-                        "7"});
-            table193.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table193.AddRow(new string[] {
-                        "rs().field",
-                        "16"});
-#line 1647
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table193, "Given ");
-#line 1655
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1656
- testRunner.And("search the recordset with type \"Is Text\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1657
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1658
- testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1659
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table194 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table194.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = 15",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table194.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = 56",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table194.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = 45",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table194.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = 7",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table194.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table194.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = 16",
-                        "1",
-                        "Is Text",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1660
- testRunner.And("the debug inputs as", ((string)(null)), table194, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table195 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table195.AddRow(new string[] {
-                        "[[result]] = 5"});
-#line 1668
- testRunner.And("the debug output as", ((string)(null)), table195, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Text multiple results")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsTextMultipleResults()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Text multiple results", ((string[])(null)));
-#line 1672
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table196 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table196.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table196.AddRow(new string[] {
-                        "rs().field",
-                        "45"});
-            table196.AddRow(new string[] {
-                        "rs().field",
-                        "54"});
-            table196.AddRow(new string[] {
-                        "rs().field",
-                        "51"});
-            table196.AddRow(new string[] {
-                        "rs().field",
-                        "86"});
-            table196.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table196.AddRow(new string[] {
-                        "rs().field",
-                        "8"});
-#line 1673
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table196, "Given ");
-#line 1682
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1683
- testRunner.And("search the recordset with type \"Is Text\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1684
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1685
- testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1686
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table197 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table197.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table197.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = 45",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table197.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = 54",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table197.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = 51",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table197.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = 86",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table197.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table197.AddRow(new string[] {
-                        "",
-                        "[[rs(7).field]] = 8",
-                        "1",
-                        "Is Text",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1687
- testRunner.And("the debug inputs as", ((string)(null)), table197, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table198 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table198.AddRow(new string[] {
-                        "[[result]] = 1,6"});
-#line 1696
- testRunner.And("the debug output as", ((string)(null)), table198, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is Text result doesnt exist")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsTextResultDoesntExist()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Text result doesnt exist", ((string[])(null)));
-#line 1700
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table199 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table199.AddRow(new string[] {
-                        "rs().field",
-                        "1"});
-            table199.AddRow(new string[] {
-                        "rs().field",
-                        "2"});
-            table199.AddRow(new string[] {
-                        "rs().field",
-                        "3"});
-            table199.AddRow(new string[] {
-                        "rs().field",
-                        "4"});
-            table199.AddRow(new string[] {
-                        "rs().field",
-                        "6"});
-            table199.AddRow(new string[] {
-                        "rs().field",
-                        "5"});
-#line 1701
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table199, "Given ");
-#line 1709
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1710
- testRunner.And("search the recordset with type \"Is Text\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1711
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1712
- testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1713
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table200 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table200.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = 1",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table200.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = 2",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table200.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = 3",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table200.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = 4",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table200.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = 6",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table200.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = 5",
-                        "1",
-                        "Is Text",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1714
- testRunner.And("the debug inputs as", ((string)(null)), table200, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table201 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table201.AddRow(new string[] {
-                        "[[result]] = -1"});
-#line 1722
- testRunner.And("the debug output as", ((string)(null)), table201, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is XML")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsXML()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is XML", ((string[])(null)));
-#line 1726
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table202 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table202.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table202.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table202.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table202.AddRow(new string[] {
-                        "rs().field",
-                        "best"});
-            table202.AddRow(new string[] {
-                        "rs().field",
-                        "<test></test>"});
-            table202.AddRow(new string[] {
-                        "rs().field",
-                        "user"});
-#line 1727
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table202, "Given ");
-#line 1735
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1736
- testRunner.And("search the recordset with type \"Is XML\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1737
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1738
- testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1739
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table203 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table203.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table203.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table203.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table203.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table203.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = <test></test>",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table203.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = user",
-                        "1",
-                        "Is XML",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1740
- testRunner.And("the debug inputs as", ((string)(null)), table203, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table204 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table204.AddRow(new string[] {
-                        "[[result]] = 5"});
-#line 1748
- testRunner.And("the debug output as", ((string)(null)), table204, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is XML multiple results")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsXMLMultipleResults()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is XML multiple results", ((string[])(null)));
-#line 1752
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table205 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table205.AddRow(new string[] {
-                        "rs().field",
-                        "<test></test>"});
-            table205.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table205.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table205.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table205.AddRow(new string[] {
-                        "rs().field",
-                        "best"});
-            table205.AddRow(new string[] {
-                        "rs().field",
-                        "<test></test>"});
-            table205.AddRow(new string[] {
-                        "rs().field",
-                        "user"});
-#line 1753
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table205, "Given ");
-#line 1762
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1763
- testRunner.And("search the recordset with type \"Is XML\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1764
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1765
- testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1766
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table206 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table206.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = <test></test>",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table206.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table206.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table206.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table206.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table206.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = <test></test>",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table206.AddRow(new string[] {
-                        "",
-                        "[[rs(7).field]] = user",
-                        "1",
-                        "Is XML",
-                        "Warewolf",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1767
- testRunner.And("the debug inputs as", ((string)(null)), table206, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table207 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table207.AddRow(new string[] {
-                        "[[result]] = 1,6"});
-#line 1776
- testRunner.And("the debug output as", ((string)(null)), table207, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Is XML result doesnt exist")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsXMLResultDoesntExist()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is XML result doesnt exist", ((string[])(null)));
-#line 1780
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table208 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table208.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table208.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table208.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table208.AddRow(new string[] {
-                        "rs().field",
-                        "best"});
-            table208.AddRow(new string[] {
-                        "rs().field",
-                        "Warewolf"});
-            table208.AddRow(new string[] {
-                        "rs().field",
-                        "user"});
-#line 1781
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table208, "Given ");
-#line 1789
- testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1790
- testRunner.And("search the recordset with type \"Is XML\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1791
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1792
- testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1793
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table209 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table209.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table209.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table209.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table209.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table209.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table209.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = user",
-                        "1",
-                        "Is XML",
-                        "Mars",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1794
- testRunner.And("the debug inputs as", ((string)(null)), table209, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table210 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table210.AddRow(new string[] {
-                        "[[result]] = -1"});
-#line 1802
- testRunner.And("the debug output as", ((string)(null)), table210, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type is Not Alphanumeric")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsNotAlphanumeric()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not Alphanumeric", ((string[])(null)));
-#line 1806
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table211 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table211.AddRow(new string[] {
-                        "rs().field",
-                        "You"});
-            table211.AddRow(new string[] {
-                        "rs().field",
-                        "are"});
-            table211.AddRow(new string[] {
-                        "rs().field",
-                        "the"});
-            table211.AddRow(new string[] {
-                        "rs().field",
-                        "best"});
-            table211.AddRow(new string[] {
-                        "rs().field",
-                        "$$"});
-            table211.AddRow(new string[] {
-                        "rs().field",
-                        "user"});
 #line 1807
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table211, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table121, "Given ");
 #line 1815
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1816
@@ -8694,86 +5087,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 1819
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table212 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table212.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table212.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table212.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table212.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table212.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = $$",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table212.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = user",
-                        "1",
-                        "Not Alphanumeric",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1820
- testRunner.And("the debug inputs as", ((string)(null)), table212, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table213 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table213.AddRow(new string[] {
-                        "[[result]] = 5"});
-#line 1828
- testRunner.And("the debug output as", ((string)(null)), table213, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -8789,32 +5102,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 1832
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table214 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table122 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table214.AddRow(new string[] {
+            table122.AddRow(new string[] {
                         "rs().field",
                         "$$"});
-            table214.AddRow(new string[] {
+            table122.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table214.AddRow(new string[] {
+            table122.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table214.AddRow(new string[] {
+            table122.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table214.AddRow(new string[] {
+            table122.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table214.AddRow(new string[] {
+            table122.AddRow(new string[] {
                         "rs().field",
                         "$$"});
-            table214.AddRow(new string[] {
+            table122.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 1833
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table214, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table122, "Given ");
 #line 1842
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1843
@@ -8825,96 +5138,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 1846
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table215 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table215.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = $$",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table215.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table215.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table215.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table215.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table215.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = $$",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table215.AddRow(new string[] {
-                        "",
-                        "[[rs(7).field]] = user",
-                        "1",
-                        "Not Alphanumeric",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1847
- testRunner.And("the debug inputs as", ((string)(null)), table215, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table216 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table216.AddRow(new string[] {
-                        "[[result]] = 1,6"});
-#line 1856
- testRunner.And("the debug output as", ((string)(null)), table216, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -8930,29 +5153,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1860
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table217 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table123 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table217.AddRow(new string[] {
+            table123.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table217.AddRow(new string[] {
+            table123.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table217.AddRow(new string[] {
+            table123.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table217.AddRow(new string[] {
+            table123.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table217.AddRow(new string[] {
+            table123.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table217.AddRow(new string[] {
+            table123.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 1861
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table217, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table123, "Given ");
 #line 1869
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1870
@@ -8963,86 +5186,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 1873
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table218 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table218.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table218.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table218.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table218.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table218.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table218.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = user",
-                        "1",
-                        "Not Alphanumeric",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1874
- testRunner.And("the debug inputs as", ((string)(null)), table218, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table219 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table219.AddRow(new string[] {
-                        "[[result]] = -1"});
-#line 1882
- testRunner.And("the debug output as", ((string)(null)), table219, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9056,29 +5199,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1886
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table220 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table124 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table220.AddRow(new string[] {
+            table124.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
-            table220.AddRow(new string[] {
+            table124.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
-            table220.AddRow(new string[] {
+            table124.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
-            table220.AddRow(new string[] {
+            table124.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
-            table220.AddRow(new string[] {
+            table124.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table220.AddRow(new string[] {
+            table124.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
 #line 1887
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table220, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table124, "Given ");
 #line 1895
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1896
@@ -9089,86 +5232,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 1899
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table221 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table221.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = 12/11/2013",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table221.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = 12/11/2013",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table221.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = 12/11/2013",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table221.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = 12/11/2013",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table221.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table221.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = 12/11/2013",
-                        "1",
-                        "Not Date",
-                        "Warewolf",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1900
- testRunner.And("the debug inputs as", ((string)(null)), table221, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table222 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table222.AddRow(new string[] {
-                        "[[result]] = 5"});
-#line 1908
- testRunner.And("the debug output as", ((string)(null)), table222, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9182,32 +5245,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 1912
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table223 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table125 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table223.AddRow(new string[] {
+            table125.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table223.AddRow(new string[] {
+            table125.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
-            table223.AddRow(new string[] {
+            table125.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
-            table223.AddRow(new string[] {
+            table125.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
-            table223.AddRow(new string[] {
+            table125.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
-            table223.AddRow(new string[] {
+            table125.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table223.AddRow(new string[] {
+            table125.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
 #line 1913
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table223, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table125, "Given ");
 #line 1922
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1923
@@ -9218,96 +5281,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 1926
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table224 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table224.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table224.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = 12/11/2013",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table224.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = 12/11/2013",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table224.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = 12/11/2013",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table224.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = 12/11/2013",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table224.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table224.AddRow(new string[] {
-                        "",
-                        "[[rs(7).field]] = 12/11/2013",
-                        "1",
-                        "Not Date",
-                        "Warewolf",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1927
- testRunner.And("the debug inputs as", ((string)(null)), table224, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table225 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table225.AddRow(new string[] {
-                        "[[result]] = 1,6"});
-#line 1936
- testRunner.And("the debug output as", ((string)(null)), table225, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9321,29 +5294,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1940
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table226 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table126 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table226.AddRow(new string[] {
+            table126.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
-            table226.AddRow(new string[] {
+            table126.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
-            table226.AddRow(new string[] {
+            table126.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
-            table226.AddRow(new string[] {
+            table126.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
-            table226.AddRow(new string[] {
+            table126.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
-            table226.AddRow(new string[] {
+            table126.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
 #line 1941
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table226, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table126, "Given ");
 #line 1949
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1950
@@ -9354,86 +5327,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 1953
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table227 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table227.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = 12/11/2013",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table227.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = 12/11/2013",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table227.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = 12/11/2013",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table227.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = 12/11/2013",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table227.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = 12/11/2013",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table227.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = 12/11/2013",
-                        "1",
-                        "Not Date",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1954
- testRunner.And("the debug inputs as", ((string)(null)), table227, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table228 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table228.AddRow(new string[] {
-                        "[[result]] = -1"});
-#line 1962
- testRunner.And("the debug output as", ((string)(null)), table228, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9447,29 +5340,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1966
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table229 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table127 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table229.AddRow(new string[] {
+            table127.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table229.AddRow(new string[] {
+            table127.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table229.AddRow(new string[] {
+            table127.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table229.AddRow(new string[] {
+            table127.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table229.AddRow(new string[] {
+            table127.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table229.AddRow(new string[] {
+            table127.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
 #line 1967
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table229, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table127, "Given ");
 #line 1975
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1976
@@ -9480,86 +5373,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 1979
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table230 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table230.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = test@testEmail.co.za",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table230.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = test@testEmail.co.za",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table230.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = test@testEmail.co.za",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table230.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = test@testEmail.co.za",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table230.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table230.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = test@testEmail.co.za",
-                        "1",
-                        "Not Email",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 1980
- testRunner.And("the debug inputs as", ((string)(null)), table230, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table231 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table231.AddRow(new string[] {
-                        "[[result]] =  5"});
-#line 1988
- testRunner.And("the debug output as", ((string)(null)), table231, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9573,32 +5386,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 1992
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table232 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table128 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table232.AddRow(new string[] {
+            table128.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table232.AddRow(new string[] {
+            table128.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table232.AddRow(new string[] {
+            table128.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table232.AddRow(new string[] {
+            table128.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table232.AddRow(new string[] {
+            table128.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table232.AddRow(new string[] {
+            table128.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table232.AddRow(new string[] {
+            table128.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
 #line 1993
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table232, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table128, "Given ");
 #line 2002
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2003
@@ -9609,96 +5422,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 2006
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table233 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table233.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table233.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = test@testEmail.co.za",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table233.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = test@testEmail.co.za",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table233.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = test@testEmail.co.za",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table233.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = test@testEmail.co.za",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table233.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table233.AddRow(new string[] {
-                        "",
-                        "[[rs(7).field]] = test@testEmail.co.za",
-                        "1",
-                        "Not Email",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 2007
- testRunner.And("the debug inputs as", ((string)(null)), table233, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table234 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table234.AddRow(new string[] {
-                        "[[result]] =  1,6"});
-#line 2016
- testRunner.And("the debug output as", ((string)(null)), table234, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9714,29 +5437,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 2020
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table235 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table129 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table235.AddRow(new string[] {
+            table129.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table235.AddRow(new string[] {
+            table129.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table235.AddRow(new string[] {
+            table129.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table235.AddRow(new string[] {
+            table129.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table235.AddRow(new string[] {
+            table129.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table235.AddRow(new string[] {
+            table129.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
 #line 2021
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table235, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table129, "Given ");
 #line 2029
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2030
@@ -9747,86 +5470,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 2033
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table236 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table236.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = test@testEmail.co.za",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table236.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = test@testEmail.co.za",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table236.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = test@testEmail.co.za",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table236.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = test@testEmail.co.za",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table236.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = test@testEmail.co.za",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table236.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = test@testEmail.co.za",
-                        "1",
-                        "Not Email",
-                        "Mars",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 2034
- testRunner.And("the debug inputs as", ((string)(null)), table236, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table237 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table237.AddRow(new string[] {
-                        "[[result]] =  -1"});
-#line 2042
- testRunner.And("the debug output as", ((string)(null)), table237, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9840,29 +5483,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 2046
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table238 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table130 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table238.AddRow(new string[] {
+            table130.AddRow(new string[] {
                         "rs().field",
                         "152"});
-            table238.AddRow(new string[] {
+            table130.AddRow(new string[] {
                         "rs().field",
                         "5"});
-            table238.AddRow(new string[] {
+            table130.AddRow(new string[] {
                         "rs().field",
                         "6"});
-            table238.AddRow(new string[] {
+            table130.AddRow(new string[] {
                         "rs().field",
                         "7"});
-            table238.AddRow(new string[] {
+            table130.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table238.AddRow(new string[] {
+            table130.AddRow(new string[] {
                         "rs().field",
                         "5"});
 #line 2047
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table238, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table130, "Given ");
 #line 2055
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2056
@@ -9873,86 +5516,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 2059
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table239 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table239.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = 152",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table239.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = 5",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table239.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = 6",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table239.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = 7",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table239.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table239.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = 5",
-                        "1",
-                        "Not Numeric",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 2060
- testRunner.And("the debug inputs as", ((string)(null)), table239, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table240 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table240.AddRow(new string[] {
-                        "[[result]] =  5"});
-#line 2068
- testRunner.And("the debug output as", ((string)(null)), table240, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9966,32 +5529,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 2072
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table241 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table131 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table241.AddRow(new string[] {
+            table131.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table241.AddRow(new string[] {
+            table131.AddRow(new string[] {
                         "rs().field",
                         "45"});
-            table241.AddRow(new string[] {
+            table131.AddRow(new string[] {
                         "rs().field",
                         "2"});
-            table241.AddRow(new string[] {
+            table131.AddRow(new string[] {
                         "rs().field",
                         "4"});
-            table241.AddRow(new string[] {
+            table131.AddRow(new string[] {
                         "rs().field",
                         "5"});
-            table241.AddRow(new string[] {
+            table131.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table241.AddRow(new string[] {
+            table131.AddRow(new string[] {
                         "rs().field",
                         "5"});
 #line 2073
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table241, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table131, "Given ");
 #line 2082
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2083
@@ -10002,96 +5565,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 2086
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table242 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table242.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table242.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = 45",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table242.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = 2",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table242.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = 4",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table242.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = 5",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table242.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table242.AddRow(new string[] {
-                        "",
-                        "[[rs(7).field]] = 5",
-                        "1",
-                        "Not Numeric",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 2087
- testRunner.And("the debug inputs as", ((string)(null)), table242, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table243 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table243.AddRow(new string[] {
-                        "[[result]] =  1,6"});
-#line 2096
- testRunner.And("the debug output as", ((string)(null)), table243, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10107,29 +5580,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 2101
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table244 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table132 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table244.AddRow(new string[] {
+            table132.AddRow(new string[] {
                         "rs().field",
                         "1"});
-            table244.AddRow(new string[] {
+            table132.AddRow(new string[] {
                         "rs().field",
                         "1"});
-            table244.AddRow(new string[] {
+            table132.AddRow(new string[] {
                         "rs().field",
                         "2"});
-            table244.AddRow(new string[] {
+            table132.AddRow(new string[] {
                         "rs().field",
                         "2"});
-            table244.AddRow(new string[] {
+            table132.AddRow(new string[] {
                         "rs().field",
                         "3"});
-            table244.AddRow(new string[] {
+            table132.AddRow(new string[] {
                         "rs().field",
                         "3"});
 #line 2102
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table244, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table132, "Given ");
 #line 2110
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2111
@@ -10140,86 +5613,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 2114
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table245 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table245.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = 1",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table245.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = 1",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table245.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = 2",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table245.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = 2",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table245.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = 3",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table245.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = 3",
-                        "1",
-                        "Not Numeric",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 2115
- testRunner.And("the debug inputs as", ((string)(null)), table245, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table246 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table246.AddRow(new string[] {
-                        "[[result]] =  -1"});
-#line 2123
-  testRunner.And("the debug output as", ((string)(null)), table246, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10233,29 +5626,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 2127
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table247 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table133 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table247.AddRow(new string[] {
+            table133.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table247.AddRow(new string[] {
+            table133.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table247.AddRow(new string[] {
+            table133.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table247.AddRow(new string[] {
+            table133.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table247.AddRow(new string[] {
+            table133.AddRow(new string[] {
                         "rs().field",
                         "52"});
-            table247.AddRow(new string[] {
+            table133.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 2128
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table247, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table133, "Given ");
 #line 2136
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2137
@@ -10266,86 +5659,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 2140
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table248 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table248.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table248.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table248.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table248.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table248.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = 52",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table248.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = user",
-                        "1",
-                        "Not Text",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 2141
- testRunner.And("the debug inputs as", ((string)(null)), table248, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table249 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table249.AddRow(new string[] {
-                        "[[result]] =  5"});
-#line 2149
- testRunner.And("the debug output as", ((string)(null)), table249, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10359,32 +5672,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 2154
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table250 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table134 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table250.AddRow(new string[] {
+            table134.AddRow(new string[] {
                         "rs().field",
                         "45"});
-            table250.AddRow(new string[] {
+            table134.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table250.AddRow(new string[] {
+            table134.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table250.AddRow(new string[] {
+            table134.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table250.AddRow(new string[] {
+            table134.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table250.AddRow(new string[] {
+            table134.AddRow(new string[] {
                         "rs().field",
                         "741"});
-            table250.AddRow(new string[] {
+            table134.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 2155
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table250, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table134, "Given ");
 #line 2164
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2165
@@ -10395,96 +5708,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 2168
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table251 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table251.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = 45",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table251.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table251.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table251.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table251.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table251.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = 741",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table251.AddRow(new string[] {
-                        "",
-                        "[[rs(7).field]] = user",
-                        "1",
-                        "Not Text",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 2169
- testRunner.And("the debug inputs as", ((string)(null)), table251, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table252 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table252.AddRow(new string[] {
-                        "[[result]] =  1,6"});
-#line 2178
- testRunner.And("the debug output as", ((string)(null)), table252, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10498,29 +5721,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 2182
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table253 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table135 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table253.AddRow(new string[] {
+            table135.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table253.AddRow(new string[] {
+            table135.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table253.AddRow(new string[] {
+            table135.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table253.AddRow(new string[] {
+            table135.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table253.AddRow(new string[] {
+            table135.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table253.AddRow(new string[] {
+            table135.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 2183
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table253, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table135, "Given ");
 #line 2191
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2192
@@ -10531,86 +5754,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 2195
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table254 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table254.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = You",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table254.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = are",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table254.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = the",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table254.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = best",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table254.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table254.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = user",
-                        "1",
-                        "Not Text",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 2196
- testRunner.And("the debug inputs as", ((string)(null)), table254, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table255 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table255.AddRow(new string[] {
-                        "[[result]] =  -1"});
-#line 2204
-  testRunner.And("the debug output as", ((string)(null)), table255, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10624,29 +5767,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 2209
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table256 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table136 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table256.AddRow(new string[] {
+            table136.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table256.AddRow(new string[] {
+            table136.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table256.AddRow(new string[] {
+            table136.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table256.AddRow(new string[] {
+            table136.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table256.AddRow(new string[] {
+            table136.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table256.AddRow(new string[] {
+            table136.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
 #line 2210
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table256, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table136, "Given ");
 #line 2218
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2219
@@ -10657,86 +5800,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 2222
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table257 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table257.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = <test></test>",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table257.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = <test></test>",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table257.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = <test></test>",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table257.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = <test></test>",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table257.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table257.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = <test></test>",
-                        "1",
-                        "Not XML",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 2223
- testRunner.And("the debug inputs as", ((string)(null)), table257, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table258 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table258.AddRow(new string[] {
-                        "[[result]] =  5"});
-#line 2231
- testRunner.And("the debug output as", ((string)(null)), table258, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10750,32 +5813,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 2236
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table259 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table137 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table259.AddRow(new string[] {
+            table137.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table259.AddRow(new string[] {
+            table137.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table259.AddRow(new string[] {
+            table137.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table259.AddRow(new string[] {
+            table137.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table259.AddRow(new string[] {
+            table137.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table259.AddRow(new string[] {
+            table137.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table259.AddRow(new string[] {
+            table137.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
 #line 2237
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table259, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table137, "Given ");
 #line 2246
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2247
@@ -10786,96 +5849,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 2250
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table260 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table260.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table260.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = <test></test>",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table260.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = <test></test>",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table260.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = <test></test>",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table260.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = <test></test>",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table260.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = Warewolf",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table260.AddRow(new string[] {
-                        "",
-                        "[[rs(7).field]] = <test></test>",
-                        "1",
-                        "Not XML",
-                        "Warewolf",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 2251
- testRunner.And("the debug inputs as", ((string)(null)), table260, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table261 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table261.AddRow(new string[] {
-                        "[[result]] =  1,6"});
-#line 2260
- testRunner.And("the debug output as", ((string)(null)), table261, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10889,29 +5862,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 2265
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table262 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table138 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table262.AddRow(new string[] {
+            table138.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table262.AddRow(new string[] {
+            table138.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table262.AddRow(new string[] {
+            table138.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table262.AddRow(new string[] {
+            table138.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table262.AddRow(new string[] {
+            table138.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table262.AddRow(new string[] {
+            table138.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
 #line 2266
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table262, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table138, "Given ");
 #line 2274
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2275
@@ -10922,86 +5895,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 2278
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table263 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "#",
-                        "",
-                        "",
-                        "",
-                        "And",
-                        "Require All Fields To Match",
-                        "Require All Matches To Be True"});
-            table263.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rs(1).field]] = <test></test>",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table263.AddRow(new string[] {
-                        "",
-                        "[[rs(2).field]] = <test></test>",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table263.AddRow(new string[] {
-                        "",
-                        "[[rs(3).field]] = <test></test>",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table263.AddRow(new string[] {
-                        "",
-                        "[[rs(4).field]] = <test></test>",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table263.AddRow(new string[] {
-                        "",
-                        "[[rs(5).field]] = <test></test>",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""});
-            table263.AddRow(new string[] {
-                        "",
-                        "[[rs(6).field]] = <test></test>",
-                        "1",
-                        "Not XML",
-                        "",
-                        "",
-                        "",
-                        "NO",
-                        "NO"});
-#line 2279
- testRunner.And("the debug inputs as", ((string)(null)), table263, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table264 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table264.AddRow(new string[] {
-                        "[[result]] =  -1"});
-#line 2287
- testRunner.And("the debug output as", ((string)(null)), table264, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -11017,61 +5910,61 @@ this.ScenarioSetup(scenarioInfo);
 #line 2291
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table265 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table139 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table265.AddRow(new string[] {
+            table139.AddRow(new string[] {
                         "rs(1).field1",
                         "123"});
-            table265.AddRow(new string[] {
+            table139.AddRow(new string[] {
                         "rs(2).field1",
                         "2"});
-            table265.AddRow(new string[] {
+            table139.AddRow(new string[] {
                         "rs(3).field1",
                         "5"});
 #line 2292
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table265, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table139, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table266 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table140 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table266.AddRow(new string[] {
+            table140.AddRow(new string[] {
                         "rs1(1).field2",
                         "214"});
-            table266.AddRow(new string[] {
+            table140.AddRow(new string[] {
                         "rs1(2).field2",
                         "51"});
-            table266.AddRow(new string[] {
+            table140.AddRow(new string[] {
                         "rs1(3).field2",
                         "56"});
 #line 2297
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table266, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table140, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table267 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table141 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table267.AddRow(new string[] {
+            table141.AddRow(new string[] {
                         "rs2(1).field3",
                         "512"});
-            table267.AddRow(new string[] {
+            table141.AddRow(new string[] {
                         "rs2(2).field3",
                         "84"});
-            table267.AddRow(new string[] {
+            table141.AddRow(new string[] {
                         "rs2(3).field3",
                         "12"});
 #line 2302
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table267, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table141, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table268 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table142 = new TechTalk.SpecFlow.Table(new string[] {
                         "field"});
-            table268.AddRow(new string[] {
+            table142.AddRow(new string[] {
                         "[[rs().field1]]"});
-            table268.AddRow(new string[] {
+            table142.AddRow(new string[] {
                         "[[rs1().field2]]"});
-            table268.AddRow(new string[] {
+            table142.AddRow(new string[] {
                         "[[rs2().field3]]"});
 #line 2307
- testRunner.And("the fields to search is", ((string)(null)), table268, "And ");
+ testRunner.And("the fields to search is", ((string)(null)), table142, "And ");
 #line 2312
  testRunner.And("search the recordset with type \"Contains\" and criteria is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2313
@@ -11101,61 +5994,61 @@ this.ScenarioSetup(scenarioInfo);
 #line 2320
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table269 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table143 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table269.AddRow(new string[] {
+            table143.AddRow(new string[] {
                         "rs(1).field1",
                         "123"});
-            table269.AddRow(new string[] {
+            table143.AddRow(new string[] {
                         "rs(2).field1",
                         "2"});
-            table269.AddRow(new string[] {
+            table143.AddRow(new string[] {
                         "rs(3).field1",
                         "5"});
 #line 2321
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table269, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table143, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table270 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table144 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table270.AddRow(new string[] {
+            table144.AddRow(new string[] {
                         "rs1(1).field2",
                         "214"});
-            table270.AddRow(new string[] {
+            table144.AddRow(new string[] {
                         "rs1(2).field2",
                         "51"});
-            table270.AddRow(new string[] {
+            table144.AddRow(new string[] {
                         "rs1(3).field2",
                         "56"});
 #line 2326
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table270, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table144, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table271 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table145 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table271.AddRow(new string[] {
+            table145.AddRow(new string[] {
                         "rs2(1).field3",
                         "512"});
-            table271.AddRow(new string[] {
+            table145.AddRow(new string[] {
                         "rs2(2).field3",
                         "84"});
-            table271.AddRow(new string[] {
+            table145.AddRow(new string[] {
                         "rs2(3).field3",
                         "12"});
 #line 2331
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table271, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table145, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table272 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table146 = new TechTalk.SpecFlow.Table(new string[] {
                         "field"});
-            table272.AddRow(new string[] {
+            table146.AddRow(new string[] {
                         "[[rs().field1]]"});
-            table272.AddRow(new string[] {
+            table146.AddRow(new string[] {
                         "[[rs1().field2]]"});
-            table272.AddRow(new string[] {
+            table146.AddRow(new string[] {
                         "[[rs2().field3]]"});
 #line 2336
- testRunner.And("the fields to search is", ((string)(null)), table272, "And ");
+ testRunner.And("the fields to search is", ((string)(null)), table146, "And ");
 #line 2341
  testRunner.And("search the recordset with type \"Contains\" and criteria is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2342
@@ -11185,61 +6078,61 @@ this.ScenarioSetup(scenarioInfo);
 #line 2349
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table273 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table147 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table273.AddRow(new string[] {
+            table147.AddRow(new string[] {
                         "AB(1).f1",
                         "123"});
-            table273.AddRow(new string[] {
+            table147.AddRow(new string[] {
                         "AB(2).f1",
                         "2"});
-            table273.AddRow(new string[] {
+            table147.AddRow(new string[] {
                         "AB(3).f1",
                         "5"});
 #line 2350
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table273, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table147, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table274 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table148 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table274.AddRow(new string[] {
+            table148.AddRow(new string[] {
                         "CD(1).f2",
                         "214"});
-            table274.AddRow(new string[] {
+            table148.AddRow(new string[] {
                         "CD(2).f2",
                         "51"});
-            table274.AddRow(new string[] {
+            table148.AddRow(new string[] {
                         "CD(3).f2",
                         "56"});
 #line 2355
- testRunner.And("I have the following recordset to search for multiple criteria", ((string)(null)), table274, "And ");
+ testRunner.And("I have the following recordset to search for multiple criteria", ((string)(null)), table148, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table275 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table149 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table275.AddRow(new string[] {
+            table149.AddRow(new string[] {
                         "EF(1).f3",
                         "512"});
-            table275.AddRow(new string[] {
+            table149.AddRow(new string[] {
                         "EF(2).f3",
                         "84"});
-            table275.AddRow(new string[] {
+            table149.AddRow(new string[] {
                         "EF(3).f3",
                         "12"});
 #line 2360
- testRunner.And("I have the following recordset to search for multiple criteria", ((string)(null)), table275, "And ");
+ testRunner.And("I have the following recordset to search for multiple criteria", ((string)(null)), table149, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table276 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table150 = new TechTalk.SpecFlow.Table(new string[] {
                         "field"});
-            table276.AddRow(new string[] {
+            table150.AddRow(new string[] {
                         "[[AB().f1]]"});
-            table276.AddRow(new string[] {
+            table150.AddRow(new string[] {
                         "[[CD().f2]]"});
-            table276.AddRow(new string[] {
+            table150.AddRow(new string[] {
                         "[[EF().f3]]"});
 #line 2365
- testRunner.And("the fields to search is", ((string)(null)), table276, "And ");
+ testRunner.And("the fields to search is", ((string)(null)), table150, "And ");
 #line 2370
  testRunner.And("search the recordset with type \"Contains\" and criteria is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2371
@@ -11269,61 +6162,61 @@ this.ScenarioSetup(scenarioInfo);
 #line 2378
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table277 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table151 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table277.AddRow(new string[] {
+            table151.AddRow(new string[] {
                         "rs(1).field1",
                         "123"});
-            table277.AddRow(new string[] {
+            table151.AddRow(new string[] {
                         "rs(2).field1",
                         "2"});
-            table277.AddRow(new string[] {
+            table151.AddRow(new string[] {
                         "rs(3).field1",
                         "5"});
 #line 2379
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table277, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table151, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table278 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table152 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table278.AddRow(new string[] {
+            table152.AddRow(new string[] {
                         "rs1(1).field2",
                         "214"});
-            table278.AddRow(new string[] {
+            table152.AddRow(new string[] {
                         "rs1(2).field2",
                         "52"});
-            table278.AddRow(new string[] {
+            table152.AddRow(new string[] {
                         "rs1(3).field2",
                         "56"});
 #line 2384
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table278, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table152, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table279 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table153 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table279.AddRow(new string[] {
+            table153.AddRow(new string[] {
                         "rs2(1).field3",
                         "512"});
-            table279.AddRow(new string[] {
+            table153.AddRow(new string[] {
                         "rs2(2).field3",
                         "82"});
-            table279.AddRow(new string[] {
+            table153.AddRow(new string[] {
                         "rs2(3).field3",
                         "12"});
 #line 2389
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table279, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table153, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table280 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table154 = new TechTalk.SpecFlow.Table(new string[] {
                         "field"});
-            table280.AddRow(new string[] {
+            table154.AddRow(new string[] {
                         "[[rs().field1]]"});
-            table280.AddRow(new string[] {
+            table154.AddRow(new string[] {
                         "[[rs1().field2]]"});
-            table280.AddRow(new string[] {
+            table154.AddRow(new string[] {
                         "[[rs2().field3]]"});
 #line 2394
- testRunner.And("the fields to search is", ((string)(null)), table280, "And ");
+ testRunner.And("the fields to search is", ((string)(null)), table154, "And ");
 #line 2399
  testRunner.And("search the recordset with type \"Contains\" and criteria is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2400
@@ -11351,17 +6244,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 2407
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table281 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table155 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table281.AddRow(new string[] {
+            table155.AddRow(new string[] {
                         "rs().row",
                         "Warewolf"});
-            table281.AddRow(new string[] {
+            table155.AddRow(new string[] {
                         "rs().row",
                         "User"});
 #line 2408
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table281, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table155, "Given ");
 #line 2412
  testRunner.And("field to search is \"[[rs().row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2413
@@ -11371,7 +6264,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 2415
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table282 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table156 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -11381,7 +6274,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table282.AddRow(new string[] {
+            table156.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).row]] = Warewolf",
                         "",
@@ -11391,7 +6284,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table282.AddRow(new string[] {
+            table156.AddRow(new string[] {
                         "",
                         "[[rs(2).row]] = User",
                         "1",
@@ -11402,14 +6295,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 2416
- testRunner.And("the debug inputs as", ((string)(null)), table282, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table156, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table283 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table157 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table283.AddRow(new string[] {
+            table157.AddRow(new string[] {
                         "[[result]] =  -1"});
 #line 2420
- testRunner.And("the debug output as", ((string)(null)), table283, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table157, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

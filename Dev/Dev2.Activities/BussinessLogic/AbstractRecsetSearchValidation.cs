@@ -26,6 +26,16 @@ namespace Dev2.DataList
     /// </summary>
     public abstract class AbstractRecsetSearchValidation : IFindRecsetOptions
     {
+        public virtual Func<DataASTMutable.WarewolfAtom, bool> GenerateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> from,IEnumerable<DataASTMutable.WarewolfAtom> to, bool all)
+        {
+            return CreateFunc(values,from,to,all);
+        }
+
+        public virtual Func<DataASTMutable.WarewolfAtom, bool> CreateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> from, IEnumerable<DataASTMutable.WarewolfAtom> to, bool all)
+        {
+            return null;
+        }
+
         /// <summary>
         /// Checks the validity of the input argument and returns the fields in a list of strings
         /// </summary>
@@ -200,7 +210,7 @@ namespace Dev2.DataList
         public abstract Func<IList<string>> BuildSearchExpression( IList<RecordSetSearchPayload> sourceList, IRecsetSearch to);
         public abstract string HandlesType();
 
-        public virtual  Func<DataASTMutable.WarewolfAtom, bool> GenerateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values)
+        public virtual  Func<DataASTMutable.WarewolfAtom, bool> GenerateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, bool all)
         {
             return values.Contains;
         }
