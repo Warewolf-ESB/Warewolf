@@ -46,6 +46,9 @@ namespace Warewolf.Storage
 
         IEnumerable<RecordSetSearchPayload> EvalWithPositionsForSearch(string exp);
 
+        IEnumerable<DataASTMutable.WarewolfAtom> EvalAsList(string searchCriteria);
+
+        IEnumerable<int> EnvalWhere(string expression, Func<DataASTMutable.WarewolfAtom, bool> clause);
     }
     public class ExecutionEnvironment : IExecutionEnvironment
     {
@@ -270,6 +273,26 @@ namespace Warewolf.Storage
         public IEnumerable<RecordSetSearchPayload> EvalWithPositionsForSearch(string exp)
         {
             return PublicFunctions.EvalEnvExpressionWithPositions(exp, _env);
+        }
+
+        public IEnumerable<DataASTMutable.WarewolfAtom> EvalAsList(string expression)
+        {
+            var result = Eval(expression);
+            if (result.IsWarewolfAtomResult)
+            {
+                // ReSharper disable PossibleNullReferenceException
+                var x = (result as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult).Item;
+                // ReSharper restore PossibleNullReferenceException
+                return new List<DataASTMutable.WarewolfAtom> { x };
+            }
+            else
+            {
+                // ReSharper disable PossibleNullReferenceException
+                // ReSharper disable PossibleNullReferenceException
+                var x = (result as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult).Item;
+                // ReSharper restore PossibleNullReferenceException
+                return x.ToList();
+            }
         }
 
         public IEnumerable<int> EnvalWhere (string expression , Func<DataASTMutable.WarewolfAtom,bool> clause)

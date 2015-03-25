@@ -71,10 +71,7 @@ namespace Dev2.DataList
         }
 
 
-        public Func<DataASTMutable.WarewolfAtom, bool> GenerateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values)
-        {
-            return (a) => values.Contains(a);
-        }
+
         public override string HandlesType()
         {
             return "Contains";

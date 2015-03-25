@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Data.Binary_Objects;
@@ -198,5 +199,10 @@ namespace Dev2.DataList
 
         public abstract Func<IList<string>> BuildSearchExpression( IList<RecordSetSearchPayload> sourceList, IRecsetSearch to);
         public abstract string HandlesType();
+
+        public virtual  Func<DataASTMutable.WarewolfAtom, bool> GenerateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values)
+        {
+            return values.Contains;
+        }
     }
 }
