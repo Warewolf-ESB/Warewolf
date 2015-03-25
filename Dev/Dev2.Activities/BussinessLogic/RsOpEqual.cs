@@ -15,7 +15,6 @@ using System.Globalization;
 using System.Linq;
 using Dev2.Common;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.DataList
 {
@@ -77,10 +76,20 @@ namespace Dev2.DataList
             return result;
         }
 
-        public override Func<DataASTMutable.WarewolfAtom, bool> GenerateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values)
+        #region Overrides of AbstractRecsetSearchValidation
+
+        public override Func<DataASTMutable.WarewolfAtom, bool> CreateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> warewolfAtoms, IEnumerable<DataASTMutable.WarewolfAtom> to, bool all)
         {
-            return (a) => values.Contains(a);
+            if (all)
+                return (a) => values.All(x => a.ToString().ToLower(CultureInfo.InvariantCulture) == x.ToString().ToLower(CultureInfo.InvariantCulture));
+            return (a) => values.Any(x => a.ToString().ToLower(CultureInfo.InvariantCulture) == x.ToString().ToLower(CultureInfo.InvariantCulture));
+
         }
+
+        #endregion
+
+
+
 
         public override string HandlesType()
         {

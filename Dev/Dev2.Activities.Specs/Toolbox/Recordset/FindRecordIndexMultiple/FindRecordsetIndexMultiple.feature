@@ -141,15 +141,15 @@ Scenario: Find an index of data in a recordset with Is Base64
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 4
 	And the execution has "NO" error
-	And the debug inputs as
-	|     #      |                                | # |           |  |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = You          |   |           |  |  |     |                             |                                |
-	|           | [[rs(2).field]] = are          |   |           |  |  |     |                             |                                |
-	|           | [[rs(3).field]] = the          |   |           |  |  |     |                             |                                |
-	|           | [[rs(4).field]] = d2FyZXdvbGY= | 1 | Is Base64 |  |  |     | NO                          | NO                             |
-	And the debug output as
-	|                 |
-	| [[result]] = 4 |
+#	And the debug inputs as
+#	|     #      |                                | # |           |  |  | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = You          |   |           |  |  |     |                             |                                |
+#	|           | [[rs(2).field]] = are          |   |           |  |  |     |                             |                                |
+#	|           | [[rs(3).field]] = the          |   |           |  |  |     |                             |                                |
+#	|           | [[rs(4).field]] = d2FyZXdvbGY= | 1 | Is Base64 |  |  |     | NO                          | NO                             |
+#	And the debug output as
+#	|                 |
+#	| [[result]] = 4 |
 
 Scenario: Find an index of data in a recordset with Is Binary
 	Given I have the following recordset to search for multiple criteria
@@ -163,15 +163,15 @@ Scenario: Find an index of data in a recordset with Is Binary
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 4
 	And the execution has "NO" error
-	And the debug inputs as
-	| #          |                                | # |           |  |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = You          |   |           |  |  |     |                             |                                |
-	|           | [[rs(2).field]] = are          |   |           |  |  |     |                             |                                |
-	|           | [[rs(3).field]] = the          |   |           |  |  |     |                             |                                |
-	|           | [[rs(4).field]] = 101011110010 | 1 | Is Binary |  |  |     | NO                          | NO                             |
-	And the debug output as
-	|                 |
-	| [[result]] = 4 |
+#	And the debug inputs as
+#	| #          |                                | # |           |  |  | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = You          |   |           |  |  |     |                             |                                |
+#	|           | [[rs(2).field]] = are          |   |           |  |  |     |                             |                                |
+#	|           | [[rs(3).field]] = the          |   |           |  |  |     |                             |                                |
+#	|           | [[rs(4).field]] = 101011110010 | 1 | Is Binary |  |  |     | NO                          | NO                             |
+#	And the debug output as
+#	|                 |
+#	| [[result]] = 4 |
 
 Scenario: Find an index of data in a recordset with Is Hex
 	Given I have the following recordset to search for multiple criteria

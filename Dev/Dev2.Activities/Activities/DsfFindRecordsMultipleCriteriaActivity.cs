@@ -29,6 +29,7 @@ using Dev2.Enums;
 using Dev2.Interfaces;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -108,6 +109,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
                 IList<string> toSearch = FieldsToSearch.Split(',');
+                List<int> results = new List<int>();
                 //if(dataObject.IsDebugMode())
                 //{
                 //    AddDebugInputValues(dataObject, toSearch, compiler, executionId, ref errorResultTo);
@@ -115,28 +117,42 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 foreach(var searchvar in toSearch)
                 {
                     Func<DataASTMutable.WarewolfAtom, bool> func = null;
-                    foreach(FindRecordsTO to in ResultsCollection)
+                    foreach(FindRecordsTO to in ResultsCollection.Where(a=> !String.IsNullOrEmpty(a.SearchType)))
                     {
                         var right = env.EvalAsList(to.SearchCriteria);
+                        IEnumerable<DataASTMutable.WarewolfAtom> from = new List<DataASTMutable.WarewolfAtom>();
+                        IEnumerable<DataASTMutable.WarewolfAtom> tovalue = new List<DataASTMutable.WarewolfAtom>(); 
+                        if(!String.IsNullOrEmpty(to.From))
+                         from = env.EvalAsList(to.From);
+                        if (!String.IsNullOrEmpty(to.To))
+                            tovalue = env.EvalAsList(to.To);
                         if (func == null)
                         {
-                            func = CreateFuncFromOperator(to.SearchType, right, MatchCase);
+                            func = CreateFuncFromOperator(to.SearchType, right, from,tovalue ,MatchCase);
                         }
                         else
                         {
                             if(RequireAllTrue)
-                            func = CombineFuncAnd(func,to.SearchType, right, MatchCase);
+                                func = CombineFuncAnd(func, to.SearchType, right, from, tovalue, MatchCase);
                             else
                             {
-                                func = CombineFuncOr(func, to.SearchType, right, MatchCase); 
+                                func = CombineFuncOr(func, to.SearchType, right, from, tovalue, MatchCase); 
                             }
                         }
-                        var output = env.EnvalWhere(searchvar, func);
-                        var resultintermediate = String.Join(",", output);
+                        
+                       
    
-                    }  
+                    }
+                    var output = env.EnvalWhere(dataObject.Environment.ToStar(searchvar), func);
+                    results.AddRange(output);
+                   
                 }
-
+                var res =String.Join(",", results);
+                env.Assign(Result, res);
+                if(dataObject.IsDebugMode())
+                {
+                    AddDebugOutputItem(new DebugItemWarewolfAtomResult(String.Join(",",env.EvalAsListOfStrings(Result)),"Result"));
+                }
                 //IEnumerable<string> resultsDuringSearch = new List<string>();
                 //var currenSearchResults = new List<string>();
                 //IDev2IteratorCollection itrCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
@@ -329,31 +345,31 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     //    }
                     //}
 
-                    //DispatchDebugState(context, StateType.Before);
-                    //DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(context, StateType.Before);
+                    DispatchDebugState(context, StateType.After);
                 }
             }
         }
 
-        Func<DataASTMutable.WarewolfAtom, bool> CombineFuncAnd(Func<DataASTMutable.WarewolfAtom, bool> func, string searchType, IEnumerable<DataASTMutable.WarewolfAtom> values, bool matchCase)
+        Func<DataASTMutable.WarewolfAtom, bool> CombineFuncAnd(Func<DataASTMutable.WarewolfAtom, bool> func,string searchType,IEnumerable<DataASTMutable.WarewolfAtom> values,IEnumerable<DataASTMutable.WarewolfAtom> from,IEnumerable<DataASTMutable.WarewolfAtom> to, bool matchcase)
         {
-            var func2 = CreateFuncFromOperator(searchType, values, matchCase);
+            var func2 = CreateFuncFromOperator(searchType, values,from,to, matchcase);
             return new Func<DataASTMutable.WarewolfAtom, bool>(a=> func.Invoke(a) && func2.Invoke(a));
         }
 
-        Func<DataASTMutable.WarewolfAtom, bool> CombineFuncOr(Func<DataASTMutable.WarewolfAtom, bool> func, string searchType, IEnumerable<DataASTMutable.WarewolfAtom> values, bool matchCase)
+        Func<DataASTMutable.WarewolfAtom, bool> CombineFuncOr(Func<DataASTMutable.WarewolfAtom, bool> func,string searchType,IEnumerable<DataASTMutable.WarewolfAtom> values,IEnumerable<DataASTMutable.WarewolfAtom> from,IEnumerable<DataASTMutable.WarewolfAtom> to, bool matchcase)
         {
-            var func2 = CreateFuncFromOperator(searchType, values, matchCase);
+            var func2 = CreateFuncFromOperator(searchType, values,from,to, matchcase);
             return new Func<DataASTMutable.WarewolfAtom, bool>(a => func.Invoke(a) || func2.Invoke(a));
             //return new Func<DataASTMutable.WarewolfAtom, bool>((a => { return func.Invoke(a) || func2.Invoke(a); }));
         }
 
 
-        Func<DataASTMutable.WarewolfAtom,bool> CreateFuncFromOperator(string searchType,IEnumerable<DataASTMutable.WarewolfAtom> values, bool Matchcase )
+        Func<DataASTMutable.WarewolfAtom,bool> CreateFuncFromOperator(string searchType,IEnumerable<DataASTMutable.WarewolfAtom> values,IEnumerable<DataASTMutable.WarewolfAtom> from,IEnumerable<DataASTMutable.WarewolfAtom> to, bool matchcase )
         {
 
             IFindRecsetOptions opt = FindRecsetOptions.FindMatch(searchType);
-            return opt.GenerateFunc(values);
+            return opt.GenerateFunc(values, from,to,RequireAllFieldsToMatch);
         }
 
         private void ValidateRequiredFields(SearchTO searchTo, out ErrorResultTO errors)
@@ -410,6 +426,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddDebugInputItem(new DebugItemStaticDataParams(RequireAllTrue ? "YES" : "NO", "Require All Matches To Be True"));
             }
         }
+
+        #region Overrides of DsfNativeActivity<string>
+
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env)
+        {
+            return _debugOutputs;
+        }
+
+        #endregion
 
         #region Private Methods
 
