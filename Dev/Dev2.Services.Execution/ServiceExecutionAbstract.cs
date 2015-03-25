@@ -317,7 +317,7 @@ namespace Dev2.Services.Execution
                     var formattedPayload = formater != null
                             ? formater.Format(result).ToString()
                             : result;
-                    PushXmlIntoEnvironment(formattedPayload,InstanceOutputDefintions);
+                    PushXmlIntoEnvironment(formattedPayload);
                 }
             }
             catch (Exception ex)
@@ -385,7 +385,7 @@ namespace Dev2.Services.Execution
         }
 
 
-        public void PushXmlIntoEnvironment(string input, string outputDefs)
+        public void PushXmlIntoEnvironment(string input)
         {
 
             if (input != string.Empty)
@@ -404,7 +404,8 @@ namespace Dev2.Services.Execution
                         IDictionary<string, int> indexCache = new Dictionary<string, int>();
 
                         // BUG 9626 - 2013.06.11 - TWR: refactored for recursion
-                        TryConvert(children, indexCache);
+                        var outputDefs = DataListFactory.CreateOutputParser().Parse(InstanceOutputDefintions);
+                        TryConvert(children, outputDefs, indexCache);
                     }
                 }
                 catch (Exception e)
@@ -417,7 +418,7 @@ namespace Dev2.Services.Execution
                 }
             }
         }
-      void TryConvert(XmlNodeList children, IDictionary<string, int> indexCache, int level = 0)
+      void TryConvert(XmlNodeList children, IList<IDev2Definition> outputDefs, IDictionary<string, int> indexCache, int level = 0)
         {
             // spin through each element in the XML
             foreach(XmlNode c in children)
@@ -429,6 +430,14 @@ namespace Dev2.Services.Execution
                     try
                     {
                         warewolfEvalResult = DataObj.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(c.Name));
+                        if (warewolfEvalResult.IsWarewolfAtomResult)
+                        {
+                            var checkNullResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                            if (checkNullResult != null && checkNullResult.Item.IsNothing)
+                            {
+                                warewolfEvalResult = null;
+                            }
+                        }
                     }
                     catch (Exception e)
                     {
@@ -484,7 +493,7 @@ namespace Dev2.Services.Execution
                         if(level == 0)
                         {
                             // Only recurse if we're at the first level!!
-                            TryConvert(c.ChildNodes, indexCache, ++level);
+                            TryConvert(c.ChildNodes,outputDefs, indexCache, ++level);
                         }                        
                     }
                 }
