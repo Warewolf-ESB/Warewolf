@@ -11,10 +11,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Data;
@@ -159,7 +157,7 @@ namespace Dev2.Services.Execution
                 List<MethodParameter> inputs = method.Parameters;
                 if (inputs.Count == 0)
                 {
-                    ExecuteServiceAndMergeResultIntoDataList(outputFormatter,out invokeErrors);
+                    ExecuteService(Service.Method.Parameters, out invokeErrors, outputFormatter);
                     errors.MergeErrors(invokeErrors);
                 }
                 else
@@ -178,7 +176,7 @@ namespace Dev2.Services.Execution
                             var definitions = dev2Definitions as IDev2Definition[] ?? dev2Definitions.ToArray();
                             if (definitions.Count() == 1)
                             {
-                                toInject = Data.Util.DataListUtil.AddBracketsToValueIfNotExist(definitions[0].RawValue);    
+                                toInject = DataListUtil.AddBracketsToValueIfNotExist(definitions[0].RawValue);    
                             }
                             
                         }
@@ -194,8 +192,7 @@ namespace Dev2.Services.Execution
 
                     while (itrCollection.HasMoreData())
                     {
-                        ExecuteServiceAndMergeResultIntoDataList(outputFormatter, compiler, itrCollection, itrs,
-                            out invokeErrors);
+                        ExecuteService(Service.Method.Parameters, itrCollection, itrs, out invokeErrors, outputFormatter);                        
                         errors.MergeErrors(invokeErrors);
                     }
                 }
@@ -217,46 +214,11 @@ namespace Dev2.Services.Execution
 
         #region ExecuteServiceAndMergeResultIntoDataList
 
-        private void ExecuteServiceAndMergeResultIntoDataList(IOutputFormatter outputFormatter,
-            IDataListCompiler compiler, IWarewolfListIterator itrCollection,
-            IEnumerable<string> itrs, out ErrorResultTO errors)
-        {
-            errors = new ErrorResultTO();
-            ErrorResultTO invokeErrors;
-
-            object response = ExecuteService(Service.Method.Parameters, itrCollection, itrs, out invokeErrors,
-                outputFormatter);
-            errors.MergeErrors(invokeErrors);
-            if (errors.HasErrors())
-            {
-                return;
-            }
-
-            MergeResultIntoDataList(compiler, outputFormatter, response, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-        }
-        
-        private void ExecuteServiceAndMergeResultIntoDataList(IOutputFormatter outputFormatter, out ErrorResultTO errors)
-        {
-            errors = new ErrorResultTO();
-            ErrorResultTO invokeErrors;
-
-            ExecuteService(Service.Method.Parameters, out invokeErrors,outputFormatter);
-            errors.MergeErrors(invokeErrors);
-            if (errors.HasErrors())
-            {
-                return;
-            }
-
-            
-            errors.MergeErrors(invokeErrors);
-        }
-
         #endregion
 
         #region ExecuteService
 
-        private object ExecuteService(IList<MethodParameter> methodParameters, IWarewolfListIterator itrCollection,
+        private void ExecuteService(IList<MethodParameter> methodParameters, IWarewolfListIterator itrCollection,
             IEnumerable<string> itrs, out ErrorResultTO errors, IOutputFormatter formater = null)
         {
             errors = new ErrorResultTO();
@@ -286,13 +248,11 @@ namespace Dev2.Services.Execution
                 ErrorResultTO invokeErrors;
                 ExecuteService(methodParameters,out invokeErrors, formater);
                 errors.MergeErrors(invokeErrors);
-                return Guid.NewGuid();
             }
             catch (Exception ex)
             {
                 errors.AddError(string.Format("Service Execution Error: {0}", ex.Message));
             }
-            return null;
         }
         
         private void ExecuteService(IEnumerable<MethodParameter> methodParameters, out ErrorResultTO errors, IOutputFormatter formater = null)
@@ -330,61 +290,6 @@ namespace Dev2.Services.Execution
 
         #region MergeResultIntoDataList
 
-        private void MergeResultIntoDataList(IDataListCompiler compiler, IOutputFormatter outputFormatter, object result,
-            out ErrorResultTO errors)
-        {
-            errors = new ErrorResultTO();
-
-            // NOTE : This is only used by Plugin Services and is 1 of 4 locations that now needs to be updated should the DataList or execution model change ;)
-
-            // Format the XML data
-            if (RequiresFormatting)
-            {
-                if (result == null)
-                {
-                    return;
-                }
-
-                try
-                {
-                    errors = new ErrorResultTO();
-                    ErrorResultTO invokeErrors;
-                    string formattedPayload = result.ToString();
-
-                    if (!HandlesOutputFormatting)
-                    {
-                        formattedPayload = outputFormatter != null
-                            ? outputFormatter.Format(result).ToString()
-                            : result.ToString();
-                    }
-
-                    // Create a shape from the service action outputs
-                    StringBuilder dlShape = compiler.ShapeDev2DefinitionsToDataList(Service.OutputSpecification,
-                        enDev2ArgumentType.Output, false, out invokeErrors);
-                    errors.MergeErrors(invokeErrors);
-
-                    // Push formatted data into a datalist using the shape from the service action outputs
-                    Guid shapeDataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
-                        formattedPayload.ToStringBuilder(), dlShape, out invokeErrors);
-                    errors.MergeErrors(invokeErrors);
-
-                    // This merge op is killing the alias data....
-                    // We need to account for alias ops too ;)
-                    compiler.SetParentID(shapeDataListID, DataObj.DataListID);
-
-                    compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags),
-                        InstanceOutputDefintions, InstanceOutputDefintions, shapeDataListID, out invokeErrors);
-                    errors.MergeErrors(invokeErrors);
-                }
-                catch (Exception)
-                {
-                    errors.AddError(
-                        "Data Format Error : It is likely that you tested with one format yet the service is returning another. IE you tested with XML and it now returns JSON");
-                }
-            }
-        }
-
-
         public void PushXmlIntoEnvironment(string input)
         {
 
@@ -392,7 +297,7 @@ namespace Dev2.Services.Execution
             {
                 try
                 {
-                    string toLoad = Data.Util.DataListUtil.StripCrap(input); // clean up the rubish ;)
+                    string toLoad = DataListUtil.StripCrap(input); // clean up the rubish ;)
                     XmlDocument xDoc = new XmlDocument();
                     toLoad = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), toLoad);
                     xDoc.LoadXml(toLoad);
@@ -445,7 +350,10 @@ namespace Dev2.Services.Execution
                     }
                     if(warewolfEvalResult!=null)
                     {
-                        if (warewolfEvalResult.IsWarewolfAtomListresult)
+                        var c1 = c;
+                        var recSetName = outputDefs.Where(definition => definition.RecordSetName == c1.Name);
+                        var dev2Definitions = recSetName as IDev2Definition[] ?? recSetName.ToArray();
+                        if (dev2Definitions.Count()!=0)
                         {
                             // fetch recordset index
                             int fetchIdx;
@@ -455,27 +363,25 @@ namespace Dev2.Services.Execution
                             foreach(XmlNode subc in nl)
                             {
                                 // Extract column being mapped to ;)
-
-//                                var theCol = entry.Columns.FirstOrDefault(col => col.ColumnName == subc.Name);
-//                                var dir = enDev2ColumnArgumentDirection.None;
-//                                if(theCol != null)
-//                                {
-//                                    dir = theCol.ColumnIODirection;
-//                                }
-//
+                                foreach(var definition in dev2Definitions)
+                                {
+                                    if (definition.MapsTo == subc.Name)
+                                    {
+                                        DataObj.Environment.Assign(definition.RawValue, subc.InnerXml);
+                                    }
+                                }                              
 //                                if(CanMapValue(onlyMapInputs, dir))
 //                                {
 //                                    entry.TryPutRecordItemAtIndex(Dev2BinaryDataListFactory.CreateBinaryItem(subc.InnerXml, c.Name, subc.Name, idx), idx, out error);
 //                                }
-                                var displayExpression = Data.Util.DataListUtil.AddBracketsToValueIfNotExist(Data.Util.DataListUtil.CreateRecordsetDisplayValue(c.Name, subc.Name, idx.ToString()));
-                                DataObj.Environment.Assign(displayExpression, subc.InnerXml);
+                                
                             }
                             // update this recordset index
                             indexCache[c.Name] = ++idx;
                         }
                         else if (warewolfEvalResult.IsWarewolfAtomResult)
                         {
-                            DataObj.Environment.Assign(Data.Util.DataListUtil.AddBracketsToValueIfNotExist(c.Name), c.InnerXml);
+                            DataObj.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(c.Name), c.InnerXml);
                         }
 //                        else if(CanMapValue(onlyMapInputs, entry.ColumnIODirection))
 //                        {
