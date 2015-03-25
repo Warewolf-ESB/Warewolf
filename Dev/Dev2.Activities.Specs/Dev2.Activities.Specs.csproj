@@ -165,9 +165,6 @@
     <Compile Include="BaseTypes\FileToolsBase.cs" />
     <Compile Include="BaseTypes\RecordSetBase.cs" />
     <Compile Include="Composition\DBSource\XmlFetch.cs" />
-    <Compile Include="Composition\WorkflowExecution1.feature.cs">
-      <DependentUpon>WorkflowExecution.feature</DependentUpon>
-    </Compile>
     <Compile Include="Composition\WorkflowExecutionSteps.cs" />
     <Compile Include="Explorer\Explorer.feature.cs">
       <AutoGen>True</AutoGen>

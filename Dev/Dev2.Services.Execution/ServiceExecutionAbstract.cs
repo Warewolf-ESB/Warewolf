@@ -430,7 +430,7 @@ namespace Dev2.Services.Execution
                     try
                     {
                         warewolfEvalResult = DataObj.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(c.Name));
-                        if (warewolfEvalResult.IsWarewolfAtomResult)
+                        if (warewolfEvalResult.IsWarewolfAtomResult && level==0)
                         {
                             var checkNullResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
                             if (checkNullResult != null && checkNullResult.Item.IsNothing)

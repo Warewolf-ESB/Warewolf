@@ -109,6 +109,35 @@ Scenario: Workflow with an assign and webservice
 	  | [[Countries(10).CountryID]] = 10           |
 	  | [[Countries(10).Description]] = Azerbaijan |
 
+Scenario: Workflow with an assign and webservice different mappings
+	 Given I have a workflow "TestWebServiceWFDiffMappings"
+	 And "TestWebServiceWFDiffMappings" contains an Assign "Inputs" as
+	  | variable   | value |
+	  | [[ext]]    | json  |
+	  | [[prefix]] | a     |
+	 And "TestWebServiceWFDiffMappings" contains a "webservice" service "InternalCountriesServiceTest" with mappings
+	  | Input to Service | From Variable | Output from Service      | To Variable                 |
+	  | extension        | [[ext]]       | Countries(*).CountryID   | [[MyCountries().CountryID]]   |
+	  | prefix           | [[prefix]]    | Countries(*).Description | [[MyCountries().Description]] |
+	  When "TestWebServiceWFDiffMappings" is executed
+	  Then the workflow execution has "NO" error
+	   And the 'Inputs' in WorkFlow 'TestWebServiceWFDiffMappings' debug inputs as
+	  | # | Variable     | New Value |
+	  | 1 | [[ext]] =    | json      |
+	  | 2 | [[prefix]] = | a         |
+	  And the 'Inputs' in Workflow 'TestWebServiceWFDiffMappings' debug outputs as    
+	  | # |                |
+	  | 1 | [[ext]] = json |
+	  | 2 | [[prefix]] = a |
+	  And the 'InternalCountriesServiceTest' in WorkFlow 'TestWebServiceWFDiffMappings' debug inputs as
+	  |  |
+	  | [[ext]] = json |
+	  | [[prefix]] = a |
+	  And the 'InternalCountriesServiceTest' in Workflow 'TestWebServiceWFDiffMappings' debug outputs as
+	  |                                            |
+	  | [[Countries(10).CountryID]] = 10           |
+	  | [[Countries(10).Description]] = Azerbaijan |
+
 	
 Scenario: Workflow with an assign and remote workflow
 	Given I have a workflow "TestAssignWithRemote"
