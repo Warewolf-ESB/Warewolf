@@ -1142,9 +1142,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 278
 this.ScenarioSetup(scenarioInfo);
 #line 279
-      testRunner.Given("I have \"Unsave 1\" is opened on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("I have \"Unsave 1\" is opened on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 280
-   testRunner.And("I have \"Assign\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I have \"Assign\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
@@ -1168,25 +1168,351 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         ""});
 #line 281
-   testRunner.And("the Variable Names are", ((string)(null)), table16, "And ");
+  testRunner.And("the Variable Names are", ((string)(null)), table16, "And ");
 #line 285
-   testRunner.And("Input hyper link contains \"http://rsaklf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("Input hyper link contains \"http://rsaklf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 286
-   testRunner.And("Input hyper link has No scroll bar", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("Input hyper link has No scroll bar", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 287
-   testRunner.When("I Debug \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.When("I Debug \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 288
-   testRunner.Then("\"Debug input data\" dialogbox is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.Then("\"Debug input data\" dialogbox is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 289
-   testRunner.And(@"I enter ""Var"" value as ""Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll barInput data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll barInput data hyper link has max 3 lines and for bigger data scroll bar""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(@"I enter ""Var"" value as ""Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll barInput data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll barInput data hyper link has max 3 lines and for bigger data scroll bar""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 290
-   testRunner.And("Input hyper link has No scroll bar", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("Input hyper link has No scroll bar", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 291
-   testRunner.When("I Debug \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.When("I Debug \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 292
-   testRunner.Then(@"I enter ""Var"" value as ""Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll barInput data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll barInput data hyper link has max 3 lines and for bigger data scroll bar lines and for bigger data scroll barInput data hyper link has max 3 lines and for bigger data scroll bar lines and for bigger data scroll barInput data hyper link has max 3 lines and for bigger data scroll bar""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.Then(@"I enter ""Var"" value as ""Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll barInput data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll barInput data hyper link has max 3 lines and for bigger data scroll bar lines and for bigger data scroll barInput data hyper link has max 3 lines and for bigger data scroll bar lines and for bigger data scroll barInput data hyper link has max 3 lines and for bigger data scroll bar""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 293
-   testRunner.And("Input hyper link has scroll bar", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("Input hyper link has scroll bar", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Dragging local wf to remote design surface throws an error")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DesignTests")]
+        public virtual void DraggingLocalWfToRemoteDesignSurfaceThrowsAnError()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Dragging local wf to remote design surface throws an error", ((string[])(null)));
+#line 296
+this.ScenarioSetup(scenarioInfo);
+#line 297
+  testRunner.Given("I have \"Unsave 1\" is opened on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 298
+  testRunner.And("I connected to remote server \"Remote\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 299
+  testRunner.When("I open remore design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 300
+  testRunner.Then("\"Unsaves 1 - Remote\" is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 301
+  testRunner.When("I have local workflow \"Workflow\" on \"Unsaves 1 - Remote\" design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 302
+  testRunner.Then("\"Invalid Designer Operation\" popup is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Opening and closing ten unsaved workflows is prompting to save")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DesignTests")]
+        public virtual void OpeningAndClosingTenUnsavedWorkflowsIsPromptingToSave()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening and closing ten unsaved workflows is prompting to save", ((string[])(null)));
+#line 305
+this.ScenarioSetup(scenarioInfo);
+#line 306
+     testRunner.Given("I have \"Unsaved 1\" is opened with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 307
+  testRunner.And("I have \"Unsaved 2\" is opened with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 308
+  testRunner.And("I have \"Unsaved 3\" is opened with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 309
+  testRunner.And("I have \"Unsaved 4\" is opened with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 310
+  testRunner.And("I have \"Unsaved 5\" is opened with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 311
+  testRunner.And("I have \"Unsaved 6\" is opened with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 312
+  testRunner.And("I have \"Unsaved 7\" is opened with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 313
+  testRunner.And("I have \"Unsaved 8\" is opened with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 314
+  testRunner.And("I have \"Unsaved 9\" is opened with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 315
+  testRunner.And("I have \"Unsaved 10\" is opened with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 316
+  testRunner.When("I close all but this at \"Unsaved 10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 317
+  testRunner.Then("Save popup is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("When I swap servers in Settings prompts to save unchanged settings")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DesignTests")]
+        public virtual void WhenISwapServersInSettingsPromptsToSaveUnchangedSettings()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("When I swap servers in Settings prompts to save unchanged settings", ((string[])(null)));
+#line 320
+this.ScenarioSetup(scenarioInfo);
+#line 321
+     testRunner.Given("I have \"settings\" tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 322
+  testRunner.And("I have connected to remote \"Sandbox-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 323
+  testRunner.And("I select \"localhost(Connected)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 324
+  testRunner.And("I have \"Save\" button \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 325
+  testRunner.When("I select \"Sandbox-1\" in settings tab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 326
+  testRunner.Then("\"Settings have changed\" popup is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("When I swap servers in Scheduler prompts to save unchanged settings")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DesignTests")]
+        public virtual void WhenISwapServersInSchedulerPromptsToSaveUnchangedSettings()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("When I swap servers in Scheduler prompts to save unchanged settings", ((string[])(null)));
+#line 329
+this.ScenarioSetup(scenarioInfo);
+#line 330
+     testRunner.Given("I have \"Scheduler\" tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 331
+  testRunner.And("I have connected to remote \"Sandbox-1 (Connected)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 332
+  testRunner.And("I select \"localhost(Connected)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 333
+  testRunner.And("I have \"Save\" button \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 334
+  testRunner.When("I select \"Sandbox-1 (Connected)\" in Scheduler tab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 335
+  testRunner.Then("\"Scheduler Task has changes\" popup is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Studio closes when unsaved designs surfaces are open prompts to save")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DesignTests")]
+        public virtual void StudioClosesWhenUnsavedDesignsSurfacesAreOpenPromptsToSave()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Studio closes when unsaved designs surfaces are open prompts to save", ((string[])(null)));
+#line 338
+this.ScenarioSetup(scenarioInfo);
+#line 339
+     testRunner.Given("I have \"Unsavd 1\" opened in design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 340
+  testRunner.And("I have \"Unsaved 2\" is opened with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 341
+  testRunner.And("I have \"Unsaved 3\" is opened with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 342
+  testRunner.And("I have \"Unsaved 4\" is opened with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 343
+  testRunner.And("I have \"Unsaved 5\" is opened with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 344
+  testRunner.When("i close the studio", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 345
+  testRunner.Then("\"Save\" popup is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Studio Resumes")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DesignTests")]
+        public virtual void StudioResumes()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Studio Resumes", ((string[])(null)));
+#line 348
+this.ScenarioSetup(scenarioInfo);
+#line 349
+     testRunner.Given("I have \"workflow\" opened with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 350
+  testRunner.And("I have \"SDBervice\" opened with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 351
+  testRunner.And("I have \"Settings\" opened with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 352
+  testRunner.And("I have \"Scheduler\" opened with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 353
+  testRunner.And("I have \"WebService\" opened with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 354
+  testRunner.And("i have \"Unsaved 1 \" is opened with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 355
+  testRunner.When("i restart the studio", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 356
+  testRunner.Then("I have \"workflow\" opened with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 357
+  testRunner.And("I have \"SDBervice\" opened with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 358
+  testRunner.And("I have \"Settings\" opened with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 359
+  testRunner.And("I have \"Scheduler\" opened with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 360
+  testRunner.And("I have \"WebService\" opened with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 361
+  testRunner.And("i have \"Unsaved 1 \" is opened with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Floating the unsaved design surface and click on save")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DesignTests")]
+        public virtual void FloatingTheUnsavedDesignSurfaceAndClickOnSave()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Floating the unsaved design surface and click on save", ((string[])(null)));
+#line 365
+this.ScenarioSetup(scenarioInfo);
+#line 366
+      testRunner.Given("I have \"Unbsaved 1\" opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 367
+   testRunner.And("I have \"Assign\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 368
+   testRunner.And("I have \"Data Merge\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 369
+   testRunner.When("I Float the \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 370
+   testRunner.Then("focus is at \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 371
+   testRunner.And("Design surface name is \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 372
+   testRunner.And("I have \"Assign\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 373
+   testRunner.And("I have \"Data Merge\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 374
+   testRunner.When("I Debug \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 375
+   testRunner.And("variable list is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 376
+   testRunner.Then("debug output is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 377
+   testRunner.And("Save is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 378
+   testRunner.When("I click on \"Save\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 379
+   testRunner.Then("\"save\" dialogbox is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 380
+   testRunner.When("I save as \"Floating\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 381
+   testRunner.Then("the \"Unsaved 1\" is updated as \"Floating\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Save enables depends on focus when Floating design surface and settings")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DesignTests")]
+        public virtual void SaveEnablesDependsOnFocusWhenFloatingDesignSurfaceAndSettings()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Save enables depends on focus when Floating design surface and settings", ((string[])(null)));
+#line 384
+this.ScenarioSetup(scenarioInfo);
+#line 385
+     testRunner.Given("I have \"Unsave 1\" is opened on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 386
+     testRunner.And("I have \"Assign\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 387
+     testRunner.And("I have \"Settings\" opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 388
+     testRunner.When("I Float the \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 389
+     testRunner.And("I Float the \"Settings\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 390
+     testRunner.When("I have focus at \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 391
+  testRunner.Then("Save is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 392
+  testRunner.When("I have focus at \"Settings\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 393
+  testRunner.Then("Save is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Floating all the screens and minimizing")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DesignTests")]
+        public virtual void FloatingAllTheScreensAndMinimizing()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Floating all the screens and minimizing", ((string[])(null)));
+#line 397
+this.ScenarioSetup(scenarioInfo);
+#line 398
+    testRunner.Given("I have studio running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 399
+ testRunner.And("I have \"Settings\" opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 400
+ testRunner.And("Explorer is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 401
+ testRunner.And("Variable list is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 402
+ testRunner.And("Toolbox is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 403
+ testRunner.When("I float \"Explorer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 404
+ testRunner.Then("explorer has \"Mininize\" option", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 405
+ testRunner.And("explorer has \"Maximize\" option", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 406
+ testRunner.When("i click on explorer \"Mininize\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 407
+ testRunner.Then("explorer is \"Mininmized\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 408
+ testRunner.When("I float \"Toolbox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 409
+ testRunner.Then("Toolbox has \"Mininize\" option", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 410
+ testRunner.And("Toolbox has \"Maximize\" option", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 411
+ testRunner.When("I click on Toolbox \"Mininize\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 412
+ testRunner.Then("Toolbox is \"Mininmized\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 413
+ testRunner.When("I click on toolbox \"Maximize\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 414
+ testRunner.Then("toolbox is \"Maximized\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 415
+ testRunner.When("I click on explorer \"Maximize\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 416
+ testRunner.Then("explorer is \"Maximized\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Floating output is generating debug output")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DesignTests")]
+        public virtual void FloatingOutputIsGeneratingDebugOutput()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Floating output is generating debug output", ((string[])(null)));
+#line 420
+this.ScenarioSetup(scenarioInfo);
+#line 421
+    testRunner.Given("I have \"Unsaved 1\" opened on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 422
+ testRunner.And("I have \"Assign\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 423
+ testRunner.And("I have \"Data Merge\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 424
+ testRunner.And("I float \"Debug Output\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 425
+ testRunner.And("I focused at \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 426
+ testRunner.When("I debug", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 427
+ testRunner.Then("debug output is generated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 428
+ testRunner.And("\"Assign\" is visible in debug output", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 429
+ testRunner.And("\"Data Merge\" is visible in debug output", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
