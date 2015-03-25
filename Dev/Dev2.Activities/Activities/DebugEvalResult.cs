@@ -46,7 +46,7 @@ namespace Dev2.Activities
                     return new DebugItemWarewolfAtomListResult(listResult, "", "", _inputVariable, LabelText, "", "=").GetDebugItemResult();
                 }
             }
-            return null;
+            return new DebugItemStaticDataParams("",_inputVariable,LabelText).GetDebugItemResult();
         }
 
         #endregion

@@ -18,6 +18,7 @@ using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Factories;
 using Dev2.Data.Interfaces;
@@ -26,11 +27,11 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -112,19 +113,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ErrorResultTO allErrors = new ErrorResultTO();
             Guid executionId = DataListExecutionID.Get(context);
 
-            IDev2IteratorCollection iteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
+            IWarewolfListIterator iteratorCollection = new WarewolfListIterator();
 
-            IBinaryDataListEntry expressionsEntryFind = compiler.Evaluate(executionId, enActionType.User, Find, false, out errors);
-            allErrors.MergeErrors(errors);
-            IDev2DataListEvaluateIterator itrFind = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntryFind);
+            var itrFind = new WarewolfIterator(dataObject.Environment.Eval(Find));
+            iteratorCollection.AddVariableToIterateOn(itrFind);
 
-            iteratorCollection.AddIterator(itrFind);
-
-            IBinaryDataListEntry expressionsEntryReplaceWith = compiler.Evaluate(executionId, enActionType.User, ReplaceWith, false, out errors);
-            allErrors.MergeErrors(errors);
-            IDev2DataListEvaluateIterator itrReplace = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntryReplaceWith);
-
-            iteratorCollection.AddIterator(itrReplace);
+            
+            var itrReplace = new WarewolfIterator(dataObject.Environment.Eval(ReplaceWith));
+            iteratorCollection.AddVariableToIterateOn(itrReplace);
+            
             int replacementCount = 0;
             int replacementTotal = 0;
 
@@ -138,8 +135,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if(dataObject.IsDebugMode())
                     {
-                        IBinaryDataListEntry inFieldsEntry = compiler.Evaluate(executionId, enActionType.User, s, false, out errors);
-                        AddDebugInputItem(new DebugItemVariableParams(s, "In Field(s)", inFieldsEntry, executionId));
+                        AddDebugInputItem(new DebugEvalResult(s, "In Field(s)", dataObject.Environment));
                     }
                 }
                 var rule = new IsSingleValueRule(() => Result);
@@ -153,8 +149,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     while(iteratorCollection.HasMoreData())
                     {
                         // now process each field for entire evaluated Where expression....                    
-                        var findValue = iteratorCollection.FetchNextRow(itrFind).TheValue;
-                        var replaceWithValue = iteratorCollection.FetchNextRow(itrReplace).TheValue;
+                        var findValue = iteratorCollection.FetchNextValue(itrFind);
+                        var replaceWithValue = iteratorCollection.FetchNextValue(itrReplace);
                         foreach(string s in toSearch)
                         {
                             if(!DataListUtil.IsEvaluated(s))
@@ -164,34 +160,47 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
                             if(!string.IsNullOrEmpty(findValue))
                             {
-                                IBinaryDataListEntry entryToReplaceIn;
-                                toUpsert = replaceOperation.Replace(executionId, s.Trim(), findValue, replaceWithValue, CaseMatch, toUpsert, out errors, out replacementCount, out entryToReplaceIn);
+                                var warewolfEvalResult = dataObject.Environment.Eval(s.Trim());
+                                if (warewolfEvalResult.IsWarewolfAtomListresult)
+                                {
+                                    var listResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                                    if (listResult != null)
+                                    {
+                                        foreach(var warewolfAtom in listResult.Item)
+                                        {
+                                            var newString = replaceOperation.Replace(warewolfAtom.ToString(), findValue, replaceWithValue, CaseMatch, out errors, out replacementCount);
+                                            dataObject.Environment.Assign(s, newString);
+                                        }
+                                    }
+                                }
+                                else if (warewolfEvalResult.IsWarewolfAtomResult)
+                                {
+                                    var scalarResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                                    if (scalarResult != null)
+                                    {
+                                        var newString = replaceOperation.Replace(scalarResult.Item.ToString(), findValue, replaceWithValue, CaseMatch, out errors, out replacementCount);
+                                        dataObject.Environment.Assign(s, newString); 
+                                    }
+                                }
                             }
 
                             replacementTotal += replacementCount;
 
-                            allErrors.MergeErrors(errors);
                         }
                     }
                 }
                 if(dataObject.IsDebugMode())
                 {
-                    AddDebugInputItem(new DebugItemVariableParams(Find, "Find", expressionsEntryFind, executionId));
-                    AddDebugInputItem(new DebugItemVariableParams(ReplaceWith, "Replace With", expressionsEntryReplaceWith, executionId));
+                    AddDebugInputItem(new DebugEvalResult(Find, "Find", dataObject.Environment));
+                    AddDebugInputItem(new DebugEvalResult(ReplaceWith, "Replace With",dataObject.Environment));
                 }
-
-                toUpsert.Add(Result, replacementTotal.ToString(CultureInfo.InvariantCulture));
+                dataObject.Environment.Assign(Result, replacementTotal.ToString(CultureInfo.InvariantCulture));
 
 
                 // now push the result to the server
-                compiler.Upsert(executionId, toUpsert, out errors);
-                allErrors.MergeErrors(errors);
-                if(dataObject.IsDebugMode() && !allErrors.HasErrors())
+                if (dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
-                    foreach(var debugOutputTo in toUpsert.DebugOutputs)
-                    {
-                        AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
-                    }
+                    AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
                 }
             }
             // ReSharper disable EmptyGeneralCatchClause

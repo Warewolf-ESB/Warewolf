@@ -28,7 +28,7 @@ namespace Dev2.Data.Interfaces
         /// <param name="caseMatch">if set to <c>true</c> [case match].</param>
         /// <param name="payloadBuilder">The payload builder.</param>
         /// <param name="errors">The errors.</param>
-        /// <param name="ReplaceCount">The replace count.</param>
+        /// <param name="replaceCount">The replace count.</param>
         /// <param name="entryToReplaceIn"></param>
         /// <returns></returns>
         IDev2DataListUpsertPayloadBuilder<string> Replace(Guid exIdx,
@@ -38,7 +38,26 @@ namespace Dev2.Data.Interfaces
             bool caseMatch,
             IDev2DataListUpsertPayloadBuilder<string> payloadBuilder,
             out ErrorResultTO errors,
-            out int ReplaceCount,
+            out int replaceCount,
             out IBinaryDataListEntry entryToReplaceIn);
+        
+        /// <summary>
+        /// Replaces a value in and entry with a new value.
+        /// </summary>
+        /// <param name="stringToSearch">The old string.</param>
+        /// <param name="findString">The old string.</param>
+        /// <param name="replacementString">The new string.</param>
+        /// <param name="caseMatch">if set to <c>true</c> [case match].</param>
+        /// <param name="errors">The errors.</param>
+        /// <param name="replaceCount">The replace count.</param>
+        /// <returns></returns>
+        string Replace(
+            string stringToSearch,
+            string findString,
+            string replacementString,
+            bool caseMatch,
+            out ErrorResultTO errors,
+            out int replaceCount
+            );
     }
 }

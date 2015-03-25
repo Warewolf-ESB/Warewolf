@@ -113,7 +113,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
             string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+            GetScalarValueFromEnvironment(result.Environment, ResultVariable,
                                        out actualValue, out error);
             Assert.AreEqual(expectedResult, actualValue);
         }
@@ -125,7 +125,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
             string actualValue;
             value = value.Replace('"', ' ').Trim();
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
+            GetScalarValueFromEnvironment(result.Environment, variable,
                                        out actualValue, out error);
             Assert.AreEqual(value, actualValue);
         }
