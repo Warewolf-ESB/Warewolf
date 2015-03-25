@@ -234,6 +234,11 @@
       <DependentUpon>Replace.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Data\Replace\ReplaceSteps.cs" />
+    <Compile Include="Toolbox\Design Tests\DesignTests.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DesignTests.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox\FileAndFolder\Copy\Copy.feature.cs">
       <DependentUpon>Copy.feature</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -495,6 +500,10 @@
     <None Include="Toolbox\Data\Replace\Replace.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Replace.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Design Tests\DesignTests.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DesignTests.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\FileAndFolder\Copy\Copy.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
