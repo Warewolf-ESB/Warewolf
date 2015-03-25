@@ -38,9 +38,9 @@ namespace Dev2.Data.Operations
 
         #region Methods
 
-        public IDev2DataListUpsertPayloadBuilder<string> Replace(Guid exIdx, string expression, string oldString, string newString, bool caseMatch, IDev2DataListUpsertPayloadBuilder<string> payloadBuilder, out ErrorResultTO errors, out int ReplaceCount, out IBinaryDataListEntry entryToReplaceIn)
+        public IDev2DataListUpsertPayloadBuilder<string> Replace(Guid exIdx, string expression, string oldString, string newString, bool caseMatch, IDev2DataListUpsertPayloadBuilder<string> payloadBuilder, out ErrorResultTO errors, out int replaceCount, out IBinaryDataListEntry entryToReplaceIn)
         {
-            ReplaceCount = 0;
+            replaceCount = 0;
             oldString = oldString.Replace("\\", "\\\\");
             // ReSharper disable RedundantAssignment
             ErrorResultTO allErrors = new ErrorResultTO();
@@ -73,15 +73,15 @@ namespace Dev2.Data.Operations
                     {
                         foreach(IBinaryDataListItem binaryDataListItem in rowList)
                         {
-                            int tmpCount = ReplaceCount;
+                            int tmpCount = replaceCount;
                             string tmpVal = binaryDataListItem.TheValue;
                             if (tmpVal.Contains("\\") && oldString.Contains("\\"))
                             {
                                 tmpVal = tmpVal.Replace("\\","\\\\");
                             }
 
-                            ReplaceCount += regex.Matches(tmpVal).Count;
-                            if(ReplaceCount > tmpCount)
+                            replaceCount += regex.Matches(tmpVal).Count;
+                            if(replaceCount > tmpCount)
                             {
                                 if(entryToReplaceIn.IsRecordset)
                                 {
@@ -106,6 +106,41 @@ namespace Dev2.Data.Operations
             errors = allErrors;
 
             return payloadBuilder;
+        }
+
+        /// <summary>
+        /// Replaces a value in and entry with a new value.
+        /// </summary>
+        /// <param name="stringToSearch">The old string.</param>
+        /// <param name="findString">The old string.</param>
+        /// <param name="replacementString">The new string.</param>
+        /// <param name="caseMatch">if set to <c>true</c> [case match].</param>
+        /// <param name="errors">The errors.</param>
+        /// <param name="replaceCount">The replace count.</param>
+        /// <returns></returns>
+        public string Replace(string stringToSearch, string findString, string replacementString, bool caseMatch, out ErrorResultTO errors, out int replaceCount)
+        {
+            replaceCount = 0;
+            var oldString = stringToSearch.Replace("\\", "\\\\");
+            // ReSharper disable RedundantAssignment
+            ErrorResultTO allErrors = new ErrorResultTO();
+            errors = new ErrorResultTO();
+            // ReSharper restore RedundantAssignment
+            allErrors.MergeErrors(errors);
+
+            var regexOptions = caseMatch ? NoneCompiled : IgnoreCaseCompiled;
+
+            //Massimo Guerrera -  Added the Regex.Escape to escape certain characters - Bug 9937
+            Regex regex = new Regex(Regex.Escape(findString), regexOptions);
+            string tmpVal = oldString;
+            if (tmpVal.Contains("\\") && oldString.Contains("\\"))
+            {
+                tmpVal = tmpVal.Replace("\\", "\\\\");
+            }
+            replaceCount += regex.Matches(tmpVal).Count;
+            var replaceValue = regex.Replace(tmpVal, replacementString);
+            errors = allErrors;
+            return replaceValue;
         }
 
         #endregion
