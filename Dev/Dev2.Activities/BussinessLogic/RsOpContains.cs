@@ -76,8 +76,8 @@ namespace Dev2.DataList
         public override Func<DataASTMutable.WarewolfAtom, bool> CreateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> warewolfAtoms, IEnumerable<DataASTMutable.WarewolfAtom> to, bool all)
         {
             if (all)
-                return (a) => values.All(x => x.ToString().ToLower(CultureInfo.InvariantCulture) .Contains(a.ToString().ToLower(CultureInfo.InvariantCulture)));
-            return (a) => values.Any(x => x.ToString().ToLower(CultureInfo.InvariantCulture).Contains(a.ToString().ToLower(CultureInfo.InvariantCulture)));
+                return (a) => values.All(x => a.ToString().ToLower(CultureInfo.InvariantCulture) .Contains(x.ToString().ToLower(CultureInfo.InvariantCulture)));
+            return (a) => values.Any(x => a.ToString().ToLower(CultureInfo.InvariantCulture).Contains(x.ToString().ToLower(CultureInfo.InvariantCulture)));
         }
 
         #endregion

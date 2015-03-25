@@ -47,3 +47,17 @@ type WarewolfEnvironment =
        RecordSets : Map<string,WarewolfRecordset>;
        Scalar : Map<string,WarewolfAtom>; 
     }
+
+
+let tryParseAtom (data:string) = 
+    let mutable value = 0;
+    let success = System.Int32.TryParse(data,&value)
+    if success then Int value
+    else DataString data
+
+let CompareAtoms (x:WarewolfAtom) (y:WarewolfAtom) = 
+             match (x,y) with
+                                            | ( Int a, Int b ) -> a.CompareTo(b)
+                                            | (Float a, Float b ) -> a.CompareTo(b)
+                                            | (DataString a, DataString b ) -> a.CompareTo(b)
+                                            | (a,b) -> ( a.ToString()).CompareTo( b.ToString())

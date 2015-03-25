@@ -58,6 +58,24 @@ namespace Dev2.DataList
             return result;
         }
 
+
+        public override Func<DataASTMutable.WarewolfAtom, bool> CreateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> warewolfAtoms, IEnumerable<DataASTMutable.WarewolfAtom> to, bool all)
+        {
+            if (all)
+                return (a) => values.All(x =>
+                {
+                    Regex exp = new Regex(x.ToString());
+                    return exp.IsMatch(a.ToString());
+
+                });
+            return (a) => values.Any(x =>
+            {
+                Regex exp = new Regex(x.ToString());
+                return exp.IsMatch(a.ToString());
+
+            });
+        }
+
         public override string HandlesType()
         {
             return "Is Regex";
