@@ -80,6 +80,20 @@ Scenario: Simple workflow executing against the server with a database service
 	 |               |
 	 | [[count]] = 9 |
 
+
+Scenario: Workflow Execution Asynchronous 
+     Given I have a workflow "TestWFWithDBService"
+
+
+
+
+
+
+
+
+
+
+
 Scenario: Workflow with an assign and webservice
 	 Given I have a workflow "TestWebServiceWF"
 	 And "TestWebServiceWF" contains an Assign "Inputs" as
@@ -4247,7 +4261,6 @@ Scenario: Workflow with Assign Unique Tool and testing variables in Returnfield 
 	  | # | Variable         | New Value |
 	  | 1 | [[rs(1).row]] =  | 10        |
 	  | 2 | [[rs(1).data]] = | 10        |
-
 	  And the 'Records1' in Workflow 'workflowithAssignUni' debug outputs as  
 	  | # |                      |
 	  | 1 | [[rs(1).row]] =  10  |
@@ -4259,7 +4272,50 @@ Scenario: Workflow with Assign Unique Tool and testing variables in Returnfield 
       And the 'Unrec' in Workflow 'workflowithAssignUni' debug outputs as  
        |                     |
        | [[rec(1).unique]] = |
-      
+
+	  #Make the spec passed 688
+ Scenario: Executing Asynchrounous testing workflow
+	  Given I have a workflow "Testing - Async Test Master Test"
+	  And "Testing - Async Test Master Test" contains "Testing - Async Test Master" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  When "Testing - Async Test Master Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Random' in WorkFlow 'Testing - Async Test Master' debug inputs as
+	  | Random |
+	  | GUID   | 
+	  And the 'Random' in Workflow 'Testing - Async Test Master' debug outputs as    
+	  |                   |
+	  | [[guid]] = String |
+	  And the 'Read File' in WorkFlow 'Testing - Async Test Master' debug inputs as
+	  | Input Path | Username | Password |
+	  | String     | ""       | ""       |  
+	  And the 'Read File' in Workflow 'Testing - Async Test Master' debug outputs as    
+	  |                    |
+	  | [[res]] = 1 |
+	   And the "Decision" in workflow 'Testing - Async Test Master' debug input as
+	   |                    | Statement | Require All decisions to be True |
+	   | [[Result]] = Int32 |           |                                  |
+	   |                    |           |                                  |
+	   |                    | String    | YES                              |
+	   And the "Decision" in workflow 'Testing - Async Test Master' debug output as 
+	   |      |
+	   | Pass |
+	    And the 'Assign' in WorkFlow 'Testing - Async Test Master' debug inputs as
+	  | # | Variable     | New Value |
+	  | 1 | [[Result]] = | Pass      |
+	  And the 'Assign' in Workflow 'Testing - Async Test Master' debug outputs as  
+	  | # |                      |
+	  | 1 | [[Result]] =  Pass   |
+	   And the 'Delete' in WorkFlow 'Testing - Async Test Master' debug inputs as
+	  | Input Path | Username | Password |
+	  | String     | ""       | ""       |  
+	  And the 'Delete' in Workflow 'Testing - Async Test Master' debug outputs as  
+	  |                      |
+	  | [[result]] = Success |
+
+
+
+	     
 
 Scenario: Executing Utility - Format Number example workflow
 	  Given I have a workflow "Utility - Format Number Test"

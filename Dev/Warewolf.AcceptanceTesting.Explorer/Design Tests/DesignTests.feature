@@ -4,34 +4,45 @@
 	I want to be told the sum of two numbers
 
 @DesignTests
-Scenario: Change mappings and Saving workflow which has dependencies is showing popup
+Scenario: Change mappings of Recordset and expect dependencies popup 
 	Given I have a workflow "MappingWF" is opened on design surface
-	And the "Assign" is "Visible"
-	And the mappings are "visible"
-	And the Variable Names are
+	And I have "Unsaved 1" is opened 
+	And I have "MappingsWF" on "Unsaved 1" design surface 
+	And I focus at "MappingWF"
+	And the "MappingWF" Recordset Variable mappings has
+       | Recordset Name | Delete Visible | Note Visible | Note Highlighted | Input | Output |
+       | rec()          | NO             | Yes          | Yes              |       |        |
+       | rec().a        | NO             | Yes          | Yes              | Yes   |        |
+       | mr()           | NO             | Yes          |                  |       |        |
+       | mr().a         | NO             | Yes          |                  | Yes   |        |
+       |                | No             | No           |                  |       |        |  
+	When I edit "MappingWF" Recordset Variable mappings as
+       | Recordset Name | Delete Visible | Note Visible | Note Highlighted | Input | Output |
+       | rec()          | NO             | Yes          |                  |       |        |
+       | rec().a        | NO             | Yes          | Yes              |       | Yes    |
+       | mr()           | NO             | Yes          |                  |       |        |
+       | mr().a         | NO             | Yes          |                  |       | Yes    |
+       |                | No             | No           |                  |       |        |  
+	And I click on save
+	Then "Inputs/Outputs Changed" popup is "Visible"
+
+
+
+Scenario: Change mappings of scalar and expect dependencies popup 
+	Given I have a workflow "MappingWF" is opened on design surface
+	And I have "Unsaved 1" is opened 
+	And I have "MappingsWF" on "Unsaved 1" design surface 
+	And I focus at "MappingWF"
+	And the "MappingWF" Variable mappings has
 	| Variable Name | Delete Visible | Note Visible | Note Highlighted | Input | Output |
 	| Var           | NO             | Yes          | No               |       | Yes    |
 	|               | NO             | NO           | NO               |       |        |
-	And the Recordset Names are
-	| Recordset Name | Delete Visible | Note Visible | Note Highlighted | Input | Output |
-	| rec()          | NO             | Yes          | Yes              |       |        |
-	| rec().a        | NO             | Yes          | Yes              | Yes   |        |
-	| mr()           | NO             | Yes          |                  |       |        |
-	| mr().a         | NO             | Yes          |                  | Yes   |        |
-	|                | No             | No           |                  |       |        |  
-	When I edit the Variable Names are
+	When I edit "MappingWF" Variable mappings as
 	| Variable Name | Delete Visible | Note Visible | Note Highlighted | Input | Output |
 	| Var           | NO             | Yes          | No               | Yes   |        |
 	|               | NO             | NO           | NO               |       |        |
-	And I edit the Recordset Names are
-	| Recordset Name | Delete Visible | Note Visible | Note Highlighted | Input | Output |
-	| rec()          | NO             | Yes          |                  |       |        |
-	| rec().a        | NO             | Yes          | Yes              |       | Yes    |
-	| mr()           | NO             | Yes          |                  |       |        |
-	| mr().a         | NO             | Yes          |                  |       | Yes    |
-	|                | No             | No           |                  |       |        |  
 	When I click on save
-	Then "Inputs/Outputs Changed" popup is "Displayed"
+	Then "Inputs/Outputs Changed" popup is "Visible"
 
 
 
@@ -62,7 +73,7 @@ Scenario: Mappings out of date mark is visible on workflow service proc
 	| mr().a         | NO             | Yes          |                  |       |        |
 	|                | No             | No           |                  |       |        |  
 	And I click on save
-	Then "Inputs/Outputs Changed" popup is "Displayed"
+	Then "Inputs/Outputs Changed" popup is "Visible"
 	And I have focus on tab "Unsaved 1"
 	And I have "MappingsWF" on "Unsaved 1" design surface
 	And "MappingsWF" proc Mappings out of date is "Visible"
@@ -130,7 +141,7 @@ Scenario: Editing Services which has dependencies is throwing popup
 	| Input       | Default Value | Required Field | Empty is Null |
 	| CountryName |               | Yes            |               |
 	| Prefix      |               | Yes            |               |
-	Then "Inputs/Outputs Changed" popup is "Displayed" 
+	Then "Inputs/Outputs Changed" popup is "Visible" 
 
 
 Scenario: DBService edit option opens dbservice
@@ -158,7 +169,7 @@ Scenario: Service update option is visible on the proc
 	| CountryName | Test          | Yes            |               |
 	| Prefix      | Warewolf      | Yes            |               |
 	And I click on save
-	Then "Inputs/Outputs Changed" popup is "Displayed" 
+	Then "Inputs/Outputs Changed" popup is "Visible" 
 	When I have focus on tab "Unsaved 1"
 	Then I have "Testsrv" on "Unsaved 1" design surface
 	And "Testsrv" proc Mappings out of date is "Visible"
