@@ -15,15 +15,15 @@ Scenario: Find an index of data in a recordset with Is Between numeric
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 3
 	And the execution has "NO" error
-	And the debug inputs as
-	|  #         |                      | # |            |  |    | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = 1  |   |            |  |    |     |                             |                                |
-	|           | [[rs(2).field]] = 15 |   |            |  |    |     |                             |                                |
-	|           | [[rs(3).field]] = 20 |   |            |  |    |     |                             |                                |
-	|           | [[rs(4).field]] = 34 | 1 | Is Between |  | 16 | 33  | NO                          | NO                             |
-	And the debug output as
-	|                 |
-	| [[result]] = 3 |
+#	And the debug inputs as
+#	|  #         |                      | # |            |  |    | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = 1  |   |            |  |    |     |                             |                                |
+#	|           | [[rs(2).field]] = 15 |   |            |  |    |     |                             |                                |
+#	|           | [[rs(3).field]] = 20 |   |            |  |    |     |                             |                                |
+#	|           | [[rs(4).field]] = 34 | 1 | Is Between |  | 16 | 33  | NO                          | NO                             |
+#	And the debug output as
+#	|                 |
+#	| [[result]] = 3 |
 
 Scenario: Find an index of data in an empty recordset
 	Given I have the following recordset to search for multiple criteria
@@ -34,12 +34,12 @@ Scenario: Find an index of data in an empty recordset
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be ""
 	And the execution has "AN" error
-	And the debug inputs as
-	| #           |                   | # |            |  |    | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s) | [[rs(1).value]] = | 1 | Is Between |  | 16 | 33  | NO                          | NO                             |
-	And the debug output as
-	|                  |
-	| [[result]] =  |	
+#	And the debug inputs as
+#	| #           |                   | # |            |  |    | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s) | [[rs(1).value]] = | 1 | Is Between |  | 16 | 33  | NO                          | NO                             |
+#	And the debug output as
+#	|                  |
+#	| [[result]] =  |	
 
 Scenario: Find an index of data in a recordset with a blank from
 	Given I have the following recordset to search for multiple criteria
@@ -97,15 +97,15 @@ Scenario: Find an index of data in a recordset with Is Between DateTime
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 2
 	And the execution has "NO" error
-	And the debug inputs as
-	|  #         |                              | # |            |  |          | And      | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = 5/3/2013   |   |            |  |          |          |                             |                                |
-	|           | [[rs(2).field]] = 2/3/2013   |   |            |  |          |          |                             |                                |
-	|           | [[rs(3).field]] = 7/4/2013   |   |            |  |          |          |                             |                                |
-	|           | [[rs(4).field]] = 11/11/2012 | 1 | Is Between |  | 1/3/2013 | 3/3/2013 | NO                          | NO                             |
-	And the debug output as
-	|                 |
-	| [[result]] = 2 |
+#	And the debug inputs as
+#	|  #         |                              | # |            |  |          | And      | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = 5/3/2013   |   |            |  |          |          |                             |                                |
+#	|           | [[rs(2).field]] = 2/3/2013   |   |            |  |          |          |                             |                                |
+#	|           | [[rs(3).field]] = 7/4/2013   |   |            |  |          |          |                             |                                |
+#	|           | [[rs(4).field]] = 11/11/2012 | 1 | Is Between |  | 1/3/2013 | 3/3/2013 | NO                          | NO                             |
+#	And the debug output as
+#	|                 |
+#	| [[result]] = 2 |
 
 
 
@@ -229,15 +229,15 @@ Scenario: Find an index of data in a recordset with Not Between DateTime
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 2
 	And the execution has "NO" error
-	And the debug inputs as
-	|   #        |                            | # |             |  |          | And      | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = 2/3/2013 |   |             |  |          |          |                             |                                |
-	|           | [[rs(2).field]] = 7/3/2013 |   |             |  |          |          |                             |                                |
-	|           | [[rs(3).field]] = 2/3/2013 |   |             |  |          |          |                             |                                |
-	|           | [[rs(4).field]] = 2/3/2013 | 1 | Not Between |  | 1/3/2013 | 3/3/2013 | NO                          | NO                             |
-	And the debug output as
-	|                 |
-	| [[result]] = 2 |
+#	And the debug inputs as
+#	|   #        |                            | # |             |  |          | And      | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = 2/3/2013 |   |             |  |          |          |                             |                                |
+#	|           | [[rs(2).field]] = 7/3/2013 |   |             |  |          |          |                             |                                |
+#	|           | [[rs(3).field]] = 2/3/2013 |   |             |  |          |          |                             |                                |
+#	|           | [[rs(4).field]] = 2/3/2013 | 1 | Not Between |  | 1/3/2013 | 3/3/2013 | NO                          | NO                             |
+#	And the debug output as
+#	|                 |
+#	| [[result]] = 2 |
 
 Scenario: Find an index of data in a recordset with Not Between numeric
 	Given I have the following recordset to search for multiple criteria
@@ -251,15 +251,15 @@ Scenario: Find an index of data in a recordset with Not Between numeric
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 3
 	And the execution has "NO" error
-	And the debug inputs as
-	|  #         |                       | # |             |  |    | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = 17  |   |             |  |    |     |                             |                                |
-	|           | [[rs(2).field]] = 22  |   |             |  |    |     |                             |                                |
-	|           | [[rs(3).field]] = 400 |   |             |  |    |     |                             |                                |
-	|           | [[rs(4).field]] = 31  | 1 | Not Between |  | 16 | 33  | NO                          | NO                             |
-	And the debug output as
-	|                 |
-	| [[result]] = 3 |
+#	And the debug inputs as
+#	|  #         |                       | # |             |  |    | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = 17  |   |             |  |    |     |                             |                                |
+#	|           | [[rs(2).field]] = 22  |   |             |  |    |     |                             |                                |
+#	|           | [[rs(3).field]] = 400 |   |             |  |    |     |                             |                                |
+#	|           | [[rs(4).field]] = 31  | 1 | Not Between |  | 16 | 33  | NO                          | NO                             |
+#	And the debug output as
+#	|                 |
+#	| [[result]] = 3 |
 
 Scenario: Find an index of data in a recordset with Not Binary
 	Given I have the following recordset to search for multiple criteria
@@ -317,15 +317,15 @@ Scenario: Find an index of data in a recordset with Not Regex
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 4
 	And the execution has "NO" error
-	And the debug inputs as
-	|   #        |                                   | # |           |                                        |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = 999.999.999.999 |   |           |                                        |  |     |                             |                                |
-	|           | [[rs(2).field]] = 999.999.999.999 |   |           |                                        |  |     |                             |                                |
-	|           | [[rs(3).field]] = 999.999.999.999 |   |           |                                        |  |     |                             |                                |
-	|           | [[rs(4).field]] = warewolf        | 1 | Not Regex | \b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b |  |     | NO                          | NO                             |
-	And the debug output as
-	|                 |
-	| [[result]] = 4 |
+#	And the debug inputs as
+#	|   #        |                                   | # |           |                                        |  | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = 999.999.999.999 |   |           |                                        |  |     |                             |                                |
+#	|           | [[rs(2).field]] = 999.999.999.999 |   |           |                                        |  |     |                             |                                |
+#	|           | [[rs(3).field]] = 999.999.999.999 |   |           |                                        |  |     |                             |                                |
+#	|           | [[rs(4).field]] = warewolf        | 1 | Not Regex | \b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b |  |     | NO                          | NO                             |
+#	And the debug output as
+#	|                 |
+#	| [[result]] = 4 |
 
 Scenario: Find an index of data in a recordset with Doesn't Start With
 	Given I have the following recordset to search for multiple criteria
@@ -772,10 +772,10 @@ Scenario: Find an index of data in a recordset search type is Less Or Equal
 	| rs().field | are   |
 	| rs().field | the   |
 	| rs().field | best  |
-	| rs().field | 5     |
+	| rs().field | aaa   |
 	| rs().field | user  |
 	And field to search is "[[rs().field]]"
-	And search the recordset with type "<=" and criteria is "5"
+	And search the recordset with type "<=" and criteria is "aaa"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 5
 	And the execution has "NO" error
@@ -795,10 +795,10 @@ Scenario: Find an index of data in a recordset search type is Less Or Equal mult
 	Given I have the following recordset to search for multiple criteria
 	| rs         | value    |
 	| rs().field | 1        |
-	| rs().field | are      |
-	| rs().field | the      |
-	| rs().field | best     |
-	| rs().field | Warewolf |
+	| rs().field | 7      |
+	| rs().field | 8      |
+	| rs().field | 9     |
+	| rs().field | 10 |
 	| rs().field | 5        |
 	And field to search is "[[rs().field]]"
 	And search the recordset with type "<=" and criteria is "5"
@@ -2413,10 +2413,11 @@ Scenario: Search using a negative index recordset criteria
 	And search the recordset with type "Not XML" and criteria is "[[my(-1).set]]"
 	When the find records index multiple tool is executed
 	Then the execution has "AN" error
-	And the debug inputs as
-	| #           |                          | # |         |                  |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s) | [[rs(1).row]] = Warewolf |   |         |                  |  |     |                             |                                |
-	|             | [[rs(2).row]] = User     | 1 | Not XML | [[my(-1).set]] = |  |     | NO                          | NO                             |
-	And the debug output as
-	|                  |
-	| [[result]] =  -1 |
+#	And the debug inputs as
+#	| #           |                          | # |         |                  |  | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s) | [[rs(1).row]] = Warewolf |   |         |                  |  |     |                             |                                |
+#	|             | [[rs(2).row]] = User     | 1 | Not XML | [[my(-1).set]] = |  |     | NO                          | NO                             |
+#	And the debug output as
+#	|                  |
+#	| [[result]] =  -1 |
+#

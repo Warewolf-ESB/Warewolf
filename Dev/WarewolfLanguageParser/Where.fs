@@ -36,7 +36,7 @@ let rec  EvalWhere  (env: WarewolfEnvironment) (lang:string) (func: WarewolfAtom
 
 and evalRecordsSetExpressionWhere (recset:RecordSetIdentifier) (env: WarewolfEnvironment) (func: WarewolfAtom->bool)  =
     if  not (env.RecordSets.ContainsKey recset.Name)       then 
-        List.empty      
+        failwith "invalid recordset"     
     else
             let positions = env.RecordSets.[recset.Name].Data.[PositionColumn]
             match recset.Index with

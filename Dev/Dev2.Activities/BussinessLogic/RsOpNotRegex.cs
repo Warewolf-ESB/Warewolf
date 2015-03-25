@@ -62,7 +62,19 @@ namespace Dev2.DataList
         {
 
 
-            return (a) => values.All(x => a.ToString().IsHex());
+            if (all)
+                return (a) => !values.All(x =>
+                {
+                    Regex exp = new Regex(x.ToString());
+                    return exp.IsMatch(a.ToString());
+
+                });
+            return (a) => !values.Any(x =>
+            {
+                Regex exp = new Regex(x.ToString());
+                return exp.IsMatch(a.ToString());
+
+            });
 
         }
         public override string HandlesType()

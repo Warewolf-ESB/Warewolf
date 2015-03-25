@@ -48,6 +48,7 @@
     <Compile Include="DataListUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExecutionEnvironment.cs" />
+    <Compile Include="WarewolfAtomIterator.cs" />
     <Compile Include="WarewolfListIterator.cs" />
   </ItemGroup>
   <ItemGroup>
