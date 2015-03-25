@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Dev2.Activities.Specs.Toolbox.DesignTests
+namespace Warewolf.AcceptanceTesting.Explorer.DesignTests
 {
     using TechTalk.SpecFlow;
     
@@ -49,7 +49,7 @@ namespace Dev2.Activities.Specs.Toolbox.DesignTests
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "DesignTests")))
             {
-                Dev2.Activities.Specs.Toolbox.DesignTests.DesignTestsFeature.FeatureSetup(null);
+                Warewolf.AcceptanceTesting.Explorer.DesignTests.DesignTestsFeature.FeatureSetup(null);
             }
         }
         
@@ -406,11 +406,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Service hyper link in Debug output is opening service")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Workflow hyper link in Debug output is opening service")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DesignTests")]
-        public virtual void ServiceHyperLinkInDebugOutputIsOpeningService()
+        public virtual void WorkflowHyperLinkInDebugOutputIsOpeningService()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Service hyper link in Debug output is opening service", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow hyper link in Debug output is opening service", ((string[])(null)));
 #line 91
 this.ScenarioSetup(scenarioInfo);
 #line 92
@@ -422,9 +422,89 @@ this.ScenarioSetup(scenarioInfo);
 #line 95
  testRunner.Then("Workflow \"MappingsWF\" hyperlink is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 96
- testRunner.When("I click on hyperlink of \"MappingsWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I click on hyperlink of \"Workflow: MappingsWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 97
  testRunner.Then("workflow \"MappingWF\" is opened on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Service hyper link in Debug output is opening service")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DesignTests")]
+        public virtual void ServiceHyperLinkInDebugOutputIsOpeningService()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Service hyper link in Debug output is opening service", ((string[])(null)));
+#line 99
+this.ScenarioSetup(scenarioInfo);
+#line 100
+ testRunner.Given("I have \"Unsaved 1\" is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 101
+ testRunner.And("I have \"Service\" on \"Unsaved 1\" design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 102
+ testRunner.When("I Debug \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 103
+ testRunner.Then("Workflow \"Service\" hyperlink is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 104
+ testRunner.When("I click on hyperlink of \"Service: Service\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 105
+ testRunner.Then("workflow \"Service\" is opened on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Opening remote wflw From design surface")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DesignTests")]
+        public virtual void OpeningRemoteWflwFromDesignSurface()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening remote wflw From design surface", ((string[])(null)));
+#line 107
+this.ScenarioSetup(scenarioInfo);
+#line 108
+ testRunner.Given("I have \"Unsaved 1\" is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 109
+ testRunner.And("I have connected to remote \"Sandbox-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 110
+ testRunner.And("I have \"RemoteWf\" on \"Unsaved 1\" design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 111
+ testRunner.When("I Debug \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 112
+ testRunner.Then("Workflow \"Service\" hyperlink is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 113
+ testRunner.When("I click on hyperlink of \"Workflow: RemoteWf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 114
+ testRunner.Then("workflow \"Service\" is opened on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 115
+ testRunner.And("\"Create connection\" popup is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Opening remote wflw on design surface prompts user to make connection")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DesignTests")]
+        public virtual void OpeningRemoteWflwOnDesignSurfacePromptsUserToMakeConnection()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening remote wflw on design surface prompts user to make connection", ((string[])(null)));
+#line 117
+this.ScenarioSetup(scenarioInfo);
+#line 118
+ testRunner.Given("I have \"Unsaved 1\" is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 119
+ testRunner.And("I have not connected to remote \"Sandbox-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 120
+ testRunner.And("I have \"RemoteWf\" on \"Unsaved 1\" design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 121
+ testRunner.When("I Debug \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 122
+ testRunner.Then("Workflow \"Service\" hyperlink is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 123
+ testRunner.When("I click on hyperlink of \"Workflow: RemoteWf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 124
+ testRunner.Then("workflow \"Service\" is not opened on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 125
+ testRunner.And("\"Create connection\" popup is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -435,9 +515,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EditingServicesWhichHasDependenciesIsThrowingPopup()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Editing Services which has dependencies is throwing popup", ((string[])(null)));
-#line 100
+#line 127
 this.ScenarioSetup(scenarioInfo);
-#line 101
+#line 128
     testRunner.Given("DB Services \"Testsrv\" is opened on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -455,9 +535,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Yes",
                         ""});
-#line 102
+#line 129
  testRunner.When("I edit \"Testsrv\" mappings", ((string)(null)), table9, "When ");
-#line 106
+#line 133
  testRunner.Then("\"Inputs/Outputs Changed\" popup is \"Displayed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -469,19 +549,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DBServiceEditOptionOpensDbservice()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("DBService edit option opens dbservice", ((string[])(null)));
-#line 109
+#line 136
 this.ScenarioSetup(scenarioInfo);
-#line 110
+#line 137
     testRunner.Given("I have \"Unsaved 1\" is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 111
+#line 138
  testRunner.And("I have \"Testsrv\" on \"Unsaved 1\" design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 112
+#line 139
  testRunner.And("Edit button is \"Visible\" on \"MappingsWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 113
+#line 140
  testRunner.When("click on \"Edit\" on \"Testsrv\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 114
+#line 141
  testRunner.Then("DB Services \"Testsrv\" is opened on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 115
+#line 142
  testRunner.And("Focus is at \"Testsrv\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -493,13 +573,13 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ServiceUpdateOptionIsVisibleOnTheProc()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Service update option is visible on the proc", ((string[])(null)));
-#line 117
+#line 144
 this.ScenarioSetup(scenarioInfo);
-#line 118
+#line 145
     testRunner.Given("I have \"Unsaved 1\" is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 119
+#line 146
  testRunner.And("I have \"Testsrv\" on \"Unsaved 1\" design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 120
+#line 147
  testRunner.When("I open \"Testsrv\" large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -511,7 +591,7 @@ this.ScenarioSetup(scenarioInfo);
             table10.AddRow(new string[] {
                         "[[Prefix]]",
                         "Prefix"});
-#line 121
+#line 148
  testRunner.Then("Input mappings of \"Testsrv\" are", ((string)(null)), table10, "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
@@ -523,7 +603,7 @@ this.ScenarioSetup(scenarioInfo);
             table11.AddRow(new string[] {
                         "[[dbo_Pr_CitiesGetByCountry().City]]",
                         "[[dbo_Pr_CitiesGetByCountry().City]]"});
-#line 125
+#line 152
  testRunner.And("Output mappings of \"Testsrv\" are", ((string)(null)), table11, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
@@ -541,37 +621,37 @@ this.ScenarioSetup(scenarioInfo);
                         "Warewolf",
                         "Yes",
                         ""});
-#line 129
+#line 156
  testRunner.When("I edit \"Testsrv\" mappings", ((string)(null)), table12, "When ");
-#line 133
+#line 160
  testRunner.And("I click on save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 134
+#line 161
  testRunner.Then("\"Inputs/Outputs Changed\" popup is \"Displayed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 135
+#line 162
  testRunner.When("I have focus on tab \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 136
+#line 163
  testRunner.Then("I have \"Testsrv\" on \"Unsaved 1\" design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 137
+#line 164
  testRunner.And("\"Testsrv\" proc Mappings out of date is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 138
+#line 165
  testRunner.When("I open \"Testsrv\" large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 139
+#line 166
  testRunner.Then("Input mappings of \"MappingsWF\" are \"Invisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 140
+#line 167
  testRunner.And("Output mappings of \"MappingsWF\" are \"Invisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 141
+#line 168
  testRunner.And("Fix button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 142
+#line 169
  testRunner.And("Done button is \"Invisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 143
+#line 170
  testRunner.When("I close \"MappingsWF\" large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 144
+#line 171
  testRunner.Then("\"MappingsWF\" proc Mappings out of date is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 145
+#line 172
  testRunner.When("I open \"MappingsWF\" large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 146
+#line 173
  testRunner.And("click on \"Fix\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 147
+#line 174
  testRunner.Then("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
@@ -583,7 +663,7 @@ this.ScenarioSetup(scenarioInfo);
             table13.AddRow(new string[] {
                         "Warewolf",
                         "Prefix"});
-#line 148
+#line 175
  testRunner.Then("Input mappings of \"Testsrv\" are", ((string)(null)), table13, "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
@@ -595,11 +675,11 @@ this.ScenarioSetup(scenarioInfo);
             table14.AddRow(new string[] {
                         "[[dbo_Pr_CitiesGetByCountry().City]]",
                         "[[dbo_Pr_CitiesGetByCountry().City]]"});
-#line 152
+#line 179
  testRunner.And("Output mappings of \"Testsrv\" are", ((string)(null)), table14, "And ");
-#line 156
+#line 183
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 157
+#line 184
  testRunner.Then("\"MappingsWF\" small view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -611,19 +691,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SavingAWorkflowIsUpdaingNameOfDesignSurface()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Saving a workflow is updaing name of design surface", ((string[])(null)));
-#line 161
+#line 188
 this.ScenarioSetup(scenarioInfo);
-#line 162
+#line 189
     testRunner.Given("I have \"Unsaved 1\" is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 163
+#line 190
  testRunner.And("tab is opened as \"Unsaved 1\" with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 164
+#line 191
  testRunner.And("Design surface name is \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 165
+#line 192
  testRunner.And("I save Unsaved 1 as \"Workflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 166
+#line 193
  testRunner.Then("tab is opened as \"Workflow\" with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 167
+#line 194
  testRunner.And("Design surface name is \"Workflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -635,19 +715,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RenamingASavedWorkflowIsUpdaingNameOnDesignSurface()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Renaming a saved workflow is updaing name on design surface", ((string[])(null)));
-#line 170
+#line 197
 this.ScenarioSetup(scenarioInfo);
-#line 171
+#line 198
     testRunner.Given("I have \"Workflow\" is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 172
+#line 199
  testRunner.And("tab is opened as \"Workflow\" with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 173
+#line 200
  testRunner.And("Design surface name is \"Workflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 174
+#line 201
  testRunner.And("I Rename \"Workflow\" as \"RenamedWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 175
+#line 202
  testRunner.Then("tab is opened as \"RenamedWF\" with star", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 176
+#line 203
  testRunner.And("Design surface name is \"RenamedWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -659,29 +739,29 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void WhileWorkflowIsDebugingToolsAreHighligtingByShowingTheFlow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("While workflow is debuging tools are highligting by showing the flow", ((string[])(null)));
-#line 178
+#line 205
 this.ScenarioSetup(scenarioInfo);
-#line 179
+#line 206
    testRunner.Given("I have \"Unsave 1\" is opened on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 180
+#line 207
    testRunner.And("I have \"Assign\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 181
+#line 208
    testRunner.And("I have \"Base Conversion\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 182
+#line 209
    testRunner.And("I have \"Case Conversion\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 183
+#line 210
    testRunner.And("I have \"Data Merge\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 184
+#line 211
    testRunner.And("I have \"Data Split\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 185
+#line 212
    testRunner.And("I have \"Find Index\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 186
+#line 213
    testRunner.And("I have \"Replace\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 187
+#line 214
    testRunner.And("I have \"Unique\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 188
+#line 215
    testRunner.And("I have \"Sort\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 189
+#line 216
    testRunner.When("I Debug \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
@@ -702,7 +782,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Unique"});
             table15.AddRow(new string[] {
                         "Sort"});
-#line 190
+#line 217
    testRunner.Then("design surface tools are highlighted as", ((string)(null)), table15, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -711,67 +791,67 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void BySelectingEachDebugOutputIsHighlightingRelatedToolOrService(string select, string assign, string baseConversion, string caseConversion, string dataMerge, string dataSplit, string findIndex, string replace, string unique, string sort, string testsrv, string workflow, string webservice, string remoteWorkflow, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("By Selecting each Debug Output is highlighting related tool or service", exampleTags);
-#line 202
-this.ScenarioSetup(scenarioInfo);
-#line 203
-   testRunner.Given("I have \"Unsave 1\" is opened on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 204
-   testRunner.And("I have \"Assign\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 205
-   testRunner.And("I have \"Base Conversion\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 206
-   testRunner.And("I have \"Case Conversion\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 207
-   testRunner.And("I have \"Data Merge\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 208
-   testRunner.And("I have \"Data Split\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 209
-   testRunner.And("I have \"Find Index\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 210
-   testRunner.And("I have \"Replace\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 211
-   testRunner.And("I have \"Unique\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 212
-   testRunner.And("I have \"Sort\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 213
-   testRunner.And("I have \"Testsrv\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 214
-   testRunner.And("I have \"Workflow\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 215
-   testRunner.And("I have \"Webservice\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 216
-   testRunner.And("I have \"RemoteWorkflow\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 217
-   testRunner.When("I Debug \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 218
-   testRunner.Then("debug output is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 219
-   testRunner.When(string.Format("I select \'{0}\'", select), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 220
-   testRunner.Then(string.Format("\"Assign\" on design is \'{0}\'", assign), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 221
-   testRunner.Then(string.Format("\"Base Conversion\" on design is \'{0}\'", baseConversion), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 222
-   testRunner.Then(string.Format("\"Case Conversion\" on design is \'{0}\'", caseConversion), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 223
-   testRunner.Then(string.Format("\"Data Merge\" on design is \'{0}\'", dataMerge), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 224
-   testRunner.Then(string.Format("\"Data Split\" on design is \'{0}\'", dataSplit), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 225
-   testRunner.Then(string.Format("\"Find Index\" on design is \'{0}\'", findIndex), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 226
-   testRunner.Then(string.Format("\"Replace\" on design is \'{0}\'", replace), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 227
-   testRunner.Then(string.Format("\"Unique\" on design is \'{0}\'", unique), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 228
-   testRunner.Then(string.Format("\"Sort\" on design is \'{0}\'", sort), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 229
-   testRunner.Then(string.Format("\"Testsrv\" on design is \'{0}\'", testsrv), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioSetup(scenarioInfo);
 #line 230
-   testRunner.Then(string.Format("\"Workflow\" on design is \'{0}\'", workflow), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Given("I have \"Unsave 1\" is opened on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 231
-   testRunner.Then(string.Format("\"Webservice\" on design is \'{0}\'", webservice), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.And("I have \"Assign\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 232
+   testRunner.And("I have \"Base Conversion\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 233
+   testRunner.And("I have \"Case Conversion\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 234
+   testRunner.And("I have \"Data Merge\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 235
+   testRunner.And("I have \"Data Split\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 236
+   testRunner.And("I have \"Find Index\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 237
+   testRunner.And("I have \"Replace\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 238
+   testRunner.And("I have \"Unique\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 239
+   testRunner.And("I have \"Sort\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 240
+   testRunner.And("I have \"Testsrv\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 241
+   testRunner.And("I have \"Workflow\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 242
+   testRunner.And("I have \"Webservice\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 243
+   testRunner.And("I have \"RemoteWorkflow\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 244
+   testRunner.When("I Debug \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 245
+   testRunner.Then("debug output is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 246
+   testRunner.When(string.Format("I select \'{0}\'", select), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 247
+   testRunner.Then(string.Format("\"Assign\" on design is \'{0}\'", assign), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 248
+   testRunner.Then(string.Format("\"Base Conversion\" on design is \'{0}\'", baseConversion), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 249
+   testRunner.Then(string.Format("\"Case Conversion\" on design is \'{0}\'", caseConversion), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 250
+   testRunner.Then(string.Format("\"Data Merge\" on design is \'{0}\'", dataMerge), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 251
+   testRunner.Then(string.Format("\"Data Split\" on design is \'{0}\'", dataSplit), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 252
+   testRunner.Then(string.Format("\"Find Index\" on design is \'{0}\'", findIndex), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 253
+   testRunner.Then(string.Format("\"Replace\" on design is \'{0}\'", replace), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 254
+   testRunner.Then(string.Format("\"Unique\" on design is \'{0}\'", unique), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 255
+   testRunner.Then(string.Format("\"Sort\" on design is \'{0}\'", sort), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 256
+   testRunner.Then(string.Format("\"Testsrv\" on design is \'{0}\'", testsrv), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 257
+   testRunner.Then(string.Format("\"Workflow\" on design is \'{0}\'", workflow), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 258
+   testRunner.Then(string.Format("\"Webservice\" on design is \'{0}\'", webservice), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 259
    testRunner.Then(string.Format("\"RemoteWorkflow\" on design is \'{0}\'", remoteWorkflow), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1051,6 +1131,64 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void BySelectingEachDebugOutputIsHighlightingRelatedToolOrService_WorkflowRemoteWorkflow()
         {
             this.BySelectingEachDebugOutputIsHighlightingRelatedToolOrService("Workflow: RemoteWorkflow", "Not Highlight", "Not Highlighted", "Not Highlighted", "Not Highlighted", "Not Highlighted", "Not Highlighted", "Not Highlighted", "Not Highlighted", "Not Highlighted", "Not Highlighted", "Not Highlighted", "Not Highlighted", "Highlighted", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Input data hyper link has max 3 lines and for bigger data scroll bar")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DesignTests")]
+        public virtual void InputDataHyperLinkHasMax3LinesAndForBiggerDataScrollBar()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Input data hyper link has max 3 lines and for bigger data scroll bar", ((string[])(null)));
+#line 278
+this.ScenarioSetup(scenarioInfo);
+#line 279
+      testRunner.Given("I have \"Unsave 1\" is opened on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 280
+   testRunner.And("I have \"Assign\" on \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable Name",
+                        "Delete Visible",
+                        "Note Visible",
+                        "Note Highlighted",
+                        "Input",
+                        "Output"});
+            table16.AddRow(new string[] {
+                        "Var",
+                        "NO",
+                        "Yes",
+                        "No",
+                        "Yes",
+                        ""});
+            table16.AddRow(new string[] {
+                        "",
+                        "NO",
+                        "NO",
+                        "NO",
+                        "",
+                        ""});
+#line 281
+   testRunner.And("the Variable Names are", ((string)(null)), table16, "And ");
+#line 285
+   testRunner.And("Input hyper link contains \"http://rsaklf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 286
+   testRunner.And("Input hyper link has No scroll bar", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 287
+   testRunner.When("I Debug \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 288
+   testRunner.Then("\"Debug input data\" dialogbox is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 289
+   testRunner.And(@"I enter ""Var"" value as ""Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll barInput data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll barInput data hyper link has max 3 lines and for bigger data scroll bar""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 290
+   testRunner.And("Input hyper link has No scroll bar", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 291
+   testRunner.When("I Debug \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 292
+   testRunner.Then(@"I enter ""Var"" value as ""Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll barInput data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll barInput data hyper link has max 3 lines and for bigger data scroll bar lines and for bigger data scroll barInput data hyper link has max 3 lines and for bigger data scroll bar lines and for bigger data scroll barInput data hyper link has max 3 lines and for bigger data scroll bar""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 293
+   testRunner.And("Input hyper link has scroll bar", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
         }
     }
 }

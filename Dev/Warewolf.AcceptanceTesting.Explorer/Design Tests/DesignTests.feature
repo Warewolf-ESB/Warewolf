@@ -88,14 +88,41 @@ Scenario: Edit button on service proc is opening workflow
 	Then workflow "MappingWF" is opened on design surface	 
 	And Focus is at "MappingWF" 
 
-Scenario: Service hyper link in Debug output is opening service
+Scenario: Workflow hyper link in Debug output is opening service
 	Given I have "Unsaved 1" is opened 
 	And I have "MappingsWF" on "Unsaved 1" design surface
 	When I Debug "Unsaved 1" 
 	Then Workflow "MappingsWF" hyperlink is "Visible"
-	When I click on hyperlink of "MappingsWF"
+	When I click on hyperlink of "Workflow: MappingsWF"
 	Then workflow "MappingWF" is opened on design surface 
 
+Scenario: Service hyper link in Debug output is opening service
+	Given I have "Unsaved 1" is opened 
+	And I have "Service" on "Unsaved 1" design surface
+	When I Debug "Unsaved 1" 
+	Then Workflow "Service" hyperlink is "Visible"
+	When I click on hyperlink of "Service: Service"
+	Then workflow "Service" is opened on design surface 
+
+Scenario: Opening remote wflw From design surface 
+	Given I have "Unsaved 1" is opened 
+	And I have connected to remote "Sandbox-1"
+	And I have "RemoteWf" on "Unsaved 1" design surface
+	When I Debug "Unsaved 1" 
+	Then Workflow "Service" hyperlink is "Visible"
+	When I click on hyperlink of "Workflow: RemoteWf"
+	Then workflow "Service" is opened on design surface 
+	And "Create connection" popup is "Not Visible"
+
+Scenario: Opening remote wflw on design surface prompts user to make connection
+	Given I have "Unsaved 1" is opened 
+	And I have not connected to remote "Sandbox-1"
+	And I have "RemoteWf" on "Unsaved 1" design surface
+	When I Debug "Unsaved 1" 
+	Then Workflow "Service" hyperlink is "Visible"
+	When I click on hyperlink of "Workflow: RemoteWf"
+	Then workflow "Service" is not opened on design surface 
+	And "Create connection" popup is "Visible"
 
 Scenario: Editing Services which has dependencies is throwing popup
     Given DB Services "Testsrv" is opened on design surface 
@@ -245,6 +272,28 @@ Examples:
    | Service: Webservice      | Not Highlight | Not Highlighted | Not Highlighted | Not Highlighted | Not Highlighted | Not Highlighted | Not Highlighted | Not Highlighted | Not Highlighted | Not Highlighted | Not Highlighted | Highlighted     | Not Highlighted |
    | Workflow: RemoteWorkflow | Not Highlight | Not Highlighted | Not Highlighted | Not Highlighted | Not Highlighted | Not Highlighted | Not Highlighted | Not Highlighted | Not Highlighted | Not Highlighted | Not Highlighted | Not Highlighted | Highlighted     |
  
+
+
+
+Scenario: Input data hyper link has max 3 lines and for bigger data scroll bar
+      Given I have "Unsave 1" is opened on design surface
+	  And I have "Assign" on "Unsaved 1"
+	  And the Variable Names are
+	  | Variable Name | Delete Visible | Note Visible | Note Highlighted | Input | Output |
+	  | Var           | NO             | Yes          | No               | Yes   |        |
+	  |               | NO             | NO           | NO               |       |        |
+	  And Input hyper link contains "http://rsaklf"
+	  And Input hyper link has No scroll bar
+	  When I Debug "Unsaved 1"
+	  Then "Debug input data" dialogbox is opened
+	  And I enter "Var" value as "Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll barInput data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll barInput data hyper link has max 3 lines and for bigger data scroll bar"
+	  And Input hyper link has No scroll bar
+	  When I Debug "Unsaved 1"
+	  Then I enter "Var" value as "Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll barInput data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll bar Input data hyper link has max 3 lines and for bigger data scroll barInput data hyper link has max 3 lines and for bigger data scroll bar lines and for bigger data scroll barInput data hyper link has max 3 lines and for bigger data scroll bar lines and for bigger data scroll barInput data hyper link has max 3 lines and for bigger data scroll bar"
+	  And Input hyper link has scroll bar
+
+
+
 
 
 
