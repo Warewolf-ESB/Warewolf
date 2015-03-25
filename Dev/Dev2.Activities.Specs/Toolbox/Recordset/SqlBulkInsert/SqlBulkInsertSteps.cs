@@ -19,6 +19,7 @@ using System.Linq;
 using ActivityUnitTests;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Integration.Tests.Services.Sql;
 using Dev2.Runtime.Hosting;
@@ -26,6 +27,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
+using WarewolfParserInterop;
 
 namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
 {
@@ -78,15 +80,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
                 {
                     Action = sqlBulkInsert
                 };
-            ErrorResultTO errors;
-
-            var compiler = ScenarioContext.Current.Get<IDataListCompiler>("compiler");
-            var dlId = ScenarioContext.Current.Get<Guid>("dlID");
-            var dataShape = ScenarioContext.Current.Get<string>("dataShape");
-            var data = compiler.ConvertFrom(dlId, DataListFormat.CreateFormat(GlobalConstants._XML),
-                                               enTranslationDepth.Data, out errors);
-            CurrentDl = dataShape;
-            TestData = data.ToString();
+           
             ScenarioContext.Current.Add("activity", sqlBulkInsert);
         }
 
@@ -119,23 +113,19 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             var compiler = DataListFactory.CreateDataListCompiler();
             ScenarioContext.Current.Add("compiler", compiler);
             // build up DataTable
-            var dbData = new DataTable("rs");
-            foreach(string columnName in table.Header)
+            foreach (TableRow row in table.Rows)
             {
-                dbData.Columns.Add(columnName);
+                var i = 0;
+                foreach (string columnName in table.Header)
+                {
+                    var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue("rs", columnName, "");
+                    var assignValue = new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), row[i]);
+                    CurrentExecutionEnvironment.AssignWithFrame(assignValue);
+                    i++;
+                }
+                CurrentExecutionEnvironment.CommitAssign();
             }
-            foreach(TableRow row in table.Rows)
-            {
-                dbData.Rows.Add(row[0], row[1], row[2]);
-            }
-            // Execute Translator
-            ErrorResultTO errors;
-            var dataShape = "<root><rs><Col1/><Col2/><Col3/></rs></root>";
-            var dlId = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dbData, dataShape.ToStringBuilder(),
-                                        out errors);
-            dataShape = "<root><rs><Col1/><Col2/><Col3/></rs><result/></root>";
-            ScenarioContext.Current.Add("dlID", dlId);
-            ScenarioContext.Current.Add("dataShape", dataShape);
+            // Execute Translator            
         }
 
         [Given(@"Check constraints is disabled")]
