@@ -148,7 +148,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                    
                 }
                 if(!results.Any()) results.Add(-1);
-                var res =String.Join(",", results);
+                var res =String.Join(",", results.Distinct());
                 env.Assign(Result, res);
                 if(dataObject.IsDebugMode())
                 {

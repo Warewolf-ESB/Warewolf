@@ -46,8 +46,8 @@ variableExpression 	:
 	| langExpression  variableExpression   {   $1::$2}
 	| scalar {  [ScalarExpression $1] }	
 	| recset { [RecordSetExpression $1] }
-	| atom {[WarewolfAtomAtomExpression $1]}
 	| EOF {[]}
+	| atom {[WarewolfAtomAtomExpression $1]}
 recset : 
     |OPENLANGUAGE VARNAME OPENBRACKET index CLOSEDBRACKET DOT VARNAME CLOSELANGAUGE {{Name = $2; Column = $7; Index =$4 ;}}
 	|OPENLANGUAGE VARNAME OPENBRACKET STAR CLOSEDBRACKET DOT VARNAME CLOSELANGAUGE {{Name = $2; Column = $7; Index =Star ;}}
@@ -56,13 +56,13 @@ recset :
 recsetName : 
     |OPENLANGUAGE VARNAME OPENBRACKET CLOSEDBRACKET CLOSELANGAUGE{{Name = $2;Index = Last;}}
 	|OPENLANGUAGE VARNAME OPENBRACKET index CLOSEDBRACKET CLOSELANGAUGE{{Name = $2; Index = $4;}}
-	|OPENLANGUAGE VARNAME OPENBRACKET STAR CLOSEDBRACKET CLOSELANGAUGE{{Name = $2; Index = Last;}}
+	|OPENLANGUAGE VARNAME OPENBRACKET STAR CLOSEDBRACKET CLOSELANGAUGE{{Name = $2; Index = Star;}}
 	|OPENLANGUAGE VARNAME OPENBRACKET langExpression CLOSEDBRACKET CLOSELANGAUGE{{Name = $2;Index = IndexExpression $4;}}
 index :
 	| INT {IndexExpression ( WarewolfAtomAtomExpression ( tryParseAtom $1))}
 scalar : 
 	|OPENLANGUAGE VARNAME CLOSELANGAUGE {$2}
-atom :
+atom : 
 	| FLOAT {   Float $1 }
 	|  INT {  tryParseAtom $1 }
 	| VARNAME {  DataString $1 }   	   
