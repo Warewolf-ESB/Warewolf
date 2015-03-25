@@ -40,7 +40,6 @@ namespace Warewolf.Storage
         readonly WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult _scalarResult;
         readonly int _maxValue;
         int _currentValue;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
