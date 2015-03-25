@@ -103,6 +103,9 @@ namespace WarewolfParserInterop
             return _values.Take(_count).GetEnumerator();
         }
 
+
+      // ReSharper restore FunctionNeverReturns
+
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
@@ -138,15 +141,22 @@ namespace WarewolfParserInterop
               if(i!= position)
                   lst.AddSomething(this[i]);
           }
-          //T[] dest = new T[_values.Length - 1];
-          //if (position > 0)
-          //    Array.Copy(_values, 0, dest, 0, position);
-
-          //if (position < _values.Length - 1)
-          //    Array.Copy(_values, position + 1, dest, position, _values.Length - position - 1);
-          //_count--;
 
           return lst;
+      }
+
+
+      public IEnumerable<int> Where(Func<T, bool> func)
+      {
+
+          for (int i = 0; i < _count; i++)
+          {
+              if (func(_values[i]))
+              {
+                  yield return i;
+
+              }
+          }
       }
     }
 }

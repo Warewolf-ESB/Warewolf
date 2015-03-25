@@ -6,6 +6,8 @@ open Microsoft.FSharp.Text.Lexing
 open DataASTMutable
 open WarewolfDataEvaluationCommon
 open Dev2.Common.Interfaces
+open Where
+
 let PositionColumn = "WarewolfPositionColumn"
 
 let CreateDataSet (a:string) =
@@ -204,3 +206,6 @@ let EvalDelete (exp:string)  (env:WarewolfEnvironment) = WarewolfDataEvaluationC
 
 
 let SortRecset (exp:string) (desc:bool) (env:WarewolfEnvironment)  = WarewolfDataEvaluationCommon.SortRecset exp desc env 
+
+
+let EvalWhere (exp:string) (env:WarewolfEnvironment)  (func:System.Func<WarewolfAtom,bool>) = Where.EvalWhere env exp (fun a-> func.Invoke( a))

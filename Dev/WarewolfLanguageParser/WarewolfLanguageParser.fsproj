@@ -64,9 +64,11 @@
     <Compile Include="EvalLanguage.fs" />
     <Compile Include="ToolAst.fs" />
     <Compile Include="WarewolfDataEvaluationCommon.fs" />
+	<Compile Include="Where.fs" />
     <Compile Include="EvalTools.fs" />
     <Compile Include="PublicFunctions.fs" />
     <Compile Include="WarewolfTestData.fs" />
+
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">

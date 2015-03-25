@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.Storage;
 using WarewolfParserInterop;
 namespace WarewolfParsingTest
 {
@@ -876,6 +877,70 @@ namespace WarewolfParsingTest
             Assert.AreEqual((recordSet.Data["b"][3] as DataASTMutable.WarewolfAtom.Int).Item, 26);
             Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
             Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
+
+        }
+
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_where_WithNoIndexAndMultipleColumns_MultipleEvals()
+        {
+
+
+            var assigns = new List<IAssignValue>
+             {
+                 new AssignValue("[[rec().a]]", "25"),
+                 new AssignValue("[[rec().b]]", "33"),
+                 new AssignValue("[[rec().b]]", "26"),
+                 new AssignValue("[[rec().a]]", "27"),
+
+             };
+            var testEnv = WarewolfTestData.CreateTestEnvEmpty(""); ;
+
+            var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, testEnv);
+            ExecutionEnvironment  env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "27"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"));
+
+            var items = env.EnvalWhere("[[rec(*).a]]", (a => PublicFunctions.AtomtoString(a) == "25"));
+            Assert.AreEqual(items.ToArray()[0],1);
+
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_where_WithNoIndexAndMultipleColumns_Multipleresults()
+        {
+
+
+            var assigns = new List<IAssignValue>
+             {
+                 new AssignValue("[[rec().a]]", "25"),
+                 new AssignValue("[[rec().b]]", "33"),
+                 new AssignValue("[[rec().b]]", "25"),
+                 new AssignValue("[[rec().a]]", "27"),
+
+             };
+            var testEnv = WarewolfTestData.CreateTestEnvEmpty(""); ;
+
+            var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, testEnv);
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"));
+
+            var items = env.EnvalWhere("[[rec(*).a]]", (a => PublicFunctions.AtomtoString(a) == "25"));
+
+            IEnumerable<int> enumerable = items as int[] ?? items.ToArray();
+            Assert.AreEqual(enumerable.ToArray()[0], 1);
+            Assert.AreEqual(enumerable.ToArray()[0], 3);
 
         }
 

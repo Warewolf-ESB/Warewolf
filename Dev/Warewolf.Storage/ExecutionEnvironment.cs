@@ -271,5 +271,10 @@ namespace Warewolf.Storage
         {
             return PublicFunctions.EvalEnvExpressionWithPositions(exp, _env);
         }
+
+        public IEnumerable<int> EnvalWhere (string expression , Func<DataASTMutable.WarewolfAtom,bool> clause)
+        {
+            return PublicFunctions.EvalWhere(expression, _env, clause);
+        }
     }
 }
