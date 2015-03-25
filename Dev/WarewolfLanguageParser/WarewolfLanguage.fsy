@@ -10,6 +10,7 @@
 %token <string> INT   
 %token <float> FLOAT
 %token <string> STRING    
+%token <string> VARNAME    
 
 // Misc tokens
 %token EOF
@@ -43,25 +44,28 @@ langExpression :
 	| DOT {WarewolfAtomAtomExpression (DataString ".")}
 variableExpression 	:
 	| langExpression  variableExpression   {   $1::$2}
-	| atom {[WarewolfAtomAtomExpression $1]}
 	| scalar {  [ScalarExpression $1] }	
 	| recset { [RecordSetExpression $1] }
+	| atom {[WarewolfAtomAtomExpression $1]}
 	| EOF {[]}
 recset : 
-    |OPENLANGUAGE STRING OPENBRACKET index CLOSEDBRACKET DOT STRING CLOSELANGAUGE {{Name = $2; Column = $7; Index =$4 ;}}
-	|OPENLANGUAGE STRING OPENBRACKET STAR CLOSEDBRACKET DOT STRING CLOSELANGAUGE {{Name = $2; Column = $7; Index =Star ;}}
-    |OPENLANGUAGE STRING OPENBRACKET CLOSEDBRACKET DOT STRING CLOSELANGAUGE {{Name = $2; Column = $6; Index =Last ;}}
-	|OPENLANGUAGE STRING OPENBRACKET langExpression CLOSEDBRACKET DOT STRING CLOSELANGAUGE {{Name = $2; Column = $7; Index = IndexExpression $4 ;}}
+    |OPENLANGUAGE VARNAME OPENBRACKET index CLOSEDBRACKET DOT VARNAME CLOSELANGAUGE {{Name = $2; Column = $7; Index =$4 ;}}
+	|OPENLANGUAGE VARNAME OPENBRACKET STAR CLOSEDBRACKET DOT VARNAME CLOSELANGAUGE {{Name = $2; Column = $7; Index =Star ;}}
+    |OPENLANGUAGE VARNAME OPENBRACKET CLOSEDBRACKET DOT VARNAME CLOSELANGAUGE {{Name = $2; Column = $6; Index =Last ;}}
+	|OPENLANGUAGE VARNAME OPENBRACKET langExpression CLOSEDBRACKET DOT VARNAME CLOSELANGAUGE {{Name = $2; Column = $7; Index = IndexExpression $4 ;}}
 recsetName : 
-    |OPENLANGUAGE STRING OPENBRACKET CLOSEDBRACKET CLOSELANGAUGE{{Name = $2;Index = Last;}}
-	|OPENLANGUAGE STRING OPENBRACKET index CLOSEDBRACKET CLOSELANGAUGE{{Name = $2; Index = $4;}}
-	|OPENLANGUAGE STRING OPENBRACKET STAR CLOSEDBRACKET CLOSELANGAUGE{{Name = $2; Index = Star;}}
-	|OPENLANGUAGE STRING OPENBRACKET langExpression CLOSEDBRACKET CLOSELANGAUGE{{Name = $2;Index = IndexExpression $4;}}
+    |OPENLANGUAGE VARNAME OPENBRACKET CLOSEDBRACKET CLOSELANGAUGE{{Name = $2;Index = Last;}}
+	|OPENLANGUAGE VARNAME OPENBRACKET index CLOSEDBRACKET CLOSELANGAUGE{{Name = $2; Index = $4;}}
+	|OPENLANGUAGE VARNAME OPENBRACKET STAR CLOSEDBRACKET CLOSELANGAUGE{{Name = $2; Index = Last;}}
+	|OPENLANGUAGE VARNAME OPENBRACKET langExpression CLOSEDBRACKET CLOSELANGAUGE{{Name = $2;Index = IndexExpression $4;}}
 index :
 	| INT {IndexExpression ( WarewolfAtomAtomExpression ( tryParseAtom $1))}
 scalar : 
-	|OPENLANGUAGE STRING CLOSELANGAUGE {$2}
+	|OPENLANGUAGE VARNAME CLOSELANGAUGE {$2}
 atom :
 	| FLOAT {   Float $1 }
-	| INT {  tryParseAtom $1 }  	   
+	|  INT {  tryParseAtom $1 }
+	| VARNAME {  DataString $1 }   	   
 	| STRING {  DataString $1 } 
+	
+	

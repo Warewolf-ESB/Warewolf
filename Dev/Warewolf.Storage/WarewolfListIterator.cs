@@ -47,6 +47,10 @@ namespace Warewolf.Storage
 
         public void AddVariableToIterateOn(string expression)
         {
+            if (_variablesToIterateOn.ContainsKey(expression))
+            {
+                return;
+            }
             var warewolfEvalResult = _env.Eval(expression);
             _variablesToIterateOn.Add(expression,warewolfEvalResult);
             var recSetName = DataListUtils.ExtractRecordsetNameFromValue(expression);

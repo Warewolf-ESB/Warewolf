@@ -15,6 +15,9 @@ let whitespace = [' ' '\t' ]
 let newline = ('\n' | '\r' '\n')
 let char        = ['a'-'z''A'-'Z'' ''\t' ',' '!' '-' '=' '+' '/' '*' '$' '#' '@' '<' '>' '\\']
 let tilde        = ['~']
+let varStart = ['a'-'z''A'-'Z']
+let varEnd = ['a'-'z''A'-'Z''0'-'9''_''-']
+let variableName = varStart* ?varEnd+
 let string      = char+   
 let column      = char+ '.' char+
 let digit       = ['0'-'9']  
@@ -33,8 +36,8 @@ rule tokenstream = parse
 | "*" 		{ STAR }
 | int           { INT( LexBuffer<char>.LexemeString(lexbuf) ) }
 | float         { FLOAT(System.Double.Parse(LexBuffer<char>.LexemeString(lexbuf))) }
+| variableName       { VARNAME (LexBuffer<char>.LexemeString(lexbuf) )}
 | string        { STRING (LexBuffer<char>.LexemeString(lexbuf) )}
-
 // --------------------------
 | tilde	{ tokenstream lexbuf }
 | newline	{ newline lexbuf; tokenstream lexbuf }
