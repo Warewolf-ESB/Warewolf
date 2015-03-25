@@ -2,10 +2,10 @@ namespace Dev2.Common.Interfaces
 {
     public interface IWarewolfListIterator
     {
-        string FetchNextValue(string expression);
+        string FetchNextValue(IWarewolfIterator iterator);
 
-        void AddVariableToIterateOn(string expression);
+        void AddVariableToIterateOn(IWarewolfIterator iterator);
 
         bool HasMoreData();
     }
-}
+}

@@ -151,8 +151,8 @@ namespace Dev2.Services.Execution
             {
                 ErrorResultTO invokeErrors;
 
-                var itrs = new List<string>(5);
-                IWarewolfListIterator itrCollection = new WarewolfListIterator(DataObj.Environment);
+                var itrs = new List<IWarewolfIterator>(5);
+                IWarewolfListIterator itrCollection = new WarewolfListIterator();
                 ServiceMethod method = Service.Method;
                 List<MethodParameter> inputs = method.Parameters;
                 if (inputs.Count == 0)
@@ -184,8 +184,9 @@ namespace Dev2.Services.Execution
                         {
                             toInject = sai.DefaultValue;
                         }
-                        itrCollection.AddVariableToIterateOn(toInject);
-                        itrs.Add(toInject);
+                        var paramIterator = new WarewolfIterator(DataObj.Environment.Eval(toInject));
+                        itrCollection.AddVariableToIterateOn(paramIterator);
+                        itrs.Add(paramIterator);
                     }
 
                     #endregion
@@ -219,14 +220,14 @@ namespace Dev2.Services.Execution
         #region ExecuteService
 
         private void ExecuteService(IList<MethodParameter> methodParameters, IWarewolfListIterator itrCollection,
-            IEnumerable<string> itrs, out ErrorResultTO errors, IOutputFormatter formater = null)
+            IEnumerable<IWarewolfIterator> itrs, out ErrorResultTO errors, IOutputFormatter formater = null)
         {
             errors = new ErrorResultTO();
             if (methodParameters.Any())
             {
                 // Loop iterators 
                 int pos = 0;
-                foreach (string itr in itrs)
+                foreach (var itr in itrs)
                 {
                     string injectVal = itrCollection.FetchNextValue(itr);
                     MethodParameter param = methodParameters[pos];

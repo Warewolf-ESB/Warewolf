@@ -1,73 +1,84 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dev2.Common.Interfaces;
 
 namespace Warewolf.Storage
 {
     public class WarewolfListIterator : IWarewolfListIterator
     {
-        readonly IExecutionEnvironment _env;
-        readonly Dictionary<string,WarewolfDataEvaluationCommon.WarewolfEvalResult> _variablesToIterateOn;
-        int _maxCounter;
-        int _currentCounter;
+        readonly List<IWarewolfIterator> _variablesToIterateOn;
 
-        public WarewolfListIterator(IExecutionEnvironment env)
+        public WarewolfListIterator()
         {
-            if(env == null)
-            {
-                throw new ArgumentNullException("env");
-            }
-            _env = env;
-            _variablesToIterateOn = new Dictionary<string, WarewolfDataEvaluationCommon.WarewolfEvalResult>();
-            _currentCounter = 0;
+            _variablesToIterateOn = new List<IWarewolfIterator>();
         }
 
-        public string FetchNextValue(string expression)
+        public string FetchNextValue(IWarewolfIterator expression)
         {
-            _currentCounter++;
-            var warewolfEvalResult = _variablesToIterateOn[expression];
-            if (warewolfEvalResult.IsWarewolfAtomListresult)
+            var warewolfEvalResult = _variablesToIterateOn[_variablesToIterateOn.IndexOf(expression)];
+            if (warewolfEvalResult!=null)
             {
-                var listResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
-                if (listResult != null)
-                {                    
-                   return ExecutionEnvironment.WarewolfAtomToString(listResult.Item.GetNextValue());
-                }
-            }
-            else if (warewolfEvalResult.IsWarewolfAtomResult)
-            {
-                var scalarResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
-                if(scalarResult != null)
-                {
-                    return ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item);
-                }
+                return warewolfEvalResult.GetNextValue();
             }            
             return null;
         }
 
-        public void AddVariableToIterateOn(string expression)
+        public void AddVariableToIterateOn(IWarewolfIterator iterator)
         {
-            if (_variablesToIterateOn.ContainsKey(expression))
-            {
-                return;
-            }
-            var warewolfEvalResult = _env.Eval(expression);
-            _variablesToIterateOn.Add(expression,warewolfEvalResult);
-            var recSetName = DataListUtils.ExtractRecordsetNameFromValue(expression);
-            var makeValueIntoHighLevelRecordset = DataListUtils.MakeValueIntoHighLevelRecordset(DataListUtils.AddBracketsToValueIfNotExist(recSetName));
-            if (ExecutionEnvironment.IsRecordSetName(DataListUtils.AddBracketsToValueIfNotExist(makeValueIntoHighLevelRecordset)))
-            {
-                var newlyAdded = _env.GetLength(recSetName);
-                if (newlyAdded > _maxCounter)
-                {
-                    _maxCounter = newlyAdded;
-                }
-            }
+            _variablesToIterateOn.Add(iterator);            
         }
 
         public bool HasMoreData()
         {
-            return _currentCounter<=_maxCounter;
+            return _variablesToIterateOn.Any(iterator => iterator.HasMoreData());
         }
+    }
+
+    public class WarewolfIterator : IWarewolfIterator
+    {
+        readonly WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult _listResult;
+        readonly WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult _scalarResult;
+        readonly int _maxValue;
+        int _currentValue;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
+        /// </summary>
+        public WarewolfIterator(WarewolfDataEvaluationCommon.WarewolfEvalResult warewolfEvalResult)
+        {
+            if (warewolfEvalResult.IsWarewolfAtomListresult)
+            {
+                _listResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;                
+            }
+            else if (warewolfEvalResult.IsWarewolfAtomResult)
+            {
+                _scalarResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;               
+            }
+            _maxValue = _listResult != null ? _listResult.Item.Count(atom => !atom.IsNothing) : 1;
+            _currentValue = 0;
+        }        
+
+        #region Implementation of IWarewolfIterator
+
+        public int GetLength()
+        {
+            return _maxValue;
+        }
+
+        public string GetNextValue()
+        {
+            _currentValue++;
+            if (_listResult != null)
+            {
+                return ExecutionEnvironment.WarewolfAtomToString(_listResult.Item.GetNextValue());
+            }
+            return _scalarResult!=null ? ExecutionEnvironment.WarewolfAtomToString(_scalarResult.Item) : null;
+        }
+
+        public bool HasMoreData()
+        {
+            return _currentValue<=_maxValue-1;
+        }
+        #endregion
     }
 }

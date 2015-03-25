@@ -124,9 +124,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     return;
                 }
-                IWarewolfListIterator warewolfListIterator = new WarewolfListIterator(dataObject.Environment);
+                IWarewolfListIterator warewolfListIterator = new WarewolfListIterator();
                 allErrors.MergeErrors(errorResultTo);
-                Dictionary<int, List<string>> listOfIterators = new Dictionary<int, List<string>>();
+                Dictionary<int, List<IWarewolfIterator>> listOfIterators = new Dictionary<int, List<IWarewolfIterator>>();
 
                 #region Create a iterator for each row in the data grid in the designer so that the right iteration happen on the data
 
@@ -178,11 +178,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                         _debugInputs.Add(debugItem);
                     }
-                    warewolfListIterator.AddVariableToIterateOn(row.InputVariable);
-                    warewolfListIterator.AddVariableToIterateOn(row.At);
-                    warewolfListIterator.AddVariableToIterateOn(row.Padding);
+                    var inputIterator = new WarewolfIterator(dataObject.Environment.Eval(row.InputVariable));
+                    var atIterator = new WarewolfIterator(dataObject.Environment.Eval(row.At));
+                    var paddingIterator = new WarewolfIterator(dataObject.Environment.Eval(row.Padding));
+                    warewolfListIterator.AddVariableToIterateOn(inputIterator);
+                    warewolfListIterator.AddVariableToIterateOn(atIterator);
+                    warewolfListIterator.AddVariableToIterateOn(paddingIterator);
 
-                    listOfIterators.Add(dictionaryKey, new List<string> { row.InputVariable, row.At, row.Padding });
+                    listOfIterators.Add(dictionaryKey, new List<IWarewolfIterator> { inputIterator, atIterator, paddingIterator });
                     dictionaryKey++;
                 }
 
@@ -410,6 +413,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
+
+
         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
@@ -419,7 +424,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
+        {
+            return _debugInputs;
+        }
+
+
         public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        {
+            foreach(IDebugItem debugOutput in _debugOutputs)
+            {
+                debugOutput.FlushStringBuilder();
+            }
+            return _debugOutputs;
+        }
+
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {
