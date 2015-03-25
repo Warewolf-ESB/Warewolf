@@ -98,8 +98,8 @@ namespace WarewolfParsingTest
 
                 var x = data[2] as LanguageAST.LanguageExpression.RecordSetExpression;
                 Assert.IsNotNull(x);
-                Assert.IsTrue(x.Item.Index.IsIntIndex);
-                Assert.AreEqual(((LanguageAST.Index.IntIndex)x.Item.Index).Item , 0);
+                Assert.IsTrue(x.Item.Index.IsIndexExpression);
+                //Assert.AreEqual(((LanguageAST.Index.IntIndex)x.Item.Index).Item , 0);
                 Assert.AreEqual(x.Item.Column,"a");
                 Assert.AreEqual(x.Item.Name, "rec");
             }
@@ -523,9 +523,9 @@ namespace WarewolfParsingTest
             Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 25);
             Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 26);
             Assert.AreEqual((recordSet.Data["a"][2] as DataASTMutable.WarewolfAtom.Int).Item, 27);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][2] as DataASTMutable.WarewolfAtom.Int).Item, 3);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][2] as DataASTMutable.WarewolfAtom.Int).Item, 3);
 
         }
 
@@ -556,9 +556,9 @@ namespace WarewolfParsingTest
             Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 25);
             Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 26);
             Assert.AreEqual((recordSet.Data["a"][2] as DataASTMutable.WarewolfAtom.Int).Item, 27);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][2] as DataASTMutable.WarewolfAtom.Int).Item, 3);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][2] as DataASTMutable.WarewolfAtom.Int).Item, 3);
 
         }
 
@@ -596,8 +596,8 @@ namespace WarewolfParsingTest
             Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 33);
             Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 27);
 
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
 
         }
 
@@ -634,8 +634,8 @@ namespace WarewolfParsingTest
             Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 27);
             Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 27);
 
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
 
         }
 
@@ -673,8 +673,8 @@ namespace WarewolfParsingTest
             Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 33);
             Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 33);
 
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
 
         }
 
@@ -705,8 +705,8 @@ namespace WarewolfParsingTest
             Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 27);
             Assert.AreEqual((recordSet.Data["b"][0] as DataASTMutable.WarewolfAtom.Int).Item, 33);
             Assert.AreEqual((recordSet.Data["b"][1] as DataASTMutable.WarewolfAtom.Int).Item, 26);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
 
 
         }
@@ -738,8 +738,8 @@ namespace WarewolfParsingTest
             Assert.IsTrue((recordSet.Data["a"][1].IsNothing));
             Assert.AreEqual((recordSet.Data["b"][0] as DataASTMutable.WarewolfAtom.Int).Item, 33);
             Assert.AreEqual((recordSet.Data["b"][1] as DataASTMutable.WarewolfAtom.Int).Item, 26);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
 
 
         }
@@ -772,9 +772,9 @@ namespace WarewolfParsingTest
             Assert.IsTrue((recordSet.Data["b"][0].IsNothing));
             Assert.AreEqual((recordSet.Data["b"][1] as DataASTMutable.WarewolfAtom.Int).Item, 33);
             Assert.AreEqual((recordSet.Data["b"][2] as DataASTMutable.WarewolfAtom.Int).Item, 26);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][0] as DataASTMutable.WarewolfAtom.Int).Item, 25);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][1] as DataASTMutable.WarewolfAtom.Int).Item, 26);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][2] as DataASTMutable.WarewolfAtom.Int).Item, 27);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 25);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataASTMutable.WarewolfAtom.Int).Item, 26);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][2] as DataASTMutable.WarewolfAtom.Int).Item, 27);
 
 
         }
@@ -858,8 +858,8 @@ namespace WarewolfParsingTest
             Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 27);
             Assert.AreEqual((recordSet.Data["b"][0] as DataASTMutable.WarewolfAtom.Int).Item, 33);
             Assert.AreEqual((recordSet.Data["b"][1] as DataASTMutable.WarewolfAtom.Int).Item, 26);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
 
             var env4 = PublicFunctions.EvalMultiAssign(assigns, testEnv2);
 
@@ -875,8 +875,8 @@ namespace WarewolfParsingTest
             Assert.AreEqual((recordSet.Data["b"][1] as DataASTMutable.WarewolfAtom.Int).Item, 26);
             Assert.AreEqual((recordSet.Data["b"][2] as DataASTMutable.WarewolfAtom.Int).Item, 33);
             Assert.AreEqual((recordSet.Data["b"][3] as DataASTMutable.WarewolfAtom.Int).Item, 26);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn#"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
 
         }
 
@@ -940,7 +940,7 @@ namespace WarewolfParsingTest
 
             IEnumerable<int> enumerable = items as int[] ?? items.ToArray();
             Assert.AreEqual(enumerable.ToArray()[0], 1);
-            Assert.AreEqual(enumerable.ToArray()[0], 3);
+            Assert.AreEqual(enumerable.ToArray()[1], 3);
 
         }
 

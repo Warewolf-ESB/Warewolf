@@ -13,7 +13,11 @@ let newline (lexbuf: LexBuffer<_>) =
 // Regular expressions
 let whitespace = [' ' '\t' ]
 let newline = ('\n' | '\r' '\n')
-let char        = ['a'-'z''A'-'Z'' ''\t' ',' '!' '-' '=' '+' '/' '*' '$' '#' '@' '<' '>' '\\' '{' '}' ]
+let openSquare   = ['[']
+let openLang = openSquare openSquare
+let closeSquare   = [']']
+let closeLang = closeSquare closeSquare
+let char        = ['a'-'z''A'-'Z'' ''\t' ',' '!' '-' '=' '+' '/' '*' '$' '#' '@' '<' '>' '\\' ]
 let tilde        = ['~']
 let varStart = ['a'-'z''A'-'Z']
 let varEnd = ['a'-'z''A'-'Z''0'-'9''_''-']
@@ -28,8 +32,8 @@ let int         = '-'?digit+
 let float       = '-'?digit+ '.' digit+   
 rule tokenstream = parse
 // --------------------------
-| "[[" 		{ OPENLANGUAGE }
-| "]]" 		{ CLOSELANGAUGE }
+| openLang 		{ OPENLANGUAGE }
+| closeLang 		{ CLOSELANGAUGE }
 | "(" 		{ OPENBRACKET }
 | ")" 		{ CLOSEDBRACKET }
 | "." 		{ DOT }
@@ -42,5 +46,5 @@ rule tokenstream = parse
 | tilde	{ tokenstream lexbuf }
 | newline	{ newline lexbuf; tokenstream lexbuf }
 // --------------------------
-| _    		{ failwith ("ParseError" + LexBuffer<_>.LexemeString lexbuf) }
+| _    		{ STRING (LexBuffer<char>.LexemeString(lexbuf)) }
 | eof   	{ EOF }
