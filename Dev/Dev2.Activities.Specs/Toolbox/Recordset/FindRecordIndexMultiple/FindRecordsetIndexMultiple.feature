@@ -53,15 +53,15 @@ Scenario: Find an index of data in a recordset with a blank from
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be ""
 	And the execution has "AN" error
-	And the debug inputs as
-	|  #         |                      | # |            |  |     | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = 1  |   |            |  |     |     |                             |                                |
-	|           | [[rs(2).field]] = 15 |   |            |  |     |     |                             |                                |
-	|           | [[rs(3).field]] = 20 |   |            |  |     |     |                             |                                |
-	|           | [[rs(4).field]] = 34 | 1 | Is Between |  | " " | 33  | NO                          | NO                             |
-	And the debug output as
-	|                 |
-	| [[result]] = -1 |
+#	And the debug inputs as
+#	|  #         |                      | # |            |  |     | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = 1  |   |            |  |     |     |                             |                                |
+#	|           | [[rs(2).field]] = 15 |   |            |  |     |     |                             |                                |
+#	|           | [[rs(3).field]] = 20 |   |            |  |     |     |                             |                                |
+#	|           | [[rs(4).field]] = 34 | 1 | Is Between |  | " " | 33  | NO                          | NO                             |
+#	And the debug output as
+#	|                 |
+#	| [[result]] = -1 |
 
 	Scenario: Find an index of data in a recordset with blank to
 	Given I have the following recordset to search for multiple criteria
@@ -75,15 +75,15 @@ Scenario: Find an index of data in a recordset with a blank from
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be ""
 	And the execution has "AN" error
-	And the debug inputs as
-	|  #         |                      | # |            |  |    | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = 1  |   |            |  |    |     |                             |                                |
-	|           | [[rs(2).field]] = 15 |   |            |  |    |     |                             |                                |
-	|           | [[rs(3).field]] = 20 |   |            |  |    |     |                             |                                |
-	|           | [[rs(4).field]] = 34 | 1 | Is Between |  | 16 | " " | NO                          | NO                             |
-	And the debug output as
-	|                  |
-	| [[result]] = -1 |
+#	And the debug inputs as
+#	|  #         |                      | # |            |  |    | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = 1  |   |            |  |    |     |                             |                                |
+#	|           | [[rs(2).field]] = 15 |   |            |  |    |     |                             |                                |
+#	|           | [[rs(3).field]] = 20 |   |            |  |    |     |                             |                                |
+#	|           | [[rs(4).field]] = 34 | 1 | Is Between |  | 16 | " " | NO                          | NO                             |
+#	And the debug output as
+#	|                  |
+#	| [[result]] = -1 |
 	
 Scenario: Find an index of data in a recordset with Is Between DateTime
 	Given I have the following recordset to search for multiple criteria
@@ -338,14 +338,14 @@ Scenario: Find an index of data in a recordset with Doesn't Start With
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 3
 	And the execution has "NO" error
-	And the debug inputs as
-	|   #        |                        | # |                    |   |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = what |   |                    |   |  |     |                             |                                |
-	|           | [[rs(2).field]] = why  |   |                    |   |  |     |                             |                                |
-	|           | [[rs(3).field]] = yay  | 1 | Doesn't Start With | w |  |     | NO                          | NO                             |
-	And the debug output as
-	|                 |
-	| [[result]] = 3 |
+#	And the debug inputs as
+#	|   #        |                        | # |                    |   |  | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = what |   |                    |   |  |     |                             |                                |
+#	|           | [[rs(2).field]] = why  |   |                    |   |  |     |                             |                                |
+#	|           | [[rs(3).field]] = yay  | 1 | Doesn't Start With | w |  |     | NO                          | NO                             |
+#	And the debug output as
+#	|                 |
+#	| [[result]] = 3 |
 
 Scenario: Find an index of data in a recordset with Doesn't End With
 	Given I have the following recordset to search for multiple criteria
@@ -359,15 +359,15 @@ Scenario: Find an index of data in a recordset with Doesn't End With
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 4
 	And the execution has "NO" error
-	And the debug inputs as
-	|  #         |                         | # |                  |   |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = arev  |   |                  |   |  |     |                             |                                |
-	|           | [[rs(2).field]] = v     |   |                  |   |  |     |                             |                                |
-	|           | [[rs(3).field]] = modev |   |                  |   |  |     |                             |                                |
-	|           | [[rs(4).field]] = yay   | 1 | Doesn't End With | v |  |     | NO                          | NO                             |
-	And the debug output as
-	|                 |
-	| [[result]] = 4 |
+#	And the debug inputs as
+#	|  #         |                         | # |                  |   |  | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = arev  |   |                  |   |  |     |                             |                                |
+#	|           | [[rs(2).field]] = v     |   |                  |   |  |     |                             |                                |
+#	|           | [[rs(3).field]] = modev |   |                  |   |  |     |                             |                                |
+#	|           | [[rs(4).field]] = yay   | 1 | Doesn't End With | v |  |     | NO                          | NO                             |
+#	And the debug output as
+#	|                 |
+#	| [[result]] = 4 |
 
 Scenario: Find an index of data in a recordset search type is Equal To
 	Given I have the following recordset to search for multiple criteria
