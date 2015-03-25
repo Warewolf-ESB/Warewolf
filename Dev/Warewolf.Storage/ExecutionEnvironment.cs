@@ -62,6 +62,7 @@ namespace Warewolf.Storage
         public WarewolfDataEvaluationCommon.WarewolfEvalResult Eval(string exp)
         {
             return PublicFunctions.EvalEnvExpression(exp, _env);
+            
         }
 
         public bool Assign(string exp,string value)

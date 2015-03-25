@@ -72,7 +72,12 @@ namespace Dev2.DataList
 
             return result;
         }
-
+        public override Func<DataASTMutable.WarewolfAtom, bool> CreateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> warewolfAtoms, IEnumerable<DataASTMutable.WarewolfAtom> to, bool all)
+        {
+            if (all)
+                return (a) => values.All(x => DataASTMutable.CompareAtoms(a, x) != 0);
+            return (a) => values.Any(x => DataASTMutable.CompareAtoms(a, x) != 0);
+        }
         public override string HandlesType()
         {
             return "<> (Not Equal)";

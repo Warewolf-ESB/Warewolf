@@ -7,8 +7,8 @@ module Lexer
 open Microsoft.FSharp.Text.Lexing
 open Parser
 let newline (lexbuf: LexBuffer<_>) = 
-  lexbuf.StartPos <- lexbuf.StartPos.NextLine
-
+    lexbuf.StartPos <- lexbuf.StartPos.NextLine
+ 
 
 # 13 "WarewolfLanguageLex.fs"
 let trans : uint16[] array = 

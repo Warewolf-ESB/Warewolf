@@ -53,15 +53,15 @@ Scenario: Find an index of data in a recordset with a blank from
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be ""
 	And the execution has "AN" error
-	And the debug inputs as
-	|  #         |                      | # |            |  |     | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = 1  |   |            |  |     |     |                             |                                |
-	|           | [[rs(2).field]] = 15 |   |            |  |     |     |                             |                                |
-	|           | [[rs(3).field]] = 20 |   |            |  |     |     |                             |                                |
-	|           | [[rs(4).field]] = 34 | 1 | Is Between |  | " " | 33  | NO                          | NO                             |
-	And the debug output as
-	|                 |
-	| [[result]] = -1 |
+#	And the debug inputs as
+#	|  #         |                      | # |            |  |     | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = 1  |   |            |  |     |     |                             |                                |
+#	|           | [[rs(2).field]] = 15 |   |            |  |     |     |                             |                                |
+#	|           | [[rs(3).field]] = 20 |   |            |  |     |     |                             |                                |
+#	|           | [[rs(4).field]] = 34 | 1 | Is Between |  | " " | 33  | NO                          | NO                             |
+#	And the debug output as
+#	|                 |
+#	| [[result]] = -1 |
 
 	Scenario: Find an index of data in a recordset with blank to
 	Given I have the following recordset to search for multiple criteria
@@ -75,15 +75,15 @@ Scenario: Find an index of data in a recordset with a blank from
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be ""
 	And the execution has "AN" error
-	And the debug inputs as
-	|  #         |                      | # |            |  |    | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = 1  |   |            |  |    |     |                             |                                |
-	|           | [[rs(2).field]] = 15 |   |            |  |    |     |                             |                                |
-	|           | [[rs(3).field]] = 20 |   |            |  |    |     |                             |                                |
-	|           | [[rs(4).field]] = 34 | 1 | Is Between |  | 16 | " " | NO                          | NO                             |
-	And the debug output as
-	|                  |
-	| [[result]] = -1 |
+#	And the debug inputs as
+#	|  #         |                      | # |            |  |    | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = 1  |   |            |  |    |     |                             |                                |
+#	|           | [[rs(2).field]] = 15 |   |            |  |    |     |                             |                                |
+#	|           | [[rs(3).field]] = 20 |   |            |  |    |     |                             |                                |
+#	|           | [[rs(4).field]] = 34 | 1 | Is Between |  | 16 | " " | NO                          | NO                             |
+#	And the debug output as
+#	|                  |
+#	| [[result]] = -1 |
 	
 Scenario: Find an index of data in a recordset with Is Between DateTime
 	Given I have the following recordset to search for multiple criteria
@@ -338,14 +338,14 @@ Scenario: Find an index of data in a recordset with Doesn't Start With
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 3
 	And the execution has "NO" error
-	And the debug inputs as
-	|   #        |                        | # |                    |   |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = what |   |                    |   |  |     |                             |                                |
-	|           | [[rs(2).field]] = why  |   |                    |   |  |     |                             |                                |
-	|           | [[rs(3).field]] = yay  | 1 | Doesn't Start With | w |  |     | NO                          | NO                             |
-	And the debug output as
-	|                 |
-	| [[result]] = 3 |
+#	And the debug inputs as
+#	|   #        |                        | # |                    |   |  | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = what |   |                    |   |  |     |                             |                                |
+#	|           | [[rs(2).field]] = why  |   |                    |   |  |     |                             |                                |
+#	|           | [[rs(3).field]] = yay  | 1 | Doesn't Start With | w |  |     | NO                          | NO                             |
+#	And the debug output as
+#	|                 |
+#	| [[result]] = 3 |
 
 Scenario: Find an index of data in a recordset with Doesn't End With
 	Given I have the following recordset to search for multiple criteria
@@ -359,15 +359,15 @@ Scenario: Find an index of data in a recordset with Doesn't End With
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 4
 	And the execution has "NO" error
-	And the debug inputs as
-	|  #         |                         | # |                  |   |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = arev  |   |                  |   |  |     |                             |                                |
-	|           | [[rs(2).field]] = v     |   |                  |   |  |     |                             |                                |
-	|           | [[rs(3).field]] = modev |   |                  |   |  |     |                             |                                |
-	|           | [[rs(4).field]] = yay   | 1 | Doesn't End With | v |  |     | NO                          | NO                             |
-	And the debug output as
-	|                 |
-	| [[result]] = 4 |
+#	And the debug inputs as
+#	|  #         |                         | # |                  |   |  | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = arev  |   |                  |   |  |     |                             |                                |
+#	|           | [[rs(2).field]] = v     |   |                  |   |  |     |                             |                                |
+#	|           | [[rs(3).field]] = modev |   |                  |   |  |     |                             |                                |
+#	|           | [[rs(4).field]] = yay   | 1 | Doesn't End With | v |  |     | NO                          | NO                             |
+#	And the debug output as
+#	|                 |
+#	| [[result]] = 4 |
 
 Scenario: Find an index of data in a recordset search type is Equal To
 	Given I have the following recordset to search for multiple criteria
@@ -461,19 +461,19 @@ Scenario: Find an index of data in a recordset search type is Greater Than
 	And field to search is "[[rs().field]]"
 	And search the recordset with type ">" and criteria is "3"
 	When the find records index multiple tool is executed
-	Then the find records index multiple result should be 1
+	Then the find records index multiple result should be 1,2,3,5,6
 	And the execution has "NO" error
-	And the debug inputs as
-	|     #      |                            | # |       |   |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = 4        |   |       |   |  |     |                             |                                |
-	|           | [[rs(2).field]] = are      |   |       |   |  |     |                             |                                |
-	|           | [[rs(3).field]] = the      |   |       |   |  |     |                             |                                |
-	|           | [[rs(4).field]] = 2        |   |       |   |  |     |                             |                                |
-	|           | [[rs(5).field]] = Warewolf |   |       |   |  |     |                             |                                |
-	|           | [[rs(6).field]] = user     | 1 | >     | 3 |  |     | NO                          | NO                             |
-	And the debug output as
-	|                 |
-	| [[result]] = 1 |
+#	And the debug inputs as
+#	|     #      |                            | # |       |   |  | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = 4        |   |       |   |  |     |                             |                                |
+#	|           | [[rs(2).field]] = are      |   |       |   |  |     |                             |                                |
+#	|           | [[rs(3).field]] = the      |   |       |   |  |     |                             |                                |
+#	|           | [[rs(4).field]] = 2        |   |       |   |  |     |                             |                                |
+#	|           | [[rs(5).field]] = Warewolf |   |       |   |  |     |                             |                                |
+#	|           | [[rs(6).field]] = user     | 1 | >     | 3 |  |     | NO                          | NO                             |
+#	And the debug output as
+#	|                 |
+#	| [[result]] = 1 |
 
 Scenario: Find an index of data in a recordset search type is Greater Than multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -483,51 +483,51 @@ Scenario: Find an index of data in a recordset search type is Greater Than multi
 	| rs().field | are   |
 	| rs().field | the   |
 	| rs().field | best  |
-	| rs().field | 8     |
+	| rs().field | 2     |
 	| rs().field | user  |
 	And field to search is "[[rs().field]]"
 	And search the recordset with type ">" and criteria is "3"
 	When the find records index multiple tool is executed
-	Then the find records index multiple result should be 1,6
+	Then the find records index multiple result should be 1,2,3,4,5,7
 	And the execution has "NO" error
-	And the debug inputs as
-	| #          |                        | # |       |   |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = 4    |   |       |   |  |     |                             |                                |
-	|           | [[rs(2).field]] = You  |   |       |   |  |     |                             |                                |
-	|           | [[rs(3).field]] = are  |   |       |   |  |     |                             |                                |
-	|           | [[rs(4).field]] = the  |   |       |   |  |     |                             |                                |
-	|           | [[rs(5).field]] = best |   |       |   |  |     |                             |                                |
-	|           | [[rs(6).field]] = 8    |   |       |   |  |     |                             |                                |
-	|           | [[rs(7).field]] = user | 1 | >     | 3 |  |     | NO                          | NO                             |
-	And the debug output as
-	|                   |
-	| [[result]] = 1,6 |
+#	And the debug inputs as
+#	| #          |                        | # |       |   |  | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = 4    |   |       |   |  |     |                             |                                |
+#	|           | [[rs(2).field]] = You  |   |       |   |  |     |                             |                                |
+#	|           | [[rs(3).field]] = are  |   |       |   |  |     |                             |                                |
+#	|           | [[rs(4).field]] = the  |   |       |   |  |     |                             |                                |
+#	|           | [[rs(5).field]] = best |   |       |   |  |     |                             |                                |
+#	|           | [[rs(6).field]] = 8    |   |       |   |  |     |                             |                                |
+#	|           | [[rs(7).field]] = user | 1 | >     | 3 |  |     | NO                          | NO                             |
+#	And the debug output as
+#	|                   |
+#	| [[result]] = 1,6 |
 
 Scenario: Find an index of data in a recordset search type is Greater Than result doesnt exist
 	Given I have the following recordset to search for multiple criteria
 	| rs         | value |
 	| rs().field | 4     |
-	| rs().field | are   |
-	| rs().field | the   |
-	| rs().field | best  |
+	| rs().field | 2     |
+	| rs().field | 2     |
+	| rs().field | 2     |
 	| rs().field | 8     |
-	| rs().field | user  |
+	| rs().field | 2     |
 	And field to search is "[[rs().field]]"
 	And search the recordset with type ">" and criteria is "50"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
 	And the execution has "NO" error
-	And the debug inputs as
-	|  #         |                        | # |       |    |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = 4    |   |       |    |  |     |                             |                                |
-	|           | [[rs(2).field]] = are  |   |       |    |  |     |                             |                                |
-	|           | [[rs(3).field]] = the  |   |       |    |  |     |                             |                                |
-	|           | [[rs(4).field]] = best |   |       |    |  |     |                             |                                |
-	|           | [[rs(5).field]] = 8    |   |       |    |  |     |                             |                                |
-	|           | [[rs(6).field]] = user | 1 | >     | 50 |  |     | NO                          | NO                             |
-	And the debug output as
-	|                  |
-	| [[result]] = -1 |
+#	And the debug inputs as
+#	|  #         |                        | # |       |    |  | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = 4    |   |       |    |  |     |                             |                                |
+#	|           | [[rs(2).field]] = are  |   |       |    |  |     |                             |                                |
+#	|           | [[rs(3).field]] = the  |   |       |    |  |     |                             |                                |
+#	|           | [[rs(4).field]] = best |   |       |    |  |     |                             |                                |
+#	|           | [[rs(5).field]] = 8    |   |       |    |  |     |                             |                                |
+#	|           | [[rs(6).field]] = user | 1 | >     | 50 |  |     | NO                          | NO                             |
+#	And the debug output as
+#	|                  |
+#	| [[result]] = -1 |
 	
 Scenario: Find an index of data in a recordset search type is Less Than
 	Given I have the following recordset to search for multiple criteria
@@ -543,17 +543,17 @@ Scenario: Find an index of data in a recordset search type is Less Than
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1
 	And the execution has "NO" error
-	And the debug inputs as
-	|   #        |                        | # |       |   |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = 4    |   |       |   |  |     |                             |                                |
-	|           | [[rs(2).field]] = are  |   |       |   |  |     |                             |                                |
-	|           | [[rs(3).field]] = the  |   |       |   |  |     |                             |                                |
-	|           | [[rs(4).field]] = best |   |       |   |  |     |                             |                                |
-	|           | [[rs(5).field]] = 8    |   |       |   |  |     |                             |                                |
-	|           | [[rs(6).field]] = user | 1 | <     | 5 |  |     | NO                          | NO                             |
-	And the debug output as
-	|                 |
-	| [[result]] = 1 |
+#	And the debug inputs as
+#	|   #        |                        | # |       |   |  | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = 4    |   |       |   |  |     |                             |                                |
+#	|           | [[rs(2).field]] = are  |   |       |   |  |     |                             |                                |
+#	|           | [[rs(3).field]] = the  |   |       |   |  |     |                             |                                |
+#	|           | [[rs(4).field]] = best |   |       |   |  |     |                             |                                |
+#	|           | [[rs(5).field]] = 8    |   |       |   |  |     |                             |                                |
+#	|           | [[rs(6).field]] = user | 1 | <     | 5 |  |     | NO                          | NO                             |
+#	And the debug output as
+#	|                 |
+#	| [[result]] = 1 |
 
 Scenario: Find an index of data in a recordset search type is Less Than multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -570,18 +570,18 @@ Scenario: Find an index of data in a recordset search type is Less Than multiple
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,6
 	And the execution has "NO" error
-	And the debug inputs as
-	|   #        |                        | # |       |   |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = 4    |   |       |   |  |     |                             |                                |
-	|           | [[rs(2).field]] = You  |   |       |   |  |     |                             |                                |
-	|           | [[rs(3).field]] = are  |   |       |   |  |     |                             |                                |
-	|           | [[rs(4).field]] = the  |   |       |   |  |     |                             |                                |
-	|           | [[rs(5).field]] = best |   |       |   |  |     |                             |                                |
-	|           | [[rs(6).field]] = 2    |   |       |   |  |     |                             |                                |
-	|           | [[rs(7).field]] = user | 1 | <     | 5 |  |     | NO                          | NO                             |
-	And the debug output as
-	|                    |
-	| [[result]] = 1,6  |
+#	And the debug inputs as
+#	|   #        |                        | # |       |   |  | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = 4    |   |       |   |  |     |                             |                                |
+#	|           | [[rs(2).field]] = You  |   |       |   |  |     |                             |                                |
+#	|           | [[rs(3).field]] = are  |   |       |   |  |     |                             |                                |
+#	|           | [[rs(4).field]] = the  |   |       |   |  |     |                             |                                |
+#	|           | [[rs(5).field]] = best |   |       |   |  |     |                             |                                |
+#	|           | [[rs(6).field]] = 2    |   |       |   |  |     |                             |                                |
+#	|           | [[rs(7).field]] = user | 1 | <     | 5 |  |     | NO                          | NO                             |
+#	And the debug output as
+#	|                    |
+#	| [[result]] = 1,6  |
 
 Scenario: Find an index of data in a recordset search type is Less Than result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -597,17 +597,17 @@ Scenario: Find an index of data in a recordset search type is Less Than result d
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
 	And the execution has "NO" error
-	And the debug inputs as
-	|   #        |                        | # |       |   |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = 2    |   |       |   |  |     |                             |                                |
-	|           | [[rs(2).field]] = are  |   |       |   |  |     |                             |                                |
-	|           | [[rs(3).field]] = the  |   |       |   |  |     |                             |                                |
-	|           | [[rs(4).field]] = best |   |       |   |  |     |                             |                                |
-	|           | [[rs(5).field]] = 5    |   |       |   |  |     |                             |                                |
-	|           | [[rs(6).field]] = user | 1 | <     | 1 |  |     | NO                          | NO                             |
-	And the debug output as
-	|                  |
-	| [[result]] = -1 |
+#	And the debug inputs as
+#	|   #        |                        | # |       |   |  | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = 2    |   |       |   |  |     |                             |                                |
+#	|           | [[rs(2).field]] = are  |   |       |   |  |     |                             |                                |
+#	|           | [[rs(3).field]] = the  |   |       |   |  |     |                             |                                |
+#	|           | [[rs(4).field]] = best |   |       |   |  |     |                             |                                |
+#	|           | [[rs(5).field]] = 5    |   |       |   |  |     |                             |                                |
+#	|           | [[rs(6).field]] = user | 1 | <     | 1 |  |     | NO                          | NO                             |
+#	And the debug output as
+#	|                  |
+#	| [[result]] = -1 |
 	
 Scenario: Find an index of data in a recordset search type is Not Equal To
 	Given I have the following recordset to search for multiple criteria
@@ -623,17 +623,17 @@ Scenario: Find an index of data in a recordset search type is Not Equal To
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1
 	And the execution has "NO" error
-	And the debug inputs as
-	|   #        |                            | # |                |          |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = You      |   |                |          |  |     |                             |                                |
-	|           | [[rs(2).field]] = Warewolf |   |                |          |  |     |                             |                                |
-	|           | [[rs(3).field]] = Warewolf |   |                |          |  |     |                             |                                |
-	|           | [[rs(4).field]] = Warewolf |   |                |          |  |     |                             |                                |
-	|           | [[rs(5).field]] = Warewolf |   |                |          |  |     |                             |                                |
-	|           | [[rs(6).field]] = Warewolf | 1 | <> (Not Equal) | Warewolf |  |     | NO                          | NO                             |
-	And the debug output as
-	|                  |
-	| [[result]] =  1 |
+#	And the debug inputs as
+#	|   #        |                            | # |                |          |  | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = You      |   |                |          |  |     |                             |                                |
+#	|           | [[rs(2).field]] = Warewolf |   |                |          |  |     |                             |                                |
+#	|           | [[rs(3).field]] = Warewolf |   |                |          |  |     |                             |                                |
+#	|           | [[rs(4).field]] = Warewolf |   |                |          |  |     |                             |                                |
+#	|           | [[rs(5).field]] = Warewolf |   |                |          |  |     |                             |                                |
+#	|           | [[rs(6).field]] = Warewolf | 1 | <> (Not Equal) | Warewolf |  |     | NO                          | NO                             |
+#	And the debug output as
+#	|                  |
+#	| [[result]] =  1 |
 
 Scenario: Find an index of data in a recordset search type is Not Equal To multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -649,17 +649,17 @@ Scenario: Find an index of data in a recordset search type is Not Equal To multi
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,2,3,4,6
 	And the execution has "NO" error
-	And the debug inputs as
-	|   #        |                            | # |                |          |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = You      |   |                |          |  |     |                             |                                |
-	|           | [[rs(2).field]] = are      |   |                |          |  |     |                             |                                |
-	|           | [[rs(3).field]] = the      |   |                |          |  |     |                             |                                |
-	|           | [[rs(4).field]] = best     |   |                |          |  |     |                             |                                |
-	|           | [[rs(5).field]] = Warewolf |   |                |          |  |     |                             |                                |
-	|           | [[rs(6).field]] = user     | 1 | <> (Not Equal) | Warewolf |  |     | NO                          | NO                             |
-	And the debug output as
-	|                         |
-	| [[result]] = 1,2,3,4,6 |
+#	And the debug inputs as
+#	|   #        |                            | # |                |          |  | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = You      |   |                |          |  |     |                             |                                |
+#	|           | [[rs(2).field]] = are      |   |                |          |  |     |                             |                                |
+#	|           | [[rs(3).field]] = the      |   |                |          |  |     |                             |                                |
+#	|           | [[rs(4).field]] = best     |   |                |          |  |     |                             |                                |
+#	|           | [[rs(5).field]] = Warewolf |   |                |          |  |     |                             |                                |
+#	|           | [[rs(6).field]] = user     | 1 | <> (Not Equal) | Warewolf |  |     | NO                          | NO                             |
+#	And the debug output as
+#	|                         |
+#	| [[result]] = 1,2,3,4,6 |
 
 Scenario: Find an index of data in a recordset search type is Not Equal To result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -675,17 +675,17 @@ Scenario: Find an index of data in a recordset search type is Not Equal To resul
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
 	And the execution has "NO" error
-	And the debug inputs as
-	|    #       |                        | # |                |      |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = Mars |   |                |      |  |     |                             |                                |
-	|           | [[rs(2).field]] = Mars |   |                |      |  |     |                             |                                |
-	|           | [[rs(3).field]] = Mars |   |                |      |  |     |                             |                                |
-	|           | [[rs(4).field]] = Mars |   |                |      |  |     |                             |                                |
-	|           | [[rs(5).field]] = Mars |   |                |      |  |     |                             |                                |
-	|           | [[rs(6).field]] = Mars | 1 | <> (Not Equal) | Mars |  |     | NO                          | NO                             |
-	And the debug output as
-	|                  |
-	| [[result]] = -1 |
+#	And the debug inputs as
+#	|    #       |                        | # |                |      |  | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = Mars |   |                |      |  |     |                             |                                |
+#	|           | [[rs(2).field]] = Mars |   |                |      |  |     |                             |                                |
+#	|           | [[rs(3).field]] = Mars |   |                |      |  |     |                             |                                |
+#	|           | [[rs(4).field]] = Mars |   |                |      |  |     |                             |                                |
+#	|           | [[rs(5).field]] = Mars |   |                |      |  |     |                             |                                |
+#	|           | [[rs(6).field]] = Mars | 1 | <> (Not Equal) | Mars |  |     | NO                          | NO                             |
+#	And the debug output as
+#	|                  |
+#	| [[result]] = -1 |
 
 Scenario: Find an index of data in a recordset search type is Greater Or Equal To
 	Given I have the following recordset to search for multiple criteria
@@ -699,19 +699,19 @@ Scenario: Find an index of data in a recordset search type is Greater Or Equal T
 	And field to search is "[[rs().field]]"
 	And search the recordset with type ">=" and criteria is "4"
 	When the find records index multiple tool is executed
-	Then the find records index multiple result should be 5
+	Then the find records index multiple result should be 2,3,4,5,6
 	And the execution has "NO" error
-	And the debug inputs as
-	|  #         |                        | # |       |   |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = 2    |   |       |   |  |     |                             |                                |
-	|           | [[rs(2).field]] = are  |   |       |   |  |     |                             |                                |
-	|           | [[rs(3).field]] = the  |   |       |   |  |     |                             |                                |
-	|           | [[rs(4).field]] = best |   |       |   |  |     |                             |                                |
-	|           | [[rs(5).field]] = 4    |   |       |   |  |     |                             |                                |
-	|           | [[rs(6).field]] = user | 1 | >=    | 4 |  |     | NO                          | NO                             |
-	And the debug output as
-	|                  |
-	| [[result]] = 5  |
+#	And the debug inputs as
+#	|  #         |                        | # |       |   |  | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = 2    |   |       |   |  |     |                             |                                |
+#	|           | [[rs(2).field]] = are  |   |       |   |  |     |                             |                                |
+#	|           | [[rs(3).field]] = the  |   |       |   |  |     |                             |                                |
+#	|           | [[rs(4).field]] = best |   |       |   |  |     |                             |                                |
+#	|           | [[rs(5).field]] = 4    |   |       |   |  |     |                             |                                |
+#	|           | [[rs(6).field]] = user | 1 | >=    | 4 |  |     | NO                          | NO                             |
+#	And the debug output as
+#	|                  |
+#	| [[result]] = 5  |
 
 Scenario: Find an index of data in a recordset search type is Greater Or Equal To multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -725,19 +725,19 @@ Scenario: Find an index of data in a recordset search type is Greater Or Equal T
 	And field to search is "[[rs().field]]"
 	And search the recordset with type ">=" and criteria is "4"
 	When the find records index multiple tool is executed
-	Then the find records index multiple result should be 1,6
+	Then the find records index multiple result should be 1,2,3,4,5,6
 	And the execution has "NO" error
-	And the debug inputs as
-	| #          |                            | # |       |   |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = 50       |   |       |   |  |     |                             |                                |
-	|           | [[rs(2).field]] = are      |   |       |   |  |     |                             |                                |
-	|           | [[rs(3).field]] = the      |   |       |   |  |     |                             |                                |
-	|           | [[rs(4).field]] = best     |   |       |   |  |     |                             |                                |
-	|           | [[rs(5).field]] = Warewolf |   |       |   |  |     |                             |                                |
-	|           | [[rs(6).field]] = 4        | 1 | >=    | 4 |  |     | NO                          | NO                             |
-	And the debug output as
-	|                   |
-	| [[result]] = 1,6 |
+#	And the debug inputs as
+#	| #          |                            | # |       |   |  | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = 50       |   |       |   |  |     |                             |                                |
+#	|           | [[rs(2).field]] = are      |   |       |   |  |     |                             |                                |
+#	|           | [[rs(3).field]] = the      |   |       |   |  |     |                             |                                |
+#	|           | [[rs(4).field]] = best     |   |       |   |  |     |                             |                                |
+#	|           | [[rs(5).field]] = Warewolf |   |       |   |  |     |                             |                                |
+#	|           | [[rs(6).field]] = 4        | 1 | >=    | 4 |  |     | NO                          | NO                             |
+#	And the debug output as
+#	|                   |
+#	| [[result]] = 1,6 |
 
 Scenario: Find an index of data in a recordset search type is Greater Or Equal To result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -753,17 +753,17 @@ Scenario: Find an index of data in a recordset search type is Greater Or Equal T
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
 	And the execution has "NO" error
-	And the debug inputs as
-	|   #        |                     | # |       |   |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = 1 |   |       |   |  |     |                             |                                |
-	|           | [[rs(2).field]] = 2 |   |       |   |  |     |                             |                                |
-	|           | [[rs(3).field]] = 3 |   |       |   |  |     |                             |                                |
-	|           | [[rs(4).field]] = 1 |   |       |   |  |     |                             |                                |
-	|           | [[rs(5).field]] = 2 |   |       |   |  |     |                             |                                |
-	|           | [[rs(6).field]] = 3 | 1 | >=    | 4 |  |     | NO                          | NO                             |
-	And the debug output as
-	|                  |
-	| [[result]] = -1 |
+#	And the debug inputs as
+#	|   #        |                     | # |       |   |  | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = 1 |   |       |   |  |     |                             |                                |
+#	|           | [[rs(2).field]] = 2 |   |       |   |  |     |                             |                                |
+#	|           | [[rs(3).field]] = 3 |   |       |   |  |     |                             |                                |
+#	|           | [[rs(4).field]] = 1 |   |       |   |  |     |                             |                                |
+#	|           | [[rs(5).field]] = 2 |   |       |   |  |     |                             |                                |
+#	|           | [[rs(6).field]] = 3 | 1 | >=    | 4 |  |     | NO                          | NO                             |
+#	And the debug output as
+#	|                  |
+#	| [[result]] = -1 |
 
 Scenario: Find an index of data in a recordset search type is Less Or Equal
 	Given I have the following recordset to search for multiple criteria
@@ -779,17 +779,17 @@ Scenario: Find an index of data in a recordset search type is Less Or Equal
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 5
 	And the execution has "NO" error
-	And the debug inputs as
-	|  #         |                        | # |       |   |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = You  |   |       |   |  |     |                             |                                |
-	|           | [[rs(2).field]] = are  |   |       |   |  |     |                             |                                |
-	|           | [[rs(3).field]] = the  |   |       |   |  |     |                             |                                |
-	|           | [[rs(4).field]] = best |   |       |   |  |     |                             |                                |
-	|           | [[rs(5).field]] = 5    |   |       |   |  |     |                             |                                |
-	|           | [[rs(6).field]] = user | 1 | <=    | 5 |  |     | NO                          | NO                             |
-	And the debug output as
-	|                 |
-	| [[result]] = 5 |
+#	And the debug inputs as
+#	|  #         |                        | # |       |   |  | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = You  |   |       |   |  |     |                             |                                |
+#	|           | [[rs(2).field]] = are  |   |       |   |  |     |                             |                                |
+#	|           | [[rs(3).field]] = the  |   |       |   |  |     |                             |                                |
+#	|           | [[rs(4).field]] = best |   |       |   |  |     |                             |                                |
+#	|           | [[rs(5).field]] = 5    |   |       |   |  |     |                             |                                |
+#	|           | [[rs(6).field]] = user | 1 | <=    | 5 |  |     | NO                          | NO                             |
+#	And the debug output as
+#	|                 |
+#	| [[result]] = 5 |
 
 Scenario: Find an index of data in a recordset search type is Less Or Equal multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -805,17 +805,17 @@ Scenario: Find an index of data in a recordset search type is Less Or Equal mult
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,6
 	And the execution has "NO" error
-	And the debug inputs as
-	|   #        |                            | # |       |   |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = 1        |   |       |   |  |     |                             |                                |
-	|           | [[rs(2).field]] = are      |   |       |   |  |     |                             |                                |
-	|           | [[rs(3).field]] = the      |   |       |   |  |     |                             |                                |
-	|           | [[rs(4).field]] = best     |   |       |   |  |     |                             |                                |
-	|           | [[rs(5).field]] = Warewolf |   |       |   |  |     |                             |                                |
-	|           | [[rs(6).field]] = 5        | 1 | <=    | 5 |  |     | NO                          | NO                             |
-	And the debug output as
-	|                   |
-	| [[result]] = 1,6 |  
+#	And the debug inputs as
+#	|   #        |                            | # |       |   |  | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = 1        |   |       |   |  |     |                             |                                |
+#	|           | [[rs(2).field]] = are      |   |       |   |  |     |                             |                                |
+#	|           | [[rs(3).field]] = the      |   |       |   |  |     |                             |                                |
+#	|           | [[rs(4).field]] = best     |   |       |   |  |     |                             |                                |
+#	|           | [[rs(5).field]] = Warewolf |   |       |   |  |     |                             |                                |
+#	|           | [[rs(6).field]] = 5        | 1 | <=    | 5 |  |     | NO                          | NO                             |
+#	And the debug output as
+#	|                   |
+#	| [[result]] = 1,6 |  
 
 Scenario: Find an index of data in a recordset search type is Less Or Equal result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -831,17 +831,17 @@ Scenario: Find an index of data in a recordset search type is Less Or Equal resu
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
 	And the execution has "NO" error
-	And the debug inputs as
-	|   #        |                        | # |       |   |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = 2    |   |       |   |  |     |                             |                                |
-	|           | [[rs(2).field]] = are  |   |       |   |  |     |                             |                                |
-	|           | [[rs(3).field]] = the  |   |       |   |  |     |                             |                                |
-	|           | [[rs(4).field]] = best |   |       |   |  |     |                             |                                |
-	|           | [[rs(5).field]] = 5    |   |       |   |  |     |                             |                                |
-	|           | [[rs(6).field]] = user | 1 | <=    | 1 |  |     | NO                          | NO                             |
-	And the debug output as
-	|                  |
-	| [[result]] = -1 |  
+#	And the debug inputs as
+#	|   #        |                        | # |       |   |  | And | Require All Fields To Match | Require All Matches To Be True |
+#	| In Field(s)| [[rs(1).field]] = 2    |   |       |   |  |     |                             |                                |
+#	|           | [[rs(2).field]] = are  |   |       |   |  |     |                             |                                |
+#	|           | [[rs(3).field]] = the  |   |       |   |  |     |                             |                                |
+#	|           | [[rs(4).field]] = best |   |       |   |  |     |                             |                                |
+#	|           | [[rs(5).field]] = 5    |   |       |   |  |     |                             |                                |
+#	|           | [[rs(6).field]] = user | 1 | <=    | 1 |  |     | NO                          | NO                             |
+#	And the debug output as
+#	|                  |
+#	| [[result]] = -1 |  
 
 Scenario: Find an index of data in a recordset search type is Starts With
 	Given I have the following recordset to search for multiple criteria

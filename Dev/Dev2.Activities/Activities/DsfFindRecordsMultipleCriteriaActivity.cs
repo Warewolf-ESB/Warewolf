@@ -100,12 +100,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-
+            var compiler = DataListFactory.CreateDataListCompiler();
             var dataObject = context.GetExtension<IDSFDataObject>();
+
             var env = dataObject.Environment;
             var executionId = dataObject.DataListID;
             InitializeDebug(dataObject);
-
+            var allErrors = new ErrorResultTO();
             try
             {
                 IList<string> toSearch = FieldsToSearch.Split(',');
@@ -114,14 +115,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 //{
                 //    AddDebugInputValues(dataObject, toSearch, compiler, executionId, ref errorResultTo);
                 //}
+               
+                bool hasEvaled = false;
                 foreach(var searchvar in toSearch)
                 {
                     Func<DataASTMutable.WarewolfAtom, bool> func = null;
                     foreach(FindRecordsTO to in ResultsCollection.Where(a=> !String.IsNullOrEmpty(a.SearchType)))
                     {
+                        if ((to.From.Length > 0 && String.IsNullOrEmpty(to.To))
+                            || (to.To.Length > 0 && String.IsNullOrEmpty(to.From)))
+                        {
+                            throw new Exception("From and to Must be populated");
+                        }  
                         var right = env.EvalAsList(to.SearchCriteria);
                         IEnumerable<DataASTMutable.WarewolfAtom> from = new List<DataASTMutable.WarewolfAtom>();
                         IEnumerable<DataASTMutable.WarewolfAtom> tovalue = new List<DataASTMutable.WarewolfAtom>(); 
+
                         if(!String.IsNullOrEmpty(to.From))
                          from = env.EvalAsList(to.From);
                         if (!String.IsNullOrEmpty(to.To))
@@ -144,11 +153,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
    
                     }
                     var output = env.EnvalWhere(dataObject.Environment.ToStar(searchvar), func);
-                    results.AddRange(output);
+                    
+                     if(RequireAllFieldsToMatch&& hasEvaled )
+                     {
+                         results = results.Intersect(output).ToList();
+                     }
+                     else
+                     {
+                         results = results.Union(output).ToList();
+                     }
+                     hasEvaled = true;
                    
                 }
                 if(!results.Any()) results.Add(-1);
-                var res =String.Join(",", results);
+                var res =String.Join(",", results.Distinct());
                 env.Assign(Result, res);
                 if(dataObject.IsDebugMode())
                 {
@@ -321,17 +339,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             catch (Exception exception)
             {
                 Dev2Logger.Log.Error("DSFRecordsMultipleCriteria", exception);
-                //allErrors.AddError(exception.Message);
+                allErrors.AddError(exception.Message);
             }
             finally
             {
-                //var hasErrors = allErrors.HasErrors();
-                //if(hasErrors)
-                //{
-                //    DisplayAndWriteError("DsfFindRecordsMultipleCriteriaActivity", allErrors);
-                //    //compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorResultTo);
-                //    //compiler.Upsert(executionId, Result, (string)null, out errorResultTo);
-                //}
+                var hasErrors = allErrors.HasErrors();
+                if (hasErrors)
+                {
+                    DisplayAndWriteError("DsfFindRecordsMultipleCriteriaActivity", allErrors);
+                    ErrorResultTO errorResultTo;
+                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorResultTo);
+                    compiler.Upsert(executionId, Result, (string)null, out errorResultTo);
+                }
 
                 if(dataObject.IsDebugMode())
                 {
