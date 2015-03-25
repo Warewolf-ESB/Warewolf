@@ -17,12 +17,10 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
-using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Value_Objects;
 using Warewolf.Storage;
-
+using DataListUtil = Dev2.Data.Util.DataListUtil;
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
 namespace Dev2.Data.Decision

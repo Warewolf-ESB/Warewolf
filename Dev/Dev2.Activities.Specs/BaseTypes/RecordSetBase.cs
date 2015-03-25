@@ -58,7 +58,10 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 foreach(dynamic variable in variableList)
                 {
-                    CurrentExecutionEnvironment.Assign(DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), variable.Item2);
+                    if (!string.IsNullOrEmpty(variable.Item1) && !string.IsNullOrEmpty(variable.Item2))
+                    {
+                        CurrentExecutionEnvironment.Assign(DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), variable.Item2);
+                    }
                     //Build(variable, shape, data, row);
                     row++;
                 }

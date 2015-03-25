@@ -165,9 +165,7 @@
     <Compile Include="BaseTypes\FileToolsBase.cs" />
     <Compile Include="BaseTypes\RecordSetBase.cs" />
     <Compile Include="Composition\DBSource\XmlFetch.cs" />
-    <Compile Include="Composition\WorkflowExecution2.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
+    <Compile Include="Composition\WorkflowExecution1.feature.cs">
       <DependentUpon>WorkflowExecution.feature</DependentUpon>
     </Compile>
     <Compile Include="Composition\WorkflowExecutionSteps.cs" />
@@ -460,9 +458,6 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>WorkflowExecution2.feature.cs</LastGenOutput>
     </None>
-    <None Include="Default.srprofile">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Explorer\Explorer.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Explorer.feature.cs</LastGenOutput>
@@ -476,13 +471,9 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Settings Permissions1.feature.cs</LastGenOutput>
     </None>
-    <None Include="runtests.cmd" />
     <None Include="Scheduler\Scheduler.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Scheduler.feature.cs</LastGenOutput>
-    </None>
-    <None Include="SpecRunTestProfile.xsd">
-      <SubType>Designer</SubType>
     </None>
     <None Include="Toolbox\ControlFlow\Decision\Decision.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

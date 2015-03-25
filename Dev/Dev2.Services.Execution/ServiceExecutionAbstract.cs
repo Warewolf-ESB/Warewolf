@@ -12,17 +12,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
-using Dev2.Common.Interfaces.DataList.Contract;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Framework.Converters.Graph;
+using Warewolf.Storage;
 
 namespace Dev2.Services.Execution
 {
@@ -108,11 +109,12 @@ namespace Dev2.Services.Execution
             return true;
         }
 
-        protected abstract object ExecuteService(out ErrorResultTO errors, IOutputFormatter formater = null);
+        protected abstract object ExecuteService(List<MethodParameter> methodParameters, out ErrorResultTO errors, IOutputFormatter formater);
 
         #region ExecuteImpl
 
         public TService Service { get; set; }
+        public string InstanceInputDefinitions { get; set; }
 
         protected void ExecuteImpl(IDataListCompiler compiler, out ErrorResultTO errors)
         {
@@ -151,20 +153,19 @@ namespace Dev2.Services.Execution
             {
                 ErrorResultTO invokeErrors;
 
-                var itrs = new List<IDev2DataListEvaluateIterator>(5);
-                IDev2IteratorCollection itrCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
+                var itrs = new List<string>(5);
+                IWarewolfListIterator itrCollection = new WarewolfListIterator(DataObj.Environment);
                 ServiceMethod method = Service.Method;
                 List<MethodParameter> inputs = method.Parameters;
                 if (inputs.Count == 0)
                 {
-                    ExecuteServiceAndMergeResultIntoDataList(outputFormatter, compiler, itrCollection, itrs,
-                        out invokeErrors);
+                    ExecuteServiceAndMergeResultIntoDataList(outputFormatter,out invokeErrors);
                     errors.MergeErrors(invokeErrors);
                 }
                 else
                 {
                     #region Build iterators for each ServiceActionInput
-
+                    var inputDefs = DataListFactory.CreateInputParser().Parse(InstanceInputDefinitions);
                     foreach (MethodParameter sai in inputs)
                     {
                         string val = sai.Name;
@@ -172,20 +173,21 @@ namespace Dev2.Services.Execution
 
                         if (val != null)
                         {
-                            toInject = DataListUtil.AddBracketsToValueIfNotExist(sai.Name);
+                            var sai1 = sai;
+                            var dev2Definitions = inputDefs.Where(definition => definition.Name == sai1.Name);
+                            var definitions = dev2Definitions as IDev2Definition[] ?? dev2Definitions.ToArray();
+                            if (definitions.Count() == 1)
+                            {
+                                toInject = Data.Util.DataListUtil.AddBracketsToValueIfNotExist(definitions[0].RawValue);    
+                            }
+                            
                         }
                         else if (!sai.EmptyToNull)
                         {
                             toInject = sai.DefaultValue;
                         }
-
-                        IBinaryDataListEntry expressionEntry = compiler.Evaluate(DataObj.DataListID, enActionType.User,
-                            toInject, false, out invokeErrors);
-                        errors.MergeErrors(invokeErrors);
-                        IDev2DataListEvaluateIterator expressionIterator =
-                            Dev2ValueObjectFactory.CreateEvaluateIterator(expressionEntry);
-                        itrCollection.AddIterator(expressionIterator);
-                        itrs.Add(expressionIterator);
+                        itrCollection.AddVariableToIterateOn(toInject);
+                        itrs.Add(toInject);
                     }
 
                     #endregion
@@ -216,8 +218,8 @@ namespace Dev2.Services.Execution
         #region ExecuteServiceAndMergeResultIntoDataList
 
         private void ExecuteServiceAndMergeResultIntoDataList(IOutputFormatter outputFormatter,
-            IDataListCompiler compiler, IDev2IteratorCollection itrCollection,
-            IEnumerable<IDev2DataListEvaluateIterator> itrs, out ErrorResultTO errors)
+            IDataListCompiler compiler, IWarewolfListIterator itrCollection,
+            IEnumerable<string> itrs, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             ErrorResultTO invokeErrors;
@@ -230,8 +232,23 @@ namespace Dev2.Services.Execution
                 return;
             }
 
-            // TODO : This needs to move to the other side of the Marshaled Invoke
             MergeResultIntoDataList(compiler, outputFormatter, response, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+        }
+        
+        private void ExecuteServiceAndMergeResultIntoDataList(IOutputFormatter outputFormatter, out ErrorResultTO errors)
+        {
+            errors = new ErrorResultTO();
+            ErrorResultTO invokeErrors;
+
+            ExecuteService(Service.Method.Parameters, out invokeErrors,outputFormatter);
+            errors.MergeErrors(invokeErrors);
+            if (errors.HasErrors())
+            {
+                return;
+            }
+
+            
             errors.MergeErrors(invokeErrors);
         }
 
@@ -239,37 +256,27 @@ namespace Dev2.Services.Execution
 
         #region ExecuteService
 
-        private object ExecuteService(IList<MethodParameter> methodParameters, IDev2IteratorCollection itrCollection,
-            IEnumerable<IDev2DataListEvaluateIterator> itrs, out ErrorResultTO errors, IOutputFormatter formater = null)
+        private object ExecuteService(IList<MethodParameter> methodParameters, IWarewolfListIterator itrCollection,
+            IEnumerable<string> itrs, out ErrorResultTO errors, IOutputFormatter formater = null)
         {
             errors = new ErrorResultTO();
             if (methodParameters.Any())
             {
                 // Loop iterators 
                 int pos = 0;
-                foreach (IDev2DataListEvaluateIterator itr in itrs)
+                foreach (string itr in itrs)
                 {
-                    IBinaryDataListItem injectVal = itrCollection.FetchNextRow(itr);
+                    string injectVal = itrCollection.FetchNextValue(itr);
                     MethodParameter param = methodParameters[pos];
-                    if (param != null)
-                    {
-                        string theValue;
-                        try
-                        {
-                            theValue = injectVal.TheValue;
-                        }
-                        catch (Exception)
-                        {
-                            theValue = "";
-                        }
+                    
 
                         param.Value = param.EmptyToNull &&
                                       (injectVal == null ||
-                                       string.Compare(theValue, string.Empty,
+                                       string.Compare(injectVal, string.Empty,
                                            StringComparison.InvariantCultureIgnoreCase) == 0)
                             ? null
-                            : theValue;
-                    }
+                            : injectVal;
+                    
                     pos++;
                 }
             }
@@ -277,15 +284,46 @@ namespace Dev2.Services.Execution
             try
             {
                 ErrorResultTO invokeErrors;
-                object result = ExecuteService(out invokeErrors, formater);
+                ExecuteService(methodParameters,out invokeErrors, formater);
                 errors.MergeErrors(invokeErrors);
-                return result;
+                return Guid.NewGuid();
             }
             catch (Exception ex)
             {
                 errors.AddError(string.Format("Service Execution Error: {0}", ex.Message));
             }
             return null;
+        }
+        
+        private void ExecuteService(IEnumerable<MethodParameter> methodParameters, out ErrorResultTO errors, IOutputFormatter formater = null)
+        {
+            errors = new ErrorResultTO();
+            try
+            {
+                var parameters = methodParameters as IList<MethodParameter> ?? methodParameters.ToList();
+                string result;
+                if (parameters.Any())
+                {
+                    result = ExecuteService(parameters.ToList(), out errors, formater).ToString();
+                }
+                else
+                {
+                    ErrorResultTO invokeErrors;
+                    result = ExecuteService(new List<MethodParameter>(), out invokeErrors, formater).ToString();
+                    errors.MergeErrors(invokeErrors);
+                }
+                if (!HandlesOutputFormatting)
+                {
+                    var formattedPayload = formater != null
+                            ? formater.Format(result).ToString()
+                            : result;
+                    PushXmlIntoEnvironment(formattedPayload,InstanceOutputDefintions);
+                }
+            }
+            catch (Exception ex)
+            {
+                errors.AddError(string.Format("Service Execution Error: {0}", ex.Message));
+            }
         }
 
         #endregion
@@ -346,6 +384,112 @@ namespace Dev2.Services.Execution
             }
         }
 
+
+        public void PushXmlIntoEnvironment(string input, string outputDefs)
+        {
+
+            if (input != string.Empty)
+            {
+                try
+                {
+                    string toLoad = Data.Util.DataListUtil.StripCrap(input); // clean up the rubish ;)
+                    XmlDocument xDoc = new XmlDocument();
+                    toLoad = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), toLoad);
+                    xDoc.LoadXml(toLoad);
+
+                    if (xDoc.DocumentElement != null)
+                    {
+                        XmlNodeList children = xDoc.DocumentElement.ChildNodes;
+
+                        IDictionary<string, int> indexCache = new Dictionary<string, int>();
+
+                        // BUG 9626 - 2013.06.11 - TWR: refactored for recursion
+                        TryConvert(children, indexCache);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Log.Error(e.Message,e);
+                    // if use passed in empty input they only wanted the shape ;)
+                    if (input.Length > 0)
+                    {
+                    }
+                }
+            }
+        }
+      void TryConvert(XmlNodeList children, IDictionary<string, int> indexCache, int level = 0)
+        {
+            // spin through each element in the XML
+            foreach(XmlNode c in children)
+            {
+                if(c.Name != GlobalConstants.NaughtyTextNode)
+                {
+                    // scalars and recordset fetch
+                    WarewolfDataEvaluationCommon.WarewolfEvalResult warewolfEvalResult = null;
+                    try
+                    {
+                        warewolfEvalResult = DataObj.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(c.Name));
+                    }
+                    catch (Exception e)
+                    {
+                        Dev2Logger.Log.Error(e.Message,e);
+                    }
+                    if(warewolfEvalResult!=null)
+                    {
+                        if (warewolfEvalResult.IsWarewolfAtomListresult)
+                        {
+                            // fetch recordset index
+                            int fetchIdx;
+                            var idx = indexCache.TryGetValue(c.Name, out fetchIdx) ? fetchIdx : 1;
+                            // process recordset
+                            var nl = c.ChildNodes;
+                            foreach(XmlNode subc in nl)
+                            {
+                                // Extract column being mapped to ;)
+
+//                                var theCol = entry.Columns.FirstOrDefault(col => col.ColumnName == subc.Name);
+//                                var dir = enDev2ColumnArgumentDirection.None;
+//                                if(theCol != null)
+//                                {
+//                                    dir = theCol.ColumnIODirection;
+//                                }
+//
+//                                if(CanMapValue(onlyMapInputs, dir))
+//                                {
+//                                    entry.TryPutRecordItemAtIndex(Dev2BinaryDataListFactory.CreateBinaryItem(subc.InnerXml, c.Name, subc.Name, idx), idx, out error);
+//                                }
+                                var displayExpression = Data.Util.DataListUtil.AddBracketsToValueIfNotExist(Data.Util.DataListUtil.CreateRecordsetDisplayValue(c.Name, subc.Name, idx.ToString()));
+                                DataObj.Environment.Assign(displayExpression, subc.InnerXml);
+                            }
+                            // update this recordset index
+                            indexCache[c.Name] = ++idx;
+                        }
+                        else if (warewolfEvalResult.IsWarewolfAtomResult)
+                        {
+                            DataObj.Environment.Assign(Data.Util.DataListUtil.AddBracketsToValueIfNotExist(c.Name), c.InnerXml);
+                        }
+//                        else if(CanMapValue(onlyMapInputs, entry.ColumnIODirection))
+//                        {
+//                            // process scalar
+//                            entry.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(c.InnerXml, c.Name), out error);
+//
+//                            if(!string.IsNullOrEmpty(error))
+//                            {
+//                                errors.AddError(error);
+//                            }
+//                        }
+                    }
+                    else
+                    {
+                        if(level == 0)
+                        {
+                            // Only recurse if we're at the first level!!
+                            TryConvert(c.ChildNodes, indexCache, ++level);
+                        }                        
+                    }
+                }
+            }
+        }
         #endregion
 
         #region GetOutputFormatter

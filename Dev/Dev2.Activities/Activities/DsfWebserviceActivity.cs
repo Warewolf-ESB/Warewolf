@@ -26,18 +26,16 @@ namespace Dev2.Activities
         protected override Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors)
         {
             tmpErrors = new ErrorResultTO();
-            ErrorResultTO invokeErrors;
             var compiler = DataListFactory.CreateDataListCompiler();
             var oldID = dataObject.DataListID;
             var webserviceExecution = GetNewWebserviceExecution(dataObject);
-#pragma warning disable 168
-            var remainingMappings = esbChannel.ShapeForSubRequest(dataObject, inputs, outputs, out invokeErrors);
-#pragma warning restore 168
-            tmpErrors.MergeErrors(invokeErrors);
+
 
             if(webserviceExecution != null && !tmpErrors.HasErrors())
             {
                 webserviceExecution.InstanceOutputDefintions = outputs; // set the output mapping for the instance ;)
+                webserviceExecution.InstanceInputDefinitions = inputs;
+                ErrorResultTO invokeErrors;
                 var result = webserviceExecution.Execute(out invokeErrors);
                 tmpErrors.MergeErrors(invokeErrors);
 

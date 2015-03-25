@@ -87,6 +87,11 @@ namespace Dev2
             IDataListCompiler compiler);
 
         void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceId, string uri, out ErrorResultTO errors);
+
+
+        IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs);
+
+        void CreateNewEnvironmentFromInputMappings(IDSFDataObject dataObject, string inputDefs);
     }
 
     public interface IEsbWorkspaceChannel : IEsbChannel

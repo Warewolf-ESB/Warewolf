@@ -9,6 +9,7 @@
 */
 
 using System.ServiceModel;
+using Warewolf.Storage;
 
 namespace Dev2
 {
@@ -44,5 +45,6 @@ namespace Dev2
 
         [OperationContract]
         void ReloadSpecific(string userName, string resourceName);
+
     }
 }

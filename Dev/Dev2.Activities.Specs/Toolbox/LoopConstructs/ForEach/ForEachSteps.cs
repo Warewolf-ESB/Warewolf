@@ -349,6 +349,15 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             throw new NotImplementedException();
         }
 
+        public IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs)
+        {
+            return null;
+        }
+
+        public void CreateNewEnvironmentFromInputMappings(IDSFDataObject dataObject, string inputDefs)
+        {
+        }
+
         #endregion
 
         public IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceID, string inputDefs, string outputDefs,

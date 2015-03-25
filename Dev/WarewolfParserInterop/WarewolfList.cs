@@ -9,7 +9,9 @@ namespace WarewolfParserInterop
         private T[] _values;
         private int _count;
         private readonly T _defaultValue;
-        public WarewolfAtomList(T defaultValue)
+      IEnumerator<T> _currentEnumerator;
+
+      public WarewolfAtomList(T defaultValue)
         {
            _count= 32;
             _values = new T[32];
@@ -93,12 +95,19 @@ namespace WarewolfParserInterop
             }
         }
 
+      public T GetNextValue()
+      {
+          var x = GetCurrentEnumerator();
+          x.MoveNext();
+          return x.Current;
+      }
 
+      IEnumerator<T> GetCurrentEnumerator()
+      {
+          return _currentEnumerator ?? (_currentEnumerator = GetEnumerator());
+      }
 
-
-
-
-        public IEnumerator<T> GetEnumerator()
+      public IEnumerator<T> GetEnumerator()
         {
             return _values.Take(_count).GetEnumerator();
         }

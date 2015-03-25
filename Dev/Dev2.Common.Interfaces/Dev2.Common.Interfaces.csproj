@@ -188,6 +188,7 @@
     <Compile Include="Interfaces\IDev2TOFn.cs" />
     <Compile Include="IPulseLogger.cs" />
     <Compile Include="IVersionStrategy.cs" />
+    <Compile Include="IWarewolfListIterator.cs" />
     <Compile Include="PathOperations\IResult.cs" />
     <Compile Include="Patterns\ISpookyLoadable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

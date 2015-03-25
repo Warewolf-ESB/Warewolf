@@ -403,7 +403,7 @@ namespace Dev2.Runtime.ESB.Control
             return new ExecutionEnvironment();
         }
 
-        IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs)
+        public IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs)
         {
             var innerEnvironment = dataObject.Environment;
             dataObject.PopEnvironment();
@@ -411,7 +411,7 @@ namespace Dev2.Runtime.ESB.Control
             return innerEnvironment;
         }
 
-        void CreateNewEnvironmentFromInputMappings(IDSFDataObject dataObject, string inputDefs)
+        public void CreateNewEnvironmentFromInputMappings(IDSFDataObject dataObject, string inputDefs)
         {
             var shapeDefinitionsToEnvironment = DataListUtil.InputsToEnvironment(dataObject.Environment, inputDefs);
             dataObject.PushEnvironment(shapeDefinitionsToEnvironment);
