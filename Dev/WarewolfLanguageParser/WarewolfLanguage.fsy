@@ -8,7 +8,7 @@
 // Regular tokens
 %token OPENLANGUAGE CLOSELANGAUGE OPENBRACKET CLOSEDBRACKET STAR DOT 
 %token <string> INT   
-%token <float> FLOAT
+%token <string> FLOAT
 %token <string> STRING    
 %token <string> VARNAME    
 
@@ -63,7 +63,7 @@ index :
 scalar : 
 	|OPENLANGUAGE VARNAME CLOSELANGAUGE {$2}
 atom : 
-	| FLOAT {   Float $1 }
+	| FLOAT {   tryFloatParseAtom $1 }
 	|  INT {  tryParseAtom $1 }
 	| VARNAME {  DataString $1 }   	   
 	| STRING {  DataString $1 } 

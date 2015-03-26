@@ -17,6 +17,8 @@ namespace Dev2.Services.Execution
     {
         IDSFDataObject DataObj { get; set; }
         string InstanceOutputDefintions { get; set; }
+        string InstanceInputDefinitions { get; set; }
+
         void BeforeExecution(ErrorResultTO errors);
         Guid Execute(out ErrorResultTO errors);
         void AfterExecution(ErrorResultTO errors);

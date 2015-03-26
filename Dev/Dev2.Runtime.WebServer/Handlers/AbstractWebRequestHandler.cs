@@ -190,11 +190,11 @@ namespace Dev2.Runtime.WebServer.Handlers
                         {
                             if (dataObject.ReturnType == EmitionTypes.JSON)
                             {
-                                executePayload = esbEndpoint.GetJsonOutputFromEnvironment(dataObject, workspaceGuid);
+                                executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, workspaceGuid,resource.DataList.ToString());
                             }
                             else if (dataObject.ReturnType == EmitionTypes.XML)
                             {
-                                executePayload = esbEndpoint.GetXmlOutputFromEnvironment(dataObject,workspaceGuid);
+                                executePayload = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, workspaceGuid,resource.DataList.ToString());
                             }
                             //executePayload = esbEndpoint.FetchExecutionPayload(dataObject, formatter, out errors);
                            // allErrors.MergeErrors(errors);

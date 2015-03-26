@@ -206,6 +206,7 @@
     <Compile Include="Common\TypeExtensionMethods.cs" />
     <Compile Include="Converters\TypeToIconConverter.cs" />
     <Compile Include="DynamicServices\Objects\Dev2XamlLoader.cs" />
+    <Compile Include="ExecutionEnvironmentUtils.cs" />
     <Compile Include="ExtMethods\StringExtension.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -315,6 +316,10 @@
     <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
       <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
       <Name>Warewolf.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
+      <Project>{E0F7C709-A61B-4829-A659-D7780052326A}</Project>
+      <Name>WarewolfLanguageParser</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

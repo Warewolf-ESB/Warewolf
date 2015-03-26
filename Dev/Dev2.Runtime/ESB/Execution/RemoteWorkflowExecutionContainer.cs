@@ -102,8 +102,7 @@ namespace Dev2.Runtime.ESB.Execution
             ErrorResultTO invokeErrors;
 
             // get data in a format we can send ;)
-            var dataListFragment = dataListCompiler.ConvertFrom(DataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
+            var dataListFragment = ExecutionEnvironmentUtils.GetXmlInputFromEnvironment(DataObject, DataObject.WorkspaceID, DataObject.RemoteInvokeResultShape.ToString());
             string result = string.Empty;
 
             var connection = GetConnection(DataObject.EnvironmentID);
@@ -116,7 +115,7 @@ namespace Dev2.Runtime.ESB.Execution
             try
             {
                 // Invoke Remote WF Here ;)
-                result = ExecuteGetRequest(connection, serviceName, dataListFragment.ToString());
+                result = ExecuteGetRequest(connection, serviceName, dataListFragment);
                 IList<IDebugState> msg = FetchRemoteDebugItems(connection);
                 DataObject.RemoteDebugItems = msg; // set them so they can be acted upon
             }
@@ -127,6 +126,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
 
             // Create tmpDL
+            ExecutionEnvironmentUtils.UpdateEnvironmentFromOutputPayload(DataObject,result.ToStringBuilder(),DataObject.RemoteInvokeResultShape.ToString());
             var tmpId = dataListCompiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), result.ToStringBuilder(), DataObject.RemoteInvokeResultShape, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 

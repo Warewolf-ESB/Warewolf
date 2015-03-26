@@ -29,6 +29,7 @@ namespace Dev2.Runtime.ESB.Execution
         protected EsbExecuteRequest Request { get; private set; }
 
         public String InstanceOutputDefinition { get; set; }
+        public String InstanceInputDefinition { get; set; }
 
         protected EsbExecutionContainer(ServiceAction sa, IDSFDataObject dataObject, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : this(sa, dataObject, theWorkspace, esbChannel, null)

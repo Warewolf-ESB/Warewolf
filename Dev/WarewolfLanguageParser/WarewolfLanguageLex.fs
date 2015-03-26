@@ -115,7 +115,7 @@ and _fslex_tokenstream  _fslex_state lexbuf =
           )
   | 7 -> ( 
 # 42 "..\WarewolfLanguageParser\WarewolfLanguageLex.fsl"
-                                 FLOAT(System.Double.Parse(LexBuffer<char>.LexemeString(lexbuf))) 
+                                 FLOAT(LexBuffer<char>.LexemeString(lexbuf)) 
 # 119 "WarewolfLanguageLex.fs"
           )
   | 8 -> ( 

@@ -26,11 +26,12 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
+using Dev2.MathOperations;
 using Dev2.Util;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -126,33 +127,50 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
 
                 toUpsert.IsDebug = dataObject.IsDebugMode();
-                IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
-                var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors).ToString();
-                if(!string.IsNullOrEmpty(datalist))
+                var colItr = new WarewolfListIterator();
+//                var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors).ToString();
+//                if(!string.IsNullOrEmpty(datalist))
+//                {
+//                    ValidateInput(datalist, allErrors, Input1);
+//                    ValidateInput(datalist, allErrors, Input2);
+//                }
+                var input1 = string.IsNullOrEmpty(Input1) ? GlobalConstants.CalcExpressionNow : Input1;
+                string cleanExpression;
+                var isCalcEvaluation = DataListUtil.IsCalcEvaluation(input1, out cleanExpression);
+                var functionEvaluator = new FunctionEvaluator();
+                if (isCalcEvaluation)
                 {
-                    ValidateInput(datalist, allErrors, Input1);
-                    ValidateInput(datalist, allErrors, Input2);
+                    string eval;
+                    string error;
+                    functionEvaluator.TryEvaluateFunction(cleanExpression, out eval, out error);
+                    input1 = eval;
                 }
-                IBinaryDataListEntry input1Entry = compiler.Evaluate(executionId, enActionType.User, string.IsNullOrEmpty(Input1) ? GlobalConstants.CalcExpressionNow : Input1, false, out errors);
-                allErrors.MergeErrors(errors);
-                IDev2DataListEvaluateIterator input1Itr = Dev2ValueObjectFactory.CreateEvaluateIterator(input1Entry);
-                colItr.AddIterator(input1Itr);
+                
+                var input2 = string.IsNullOrEmpty(Input2) ? GlobalConstants.CalcExpressionNow : Input2;
+                isCalcEvaluation = DataListUtil.IsCalcEvaluation(input2, out cleanExpression);
+                functionEvaluator = new FunctionEvaluator();
+                if (isCalcEvaluation)
+                {
+                    string eval;
+                    string error;
+                    functionEvaluator.TryEvaluateFunction(cleanExpression, out eval, out error);
+                    input2 = eval;
+                }
 
-                IBinaryDataListEntry input2Entry = compiler.Evaluate(executionId, enActionType.User, string.IsNullOrEmpty(Input2) ? GlobalConstants.CalcExpressionNow : Input2, false, out errors);
-                allErrors.MergeErrors(errors);
-                IDev2DataListEvaluateIterator input2Itr = Dev2ValueObjectFactory.CreateEvaluateIterator(input2Entry);
-                colItr.AddIterator(input2Itr);
+                var input1Itr = new WarewolfIterator(dataObject.Environment.Eval(input1));
+                colItr.AddVariableToIterateOn(input1Itr);
 
-                IBinaryDataListEntry inputFormatEntry = compiler.Evaluate(executionId, enActionType.User, InputFormat ?? string.Empty, false, out errors);
-                allErrors.MergeErrors(errors);
-                IDev2DataListEvaluateIterator ifItr = Dev2ValueObjectFactory.CreateEvaluateIterator(inputFormatEntry);
-                colItr.AddIterator(ifItr);
+                var input2Itr = new WarewolfIterator(dataObject.Environment.Eval(input2));
+                colItr.AddVariableToIterateOn(input2Itr);
+
+                var ifItr = new WarewolfIterator(dataObject.Environment.Eval(InputFormat ?? string.Empty));
+                colItr.AddVariableToIterateOn(ifItr);
 
                 if(dataObject.IsDebugMode())
                 {
-                    AddDebugInputItem(string.IsNullOrEmpty(Input1) ? GlobalConstants.CalcExpressionNow : Input1, "Input 1", input1Entry, executionId);
-                    AddDebugInputItem(string.IsNullOrEmpty(Input2) ? GlobalConstants.CalcExpressionNow : Input2, "Input 2", input2Entry, executionId);
-                    AddDebugInputItem(InputFormat, "Input Format", inputFormatEntry, executionId);
+                    AddDebugInputItem(string.IsNullOrEmpty(Input1) ? GlobalConstants.CalcExpressionNow : Input1, "Input 1", dataObject.Environment);
+                    AddDebugInputItem(string.IsNullOrEmpty(Input2) ? GlobalConstants.CalcExpressionNow : Input2, "Input 2", dataObject.Environment);
+                    AddDebugInputItem(InputFormat, "Input Format", dataObject.Environment);
                     AddDebugInputItem(new DebugItemStaticDataParams(OutputType, "Output In"));
                 }
 
@@ -160,18 +178,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 while(colItr.HasMoreData())
                 {
-                    IDateTimeDiffTO transObj = ConvertToDateTimeDiffTo(colItr.FetchNextRow(input1Itr).TheValue,
-                                                                       colItr.FetchNextRow(input2Itr).TheValue,
-                                                                       colItr.FetchNextRow(ifItr).TheValue,
+                    IDateTimeDiffTO transObj = ConvertToDateTimeDiffTo(colItr.FetchNextValue(input1Itr),
+                                                                       colItr.FetchNextValue(input2Itr),
+                                                                       colItr.FetchNextValue(ifItr),
                                                                        OutputType);
                     //Create a DateTimeComparer using the DateTimeConverterFactory
                     IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
                     //Call the TryComparer method on the DateTimeComparer and pass it the IDateTimeDiffTO created from the ConvertToDateTimeDiffTO Method                
                     string result;
                     string error;
+                    string expression = Result;
                     if(comparer.TryCompare(transObj, out result, out error))
                     {
-                        string expression;
                         if(DataListUtil.IsValueRecordset(Result) &&
                             DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
                         {
@@ -192,26 +210,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         else
                         {
 
-                            toUpsert.Add(expression, result);
+                            dataObject.Environment.Assign(expression, result);
 
                         }
                     }
                     else
                     {
-                        DoDebugOutput(dataObject, Result, result, executionId, indexToUpsertTo);
+                        DoDebugOutput(dataObject, expression);
                         allErrors.AddError(error);
                     }
                     indexToUpsertTo++;
                 }
 
-                compiler.Upsert(executionId, toUpsert, out errors);
                 allErrors.MergeErrors(errors);
                 if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
-                    foreach(var debugOutputTo in toUpsert.DebugOutputs)
-                    {
-                        AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
-                    }
+                    AddDebugOutputItem(new DebugEvalResult(Result,null,dataObject.Environment));
                 }
             }
             catch(Exception e)
@@ -259,19 +273,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         }
 
-        void DoDebugOutput(IDSFDataObject dataObject, string region, string result, Guid executionId, int indexToUpsertTo)
+        void DoDebugOutput(IDSFDataObject dataObject, string region)
         {
             if(dataObject.IsDebugMode())
             {
-                AddDebugOutputItem(new DebugOutputParams(region, result, executionId, indexToUpsertTo - 1));
+                AddDebugOutputItem(new DebugEvalResult(region, "",dataObject.Environment));
             }
         }
 
         #region Private Methods
 
-        private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
+        private void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment environment)
         {
-            AddDebugInputItem(new DebugItemVariableParams(expression, labelText, valueEntry, executionId));
+            AddDebugInputItem(new DebugEvalResult(expression, labelText, environment));
         }
 
         /// <summary>

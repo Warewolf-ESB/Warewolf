@@ -161,6 +161,7 @@
     <Compile Include="Compilers\EvaluateRuleSet.cs" />
     <Compile Include="Compilers\RecordsetGroup.cs" />
     <Compile Include="Compilers\TransientRecordsetProcessGroup.cs" />
+    <Compile Include="DataListTO.cs" />
     <Compile Include="Decisions\Operations\DecisionUtils.cs" />
     <Compile Include="Decisions\Operations\NotBetween.cs" />
     <Compile Include="Decisions\Operations\NotContains.cs" />

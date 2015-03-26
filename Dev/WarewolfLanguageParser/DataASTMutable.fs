@@ -51,16 +51,26 @@ type WarewolfEnvironment =
 
 let tryParseAtom (data:string) = 
     let mutable value = 0;
-    let success = System.Int32.TryParse(data,&value)
-    if success then Int value
-    else DataString data
+    if data.StartsWith("0") then DataString data
+    else
+       let success = System.Int32.TryParse(data,&value)
+       if success then Int value
+       else DataString data
+
+let tryFloatParseAtom (data:string) = 
+    let mutable value=0.0;
+    if data.StartsWith("0") then DataString data
+    else
+       let success = System.Double.TryParse(data,&value)
+       if success then Float value
+       else DataString data
 
 let CompareAtoms (x:WarewolfAtom) (y:WarewolfAtom) = 
              match (x,y) with
                                             | ( Int a, Int b ) -> a.CompareTo(b)
                                             | (Float a, Float b ) -> a.CompareTo(b)
-                                            | (Int a, Float b ) -> System.Single.Parse(a.ToString()).CompareTo(b)
-                                            | (Float a, Int b ) -> a.CompareTo(System.Single.Parse((b.ToString())))
+                                            | (Int a, Float b ) -> System.Double.Parse(a.ToString()).CompareTo(b)
+                                            | (Float a, Int b ) -> a.CompareTo(System.Double.Parse((b.ToString())))
                                             | (Int a, DataString b ) -> a.ToString().CompareTo(b)
                                             | (Float a, DataString b ) -> a.ToString().CompareTo(b)
                                             | (DataString a, DataString b ) -> a.CompareTo(b)

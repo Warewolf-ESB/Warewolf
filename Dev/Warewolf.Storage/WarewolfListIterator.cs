@@ -74,7 +74,9 @@ namespace Warewolf.Storage
             _currentValue++;
             if (_listResult != null)
             {
-                return ExecutionEnvironment.WarewolfAtomToString(_listResult.Item.GetNextValue());
+                
+                var warewolfAtomToString = ExecutionEnvironment.WarewolfAtomToString(_listResult.Item.GetNextValue());                
+                return warewolfAtomToString;
             }
             return _scalarResult!=null ? ExecutionEnvironment.WarewolfAtomToString(_scalarResult.Item) : null;
         }
