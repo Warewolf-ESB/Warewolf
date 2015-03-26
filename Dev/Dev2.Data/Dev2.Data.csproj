@@ -437,6 +437,7 @@
     <Compile Include="Value Objects\Dev2RecordsetIndexScope.cs" />
     <Compile Include="Value Objects\Dev2TokenConverter.cs" />
     <Compile Include="Value Objects\Dev2ValueObjectFactory.cs" />
+    <Compile Include="WarewolfIterator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
