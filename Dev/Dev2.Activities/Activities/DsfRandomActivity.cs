@@ -22,12 +22,12 @@ using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 namespace Dev2.Activities
 {
@@ -103,20 +103,17 @@ namespace Dev2.Activities
                 if(!errors.HasErrors())
                 {
 
-                    IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
+                    var colItr = new WarewolfListIterator();
 
-                    IDev2DataListEvaluateIterator lengthItr = CreateDataListEvaluateIterator(Length, executionId, compiler, colItr, allErrors);
-                    IBinaryDataListEntry lengthEntry = compiler.Evaluate(executionId, enActionType.User, Length, false, out errors);
+                    var lengthItr = CreateDataListEvaluateIterator(Length, dataObject.Environment);
 
-                    IDev2DataListEvaluateIterator fromItr = CreateDataListEvaluateIterator(From, executionId, compiler, colItr, allErrors);
-                    IBinaryDataListEntry fromEntry = compiler.Evaluate(executionId, enActionType.User, From, false, out errors);
+                    var fromItr = CreateDataListEvaluateIterator(From, dataObject.Environment);
 
-                    IDev2DataListEvaluateIterator toItr = CreateDataListEvaluateIterator(To, executionId, compiler, colItr, allErrors);
-                    IBinaryDataListEntry toEntry = compiler.Evaluate(executionId, enActionType.User, To, false, out errors);
+                    var toItr = CreateDataListEvaluateIterator(To, dataObject.Environment);
 
                     if(dataObject.IsDebugMode())
                     {
-                        AddDebugInputItem(Length, From, To, fromEntry, toEntry, lengthEntry, executionId, RandomType);
+                        AddDebugInputItem(Length, From, To, dataObject.Environment, RandomType);
                     }
                     Dev2Random dev2Random = new Dev2Random();
                     while(colItr.HasMoreData())
@@ -125,9 +122,9 @@ namespace Dev2.Activities
                         int fromNum = -1;
                         int toNum = -1;
 
-                        string fromValue = colItr.FetchNextRow(fromItr).TheValue;
-                        string toValue = colItr.FetchNextRow(toItr).TheValue;
-                        string lengthValue = colItr.FetchNextRow(lengthItr).TheValue;
+                        string fromValue = colItr.FetchNextValue(fromItr);
+                        string toValue = colItr.FetchNextValue(toItr);
+                        string lengthValue = colItr.FetchNextValue(lengthItr);
 
                         if(RandomType != enRandomType.Guid)
                         {
@@ -180,13 +177,10 @@ namespace Dev2.Activities
                         }
                         else
                         {
-
-                            toUpsert.Add(Result, value);
-                            toUpsert.FlushIterationFrame();
+                            dataObject.Environment.Assign(Result, value);
 
                         }
                     }
-                    compiler.Upsert(executionId, toUpsert, out errors);
 
                     if(dataObject.IsDebugMode())
                     {
@@ -196,10 +190,7 @@ namespace Dev2.Activities
                         }
                         else
                         {
-                            foreach(var debugOutputTo in toUpsert.DebugOutputs)
-                            {
-                                AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
-                            }
+                            AddDebugOutputItem(new DebugEvalResult(Result,"Result",dataObject.Environment));
                         }
                     }
                     allErrors.MergeErrors(errors);
@@ -218,7 +209,7 @@ namespace Dev2.Activities
                 {
                     DisplayAndWriteError("DsfRandomActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
-                    compiler.Upsert(executionId, Result, (string)null, out errors);
+                    dataObject.Environment.Assign(Result, null);
                 }
                 if(dataObject.IsDebugMode())
                 {
@@ -332,7 +323,7 @@ namespace Dev2.Activities
             return lengthNum;
         }
 
-        private void AddDebugInputItem(string lengthExpression, string fromExpression, string toExpression, IBinaryDataListEntry fromEntry, IBinaryDataListEntry toEntry, IBinaryDataListEntry lengthEntry, Guid executionId, enRandomType randomType)
+        private void AddDebugInputItem(string lengthExpression, string fromExpression, string toExpression, IExecutionEnvironment executionEnvironment, enRandomType randomType)
         {
             AddDebugInputItem(new DebugItemStaticDataParams(randomType.GetDescription(), "Random"));
 
@@ -343,12 +334,12 @@ namespace Dev2.Activities
 
             if(randomType == enRandomType.Numbers)
             {
-                AddDebugInputItem(new DebugItemVariableParams(fromExpression, "From", fromEntry, executionId));
-                AddDebugInputItem(new DebugItemVariableParams(toExpression, "To", toEntry, executionId));
+                AddDebugInputItem(new DebugEvalResult(fromExpression, "From", executionEnvironment));
+                AddDebugInputItem(new DebugEvalResult(toExpression, "To", executionEnvironment));
             }
             else
             {
-                AddDebugInputItem(new DebugItemVariableParams(lengthExpression, "Length", lengthEntry, executionId));
+                AddDebugInputItem(new DebugEvalResult(lengthExpression, "Length", executionEnvironment));
             }
         }
 

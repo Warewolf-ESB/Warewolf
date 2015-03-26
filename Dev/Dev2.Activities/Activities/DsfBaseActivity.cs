@@ -5,17 +5,18 @@ using System.Linq;
 using System.Reflection;
 using Dev2.Activities.Debug;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 namespace Dev2.Activities
 {
@@ -63,10 +64,10 @@ namespace Dev2.Activities
             try
             {
                 IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
-                
-                IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
+
+                var colItr = new WarewolfListIterator();
                 IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-                var iteratorPropertyDictionary = new Dictionary<string, IDev2DataListEvaluateIterator>();
+                var iteratorPropertyDictionary = new Dictionary<string, IWarewolfIterator>();
                 foreach (var propertyInfo in GetType().GetProperties().Where(info => info.IsDefined(typeof(Inputs))))
                 {
                     var attributes = (Inputs[]) propertyInfo.GetCustomAttributes(typeof(Inputs), false);
@@ -76,8 +77,8 @@ namespace Dev2.Activities
                     {
                         AddDebugInputItem(new DebugItemVariableParams(variableValue, attributes[0].UserVisibleName, binaryDataListEntry, executionId));
                     }
-                    IDev2DataListEvaluateIterator dtItr = CreateDataListEvaluateIterator(variableValue, executionId, compiler, colItr, allErrors);
-                    colItr.AddIterator(dtItr);
+                    var dtItr = CreateDataListEvaluateIterator(variableValue,dataObject.Environment);
+                    colItr.AddVariableToIterateOn(dtItr);
                     iteratorPropertyDictionary.Add(propertyInfo.Name,dtItr);
 
                 }
@@ -86,12 +87,11 @@ namespace Dev2.Activities
                     var evaluatedValues = new Dictionary<string, string>();
                     foreach (var dev2DataListEvaluateIterator in iteratorPropertyDictionary)
                     {
-                        var binaryDataListItem = colItr.FetchNextRow(dev2DataListEvaluateIterator.Value);
-                        evaluatedValues.Add(dev2DataListEvaluateIterator.Key,binaryDataListItem.TheValue);
+                        var binaryDataListItem = colItr.FetchNextValue(dev2DataListEvaluateIterator.Value);
+                        evaluatedValues.Add(dev2DataListEvaluateIterator.Key,binaryDataListItem);
                     }
                     var result = PerformExecution(evaluatedValues);
-
-                    toUpsert.Add(Result, result);
+                    dataObject.Environment.Assign(Result, result);
                 }
   
 

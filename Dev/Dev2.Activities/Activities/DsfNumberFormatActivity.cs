@@ -24,12 +24,11 @@ using Dev2.Data.Operations;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Builders;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -113,20 +112,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var expression = Expression ?? string.Empty;
                 var roundingDecimalPlaces = RoundingDecimalPlaces ?? string.Empty;
                 var decimalPlacesToShow = DecimalPlacesToShow ?? string.Empty;
-                var colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
-                var expressionIterator = CreateDataListEvaluateIterator(expression, executionId, compiler, colItr, allErrors);
-                var roundingDecimalPlacesIterator = CreateDataListEvaluateIterator(roundingDecimalPlaces, executionId, compiler, colItr, allErrors);
-                var decimalPlacesToShowIterator = CreateDataListEvaluateIterator(decimalPlacesToShow, executionId, compiler, colItr, allErrors);
+                var colItr = new WarewolfListIterator();
+                var expressionIterator = CreateDataListEvaluateIterator(expression, dataObject.Environment);
+                var roundingDecimalPlacesIterator = CreateDataListEvaluateIterator(roundingDecimalPlaces, dataObject.Environment);
+                var decimalPlacesToShowIterator = CreateDataListEvaluateIterator(decimalPlacesToShow, dataObject.Environment);
 
                 if(dataObject.IsDebugMode())
                 {
-                    AddDebugInputItem(expression, "Number", expressionIterator.FetchEntry(), executionId);
+                    AddDebugInputItem(expression, "Number",  dataObject.Environment);
                     if(!String.IsNullOrEmpty(RoundingType))
                     {
                         AddDebugInputItem(new DebugItemStaticDataParams(RoundingType, "Rounding"));
                     }
-                    AddDebugInputItem(roundingDecimalPlaces, "Rounding Value", roundingDecimalPlacesIterator.FetchEntry(), executionId);
-                    AddDebugInputItem(decimalPlacesToShow, "Decimals to show", decimalPlacesToShowIterator.FetchEntry(), executionId);
+                    AddDebugInputItem(roundingDecimalPlaces, "Rounding Value", dataObject.Environment);
+                    AddDebugInputItem(decimalPlacesToShow, "Decimals to show", dataObject.Environment);
                 }
                 // Loop data ;)
                 var rule = new IsSingleValueRule(() => Result);
@@ -135,7 +134,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 while(colItr.HasMoreData())
                 {
                     int decimalPlacesToShowValue;
-                    var tmpDecimalPlacesToShow = colItr.FetchNextRow(decimalPlacesToShowIterator).TheValue;
+                    var tmpDecimalPlacesToShow = colItr.FetchNextValue(decimalPlacesToShowIterator);
                     var adjustDecimalPlaces = tmpDecimalPlacesToShow.IsRealNumber(out decimalPlacesToShowValue);
                     if(!string.IsNullOrEmpty(tmpDecimalPlacesToShow) && !adjustDecimalPlaces)
                     {
@@ -143,15 +142,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
 
 
-                    var tmpDecimalPlaces = colItr.FetchNextRow(roundingDecimalPlacesIterator).TheValue;
+                    var tmpDecimalPlaces = colItr.FetchNextValue(roundingDecimalPlacesIterator);
                     var roundingDecimalPlacesValue = 0;
                     if(!string.IsNullOrEmpty(tmpDecimalPlaces) && !tmpDecimalPlaces.IsRealNumber(out roundingDecimalPlacesValue))
                     {
                         throw new Exception("Rounding decimal places is not valid");
                     }
 
-                    var binaryDataListItem = colItr.FetchNextRow(expressionIterator);
-                    var val = binaryDataListItem.TheValue;
+                    var binaryDataListItem = colItr.FetchNextValue(expressionIterator);
+                    var val = binaryDataListItem;
                     FormatNumberTO formatNumberTo = new FormatNumberTO(val, RoundingType, roundingDecimalPlacesValue, adjustDecimalPlaces, decimalPlacesToShowValue);
                     var result = _numberFormatter.Format(formatNumberTo);
 
@@ -160,10 +159,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         allErrors.AddError(single.Message);
                     }
                     else
-                        UpdateResultRegions(toUpsert, result);
+                        UpdateResultRegions(dataObject.Environment, result);
                 }
-                compiler.Upsert(executionId, toUpsert, out errors);
-                allErrors.MergeErrors(errors);
                 if(!allErrors.HasErrors())
                 {
                     foreach(var debugOutputTo in toUpsert.DebugOutputs)
@@ -198,24 +195,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        void UpdateResultRegions(IDev2DataListUpsertPayloadBuilder<string> toUpsert, string result)
+        void UpdateResultRegions(IExecutionEnvironment environment, string result)
         {
-
-            toUpsert.Add(Result, result);
-            toUpsert.FlushIterationFrame();
-
+            environment.Assign(Result, result);
         }
 
         #endregion
 
         #region Private Methods
 
-        private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
+        private void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment environment)
         {
             DebugItem itemToAdd = new DebugItem();
-            if(valueEntry != null)
+            if (environment != null)
             {
-                AddDebugItem(new DebugItemVariableParams(expression, labelText, valueEntry, executionId), itemToAdd);
+                AddDebugItem(new DebugEvalResult(expression, labelText, environment), itemToAdd);
             }
             else
             {
