@@ -369,6 +369,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SQLBulkInsert.feature</DependentUpon>
     </Compile>
+    <Compile Include="Tools\Utility - Web Request.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Utility - Web Request.feature</DependentUpon>
+    </Compile>
     <Compile Include="Variable List\VariableListSteps.cs" />
     <Compile Include="Web Service\Web Source.feature.cs">
       <AutoGen>True</AutoGen>
@@ -524,6 +529,10 @@
     <None Include="Tools\SQLBulkInsert.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SQLBulkInsert.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\Utility - Web Request.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Utility - Web Request.feature.cs</LastGenOutput>
     </None>
     <None Include="Web Service\Web Source.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

@@ -3,7 +3,7 @@
 	As a math idiot
 	I want to be told the sum of two numbers
 
-@mytag
+@CMD
 Scenario: Execute Command Line small view
 	Given I have CMD Line tool on design surface
 	And I have CMD as ""
@@ -36,9 +36,9 @@ Scenario: Execute Command Line water marks Large view
 Scenario: Execute Command Line is not thrown error for poper commands
 	Given I have CMD Line tool on design surface
 	When I open CMD Line large view
-	And I have CMD as "pause"
+	And I enter have CMD is "pause"
 	Then I have Priority selected "Normal"
-	And Result as "[[Result]]"
+	And I enter Result is "[[Result]]"
 	And End this workflow is "Unselected"
 	And Done button is "Visible"
 	When I click on "Done"
@@ -48,9 +48,9 @@ Scenario: Execute Command Line is not thrown error for poper commands
 Scenario Outline: Execute Command Line Large view validates for incorrect variables
 	Given I have CMD Line tool on design surface
 	When I open CMD Line large view
-	And I have CMD as '<Var>'
+	And I enter CMD is '<Var>'
 	Then I have Priority selected "Normal"
-	And Result as "[[Result]]"
+	And I enter Result is "[[Result]]"
 	And End this workflow is "Unselected"
 	And Done button is "Visible"
 	When I click on "Done"
@@ -69,9 +69,9 @@ Scenario Outline: Execute Command Line Large view validates for incorrect variab
 Scenario Outline: Execute Command Line Large view validates for incorrect variables in result
 	Given I have CMD Line tool on design surface
 	When I open CMD Line large view
-	And I have CMD as "[[a]]"
+	And I enter CMD is "[[a]]"
 	Then I have Priority selected "Normal"
-	And Result as '<Result>'
+	And I enter Result is '<Result>'
 	And End this workflow is "Unselected"
 	And Done button is "Visible"
 	When I click on "Done"
@@ -90,9 +90,9 @@ Scenario Outline: Execute Command Line Large view validates for incorrect variab
 Scenario: Execute Command Line Large view persisting data to small view
 	Given I have CMD Line tool on design surface
 	When I open CMD Line large view
-	And I have CMD as "pause [[a]]"
+	And I enter CMD is "pause [[a]]"
 	Then I have Priority selected "Idle"
-	And Result as "[[Result]]"
+	And I enter Result is "[[Result]]"
 	And End this workflow is "Unselected"
 	And Done button is "Visible"
 	When I click on "Done"
@@ -105,9 +105,9 @@ Scenario: Execute Command Line Large view persisting data to small view
 Scenario Outline: CMD line Priority is not changing when close and open largeview
 	Given I have CMD Line tool on design surface
 	When I open CMD Line large view
-	And I have CMD as "pause [[a]]"
+	And I enter CMD is "pause [[a]]"
 	Then I have Priority selected '<Priority>'
-	And Result as "[[Result]]"
+	And I enter Result is "[[Result]]"
 	And End this workflow is "Unselected"
 	And Done button is "Visible"
 	When I click on "Done"
