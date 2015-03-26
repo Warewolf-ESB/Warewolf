@@ -56,3 +56,11 @@ and EvalRecordsetWhere (recset:RecordSetName) (env: WarewolfEnvironment) (func: 
           let positions = env.RecordSets.[recset.Name].Data.[PositionColumn]
           let data = env.RecordSets.[recset.Name].Data |> Map.toList |> List.map snd |> List.collect (fun a -> evalListPositions a positions func) 
           List.empty
+
+//and EvalRecordsetWhere (recset:string list) (recsetToIndex:string list) (output:string list) (env: WarewolfEnvironment) (func: WarewolfAtom->bool)  =
+//    if  not (env.RecordSets.ContainsKey recset.Name)       then 
+//        List.empty      
+//    else
+//          let positions = env.RecordSets.[recset.Name].Data.[PositionColumn]
+//          let data = env.RecordSets.[recset.Name].Data |> Map.toList |> List.map snd |> List.collect (fun a -> evalListPositions a positions func) 
+//          List.empty

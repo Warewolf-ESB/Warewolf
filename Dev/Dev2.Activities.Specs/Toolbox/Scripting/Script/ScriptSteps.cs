@@ -109,8 +109,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
             string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
-                                       out actualValue, out error);
+            GetScalarValueFromEnvironment(ResultVariable,out actualValue,out error);
             Assert.AreEqual(expectedResult, actualValue);
         }
     }

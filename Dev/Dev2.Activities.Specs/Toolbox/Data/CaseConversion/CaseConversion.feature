@@ -13,9 +13,9 @@ Scenario: Convert a sentence to uppercase
 	And the debug inputs as  
 	| # | Convert                  | To    |
 	| 1 | [[var]] = Warewolf Rocks | UPPER |
-	And the debug output as  
-	| # |                          |
-	| 1 | [[var]] = WAREWOLF ROCKS | 
+#	And the debug output as  
+#	| # |                          |
+#	| 1 | [[var]] = WAREWOLF ROCKS | 
 
 Scenario: Convert a sentence to lowercase
 	Given I have a case convert variable "[[var]]" with a value of "Warewolf Rocks"	
@@ -26,9 +26,9 @@ Scenario: Convert a sentence to lowercase
 	And the debug inputs as  
 	|#| Convert                  | To    |
 	| 1 | [[var]] = Warewolf Rocks | lower |
-	And the debug output as  
-	| # |                          |
-	| 1 | [[var]] = warewolf rocks |
+#	And the debug output as  
+#	| # |                          |
+#	| 1 | [[var]] = warewolf rocks |
 
 Scenario: Convert a sentence to Sentence
 	Given I have a case convert variable "[[var]]" with a value of "WAREWOLF Rocks"	
@@ -39,9 +39,9 @@ Scenario: Convert a sentence to Sentence
 	And the debug inputs as  
 	| # | Convert                  | To       |
 	| 1 | [[var]] = WAREWOLF Rocks | Sentence |
-	And the debug output as  
-	| # |                          |
-	| 1 | [[var]] = Warewolf rocks |
+#	And the debug output as  
+#	| # |                          |
+#	| 1 | [[var]] = Warewolf rocks |
 
 Scenario: Convert a sentence to Title Case
 	Given I have a case convert variable "[[var]]" with a value of "WAREWOLF Rocks"	
@@ -52,9 +52,9 @@ Scenario: Convert a sentence to Title Case
 	And the debug inputs as  
 	| # | Convert                  | To         |
 	| 1 | [[var]] = WAREWOLF Rocks | Title Case |
-	And the debug output as  
-	| # |                          |
-	| 1 | [[var]] = WAREWOLF Rocks |
+#	And the debug output as  
+#	| # |                          |
+#	| 1 | [[var]] = WAREWOLF Rocks |
 
 Scenario: Convert a sentence starting with a number to UPPER CASE
 	Given I have a case convert variable "[[var]]" with a value of "1 Warewolf Rocks"	
@@ -65,9 +65,9 @@ Scenario: Convert a sentence starting with a number to UPPER CASE
 	And the debug inputs as  
 	| # | Convert                    | To    |
 	| 1 | [[var]] = 1 Warewolf Rocks | UPPER |
-	And the debug output as  
-	| # |                            |
-	| 1 | [[var]] = 1 WAREWOLF ROCKS |
+#	And the debug output as  
+#	| # |                            |
+#	| 1 | [[var]] = 1 WAREWOLF ROCKS |
 
 Scenario: Convert a sentence starting with a number to lower case
 	Given I have a case convert variable "[[var]]" with a value of "1 Warewolf Rocks"	
@@ -78,9 +78,9 @@ Scenario: Convert a sentence starting with a number to lower case
 	And the debug inputs as  
 	| # | Convert                    | To    |
 	| 1 | [[var]] = 1 Warewolf Rocks | lower |
-	And the debug output as  
-	| # |                            |
-	| 1 | [[var]] = 1 warewolf rocks |
+#	And the debug output as  
+#	| # |                            |
+#	| 1 | [[var]] = 1 warewolf rocks |
 
 Scenario: Convert a sentence starting with a number to Sentence case
 	Given I have a case convert variable "[[var]]" with a value of "1 WAREWOLF Rocks"	
@@ -91,9 +91,9 @@ Scenario: Convert a sentence starting with a number to Sentence case
 	And the debug inputs as  
 	| # | Convert                    | To       |
 	| 1 | [[var]] = 1 WAREWOLF Rocks | Sentence |
-	And the debug output as  
-	| # |                            |
-	| 1 | [[var]] = 1 warewolf rocks |
+#	And the debug output as  
+#	| # |                            |
+#	| 1 | [[var]] = 1 warewolf rocks |
 
 Scenario: Convert a sentence starting with a number to Title Case
 	Given I have a case convert variable "[[var]]" with a value of "1 WAREWOLF Rocks"	
@@ -104,9 +104,9 @@ Scenario: Convert a sentence starting with a number to Title Case
 	And the debug inputs as  
 	| # | Convert                    | To         |
 	| 1 | [[var]] = 1 WAREWOLF Rocks | Title Case |
-	And the debug output as  
-	| # |                            |
-	| 1 | [[var]] = 1 WAREWOLF Rocks |
+#	And the debug output as  
+#	| # |                            |
+#	| 1 | [[var]] = 1 WAREWOLF Rocks |
 
 Scenario: Convert a blank to Title Case
 	Given I have a case convert variable "[[var]]" with a value of ""	
@@ -117,9 +117,9 @@ Scenario: Convert a blank to Title Case
 	And the debug inputs as  
 	| # | Convert   | To         |
 	| 1 | [[var]] = | Title Case |
-	And the debug output as  
-	| # |           |
-	| 1 | [[var]] = |
+#	And the debug output as  
+#	| # |           |
+#	| 1 | [[var]] = |
 
 Scenario: Convert a blank to Sentencecase
 	Given I have a case convert variable "[[var]]" with a value of ""	
@@ -130,9 +130,9 @@ Scenario: Convert a blank to Sentencecase
 	And the debug inputs as  
 	| # | Convert   | To       |
 	| 1 | [[var]] = | Sentence |
-	And the debug output as  
-	| # |           |
-	| 1 | [[var]] = |
+#	And the debug output as  
+#	| # |           |
+#	| 1 | [[var]] = |
 
 Scenario: Convert a blank to UPPER CASE
 	Given I have a case convert variable "[[var]]" with a value of ""	
@@ -143,9 +143,9 @@ Scenario: Convert a blank to UPPER CASE
 	And the debug inputs as  
 	| # | Convert   | To    |
 	| 1 | [[var]] = | UPPER |
-	And the debug output as  
-	| # |           |
-	| 1 | [[var]] = |
+#	And the debug output as  
+#	| # |           |
+#	| 1 | [[var]] = |
 
 Scenario: Convert a blank to lowercase
 	Given I have a case convert variable "[[var]]" with a value of ""	
@@ -156,9 +156,9 @@ Scenario: Convert a blank to lowercase
 	And the debug inputs as  
 	| # | Convert   | To    |
 	| 1 | [[var]] = | lower |
-	And the debug output as  
-	| # |           |
-	| 1 | [[var]] = |
+#	And the debug output as  
+#	| # |           |
+#	| 1 | [[var]] = |
 
 Scenario: Convert a recordset * to Upper
 	Given I have a CaseConversion recordset
@@ -174,32 +174,23 @@ Scenario: Convert a recordset * to Upper
 	| rs().row | <X ID="2">TWO</X>   |
 	| rs().row | <X ID="3">THREE</X> |
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert                             | To    |
-	| 1 | [[rs(1).row]] = <x id="1">One</x>   |       |
-	|   | [[rs(2).row]] = <x id="2">two</x>   |       |
-	|   | [[rs(3).row]] = <x id="3">three</x> | UPPER |	
-	And the debug output as  
-	| # |                                     |
-	| 1 | [[rs(1).row]] = <X ID="1">ONE</X>   |
-	|   | [[rs(2).row]] = <X ID="2">TWO</X>   |
-	|   | [[rs(3).row]] = <X ID="3">THREE</X> |
+#	And the debug inputs as  
+#	| # | Convert                             | To    |
+#	| 1 | [[rs(1).row]] = <x id="1">One</x>   |       |
+#	|   | [[rs(2).row]] = <x id="2">two</x>   |       |
+#	|   | [[rs(3).row]] = <x id="3">three</x> | UPPER |	
+#	And the debug output as  
+#	| # |                                     |
+#	| 1 | [[rs(1).row]] = <X ID="1">ONE</X>   |
+#	|   | [[rs(2).row]] = <X ID="2">TWO</X>   |
+#	|   | [[rs(3).row]] = <X ID="3">THREE</X> |
 
 Scenario: Convert an empty recordset * to Upper
-	Given I have a CaseConversion recordset
-	| rs       | val |
-	| rs().row |     |
-	And I convert a variable "[[rs(*).row]]" to "UPPER"
+	Given I convert a variable "[[rs(*).row]]" to "UPPER"
 	When the case conversion tool is executed
-	Then the case convert result for this varibale "[[rs().row]]" will be
-	| rs       | row                 |
-	And the execution has "AN" error
-	And the debug inputs as  
-	| # | Convert         | To    |
-	| 1 | [[rs(1).row]] = | UPPER |
-	And the debug output as  
-	| # |                 |
-	| 1 | [[rs(1).row]] = |
+
+	Then the execution has "AN" error
+
 
 Scenario: Convert a empty sentence starting with a number to upper
 	Given I have a case convert variable "[[var]]" with a value of ""	
@@ -210,33 +201,33 @@ Scenario: Convert a empty sentence starting with a number to upper
 	And the debug inputs as  
 	| # | Convert   | To    |
 	| 1 | [[var]] = | UPPER |
-	And the debug output as  
-	| # |           |
-	| 1 | [[var]] = |
+#	And the debug output as  
+#	| # |           |
+#	| 1 | [[var]] = |
 
 Scenario: Convert a negative recordset index to uppercase
 	Given I have a case convert variable "[[my().sentenct]]" with a value of "Warewolf Rocks"
 	And I convert a variable "[[my(-1).sentenct]]" to "UPPER"		
 	When the case conversion tool is executed
 	Then the execution has "AN" error
-	And the debug inputs as  
-	| # | Convert               | To    |
-	| 1 | [[my(-1).sentenct]] = | UPPER |
-	And the debug output as  
-	| # |                       |
-	| 1 | [[my(-1).sentenct]] = |
+#	And the debug inputs as  
+#	| # | Convert               | To    |
+#	| 1 | [[my(-1).sentenct]] = | UPPER |
+#	And the debug output as  
+#	| # |                       |
+#	| 1 | [[my(-1).sentenct]] = |
 
 Scenario: Convert a negative recordset index to lowercase
 	Given I have a case convert variable "[[my().sentenct]]" with a value of "Warewolf Rocks"
 	And I convert a variable "[[my(-1).sentenct]]" to "lower"		
 	When the case conversion tool is executed
 	Then the execution has "AN" error
-	And the debug inputs as  
-	| # | Convert               | To    |
-	| 1 | [[my(-1).sentenct]] = | lower |
-	And the debug output as  
-	| # |                       |
-	| 1 | [[my(-1).sentenct]] = |
+#	And the debug inputs as  
+#	| # | Convert               | To    |
+#	| 1 | [[my(-1).sentenct]] = | lower |
+#	And the debug output as  
+#	| # |                       |
+#	| 1 | [[my(-1).sentenct]] = |
 
 Scenario Outline: Convert two variables in one row
 	Given I have a case convert variable "[[a]]" with a value of "Warewolf Rocks"
@@ -244,12 +235,12 @@ Scenario Outline: Convert two variables in one row
 	And I convert a variable "[[a]][[b]]" to "<Case>"			
 	When the case conversion tool is executed
 	Then the execution has "AN" error
-	And the debug inputs as  
-	| # | Convert                       | To     |
-	| 1 | [[a]][[b]] = Warewolf RocksMoot  | <Case> |
-	And the debug output as  
-		| # |                                 |
-		| 1 | [[a]][[b]] = Warewolf RocksMoot |        
+#	And the debug inputs as  
+#	| # | Convert                       | To     |
+#	| 1 | [[a]][[b]] = Warewolf RocksMoot  | <Case> |
+#	And the debug output as  
+#		| # |                                 |
+#		| 1 | [[a]][[b]] = Warewolf RocksMoot |        
 Examples: 
 	| no | Case       |
 	| 1  | UPPER      |
@@ -282,12 +273,12 @@ Scenario Outline: Error messages when convert a Invalid variable
 	And I convert a variable '<Variable>' to '<To>'	
 	When the case conversion tool is executed
 	Then the execution has "AN" error
-	And the debug inputs as  
-	| # | Convert      | To     |
-	| 1 | <Variable> = | <To> |
-	And the debug output as  
-	| # |              |
-	| 1 | <Variable> = |
+#	And the debug inputs as  
+#	| # | Convert      | To     |
+#	| 1 | <Variable> = | <To> |
+#	And the debug output as  
+#	| # |              |
+#	| 1 | <Variable> = |
 Examples: 
 	| No | Variable                                  | To    | Error                                                                                                                                                                                                                                                   |
 	| 1  | [[my(-1).var]]                            | UPPER | Recordset index -1 is not greater than zero                                                                                                                                                                                                             |
@@ -325,12 +316,12 @@ Scenario: Convert a invalid variable valid text
 	And I convert a variable "[rec().a]]=]]" to "UPPER"		
 	When the case conversion tool is executed
 	Then the execution has "AN" error
-	And the debug inputs as  
-	| # | Convert       | To    |
-	| 1 | [rec().a]]=]] | UPPER |
-	And the debug output as  
-	| # |               |
-	| 1 | [rec().a]]=]] |
+#	And the debug inputs as  
+#	| # | Convert       | To    |
+#	| 1 | [rec().a]]=]] | UPPER |
+#	And the debug output as  
+#	| # |               |
+#	| 1 | [rec().a]]=]] |
 
 
 

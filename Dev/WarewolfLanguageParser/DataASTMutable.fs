@@ -66,4 +66,6 @@ let CompareAtoms (x:WarewolfAtom) (y:WarewolfAtom) =
                                             | (DataString a, DataString b ) -> a.CompareTo(b)
                                             | (DataString a, Float b ) -> a.CompareTo(b.ToString())
                                             | (DataString a, Int b ) -> a.CompareTo(b.ToString())
+                                            | (Nothing ,Nothing) -> 0
+                                            | (Nothing,_) -> -1
                                             | (a,b) -> ( a.ToString()).CompareTo( b.ToString())

@@ -107,6 +107,15 @@ namespace WarewolfParserInterop
           return _currentEnumerator ?? (_currentEnumerator = GetEnumerator());
       }
 
+      public bool Apply (Func<T,T> action )
+      {
+          for(int i = 0; i < _count; i++)
+          {
+              _values[i] = action(_values[i]);
+          }
+          return true;
+      }
+
       public IEnumerator<T> GetEnumerator()
         {
             return _values.Take(_count).GetEnumerator();

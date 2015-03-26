@@ -85,7 +85,15 @@ namespace Dev2
             _convertFunctions.Add("Title Case", ConvertToAllFirstUpper);
             ConvertTypes = new List<string>(_convertFunctions.Keys);
         }
-
+        public static Dictionary<string, Func<string, string>> GetFuncs()
+        {
+            var convertFunctions = new Dictionary<string, Func<string, string>>();
+            convertFunctions.Add("UPPER", ConvertToAllUpper);
+            convertFunctions.Add("lower", ConvertToAllLower);
+            convertFunctions.Add("Sentence", ConvertToFirstUpper);
+            convertFunctions.Add("Title Case", ConvertToAllFirstUpper);
+            return convertFunctions;
+        }
         /// <summary>
         ///     Make the first letter of the word to upper case
         /// </summary>

@@ -9,7 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System.Xml.Linq;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Data.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -19,25 +19,52 @@ using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage;
 
 namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
 {
     [Binding]
     public class LengthSteps : RecordSetBases
     {
+        //protected override void BuildDataList()
+        //{
+        //    List<Tuple<string, string>> variableList;
+        //    ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+        //    if(variableList == null)
+        //    {
+        //        variableList = new List<Tuple<string, string>>();
+        //        ScenarioContext.Current.Add("variableList", variableList);
+        //    }
+
+        //    variableList.Add(new Tuple<string, string>(ResultVariable, ""));
+        //    BuildShapeAndTestData();
+
+
+        //}
+
         protected override void BuildDataList()
         {
-            List<Tuple<string, string>> variableList;
+            var shape = new XElement("root");
+            var data = new XElement("root");
+
+            // ReSharper disable NotAccessedVariable
+            int row = 0;
+            dynamic variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if(variableList == null)
+            if (variableList != null)
             {
-                variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                foreach (dynamic variable in variableList)
+                {
+                    if (!string.IsNullOrEmpty(variable.Item1) && !string.IsNullOrEmpty(variable.Item2))
+                    {
+                        CurrentExecutionEnvironment.Assign(DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), variable.Item2);
+                    }
+                    //Build(variable, shape, data, row);
+                    row++;
+                }
             }
-
-            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
-            BuildShapeAndTestData();
 
             string recordSetName;
             ScenarioContext.Current.TryGetValue("recordset", out recordSetName);
@@ -45,16 +72,18 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
             var recordset = ScenarioContext.Current.Get<string>("recordset");
 
             var length = new DsfRecordsetLengthActivity
-                {
-                    RecordsetName = recordset,
-                    RecordsLength = ResultVariable
-                };
+            {
+                RecordsetName = recordset,
+                RecordsLength = ResultVariable
+            };
 
             TestStartNode = new FlowStep
-                {
-                    Action = length
-                };
+            {
+                Action = length
+            };
             ScenarioContext.Current.Add("activity", length);
+            CurrentDl = shape.ToString();
+            TestData = data.ToString();
         }
 
         [Given(@"I get  the length from a recordset that looks like with this shape")]
@@ -108,12 +137,10 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
         [Then(@"the length result should be (.*)")]
         public void ThenTheLengthResultShouldBe(string expectedResult)
         {
-            string error;
-            string actualValue;
+
+            string actualValue = ExecutionEnvironment.WarewolfEvalResultToString( CurrentExecutionEnvironment.Eval("[[result]]"));
             expectedResult = expectedResult.Replace('"', ' ').Trim();
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
-                                       out actualValue, out error);
+           
             actualValue = string.IsNullOrEmpty(actualValue) ? "0" : actualValue;
             Assert.AreEqual(expectedResult, actualValue);
         }

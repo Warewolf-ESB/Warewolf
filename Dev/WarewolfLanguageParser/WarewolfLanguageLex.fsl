@@ -44,7 +44,7 @@ rule tokenstream = parse
 | string        { STRING (LexBuffer<char>.LexemeString(lexbuf) )}
 // --------------------------
 | tilde	{ tokenstream lexbuf }
-| newline	{ newline lexbuf; tokenstream lexbuf }
+//| newline	{ newline lexbuf; tokenstream lexbuf }
 // --------------------------
 | _    		{ STRING (LexBuffer<char>.LexemeString(lexbuf)) }
 | eof   	{ EOF }

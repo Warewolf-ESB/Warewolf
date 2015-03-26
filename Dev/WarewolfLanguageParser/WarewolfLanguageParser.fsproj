@@ -59,12 +59,14 @@
     <FsLex Include="..\WarewolfLanguageParser\WarewolfLanguageLex.fsl">
       <OtherFlags>--unicode</OtherFlags>
     </FsLex>
-	    <Compile Include="WarewolfLanguage.fs" />
+    <Compile Include="WarewolfLanguage.fs" />
     <Compile Include="WarewolfLanguageLex.fs" />
     <Compile Include="EvalLanguage.fs" />
     <Compile Include="ToolAst.fs" />
     <Compile Include="WarewolfDataEvaluationCommon.fs" />
+	<Compile Include="AssignEvaluation.fs" />
     <Compile Include="Where.fs" />
+    <Compile Include="UpdateInPlace.fs" />
     <Compile Include="EvalTools.fs" />
     <Compile Include="PublicFunctions.fs" />
     <Compile Include="WarewolfTestData.fs" />

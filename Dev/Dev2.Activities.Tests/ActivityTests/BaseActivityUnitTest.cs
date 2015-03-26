@@ -521,23 +521,11 @@ namespace ActivityUnitTests
 
         protected List<string> RetrieveAllRecordSetFieldValues(Guid dataListId, string recordSetName, string fieldToRetrieve, out string error)
         {
-            var retVals = new List<string>();
-            IList<IBinaryDataListItem> dataListItems;
-            if(GetRecordSetFieldValueFromDataList(dataListId, recordSetName, fieldToRetrieve, out dataListItems, out error))
-            {
-                retVals.AddRange(dataListItems.Select(item =>
-                {
-                    try
-                    {
-                        return item.TheValue;
-                    }
-                    catch(Exception)
-                    {
-                        return "";
-                    }
-                }));
-            }
-            return retVals;
+
+
+            var retVals = CurrentExecutionEnvironment.EvalAsListOfStrings("[[" + recordSetName + "(*)." + fieldToRetrieve + "]]");
+            error = "";
+            return (List<string>)retVals;
         }
 
         protected void DataListRemoval(Guid dlId)

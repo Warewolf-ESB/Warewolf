@@ -49,6 +49,8 @@ namespace Warewolf.Storage
         IEnumerable<DataASTMutable.WarewolfAtom> EvalAsList(string searchCriteria);
 
         IEnumerable<int> EnvalWhere(string expression, Func<DataASTMutable.WarewolfAtom, bool> clause);
+
+        void ApplyUpdate(string expression, Func<DataASTMutable.WarewolfAtom, DataASTMutable.WarewolfAtom> clause);
     }
     public class ExecutionEnvironment : IExecutionEnvironment
     {
@@ -130,6 +132,8 @@ namespace Warewolf.Storage
         {
             return _env.RecordSets[recordSetName].Count;
         }
+
+
 
         public IList<int> EvalRecordSetIndexes(string recordsetName)
         {
@@ -299,6 +303,13 @@ namespace Warewolf.Storage
         public IEnumerable<int> EnvalWhere (string expression , Func<DataASTMutable.WarewolfAtom,bool> clause)
         {
             return PublicFunctions.EvalWhere(expression, _env, clause);
+        }
+
+        public void ApplyUpdate(string expression, Func<DataASTMutable.WarewolfAtom, DataASTMutable.WarewolfAtom> clause)
+        {
+            var temp = PublicFunctions.EvalUpdate(expression, _env,clause);
+            _env = temp;
+
         }
     }
 }
