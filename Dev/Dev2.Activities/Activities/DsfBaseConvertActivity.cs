@@ -19,22 +19,18 @@ using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.Convertors.Base;
-using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Converters;
 using Dev2.Data.Factories;
-using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Interfaces;
 using Dev2.Validation;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -45,7 +41,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Fields
         private readonly Dev2BaseConversionFactory _fac = new Dev2BaseConversionFactory();
-        private int _indexCounter;
 
         #endregion
 
@@ -80,7 +75,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
         // ReSharper restore RedundantOverridenMember
 
-        private readonly IList<string> nonFramedTokens = new List<string>();
         /// <summary>
         /// The execute method that is called when the activity is executed at run time and will hold all the logic of the activity
         /// </summary>       
@@ -91,147 +85,58 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            _indexCounter = 0;
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors;
-            Guid executionId = DataListExecutionID.Get(context);
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
 
             InitializeDebug(dataObject);
-
+            var env = dataObject.Environment;
             try
             {
                 CleanArgs();
 
                 toUpsert.IsDebug = dataObject.IsDebugMode();
 
-                foreach(var item in ConvertCollection)
+    
+
+                int index = 1;
+
+                foreach (var item in ConvertCollection.Where(a => !String.IsNullOrEmpty(a.FromExpression)))
                 {
-                    try
+
+                    if (dataObject.IsDebugMode())
                     {
-                        _indexCounter++;
-                        // Travis.Frisinger - This needs to be in the ViewModel not here ;)
-                        if (item.ToExpression == string.Empty)
-                        {
-                            item.ToExpression = item.FromExpression;
-                        }
-                        if (nonFramedTokens.Contains(item.ToExpression))
-                        {
-                            // reset the framing ;)
-                            nonFramedTokens.Clear();
-                            nonFramedTokens.Add(item.ToExpression);
-
-                            compiler.Upsert(executionId, toUpsert, out errors);
-                            allErrors.MergeErrors(errors);
-
-                            if (!allErrors.HasErrors() && toUpsert != null)
-                            {
-                                var outIndex = 1;
-                                foreach (var debugOutputTo in toUpsert.DebugOutputs)
-                                {
-                                    var debugItem = new DebugItem();
-                                    AddDebugItem(new DebugItemStaticDataParams("", outIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
-                                    AddDebugItem(new DebugItemVariableParams(debugOutputTo), debugItem);
-                                    _debugOutputs.Add(debugItem);
-                                    outIndex++;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            // current append indexes are alright ;)
-                            nonFramedTokens.Add(item.ToExpression);
-                        }
-                       
-                        IsSingleValueRule.ApplyIsSingleValueRule(item.FromExpression, allErrors);
-                        var fieldName = item.FromExpression;
-                        fieldName = DataListUtil.IsValueRecordset(fieldName) ? DataListUtil.ReplaceRecordsetIndexWithBlank(fieldName) : fieldName;
-                        var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), Dev2.DataList.Contract.enTranslationDepth.Shape, out errors);
-                        if(!datalist.IsNullOrEmpty())
-                        {
-                            var isValidExpr = new IsValidExpressionRule(() => fieldName, datalist.ToString())
-                            {
-                                LabelText = fieldName
-                            };
-
-                            var errorInfo = isValidExpr.Check();
-                            if(errorInfo != null)
-                            {
-                                item.FromExpression = "";
-                                errors.AddError(errorInfo.Message);
-                            }
-                            allErrors.MergeErrors(errors);
-                        }
-
-                        IBinaryDataListEntry tmp = compiler.Evaluate(executionId, enActionType.User, item.FromExpression, false, out errors);
-                        if(dataObject.IsDebugMode())
-                        {
-                            AddDebugInputItem(item.FromExpression, tmp, executionId, item.FromType, item.ToType);
-                        }
-                        allErrors.MergeErrors(errors);
-                        if(tmp != null)
-                        {
-
-                            IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(tmp);
-
-                            IBaseConverter from = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.FromType, typeof(enDev2BaseConvertType)));
-                            IBaseConverter to = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.ToType, typeof(enDev2BaseConvertType)));
-                            IBaseConversionBroker broker = _fac.CreateBroker(from, to);
-
-                            // process result information
-                            while(itr.HasMoreRecords())
-                            {
-
-                                IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
-                                foreach(IBinaryDataListItem c in cols)
-                                {
-                                    // set up live flushing iterator details
-                                    int indexToUpsertTo = c.ItemCollectionIndex;
-
-                                    string val = string.IsNullOrEmpty(c.TheValue) ? "" : broker.Convert(c.TheValue);
-                                    string expression = item.ToExpression;
-
-                                    if(DataListUtil.IsValueRecordset(item.ToExpression) && DataListUtil.GetRecordsetIndexType(item.ToExpression) == enRecordsetIndexType.Star)
-                                    {
-                                        expression = item.ToExpression.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
-                                    }
-                                    toUpsert.Add(expression, val);                                   
-                                }
-                            }
-                        }
-                    }
-                    catch(Exception e)
-                    {
-
-                        Dev2Logger.Log.Error("DSFBaseConvert", e);
-                        allErrors.AddError(e.Message);
-                    }
-                    finally
-                    {
-                        if(allErrors.HasErrors())
-                        {
-                            toUpsert.Add(item.ToExpression, null);
-                        }
-                    }
-                }
-                compiler.Upsert(executionId, toUpsert, out errors);
-                allErrors.MergeErrors(errors);
-
-                if (!allErrors.HasErrors() && toUpsert != null)
-                {
-                    var outIndex = 1;
-                    foreach (var debugOutputTo in toUpsert.DebugOutputs)
-                    {
+                        env.Eval(item.FromExpression);
                         var debugItem = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("", outIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
-                        AddDebugItem(new DebugItemVariableParams(debugOutputTo), debugItem);
-                        _debugOutputs.Add(debugItem);
-                        outIndex++;
+                        AddDebugItem(new DebugItemStaticDataParams("", index.ToString(CultureInfo.InvariantCulture)), debugItem);
+                        AddDebugItem(new DebugEvalResult(item.FromExpression, "Convert", env), debugItem);
+                        AddDebugItem(new DebugItemStaticDataParams(item.FromType, "from"), debugItem);
+                        AddDebugItem(new DebugItemStaticDataParams(item.ToType, "To"), debugItem);
+                        _debugInputs.Add(debugItem);
+                        index++;
                     }
+
+                    env.ApplyUpdate(item.FromExpression, TryConvertFunc(item, env));
+
+                    IsSingleValueRule.ApplyIsSingleValueRule(item.FromExpression, allErrors);
+                    if (dataObject.IsDebugMode())
+                    {
+                        env.Eval(item.FromExpression);
+                        var debugItem = new DebugItem();
+                        AddDebugItem(new DebugItemStaticDataParams("", index.ToString(CultureInfo.InvariantCulture)), debugItem);
+                        AddDebugItem(new DebugEvalResult(item.FromExpression, "Convert", env), debugItem);
+                        AddDebugItem(new DebugItemStaticDataParams(item.ToType, "To"), debugItem);
+                        _debugOutputs.Add(debugItem);
+
+                    }
+
+
+
                 }
+
+
             }
             catch(Exception e)
             {
@@ -245,6 +150,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(hasErrors)
                 {
                     DisplayAndWriteError("DsfBaseConvertActivity", allErrors);
+                    ErrorResultTO errors;
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
                 if(dataObject.IsDebugMode())
@@ -261,6 +167,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
+
+        Func<DataASTMutable.WarewolfAtom, DataASTMutable.WarewolfAtom> TryConvertFunc(BaseConvertTO item, IExecutionEnvironment env)
+        {
+         
+
+         
+                    return (a =>
+                    {
+
+                        IBaseConverter from = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.FromType, typeof(enDev2BaseConvertType)));
+                        IBaseConverter to = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.ToType, typeof(enDev2BaseConvertType)));
+                        IBaseConversionBroker broker = _fac.CreateBroker(from, to);
+
+                        var upper = broker.Convert(a.ToString());
+                        var evalled = env.Eval(upper);
+                        if (evalled.IsWarewolfAtomResult)
+                        {
+                            var warewolfAtomResult = evalled as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                            if (warewolfAtomResult != null)
+                            {
+                                return warewolfAtomResult.Item;
+                            }
+                            return DataASTMutable.WarewolfAtom.Nothing;
+                        }
+
+                        return DataASTMutable.WarewolfAtom.NewDataString(WarewolfDataEvaluationCommon.EvalResultToString(evalled));
+                    });
+
+        }
+
 
         #region Private Methods
 
@@ -284,7 +220,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -293,7 +229,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {
@@ -305,16 +241,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion
 
         #region Private Methods
-
-        private void AddDebugInputItem(string expression, IBinaryDataListEntry valueEntry, Guid executionId, string fromType, string toType)
-        {
-            var itemToAdd = new DebugItem();
-            AddDebugItem(new DebugItemStaticDataParams("", _indexCounter.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-            AddDebugItem(new DebugItemVariableParams(expression, "Convert", valueEntry, executionId), itemToAdd);
-            AddDebugItem(new DebugItemStaticDataParams(fromType, "From"), itemToAdd);
-            AddDebugItem(new DebugItemStaticDataParams(toType, "To"), itemToAdd);
-            _debugInputs.Add(itemToAdd);
-        }
 
         private void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {

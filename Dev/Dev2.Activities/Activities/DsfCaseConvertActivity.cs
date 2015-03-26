@@ -89,7 +89,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
                 CleanArgs();
-                ICaseConverter converter = CaseConverterFactory.CreateCaseConverter();
+
 
                 allErrors.MergeErrors(errors);
 
