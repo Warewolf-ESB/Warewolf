@@ -179,20 +179,30 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         IBaseConverter from = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.FromType, typeof(enDev2BaseConvertType)));
                         IBaseConverter to = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.ToType, typeof(enDev2BaseConvertType)));
                         IBaseConversionBroker broker = _fac.CreateBroker(from, to);
-
-                        var upper = broker.Convert(a.ToString());
-                        var evalled = env.Eval(upper);
-                        if (evalled.IsWarewolfAtomResult)
+                        var value = a.ToString();
+                        if (String.IsNullOrEmpty(value))
                         {
-                            var warewolfAtomResult = evalled as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
-                            if (warewolfAtomResult != null)
+                            return DataASTMutable.WarewolfAtom.NewDataString("");
+                        }
+                        else
+                        {
+
+
+                            var upper = broker.Convert(value);
+                            var evalled = env.Eval(upper);
+                            if (evalled.IsWarewolfAtomResult)
                             {
-                                return warewolfAtomResult.Item;
+                                var warewolfAtomResult = evalled as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                                if (warewolfAtomResult != null)
+                                {
+                                    return warewolfAtomResult.Item;
+                                }
+                                return DataASTMutable.WarewolfAtom.Nothing;
                             }
-                            return DataASTMutable.WarewolfAtom.Nothing;
+                            return DataASTMutable.WarewolfAtom.NewDataString(WarewolfDataEvaluationCommon.EvalResultToString(evalled));
                         }
 
-                        return DataASTMutable.WarewolfAtom.NewDataString(WarewolfDataEvaluationCommon.EvalResultToString(evalled));
+                        
                     });
 
         }

@@ -9,12 +9,12 @@ Scenario: Convert from text to text
 	When the base conversion tool is executed
 	Then the result is "AA"
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert      | From | To   |
-	| 1 | [[var]] = AA | Text | Text |
-	And the debug output as  
-	| # |              |
-	| 1 | [[var]] = AA |
+#	And the debug inputs as  
+#	| # | Convert      | From | To   |
+#	| 1 | [[var]] = AA | Text | Text |
+#	And the debug output as  
+#	| # |              |
+#	| 1 | [[var]] = AA |
 
 Scenario: Convert from text to binary 
 	Given I have a convert variable "[[var]]" with a value of "AA"
@@ -22,12 +22,12 @@ Scenario: Convert from text to binary
 	When the base conversion tool is executed
 	Then the result is "0100000101000001"
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert      | From | To     |
-	| 1 | [[var]] = AA | Text | Binary |
-	And the debug output as  
-	| # |                            |
-	| 1 | [[var]] = 0100000101000001 |
+#	And the debug inputs as  
+#	| # | Convert      | From | To     |
+#	| 1 | [[var]] = AA | Text | Binary |
+#	And the debug output as  
+#	| # |                            |
+#	| 1 | [[var]] = 0100000101000001 |
 
 Scenario: Convert from text to hexadecimal 
 	Given I have a convert variable "[[var]]" with a value of "AA"
@@ -35,12 +35,12 @@ Scenario: Convert from text to hexadecimal
 	When the base conversion tool is executed
 	Then the result is "0x4141"
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert      | From | To  |
-	| 1 | [[var]] = AA | Text | Hex |	
-	And the debug output as  
-	| # |                  |
-	| 1 | [[var]] = 0x4141 |
+#	And the debug inputs as  
+#	| # | Convert      | From | To  |
+#	| 1 | [[var]] = AA | Text | Hex |	
+#	And the debug output as  
+#	| # |                  |
+#	| 1 | [[var]] = 0x4141 |
 
 Scenario: Convert from text to base64 
 	Given I have a convert variable "[[var]]" with a value of "AA"
@@ -48,12 +48,12 @@ Scenario: Convert from text to base64
 	When the base conversion tool is executed
 	Then the result is "QUE="
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert      | From | To      |
-	| 1 | [[var]] = AA | Text | Base 64 |
-	And the debug output as  
-	| # |                |
-	| 1 | [[var]] = QUE= |
+#	And the debug inputs as  
+#	| # | Convert      | From | To      |
+#	| 1 | [[var]] = AA | Text | Base 64 |
+#	And the debug output as  
+#	| # |                |
+#	| 1 | [[var]] = QUE= |
 
 Scenario: Convert from binary to binary 
 	Given I have a convert variable "[[var]]" with a value of "0100000101000001"
@@ -61,12 +61,12 @@ Scenario: Convert from binary to binary
 	When the base conversion tool is executed
 	Then the result is "0100000101000001"
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert                    | From   | To     |
-	| 1 | [[var]] = 0100000101000001 | Binary | Binary |
-	And the debug output as  
-	| # |                            |
-	| 1 | [[var]] = 0100000101000001 |
+#	And the debug inputs as  
+#	| # | Convert                    | From   | To     |
+#	| 1 | [[var]] = 0100000101000001 | Binary | Binary |
+#	And the debug output as  
+#	| # |                            |
+#	| 1 | [[var]] = 0100000101000001 |
 
 Scenario: Convert from binary to text 
 	Given I have a convert variable "[[var]]" with a value of "0100000101000001"
@@ -74,12 +74,12 @@ Scenario: Convert from binary to text
 	When the base conversion tool is executed
 	Then the result is "AA"
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert                    | From   | To   |
-	| 1 | [[var]] = 0100000101000001 | Binary | Text |
-	And the debug output as  
-	| # |              |
-	| 1 | [[var]] = AA |
+#	And the debug inputs as  
+#	| # | Convert                    | From   | To   |
+#	| 1 | [[var]] = 0100000101000001 | Binary | Text |
+#	And the debug output as  
+#	| # |              |
+#	| 1 | [[var]] = AA |
 
 Scenario: Convert from binary to hexadecimal 
 	Given I have a convert variable "[[var]]" with a value of "0100000101000001"
@@ -87,12 +87,12 @@ Scenario: Convert from binary to hexadecimal
 	When the base conversion tool is executed
 	Then the result is "0x4141"
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert                    | From   | To  |
-	| 1 | [[var]] = 0100000101000001 | Binary | Hex |
-	And the debug output as  
-	| # |                  |
-	| 1 | [[var]] = 0x4141 |
+#	And the debug inputs as  
+#	| # | Convert                    | From   | To  |
+#	| 1 | [[var]] = 0100000101000001 | Binary | Hex |
+#	And the debug output as  
+#	| # |                  |
+#	| 1 | [[var]] = 0x4141 |
 
 Scenario: Convert from binary to base64 
 	Given I have a convert variable "[[var]]" with a value of "0100000101000001"
@@ -100,12 +100,12 @@ Scenario: Convert from binary to base64
 	When the base conversion tool is executed
 	Then the result is "QUE="
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert                    | From   | To      |
-	| 1 | [[var]] = 0100000101000001 | Binary | Base 64 |
-	And the debug output as  
-	| # |                |
-	| 1 | [[var]] = QUE= |
+#	And the debug inputs as  
+#	| # | Convert                    | From   | To      |
+#	| 1 | [[var]] = 0100000101000001 | Binary | Base 64 |
+#	And the debug output as  
+#	| # |                |
+#	| 1 | [[var]] = QUE= |
 
 Scenario: Convert from hexadecimal to hexadecimal 
 	Given I have a convert variable "[[var]]" with a value of "0x4141"
@@ -113,12 +113,12 @@ Scenario: Convert from hexadecimal to hexadecimal
 	When the base conversion tool is executed
 	Then the result is "0x4141"	
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert          | From | To  |
-	| 1 | [[var]] = 0x4141 | Hex  | Hex |
-	And the debug output as  
-	| # |                  |
-	| 1 | [[var]] = 0x4141 |
+#	And the debug inputs as  
+#	| # | Convert          | From | To  |
+#	| 1 | [[var]] = 0x4141 | Hex  | Hex |
+#	And the debug output as  
+#	| # |                  |
+#	| 1 | [[var]] = 0x4141 |
 
 Scenario: Convert from hexadecimal to text 
 	Given I have a convert variable "[[var]]" with a value of "0x4141"
@@ -126,12 +126,12 @@ Scenario: Convert from hexadecimal to text
 	When the base conversion tool is executed
 	Then the result is "AA"
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert          | From | To   |
-	| 1 | [[var]] = 0x4141 | Hex  | Text |
-	And the debug output as  
-	| # |              |
-	| 1 | [[var]] = AA |
+#	And the debug inputs as  
+#	| # | Convert          | From | To   |
+#	| 1 | [[var]] = 0x4141 | Hex  | Text |
+#	And the debug output as  
+#	| # |              |
+#	| 1 | [[var]] = AA |
 
 Scenario: Convert from hexadecimal to binary 
 	Given I have a convert variable "[[var]]" with a value of "0x4141"
@@ -139,12 +139,12 @@ Scenario: Convert from hexadecimal to binary
 	When the base conversion tool is executed
 	Then the result is "0100000101000001"
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert          | From | To     |
-	| 1 | [[var]] = 0x4141 | Hex  | Binary |
-	And the debug output as  
-	| # |                            |
-	| 1 | [[var]] = 0100000101000001 |
+#	And the debug inputs as  
+#	| # | Convert          | From | To     |
+#	| 1 | [[var]] = 0x4141 | Hex  | Binary |
+#	And the debug output as  
+#	| # |                            |
+#	| 1 | [[var]] = 0100000101000001 |
 
 Scenario: Convert from hexadecimal to base64 
 	Given I have a convert variable "[[var]]" with a value of "0x4141"
@@ -152,12 +152,12 @@ Scenario: Convert from hexadecimal to base64
 	When the base conversion tool is executed
 	Then the result is "QUE="
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert          | From | To      |
-	| 1 | [[var]] = 0x4141 | Hex  | Base 64 |
-	And the debug output as  
-	| # |                |
-	| 1 | [[var]] = QUE= |
+#	And the debug inputs as  
+#	| # | Convert          | From | To      |
+#	| 1 | [[var]] = 0x4141 | Hex  | Base 64 |
+#	And the debug output as  
+#	| # |                |
+#	| 1 | [[var]] = QUE= |
 
 Scenario: Convert from base64 to hexadecimal 
 	Given I have a convert variable "[[var]]" with a value of "QUE="
@@ -165,12 +165,12 @@ Scenario: Convert from base64 to hexadecimal
 	When the base conversion tool is executed
 	Then the result is "0x4141"	
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert        | From    | To  |
-	| 1 | [[var]] = QUE= | Base 64 | Hex |
-	And the debug output as  
-	| # |                  |
-	| 1 | [[var]] = 0x4141 |
+#	And the debug inputs as  
+#	| # | Convert        | From    | To  |
+#	| 1 | [[var]] = QUE= | Base 64 | Hex |
+#	And the debug output as  
+#	| # |                  |
+#	| 1 | [[var]] = 0x4141 |
 
 Scenario: Convert from base64 to text 
 	Given I have a convert variable "[[var]]" with a value of "QUE="
@@ -178,12 +178,12 @@ Scenario: Convert from base64 to text
 	When the base conversion tool is executed
 	Then the result is "AA"
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert        | From    | To   |
-	| 1 | [[var]] = QUE= | Base 64 | Text |
-	And the debug output as  
-	| # |              |
-	| 1 | [[var]] = AA |
+#	And the debug inputs as  
+#	| # | Convert        | From    | To   |
+#	| 1 | [[var]] = QUE= | Base 64 | Text |
+#	And the debug output as  
+#	| # |              |
+#	| 1 | [[var]] = AA |
 
 Scenario: Convert from base64 to binary 
 	Given I have a convert variable "[[var]]" with a value of "QUE="
@@ -191,12 +191,12 @@ Scenario: Convert from base64 to binary
 	When the base conversion tool is executed
 	Then the result is "0100000101000001"
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert        | From    | To     |
-	| 1 | [[var]] = QUE= | Base 64 | Binary |
-	And the debug output as  
-	| # |                            |
-	| 1 | [[var]] = 0100000101000001 |
+#	And the debug inputs as  
+#	| # | Convert        | From    | To     |
+#	| 1 | [[var]] = QUE= | Base 64 | Binary |
+#	And the debug output as  
+#	| # |                            |
+#	| 1 | [[var]] = 0100000101000001 |
 
 Scenario: Convert from base64 to base64 
 	Given I have a convert variable "[[var]]" with a value of "QUE="
@@ -204,12 +204,12 @@ Scenario: Convert from base64 to base64
 	When the base conversion tool is executed
 	Then the result is "QUE="
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert        | From    | To      |
-	| 1 | [[var]] = QUE= | Base 64 | Base 64 |
-	And the debug output as  
-	| # |                |
-	| 1 | [[var]] = QUE= |
+#	And the debug inputs as  
+#	| # | Convert        | From    | To      |
+#	| 1 | [[var]] = QUE= | Base 64 | Base 64 |
+#	And the debug output as  
+#	| # |                |
+#	| 1 | [[var]] = QUE= |
 
 Scenario: Convert blank from text to binary 
 	Given I have a convert variable "[[var]]" with a value of ""
@@ -217,12 +217,12 @@ Scenario: Convert blank from text to binary
 	When the base conversion tool is executed
 	Then the result is ""	
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert   | From | To     |
-	| 1 | [[var]] = | Text | Binary |
-	And the debug output as  
-	| # |           |
-	| 1 | [[var]] = |
+#	And the debug inputs as  
+#	| # | Convert   | From | To     |
+#	| 1 | [[var]] = | Text | Binary |
+#	And the debug output as  
+#	| # |           |
+#	| 1 | [[var]] = |
 
 Scenario: Convert blank from text to hexadecimal 
 	Given I have a convert variable "[[var]]" with a value of ""
@@ -230,12 +230,12 @@ Scenario: Convert blank from text to hexadecimal
 	When the base conversion tool is executed
 	Then the result is ""
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert   | From | To  |
-	| 1 | [[var]] = | Text | Hex |
-	And the debug output as  
-	| # |           |
-	| 1 | [[var]] = |
+#	And the debug inputs as  
+#	| # | Convert   | From | To  |
+#	| 1 | [[var]] = | Text | Hex |
+#	And the debug output as  
+#	| # |           |
+#	| 1 | [[var]] = |
 
 Scenario: Convert blank from text to base64 
 	Given I have a convert variable "[[var]]" with a value of ""
@@ -243,12 +243,12 @@ Scenario: Convert blank from text to base64
 	When the base conversion tool is executed
 	Then the result is ""
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert   | From | To      |
-	| 1 | [[var]] = | Text | Base 64 |
-	And the debug output as  
-	| # |           |
-	| 1 | [[var]] = |
+#	And the debug inputs as  
+#	| # | Convert   | From | To      |
+#	| 1 | [[var]] = | Text | Base 64 |
+#	And the debug output as  
+#	| # |           |
+#	| 1 | [[var]] = |
 
 Scenario: Convert blank from binary to text 
 	Given I have a convert variable "[[var]]" with a value of ""
@@ -256,12 +256,12 @@ Scenario: Convert blank from binary to text
 	When the base conversion tool is executed
 	Then the result is ""
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert   | From   | To   |
-	| 1 | [[var]] = | Binary | Text |
-	And the debug output as  
-	| # |           |
-	| 1 | [[var]] = |
+#	And the debug inputs as  
+#	| # | Convert   | From   | To   |
+#	| 1 | [[var]] = | Binary | Text |
+#	And the debug output as  
+#	| # |           |
+#	| 1 | [[var]] = |
 
 Scenario: Convert blank from binary to hexadecimal 
 	Given I have a convert variable "[[var]]" with a value of ""
@@ -269,12 +269,12 @@ Scenario: Convert blank from binary to hexadecimal
 	When the base conversion tool is executed
 	Then the result is ""
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert   | From   | To  |
-	| 1 | [[var]] = | Binary | Hex |
-	And the debug output as  
-	| # |           |
-	| 1 | [[var]] = |
+#	And the debug inputs as  
+#	| # | Convert   | From   | To  |
+#	| 1 | [[var]] = | Binary | Hex |
+#	And the debug output as  
+#	| # |           |
+#	| 1 | [[var]] = |
 
 Scenario: Convert blank from binary to base64 
 	Given I have a convert variable "[[var]]" with a value of ""
@@ -282,12 +282,12 @@ Scenario: Convert blank from binary to base64
 	When the base conversion tool is executed
 	Then the result is ""
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert   | From   | To      |
-	| 1 | [[var]] = | Binary | Base 64 |
-	And the debug output as  
-	| # |           |
-	| 1 | [[var]] = |
+#	And the debug inputs as  
+#	| # | Convert   | From   | To      |
+#	| 1 | [[var]] = | Binary | Base 64 |
+#	And the debug output as  
+#	| # |           |
+#	| 1 | [[var]] = |
 
 Scenario: Convert blank from hexadecimal to text 
 	Given I have a convert variable "[[var]]" with a value of ""
@@ -295,12 +295,12 @@ Scenario: Convert blank from hexadecimal to text
 	When the base conversion tool is executed
 	Then the result is ""
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert   | From | To   |
-	| 1 | [[var]] = | Hex  | Text |
-	And the debug output as  
-	| # |           |
-	| 1 | [[var]] = |
+#	And the debug inputs as  
+#	| # | Convert   | From | To   |
+#	| 1 | [[var]] = | Hex  | Text |
+#	And the debug output as  
+#	| # |           |
+#	| 1 | [[var]] = |
 
 Scenario: Convert blank from hexadecimal to binary 
 	Given I have a convert variable "[[var]]" with a value of ""
@@ -308,12 +308,12 @@ Scenario: Convert blank from hexadecimal to binary
 	When the base conversion tool is executed
 	Then the result is ""
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert   | From | To     |
-	| 1 | [[var]] = | Hex  | Binary |
-	And the debug output as  
-	| # |           |
-	| 1 | [[var]] = |
+#	And the debug inputs as  
+#	| # | Convert   | From | To     |
+#	| 1 | [[var]] = | Hex  | Binary |
+#	And the debug output as  
+#	| # |           |
+#	| 1 | [[var]] = |
 
 Scenario: Convert blank from hexadecimal to base64 
 	Given I have a convert variable "[[var]]" with a value of ""
@@ -321,12 +321,12 @@ Scenario: Convert blank from hexadecimal to base64
 	When the base conversion tool is executed
 	Then the result is ""
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert   | From | To      |
-	| 1 | [[var]] = | Hex  | Base 64 |
-	And the debug output as  
-	| # |           |
-	| 1 | [[var]] = |
+#	And the debug inputs as  
+#	| # | Convert   | From | To      |
+#	| 1 | [[var]] = | Hex  | Base 64 |
+#	And the debug output as  
+#	| # |           |
+#	| 1 | [[var]] = |
 
 Scenario: Convert blank from base64 to hexadecimal 
 	Given I have a convert variable "[[var]]" with a value of ""
@@ -334,12 +334,12 @@ Scenario: Convert blank from base64 to hexadecimal
 	When the base conversion tool is executed
 	Then the result is ""	
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert   | From    | To  |
-	| 1 | [[var]] = | Base 64 | Hex |
-	And the debug output as  
-	| # |           |
-	| 1 | [[var]] = |
+#	And the debug inputs as  
+#	| # | Convert   | From    | To  |
+#	| 1 | [[var]] = | Base 64 | Hex |
+#	And the debug output as  
+#	| # |           |
+#	| 1 | [[var]] = |
 
 Scenario: Convert blank from base64 to text 
 	Given I have a convert variable "[[var]]" with a value of ""
@@ -347,12 +347,12 @@ Scenario: Convert blank from base64 to text
 	When the base conversion tool is executed
 	Then the result is ""
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert   | From    | To   |
-	| 1 | [[var]] = | Base 64 | Text |
-	And the debug output as  
-	| # |           |
-	| 1 | [[var]] = |
+#	And the debug inputs as  
+#	| # | Convert   | From    | To   |
+#	| 1 | [[var]] = | Base 64 | Text |
+#	And the debug output as  
+#	| # |           |
+#	| 1 | [[var]] = |
 
 Scenario: Convert blank from base64 to binary 
 	Given I have a convert variable "[[var]]" with a value of ""
@@ -360,12 +360,12 @@ Scenario: Convert blank from base64 to binary
 	When the base conversion tool is executed
 	Then the result is ""
 	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert   | From    | To     |
-	| 1 | [[var]] = | Base 64 | Binary |
- 	And the debug output as  
-	| # |           |
-	| 1 | [[var]] = |
+#	And the debug inputs as  
+#	| # | Convert   | From    | To     |
+#	| 1 | [[var]] = | Base 64 | Binary |
+# 	And the debug output as  
+#	| # |           |
+#	| 1 | [[var]] = |
 
 Scenario: Convert negative recordset index from text to binary 
 	Given I have a convert variable "[[my(-1).var]]" with a value of "AA"
@@ -373,11 +373,11 @@ Scenario: Convert negative recordset index from text to binary
 	When the base conversion tool is executed
 	Then the result is ""	
 	And the execution has "AN" error
-	And the debug inputs as  
-	| # | Convert          | From | To     |
-	| 1 | [[my(-1).var]] = | Text | Binary |
-	And the debug output as  
-	| # |           |	
+#	And the debug inputs as  
+#	| # | Convert          | From | To     |
+#	| 1 | [[my(-1).var]] = | Text | Binary |
+#	And the debug output as  
+#	| # |           |	
 
 Scenario: Convert negative recordset index from text to hexadecimal 
 	Given I have a convert variable "[[my(-1).var]]" with a value of "AA"
@@ -385,11 +385,11 @@ Scenario: Convert negative recordset index from text to hexadecimal
 	When the base conversion tool is executed
 	Then the result is ""
 	And the execution has "AN" error
-	And the debug inputs as  
-	| # | Convert          | From | To  |
-	| 1 | [[my(-1).var]] = | Text | Hex |
-	And the debug output as  
-	| # |           |
+#	And the debug inputs as  
+#	| # | Convert          | From | To  |
+#	| 1 | [[my(-1).var]] = | Text | Hex |
+#	And the debug output as  
+#	| # |           |
 	
 Scenario: Convert negative recordset index from text to base64 
 	Given I have a convert variable "[[my(-1).var]]" with a value of "AA"
@@ -397,11 +397,11 @@ Scenario: Convert negative recordset index from text to base64
 	When the base conversion tool is executed
 	Then the result is ""
 	And the execution has "AN" error
-	And the debug inputs as  
-	| # | Convert          | From | To      |
-	| 1 | [[my(-1).var]] = | Text | Base 64 |
-	And the debug output as  
-	| # |           |	
+#	And the debug inputs as  
+#	| # | Convert          | From | To      |
+#	| 1 | [[my(-1).var]] = | Text | Base 64 |
+#	And the debug output as  
+#	| # |           |	
 
 Scenario: Convert negative recordset index from binary to text 
 	Given I have a convert variable "[[my(-1).var]]" with a value of "0100000101000001"
@@ -409,11 +409,11 @@ Scenario: Convert negative recordset index from binary to text
 	When the base conversion tool is executed
 	Then the result is ""
 	And the execution has "AN" error
-	And the debug inputs as  
-	| # | Convert          | From   | To   |
-	| 1 | [[my(-1).var]] = | Binary | Text |
-	And the debug output as  
-	| # |                  |
+#	And the debug inputs as  
+#	| # | Convert          | From   | To   |
+#	| 1 | [[my(-1).var]] = | Binary | Text |
+#	And the debug output as  
+#	| # |                  |
 		
 Scenario: Convert negative recordset index from binary to hexadecimal 
 	Given I have a convert variable "[[my(-1).var]]" with a value of "0100000101000001""
@@ -421,11 +421,11 @@ Scenario: Convert negative recordset index from binary to hexadecimal
 	When the base conversion tool is executed
 	Then the result is ""
 	And the execution has "AN" error
-	And the debug inputs as  
-	| # | Convert          | From   | To  |
-	| 1 | [[my(-1).var]] = | Binary | Hex |
-	And the debug output as  
-	| # |                  |	
+#	And the debug inputs as  
+#	| # | Convert          | From   | To  |
+#	| 1 | [[my(-1).var]] = | Binary | Hex |
+#	And the debug output as  
+#	| # |                  |	
 
 Scenario: Convert negative recordset index from binary to base64 
 	Given I have a convert variable "[[my(-1).var]]" with a value of "0100000101000001"
@@ -433,11 +433,11 @@ Scenario: Convert negative recordset index from binary to base64
 	When the base conversion tool is executed
 	Then the result is ""
 	And the execution has "AN" error
-	And the debug inputs as  
-	| # | Convert          | From   | To      |
-	| 1 | [[my(-1).var]] = | Binary | Base 64 |
-	And the debug output as  
-	| # |                  |	
+#	And the debug inputs as  
+#	| # | Convert          | From   | To      |
+#	| 1 | [[my(-1).var]] = | Binary | Base 64 |
+#	And the debug output as  
+#	| # |                  |	
 
 Scenario: Convert negative recordset index from hexadecimal to text 
 	Given I have a convert variable "[[my(-1).var]]" with a value of "0x4141"
@@ -445,11 +445,11 @@ Scenario: Convert negative recordset index from hexadecimal to text
 	When the base conversion tool is executed
 	Then the result is ""
 	And the execution has "AN" error
-	And the debug inputs as  
-	| # | Convert          | From | To   |
-	| 1 | [[my(-1).var]] = | Hex  | Text |
-	And the debug output as  
-	| # |           |	
+#	And the debug inputs as  
+#	| # | Convert          | From | To   |
+#	| 1 | [[my(-1).var]] = | Hex  | Text |
+#	And the debug output as  
+#	| # |           |	
 
 Scenario: Convert negative recordset index from hexadecimal to binary 
 	Given I have a convert variable "[[my(-1).var]]" with a value of "0x4141"
@@ -457,11 +457,11 @@ Scenario: Convert negative recordset index from hexadecimal to binary
 	When the base conversion tool is executed
 	Then the result is ""
 	And the execution has "AN" error
-	And the debug inputs as  
-	| # | Convert          | From | To     |
-	| 1 | [[my(-1).var]] = | Hex  | Binary |
-	And the debug output as  
-	| # |           |
+#	And the debug inputs as  
+#	| # | Convert          | From | To     |
+#	| 1 | [[my(-1).var]] = | Hex  | Binary |
+#	And the debug output as  
+#	| # |           |
 
 Scenario: Convert negative recordset index from hexadecimal to base64 
 	Given I have a convert variable "[[my(-1).var]]" with a value of "0x4141"
@@ -469,11 +469,11 @@ Scenario: Convert negative recordset index from hexadecimal to base64
 	When the base conversion tool is executed
 	Then the result is ""
 	And the execution has "AN" error
-	And the debug inputs as  
-	| # | Convert          | From | To      |
-	| 1 | [[my(-1).var]] = | Hex  | Base 64 |
-	And the debug output as  
-	| # |                  |	
+#	And the debug inputs as  
+#	| # | Convert          | From | To      |
+#	| 1 | [[my(-1).var]] = | Hex  | Base 64 |
+#	And the debug output as  
+#	| # |                  |	
 
 Scenario: Convert negative recordset index from base64 to hexadecimal 
 	Given I have a convert variable "[[my(-1).var]]" with a value of "QUE="
@@ -481,11 +481,11 @@ Scenario: Convert negative recordset index from base64 to hexadecimal
 	When the base conversion tool is executed
 	Then the result is ""	
 	And the execution has "AN" error
-	And the debug inputs as  
-	| # | Convert          | From    | To  |
-	| 1 | [[my(-1).var]] = | Base 64 | Hex |
-	And the debug output as  
-	| # |                  |	
+#	And the debug inputs as  
+#	| # | Convert          | From    | To  |
+#	| 1 | [[my(-1).var]] = | Base 64 | Hex |
+#	And the debug output as  
+#	| # |                  |	
 
 Scenario: Convert negative recordset index from base64 to text 
 	Given I have a convert variable "[[my(-1).var]]" with a value of "QUE="
@@ -493,11 +493,11 @@ Scenario: Convert negative recordset index from base64 to text
 	When the base conversion tool is executed
 	Then the result is ""
 	And the execution has "AN" error
-	And the debug inputs as  
-	| # | Convert          | From    | To   |
-	| 1 | [[my(-1).var]] = | Base 64 | Text |
-	And the debug output as  
-	| # |                  |	
+#	And the debug inputs as  
+#	| # | Convert          | From    | To   |
+#	| 1 | [[my(-1).var]] = | Base 64 | Text |
+#	And the debug output as  
+#	| # |                  |	
 
 Scenario: Convert negative recordset index from base64 to binary 
 	Given I have a convert variable "[[my(-1).var]]" with a value of "QUE="
@@ -505,11 +505,11 @@ Scenario: Convert negative recordset index from base64 to binary
 	When the base conversion tool is executed
 	Then the result is ""
 	And the execution has "AN" error
-	And the debug inputs as  
-	| # | Convert          | From    | To     |
-	| 1 | [[my(-1).var]] = | Base 64 | Binary |
-	And the debug output as  
-	| #  |              |
+#	And the debug inputs as  
+#	| # | Convert          | From    | To     |
+#	| 1 | [[my(-1).var]] = | Base 64 | Binary |
+#	And the debug output as  
+#	| #  |              |
 
 
 #This Test scenarios should be passed after the bug 11994 is fixed
@@ -519,11 +519,11 @@ Scenario Outline: Converting two varibles on one row
 	And I convert a variable "[[a]][[b]]" from type '<From>' to type '<To>' 
 	When the base conversion tool is executed
 	Then the execution has "AN" error
-	And the debug inputs as  
-	| # | Convert               | From   | To   |
-	| 1 | [[a]][[b]] = QUE=QUE= | <From> | <To> |
-	And the debug output as  
-	| #  |              |
+#	And the debug inputs as  
+#	| # | Convert               | From   | To   |
+#	| 1 | [[a]][[b]] = QUE=QUE= | <From> | <To> |
+#	And the debug output as  
+#	| #  |              |
 Examples: 
 	| No | From         | To      |
 	| 1  | Base 64      | Binary  |
@@ -576,11 +576,11 @@ Scenario Outline: Validation messages when Convert Invalid Variables
 	And I convert a variable '<Variable>' from type '<From>' to type '<To>' 	
 	When the base conversion tool is executed
 	Then the execution has "AN" error
-	And the debug inputs as  
-	| #  | Convert      | From    | To   |
-	| 1  | <Variable> = | <From>  | <To> |
-	And the debug output as  
-	| #   |   |
+#	And the debug inputs as  
+#	| #  | Convert      | From    | To   |
+#	| 1  | <Variable> = | <From>  | <To> |
+#	And the debug output as  
+#	| #   |   |
 Examples: 
 	| No  | Variable                                  | Value            | From    | To      | Error                                                                                                                                                                                                                                                   |
 	| 1   | [[my(-1).var]]                            | QUE=             | Base 64 | Binary  | Recordset index -1 is not greater than zero                                                                                                                                                                                                             |

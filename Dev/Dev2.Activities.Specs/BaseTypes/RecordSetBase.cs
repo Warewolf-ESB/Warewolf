@@ -56,14 +56,23 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             if(variableList != null)
             {
-                foreach(dynamic variable in variableList)
+                try
                 {
-                    if (!string.IsNullOrEmpty(variable.Item1) )
+                    foreach (dynamic variable in variableList)
                     {
-                        CurrentExecutionEnvironment.Assign(DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), variable.Item2);
+                        if (!string.IsNullOrEmpty(variable.Item1))
+                        {
+                            CurrentExecutionEnvironment.Assign(DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), variable.Item2);
+                        }
+                        //Build(variable, shape, data, row);
+                        row++;
                     }
-                    //Build(variable, shape, data, row);
-                    row++;
+                }
+                    // ReSharper disable EmptyGeneralCatchClause
+                catch
+                    // ReSharper restore EmptyGeneralCatchClause
+                {
+                    
                 }
             }
 
