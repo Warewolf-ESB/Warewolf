@@ -176,9 +176,9 @@ namespace Dev2.Services.Execution
                             var definitions = dev2Definitions as IDev2Definition[] ?? dev2Definitions.ToArray();
                             if (definitions.Count() == 1)
                             {
-                                toInject = DataListUtil.AddBracketsToValueIfNotExist(definitions[0].RawValue);    
+                                toInject = DataListUtil.AddBracketsToValueIfNotExist(definitions[0].RawValue);
                             }
-                            
+
                         }
                         else if (!sai.EmptyToNull)
                         {
@@ -193,7 +193,7 @@ namespace Dev2.Services.Execution
 
                     while (itrCollection.HasMoreData())
                     {
-                        ExecuteService(Service.Method.Parameters, itrCollection, itrs, out invokeErrors, outputFormatter);                        
+                        ExecuteService(Service.Method.Parameters, itrCollection, itrs, out invokeErrors, outputFormatter);
                         errors.MergeErrors(invokeErrors);
                     }
                 }
@@ -231,15 +231,15 @@ namespace Dev2.Services.Execution
                 {
                     string injectVal = itrCollection.FetchNextValue(itr);
                     MethodParameter param = methodParameters[pos];
-                    
 
-                        param.Value = param.EmptyToNull &&
-                                      (injectVal == null ||
-                                       string.Compare(injectVal, string.Empty,
-                                           StringComparison.InvariantCultureIgnoreCase) == 0)
-                            ? null
-                            : injectVal;
-                    
+
+                    param.Value = param.EmptyToNull &&
+                                  (injectVal == null ||
+                                   string.Compare(injectVal, string.Empty,
+                                       StringComparison.InvariantCultureIgnoreCase) == 0)
+                        ? null
+                        : injectVal;
+
                     pos++;
                 }
             }
@@ -247,7 +247,7 @@ namespace Dev2.Services.Execution
             try
             {
                 ErrorResultTO invokeErrors;
-                ExecuteService(methodParameters,out invokeErrors, formater);
+                ExecuteService(methodParameters, out invokeErrors, formater);
                 errors.MergeErrors(invokeErrors);
             }
             catch (Exception ex)
@@ -255,7 +255,7 @@ namespace Dev2.Services.Execution
                 errors.AddError(string.Format("Service Execution Error: {0}", ex.Message));
             }
         }
-        
+
         private void ExecuteService(IEnumerable<MethodParameter> methodParameters, out ErrorResultTO errors, IOutputFormatter formater = null)
         {
             errors = new ErrorResultTO();
@@ -316,7 +316,7 @@ namespace Dev2.Services.Execution
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Log.Error(e.Message,e);
+                    Dev2Logger.Log.Error(e.Message, e);
                     // if use passed in empty input they only wanted the shape ;)
                     if (input.Length > 0)
                     {
@@ -324,19 +324,19 @@ namespace Dev2.Services.Execution
                 }
             }
         }
-      void TryConvert(XmlNodeList children, IList<IDev2Definition> outputDefs, IDictionary<string, int> indexCache, int level = 0)
+        void TryConvert(XmlNodeList children, IList<IDev2Definition> outputDefs, IDictionary<string, int> indexCache, int level = 0)
         {
             // spin through each element in the XML
-            foreach(XmlNode c in children)
+            foreach (XmlNode c in children)
             {
-                if(c.Name != GlobalConstants.NaughtyTextNode)
+                if (c.Name != GlobalConstants.NaughtyTextNode)
                 {
                     // scalars and recordset fetch
                     WarewolfDataEvaluationCommon.WarewolfEvalResult warewolfEvalResult = null;
                     try
                     {
                         warewolfEvalResult = DataObj.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(c.Name));
-                        if (warewolfEvalResult.IsWarewolfAtomResult && level==0)
+                        if (warewolfEvalResult.IsWarewolfAtomResult && level == 0)
                         {
                             var checkNullResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
                             if (checkNullResult != null && checkNullResult.Item.IsNothing)
@@ -347,35 +347,35 @@ namespace Dev2.Services.Execution
                     }
                     catch (Exception e)
                     {
-                        Dev2Logger.Log.Error(e.Message,e);
+                        Dev2Logger.Log.Error(e.Message, e);
                     }
-                    if(warewolfEvalResult!=null)
+                    if (warewolfEvalResult != null)
                     {
                         var c1 = c;
                         var recSetName = outputDefs.Where(definition => definition.RecordSetName == c1.Name);
                         var dev2Definitions = recSetName as IDev2Definition[] ?? recSetName.ToArray();
-                        if (dev2Definitions.Count()!=0)
+                        if (dev2Definitions.Count() != 0)
                         {
                             // fetch recordset index
                             int fetchIdx;
                             var idx = indexCache.TryGetValue(c.Name, out fetchIdx) ? fetchIdx : 1;
                             // process recordset
                             var nl = c.ChildNodes;
-                            foreach(XmlNode subc in nl)
+                            foreach (XmlNode subc in nl)
                             {
                                 // Extract column being mapped to ;)
-                                foreach(var definition in dev2Definitions)
+                                foreach (var definition in dev2Definitions)
                                 {
                                     if (definition.MapsTo == subc.Name)
                                     {
                                         DataObj.Environment.Assign(definition.RawValue, subc.InnerXml);
                                     }
-                                }                              
-//                                if(CanMapValue(onlyMapInputs, dir))
-//                                {
-//                                    entry.TryPutRecordItemAtIndex(Dev2BinaryDataListFactory.CreateBinaryItem(subc.InnerXml, c.Name, subc.Name, idx), idx, out error);
-//                                }
-                                
+                                }
+                                //                                if(CanMapValue(onlyMapInputs, dir))
+                                //                                {
+                                //                                    entry.TryPutRecordItemAtIndex(Dev2BinaryDataListFactory.CreateBinaryItem(subc.InnerXml, c.Name, subc.Name, idx), idx, out error);
+                                //                                }
+
                             }
                             // update this recordset index
                             indexCache[c.Name] = ++idx;
@@ -384,24 +384,24 @@ namespace Dev2.Services.Execution
                         {
                             DataObj.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(c.Name), c.InnerXml);
                         }
-//                        else if(CanMapValue(onlyMapInputs, entry.ColumnIODirection))
-//                        {
-//                            // process scalar
-//                            entry.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(c.InnerXml, c.Name), out error);
-//
-//                            if(!string.IsNullOrEmpty(error))
-//                            {
-//                                errors.AddError(error);
-//                            }
-//                        }
+                        //                        else if(CanMapValue(onlyMapInputs, entry.ColumnIODirection))
+                        //                        {
+                        //                            // process scalar
+                        //                            entry.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(c.InnerXml, c.Name), out error);
+                        //
+                        //                            if(!string.IsNullOrEmpty(error))
+                        //                            {
+                        //                                errors.AddError(error);
+                        //                            }
+                        //                        }
                     }
                     else
                     {
-                        if(level == 0)
+                        if (level == 0)
                         {
                             // Only recurse if we're at the first level!!
-                            TryConvert(c.ChildNodes,outputDefs, indexCache, ++level);
-                        }                        
+                            TryConvert(c.ChildNodes, outputDefs, indexCache, ++level);
+                        }
                     }
                 }
             }

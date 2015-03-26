@@ -7,5 +7,7 @@ namespace Dev2.Common.Interfaces
         void AddVariableToIterateOn(IWarewolfIterator iterator);
 
         bool HasMoreData();
+
+        int GetMax();
     }
 }
