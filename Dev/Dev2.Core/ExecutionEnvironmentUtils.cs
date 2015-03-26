@@ -13,7 +13,6 @@ namespace Dev2
 {
     public static class ExecutionEnvironmentUtils
     {
-
         public static string GetXmlOutputFromEnvironment(IDSFDataObject dataObject, Guid workspaceGuid,string dataList)
         {
             var environment = dataObject.Environment;
@@ -185,6 +184,22 @@ namespace Dev2
                 TryConvert(dataObject, children, dataListTO.Inputs);
             }
         }
+        
+        public static void UpdateEnvironmentFromOutputPayload(IDSFDataObject dataObject, StringBuilder rawPayload, string dataList)
+        {
+
+            string toLoad = DataListUtil.StripCrap(rawPayload.ToString()); // clean up the rubish ;)
+            XmlDocument xDoc = new XmlDocument();
+            toLoad = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), toLoad);
+            xDoc.LoadXml(toLoad);
+
+            if (xDoc.DocumentElement != null)
+            {
+                XmlNodeList children = xDoc.DocumentElement.ChildNodes;
+                var dataListTO = new DataListTO(dataList);
+                TryConvert(dataObject, children, dataListTO.Outputs);
+            }
+        }
 
         static void TryConvert(IDSFDataObject dataObject, XmlNodeList children, List<string> inputDefs, int level = 0)
         {
@@ -258,5 +273,76 @@ namespace Dev2
                 }
             }
         }
+
+        public static string GetXmlInputFromEnvironment(IDSFDataObject dataObject, Guid workspaceGuid, string dataList)
+        {
+            var environment = dataObject.Environment;
+            var dataListTO = new DataListTO(dataList);
+            StringBuilder result = new StringBuilder("<" + "DataList" + ">");
+            var scalarOutputs = dataListTO.Inputs.Where(s => !DataListUtil.IsValueRecordset(s));
+            var recSetOutputs = dataListTO.Inputs.Where(DataListUtil.IsValueRecordset);
+            var groupedRecSets = recSetOutputs.GroupBy(DataListUtil.ExtractRecordsetNameFromValue);
+            foreach (var groupedRecSet in groupedRecSets)
+            {
+                var i = 1;
+                var warewolfListIterators = new WarewolfListIterator();
+                Dictionary<string, IWarewolfIterator> iterators = new Dictionary<string, IWarewolfIterator>();
+                foreach (var name in groupedRecSet)
+                {
+                    var warewolfIterator = new WarewolfIterator(environment.Eval(name));
+                    iterators.Add(DataListUtil.ExtractFieldNameFromValue(name), warewolfIterator);
+                    warewolfListIterators.AddVariableToIterateOn(warewolfIterator);
+
+                }
+                while (warewolfListIterators.HasMoreData())
+                {
+                    result.Append("<");
+                    result.Append(groupedRecSet.Key);
+                    result.Append(string.Format(" Index=\"{0}\">", i));
+                    foreach (var namedIterator in iterators)
+                    {
+                        var value = warewolfListIterators.FetchNextValue(namedIterator.Value);
+                        result.Append("<");
+                        result.Append(namedIterator.Key);
+                        result.Append(">");
+                        result.Append(value);
+                        result.Append("</");
+                        result.Append(namedIterator.Key);
+                        result.Append(">");
+                    }
+                    result.Append("</");
+                    result.Append(groupedRecSet.Key);
+                    result.Append(">");
+                    i++;
+                }
+
+            }
+
+
+            foreach (var output in scalarOutputs)
+            {
+                var evalResult = environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(output));
+                if (evalResult.IsWarewolfAtomResult)
+                {
+                    var scalarResult = evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                    if (scalarResult != null && !scalarResult.Item.IsNothing)
+                    {
+                        result.Append("<");
+                        result.Append(output);
+                        result.Append(">");
+                        result.Append(scalarResult.Item);
+                        result.Append("</");
+                        result.Append(output);
+                        result.Append(">");
+                    }
+                }
+            }
+
+            result.Append("</" + "DataList" + ">");
+
+
+            return result.ToString();
+        }
+
     }
 }

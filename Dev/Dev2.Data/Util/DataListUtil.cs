@@ -2093,7 +2093,7 @@ namespace Dev2.Data.Util
             {
                 if(!dev2Definition.IsRecordSet)
                 {
-                    var warewolfEvalResult = innerEnvironment.Eval(dev2Definition.RawValue);
+                    var warewolfEvalResult = innerEnvironment.Eval(DataListUtils.AddBracketsToValueIfNotExist(dev2Definition.Name));
                     if(warewolfEvalResult.IsWarewolfAtomListresult)
                     {
                         var data = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
@@ -2107,7 +2107,7 @@ namespace Dev2.Data.Util
                         var data = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
                         if(data != null)
                         {
-                            environment.MultiAssign(new List<IAssignValue> { new AssignValue("[[" + dev2Definition.Value + "]]", ExecutionEnvironment.WarewolfAtomToString(data.Item)) });
+                            environment.MultiAssign(new List<IAssignValue> { new AssignValue(DataListUtils.AddBracketsToValueIfNotExist(dev2Definition.Value), ExecutionEnvironment.WarewolfAtomToString(data.Item)) });
                         }
                     }
                 }
