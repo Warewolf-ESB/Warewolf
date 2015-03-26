@@ -14,7 +14,7 @@ type token =
   | EOF
   | VARNAME of (string)
   | STRING of (string)
-  | FLOAT of (float)
+  | FLOAT of (string)
   | INT of (string)
   | OPENLANGUAGE
   | CLOSELANGAUGE
@@ -472,12 +472,12 @@ let _fsyacc_reductions ()  =    [|
                  : LanguageAST.ScalarIdentifier));
 # 473 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
-            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : float)) in
+            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
 # 66 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                                  Float _1 
+                                  tryFloatParseAtom _1 
                    )
 # 66 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : DataASTMutable.WarewolfAtom));
