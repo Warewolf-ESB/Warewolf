@@ -359,6 +359,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Recordset - FindRecordIndex.feature</DependentUpon>
     </Compile>
+    <Compile Include="Tools\Scripting - CMD Line.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Scripting - CMD Line.feature</DependentUpon>
+    </Compile>
     <Compile Include="Tools\SQLBulkInsert.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -511,6 +516,10 @@
     <None Include="Tools\Recordset - FindRecordIndex.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Recordset - FindRecordIndex.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\Scripting - CMD Line.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Scripting - CMD Line.feature.cs</LastGenOutput>
     </None>
     <None Include="Tools\SQLBulkInsert.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
