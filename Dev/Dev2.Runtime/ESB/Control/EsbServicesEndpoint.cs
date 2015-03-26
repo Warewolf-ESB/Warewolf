@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.Data.Binary_Objects;
@@ -218,10 +219,11 @@ namespace Dev2.Runtime.ESB.Control
             if(dataObject.DataListID == GlobalConstants.NullDataListID)
             {
                 StringBuilder theShape;
-
+                DataListTO dataListTo;
                 try
                 {
                     theShape = dataObject.ResourceID == Guid.Empty ? FindServiceShape(workspaceId, dataObject.ServiceName) : FindServiceShape(workspaceId, dataObject.ResourceID);
+                    dataListTo = dataObject.ResourceID == Guid.Empty ? GetDataListTO(workspaceId, dataObject.ServiceName) : GetDataListTO(workspaceId, dataObject.ResourceID);
                 }
                 catch(Exception ex)
                 {
@@ -232,6 +234,7 @@ namespace Dev2.Runtime.ESB.Control
 
                 // TODO : Amend here to respect Inputs only when creating shape ;)
                 ErrorResultTO invokeErrors;
+                UpdateEnvironmentFromInputPayload(dataObject,dataObject.RawPayload, dataListTo);
                 dataObject.DataListID = compiler.ConvertAndOnlyMapInputs(DataListFormat.CreateFormat(GlobalConstants._XML), dataObject.RawPayload, theShape, out invokeErrors);
                 // The act of doing this moves the index data correctly ;)
                 // We need to remove this in the future.
@@ -296,6 +299,94 @@ namespace Dev2.Runtime.ESB.Control
             return resultID;
         }
 
+        void UpdateEnvironmentFromInputPayload(IDSFDataObject dataObject,StringBuilder rawPayload, DataListTO dataListTO)
+        {
+
+            string toLoad = DataListUtil.StripCrap(rawPayload.ToString()); // clean up the rubish ;)
+            XmlDocument xDoc = new XmlDocument();
+            toLoad = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), toLoad);
+            xDoc.LoadXml(toLoad);
+
+            if (xDoc.DocumentElement != null)
+            {
+                XmlNodeList children = xDoc.DocumentElement.ChildNodes;
+                TryConvert(dataObject,children, dataListTO.Inputs);
+            }
+        }
+
+        void TryConvert(IDSFDataObject dataObject,XmlNodeList children, List<string> inputDefs, int level = 0)
+        {
+            // spin through each element in the XML
+            foreach (XmlNode c in children)
+            {
+                if (c.Name != GlobalConstants.NaughtyTextNode)
+                {
+                    // scalars and recordset fetch
+                    WarewolfDataEvaluationCommon.WarewolfEvalResult warewolfEvalResult = null;
+                    try
+                    {
+                        warewolfEvalResult = dataObject.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(c.Name));
+                        if (warewolfEvalResult.IsWarewolfAtomResult && level == 0)
+                        {
+                            var checkNullResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                            if (checkNullResult != null && checkNullResult.Item.IsNothing)
+                            {
+                                warewolfEvalResult = null;
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Dev2Logger.Log.Error(e.Message, e);
+                    }
+                    if (warewolfEvalResult != null)
+                    {
+                        var c1 = c;
+                        var scalars = inputDefs.Where(definition => definition == c1.Name);
+                        var recSets = inputDefs.Where(definition => DataListUtil.ExtractRecordsetNameFromValue(definition) == c1.Name);
+                        var scalarDefs = scalars as string[] ?? scalars.ToArray();
+                        var recSetDefs = recSets as string[] ?? recSets.ToArray();
+                        if (recSetDefs.Count() != 0)
+                        {
+                            // fetch recordset index
+                            // process recordset
+                            var nl = c.ChildNodes;
+                            foreach (XmlNode subc in nl)
+                            {
+                                // Extract column being mapped to ;)
+                                foreach (var definition in recSetDefs)
+                                {
+                                    if (DataListUtil.IsValueRecordset(definition))
+                                    {
+                                        if (DataListUtil.ExtractFieldNameFromValue(definition) == subc.Name)
+                                        {
+                                            var recSetAppend = DataListUtil.ReplaceRecordsetIndexWithBlank(definition);
+                                            dataObject.Environment.Assign(recSetAppend, subc.InnerXml);
+                                        }
+                                    }                                    
+                                }
+                            }
+                        }
+                        if (scalarDefs.Count() != 0)
+                        {
+                            // fetch recordset index
+                            // process recordset
+                                
+                                        dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(c.Name), c.InnerXml);
+                        }
+                    }
+                    else
+                    {
+                        if (level == 0)
+                        {
+                            // Only recurse if we're at the first level!!
+                            TryConvert(dataObject, c.ChildNodes, inputDefs, ++level);
+                        }
+                    }
+                }
+            }
+        }
+
         public void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceId, string uri, out ErrorResultTO errors)
         {
             errors = null;
@@ -329,7 +420,6 @@ namespace Dev2.Runtime.ESB.Control
             var principle = Thread.CurrentPrincipal;
             Dev2Logger.Log.Info("SUB-EXECUTION USER CONTEXT IS [ " + principle.Identity.Name + " ] FOR SERVICE  [ " + dataObject.ServiceName + " ]");
 
-            var result = dataObject.DataListID;
             _doNotWipeDataList = false;
             if(dataObject.RunWorkflowAsync)
             {
@@ -616,6 +706,43 @@ namespace Dev2.Runtime.ESB.Control
             result.Replace(GlobalConstants.SerializableResourceQuote, "\"");
             result.Replace(GlobalConstants.SerializableResourceSingleQuote, "\'");
             return result;
+        } 
+        
+        /// <summary>
+        /// Finds the service shape.
+        /// </summary>
+        /// <param name="workspaceId">The workspace ID.</param>
+        /// <param name="resourceId">Name of the service.</param>
+        /// <returns></returns>
+        public DataListTO GetDataListTO(Guid workspaceId, Guid resourceId)
+        {
+            var resource = GetResource(workspaceId, resourceId);
+            return new DataListTO(resource.DataList.ToString());
+        }
+        
+        /// <summary>
+        /// Finds the service shape.
+        /// </summary>
+        /// <param name="workspaceId">The workspace ID.</param>
+        /// <param name="resourceName">Name of the service.</param>
+        /// <returns></returns>
+        public DataListTO GetDataListTO(Guid workspaceId, string resourceName)
+        {
+            var resource = GetResource(workspaceId, resourceName);
+            return new DataListTO(resource.DataList.ToString());
+        }
+
+
+        static IResource GetResource(Guid workspaceId, Guid resourceId)
+        {
+            var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceId) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
+            return resource;
+        } 
+        
+        static IResource GetResource(Guid workspaceId, string resourceName)
+        {
+            var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceName) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
+            return resource;
         }
 
         static readonly StringBuilder EmptyDataList = new StringBuilder("<DataList></DataList>");
@@ -877,5 +1004,249 @@ namespace Dev2.Runtime.ESB.Control
         {
             return new EsbServiceInvoker(this, this, theWorkspace);
         }
+
+        public string GetXmlOutputFromEnvironment(IDSFDataObject dataObject, Guid workspaceGuid)
+        {
+            var environment = dataObject.Environment;
+            var dataListTO = GetDataListTO(workspaceGuid, dataObject.ResourceID);
+            StringBuilder result = new StringBuilder("<" + "DataList" + ">");
+            var scalarOutputs = dataListTO.Outputs.Where(s => !DataListUtil.IsValueRecordset(s));
+            var recSetOutputs = dataListTO.Outputs.Where(DataListUtil.IsValueRecordset);
+            var groupedRecSets = recSetOutputs.GroupBy(DataListUtil.ExtractRecordsetNameFromValue);
+            foreach (var groupedRecSet in groupedRecSets)
+            {
+                var i = 1;
+                var warewolfListIterators = new WarewolfListIterator();
+                Dictionary<string, IWarewolfIterator> iterators = new Dictionary<string, IWarewolfIterator>();
+                foreach (var name in groupedRecSet)
+                {
+                    var warewolfIterator = new WarewolfIterator(environment.Eval(name));
+                    iterators.Add(DataListUtil.ExtractFieldNameFromValue(name), warewolfIterator);
+                    warewolfListIterators.AddVariableToIterateOn(warewolfIterator);
+
+                }
+                while (warewolfListIterators.HasMoreData())
+                {
+                    result.Append("<");
+                    result.Append(groupedRecSet.Key);
+                    result.Append(string.Format(" Index=\"{0}\">", i));
+                    foreach (var namedIterator in iterators)
+                    {
+                        var value = warewolfListIterators.FetchNextValue(namedIterator.Value);
+                        result.Append("<");
+                        result.Append(namedIterator.Key);
+                        result.Append(">");
+                        result.Append(value);
+                        result.Append("</");
+                        result.Append(namedIterator.Key);
+                        result.Append(">");
+                    }
+                    result.Append("</");
+                    result.Append(groupedRecSet.Key);
+                    result.Append(">");
+                    i++;
+                }
+                
+            }
+                
+            
+            foreach (var output in scalarOutputs)
+            {
+                var evalResult = environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(output));
+                if (evalResult.IsWarewolfAtomResult)
+                {
+                    var scalarResult = evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                    if (scalarResult != null && !scalarResult.Item.IsNothing)
+                    {
+                        result.Append("<");
+                        result.Append(output);
+                        result.Append(">");
+                        result.Append(scalarResult.Item);
+                        result.Append("</");
+                        result.Append(output);
+                        result.Append(">");
+                    }
+                }                                                    
+            }            
+
+            result.Append("</" + "DataList" + ">");
+
+
+            return result.ToString();
+        }
+
+        public string GetJsonOutputFromEnvironment(IDSFDataObject dataObject, Guid workspaceGuid)
+        {
+            var environment = dataObject.Environment;
+            var dataListTO = GetDataListTO(workspaceGuid, dataObject.ResourceID);
+            StringBuilder result = new StringBuilder("{");
+            var keyCnt = 0;
+            var scalarOutputs = dataListTO.Outputs.Where(s => !DataListUtil.IsValueRecordset(s));
+            var recSetOutputs = dataListTO.Outputs.Where(DataListUtil.IsValueRecordset);
+            var groupedRecSets = recSetOutputs.GroupBy(DataListUtil.ExtractRecordsetNameFromValue);
+            foreach (var groupedRecSet in groupedRecSets)
+            {
+                var i = 0;
+                var warewolfListIterators = new WarewolfListIterator();
+                Dictionary<string, IWarewolfIterator> iterators = new Dictionary<string, IWarewolfIterator>();
+                foreach (var name in groupedRecSet)
+                {
+                    var warewolfIterator = new WarewolfIterator(environment.Eval(name));
+                    iterators.Add(DataListUtil.ExtractFieldNameFromValue(name), warewolfIterator);
+                    warewolfListIterators.AddVariableToIterateOn(warewolfIterator);
+
+                }
+                while (warewolfListIterators.HasMoreData())
+                {
+                    result.Append("\"");
+                    result.Append(groupedRecSet.Key);
+                    result.Append("\" : [");
+                    int colIdx = 0;
+                    foreach (var namedIterator in iterators)
+                    {
+                        result.Append("{");
+                        var value = warewolfListIterators.FetchNextValue(namedIterator.Value);
+                        result.Append("\"");
+                        result.Append(namedIterator.Key);
+                        result.Append("\":\"");
+                        result.Append(value);
+                        result.Append("\"");
+                        
+                        colIdx++;
+                        if (colIdx < iterators.Count)
+                        {
+                            result.Append(",");
+                        }
+                        
+                    }
+
+                    result.Append("}");
+                    result.Append("]");
+                    i++;
+                    if (i <= warewolfListIterators.GetMax())
+                    {
+                        result.Append(", ");
+                    }
+                    
+                }
+               
+
+            }
+
+            var scalars = scalarOutputs as string[] ?? scalarOutputs.ToArray();
+            foreach (var output in scalars)
+            {
+                var evalResult = environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(output));
+                if (evalResult.IsWarewolfAtomResult)
+                {
+                    var scalarResult = evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                    if (scalarResult != null && !scalarResult.Item.IsNothing)
+                    {
+                        result.Append("\"");
+                        result.Append(output);
+                        result.Append("\":\"");
+                        result.Append(scalarResult.Item);
+                        result.Append("\"");
+
+                    }
+                }
+                else if (evalResult.IsWarewolfAtomListresult)
+                {
+                    var recSetResult = evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+
+                }
+                keyCnt++;
+                if (keyCnt < scalars.Count())
+                {
+                    result.Append(",");
+                }
+            }            
+
+            result.Append("}");
+            return result.ToString();
+        }
+
     }
+
+    public class DataListTO
+    {
+        public DataListTO(string dataList)
+        {
+            Inputs = new List<string>();
+            Outputs = new List<string>();
+            using (var stringReader = new StringReader(dataList))
+            {
+                var xDoc = XDocument.Load(stringReader);
+
+                var rootEl = xDoc.Element("DataList");
+
+                    if(rootEl != null)
+                    {   
+                        Inputs.AddRange(                     
+                        rootEl.Elements().Where(el =>
+                        {
+                            var firstOrDefault = el.Attributes("ColumnIODirection").FirstOrDefault();
+                            var removeCondition = firstOrDefault != null &&
+                                                  (firstOrDefault.Value == enDev2ColumnArgumentDirection.Input.ToString() ||
+                                                   firstOrDefault.Value == enDev2ColumnArgumentDirection.Both.ToString());
+                            return (removeCondition && !el.HasElements);
+                        }).Select(element => element.Name.ToString()));
+                        
+                        Outputs.AddRange(
+                        rootEl.Elements().Where(el =>
+                        {
+                            var firstOrDefault = el.Attributes("ColumnIODirection").FirstOrDefault();
+                            var removeCondition = firstOrDefault != null &&
+                                                  (firstOrDefault.Value == enDev2ColumnArgumentDirection.Output.ToString() ||
+                                                   firstOrDefault.Value == enDev2ColumnArgumentDirection.Both.ToString());
+                            return (removeCondition && !el.HasElements);
+                        }).Select(element => element.Name.ToString()));
+                    }
+
+                if(rootEl != null)
+                {
+                    var xElements = rootEl.Elements().Where(el => el.HasElements);
+                    var enumerable = xElements as IList<XElement> ?? xElements.ToList();
+                    Inputs.AddRange(enumerable.Elements().Select(element =>
+                    {
+                        var xAttribute = element.Attributes("ColumnIODirection").FirstOrDefault();
+                        var include = xAttribute != null &&
+                                              (xAttribute.Value == enDev2ColumnArgumentDirection.Input.ToString() ||
+                                               xAttribute.Value == enDev2ColumnArgumentDirection.Both.ToString());
+                        if (include)
+                        {
+                            if (element.Parent != null)
+                            {
+                                return DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(element.Parent.Name.ToString(), element.Name.ToString(), "*"));
+                            }
+                        }
+                        return "";
+                    }));
+
+                    Outputs.AddRange(enumerable.Elements().Select(element =>
+                    {
+                        var xAttribute = element.Attributes("ColumnIODirection").FirstOrDefault();
+                        var include = xAttribute != null &&
+                                              (xAttribute.Value == enDev2ColumnArgumentDirection.Output.ToString() ||
+                                               xAttribute.Value == enDev2ColumnArgumentDirection.Both.ToString() );
+                        if(include)
+                        {
+                            if(element.Parent != null)
+                            {
+                                return DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(element.Parent.Name.ToString(), element.Name.ToString(), "*"));
+                            }
+                        }
+                        return "";
+                    }));
+                }
+            }
+            Inputs.RemoveAll(string.IsNullOrEmpty);
+            Outputs.RemoveAll(string.IsNullOrEmpty);
+        }
+
+        public List<string> Outputs { get; set; }
+
+        public List<string> Inputs { get; set; }
+    }
+
 }

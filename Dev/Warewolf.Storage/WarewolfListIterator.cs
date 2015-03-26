@@ -28,6 +28,11 @@ namespace Warewolf.Storage
             _variablesToIterateOn.Add(iterator);            
         }
 
+        public int GetMax()
+        {
+            return _variablesToIterateOn.Max(iterator => iterator.GetLength());
+        }
+
         public bool HasMoreData()
         {
             return _variablesToIterateOn.Any(iterator => iterator.HasMoreData());

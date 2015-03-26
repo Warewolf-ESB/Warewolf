@@ -53,7 +53,7 @@ namespace Dev2.Runtime.WebServer.Handlers
         {
             //lock(ExecutionObject)
             {
-                string executePayload;
+                string executePayload = "";
                 IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
                 Guid workspaceGuid;
 
@@ -188,8 +188,16 @@ namespace Dev2.Runtime.WebServer.Handlers
                         // some silly chicken thinks web request where a good idea for debug ;(
                         if(!dataObject.IsDebug || dataObject.RemoteInvoke)
                         {
-                            executePayload = esbEndpoint.FetchExecutionPayload(dataObject, formatter, out errors);
-                            allErrors.MergeErrors(errors);
+                            if (dataObject.ReturnType == EmitionTypes.JSON)
+                            {
+                                executePayload = esbEndpoint.GetJsonOutputFromEnvironment(dataObject, workspaceGuid);
+                            }
+                            else if (dataObject.ReturnType == EmitionTypes.XML)
+                            {
+                                executePayload = esbEndpoint.GetXmlOutputFromEnvironment(dataObject,workspaceGuid);
+                            }
+                            //executePayload = esbEndpoint.FetchExecutionPayload(dataObject, formatter, out errors);
+                           // allErrors.MergeErrors(errors);
                             compiler.UpsertSystemTag(executionDlid, enSystemTag.Dev2Error, allErrors.MakeDataListReady(),
                                                      out errors);
                         }

@@ -161,6 +161,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             DataList = xml.ElementSafeStringBuilder("DataList");
         }
 
+
         public void SetIsNew(XElement xml)
         {
             var xElement = xml.Element("IsNewWorkflow");
@@ -782,6 +783,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         
     }
 
+   
     public class VersionInfo : IVersionInfo
     {
         public  VersionInfo(DateTime dateTimeStamp, string  reason, string user, string versionNumber, Guid resourceId ,Guid versionId)
