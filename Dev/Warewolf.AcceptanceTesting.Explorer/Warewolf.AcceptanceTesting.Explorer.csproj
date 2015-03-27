@@ -243,7 +243,7 @@
       <DependentUpon>Explorer.feature</DependentUpon>
     </Compile>
     <Compile Include="ExplorerSteps.cs" />
-    <Compile Include="Email Tool\NewEmailSource.feature.cs">
+    <Compile Include="Tools\Utility - Email\NewEmailSource.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>NewEmailSource.feature</DependentUpon>
@@ -369,6 +369,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SQLBulkInsert.feature</DependentUpon>
     </Compile>
+    <Compile Include="Tools\Utility - Email\Utility - Email.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Utility - Email.feature</DependentUpon>
+    </Compile>
     <Compile Include="Tools\Utility - Web Request.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -436,7 +441,7 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Explorer.feature.cs</LastGenOutput>
     </None>
-    <None Include="Email Tool\NewEmailSource.feature">
+    <None Include="Tools\Utility - Email\NewEmailSource.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>NewEmailSource.feature.cs</LastGenOutput>
     </None>
@@ -534,6 +539,10 @@
     <None Include="Tools\SQLBulkInsert.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SQLBulkInsert.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\Utility - Email\Utility - Email.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Utility - Email.feature.cs</LastGenOutput>
     </None>
     <None Include="Tools\Utility - Web Request.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

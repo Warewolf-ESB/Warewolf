@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Warewolf.AcceptanceTesting.Explorer.Tools
+namespace Warewolf.AcceptanceTesting.Explorer.Tools.Utility_Email
 {
     using TechTalk.SpecFlow;
     
@@ -49,7 +49,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.Tools
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "Utility - Email")))
             {
-                Warewolf.AcceptanceTesting.Explorer.Tools.Utility_EmailFeature.FeatureSetup(null);
+                Warewolf.AcceptanceTesting.Explorer.Tools.Utility_Email.Utility_EmailFeature.FeatureSetup(null);
             }
         }
         
@@ -1633,7 +1633,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validation is not thrown when I close large view", ((string[])(null)));
 #line 379
- this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 380
  testRunner.Given("I have email tool large view in design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 381
@@ -1653,7 +1653,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 388
  testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 389
-   testRunner.And("\"Email\" Small view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("\"Email\" Small view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

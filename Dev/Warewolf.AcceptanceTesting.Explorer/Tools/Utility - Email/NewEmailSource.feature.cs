@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Warewolf.AcceptanceTesting.Explorer.EmailTool
+namespace Warewolf.AcceptanceTesting.Explorer.Tools.Utility_Email
 {
     using TechTalk.SpecFlow;
     
@@ -49,7 +49,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.EmailTool
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "NewEmailSource")))
             {
-                Warewolf.AcceptanceTesting.Explorer.EmailTool.NewEmailSourceFeature.FeatureSetup(null);
+                Warewolf.AcceptanceTesting.Explorer.Tools.Utility_Email.NewEmailSourceFeature.FeatureSetup(null);
             }
         }
         

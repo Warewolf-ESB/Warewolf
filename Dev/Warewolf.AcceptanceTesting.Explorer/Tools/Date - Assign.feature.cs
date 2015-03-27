@@ -1,1 +1,0 @@
-﻿#error Feature file already contains a scenario with name 'Adding Variables by using QVI and split on chars'
