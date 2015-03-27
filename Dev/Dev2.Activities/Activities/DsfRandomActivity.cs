@@ -18,6 +18,7 @@ using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
+using Dev2.Data;
 using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -93,7 +94,7 @@ namespace Dev2.Activities
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
             toUpsert.IsDebug = dataObject.IsDebugMode();
             toUpsert.ResourceID = dataObject.ResourceID;
-
+            var env = dataObject.Environment;
             InitializeDebug(dataObject);
 
             try
@@ -103,20 +104,28 @@ namespace Dev2.Activities
                 if(!errors.HasErrors())
                 {
 
-                    var colItr = new WarewolfListIterator();
 
-                    var lengthItr = CreateDataListEvaluateIterator(Length, dataObject.Environment);
+                    var lengthItr = new WarewolfIterator(env.Eval(Length));
+                    var fromItr = new WarewolfIterator(env.Eval(From));
+                    var toItr = new WarewolfIterator(env.Eval(To));
+                    WarewolfListIterator colItr = new WarewolfListIterator();
+                    colItr.AddVariableToIterateOn(lengthItr);
+                    colItr.AddVariableToIterateOn(fromItr);
+                    colItr.AddVariableToIterateOn(toItr);
 
-                    var fromItr = CreateDataListEvaluateIterator(From, dataObject.Environment);
-
-                    var toItr = CreateDataListEvaluateIterator(To, dataObject.Environment);
 
                     if(dataObject.IsDebugMode())
                     {
-                        AddDebugInputItem(Length, From, To, dataObject.Environment, RandomType);
+                        if(!String.IsNullOrEmpty(Length))
+                        AddDebugInputItem(new DebugEvalResult(Length,"Length",env));
+                        if (!String.IsNullOrEmpty(From))
+                        AddDebugInputItem(new DebugEvalResult(From, "From", env));
+                        if (!String.IsNullOrEmpty(To))
+                        AddDebugInputItem(new DebugEvalResult(To, "To", env));
+                       // AddDebugInputItem(Length, From, To, fromEntry, toEntry, lengthEntry, executionId, RandomType);
                     }
                     Dev2Random dev2Random = new Dev2Random();
-                    while(colItr.HasMoreData())
+                    while (colItr.HasMoreData())
                     {
                         int lengthNum = -1;
                         int fromNum = -1;
@@ -177,10 +186,13 @@ namespace Dev2.Activities
                         }
                         else
                         {
-                            dataObject.Environment.Assign(Result, value);
+
+                            env.Assign(Result, value);
+                  
 
                         }
                     }
+
 
                     if(dataObject.IsDebugMode())
                     {
@@ -188,13 +200,13 @@ namespace Dev2.Activities
                         {
                             AddDebugOutputItem(new DebugItemStaticDataParams("", "Result"));
                         }
-                        else
-                        {
-                            AddDebugOutputItem(new DebugEvalResult(Result,"Result",dataObject.Environment));
+              
+                                AddDebugOutputItem(new DebugEvalResult(Result,"",env));
+                      
                         }
                     }
                     allErrors.MergeErrors(errors);
-                }
+                
             }
             catch(Exception e)
             {
@@ -347,7 +359,7 @@ namespace Dev2.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -356,7 +368,7 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

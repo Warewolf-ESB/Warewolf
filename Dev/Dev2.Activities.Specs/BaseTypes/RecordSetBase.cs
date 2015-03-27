@@ -76,25 +76,26 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
             }
 
-//            List<Tuple<string, string>> emptyRecordset;
-//            bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
-//            if(isAdded)
-//            {
-//                foreach(Tuple<string, string> emptyRecord in emptyRecordset)
-//                {
-//                    var recSetElement = shape
-//                                      .Descendants(emptyRecord.Item1)
-//                                      .FirstOrDefault();
-//                    if(recSetElement == null)
-//                    {
-//                        shape.Add(new XElement(emptyRecord.Item1, new XElement(emptyRecord.Item2)));
-//                    }
-//                    else
-//                    {
-//                        recSetElement.Add(new XElement(emptyRecord.Item2));
-//                    }
-//                }
-//            }
+            List<Tuple<string, string>> emptyRecordset;
+            bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
+            if (isAdded)
+            {
+                foreach (Tuple<string, string> emptyRecord in emptyRecordset)
+                {
+                    CurrentExecutionEnvironment.Assign(DataListUtil.AddBracketsToValueIfNotExist(emptyRecord.Item1), emptyRecord.Item2);
+                    //var recSetElement = shape
+                    //                  .Descendants(emptyRecord.Item1)
+                    //                  .FirstOrDefault();
+                    //if (recSetElement == null)
+                    //{
+                    //    shape.Add(new XElement(emptyRecord.Item1, new XElement(emptyRecord.Item2)));
+                    //}
+                    //else
+                    //{
+                    //    recSetElement.Add(new XElement(emptyRecord.Item2));
+                    //}
+                }
+            }
 
             CurrentDl = shape.ToString();
             TestData = data.ToString();

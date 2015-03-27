@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using WarewolfParserInterop;
 
 namespace Warewolf.Storage
 {
@@ -69,8 +70,10 @@ namespace Warewolf.Storage
 
         public bool Assign(string exp,string value)
         {
-            var envTemp =  PublicFunctions.EvalAssign(exp,value, _env);
+            var envTemp =  PublicFunctions.EvalAssignWithFrame( new AssignValue( exp,value), _env);
+            
             _env = envTemp;
+            CommitAssign();
             return true; //todo : decide on whether to catch here of just send exceptions on
         }
 
