@@ -126,7 +126,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
             string actualValue;
             results = results.Replace("\"\"", "");
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+            GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
             Assert.AreEqual(results, actualValue);
         }
@@ -137,7 +137,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
             string error;
             string actualValue;
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+            GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
 
             List<string> records = actualValue.Split(',').ToList();
