@@ -111,7 +111,7 @@ namespace Dev2.Activities
                     colItr.AddVariableToIterateOn(lengthItr);
                     colItr.AddVariableToIterateOn(fromItr);
                     colItr.AddVariableToIterateOn(toItr);
-                    
+
 
                     if(dataObject.IsDebugMode())
                     {
@@ -202,7 +202,7 @@ namespace Dev2.Activities
               
                                 AddDebugOutputItem(new DebugEvalResult(Result,"",env));
                       
-                      }
+                        }
                     }
                     allErrors.MergeErrors(errors);
                 
@@ -220,7 +220,7 @@ namespace Dev2.Activities
                 {
                     DisplayAndWriteError("DsfRandomActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
-                    compiler.Upsert(executionId, Result, (string)null, out errors);
+                    dataObject.Environment.Assign(Result, null);
                 }
                 if(dataObject.IsDebugMode())
                 {
@@ -334,7 +334,7 @@ namespace Dev2.Activities
             return lengthNum;
         }
 
-        private void AddDebugInputItem(string lengthExpression, string fromExpression, string toExpression, IBinaryDataListEntry fromEntry, IBinaryDataListEntry toEntry, IBinaryDataListEntry lengthEntry, Guid executionId, enRandomType randomType)
+        private void AddDebugInputItem(string lengthExpression, string fromExpression, string toExpression, IExecutionEnvironment executionEnvironment, enRandomType randomType)
         {
             AddDebugInputItem(new DebugItemStaticDataParams(randomType.GetDescription(), "Random"));
 
@@ -345,12 +345,12 @@ namespace Dev2.Activities
 
             if(randomType == enRandomType.Numbers)
             {
-                AddDebugInputItem(new DebugItemVariableParams(fromExpression, "From", fromEntry, executionId));
-                AddDebugInputItem(new DebugItemVariableParams(toExpression, "To", toEntry, executionId));
+                AddDebugInputItem(new DebugEvalResult(fromExpression, "From", executionEnvironment));
+                AddDebugInputItem(new DebugEvalResult(toExpression, "To", executionEnvironment));
             }
             else
             {
-                AddDebugInputItem(new DebugItemVariableParams(lengthExpression, "Length", lengthEntry, executionId));
+                AddDebugInputItem(new DebugEvalResult(lengthExpression, "Length", executionEnvironment));
             }
         }
 

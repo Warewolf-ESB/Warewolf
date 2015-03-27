@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 
 namespace Warewolf.Storage
@@ -27,6 +28,33 @@ namespace Warewolf.Storage
 
         #endregion Class Members
 
+
+
+        /// <summary>
+        /// Determines whether [is calc evaluation] [the specified expression].
+        /// </summary>
+        /// <param name="expression">The expression.</param>
+        /// <param name="newExpression">The new expression.</param>
+        /// <returns>
+        ///   <c>true</c> if [is calc evaluation] [the specified expression]; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsCalcEvaluation(string expression, out string newExpression)
+        {
+            bool result = false;
+
+            newExpression = string.Empty;
+
+            if (expression.StartsWith(GlobalConstants.CalculateTextConvertPrefix))
+            {
+                if (expression.EndsWith(GlobalConstants.CalculateTextConvertSuffix))
+                {
+                    newExpression = expression.Substring(GlobalConstants.CalculateTextConvertPrefix.Length, expression.Length - (GlobalConstants.CalculateTextConvertSuffix.Length + GlobalConstants.CalculateTextConvertPrefix.Length));
+                    result = true;
+                }
+            }
+
+            return result;
+        }
 
 
         /// <summary>
@@ -744,4 +772,4 @@ namespace Warewolf.Storage
         }
 
     }
-}
+}

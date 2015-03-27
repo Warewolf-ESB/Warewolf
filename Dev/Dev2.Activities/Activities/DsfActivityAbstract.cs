@@ -15,16 +15,18 @@ using System.Activities.Presentation;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Dev2;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Activity;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Data;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics.Debug;
 using Dev2.Network.Execution;
 using Microsoft.VisualBasic.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
@@ -261,15 +263,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Protected Methods
 
-        protected IDev2DataListEvaluateIterator CreateDataListEvaluateIterator(string expression, Guid executionId, IDataListCompiler compiler, IDev2IteratorCollection iteratorCollection, ErrorResultTO allErrors)
+        protected IWarewolfIterator CreateDataListEvaluateIterator(string expression, IExecutionEnvironment executionEnvironment)
         {
-            ErrorResultTO errors;
-
-            IBinaryDataListEntry expressionEntry = compiler.Evaluate(executionId, enActionType.User, expression, false, out errors);
-            allErrors.MergeErrors(errors);
-            IDev2DataListEvaluateIterator expressionIterator = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionEntry);
-            iteratorCollection.AddIterator(expressionIterator);
-
+            var expressionIterator = new WarewolfIterator(executionEnvironment.Eval(expression));
             return expressionIterator;
         }
 

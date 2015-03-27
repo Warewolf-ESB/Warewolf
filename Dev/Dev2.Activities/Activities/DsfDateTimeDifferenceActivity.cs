@@ -21,13 +21,13 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Converters.DateAndTime;
+using Dev2.Data;
 using Dev2.Data.Factories;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
-using Dev2.MathOperations;
 using Dev2.Util;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
@@ -134,33 +134,33 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 //                    ValidateInput(datalist, allErrors, Input1);
 //                    ValidateInput(datalist, allErrors, Input2);
 //                }
-                var input1 = string.IsNullOrEmpty(Input1) ? GlobalConstants.CalcExpressionNow : Input1;
-                string cleanExpression;
-                var isCalcEvaluation = DataListUtil.IsCalcEvaluation(input1, out cleanExpression);
-                var functionEvaluator = new FunctionEvaluator();
-                if (isCalcEvaluation)
-                {
-                    string eval;
-                    string error;
-                    functionEvaluator.TryEvaluateFunction(cleanExpression, out eval, out error);
-                    input1 = eval;
-                }
-                
-                var input2 = string.IsNullOrEmpty(Input2) ? GlobalConstants.CalcExpressionNow : Input2;
-                isCalcEvaluation = DataListUtil.IsCalcEvaluation(input2, out cleanExpression);
-                functionEvaluator = new FunctionEvaluator();
-                if (isCalcEvaluation)
-                {
-                    string eval;
-                    string error;
-                    functionEvaluator.TryEvaluateFunction(cleanExpression, out eval, out error);
-                    input2 = eval;
-                }
+//                var input1 = string.IsNullOrEmpty(Input1) ? GlobalConstants.CalcExpressionNow : Input1;
+//                string cleanExpression;
+//                var isCalcEvaluation = DataListUtil.IsCalcEvaluation(input1, out cleanExpression);
+//                var functionEvaluator = new FunctionEvaluator();
+//                if (isCalcEvaluation)
+//                {
+//                    string eval;
+//                    string error;
+//                    functionEvaluator.TryEvaluateFunction(cleanExpression, out eval, out error);
+//                    input1 = eval;
+//                }
+//                
+//                var input2 = string.IsNullOrEmpty(Input2) ? GlobalConstants.CalcExpressionNow : Input2;
+//                isCalcEvaluation = DataListUtil.IsCalcEvaluation(input2, out cleanExpression);
+//                functionEvaluator = new FunctionEvaluator();
+//                if (isCalcEvaluation)
+//                {
+//                    string eval;
+//                    string error;
+//                    functionEvaluator.TryEvaluateFunction(cleanExpression, out eval, out error);
+//                    input2 = eval;
+//                }
 
-                var input1Itr = new WarewolfIterator(dataObject.Environment.Eval(input1));
+                var input1Itr = new WarewolfIterator(dataObject.Environment.Eval(string.IsNullOrEmpty(Input1) ? GlobalConstants.CalcExpressionNow : Input1));
                 colItr.AddVariableToIterateOn(input1Itr);
 
-                var input2Itr = new WarewolfIterator(dataObject.Environment.Eval(input2));
+                var input2Itr = new WarewolfIterator(dataObject.Environment.Eval(string.IsNullOrEmpty(Input2) ? GlobalConstants.CalcExpressionNow : Input2));
                 colItr.AddVariableToIterateOn(input2Itr);
 
                 var ifItr = new WarewolfIterator(dataObject.Environment.Eval(InputFormat ?? string.Empty));
