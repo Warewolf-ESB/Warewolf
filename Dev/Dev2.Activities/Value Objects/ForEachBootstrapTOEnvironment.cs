@@ -45,7 +45,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
             errors = new ErrorResultTO();
             ForEachType = forEachType;
             IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
-            IndexIterator localIndexIterator;
+            IIndexIterator localIndexIterator;
             IndexList indexList;
 
             switch(forEachType)
@@ -63,16 +63,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
                     var isEmpty =! records.Any();
                     if(isEmpty)
                     {
-                        indexList = new IndexList(new HashSet<int> { 1 }, 0);
-                        localIndexIterator = new IndexIterator(new HashSet<int> { 1 }, 0);
+
+                        localIndexIterator = new IndexListIndexIterator(records);
                     }
                     else
                     {
-                        indexList = new IndexList(new HashSet<int>(), 0) { MinValue = 1, MaxValue = records.Last() };
-                        localIndexIterator = new IndexIterator(new HashSet<int>(), 0);
+                        localIndexIterator = new IndexListIndexIterator(records);
                     }
 
-                    localIndexIterator.IndexList = indexList;
+                    
                     IndexIterator = localIndexIterator;
                     break;
 

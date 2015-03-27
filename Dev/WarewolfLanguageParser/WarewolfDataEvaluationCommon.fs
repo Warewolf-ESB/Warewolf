@@ -77,6 +77,12 @@ let evalRecordSetIndex (recset:WarewolfRecordset) (identifier:RecordSetIdentifie
     match index with 
     | IndexFoundPosition a -> recset.Data.[identifier.Column].[a]
     | IndexDoesNotExist -> raise (new Dev2.Common.Common.NullValueInVariableException("index not found",identifier.Name))
+//
+//let evalRecordSetIndexIncludeLast (recset:WarewolfRecordset) (identifier:RecordSetIdentifier) (position:int) =
+//    let index = getRecordSetIndex recset position
+//    match index with 
+//    | IndexFoundPosition a -> recset.Data.[identifier.Column].[a]
+//    | IndexDoesNotExist -> recset.Data.[identifier.Column].[recset.Data.[identifier.Column].]
 
 let evalRecordSetStarIndex (recset:WarewolfRecordset) (identifier:RecordSetIdentifier)  =
     recset.Data.[identifier.Column] 

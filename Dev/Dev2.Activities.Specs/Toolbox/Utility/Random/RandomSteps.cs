@@ -111,7 +111,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
             string error;
             string actualValue;
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+            GetScalarValueFromEnvironment(ResultVariable,
                                        out actualValue, out error);
             // ReSharper disable AssignNullToNotNullAttribute
             TypeConverter converter = TypeDescriptor.GetConverter(Type.GetType(type));
@@ -119,7 +119,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
             converter.ConvertFrom(actualValue);
             if(length == 0)
             {
-                Assert.IsNull(actualValue);
+                Assert.IsTrue(String.IsNullOrEmpty(actualValue));
             }
             else
             {
