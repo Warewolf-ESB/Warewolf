@@ -6,6 +6,8 @@ open Dev2.Common.Interfaces
 open LanguageAST
 
 
+
+
 let CreateDataSet (a:string) =
     let col = new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing)
     {
@@ -46,7 +48,7 @@ let rec AddToRecordSet (env:WarewolfEnvironment) (name:RecordSetIdentifier) (val
         let envwithRecset = AddRecsetToEnv name.Name env
         AddToRecordSet envwithRecset name value
     
-let EvalAssign (exp:string) (value:string) (env:WarewolfEnvironment) =
+and EvalAssign (exp:string) (value:string) (env:WarewolfEnvironment) =
     let left = WarewolfDataEvaluationCommon.ParseLanguageExpression exp 
     let right = WarewolfDataEvaluationCommon.Eval env value
     let x = match right with 
@@ -63,13 +65,16 @@ let EvalAssign (exp:string) (value:string) (env:WarewolfEnvironment) =
                                 
     |   _ -> failwith "input must be recordset or value"
 
-let rec AddToRecordSetFramed (env:WarewolfEnvironment) (name:RecordSetIdentifier) (value:WarewolfAtom)  =
+and AddToRecordSetFramed (env:WarewolfEnvironment) (name:RecordSetIdentifier) (value:WarewolfAtom)  =
     if(env.RecordSets.ContainsKey name.Name)
     then
         let recordset = env.RecordSets.[name.Name]
         let recsetAdded = match name.Index with
                           | IntIndex a -> AddAtomToRecordSetWithFraming recordset name.Column value a false
-                          | Star -> UpdateColumnWithValue recordset name.Column value 
+                          | Star ->  if recordset.Count =0 then
+                                        AddAtomToRecordSetWithFraming recordset name.Column value 1 false
+                                     else
+                                        UpdateColumnWithValue recordset name.Column value 
                           | Last -> AddAtomToRecordSetWithFraming recordset name.Column value (getPositionFromRecset recordset  name.Column) true
                           | IndexExpression a -> AddAtomToRecordSetWithFraming recordset name.Column value (EvalIndex env ( LanguageExpressionToString a )) false
         let recsets = Map.remove name.Name env.RecordSets |> fun a-> Map.add name.Name recsetAdded a
@@ -78,7 +83,7 @@ let rec AddToRecordSetFramed (env:WarewolfEnvironment) (name:RecordSetIdentifier
         let envwithRecset = AddRecsetToEnv name.Name env
         AddToRecordSetFramed envwithRecset name value
 
-let rec AddToRecordSetFramedWithAtomList (env:WarewolfEnvironment) (name:RecordSetIdentifier) (value:WarewolfAtom list) (shouldUseLast:bool)  =
+and  AddToRecordSetFramedWithAtomList (env:WarewolfEnvironment) (name:RecordSetIdentifier) (value:WarewolfAtom list) (shouldUseLast:bool)  =
 
     if(env.RecordSets.ContainsKey name.Name)
     then
@@ -116,7 +121,7 @@ let rec AddToRecordSetFramedWithAtomList (env:WarewolfEnvironment) (name:RecordS
         let envwithRecset = AddRecsetToEnv name.Name env
         AddToRecordSetFramedWithAtomList envwithRecset name value shouldUseLast
 
-let EvalMultiAssignOp  (env:WarewolfEnvironment)  (value :IAssignValue ) =
+and EvalMultiAssignOp  (env:WarewolfEnvironment)  (value :IAssignValue ) =
     let left = WarewolfDataEvaluationCommon.ParseLanguageExpression value.Name 
     let rightParse = WarewolfDataEvaluationCommon.ParseLanguageExpression value.Value 
    
@@ -144,12 +149,24 @@ let EvalMultiAssignOp  (env:WarewolfEnvironment)  (value :IAssignValue ) =
                     |   _ -> failwith "input must be recordset or value"
 
 
-let EvalMultiAssign (values :IAssignValue seq) (env:WarewolfEnvironment) =
+and EvalMultiAssign (values :IAssignValue seq) (env:WarewolfEnvironment) =
         let env = Seq.fold EvalMultiAssignOp env values
         let recsets = Map.map (fun a b -> {b with Frame = 0 }) env.RecordSets
         {env with RecordSets = recsets}
 
-let EvalAssignWithFrame (value :IAssignValue ) (env:WarewolfEnvironment) =
+and  UpdateColumnWithValue (rset:WarewolfRecordset) (columnName:string) (value: WarewolfAtom)=
+        if rset.Data.ContainsKey( columnName) 
+        then
+            let x = rset.Data.[columnName];
+            for i in [0..x.Count-1] do                         
+                x.[i]<-value;    
+            rset 
+        else 
+        {rset with Data=  Map.add columnName ( CreateFilled rset.Count value)  rset.Data    }
+
+
+
+and EvalAssignWithFrame (value :IAssignValue ) (env:WarewolfEnvironment) =
         let envass = EvalMultiAssignOp env value
         let recsets = envass.RecordSets
         {envass with RecordSets = recsets}

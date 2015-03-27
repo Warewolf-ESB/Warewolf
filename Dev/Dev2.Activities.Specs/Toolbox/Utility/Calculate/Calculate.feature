@@ -44,7 +44,7 @@ Scenario: Calculate with new lines should concatenate values
 	| [[result]] = 120 |
 
 Scenario: Calculate using Recordset (*) input in an agregate function like SUM
-	Given I have a calculate variable "[[var(*).int]]" equal to 
+	Given I have a calculate variable "[[var().int]]" equal to 
 	| var().int	|
 	| 1			|
 	| 2			|
