@@ -1,7 +1,7 @@
 ﻿module DataASTMutable
 
 open System.Collections.Generic;
-
+let PositionColumn = "WarewolfPositionColumn"
 type WarewolfAttribute =
     | Ordinal
     | Sorted
@@ -39,9 +39,13 @@ type WarewolfRecordset =
         Data : Map<WarewolfColumnHeader,WarewolfColumnData> ;
         Optimisations : WarewolfAttribute;
         LastIndex:int;
-        Count:int;
         mutable Frame : int;
-    }
+        
+
+    } with
+    member this.Count = this.Data.[PositionColumn].Count
+
+
 type WarewolfEnvironment = 
     {
        RecordSets : Map<string,WarewolfRecordset>;

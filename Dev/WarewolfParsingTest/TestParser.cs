@@ -202,12 +202,15 @@ namespace WarewolfParsingTest
             // ReSharper disable PossibleNullReferenceException
             // ReSharper disable PossibleNullReferenceException
             // ReSharper disable PossibleNullReferenceException
-            Assert.IsTrue(x.Item.IsInt);
+            Assert.IsTrue(x != null && x.Item.IsInt);
             // ReSharper restore PossibleNullReferenceException
             // ReSharper restore PossibleNullReferenceException
             var val = x.Item as DataASTMutable.WarewolfAtom.Int;
             // ReSharper disable PossibleNullReferenceException
-            Assert.AreEqual(2344, val.Item);
+            if(val != null)
+            {
+                Assert.AreEqual(2344, val.Item);
+            }
             // ReSharper restore PossibleNullReferenceException
             // ReSharper rstore PossibleNullReferenceException
         }

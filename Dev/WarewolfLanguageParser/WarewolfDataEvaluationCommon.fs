@@ -326,7 +326,6 @@ let AddColumnValueToRecordset (destination:WarewolfRecordset) (name:string) (val
         Data = added
         Optimisations = destination.Optimisations;
         LastIndex= destination.LastIndex;
-        Count= destination.Count; 
         Frame = 0;
      }
 
@@ -355,7 +354,7 @@ let AddAtomToRecordSet (rset:WarewolfRecordset) (columnName:string) (value: Ware
             let len = addedAtEnd.[PositionColumn].Count 
             
             addedAtEnd.[PositionColumn].[len-1] <- Int position
-            { rsAdded with Data=addedAtEnd ; LastIndex = rsAdded.LastIndex+1; Count = rsAdded.Count+1 ; Optimisations = if rsAdded.Count = rsAdded.LastIndex &&  rsAdded.Optimisations <> WarewolfAttribute.Fragmented &&  rsAdded.Optimisations <> WarewolfAttribute.Sorted then WarewolfAttribute.Ordinal else rsAdded.Optimisations }
+            { rsAdded with Data=addedAtEnd ; LastIndex = rsAdded.LastIndex+1;  Optimisations = if rsAdded.Count = rsAdded.LastIndex &&  rsAdded.Optimisations <> WarewolfAttribute.Fragmented &&  rsAdded.Optimisations <> WarewolfAttribute.Sorted then WarewolfAttribute.Ordinal else rsAdded.Optimisations }
         else
             if position > rsAdded.Count+1
                 then
@@ -363,7 +362,7 @@ let AddAtomToRecordSet (rset:WarewolfRecordset) (columnName:string) (value: Ware
                 let len = addedAtEnd.[PositionColumn].Count 
             
                 addedAtEnd.[PositionColumn].[len-1] <- Int position
-                { rsAdded with Data=addedAtEnd ; LastIndex = position; Count = len+1 ; Optimisations = if  rsAdded.Optimisations = WarewolfAttribute.Ordinal then WarewolfAttribute.Sorted else rsAdded.Optimisations }
+                { rsAdded with Data=addedAtEnd ; LastIndex = position;Optimisations = if  rsAdded.Optimisations = WarewolfAttribute.Ordinal then WarewolfAttribute.Sorted else rsAdded.Optimisations }
 
             else
                 let lstval = rsAdded.Data.[PositionColumn]
@@ -376,7 +375,7 @@ let AddAtomToRecordSet (rset:WarewolfRecordset) (columnName:string) (value: Ware
                       let len = addedAtEnd.[PositionColumn].Count 
             
                       addedAtEnd.[PositionColumn].[len-1] <- Int position
-                      { rsAdded with Data=addedAtEnd ; LastIndex = rsAdded.LastIndex; Count = len+1 ; Optimisations = WarewolfAttribute.Fragmented }
+                      { rsAdded with Data=addedAtEnd ; LastIndex = rsAdded.LastIndex; Optimisations = WarewolfAttribute.Fragmented }
 
 
 let getPositionFromRecset (rset:WarewolfRecordset) (columnName:string) =
@@ -404,7 +403,7 @@ let AddAtomToRecordSetWithFraming (rset:WarewolfRecordset) (columnName:string) (
             let len = addedAtEnd.[PositionColumn].Count 
             
             addedAtEnd.[PositionColumn].[len-1] <- Int position
-            { rsAdded with Data=addedAtEnd ; LastIndex = rsAdded.LastIndex+1; Count = rsAdded.Count+1; Frame = frame ; Optimisations = if rsAdded.Count = rsAdded.LastIndex &&  rsAdded.Optimisations <> WarewolfAttribute.Fragmented &&  rsAdded.Optimisations <> WarewolfAttribute.Sorted then WarewolfAttribute.Ordinal else rsAdded.Optimisations  }
+            { rsAdded with Data=addedAtEnd ; LastIndex = rsAdded.LastIndex+1; Frame = frame ; Optimisations = if rsAdded.Count = rsAdded.LastIndex &&  rsAdded.Optimisations <> WarewolfAttribute.Fragmented &&  rsAdded.Optimisations <> WarewolfAttribute.Sorted then WarewolfAttribute.Ordinal else rsAdded.Optimisations  }
         else
             if (position = rsAdded.Count+1) || (position = rsAdded.Frame && isFramed)   
             then                  
@@ -418,7 +417,7 @@ let AddAtomToRecordSetWithFraming (rset:WarewolfRecordset) (columnName:string) (
                 let len = addedAtEnd.[PositionColumn].Count 
             
                 addedAtEnd.[PositionColumn].[len-1] <- Int position
-                { rsAdded with Data=addedAtEnd ; LastIndex = position; Frame = frame ; Count = len+1 ; Optimisations = if  rsAdded.Optimisations = WarewolfAttribute.Ordinal then WarewolfAttribute.Sorted else rsAdded.Optimisations }
+                { rsAdded with Data=addedAtEnd ; LastIndex = position; Frame = frame ;  Optimisations = if  rsAdded.Optimisations = WarewolfAttribute.Ordinal then WarewolfAttribute.Sorted else rsAdded.Optimisations }
 
             else
                 let lstval = rsAdded.Data.[PositionColumn]
@@ -431,7 +430,7 @@ let AddAtomToRecordSetWithFraming (rset:WarewolfRecordset) (columnName:string) (
                       let len = addedAtEnd.[PositionColumn].Count 
             
                       addedAtEnd.[PositionColumn].[len-1] <- Int position
-                      { rsAdded with Data=addedAtEnd ; LastIndex = rsAdded.LastIndex; Count = len+1 ; Frame = frame ; Optimisations = WarewolfAttribute.Fragmented }
+                      { rsAdded with Data=addedAtEnd ; LastIndex = rsAdded.LastIndex; Frame = frame ; Optimisations = WarewolfAttribute.Fragmented }
 
 
 
@@ -455,7 +454,7 @@ let UpdateColumnWithValue (rset:WarewolfRecordset) (columnName:string) (value: W
 let DeleteValues (exp:string)  (env:WarewolfEnvironment) =
     let rset = env.RecordSets.TryFind exp
     match rset with 
-    | Some x -> {x with Data = Map.map (fun a b -> new WarewolfAtomList<WarewolfAtom>(WarewolfAtom.Nothing)) x.Data ;LastIndex=0;Count=0;  } 
+    | Some x -> {x with Data = Map.map (fun a b -> new WarewolfAtomList<WarewolfAtom>(WarewolfAtom.Nothing)) x.Data ;LastIndex=0;  } 
     | None->failwith "recordset does not exist"
 
 let DeleteValue  (exp:string) (index:int)   (env:WarewolfEnvironment) =
@@ -466,7 +465,7 @@ let DeleteValue  (exp:string) (index:int)   (env:WarewolfEnvironment) =
                                     | Nothing -> failwith "index does not exist"
                                     | Int a -> a
                                     | _  -> failwith "index does not exist"
-                     {values  with Data = Map.map (fun (a:string) (b:WarewolfAtomList<WarewolfAtom>) -> b.DeletePosition( posAsInt ) ) values.Data ;  LastIndex= values.LastIndex-1 ;Count=values.Count-1;} 
+                     {values  with Data = Map.map (fun (a:string) (b:WarewolfAtomList<WarewolfAtom>) -> b.DeletePosition( posAsInt ) ) values.Data ;  LastIndex= values.LastIndex-1 } 
     | None->failwith "recordset does not exist"
 
 let DeleteIndex  (exp:string) (index:int)   (env:WarewolfEnvironment) =
@@ -474,7 +473,7 @@ let DeleteIndex  (exp:string) (index:int)   (env:WarewolfEnvironment) =
     match rset with 
     | Some values -> let pos = Seq.findIndex ( fun a-> AtomtoString a = index.ToString())  values.Data.[PositionColumn]
                      let posAsInt = pos
-                     {values  with Data = Map.map (fun (a:string) (b:WarewolfAtomList<WarewolfAtom>) -> b.DeletePosition( posAsInt ) ) values.Data ;LastIndex= values.LastIndex-1 ;Count=values.Count-1 } 
+                     {values  with Data = Map.map (fun (a:string) (b:WarewolfAtomList<WarewolfAtom>) -> b.DeletePosition( posAsInt ) ) values.Data ;LastIndex= values.LastIndex-1  } 
     | None->failwith "recordset does not exist"
 let GetLastIndexFromRecordSet (exp:string)  (env:WarewolfEnvironment)  =
     let rset = env.RecordSets.TryFind exp
@@ -527,7 +526,7 @@ let rec sortRecst (recset:WarewolfRecordset) (colName:string) (desc:bool)=
     let sorted = if not desc then Seq.sortBy (fun x ->  (fst x)  ) interpolated else Seq.sortBy (fun x ->  (fst x)   ) interpolated |> List.ofSeq |>List.rev |> Seq.ofList
     let indexes = Seq.map snd sorted  |> Array.ofSeq
     let data = Map.map (fun a b -> ApplyIndexes b indexes a) recset.Data
-    {recset with Data = data; Optimisations =Ordinal ; LastIndex = positions.Length ;Count = positions.Length }
+    {recset with Data = data; Optimisations =Ordinal ; LastIndex = positions.Length  }
 
 and SortRecset (exp:string) (desc:bool)  (env:WarewolfEnvironment) =
     let left = ParseLanguageExpression exp 

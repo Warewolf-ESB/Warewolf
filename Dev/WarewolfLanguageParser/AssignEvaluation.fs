@@ -12,7 +12,7 @@ let CreateDataSet (a:string) =
         Data = [(PositionColumn,col) ] |> Map.ofList
         Optimisations = Ordinal;
         LastIndex=0;
-        Count=0;
+
         Frame=0;
     }
 

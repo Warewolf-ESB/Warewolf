@@ -172,9 +172,14 @@ namespace Warewolf.Storage
             {
                 // ReSharper disable PossibleNullReferenceException
                 // ReSharper disable PossibleNullReferenceException
-                var x = (result as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult).Item;
-                // ReSharper restore PossibleNullReferenceException
-                return x.Select(WarewolfAtomToString).ToList();
+                var warewolfAtomListresult = result as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                if(warewolfAtomListresult != null)
+                {
+                    var x = warewolfAtomListresult.Item;
+                    // ReSharper restore PossibleNullReferenceException
+                    return x.Select(WarewolfAtomToString).ToList();
+                }
+                throw new Exception("bob");
             }
         }
 
@@ -313,6 +318,47 @@ namespace Warewolf.Storage
             var temp = PublicFunctions.EvalUpdate(expression, _env,clause);
             _env = temp;
 
+        }
+
+        public static string ConvertToIndex(string outputVar, int i)
+        {
+            var output =  WarewolfDataEvaluationCommon.ParseLanguageExpression(outputVar);
+            if(output.IsRecordSetExpression)
+            {
+                
+                var outputidentifier = (output as LanguageAST.LanguageExpression.RecordSetExpression).Item;
+                if(outputidentifier.Index == LanguageAST.Index.Star)
+                return "[[" + outputidentifier.Name + "(" + i+ ")." +outputidentifier.Column+ "]]";
+            }
+            return outputVar;
+        }
+
+        public static bool IsRecordsetIdentifier(string assignVar)
+        {
+            try
+            {
+                var x = WarewolfDataEvaluationCommon.ParseLanguageExpression(assignVar);
+                return x.IsRecordSetExpression;
+            }
+            catch (Exception)
+            {
+                return false;
+
+            }
+        }
+
+        public static bool IsScalar(string assignVar)
+        {
+            try
+            {
+                var x = WarewolfDataEvaluationCommon.ParseLanguageExpression(assignVar);
+                return x.IsScalarExpression;
+            }
+            catch (Exception)
+            {
+                return false;
+
+            }
         }
     }
 }
