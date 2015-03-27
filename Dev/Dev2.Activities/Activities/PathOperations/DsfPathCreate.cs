@@ -16,12 +16,12 @@ using System.Linq;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
+using Dev2.Data;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.PathOperations;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -48,33 +48,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IList<OutputTO> outputs = new List<OutputTO>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             allErrors = new ErrorResultTO();
-            ErrorResultTO errors;
-            Guid executionId = dataObject.DataListID;
-            IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
+            var colItr = new WarewolfListIterator();
 
             //get all the possible paths for all the string variables
-            IBinaryDataListEntry outputPathEntry = compiler.Evaluate(executionId, enActionType.User, OutputPath, false, out errors);
-            allErrors.MergeErrors(errors);
-            IDev2DataListEvaluateIterator outputItr = Dev2ValueObjectFactory.CreateEvaluateIterator(outputPathEntry);
-            colItr.AddIterator(outputItr);
+            
+            var outputItr = new WarewolfIterator(dataObject.Environment.Eval(OutputPath));
+            colItr.AddVariableToIterateOn(outputItr);
 
-            IBinaryDataListEntry usernameEntry = compiler.Evaluate(executionId, enActionType.User, Username, false, out errors);
-            allErrors.MergeErrors(errors);
-            IDev2DataListEvaluateIterator unameItr = Dev2ValueObjectFactory.CreateEvaluateIterator(usernameEntry);
-            colItr.AddIterator(unameItr);
+            var unameItr = new WarewolfIterator(dataObject.Environment.Eval(Username));
+            colItr.AddVariableToIterateOn(unameItr);
 
-            IBinaryDataListEntry passwordEntry = compiler.Evaluate(executionId, enActionType.User, Password, false, out errors);
-            allErrors.MergeErrors(errors);
-            IDev2DataListEvaluateIterator passItr = Dev2ValueObjectFactory.CreateEvaluateIterator(passwordEntry);
-            colItr.AddIterator(passItr);
+            var passItr = new WarewolfIterator(dataObject.Environment.Eval(Password));
+            colItr.AddVariableToIterateOn(passItr);
 
             if(dataObject.IsDebugMode())
             {
-                AddDebugInputItem(new DebugItemVariableParams(OutputPath, "File or Folder", outputPathEntry, executionId));
+                AddDebugInputItem(new DebugEvalResult(OutputPath, "File or Folder", dataObject.Environment));
                 AddDebugInputItem(new DebugItemStaticDataParams(Overwrite.ToString(), "Overwrite"));
-                AddDebugInputItemUserNamePassword(executionId, usernameEntry);
+                AddDebugInputItemUserNamePassword(dataObject.Environment);
             }
 
             while(colItr.HasMoreData())
@@ -84,9 +76,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 try
                 {
-                    IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(colItr.FetchNextRow(outputItr).TheValue,
-                                                                                colItr.FetchNextRow(unameItr).TheValue,
-                                                                                colItr.FetchNextRow(passItr).TheValue,
+                    IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(outputItr),
+                                                                                colItr.FetchNextValue(unameItr),
+                                                                                colItr.FetchNextValue(passItr),
                                                                                 true);
 
                     IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);

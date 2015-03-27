@@ -22,7 +22,6 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Enums;
 using Dev2.Data.Factories;
-using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
@@ -30,6 +29,7 @@ using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage;
 
 namespace Dev2.Activities
 {
@@ -139,13 +139,13 @@ namespace Dev2.Activities
 
                             foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
                             {
-                                toUpsert.Add(region, val);
+                                dataObject.Environment.Assign(region, val);
                             }
                         }
                     }
                     catch(Exception)
                     {
-                        toUpsert.Add(item.Result, null);
+                        dataObject.Environment.Assign(item.Result, null);
                     }
                 }
 
@@ -155,11 +155,11 @@ namespace Dev2.Activities
                 if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
                     int innerCount = 1;
-                    foreach(DebugTO debugOutputTo in toUpsert.DebugOutputs)
+                    foreach (GatherSystemInformationTO item in SystemInformationCollection)
                     {
                         var itemToAdd = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                        AddDebugItem(new DebugItemVariableParams(debugOutputTo), itemToAdd);
+                        AddDebugItem(new DebugEvalResult(item.Result,"",dataObject.Environment), itemToAdd);
                         _debugOutputs.Add(itemToAdd);
                         innerCount++;
                     }
@@ -184,11 +184,11 @@ namespace Dev2.Activities
                     if(hasErrors)
                     {
                         int innerCount = 1;
-                        foreach(DebugTO debugOutputTo in toUpsert.DebugOutputs)
+                        foreach (GatherSystemInformationTO item in SystemInformationCollection)
                         {
                             var itemToAdd = new DebugItem();
                             AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                            AddDebugItem(new DebugItemVariableParams(debugOutputTo), itemToAdd);
+                            AddDebugItem(new DebugEvalResult(item.Result, "", dataObject.Environment), itemToAdd);
                             _debugOutputs.Add(itemToAdd);
                             innerCount++;
                         }
@@ -301,12 +301,12 @@ namespace Dev2.Activities
 
         #region Overrides of DsfNativeActivity<string>
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

@@ -2114,5 +2114,15 @@ namespace Dev2.Data.Util
             }
 
         }
+
+        public static string ReplaceRecordsetBlankWithIndex(string fullRecSetName, int length)
+        {
+            var blankIndex = fullRecSetName.IndexOf("().", StringComparison.Ordinal);
+            if (blankIndex != -1)
+            {
+                return fullRecSetName.Replace("().", string.Format("({0}).", length));
+            }
+            return fullRecSetName;
+        }
     }
 }

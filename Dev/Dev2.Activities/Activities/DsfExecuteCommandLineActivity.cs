@@ -21,18 +21,18 @@ using System.Text;
 using System.Threading;
 using Dev2.Activities.Debug;
 using Dev2.Common;
-using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Data;
 using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Runtime.Execution;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 namespace Dev2.Activities
 {
@@ -115,37 +115,24 @@ namespace Dev2.Activities
             InitializeDebug(dataObject);
             try
             {
-                IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dlId, enActionType.User, CommandFileName, false, out errors);
                 if(dataObject.IsDebugMode())
                 {
-                    AddDebugInputItem(new DebugItemVariableParams(CommandFileName, "Command", expressionsEntry, dlId));
+                    AddDebugInputItem(new DebugEvalResult(CommandFileName, "Command", dataObject.Environment));
                 }
-                allErrors.MergeErrors(errors);
-                IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
+                var itr = new WarewolfIterator(dataObject.Environment.Eval(CommandFileName));
                 IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
                 toUpsert.IsDebug = dataObject.IsDebugMode();
                 if(!allErrors.HasErrors())
                 {
-                    while(itr.HasMoreRecords())
+                    while(itr.HasMoreData())
                     {
-                        IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
-                        foreach(IBinaryDataListItem c in cols)
+                        var val = itr.GetNextValue();
                         {
-                            if(c.IsDeferredRead)
-                            {
-                                if(toUpsert != null)
-                                {
-                                    toUpsert.HasLiveFlushing = true;
-                                    toUpsert.LiveFlushingLocation = dlId;
-                                }
-                            }
-
-                            if(string.IsNullOrEmpty(c.TheValue))
+                            if(string.IsNullOrEmpty(val))
                             {
                                 throw new Exception("Empty script to execute");
                             }
 
-                            string val = c.TheValue;
                             StreamReader errorReader;
                             StringBuilder outputReader;
                             if(!ExecuteProcess(val, exeToken, out errorReader, out outputReader)) return;
@@ -157,46 +144,19 @@ namespace Dev2.Activities
                             //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                             foreach(var region in DataListCleaningUtils.SplitIntoRegions(CommandResult))
                             {
-                                if(toUpsert != null)
+                                if(dataObject.Environment != null)
                                 {
-                                    toUpsert.Add(region, readValue);
+                                    dataObject.Environment.Assign(region, readValue);
                                 }
 
                             }
-
-                            errorReader.Close();
-
-                            if(toUpsert != null && toUpsert.HasLiveFlushing)
-                            {
-                                try
-                                {
-                                    toUpsert.FlushIterationFrame();
-                                    toUpsert = null;
-                                }
-                                catch(Exception e)
-                                {
-                                    Dev2Logger.Log.Error("DSFExecuteCommandLine", e);
-                                    allErrors.AddError(e.Message);
-                                }
-                            }
-                            else
-                            {
-                                compiler.Upsert(dlId, toUpsert, out errors);
-                                allErrors.MergeErrors(errors);
-                            }
+                            errorReader.Close();                            
                         }
                     }
 
                     if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                     {
-                        if(toUpsert == null)
-                        {
-                            return;
-                        }
-                        foreach(var debugOutputTo in toUpsert.DebugOutputs)
-                        {
-                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
-                        }
+                        AddDebugOutputItem(new DebugEvalResult(CommandResult,"",dataObject.Environment));
                     }
                 }
             }
@@ -213,7 +173,10 @@ namespace Dev2.Activities
                 {
                     DisplayAndWriteError("DsfExecuteCommandLineActivity", allErrors);
                     compiler.UpsertSystemTag(dlId, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
-                    compiler.Upsert(dlId, CommandResult, (string)null, out errors);
+                    if(dataObject.Environment != null)
+                    {
+                        dataObject.Environment.Assign(CommandResult, null);
+                    }
                 }
                 if(dataObject.IsDebugMode())
                 {
@@ -479,7 +442,7 @@ namespace Dev2.Activities
 
         #region Overrides of DsfNativeActivity<string>
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -488,7 +451,7 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

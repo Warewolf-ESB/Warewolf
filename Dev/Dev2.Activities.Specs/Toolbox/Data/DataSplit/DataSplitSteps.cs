@@ -118,7 +118,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
             }
-            variableList.Add(new Tuple<string, string>(variable, ""));
+           // variableList.Add(new Tuple<string, string>(variable, ""));
 
             List<DataSplitDTO> splitCollection;
             ScenarioContext.Current.TryGetValue("splitCollection", out splitCollection);

@@ -519,7 +519,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess(null, true);
             ErrorResultTO errorResult;
             IBinaryDataList bdl = Compiler.FetchBinaryDataList(result.DataListID, out errorResult);
-            var outputs = unique.GetDebugOutputs(bdl);
+            var outputs = unique.GetDebugOutputs(result.Environment);
             Assert.IsTrue(outputs.Count > 0);
             Assert.IsTrue(outputs[0].ResultsList.Count == 7);
             var groups = outputs.SelectMany(a => a.ResultsList).Select(a => a.GroupName).Distinct().ToList();
@@ -563,7 +563,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess(null, true);
             ErrorResultTO errorResult;
             IBinaryDataList bdl = Compiler.FetchBinaryDataList(result.DataListID, out errorResult);
-            var outputs = unique.GetDebugOutputs(bdl);
+            var outputs = unique.GetDebugOutputs(result.Environment);
             Assert.IsTrue(outputs[0].ResultsList.Count == 7);
             var groups = outputs.SelectMany(a => a.ResultsList).Select(a => a.GroupName).Distinct().ToList();
             Assert.AreEqual(groups.Count(), 3);
@@ -605,7 +605,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess(null, true);
             ErrorResultTO errorResult;
             IBinaryDataList bdl = Compiler.FetchBinaryDataList(result.DataListID, out errorResult);
-            var outputs = unique.GetDebugOutputs(bdl);
+            var outputs = unique.GetDebugOutputs(result.Environment);
             Assert.IsTrue(outputs[0].ResultsList.Count == 2);
             var groups = outputs.SelectMany(a => a.ResultsList).Select(a => a.GroupName).Distinct().ToList();
             Assert.AreEqual(groups.Count(a => !String.IsNullOrEmpty(a)), 0);

@@ -24,6 +24,7 @@ using Dev2.Enums;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Storage;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -416,8 +417,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
-            var debugOutputs = activity.GetDebugOutputs((IBinaryDataList)null);
-            var debugInputs = activity.GetDebugInputs((IBinaryDataList)null);
+            var debugOutputs = activity.GetDebugOutputs(null);
+            var debugInputs = activity.GetDebugInputs(null);
 
             Assert.AreEqual(1, debugInputs.Count);
             Assert.AreEqual(1, debugOutputs.Count);

@@ -13,19 +13,18 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using Dev2;
+using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.PathOperations;
-using Dev2.Data.Factories;
 using Dev2.Data.PathOperations.Interfaces;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 using Dev2.PathOperations;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -60,14 +59,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-            Guid dlId = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
 
-            IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> toUpsertDeferred = Dev2DataListBuilderFactory.CreateBinaryDataListUpsertBuilder(true);
-            toUpsertDeferred.IsDebug = true;
-            IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-            toUpsert.IsDebug = true;
             // Process if no errors
 
             if(dataObject.IsDebugMode())
@@ -100,22 +94,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     {
                                         foreach (var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
                                         {
-                                            toUpsert.Add(region, value);
+                                            dataObject.Environment.Assign(region, value);
                                         }
                                     }
                                 }
-                                toUpsert.FlushIterationFrame();
                             }
                         }
-                        compiler.Upsert(dlId, toUpsert, out errors);
                         if (dataObject.IsDebugMode())
                         {
                             if (!String.IsNullOrEmpty(Result))
                             {
-                                foreach (var debugOutputTo in toUpsert.DebugOutputs)
-                                {
-                                    AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
-                                }
+                               AddDebugOutputItem(new DebugEvalResult(Result,"",dataObject.Environment));
                             }
                         }
                         allErrors.MergeErrors(errors);
@@ -211,7 +200,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -220,7 +209,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
 
             foreach(IDebugItem debugOutput in _debugOutputs)
@@ -234,27 +223,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Internal Methods
 
-        internal void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
+        internal void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment environment)
         {
-            AddDebugInputItem(new DebugItemVariableParams(expression, labelText, valueEntry, executionId));
+            AddDebugInputItem(new DebugEvalResult(expression, labelText, environment));
         }
 
-        internal void AddDebugOutputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
+        internal void AddDebugOutputItem(string expression, string labelText, IExecutionEnvironment environment)
         {
-            AddDebugOutputItem(new DebugItemVariableParams(expression, labelText, valueEntry, executionId));
+            AddDebugOutputItem(new DebugEvalResult(expression, labelText, environment));
         }
 
         #endregion
 
-        protected void AddDebugInputItemUserNamePassword(Guid executionId, IBinaryDataListEntry usernameEntry)
+        protected void AddDebugInputItemUserNamePassword(IExecutionEnvironment environment)
         {
-            AddDebugInputItem(new DebugItemVariableParams(Username, "Username", usernameEntry, executionId));
+            AddDebugInputItem(new DebugEvalResult(Username, "Username", environment));
             AddDebugInputItemPassword("Password", Password);
         }
 
-        protected void AddDebugInputItemDestinationUsernamePassword(Guid executionId, IBinaryDataListEntry destUsernameEntry, string destinationPassword, string userName)
+        protected void AddDebugInputItemDestinationUsernamePassword(IExecutionEnvironment environment, string destinationPassword, string userName)
         {
-            AddDebugInputItem(new DebugItemVariableParams(userName, "Destination Username", destUsernameEntry, executionId));
+            AddDebugInputItem(new DebugEvalResult(userName, "Destination Username", environment));
             AddDebugInputItemPassword("Destination Password", destinationPassword);
         }
 

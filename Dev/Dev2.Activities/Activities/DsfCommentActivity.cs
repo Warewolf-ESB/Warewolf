@@ -15,8 +15,8 @@ using System.Collections.Generic;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -39,7 +39,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return DebugItem.EmptyList;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             List<DebugItem> result = new List<DebugItem>();
             DebugItem itemToAdd = new DebugItem();
