@@ -216,10 +216,10 @@
       <DependentUpon>New Database Source.feature</DependentUpon>
     </Compile>
     <Compile Include="DBService Specs\NewDatabaseSourceSteps.cs" />
-    <Compile Include="Decision.feature.cs">
+    <Compile Include="Tools\Control Flow - Decision.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Decision.feature</DependentUpon>
+      <DependentUpon>Control Flow - Decision.feature</DependentUpon>
     </Compile>
     <Compile Include="Deploy\DeployTab.feature.cs">
       <AutoGen>True</AutoGen>
@@ -278,10 +278,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Settings Tab.feature</DependentUpon>
     </Compile>
-    <Compile Include="Switch.feature.cs">
+    <Compile Include="Tools\Control Flow - Switch.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Switch.feature</DependentUpon>
+      <DependentUpon>Control Flow - Switch.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Toolbox.feature.cs">
       <AutoGen>True</AutoGen>
@@ -374,6 +374,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Utility - Web Request.feature</DependentUpon>
     </Compile>
+    <Compile Include="Tools\Utility - Xpath.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Utility - Xpath.feature</DependentUpon>
+    </Compile>
     <Compile Include="Variable List\VariableListSteps.cs" />
     <Compile Include="Web Service\Web Source.feature.cs">
       <AutoGen>True</AutoGen>
@@ -411,9 +416,9 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>New Database Source.feature.cs</LastGenOutput>
     </None>
-    <None Include="Decision.feature">
+    <None Include="Tools\Control Flow - Decision.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Decision.feature.cs</LastGenOutput>
+      <LastGenOutput>Control Flow - Decision.feature.cs</LastGenOutput>
     </None>
     <None Include="Deploy\DeployTab.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -458,9 +463,9 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Settings Tab.feature.cs</LastGenOutput>
     </None>
-    <None Include="Switch.feature">
+    <None Include="Tools\Control Flow - Switch.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Switch.feature.cs</LastGenOutput>
+      <LastGenOutput>Control Flow - Switch.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Toolbox.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -533,6 +538,10 @@
     <None Include="Tools\Utility - Web Request.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Utility - Web Request.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\Utility - Xpath.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Utility - Xpath.feature.cs</LastGenOutput>
     </None>
     <None Include="Web Service\Web Source.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

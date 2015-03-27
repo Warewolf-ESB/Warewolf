@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Warewolf.AcceptanceTesting.Explorer
+namespace Warewolf.AcceptanceTesting.Explorer.Tools
 {
     using TechTalk.SpecFlow;
     
@@ -24,15 +24,15 @@ namespace Warewolf.AcceptanceTesting.Explorer
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "Switch.feature"
+#line 1 "Control Flow - Switch.feature"
 #line hidden
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Switch", "In order to avoid silly mistakes\nAs a math idiot\nI want to be told the sum of two" +
-                    " numbers", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Switch", "In order to avoid silly mistakes\r\nAs a math idiot\r\nI want to be told the sum of t" +
+                    "wo numbers", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -49,7 +49,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "Switch")))
             {
-                Warewolf.AcceptanceTesting.Explorer.SwitchFeature.FeatureSetup(null);
+                Warewolf.AcceptanceTesting.Explorer.Tools.SwitchFeature.FeatureSetup(null);
             }
         }
         
