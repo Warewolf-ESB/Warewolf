@@ -337,8 +337,8 @@ namespace ActivityUnitTests
             IBinaryDataList dl = Compiler.FetchBinaryDataList(ExecutionId, out errors);
 
             var result = ExecuteProcess(null, true, null, isRemoteInvoke);
-            inputResults = activity.GetDebugInputs(dl);
-            outputResults = activity.GetDebugOutputs(dl);
+            inputResults = activity.GetDebugInputs(CurrentExecutionEnvironment);
+            outputResults = activity.GetDebugOutputs(CurrentExecutionEnvironment);
 
             return result;
         }
@@ -359,8 +359,8 @@ namespace ActivityUnitTests
             ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(TestData), new StringBuilder(CurrentDl), out errors);
             IBinaryDataList dl = Compiler.FetchBinaryDataList(ExecutionId, out errors);
             var result = ExecuteProcess(null, true);
-            inputResults = activity.GetDebugInputs(dl);
-            outputResults = activity.GetDebugOutputs(dl);
+            inputResults = activity.GetDebugInputs(CurrentExecutionEnvironment);
+            outputResults = activity.GetDebugOutputs(CurrentExecutionEnvironment);
 
             return result;
         }

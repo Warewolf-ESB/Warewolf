@@ -416,14 +416,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
-        {
-            foreach(IDebugItem debugInput in _debugInputs)
-            {
-                debugInput.FlushStringBuilder();
-            }
-            return _debugInputs;
-        }
+
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
         {
@@ -431,14 +424,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
-        {
-            foreach(IDebugItem debugOutput in _debugOutputs)
-            {
-                debugOutput.FlushStringBuilder();
-            }
-            return _debugOutputs;
-        }
 
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {

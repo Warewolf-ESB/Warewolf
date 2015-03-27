@@ -446,15 +446,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             return _debugOutputs;
         }
-         public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
-         {
-             return _debugOutputs;
-         }
-
-         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
-         {
-             return _debugInputs;
-         }
+        
         #endregion Get Inputs/Outputs
 
         #region GetForEachInputs/Outputs

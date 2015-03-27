@@ -163,29 +163,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugOutputs;
         }
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
-        {
-            foreach(IDebugItem debugInput in _debugInputs)
-            {
-                debugInput.FlushStringBuilder();
-            }
-            return _debugInputs;
-        }
+       
 
         #endregion
 
-        #region GetDebugOutputs
-
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
-        {
-            foreach(IDebugItem debugOutput in _debugOutputs)
-            {
-                debugOutput.FlushStringBuilder();
-            }
-            return _debugOutputs;
-        }
-
-        #endregion
+        
 
 
         #endregion Get Inputs/Outputs

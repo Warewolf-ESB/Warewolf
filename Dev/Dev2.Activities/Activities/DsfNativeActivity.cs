@@ -443,20 +443,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDebugInputs/Outputs
 
-        public virtual List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
-        {
-            return DebugItem.EmptyList;
-        }
-
         public virtual List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
         {
             return DebugItem.EmptyList;
         }
 
-        public virtual List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
-        {
-            return DebugItem.EmptyList;
-        }
         public virtual List<DebugItem> GetDebugOutputs(IExecutionEnvironment env)
         {
             return DebugItem.EmptyList;

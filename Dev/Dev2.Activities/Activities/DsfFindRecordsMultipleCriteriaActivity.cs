@@ -590,7 +590,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -599,15 +599,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
-        {
-            foreach(IDebugItem debugOutput in _debugOutputs)
-            {
-                debugOutput.FlushStringBuilder();
-            }
-            return _debugOutputs;
-        }
-
+        
         #endregion Get Inputs/Outputs
 
         #region Get ForEach Inputs/Ouputs

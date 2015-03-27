@@ -26,7 +26,7 @@ namespace Dev2.Activities
         
 
         #region Get Debug Inputs/Outputs
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {
@@ -34,8 +34,8 @@ namespace Dev2.Activities
             }
             return _debugOutputs;
         }
-        
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
           return _debugInputs;
         }

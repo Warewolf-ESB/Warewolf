@@ -485,12 +485,12 @@ namespace Dev2.Activities.Specs.BaseTypes
                 DsfActivityAbstract<string> dsfActivityAbstractString = act as DsfActivityAbstract<string>;
                 if(dsfActivityAbstractString != null)
                 {
-                    return DebugItemResults(dsfActivityAbstractString, dl);
+                    return DebugItemResults(dsfActivityAbstractString, result.Environment);
                 }
                 DsfActivityAbstract<bool> dsfActivityAbstractBool = act as DsfActivityAbstract<bool>;
                 if(dsfActivityAbstractBool != null)
                 {
-                    return DebugItemResults(dsfActivityAbstractBool, dl);
+                    return DebugItemResults(dsfActivityAbstractBool, result.Environment);
                 }
                 var activity = ScenarioContext.Current.Get<DsfActivityAbstract<string>>("activity");
                 return DebugItemResults(activity, env);
@@ -498,18 +498,13 @@ namespace Dev2.Activities.Specs.BaseTypes
             catch
             {
                 var activity = ScenarioContext.Current.Get<DsfActivityAbstract<bool>>("activity");
-                return activity.GetDebugInputs(dl)
+                return activity.GetDebugInputs(result.Environment)
                     .SelectMany(r => r.ResultsList)
                     .ToList();
             }
         }
 
-        static List<IDebugItemResult> DebugItemResults<T>(DsfActivityAbstract<T> dsfActivityAbstractString, IBinaryDataList dl)
-        {
-            return dsfActivityAbstractString.GetDebugInputs(dl)
-                .SelectMany(r => r.ResultsList)
-                .ToList();
-        }
+
         static List<IDebugItemResult> DebugItemResults<T>(DsfActivityAbstract<T> dsfActivityAbstractString, IExecutionEnvironment dl)
         {
             return dsfActivityAbstractString.GetDebugInputs(dl)

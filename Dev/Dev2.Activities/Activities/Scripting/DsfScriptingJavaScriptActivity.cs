@@ -24,6 +24,7 @@ using Dev2.Diagnostics;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Activities
@@ -203,7 +204,7 @@ namespace Dev2.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -212,7 +213,7 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {
