@@ -34,8 +34,12 @@ let WarewolfAtomRecordtoString (x:WarewolfAtomRecord )=
 let EvalResultToString (a:WarewolfEvalResult) = 
     match a with
     | WarewolfAtomResult x -> AtomtoString x
-    | WarewolfAtomListresult x -> Seq.map WarewolfAtomRecordtoString x |> (Seq.fold (+) "")
+    | WarewolfAtomListresult x -> Seq.map WarewolfAtomRecordtoString x |> fun a->System.String.Join(",",a)
 
+let EvalResultToStringNoCommas (a:WarewolfEvalResult) = 
+    match a with
+    | WarewolfAtomResult x -> AtomtoString x
+    | WarewolfAtomListresult x -> Seq.map WarewolfAtomRecordtoString x |> (Seq.fold (+) "")
 
 let AtomToInt(a:WarewolfAtom) = 
     match a with
@@ -441,14 +445,18 @@ let CreateFilled (count:int) (value: WarewolfAtom):WarewolfColumnData=
 
 
 let UpdateColumnWithValue (rset:WarewolfRecordset) (columnName:string) (value: WarewolfAtom)=
-    if rset.Data.ContainsKey( columnName) 
-    then
-        let x = rset.Data.[columnName];
-        for i in [0..x.Count-1] do                         
-            x.[i]<-value;    
-        rset 
+    if rset.Count = 0 then
+   
+        rset
     else 
-    {rset with Data=  Map.add columnName ( CreateFilled rset.Count value)  rset.Data    }
+        if rset.Data.ContainsKey( columnName) 
+        then
+            let x = rset.Data.[columnName];
+            for i in [0..x.Count-1] do                         
+                x.[i]<-value;    
+            rset 
+        else 
+        {rset with Data=  Map.add columnName ( CreateFilled rset.Count value)  rset.Data    }
 
 
 let DeleteValues (exp:string)  (env:WarewolfEnvironment) =
