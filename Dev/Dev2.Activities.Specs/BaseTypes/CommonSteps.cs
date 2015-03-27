@@ -331,7 +331,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 string actualValue;
                 value = value.Replace('"', ' ').Trim();
-                GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
+                GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(variable),
                                            out actualValue, out error);
                 if(string.IsNullOrEmpty(value))
                 {

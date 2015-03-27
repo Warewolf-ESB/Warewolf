@@ -15,13 +15,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Dev2.Activities.Debug;
+using Dev2.Common.Interfaces;
+using Dev2.Data;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.PathOperations;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 namespace Dev2.Activities.PathOperations
 {
@@ -42,72 +43,53 @@ namespace Dev2.Activities.PathOperations
             DestinationUsername = string.Empty;
         }
 
-        protected IDev2IteratorCollection ColItr;
+        protected IWarewolfListIterator ColItr;
 
         protected override IList<OutputTO> ExecuteConcreteAction(NativeActivityContext context,
                                                                  out ErrorResultTO allErrors)
         {
             IList<OutputTO> outputs = new List<OutputTO>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             allErrors = new ErrorResultTO();
-            ErrorResultTO errors;
-            Guid executionId = dataObject.DataListID;
-            ColItr = Dev2ValueObjectFactory.CreateIteratorCollection();
+            ColItr = new WarewolfListIterator();
 
-            //get all the possible paths for all the string variables
-            IBinaryDataListEntry inputPathEntry = compiler.Evaluate(executionId, enActionType.User, InputPath, false,
-                                                                    out errors);
-            allErrors.MergeErrors(errors);
-            IDev2DataListEvaluateIterator inputItr = Dev2ValueObjectFactory.CreateEvaluateIterator(inputPathEntry);
-            ColItr.AddIterator(inputItr);
+            //get all the possible paths for all the string variables          
+            var inputItr = new WarewolfIterator(dataObject.Environment.Eval(InputPath));
+            ColItr.AddVariableToIterateOn(inputItr);
 
-            IBinaryDataListEntry outputPathEntry = compiler.Evaluate(executionId, enActionType.User, OutputPath, false,
-                                                                     out errors);
-            allErrors.MergeErrors(errors);
-            IDev2DataListEvaluateIterator outputItr = Dev2ValueObjectFactory.CreateEvaluateIterator(outputPathEntry);
-            ColItr.AddIterator(outputItr);
+           
+            var outputItr = new WarewolfIterator(dataObject.Environment.Eval(OutputPath));
+            ColItr.AddVariableToIterateOn(outputItr);
 
-            IBinaryDataListEntry usernameEntry = compiler.Evaluate(executionId, enActionType.User, Username, false,
-                                                                   out errors);
-            allErrors.MergeErrors(errors);
-            IDev2DataListEvaluateIterator unameItr = Dev2ValueObjectFactory.CreateEvaluateIterator(usernameEntry);
-            ColItr.AddIterator(unameItr);
+           
+            var unameItr = new WarewolfIterator(dataObject.Environment.Eval(Username));
+            ColItr.AddVariableToIterateOn(unameItr);
 
-            IBinaryDataListEntry passwordEntry = compiler.Evaluate(executionId, enActionType.User, Password, false,
-                                                                   out errors);
-            allErrors.MergeErrors(errors);
-            IDev2DataListEvaluateIterator passItr = Dev2ValueObjectFactory.CreateEvaluateIterator(passwordEntry);
-            ColItr.AddIterator(passItr);
+            
+            var passItr = new WarewolfIterator(dataObject.Environment.Eval(Password));
+            ColItr.AddVariableToIterateOn(passItr);
 
-            IBinaryDataListEntry destinationUsernameEntry = compiler.Evaluate(executionId, enActionType.User, DestinationUsername, false,
-                                                                  out errors);
-            allErrors.MergeErrors(errors);
-            IDev2DataListEvaluateIterator desunameItr = Dev2ValueObjectFactory.CreateEvaluateIterator(destinationUsernameEntry);
-            ColItr.AddIterator(desunameItr);
+            
+            var desunameItr = new WarewolfIterator(dataObject.Environment.Eval(DestinationUsername));
+            ColItr.AddVariableToIterateOn(desunameItr);
 
-            IBinaryDataListEntry destinationPasswordEntry = compiler.Evaluate(executionId, enActionType.User, DestinationPassword, false,
-                                                                   out errors);
-            allErrors.MergeErrors(errors);
-            IDev2DataListEvaluateIterator despassItr = Dev2ValueObjectFactory.CreateEvaluateIterator(destinationPasswordEntry);
-            ColItr.AddIterator(despassItr);
+            
+            var despassItr = new WarewolfIterator(dataObject.Environment.Eval(DestinationPassword));
+            ColItr.AddVariableToIterateOn(despassItr);
 
-            var iteratorsErrors = new List<ErrorResultTO>();
-            AddItemsToIterator(executionId, compiler, iteratorsErrors);
-            ErrorResultTO to = allErrors;
-            iteratorsErrors.ForEach(to.MergeErrors);
+            AddItemsToIterator(dataObject.Environment);
 
             outputs.Add(DataListFactory.CreateOutputTO(Result));
 
             if(dataObject.IsDebugMode())
             {
-                AddDebugInputItem(new DebugItemVariableParams(InputPath, "Source Path", inputPathEntry, executionId));
-                AddDebugInputItemUserNamePassword(executionId, usernameEntry);
-                AddDebugInputItem(new DebugItemVariableParams(OutputPath, "Destination Path", outputPathEntry, executionId));
-                AddDebugInputItemDestinationUsernamePassword(executionId, destinationUsernameEntry, DestinationPassword, DestinationUsername);
+                AddDebugInputItem(new DebugEvalResult(InputPath, "Source Path", dataObject.Environment));
+                AddDebugInputItemUserNamePassword(dataObject.Environment);
+                AddDebugInputItem(new DebugEvalResult(OutputPath, "Destination Path", dataObject.Environment));
+                AddDebugInputItemDestinationUsernamePassword(dataObject.Environment, DestinationPassword, DestinationUsername);
                 AddDebugInputItem(new DebugItemStaticDataParams(Overwrite.ToString(), "Overwrite"));
-                AddDebugInputItems(executionId);
+                AddDebugInputItems(dataObject.Environment);
             }
 
             while(ColItr.HasMoreData())
@@ -117,9 +99,9 @@ namespace Dev2.Activities.PathOperations
                 IActivityIOPath dst = null;
                 try
                 {
-                    src = ActivityIOFactory.CreatePathFromString(ColItr.FetchNextRow(inputItr).TheValue,
-                                                                                 ColItr.FetchNextRow(unameItr).TheValue,
-                                                                                 ColItr.FetchNextRow(passItr).TheValue,
+                    src = ActivityIOFactory.CreatePathFromString(ColItr.FetchNextValue(inputItr),
+                                                                                 ColItr.FetchNextValue(unameItr),
+                                                                                 ColItr.FetchNextValue(passItr),
                                                                                  true);
 
 
@@ -131,9 +113,9 @@ namespace Dev2.Activities.PathOperations
                 }
                 try
                 {
-                    dst = ActivityIOFactory.CreatePathFromString(ColItr.FetchNextRow(outputItr).TheValue,
-                                                                                     ColItr.FetchNextRow(desunameItr).TheValue,
-                                                                                     ColItr.FetchNextRow(despassItr).TheValue,
+                    dst = ActivityIOFactory.CreatePathFromString(ColItr.FetchNextValue(outputItr),
+                                                                                     ColItr.FetchNextValue(desunameItr),
+                                                                                     ColItr.FetchNextValue(despassItr),
                                                                                      true);
 
                 }
@@ -170,11 +152,11 @@ namespace Dev2.Activities.PathOperations
 
         }
 
-        protected virtual void AddItemsToIterator(Guid executionId, IDataListCompiler compiler, List<ErrorResultTO> errors)
+        protected virtual void AddItemsToIterator(IExecutionEnvironment environment)
         {
         }
 
-        protected virtual void AddDebugInputItems(Guid executionId)
+        protected virtual void AddDebugInputItems(IExecutionEnvironment environment)
         {
         }
 
