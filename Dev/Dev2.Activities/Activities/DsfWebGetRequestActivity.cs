@@ -17,12 +17,9 @@ using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Data.Factories;
+using Dev2.Data;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Builders;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -89,39 +86,27 @@ namespace Dev2.Activities
             var dlId = dataObject.DataListID;
             var allErrors = new ErrorResultTO();
             var executionId = DataListExecutionID.Get(context);
-            var toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-            toUpsert.IsDebug = dataObject.IsDebugMode();
 
             InitializeDebug(dataObject);
             try
             {
-                var expressionsEntry = compiler.Evaluate(executionId, enActionType.User, Url, false, out errorsTo);
-                allErrors.MergeErrors(errorsTo);
-                var headersEntry = compiler.Evaluate(executionId, enActionType.User, Headers, false, out errorsTo);
                 allErrors.MergeErrors(errorsTo);
                 if(dataObject.IsDebugMode())
                 {
                     DebugItem debugItem = new DebugItem();
-                    if(expressionsEntry == null)
-                    {
-                        AddDebugItem(new DebugItemStaticDataParams("", Url, "URL"), debugItem);
-                    }
-                    else
-                    {
-                        AddDebugItem(new DebugItemVariableParams(Url, "URL", expressionsEntry, executionId), debugItem);
-                    }
+                    AddDebugItem(new DebugEvalResult(Url, "URL", dataObject.Environment), debugItem);
                     _debugInputs.Add(debugItem);
                 }
-                var colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
-                var urlitr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
-                var headerItr = Dev2ValueObjectFactory.CreateEvaluateIterator(headersEntry);
-                colItr.AddIterator(urlitr);
-                colItr.AddIterator(headerItr);
+                var colItr = new WarewolfListIterator();
+                var urlitr = new WarewolfIterator(dataObject.Environment.Eval(Url));
+                var headerItr = new WarewolfIterator(dataObject.Environment.Eval(Headers));
+                colItr.AddVariableToIterateOn(urlitr);
+                colItr.AddVariableToIterateOn(headerItr);
                 const int IndexToUpsertTo = 1;
                 while(colItr.HasMoreData())
                 {
-                    var c = colItr.FetchNextRow(urlitr);
-                    var headerValue = colItr.FetchNextRow(headerItr).TheValue;
+                    var c = colItr.FetchNextValue(urlitr);
+                    var headerValue = colItr.FetchNextValue(headerItr);
                     var headers = string.IsNullOrEmpty(headerValue)
                                       ? new string[0]
                                       : headerValue.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries);
@@ -136,15 +121,15 @@ namespace Dev2.Activities
                         if(dataObject.IsDebugMode())
                         {
                             DebugItem debugItem = new DebugItem();
-                            AddDebugItem(new DebugItemVariableParams(Headers, "Header", headersEntry, executionId), debugItem);
+                            AddDebugItem(new DebugEvalResult(Headers, "Header", dataObject.Environment), debugItem);
                             _debugInputs.Add(debugItem);
                         }
                     }
 
-                    var result = WebRequestInvoker.ExecuteRequest(Method, c.TheValue, headersEntries);
+                    var result = WebRequestInvoker.ExecuteRequest(Method, c, headersEntries);
                     allErrors.MergeErrors(errorsTo);
                     var expression = GetExpression(IndexToUpsertTo);
-                    PushResultsToDataList(expression, toUpsert, result, dataObject, executionId, compiler, allErrors);
+                    PushResultsToDataList(expression, result, dataObject);
                 }
             }
             catch(Exception e)
@@ -159,7 +144,7 @@ namespace Dev2.Activities
                     DisplayAndWriteError("DsfWebGetRequestActivity", allErrors);
                     compiler.UpsertSystemTag(dlId, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorsTo);
                     var expression = GetExpression(1);
-                    PushResultsToDataList(expression, toUpsert, null, dataObject, executionId, compiler, allErrors);
+                    PushResultsToDataList(expression, null, dataObject);
                 }
                 if(dataObject.IsDebugMode())
                 {
@@ -183,26 +168,21 @@ namespace Dev2.Activities
             return expression;
         }
 
-        void PushResultsToDataList(string expression, IDev2DataListUpsertPayloadBuilder<string> toUpsert, string result, IDSFDataObject dataObject, Guid executionId, IDataListCompiler compiler, ErrorResultTO allErrors)
+        void PushResultsToDataList(string expression,  string result, IDSFDataObject dataObject)
         {
-            UpdateResultRegions(expression, toUpsert, result);
-            compiler.Upsert(executionId, toUpsert, out errorsTo);
+            UpdateResultRegions(expression, dataObject.Environment, result);
             if(dataObject.IsDebugMode())
             {
-                foreach(var debugOutputTo in toUpsert.DebugOutputs)
-                {
-                    AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
-                }
+                
+                    AddDebugOutputItem(new DebugEvalResult(expression,"",dataObject.Environment));
             }
-            allErrors.MergeErrors(errorsTo);
         }
 
-        void UpdateResultRegions(string expression, IDev2DataListUpsertPayloadBuilder<string> toUpsert, string result)
+        void UpdateResultRegions(string expression, IExecutionEnvironment environment, string result)
         {
             foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
             {
-                toUpsert.Add(region, result);
-                toUpsert.FlushIterationFrame();
+                environment.Assign(region, result);
             }
         }
 
