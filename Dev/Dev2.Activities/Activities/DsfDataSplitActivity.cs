@@ -266,6 +266,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                         {
                                             env.AssignWithFrame(new AssignValue(assignVar, tmp));
                                         }
+                                        if (dataObject.IsDebugMode())
+                                        {
+                                            AddDebugInputItem(new DebugEvalResult(assignVar, "Result", env));
+
+                                        }
 
                                         positions[outputVar] = positions[outputVar] + 1;
                                     }

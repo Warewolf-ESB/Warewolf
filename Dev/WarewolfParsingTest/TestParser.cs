@@ -947,6 +947,36 @@ namespace WarewolfParsingTest
 
         }
 
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_where_WithNoIndexAndMultipleColumns_UnOrdered()
+        {
+
+
+            var assigns = new List<IAssignValue>
+             {
+                 new AssignValue("[[rec(2).a]]", "25"),
+                 new AssignValue("[[rec(3).a]]", "33"),
+                 new AssignValue("[[rec(44).a]]", "25"),
+                 new AssignValue("[[rec(1).a]]", "27"),
+
+             };
+            var testEnv = WarewolfTestData.CreateTestEnvEmpty(""); ;
+
+            var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, testEnv);
+
+
+            var items = PublicFunctions.EvalEnvExpression("[[rec(*).a]]",testEnv2);
+
+
+
+        }
+
+
+
             //var ast = PublicFunctions.EvalAssign("[[rec().a]]", "25", env);
             //var ast = PublicFunctions.EvalAssign("[[rec().a]]", "25", env);
             //// three rows

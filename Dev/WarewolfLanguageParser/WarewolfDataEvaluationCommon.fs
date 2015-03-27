@@ -89,8 +89,10 @@ let evalRecordSetIndex (recset:WarewolfRecordset) (identifier:RecordSetIdentifie
 //    | IndexDoesNotExist -> recset.Data.[identifier.Column].[recset.Data.[identifier.Column].]
 
 let evalRecordSetStarIndex (recset:WarewolfRecordset) (identifier:RecordSetIdentifier)  =
-    recset.Data.[identifier.Column] 
-
+    match recset.Optimisations with 
+    |Ordinal -> recset.Data.[identifier.Column] 
+    | Sorted -> recset.Data.[identifier.Column]
+    | Fragmented-> Seq.zip  recset.Data.[PositionColumn] recset.Data.[identifier.Column] |> Seq.sort |>Seq.map snd |> fun a -> new WarewolfAtomList<WarewolfAtom>(WarewolfAtom.Nothing,a)
 let evalRecordSetStarIndexWithPositions (recset:WarewolfRecordset) (identifier:RecordSetIdentifier)  =
     Seq.zip ( Seq.map AtomToInt recset.Data.[PositionColumn]) recset.Data.[identifier.Column]  |> Seq.map (fun a -> PositionedValue a)
 
