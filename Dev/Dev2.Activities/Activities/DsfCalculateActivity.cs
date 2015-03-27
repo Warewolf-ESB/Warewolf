@@ -19,7 +19,6 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Dev2.Validation;
@@ -89,7 +88,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 string input = string.IsNullOrEmpty(Expression) ? Expression : Expression.Replace("\\r", string.Empty).Replace("\\n", string.Empty).Replace(Environment.NewLine, "");
                 var warewolfListIterator = new WarewolfListIterator();
-                var inputIterator = new WarewolfIterator(dataObject.Environment.Eval(input));
+                var calc = String.Format(GlobalConstants.CalculateTextConvertFormat,input);
+                var inputIterator = new WarewolfIterator(dataObject.Environment.Eval(calc));
                 warewolfListIterator.AddVariableToIterateOn(inputIterator);
                 while(warewolfListIterator.HasMoreData())
                 {
