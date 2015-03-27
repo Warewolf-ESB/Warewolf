@@ -1495,15 +1495,15 @@ this.ScenarioSetup(scenarioInfo);
             table37.AddRow(new string[] {
                         "4",
                         "[[d]]     =",
-                        "[[rec().a]] = 10"});
+                        "[[rec(1).a]] = 10"});
             table37.AddRow(new string[] {
                         "5",
                         "[[e]]     =",
-                        "[[rec().b]] = 20"});
+                        "[[rec(1).b]] = 20"});
             table37.AddRow(new string[] {
                         "6",
                         "[[f]]     =",
-                        "[[rec().c]] = 30"});
+                        "[[rec(1).c]] = 30"});
 #line 368
        testRunner.And("the debug inputs as", ((string)(null)), table37, "And ");
 #line hidden

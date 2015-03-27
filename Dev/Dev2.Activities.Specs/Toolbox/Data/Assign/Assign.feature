@@ -370,9 +370,9 @@ Scenario: Assign values to different columns in a reccord set
        | 1 | [[rec().a]] = | 10               |
        | 2 | [[rec().b]] = | 20               |
        | 3 | [[rec().c]] = | 30               |
-       | 4 | [[d]]     =   | [[rec().a]] = 10 |
-       | 5 | [[e]]     =   | [[rec().b]] = 20 |
-       | 6 | [[f]]     =   | [[rec().c]] = 30 |
+       | 4 | [[d]]     =   | [[rec(1).a]] = 10 |
+       | 5 | [[e]]     =   | [[rec(1).b]] = 20 |
+       | 6 | [[f]]     =   | [[rec(1).c]] = 30 |
        And the debug output as
     | # |                   |
     | 1 | [[rec(1).a]] = 10 |
