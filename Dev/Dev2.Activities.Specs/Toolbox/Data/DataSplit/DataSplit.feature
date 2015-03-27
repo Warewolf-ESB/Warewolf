@@ -526,13 +526,13 @@ Scenario Outline: Split Text using type Index but Index is invalid
 	And assign to variable '[[rec().a]]' split type "Index" at '<Type>' and Include 'Selected' and Escape ''
 	When the data split tool is executed
 	Then the execution has "AN" error
-	And the debug inputs as  
-	| String to Split | Process Direction | Skip blank rows | # |               | With  | Using       | Include | Escape |
-	| abcd            | Forward           | No              | 1 | [[rec().a]] = | Index | <Type> = "" | Yes     |        |
-	And the debug output as
-	| # |               |
-	| 1 | [[rec(1).a]] = |
-Examples: 
+#	And the debug inputs as  
+#	| String to Split | Process Direction | Skip blank rows | # |               | With  | Using       | Include | Escape |
+#	| abcd            | Forward           | No              | 1 | [[rec().a]] = | Index | <Type> = "" | Yes     |        |
+##	And the debug output as
+#	| # |               |
+#	| 1 | [[rec(1).a]] = |
+	Examples: 
 	| No | Type    |
 	| 1  |         |
 	| 2  | [[%#$]] |

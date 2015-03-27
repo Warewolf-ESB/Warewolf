@@ -121,7 +121,7 @@ let rec IndexToString (x:Index) =
 and EvalIndex  ( env:WarewolfEnvironment) (exp:string)=
     let getIntFromAtom (a:WarewolfAtom) =
         match a with
-        | Int x -> x
+        | Int x -> if x<= 0 then failwith "invalid recordset index was less than 0" else x
         |_ ->failwith "invalid recordset index was not an int"
     let evalled = Eval env exp
     match evalled with

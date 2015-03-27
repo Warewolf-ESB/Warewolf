@@ -943,38 +943,6 @@ this.ScenarioSetup(scenarioInfo);
 #line 528
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
-                        "String to Split",
-                        "Process Direction",
-                        "Skip blank rows",
-                        "#",
-                        "",
-                        "With",
-                        "Using",
-                        "Include",
-                        "Escape"});
-            table18.AddRow(new string[] {
-                        "abcd",
-                        "Forward",
-                        "No",
-                        "1",
-                        "[[rec().a]] =",
-                        "Index",
-                        string.Format("{0} = \"\"", type),
-                        "Yes",
-                        ""});
-#line 529
- testRunner.And("the debug inputs as", ((string)(null)), table18, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        ""});
-            table19.AddRow(new string[] {
-                        "1",
-                        "[[rec(1).a]] ="});
-#line 532
- testRunner.And("the debug output as", ((string)(null)), table19, "And ");
-#line hidden
             this.ScenarioCleanup();
         }
         
