@@ -10,12 +10,12 @@ Scenario: Generate Letters
 	When the random tool is executed 
 	Then the result from the random tool should be of type "System.String" with a length of "10"
 	And the execution has "NO" error
-#	And the debug inputs as  
-#	| Random  | Length |
-#	| Letters | 10     |
-#	And the debug output as 
-#	|                      |
-#	| [[result]] = String |
+	And the debug inputs as  
+	| Random  | Length |
+	| Letters | 10     |
+	And the debug output as 
+	|                      |
+	| [[result]] = String |
 
 Scenario: Generate Letters and Numbers
 	Given I have a type as "LetterAndNumbers"

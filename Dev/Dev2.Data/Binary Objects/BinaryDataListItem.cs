@@ -38,7 +38,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 {
                     var displayValue = String.IsNullOrEmpty(DisplayValue) ? FieldName : DisplayValue;
                     var variableName = DataListUtil.AddBracketsToValueIfNotExist(displayValue);
-                    throw new NullValueInVariableException(string.Format("No Value assigned for: {0}", variableName), variableName);
+                    throw new Exception(string.Format("No Value assigned for: {0}", variableName)+variableName);
                 }
                 return theValue;
             }
