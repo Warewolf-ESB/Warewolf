@@ -202,6 +202,23 @@ namespace Warewolf.Storage
             }
         }
 
+        public static bool IsValidVariableExpression(string expression, out string errorMessage)
+        {
+            errorMessage = "";
+            try
+            {
+                var x = WarewolfDataEvaluationCommon.ParseLanguageExpression(expression);
+                if (x.IsRecordSetExpression)
+                {
+                }
+            }
+            catch (Exception e)
+            {
+                errorMessage = e.Message;
+                return false;
+            }
+        }
+
         public static string WarewolfEvalResultToString(WarewolfDataEvaluationCommon.WarewolfEvalResult result)
         {
          

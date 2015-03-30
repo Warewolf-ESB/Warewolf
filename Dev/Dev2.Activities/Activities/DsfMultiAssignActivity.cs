@@ -274,6 +274,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (e.Message.Contains("ParseError"))
                 {
+                    AddDebugItem(new DebugItemWarewolfAtomResult("", assignValue.Value, assignValue.Name, "", VariableLabelText, NewFieldLabelText, "="), debugItem);
                     return;
                 }
                 if (DataListUtil.IsEvaluated(assignValue.Value))
