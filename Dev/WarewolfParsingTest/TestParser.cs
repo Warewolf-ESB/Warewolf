@@ -163,7 +163,7 @@ namespace WarewolfParsingTest
                  new AssignValue("[[d]]", "1")
 
              };
-            var env = WarewolfTestData.CreateTestEnvEmpty(""); ;
+            var env = WarewolfTestData.CreateTestEnvEmpty("");
 
             var env2 = PublicFunctions.EvalMultiAssign(assigns, env);
             return env2;
@@ -234,14 +234,14 @@ namespace WarewolfParsingTest
         }
 
 
-        //todo: cover this case. i think the dot is forcing things into the wrong place
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WarewolfParse_Eval")]
         public void WarewolfParse_Eval_RecsetWithNestedIndex_Exists()
         {
 
-            var env = CreateTestEnvWithData(); ;
+            var env = CreateTestEnvWithData();
 
             var ast = PublicFunctions.EvalEnvExpression("[[rec([[d]]).a]]", env);
             Assert.IsTrue(ast.IsWarewolfAtomListresult);
@@ -322,7 +322,7 @@ namespace WarewolfParsingTest
         public void WarewolfParse_Eval_Assign_Star_Empty()
         {
 
-            var env = WarewolfTestData.CreateTestEnvEmpty(""); ;
+            var env = WarewolfTestData.CreateTestEnvEmpty(""); 
 
             var data = PublicFunctions.EvalAssign("[[rec(*).a]]", "30", env);
             var recordSet = data.RecordSets["rec"];
@@ -338,7 +338,7 @@ namespace WarewolfParsingTest
         public void WarewolfParse_Eval_Assign_StarNonExistentColumn()
         {
 
-            var env = WarewolfTestData.CreateTestEnvEmpty(""); ;
+            var env = WarewolfTestData.CreateTestEnvEmpty(""); 
             var env2 = PublicFunctions.EvalAssign("[[rec(1).a]]", "25", env);
             var env3 = PublicFunctions.EvalAssign("[[rec(2).a]]", "33", env2);
             var data = PublicFunctions.EvalAssign("[[rec(*).b]]", "30", env3);
@@ -364,7 +364,7 @@ namespace WarewolfParsingTest
         public void WarewolfParse_Eval_Assign_WithIndex()
         {
 
-            var env = WarewolfTestData.CreateTestEnvEmpty(""); ;
+            var env = WarewolfTestData.CreateTestEnvEmpty(""); 
 
             var env2 = PublicFunctions.EvalAssign("[[rec(1).a]]", "25", env);
             var env3 = PublicFunctions.EvalAssign("[[rec(3).a]]", "22", env2);
@@ -387,7 +387,7 @@ namespace WarewolfParsingTest
         public void WarewolfParse_Eval_Assign_WithIndex_Ordinal()
         {
 
-            var env = WarewolfTestData.CreateTestEnvEmpty(""); ;
+            var env = WarewolfTestData.CreateTestEnvEmpty(""); 
 
             var env2 = PublicFunctions.EvalAssign("[[rec(1).a]]", "25", env);
             var env3 = PublicFunctions.EvalAssign("[[rec(2).a]]", "22", env2);
@@ -409,7 +409,7 @@ namespace WarewolfParsingTest
         public void WarewolfParse_Eval_Assign_WithIndex_Ordered()
         {
 
-            var env = WarewolfTestData.CreateTestEnvEmpty(""); ;
+            var env = WarewolfTestData.CreateTestEnvEmpty(""); 
 
             var env2 = PublicFunctions.EvalAssign("[[rec(1).a]]", "25", env);
             var env3 = PublicFunctions.EvalAssign("[[rec(2).a]]", "22", env2);
@@ -431,7 +431,7 @@ namespace WarewolfParsingTest
         public void WarewolfParse_Eval_Assign_WithNoIndex_Append()
         {
 
-            var env = WarewolfTestData.CreateTestEnvEmpty(""); ;
+            var env = WarewolfTestData.CreateTestEnvEmpty(""); 
 
             var env2 = PublicFunctions.EvalAssign("[[rec().a]]", "25", env);
             var env3 = PublicFunctions.EvalAssign("[[rec().a]]", "22", env2);
@@ -457,7 +457,7 @@ namespace WarewolfParsingTest
         public void WarewolfParse_Eval_Assign_WithNoIndex_ToUnordered()
         {
 
-            var env = WarewolfTestData.CreateTestEnvEmpty(""); ;
+            var env = WarewolfTestData.CreateTestEnvEmpty(""); 
             var env2 = PublicFunctions.EvalAssign("[[rec(3).a]]", "25", env);
             var env3 = PublicFunctions.EvalAssign("[[rec().a]]", "25", env2);
             var env4 = PublicFunctions.EvalAssign("[[rec().a]]", "22", env3);
@@ -483,7 +483,7 @@ namespace WarewolfParsingTest
         public void WarewolfParse_Eval_Assign_WithNoIndex_ToUnordered_Mixedup()
         {
 
-            var env = WarewolfTestData.CreateTestEnvEmpty(""); ;
+            var env = WarewolfTestData.CreateTestEnvEmpty(""); 
             var env2 = PublicFunctions.EvalAssign("[[rec(3).a]]", "25", env);
             var env3 = PublicFunctions.EvalAssign("[[rec().a]]", "25", env2);
             var env4 = PublicFunctions.EvalAssign("[[rec(2).a]]", "22", env3);
@@ -515,7 +515,7 @@ namespace WarewolfParsingTest
                  new AssignValue("[[rec().a]]", "27"),
 
              };
-            var env = WarewolfTestData.CreateTestEnvEmpty(""); ;
+            var env = WarewolfTestData.CreateTestEnvEmpty(""); 
 
              var env2 = PublicFunctions.EvalMultiAssign(assigns, env);
 
@@ -548,7 +548,7 @@ namespace WarewolfParsingTest
                  new AssignValue("[[rec().a]]", "27"),
 
              };
-            var env = WarewolfTestData.CreateTestEnvEmpty(""); ;
+            var env = WarewolfTestData.CreateTestEnvEmpty(""); 
 
              var env2 = PublicFunctions.EvalMultiAssign(assigns, env);
 
@@ -588,7 +588,7 @@ namespace WarewolfParsingTest
 
 
              };
-            var env = WarewolfTestData.CreateTestEnvEmpty(""); ;
+            var env = WarewolfTestData.CreateTestEnvEmpty(""); 
 
             var envx = PublicFunctions.EvalMultiAssign(assigns, env);
             var env2 = PublicFunctions.EvalMultiAssign(assigns2, envx);
@@ -626,7 +626,7 @@ namespace WarewolfParsingTest
 
 
              };
-            var env = WarewolfTestData.CreateTestEnvEmpty(""); ;
+            var env = WarewolfTestData.CreateTestEnvEmpty(""); 
 
             var envx = PublicFunctions.EvalMultiAssign(assigns, env);
             var env2 = PublicFunctions.EvalMultiAssign(assigns2, envx);
@@ -665,7 +665,7 @@ namespace WarewolfParsingTest
 
 
              };
-            var env = WarewolfTestData.CreateTestEnvEmpty(""); ;
+            var env = WarewolfTestData.CreateTestEnvEmpty(""); 
 
             var envx = PublicFunctions.EvalMultiAssign(assigns, env);
             var env2 = PublicFunctions.EvalMultiAssign(assigns2, envx);
@@ -696,7 +696,7 @@ namespace WarewolfParsingTest
                  new AssignValue("[[rec().a]]", "27"),
 
              };
-            var testEnv = WarewolfTestData.CreateTestEnvEmpty(""); ;
+            var testEnv = WarewolfTestData.CreateTestEnvEmpty(""); 
 
             var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, testEnv);
 
@@ -762,7 +762,7 @@ namespace WarewolfParsingTest
 
 
              };
-            var testEnv = WarewolfTestData.CreateTestEnvEmpty(""); ;
+            var testEnv = WarewolfTestData.CreateTestEnvEmpty(""); 
 
             var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, testEnv);
 
@@ -798,9 +798,9 @@ namespace WarewolfParsingTest
 
 
              };
-            var testEnv = WarewolfTestData.CreateTestEnvEmpty(""); ;
+            var testEnv = WarewolfTestData.CreateTestEnvEmpty(""); 
             var testEnv3 = PublicFunctions.EvalMultiAssign(assigns, testEnv);
-            var testEnv2 = PublicFunctions.EvalEnvExpression("[[rec()]]", testEnv3);
+            PublicFunctions.EvalEnvExpression("[[rec()]]", testEnv3);
 
 
 
@@ -815,18 +815,13 @@ namespace WarewolfParsingTest
         {
 
 
-            var assigns = new List<IAssignValue>
-             {
-                 new AssignValue("[[rec(25).a]]", "25"),
-                 new AssignValue("[[rec().b]]", "33"),
-                 new AssignValue("[[rec().b]]", "26"),
 
-
-             };
-            var testEnv = WarewolfTestData.CreateTestEnvEmpty(""); ;
+            var testEnv = WarewolfTestData.CreateTestEnvEmpty(""); 
             var testEnv3 = PublicFunctions.EvalAssignWithFrame(new AssignValue("[[rec().a]]", "25"), testEnv);
             var testEnv4 = PublicFunctions.EvalAssignWithFrame(new AssignValue("[[rec().a]]", "25"), testEnv3);
+            // ReSharper disable UnusedVariable
             var testEnv5 = PublicFunctions.EvalAssignWithFrame(new AssignValue("[[rec().a]]", "25"), testEnv4);
+            // ReSharper restore UnusedVariable
 
 
 
@@ -849,7 +844,7 @@ namespace WarewolfParsingTest
                  new AssignValue("[[rec().a]]", "27"),
 
              };
-            var testEnv = WarewolfTestData.CreateTestEnvEmpty(""); ;
+            var testEnv = WarewolfTestData.CreateTestEnvEmpty(""); 
 
             var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, testEnv);
 
@@ -900,9 +895,11 @@ namespace WarewolfParsingTest
                  new AssignValue("[[rec().a]]", "27"),
 
              };
-            var testEnv = WarewolfTestData.CreateTestEnvEmpty(""); ;
+            var testEnv = WarewolfTestData.CreateTestEnvEmpty(""); 
 
+            // ReSharper disable UnusedVariable
             var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, testEnv);
+            // ReSharper restore UnusedVariable
             ExecutionEnvironment  env = new ExecutionEnvironment();
             env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
             env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"));
@@ -930,9 +927,11 @@ namespace WarewolfParsingTest
                  new AssignValue("[[rec().a]]", "27"),
 
              };
-            var testEnv = WarewolfTestData.CreateTestEnvEmpty(""); ;
+            var testEnv = WarewolfTestData.CreateTestEnvEmpty(""); 
 
+            // ReSharper disable UnusedVariable
             var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, testEnv);
+            // ReSharper restore UnusedVariable
             ExecutionEnvironment env = new ExecutionEnvironment();
             env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
             env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"));
@@ -1404,7 +1403,7 @@ namespace WarewolfParsingTest
                  new AssignValue("[[rec(1).a]]", "27"),
 
              };
-            var testEnv = WarewolfTestData.CreateTestEnvEmpty(""); ;
+            var testEnv = WarewolfTestData.CreateTestEnvEmpty(""); 
 
             var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, testEnv);
 
@@ -1438,7 +1437,7 @@ namespace WarewolfParsingTest
                  new AssignValue("[[rec(1).a]]", "27"),
 
              };
-            var testEnv = WarewolfTestData.CreateTestEnvEmpty(""); ;
+            var testEnv = WarewolfTestData.CreateTestEnvEmpty(""); 
 
             var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, testEnv);
 
@@ -1457,42 +1456,6 @@ namespace WarewolfParsingTest
         }
 
 
-
-            //var ast = PublicFunctions.EvalAssign("[[rec().a]]", "25", env);
-            //var ast = PublicFunctions.EvalAssign("[[rec().a]]", "25", env);
-            //// three rows
-
-            //var ast = PublicFunctions.EvalAssign("[[rec().a]]", "25", env);
-            //var ast = PublicFunctions.EvalAssign("[[rec().b]]", "25", env);
-            //var ast = PublicFunctions.EvalAssign("[[rec().a]]", "25", env);
-            //var ast = PublicFunctions.EvalAssign("[[rec().a]]", "25", env);
-            //// three rows with b at 0 
-
-            //var ast = PublicFunctions.EvalAssign("[[rec().a]]", "25", env);
-            //var ast = PublicFunctions.EvalAssign("[[rec().b]]", "25", env);
-            //var ast = PublicFunctions.EvalAssign("[[rec().b]]", "25", env);
-            //var ast = PublicFunctions.EvalAssign("[[rec().a]]", "25", env);
-            //// two rows with b at 0 and 1 
-
-            //var ast = PublicFunctions.EvalAssign("[[rec().a]]", "25", env);
-            //var ast = PublicFunctions.EvalAssign("[[rec().b]]", "25", env);
-            //var ast = PublicFunctions.EvalAssign("[[rec().b]]", "25", env);
-
-            //// two rows with b at 0 and 1 a olny 0
-
-            //// two batches 
-            //var ast = PublicFunctions.EvalAssign("[[rec().a]]", "25", env);
-            //var ast = PublicFunctions.EvalAssign("[[rec().b]]", "25", env);
-            //var ast = PublicFunctions.EvalAssign("[[rec().a]]", "25", env);
-            //var ast = PublicFunctions.EvalAssign("[[rec().a]]", "25", env);
-            //// second must move the frame
-            //var ast = PublicFunctions.EvalAssign("[[rec().a]]", "25", env);
-            //var ast = PublicFunctions.EvalAssign("[[rec().b]]", "25", env);
-            //var ast = PublicFunctions.EvalAssign("[[rec().a]]", "25", env);
-            //var ast = PublicFunctions.EvalAssign("[[rec().a]]", "25", env);
-
-            //// after this there are 6 rows
-            //// ReSharper rstore PossibleNullReferenceException
         
         // ReSharper restore InconsistentNaming
     }
