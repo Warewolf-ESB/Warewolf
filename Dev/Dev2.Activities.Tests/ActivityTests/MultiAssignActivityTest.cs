@@ -58,7 +58,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             string error;
             const string expected = "Value1";
-            string actual = RetrieveAllRecordSetFieldValues(result.DataListID, "gRec", "opt", out error).FirstOrDefault();
+            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out error).FirstOrDefault();
 
             // remove test datalist
             DataListRemoval(result.DataListID);
@@ -106,7 +106,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             const string expected = "Value1";
             string error;
-            string actual = RetrieveAllRecordSetFieldValues(result.DataListID, "cRec", "opt", out error).First();
+            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error).First();
 
             // remove test datalist
             DataListRemoval(result.DataListID);
@@ -130,7 +130,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             const string expected = "display1";
             string error;
-            List<string> vals = RetrieveAllRecordSetFieldValues(result.DataListID, "cRec", "display", out error);
+            List<string> vals = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "display", out error);
             string actual = vals[0];
 
             // remove test datalist
@@ -153,7 +153,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
             const string expected = "Value1";
             string error;
-            string actual = RetrieveAllRecordSetFieldValues(result.DataListID, "cRec", "opt", out error).First();
+            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error).First();
 
             // remove test datalist
             DataListRemoval(result.DataListID);
@@ -178,7 +178,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             string error;
 
-            IList<string> vals = RetrieveAllRecordSetFieldValues(result.DataListID, "cRec", "display", out error);
+            IList<string> vals = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "display", out error);
             string actual = vals[0];
 
             // remove test datalist
@@ -207,7 +207,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
             const string expected = "Value2";
             string error;
-            string actual = RetrieveAllRecordSetFieldValues(result.DataListID, "cRec", "opt", out error).First();
+            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error).First();
 
             // remove test datalist
             DataListRemoval(result.DataListID);
@@ -226,7 +226,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , ActivityStrings.mult_assign_expression_both_sides_mult_rs_adl, fieldCollection);
             IDSFDataObject result = ExecuteProcess();
             string error;
-            string actual = RetrieveAllRecordSetFieldValues(result.DataListID, "cRec", "opt", out error).First();
+            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error).First();
 
             // remove test datalist
             DataListRemoval(result.DataListID);
@@ -257,7 +257,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            List<string> resultCollection = RetrieveAllRecordSetFieldValues(result.DataListID, "cRec", "opt", out error);
+            List<string> resultCollection = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error);
 
             // remove test datalist
             DataListRemoval(result.DataListID);
@@ -278,7 +278,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "cRec", "opt", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error);
 
             // remove test datalist
             DataListRemoval(result.DataListID);
@@ -311,7 +311,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "cRec", "opt", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error);
 
             // remove test datalist
             DataListRemoval(result.DataListID);
@@ -359,7 +359,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , fieldCollection);
             IDSFDataObject result = ExecuteProcess();
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "cRec", "opt", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error);
 
             // remove test datalist
             DataListRemoval(result.DataListID);
@@ -383,7 +383,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            string actual = RetrieveAllRecordSetFieldValues(result.DataListID, "cRec", "opt", out error).First();
+            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error).First();
 
             // remove test datalist
             DataListRemoval(result.DataListID);
@@ -407,7 +407,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = "display1";
             string error;
 
-            List<string> vals = RetrieveAllRecordSetFieldValues(result.DataListID, "cRec", "display", out error);
+            List<string> vals = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "display", out error);
             string actual = vals[0];
 
             // remove test datalist
@@ -431,7 +431,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = "bob";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "testName1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "testName1", out actual, out error);
 
             // remove test datalist
             DataListRemoval(result.DataListID);
@@ -455,7 +455,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "testValue1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "testValue1", out actual, out error);
 
             // remove test datalist
             DataListRemoval(result.DataListID);
@@ -480,7 +480,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "testValue1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "testValue1", out actual, out error);
 
             // remove test datalist
             DataListRemoval(result.DataListID);
@@ -504,7 +504,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = "testValue@#";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "testValue1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "testValue1", out actual, out error);
 
             // remove test datalist
             DataListRemoval(result.DataListID);
@@ -527,7 +527,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             const string expected = "testRecValue1";
             string error;
-            string actual = RetrieveAllRecordSetFieldValues(result.DataListID, "testRecSet1", "testRec1", out error).First();
+            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "testRecSet1", "testRec1", out error).First();
 
             // remove test datalist
             DataListRemoval(result.DataListID);
@@ -551,7 +551,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<string> expected = new List<string> { ""
                                                      , "testRecValue1" };
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "testRecSet1", "testRec1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "testRecSet1", "testRec1", out error);
 
             // remove test datalist
             DataListRemoval(result.DataListID);
@@ -574,7 +574,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             const string expected = "testRecValue1";
             string error;
-            string actual = RetrieveAllRecordSetFieldValues(result.DataListID, "testRecSet1", "testRec1", out error).First();
+            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "testRecSet1", "testRec1", out error).First();
 
             // remove test datalist
             DataListRemoval(result.DataListID);
@@ -602,7 +602,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             const string expected = "abc123";
             string error;
-            string actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset", "a", out error).First();
+            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset", "a", out error).First();
 
             // remove test datalist
             DataListRemoval(result.DataListID);
@@ -633,7 +633,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , fieldCollection);
             IDSFDataObject result = ExecuteProcess();
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "cRec", "opt", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error);
 
             // remove test datalist
             DataListRemoval(result.DataListID);
@@ -658,7 +658,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , fieldCollection);
             IDSFDataObject result = ExecuteProcess();
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "cRec", "opt", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error);
 
             // remove test datalist
             DataListRemoval(result.DataListID);
@@ -716,7 +716,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = "";
             string error;
             string actual;
-            GetScalarValueFromDataList(result.DataListID, "scalar", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "scalar", out actual, out error);
 
             // remove test datalist
             DataListRemoval(result.DataListID);
@@ -743,7 +743,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             List<string> expected = new List<string> { "0", "1" };
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "cRec", "opt", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -771,7 +771,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             List<string> expected = new List<string> { "" };
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "cRec", "opt", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -799,7 +799,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = "variable";
             string error;
             string actual;
-            GetScalarValueFromDataList(result.DataListID, "var", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "var", out actual, out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -825,7 +825,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = "variablevariable";
             string error;
             string actual;
-            GetScalarValueFromDataList(result.DataListID, "var", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "var", out actual, out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -873,7 +873,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                     , "Value9"
                                                     , "Value10" };
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "gRec", "opt", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -906,7 +906,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             string error;
-            IList<string> data = RetrieveAllRecordSetFieldValues(result.DataListID, "gRec", "opt", out error);
+            IList<string> data = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -942,7 +942,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            IList<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "gRec", "opt", out error);
+            IList<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -984,7 +984,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                     , "Value2"
                                                     , "Value2" };
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "gRec", "opt", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -1019,7 +1019,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             const string expected = "Value10";
             string error;
-            string actual = RetrieveAllRecordSetFieldValues(result.DataListID, "gRec", "opt", out error)[1];
+            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out error)[1];
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -1052,7 +1052,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = "Value10";
             string error;
             string actual;
-            GetScalarValueFromDataList(result.DataListID, "testScalar", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "testScalar", out actual, out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -1087,7 +1087,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                     , "testData"
                                                     , "testData" };
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "gRec", "opt", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -1114,7 +1114,7 @@ namespace Dev2.Tests.Activities.ActivityTests
               , fieldCollection);
             IDSFDataObject result = ExecuteProcess();
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "gRec", "opt", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -1141,7 +1141,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
             string error;
             string actual;
-            GetScalarValueFromDataList(result.DataListID, "testScalar", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "testScalar", out actual, out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -1166,7 +1166,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             string error;
             string actual;
-            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -1191,7 +1191,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = "<InnerError>Recordset index ([xx]) contains invalid character(s)</InnerError>";
             string error;
             string actual;
-            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -1215,7 +1215,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = "<InnerError>Invalid region detected: An open [[ without a related close ]]</InnerError><InnerError>Invalid Data : Either empty expression or empty token list. Please check that your variable list does not contain errors.</InnerError><InnerError>Invalid Region [[cRec([[xx]).opt]]</InnerError>";
             string error;
             string actual;
-            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -1239,7 +1239,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = "<InnerError>Invalid region detected: A close ]] without a related open [[</InnerError><InnerError>Invalid Data : Either empty expression or empty token list. Please check that your variable list does not contain errors.</InnerError><InnerError>Invalid Region [[cRec([[xx]][aa]]).opt]]</InnerError>";
             string error;
             string actual;
-            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -1267,7 +1267,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
 
-            GetScalarValueFromDataList(result.DataListID, "Variable", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Variable", out actual, out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -1291,7 +1291,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
 
-            GetScalarValueFromDataList(result.DataListID, "Variable", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Variable", out actual, out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -1316,7 +1316,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
 
-            GetScalarValueFromDataList(result.DataListID, "Variable", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Variable", out actual, out error);
 
             var res = Compiler.HasErrors(result.DataListID);
 

@@ -14,7 +14,6 @@ using ActivityUnitTests;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.Diagnostics;
 using System;
 using System.Activities;
 using System.Collections.Generic;
@@ -36,12 +35,12 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         protected virtual List<IDebugItemResult> GetDebugInputItemResults(Activity activity)
         {
-            return CommonSteps.GetInputDebugItems(activity,CurrentExecutionEnvironment);
+            return CommonSteps.GetInputDebugItems(activity,DataObject.Environment);
         }
 
         protected virtual List<IDebugItemResult> GetDebugOutputItemResults(Activity activity)
         {
-            return CommonSteps.GetOutputDebugItems(activity,CurrentExecutionEnvironment);
+            return CommonSteps.GetOutputDebugItems(activity, DataObject.Environment);
         }
 
         protected void BuildShapeAndTestData()
@@ -62,7 +61,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     {
                         if (!string.IsNullOrEmpty(variable.Item1))
                         {
-                            CurrentExecutionEnvironment.Assign(DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), variable.Item2);
+                            DataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), variable.Item2);
                         }
                         //Build(variable, shape, data, row);
                         row++;
@@ -82,7 +81,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 foreach (Tuple<string, string> emptyRecord in emptyRecordset)
                 {
-                    CurrentExecutionEnvironment.Assign(DataListUtil.AddBracketsToValueIfNotExist(emptyRecord.Item1), emptyRecord.Item2);
+                    DataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(emptyRecord.Item1), emptyRecord.Item2);
                     //var recSetElement = shape
                     //                  .Descendants(emptyRecord.Item1)
                     //                  .FirstOrDefault();

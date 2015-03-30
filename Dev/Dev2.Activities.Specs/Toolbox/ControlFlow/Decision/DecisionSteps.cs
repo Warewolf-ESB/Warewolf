@@ -195,7 +195,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
             try
             {
                 Dev2DataListDecisionHandler.Instance.RemoveEnvironment(result.DataListID);
-                Dev2DataListDecisionHandler.Instance.AddEnvironment(result.DataListID, CurrentExecutionEnvironment);
+                Dev2DataListDecisionHandler.Instance.AddEnvironment(result.DataListID, result.Environment);
             }
             catch{
             }
