@@ -427,7 +427,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected virtual void AfterExecutionCompleted(ErrorResultTO tmpErrors)
         {
-            Dev2DataListDecisionHandler.Instance.RemoveEnvironment(DataObject.DataListID);
+            if(DataObject != null)
+            {
+                Dev2DataListDecisionHandler.Instance.RemoveEnvironment(DataObject.DataListID);
+            }
         }
 
         protected virtual Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors)

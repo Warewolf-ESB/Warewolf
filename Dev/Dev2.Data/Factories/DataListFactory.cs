@@ -102,18 +102,16 @@ namespace Dev2.DataList.Contract
             {
                 if(isOutput)
                 {
-                    var rsName = DataListUtil.ExtractRecordsetNameFromValue(def.Value);
 
-                    if(!def.IsRecordSet && string.IsNullOrEmpty(rsName))
+                    if(!def.IsRecordSet)
                     {
                         result.Add(def);
                     }
                 }
                 else
                 {
-                    var rsName = DataListUtil.ExtractRecordsetNameFromValue(def.Name);
 
-                    if(!def.IsRecordSet && string.IsNullOrEmpty(rsName))
+                    if(!def.IsRecordSet)
                     {
                         result.Add(def);
                     }
