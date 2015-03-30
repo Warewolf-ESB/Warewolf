@@ -952,6 +952,446 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_Delete_WithNoIndexAndMultipleColumns_Multipleresults()
+        {
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"));
+
+
+
+            env.EvalDelete("[[rec(1)]]");
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]");
+
+
+            Assert.AreEqual(items[0], "26");
+            Assert.AreEqual(items[1], "25");
+            Assert.AreEqual(items[2], "28");
+
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_Delete_Mid()
+        {
+
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"));
+
+
+
+            env.EvalDelete("[[rec(3)]]");
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]");
+
+
+            Assert.AreEqual(items[0], "25");
+            Assert.AreEqual(items[1], "26");
+            Assert.AreEqual(items[2], "28");
+
+        }
+
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_Delete_Unordered()
+        {
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec(5).a]]", "25"));
+            env.AssignWithFrame(new AssignValue("[[rec(1).a]]", "26"));
+            env.AssignWithFrame(new AssignValue("[[rec(3).a]]", "25"));
+            env.AssignWithFrame(new AssignValue("[[rec(4).a]]", "28"));
+
+
+
+            env.EvalDelete("[[rec(3)]]");
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]");
+
+
+            Assert.AreEqual(items[0], "26");
+            Assert.AreEqual(items[1], "28");
+            Assert.AreEqual(items[2], "25");
+
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_Delete_Unordered_CheckForAttributes()
+        {
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec(5).a]]", "25"));
+            env.AssignWithFrame(new AssignValue("[[rec(1).a]]", "26"));
+            env.AssignWithFrame(new AssignValue("[[rec(3).a]]", "25"));
+            env.AssignWithFrame(new AssignValue("[[rec(4).a]]", "28"));
+
+
+
+            env.EvalDelete("[[rec(3)]]");
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]");
+
+
+            Assert.AreEqual(items[0], "26");
+            Assert.AreEqual(items[1], "28");
+            Assert.AreEqual(items[2], "25");
+            PrivateObject p = new PrivateObject(env);
+            var inner = p.GetField("_env") as DataASTMutable.WarewolfEnvironment;
+            var recset = inner.RecordSets["rec"];
+            Assert.AreEqual(recset.Optimisations, DataASTMutable.WarewolfAttribute.Fragmented);
+            Assert.AreEqual(recset.LastIndex, 5);
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_Delete_Unordered_CheckForAttributes_Last()
+        {
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"));
+
+
+
+            env.EvalDelete("[[rec(2)]]");
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]");
+
+
+            Assert.AreEqual(items[0], "25");
+            Assert.AreEqual(items[1], "26");
+            Assert.AreEqual(items[2], "28");
+            PrivateObject p = new PrivateObject(env);
+            var inner = p.GetField("_env") as DataASTMutable.WarewolfEnvironment;
+            var recset = inner.RecordSets["rec"];
+            Assert.AreEqual(recset.Optimisations, DataASTMutable.WarewolfAttribute.Sorted);
+            Assert.AreEqual(recset.LastIndex, 4);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_Delete_Unordered_CheckForAttributes_Multiple_Columns_Last()
+        {
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "26"));
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "25"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"));
+
+
+
+            env.EvalDelete("[[rec(2)]]");
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]");
+
+
+            Assert.AreEqual(items[0], "25");
+
+            items = env.EvalAsListOfStrings("[[rec(*).b]]");
+
+
+            Assert.AreEqual(items[0], "26");
+            PrivateObject p = new PrivateObject(env);
+            var inner = p.GetField("_env") as DataASTMutable.WarewolfEnvironment;
+            var recset = inner.RecordSets["rec"];
+            Assert.AreEqual(recset.Optimisations, DataASTMutable.WarewolfAttribute.Sorted);
+            Assert.AreEqual(recset.LastIndex, 1);
+            Assert.AreEqual(recset.Count, 1);
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_Delete_Unordered_CheckForAttributes_Multiple_Columns_Mixed()
+        {
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "26"));
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "25"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"));
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "22"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "24"));
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "27"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "1"));
+
+
+            env.EvalDelete("[[rec(2)]]");
+        
+            env.AssignWithFrame(new AssignValue("[[rec(1).b]]", "xxx"));
+            env.AssignWithFrame(new AssignValue("[[rec(1).a]]", "yyy"));
+            env.AssignWithFrame(new AssignValue("[[rec(17).b]]", "uuu"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "aaa"));
+
+
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]");
+            Assert.AreEqual(items[0], "yyy");
+            Assert.AreEqual(items[1], "24");
+            Assert.AreEqual(items[2], "1");
+            Assert.AreEqual(items[3], "aaa");
+            items = env.EvalAsListOfStrings("[[rec(*).b]]");
+            Assert.AreEqual(items[0], "xxx");
+            Assert.AreEqual(items[1], "22");
+            Assert.AreEqual(items[2], "27");
+            Assert.AreEqual(items[3], "uuu");
+            PrivateObject p = new PrivateObject(env);
+            var inner = p.GetField("_env") as DataASTMutable.WarewolfEnvironment;
+            var recset = inner.RecordSets["rec"];
+            Assert.AreEqual(recset.Optimisations, DataASTMutable.WarewolfAttribute.Sorted);
+            Assert.AreEqual(recset.LastIndex, 17);
+            Assert.AreEqual(recset.Count, 4);
+        }
+
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_Delete_Unordered_CheckForAttributes_Multiple_Columns_Mixed_MoreStuff()
+        {
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "26"));
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "25"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"));
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "22"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "24"));
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "27"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "1"));
+
+
+            env.EvalDelete("[[rec(2)]]");
+
+            env.AssignWithFrame(new AssignValue("[[rec(1).b]]", "xxx"));
+            env.AssignWithFrame(new AssignValue("[[rec(1).a]]", "yyy"));
+            env.AssignWithFrame(new AssignValue("[[rec(17).b]]", "uuu"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "aaa"));
+            env.AssignWithFrame(new AssignValue("[[rec(7).b]]", "444"));
+            env.AssignWithFrame(new AssignValue("[[rec(7).a]]", "222"));
+
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]");
+            Assert.AreEqual(items[0], "yyy");
+            Assert.AreEqual(items[1], "24");
+            Assert.AreEqual(items[2], "1");
+            Assert.AreEqual(items[3], "222");
+            Assert.AreEqual(items[4], "aaa");
+            items = env.EvalAsListOfStrings("[[rec(*).b]]");
+            Assert.AreEqual(items[0], "xxx");
+            Assert.AreEqual(items[1], "22");
+            Assert.AreEqual(items[2], "27");
+            Assert.AreEqual(items[3], "444");
+            Assert.AreEqual(items[4], "uuu");
+            PrivateObject p = new PrivateObject(env);
+            var inner = p.GetField("_env") as DataASTMutable.WarewolfEnvironment;
+            var recset = inner.RecordSets["rec"];
+            Assert.AreEqual(recset.Optimisations, DataASTMutable.WarewolfAttribute.Fragmented);
+            Assert.AreEqual(recset.LastIndex, 17);
+            Assert.AreEqual(recset.Count, 5);
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_Delete_Unordered_CheckForAttributes_Multiple_Columns_Mixed_OtherMoreStuff()
+        {
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "26"));
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "25"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"));
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "22"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "24"));
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "27"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "1"));
+
+
+            env.EvalDelete("[[rec(2)]]");
+
+            env.AssignWithFrame(new AssignValue("[[rec(1).b]]", "xxx"));
+            env.AssignWithFrame(new AssignValue("[[rec(1).a]]", "yyy"));
+            env.AssignWithFrame(new AssignValue("[[rec(17).b]]", "uuu"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "aaa"));
+            env.AssignWithFrame(new AssignValue("[[rec(7).b]]", "444"));
+            env.AssignWithFrame(new AssignValue("[[rec(7).a]]", "222"));
+            env.EvalDelete("[[rec(7)]]");
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]");
+            Assert.AreEqual(items[0], "yyy");
+            Assert.AreEqual(items[1], "24");
+            Assert.AreEqual(items[2], "1");
+
+            Assert.AreEqual(items[3], "aaa");
+            items = env.EvalAsListOfStrings("[[rec(*).b]]");
+            Assert.AreEqual(items[0], "xxx");
+            Assert.AreEqual(items[1], "22");
+            Assert.AreEqual(items[2], "27");
+
+            Assert.AreEqual(items[3], "uuu");
+           
+            PrivateObject p = new PrivateObject(env);
+            var inner = p.GetField("_env") as DataASTMutable.WarewolfEnvironment;
+            var recset = inner.RecordSets["rec"];
+            Assert.AreEqual(recset.Optimisations, DataASTMutable.WarewolfAttribute.Fragmented);
+            Assert.AreEqual(recset.LastIndex, 17);
+            Assert.AreEqual(recset.Count, 4);
+        }
+
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_Delete_Unordered_CheckForAttributes_Multiple_DeleteLast()
+        {
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "26"));
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "25"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"));
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "22"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "24"));
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "27"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "1"));
+
+
+            env.EvalDelete("[[rec(2)]]");
+
+            env.AssignWithFrame(new AssignValue("[[rec(1).b]]", "xxx"));
+            env.AssignWithFrame(new AssignValue("[[rec(1).a]]", "yyy"));
+            env.AssignWithFrame(new AssignValue("[[rec(17).b]]", "uuu"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "aaa"));
+            env.AssignWithFrame(new AssignValue("[[rec(7).b]]", "444"));
+            env.AssignWithFrame(new AssignValue("[[rec(7).a]]", "222"));
+            env.EvalDelete("[[rec(7)]]");
+            env.EvalDelete("[[rec()]]");
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]");
+            Assert.AreEqual(items[0], "yyy");
+            Assert.AreEqual(items[1], "24");
+            Assert.AreEqual(items[2], "1");
+
+   
+            items = env.EvalAsListOfStrings("[[rec(*).b]]");
+            Assert.AreEqual(items[0], "xxx");
+            Assert.AreEqual(items[1], "22");
+            Assert.AreEqual(items[2], "27");
+
+    
+
+            PrivateObject p = new PrivateObject(env);
+            var inner = p.GetField("_env") as DataASTMutable.WarewolfEnvironment;
+            var recset = inner.RecordSets["rec"];
+            Assert.AreEqual(recset.Optimisations, DataASTMutable.WarewolfAttribute.Fragmented);
+            Assert.AreEqual(recset.LastIndex, 4);
+            Assert.AreEqual(recset.Count, 3);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_Delete_Unordered_CheckForAttributes_Multiple_Delete_Star()
+        {
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "26"));
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "25"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"));
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "22"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "24"));
+            env.AssignWithFrame(new AssignValue("[[rec().b]]", "27"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "1"));
+
+
+            env.EvalDelete("[[rec(2)]]");
+
+            env.AssignWithFrame(new AssignValue("[[rec(1).b]]", "xxx"));
+            env.AssignWithFrame(new AssignValue("[[rec(1).a]]", "yyy"));
+            env.AssignWithFrame(new AssignValue("[[rec(17).b]]", "uuu"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "aaa"));
+            env.AssignWithFrame(new AssignValue("[[rec(7).b]]", "444"));
+            env.AssignWithFrame(new AssignValue("[[rec(7).a]]", "222"));
+            env.EvalDelete("[[rec(7)]]");
+            env.EvalDelete("[[rec(*)]]");
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]");
+            Assert.AreEqual(items.Count, 0);
+
+
+
+
+
+
+            PrivateObject p = new PrivateObject(env);
+            var inner = p.GetField("_env") as DataASTMutable.WarewolfEnvironment;
+            var recset = inner.RecordSets["rec"];
+            Assert.AreEqual(recset.Optimisations, DataASTMutable.WarewolfAttribute.Fragmented);
+            Assert.AreEqual(recset.LastIndex, 0);
+            Assert.AreEqual(recset.Count, 0);
+        }
+
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_Delete_Unordered_CheckForAttributes_Mixed()
+        {
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"));
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"));
+            env.AssignWithFrame(new AssignValue("[[rec(5).a]]", "25"));
+            env.AssignWithFrame(new AssignValue("[[rec(7).a]]", "28"));
+
+
+
+            env.EvalDelete("[[rec(2)]]");
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]");
+
+
+            Assert.AreEqual(items[0], "25");
+            Assert.AreEqual(items[1], "25");
+            Assert.AreEqual(items[2], "28");
+            PrivateObject p = new PrivateObject(env);
+            var inner = p.GetField("_env") as DataASTMutable.WarewolfEnvironment;
+            var recset = inner.RecordSets["rec"];
+            Assert.AreEqual(recset.Optimisations, DataASTMutable.WarewolfAttribute.Sorted);
+            Assert.AreEqual(recset.LastIndex, 7);
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
         public void WarewolfParse_Eval_where_WithNoIndexAndMultipleColumns_UnOrdered()
         {
 
@@ -970,7 +1410,48 @@ namespace WarewolfParsingTest
 
 
             var items = PublicFunctions.EvalEnvExpression("[[rec(*).a]]",testEnv2);
+            if(items.IsWarewolfAtomListresult)
+            {
+                var lst = (items as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult).Item;
+                Assert.AreEqual(lst[0].ToString(),"27");
+                Assert.AreEqual(lst[1].ToString(), "25");
+                Assert.AreEqual(lst[2].ToString(), "33");
+                Assert.AreEqual(lst[3].ToString(), "25");
+            }
 
+
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_where_WithNoIndexAndMultipleColumns_UnOrdered_Delete()
+        {
+
+
+            var assigns = new List<IAssignValue>
+             {
+                 new AssignValue("[[rec(2).a]]", "25"),
+                 new AssignValue("[[rec(3).a]]", "33"),
+                 new AssignValue("[[rec(44).a]]", "25"),
+                 new AssignValue("[[rec(1).a]]", "27"),
+
+             };
+            var testEnv = WarewolfTestData.CreateTestEnvEmpty(""); ;
+
+            var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, testEnv);
+
+            var env3 = PublicFunctions.EvalDelete("[[rec(1)]]", testEnv2);
+            var items = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", env3);
+            if (items.IsWarewolfAtomListresult)
+            {
+                var lst = (items as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult).Item;
+ 
+                Assert.AreEqual(lst[0].ToString(), "25");
+                Assert.AreEqual(lst[1].ToString(), "33");
+                Assert.AreEqual(lst[2].ToString(), "25");
+            }
 
 
         }
