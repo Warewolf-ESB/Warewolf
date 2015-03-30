@@ -88,7 +88,7 @@ namespace Dev2.Data.Decision
             var dds = EvaluateRegion(newDecisionData, dlId);
 
             ErrorResultTO errors = new ErrorResultTO();
-
+              var env =  _environments[dlId];
             if(dds != null)
             {
                 if(dlId != GlobalConstants.NullDataListID)
@@ -107,7 +107,7 @@ namespace Dev2.Data.Decision
                                 // Treat Errors special
                                 if(typeOf == enDecisionType.IsError || typeOf == enDecisionType.IsNotError)
                                 {
-                                    dd.Col1 = Compiler.EvaluateSystemEntry(dlId, enSystemTag.Dev2Error, out errors);
+                                    dd.Col1 = String.Join("", env.Errors);
                                 }
 
                                 IDecisionOperation op = Dev2DecisionFactory.Instance().FetchDecisionFunction(typeOf);

@@ -212,6 +212,10 @@ namespace ActivityUnitTests
                 WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, esbChannel);
 
                 errors.ClearErrors();
+            if(dataObject.ResourceID == Guid.Empty)
+            {
+                dataObject.ResourceID = Guid.NewGuid();
+            }
                 dataObject.DataListID = wfec.Execute(out errors);
                 CurrentExecutionEnvironment = dataObject.Environment;
             return dataObject;
