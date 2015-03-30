@@ -63,7 +63,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                      , "9"
                                                      , "10" };
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset", "Id", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset", "Id", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -100,7 +100,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                      , "9"
                                                      , "10" };
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset", "Id", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset", "Id", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -138,7 +138,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                      , "Y"
                                                      , "Z" };
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset", "Name", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset", "Name", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -176,7 +176,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                      , "Sunday, November 30, 2008 05:11:59 PM"
                                                      , "Wednesday, June 27, 2012 08:10:00 AM"  };
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset", "Time", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset", "Time", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -211,7 +211,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                      , "Y"
                                                      , "Z" };
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset", "Name", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset", "Name", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -250,7 +250,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                      , "19"
                                                      , "20" };
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recordSet", "Id", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recordSet", "Id", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -271,7 +271,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             List<string> expected = new List<string> { "1", "4", "3", "10", "8", "6", "2", "7", "9", "1" };
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset", "Id", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset", "Id", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -297,7 +297,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
             List<string> expected = new List<string> { "10", "9", "8", "7", "6", "4", "3", "2", "1", "1" };
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset", "Id", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset", "Id", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -317,7 +317,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
             List<string> expected = new List<string> { "1", "4", "3", "10", "8", "6", "2", "7", "9", "1" };
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset", "Id", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset", "Id", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -342,7 +342,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             List<string> expected = new List<string> { "1", "4", "3", "10", "8", "6", "2", "7", "9", "1" };
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset", "Id", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset", "Id", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -364,7 +364,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             List<string> expected = new List<string> { "1", "4", "3", "10", "8", "6", "2", "7", "9", "1" };
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset", "Id", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset", "Id", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);

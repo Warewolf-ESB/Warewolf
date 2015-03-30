@@ -129,9 +129,16 @@ and EvalIndex  ( env:WarewolfEnvironment) (exp:string)=
         match a with
         | Int x -> if x<= 0 then failwith "invalid recordset index was less than 0" else x
         |_ ->failwith "invalid recordset index was not an int"
+    
+    let getIntFromAtomList (a:WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>) =
+        match a.Count with
+        | 1 -> 1
+        |_ -> failwith "must be single value only"
+
     let evalled = Eval env exp
     match evalled with
     | WarewolfAtomResult a -> getIntFromAtom a 
+    | WarewolfAtomListresult a -> getIntFromAtomList a 
     |_ ->failwith "invalid recordset index was a list"
 
 

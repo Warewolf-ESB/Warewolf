@@ -49,7 +49,6 @@ namespace ActivityUnitTests
         public IEsbWorkspaceChannel DsfChannel;
         public Mock<IEsbWorkspaceChannel> MockChannel;
         public static IDataListCompiler Compiler;
-        public static IExecutionEnvironment CurrentExecutionEnvironment;
         public BaseActivityUnitTest()
         {
             CallBackData = "Default Data";
@@ -57,8 +56,7 @@ namespace ActivityUnitTests
             {
                 Action = new DsfCommentActivity()
             };
-            if(CurrentExecutionEnvironment==null)
-            CurrentExecutionEnvironment = new ExecutionEnvironment();
+           DataObject = new DsfDataObject("",Guid.NewGuid());
         }
 
         public Guid ExecutionId { get; set; }
@@ -68,6 +66,8 @@ namespace ActivityUnitTests
         public string CurrentDl { get; set; }
 
         public FlowStep TestStartNode { get; set; }
+
+        public IDSFDataObject DataObject { get; set; }
 
         public string CallBackData { get; set; }
 
@@ -209,7 +209,6 @@ namespace ActivityUnitTests
                 {
                     esbChannel = channel;
                 }
-                dataObject.Environment = CurrentExecutionEnvironment;
                 WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, esbChannel);
 
                 errors.ClearErrors();
@@ -217,8 +216,9 @@ namespace ActivityUnitTests
             {
                 dataObject.ResourceID = Guid.NewGuid();
             }
-                dataObject.DataListID = wfec.Execute(out errors);
-                CurrentExecutionEnvironment = dataObject.Environment;
+            dataObject.Environment = DataObject.Environment;
+            dataObject.DataListID = wfec.Execute(out errors);
+            DataObject = dataObject;
             return dataObject;
         }
 
@@ -339,12 +339,16 @@ namespace ActivityUnitTests
 
             Compiler = DataListFactory.CreateDataListCompiler();
             ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(TestData), new StringBuilder(CurrentDl), out errors);
-            IBinaryDataList dl = Compiler.FetchBinaryDataList(ExecutionId, out errors);
+            inputResults = null;
+            outputResults = null;
+            var result = ExecuteProcess(null, true, null, isRemoteInvoke) as IDSFDataObject;
+            if(result != null)
+            {
+                inputResults = activity.GetDebugInputs(result.Environment);
+                outputResults = activity.GetDebugOutputs(result.Environment);
 
-            var result = ExecuteProcess(null, true, null, isRemoteInvoke);
-            inputResults = activity.GetDebugInputs(CurrentExecutionEnvironment);
-            outputResults = activity.GetDebugOutputs(CurrentExecutionEnvironment);
-
+               
+            }
             return result;
         }
 
@@ -363,10 +367,17 @@ namespace ActivityUnitTests
             Compiler = DataListFactory.CreateDataListCompiler();
             ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(TestData), new StringBuilder(CurrentDl), out errors);
             IBinaryDataList dl = Compiler.FetchBinaryDataList(ExecutionId, out errors);
-            var result = ExecuteProcess(null, true);
-            inputResults = activity.GetDebugInputs(CurrentExecutionEnvironment);
-            outputResults = activity.GetDebugOutputs(CurrentExecutionEnvironment);
+            var result = ExecuteProcess(null, true) as IDSFDataObject;
+            inputResults = null;
+            outputResults = null;
+            if(result != null)
+            {
+                inputResults = activity.GetDebugInputs(result.Environment);
+                outputResults = activity.GetDebugOutputs(result.Environment);
 
+                
+            }
+            
             return result;
         }
 
@@ -466,24 +477,6 @@ namespace ActivityUnitTests
             return true;
         }
 
-        public bool GetScalarValueFromEnvironment( string fieldToRetrieve, out string result, out string error)
-        {
-
-            error = "";
-            result = null;
-            try
-            {
-                result = ExecutionEnvironment.WarewolfEvalResultToString(CurrentExecutionEnvironment.Eval(fieldToRetrieve));
-            }
-            catch (Exception err)
-            {
-                error = err.Message;
-            }
-
-
-            return true;
-        }
-
 
 
         public bool GetRecordSetFieldValueFromDataList(Guid dataListId, string recordSet, string fieldNameToRetrieve, out IList<IBinaryDataListItem> result, out string error)
@@ -524,11 +517,18 @@ namespace ActivityUnitTests
             return isCool;
         }
 
-        protected List<string> RetrieveAllRecordSetFieldValues(Guid dataListId, string recordSetName, string fieldToRetrieve, out string error)
+        protected List<string> RetrieveAllRecordSetFieldValues(Guid dataListID, string recordSetName, string fieldToRetrieve, out string error)
+        {
+            //todo: do not fix make work with environment
+            error = null;
+            return null;
+        }
+
+        protected List<string> RetrieveAllRecordSetFieldValues(IExecutionEnvironment environment, string recordSetName, string fieldToRetrieve, out string error)
         {
 
 
-            var retVals = CurrentExecutionEnvironment.EvalAsListOfStrings("[[" + recordSetName + "(*)." + fieldToRetrieve + "]]");
+            var retVals = environment.EvalAsListOfStrings("[[" + recordSetName + "(*)." + fieldToRetrieve + "]]");
             error = "";
             return (List<string>)retVals;
         }

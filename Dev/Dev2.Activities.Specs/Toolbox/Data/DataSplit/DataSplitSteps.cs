@@ -166,8 +166,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
          [Then(@"the split recordset ""(.*)"" will be")]
          public void ThenTheSplitRecordsetWillBe(string variable, Table table)
          {
+             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
              List<TableRow> tableRows = table.Rows.ToList();
-             var recordSets = CurrentExecutionEnvironment.Eval(variable);
+             var recordSets = result.Environment.Eval(variable);
              if (recordSets.IsWarewolfAtomListresult)
              {
                  // ReSharper disable PossibleNullReferenceException

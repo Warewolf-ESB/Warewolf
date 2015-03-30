@@ -15,11 +15,9 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities.Specs.BaseTypes;
-using Dev2.Data.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Warewolf.Storage;
 
 namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
 {
@@ -28,8 +26,6 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
     {
         protected override void BuildDataList()
         {
-            if(CurrentExecutionEnvironment==null)
-                CurrentExecutionEnvironment = new ExecutionEnvironment();
             var variableList = ScenarioContext.Current.Get<List<Tuple<string, string>>>("variableList");
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
 
@@ -71,7 +67,6 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            CurrentExecutionEnvironment = result.Environment;
             ScenarioContext.Current.Add("result", result);
         }
 
@@ -82,7 +77,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
             string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            GetScalarValueFromEnvironment(CurrentExecutionEnvironment, variable,
+            GetScalarValueFromEnvironment(result.Environment, variable,
                                        out actualValue, out error);
             Assert.AreEqual(expectedResult, actualValue);
         }

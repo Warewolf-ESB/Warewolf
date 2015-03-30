@@ -62,7 +62,7 @@ namespace Dev2.Activities.Specs.BaseTypes
            // string fetchErrors = ExecutionEnvironment.WarewolfEvalResultToString(CurrentExecutionEnvironment.Eval(DataListUtil.AddBracketsToValueIfNotExist(enSystemTag.Dev2Error.ToString())));
             string fetchErrors = comiler.FetchErrors(result.DataListID);
             //string fetchErrors = RecordSetBases.FetchErrors(result.DataListID);
-            bool actual = CurrentExecutionEnvironment.Errors.Count==0;
+            bool actual = result.Environment.Errors.Count==0;
             string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actual ? "did not occur" : "did occur" + fetchErrors);
 
@@ -72,7 +72,8 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Then(@"the debug inputs as")]
         public void ThenTheDebugInputsAs(Table table)
         {
-            var inputDebugItems = GetInputDebugItems(null,CurrentExecutionEnvironment);
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var inputDebugItems = GetInputDebugItems(null, result.Environment);
             ThenTheDebugInputsAs(table, inputDebugItems);
         }
 
@@ -85,7 +86,8 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Then(@"the debug output as")]
         public void ThenTheDebugOutputAs(Table table)
         {
-            var outputDebugItems = GetOutputDebugItems(null,CurrentExecutionEnvironment);
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var outputDebugItems = GetOutputDebugItems(null, result.Environment);
             ThenTheDebugOutputAs(table, outputDebugItems);
         }
 

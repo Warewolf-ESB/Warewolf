@@ -15,8 +15,6 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities.Specs.BaseTypes;
-using Dev2.Data.Util;
-using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -136,7 +134,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
             string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            GetScalarValueFromEnvironment(CurrentExecutionEnvironment, ResultVariable,
+            GetScalarValueFromEnvironment(result.Environment, ResultVariable,
                                        out actualValue, out error);
             //if(string.IsNullOrEmpty(expectedResult))
             //{
@@ -150,7 +148,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
         {
             List<TableRow> tableRows = table.Rows.ToList();
          
-            var recordSets  = CurrentExecutionEnvironment.Eval(recordset);
+            var recordSets  = DataObject.Environment.Eval(recordset);
             if (recordSets.IsWarewolfAtomListresult)
             {
                 // ReSharper disable PossibleNullReferenceException
