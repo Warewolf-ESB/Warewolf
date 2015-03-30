@@ -149,7 +149,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
                                        out actualValue, out error);
             if(string.IsNullOrEmpty(value))
             {
-                Assert.IsNull(actualValue);
+                Assert.IsTrue(string.IsNullOrEmpty(actualValue));
             }
             else
             {

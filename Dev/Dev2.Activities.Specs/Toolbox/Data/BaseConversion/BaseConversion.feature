@@ -9,12 +9,12 @@ Scenario: Convert from text to text
 	When the base conversion tool is executed
 	Then the result is "AA"
 	And the execution has "NO" error
-#	And the debug inputs as  
-#	| # | Convert      | From | To   |
-#	| 1 | [[var]] = AA | Text | Text |
-#	And the debug output as  
-#	| # |              |
-#	| 1 | [[var]] = AA |
+	And the debug inputs as  
+	| # | Convert      | From | To   |
+	| 1 | [[var]] = AA | Text | Text |
+	And the debug output as  
+	| # |              |
+	| 1 | [[var]] = AA |
 
 Scenario: Convert from text to binary 
 	Given I have a convert variable "[[var]]" with a value of "AA"

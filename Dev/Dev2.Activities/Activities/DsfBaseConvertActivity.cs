@@ -25,7 +25,6 @@ using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Converters;
 using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 using Dev2.Enums;
@@ -113,7 +112,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         var debugItem = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", index.ToString(CultureInfo.InvariantCulture)), debugItem);
                         AddDebugItem(new DebugEvalResult(item.FromExpression, "Convert", env), debugItem);
-                        AddDebugItem(new DebugItemStaticDataParams(item.FromType, "from"), debugItem);
+                        AddDebugItem(new DebugItemStaticDataParams(item.FromType, "From"), debugItem);
                         AddDebugItem(new DebugItemStaticDataParams(item.ToType, "To"), debugItem);
                         _debugInputs.Add(debugItem);
                         index++;
@@ -128,7 +127,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         var debugItem = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", index.ToString(CultureInfo.InvariantCulture)), debugItem);
                         AddDebugItem(new DebugEvalResult(item.FromExpression, "Convert", env), debugItem);
-                        AddDebugItem(new DebugItemStaticDataParams(item.ToType, "To"), debugItem);
                         _debugOutputs.Add(debugItem);
 
                     }
@@ -185,25 +183,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             return DataASTMutable.WarewolfAtom.NewDataString("");
                         }
-                        else
+                        var upper = broker.Convert(value);
+                        var evalled = env.Eval(upper);
+                        if (evalled.IsWarewolfAtomResult)
                         {
-
-
-                            var upper = broker.Convert(value);
-                            var evalled = env.Eval(upper);
-                            if (evalled.IsWarewolfAtomResult)
+                            var warewolfAtomResult = evalled as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                            if (warewolfAtomResult != null)
                             {
-                                var warewolfAtomResult = evalled as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
-                                if (warewolfAtomResult != null)
-                                {
-                                    return warewolfAtomResult.Item;
-                                }
-                                return DataASTMutable.WarewolfAtom.Nothing;
+                                return warewolfAtomResult.Item;
                             }
-                            return DataASTMutable.WarewolfAtom.NewDataString(WarewolfDataEvaluationCommon.EvalResultToString(evalled));
+                            return DataASTMutable.WarewolfAtom.Nothing;
                         }
-
-                        
+                        return DataASTMutable.WarewolfAtom.NewDataString(WarewolfDataEvaluationCommon.EvalResultToString(evalled));
                     });
 
         }

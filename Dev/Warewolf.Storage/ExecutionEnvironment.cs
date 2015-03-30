@@ -41,7 +41,7 @@ namespace Warewolf.Storage
 
         void CommitAssign();
 
-        void SortRecordSet(string SortField, bool descOrder);
+        void SortRecordSet(string sortField, bool descOrder);
 
         string ToStar(string expression);
 
@@ -208,8 +208,9 @@ namespace Warewolf.Storage
             try
             {
                 var x = WarewolfDataEvaluationCommon.ParseLanguageExpression(expression);
-                if (x.IsRecordSetExpression)
+                if (x.IsRecordSetExpression || x.IsScalarExpression)
                 {
+                    return true;
                 }
             }
             catch (Exception e)
@@ -217,6 +218,7 @@ namespace Warewolf.Storage
                 errorMessage = e.Message;
                 return false;
             }
+            return false;
         }
 
         public static string WarewolfEvalResultToString(WarewolfDataEvaluationCommon.WarewolfEvalResult result)

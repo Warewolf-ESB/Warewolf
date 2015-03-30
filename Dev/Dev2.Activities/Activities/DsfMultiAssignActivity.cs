@@ -220,12 +220,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var debugItem = new DebugItem();
             const string VariableLabelText = "Variable";
             const string NewFieldLabelText = "New Value";
-            AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
+            
             try
             {
                 if (!DataListUtil.IsEvaluated(assignValue.Value))
                 {
                     var evalResult = environment.Eval(assignValue.Name);
+                    AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
                     if (evalResult.IsWarewolfAtomResult)
                     {
                         var scalarResult = evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
@@ -254,7 +255,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     var oldValueResult = environment.Eval(assignValue.Name);
                     var newValueResult = environment.Eval(assignValue.Value);
-
+                    AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
                     if (oldValueResult.IsWarewolfAtomResult && newValueResult.IsWarewolfAtomResult)
                     {
                         var valueResult = newValueResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
@@ -275,6 +276,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (e.Message.Contains("ParseError"))
                 {
                     AddDebugItem(new DebugItemWarewolfAtomResult("", assignValue.Value, assignValue.Name, "", VariableLabelText, NewFieldLabelText, "="), debugItem);
+                    return;
+                }
+                string errorMessage;
+                if (!ExecutionEnvironment.IsValidVariableExpression(assignValue.Name, out errorMessage))
+                {
                     return;
                 }
                 if (DataListUtil.IsEvaluated(assignValue.Value))
@@ -307,12 +313,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             const string VariableLabelText = "";
             const string NewFieldLabelText = "";
             var debugItem = new DebugItem();
-            AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
+            
             try
             {
                 if (!DataListUtil.IsEvaluated(assignValue.Value))
                 {
                     var evalResult = environment.Eval(assignValue.Name);
+                    AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
                     if (evalResult.IsWarewolfAtomResult)
                     {
                         var scalarResult = evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
@@ -333,6 +340,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 else if (DataListUtil.IsEvaluated(assignValue.Value))
                 {
                     var evalResult = environment.Eval(assignValue.Name);
+                    AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
                     if (evalResult.IsWarewolfAtomResult)
                     {
                         var scalarResult = evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;

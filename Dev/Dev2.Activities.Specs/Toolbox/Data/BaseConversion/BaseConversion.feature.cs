@@ -88,6 +88,28 @@ this.ScenarioSetup(scenarioInfo);
 #line 11
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Convert",
+                        "From",
+                        "To"});
+            table1.AddRow(new string[] {
+                        "1",
+                        "[[var]] = AA",
+                        "Text",
+                        "Text"});
+#line 12
+ testRunner.And("the debug inputs as", ((string)(null)), table1, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table2.AddRow(new string[] {
+                        "1",
+                        "[[var]] = AA"});
+#line 15
+ testRunner.And("the debug output as", ((string)(null)), table2, "And ");
+#line hidden
             this.ScenarioCleanup();
         }
         
