@@ -49,7 +49,7 @@ namespace ActivityUnitTests
         public IEsbWorkspaceChannel DsfChannel;
         public Mock<IEsbWorkspaceChannel> MockChannel;
         public static IDataListCompiler Compiler;
-        public IExecutionEnvironment CurrentExecutionEnvironment;
+        public static IExecutionEnvironment CurrentExecutionEnvironment;
         public BaseActivityUnitTest()
         {
             CallBackData = "Default Data";
@@ -57,6 +57,7 @@ namespace ActivityUnitTests
             {
                 Action = new DsfCommentActivity()
             };
+            if(CurrentExecutionEnvironment==null)
             CurrentExecutionEnvironment = new ExecutionEnvironment();
         }
 
@@ -212,6 +213,10 @@ namespace ActivityUnitTests
                 WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, esbChannel);
 
                 errors.ClearErrors();
+            if(dataObject.ResourceID == Guid.Empty)
+            {
+                dataObject.ResourceID = Guid.NewGuid();
+            }
                 dataObject.DataListID = wfec.Execute(out errors);
                 CurrentExecutionEnvironment = dataObject.Environment;
             return dataObject;

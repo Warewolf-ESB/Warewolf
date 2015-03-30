@@ -62,7 +62,7 @@ namespace Dev2.Activities.Specs.BaseTypes
            // string fetchErrors = ExecutionEnvironment.WarewolfEvalResultToString(CurrentExecutionEnvironment.Eval(DataListUtil.AddBracketsToValueIfNotExist(enSystemTag.Dev2Error.ToString())));
             string fetchErrors = comiler.FetchErrors(result.DataListID);
             //string fetchErrors = RecordSetBases.FetchErrors(result.DataListID);
-            bool actual = string.IsNullOrEmpty(fetchErrors);
+            bool actual = CurrentExecutionEnvironment.Errors.Count==0;
             string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actual ? "did not occur" : "did occur" + fetchErrors);
 

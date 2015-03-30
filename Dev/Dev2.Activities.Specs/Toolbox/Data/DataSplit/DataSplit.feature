@@ -26,6 +26,16 @@ Scenario: Split text to a recordset using Index using Star notation
 #	|   | [[vowels(4).letters]] = d |
 #	|   | [[vowels(5).letters]] = e |
 
+Scenario: Split text to a scalar
+	Given A string to split with value "abcde"
+	And  assign to variable "[[a]]" split type "Index" at "1" and Include "unselected"
+	When the data split tool is executed
+	Then the split recordset "[[a]]" will be
+	| rs | value |
+	| a  | a     |
+	And the execution has "NO" error
+
+
 Scenario: Split text to a recordset using Index using Append notation
 	Given A string to split with value "abcde"
 	And  assign to variable "[[vowels().letters]]" split type "Index" at "1" and Include "unselected"

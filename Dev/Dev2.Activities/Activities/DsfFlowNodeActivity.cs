@@ -149,6 +149,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void OnFaulted(NativeActivityFaultContext faultContext, Exception propagatedException, ActivityInstance propagatedFrom)
         {
             IDSFDataObject dataObject = faultContext.GetExtension<IDSFDataObject>();
+            dataObject.Environment.AddError(propagatedException.Message);
             if(dataObject != null && dataObject.IsDebugMode())
             {
                 DispatchDebugState(faultContext, StateType.After);
@@ -207,7 +208,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 DebugItem itemToAdd = new DebugItem();
         
                 var a = env.Eval(ds.SwitchVariable);
-                var debugResult = new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfEvalResultToString(a), ds.SwitchVariable, "Switch on");
+                var debugResult = new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfEvalResultToString(a),"", ds.SwitchVariable,"", "Switch on","","=");
                 itemToAdd.AddRange(debugResult.GetDebugItemResult());
                 result.Add(itemToAdd);
             }
@@ -302,11 +303,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             catch(Exception)
                 // ReSharper restore EmptyGeneralCatchClause
             {
-                //if(!dataList.HasErrors())
-                //{
-                //    itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
-                //    result.Add(itemToAdd);
-                //}
+
+                    itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
+                    result.Add(itemToAdd);
+                
             }
 
             return result;
