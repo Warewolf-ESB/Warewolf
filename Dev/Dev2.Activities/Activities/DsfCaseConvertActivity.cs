@@ -93,36 +93,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 allErrors.MergeErrors(errors);
 
-                int index = 1;
+                int inputIndex = 1;
+                int outputIndex = 1;
 
                 foreach(ICaseConvertTO item in ConvertCollection.Where(a=>!String.IsNullOrEmpty(a.StringToConvert)))
                 {
 
                     if (dataObject.IsDebugMode())
                     {
-                        var res = env.Eval(item.StringToConvert);
                         var debugItem = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("", index.ToString(CultureInfo.InvariantCulture)), debugItem);
+                        AddDebugItem(new DebugItemStaticDataParams("", inputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
                         AddDebugItem(new DebugEvalResult(item.StringToConvert, "Convert", env), debugItem);
                         AddDebugItem(new DebugItemStaticDataParams(item.ConvertType, "To"), debugItem);
                         _debugInputs.Add(debugItem);
-                        index++;
+                        inputIndex++;
                     }
 
                     env.ApplyUpdate(item.StringToConvert, TryConvertFunc(item.ConvertType,env));
-                  
-                     IsSingleValueRule.ApplyIsSingleValueRule(item.ExpressionToConvert, allErrors);
-                    if(dataObject.IsDebugMode())
+                    string errorMessage;
+                    if (ExecutionEnvironment.IsValidVariableExpression(item.StringToConvert, out errorMessage))
                     {
-                        var res = env.Eval(item.StringToConvert);
-                        var debugItem = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("", index.ToString(CultureInfo.InvariantCulture)), debugItem);
-                        AddDebugItem(new DebugEvalResult(item.StringToConvert, "Convert", env),debugItem);
-                        AddDebugItem(new DebugItemStaticDataParams(item.ConvertType, "To"), debugItem);
-                        _debugOutputs.Add(debugItem);
-                 
+                        IsSingleValueRule.ApplyIsSingleValueRule(item.ExpressionToConvert, allErrors);
+                        if (dataObject.IsDebugMode())
+                        {
+                            var debugItem = new DebugItem();
+                            AddDebugItem(new DebugItemStaticDataParams("", outputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
+                            AddDebugItem(new DebugEvalResult(item.StringToConvert, "", env), debugItem);
+                            _debugOutputs.Add(debugItem);
+                            outputIndex++;
+                        }
                     }
-
 
                    
                 }

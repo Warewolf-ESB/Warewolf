@@ -101,41 +101,42 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
     
 
-                int index = 1;
+                int inputIndex = 1;
+                int outputIndex = 1;
 
                 foreach (var item in ConvertCollection.Where(a => !String.IsNullOrEmpty(a.FromExpression)))
                 {
 
                     if (dataObject.IsDebugMode())
                     {
-                        env.Eval(item.FromExpression);
                         var debugItem = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("", index.ToString(CultureInfo.InvariantCulture)), debugItem);
+                        AddDebugItem(new DebugItemStaticDataParams("", inputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
                         AddDebugItem(new DebugEvalResult(item.FromExpression, "Convert", env), debugItem);
                         AddDebugItem(new DebugItemStaticDataParams(item.FromType, "From"), debugItem);
                         AddDebugItem(new DebugItemStaticDataParams(item.ToType, "To"), debugItem);
                         _debugInputs.Add(debugItem);
-                        index++;
+                        inputIndex++;
                     }
 
-                    env.ApplyUpdate(item.FromExpression, TryConvertFunc(item, env));
-
-                    IsSingleValueRule.ApplyIsSingleValueRule(item.FromExpression, allErrors);
-                    if (dataObject.IsDebugMode())
+                    try
                     {
-                        env.Eval(item.FromExpression);
-                        var debugItem = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("", index.ToString(CultureInfo.InvariantCulture)), debugItem);
-                        AddDebugItem(new DebugEvalResult(item.FromExpression, "Convert", env), debugItem);
-                        _debugOutputs.Add(debugItem);
-
+                        env.ApplyUpdate(item.FromExpression, TryConvertFunc(item, env));
+                        IsSingleValueRule.ApplyIsSingleValueRule(item.FromExpression, allErrors);
+                        if (dataObject.IsDebugMode())
+                        {
+                            var debugItem = new DebugItem();
+                            AddDebugItem(new DebugItemStaticDataParams("", outputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
+                            AddDebugItem(new DebugEvalResult(item.FromExpression, "", env), debugItem);
+                            _debugOutputs.Add(debugItem);
+                            outputIndex++;
+                        }
                     }
-
-
-
+                    catch(Exception e)
+                    {
+                        Dev2Logger.Log.Error("DSFBaseConvert", e);
+                        allErrors.AddError(e.Message);
+                    }         
                 }
-
-
             }
             catch(Exception e)
             {

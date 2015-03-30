@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using Dev2.Activities.Debug;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Warewolf.Storage;
 
@@ -15,7 +17,16 @@ namespace Dev2.Activities
         {
             _inputVariable = inputVariable;
             _label = label;
-            _evalResult = environment.Eval(inputVariable);
+            try
+            {
+                _evalResult = environment.Eval(inputVariable);
+            }
+            catch(Exception e)
+            {
+                Dev2Logger.Log.Error(e.Message,e);
+                _evalResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
+            }
+            
         }
 
         #region Overrides of DebugOutputBase
@@ -35,7 +46,12 @@ namespace Dev2.Activities
                 var scalarResult = _evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
                 if (scalarResult != null && !scalarResult.Item.IsNothing)
                 {
-                    return new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item), _inputVariable, LabelText).GetDebugItemResult();
+                    var warewolfAtomToString = ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item);
+                    if (warewolfAtomToString == _inputVariable)
+                    {
+                        warewolfAtomToString = "";
+                    }
+                    return new DebugItemWarewolfAtomResult(warewolfAtomToString, _inputVariable, LabelText).GetDebugItemResult();
                 }
             }
             else if (_evalResult.IsWarewolfAtomListresult)
