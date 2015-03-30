@@ -338,7 +338,8 @@ namespace Dev2.Runtime.ESB.Control
             var oldID = dataObject.DataListID;
             var compiler = DataListFactory.CreateDataListCompiler();
 
-            var remainingMappings = ShapeForSubRequest(dataObject, inputDefs, outputDefs, out errors);
+            //var remainingMappings = ShapeForSubRequest(dataObject, inputDefs, outputDefs, out errors);
+            errors = new ErrorResultTO();
             CreateNewEnvironmentFromInputMappings(dataObject, inputDefs);
             // local non-scoped execution ;)
             var isLocal = !dataObject.IsRemoteWorkflow();
@@ -376,42 +377,24 @@ namespace Dev2.Runtime.ESB.Control
                         // If Web-service or Plugin, skip the final shaping junk ;)
                         if (SubExecutionRequiresShape(workspaceId, dataObject.ServiceName))
                         {
-                            if (!dataObject.IsDataListScoped && remainingMappings != null)
-                            {
-                                // Adjust the remaining output mappings ;)
-                                compiler.SetParentID(dataObject.DataListID, oldID);
-                                var outputMappings = remainingMappings.FirstOrDefault(c => c.Key == enDev2ArgumentType.Output);
-                                compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, outputMappings.Value,
-                                               out invokeErrors);
-                                errors.MergeErrors(invokeErrors);
-                            }
-                            else
-                            {
-                                if (!string.IsNullOrEmpty(outputDefs))
-                                {
-                                    compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, outputDefs,out invokeErrors);
-                                    errors.MergeErrors(invokeErrors);
-                                }
-                            }
+//                            if (!dataObject.IsDataListScoped && remainingMappings != null)
+//                            {
+//                                // Adjust the remaining output mappings ;)
+//                                compiler.SetParentID(dataObject.DataListID, oldID);
+//                                var outputMappings = remainingMappings.FirstOrDefault(c => c.Key == enDev2ArgumentType.Output);
+//                                compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, outputMappings.Value,
+//                                               out invokeErrors);
+//                                errors.MergeErrors(invokeErrors);
+//                            }
+//                            else
+//                            {
+//                                if (!string.IsNullOrEmpty(outputDefs))
+//                                {
+//                                    compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, outputDefs,out invokeErrors);
+//                                    errors.MergeErrors(invokeErrors);
+//                                }
+//                            }
                         }
-
-                        // The act of doing this moves the index data correctly ;)
-                        // We need to remove this in the future.
-#pragma warning disable 168
-                        // ReSharper disable UnusedVariable
-                        var dl1 = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
-                        if (dl1 == null)
-                        {
-
-                        }
-                        var dl2 = compiler.ConvertFrom(oldID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
-                        if (dl2 == null)
-                        {
-
-                        }
-                        // ReSharper restore UnusedVariable
-#pragma warning restore 168
-
                         return env;
                     }
                     errors.AddError("Null container returned");
@@ -549,18 +532,7 @@ namespace Dev2.Runtime.ESB.Control
 
                 shapeID = compiler.Merge(outputID,inputID, enDataListMergeTypes.Union,enTranslationDepth.Shape,false, out invokeErrors);             
                 errors.MergeErrors(invokeErrors);
-                // ReSharper disable UnusedVariable
-                var dl1 = compiler.ConvertFrom(shapeID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
-                if (dl1 == null)
-                {
-                    
-                }
-                var dl2 = compiler.ConvertFrom(oldID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
-                if (dl2 == null)
-                {
-
-                }
-                // ReSharper restore UnusedVariable
+ 
             }
 
             // set execution ID ;)

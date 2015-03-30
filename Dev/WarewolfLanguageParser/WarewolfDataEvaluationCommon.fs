@@ -211,8 +211,13 @@ and EvalDataSetExpression (env: WarewolfEnvironment)  (name:RecordSetName) =
             | Star -> WarewolfRecordSetResult env.RecordSets.[name.Name]
             | IntIndex a -> WarewolfRecordSetResult (evalARow (getRecordSetIndexAsInt recset a) recset name.Name env)
             | Last  -> WarewolfRecordSetResult ( evalARow  recset.LastIndex recset  name.Name env)
-            | IndexExpression b -> let res = Eval env (LanguageExpressionToString b) |> EvalResultToString
-                                   Eval env ( sprintf "[[%s(%s)]]" name.Name res)
+            | IndexExpression b -> 
+                                   let res = Eval env (LanguageExpressionToString b) |> EvalResultToString
+                                   match b with 
+                                        | WarewolfAtomAtomExpression atom ->
+                                                    match atom with
+                                                    | Int a ->  WarewolfRecordSetResult (evalARow (getRecordSetIndexAsInt recset a) recset name.Name env)
+                                        | _ ->   Eval env ( sprintf "[[%s(%s)]]" name.Name res)
     else
         raise (new Dev2.Common.Common.NullValueInVariableException("Recordset not found",name.Name))
 

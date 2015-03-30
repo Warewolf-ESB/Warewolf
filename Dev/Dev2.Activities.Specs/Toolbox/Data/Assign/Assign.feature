@@ -255,40 +255,40 @@ Scenario: Assign multiple recordset to the end of a recordset
 	| 3 | [[rec(3).set]] = 30 |
 	| 4 | [[des(1).val]] = 30 |
 
-Scenario: Assign the value of a negative recordset index
-	Given I assign the value 10 to a variable "[[rec().set]]"	
-	And I assign the value [[rec(-1).set]] to a variable "[[var]]"
-	When the assign tool is executed
-	Then the value of "[[var]]" equals ""
-	And the execution has "AN" error
-	And the debug inputs as
-	| # | Variable        | New Value         |
-	| 1 | [[rec().set]] = | 10                |
-	| 2 | [[var]]       = | [[rec(-1).set]] = |
-	And the debug output as
-	| # |                     |
-	| 1 | [[rec(1).set]] = 10 |
-	| 2 | [[var]] =           |
+#Scenario: Assign the value of a negative recordset index
+#	Given I assign the value 10 to a variable "[[rec().set]]"	
+#	And I assign the value [[rec(-1).set]] to a variable "[[var]]"
+#	When the assign tool is executed
+#	Then the value of "[[var]]" equals ""
+#	And the execution has "AN" error
+#	And the debug inputs as
+#	| # | Variable        | New Value         |
+#	| 1 | [[rec().set]] = | 10                |
+#	| 2 | [[var]]       = | [[rec(-1).set]] = |
+#	And the debug output as
+#	| # |                     |
+#	| 1 | [[rec(1).set]] = 10 |
+#	| 2 | [[var]] =           |
 
-Scenario: Assign the value of a negative recordset index and another assign after
-	Given I assign the value 10 to a variable "[[rec().set]]"	
-	And I assign the value [[rec(-1).set]] to a variable "[[var]]"
-	And I assign the value 30 to a variable "[[scalar]]"	
-	When the assign tool is executed
-	Then the value of "[[rec().set]]" equals "10"
-	Then the value of "[[var]]" equals ""
-	Then the value of "[[scalar]]" equals "30"
-	And the execution has "AN" error
-	And the debug inputs as
-    | # | Variable        | New Value         |
-    | 1 | [[rec().set]] = | 10                |
-    | 2 | [[var]]       = | [[rec(-1).set]] = |
-    | 3 | [[scalar]]    = | 30                |    
-	And the debug output as
-	| # |                     |
-	| 1 | [[rec(1).set]] = 10 |
-	| 2 | [[var]] =           |
-	| 3 | [[scalar]] = 30     |
+#Scenario: Assign the value of a negative recordset index and another assign after
+#	Given I assign the value 10 to a variable "[[rec().set]]"	
+#	And I assign the value [[rec(-1).set]] to a variable "[[var]]"
+#	And I assign the value 30 to a variable "[[scalar]]"	
+#	When the assign tool is executed
+#	Then the value of "[[rec().set]]" equals "10"
+#	Then the value of "[[var]]" equals ""
+#	Then the value of "[[scalar]]" equals "30"
+#	And the execution has "AN" error
+#	And the debug inputs as
+#    | # | Variable        | New Value         |
+#    | 1 | [[rec().set]] = | 10                |
+#    | 2 | [[var]]       = | [[rec(-1).set]] = |
+#    | 3 | [[scalar]]    = | 30                |    
+#	And the debug output as
+#	| # |                     |
+#	| 1 | [[rec(1).set]] = 10 |
+#	| 2 | [[var]] =           |
+#	| 3 | [[scalar]] = 30     |
 
 Scenario: Assign to a negative recordset index
 	Given I assign the value 10 to a variable "[[des(-1).val]]"
@@ -539,29 +539,29 @@ Scenario: Assign two recordset with index as variable to scalr
 	| 4 | [[b]]  = 2                 |
 	| 5 | [[c]]  = TestWarewolf      |
 
-Scenario: Assign two recordset with index as recordset variable to scalr
-	Given I assign the value Test to a variable "[[rec(1).test]]"	
-	And I assign the value Warewolf to a variable "[[rec(2).test]]"
-	And I assign the value 1 to a variable "[[Index(1).a]]"
-	And I assign the value 2 to a variable "[[Index(2).a]]"
-	And I assign the value [[rec([[Index(1).a]]).test]][[rec([[Index(2).a]]).test]] to a variable "[[Result]]"
-	When the assign tool is executed
-	Then the value of "[[Result]]" equals "TestWarewolf"
-	And the execution has "NO" error
-	And the debug inputs as
-	| # | Variable          | New Value                                                               |
-	| 1 | [[rec(1).test]] = | Test                                                                    |
-	| 2 | [[rec(2).test]] = | Warewolf                                                                |
-	| 3 | [[Index(1).a]]  = | 1                                                                       |
-	| 4 | [[Index(2).a]]  = | 2                                                                       |
-	| 5 | [[Result]]      = | [[rec([[Index(1).a]]).test]][[rec([[Index(2).a]]).test]] = TestWarewolf |
-	And the debug output as
-	| # |                            |
-	| 1 | [[rec(1).test]] = Test     |
-	| 2 | [[rec(2).test]] = Warewolf |
-	| 3 | [[Index(1).a]]  = 1        |
-	| 4 | [[Index(2).a]]  = 2        |
-	| 5 | [[Result]]  = TestWarewolf |
+#Scenario: Assign two recordset with index as recordset variable to scalr
+#	Given I assign the value Test to a variable "[[rec(1).test]]"	
+#	And I assign the value Warewolf to a variable "[[rec(2).test]]"
+#	And I assign the value 1 to a variable "[[Index(1).a]]"
+#	And I assign the value 2 to a variable "[[Index(2).a]]"
+#	And I assign the value [[rec([[Index(1).a]]).test]][[rec([[Index(2).a]]).test]] to a variable "[[Result]]"
+#	When the assign tool is executed
+#	Then the value of "[[Result]]" equals "TestWarewolf"
+#	And the execution has "NO" error
+#	And the debug inputs as
+#	| # | Variable          | New Value                                                               |
+#	| 1 | [[rec(1).test]] = | Test                                                                    |
+#	| 2 | [[rec(2).test]] = | Warewolf                                                                |
+#	| 3 | [[Index(1).a]]  = | 1                                                                       |
+#	| 4 | [[Index(2).a]]  = | 2                                                                       |
+#	| 5 | [[Result]]      = | [[rec([[Index(1).a]]).test]][[rec([[Index(2).a]]).test]] = TestWarewolf |
+#	And the debug output as
+#	| # |                            |
+#	| 1 | [[rec(1).test]] = Test     |
+#	| 2 | [[rec(2).test]] = Warewolf |
+#	| 3 | [[Index(1).a]]  = 1        |
+#	| 4 | [[Index(2).a]]  = 2        |
+#	| 5 | [[Result]]  = TestWarewolf |
 
 Scenario: Assign addition of all variables to scalar2
 	Given I assign the value 1 to a variable "[[rec(1).test]]"	

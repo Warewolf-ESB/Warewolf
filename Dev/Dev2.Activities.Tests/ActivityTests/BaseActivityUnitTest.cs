@@ -49,7 +49,7 @@ namespace ActivityUnitTests
         public IEsbWorkspaceChannel DsfChannel;
         public Mock<IEsbWorkspaceChannel> MockChannel;
         public static IDataListCompiler Compiler;
-        public IExecutionEnvironment CurrentExecutionEnvironment;
+        public static IExecutionEnvironment CurrentExecutionEnvironment;
         public BaseActivityUnitTest()
         {
             CallBackData = "Default Data";
@@ -57,6 +57,7 @@ namespace ActivityUnitTests
             {
                 Action = new DsfCommentActivity()
             };
+            if(CurrentExecutionEnvironment==null)
             CurrentExecutionEnvironment = new ExecutionEnvironment();
         }
 

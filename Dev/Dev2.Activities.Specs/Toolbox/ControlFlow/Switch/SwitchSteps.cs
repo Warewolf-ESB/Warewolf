@@ -19,6 +19,7 @@ using Dev2.Data.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage;
 
 namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
 {
@@ -27,6 +28,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
     {
         protected override void BuildDataList()
         {
+            if(CurrentExecutionEnvironment==null)
+                CurrentExecutionEnvironment = new ExecutionEnvironment();
             var variableList = ScenarioContext.Current.Get<List<Tuple<string, string>>>("variableList");
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
 
@@ -36,7 +39,9 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
                     ExpressionText =
                         string.Format(
                             "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.FetchSwitchData(\"{0}\",AmbientDataList)",
-                            (variableList).First().Item1)
+                            (variableList).First().Item1),
+                      
+                            
                 };
 
             TestStartNode = new FlowStep
@@ -66,6 +71,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            CurrentExecutionEnvironment = result.Environment;
             ScenarioContext.Current.Add("result", result);
         }
 
@@ -76,7 +82,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
             string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
+            GetScalarValueFromEnvironment(CurrentExecutionEnvironment, variable,
                                        out actualValue, out error);
             Assert.AreEqual(expectedResult, actualValue);
         }

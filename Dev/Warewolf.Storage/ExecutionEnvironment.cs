@@ -68,13 +68,22 @@ namespace Warewolf.Storage
 
         public WarewolfDataEvaluationCommon.WarewolfEvalResult Eval(string exp)
         {
+            if (string.IsNullOrEmpty(exp))
+            {
+                return WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
+            }
             return PublicFunctions.EvalEnvExpression(exp, _env);
             
         }
 
         public void Assign(string exp, string value)
         {
+            if (string.IsNullOrEmpty(exp))
+            {
+                return ;
+            }
 
+            
             var envTemp =  PublicFunctions.EvalAssignWithFrame( new AssignValue( exp,value), _env);
             
             _env = envTemp;
@@ -87,12 +96,12 @@ namespace Warewolf.Storage
         {
             try
             {
-                var envTemp = PublicFunctions.EvalMultiAssign(values, _env);
-                _env = envTemp;
-            }
+            var envTemp = PublicFunctions.EvalMultiAssign(values, _env);
+            _env = envTemp;
+        }
             catch(Exception err)
             {
-                
+
                Errors.Add(err.Message);
                throw;
             }
@@ -104,8 +113,13 @@ namespace Warewolf.Storage
         {
             try
             {
-                var envTemp = PublicFunctions.EvalAssignWithFrame(values, _env);
-                _env = envTemp;
+            if (string.IsNullOrEmpty(values.Name))
+            {
+                return ;
+            }
+
+            var envTemp = PublicFunctions.EvalAssignWithFrame(values, _env);
+            _env = envTemp;
             }
             catch (Exception err)
             {
@@ -193,17 +207,17 @@ namespace Warewolf.Storage
                 // ReSharper restore PossibleNullReferenceException
                 return new List<string> { WarewolfAtomToString(x) };
             }
-            // ReSharper disable PossibleNullReferenceException
-            // ReSharper disable PossibleNullReferenceException
-            var warewolfAtomListresult = result as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
-            if(warewolfAtomListresult != null)
-            {
-                var x = warewolfAtomListresult.Item;
-                // ReSharper restore PossibleNullReferenceException
-                return x.Select(WarewolfAtomToString).ToList();
+                // ReSharper disable PossibleNullReferenceException
+                // ReSharper disable PossibleNullReferenceException
+                var warewolfAtomListresult = result as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                if(warewolfAtomListresult != null)
+                {
+                    var x = warewolfAtomListresult.Item;
+                    // ReSharper restore PossibleNullReferenceException
+                    return x.Select(WarewolfAtomToString).ToList();
+                }
+                throw new Exception("bob");
             }
-            throw new Exception("bob");
-        }
 
         public static  string WarewolfAtomToString(DataASTMutable.WarewolfAtom a)
         {
@@ -253,9 +267,9 @@ namespace Warewolf.Storage
                 if(warewolfAtomResult != null)
                 {
                     var x = warewolfAtomResult.Item;
-                    // ReSharper restore PossibleNullReferenceException
-                    return WarewolfAtomToString(x);
-                }
+                // ReSharper restore PossibleNullReferenceException
+                return WarewolfAtomToString(x);
+            }
                 throw new Exception("null when f# said it should not be");
             }
                 // ReSharper disable RedundantIfElseBlock
@@ -267,21 +281,21 @@ namespace Warewolf.Storage
                 if(warewolfAtomListresult != null)
                 {
                     var x = warewolfAtomListresult.Item;
-                    StringBuilder res = new StringBuilder(); 
-                    for(int index  = 0; index < x.Count; index++)
+                StringBuilder res = new StringBuilder(); 
+                for(int index  = 0; index < x.Count; index++)
+                {
+                    var warewolfAtom = x[index];
+                    if(index==x.Count-1)
                     {
-                        var warewolfAtom = x[index];
-                        if(index==x.Count-1)
-                        {
-                            res.Append(warewolfAtom);
-                        }
-                        else
-                        {
-                            res.Append(warewolfAtom).Append(",");
-                        }
+                        res.Append(warewolfAtom);
                     }
-                    return res.ToString();
+                    else
+                    {
+                        res.Append(warewolfAtom).Append(",");
+                    }
                 }
+                return res.ToString();
+            }
                 throw new Exception("null when f# said it should not be");
             }
         }
@@ -333,8 +347,8 @@ namespace Warewolf.Storage
                 var rec = exp as LanguageAST.LanguageExpression.RecordSetExpression;
                 if(rec != null)
                 {
-                    return "[["+rec.Item.Name+"(*)."+rec.Item.Column+"]]";
-                }
+                return "[["+rec.Item.Name+"(*)."+rec.Item.Column+"]]";
+            }
             }
             return expression;
         }
@@ -349,9 +363,9 @@ namespace Warewolf.Storage
                 if(warewolfAtomResult != null)
                 {
                     var x = warewolfAtomResult.Item;
-                    // ReSharper restore PossibleNullReferenceException
-                    return new List<DataASTMutable.WarewolfAtom> { x };
-                }
+                // ReSharper restore PossibleNullReferenceException
+                return new List<DataASTMutable.WarewolfAtom> { x };
+            }
                 throw new Exception("null when f# said it should not be");
             }
                 // ReSharper disable RedundantIfElseBlock

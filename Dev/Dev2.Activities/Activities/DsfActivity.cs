@@ -427,7 +427,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected virtual void AfterExecutionCompleted(ErrorResultTO tmpErrors)
         {
-            Dev2DataListDecisionHandler.Instance.RemoveEnvironment(DataObject.DataListID);
+            if(DataObject != null)
+            {
+                Dev2DataListDecisionHandler.Instance.RemoveEnvironment(DataObject.DataListID);
+            }
         }
 
         protected virtual Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors)
@@ -613,7 +616,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var results = new List<DebugItem>();
             foreach(IDev2Definition dev2Definition in inputs)
             {
-                var tmpEntry = environment.Eval(dev2Definition.RawValue);
+                try
+                {
+                    var tmpEntry = environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(dev2Definition.Name));
+                
 
                 if(tmpEntry.IsWarewolfAtomResult)
                 {
@@ -638,6 +644,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                        
                     }
                     results.Add(itemToAdd);
+                }
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Log.Error(e.Message,e);
                 }
             }
 
