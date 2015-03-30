@@ -57,6 +57,7 @@ namespace Dev2.Activities.Debug
         {
             var results = new List<IDebugItemResult>();
             var grpIdx = 0;
+            var index = _warewolfRecordset.Data["WarewolfPositionColumn"][0];
             foreach (var item in _warewolfRecordset.Data)
             {
                 if (item.Key == "WarewolfPositionColumn")
@@ -64,11 +65,10 @@ namespace Dev2.Activities.Debug
                     continue;
                 }
                 
+                var position = ExecutionEnvironment.WarewolfAtomToString(index);
                 foreach (var warewolfAtom in item.Value)
                 {
                     grpIdx++;
-                    var index = _warewolfRecordset.Data["WarewolfPositionColumn"][grpIdx-1];
-                    var position = ExecutionEnvironment.WarewolfAtomToString(index);
                     string displayExpression = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(_variable),item.Key,position));
                     var debugType = DebugItemResultType.Value;
                     if (DataListUtil.IsEvaluated(displayExpression))

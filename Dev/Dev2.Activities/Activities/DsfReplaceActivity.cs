@@ -26,7 +26,6 @@ using Dev2.Data.Interfaces;
 using Dev2.Data.Operations;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 using Dev2.Util;
@@ -195,13 +194,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddDebugInputItem(new DebugEvalResult(Find, "Find", dataObject.Environment));
                     AddDebugInputItem(new DebugEvalResult(ReplaceWith, "Replace With",dataObject.Environment));
                 }
-                dataObject.Environment.Assign(Result, replacementTotal.ToString(CultureInfo.InvariantCulture));
+                if (!string.IsNullOrEmpty(Result))
+                {
+                    dataObject.Environment.Assign(Result, replacementTotal.ToString(CultureInfo.InvariantCulture));
+                }
 
 
                 // now push the result to the server
                 if (dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
-                    AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
+                    if (!string.IsNullOrEmpty(Result))
+                    {
+                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
+                    }
                 }
             }
             // ReSharper disable EmptyGeneralCatchClause

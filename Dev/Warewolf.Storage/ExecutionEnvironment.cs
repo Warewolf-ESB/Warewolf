@@ -64,12 +64,22 @@ namespace Warewolf.Storage
 
         public WarewolfDataEvaluationCommon.WarewolfEvalResult Eval(string exp)
         {
+            if (string.IsNullOrEmpty(exp))
+            {
+                return WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
+            }
             return PublicFunctions.EvalEnvExpression(exp, _env);
             
         }
 
         public bool Assign(string exp,string value)
         {
+            if (string.IsNullOrEmpty(exp))
+            {
+                return true;
+            }
+
+            
             var envTemp =  PublicFunctions.EvalAssignWithFrame( new AssignValue( exp,value), _env);
             
             _env = envTemp;
@@ -87,6 +97,11 @@ namespace Warewolf.Storage
 
         public bool AssignWithFrame(IAssignValue values)
         {
+            if (string.IsNullOrEmpty(values.Name))
+            {
+                return true;
+            }
+
             var envTemp = PublicFunctions.EvalAssignWithFrame(values, _env);
             _env = envTemp;
             return true; //todo : decide on whether to catch here of just send exceptions on

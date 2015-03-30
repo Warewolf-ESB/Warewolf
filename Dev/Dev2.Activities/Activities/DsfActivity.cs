@@ -613,7 +613,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var results = new List<DebugItem>();
             foreach(IDev2Definition dev2Definition in inputs)
             {
-                var tmpEntry = environment.Eval(dev2Definition.RawValue);
+                try
+                {
+                    var tmpEntry = environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(dev2Definition.Name));
+                
 
                 if(tmpEntry.IsWarewolfAtomResult)
                 {
@@ -638,6 +641,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                        
                     }
                     results.Add(itemToAdd);
+                }
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Log.Error(e.Message,e);
                 }
             }
 

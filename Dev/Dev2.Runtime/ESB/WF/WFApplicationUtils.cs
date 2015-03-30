@@ -13,13 +13,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.Hosting;
@@ -34,9 +34,8 @@ namespace Dev2.Runtime.ESB.WF
         {
             _add = AddDebugItem;
         }
-        public WfApplicationUtils(Func<IDataListCompiler> getDataListCompiler, Action<DebugOutputBase, DebugItem> add)
+        public WfApplicationUtils(Action<DebugOutputBase, DebugItem> add)
         {
-            _getDataListCompiler = getDataListCompiler;
             _add = add;
         }
         public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, out ErrorResultTO errors, DateTime? workflowStartTime = null, bool interrogateInputs = false, bool interrogateOutputs = false)
@@ -91,20 +90,17 @@ namespace Dev2.Runtime.ESB.WF
                 {
 
                     ErrorResultTO invokeErrors;
-                    var com = compiler.FetchBinaryDataList(dataObject.DataListID, out invokeErrors);
-                    errors.MergeErrors(invokeErrors);
                     var defs = compiler.GenerateDefsFromDataListForDebug(FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID), enDev2ColumnArgumentDirection.Input);
-                    var inputs = GetDebugValues(defs, com, out invokeErrors);
+                    var inputs = GetDebugValues(defs, dataObject, out invokeErrors);
                     errors.MergeErrors(invokeErrors);
                     debugState.Inputs.AddRange(inputs);
                 }
                 if(interrogateOutputs)
                 {
                     ErrorResultTO invokeErrors;
-                    var com = compiler.FetchBinaryDataList(dataObject.DataListID, out invokeErrors);
-                    errors.MergeErrors(invokeErrors);
+                    
                     var defs = compiler.GenerateDefsFromDataListForDebug(FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID), enDev2ColumnArgumentDirection.Output);
-                    var inputs = GetDebugValues(defs, com, out invokeErrors);
+                    var inputs = GetDebugValues(defs, dataObject, out invokeErrors);
                     errors.MergeErrors(invokeErrors);
                     debugState.Outputs.AddRange(inputs);
                 }
@@ -139,18 +135,14 @@ namespace Dev2.Runtime.ESB.WF
         }
 
         public Func<IDebugDispatcher> GetDebugDispatcher = () => DebugDispatcher.Instance;
-        private readonly Func<IDataListCompiler> _getDataListCompiler = () => DataListFactory.CreateDataListCompiler();
 
-        public List<DebugItem> GetDebugValues(IList<IDev2Definition> values, IBinaryDataList dataList, out ErrorResultTO errors)
+        public List<DebugItem> GetDebugValues(IList<IDev2Definition> values, IDSFDataObject dataObject, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            IDataListCompiler compiler = _getDataListCompiler();
             var results = new List<DebugItem>();
             var added = new List<string>();
             foreach(IDev2Definition dev2Definition in values)
             {
-                IBinaryDataListEntry tmpEntry = compiler.Evaluate(dataList.UID, enActionType.User, GetVariableName(dev2Definition), false, out errors);
-                GetValue(tmpEntry, dev2Definition);
 
 
                 var defn = GetVariableName(dev2Definition);
@@ -159,7 +151,7 @@ namespace Dev2.Runtime.ESB.WF
 
                 added.Add(defn);
                 DebugItem itemToAdd = new DebugItem();
-                _add(new DebugItemVariableParams(GetVariableName(dev2Definition), "", tmpEntry, dataList.UID), itemToAdd);
+                _add(new DebugEvalResult(GetVariableName(dev2Definition), "", dataObject.Environment), itemToAdd);
                 results.Add(itemToAdd);
             }
 
@@ -170,23 +162,7 @@ namespace Dev2.Runtime.ESB.WF
 
             return results;
         }
-        private static void GetValue(IBinaryDataListEntry tmpEntry, IDev2Definition defn)
-        {
-            if (tmpEntry != null)
-            {
-                if (String.IsNullOrEmpty(defn.RecordSetName))
-                {
-
-                    tmpEntry.FetchScalar(); // ask trav what this side effect means
-
-                }
-                else
-                {
-                    string error;
-                    tmpEntry.MakeRecordsetEvaluateReady(GlobalConstants.AllIndexes, GlobalConstants.AllColumns, out error);
-                }
-            }
-        }
+   
 
         string GetVariableName(IDev2Definition value)
         {
