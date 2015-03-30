@@ -11,7 +11,6 @@
 
 using System;
 using System.Activities;
-using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -134,15 +133,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 {
                                     assignValue = new AssignValue(t.FieldName, "=" + cleanExpression);
                                 }
+                                DebugItem debugItem = null;
                                 if (dataObject.IsDebugMode())
                                 {
-                                    AddSingleInputDebugItem(dataObject.Environment, innerCount, assignValue);
+                                    debugItem = AddSingleInputDebugItem(dataObject.Environment, innerCount, assignValue);
                                 }
                                 if (isCalcEvaluation)
                                 {
                                     assignValue = DoCalculation(dataObject.Environment, t.FieldName, cleanExpression);
                                 }
                                 dataObject.Environment.AssignWithFrame(assignValue);
+                                if (debugItem != null)
+                                {
+                                    _debugInputs.Add(debugItem);
+                                }
                                 if (dataObject.IsDebugMode())
                                 {
 
@@ -215,7 +219,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return null;
         }
 
-        void AddSingleInputDebugItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue)
+        DebugItem AddSingleInputDebugItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue)
         {
             var debugItem = new DebugItem();
             const string VariableLabelText = "Variable";
@@ -276,13 +280,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (e.Message.Contains("ParseError"))
                 {
                     AddDebugItem(new DebugItemWarewolfAtomResult("", assignValue.Value, assignValue.Name, "", VariableLabelText, NewFieldLabelText, "="), debugItem);
-                    return;
+                    return debugItem;
                 }
                 string errorMessage;
                 if (!ExecutionEnvironment.IsValidVariableExpression(assignValue.Name, out errorMessage))
                 {
-                    return;
+                    return null;
                 }
+                AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
                 if (DataListUtil.IsEvaluated(assignValue.Value))
                 {
                     var newValueResult = environment.Eval(assignValue.Value);
@@ -305,7 +310,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddDebugItem(new DebugItemWarewolfAtomResult("", assignValue.Value, assignValue.Name, "", VariableLabelText, NewFieldLabelText, "="), debugItem);
                 }
             }
-            _debugInputs.Add(debugItem);
+            return debugItem;
         }
 
         void AddSingleDebugOutputItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue)
