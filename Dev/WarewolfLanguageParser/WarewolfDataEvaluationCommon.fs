@@ -403,7 +403,7 @@ let AddAtomToRecordSetWithFraming (rset:WarewolfRecordset) (columnName:string) (
                   else 
                        { rset with Data=  Map.add columnName (CreateEmpty rset.Data.[PositionColumn].Length rset.Data.[PositionColumn].Count )  rset.Data    }
     let frame = if isFramed then position else 0;
-    if (position = rsAdded.Count+1)    
+    if (position = rsAdded.LastIndex+1)    
         then                  
             let addedAtEnd =  Map.map (fun k v -> if k=columnName then  ( AddToList v value) else (AddNothingToList v Nothing)) rsAdded.Data
             let len = addedAtEnd.[PositionColumn].Count 
@@ -411,13 +411,13 @@ let AddAtomToRecordSetWithFraming (rset:WarewolfRecordset) (columnName:string) (
             addedAtEnd.[PositionColumn].[len-1] <- Int position
             { rsAdded with Data=addedAtEnd ; LastIndex = rsAdded.LastIndex+1; Frame = frame ; Optimisations = if rsAdded.Count = rsAdded.LastIndex &&  rsAdded.Optimisations <> WarewolfAttribute.Fragmented &&  rsAdded.Optimisations <> WarewolfAttribute.Sorted then WarewolfAttribute.Ordinal else rsAdded.Optimisations  }
         else
-            if (position = rsAdded.Count+1) || (position = rsAdded.Frame && isFramed)   
+            if (position = rsAdded.LastIndex+1) || (position = rsAdded.Frame && isFramed)   
             then                  
                 let len = rsAdded.Data.[PositionColumn].Count 
                 rsAdded.Data.[columnName].[len-1] <- value
                 rsAdded
             else
-            if position > rsAdded.Count
+            if position > rsAdded.LastIndex
                 then
                 let addedAtEnd =  Map.map (fun k v -> if k=columnName then  ( AddToList v value) else (AddNothingToList v Nothing)) rsAdded.Data
                 let len = addedAtEnd.[PositionColumn].Count 
@@ -482,8 +482,12 @@ let DeleteIndex  (exp:string) (index:int)   (env:WarewolfEnvironment) =
     let rset = env.RecordSets.TryFind exp
     match rset with 
     | Some values -> let pos = Seq.findIndex ( fun a-> AtomtoString a = index.ToString())  values.Data.[PositionColumn]
-                     let posAsInt = pos
-                     {values  with Data = Map.map (fun (a:string) (b:WarewolfAtomList<WarewolfAtom>) -> b.DeletePosition( posAsInt ) ) values.Data ;LastIndex= values.LastIndex-1  } 
+                     let posAsInt = pos   
+                     let newData =  Map.map (fun (a:string) (b:WarewolfAtomList<WarewolfAtom>) -> b.DeletePosition( posAsInt ) ) values.Data                  
+                     {  values  with Optimisations = (if values.Optimisations = Ordinal then Sorted else values.Optimisations) ;
+                                              Data = newData  ;                        
+                                              LastIndex= if index = values.LastIndex then AtomToInt (Seq.max  newData.[PositionColumn]) else values.LastIndex ; 
+                     } 
     | None->failwith "recordset does not exist"
 let GetLastIndexFromRecordSet (exp:string)  (env:WarewolfEnvironment)  =
     let rset = env.RecordSets.TryFind exp
@@ -491,9 +495,14 @@ let GetLastIndexFromRecordSet (exp:string)  (env:WarewolfEnvironment)  =
     | Some values -> values.LastIndex                    
     | None->failwith "recordset does not exist"
 
-let rec DeleteExpressionIndex (exp:RecordSetName) (ind: LanguageExpression)  (env:WarewolfEnvironment)  =
+let rec DeleteExpressionIndex (b:RecordSetName) (ind: LanguageExpression)  (env:WarewolfEnvironment)  =
     let data = LanguageExpressionToString ind |> (Eval env) |> EvalResultToString
-    EvalDelete( (sprintf "[[%s(%s)]]" exp.Name data)) env
+    match ind with 
+    | WarewolfAtomAtomExpression atom ->
+                match atom with
+                | Int a -> DeleteIndex  b.Name a env |> (fun upd-> {env with RecordSets = Map.map (fun ax bx -> if ax=b.Name then upd else bx ) env.RecordSets} )
+                | _ -> failwith "recordsets must have an integer star or empty index"
+    |_->EvalDelete( (sprintf "[[%s(%s)]]" b.Name data)) env
 
 and EvalDelete (exp:string)  (env:WarewolfEnvironment) =
     let left = ParseLanguageExpression exp 
