@@ -880,7 +880,7 @@ namespace Dev2.Core.Tests.Settings
                 ResourceID = resourceID,
                 ResourceName = ResourceName
             };
-            const ResourceType ResourceType = ResourceType.WorkflowService;
+            const ResourceType ResourceType = Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService;
             var newResourceID = Guid.NewGuid();
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.Setup(r => r.ID).Returns(newResourceID);
@@ -908,7 +908,7 @@ namespace Dev2.Core.Tests.Settings
         public void SecurityViewModel_PickResourceCommand_PermissionHasResource_PickerShouldHavePermissionResourceAsSelectedResource()
         {
             //------------Setup for test--------------------------
-            const ResourceType ResourceType = ResourceType.WorkflowService;
+            const ResourceType ResourceType = Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService;
             const string ResourceName = "Resource2";
             var resourceID = Guid.NewGuid();
             var resourceModel = new Mock<IResourceModel>();
