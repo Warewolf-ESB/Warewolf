@@ -60,7 +60,7 @@ and evalRecordsSetExpressionUpdate (recset:RecordSetIdentifier) (env: WarewolfEn
                                                     | Int a ->  let data = WarewolfDataEvaluationCommon.Eval env   (LanguageExpressionToString (RecordSetExpression recset)) |> EvalResultToString |> DataString |> func
                                                                 AssignEvaluation.EvalAssign (LanguageExpressionToString (RecordSetExpression recset))  (data.ToString()) env 
                                                     | _ -> failwith "Invalid index"
-                                        | _ ->   EvalUpdate env ( sprintf "[[%s(%s)]]" recset.Name res) func
+                                        | _ ->   EvalUpdate env ( sprintf "[[%s(%s).%s]]" recset.Name res recset.Column) func
                                     
                 | _ -> failwith "Unknown evaluation type"
 

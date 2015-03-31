@@ -2821,7 +2821,7 @@ Scenario: Workflow with Assign and Unique Tool, Result rec with star
        |   | [[rec(3).unique]] = 20 |
        |   | [[rec(4).unique]] = 30 |
 
-
+#DONE
 Scenario: Convert an recordset to Upper by using index as scalar
 	Given I have a workflow "ConvertUsingScalarWithRecursiveEvalution"
 	And "ConvertUsingScalarWithRecursiveEvalution" contains an Assign "Records" as
@@ -2848,6 +2848,7 @@ Scenario: Convert an recordset to Upper by using index as scalar
 	  | # |                          |
 	  | 1 | [[rs(1).row]] = WAREWOLF |
 
+#DONE
 Scenario: Convert an recordset to Upper by using index as recordset
 	Given I have a workflow "ConvertUsingRecSetInRecursiveEvalution"
 	And "ConvertUsingRecSetInRecursiveEvalution" contains an Assign "Records" as
