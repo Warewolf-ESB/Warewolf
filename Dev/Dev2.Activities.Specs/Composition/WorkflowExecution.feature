@@ -180,7 +180,7 @@ Scenario: Workflow with an assign and remote workflow
 	  | [[values(1).up]] = HELLO  |
 	  | [[values(1).low]] = hello |
 
-	  
+#done	  
 Scenario: Workflow with Assign Base Convert and Case Convert tools executing against the server
 	  Given I have a workflow "WorkflowWithAssignBaseConvertandCaseconvert"
 	  And "WorkflowWithAssignBaseConvertandCaseconvert" contains an Assign "Assign1" as
@@ -289,6 +289,7 @@ Scenario: Workflow with Assign Base Convert and Case Convert tools executing aga
 #	  |                       |
 #	  | [[result2]] = Failure |
 
+#done
 Scenario: Workflow with 3 Assigns tools executing against the server
 	  Given I have a workflow "WorkflowWith3Assigntools"
 	  And "WorkflowWith3Assigntools" contains an Assign "Assigntool1" as
