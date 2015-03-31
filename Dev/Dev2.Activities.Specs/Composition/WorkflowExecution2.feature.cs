@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Dev2.Activities.Specs.Composition
+namespace SpecFlow.GeneratedTests
 {
     using TechTalk.SpecFlow;
     
@@ -50,7 +50,7 @@ namespace Dev2.Activities.Specs.Composition
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "WorkflowExecution")))
             {
-                Dev2.Activities.Specs.Composition.WorkflowExecutionFeature.FeatureSetup(null);
+                SpecFlow.GeneratedTests.WorkflowExecutionFeature.FeatureSetup(null);
             }
         }
         
@@ -8815,11 +8815,11 @@ this.FeatureBackground();
         public virtual void WorkflowSavingWithDifferentVersions()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow Saving with Different Versions", ((string[])(null)));
-#line 3315
+#line 3314
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 3316
+#line 3315
   testRunner.Given("I have a workflow \"WorkflowWithVersionAssignTest\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table474 = new TechTalk.SpecFlow.Table(new string[] {
@@ -8831,15 +8831,15 @@ this.FeatureBackground();
             table474.AddRow(new string[] {
                         "[[rec().a]]",
                         "Test"});
-#line 3317
+#line 3316
   testRunner.And("\"WorkflowWithVersionAssignTest\" contains an Assign \"VarsAssign\" as", ((string)(null)), table474, "And ");
-#line 3321
+#line 3320
    testRunner.When("workflow \"WorkflowWithVersionAssignTest\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3322
+#line 3321
    testRunner.Then("workflow \"WorkflowWithVersionAssignTest\" has \"0\" Versions in explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 3323
+#line 3322
    testRunner.When("workflow \"WorkflowWithVersionAssignTest\" is saved \"2\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3324
+#line 3323
    testRunner.Then("workflow \"WorkflowWithVersionAssignTest\" has \"2\" Versions in explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table475 = new TechTalk.SpecFlow.Table(new string[] {
@@ -8850,11 +8850,11 @@ this.FeatureBackground();
                         "v.2 DateTime"});
             table475.AddRow(new string[] {
                         "v.1 DateTime"});
-#line 3325
+#line 3324
    testRunner.And("explorer as", ((string)(null)), table475, "And ");
-#line 3330
+#line 3329
    testRunner.When("workflow \"WorkflowWithVersionAssignTest\" is saved \"3\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3331
+#line 3330
    testRunner.Then("workflow \"WorkflowWithVersionAssignTest\" has \"5\" Versions in explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table476 = new TechTalk.SpecFlow.Table(new string[] {
@@ -8871,7 +8871,7 @@ this.FeatureBackground();
                         "v.2 DateTime Save"});
             table476.AddRow(new string[] {
                         "v.1 DateTime Save"});
-#line 3332
+#line 3331
    testRunner.And("explorer as", ((string)(null)), table476, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -8884,11 +8884,11 @@ this.FeatureBackground();
         public virtual void ExecutingWorkflowOfDifferentVersions()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing workflow of different versions", ((string[])(null)));
-#line 3342
+#line 3341
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 3343
+#line 3342
   testRunner.Given("I have a workflow \"WorkflowWithVersionAssignExecuted2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table477 = new TechTalk.SpecFlow.Table(new string[] {
@@ -8900,15 +8900,15 @@ this.FeatureBackground();
             table477.AddRow(new string[] {
                         "[[rec().a]]",
                         "Test"});
-#line 3344
+#line 3343
   testRunner.And("\"WorkflowWithVersionAssignExecuted2\" contains an Assign \"VarsAssign\" as", ((string)(null)), table477, "And ");
-#line 3348
+#line 3347
    testRunner.When("workflow \"WorkflowWithVersionAssignExecuted2\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3349
+#line 3348
    testRunner.Then("workflow \"WorkflowWithVersionAssignExecuted2\" has \"0\" Versions in explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 3350
+#line 3349
    testRunner.When("\"WorkflowWithVersionAssignExecuted2\" is executed without saving", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3351
+#line 3350
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table478 = new TechTalk.SpecFlow.Table(new string[] {
@@ -8923,7 +8923,7 @@ this.FeatureBackground();
                         "2",
                         "[[rec().a]] =",
                         "Test"});
-#line 3352
+#line 3351
    testRunner.And("the \'VarsAssign\' in WorkFlow \'WorkflowWithVersionAssignExecuted2\' debug inputs as" +
                     "", ((string)(null)), table478, "And ");
 #line hidden
@@ -8936,12 +8936,12 @@ this.FeatureBackground();
             table479.AddRow(new string[] {
                         "2",
                         "[[rec(2).a]] = Test"});
-#line 3356
+#line 3355
    testRunner.And("the \'VarsAssign\' in Workflow \'WorkflowWithVersionAssignExecuted2\' debug outputs a" +
                     "s", ((string)(null)), table479, "And ");
-#line 3360
+#line 3359
    testRunner.When("workflow \"WorkflowWithVersionAssignExecuted2\" is saved \"2\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3361
+#line 3360
    testRunner.Then("workflow \"WorkflowWithVersionAssignExecuted2\" has \"2\" Versions in explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table480 = new TechTalk.SpecFlow.Table(new string[] {
@@ -8952,7 +8952,7 @@ this.FeatureBackground();
                         "v.2 DateTime"});
             table480.AddRow(new string[] {
                         "v.1 DateTime"});
-#line 3362
+#line 3361
    testRunner.And("explorer as", ((string)(null)), table480, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table481 = new TechTalk.SpecFlow.Table(new string[] {
@@ -8967,13 +8967,13 @@ this.FeatureBackground();
             table481.AddRow(new string[] {
                         "[[rec().a]]",
                         "V1"});
-#line 3367
+#line 3366
   testRunner.And("\"WorkflowWithVersionAssignExecuted2\" contains an Assign \"VarsAssign2\" as", ((string)(null)), table481, "And ");
-#line 3372
+#line 3371
   testRunner.When("workflow \"WorkflowWithVersionAssignExecuted2\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3373
+#line 3372
   testRunner.When("\"WorkflowWithVersionAssignExecuted2\" is executed without saving", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3374
+#line 3373
   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table482 = new TechTalk.SpecFlow.Table(new string[] {
@@ -8992,12 +8992,12 @@ this.FeatureBackground();
                         "3",
                         "[[rec().a]] =",
                         "V1"});
-#line 3375
+#line 3374
   testRunner.And("the \'VarsAssign2\' in WorkFlow \'WorkflowWithVersionAssignExecuted2\' debug inputs a" +
                     "s", ((string)(null)), table482, "And ");
-#line 3380
+#line 3379
   testRunner.When("workflow \"WorkflowWithVersionAssignExecuted2\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3381
+#line 3380
    testRunner.Then("workflow \"WorkflowWithVersionAssignExecuted2\" has \"4\" Versions in explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table483 = new TechTalk.SpecFlow.Table(new string[] {
@@ -9012,13 +9012,13 @@ this.FeatureBackground();
                         "v.2 DateTime"});
             table483.AddRow(new string[] {
                         "v.1 DateTime"});
-#line 3382
+#line 3381
    testRunner.And("explorer as", ((string)(null)), table483, "And ");
-#line 3389
+#line 3388
    testRunner.When("I rollback \"WorkflowWithVersionAssignExecuted\" to version \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3390
+#line 3389
    testRunner.When("\"WorkflowWithVersionAssignExecuted2\" is executed without saving", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3391
+#line 3390
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table484 = new TechTalk.SpecFlow.Table(new string[] {
@@ -9030,10 +9030,10 @@ this.FeatureBackground();
             table484.AddRow(new string[] {
                         "2",
                         "[[rec(2).a]] = Test"});
-#line 3392
+#line 3391
    testRunner.And("the \'VarsAssign\' in Workflow \'WorkflowWithVersionAssignExecuted2\' debug outputs a" +
                     "s", ((string)(null)), table484, "And ");
-#line 3396
+#line 3395
    testRunner.And("the \'VarsAssign\' in Workflow \'WorkflowWithVersionAssignExecuted2\' debug outputs d" +
                     "oes not exist|", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -9049,11 +9049,11 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow with Assign Base Convert and Case Convert testing variable that hasn\'t b" +
                     "een assigned", ((string[])(null)));
-#line 3454
+#line 3453
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 3455
+#line 3454
    testRunner.Given("I have a workflow \"WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalu" +
                     "es\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
@@ -9063,7 +9063,7 @@ this.FeatureBackground();
             table485.AddRow(new string[] {
                         "[[res]]",
                         "1"});
-#line 3456
+#line 3455
    testRunner.And("\"WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues\" contains an As" +
                     "sign \"Assign1\" as", ((string)(null)), table485, "And ");
 #line hidden
@@ -9073,7 +9073,7 @@ this.FeatureBackground();
             table486.AddRow(new string[] {
                         "[[res12]]",
                         "UPPER"});
-#line 3459
+#line 3458
    testRunner.And("\"WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues\" contains case " +
                     "convert \"Case to Convert\" as", ((string)(null)), table486, "And ");
 #line hidden
@@ -9085,12 +9085,12 @@ this.FeatureBackground();
                         "[[res12]]",
                         "Text",
                         "Base 64"});
-#line 3462
+#line 3461
    testRunner.And("\"WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues\" contains Base " +
                     "convert \"Base to Convert\" as", ((string)(null)), table487, "And ");
-#line 3465
+#line 3464
    testRunner.When("\"WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3466
+#line 3465
    testRunner.Then("the workflow execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table488 = new TechTalk.SpecFlow.Table(new string[] {
@@ -9101,7 +9101,7 @@ this.FeatureBackground();
                         "1",
                         "[[res]] =",
                         "1"});
-#line 3467
+#line 3466
    testRunner.And("the \'Assign1\' in WorkFlow \'WorkflowBaseConvertandCaseconvertTestingUnassignedVari" +
                     "ablevalues\' debug inputs as", ((string)(null)), table488, "And ");
 #line hidden
@@ -9111,7 +9111,7 @@ this.FeatureBackground();
             table489.AddRow(new string[] {
                         "1",
                         "[[res]] =  1"});
-#line 3470
+#line 3469
     testRunner.And("the \'Assign1\' in Workflow \'WorkflowBaseConvertandCaseconvertTestingUnassignedVari" +
                     "ablevalues\' debug outputs as", ((string)(null)), table489, "And ");
 #line hidden
@@ -9123,7 +9123,7 @@ this.FeatureBackground();
                         "1",
                         "[[res12]] =",
                         "UPPER"});
-#line 3473
+#line 3472
    testRunner.And("the \'Case to Convert\' in WorkFlow \'WorkflowBaseConvertandCaseconvertTestingUnassi" +
                     "gnedVariablevalues\' debug inputs as", ((string)(null)), table490, "And ");
 #line hidden
@@ -9133,7 +9133,7 @@ this.FeatureBackground();
             table491.AddRow(new string[] {
                         "1",
                         "[[res12]] ="});
-#line 3476
+#line 3475
    testRunner.And("the \'Case to Convert\' in Workflow \'WorkflowBaseConvertandCaseconvertTestingUnassi" +
                     "gnedVariablevalues\' debug outputs as", ((string)(null)), table491, "And ");
 #line hidden
@@ -9147,14 +9147,14 @@ this.FeatureBackground();
                         "[[res12]] =",
                         "Text",
                         "Base 64"});
-#line 3479
+#line 3478
    testRunner.And("the \'Base to Convert\' in WorkFlow \'WorkflowBaseConvertandCaseconvertTestingUnassi" +
                     "gnedVariablevalues\' debug inputs as", ((string)(null)), table492, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table493 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-#line 3482
+#line 3481
       testRunner.And("the \'Base to Convert\' in Workflow \'WorkflowBaseConvertandCaseconvertTestingUnassi" +
                     "gnedVariablevalues\' debug outputs as", ((string)(null)), table493, "And ");
 #line hidden
@@ -9170,11 +9170,11 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow with Assigns DataMerge and DataSplit and testing variables that hasn\'t b" +
                     "een assigned", ((string[])(null)));
-#line 3486
+#line 3485
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 3487
+#line 3486
       testRunner.Given("I have a workflow \"WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table494 = new TechTalk.SpecFlow.Table(new string[] {
@@ -9183,7 +9183,7 @@ this.FeatureBackground();
             table494.AddRow(new string[] {
                         "[[res]]",
                         "Test"});
-#line 3488
+#line 3487
    testRunner.And("\"WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues\" contains an Assign \"Assi" +
                     "gn To merge\" as", ((string)(null)), table494, "And ");
 #line hidden
@@ -9199,7 +9199,7 @@ this.FeatureBackground();
                         "4",
                         "",
                         "Left"});
-#line 3491
+#line 3490
    testRunner.And("\"WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues\" contains Data Merge \"Dat" +
                     "a Merge\" into \"[[result]]\" as", ((string)(null)), table495, "And ");
 #line hidden
@@ -9217,12 +9217,12 @@ this.FeatureBackground();
                         "4",
                         "Unselected",
                         ""});
-#line 3494
+#line 3493
    testRunner.And("\"WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues\" contains Data Split \"Dat" +
                     "a Split\" as", ((string)(null)), table496, "And ");
-#line 3497
+#line 3496
    testRunner.When("\"WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3498
+#line 3497
    testRunner.Then("the workflow execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table497 = new TechTalk.SpecFlow.Table(new string[] {
@@ -9233,7 +9233,7 @@ this.FeatureBackground();
                         "1",
                         "[[res]] =",
                         "Test"});
-#line 3499
+#line 3498
    testRunner.And("the \'Assign To merge\' in WorkFlow \'WorkflowWithMergeAndSlitToTestunAssignrdvaraib" +
                     "levalues\' debug inputs as", ((string)(null)), table497, "And ");
 #line hidden
@@ -9243,7 +9243,7 @@ this.FeatureBackground();
             table498.AddRow(new string[] {
                         "1",
                         "[[res]]          =  Test"});
-#line 3502
+#line 3501
   testRunner.And("the \'Assign To merge\' in Workflow \'WorkflowWithMergeAndSlitToTestunAssignrdvaraib" +
                     "levalues\' debug outputs as", ((string)(null)), table498, "And ");
 #line hidden
@@ -9261,7 +9261,7 @@ this.FeatureBackground();
                         "\"4\"",
                         "\"\"",
                         "Left"});
-#line 3505
+#line 3504
    testRunner.And("the \'Data Merge\' in WorkFlow \'WorkflowWithMergeAndSlitToTestunAssignrdvaraibleval" +
                     "ues\' debug inputs as", ((string)(null)), table499, "And ");
 #line hidden
@@ -9269,7 +9269,7 @@ this.FeatureBackground();
                         ""});
             table500.AddRow(new string[] {
                         "[[result]] ="});
-#line 3508
+#line 3507
    testRunner.And("the \'Data Merge\' in Workflow \'WorkflowWithMergeAndSlitToTestunAssignrdvaraibleval" +
                     "ues\' debug outputs as", ((string)(null)), table500, "And ");
 #line hidden
@@ -9293,7 +9293,7 @@ this.FeatureBackground();
                         "4",
                         "No",
                         ""});
-#line 3511
+#line 3510
    testRunner.And("the \'Data Split\' in WorkFlow \'WorkflowWithMergeAndSlitToTestunAssignrdvaraibleval" +
                     "ues\' debug inputs as", ((string)(null)), table501, "And ");
 #line hidden
@@ -9303,7 +9303,7 @@ this.FeatureBackground();
             table502.AddRow(new string[] {
                         "1",
                         "[[rec(1).b]] ="});
-#line 3514
+#line 3513
    testRunner.And("the \'Data Split\' in Workflow \'WorkflowWithMergeAndSlitToTestunAssignrdvaraibleval" +
                     "ues\' debug outputs as", ((string)(null)), table502, "And ");
 #line hidden
@@ -9317,11 +9317,11 @@ this.FeatureBackground();
         public virtual void WorkflowWithAssignsReplaceAndTestingVariablesThatHasnTBeenAssigned()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow with Assigns Replace and testing variables that hasn\'t been assigned", ((string[])(null)));
-#line 3552
+#line 3551
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 3553
+#line 3552
       testRunner.Given("I have a workflow \"workflowithAssignandReplaceTestingUnassignedvariablevalues\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table503 = new TechTalk.SpecFlow.Table(new string[] {
@@ -9330,7 +9330,7 @@ this.FeatureBackground();
             table503.AddRow(new string[] {
                         "[[Val]]",
                         "test"});
-#line 3554
+#line 3553
        testRunner.And("\"workflowithAssignandReplaceTestingUnassignedvariablevalues\" contains an Assign \"" +
                     "Assign34\" as", ((string)(null)), table503, "And ");
 #line hidden
@@ -9342,12 +9342,12 @@ this.FeatureBackground();
                         "[[rec()]]",
                         "[[Val1]]",
                         "[[Val2]]"});
-#line 3557
+#line 3556
    testRunner.And("\"workflowithAssignandReplaceTestingUnassignedvariablevalues\" contains Replace \"Re" +
                     "placing\" into \"[[replac]]\" as", ((string)(null)), table504, "And ");
-#line 3560
+#line 3559
    testRunner.When("\"workflowithAssignandReplaceTestingUnassignedvariablevalues\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3561
+#line 3560
    testRunner.Then("the workflow execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table505 = new TechTalk.SpecFlow.Table(new string[] {
@@ -9358,7 +9358,7 @@ this.FeatureBackground();
                         "1",
                         "[[Val]] =",
                         "test"});
-#line 3562
+#line 3561
    testRunner.And("the \'Assign34\' in WorkFlow \'workflowithAssignandReplaceTestingUnassignedvariablev" +
                     "alues\' debug inputs as", ((string)(null)), table505, "And ");
 #line hidden
@@ -9368,7 +9368,7 @@ this.FeatureBackground();
             table506.AddRow(new string[] {
                         "1",
                         "[[Val]] = test"});
-#line 3565
+#line 3564
     testRunner.And("the \'Assign34\' in Workflow \'workflowithAssignandReplaceTestingUnassignedvariablev" +
                     "alues\' debug outputs as", ((string)(null)), table506, "And ");
 #line hidden
@@ -9380,7 +9380,7 @@ this.FeatureBackground();
                         "[[rec()]] =",
                         "",
                         ""});
-#line 3568
+#line 3567
    testRunner.And("the \'Replacing\' in WorkFlow \'workflowithAssignandReplaceTestingUnassignedvariable" +
                     "values\' debug inputs as", ((string)(null)), table507, "And ");
 #line hidden
@@ -9388,7 +9388,7 @@ this.FeatureBackground();
                         ""});
             table508.AddRow(new string[] {
                         "[[replac]] ="});
-#line 3571
+#line 3570
    testRunner.And("the \'Replacing\' in Workflow \'workflowithAssignandReplaceTestingUnassignedvariable" +
                     "values\' debug outputs as", ((string)(null)), table508, "And ");
 #line hidden
@@ -9404,11 +9404,11 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow with Assign Format Numbers and testing variables that hasn\'t been assign" +
                     "ed", ((string[])(null)));
-#line 3602
+#line 3601
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 3603
+#line 3602
    testRunner.Given("I have a workflow \"WorkflowWithAssignandFormatTestingUnassignedvariablevalues\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table509 = new TechTalk.SpecFlow.Table(new string[] {
@@ -9417,7 +9417,7 @@ this.FeatureBackground();
             table509.AddRow(new string[] {
                         "[[val]]",
                         "1"});
-#line 3604
+#line 3603
    testRunner.And("\"WorkflowWithAssignandFormatTestingUnassignedvariablevalues\" contains an Assign \"" +
                     "IndexVal\" as", ((string)(null)), table509, "And ");
 #line hidden
@@ -9433,12 +9433,12 @@ this.FeatureBackground();
                         "[[val1]]",
                         "[[val1]]",
                         "[[fresult]]"});
-#line 3607
+#line 3606
       testRunner.And("\"WorkflowWithAssignandFormatTestingUnassignedvariablevalues\" contains Format Numb" +
                     "er \"Fnumber\" as", ((string)(null)), table510, "And ");
-#line 3610
+#line 3609
    testRunner.When("\"WorkflowWithAssignandFormatTestingUnassignedvariablevalues\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3611
+#line 3610
    testRunner.Then("the workflow execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table511 = new TechTalk.SpecFlow.Table(new string[] {
@@ -9449,7 +9449,7 @@ this.FeatureBackground();
                         "1",
                         "[[val]]  =",
                         "1"});
-#line 3612
+#line 3611
    testRunner.And("the \'IndexVal\' in WorkFlow \'WorkflowWithAssignandFormatTestingUnassignedvariablev" +
                     "alues\' debug inputs as", ((string)(null)), table511, "And ");
 #line hidden
@@ -9459,7 +9459,7 @@ this.FeatureBackground();
             table512.AddRow(new string[] {
                         "1",
                         "[[val]]  = 1"});
-#line 3615
+#line 3614
    testRunner.And("the \'IndexVal\' in Workflow \'WorkflowWithAssignandFormatTestingUnassignedvariablev" +
                     "alues\' debug outputs as", ((string)(null)), table512, "And ");
 #line hidden
@@ -9473,7 +9473,7 @@ this.FeatureBackground();
                         "Up",
                         "[[val1]] =",
                         "[[val1]]  ="});
-#line 3618
+#line 3617
    testRunner.And("the \'Fnumber\' in WorkFlow \'WorkflowWithAssignandFormatTestingUnassignedvariableva" +
                     "lues\' debug inputs as", ((string)(null)), table513, "And ");
 #line hidden
@@ -9481,7 +9481,7 @@ this.FeatureBackground();
                         ""});
             table514.AddRow(new string[] {
                         "[[fresult]]  ="});
-#line 3621
+#line 3620
    testRunner.And("the \'Fnumber\' in Workflow \'WorkflowWithAssignandFormatTestingUnassignedvariableva" +
                     "lues\' debug outputs as", ((string)(null)), table514, "And ");
 #line hidden
@@ -9497,11 +9497,11 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow with Assign Create Delete folder and testing variable values that hasn\'t" +
                     " been assigned", ((string[])(null)));
-#line 3650
+#line 3649
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 3651
+#line 3650
    testRunner.Given("I have a workflow \"WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariab" +
                     "levalues\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
@@ -9511,7 +9511,7 @@ this.FeatureBackground();
             table515.AddRow(new string[] {
                         "[[rec().a]]",
                         "C:\\copied00.txt"});
-#line 3652
+#line 3651
    testRunner.And("\"WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues\" contains" +
                     " an Assign \"AssignT\" as", ((string)(null)), table515, "And ");
 #line hidden
@@ -9527,7 +9527,7 @@ this.FeatureBackground();
                         "",
                         "",
                         "[[res1]]"});
-#line 3655
+#line 3654
    testRunner.And("\"WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues\" contains" +
                     " an Create \"Create12\" as", ((string)(null)), table516, "And ");
 #line hidden
@@ -9537,13 +9537,13 @@ this.FeatureBackground();
             table517.AddRow(new string[] {
                         "[[NoValue]]",
                         "[[res2]]"});
-#line 3658
+#line 3657
    testRunner.And("\"WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues\" contains" +
                     " an Delete Folder \"DeleteFolder1\" as", ((string)(null)), table517, "And ");
-#line 3661
+#line 3660
    testRunner.When("\"WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues\" is execu" +
                     "ted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3662
+#line 3661
    testRunner.Then("the workflow execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table518 = new TechTalk.SpecFlow.Table(new string[] {
@@ -9554,7 +9554,7 @@ this.FeatureBackground();
                         "1",
                         "[[rec().a]] =",
                         "C:\\copied00.txt"});
-#line 3663
+#line 3662
    testRunner.And("the \'AssignT\' in WorkFlow \'WorkflowWithAssignCreateandDeleteRecordTestingUnassign" +
                     "edvariablevalues\' debug inputs as", ((string)(null)), table518, "And ");
 #line hidden
@@ -9564,7 +9564,7 @@ this.FeatureBackground();
             table519.AddRow(new string[] {
                         "1",
                         "[[rec(1).a]] = C:\\copied00.txt"});
-#line 3666
+#line 3665
    testRunner.And("the \'AssignT\' in Workflow \'WorkflowWithAssignCreateandDeleteRecordTestingUnassign" +
                     "edvariablevalues\' debug outputs as", ((string)(null)), table519, "And ");
 #line hidden
@@ -9578,7 +9578,7 @@ this.FeatureBackground();
                         "True",
                         "\"\"",
                         "\"\""});
-#line 3669
+#line 3668
   testRunner.And("the \'Create12\' in WorkFlow \'WorkflowWithAssignCreateandDeleteRecordTestingUnassig" +
                     "nedvariablevalues\' debug inputs as", ((string)(null)), table520, "And ");
 #line hidden
@@ -9586,7 +9586,7 @@ this.FeatureBackground();
                         ""});
             table521.AddRow(new string[] {
                         "[[res1]] ="});
-#line 3672
+#line 3671
     testRunner.And("the \'Create12\' in Workflow \'WorkflowWithAssignCreateandDeleteRecordTestingUnassig" +
                     "nedvariablevalues\' debug outputs as", ((string)(null)), table521, "And ");
 #line hidden
@@ -9598,7 +9598,7 @@ this.FeatureBackground();
                         "[[NoValue]] =",
                         "\"\"",
                         "\"\""});
-#line 3675
+#line 3674
    testRunner.And("the \'DeleteFolder1\' in WorkFlow \'WorkflowWithAssignCreateandDeleteRecordTestingUn" +
                     "assignedvariablevalues\' debug inputs as", ((string)(null)), table522, "And ");
 #line hidden
@@ -9606,7 +9606,7 @@ this.FeatureBackground();
                         ""});
             table523.AddRow(new string[] {
                         "[[res2]] ="});
-#line 3678
+#line 3677
    testRunner.And("the \'DeleteFolder1\' in Workflow \'WorkflowWithAssignCreateandDeleteRecordTestingUn" +
                     "assignedvariablevalues\' debug outputs as", ((string)(null)), table523, "And ");
 #line hidden
@@ -9620,11 +9620,11 @@ this.FeatureBackground();
         public virtual void CalculateTestingVariableValuesThatHasnTBeenAssigned()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate testing variable values that hasn\'t been assigned", ((string[])(null)));
-#line 3716
+#line 3715
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 3717
+#line 3716
       testRunner.Given("I have a workflow \"WorkflowforCalTestingUnassignedvariablevalue\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table524 = new TechTalk.SpecFlow.Table(new string[] {
@@ -9633,14 +9633,14 @@ this.FeatureBackground();
             table524.AddRow(new string[] {
                         "[[Val]]",
                         "1"});
-#line 3718
+#line 3717
       testRunner.And("\"WorkflowforCalTestingUnassignedvariablevalue\" contains an Assign \"Values34\" as", ((string)(null)), table524, "And ");
-#line 3721
+#line 3720
   testRunner.And("\"WorkflowforCalTestingUnassignedvariablevalue\" contains Calculate \"Calculate1\" wi" +
                     "th formula \"[[Val1]]+1\" into \"[[res]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3722
+#line 3721
    testRunner.When("\"WorkflowforCalTestingUnassignedvariablevalue\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3723
+#line 3722
    testRunner.Then("the workflow execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table525 = new TechTalk.SpecFlow.Table(new string[] {
@@ -9651,7 +9651,7 @@ this.FeatureBackground();
                         "1",
                         "[[Val]] =",
                         "1"});
-#line 3724
+#line 3723
       testRunner.And("the \'Values34\' in WorkFlow \'WorkflowforCalTestingUnassignedvariablevalue\' debug i" +
                     "nputs as", ((string)(null)), table525, "And ");
 #line hidden
@@ -9661,7 +9661,7 @@ this.FeatureBackground();
             table526.AddRow(new string[] {
                         "1",
                         "[[Val]] = 1"});
-#line 3727
+#line 3726
    testRunner.And("the \'Values34\' in Workflow \'WorkflowforCalTestingUnassignedvariablevalue\' debug o" +
                     "utputs as", ((string)(null)), table526, "And ");
 #line hidden
@@ -9669,7 +9669,7 @@ this.FeatureBackground();
                         "fx ="});
             table527.AddRow(new string[] {
                         "[[Val1]]+1 = [[Val1]]+1"});
-#line 3730
+#line 3729
    testRunner.And("the \'Calculate1\' in WorkFlow \'WorkflowforCalTestingUnassignedvariablevalue\' debug" +
                     " inputs as", ((string)(null)), table527, "And ");
 #line hidden
@@ -9677,7 +9677,7 @@ this.FeatureBackground();
                         ""});
             table528.AddRow(new string[] {
                         "[[res]] ="});
-#line 3733
+#line 3732
       testRunner.And("the \'Calculate1\' in Workflow \'WorkflowforCalTestingUnassignedvariablevalue\' debug" +
                     " outputs as", ((string)(null)), table528, "And ");
 #line hidden
@@ -9691,11 +9691,11 @@ this.FeatureBackground();
         public virtual void CalculateTestingVariableValuesThatHasnTBeenAssigned2()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate testing variable values that hasn\'t been assigned2", ((string[])(null)));
-#line 3738
+#line 3737
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 3739
+#line 3738
       testRunner.Given("I have a workflow \"WorkflowforCalTestingUnassignedvariablevalue2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table529 = new TechTalk.SpecFlow.Table(new string[] {
@@ -9704,14 +9704,14 @@ this.FeatureBackground();
             table529.AddRow(new string[] {
                         "[[Val]]",
                         "1"});
-#line 3740
+#line 3739
       testRunner.And("\"WorkflowforCalTestingUnassignedvariablevalue2\" contains an Assign \"Values34\" as", ((string)(null)), table529, "And ");
-#line 3743
+#line 3742
   testRunner.And("\"WorkflowforCalTestingUnassignedvariablevalue2\" contains Calculate \"Calculate1\" w" +
                     "ith formula \"[[Val1]]23+1\" into \"[[res]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3744
+#line 3743
    testRunner.When("\"WorkflowforCalTestingUnassignedvariablevalue2\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3745
+#line 3744
    testRunner.Then("the workflow execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table530 = new TechTalk.SpecFlow.Table(new string[] {
@@ -9722,7 +9722,7 @@ this.FeatureBackground();
                         "1",
                         "[[Val]] =",
                         "1"});
-#line 3746
+#line 3745
       testRunner.And("the \'Values34\' in WorkFlow \'WorkflowforCalTestingUnassignedvariablevalue2\' debug " +
                     "inputs as", ((string)(null)), table530, "And ");
 #line hidden
@@ -9732,7 +9732,7 @@ this.FeatureBackground();
             table531.AddRow(new string[] {
                         "1",
                         "[[Val]] = 1"});
-#line 3749
+#line 3748
    testRunner.And("the \'Values34\' in Workflow \'WorkflowforCalTestingUnassignedvariablevalue2\' debug " +
                     "outputs as", ((string)(null)), table531, "And ");
 #line hidden
@@ -9740,7 +9740,7 @@ this.FeatureBackground();
                         "fx ="});
             table532.AddRow(new string[] {
                         "[[Val1]]23+1 = [[Val1]]23+1"});
-#line 3752
+#line 3751
    testRunner.And("the \'Calculate1\' in WorkFlow \'WorkflowforCalTestingUnassignedvariablevalue2\' debu" +
                     "g inputs as", ((string)(null)), table532, "And ");
 #line hidden
@@ -9748,7 +9748,7 @@ this.FeatureBackground();
                         ""});
             table533.AddRow(new string[] {
                         "[[res]] ="});
-#line 3755
+#line 3754
       testRunner.And("the \'Calculate1\' in Workflow \'WorkflowforCalTestingUnassignedvariablevalue2\' debu" +
                     "g outputs as", ((string)(null)), table533, "And ");
 #line hidden
@@ -9764,11 +9764,11 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow with Assign and Random and testing variable values that hasn\'t been assi" +
                     "gned", ((string[])(null)));
-#line 3759
+#line 3758
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 3760
+#line 3759
   testRunner.Given("I have a workflow \"WorkflowWithAssignandRandomTestingUnassignedvariablevalue\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table534 = new TechTalk.SpecFlow.Table(new string[] {
@@ -9777,7 +9777,7 @@ this.FeatureBackground();
             table534.AddRow(new string[] {
                         "[[a]]",
                         "1"});
-#line 3761
+#line 3760
   testRunner.And("\"WorkflowWithAssignandRandomTestingUnassignedvariablevalue\" contains an Assign \"V" +
                     "alforrandno\" as", ((string)(null)), table534, "And ");
 #line hidden
@@ -9791,12 +9791,12 @@ this.FeatureBackground();
                         "[[val1]]",
                         "[[val2]]",
                         "[[ranresult]]"});
-#line 3764
+#line 3763
     testRunner.And("\"WorkflowWithAssignandRandomTestingUnassignedvariablevalue\" contains Random \"Rand" +
                     "\" as", ((string)(null)), table535, "And ");
-#line 3767
+#line 3766
    testRunner.When("\"WorkflowWithAssignandRandomTestingUnassignedvariablevalue\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3768
+#line 3767
    testRunner.Then("the workflow execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table536 = new TechTalk.SpecFlow.Table(new string[] {
@@ -9807,7 +9807,7 @@ this.FeatureBackground();
                         "1",
                         "[[a]] =",
                         "1"});
-#line 3769
+#line 3768
    testRunner.And("the \'Valforrandno\' in WorkFlow \'WorkflowWithAssignandRandomTestingUnassignedvaria" +
                     "blevalue\' debug inputs as", ((string)(null)), table536, "And ");
 #line hidden
@@ -9817,7 +9817,7 @@ this.FeatureBackground();
             table537.AddRow(new string[] {
                         "1",
                         "[[a]] = 1"});
-#line 3772
+#line 3771
    testRunner.And("the \'Valforrandno\' in Workflow \'WorkflowWithAssignandRandomTestingUnassignedvaria" +
                     "blevalue\' debug outputs as", ((string)(null)), table537, "And ");
 #line hidden
@@ -9829,7 +9829,7 @@ this.FeatureBackground();
                         "Numbers",
                         "[[val1]]  =",
                         "[[val2]] ="});
-#line 3775
+#line 3774
    testRunner.And("the \'Rand\' in WorkFlow \'WorkflowWithAssignandRandomTestingUnassignedvariablevalue" +
                     "\' debug inputs as", ((string)(null)), table538, "And ");
 #line hidden
@@ -9837,7 +9837,7 @@ this.FeatureBackground();
                         ""});
             table539.AddRow(new string[] {
                         "[[ranresult]] ="});
-#line 3778
+#line 3777
    testRunner.And("the \'Rand\' in Workflow \'WorkflowWithAssignandRandomTestingUnassignedvariablevalue" +
                     "\' debug outputs as", ((string)(null)), table539, "And ");
 #line hidden
@@ -9853,11 +9853,11 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow with Assign, Date Time Difference tools and testing variable values that" +
                     " hasn\'t been assigned", ((string[])(null)));
-#line 3808
+#line 3807
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 3809
+#line 3808
    testRunner.Given("I have a workflow \"WorkflowWithAssignAndDateTimeDifferencetoolsTestingUnassignedv" +
                     "ariablevalue\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
@@ -9867,7 +9867,7 @@ this.FeatureBackground();
             table540.AddRow(new string[] {
                         "[[val]]",
                         "2014"});
-#line 3810
+#line 3809
    testRunner.And("\"WorkflowWithAssignAndDateTimeDifferencetoolsTestingUnassignedvariablevalue\" cont" +
                     "ains an Assign \"InputDates\" as", ((string)(null)), table540, "And ");
 #line hidden
@@ -9883,13 +9883,13 @@ this.FeatureBackground();
                         "[[val3]]",
                         "Years",
                         "[[result]]"});
-#line 3813
+#line 3812
    testRunner.And("\"WorkflowWithAssignAndDateTimeDifferencetoolsTestingUnassignedvariablevalue\" cont" +
                     "ains Date and Time Difference \"DateAndTime\" as", ((string)(null)), table541, "And ");
-#line 3816
+#line 3815
    testRunner.When("\"WorkflowWithAssignAndDateTimeDifferencetoolsTestingUnassignedvariablevalue\" is e" +
                     "xecuted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3817
+#line 3816
    testRunner.Then("the workflow execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table542 = new TechTalk.SpecFlow.Table(new string[] {
@@ -9900,7 +9900,7 @@ this.FeatureBackground();
                         "1",
                         "[[val]]  =",
                         "2014"});
-#line 3818
+#line 3817
    testRunner.And("the \'InputDates\' in WorkFlow \'WorkflowWithAssignAndDateTimeDifferencetoolsTesting" +
                     "Unassignedvariablevalue\' debug inputs as", ((string)(null)), table542, "And ");
 #line hidden
@@ -9910,7 +9910,7 @@ this.FeatureBackground();
             table543.AddRow(new string[] {
                         "1",
                         "[[val]]  = 2014"});
-#line 3821
+#line 3820
    testRunner.And("the \'InputDates\' in Workflow \'WorkflowWithAssignAndDateTimeDifferencetoolsTesting" +
                     "Unassignedvariablevalue\' debug outputs as", ((string)(null)), table543, "And ");
 #line hidden
@@ -9924,13 +9924,13 @@ this.FeatureBackground();
                         "[[val2]] =",
                         "[[val3]]  =",
                         "Years"});
-#line 3824
+#line 3823
    testRunner.And("the \'DateAndTime\' in WorkFlow \'WorkflowWithAssignAndDateTimeDifferencetoolsTestin" +
                     "gUnassignedvariablevalue\' debug inputs as", ((string)(null)), table544, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table545 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-#line 3827
+#line 3826
    testRunner.And("the \'DateAndTime\' in Workflow \'WorkflowWithAssignAndDateTimeDifferencetoolsTestin" +
                     "gUnassignedvariablevalue\' debug outputs as", ((string)(null)), table545, "And ");
 #line hidden
@@ -9946,11 +9946,11 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow with Assign Unique Tool and testing variables in Returnfield hasn\'t been" +
                     " assigned", ((string[])(null)));
-#line 3921
+#line 3920
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 3922
+#line 3921
       testRunner.Given("I have a workflow \"workflowithAssignUni\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table546 = new TechTalk.SpecFlow.Table(new string[] {
@@ -9962,7 +9962,7 @@ this.FeatureBackground();
             table546.AddRow(new string[] {
                         "[[rs(1).data]]",
                         "10"});
-#line 3923
+#line 3922
       testRunner.And("\"workflowithAssignUni\" contains an Assign \"Records1\" as", ((string)(null)), table546, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table547 = new TechTalk.SpecFlow.Table(new string[] {
@@ -9973,11 +9973,11 @@ this.FeatureBackground();
                         "[[rs(1).row]]",
                         "[[new().row]]",
                         "[[rec().unique]]"});
-#line 3927
+#line 3926
    testRunner.And("\"workflowithAssignUni\" contains an Unique \"Unrec\" as", ((string)(null)), table547, "And ");
-#line 3930
+#line 3929
    testRunner.When("\"workflowithAssignUni\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3931
+#line 3930
    testRunner.Then("the workflow execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table548 = new TechTalk.SpecFlow.Table(new string[] {
@@ -9992,7 +9992,7 @@ this.FeatureBackground();
                         "2",
                         "[[rs(1).data]] =",
                         "10"});
-#line 3932
+#line 3931
    testRunner.And("the \'Records1\' in WorkFlow \'workflowithAssignUni\' debug inputs as", ((string)(null)), table548, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table549 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10004,7 +10004,7 @@ this.FeatureBackground();
             table549.AddRow(new string[] {
                         "2",
                         "[[rs(1).data]] =  10"});
-#line 3937
+#line 3936
    testRunner.And("the \'Records1\' in Workflow \'workflowithAssignUni\' debug outputs as", ((string)(null)), table549, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table550 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10019,14 +10019,14 @@ this.FeatureBackground();
                         "",
                         "",
                         "[[new().row]] ="});
-#line 3941
+#line 3940
    testRunner.And("the \'Unrec\' in WorkFlow \'workflowithAssignUni\' debug inputs as", ((string)(null)), table550, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table551 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table551.AddRow(new string[] {
                         "[[rec(1).unique]] ="});
-#line 3945
+#line 3944
       testRunner.And("the \'Unrec\' in Workflow \'workflowithAssignUni\' debug outputs as", ((string)(null)), table551, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -10039,11 +10039,11 @@ this.FeatureBackground();
         public virtual void ExecutingUtility_FormatNumberExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Utility - Format Number example workflow", ((string[])(null)));
-#line 3950
+#line 3949
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 3951
+#line 3950
    testRunner.Given("I have a workflow \"Utility - Format Number Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table552 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10051,12 +10051,12 @@ this.FeatureBackground();
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 3952
+#line 3951
    testRunner.And("\"Utility - Format Number Test\" contains \"Utility - Format Number\" from server \"lo" +
                     "calhost\" with mapping as", ((string)(null)), table552, "And ");
-#line 3954
+#line 3953
    testRunner.When("\"Utility - Format Number Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3955
+#line 3954
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table553 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10069,14 +10069,14 @@ this.FeatureBackground();
                         "Normal",
                         "2",
                         "2"});
-#line 3956
+#line 3955
    testRunner.And("the \'Format Number1\' in WorkFlow \'Utility - Format Number\' debug inputs as", ((string)(null)), table553, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table554 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table554.AddRow(new string[] {
                         "[[Price]] = 123.45"});
-#line 3959
+#line 3958
    testRunner.And("the \'Format Number1\' in Workflow \'Utility - Format Number\' debug outputs as", ((string)(null)), table554, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table555 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10089,14 +10089,14 @@ this.FeatureBackground();
                         "Up",
                         "-2",
                         "-3"});
-#line 3962
+#line 3961
     testRunner.And("the \'Format Number2\' in WorkFlow \'Utility - Format Number\' debug inputs as", ((string)(null)), table555, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table556 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table556.AddRow(new string[] {
                         "[[PriceInK]] = 14"});
-#line 3965
+#line 3964
    testRunner.And("the \'Format Number2\' in Workflow \'Utility - Format Number\' debug outputs as", ((string)(null)), table556, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -10109,11 +10109,11 @@ this.FeatureBackground();
         public virtual void ExecutingUtility_RandomExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Utility - Random example workflow", ((string[])(null)));
-#line 3970
+#line 3969
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 3971
+#line 3970
    testRunner.Given("I have a workflow \"Utility - Random Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table557 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10121,12 +10121,12 @@ this.FeatureBackground();
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 3972
+#line 3971
    testRunner.And("\"Utility - Random Test\" contains \"Utility - Random\" from server \"localhost\" with " +
                     "mapping as", ((string)(null)), table557, "And ");
-#line 3974
+#line 3973
    testRunner.When("\"Utility - Random Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3975
+#line 3974
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table558 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10137,14 +10137,14 @@ this.FeatureBackground();
                         "Numbers",
                         "1",
                         "6"});
-#line 3976
+#line 3975
    testRunner.And("the \'Random1\' in WorkFlow \'Utility - Random\' debug inputs as", ((string)(null)), table558, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table559 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table559.AddRow(new string[] {
                         "[[DiceRoll]] = Int32"});
-#line 3979
+#line 3978
    testRunner.And("the \'Random1\' in Workflow \'Utility - Random\' debug outputs as", ((string)(null)), table559, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table560 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10153,28 +10153,28 @@ this.FeatureBackground();
             table560.AddRow(new string[] {
                         "Letters",
                         "7"});
-#line 3982
+#line 3981
      testRunner.And("the \'Random2\' in WorkFlow \'Utility - Random\' debug inputs as", ((string)(null)), table560, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table561 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table561.AddRow(new string[] {
                         "[[Scrabble]] = String"});
-#line 3985
+#line 3984
    testRunner.And("the \'Random2\' in Workflow \'Utility - Random\' debug outputs as", ((string)(null)), table561, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table562 = new TechTalk.SpecFlow.Table(new string[] {
                         "Random"});
             table562.AddRow(new string[] {
                         "GUID"});
-#line 3988
+#line 3987
       testRunner.And("the \'Random3\' in WorkFlow \'Utility - Random\' debug inputs as", ((string)(null)), table562, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table563 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table563.AddRow(new string[] {
                         "[[License]] = String"});
-#line 3991
+#line 3990
    testRunner.And("the \'Random3\' in Workflow \'Utility - Random\' debug outputs as", ((string)(null)), table563, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -10187,11 +10187,11 @@ this.FeatureBackground();
         public virtual void ExecutingUtility_DateAndTimeExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Utility - Date and Time example workflow", ((string[])(null)));
-#line 3996
+#line 3995
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 3997
+#line 3996
    testRunner.Given("I have a workflow \"Utility - Date and Time Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table564 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10199,12 +10199,12 @@ this.FeatureBackground();
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 3998
+#line 3997
    testRunner.And("\"Utility - Date and Time Test\" contains \"Utility - Date and Time\" from server \"lo" +
                     "calhost\" with mapping as", ((string)(null)), table564, "And ");
-#line 4000
+#line 3999
    testRunner.When("\"Utility - Date and Time Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4001
+#line 4000
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table565 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10225,14 +10225,14 @@ this.FeatureBackground();
                         "\"\"",
                         "System Date Time Format",
                         "yyyy/MM/dd hh:mm:ss tt"});
-#line 4002
+#line 4001
    testRunner.And("the \'Date and Time(1)\' in WorkFlow \'Utility - Date and Time\' debug inputs as", ((string)(null)), table565, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table566 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table566.AddRow(new string[] {
                         "[[nowish]] = DateTime"});
-#line 4005
+#line 4004
    testRunner.And("the \'Date and Time(1)\' in Workflow \'Utility - Date and Time\' debug outputs as", ((string)(null)), table566, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table567 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10249,14 +10249,14 @@ this.FeatureBackground();
                         "\"\"",
                         "\"\"",
                         "mm/dd/yy 12h:min am/pm"});
-#line 4008
+#line 4007
   testRunner.And("the \'Date and Time(2)\' in WorkFlow \'Utility - Date and Time\' debug inputs as", ((string)(null)), table567, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table568 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table568.AddRow(new string[] {
                         "[[nowish]] = DateTime"});
-#line 4011
+#line 4010
    testRunner.And("the \'Date and Time(2)\' in Workflow \'Utility - Date and Time\' debug outputs as", ((string)(null)), table568, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table569 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10271,14 +10271,14 @@ this.FeatureBackground();
                         "Minutes",
                         "46664",
                         "mm/dd/yyyy 12h:min am/pm"});
-#line 4014
+#line 4013
    testRunner.And("the \'Date and Time(3)\' in WorkFlow \'Utility - Date and Time\' debug inputs as", ((string)(null)), table569, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table570 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table570.AddRow(new string[] {
                         "[[SomeTimeBack]] = DateTime"});
-#line 4017
+#line 4016
    testRunner.And("the \'Date and Time(3)\' in Workflow \'Utility - Date and Time\' debug outputs as", ((string)(null)), table570, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table571 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10293,14 +10293,14 @@ this.FeatureBackground();
                         "\"\"",
                         "\"\"",
                         "mm/dd/yyyy 12h:min:ss.sp am/pm"});
-#line 4020
+#line 4019
   testRunner.And("the \'Date and Time(4)\' in WorkFlow \'Utility - Date and Time\' debug inputs as", ((string)(null)), table571, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table572 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table572.AddRow(new string[] {
                         "[[TheDefaultDate]] = DateTime"});
-#line 4023
+#line 4022
    testRunner.And("the \'Date and Time(4)\' in Workflow \'Utility - Date and Time\' debug outputs as", ((string)(null)), table572, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table573 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10319,7 +10319,7 @@ this.FeatureBackground();
                         "\"\"",
                         "\"\"",
                         "\'Date format yyyy MM dd yields : \' yyyy MM dd"});
-#line 4026
+#line 4025
    testRunner.And("the \'Date and Time(5)\' in WorkFlow \'Utility - Date and Time\' debug inputs as", ((string)(null)), table573, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -10332,11 +10332,11 @@ this.FeatureBackground();
         public virtual void ExecutingUtility_GatherSystemInformationExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Utility - Gather System Information example workflow", ((string[])(null)));
-#line 4030
+#line 4029
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4031
+#line 4030
    testRunner.Given("I have a workflow \"Utility - System Information Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table574 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10344,12 +10344,12 @@ this.FeatureBackground();
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 4032
+#line 4031
    testRunner.And("\"Utility - System Information Test\" contains \"Utility - System Information\" from " +
                     "server \"localhost\" with mapping as", ((string)(null)), table574, "And ");
-#line 4034
+#line 4033
    testRunner.When("\"Utility - System Information Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4035
+#line 4034
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table575 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10424,7 +10424,7 @@ this.FeatureBackground();
                         "17",
                         "[[Agents]] =",
                         "Warewolf Agents"});
-#line 4036
+#line 4035
    testRunner.And("the \'Gather System Information (17)\' in WorkFlow \'Utility - System Information\' d" +
                     "ebug inputs as", ((string)(null)), table575, "And ");
 #line hidden
@@ -10482,7 +10482,7 @@ this.FeatureBackground();
             table576.AddRow(new string[] {
                         "17",
                         "[[Agents]]        =    String"});
-#line 4055
+#line 4054
   testRunner.And("the \'Gather System Information (17)\' in Workflow \'Utility - System Information\' d" +
                     "ebug outputs as", ((string)(null)), table576, "And ");
 #line hidden
@@ -10496,11 +10496,11 @@ this.FeatureBackground();
         public virtual void ExecutingUtility_WebRequestExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Utility - Web Request example workflow", ((string[])(null)));
-#line 4076
+#line 4075
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4077
+#line 4076
    testRunner.Given("I have a workflow \"Utility - Web Request Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table577 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10508,12 +10508,12 @@ this.FeatureBackground();
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 4078
+#line 4077
    testRunner.And("\"Utility - Web Request Test\" contains \"Utility - Web Request\" from server \"localh" +
                     "ost\" with mapping as", ((string)(null)), table577, "And ");
-#line 4080
+#line 4079
    testRunner.When("\"Utility - Web Request Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4081
+#line 4080
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table578 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10522,14 +10522,14 @@ this.FeatureBackground();
             table578.AddRow(new string[] {
                         "https://www.google.com/",
                         ""});
-#line 4082
+#line 4081
    testRunner.And("the \'Web Request(1)\' in WorkFlow \'Utility - Web Request\' debug inputs as", ((string)(null)), table578, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table579 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table579.AddRow(new string[] {
                         "[[GoogleHome]] = String"});
-#line 4085
+#line 4084
    testRunner.And("the \'Web Request(1)\' in Workflow \'Utility - Web Request\' debug outputs as", ((string)(null)), table579, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table580 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10539,14 +10539,14 @@ this.FeatureBackground();
                         "http://maps.googleapis.com/maps/api/geocode/xml?address=[[BartsAddress]]&sensor=f" +
                             "alse = String",
                         ""});
-#line 4088
+#line 4087
    testRunner.And("the \'Web Request(2)\' in WorkFlow \'Utility - Web Request\' debug inputs as", ((string)(null)), table580, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table581 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table581.AddRow(new string[] {
                         "[[GecodedAddress]] = String"});
-#line 4091
+#line 4090
    testRunner.And("the \'Web Request(2)\' in Workflow \'Utility - Web Request\' debug outputs as", ((string)(null)), table581, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -10559,11 +10559,11 @@ this.FeatureBackground();
         public virtual void ExecutingData_BaseConversionExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Data - Base Conversion example workflow", ((string[])(null)));
-#line 4114
+#line 4113
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4115
+#line 4114
    testRunner.Given("I have a workflow \"Data - Base Conversion Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table582 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10571,12 +10571,12 @@ this.FeatureBackground();
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 4116
+#line 4115
    testRunner.And("\"Data - Base Conversion Test\" contains \"Data - Base Conversion\" from server \"loca" +
                     "lhost\" with mapping as", ((string)(null)), table582, "And ");
-#line 4118
+#line 4117
    testRunner.When("\"Data - Base Conversion Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4119
+#line 4118
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table583 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10590,7 +10590,7 @@ this.FeatureBackground();
                             "1001100111011011000110010101100100",
                         "Binary",
                         "Text"});
-#line 4120
+#line 4119
    testRunner.And("the \'Base Conversion (1)\' in WorkFlow \'Data - Base Conversion\' debug inputs as", ((string)(null)), table583, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table584 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10599,7 +10599,7 @@ this.FeatureBackground();
             table584.AddRow(new string[] {
                         "1",
                         "[[Blob]] = I was mangled"});
-#line 4123
+#line 4122
    testRunner.And("the \'Base Conversion (1)\' in Workflow \'Data - Base Conversion\' debug outputs as", ((string)(null)), table584, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -10612,11 +10612,11 @@ this.FeatureBackground();
         public virtual void ExecutingData_CaseConversionExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Data - Case Conversion example workflow", ((string[])(null)));
-#line 4128
+#line 4127
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4129
+#line 4128
    testRunner.Given("I have a workflow \"Data - Case Conversion Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table585 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10624,12 +10624,12 @@ this.FeatureBackground();
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 4130
+#line 4129
    testRunner.And("\"Data - Case Conversion Test\" contains \"Data - Case Conversion\" from server \"loca" +
                     "lhost\" with mapping as", ((string)(null)), table585, "And ");
-#line 4132
+#line 4131
    testRunner.When("\"Data - Case Conversion Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4133
+#line 4132
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table586 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10640,7 +10640,7 @@ this.FeatureBackground();
                         "1",
                         "[[sometext]] = gET reaDy FoR sOme Text CONVersionS",
                         "UPPER"});
-#line 4134
+#line 4133
    testRunner.And("the \'Case Conversion1 (1)\' in WorkFlow \'Data - Case Conversion\' debug inputs as", ((string)(null)), table586, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table587 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10649,7 +10649,7 @@ this.FeatureBackground();
             table587.AddRow(new string[] {
                         "1",
                         "[[sometext]] = GET READY FOR SOME TEXT CONVERSIONS"});
-#line 4137
+#line 4136
    testRunner.And("the \'Case Conversion1 (1)\' in Workflow \'Data - Case Conversion\' debug outputs as", ((string)(null)), table587, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table588 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10660,7 +10660,7 @@ this.FeatureBackground();
                         "1",
                         "[[sometext]] = GET READY FOR SOME TEXT CONVERSIONS",
                         "lower"});
-#line 4140
+#line 4139
     testRunner.And("the \'Case Conversion2 (1)\' in WorkFlow \'Data - Case Conversion\' debug inputs as", ((string)(null)), table588, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table589 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10669,7 +10669,7 @@ this.FeatureBackground();
             table589.AddRow(new string[] {
                         "1",
                         "[[sometext]] = get ready for some text conversions"});
-#line 4143
+#line 4142
    testRunner.And("the \'Case Conversion2 (1)\' in Workflow \'Data - Case Conversion\' debug outputs as", ((string)(null)), table589, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table590 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10680,7 +10680,7 @@ this.FeatureBackground();
                         "1",
                         "[[sometext]] = get ready for some text conversions",
                         "Sentence"});
-#line 4146
+#line 4145
     testRunner.And("the \'Case Conversion3 (1)\' in WorkFlow \'Data - Case Conversion\' debug inputs as", ((string)(null)), table590, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table591 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10689,7 +10689,7 @@ this.FeatureBackground();
             table591.AddRow(new string[] {
                         "1",
                         "[[sometext]] = Get ready for some text conversions"});
-#line 4149
+#line 4148
    testRunner.And("the \'Case Conversion3 (1)\' in Workflow \'Data - Case Conversion\' debug outputs as", ((string)(null)), table591, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table592 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10700,7 +10700,7 @@ this.FeatureBackground();
                         "1",
                         "[[sometext]] = Get ready for some text conversions",
                         "Title Case"});
-#line 4152
+#line 4151
       testRunner.And("the \'Case Conversion4 (1)\' in WorkFlow \'Data - Case Conversion\' debug inputs as", ((string)(null)), table592, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table593 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10709,7 +10709,7 @@ this.FeatureBackground();
             table593.AddRow(new string[] {
                         "1",
                         "[[sometext]] = Get Ready For Some Text Conversions"});
-#line 4155
+#line 4154
    testRunner.And("the \'Case Conversion4 (1)\' in Workflow \'Data - Case Conversion\' debug outputs as", ((string)(null)), table593, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table594 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10720,7 +10720,7 @@ this.FeatureBackground();
                         "1",
                         "[[sometext]] = 1Mixed up 5om3",
                         "UPPER"});
-#line 4158
+#line 4157
       testRunner.And("the \'Case Conversion5 (1)\' in WorkFlow \'Data - Case Conversion\' debug inputs as", ((string)(null)), table594, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table595 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10729,7 +10729,7 @@ this.FeatureBackground();
             table595.AddRow(new string[] {
                         "1",
                         "[[sometext]] = 1MIXED UP 5OM3"});
-#line 4161
+#line 4160
    testRunner.And("the \'Case Conversion5 (1)\' in Workflow \'Data - Case Conversion\' debug outputs as", ((string)(null)), table595, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table596 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10740,7 +10740,7 @@ this.FeatureBackground();
                         "1",
                         "[[sometext]] = 1MIXED UP 5OM3",
                         "lower"});
-#line 4164
+#line 4163
       testRunner.And("the \'Case Conversion6 (1)\' in WorkFlow \'Data - Case Conversion\' debug inputs as", ((string)(null)), table596, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table597 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10749,7 +10749,7 @@ this.FeatureBackground();
             table597.AddRow(new string[] {
                         "1",
                         "[[sometext]] = 1mixed up 5om3"});
-#line 4167
+#line 4166
    testRunner.And("the \'Case Conversion6 (1)\' in Workflow \'Data - Case Conversion\' debug outputs as", ((string)(null)), table597, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table598 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10760,7 +10760,7 @@ this.FeatureBackground();
                         "1",
                         "[[sometext]] = 1mixed up 5om3",
                         "Sentence"});
-#line 4170
+#line 4169
       testRunner.And("the \'Case Conversion7 (1)\' in WorkFlow \'Data - Case Conversion\' debug inputs as", ((string)(null)), table598, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table599 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10769,7 +10769,7 @@ this.FeatureBackground();
             table599.AddRow(new string[] {
                         "1",
                         "[[sometext]] = 1mixed up 5om3"});
-#line 4173
+#line 4172
    testRunner.And("the \'Case Conversion7 (1)\' in Workflow \'Data - Case Conversion\' debug outputs as", ((string)(null)), table599, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table600 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10780,7 +10780,7 @@ this.FeatureBackground();
                         "1",
                         "[[sometext]] = 1mixed up 5om3",
                         "Title Case"});
-#line 4176
+#line 4175
       testRunner.And("the \'Case Conversion8 (1)\' in WorkFlow \'Data - Case Conversion\' debug inputs as", ((string)(null)), table600, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table601 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10789,7 +10789,7 @@ this.FeatureBackground();
             table601.AddRow(new string[] {
                         "1",
                         "[[sometext]] = 1mixed Up 5om3"});
-#line 4179
+#line 4178
    testRunner.And("the \'Case Conversion8 (1)\' in Workflow \'Data - Case Conversion\' debug outputs as", ((string)(null)), table601, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -10802,11 +10802,11 @@ this.FeatureBackground();
         public virtual void ExecutingData_FindIndexExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Data - Find Index example workflow", ((string[])(null)));
-#line 4220
+#line 4219
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4221
+#line 4220
    testRunner.Given("I have a workflow \"Utility - Find Index Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table602 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10814,12 +10814,12 @@ this.FeatureBackground();
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 4222
+#line 4221
    testRunner.And("\"Utility - Find Index Test\" contains \"Utility - Find Index\" from server \"localhos" +
                     "t\" with mapping as", ((string)(null)), table602, "And ");
-#line 4224
+#line 4223
    testRunner.When("\"Utility - Find Index Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4225
+#line 4224
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table603 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10832,14 +10832,14 @@ this.FeatureBackground();
                         "First Occurrence",
                         "b",
                         "Left to Right"});
-#line 4226
+#line 4225
    testRunner.And("the \'Find Index1\' in WorkFlow \'Utility - Find Index\' debug inputs as", ((string)(null)), table603, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table604 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table604.AddRow(new string[] {
                         "[[WhereIsB]] = 2"});
-#line 4229
+#line 4228
    testRunner.And("the \'Find Index1\' in Workflow \'Utility - Find Index\' debug outputs as", ((string)(null)), table604, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table605 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10852,14 +10852,14 @@ this.FeatureBackground();
                         "All Occurrences",
                         "b",
                         "Left to Right"});
-#line 4232
+#line 4231
    testRunner.And("the \'Find Index2\' in WorkFlow \'Utility - Find Index\' debug inputs as", ((string)(null)), table605, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table606 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table606.AddRow(new string[] {
                         "[[WhereAreTheBs]] = 2,4,11"});
-#line 4235
+#line 4234
    testRunner.And("the \'Find Index2\' in Workflow \'Utility - Find Index\' debug outputs as", ((string)(null)), table606, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -10872,11 +10872,11 @@ this.FeatureBackground();
         public virtual void ExecutingUtility_ReplaceExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Utility - Replace example workflow", ((string[])(null)));
-#line 4240
+#line 4239
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4241
+#line 4240
    testRunner.Given("I have a workflow \"Utility - Replace Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table607 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10884,12 +10884,12 @@ this.FeatureBackground();
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 4242
+#line 4241
    testRunner.And("\"Utility - Replace Test\" contains \"Utility - Replace\" from server \"localhost\" wit" +
                     "h mapping as", ((string)(null)), table607, "And ");
-#line 4244
+#line 4243
    testRunner.When("\"Utility - Replace Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4245
+#line 4244
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table608 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10900,7 +10900,7 @@ this.FeatureBackground();
                         "[[SomeText]] = Replace",
                         "ac",
                         "icat"});
-#line 4246
+#line 4245
    testRunner.And("the \'Replace1\' in WorkFlow \'Utility - Replace\' debug inputs as", ((string)(null)), table608, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table609 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10909,7 +10909,7 @@ this.FeatureBackground();
                         "[[SomeText]] = Replicate"});
             table609.AddRow(new string[] {
                         "[[count]] = 1"});
-#line 4249
+#line 4248
    testRunner.And("the \'Replace1\' in Workflow \'Utility - Replace\' debug outputs as", ((string)(null)), table609, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table610 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10922,7 +10922,7 @@ this.FeatureBackground();
                         "[[rec(2).mobileNumber]] = +1985623145"});
             table610.AddRow(new string[] {
                         "[[recount]] = 3"});
-#line 4253
+#line 4252
    testRunner.And("the \'Replace2\' in Workflow \'Utility - Replace\' debug outputs as", ((string)(null)), table610, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -10935,11 +10935,11 @@ this.FeatureBackground();
         public virtual void ExecutingRecordset_CountRecordsExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Recordset - Count Records example workflow", ((string[])(null)));
-#line 4260
+#line 4259
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4261
+#line 4260
    testRunner.Given("I have a workflow \"Recordset - Count Records Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table611 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10947,12 +10947,12 @@ this.FeatureBackground();
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 4262
+#line 4261
    testRunner.And("\"Recordset - Count Records Test\" contains \"Recordset - Count Records\" from server" +
                     " \"localhost\" with mapping as", ((string)(null)), table611, "And ");
-#line 4264
+#line 4263
    testRunner.When("\"Recordset - Count Records Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4265
+#line 4264
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table612 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10963,14 +10963,14 @@ this.FeatureBackground();
                         "[[rec(2).set]] = SOA"});
             table612.AddRow(new string[] {
                         "[[rec(3).set]] = Recordset"});
-#line 4266
+#line 4265
    testRunner.And("the \'Count Records\' in WorkFlow \'Recordset - Count Records\' debug inputs as", ((string)(null)), table612, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table613 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table613.AddRow(new string[] {
                         "[[count]] = 3"});
-#line 4271
+#line 4270
    testRunner.And("the \'Count Records\' in Workflow \'Recordset - Count Records\' debug outputs as", ((string)(null)), table613, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -10983,11 +10983,11 @@ this.FeatureBackground();
         public virtual void ExecutingRecordset_RecordsLengthExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Recordset - Records Length example workflow", ((string[])(null)));
-#line 4275
+#line 4274
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4276
+#line 4275
    testRunner.Given("I have a workflow \"Recordset - Records Length Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table614 = new TechTalk.SpecFlow.Table(new string[] {
@@ -10995,12 +10995,12 @@ this.FeatureBackground();
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 4277
+#line 4276
    testRunner.And("\"Recordset - Records Length Test\" contains \"Recordset - Records Length\" from serv" +
                     "er \"localhost\" with mapping as", ((string)(null)), table614, "And ");
-#line 4279
+#line 4278
    testRunner.When("\"Recordset - Records Length Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4280
+#line 4279
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table615 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11009,28 +11009,28 @@ this.FeatureBackground();
                         "[[rec(1).set]] = Warewolf"});
             table615.AddRow(new string[] {
                         "[[rec(5).set]] = Recordset"});
-#line 4281
+#line 4280
    testRunner.And("the \'Length1\' in WorkFlow \'Recordset - Records Length\' debug inputs as", ((string)(null)), table615, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table616 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table616.AddRow(new string[] {
                         "[[length]] = 5"});
-#line 4285
+#line 4284
    testRunner.And("the \'Length1\' in Workflow \'Recordset - Records Length\' debug outputs as", ((string)(null)), table616, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table617 = new TechTalk.SpecFlow.Table(new string[] {
                         "Recordset"});
             table617.AddRow(new string[] {
                         "[[rec(5).set]] = Recordset"});
-#line 4288
+#line 4287
    testRunner.And("the \'Length2\' in WorkFlow \'Recordset - Records Length\' debug inputs as", ((string)(null)), table617, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table618 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table618.AddRow(new string[] {
                         "[[length]] = 5"});
-#line 4291
+#line 4290
    testRunner.And("the \'Length2\' in Workflow \'Recordset - Records Length\' debug outputs as", ((string)(null)), table618, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -11043,11 +11043,11 @@ this.FeatureBackground();
         public virtual void ExecutingRecordset_DeleteRecordsExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Recordset - Delete Records example workflow", ((string[])(null)));
-#line 4295
+#line 4294
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4296
+#line 4295
    testRunner.Given("I have a workflow \"Recordset - Delete Records Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table619 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11055,26 +11055,26 @@ this.FeatureBackground();
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 4297
+#line 4296
    testRunner.And("\"Recordset - Delete Records Test\" contains \"Recordset - Delete Records\" from serv" +
                     "er \"localhost\" with mapping as", ((string)(null)), table619, "And ");
-#line 4299
+#line 4298
    testRunner.When("\"Recordset - Delete Records Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4300
+#line 4299
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table620 = new TechTalk.SpecFlow.Table(new string[] {
                         "Records"});
             table620.AddRow(new string[] {
                         "[[rec(2).set]] = 2"});
-#line 4301
+#line 4300
    testRunner.And("the \'Delete Record1\' in WorkFlow \'Recordset - Delete Records\' debug inputs as", ((string)(null)), table620, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table621 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table621.AddRow(new string[] {
                         "[[result]] = Success"});
-#line 4304
+#line 4303
    testRunner.And("the \'Delete Record1\' in Workflow \'Recordset - Delete Records\' debug outputs as", ((string)(null)), table621, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table622 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11083,14 +11083,14 @@ this.FeatureBackground();
                         "[[rec(1).set]] = 1"});
             table622.AddRow(new string[] {
                         "[[rec(3).set]] = 3"});
-#line 4307
+#line 4306
    testRunner.And("the \'Delete Record2\' in WorkFlow \'Recordset - Delete Records\' debug inputs as", ((string)(null)), table622, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table623 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table623.AddRow(new string[] {
                         "[[result]] = Success"});
-#line 4311
+#line 4310
    testRunner.And("the \'Delete Record2\' in Workflow \'Recordset - Delete Records\' debug outputs as", ((string)(null)), table623, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -11103,11 +11103,11 @@ this.FeatureBackground();
         public virtual void ExecutingRecordset_FindRecordsExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Recordset - Find Records example workflow", ((string[])(null)));
-#line 4315
+#line 4314
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4316
+#line 4315
    testRunner.Given("I have a workflow \"Recordset - Find Records Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table624 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11115,19 +11115,19 @@ this.FeatureBackground();
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 4317
+#line 4316
    testRunner.And("\"Recordset - Find Records Test\" contains \"Recordset - Find Records\" from server \"" +
                     "localhost\" with mapping as", ((string)(null)), table624, "And ");
-#line 4319
+#line 4318
    testRunner.When("\"Recordset - Find Records Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4320
+#line 4319
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table625 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table625.AddRow(new string[] {
                         "[[Results]] = -1"});
-#line 4321
+#line 4320
    testRunner.And("the \'Find Record Index (2)\' in Workflow \'Recordset - Find Records\' debug outputs " +
                     "as", ((string)(null)), table625, "And ");
 #line hidden
@@ -11141,11 +11141,11 @@ this.FeatureBackground();
         public virtual void ExecutingRecordset_SortRecordsExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Recordset - Sort Records example workflow", ((string[])(null)));
-#line 4325
+#line 4324
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4326
+#line 4325
    testRunner.Given("I have a workflow \"Recordset - Sort Records Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table626 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11153,12 +11153,12 @@ this.FeatureBackground();
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 4327
+#line 4326
    testRunner.And("\"Recordset - Sort Records Test\" contains \"Recordset - Sort Records\" from server \"" +
                     "localhost\" with mapping as", ((string)(null)), table626, "And ");
-#line 4329
+#line 4328
    testRunner.When("\"Recordset - Sort Records Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4330
+#line 4329
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table627 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11194,7 +11194,7 @@ this.FeatureBackground();
             table627.AddRow(new string[] {
                         "[[rec(10).set]] =z",
                         "Backwards"});
-#line 4331
+#line 4330
    testRunner.And("the \'Sort Records1\' in WorkFlow \'Recordset - Sort Records\' debug inputs as", ((string)(null)), table627, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table628 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11219,7 +11219,7 @@ this.FeatureBackground();
                         "[[rec(9).set]] = 1"});
             table628.AddRow(new string[] {
                         "[[rec(10).set]] =0"});
-#line 4343
+#line 4342
    testRunner.And("the \'Sort Records1\' in Workflow \'Recordset - Sort Records\' debug outputs as", ((string)(null)), table628, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table629 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11255,7 +11255,7 @@ this.FeatureBackground();
             table629.AddRow(new string[] {
                         "[[rec(10).set]] =0",
                         "Forward"});
-#line 4355
+#line 4354
    testRunner.And("the \'Sort Records2\' in WorkFlow \'Recordset - Sort Records\' debug inputs as", ((string)(null)), table629, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table630 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11280,7 +11280,7 @@ this.FeatureBackground();
                         "[[rec(9).set]] = y"});
             table630.AddRow(new string[] {
                         "[[rec(10).set]] =z"});
-#line 4367
+#line 4366
    testRunner.And("the \'Sort Records2\' in Workflow \'Recordset - Sort Records\' debug outputs as", ((string)(null)), table630, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -11293,11 +11293,11 @@ this.FeatureBackground();
         public virtual void ExecutingRecordset_UniqueRecordsExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Recordset - Unique Records example workflow", ((string[])(null)));
-#line 4380
+#line 4379
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4381
+#line 4380
    testRunner.Given("I have a workflow \"Recordset - Unique Records Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table631 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11305,12 +11305,12 @@ this.FeatureBackground();
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 4382
+#line 4381
    testRunner.And("\"Recordset - Unique Records Test\" contains \"Recordset - Unique Records\" from serv" +
                     "er \"localhost\" with mapping as", ((string)(null)), table631, "And ");
-#line 4384
+#line 4383
    testRunner.When("\"Recordset - Unique Records Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4385
+#line 4384
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table632 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11321,7 +11321,7 @@ this.FeatureBackground();
                         "In Field(s)",
                         "[[Example(4).FirstName]] = Jerome",
                         "[[Example().Index]] ="});
-#line 4386
+#line 4385
    testRunner.And("the \'Unique Records1\' in WorkFlow \'Recordset - Unique Records\' debug inputs as", ((string)(null)), table632, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table633 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11333,7 +11333,7 @@ this.FeatureBackground();
             table633.AddRow(new string[] {
                         "",
                         "[[Result(2).example1]] = 4"});
-#line 4389
+#line 4388
     testRunner.And("the \'Unique Records1\' in Workflow \'Recordset - Unique Records\' debug outputs as", ((string)(null)), table633, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table634 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11348,7 +11348,7 @@ this.FeatureBackground();
                         "",
                         "[[Example(4).LastName]] = Smit",
                         "[[Example().Index]] ="});
-#line 4393
+#line 4392
       testRunner.And("the \'Unique Records2\' in WorkFlow \'Recordset - Unique Records\' debug inputs as", ((string)(null)), table634, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table635 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11363,7 +11363,7 @@ this.FeatureBackground();
             table635.AddRow(new string[] {
                         "",
                         "[[Result(3).example2]] = 4"});
-#line 4397
+#line 4396
     testRunner.And("the \'Unique Records2\' in Workflow \'Recordset - Unique Records\' debug outputs as", ((string)(null)), table635, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -11376,11 +11376,11 @@ this.FeatureBackground();
         public virtual void ExecutingLoopConstructs_ForEachExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Loop Constructs - For Each example workflow", ((string[])(null)));
-#line 4403
+#line 4402
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4404
+#line 4403
    testRunner.Given("I have a workflow \"Loop Constructs - For Each Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table636 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11388,12 +11388,12 @@ this.FeatureBackground();
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 4405
+#line 4404
    testRunner.And("\"Loop Constructs - For Each Test\" contains \"Loop Constructs - For Each\" from serv" +
                     "er \"localhost\" with mapping as", ((string)(null)), table636, "And ");
-#line 4407
+#line 4406
    testRunner.When("\"Loop Constructs - For Each Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4408
+#line 4407
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table637 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11402,9 +11402,9 @@ this.FeatureBackground();
             table637.AddRow(new string[] {
                         "No. of Executes",
                         "6"});
-#line 4409
+#line 4408
       testRunner.And("the \'For Each1\' in WorkFlow \'Loop Constructs - For Each\' debug inputs as", ((string)(null)), table637, "And ");
-#line 4412
+#line 4411
     testRunner.And("the \'For Each1\' in WorkFlow \'Loop Constructs - For Each\' has  \"6\" nested children" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -11414,14 +11414,14 @@ this.FeatureBackground();
             table638.AddRow(new string[] {
                         "GUID",
                         ""});
-#line 4413
+#line 4412
     testRunner.And("the \'Random1\' in step 1 for \'For Each1\' debug inputs as", ((string)(null)), table638, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table639 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table639.AddRow(new string[] {
                         "[[rec(1).set]] = String"});
-#line 4416
+#line 4415
     testRunner.And("the \'Random1\' in step 1 for \'For Each1\' debug outputs as", ((string)(null)), table639, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table640 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11430,14 +11430,14 @@ this.FeatureBackground();
             table640.AddRow(new string[] {
                         "GUID",
                         ""});
-#line 4419
+#line 4418
   testRunner.And("the \'Random1\' in step 2 for \'For Each1\' debug inputs as", ((string)(null)), table640, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table641 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table641.AddRow(new string[] {
                         "[[rec(2).set]] = String"});
-#line 4422
+#line 4421
     testRunner.And("the \'Random1\' in step 2 for \'For Each1\' debug outputs as", ((string)(null)), table641, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table642 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11446,14 +11446,14 @@ this.FeatureBackground();
             table642.AddRow(new string[] {
                         "GUID",
                         ""});
-#line 4425
+#line 4424
   testRunner.And("the \'Random1\' in step 3 for \'For Each1\' debug inputs as", ((string)(null)), table642, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table643 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table643.AddRow(new string[] {
                         "[[rec(3).set]] = String"});
-#line 4428
+#line 4427
     testRunner.And("the \'Random1\' in step 3 for \'For Each1\' debug outputs as", ((string)(null)), table643, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table644 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11462,14 +11462,14 @@ this.FeatureBackground();
             table644.AddRow(new string[] {
                         "GUID",
                         ""});
-#line 4431
+#line 4430
   testRunner.And("the \'Random1\' in step 4 for \'For Each1\' debug inputs as", ((string)(null)), table644, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table645 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table645.AddRow(new string[] {
                         "[[rec(4).set]] = String"});
-#line 4434
+#line 4433
     testRunner.And("the \'Random1\' in step 4 for \'For Each1\' debug outputs as", ((string)(null)), table645, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table646 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11478,14 +11478,14 @@ this.FeatureBackground();
             table646.AddRow(new string[] {
                         "GUID",
                         ""});
-#line 4437
+#line 4436
   testRunner.And("the \'Random1\' in step 5 for \'For Each1\' debug inputs as", ((string)(null)), table646, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table647 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table647.AddRow(new string[] {
                         "[[rec(5).set]] = String"});
-#line 4440
+#line 4439
     testRunner.And("the \'Random1\' in step 5 for \'For Each1\' debug outputs as", ((string)(null)), table647, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -11498,11 +11498,11 @@ this.FeatureBackground();
         public virtual void ExecutingControlFlow_SequenceExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Control Flow - Sequence example workflow", ((string[])(null)));
-#line 4444
+#line 4443
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4445
+#line 4444
    testRunner.Given("I have a workflow \"Control Flow - Sequence Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table648 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11510,12 +11510,12 @@ this.FeatureBackground();
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 4446
+#line 4445
    testRunner.And("\"Control Flow - Sequence Test\" contains \"Control Flow - Sequence\" from server \"lo" +
                     "calhost\" with mapping as", ((string)(null)), table648, "And ");
-#line 4448
+#line 4447
    testRunner.When("\"Control Flow - Sequence Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4449
+#line 4448
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table649 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11566,7 +11566,7 @@ this.FeatureBackground();
             table649.AddRow(new string[] {
                         "",
                         "[[TempCustomers(5).Email]] = maggie.simpson@couch.com"});
-#line 4455
+#line 4454
      testRunner.And("the \'Split Names (3)\' in Workflow \'Organize Customers\' debug outputs as", ((string)(null)), table649, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table650 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11587,7 +11587,7 @@ this.FeatureBackground();
             table650.AddRow(new string[] {
                         "[[Customers(5).FirstName]] = maggie",
                         "Forward"});
-#line 4472
+#line 4471
     testRunner.And("the \'Sort Names Alphabetically\' in WorkFlow \'Organize Customers\' debug inputs as", ((string)(null)), table650, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table651 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11602,7 +11602,7 @@ this.FeatureBackground();
                         "[[Customers(4).FirstName]] = maggie"});
             table651.AddRow(new string[] {
                         "[[Customers(5).FirstName]] = marge"});
-#line 4479
+#line 4478
     testRunner.And("the \'Sort Names Alphabetically\' in Workflow \'Organize Customers\' debug outputs as" +
                     "", ((string)(null)), table651, "And ");
 #line hidden
@@ -11616,11 +11616,11 @@ this.FeatureBackground();
         public virtual void ExecutingControlFlow_DecisionExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Control Flow - Decision example workflow", ((string[])(null)));
-#line 4487
+#line 4486
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4488
+#line 4487
    testRunner.Given("I have a workflow \"Control Flow - Decision Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table652 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11628,12 +11628,12 @@ this.FeatureBackground();
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 4489
+#line 4488
    testRunner.And("\"Control Flow - Decision Test\" contains \"Control Flow - Decision\" from server \"lo" +
                     "calhost\" with mapping as", ((string)(null)), table652, "And ");
-#line 4491
+#line 4490
    testRunner.When("\"Control Flow - Decision Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4492
+#line 4491
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -11646,11 +11646,11 @@ this.FeatureBackground();
         public virtual void ExecutingControlFlow_SwitchExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Control Flow - Switch example workflow", ((string[])(null)));
-#line 4494
+#line 4493
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4495
+#line 4494
    testRunner.Given("I have a workflow \"Control Flow - Switch Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table653 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11658,12 +11658,12 @@ this.FeatureBackground();
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 4496
+#line 4495
    testRunner.And("\"Control Flow - Switch Test\" contains \"Control Flow - Switch\" from server \"localh" +
                     "ost\" with mapping as", ((string)(null)), table653, "And ");
-#line 4498
+#line 4497
    testRunner.When("\"Control Flow - Switch Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4499
+#line 4498
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -11678,11 +11678,11 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Workflow Service and Decision tool expected bubling out error in workfl" +
                     "ow service", ((string[])(null)));
-#line 4847
+#line 4846
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4848
+#line 4847
    testRunner.Given("I have a workflow \"Utility - Assign WF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table654 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11705,12 +11705,12 @@ this.FeatureBackground();
                         "",
                         "hero(*).name",
                         "[[thehero().name]]"});
-#line 4849
+#line 4848
    testRunner.And("\"Utility - Assign WF\" contains \"Utility - Assign\" from server \"localhost\" with ma" +
                     "pping as", ((string)(null)), table654, "And ");
-#line 4854
+#line 4853
    testRunner.When("\"Utility - Assign WF\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4855
+#line 4854
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table655 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11721,7 +11721,7 @@ this.FeatureBackground();
                         "[[thehero(1).pushups]] = All of them."});
             table655.AddRow(new string[] {
                         "[[thehero(1).name]] =   Chuck Norris"});
-#line 4856
+#line 4855
    testRunner.And("the \'Utility - Assign\' in Workflow \'Utility - Assign WF\' debug outputs as", ((string)(null)), table655, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -11734,11 +11734,11 @@ this.FeatureBackground();
         public virtual void ErrorFromWorkflowServiceIsExpectedToBubleOut()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Error from workflow service is expected to buble out", ((string[])(null)));
-#line 4863
+#line 4862
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4864
+#line 4863
    testRunner.Given("I have a workflow \"TestAssignWithRemote123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table656 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11747,7 +11747,7 @@ this.FeatureBackground();
             table656.AddRow(new string[] {
                         "[[inputData]]",
                         "hello"});
-#line 4865
+#line 4864
    testRunner.And("\"TestAssignWithRemote123\" contains an Assign \"AssignData\" as", ((string)(null)), table656, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table657 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11770,12 +11770,12 @@ this.FeatureBackground();
                         "",
                         "values(*).lower",
                         "[[values().low]]"});
-#line 4868
+#line 4867
    testRunner.And("\"TestAssignWithRemote123\" contains \"WorkflowUsedBySpecs\" from server \"Remote Conn" +
                     "ection Integration\" with mapping as", ((string)(null)), table657, "And ");
-#line 4873
+#line 4872
    testRunner.When("\"TestAssignWithRemote123\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4874
+#line 4873
    testRunner.Then("the \"TestAssignWithRemote123\" workflow execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table658 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11786,7 +11786,7 @@ this.FeatureBackground();
                         "1",
                         "[[inputData]] =",
                         "hello"});
-#line 4875
+#line 4874
    testRunner.And("the \'AssignData\' in WorkFlow \'TestAssignWithRemote123\' debug inputs as", ((string)(null)), table658, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table659 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11795,14 +11795,14 @@ this.FeatureBackground();
             table659.AddRow(new string[] {
                         "1",
                         "[[inputData]] = hello"});
-#line 4878
+#line 4877
    testRunner.And("the \'AssignData\' in Workflow \'TestAssignWithRemote123\' debug outputs as", ((string)(null)), table659, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table660 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table660.AddRow(new string[] {
                         "[[inputData]] = hello"});
-#line 4881
+#line 4880
     testRunner.And("the \'WorkflowUsedBySpecs\' in WorkFlow \'TestAssignWithRemote123\' debug inputs as", ((string)(null)), table660, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table661 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11811,7 +11811,7 @@ this.FeatureBackground();
             table661.AddRow(new string[] {
                         "1",
                         "[[in]] = hello"});
-#line 4884
+#line 4883
    testRunner.And("the \'Setup Assign (1)\' in Workflow \'WorkflowUsedBySpecs\' debug outputs as", ((string)(null)), table661, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table662 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11820,7 +11820,7 @@ this.FeatureBackground();
             table662.AddRow(new string[] {
                         "1",
                         "[[in]] = HELLO"});
-#line 4887
+#line 4886
    testRunner.And("the \'Convert Case (1)\' in Workflow \'WorkflowUsedBySpecs\' debug outputs as", ((string)(null)), table662, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table663 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11835,7 +11835,7 @@ this.FeatureBackground();
             table663.AddRow(new string[] {
                         "3",
                         "[[values(1).lower]] = hello"});
-#line 4890
+#line 4889
    testRunner.And("the \'Final Assign (3)\' in Workflow \'WorkflowUsedBySpecs\' debug outputs as", ((string)(null)), table663, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -11848,11 +11848,11 @@ this.FeatureBackground();
         public virtual void WorkflowByUsingForEachWithWorkflowInIt()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow by using For Each with workflow in it", ((string[])(null)));
-#line 4897
+#line 4896
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4898
+#line 4897
        testRunner.Given("I have a workflow \"WFWithForEachInrecordsetTesting\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table664 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11864,9 +11864,9 @@ this.FeatureBackground();
             table664.AddRow(new string[] {
                         "[[rec().a]]",
                         "2"});
-#line 4899
+#line 4898
        testRunner.And("\"WFWithForEachInrecordsetTesting\" contains an Assign \"Recordset\" as", ((string)(null)), table664, "And ");
-#line 4903
+#line 4902
        testRunner.And("\"WFWithForEachInrecordsetTesting\" contains a Foreach \"FEach\" as \"InRecordset\" exe" +
                     "cutions \"[[rec(*)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -11875,11 +11875,11 @@ this.FeatureBackground();
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 4904
+#line 4903
     testRunner.And("\"FEach\" contains \"SavedWFwithRandom\" from server \"localhost\" with mapping as", ((string)(null)), table665, "And ");
-#line 4906
+#line 4905
        testRunner.When("\"WFWithForEachInrecordsetTesting\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4907
+#line 4906
        testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table666 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11894,7 +11894,7 @@ this.FeatureBackground();
                         "2",
                         "[[rec().a]] =",
                         "2"});
-#line 4908
+#line 4907
        testRunner.And("the \'Recordset\' in WorkFlow \'WFWithForEachInrecordsetTesting\' debug inputs as", ((string)(null)), table666, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table667 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11906,7 +11906,7 @@ this.FeatureBackground();
             table667.AddRow(new string[] {
                         "2",
                         "[[rec(2).a]] = 2"});
-#line 4912
+#line 4911
        testRunner.And("the \'Recordset\' in Workflow \'WFWithForEachInrecordsetTesting\' debug outputs as", ((string)(null)), table667, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table668 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11918,9 +11918,9 @@ this.FeatureBackground();
             table668.AddRow(new string[] {
                         "",
                         "[[rec(2).a]] = 2"});
-#line 4916
+#line 4915
        testRunner.And("the \'FEach\' in WorkFlow \'WFWithForEachInrecordsetTesting\' debug inputs as", ((string)(null)), table668, "And ");
-#line 4920
+#line 4919
        testRunner.And("the \'FEach\' in WorkFlow \'WFWithForEachInrecordsetTesting\' has  \"2\" nested childre" +
                     "n", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -11932,14 +11932,14 @@ this.FeatureBackground();
                         "Numbers",
                         "[[rec(1).a]] = 1",
                         "5"});
-#line 4921
+#line 4920
        testRunner.And("the \'Random\' in step 1 for \'SavedWFwithRandom Test\' debug inputs as", ((string)(null)), table669, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table670 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table670.AddRow(new string[] {
                         "[[res]] = Int32"});
-#line 4924
+#line 4923
        testRunner.And("the \'Random\' in step 1 for \'SavedWFwithRandom Test\' debug outputs as", ((string)(null)), table670, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table671 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11950,14 +11950,14 @@ this.FeatureBackground();
                         "Numbers",
                         "[[rec(2).a]] = 10",
                         "5"});
-#line 4927
+#line 4926
        testRunner.And("the \'Random\' in step 2 for \'SavedWFwithRandom Test\' debug inputs as", ((string)(null)), table671, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table672 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table672.AddRow(new string[] {
                         "[[res]] = Int32"});
-#line 4930
+#line 4929
        testRunner.And("the \'Random\' in step 2 for \'SavedWFwithRandom Test\' debug outputs as", ((string)(null)), table672, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -11970,11 +11970,11 @@ this.FeatureBackground();
         public virtual void WorkflowByUsingForEachWithWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow by using For Each with workflow", ((string[])(null)));
-#line 4935
+#line 4934
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4936
+#line 4935
       testRunner.Given("I have a workflow \"WorkFlowWithForEachInRecordsetUtilityRandomTesting\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table673 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11986,10 +11986,10 @@ this.FeatureBackground();
             table673.AddRow(new string[] {
                         "[[rec().a]]",
                         "2"});
-#line 4937
+#line 4936
          testRunner.And("\"WorkFlowWithForEachInRecordsetUtilityRandomTesting\" contains an Assign \"Recordse" +
                     "t1\" as", ((string)(null)), table673, "And ");
-#line 4941
+#line 4940
          testRunner.And("\"WorkFlowWithForEachInRecordsetUtilityRandomTesting\" contains a Foreach \"ForEachT" +
                     "est123\" as \"InRecordset\" executions \"[[rec()]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -11998,12 +11998,12 @@ this.FeatureBackground();
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 4942
+#line 4941
    testRunner.And("\"ForEachTest123\" contains \"Utility - Random\" from server \"localhost\" with mapping" +
                     " as", ((string)(null)), table674, "And ");
-#line 4944
+#line 4943
          testRunner.When("\"WorkFlowWithForEachInRecordsetUtilityRandomTesting\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4945
+#line 4944
          testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table675 = new TechTalk.SpecFlow.Table(new string[] {
@@ -12018,7 +12018,7 @@ this.FeatureBackground();
                         "2",
                         "[[rec().a]] =",
                         "2"});
-#line 4946
+#line 4945
          testRunner.And("the \'Recordset1\' in WorkFlow \'WorkFlowWithForEachInRecordsetUtilityRandomTesting\'" +
                     " debug inputs as", ((string)(null)), table675, "And ");
 #line hidden
@@ -12031,7 +12031,7 @@ this.FeatureBackground();
             table676.AddRow(new string[] {
                         "2",
                         "[[rec(2).a]] = 2"});
-#line 4950
+#line 4949
          testRunner.And("the \'Recordset1\' in Workflow \'WorkFlowWithForEachInRecordsetUtilityRandomTesting\'" +
                     " debug outputs as", ((string)(null)), table676, "And ");
 #line hidden
@@ -12044,10 +12044,10 @@ this.FeatureBackground();
             table677.AddRow(new string[] {
                         "",
                         "[[rec(2).a]] = 2"});
-#line 4954
+#line 4953
          testRunner.And("the \'ForEachTest123\' in WorkFlow \'WorkFlowWithForEachInRecordsetUtilityRandomTest" +
                     "ing\' debug inputs as", ((string)(null)), table677, "And ");
-#line 4958
+#line 4957
          testRunner.And("the \'ForEachTest123\' in WorkFlow \'WorkFlowWithForEachInRecordsetUtilityRandomTest" +
                     "ing\' has  \"4\" nested children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -12059,7 +12059,7 @@ this.FeatureBackground();
                         "Numbers",
                         "1",
                         "6"});
-#line 4959
+#line 4958
       testRunner.And("the \'Random1\' in \"Utility - Random\" in step 1 for \'ForEachTest123\' debug inputs a" +
                     "s", ((string)(null)), table678, "And ");
 #line hidden
@@ -12067,7 +12067,7 @@ this.FeatureBackground();
                         ""});
             table679.AddRow(new string[] {
                         "[[DiceRoll]] = Int32"});
-#line 4962
+#line 4961
    testRunner.And("the \'Random1\' in \"Utility - Random\" in step 1 for \'ForEachTest123\' debug outputs " +
                     "as", ((string)(null)), table679, "And ");
 #line hidden
@@ -12077,7 +12077,7 @@ this.FeatureBackground();
             table680.AddRow(new string[] {
                         "Letters",
                         "7"});
-#line 4965
+#line 4964
    testRunner.And("the \'Random2\' in \"Utility - Random\" in step 1 for \'ForEachTest123\' debug inputs a" +
                     "s", ((string)(null)), table680, "And ");
 #line hidden
@@ -12085,7 +12085,7 @@ this.FeatureBackground();
                         ""});
             table681.AddRow(new string[] {
                         "[[Scrabble]] = String"});
-#line 4968
+#line 4967
    testRunner.And("the \'Random2\' in \"Utility - Random\" in step 1 for \'ForEachTest123\' debug outputs " +
                     "as", ((string)(null)), table681, "And ");
 #line hidden
@@ -12093,7 +12093,7 @@ this.FeatureBackground();
                         "Random"});
             table682.AddRow(new string[] {
                         "GUID"});
-#line 4971
+#line 4970
          testRunner.And("the \'Random3\' in \"Utility - Random\" in step 1 for \'ForEachTest123\' debug inputs a" +
                     "s", ((string)(null)), table682, "And ");
 #line hidden
@@ -12101,7 +12101,7 @@ this.FeatureBackground();
                         ""});
             table683.AddRow(new string[] {
                         "[[License]] = String"});
-#line 4974
+#line 4973
          testRunner.And("the \'Random3\' in \"Utility - Random\" in step 1 for \'ForEachTest123\' debug outputs " +
                     "as", ((string)(null)), table683, "And ");
 #line hidden
@@ -12113,7 +12113,7 @@ this.FeatureBackground();
                         "Numbers",
                         "1",
                         "6"});
-#line 4977
+#line 4976
          testRunner.And("the \'Random1\' in \"Utility - Random\" in step 2 for \'ForEachTest123\' debug inputs a" +
                     "s", ((string)(null)), table684, "And ");
 #line hidden
@@ -12121,7 +12121,7 @@ this.FeatureBackground();
                         ""});
             table685.AddRow(new string[] {
                         "[[DiceRoll]] = Int32"});
-#line 4980
+#line 4979
          testRunner.And("the \'Random1\' in \"Utility - Random\" in step 2 for \'ForEachTest123\' debug outputs " +
                     "as", ((string)(null)), table685, "And ");
 #line hidden
@@ -12131,7 +12131,7 @@ this.FeatureBackground();
             table686.AddRow(new string[] {
                         "Letters",
                         "7"});
-#line 4983
+#line 4982
           testRunner.And("the \'Random2\' in \"Utility - Random\" in step 2 for \'ForEachTest123\' debug inputs a" +
                     "s", ((string)(null)), table686, "And ");
 #line hidden
@@ -12139,7 +12139,7 @@ this.FeatureBackground();
                         ""});
             table687.AddRow(new string[] {
                         "[[Scrabble]] = String"});
-#line 4986
+#line 4985
          testRunner.And("the \'Random2\' in \"Utility - Random\" in step 2 for \'ForEachTest123\' debug outputs " +
                     "as", ((string)(null)), table687, "And ");
 #line hidden
@@ -12147,7 +12147,7 @@ this.FeatureBackground();
                         "Random"});
             table688.AddRow(new string[] {
                         "GUID"});
-#line 4989
+#line 4988
          testRunner.And("the \'Random3\' in \"Utility - Random\" in step 2 for \'ForEachTest123\' debug inputs a" +
                     "s", ((string)(null)), table688, "And ");
 #line hidden
@@ -12155,7 +12155,7 @@ this.FeatureBackground();
                         ""});
             table689.AddRow(new string[] {
                         "[[License]] = String"});
-#line 4992
+#line 4991
          testRunner.And("the \'Random3\' in \"Utility - Random\" in step 2 for \'ForEachTest123\' debug outputs " +
                     "as", ((string)(null)), table689, "And ");
 #line hidden
