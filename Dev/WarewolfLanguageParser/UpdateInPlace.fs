@@ -33,8 +33,18 @@ let rec  EvalUpdate  (env: WarewolfEnvironment) (lang:string) (func: WarewolfAto
         | ScalarExpression a ->  let data = env.Scalar.[a] |> func
                                  AssignEvaluation.EvalAssign (LanguageExpressionToString ( ScalarExpression a)) (data.ToString()) env
         | WarewolfAtomAtomExpression a -> env
-        | RecordSetNameExpression x ->failwith "update entire recorset not supported"
+        | RecordSetNameExpression x -> let data = env.RecordSets.[x.Name].Data
+                                       let newData = Map.map (fun a b->   (ApplyStarToColumn func env {Name=x.Name;Column =a; Index=Star} )) data
+                                       env
         | ComplexExpression  a -> failwith "update not supported on complex expression recorset not supported"
+
+and ApplyStarToColumn (func: WarewolfAtom->WarewolfAtom) (env:WarewolfEnvironment) (recset:RecordSetIdentifier)  = 
+    if recset.Column = PositionColumn then
+        env
+    else
+        let column = env.RecordSets.[recset.Name].Data.[recset.Column]
+        let success = column.Apply(System.Func<WarewolfAtom,WarewolfAtom>(func))
+        env
 
 and evalRecordsSetExpressionUpdate (recset:RecordSetIdentifier) (env: WarewolfEnvironment) (func: WarewolfAtom->WarewolfAtom) :WarewolfEnvironment =
     if  not (env.RecordSets.ContainsKey recset.Name)       then 

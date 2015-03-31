@@ -3962,7 +3962,7 @@ Scenario: Executing Utility - Format Number example workflow
 	  And the 'Format Number2' in Workflow 'Utility - Format Number' debug outputs as    
 	  |                   |
 	  | [[PriceInK]] = 14 |
-	 
+	#done 
 Scenario: Executing Utility - Random example workflow
 	  Given I have a workflow "Utility - Random Test"
 	  And "Utility - Random Test" contains "Utility - Random" from server "localhost" with mapping as
@@ -3988,7 +3988,7 @@ Scenario: Executing Utility - Random example workflow
 	  |                      |
 	  | [[License]] = String |
 
-
+#done
 Scenario: Executing Utility - Date and Time example workflow
 	  Given I have a workflow "Utility - Date and Time Test"
 	  And "Utility - Date and Time Test" contains "Utility - Date and Time" from server "localhost" with mapping as
@@ -4022,7 +4022,7 @@ Scenario: Executing Utility - Date and Time example workflow
 	  And the 'Date and Time(5)' in WorkFlow 'Utility - Date and Time' debug inputs as
 	  | Input            | =        | Input Format            | =                      | Add Time |    | Output Format                                 |
 	  | System Date Time | DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       | "" | 'Date format yyyy MM dd yields : ' yyyy MM dd |
-
+#done
 Scenario: Executing Utility - Gather System Information example workflow
 	  Given I have a workflow "Utility - System Information Test"
 	  And "Utility - System Information Test" contains "Utility - System Information" from server "localhost" with mapping as
@@ -4068,7 +4068,7 @@ Scenario: Executing Utility - Gather System Information example workflow
 	   | 16 | [[Domain]]        =    String |
 	   | 17 | [[Agents]]        =    String |
 
-
+#done
 Scenario: Executing Utility - Web Request example workflow
 	  Given I have a workflow "Utility - Web Request Test"
 	  And "Utility - Web Request Test" contains "Utility - Web Request" from server "localhost" with mapping as
@@ -4105,7 +4105,7 @@ Scenario: Executing Utility - Web Request example workflow
 #	  | [[hero(1).name]] =   Chuck Norris                                 |
 
 	
-
+	#done
 
 Scenario: Executing Data - Base Conversion example workflow
 	  Given I have a workflow "Data - Base Conversion Test"
@@ -4120,7 +4120,7 @@ Scenario: Executing Data - Base Conversion example workflow
 	   | # |                          |
 	   | 1 | [[Blob]] = I was mangled |
 	 
-
+#done
 Scenario: Executing Data - Case Conversion example workflow
 	  Given I have a workflow "Data - Case Conversion Test"
 	  And "Data - Case Conversion Test" contains "Data - Case Conversion" from server "localhost" with mapping as
@@ -4212,7 +4212,7 @@ Scenario: Executing Data - Case Conversion example workflow
 #   |                  Bill 003215464987bill@mail.com                 |
 
 
-
+#done
 Scenario: Executing Data - Find Index example workflow
 	  Given I have a workflow "Utility - Find Index Test"
 	  And "Utility - Find Index Test" contains "Utility - Find Index" from server "localhost" with mapping as
@@ -4232,7 +4232,7 @@ Scenario: Executing Data - Find Index example workflow
 	  |                            |
 	  | [[WhereAreTheBs]] = 2,4,11 |
 
-
+#done
 Scenario: Executing Utility - Replace example workflow
 	  Given I have a workflow "Utility - Replace Test"
 	  And "Utility - Replace Test" contains "Utility - Replace" from server "localhost" with mapping as

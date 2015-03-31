@@ -153,35 +153,39 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         var replaceWithValue = iteratorCollection.FetchNextValue(itrReplace);
                         foreach(string s in toSearch)
                         {
-                            if(!DataListUtil.IsEvaluated(s))
+
+                             if(!DataListUtil.IsEvaluated(s))
                             {
                                 allErrors.AddError("Please insert only variables into Fields To Search");
                                 return;
                             }
                             if(!string.IsNullOrEmpty(findValue))
                             {
-                                var warewolfEvalResult = dataObject.Environment.Eval(s.Trim());
-                                if (warewolfEvalResult.IsWarewolfAtomListresult)
-                                {
-                                    var listResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
-                                    if (listResult != null)
-                                    {
-                                        foreach(var warewolfAtom in listResult.Item)
-                                        {
-                                            var newString = replaceOperation.Replace(warewolfAtom.ToString(), findValue, replaceWithValue, CaseMatch, out errors, out replacementCount);
-                                            dataObject.Environment.Assign(s, newString);
-                                        }
-                                    }
-                                }
-                                else if (warewolfEvalResult.IsWarewolfAtomResult)
-                                {
-                                    var scalarResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
-                                    if (scalarResult != null)
-                                    {
-                                        var newString = replaceOperation.Replace(scalarResult.Item.ToString(), findValue, replaceWithValue, CaseMatch, out errors, out replacementCount);
-                                        dataObject.Environment.Assign(s, newString); 
-                                    }
-                                }
+                                dataObject.Environment.ApplyUpdate(s, a => DataASTMutable.WarewolfAtom.NewDataString(replaceOperation.Replace(a.ToString(), findValue, replaceWithValue, CaseMatch, out errors, ref replacementCount)));
+
+                            //    var warewolfEvalResult = dataObject.Environment.Eval(s.Trim());
+                            //    if (warewolfEvalResult.IsWarewolfAtomListresult)
+                            //    {
+                            //        var listResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                            //        if (listResult != null)
+                            //        {
+                            //            foreach(var warewolfAtom in listResult.Item)
+                            //            {
+                            //                var newString = replaceOperation.Replace(warewolfAtom.ToString(), findValue, replaceWithValue, CaseMatch, out errors, out replacementCount);
+                            //                dataObject.Environment.Assign(s, newString);
+                            //            }
+                            //        }
+                            //    }
+                            //    else if (warewolfEvalResult.IsWarewolfAtomResult)
+                            //    {
+                            //        var scalarResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                            //        if (scalarResult != null)
+                            //        {
+                            //            var newString = replaceOperation.Replace(scalarResult.Item.ToString(), findValue, replaceWithValue, CaseMatch, out errors, out replacementCount);
+                            //            dataObject.Environment.Assign(s, newString); 
+                            //        }
+                            //    }
+
                             }
 
                             replacementTotal += replacementCount;

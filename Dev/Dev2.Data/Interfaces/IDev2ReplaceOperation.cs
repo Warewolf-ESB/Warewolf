@@ -57,7 +57,7 @@ namespace Dev2.Data.Interfaces
             string replacementString,
             bool caseMatch,
             out ErrorResultTO errors,
-            out int replaceCount
+            ref int replaceCount
             );
     }
 }
