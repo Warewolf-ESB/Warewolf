@@ -35,6 +35,8 @@ namespace Dev2.Activities
 
             _errorsTo.MergeErrors(invokeErrors);
             var pluginServiceExecution = GetNewPluginServiceExecution(dataObject);
+            pluginServiceExecution.InstanceInputDefinitions = inputs;
+            pluginServiceExecution.InstanceOutputDefintions = outputs;
             tmpErrors = new ErrorResultTO();
             tmpErrors.MergeErrors(_errorsTo);
             var result = ExecutePluginService(pluginServiceExecution);

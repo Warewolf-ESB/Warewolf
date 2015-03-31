@@ -17,7 +17,6 @@ using System.Security.Authentication;
 using System.Text;
 using Dev2;
 using Dev2.Activities;
-using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
@@ -542,7 +541,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
         {
             IDev2LanguageParser parser = DataListFactory.CreateInputParser();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             return GetDebugInputs(env, parser).Select(a => (DebugItem)a).ToList();
 
         }
@@ -563,7 +561,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var warewolfAtomResult = tmpEntry as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
                     if (warewolfAtomResult != null)
                     {
-                        AddDebugItem(new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfAtomToString(warewolfAtomResult.Item), dev2Definition.RawValue, "="), itemToAdd);
+                        AddDebugItem(new DebugEvalResult(dev2Definition.RawValue, "", env), itemToAdd);
                     }
                     results.Add(itemToAdd);
                 }
@@ -573,19 +571,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var warewolfAtomListResult = tmpEntry as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
                     if (warewolfAtomListResult != null)
                     {
-                        foreach (var result in warewolfAtomListResult.Item)
-                        {
-                            AddDebugItem(new DebugItemWarewolfAtomResult(dev2Definition.RawValue, ExecutionEnvironment.WarewolfAtomToString(result), "="), itemToAdd);
-                        }
-
+                        AddDebugItem(new DebugEvalResult(dev2Definition.RawValue, "", env), itemToAdd);
                     }
                     results.Add(itemToAdd);
                 }
-
-            
-
-           
-                results.Add(itemToAdd);
 
             }
 
@@ -627,7 +616,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var warewolfAtomResult = tmpEntry as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
                     if(warewolfAtomResult != null)
                     {
-                        AddDebugItem(new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfAtomToString( warewolfAtomResult.Item),dev2Definition.RawValue, ""), itemToAdd);
+                        AddDebugItem(new DebugEvalResult(dev2Definition.RawValue, "", environment), itemToAdd);
                     }
                     results.Add(itemToAdd);
                 }
@@ -637,11 +626,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var warewolfAtomListResult = tmpEntry as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
                     if (warewolfAtomListResult != null)
                     {
-                        foreach (var result in warewolfAtomListResult.Item)
-                        {
-                            AddDebugItem(new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfAtomToString(result), dev2Definition.RawValue, ""), itemToAdd);
-                        }
-                       
+                        AddDebugItem(new DebugEvalResult(dev2Definition.RawValue, "", environment), itemToAdd);
                     }
                     results.Add(itemToAdd);
                 }
