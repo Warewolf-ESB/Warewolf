@@ -221,21 +221,13 @@ namespace Dev2
                     WarewolfDataEvaluationCommon.WarewolfEvalResult warewolfEvalResult = null;
                     try
                     {
-                        warewolfEvalResult = dataObject.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(c.Name));
-                        if (warewolfEvalResult.IsWarewolfAtomResult && level == 0)
-                        {
-                            var checkNullResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
-                            if (checkNullResult != null && checkNullResult.Item.IsNothing)
-                            {
-                                warewolfEvalResult = null;
-                            }
-                        }
+                        warewolfEvalResult = dataObject.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(c.Name));                        
                     }
                     catch (Exception e)
                     {
                         Dev2Logger.Log.Error(e.Message, e);
                     }
-                    if (warewolfEvalResult != null)
+                    if (warewolfEvalResult != null || level>0)
                     {
                         var c1 = c;
                         var scalars = inputDefs.Where(definition => definition == c1.Name);
