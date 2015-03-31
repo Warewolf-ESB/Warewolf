@@ -50,7 +50,8 @@ Scenario: Workflow with multiple tools executing against the server
 	  And the 'CountRec' in Workflow 'WorkflowWithAssignAndCount' debug outputs as    
 	  |               |
 	  | [[count]] = 2 |
-	
+
+#done	
 Scenario: Simple workflow executing against the server with a database service
 	 Given I have a workflow "TestWFWithDBService"
 	 And "TestWFWithDBService" contains a "database" service "Fetch" with mappings
@@ -80,6 +81,7 @@ Scenario: Simple workflow executing against the server with a database service
 	 |               |
 	 | [[count]] = 9 |
 
+#done
 Scenario: Workflow with an assign and webservice
 	 Given I have a workflow "TestWebServiceWF"
 	 And "TestWebServiceWF" contains an Assign "Inputs" as
@@ -1764,6 +1766,7 @@ Scenario: Executing ForEach in Rec with star which contains Sequence
 	  | 1 | [[rec(2).d]] = String |
 
 ##Bug - 12160  
+#DONE
 Scenario: Executing 2 ForEach's inside a ForEach which contains Assign only
       Given I have a workflow "WFContainsForEachInsideforEach"
 	  And "WFContainsForEachInsideforEach" contains a Foreach "ForEachTest1" as "NumOfExecution" executions "2"
@@ -1798,7 +1801,8 @@ Scenario: Executing 2 ForEach's inside a ForEach which contains Assign only
 	  And the 'Testingoutput' in step 2 for 'ForEachTest3' debug outputs as
 	  | # |                    |
 	  | 1 | [[rec(1).a]] = 123 |	  		
-		
+
+#DONE		
   Scenario: Executing 2 ForEach's inside a ForEach which contains Assign only Large Execution
       Given I have a workflow "WFForEachInsideforEachLargeTenFifty"
 	  And "WFForEachInsideforEachLargeTenFifty" contains a Foreach "ForEachTest1" as "NumOfExecution" executions "10"
@@ -4310,7 +4314,7 @@ Scenario: Executing Recordset - Delete Records example workflow
 	  And the 'Delete Record2' in Workflow 'Recordset - Delete Records' debug outputs as  
 	  |                      |
 	  | [[result]] = Success |
-
+#done
 Scenario: Executing Recordset - Find Records example workflow
 	  Given I have a workflow "Recordset - Find Records Test"
 	  And "Recordset - Find Records Test" contains "Recordset - Find Records" from server "localhost" with mapping as
