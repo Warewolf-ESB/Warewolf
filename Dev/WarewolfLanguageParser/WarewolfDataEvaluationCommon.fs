@@ -132,7 +132,7 @@ and EvalIndex  ( env:WarewolfEnvironment) (exp:string)=
     
     let getIntFromAtomList (a:WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>) =
         match a.Count with
-        | 1 -> 1
+        | 1 -> a.[0]|>AtomToInt
         |_ -> failwith "must be single value only"
 
     let evalled = Eval env exp
