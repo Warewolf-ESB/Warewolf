@@ -8,7 +8,7 @@ Background: Setup for workflow execution
 			Given Debug events are reset
 			And All environments disconnected
 			And Debug states are cleared
-
+#done
 Scenario: Simple workflow executing against the server
 	 Given I have a workflow "WorkflowWithAssign"
 	 And "WorkflowWithAssign" contains an Assign "Rec To Convert" as
@@ -25,7 +25,7 @@ Scenario: Simple workflow executing against the server
 	  | # |                    |
 	  | 1 | [[rec(1).a]] = yes |
 	  | 2 | [[rec(2).a]] = no  |
-	  
+#done	  
 Scenario: Workflow with multiple tools executing against the server
 	  Given I have a workflow "WorkflowWithAssignAndCount"
 	  And "WorkflowWithAssignAndCount" contains an Assign "Rec To Convert" as
@@ -3275,7 +3275,7 @@ Scenario: Workflow with Calculation using Star notation
 #	  |                        |
 ##	  
  
-#  Bug 12341 
+# not done unique
 Scenario: Workflow with Assign Unique to check debug outputs
       Given I have a workflow "workflowithAssignUniquedebugoutputs"
       And "workflowithAssignUniquedebugoutputs" contains an Assign "Recordset" as
@@ -3337,7 +3337,7 @@ Scenario: Workflow Saving with Different Versions
 	  | v.2 DateTime Save   |
 	  | v.1 DateTime Save   |
 
-
+#done
 Scenario: Executing workflow of different versions
 	 Given I have a workflow "WorkflowWithVersionAssignExecuted2"
 	 And "WorkflowWithVersionAssignExecuted2" contains an Assign "VarsAssign" as
