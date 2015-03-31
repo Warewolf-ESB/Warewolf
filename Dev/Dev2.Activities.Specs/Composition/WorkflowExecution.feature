@@ -2821,7 +2821,7 @@ Scenario: Workflow with Assign and Unique Tool, Result rec with star
        |   | [[rec(3).unique]] = 20 |
        |   | [[rec(4).unique]] = 30 |
 
-
+#DONE
 Scenario: Convert an recordset to Upper by using index as scalar
 	Given I have a workflow "ConvertUsingScalarWithRecursiveEvalution"
 	And "ConvertUsingScalarWithRecursiveEvalution" contains an Assign "Records" as
@@ -2848,6 +2848,7 @@ Scenario: Convert an recordset to Upper by using index as scalar
 	  | # |                          |
 	  | 1 | [[rs(1).row]] = WAREWOLF |
 
+#DONE
 Scenario: Convert an recordset to Upper by using index as recordset
 	Given I have a workflow "ConvertUsingRecSetInRecursiveEvalution"
 	And "ConvertUsingRecSetInRecursiveEvalution" contains an Assign "Records" as
@@ -4251,7 +4252,7 @@ Scenario: Executing Utility - Replace example workflow
 	  | [[rec(1).mobileNumber]] = +1655985781 |
 	  | [[rec(2).mobileNumber]] = +1985623145 |
 	  | [[recount]] = 3                       |
-
+#done
 Scenario: Executing Recordset - Count Records example workflow
 	  Given I have a workflow "Recordset - Count Records Test"
 	  And "Recordset - Count Records Test" contains "Recordset - Count Records" from server "localhost" with mapping as
@@ -4266,7 +4267,7 @@ Scenario: Executing Recordset - Count Records example workflow
 	  And the 'Count Records' in Workflow 'Recordset - Count Records' debug outputs as  
 	  |               |
 	  | [[count]] = 3 |
-
+#done
 Scenario: Executing Recordset - Records Length example workflow
 	  Given I have a workflow "Recordset - Records Length Test"
 	  And "Recordset - Records Length Test" contains "Recordset - Records Length" from server "localhost" with mapping as
@@ -4286,7 +4287,7 @@ Scenario: Executing Recordset - Records Length example workflow
 	  And the 'Length2' in Workflow 'Recordset - Records Length' debug outputs as  
 	  |                |
 	  | [[length]] = 5 |
-
+#done
 Scenario: Executing Recordset - Delete Records example workflow
 	  Given I have a workflow "Recordset - Delete Records Test"
 	  And "Recordset - Delete Records Test" contains "Recordset - Delete Records" from server "localhost" with mapping as
@@ -4316,7 +4317,7 @@ Scenario: Executing Recordset - Find Records example workflow
 	  And the 'Find Record Index (2)' in Workflow 'Recordset - Find Records' debug outputs as  
 	  |                  |
 	  | [[Results]] = -1 |
-	  
+#done	  
 Scenario: Executing Recordset - Sort Records example workflow
 	  Given I have a workflow "Recordset - Sort Records Test"
 	  And "Recordset - Sort Records Test" contains "Recordset - Sort Records" from server "localhost" with mapping as
@@ -4371,7 +4372,7 @@ Scenario: Executing Recordset - Sort Records example workflow
 	  | [[rec(8).set]] = x |
 	  | [[rec(9).set]] = y |
 	  | [[rec(10).set]] =z |
-
+#not done unique
 Scenario: Executing Recordset - Unique Records example workflow
 	  Given I have a workflow "Recordset - Unique Records Test"
 	  And "Recordset - Unique Records Test" contains "Recordset - Unique Records" from server "localhost" with mapping as
@@ -4394,7 +4395,7 @@ Scenario: Executing Recordset - Unique Records example workflow
 	   | 1 | [[Result(1).example2]] = 1 |
 	   |   | [[Result(2).example2]] = 2 |
 	   |   | [[Result(3).example2]] = 4 |
-     
+ #done    
 Scenario: Executing Loop Constructs - For Each example workflow
 	  Given I have a workflow "Loop Constructs - For Each Test"
 	  And "Loop Constructs - For Each Test" contains "Loop Constructs - For Each" from server "localhost" with mapping as
@@ -4435,7 +4436,7 @@ Scenario: Executing Loop Constructs - For Each example workflow
 	   And the 'Random1' in step 5 for 'For Each1' debug outputs as
         |                         |
         | [[rec(5).set]] = String |
-	
+#hasunique not done	
 Scenario: Executing Control Flow - Sequence example workflow
 	  Given I have a workflow "Control Flow - Sequence Test"
 	  And "Control Flow - Sequence Test" contains "Control Flow - Sequence" from server "localhost" with mapping as
@@ -4478,7 +4479,7 @@ Scenario: Executing Control Flow - Sequence example workflow
 	   | [[Customers(3).FirstName]] = lisa   |
 	   | [[Customers(4).FirstName]] = maggie |
 	   | [[Customers(5).FirstName]] = marge  |
-
+#done
 Scenario: Executing Control Flow - Decision example workflow
 	  Given I have a workflow "Control Flow - Decision Test"
 	  And "Control Flow - Decision Test" contains "Control Flow - Decision" from server "localhost" with mapping as
@@ -4838,7 +4839,7 @@ Scenario: Executing Control Flow - Switch example workflow
 #	  And the 'FindRecord0' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as
 #	  |         |
 	
-
+#done
 Scenario: Executing Workflow Service and Decision tool expected bubling out error in workflow service
 	  Given I have a workflow "Utility - Assign WF"
 	  And "Utility - Assign WF" contains "Utility - Assign" from server "localhost" with mapping as
@@ -4853,7 +4854,7 @@ Scenario: Executing Workflow Service and Decision tool expected bubling out erro
 	  | [[myrec(1).set]] =    Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
 	  | [[thehero(1).pushups]] = All of them.                                |
 	  | [[thehero(1).name]] =   Chuck Norris                                 |
-	
+#done	
 #Bug - 17484	  
 Scenario: Error from workflow service is expected to buble out
 	  Given I have a workflow "TestAssignWithRemote123"
@@ -4888,7 +4889,7 @@ Scenario: Error from workflow service is expected to buble out
 	  | 2 | [[values(1).upper]] = HELLO |
 	  | 3 | [[values(1).lower]] = hello |	  	 
 
-	 
+#new	 
 Scenario: Workflow by using For Each with workflow in it
        Given I have a workflow "WFWithForEachInrecordsetTesting"
        And "WFWithForEachInrecordsetTesting" contains an Assign "Recordset" as

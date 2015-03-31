@@ -49,21 +49,8 @@ let rec AddToRecordSet (env:WarewolfEnvironment) (name:RecordSetIdentifier) (val
         AddToRecordSet envwithRecset name value
     
 and EvalAssign (exp:string) (value:string) (env:WarewolfEnvironment) =
-    let left = WarewolfDataEvaluationCommon.ParseLanguageExpression exp 
-    let right = WarewolfDataEvaluationCommon.Eval env value
-    let x = match right with 
-            | WarewolfAtomResult a -> a
-            | WarewolfAtomListresult b -> failwith "recset"
-    match left with 
-    |   ScalarExpression a -> AddToScalars env a x
-    |   RecordSetExpression b -> AddToRecordSet env b x
-    |   AtomExpression a -> env
-    |   _ -> failwith "input must be recordset or value"
-
-
-
-                                
-    |   _ -> failwith "input must be recordset or value"
+    EvalAssignWithFrame (new WarewolfParserInterop.AssignValue(exp,value)) env
+    
 
 and AddToRecordSetFramed (env:WarewolfEnvironment) (name:RecordSetIdentifier) (value:WarewolfAtom)  =
     if(env.RecordSets.ContainsKey name.Name)
