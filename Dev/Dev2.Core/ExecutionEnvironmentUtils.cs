@@ -28,7 +28,16 @@ namespace Dev2
                 Dictionary<string, IWarewolfIterator> iterators = new Dictionary<string, IWarewolfIterator>();
                 foreach (var name in groupedRecSet)
                 {
-                    var warewolfIterator = new WarewolfIterator(environment.Eval(name));
+                    var warewolfEvalResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
+                    try
+                    {
+                        warewolfEvalResult = environment.Eval(name);
+                    }
+                    catch(Exception)
+                    {
+                        //Possible that the output defs have variables that were never initialised (i.e. null)
+                    }
+                    var warewolfIterator = new WarewolfIterator(warewolfEvalResult);
                     iterators.Add(DataListUtil.ExtractFieldNameFromValue(name), warewolfIterator);
                     warewolfListIterators.AddVariableToIterateOn(warewolfIterator);
 
