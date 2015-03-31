@@ -2875,6 +2875,7 @@ Scenario: Convert an recordset to Upper by using index as recordset
 	  | 1 | [[rs(1).row]] = WAREWOLF |
 
 #Bug 11840
+#DONE
 Scenario: Base Convert two varibles on one row 
 	Given I have a workflow "BaseConvertUsingRecSetInRecursiveEvalution"
 	And "BaseConvertUsingRecSetInRecursiveEvalution" contains an Assign "Records" as
@@ -3707,7 +3708,7 @@ Scenario: Workflow with Assign Create Delete folder and testing variable values 
 #	  |                    |
 #	  | [[res2]] = Success |
 
-
+#DONE
 Scenario: Calculate testing variable values that hasn't been assigned
       Given I have a workflow "WorkflowforCalTestingUnassignedvariablevalue"
       And "WorkflowforCalTestingUnassignedvariablevalue" contains an Assign "Values34" as
@@ -3729,6 +3730,7 @@ Scenario: Calculate testing variable values that hasn't been assigned
 	  |           |
 	  | [[res]] = |
 
+#DONE
 Scenario: Calculate testing variable values that hasn't been assigned2
       Given I have a workflow "WorkflowforCalTestingUnassignedvariablevalue2"
       And "WorkflowforCalTestingUnassignedvariablevalue2" contains an Assign "Values34" as
