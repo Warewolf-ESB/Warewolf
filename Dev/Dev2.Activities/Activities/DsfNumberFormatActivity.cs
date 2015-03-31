@@ -116,7 +116,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var expressionIterator = CreateDataListEvaluateIterator(expression, dataObject.Environment);
                 var roundingDecimalPlacesIterator = CreateDataListEvaluateIterator(roundingDecimalPlaces, dataObject.Environment);
                 var decimalPlacesToShowIterator = CreateDataListEvaluateIterator(decimalPlacesToShow, dataObject.Environment);
-
+                colItr.AddVariableToIterateOn(expressionIterator);
+                colItr.AddVariableToIterateOn(roundingDecimalPlacesIterator);
+                colItr.AddVariableToIterateOn(decimalPlacesToShowIterator);
                 if(dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(expression, "Number",  dataObject.Environment);
