@@ -3448,7 +3448,7 @@ Scenario: Executing workflow of different versions
 #	  | 1 | [[rec(1).a]] = Tezt |
 
 
-
+#done
 Scenario: Workflow with Assign Base Convert and Case Convert testing variable that hasn't been assigned
 	  Given I have a workflow "WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues"
 	  And "WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues" contains an Assign "Assign1" as
@@ -3480,7 +3480,7 @@ Scenario: Workflow with Assign Base Convert and Case Convert testing variable th
       And the 'Base to Convert' in Workflow 'WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues' debug outputs as  
 	  | # |             |
 
-
+#done
 Scenario: Workflow with Assigns DataMerge and DataSplit and testing variables that hasn't been assigned
       Given I have a workflow "WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues"
 	  And "WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues" contains an Assign "Assign To merge" as
@@ -3546,7 +3546,7 @@ Scenario: Workflow with Assigns DataMerge and DataSplit and testing variables th
 #	  | # |                     |
 #	  | 1 | [[rec(1).b]] = Test |
 
-
+#done
 Scenario: Workflow with Assigns Replace and testing variables that hasn't been assigned
       Given I have a workflow "workflowithAssignandReplaceTestingUnassignedvariablevalues"
        And "workflowithAssignandReplaceTestingUnassignedvariablevalues" contains an Assign "Assign34" as
@@ -3596,6 +3596,7 @@ Scenario: Workflow with Assigns Replace and testing variables that hasn't been a
 #	  |                |
 #	  | [[replac]] = 0 |	 
 
+#done
 Scenario: Workflow with Assign Format Numbers and testing variables that hasn't been assigned
 	  Given I have a workflow "WorkflowWithAssignandFormatTestingUnassignedvariablevalues"
 	  And "WorkflowWithAssignandFormatTestingUnassignedvariablevalues" contains an Assign "IndexVal" as
@@ -3643,7 +3644,7 @@ Scenario: Workflow with Assign Format Numbers and testing variables that hasn't 
 #	  |                      |
 #	  | [[fresult]]  = 234.0 |
 #
-
+#done
 Scenario: Workflow with Assign Create Delete folder and testing variable values that hasn't been assigned
 	  Given I have a workflow "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues"
 	  And "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues" contains an Assign "AssignT" as
@@ -3752,7 +3753,7 @@ Scenario: Calculate testing variable values that hasn't been assigned2
       And the 'Calculate1' in Workflow 'WorkflowforCalTestingUnassignedvariablevalue2' debug outputs as  
 	  |           |
 	  | [[res]] = |
-
+#DONE
 Scenario: Workflow with Assign and Random and testing variable values that hasn't been assigned
 	 Given I have a workflow "WorkflowWithAssignandRandomTestingUnassignedvariablevalue"
 	 And "WorkflowWithAssignandRandomTestingUnassignedvariablevalue" contains an Assign "Valforrandno" as
@@ -3800,7 +3801,7 @@ Scenario: Workflow with Assign and Random and testing variable values that hasn'
 #	  |                       |
 #	  | [[ranresult]] = Int32 |
 
-
+#done
 
 Scenario: Workflow with Assign, Date Time Difference tools and testing variable values that hasn't been assigned
 	  Given I have a workflow "WorkflowWithAssignAndDateTimeDifferencetoolsTestingUnassignedvariablevalue"
@@ -3914,7 +3915,7 @@ Scenario: Workflow with Assign, Date Time Difference tools and testing variable 
 #	  |               |
 #	  | [[xs(*).a]] = |
 	 
-
+#not done unique
 Scenario: Workflow with Assign Unique Tool and testing variables in Returnfield hasn't been assigned
       Given I have a workflow "workflowithAssignUni"
       And "workflowithAssignUni" contains an Assign "Records1" as
@@ -3943,7 +3944,7 @@ Scenario: Workflow with Assign Unique Tool and testing variables in Returnfield 
        |                     |
        | [[rec(1).unique]] = |
       
-
+#done 
 Scenario: Executing Utility - Format Number example workflow
 	  Given I have a workflow "Utility - Format Number Test"
 	  And "Utility - Format Number Test" contains "Utility - Format Number" from server "localhost" with mapping as

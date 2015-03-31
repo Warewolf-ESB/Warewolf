@@ -115,7 +115,8 @@ let evalRecordSetLastIndex (recset:WarewolfRecordset) (identifier:RecordSetIdent
 let evalScalar (scalarName:ScalarIdentifier) (env:WarewolfEnvironment) =
     if env.Scalar.ContainsKey scalarName
     then     ( env.Scalar.[scalarName])
-    else Nothing
+    else raise (new Dev2.Common.Common.NullValueInVariableException(sprintf "Scalar value{ %s }does not exist" scalarName,scalarName))
+             
 
 let rec IndexToString (x:Index) =
     match x with 
@@ -570,3 +571,8 @@ and SortRecset (exp:string) (desc:bool)  (env:WarewolfEnvironment) =
                                                           let recsets =   Map.add  b.Name sorted recset        
                                                           {env with RecordSets = recsets }
                 |_-> failwith "only recordsets can be sorted"
+
+let IsNothing (a:WarewolfEvalResult) =
+   match a with
+   | WarewolfAtomResult a -> a=Nothing
+   | _-> false

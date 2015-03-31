@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using WarewolfParserInterop;
 
@@ -13,6 +14,7 @@ namespace Warewolf.Storage
     {
         WarewolfDataEvaluationCommon.WarewolfEvalResult Eval(string exp);
 
+        WarewolfDataEvaluationCommon.WarewolfEvalResult EvalStrict(string exp);
         void Assign(string exp, string value);
 
         void MultiAssign(IEnumerable<IAssignValue> values);
@@ -74,6 +76,14 @@ namespace Warewolf.Storage
             }
             return PublicFunctions.EvalEnvExpression(exp, _env);
             
+        }
+
+        public WarewolfDataEvaluationCommon.WarewolfEvalResult EvalStrict(string exp)
+        {
+            var res =  Eval(exp);
+            if(IsNothing( res))
+                throw new NullValueInVariableException("The expression"+exp+"has no value assigned",exp);
+            return res;
         }
 
         public void Assign(string exp, string value)
@@ -438,6 +448,11 @@ namespace Warewolf.Storage
                 return false;
 
             }
+        }
+
+        public static bool IsNothing(WarewolfDataEvaluationCommon.WarewolfEvalResult evalInp1)
+        {
+            return WarewolfDataEvaluationCommon.IsNothing(evalInp1);
         }
     }
 }

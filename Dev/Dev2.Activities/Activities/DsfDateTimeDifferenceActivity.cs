@@ -157,13 +157,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 //                    input2 = eval;
 //                }
 
-                var input1Itr = new WarewolfIterator(dataObject.Environment.Eval(string.IsNullOrEmpty(Input1) ? GlobalConstants.CalcExpressionNow : Input1));
+                var input1Itr = new WarewolfIterator(dataObject.Environment.EvalStrict(string.IsNullOrEmpty(Input1) ? GlobalConstants.CalcExpressionNow : Input1));
                 colItr.AddVariableToIterateOn(input1Itr);
 
-                var input2Itr = new WarewolfIterator(dataObject.Environment.Eval(string.IsNullOrEmpty(Input2) ? GlobalConstants.CalcExpressionNow : Input2));
+                var evalInp2 = dataObject.Environment.EvalStrict(string.IsNullOrEmpty(Input2) ? GlobalConstants.CalcExpressionNow : Input2);
+
+                var input2Itr = new WarewolfIterator(evalInp2);
                 colItr.AddVariableToIterateOn(input2Itr);
 
-                var ifItr = new WarewolfIterator(dataObject.Environment.Eval(InputFormat ?? string.Empty));
+                var ifItr = new WarewolfIterator(dataObject.Environment.EvalStrict(InputFormat ?? string.Empty));
                 colItr.AddVariableToIterateOn(ifItr);
 
                 if(dataObject.IsDebugMode())

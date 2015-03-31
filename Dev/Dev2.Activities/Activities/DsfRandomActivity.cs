@@ -105,9 +105,9 @@ namespace Dev2.Activities
                 {
 
 
-                    var lengthItr = new WarewolfIterator(env.Eval(Length));
-                    var fromItr = new WarewolfIterator(env.Eval(From));
-                    var toItr = new WarewolfIterator(env.Eval(To));
+                    var lengthItr = new WarewolfIterator(env.EvalStrict(Length));
+                    var fromItr = new WarewolfIterator(env.EvalStrict(From));
+                    var toItr = new WarewolfIterator(env.EvalStrict(To));
                     WarewolfListIterator colItr = new WarewolfListIterator();
                     colItr.AddVariableToIterateOn(lengthItr);
                     colItr.AddVariableToIterateOn(fromItr);
