@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using WarewolfParserInterop;
 
@@ -13,11 +13,11 @@ namespace Warewolf.Storage
     {
         WarewolfDataEvaluationCommon.WarewolfEvalResult Eval(string exp);
 
-        bool Assign(string exp, string value);
+        void Assign(string exp, string value);
 
-        bool MultiAssign(IEnumerable<IAssignValue> values);
+        void MultiAssign(IEnumerable<IAssignValue> values);
 
-        bool AssignWithFrame(IAssignValue values);
+        void AssignWithFrame(IAssignValue values);
 
         int GetEvaluationResultAsInt(string exp);
 
@@ -45,13 +45,16 @@ namespace Warewolf.Storage
 
         string ToStar(string expression);
 
-        IEnumerable<RecordSetSearchPayload> EvalWithPositionsForSearch(string exp);
-
         IEnumerable<DataASTMutable.WarewolfAtom> EvalAsList(string searchCriteria);
 
         IEnumerable<int> EnvalWhere(string expression, Func<DataASTMutable.WarewolfAtom, bool> clause);
 
         void ApplyUpdate(string expression, Func<DataASTMutable.WarewolfAtom, DataASTMutable.WarewolfAtom> clause);
+
+        IList<string> Errors { get; } 
+        void AddError(string error);
+
+
     }
     public class ExecutionEnvironment : IExecutionEnvironment
     {
@@ -60,6 +63,7 @@ namespace Warewolf.Storage
         public  ExecutionEnvironment()
         {
             _env = PublicFunctions.CreateEnv("");
+            Errors = new List<string>();
         }
 
         public WarewolfDataEvaluationCommon.WarewolfEvalResult Eval(string exp)
@@ -72,11 +76,11 @@ namespace Warewolf.Storage
             
         }
 
-        public bool Assign(string exp,string value)
+        public void Assign(string exp, string value)
         {
             if (string.IsNullOrEmpty(exp))
             {
-                return true;
+                return ;
             }
 
             
@@ -84,27 +88,47 @@ namespace Warewolf.Storage
             
             _env = envTemp;
             CommitAssign();
-            return true; //todo : decide on whether to catch here of just send exceptions on
+           
         }
 
 
-        public bool MultiAssign(IEnumerable<IAssignValue> values  )
+        public void MultiAssign(IEnumerable<IAssignValue> values)
         {
+            try
+            {
             var envTemp = PublicFunctions.EvalMultiAssign(values, _env);
             _env = envTemp;
-            return true; //todo : decide on whether to catch here of just send exceptions on
+        }
+            catch(Exception err)
+            {
+
+               Errors.Add(err.Message);
+               throw;
+            }
+          
+
         }
 
-        public bool AssignWithFrame(IAssignValue values)
+        public void AssignWithFrame(IAssignValue values)
         {
+            try
+            {
             if (string.IsNullOrEmpty(values.Name))
             {
-                return true;
+                return ;
             }
 
             var envTemp = PublicFunctions.EvalAssignWithFrame(values, _env);
             _env = envTemp;
-            return true; //todo : decide on whether to catch here of just send exceptions on
+            }
+            catch (Exception err)
+            {
+
+                Errors.Add(err.Message);
+                throw;
+            }
+        
+  
         }
 
         public int GetEvaluationResultAsInt(string exp)
@@ -183,8 +207,6 @@ namespace Warewolf.Storage
                 // ReSharper restore PossibleNullReferenceException
                 return new List<string> { WarewolfAtomToString(x) };
             }
-            else
-            {
                 // ReSharper disable PossibleNullReferenceException
                 // ReSharper disable PossibleNullReferenceException
                 var warewolfAtomListresult = result as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
@@ -196,7 +218,6 @@ namespace Warewolf.Storage
                 }
                 throw new Exception("bob");
             }
-        }
 
         public static  string WarewolfAtomToString(DataASTMutable.WarewolfAtom a)
         {
@@ -242,14 +263,24 @@ namespace Warewolf.Storage
             if (result.IsWarewolfAtomResult)
             {
                 // ReSharper disable PossibleNullReferenceException
-                var x = (result as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult).Item;
+                var warewolfAtomResult = result as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                if(warewolfAtomResult != null)
+                {
+                    var x = warewolfAtomResult.Item;
                 // ReSharper restore PossibleNullReferenceException
                 return WarewolfAtomToString(x);
             }
+                throw new Exception("null when f# said it should not be");
+            }
+                // ReSharper disable RedundantIfElseBlock
             else
+                // ReSharper restore RedundantIfElseBlock
             {
                 // ReSharper disable PossibleNullReferenceException
-                var x = (result as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult).Item;
+                var warewolfAtomListresult = result as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                if(warewolfAtomListresult != null)
+                {
+                    var x = warewolfAtomListresult.Item;
                 StringBuilder res = new StringBuilder(); 
                 for(int index  = 0; index < x.Count; index++)
                 {
@@ -265,6 +296,8 @@ namespace Warewolf.Storage
                 }
                 return res.ToString();
             }
+                throw new Exception("null when f# said it should not be");
+            }
         }
 
         public void EvalAssignFromNestedStar(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult)
@@ -272,7 +305,7 @@ namespace Warewolf.Storage
             for(int index = 0; index < recsetResult.Item.Count; index++)
             {
                 var warewolfAtom = recsetResult.Item[index];
-                Assign(exp.Replace("*", (index+1).ToString()), WarewolfAtomToString(warewolfAtom));
+                Assign(exp.Replace("*", (index+1).ToString(CultureInfo.InvariantCulture)), WarewolfAtomToString(warewolfAtom));
             }
         }
 
@@ -312,14 +345,12 @@ namespace Warewolf.Storage
             if(exp.IsRecordSetExpression)
             {
                 var rec = exp as LanguageAST.LanguageExpression.RecordSetExpression;
+                if(rec != null)
+                {
                 return "[["+rec.Item.Name+"(*)."+rec.Item.Column+"]]";
             }
+            }
             return expression;
-        }
-
-        public IEnumerable<RecordSetSearchPayload> EvalWithPositionsForSearch(string exp)
-        {
-            return PublicFunctions.EvalEnvExpressionWithPositions(exp, _env);
         }
 
         public IEnumerable<DataASTMutable.WarewolfAtom> EvalAsList(string expression)
@@ -328,11 +359,18 @@ namespace Warewolf.Storage
             if (result.IsWarewolfAtomResult)
             {
                 // ReSharper disable PossibleNullReferenceException
-                var x = (result as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult).Item;
+                var warewolfAtomResult = result as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                if(warewolfAtomResult != null)
+                {
+                    var x = warewolfAtomResult.Item;
                 // ReSharper restore PossibleNullReferenceException
                 return new List<DataASTMutable.WarewolfAtom> { x };
             }
+                throw new Exception("null when f# said it should not be");
+            }
+                // ReSharper disable RedundantIfElseBlock
             else
+                // ReSharper restore RedundantIfElseBlock
             {
                 // ReSharper disable PossibleNullReferenceException
                 // ReSharper disable PossibleNullReferenceException
@@ -354,6 +392,13 @@ namespace Warewolf.Storage
 
         }
 
+        public IList<string> Errors { get; private set; }
+
+        public void AddError(string error)
+        {
+            Errors.Add(error);
+        }
+
         public static string ConvertToIndex(string outputVar, int i)
         {
             var output =  WarewolfDataEvaluationCommon.ParseLanguageExpression(outputVar);
@@ -361,7 +406,7 @@ namespace Warewolf.Storage
             {
                 
                 var outputidentifier = (output as LanguageAST.LanguageExpression.RecordSetExpression).Item;
-                if(outputidentifier.Index == LanguageAST.Index.Star)
+                if(Equals(outputidentifier.Index, LanguageAST.Index.Star))
                 return "[[" + outputidentifier.Name + "(" + i+ ")." +outputidentifier.Column+ "]]";
             }
             return outputVar;

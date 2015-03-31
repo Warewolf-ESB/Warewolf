@@ -129,9 +129,16 @@ and EvalIndex  ( env:WarewolfEnvironment) (exp:string)=
         match a with
         | Int x -> if x<= 0 then failwith "invalid recordset index was less than 0" else x
         |_ ->failwith "invalid recordset index was not an int"
+    
+    let getIntFromAtomList (a:WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>) =
+        match a.Count with
+        | 1 -> 1
+        |_ -> failwith "must be single value only"
+
     let evalled = Eval env exp
     match evalled with
     | WarewolfAtomResult a -> getIntFromAtom a 
+    | WarewolfAtomListresult a -> getIntFromAtomList a 
     |_ ->failwith "invalid recordset index was a list"
 
 
@@ -146,7 +153,7 @@ and  LanguageExpressionToString  (x:LanguageExpression) =
 
 and evalRecordsSet (recset:RecordSetIdentifier) (env: WarewolfEnvironment)  =
     if  not (env.RecordSets.ContainsKey recset.Name)       then 
-        raise (new Dev2.Common.Common.NullValueInVariableException(recset.Index.ToString(),recset.Name))
+        raise (new Dev2.Common.Common.NullValueInVariableException((sprintf "Recordset does not exist %s" (recset.Index.ToString()) ),recset.Name))
             
     else
             match recset.Index with
@@ -211,8 +218,13 @@ and EvalDataSetExpression (env: WarewolfEnvironment)  (name:RecordSetName) =
             | Star -> WarewolfRecordSetResult env.RecordSets.[name.Name]
             | IntIndex a -> WarewolfRecordSetResult (evalARow (getRecordSetIndexAsInt recset a) recset name.Name env)
             | Last  -> WarewolfRecordSetResult ( evalARow  recset.LastIndex recset  name.Name env)
-            | IndexExpression b -> let res = Eval env (LanguageExpressionToString b) |> EvalResultToString
-                                   Eval env ( sprintf "[[%s(%s)]]" name.Name res)
+            | IndexExpression b -> 
+                                   let res = Eval env (LanguageExpressionToString b) |> EvalResultToString
+                                   match b with 
+                                        | WarewolfAtomAtomExpression atom ->
+                                                    match atom with
+                                                    | Int a ->  WarewolfRecordSetResult (evalARow (getRecordSetIndexAsInt recset a) recset name.Name env)
+                                        | _ ->   Eval env ( sprintf "[[%s(%s)]]" name.Name res)
     else
         raise (new Dev2.Common.Common.NullValueInVariableException("Recordset not found",name.Name))
 

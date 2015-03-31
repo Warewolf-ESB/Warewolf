@@ -95,7 +95,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
 
             if(DataListUtil.IsValueRecordset(variable))
             {
-                var recordSetValues =CurrentExecutionEnvironment.EvalAsListOfStrings(variable);
+                var recordSetValues =result.Environment.EvalAsListOfStrings(variable);
                 recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
                 value = value.Replace('"', ' ').Trim();
 
@@ -112,7 +112,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
             {
                 string actualValue;
                 value = value.Replace('"', ' ').Trim();
-                GetScalarValueFromEnvironment(variable,
+                GetScalarValueFromEnvironment(result.Environment,variable,
                                            out actualValue, out error);
                 actualValue = actualValue.Replace('"', ' ').Trim();
                 Assert.AreEqual(value, actualValue);

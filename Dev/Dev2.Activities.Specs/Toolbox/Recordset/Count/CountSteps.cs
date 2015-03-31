@@ -15,7 +15,6 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities.Specs.BaseTypes;
-using Dev2.Data.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -115,7 +114,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
             string error;
             string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
-            GetScalarValueFromEnvironment(CurrentExecutionEnvironment, ResultVariable,
+            GetScalarValueFromEnvironment(DataObject.Environment, ResultVariable,
                                        out actualValue, out error);
             actualValue = string.IsNullOrEmpty(actualValue) ? "0" : actualValue;
             Assert.AreEqual(expectedResult, actualValue);

@@ -217,6 +217,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     var currentval = resultsEnumerator.MoveNext(); 
                                     if(!currentval)
                                     {
+                                        if(singleInnerIteration)
+                                        {
+                                            break;
+                                        }
                                         resultsEnumerator.Reset();
                                         resultsEnumerator.MoveNext(); 
                                     }
@@ -292,6 +296,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                     }
                     env.CommitAssign();
+                    if(singleInnerIteration)
+                        break;
                 }
 
             }

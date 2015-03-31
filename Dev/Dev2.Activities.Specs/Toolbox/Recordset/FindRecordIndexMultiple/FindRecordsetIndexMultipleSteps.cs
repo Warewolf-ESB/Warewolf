@@ -234,7 +234,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
             {
                 string actualValue;
                 expectedResult = expectedResult.Replace('"', ' ').Trim();
-                GetScalarValueFromEnvironment(CurrentExecutionEnvironment, ResultVariable,out actualValue,out error);
+                GetScalarValueFromEnvironment(result.Environment, ResultVariable,out actualValue,out error);
 
                 if(string.IsNullOrEmpty(expectedResult))
                 {

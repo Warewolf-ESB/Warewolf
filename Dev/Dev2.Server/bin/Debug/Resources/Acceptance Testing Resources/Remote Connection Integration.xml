@@ -1,11 +1,12 @@
 
-<Source ID="9a90923a-f6b1-4e91-bc39-e8658e76234c" Version="1.0" Name="Remote Connection Integration" ResourceType="Server" IsValid="false" ConnectionString="AppServerUri=http://TST-CI-REMOTE:3142/dsf;WebServerPort=3142;AuthenticationType=Windows" Type="Dev2Server" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+<Source ID="9a90923a-f6b1-4e91-bc39-e8658e76234c" Name="Remote Connection Integration" ResourceType="Server" IsValid="false" ConnectionString="AppServerUri=http://rsaklftrevorwilliams:3142/dsf;WebServerPort=3142;AuthenticationType=Windows" Type="Dev2Server" ServerVersion="0.4.5567.16712" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>Remote Connection Integration</DisplayName>
   <Category>Acceptance Testing Resources\Remote Connection Integration</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
   <TypeOf>Dev2Server</TypeOf>
+  <VersionInfo DateTimeStamp="2015-03-30T09:33:39.9737296+02:00" Reason="" User="" VersionNumber="2" ResourceId="9a90923a-f6b1-4e91-bc39-e8658e76234c" VersionId="0aa63998-788a-47a5-8311-7d14a5129e3c" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -15,9 +16,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>fkOZm8bQhdtUojlrxYddUVRnHDg=</DigestValue>
+        <DigestValue>H7ZWyasXUIpVOhPK0BJsQ5kae0M=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>EYy0BwUwnAqfpLlhib8D5bdejYWfAUXM8ULtAhV+g1RCGehQCTOfAcJCdlMQbankiZHRPvSVHll1mtJuyekF67AgvYt6X8nY4JImW8JRlSBtBktiuPmw0pc7LkuzYpCCLcHiUGC8kJvbICB8OQ2yoGbDw2YpTPEQlIIc9TpfWio=</SignatureValue>
+    <SignatureValue>kjkYb91IWe3PJZ0q6tKjZwJlRwrqGZHQLEM8bayWl0jJAKXHbKYvmSe1YGR1I+NVuQo2oESbpvN1iMVwzfj6jJPdoV3JNo3WlAJRvU//3X5aWhWOGO5giLjgjFQ8i6qPAjmYblGbAsMJKMHJieqv/zmnlkSF0p60yi3BJRFsJ9Y=</SignatureValue>
   </Signature>
 </Source>

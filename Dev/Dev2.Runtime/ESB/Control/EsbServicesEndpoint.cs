@@ -340,7 +340,7 @@ namespace Dev2.Runtime.ESB.Control
 
             //var remainingMappings = ShapeForSubRequest(dataObject, inputDefs, outputDefs, out errors);
             errors = new ErrorResultTO();
-            CreateNewEnvironmentFromInputMappings(dataObject, inputDefs);
+           
             // local non-scoped execution ;)
             var isLocal = !dataObject.IsRemoteWorkflow();
 
@@ -356,6 +356,7 @@ namespace Dev2.Runtime.ESB.Control
             }
             else
             {
+                CreateNewEnvironmentFromInputMappings(dataObject, inputDefs);
                 var executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal, oldID);
                 if (executionContainer != null)
                 {
@@ -459,14 +460,20 @@ namespace Dev2.Runtime.ESB.Control
                 }
                 if(!invokeErrors.HasErrors())
                 {
+                    var shapeDefinitionsToEnvironment = DataListUtil.InputsToEnvironment(dataObject.Environment, inputDefs);
                     Task.Factory.StartNew(() =>
                     {
                         Dev2Logger.Log.Info("ASYNC EXECUTION USER CONTEXT IS [ " + Thread.CurrentPrincipal.Identity.Name + " ]");
                         ErrorResultTO error;
-                        var shapeDefinitionsToEnvironment = DataListUtil.InputsToEnvironment(dataObject.Environment, inputDefs);
                         clonedDataObject.Environment = shapeDefinitionsToEnvironment;
-                        var execute = executionContainer.Execute(out error);
-                        return execute;
+                        executionContainer.Execute(out error);
+                        return clonedDataObject;
+                    }).ContinueWith(task =>
+                    {
+                        if (task.Result != null)
+                        {
+                            task.Result.Environment = null;
+                        }
                     });
                    
                 }

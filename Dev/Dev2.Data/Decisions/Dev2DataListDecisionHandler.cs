@@ -18,7 +18,6 @@ using Dev2.Common;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Warewolf.Storage;
 using DataListUtil = Dev2.Data.Util.DataListUtil;
 // ReSharper disable CheckNamespace
@@ -87,8 +86,8 @@ namespace Dev2.Data.Decision
          //   var env= _environments[dlId];
             var dds = EvaluateRegion(newDecisionData, dlId);
 
-            ErrorResultTO errors = new ErrorResultTO();
 
+              var env =  _environments[dlId];
             if(dds != null)
             {
                 if(dlId != GlobalConstants.NullDataListID)
@@ -107,7 +106,7 @@ namespace Dev2.Data.Decision
                                 // Treat Errors special
                                 if(typeOf == enDecisionType.IsError || typeOf == enDecisionType.IsNotError)
                                 {
-                                    dd.Col1 = Compiler.EvaluateSystemEntry(dlId, enSystemTag.Dev2Error, out errors);
+                                    dd.Col1 = String.Join("", env.Errors);
                                 }
 
                                 IDecisionOperation op = Dev2DecisionFactory.Instance().FetchDecisionFunction(typeOf);
@@ -131,9 +130,7 @@ namespace Dev2.Data.Decision
                                     catch(Exception e)
                                     {
                                         // An error, push into the DL
-                                        ErrorResultTO errorErrors;
-                                        errors.AddError(e.Message);
-                                        Compiler.UpsertSystemTag(dlId, enSystemTag.Dev2Error, errors.MakeDataListReady(), out errorErrors);
+                                       env.AddError(e.Message);
 
                                         return false;
                                     }
@@ -167,13 +164,6 @@ namespace Dev2.Data.Decision
             }
 
             throw new InvalidExpressionException("Could not populate decision model - DataList Errors!");
-        }
-
-        private IBinaryDataListEntry EvaluateForSwitch(string payload, Guid dlId, out ErrorResultTO errors)
-        {
-            IBinaryDataListEntry tmp = Compiler.Evaluate(dlId, enActionType.User, payload, false, out errors);
-
-            return tmp;
         }
 
         /// <summary>

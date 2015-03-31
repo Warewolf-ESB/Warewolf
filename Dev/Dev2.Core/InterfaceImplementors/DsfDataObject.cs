@@ -370,6 +370,7 @@ namespace Dev2.DynamicServices
             result.RunWorkflowAsync = RunWorkflowAsync;
             result.IsDebugNested = IsDebugNested;
             result.ForEachNestingLevel = ForEachNestingLevel;
+            result.Environment = Environment;
             return result;
         }
 

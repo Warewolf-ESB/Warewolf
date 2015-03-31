@@ -539,29 +539,29 @@ Scenario: Assign two recordset with index as variable to scalr
 	| 4 | [[b]]  = 2                 |
 	| 5 | [[c]]  = TestWarewolf      |
 
-#Scenario: Assign two recordset with index as recordset variable to scalr
-#	Given I assign the value Test to a variable "[[rec(1).test]]"	
-#	And I assign the value Warewolf to a variable "[[rec(2).test]]"
-#	And I assign the value 1 to a variable "[[Index(1).a]]"
-#	And I assign the value 2 to a variable "[[Index(2).a]]"
-#	And I assign the value [[rec([[Index(1).a]]).test]][[rec([[Index(2).a]]).test]] to a variable "[[Result]]"
-#	When the assign tool is executed
-#	Then the value of "[[Result]]" equals "TestWarewolf"
-#	And the execution has "NO" error
-#	And the debug inputs as
-#	| # | Variable          | New Value                                                               |
-#	| 1 | [[rec(1).test]] = | Test                                                                    |
-#	| 2 | [[rec(2).test]] = | Warewolf                                                                |
-#	| 3 | [[Index(1).a]]  = | 1                                                                       |
-#	| 4 | [[Index(2).a]]  = | 2                                                                       |
-#	| 5 | [[Result]]      = | [[rec([[Index(1).a]]).test]][[rec([[Index(2).a]]).test]] = TestWarewolf |
-#	And the debug output as
-#	| # |                            |
-#	| 1 | [[rec(1).test]] = Test     |
-#	| 2 | [[rec(2).test]] = Warewolf |
-#	| 3 | [[Index(1).a]]  = 1        |
-#	| 4 | [[Index(2).a]]  = 2        |
-#	| 5 | [[Result]]  = TestWarewolf |
+Scenario: Assign two recordset with index as recordset variable to scalr
+	Given I assign the value Test to a variable "[[rec(1).test]]"	
+	And I assign the value Warewolf to a variable "[[rec(2).test]]"
+	And I assign the value 1 to a variable "[[Index(1).a]]"
+	And I assign the value 2 to a variable "[[Index(2).a]]"
+	And I assign the value [[rec([[Index(1).a]]).test]][[rec([[Index(2).a]]).test]] to a variable "[[Result]]"
+	When the assign tool is executed
+	Then the value of "[[Result]]" equals "TestWarewolf"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable          | New Value                                                               |
+	| 1 | [[rec(1).test]] = | Test                                                                    |
+	| 2 | [[rec(2).test]] = | Warewolf                                                                |
+	| 3 | [[Index(1).a]]  = | 1                                                                       |
+	| 4 | [[Index(2).a]]  = | 2                                                                       |
+	| 5 | [[Result]]      = | [[rec([[Index(1).a]]).test]][[rec([[Index(2).a]]).test]] = TestWarewolf |
+	And the debug output as
+	| # |                            |
+	| 1 | [[rec(1).test]] = Test     |
+	| 2 | [[rec(2).test]] = Warewolf |
+	| 3 | [[Index(1).a]]  = 1        |
+	| 4 | [[Index(2).a]]  = 2        |
+	| 5 | [[Result]]  = TestWarewolf |
 
 Scenario: Assign addition of all variables to scalar2
 	Given I assign the value 1 to a variable "[[rec(1).test]]"	

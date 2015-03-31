@@ -15,7 +15,6 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities.Specs.BaseTypes;
-using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -114,7 +113,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
         public void ThenTheSortedRecordsetWillBe(string variable, Table table)
         {
             List<TableRow> tableRows = table.Rows.ToList();
-            var recordSets = CurrentExecutionEnvironment.Eval(variable);
+            var recordSets = DataObject.Environment.Eval(variable);
             if (recordSets.IsWarewolfAtomListresult)
             {
                 // ReSharper disable PossibleNullReferenceException
