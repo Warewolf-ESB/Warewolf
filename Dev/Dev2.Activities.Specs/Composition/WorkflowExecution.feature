@@ -4851,7 +4851,7 @@ Scenario: Executing Workflow Service and Decision tool expected bubling out erro
 	  | [[myrec(1).set]] =    Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
 	  | [[thehero(1).pushups]] = All of them.                                |
 	  | [[thehero(1).name]] =   Chuck Norris                                 |
-	
+#done	
 #Bug - 17484	  
 Scenario: Error from workflow service is expected to buble out
 	  Given I have a workflow "TestAssignWithRemote123"
@@ -4886,7 +4886,7 @@ Scenario: Error from workflow service is expected to buble out
 	  | 2 | [[values(1).upper]] = HELLO |
 	  | 3 | [[values(1).lower]] = hello |	  	 
 
-	 
+#new	 
 Scenario: Workflow by using For Each with workflow in it
        Given I have a workflow "WFWithForEachInrecordsetTesting"
        And "WFWithForEachInrecordsetTesting" contains an Assign "Recordset" as
