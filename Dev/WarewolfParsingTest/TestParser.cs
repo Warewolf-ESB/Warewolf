@@ -756,10 +756,11 @@ namespace WarewolfParsingTest
 
             var assigns = new List<IAssignValue>
              {
-                 new AssignValue("[[rec(25).a]]", "25"),
+                 new AssignValue("[[a]]", "25"),
+                 new AssignValue("[[rec().a]]", "25"),
                  new AssignValue("[[rec().b]]", "33"),
                  new AssignValue("[[rec().b]]", "26"),
-
+                  new AssignValue("[[rec(*).xv]]", "[[rec(2).b]]"),
 
              };
             var testEnv = WarewolfTestData.CreateTestEnvEmpty(""); 
@@ -828,6 +829,9 @@ namespace WarewolfParsingTest
 
 
         }
+
+
+
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
