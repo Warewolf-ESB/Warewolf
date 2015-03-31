@@ -19,7 +19,6 @@ using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Dev2.Validation;
@@ -111,7 +110,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            var count = dataObject.Environment.GetCount(rs);
+                            var count = 0;
+                            if (dataObject.Environment.HasRecordSet(RecordsetName))
+                            {
+                                count = dataObject.Environment.GetCount(rs);
+                            }
                             var value = count.ToString();
                             dataObject.Environment.Assign(CountNumber, value);
                             AddDebugOutputItem(new DebugItemWarewolfAtomResult(value,CountNumber,""));
