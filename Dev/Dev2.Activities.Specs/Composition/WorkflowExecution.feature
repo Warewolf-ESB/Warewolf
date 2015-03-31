@@ -2848,6 +2848,7 @@ Scenario: Convert an recordset to Upper by using index as scalar
 	  | # |                          |
 	  | 1 | [[rs(1).row]] = WAREWOLF |
 
+#DONE
 Scenario: Convert an recordset to Upper by using index as recordset
 	Given I have a workflow "ConvertUsingRecSetInRecursiveEvalution"
 	And "ConvertUsingRecSetInRecursiveEvalution" contains an Assign "Records" as
