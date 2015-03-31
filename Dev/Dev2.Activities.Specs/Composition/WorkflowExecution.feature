@@ -1634,6 +1634,7 @@ Scenario: Workflow with ForEach which contains assign
 		| 1 | [[rec(2).a]] = Test |
 
 
+#DONE
 ##Bug - 12160  
 Scenario: Workflow with ForEach which contains Sequence
       Given I have a workflow "WorkflowWithForEachContainingSequence"
@@ -3963,7 +3964,8 @@ Scenario: Executing Utility - Format Number example workflow
 	  And the 'Format Number2' in Workflow 'Utility - Format Number' debug outputs as    
 	  |                   |
 	  | [[PriceInK]] = 14 |
-	#done 
+
+#done 
 Scenario: Executing Utility - Random example workflow
 	  Given I have a workflow "Utility - Random Test"
 	  And "Utility - Random Test" contains "Utility - Random" from server "localhost" with mapping as

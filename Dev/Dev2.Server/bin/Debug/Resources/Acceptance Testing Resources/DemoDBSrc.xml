@@ -1,5 +1,5 @@
 
-<Source ID="6f46efe3-f4a9-464e-b173-9b931418f68b" Version="1.0" Name="DemoDBSrc" ResourceType="DbSource" IsValid="false" ServerType="SqlDatabase" Type="SqlDatabase" ConnectionString="Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=DemoDB;User ID=testUser;Password=test123;" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+<Source ID="6f46efe3-f4a9-464e-b173-9b931418f68b" Name="DemoDBSrc" ResourceType="DbSource" IsValid="false" ServerType="SqlDatabase" Type="SqlDatabase" ConnectionString="Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=Jerome-Testing;User ID=testUser;Password=test123;" ServerVersion="0.4.5568.15738" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>DemoDBSrc</DisplayName>
   <Category>Acceptance Testing Resources\DemoDBSrc</Category>
   <AuthorRoles>
@@ -19,6 +19,7 @@
   </BizRule>
   <WorkflowActivityDef>
   </WorkflowActivityDef>
+  <VersionInfo DateTimeStamp="2015-03-31T09:23:26.7195183+02:00" Reason="" User="" VersionNumber="4" ResourceId="6f46efe3-f4a9-464e-b173-9b931418f68b" VersionId="00adf1e0-b968-46bf-b397-4b43beab37f6" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -28,9 +29,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>SyS04Cs/08iH6E38xrKJEw9RwpI=</DigestValue>
+        <DigestValue>4ELRL1CWWePLV/KK8rdThPUV+AA=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>OYPyl+CN3AcBSWa1PwaQeSuhz5hjTKh/Y48Ht8/9lTZVVzh5BFnH2hZwLI+vMv99WLpiXfBEyMrJjYT/0zsn3TRKerJo0eRa9NskZ4k+/IhWL6jbLZr4hK5RLMa3Oq8Y+tjT8xS4xofKgXnpW3qXYhJ3c3AgQ+QmHRHb2hBdqsY=</SignatureValue>
+    <SignatureValue>N0rfnKsDUpGpfscKuMS2iM7HIxiWM2hT4T18MIV24PbhA+LJMugGJ0E+nlpgG6fN2aMmMcH/lqosvWrrHhmJM48DQx6/VkLp82iDcJKJJnJAbs16GXXoo3nRh0ERafU/ii2Nwo2NG38AFLwsogbQ1KCasAfHpSFWLSgkQ4IibPA=</SignatureValue>
   </Signature>
 </Source>

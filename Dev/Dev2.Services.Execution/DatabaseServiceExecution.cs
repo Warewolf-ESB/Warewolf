@@ -161,14 +161,12 @@ namespace Dev2.Services.Execution
 
                         // now convert to binary datalist ;)
                         int rowIdx = 1;
-                        try
-                        {
-                            rowIdx = environment.GetLength(rs);
-                        }
-                        catch (Exception e)
-                        {
-                            Dev2Logger.Log.Error(e.Message, e);
-                        }
+                        
+                            if (environment.HasRecordSet(rs))
+                            {
+                                rowIdx = environment.GetLength(rs);
+                            }
+                        
                         if (rsType == enRecordsetIndexType.Star)
                         {
                             rowIdx = 1;
@@ -193,7 +191,6 @@ namespace Dev2.Services.Execution
                                     {
                                         var displayExpression = Data.Util.DataListUtil.AddBracketsToValueIfNotExist(Data.Util.DataListUtil.CreateRecordsetDisplayValue(Data.Util.DataListUtil.ExtractRecordsetNameFromValue(def.Value), Data.Util.DataListUtil.ExtractFieldNameFromValue(def.Value), rowIdx.ToString()));
                                         environment.Assign(displayExpression, item.ToString());
-                                        //items.Add(new BinaryDataListItem(item.ToString(), rsNameUse, colName, rowIdx));
                                     }
 
                                     idx++;
