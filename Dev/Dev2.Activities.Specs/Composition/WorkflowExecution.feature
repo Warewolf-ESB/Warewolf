@@ -111,6 +111,7 @@ Scenario: Workflow with an assign and webservice
 	  | [[Countries(10).CountryID]] = 10           |
 	  | [[Countries(10).Description]] = Azerbaijan |
 
+#done
 Scenario: Workflow with an assign and webservice different mappings
 	 Given I have a workflow "TestWebServiceDiffMappings"
 	 And "TestWebServiceDiffMappings" contains an Assign "Inputs" as
