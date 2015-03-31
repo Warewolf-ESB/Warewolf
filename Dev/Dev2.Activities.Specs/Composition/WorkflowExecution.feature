@@ -2572,7 +2572,7 @@ Examples:
 #      | 12 | [[rec"()".a]]          |
 #      | 13 | [[rec([[[[b]]]]).a]]   |
 #
-
+#done
 Scenario: Workflow with Assign and Sort Forward to test gaps
       Given I have a workflow "workflowithAssignandsortrec"
       And "workflowithAssignandsortrec" contains an Assign "sortval" as
@@ -2585,7 +2585,7 @@ Scenario: Workflow with Assign and Sort Forward to test gaps
 	  | [[rs(6).b]] | 2     |
 	  And "workflowithAssignandsortrec" contains an Sort "sortRec" as
 	  | Sort Field | Sort Order |
-	  | [[rs(*).a | Forward    |
+	  | [[rs(*).a | Backwards    |
 	  When "workflowithAssignandsortrec" is executed
 	  Then the workflow execution has "NO" error
 	  And the 'sortval' in WorkFlow 'workflowithAssignandsortrec' debug inputs as
@@ -2620,7 +2620,7 @@ Scenario: Workflow with Assign and Sort Forward to test gaps
 	  | [[rs(5).a]] = 10 |
 	  | [[rs(6).a]] = 20 |
 	  | [[rs(7).a]] = 30 |
-
+#done
 Scenario: Workflow with Assign and Sort Backward to test gaps
       Given I have a workflow "workflowithAssignandsortrecBack"
       And "workflowithAssignandsortrecBack" contains an Assign "sortval" as
@@ -2903,7 +2903,7 @@ Scenario: Base Convert two varibles on one row
     And the 'Base to Convert' in Workflow 'BaseConvertUsingRecSetInRecursiveEvalution' debug outputs as  
 	  | # |                     |
 	  | 1 | [[rec(1).a]] = Mg== |
-
+#done
 #This should be passed with the bug 12160
 Scenario: Workflow by using For Each with Raandom in it
       Given I have a workflow "WFWithForEachContainsRandom"
@@ -2972,7 +2972,7 @@ Scenario: Workflow by using For Each with Raandom in it
 #	  And the 'DataSplit' in Workflow 'WorkflowDataSplit' debug outputs as  
 #	  | # |                     |
 #	  | 1 | [[rec(1).b]] = abcd |
-
+#done
 #bug 12470
 Scenario: Workflow with Assign and foreach contains calculate. 
       Given I have a workflow "Workflowwithforeachcontainscalculates"
@@ -3023,7 +3023,7 @@ Scenario: Workflow with Assign and foreach with invalid rec and it contains calc
       | [[rs().a]] | 1     |
       | [[rs().a]] | 2     |
       | [[rs().a]] | 3     |
-	  And "WorkflowDwithforeachcontainscalinvalid" contains a Foreach "ForEachTes" as "InRecordset" executions "[[rs()]]+1"
+	  And "WorkflowDwithforeachcontainscalinvalid" contains a Foreach "ForEachTes" as "InRecordset" executions "[[rs()]]"
 	  And "ForEachTes" contains Calculate "Cal" with formula "[[rs(*).a]]+1" into "[[result]]"
 	  When "WorkflowDwithforeachcontainscalinvalid" is executed
 	  Then the workflow execution has "NO" error
@@ -3220,7 +3220,7 @@ Scenario: Workflow with Assign and Unique Tool
        |   | [[rec(2).unique]] = 20 |
        |   | [[rec(3).unique]] = 40 |
        |   | [[rec(4).unique]] = 50 |
-
+#done
 #Bug 12142
 Scenario: Workflow with Calculation using Star notation
       Given I have a workflow "WorkflowWithAssignCalculationUsingStar"

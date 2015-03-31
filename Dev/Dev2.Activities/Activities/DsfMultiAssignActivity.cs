@@ -204,7 +204,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var calcExpression = ExecutionEnvironment.WarewolfAtomToString(result.Item);
                     string eval;
                     string error;
-                    functionEvaluator.TryEvaluateFunction(calcExpression, out eval, out error);
+                    var res = functionEvaluator.TryEvaluateFunction(calcExpression, out eval, out error);
+                    if(!res) throw  new Exception("Invalid Calculate");
                     return new AssignValue(fieldName,eval);
                 }
             }

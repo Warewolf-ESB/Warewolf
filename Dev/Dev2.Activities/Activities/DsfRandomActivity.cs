@@ -16,6 +16,7 @@ using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Data;
@@ -105,9 +106,9 @@ namespace Dev2.Activities
                 {
 
 
-                    var lengthItr = new WarewolfIterator(env.EvalStrict(Length));
-                    var fromItr = new WarewolfIterator(env.EvalStrict(From));
-                    var toItr = new WarewolfIterator(env.EvalStrict(To));
+                    IWarewolfIterator lengthItr = !String.IsNullOrEmpty(Length) ? new WarewolfIterator(env.EvalStrict(Length)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataASTMutable.WarewolfAtom.Nothing, }) ;
+                    var fromItr = !String.IsNullOrEmpty(From) ? new WarewolfIterator(env.EvalStrict(From)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataASTMutable.WarewolfAtom.Nothing, }); ;
+                    var toItr = !String.IsNullOrEmpty(To) ? new WarewolfIterator(env.EvalStrict(To)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataASTMutable.WarewolfAtom.Nothing, }); ; ;
                     WarewolfListIterator colItr = new WarewolfListIterator();
                     colItr.AddVariableToIterateOn(lengthItr);
                     colItr.AddVariableToIterateOn(fromItr);
