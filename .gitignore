@@ -229,6 +229,16 @@ vbcs.cache
 /Dev/Warewolf.Studio.CustomControls/obj
 /Dev/Warewolf.Studio.CustomControls.Tests/bin
 /Dev/Warewolf.Studio.CustomControls.Tests/obj
+/Dev/RunDatalistEval/bin
+/Dev/RunDatalistEval/obj
+/Dev/Warewolf.Storage/bin
+/Dev/Warewolf.Storage/obj
+/Dev/WarewolfLanguageParser/bin
+/Dev/WarewolfLanguageParser/obj
+/Dev/WarewolfParserInterop/bin
+/Dev/WarewolfParserInterop/obj
+/Dev/WarewolfParsingTest/bin
+/Dev/WarewolfParsingTest/obj
 
 ####################################################################################
 # These release workflows must be stored in "/Dev/BPM Resources - Release/Resources" ONLY!

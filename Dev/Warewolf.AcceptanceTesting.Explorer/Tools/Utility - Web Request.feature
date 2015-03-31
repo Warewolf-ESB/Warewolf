@@ -89,50 +89,6 @@ Examples:
    | 7  | [[[[rec().a]]              | True       |
 
 
-Scenario Outline: Web Request Tool Large view is validating incorrect variables in Header
-	Given I have Web Request small view on design surface
-	When I open Web Request Large View
-	Then I Enter URL "http://[[site]][[file]]"
-	And I Enter header '<Header>'
-	And I enter result is "[[Result]]"
-	And Preview button is "Enabled"	
-	And Done button is "Visible"
-	When I click on "Done"
-	Then Validation message is thrown '<Validation>'
-Examples: 
-   | No | URL                        | Validation |
-   | 1  | http://[[site#]][[file!]]l | True       |
-   | 2  | [[a@@#]]                   | True       |
-   | 3  | [[a]]                      | False      |
-   | 4  | [[a]][[b]]                 | False      |
-   | 5  | http://[[site]][[file]]    | False      |
-   | 6  | [[Rec().a]]                | False      |
-   | 7  | [[[[rec().a]]              | True       |
-
-
-
-
-Scenario Outline: Web Request Tool Large view is validating incorrect variables in Header
-	Given I have Web Request small view on design surface
-	When I open Web Request Large View
-	Then I Enter URL "http://[[site]][[file]]"
-	And I Enter header ""
-	And I enter result is '<Result>'
-	And Preview button is "Enabled"	
-	And Done button is "Visible"
-	When I click on "Done"
-	Then Validation message is thrown '<Validation>'
-Examples: 
-   | No | Result              | Validation |
-   | 1  | result           | False      |
-   | 2  | [[result]]       | False      |
-   | 3  | [[a]][[b]]       | True       |
-   | 4  | [[rec([[a]]).a]] | True       |
-   | 5  | [[[[a]]]]        | True       |
-   | 6  | [[rec(*).a]]     | False      |
-   | 7  | [[rec().a@]]     | True       |
-
-
 
 
 
