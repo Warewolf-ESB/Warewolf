@@ -205,7 +205,7 @@ namespace Dev2.Data.Binary_Objects
 
         public bool HasMore()
         {
-            return _current < Count-1;
+            return _current < Count;
         }
 
         public int FetchNextIndex()
