@@ -100,7 +100,7 @@ Examples:
     | 8  | [[a]]]]          | True  |
 
 
-Scenario Outline: Inserting Rows in large view
+Scenario: Inserting Rows in large view
 	Given I have Xpath Large view on design surface
 	Then I enter XML is "<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>"
 	And Xpath Large view grid has
@@ -125,7 +125,7 @@ Scenario Outline: Inserting Rows in large view
 	| 7 | [[rec(2).id]] |                               |
 	| 8 |               |                               |
 
-Scenario Outline: Deleting Rows in large view
+Scenario: Deleting Rows in large view
 	Given I have Xpath Large view on design surface
 	Then I enter XML is "<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>"
 	And Xpath Laarge view grid has
