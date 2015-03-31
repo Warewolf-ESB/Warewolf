@@ -92,12 +92,26 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="HuggsTestDataSet.cs">
+      <DependentUpon>HuggsTestDataSet.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="HuggsTestDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HuggsTestDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="IServiceExecution.cs" />
     <Compile Include="DatabaseServiceExecution.cs" />
     <Compile Include="PluginServiceExecution.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="ServiceExecutionAbstract.cs" />
     <Compile Include="WebserviceExecution.cs" />
   </ItemGroup>
@@ -142,6 +156,24 @@
       <Project>{E0F7C709-A61B-4829-A659-D7780052326A}</Project>
       <Name>WarewolfLanguageParser</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="HuggsTestDataSet.xsc">
+      <DependentUpon>HuggsTestDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="HuggsTestDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>HuggsTestDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="HuggsTestDataSet.xss">
+      <DependentUpon>HuggsTestDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

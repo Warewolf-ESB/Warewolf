@@ -177,7 +177,14 @@ namespace Dev2.Services.Execution
                             var definitions = dev2Definitions as IDev2Definition[] ?? dev2Definitions.ToArray();
                             if (definitions.Count() == 1)
                             {
-                                toInject = DataListUtil.AddBracketsToValueIfNotExist(definitions[0].RawValue);
+                                if (DataListUtil.IsEvaluated(definitions[0].RawValue))
+                                {
+                                    toInject = DataListUtil.AddBracketsToValueIfNotExist(definitions[0].RawValue);
+                                }
+                                else
+                                {
+                                    toInject = definitions[0].RawValue;
+                                }
                             }
 
                         }
