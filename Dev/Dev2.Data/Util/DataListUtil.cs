@@ -990,15 +990,30 @@ namespace Dev2.Data.Util
                             if (inputRecSet != null && inputRecSet.IsRecordSet)
                             {
                                 var enRecordsetIndexType = GetRecordsetIndexType(inputRecSet.Value);
-                                if (enRecordsetIndexType == enRecordsetIndexType.Star)
-                                {
+
                                     if (recsetResult != null)
                                     {
                                         var correctRecSet = "[[" + inputRecSet.RecordSetName + "()." + inputRecSet.Name + "]]";
 
                                         env.EvalAssignFromNestedStar(correctRecSet, recsetResult);
                                     }
-                                }
+                                
+                                //if (enRecordsetIndexType == enRecordsetIndexType.Blank)
+                                //{
+                                //    if (recsetResult != null)
+                                //    {
+
+                                //        env.EvalAssignFromNestedLast("[[" + inputRecSet.RecordSetName + "()." + inputRecSet.Name + "]]", recsetResult);
+                                //    }
+                                //}
+                                //if (enRecordsetIndexType == enRecordsetIndexType.Numeric)
+                                //{
+                                //    if (recsetResult != null)
+                                //    {
+
+                                //        env.EvalAssignFromNestedNumeric(inputRecSet.RawValue, recsetResult);
+                                //    }
+                                //}
                             }
                         }
                     }
@@ -2066,40 +2081,47 @@ namespace Dev2.Data.Util
                 var outPutRecSet = outputs.FirstOrDefault(definition => definition.IsRecordSet && definition.RecordSetName == recordSetDefinition.SetName);
                 if(outPutRecSet != null)
                 {
-                    var correctRecSet = "[[" + outPutRecSet.RecordSetName + "(*)." + outPutRecSet.Name + "]]";
-                    var warewolfEvalResult = innerEnvironment.Eval(correctRecSet);
-                    if (warewolfEvalResult.IsWarewolfAtomListresult)
-                    {
-                        var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
-                        if (outPutRecSet.IsRecordSet)
+                    
+           
+                        foreach (var outputColumnDefinitions in recordSetDefinition.Columns)
                         {
-                            var enRecordsetIndexType = GetRecordsetIndexType(outPutRecSet.RawValue);
-                            if (enRecordsetIndexType == enRecordsetIndexType.Star)
+
+                            var correctRecSet = "[[" + outputColumnDefinitions.RecordSetName + "(*)." + outputColumnDefinitions.Name + "]]";
+                            var warewolfEvalResult = innerEnvironment.Eval(correctRecSet);
+                            if (warewolfEvalResult.IsWarewolfAtomListresult)
                             {
-                                if(recsetResult != null)
-                                {
-
-                                    environment.EvalAssignFromNestedStar(outPutRecSet.RawValue, recsetResult);
-                                }
-                            }
-                            if (enRecordsetIndexType == enRecordsetIndexType.Blank)
+                            var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                            if (outPutRecSet.IsRecordSet)
                             {
-                                if (recsetResult != null)
+                                var enRecordsetIndexType = GetRecordsetIndexType(outputColumnDefinitions.RawValue);
+                                if (enRecordsetIndexType == enRecordsetIndexType.Star)
                                 {
+                                    if (recsetResult != null)
+                                    {
 
-                                    environment.EvalAssignFromNestedLast(outPutRecSet.RawValue, recsetResult);
+                                        environment.EvalAssignFromNestedStar(outputColumnDefinitions.RawValue, recsetResult);
+                                    }
                                 }
-                            }
-                            if (enRecordsetIndexType == enRecordsetIndexType.Numeric)
-                            {
-                                if (recsetResult != null)
+                                if (enRecordsetIndexType == enRecordsetIndexType.Blank)
                                 {
+                                    if (recsetResult != null)
+                                    {
 
-                                    environment.EvalAssignFromNestedNumeric(outPutRecSet.RawValue, recsetResult);
+                                        environment.EvalAssignFromNestedLast(outputColumnDefinitions.RawValue, recsetResult);
+                                    }
                                 }
-                            }
+                                if (enRecordsetIndexType == enRecordsetIndexType.Numeric)
+                                {
+                                    if (recsetResult != null)
+                                    {
 
+                                        environment.EvalAssignFromNestedNumeric(outputColumnDefinitions.RawValue, recsetResult);
+                                    }
+                                }
+
+                            }
                         }
+                       
                     }
                 }
             }

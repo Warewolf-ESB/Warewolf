@@ -57,6 +57,8 @@ namespace Warewolf.Storage
         void AddError(string error);
 
 
+
+        void AssignDataShape(string p);
     }
     public class ExecutionEnvironment : IExecutionEnvironment
     {
@@ -407,6 +409,12 @@ namespace Warewolf.Storage
         public void AddError(string error)
         {
             Errors.Add(error);
+        }
+
+        public void AssignDataShape(string p)
+        {
+            var env = PublicFunctions.EvalDataShape(p,_env);
+            _env = env;
         }
 
         public static string ConvertToIndex(string outputVar, int i)
