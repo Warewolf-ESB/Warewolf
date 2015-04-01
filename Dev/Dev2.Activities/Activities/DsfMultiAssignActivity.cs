@@ -175,7 +175,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(hasErrors)
                 {
                     DisplayAndWriteError("DsfAssignActivity", allErrors);
-                    var errorString = allErrors.MakeUserReady();
+                    var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
 
                 }
