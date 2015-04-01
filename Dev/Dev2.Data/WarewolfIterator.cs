@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Dev2.Common.Interfaces;
 using Dev2.Data.Util;
@@ -57,8 +58,12 @@ namespace Dev2.Data
             {
                 string eval;
                 string error;
-                functionEvaluator.TryEvaluateFunction(cleanExpression, out eval, out error);
+                var tryEvaluateFunction = functionEvaluator.TryEvaluateFunction(cleanExpression, out eval, out error);
                 warewolfAtomToString = eval;
+                if (!tryEvaluateFunction)
+                {
+                    throw new Exception(error);
+                }
             }
             return warewolfAtomToString;
         }

@@ -76,7 +76,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ErrorResultTO errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
             InitializeDebug(dataObject);
-            // Process if no errors
             try
             {
                 IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
@@ -96,13 +95,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var result = warewolfListIterator.FetchNextValue(inputIterator);
                     dataObject.Environment.Assign(Result, result);
                 }
-//                IEvaluationFunction evaluationFunctionTo = MathOpsFactory.CreateEvaluationExpressionTO(input);
-//
-//                string result = functionEvaluator.EvaluateFunction(evaluationFunctionTo, executionId, out errors);
-//                allErrors.MergeErrors(errors);
-//
-//                compiler.Upsert(executionId, Result, result, out errors);
-
+                
                 if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
                     AddDebugOutputItem(Result, dataObject.Environment);
@@ -122,8 +115,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(hasErrors)
                 {
                     DisplayAndWriteError("DsfCalculateActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
-                    dataObject.Environment.Assign(Result, null);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
+                    dataObject.Environment.Assign(Result, "");
                 }
                 if(dataObject.IsDebugMode())
                 {
