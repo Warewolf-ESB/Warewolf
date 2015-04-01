@@ -315,7 +315,7 @@ namespace Warewolf.Storage
             for(int index = 0; index < recsetResult.Item.Count; index++)
             {
                 var warewolfAtom = recsetResult.Item[index];
-                Assign(exp.Replace("*", (index+1).ToString(CultureInfo.InvariantCulture)), WarewolfAtomToString(warewolfAtom));
+                AssignWithFrame(new AssignValue(exp.Replace("()", "(" + (index + 1).ToString(CultureInfo.InvariantCulture) + ")"), WarewolfAtomToString(warewolfAtom)));
             }
         }
 

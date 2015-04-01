@@ -964,7 +964,10 @@ namespace Dev2.Data.Util
         {
             var env = new ExecutionEnvironment();
 
-            
+            try
+            {
+
+        
             var inputs = DataListFactory.CreateInputParser().Parse(inputDefs);
 
             IRecordSetCollection inputRecSets = DataListFactory.CreateRecordSetCollection(inputs, false);
@@ -973,27 +976,33 @@ namespace Dev2.Data.Util
 
             foreach (var recordSetDefinition in inputRecSets.RecordSets)
             {
+               
                 var outPutRecSet = inputs.FirstOrDefault(definition => definition.IsRecordSet && ExtractRecordsetNameFromValue(definition.MapsTo) == recordSetDefinition.SetName);
                 if(outPutRecSet != null)
                 {
-                    var warewolfEvalResult = outerEnvironment.Eval(outPutRecSet.RawValue);
-                    if (warewolfEvalResult.IsWarewolfAtomListresult)
+                    foreach(var dev2ColumnDefinition in recordSetDefinition.Columns)
                     {
-                        var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
-                        var inputRecSet = inputs.FirstOrDefault(definition => definition.MapsTo == outPutRecSet.Value);
-                        if (inputRecSet != null && inputRecSet.IsRecordSet)
+                        var warewolfEvalResult = outerEnvironment.Eval(dev2ColumnDefinition.RawValue);
+                        if (warewolfEvalResult.IsWarewolfAtomListresult)
                         {
-                            var enRecordsetIndexType = GetRecordsetIndexType(inputRecSet.Value);
-                            if (enRecordsetIndexType == enRecordsetIndexType.Star)
+                            var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                            var inputRecSet = inputs.FirstOrDefault(definition => definition.MapsTo == dev2ColumnDefinition.Value);
+                            if (inputRecSet != null && inputRecSet.IsRecordSet)
                             {
-                                if(recsetResult != null)
+                                var enRecordsetIndexType = GetRecordsetIndexType(inputRecSet.Value);
+                                if (enRecordsetIndexType == enRecordsetIndexType.Star)
                                 {
-                                    var correctRecSet = "[[" + inputRecSet.RecordSetName + "()." + inputRecSet.Name + "]]";
-                                    env.EvalAssignFromNestedStar(correctRecSet, recsetResult);
+                                    if (recsetResult != null)
+                                    {
+                                        var correctRecSet = "[[" + inputRecSet.RecordSetName + "()." + inputRecSet.Name + "]]";
+
+                                        env.EvalAssignFromNestedStar(correctRecSet, recsetResult);
+                                    }
                                 }
                             }
                         }
                     }
+                   
                 }
             }
             foreach (var dev2Definition in inputScalarList)
@@ -1006,7 +1015,7 @@ namespace Dev2.Data.Util
                         var data = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
                         if (data != null && data.Item.Any())
                         {
-                            env.MultiAssign(new List<IAssignValue> { new AssignValue("[[" + dev2Definition.Name + "]]", ExecutionEnvironment.WarewolfAtomToString(data.Item.Last())) });
+                            env.AssignWithFrame(new AssignValue("[[" + dev2Definition.Name + "]]", ExecutionEnvironment.WarewolfAtomToString(data.Item.Last())) );
                         }
                     }
                     else
@@ -1014,10 +1023,16 @@ namespace Dev2.Data.Util
                         var data = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
                         if (data != null)
                         {
-                            env.MultiAssign(new List<IAssignValue> { new AssignValue("[[" + dev2Definition.Name + "]]", ExecutionEnvironment.WarewolfAtomToString(data.Item)) });
+                            env.AssignWithFrame( new AssignValue("[[" + dev2Definition.Name + "]]", ExecutionEnvironment.WarewolfAtomToString(data.Item)) );
                         }
                     }
                 }
+            }
+            }
+            finally
+            {
+                
+                env.CommitAssign();
             }
             return env;
         }
