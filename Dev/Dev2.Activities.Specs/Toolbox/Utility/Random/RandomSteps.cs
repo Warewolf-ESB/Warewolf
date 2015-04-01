@@ -134,7 +134,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
             string actualValue;
             value = value.Replace('"', ' ').Trim();
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+            GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
             Assert.AreEqual(value, actualValue);
         }

@@ -22,7 +22,6 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Data;
 using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 using Dev2.Util;
@@ -84,12 +83,8 @@ namespace Dev2.Activities
             _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            Guid dlId = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
-            Guid executionId = dlId;
             allErrors.MergeErrors(errors);
 
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
@@ -102,29 +97,23 @@ namespace Dev2.Activities
             {
 
 
-                if(!errors.HasErrors())
+                if (!errors.HasErrors())
                 {
+                    if (dataObject.IsDebugMode())
+                    {
+                        AddDebugInputItem(Length, From, To, dataObject.Environment, RandomType);
+                    }
 
-
-                    IWarewolfIterator lengthItr = !String.IsNullOrEmpty(Length) ? new WarewolfIterator(env.EvalStrict(Length)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataASTMutable.WarewolfAtom.Nothing, }) ;
-                    var fromItr = !String.IsNullOrEmpty(From) ? new WarewolfIterator(env.EvalStrict(From)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataASTMutable.WarewolfAtom.Nothing, }); ;
-                    var toItr = !String.IsNullOrEmpty(To) ? new WarewolfIterator(env.EvalStrict(To)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataASTMutable.WarewolfAtom.Nothing, }); ; ;
+                    IWarewolfIterator lengthItr = !String.IsNullOrEmpty(Length) ? new WarewolfIterator(env.EvalStrict(Length)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataASTMutable.WarewolfAtom.Nothing, });
+                    var fromItr = !String.IsNullOrEmpty(From) ? new WarewolfIterator(env.EvalStrict(From)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataASTMutable.WarewolfAtom.Nothing, });
+                    var toItr = !String.IsNullOrEmpty(To) ? new WarewolfIterator(env.EvalStrict(To)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataASTMutable.WarewolfAtom.Nothing, });
                     WarewolfListIterator colItr = new WarewolfListIterator();
                     colItr.AddVariableToIterateOn(lengthItr);
                     colItr.AddVariableToIterateOn(fromItr);
                     colItr.AddVariableToIterateOn(toItr);
 
 
-                    if(dataObject.IsDebugMode())
-                    {
-                        if(!String.IsNullOrEmpty(Length))
-                        AddDebugInputItem(new DebugEvalResult(Length,"Length",env));
-                        if (!String.IsNullOrEmpty(From))
-                        AddDebugInputItem(new DebugEvalResult(From, "From", env));
-                        if (!String.IsNullOrEmpty(To))
-                        AddDebugInputItem(new DebugEvalResult(To, "To", env));
-                       // AddDebugInputItem(Length, From, To, fromEntry, toEntry, lengthEntry, executionId, RandomType);
-                    }
+                    
                     Dev2Random dev2Random = new Dev2Random();
                     while (colItr.HasMoreData())
                     {
@@ -136,14 +125,14 @@ namespace Dev2.Activities
                         string toValue = colItr.FetchNextValue(toItr);
                         string lengthValue = colItr.FetchNextValue(lengthItr);
 
-                        if(RandomType != enRandomType.Guid)
+                        if (RandomType != enRandomType.Guid)
                         {
-                            if(RandomType == enRandomType.Numbers)
+                            if (RandomType == enRandomType.Numbers)
                             {
                                 #region Getting the From
 
                                 fromNum = GetFromValue(fromValue, out errors);
-                                if(errors.HasErrors())
+                                if (errors.HasErrors())
                                 {
                                     allErrors.MergeErrors(errors);
                                     continue;
@@ -154,7 +143,7 @@ namespace Dev2.Activities
                                 #region Getting the To
 
                                 toNum = GetToValue(toValue, out errors);
-                                if(errors.HasErrors())
+                                if (errors.HasErrors())
                                 {
                                     allErrors.MergeErrors(errors);
                                     continue;
@@ -167,7 +156,7 @@ namespace Dev2.Activities
                                 #region Getting the Length
 
                                 lengthNum = GetLengthValue(lengthValue, out errors);
-                                if(errors.HasErrors())
+                                if (errors.HasErrors())
                                 {
                                     allErrors.MergeErrors(errors);
                                     continue;
@@ -178,38 +167,27 @@ namespace Dev2.Activities
                         }
                         string value = dev2Random.GetRandom(RandomType, lengthNum, fromNum, toNum);
 
-                        //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                         var rule = new IsSingleValueRule(() => Result);
                         var single = rule.Check();
-                        if(single != null)
+                        if (single != null)
                         {
                             allErrors.AddError(single.Message);
                         }
                         else
                         {
-
                             env.Assign(Result, value);
-                  
-
                         }
                     }
 
-
-                    if(dataObject.IsDebugMode())
+                    if (dataObject.IsDebugMode())
                     {
-                        if(string.IsNullOrEmpty(Result))
-                        {
-                            AddDebugOutputItem(new DebugItemStaticDataParams("", "Result"));
-                        }
-              
-                                AddDebugOutputItem(new DebugEvalResult(Result,"",env));
-                      
-                        }
+                        AddDebugOutputItem(new DebugEvalResult(Result, "", env));
                     }
-                    allErrors.MergeErrors(errors);
-                
+                }
+                allErrors.MergeErrors(errors);
+
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Log.Error("DSFRandomActivity", e);
                 allErrors.AddError(e.Message);
@@ -221,7 +199,8 @@ namespace Dev2.Activities
                 if(hasErrors)
                 {
                     DisplayAndWriteError("DsfRandomActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
                     dataObject.Environment.Assign(Result, null);
                 }
                 if(dataObject.IsDebugMode())

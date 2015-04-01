@@ -128,6 +128,22 @@ this.ScenarioSetup(scenarioInfo);
 #line 25
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Random",
+                        "Length"});
+            table3.AddRow(new string[] {
+                        "Letters & Numbers",
+                        "10"});
+#line 26
+ testRunner.And("the debug inputs as", ((string)(null)), table3, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table4.AddRow(new string[] {
+                        "[[result]] = String"});
+#line 29
+ testRunner.And("the debug output as", ((string)(null)), table4, "And ");
+#line hidden
             this.ScenarioCleanup();
         }
         
@@ -150,6 +166,24 @@ this.ScenarioSetup(scenarioInfo);
                     " \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 38
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Random",
+                        "From",
+                        "To"});
+            table5.AddRow(new string[] {
+                        "Numbers",
+                        "0",
+                        "9"});
+#line 39
+ testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table6.AddRow(new string[] {
+                        "[[result]] = Int32"});
+#line 42
+ testRunner.And("the debug output as", ((string)(null)), table6, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -174,6 +208,24 @@ this.ScenarioSetup(scenarioInfo);
 #line 51
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Random",
+                        "From",
+                        "To"});
+            table7.AddRow(new string[] {
+                        "Numbers",
+                        "10",
+                        "99"});
+#line 52
+ testRunner.And("the debug inputs as", ((string)(null)), table7, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table8.AddRow(new string[] {
+                        "[[result]] = Int32"});
+#line 55
+ testRunner.And("the debug output as", ((string)(null)), table8, "And ");
+#line hidden
             this.ScenarioCleanup();
         }
         
@@ -194,6 +246,20 @@ this.ScenarioSetup(scenarioInfo);
                     "\"36\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 63
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Random"});
+            table9.AddRow(new string[] {
+                        "GUID"});
+#line 64
+ testRunner.And("the debug inputs as", ((string)(null)), table9, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table10.AddRow(new string[] {
+                        "[[result]] = Guid"});
+#line 67
+ testRunner.And("the debug output as", ((string)(null)), table10, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -218,6 +284,24 @@ this.ScenarioSetup(scenarioInfo);
 #line 77
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Random",
+                        "From",
+                        "To"});
+            table11.AddRow(new string[] {
+                        "Numbers",
+                        "\"\"",
+                        "\"\""});
+#line 78
+ testRunner.And("the debug inputs as", ((string)(null)), table11, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table12.AddRow(new string[] {
+                        "[[result]] ="});
+#line 81
+ testRunner.And("the debug output as", ((string)(null)), table12, "And ");
+#line hidden
             this.ScenarioCleanup();
         }
         
@@ -240,6 +324,24 @@ this.ScenarioSetup(scenarioInfo);
                     "f \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 90
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Random",
+                        "From",
+                        "To"});
+            table13.AddRow(new string[] {
+                        "Numbers",
+                        "1",
+                        "\"\""});
+#line 91
+ testRunner.And("the debug inputs as", ((string)(null)), table13, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table14.AddRow(new string[] {
+                        "[[result]] ="});
+#line 94
+ testRunner.And("the debug output as", ((string)(null)), table14, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -264,6 +366,24 @@ this.ScenarioSetup(scenarioInfo);
 #line 103
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Random",
+                        "From",
+                        "To"});
+            table15.AddRow(new string[] {
+                        "Numbers",
+                        "-1",
+                        "-9"});
+#line 104
+ testRunner.And("the debug inputs as", ((string)(null)), table15, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table16.AddRow(new string[] {
+                        "[[result]] = Int32"});
+#line 107
+ testRunner.And("the debug output as", ((string)(null)), table16, "And ");
+#line hidden
             this.ScenarioCleanup();
         }
         
@@ -283,6 +403,24 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.When("the random tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 115
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Random",
+                        "From",
+                        "To"});
+            table17.AddRow(new string[] {
+                        "Numbers",
+                        "\"\"",
+                        "\"\""});
+#line 116
+ testRunner.And("the debug inputs as", ((string)(null)), table17, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table18.AddRow(new string[] {
+                        "[[result]] ="});
+#line 119
+ testRunner.And("the debug output as", ((string)(null)), table18, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -307,6 +445,22 @@ this.ScenarioSetup(scenarioInfo);
 #line 128
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Random",
+                        "Length"});
+            table19.AddRow(new string[] {
+                        "Letters",
+                        "-1"});
+#line 129
+ testRunner.And("the debug inputs as", ((string)(null)), table19, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table20.AddRow(new string[] {
+                        "[[result]] ="});
+#line 132
+ testRunner.And("the debug output as", ((string)(null)), table20, "And ");
+#line hidden
             this.ScenarioCleanup();
         }
         
@@ -330,6 +484,22 @@ this.ScenarioSetup(scenarioInfo);
 #line 141
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Random",
+                        "Length"});
+            table21.AddRow(new string[] {
+                        "Letters & Numbers",
+                        "\"\""});
+#line 142
+ testRunner.And("the debug inputs as", ((string)(null)), table21, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table22.AddRow(new string[] {
+                        "[[result]] ="});
+#line 145
+ testRunner.And("the debug output as", ((string)(null)), table22, "And ");
+#line hidden
             this.ScenarioCleanup();
         }
         
@@ -352,6 +522,22 @@ this.ScenarioSetup(scenarioInfo);
                     "f \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 154
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Random",
+                        "Length"});
+            table23.AddRow(new string[] {
+                        "Letters & Numbers",
+                        "\"\""});
+#line 155
+ testRunner.And("the debug inputs as", ((string)(null)), table23, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table24.AddRow(new string[] {
+                        "[[result]] ="});
+#line 158
+ testRunner.And("the debug output as", ((string)(null)), table24, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -378,6 +564,24 @@ this.ScenarioSetup(scenarioInfo);
 #line 169
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+            TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Random",
+                        "From",
+                        "To"});
+            table25.AddRow(new string[] {
+                        "Numbers",
+                        "5",
+                        "5"});
+#line 170
+ testRunner.And("the debug inputs as", ((string)(null)), table25, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table26.AddRow(new string[] {
+                        "[[result]] = Int32"});
+#line 173
+ testRunner.And("the debug output as", ((string)(null)), table26, "And ");
+#line hidden
             this.ScenarioCleanup();
         }
         
@@ -398,6 +602,22 @@ this.ScenarioSetup(scenarioInfo);
 #line 181
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
+            TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Random",
+                        "From",
+                        "To"});
+            table27.AddRow(new string[] {
+                        "Numbers",
+                        "[[rec(-1).set]] =",
+                        "5"});
+#line 182
+ testRunner.And("the debug inputs as", ((string)(null)), table27, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+#line 185
+ testRunner.And("the debug output as", ((string)(null)), table28, "And ");
+#line hidden
             this.ScenarioCleanup();
         }
         
@@ -407,16 +627,32 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void GenerateANumberBetween5AndANegativeIndexInARecordset()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Generate a Number between 5 and a negative index in a recordset", ((string[])(null)));
-#line 189
+#line 188
 this.ScenarioSetup(scenarioInfo);
-#line 190
+#line 189
  testRunner.Given("I have a type as \"Numbers\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 191
+#line 190
  testRunner.And("I have a range from \"5\" to \"[[rec(-1).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 192
+#line 191
  testRunner.When("the random tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 193
+#line 192
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Random",
+                        "From",
+                        "To"});
+            table29.AddRow(new string[] {
+                        "Numbers",
+                        "5",
+                        "[[rec(-1).set]]  ="});
+#line 193
+ testRunner.And("the debug inputs as", ((string)(null)), table29, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+#line 196
+ testRunner.And("the debug output as", ((string)(null)), table30, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -427,16 +663,30 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void GenerateLettersWithANegativeRecordsetIndexForLength()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Generate Letters with a negative recordset index for length", ((string[])(null)));
-#line 201
+#line 199
 this.ScenarioSetup(scenarioInfo);
-#line 202
+#line 200
  testRunner.Given("I have a type as \"Letters\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 203
+#line 201
  testRunner.And("I have a length as \"[[rec(-1).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 204
+#line 202
  testRunner.When("the random tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 205
+#line 203
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Random",
+                        "Length"});
+            table31.AddRow(new string[] {
+                        "Letters",
+                        "[[rec(-1).set]]  ="});
+#line 204
+ testRunner.And("the debug inputs as", ((string)(null)), table31, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+#line 207
+ testRunner.And("the debug output as", ((string)(null)), table32, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -447,16 +697,30 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void GenerateLettersAndNumbersWithANegativeRecordsetIndexForLength()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Generate Letters and Numbers with a negative recordset index for length", ((string[])(null)));
-#line 213
+#line 210
 this.ScenarioSetup(scenarioInfo);
-#line 214
+#line 211
  testRunner.Given("I have a type as \"LetterAndNumbers\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 215
+#line 212
  testRunner.And("I have a length as \"[[rec(-1).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 216
+#line 213
  testRunner.When("the random tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 217
+#line 214
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Random",
+                        "Length"});
+            table33.AddRow(new string[] {
+                        "Letters & Numbers",
+                        "[[rec(-1).set]] ="});
+#line 215
+ testRunner.And("the debug inputs as", ((string)(null)), table33, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+#line 218
+ testRunner.And("the debug output as", ((string)(null)), table34, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
