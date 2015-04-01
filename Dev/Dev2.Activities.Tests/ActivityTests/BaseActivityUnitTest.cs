@@ -472,8 +472,6 @@ namespace ActivityUnitTests
             {
                 error = err.Message;
             }
-
-            
             return true;
         }
 

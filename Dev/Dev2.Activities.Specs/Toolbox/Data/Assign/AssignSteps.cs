@@ -79,6 +79,34 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
             fieldCollection.Add(new ActivityDTO(variable, value, 1, true));
         }
 
+        [Then(@"the value of ""(.*)"" is null")]
+        public void ThenTheValueOfIsNull(string variable)
+        {
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            try
+            {
+                if (DataListUtil.IsValueRecordset(variable))
+                {
+                    result.Environment.EvalAsListOfStrings(variable);
+                }
+                else
+                {
+                    string actualValue;
+                    string error;
+                    GetScalarValueFromEnvironment(result.Environment, variable,
+                        out actualValue, out error);
+                    
+
+                }
+                Assert.Fail("Should have thrown NullReferenceException");
+            }
+            catch (NullReferenceException)
+            {
+                Assert.IsTrue(true, "Exception thrown");
+            }
+        }
+
+
         [When(@"the assign tool is executed")]
         public void WhenTheAssignToolIsExecuted()
         {
@@ -90,7 +118,6 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
         [Then(@"the value of ""(.*)"" equals (.*)")]
         public void ThenTheValueOfEquals(string variable, string value)
         {
-            string error;
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
 
             if(DataListUtil.IsValueRecordset(variable))
@@ -112,6 +139,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
             {
                 string actualValue;
                 value = value.Replace('"', ' ').Trim();
+                string error;
                 GetScalarValueFromEnvironment(result.Environment,variable,
                                            out actualValue, out error);
                 actualValue = actualValue.Replace('"', ' ').Trim();
