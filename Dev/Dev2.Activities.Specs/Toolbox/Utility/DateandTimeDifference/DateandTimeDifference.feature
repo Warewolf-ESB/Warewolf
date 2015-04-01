@@ -236,6 +236,7 @@ Scenario: Calculate with negative recordset index for Input 1
 	Then the execution has "AN" error
 	And the debug inputs as  
 	| Input 1           | Input 2    | Input Format | Output In |
+	| [[my(-1).date]] = | 2014-11-01 | yyyy-mm-dd   | Minutes   |
 	And the debug output as 
 	|               |
 
@@ -248,6 +249,7 @@ Scenario: Calculate with negative recordset index for Input 2
 	Then the execution has "AN" error
 	And the debug inputs as  
 	| Input 1    | Input 2           | Input Format | Output In |
+	| 2014-11-01 | [[my(-1).date]] = | yyyy-mm-dd   | Minutes   |
 	And the debug output as 
 	|               |
 
@@ -260,6 +262,7 @@ Scenario: Calculate with negative recordset index for Format
 	Then the execution has "AN" error
 	And the debug inputs as  
 	| Input 1    | Input 2    | Input Format        | Output In |
+	| 2014-11-01 | 2014-11-01 | [[my(-1).format]] = | Minutes   |
 	And the debug output as 
 	|              |
 
@@ -304,9 +307,8 @@ Scenario: Calculate the number of years with incorrect variable in input1
 	And the execution has "AN" error
 	And the debug inputs as  
 	| Input 1          | Input 2    | Input Format | Output In |
-	| [[2014/01/01]] = | 2030/01/01 | yyyy/mm/dd   | Years     |
-	And the debug output as 
-	|              |
+	| [[2014/01/01]] = | 2030/01/01 | yyyy/mm/dd   |           |
+	
 
 Scenario: Calculate the number of split seconds
 	Given I have a first date "06/01/2014 08:00:01.00" 
