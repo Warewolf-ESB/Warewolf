@@ -25,7 +25,6 @@ using Dev2.Data;
 using Dev2.Data.Factories;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 using Dev2.Util;
@@ -110,14 +109,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-
-
-
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
-            Guid executionId = DataListExecutionID.Get(context);
             allErrors.MergeErrors(errors);
             InitializeDebug(dataObject);
             // Process if no errors
@@ -128,34 +121,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 toUpsert.IsDebug = dataObject.IsDebugMode();
                 var colItr = new WarewolfListIterator();
-//                var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors).ToString();
-//                if(!string.IsNullOrEmpty(datalist))
-//                {
-//                    ValidateInput(datalist, allErrors, Input1);
-//                    ValidateInput(datalist, allErrors, Input2);
-//                }
-//                var input1 = string.IsNullOrEmpty(Input1) ? GlobalConstants.CalcExpressionNow : Input1;
-//                string cleanExpression;
-//                var isCalcEvaluation = DataListUtil.IsCalcEvaluation(input1, out cleanExpression);
-//                var functionEvaluator = new FunctionEvaluator();
-//                if (isCalcEvaluation)
-//                {
-//                    string eval;
-//                    string error;
-//                    functionEvaluator.TryEvaluateFunction(cleanExpression, out eval, out error);
-//                    input1 = eval;
-//                }
-//                
-//                var input2 = string.IsNullOrEmpty(Input2) ? GlobalConstants.CalcExpressionNow : Input2;
-//                isCalcEvaluation = DataListUtil.IsCalcEvaluation(input2, out cleanExpression);
-//                functionEvaluator = new FunctionEvaluator();
-//                if (isCalcEvaluation)
-//                {
-//                    string eval;
-//                    string error;
-//                    functionEvaluator.TryEvaluateFunction(cleanExpression, out eval, out error);
-//                    input2 = eval;
-//                }
 
                 var input1Itr = new WarewolfIterator(dataObject.Environment.EvalStrict(string.IsNullOrEmpty(Input1) ? GlobalConstants.CalcExpressionNow : Input1));
                 colItr.AddVariableToIterateOn(input1Itr);
@@ -165,7 +130,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var input2Itr = new WarewolfIterator(evalInp2);
                 colItr.AddVariableToIterateOn(input2Itr);
 
-                var ifItr = new WarewolfIterator(dataObject.Environment.EvalStrict(InputFormat ?? string.Empty));
+                var ifItr = new WarewolfIterator(dataObject.Environment.Eval(InputFormat ?? string.Empty));
                 colItr.AddVariableToIterateOn(ifItr);
 
                 if(dataObject.IsDebugMode())
@@ -202,7 +167,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             expression = Result;
                         }
 
-                        //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                         var rule = new IsSingleValueRule(() => Result);
                         var single = rule.Check();
                         if(single != null)
@@ -242,8 +206,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfDateTimeDifferenceActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
-                    compiler.Upsert(executionId, Result, (string)null, out errors);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
+                    dataObject.Environment.Assign(Result,null);
                 }
                 if(dataObject.IsDebugMode())
                 {
@@ -253,27 +218,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        void ValidateInput(string datalist, ErrorResultTO allErrors, string input)
-        {
-
-            var splitIntoRegions = DataListCleaningUtils.FindAllLanguagePieces(input);
-            foreach(var region in splitIntoRegions)
-            {
-                string region1 = region;
-                var isValidExpr = new IsValidExpressionRule(() => region1, datalist)
-                {
-                    LabelText = "Input1"
-                };
-                var errValid = isValidExpr.Check();
-                if(errValid != null)
-                {
-                    var validationError = new ErrorResultTO();
-                    validationError.AddError(errValid.Message);
-                    allErrors.MergeErrors(validationError);
-                }
-            }
-
-        }
 
         void DoDebugOutput(IDSFDataObject dataObject, string region)
         {

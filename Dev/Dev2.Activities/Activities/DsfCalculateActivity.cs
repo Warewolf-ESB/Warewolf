@@ -70,7 +70,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
@@ -117,7 +116,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfCalculateActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
-                    dataObject.Environment.Assign(Result, "");
+                    dataObject.Environment.Assign(Result, null);
                 }
                 if(dataObject.IsDebugMode())
                 {

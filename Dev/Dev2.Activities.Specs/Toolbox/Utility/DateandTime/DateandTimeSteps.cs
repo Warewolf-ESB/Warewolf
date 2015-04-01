@@ -115,7 +115,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             string error;
             string actualValue;
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+            GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
             // ReSharper disable AssignNullToNotNullAttribute
             TypeConverter converter = TypeDescriptor.GetConverter(Type.GetType(type));
@@ -130,7 +130,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             string actualValue;
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             expectedResult = expectedResult.Replace('"', ' ').Trim();
-            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+            GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
             //Ashley: Windows Server 2008 is too outdated to know GMT was renamed to UTC.
             if(actualValue != null)
@@ -139,7 +139,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             }
             if(string.IsNullOrEmpty(expectedResult))
             {
-                expectedResult = null;
+                Assert.IsTrue(string.IsNullOrEmpty(actualValue));
             }
             Assert.AreEqual(expectedResult, actualValue);
         }

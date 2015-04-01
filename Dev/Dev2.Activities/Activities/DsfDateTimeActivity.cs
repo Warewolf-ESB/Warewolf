@@ -23,7 +23,6 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Converters.DateAndTime;
 using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 using Dev2.Util;
@@ -116,11 +115,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors;
-            Guid executionId = DataListExecutionID.Get(context);
             InitializeDebug(dataObject);
             // Process if no errors
             try
@@ -204,24 +200,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         if(format.TryFormat(transObj, out result, out error))
                         {
                             string expression = Result;
-                            //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-
                             dataObject.Environment.Assign(expression, result);
-
-                            toUpsert.FlushIterationFrame();
                         }
                         else
                         {
                             allErrors.AddError(error);
                         }
                     }
-                    compiler.Upsert(executionId, toUpsert, out errors);
-                    allErrors.MergeErrors(errors);
                     if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                     {
                             AddDebugOutputItem(new DebugEvalResult(Result,"",dataObject.Environment));
                     }
-                    allErrors.MergeErrors(errors);
                 }
             }
             catch(Exception e)
@@ -237,7 +226,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(hasErrors)
                 {
                     DisplayAndWriteError("DsfDateTimeActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
                     dataObject.Environment.Assign(Result, null);
                 }
                 if(dataObject.IsDebugMode())

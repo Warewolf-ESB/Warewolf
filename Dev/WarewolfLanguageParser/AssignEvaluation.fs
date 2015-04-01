@@ -124,7 +124,10 @@ and  AddToRecordSetFramedWithAtomList (env:WarewolfEnvironment) (name:RecordSetI
 
 and EvalMultiAssignOp  (env:WarewolfEnvironment)  (value :IAssignValue ) =
     let left = WarewolfDataEvaluationCommon.ParseLanguageExpression value.Name 
-    let rightParse = WarewolfDataEvaluationCommon.ParseLanguageExpression value.Value 
+    let rightParse = new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing)
+   
+    let rightParse = if value.Value=null then LanguageExpression.WarewolfAtomAtomExpression Nothing
+                     else WarewolfDataEvaluationCommon.ParseLanguageExpression value.Value 
    
     let right = WarewolfDataEvaluationCommon.Eval env value.Value
     let shouldUseLast =  match rightParse with
