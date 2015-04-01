@@ -159,7 +159,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 });
                 bool singleInnerIteration = ArePureScalarTargets(ResultsCollection);
                 var resultsEnumerator = ResultsCollection.GetEnumerator();
-                var debugDictionary = new Dictionary<string, List<DebugItem>>();
+                var debugDictionary = new List<string>();
                 while(res.HasMoreData())
                 {
                     const int OpCnt = 0;
@@ -264,14 +264,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                         var debugItem = new DebugItem();
                                         var outputVarTo = resultsEnumerator.Current.OutputVariable;
                                         AddDebugItem(new DebugEvalResult(outputVarTo, "", env), debugItem);
-                                        if (debugDictionary.ContainsKey(outputVarTo))
+                                        if (!debugDictionary.Contains(outputVarTo))
                                         {
-                                            debugDictionary[outputVarTo].Add(debugItem);
-                                        }
-                                        else
-                                        {
-                                            debugDictionary.Add(outputVarTo,new List<DebugItem>{debugItem});
-                                        }                                                                               
+                                            debugDictionary.Add(outputVarTo);
+                                        }                                                                         
                                     }
                                     if (pos == end)
                                     {
@@ -300,7 +296,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         var debugItem = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", outputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
-                        var dataSplitUsesStarForOutput = varDebug.Key.Replace("().", "(*).");
+                        var dataSplitUsesStarForOutput = varDebug.Replace("().", "(*).");
                         AddDebugItem(new DebugEvalResult(dataSplitUsesStarForOutput, "", env), debugItem);
                         _debugOutputs.Add(debugItem);
                         outputIndex++;    
