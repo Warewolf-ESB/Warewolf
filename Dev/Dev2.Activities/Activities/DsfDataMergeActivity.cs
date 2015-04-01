@@ -22,12 +22,9 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data;
-using Dev2.Data.Factories;
 using Dev2.Data.Operations;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Interfaces;
@@ -107,14 +104,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDev2MergeOperations mergeOperations = new Dev2MergeOperations();
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errorResultTo = new ErrorResultTO();
-            Guid executionId = DataListExecutionID.Get(context);
-            IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-            toUpsert.IsDebug = dataObject.IsDebugMode();
-            toUpsert.ResourceID = dataObject.ResourceID;
 
             InitializeDebug(dataObject);
             try
@@ -134,30 +126,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 int dictionaryKey = 0;
                 foreach(DataMergeDTO row in MergeCollection)
                 {
-                    
-//                    var fieldName = row.InputVariable;
-//                    var splitIntoRegions = DataListCleaningUtils.FindAllLanguagePieces(fieldName);
-//                    var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errorResultTo).ToString();
-//                    if(!string.IsNullOrEmpty(datalist))
-//                    {
-//                        foreach(var region in splitIntoRegions)
-//                        {
-//                            var r = DataListUtil.IsValueRecordset(region) ? DataListUtil.ReplaceRecordsetIndexWithBlank(region) : region;
-//                            var isValidExpr = new IsValidExpressionRule(() => r, datalist)
-//                            {
-//                                LabelText = fieldName
-//                            };
-//
-//                            var errorInfo = isValidExpr.Check();
-//                            if(errorInfo != null)
-//                            {
-//                                row.InputVariable = "";
-//                                errorResultTo.AddError(errorInfo.Message);
-//                            }
-//                            allErrors.MergeErrors(errorResultTo);
-//                        }
-//                    }
-
                     allErrors.MergeErrors(errorResultTo);
 
                     if(dataObject.IsDebugMode())
@@ -243,27 +211,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     if(!allErrors.HasErrors())
                     {
-                        if(string.IsNullOrEmpty(Result))
+                        if (string.IsNullOrEmpty(Result))
                         {
                             AddDebugOutputItem(new DebugItemStaticDataParams("", ""));
                         }
                         else
                         {
-                            //var rule = new IsSingleValueRule(() => Result);
-//                            var single = rule.Check();
-//                            if(single != null)
-//                            {
-//                                allErrors.AddError(single.Message);
-//                            }
-//                            else
-                            {
-                                dataObject.Environment.Assign(Result, mergeOperations.MergeData.ToString());                               
-                                allErrors.MergeErrors(errorResultTo);
+                            dataObject.Environment.Assign(Result, mergeOperations.MergeData.ToString());
+                            allErrors.MergeErrors(errorResultTo);
 
-                                if(dataObject.IsDebugMode() && !allErrors.HasErrors())
-                                {
-                                    AddDebugOutputItem(new DebugEvalResult(Result,"",dataObject.Environment));                                    
-                                }
+                            if (dataObject.IsDebugMode() && !allErrors.HasErrors())
+                            {
+                                AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
                             }
                         }
                     }
@@ -288,8 +247,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
                     DisplayAndWriteError("DsfDataMergeActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorResultTo);
-                    compiler.Upsert(executionId, Result, (string)null, out errorResultTo);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
                 }
 
                 if(dataObject.IsDebugMode())

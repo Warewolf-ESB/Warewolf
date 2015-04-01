@@ -671,9 +671,9 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             for(int i = 0; i < expectedDebugItems.Count; i++)
             {
-                Verify(expectedDebugItems[i].Label, inputDebugItems[i].Label??"", "Labels", i);
-                Verify(expectedDebugItems[i].Value, inputDebugItems[i].Value, "Values", i);
-                Verify(expectedDebugItems[i].Variable, inputDebugItems[i].Variable, "Variables", i);
+                Verify(expectedDebugItems[i].Label ?? "", inputDebugItems[i].Label ?? "", "Labels", i);
+                Verify(expectedDebugItems[i].Value ?? "", inputDebugItems[i].Value ?? "", "Values", i);
+                Verify(expectedDebugItems[i].Variable ?? "", inputDebugItems[i].Variable ?? "", "Variables", i);
             }
         }
 

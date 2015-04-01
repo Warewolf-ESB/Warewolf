@@ -9,7 +9,7 @@ namespace Dev2.Activities
 {
     public class DebugEvalResult : DebugOutputBase
     {
-        readonly string _inputVariable;
+        string _inputVariable;
         readonly string _label;
         readonly WarewolfDataEvaluationCommon.WarewolfEvalResult _evalResult;
 
@@ -47,9 +47,13 @@ namespace Dev2.Activities
                 if (scalarResult != null && !scalarResult.Item.IsNothing)
                 {
                     var warewolfAtomToString = ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item);
-                    if (warewolfAtomToString == _inputVariable)
+                    if (warewolfAtomToString == _inputVariable && DataListUtils.IsEvaluated(_inputVariable))
                     {
-                        warewolfAtomToString = "";
+                        warewolfAtomToString = null;
+                    }
+                    if (!DataListUtils.IsEvaluated(_inputVariable))
+                    {
+                        _inputVariable = null;
                     }
                     return new DebugItemWarewolfAtomResult(warewolfAtomToString, _inputVariable, LabelText).GetDebugItemResult();
                 }
