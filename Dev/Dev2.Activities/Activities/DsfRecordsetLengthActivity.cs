@@ -68,8 +68,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
@@ -91,13 +89,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         if (dataObject.IsDebugMode())
                         {
-                            var warewolfEvalResult = dataObject.Environment.Eval(RecordsetName);
+                            var warewolfEvalResult = dataObject.Environment.Eval(RecordsetName.Replace("()","(*)"));
                             if (warewolfEvalResult.IsWarewolfRecordSetResult)
                             {
                                 var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult;
                                 if (recsetResult != null)
                                 {
                                     AddDebugInputItem(new DebugItemWarewolfRecordset(recsetResult.Item, RecordsetName, "Recordset", "="));
+                                }
+                            }
+                            if (warewolfEvalResult.IsWarewolfAtomListresult)
+                            {
+                                var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                                if (recsetResult != null)
+                                {
+                                    AddDebugInputItem(new DebugEvalResult(RecordsetName, "Recordset", dataObject.Environment));
                                 }
                             }
                         }
@@ -134,9 +140,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var hasErrors = allErrors.HasErrors();
                 if (hasErrors)
                 {
-                    DisplayAndWriteError("DsfCountRecordsActivity", allErrors);
-                    //dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(enSystemTag.Dev2Error.ToString()), allErrors.MakeDisplayReady());
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    DisplayAndWriteError("DsfRecordsetLengthActivity", allErrors);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
                 }
                 if (dataObject.IsDebugMode())
                 {

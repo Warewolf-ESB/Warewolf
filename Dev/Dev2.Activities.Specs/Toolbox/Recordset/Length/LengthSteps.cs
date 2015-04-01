@@ -20,6 +20,7 @@ using System.Linq;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
+using WarewolfParserInterop;
 
 namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
 {
@@ -59,11 +60,11 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
                 {
                     if (!string.IsNullOrEmpty(variable.Item1) && !string.IsNullOrEmpty(variable.Item2))
                     {
-                        DataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), variable.Item2);
+                        DataObject.Environment.AssignWithFrame(new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), variable.Item2));
                     }
-                    //Build(variable, shape, data, row);
                     row++;
                 }
+                DataObject.Environment.CommitAssign();
             }
 
             string recordSetName;
