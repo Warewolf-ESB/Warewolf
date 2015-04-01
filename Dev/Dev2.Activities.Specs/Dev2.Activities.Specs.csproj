@@ -346,12 +346,6 @@
       <DependentUpon>FindRecordsetIndexMultiple.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Recordset\FindRecordIndexMultiple\FindRecordsetIndexMultipleSteps.cs" />
-    <Compile Include="Toolbox\Recordset\FindRecordIndex\FindRecordIndex.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FindRecordIndex.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\Recordset\FindRecordIndex\FindRecordIndexSteps.cs" />
     <Compile Include="Toolbox\Recordset\Sort\Sort.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -577,10 +571,6 @@
     <None Include="Toolbox\Recordset\FindRecordIndexMultiple\FindRecordsetIndexMultiple.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>FindRecordsetIndexMultiple.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Recordset\FindRecordIndex\FindRecordIndex.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>FindRecordIndex.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Recordset\Sort\Sort.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
