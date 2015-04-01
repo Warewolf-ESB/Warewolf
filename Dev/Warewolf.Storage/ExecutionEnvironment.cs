@@ -57,6 +57,8 @@ namespace Warewolf.Storage
         void AddError(string error);
 
 
+
+        void AssignDataShape(string p);
     }
     public class ExecutionEnvironment : IExecutionEnvironment
     {
@@ -315,7 +317,7 @@ namespace Warewolf.Storage
             for(int index = 0; index < recsetResult.Item.Count; index++)
             {
                 var warewolfAtom = recsetResult.Item[index];
-                Assign(exp.Replace("*", (index+1).ToString(CultureInfo.InvariantCulture)), WarewolfAtomToString(warewolfAtom));
+                AssignWithFrame(new AssignValue(exp.Replace("()", "(" + (index + 1).ToString(CultureInfo.InvariantCulture) + ")"), WarewolfAtomToString(warewolfAtom)));
             }
         }
 
@@ -407,6 +409,12 @@ namespace Warewolf.Storage
         public void AddError(string error)
         {
             Errors.Add(error);
+        }
+
+        public void AssignDataShape(string p)
+        {
+            var env = PublicFunctions.EvalDataShape(p,_env);
+            _env = env;
         }
 
         public static string ConvertToIndex(string outputVar, int i)

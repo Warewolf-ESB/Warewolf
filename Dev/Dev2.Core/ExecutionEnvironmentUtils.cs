@@ -8,6 +8,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Data;
 using Dev2.Data.Util;
 using Warewolf.Storage;
+using WarewolfParserInterop;
 
 namespace Dev2
 {
@@ -212,6 +213,10 @@ namespace Dev2
 
         static void TryConvert(IDSFDataObject dataObject, XmlNodeList children, List<string> inputDefs, int level = 0)
         {
+            try
+            {
+
+           
             // spin through each element in the XML
             foreach (XmlNode c in children)
             {
@@ -249,7 +254,7 @@ namespace Dev2
                                         if (DataListUtil.ExtractFieldNameFromValue(definition) == subc.Name)
                                         {
                                             var recSetAppend = DataListUtil.ReplaceRecordsetIndexWithBlank(definition);
-                                            dataObject.Environment.Assign(recSetAppend, subc.InnerXml);
+                                            dataObject.Environment.AssignWithFrame(new AssignValue( recSetAppend, subc.InnerXml));
                                         }
                                     }
                                 }
@@ -272,6 +277,11 @@ namespace Dev2
                         }
                     }
                 }
+            }
+            }
+            finally
+            {
+                dataObject.Environment.CommitAssign();
             }
         }
 

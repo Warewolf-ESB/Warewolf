@@ -133,7 +133,7 @@ namespace Dev2.Services.Execution
                     var rsType = Data.Util.DataListUtil.GetRecordsetIndexType(expression);
                     var rowIndex = Data.Util.DataListUtil.ExtractIndexRegionFromRecordset(expression);
                     var rsNameUse = def.RecordSetName;
-
+                    environment.AssignDataShape(def.RawValue);
                     if (string.IsNullOrEmpty(rsName))
                     {
                         rsName = rsNameUse;

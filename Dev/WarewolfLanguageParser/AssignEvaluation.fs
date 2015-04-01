@@ -148,8 +148,33 @@ and EvalMultiAssignOp  (env:WarewolfEnvironment)  (value :IAssignValue ) =
                     |   RecordSetExpression b -> AddToRecordSetFramedWithAtomList env b (List.ofSeq x) shouldUseLast value
                     |   AtomExpression a -> env
                     |   _ -> failwith "input must be recordset or value"
+and EvalDataShape (exp:string) (env:WarewolfEnvironment) =
+    let left = WarewolfDataEvaluationCommon.ParseLanguageExpression exp
+    match left with 
+    |   ScalarExpression a -> match env.Scalar.TryFind a with
+                              | None -> AddToScalars env a Nothing
+                              | Some x -> AddToScalars env a Nothing
+    |   RecordSetExpression name -> match env.RecordSets.TryFind name.Name with
+                                      | None -> let envwithRecset = AddRecsetToEnv name.Name env
+                                                let data = envwithRecset.RecordSets.[name.Name]
+                                                let recordset =  if data.Data.ContainsKey( name.Column) 
+                                                                 then  data
+                                                                 else 
+                                                                    { data with Data=  Map.add name.Column (CreateEmpty data.Data.[PositionColumn].Length data.Data.[PositionColumn].Count )  data.Data    }
+                                                ReplaceDataset env recordset name.Name
+                                        
+                                      | Some data -> let recordset =  if data.Data.ContainsKey( name.Column)  then  
+                                                                         data
+                                                                      else 
+                                                                          { data with Data=  Map.add name.Column (CreateEmpty data.Data.[PositionColumn].Length data.Data.[PositionColumn].Count )  data.Data    }
+                                                     ReplaceDataset env recordset name.Name
 
+    |   AtomExpression a -> env
+    |   _ -> failwith "input must be recordset or value"
 
+and ReplaceDataset (env:WarewolfEnvironment)  (data:WarewolfRecordset) (name:string)=
+    let recsets = Map.remove name env.RecordSets |> fun a-> Map.add name data a
+    { env with RecordSets = recsets} 
 and EvalMultiAssign (values :IAssignValue seq) (env:WarewolfEnvironment) =
         let env = Seq.fold EvalMultiAssignOp env values
         let recsets = Map.map (fun a b -> {b with Frame = 0 }) env.RecordSets
