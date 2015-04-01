@@ -108,6 +108,50 @@ this.ScenarioSetup(scenarioInfo);
 #line 17
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "String to Split",
+                        "Process Direction",
+                        "Skip blank rows",
+                        "#",
+                        "",
+                        "With",
+                        "Using",
+                        "Include",
+                        "Escape"});
+            table2.AddRow(new string[] {
+                        "abcde",
+                        "Forward",
+                        "No",
+                        "1",
+                        "[[vowels(*).letters]] =",
+                        "Index",
+                        "1",
+                        "No",
+                        ""});
+#line 18
+ testRunner.And("the debug inputs as", ((string)(null)), table2, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table3.AddRow(new string[] {
+                        "1",
+                        "[[vowels(1).letters]] = a"});
+            table3.AddRow(new string[] {
+                        "",
+                        "[[vowels(2).letters]] = b"});
+            table3.AddRow(new string[] {
+                        "",
+                        "[[vowels(3).letters]] = c"});
+            table3.AddRow(new string[] {
+                        "",
+                        "[[vowels(4).letters]] = d"});
+            table3.AddRow(new string[] {
+                        "",
+                        "[[vowels(5).letters]] = e"});
+#line 21
+    testRunner.And("the debug output as", ((string)(null)), table3, "And ");
+#line hidden
             this.ScenarioCleanup();
         }
         
@@ -126,14 +170,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 32
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table2.AddRow(new string[] {
+            table4.AddRow(new string[] {
                         "a",
                         "a"});
 #line 33
- testRunner.Then("the split recordset \"[[a]]\" will be", ((string)(null)), table2, "Then ");
+ testRunner.Then("the split recordset \"[[a]]\" will be", ((string)(null)), table4, "Then ");
 #line 36
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -156,28 +200,72 @@ this.ScenarioSetup(scenarioInfo);
 #line 42
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table3.AddRow(new string[] {
+            table5.AddRow(new string[] {
                         "vowels().row",
                         "a"});
-            table3.AddRow(new string[] {
+            table5.AddRow(new string[] {
                         "vowels().row",
                         "b"});
-            table3.AddRow(new string[] {
+            table5.AddRow(new string[] {
                         "vowels().row",
                         "c"});
-            table3.AddRow(new string[] {
+            table5.AddRow(new string[] {
                         "vowels().row",
                         "d"});
-            table3.AddRow(new string[] {
+            table5.AddRow(new string[] {
                         "vowels().row",
                         "e"});
 #line 43
- testRunner.Then("the split recordset \"[[vowels(*).letters]]\" will be", ((string)(null)), table3, "Then ");
+ testRunner.Then("the split recordset \"[[vowels(*).letters]]\" will be", ((string)(null)), table5, "Then ");
 #line 50
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                        "String to Split",
+                        "Process Direction",
+                        "Skip blank rows",
+                        "#",
+                        "",
+                        "With",
+                        "Using",
+                        "Include",
+                        "Escape"});
+            table6.AddRow(new string[] {
+                        "abcde",
+                        "Forward",
+                        "No",
+                        "1",
+                        "[[vowels().letters]] =",
+                        "Index",
+                        "1",
+                        "No",
+                        ""});
+#line 51
+ testRunner.And("the debug inputs as", ((string)(null)), table6, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table7.AddRow(new string[] {
+                        "1",
+                        "[[vowels(1).letters]] = a"});
+            table7.AddRow(new string[] {
+                        "",
+                        "[[vowels(2).letters]] = b"});
+            table7.AddRow(new string[] {
+                        "",
+                        "[[vowels(3).letters]] = c"});
+            table7.AddRow(new string[] {
+                        "",
+                        "[[vowels(4).letters]] = d"});
+            table7.AddRow(new string[] {
+                        "",
+                        "[[vowels(5).letters]] = e"});
+#line 54
+    testRunner.And("the debug output as", ((string)(null)), table7, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -200,22 +288,60 @@ this.ScenarioSetup(scenarioInfo);
 #line 66
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table4.AddRow(new string[] {
+            table8.AddRow(new string[] {
                         "vowels().row",
                         "_)(*&^~"});
-            table4.AddRow(new string[] {
+            table8.AddRow(new string[] {
                         "vowels().row",
                         "><\":}{+"});
-            table4.AddRow(new string[] {
+            table8.AddRow(new string[] {
                         "vowels().row",
                         "@!?"});
 #line 67
- testRunner.Then("the split recordset \"[[vowels(*).chars]]\" will be", ((string)(null)), table4, "Then ");
-#line 73
+ testRunner.Then("the split recordset \"[[vowels(*).chars]]\" will be", ((string)(null)), table8, "Then ");
+#line 72
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        "String to Split",
+                        "Process Direction",
+                        "Skip blank rows",
+                        "#",
+                        "",
+                        "With",
+                        "Using",
+                        "Include",
+                        "Escape"});
+            table9.AddRow(new string[] {
+                        "@!?><\":}{+_)(*&^~",
+                        "Backward",
+                        "No",
+                        "1",
+                        "[[vowels(*).chars]] =",
+                        "Index",
+                        "7",
+                        "No",
+                        ""});
+#line 73
+ testRunner.And("the debug inputs as", ((string)(null)), table9, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table10.AddRow(new string[] {
+                        "1",
+                        "[[vowels(1).chars]] = _)(*&^~"});
+            table10.AddRow(new string[] {
+                        "",
+                        "[[vowels(2).chars]] = ><\":}{+"});
+            table10.AddRow(new string[] {
+                        "",
+                        "[[vowels(3).chars]] = @!?"});
+#line 76
+ testRunner.And("the debug output as", ((string)(null)), table10, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -226,34 +352,72 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SplitCharactersUsingIndexGoingBackwardsUsingAppendNotation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split characters using Index Going Backwards Using Append notation", ((string[])(null)));
-#line 83
+#line 82
 this.ScenarioSetup(scenarioInfo);
-#line 84
+#line 83
  testRunner.Given("A string to split with value \"@!?><\":}{+_)(*&^~\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 85
+#line 84
  testRunner.And("assign to variable \"[[vowels().chars]]\" split type \"Index\" at \"7\" and Include \"un" +
                     "selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 86
+#line 85
  testRunner.And("the direction is \"Backward\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 87
+#line 86
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table5.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "vowels().chars",
                         "_)(*&^~"});
-            table5.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "vowels().chars",
                         "><\":}{+"});
-            table5.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "vowels().chars",
                         "@!?"});
-#line 88
- testRunner.Then("the split recordset \"[[vowels(*).chars]]\" will be", ((string)(null)), table5, "Then ");
-#line 93
+#line 87
+ testRunner.Then("the split recordset \"[[vowels(*).chars]]\" will be", ((string)(null)), table11, "Then ");
+#line 92
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                        "String to Split",
+                        "Process Direction",
+                        "Skip blank rows",
+                        "#",
+                        "",
+                        "With",
+                        "Using",
+                        "Include",
+                        "Escape"});
+            table12.AddRow(new string[] {
+                        "@!?><\":}{+_)(*&^~",
+                        "Backward",
+                        "No",
+                        "1",
+                        "[[vowels().chars]] =",
+                        "Index",
+                        "7",
+                        "No",
+                        ""});
+#line 93
+ testRunner.And("the debug inputs as", ((string)(null)), table12, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table13.AddRow(new string[] {
+                        "1",
+                        "[[vowels(1).chars]] = _)(*&^~"});
+            table13.AddRow(new string[] {
+                        "",
+                        "[[vowels(2).chars]] = ><\":}{+"});
+            table13.AddRow(new string[] {
+                        "",
+                        "[[vowels(3).chars]] = @!?"});
+#line 96
+ testRunner.And("the debug output as", ((string)(null)), table13, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -264,34 +428,72 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SplitCharactersUsingIndexGoingForwardUsingStarNotation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split characters using Index Going Forward using Star notation", ((string[])(null)));
-#line 103
+#line 102
 this.ScenarioSetup(scenarioInfo);
-#line 104
+#line 103
  testRunner.Given("A string to split with value \"@!?><\":}{+_)(*&^~\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 105
+#line 104
  testRunner.And("assign to variable \"[[vowels(*).chars]]\" split type \"Index\" at \"7\" and Include \"u" +
                     "nselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 106
+#line 105
  testRunner.And("the direction is \"Forward\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 107
+#line 106
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table6.AddRow(new string[] {
+            table14.AddRow(new string[] {
                         "vowels().chars",
                         "@!?><\":"});
-            table6.AddRow(new string[] {
+            table14.AddRow(new string[] {
                         "vowels().chars",
                         "}{+_)(*"});
-            table6.AddRow(new string[] {
+            table14.AddRow(new string[] {
                         "vowels().chars",
                         "&^~"});
-#line 108
- testRunner.Then("the split recordset \"[[vowels(*).chars]]\" will be", ((string)(null)), table6, "Then ");
-#line 113
+#line 107
+ testRunner.Then("the split recordset \"[[vowels(*).chars]]\" will be", ((string)(null)), table14, "Then ");
+#line 112
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+                        "String to Split",
+                        "Process Direction",
+                        "Skip blank rows",
+                        "#",
+                        "",
+                        "With",
+                        "Using",
+                        "Include",
+                        "Escape"});
+            table15.AddRow(new string[] {
+                        "@!?><\":}{+_)(*&^~",
+                        "Forward",
+                        "No",
+                        "1",
+                        "[[vowels(*).chars]] =",
+                        "Index",
+                        "7",
+                        "No",
+                        ""});
+#line 113
+ testRunner.And("the debug inputs as", ((string)(null)), table15, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table16.AddRow(new string[] {
+                        "1",
+                        "[[vowels(1).chars]] = @!?><\":"});
+            table16.AddRow(new string[] {
+                        "",
+                        "[[vowels(2).chars]] = }{+_)(*"});
+            table16.AddRow(new string[] {
+                        "",
+                        "[[vowels(3).chars]] = &^~"});
+#line 116
+ testRunner.And("the debug output as", ((string)(null)), table16, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -302,34 +504,72 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SplitCharactersUsingIndexGoingForwardUsingAppendNotation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split characters using Index Going Forward using Append Notation", ((string[])(null)));
-#line 123
+#line 122
 this.ScenarioSetup(scenarioInfo);
-#line 124
+#line 123
  testRunner.Given("A string to split with value \"@!?><\":}{+_)(*&^~\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 125
+#line 124
  testRunner.And("assign to variable \"[[vowels().chars]]\" split type \"Index\" at \"7\" and Include \"un" +
                     "selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 126
+#line 125
  testRunner.And("the direction is \"Forward\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 127
+#line 126
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table7.AddRow(new string[] {
+            table17.AddRow(new string[] {
                         "vowels().chars",
                         "@!?><\":"});
-            table7.AddRow(new string[] {
+            table17.AddRow(new string[] {
                         "vowels().chars",
                         "}{+_)(*"});
-            table7.AddRow(new string[] {
+            table17.AddRow(new string[] {
                         "vowels().chars",
                         "&^~"});
-#line 128
- testRunner.Then("the split recordset \"[[vowels(*).chars]]\" will be", ((string)(null)), table7, "Then ");
-#line 133
+#line 127
+ testRunner.Then("the split recordset \"[[vowels(*).chars]]\" will be", ((string)(null)), table17, "Then ");
+#line 132
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+                        "String to Split",
+                        "Process Direction",
+                        "Skip blank rows",
+                        "#",
+                        "",
+                        "With",
+                        "Using",
+                        "Include",
+                        "Escape"});
+            table18.AddRow(new string[] {
+                        "@!?><\":}{+_)(*&^~",
+                        "Forward",
+                        "No",
+                        "1",
+                        "[[vowels().chars]] =",
+                        "Index",
+                        "7",
+                        "No",
+                        ""});
+#line 133
+ testRunner.And("the debug inputs as", ((string)(null)), table18, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table19.AddRow(new string[] {
+                        "1",
+                        "[[vowels(1).chars]] = @!?><\":"});
+            table19.AddRow(new string[] {
+                        "",
+                        "[[vowels(2).chars]] = }{+_)(*"});
+            table19.AddRow(new string[] {
+                        "",
+                        "[[vowels(3).chars]] = &^~"});
+#line 136
+ testRunner.And("the debug output as", ((string)(null)), table19, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -340,50 +580,134 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SplitTextUsingAllSplitTypes_SomeWithIncludeSelected()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using All split types - Some with Include selected", ((string[])(null)));
-#line 143
+#line 142
 this.ScenarioSetup(scenarioInfo);
-#line 144
+#line 143
  testRunner.Given("A string to split with value \"IndexTab\tChars,space end\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 145
+#line 144
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Index\" at \"5\" and Include " +
                     "\"Selected\" and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 146
+#line 145
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Tab\" at \"\" and Include \"un" +
                     "selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 147
+#line 146
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Chars\" at \"ars,\" and Inclu" +
                     "de \"Selected\" and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 148
+#line 147
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Space\" at \"1\" and Include " +
                     "\"unselected\" and Escape \'\\\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 149
+#line 148
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"End\" at \"\" and Include \"un" +
                     "selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 150
+#line 149
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table8.AddRow(new string[] {
+            table20.AddRow(new string[] {
                         "vowels().chars",
                         "Index"});
-            table8.AddRow(new string[] {
+            table20.AddRow(new string[] {
                         "vowels().chars",
                         "Tab"});
-            table8.AddRow(new string[] {
+            table20.AddRow(new string[] {
                         "vowels().chars",
                         "Chars,"});
-            table8.AddRow(new string[] {
+            table20.AddRow(new string[] {
                         "vowels().chars",
                         "space"});
-            table8.AddRow(new string[] {
+            table20.AddRow(new string[] {
                         "vowels().chars",
                         "end"});
-#line 151
- testRunner.Then("the split recordset \"[[vowels(*).letters]]\" will be", ((string)(null)), table8, "Then ");
-#line 159
+#line 150
+ testRunner.Then("the split recordset \"[[vowels(*).letters]]\" will be", ((string)(null)), table20, "Then ");
+#line 158
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
+                        "String to Split",
+                        "Process Direction",
+                        "Skip blank rows",
+                        "#",
+                        "",
+                        "With",
+                        "Using",
+                        "Include",
+                        "Escape"});
+            table21.AddRow(new string[] {
+                        "IndexTab\tChars,space end",
+                        "Forward",
+                        "No",
+                        "1",
+                        "[[vowels(*).letters]] =",
+                        "Index",
+                        "5",
+                        "Yes",
+                        ""});
+            table21.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        "2",
+                        "[[vowels(*).letters]] =",
+                        "Tab",
+                        "",
+                        "No",
+                        ""});
+            table21.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        "3",
+                        "[[vowels(*).letters]] =",
+                        "Chars",
+                        "ars,",
+                        "Yes",
+                        "\" \""});
+            table21.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        "4",
+                        "[[vowels(*).letters]] =",
+                        "Space",
+                        "",
+                        "No",
+                        ""});
+            table21.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        "5",
+                        "[[vowels(*).letters]] =",
+                        "End",
+                        "",
+                        "No",
+                        ""});
+#line 159
+ testRunner.And("the debug inputs as", ((string)(null)), table21, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table22.AddRow(new string[] {
+                        "1",
+                        "[[vowels(1).letters]] = Index"});
+            table22.AddRow(new string[] {
+                        "",
+                        "[[vowels(2).letters]] = Tab"});
+            table22.AddRow(new string[] {
+                        "",
+                        "[[vowels(3).letters]] = Chars,"});
+            table22.AddRow(new string[] {
+                        "",
+                        "[[vowels(4).letters]] = space"});
+            table22.AddRow(new string[] {
+                        "",
+                        "[[vowels(5).letters]] = end"});
+#line 166
+ testRunner.And("the debug output as", ((string)(null)), table22, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -396,50 +720,134 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using All split types - Some with Include selected using a Star Notati" +
                     "on", ((string[])(null)));
-#line 195
+#line 175
 this.ScenarioSetup(scenarioInfo);
-#line 196
+#line 176
  testRunner.Given("A string to split with value \"IndexTab\tChars,space end\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 197
+#line 177
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Index\" at \"5\" and Include " +
                     "\"Selected\" and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 198
+#line 178
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Tab\" at \"\" and Include \"un" +
                     "selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 199
+#line 179
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Chars\" at \"ars,\" and Inclu" +
                     "de \"Selected\" and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 200
+#line 180
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Space\" at \"1\" and Include " +
                     "\"unselected\" and Escape \'\\\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 201
+#line 181
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"End\" at \"\" and Include \"un" +
                     "selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 202
+#line 182
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table9.AddRow(new string[] {
+            table23.AddRow(new string[] {
                         "vowels().chars",
                         "Index"});
-            table9.AddRow(new string[] {
+            table23.AddRow(new string[] {
                         "vowels().chars",
                         "Tab"});
-            table9.AddRow(new string[] {
+            table23.AddRow(new string[] {
                         "vowels().chars",
                         "Chars,"});
-            table9.AddRow(new string[] {
+            table23.AddRow(new string[] {
                         "vowels().chars",
                         "space"});
-            table9.AddRow(new string[] {
+            table23.AddRow(new string[] {
                         "vowels().chars",
                         "end"});
-#line 203
- testRunner.Then("the split recordset \"[[vowels(*).letters]]\" will be", ((string)(null)), table9, "Then ");
-#line 210
+#line 183
+ testRunner.Then("the split recordset \"[[vowels(*).letters]]\" will be", ((string)(null)), table23, "Then ");
+#line 190
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
+                        "String to Split",
+                        "Process Direction",
+                        "Skip blank rows",
+                        "#",
+                        "",
+                        "With",
+                        "Using",
+                        "Include",
+                        "Escape"});
+            table24.AddRow(new string[] {
+                        "IndexTab\tChars,space end",
+                        "Forward",
+                        "No",
+                        "1",
+                        "[[vowels(*).letters]] =",
+                        "Index",
+                        "5",
+                        "Yes",
+                        ""});
+            table24.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        "2",
+                        "[[vowels(*).letters]] =",
+                        "Tab",
+                        "",
+                        "No",
+                        ""});
+            table24.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        "3",
+                        "[[vowels(*).letters]] =",
+                        "Chars",
+                        "ars,",
+                        "Yes",
+                        "\" \""});
+            table24.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        "4",
+                        "[[vowels(*).letters]] =",
+                        "Space",
+                        "",
+                        "No",
+                        ""});
+            table24.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        "5",
+                        "[[vowels(*).letters]] =",
+                        "End",
+                        "",
+                        "No",
+                        ""});
+#line 191
+ testRunner.And("the debug inputs as", ((string)(null)), table24, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table25.AddRow(new string[] {
+                        "1",
+                        "[[vowels(1).letters]] = Index"});
+            table25.AddRow(new string[] {
+                        "",
+                        "[[vowels(2).letters]] = Tab"});
+            table25.AddRow(new string[] {
+                        "",
+                        "[[vowels(3).letters]] = Chars,"});
+            table25.AddRow(new string[] {
+                        "",
+                        "[[vowels(4).letters]] = space"});
+            table25.AddRow(new string[] {
+                        "",
+                        "[[vowels(5).letters]] = end"});
+#line 198
+ testRunner.And("the debug output as", ((string)(null)), table25, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -450,89 +858,196 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SplitCSVFileFormatIntoRecordset_SomeFieldsBlank()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split CSV file format into recordset - some fields blank", ((string[])(null)));
-#line 246
+#line 207
 this.ScenarioSetup(scenarioInfo);
-#line 247
+#line 208
  testRunner.Given("A file \"CSVExample.txt\" to split", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 248
+#line 209
  testRunner.And("assign to variable \"[[rec().id]]\" split type \"Chars\" at \",\" and Include \"unselect" +
                     "ed\" and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 249
+#line 210
  testRunner.And("assign to variable \"[[rec().name]]\" split type \"Chars\" at \",\" and Include \"unsele" +
                     "cted\" and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 250
+#line 211
  testRunner.And("assign to variable \"\" split type \"Chars\" at \",\" and Include \"unselected\" and Esca" +
                     "pe \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 251
+#line 212
  testRunner.And("assign to variable \"[[rec().phone]]\" split type \"New Line\" at \"\" and Include \"uns" +
                     "elected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 252
+#line 213
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table10.AddRow(new string[] {
+            table26.AddRow(new string[] {
                         "vowels().name",
                         "NAME"});
-            table10.AddRow(new string[] {
+            table26.AddRow(new string[] {
                         "vowels().name",
                         "Barney"});
-            table10.AddRow(new string[] {
+            table26.AddRow(new string[] {
                         "vowels().name",
                         "Tshepo"});
-            table10.AddRow(new string[] {
+            table26.AddRow(new string[] {
                         "vowels().name",
                         ""});
-            table10.AddRow(new string[] {
+            table26.AddRow(new string[] {
                         "vowels().name",
                         "Mo"});
-#line 253
- testRunner.Then("the split recordset \"[[rec(*).name]]\" will be", ((string)(null)), table10, "Then ");
+#line 214
+ testRunner.Then("the split recordset \"[[rec(*).name]]\" will be", ((string)(null)), table26, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table11.AddRow(new string[] {
+            table27.AddRow(new string[] {
                         "vowels().phone",
                         "PHONE"});
-            table11.AddRow(new string[] {
+            table27.AddRow(new string[] {
                         "vowels().phone",
                         "1234"});
-            table11.AddRow(new string[] {
+            table27.AddRow(new string[] {
                         "vowels().phone",
                         "5678"});
-            table11.AddRow(new string[] {
+            table27.AddRow(new string[] {
                         "vowels().phone",
                         ""});
-            table11.AddRow(new string[] {
+            table27.AddRow(new string[] {
                         "vowels().phone",
                         ""});
-#line 260
- testRunner.Then("the split recordset \"[[rec(*).phone]]\" will be", ((string)(null)), table11, "Then ");
+#line 221
+ testRunner.Then("the split recordset \"[[rec(*).phone]]\" will be", ((string)(null)), table27, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table12.AddRow(new string[] {
+            table28.AddRow(new string[] {
                         "vowels().id",
                         "ID"});
-            table12.AddRow(new string[] {
+            table28.AddRow(new string[] {
                         "vowels().id",
                         "1"});
-            table12.AddRow(new string[] {
+            table28.AddRow(new string[] {
                         "vowels().id",
                         "2"});
-            table12.AddRow(new string[] {
+            table28.AddRow(new string[] {
                         "vowels().id",
                         ""});
-            table12.AddRow(new string[] {
+            table28.AddRow(new string[] {
                         "vowels().id",
                         "3"});
-#line 267
- testRunner.Then("the split recordset \"[[rec(*).id]]\" will be", ((string)(null)), table12, "Then ");
-#line 274
+#line 228
+ testRunner.Then("the split recordset \"[[rec(*).id]]\" will be", ((string)(null)), table28, "Then ");
+#line 235
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
+                        "String to Split",
+                        "Process Direction",
+                        "Skip blank rows",
+                        "#",
+                        "",
+                        "With",
+                        "Using",
+                        "Include",
+                        "Escape"});
+            table29.AddRow(new string[] {
+                        "String",
+                        "Forward",
+                        "No",
+                        "1",
+                        "[[rec().id]]    =",
+                        "Chars",
+                        ",",
+                        "No",
+                        "\" \""});
+            table29.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        "2",
+                        "[[rec().name]]  =",
+                        "Chars",
+                        ",",
+                        "No",
+                        "\" \""});
+            table29.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        "3",
+                        "",
+                        "Chars",
+                        ",",
+                        "No",
+                        "\" \""});
+            table29.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        "4",
+                        "[[rec().phone]] =",
+                        "New Line",
+                        "",
+                        "No",
+                        ""});
+#line 236
+ testRunner.And("the debug inputs as", ((string)(null)), table29, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table30.AddRow(new string[] {
+                        "1",
+                        "[[rec(1).id]] = ID"});
+            table30.AddRow(new string[] {
+                        "",
+                        "[[rec(2).id]] = 1"});
+            table30.AddRow(new string[] {
+                        "",
+                        "[[rec(3).id]] = 2"});
+            table30.AddRow(new string[] {
+                        "",
+                        "[[rec(4).id]] ="});
+            table30.AddRow(new string[] {
+                        "",
+                        "[[rec(5).id]] = 3"});
+            table30.AddRow(new string[] {
+                        "2",
+                        "[[rec(1).name]] = NAME"});
+            table30.AddRow(new string[] {
+                        "",
+                        "[[rec(2).name]] = Barney"});
+            table30.AddRow(new string[] {
+                        "",
+                        "[[rec(3).name]] = Tshepo"});
+            table30.AddRow(new string[] {
+                        "",
+                        "[[rec(4).name]] ="});
+            table30.AddRow(new string[] {
+                        "",
+                        "[[rec(5).name]] = Mo"});
+            table30.AddRow(new string[] {
+                        "3",
+                        "\" \""});
+            table30.AddRow(new string[] {
+                        "4",
+                        "[[rec(1).phone]] = PHONE"});
+            table30.AddRow(new string[] {
+                        "",
+                        "[[rec(2).phone]] = 1234"});
+            table30.AddRow(new string[] {
+                        "",
+                        "[[rec(3).phone]] = 5678"});
+            table30.AddRow(new string[] {
+                        "",
+                        "[[rec(4).phone]] ="});
+            table30.AddRow(new string[] {
+                        "",
+                        "[[rec(5).phone]] ="});
+#line 242
+ testRunner.And("the debug output as", ((string)(null)), table30, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -543,82 +1058,180 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SplitCSVFileFormatIntoRecordset_SkipBlankRowsSelected()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split CSV file format into recordset - Skip blank rows selected", ((string[])(null)));
-#line 300
+#line 261
 this.ScenarioSetup(scenarioInfo);
-#line 301
+#line 262
  testRunner.Given("A file \"CSVExample.txt\" to split", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 302
- testRunner.And("assign to variable \"[[bob().id]]\" split type \"Chars\" at \",\" and Include \"unselect" +
+#line 263
+ testRunner.And("assign to variable \"[[rec().id]]\" split type \"Chars\" at \",\" and Include \"unselect" +
                     "ed\" and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 303
- testRunner.And("assign to variable \"[[bob().name]]\" split type \"Chars\" at \",\" and Include \"unsele" +
+#line 264
+ testRunner.And("assign to variable \"[[rec().name]]\" split type \"Chars\" at \",\" and Include \"unsele" +
                     "cted\" and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 304
+#line 265
  testRunner.And("assign to variable \"\" split type \"Chars\" at \",\" and Include \"unselected\" and Esca" +
                     "pe \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 305
- testRunner.And("assign to variable \"[[bob().phone]]\" split type \"New Line\" at \"\" and Include \"uns" +
+#line 266
+ testRunner.And("assign to variable \"[[rec().phone]]\" split type \"New Line\" at \"\" and Include \"uns" +
                     "elected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 306
+#line 267
  testRunner.And("Skip Blanks rows is \"enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 307
+#line 268
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table13.AddRow(new string[] {
+            table31.AddRow(new string[] {
                         "rec().name",
                         "NAME"});
-            table13.AddRow(new string[] {
+            table31.AddRow(new string[] {
                         "rec().name",
                         "Barney"});
-            table13.AddRow(new string[] {
+            table31.AddRow(new string[] {
                         "rec().name",
                         "Tshepo"});
-            table13.AddRow(new string[] {
+            table31.AddRow(new string[] {
                         "rec().name",
                         "Mo"});
-#line 308
- testRunner.Then("the split recordset \"[[bob(*).name]]\" will be", ((string)(null)), table13, "Then ");
+#line 269
+ testRunner.Then("the split recordset \"[[rec(*).name]]\" will be", ((string)(null)), table31, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table14.AddRow(new string[] {
+            table32.AddRow(new string[] {
                         "rec().phone",
                         "PHONE"});
-            table14.AddRow(new string[] {
+            table32.AddRow(new string[] {
                         "rec().phone",
                         "1234"});
-            table14.AddRow(new string[] {
+            table32.AddRow(new string[] {
                         "rec().phone",
                         "5678"});
-            table14.AddRow(new string[] {
+            table32.AddRow(new string[] {
                         "rec().phone",
                         ""});
-#line 314
- testRunner.Then("the split recordset \"[[bob(*).phone]]\" will be", ((string)(null)), table14, "Then ");
+#line 275
+ testRunner.Then("the split recordset \"[[rec(*).phone]]\" will be", ((string)(null)), table32, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table15.AddRow(new string[] {
+            table33.AddRow(new string[] {
                         "rec().id",
                         "ID"});
-            table15.AddRow(new string[] {
+            table33.AddRow(new string[] {
                         "rec().id",
                         "1"});
-            table15.AddRow(new string[] {
+            table33.AddRow(new string[] {
                         "rec().id",
                         "2"});
-            table15.AddRow(new string[] {
+            table33.AddRow(new string[] {
                         "rec().id",
                         "3"});
-#line 320
- testRunner.Then("the split recordset \"[[bob(*).id]]\" will be", ((string)(null)), table15, "Then ");
-#line 326
+#line 281
+ testRunner.Then("the split recordset \"[[rec(*).id]]\" will be", ((string)(null)), table33, "Then ");
+#line 287
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
+                        "String to Split",
+                        "Process Direction",
+                        "Skip blank rows",
+                        "#",
+                        "",
+                        "With",
+                        "Using",
+                        "Include",
+                        "Escape"});
+            table34.AddRow(new string[] {
+                        "String",
+                        "Forward",
+                        "Yes",
+                        "1",
+                        "[[rec().id]]    =",
+                        "Chars",
+                        ",",
+                        "No",
+                        "\" \""});
+            table34.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        "2",
+                        "[[rec().name]]  =",
+                        "Chars",
+                        ",",
+                        "No",
+                        "\" \""});
+            table34.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        "3",
+                        "",
+                        "Chars",
+                        ",",
+                        "No",
+                        "\" \""});
+            table34.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        "4",
+                        "[[rec().phone]] =",
+                        "New Line",
+                        "",
+                        "No",
+                        ""});
+#line 288
+ testRunner.And("the debug inputs as", ((string)(null)), table34, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table35.AddRow(new string[] {
+                        "1",
+                        "[[rec(1).id]] = ID"});
+            table35.AddRow(new string[] {
+                        "",
+                        "[[rec(2).id]] = 1"});
+            table35.AddRow(new string[] {
+                        "",
+                        "[[rec(3).id]] = 2"});
+            table35.AddRow(new string[] {
+                        "",
+                        "[[rec(4).id]] = 3"});
+            table35.AddRow(new string[] {
+                        "2",
+                        "[[rec(1).name]] = NAME"});
+            table35.AddRow(new string[] {
+                        "",
+                        "[[rec(2).name]] = Barney"});
+            table35.AddRow(new string[] {
+                        "",
+                        "[[rec(3).name]] = Tshepo"});
+            table35.AddRow(new string[] {
+                        "",
+                        "[[rec(4).name]] = Mo"});
+            table35.AddRow(new string[] {
+                        "3",
+                        "\" \""});
+            table35.AddRow(new string[] {
+                        "4",
+                        "[[rec(1).phone]] = PHONE"});
+            table35.AddRow(new string[] {
+                        "",
+                        "[[rec(2).phone]] = 1234"});
+            table35.AddRow(new string[] {
+                        "",
+                        "[[rec(3).phone]] = 5678"});
+            table35.AddRow(new string[] {
+                        "",
+                        "[[rec(4).phone]] ="});
+#line 294
+ testRunner.And("the debug output as", ((string)(null)), table35, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -629,32 +1242,111 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SplitBlankTextUsingAllSplitTypes()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split blank text using All split types", ((string[])(null)));
-#line 349
+#line 310
 this.ScenarioSetup(scenarioInfo);
-#line 350
+#line 311
  testRunner.Given("A string to split with value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 351
+#line 312
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Index\" at \"5\" and Include \"" +
                     "Selected\" and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 352
+#line 313
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Tab\" at \"\" and Include \"uns" +
                     "elected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 353
+#line 314
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Chars\" at \"ars,\" and Includ" +
                     "e \"selected\" and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 354
+#line 315
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Space\" at \"\" and Include \"u" +
                     "nselected\" and Escape \'\\\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 355
+#line 316
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"End\" at \"\" and Include \"uns" +
                     "elected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 356
+#line 317
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"NewLine\" at \"\" and Include " +
                     "\"unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 357
+#line 318
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 358
+#line 319
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
+                        "String to Split",
+                        "Process Direction",
+                        "Skip blank rows",
+                        "#",
+                        "",
+                        "With",
+                        "Using",
+                        "Include",
+                        "Escape"});
+            table36.AddRow(new string[] {
+                        "\" \"",
+                        "Forward",
+                        "No",
+                        "1",
+                        "[[vowels().letters]] =",
+                        "Index",
+                        "5",
+                        "Yes",
+                        ""});
+            table36.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        "2",
+                        "[[vowels().letters]] =",
+                        "Tab",
+                        "",
+                        "No",
+                        ""});
+            table36.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        "3",
+                        "[[vowels().letters]] =",
+                        "Chars",
+                        "ars,",
+                        "Yes",
+                        "\" \""});
+            table36.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        "4",
+                        "[[vowels().letters]] =",
+                        "Space",
+                        "",
+                        "No",
+                        ""});
+            table36.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        "5",
+                        "[[vowels().letters]] =",
+                        "End",
+                        "",
+                        "No",
+                        ""});
+            table36.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        "6",
+                        "[[vowels().letters]] =",
+                        "NewLine",
+                        "",
+                        "",
+                        ""});
+#line 320
+ testRunner.And("the debug inputs as", ((string)(null)), table36, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+#line 328
+ testRunner.And("the debug output as", ((string)(null)), table37, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -665,21 +1357,60 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SplitTextUsingIndexWhereAndSpace()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using Index where and Space >", ((string[])(null)));
-#line 376
+#line 331
 this.ScenarioSetup(scenarioInfo);
-#line 377
+#line 332
  testRunner.Given("A string to split with value \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 378
+#line 333
  testRunner.And("assign to variable \"[[var]]\" split type \"Index\" at \",\" and Include \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 379
+#line 334
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Space\" at \"\" and Include \"u" +
                     "nselected\" and Escape \'\\\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 380
+#line 335
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 381
+#line 336
     testRunner.Then("the split result for \"[[var]]\" will be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 382
+#line 337
     testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
+                        "String to Split",
+                        "Process Direction",
+                        "Skip blank rows",
+                        "#",
+                        "",
+                        "With",
+                        "Using",
+                        "Include",
+                        "Escape"});
+            table38.AddRow(new string[] {
+                        "123",
+                        "Forward",
+                        "No",
+                        "1",
+                        "[[var]]    =",
+                        "Index",
+                        ",",
+                        "Yes",
+                        ""});
+            table38.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        "2",
+                        "[[vowels().letters]] =",
+                        "Space",
+                        "",
+                        "No",
+                        ""});
+#line 338
+    testRunner.And("the debug inputs as", ((string)(null)), table38, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+#line 342
+ testRunner.And("the debug output as", ((string)(null)), table39, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -690,26 +1421,58 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SplitTextUsingCharAndEscapeCharacter()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using Char and Escape character", ((string[])(null)));
-#line 392
+#line 345
 this.ScenarioSetup(scenarioInfo);
-#line 393
+#line 346
  testRunner.Given("A string to split with value \"123\\,45,1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 394
+#line 347
  testRunner.And("assign to variable \"[[var]]\" split type \"Chars\" at \",\" and Include \"Unselected\" a" +
                     "nd Escape \'\\\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 395
+#line 348
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table16.AddRow(new string[] {
+            table40.AddRow(new string[] {
                         "[[var]]",
                         "123\\,45"});
-#line 396
- testRunner.Then("the split recordset \"[[var]]\" will be", ((string)(null)), table16, "Then ");
-#line 400
+#line 349
+ testRunner.Then("the split recordset \"[[var]]\" will be", ((string)(null)), table40, "Then ");
+#line 353
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
+                        "String to Split",
+                        "Process Direction",
+                        "Skip blank rows",
+                        "#",
+                        "",
+                        "With",
+                        "Using",
+                        "Include",
+                        "Escape"});
+            table41.AddRow(new string[] {
+                        "123\\,45,1",
+                        "Forward",
+                        "No",
+                        "1",
+                        "[[var]]  =",
+                        "Chars",
+                        ",",
+                        "No",
+                        "\\"});
+#line 355
+ testRunner.And("the debug inputs as", ((string)(null)), table41, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table42.AddRow(new string[] {
+                        "1",
+                        "[[var]] = 123\\,45"});
+#line 358
+ testRunner.And("the debug output as", ((string)(null)), table42, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -720,17 +1483,46 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SplitBlankText()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split blank text", ((string[])(null)));
-#line 409
+#line 362
 this.ScenarioSetup(scenarioInfo);
-#line 410
+#line 363
  testRunner.Given("A string to split with value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 411
+#line 364
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Index\" at \"1\" and Include " +
                     "\"Unselected\" and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 412
+#line 365
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 413
+#line 366
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table43 = new TechTalk.SpecFlow.Table(new string[] {
+                        "String to Split",
+                        "Process Direction",
+                        "Skip blank rows",
+                        "#",
+                        "",
+                        "With",
+                        "Using",
+                        "Include",
+                        "Escape"});
+            table43.AddRow(new string[] {
+                        "\" \"",
+                        "Forward",
+                        "No",
+                        "1",
+                        "[[vowels(*).letters]] =",
+                        "Index",
+                        "1",
+                        "No",
+                        ""});
+#line 367
+ testRunner.And("the debug inputs as", ((string)(null)), table43, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table44 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+#line 370
+ testRunner.And("the debug output as", ((string)(null)), table44, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -741,17 +1533,46 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SplitTextToARecordsetUsingANegativeIndex()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text to a recordset using a negative Index", ((string[])(null)));
-#line 421
+#line 373
 this.ScenarioSetup(scenarioInfo);
-#line 422
+#line 374
  testRunner.Given("A string to split with value \"abcde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 423
+#line 375
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Index\" at \"-1\" and Include" +
                     " \"unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 424
+#line 376
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 425
+#line 377
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
+                        "String to Split",
+                        "Process Direction",
+                        "Skip blank rows",
+                        "#",
+                        "",
+                        "With",
+                        "Using",
+                        "Include",
+                        "Escape"});
+            table45.AddRow(new string[] {
+                        "abcde",
+                        "Forward",
+                        "No",
+                        "1",
+                        "[[vowels(*).letters]] =",
+                        "Index",
+                        "-1",
+                        "No",
+                        ""});
+#line 378
+ testRunner.And("the debug inputs as", ((string)(null)), table45, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table46 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+#line 381
+ testRunner.And("the debug output as", ((string)(null)), table46, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -762,37 +1583,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SplitTextIntoNegativeRecordsetIndexAsTheIndexToSplitAt()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text into negative recordset index as the index to split at", ((string[])(null)));
-#line 433
+#line 384
 this.ScenarioSetup(scenarioInfo);
-#line 434
+#line 385
  testRunner.Given("A string to split with value \"abcd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 435
+#line 386
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Index\" at \"[[my(-1).index]]" +
                     "\" and Include \"Selected\" and Escape \'\\\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 436
+#line 387
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 437
- testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Split text using a negative recordset index as escape character")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        public virtual void SplitTextUsingANegativeRecordsetIndexAsEscapeCharacter()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using a negative recordset index as escape character", ((string[])(null)));
-#line 439
-this.ScenarioSetup(scenarioInfo);
-#line 440
- testRunner.Given("A string to split with value \"abcd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 441
- testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Index\" at \"2\" and Include \"" +
-                    "Selected\" and Escape \'[[my(-1).escape]]\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 442
- testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 443
+#line 388
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -804,19 +1604,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SplitTextUsingAIndexWithAndSpace()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using a index with \",\" and space", ((string[])(null)));
-#line 451
+#line 390
 this.ScenarioSetup(scenarioInfo);
-#line 452
+#line 391
      testRunner.Given("A string to split with value \"a bc, def\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 453
+#line 392
   testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Index\" at \",\" and Include " +
                     "\"UnSelected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 454
+#line 393
   testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Space\" at \"\" and Include \"" +
                     "unselected\" and Escape \'\\\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 455
+#line 394
   testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 456
+#line 395
   testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -828,27 +1628,27 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SplitTextUsingIndexWhereIndexIsNotNumeric_Variable()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using Index where index is not numeric - variable", ((string[])(null)));
-#line 458
+#line 397
 this.ScenarioSetup(scenarioInfo);
-#line 459
+#line 398
      testRunner.Given("A string to split with value \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 460
+#line 399
   testRunner.And("I have a variable \"[[idx]]\" with a value \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 461
+#line 400
      testRunner.And("assign to variable \"[[var]]\" split type \"Index\" at \"[[idx]]\" and Include \"unselec" +
                     "ted\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 462
+#line 401
      testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table47 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table17.AddRow(new string[] {
+            table47.AddRow(new string[] {
                         "[[var]]",
                         "12"});
-#line 463
-     testRunner.Then("the split recordset \"[[var]]\" will be", ((string)(null)), table17, "Then ");
-#line 466
+#line 402
+     testRunner.Then("the split recordset \"[[var]]\" will be", ((string)(null)), table47, "Then ");
+#line 405
      testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -860,25 +1660,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SplitTextUsingIndexWhereIndexProvided()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using Index where index > provided", ((string[])(null)));
-#line 468
+#line 407
 this.ScenarioSetup(scenarioInfo);
-#line 469
+#line 408
      testRunner.Given("A string to split with value \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 470
+#line 409
      testRunner.And("assign to variable \"[[var]]\" split type \"Index\" at \"7\" and Include \"Selected\" and" +
                     " Escape \'\\\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 471
+#line 410
      testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table48 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table18.AddRow(new string[] {
+            table48.AddRow(new string[] {
                         "[[var]]",
                         "123"});
-#line 472
-     testRunner.Then("the split recordset \"[[var]]\" will be", ((string)(null)), table18, "Then ");
-#line 475
+#line 411
+     testRunner.Then("the split recordset \"[[var]]\" will be", ((string)(null)), table48, "Then ");
+#line 414
      testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -890,27 +1690,56 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SendingErrorInErrorVariableAndCallingWebservice()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sending Error in error variable and calling webservice", ((string[])(null)));
-#line 477
+#line 416
 this.ScenarioSetup(scenarioInfo);
-#line 478
+#line 417
     testRunner.Given("A string to split with value \"@!?><\":}{+_)(*&^~\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 479
+#line 418
  testRunner.And("assign to variable \"[[vowels(*).chars]]\" split type \"Index\" at \"*\" and Include \"u" +
                     "nselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 480
+#line 419
  testRunner.And("the direction is \"Backward\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 481
+#line 420
     testRunner.And("assign error to variable \"[[error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 482
+#line 421
     testRunner.And("call the web service \"http://TST-CI-REMOTE:3142/services/ONERROR/OnError_WriteToF" +
                     "ile.xml?errorLog=[[error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 483
+#line 422
     testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 484
+#line 423
     testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 485
+#line 424
     testRunner.And("the result from the web service \"http://TST-CI-REMOTE:3142/services/ONERROR/OnErr" +
                     "or_ReadFromFile.xml\" will have the same data as variable \"[[error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table49 = new TechTalk.SpecFlow.Table(new string[] {
+                        "String to Split",
+                        "Process Direction",
+                        "Skip blank rows",
+                        "#",
+                        "",
+                        "With",
+                        "Using",
+                        "Include",
+                        "Escape"});
+            table49.AddRow(new string[] {
+                        "@!?><\":}{+_)(*&^~",
+                        "Backward",
+                        "No",
+                        "1",
+                        "[[vowels(*).chars]] =",
+                        "Index",
+                        "*",
+                        "No",
+                        ""});
+#line 425
+    testRunner.And("the debug inputs as", ((string)(null)), table49, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table50 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+#line 428
+    testRunner.And("the debug output as", ((string)(null)), table50, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -921,17 +1750,46 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SplitNegativeRecordIndexAsInput()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split negative record index as Input", ((string[])(null)));
-#line 493
+#line 431
 this.ScenarioSetup(scenarioInfo);
-#line 494
+#line 432
  testRunner.Given("A string to split with value \"[[my(-1).var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 495
+#line 433
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Index\" at \"5\" and Include \"" +
                     "Selected\" and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 496
+#line 434
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 497
+#line 435
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table51 = new TechTalk.SpecFlow.Table(new string[] {
+                        "String to Split",
+                        "Process Direction",
+                        "Skip blank rows",
+                        "#",
+                        "",
+                        "With",
+                        "Using",
+                        "Include",
+                        "Escape"});
+            table51.AddRow(new string[] {
+                        "[[my(-1).var]] =",
+                        "Forward",
+                        "No",
+                        "1",
+                        "[[vowels().letters]]  =",
+                        "Index",
+                        "5",
+                        "Yes",
+                        ""});
+#line 436
+ testRunner.And("the debug inputs as", ((string)(null)), table51, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table52 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+#line 439
+ testRunner.And("the debug output as", ((string)(null)), table52, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -942,17 +1800,96 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SplitTextIntoNegativeRecordsetIndex()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text into negative recordset index", ((string[])(null)));
-#line 505
+#line 442
 this.ScenarioSetup(scenarioInfo);
-#line 506
+#line 443
  testRunner.Given("A string to split with value \"abcd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 507
+#line 444
  testRunner.And("assign to variable \"[[vowels(-1).letters]]\" split type \"Index\" at \"5\" and Include" +
                     " \"Selected\" and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 508
+#line 445
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 509
+#line 446
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table53 = new TechTalk.SpecFlow.Table(new string[] {
+                        "String to Split",
+                        "Process Direction",
+                        "Skip blank rows",
+                        "#",
+                        "",
+                        "With",
+                        "Using",
+                        "Include",
+                        "Escape"});
+            table53.AddRow(new string[] {
+                        "abcd",
+                        "Forward",
+                        "No",
+                        "1",
+                        "[[vowels(-1).letters]] =",
+                        "Index",
+                        "5",
+                        "Yes",
+                        ""});
+#line 447
+ testRunner.And("the debug inputs as", ((string)(null)), table53, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table54 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+#line 450
+ testRunner.And("the debug output as", ((string)(null)), table54, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        public virtual void SplitTextByUsingTwoVariablesInOneRow(string no, string varaibles, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split Text by using two variables in one row", exampleTags);
+#line 453
+this.ScenarioSetup(scenarioInfo);
+#line 454
+ testRunner.Given("A string to split with value \"abcd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 455
+ testRunner.And("assign to variable \'<variables>\' split type \"Index\" at \"4\" and Include \"Selected\"" +
+                    " and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 456
+ testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 457
+ testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table55 = new TechTalk.SpecFlow.Table(new string[] {
+                        "String to Split",
+                        "Process Direction",
+                        "Skip blank rows",
+                        "#",
+                        "",
+                        "With",
+                        "Using",
+                        "Include",
+                        "Escape"});
+            table55.AddRow(new string[] {
+                        "abcd",
+                        "Forward",
+                        "No",
+                        "1",
+                        "<variables> =",
+                        "Index",
+                        "4",
+                        "Yes",
+                        ""});
+#line 458
+ testRunner.And("the debug inputs as", ((string)(null)), table55, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table56 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table56.AddRow(new string[] {
+                        "1",
+                        "<variables> ="});
+#line 461
+ testRunner.And("the debug output as", ((string)(null)), table56, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -960,17 +1897,46 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SplitTextUsingTypeIndexButIndexIsInvalid(string no, string type, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split Text using type Index but Index is invalid", exampleTags);
-#line 534
+#line 468
 this.ScenarioSetup(scenarioInfo);
-#line 535
+#line 469
  testRunner.Given("A string to split with value \"abcd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 536
+#line 470
  testRunner.And(string.Format("assign to variable \'[[rec().a]]\' split type \"Index\" at \'{0}\' and Include \'Selecte" +
                         "d\' and Escape \'\'", type), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 537
+#line 471
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 538
+#line 472
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table57 = new TechTalk.SpecFlow.Table(new string[] {
+                        "String to Split",
+                        "Process Direction",
+                        "Skip blank rows",
+                        "#",
+                        "",
+                        "With",
+                        "Using",
+                        "Include",
+                        "Escape"});
+            table57.AddRow(new string[] {
+                        "abcd",
+                        "Forward",
+                        "No",
+                        "1",
+                        "[[rec().a]] =",
+                        "Index",
+                        string.Format("{0} = \"\"", type),
+                        "Yes",
+                        ""});
+#line 473
+ testRunner.And("the debug inputs as", ((string)(null)), table57, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table58 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+#line 476
+ testRunner.And("the debug output as", ((string)(null)), table58, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -991,26 +1957,55 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "[[%#$]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "[[%$]]")]
         public virtual void SplitTextUsingTypeIndexButIndexIsInvalid_2()
         {
-            this.SplitTextUsingTypeIndexButIndexIsInvalid("2", "[[%#$]]", ((string[])(null)));
+            this.SplitTextUsingTypeIndexButIndexIsInvalid("2", "[[%$]]", ((string[])(null)));
         }
         
         public virtual void DebugOutputValidationErrors(string no, string variable, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Debug output Validation errors", exampleTags);
-#line 550
+#line 483
 this.ScenarioSetup(scenarioInfo);
-#line 551
+#line 484
  testRunner.Given("A string to split with value \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 552
+#line 485
  testRunner.And(string.Format("assign to variable \'{0}\' split type \"Index\" at \'5\' and Include \'Selected\' and Esc" +
                         "ape \'\'", variable), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 553
+#line 486
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 554
+#line 487
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table59 = new TechTalk.SpecFlow.Table(new string[] {
+                        "String to Split",
+                        "Process Direction",
+                        "Skip blank rows",
+                        "#",
+                        "",
+                        "With",
+                        "Using",
+                        "Include",
+                        "Escape"});
+            table59.AddRow(new string[] {
+                        "\"\" =  \"Warewolf\"",
+                        "Forward",
+                        "No",
+                        "1",
+                        string.Format("{0}  =", variable),
+                        "Index",
+                        "5",
+                        "Yes",
+                        ""});
+#line 488
+ testRunner.And("the debug inputs as", ((string)(null)), table59, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table60 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+#line 491
+ testRunner.And("the debug output as", ((string)(null)), table60, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1118,20 +2113,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "12")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var#]]")]
-        public virtual void DebugOutputValidationErrors_Variant9()
-        {
-            this.DebugOutputValidationErrors("12", "[[var#]]", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]]00]]")]
-        public virtual void DebugOutputValidationErrors_Variant10()
+        public virtual void DebugOutputValidationErrors_Variant9()
         {
             this.DebugOutputValidationErrors("13", "[[var]]00]]", ((string[])(null)));
         }
@@ -1139,10 +2123,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 11")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]]@]]")]
-        public virtual void DebugOutputValidationErrors_Variant11()
+        public virtual void DebugOutputValidationErrors_Variant10()
         {
             this.DebugOutputValidationErrors("14", "[[var]]@]]", ((string[])(null)));
         }
@@ -1150,10 +2134,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 12")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var.()]]")]
-        public virtual void DebugOutputValidationErrors_Variant12()
+        public virtual void DebugOutputValidationErrors_Variant11()
         {
             this.DebugOutputValidationErrors("15", "[[var.()]]", ((string[])(null)));
         }
@@ -1161,10 +2145,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 13")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[]]")]
-        public virtual void DebugOutputValidationErrors_Variant13()
+        public virtual void DebugOutputValidationErrors_Variant12()
         {
             this.DebugOutputValidationErrors("16", "[[]]", ((string[])(null)));
         }
@@ -1172,10 +2156,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 14")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[()]]")]
-        public virtual void DebugOutputValidationErrors_Variant14()
+        public virtual void DebugOutputValidationErrors_Variant13()
         {
             this.DebugOutputValidationErrors("17", "[[()]]", ((string[])(null)));
         }
@@ -1183,10 +2167,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var[[]]")]
-        public virtual void DebugOutputValidationErrors_Variant15()
+        public virtual void DebugOutputValidationErrors_Variant14()
         {
             this.DebugOutputValidationErrors("28", "[[var[[]]", ((string[])(null)));
         }
@@ -1194,10 +2178,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 16")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var1.a]]")]
-        public virtual void DebugOutputValidationErrors_Variant16()
+        public virtual void DebugOutputValidationErrors_Variant15()
         {
             this.DebugOutputValidationErrors("29", "[[var1.a]]", ((string[])(null)));
         }
@@ -1205,10 +2189,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 17")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()!a]]")]
-        public virtual void DebugOutputValidationErrors_Variant17()
+        public virtual void DebugOutputValidationErrors_Variant16()
         {
             this.DebugOutputValidationErrors("20", "[[rec()!a]]", ((string[])(null)));
         }
@@ -1216,10 +2200,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 18")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()         a]]")]
-        public virtual void DebugOutputValidationErrors_Variant18()
+        public virtual void DebugOutputValidationErrors_Variant17()
         {
             this.DebugOutputValidationErrors("21", "[[rec()         a]]", ((string[])(null)));
         }
@@ -1227,10 +2211,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 19")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 18")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[{{rec(_).a}}]]]")]
-        public virtual void DebugOutputValidationErrors_Variant19()
+        public virtual void DebugOutputValidationErrors_Variant18()
         {
             this.DebugOutputValidationErrors("22", "[[{{rec(_).a}}]]]", ((string[])(null)));
         }
@@ -1238,10 +2222,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 20")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 19")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(23).[[var*]]]]")]
-        public virtual void DebugOutputValidationErrors_Variant20()
+        public virtual void DebugOutputValidationErrors_Variant19()
         {
             this.DebugOutputValidationErrors("23", "[[rec(23).[[var*]]]]", ((string[])(null)));
         }
@@ -1249,10 +2233,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 21")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()")]
-        public virtual void DebugOutputValidationErrors_Variant21()
+        public virtual void DebugOutputValidationErrors_Variant20()
         {
             this.DebugOutputValidationErrors("24", "[[rec()", ((string[])(null)));
         }
@@ -1260,10 +2244,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 22")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "a[[rec([[[[b]]]]).a]]@")]
-        public virtual void DebugOutputValidationErrors_Variant22()
+        public virtual void DebugOutputValidationErrors_Variant21()
         {
             this.DebugOutputValidationErrors("25", "a[[rec([[[[b]]]]).a]]@", ((string[])(null)));
         }
@@ -1271,10 +2255,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 23")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var  ]]")]
-        public virtual void DebugOutputValidationErrors_Variant23()
+        public virtual void DebugOutputValidationErrors_Variant22()
         {
             this.DebugOutputValidationErrors("26", "[[var  ]]", ((string[])(null)));
         }
@@ -1282,10 +2266,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 24")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var@]]")]
-        public virtual void DebugOutputValidationErrors_Variant24()
+        public virtual void DebugOutputValidationErrors_Variant23()
         {
             this.DebugOutputValidationErrors("27", "[[var@]]", ((string[])(null)));
         }
@@ -1293,21 +2277,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 25")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "28")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var#]]")]
-        public virtual void DebugOutputValidationErrors_Variant25()
-        {
-            this.DebugOutputValidationErrors("28", "[[var#]]", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 26")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]]]]")]
-        public virtual void DebugOutputValidationErrors_Variant26()
+        public virtual void DebugOutputValidationErrors_Variant24()
         {
             this.DebugOutputValidationErrors("29", "[[var]]]]", ((string[])(null)));
         }
@@ -1315,10 +2288,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 27")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[(1var)]]")]
-        public virtual void DebugOutputValidationErrors_Variant27()
+        public virtual void DebugOutputValidationErrors_Variant25()
         {
             this.DebugOutputValidationErrors("30", "[[(1var)]]", ((string[])(null)));
         }
@@ -1326,10 +2299,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 28")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "31")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[1var)]]")]
-        public virtual void DebugOutputValidationErrors_Variant28()
+        public virtual void DebugOutputValidationErrors_Variant26()
         {
             this.DebugOutputValidationErrors("31", "[[1var)]]", ((string[])(null)));
         }
@@ -1337,10 +2310,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 29")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var.()]]")]
-        public virtual void DebugOutputValidationErrors_Variant29()
+        public virtual void DebugOutputValidationErrors_Variant27()
         {
             this.DebugOutputValidationErrors("32", "[[var.()]]", ((string[])(null)));
         }
@@ -1348,10 +2321,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 30")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var  ]]")]
-        public virtual void DebugOutputValidationErrors_Variant30()
+        public virtual void DebugOutputValidationErrors_Variant28()
         {
             this.DebugOutputValidationErrors("33", "[[var  ]]", ((string[])(null)));
         }
@@ -1359,10 +2332,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 31")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var~]]")]
-        public virtual void DebugOutputValidationErrors_Variant31()
+        public virtual void DebugOutputValidationErrors_Variant29()
         {
             this.DebugOutputValidationErrors("34", "[[var~]]", ((string[])(null)));
         }
@@ -1370,10 +2343,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 32")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "35")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var+]]")]
-        public virtual void DebugOutputValidationErrors_Variant32()
+        public virtual void DebugOutputValidationErrors_Variant30()
         {
             this.DebugOutputValidationErrors("35", "[[var+]]", ((string[])(null)));
         }
@@ -1381,10 +2354,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 33")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 31")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "36")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]a]]")]
-        public virtual void DebugOutputValidationErrors_Variant33()
+        public virtual void DebugOutputValidationErrors_Variant31()
         {
             this.DebugOutputValidationErrors("36", "[[var]a]]", ((string[])(null)));
         }
@@ -1392,10 +2365,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 34")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "37")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var[a]]")]
-        public virtual void DebugOutputValidationErrors_Variant34()
+        public virtual void DebugOutputValidationErrors_Variant32()
         {
             this.DebugOutputValidationErrors("37", "[[var[a]]", ((string[])(null)));
         }
@@ -1403,10 +2376,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 35")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "38")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var 1]]")]
-        public virtual void DebugOutputValidationErrors_Variant35()
+        public virtual void DebugOutputValidationErrors_Variant33()
         {
             this.DebugOutputValidationErrors("38", "[[var 1]]", ((string[])(null)));
         }
@@ -1414,10 +2387,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 36")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "39")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var[[]]")]
-        public virtual void DebugOutputValidationErrors_Variant36()
+        public virtual void DebugOutputValidationErrors_Variant34()
         {
             this.DebugOutputValidationErrors("39", "[[var[[]]", ((string[])(null)));
         }
@@ -1425,10 +2398,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 37")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 35")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "40")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var[[1]]]]")]
-        public virtual void DebugOutputValidationErrors_Variant37()
+        public virtual void DebugOutputValidationErrors_Variant35()
         {
             this.DebugOutputValidationErrors("40", "[[var[[1]]]]", ((string[])(null)));
         }
@@ -1436,10 +2409,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 38")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 36")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "41")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var.a]]")]
-        public virtual void DebugOutputValidationErrors_Variant38()
+        public virtual void DebugOutputValidationErrors_Variant36()
         {
             this.DebugOutputValidationErrors("41", "[[var.a]]", ((string[])(null)));
         }
@@ -1447,10 +2420,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 39")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 37")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "42")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var1.a]]")]
-        public virtual void DebugOutputValidationErrors_Variant39()
+        public virtual void DebugOutputValidationErrors_Variant37()
         {
             this.DebugOutputValidationErrors("42", "[[var1.a]]", ((string[])(null)));
         }
@@ -1458,10 +2431,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 40")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 38")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "43")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[[[a]].[[b]]]]cd]]")]
-        public virtual void DebugOutputValidationErrors_Variant40()
+        public virtual void DebugOutputValidationErrors_Variant38()
         {
             this.DebugOutputValidationErrors("43", "[[[[a]].[[b]]]]cd]]", ((string[])(null)));
         }
@@ -1469,10 +2442,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 41")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 39")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "44")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var*]]")]
-        public virtual void DebugOutputValidationErrors_Variant41()
+        public virtual void DebugOutputValidationErrors_Variant39()
         {
             this.DebugOutputValidationErrors("44", "[[var*]]", ((string[])(null)));
         }
@@ -1480,21 +2453,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 42")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "45")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[1var]]")]
-        public virtual void DebugOutputValidationErrors_Variant42()
-        {
-            this.DebugOutputValidationErrors("45", "[[1var]]", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 43")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 40")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "46")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[@var]]")]
-        public virtual void DebugOutputValidationErrors_Variant43()
+        public virtual void DebugOutputValidationErrors_Variant40()
         {
             this.DebugOutputValidationErrors("46", "[[@var]]", ((string[])(null)));
         }
@@ -1502,10 +2464,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 44")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 41")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "47")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]](var)]]")]
-        public virtual void DebugOutputValidationErrors_Variant44()
+        public virtual void DebugOutputValidationErrors_Variant41()
         {
             this.DebugOutputValidationErrors("47", "[[var]](var)]]", ((string[])(null)));
         }
@@ -1513,10 +2475,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 45")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 42")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "48")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var,]]")]
-        public virtual void DebugOutputValidationErrors_Variant45()
+        public virtual void DebugOutputValidationErrors_Variant42()
         {
             this.DebugOutputValidationErrors("48", "[[var,]]", ((string[])(null)));
         }
@@ -1524,10 +2486,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 46")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 43")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "49")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[:var 1]]")]
-        public virtual void DebugOutputValidationErrors_Variant46()
+        public virtual void DebugOutputValidationErrors_Variant43()
         {
             this.DebugOutputValidationErrors("49", "[[:var 1]]", ((string[])(null)));
         }
@@ -1535,10 +2497,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 47")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 44")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "50")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[,var]]")]
-        public virtual void DebugOutputValidationErrors_Variant47()
+        public virtual void DebugOutputValidationErrors_Variant44()
         {
             this.DebugOutputValidationErrors("50", "[[,var]]", ((string[])(null)));
         }
@@ -1546,10 +2508,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 48")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 45")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "51")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[test,var]]")]
-        public virtual void DebugOutputValidationErrors_Variant48()
+        public virtual void DebugOutputValidationErrors_Variant45()
         {
             this.DebugOutputValidationErrors("51", "[[test,var]]", ((string[])(null)));
         }
@@ -1557,10 +2519,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 49")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 46")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "52")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[test. var]]")]
-        public virtual void DebugOutputValidationErrors_Variant49()
+        public virtual void DebugOutputValidationErrors_Variant46()
         {
             this.DebugOutputValidationErrors("52", "[[test. var]]", ((string[])(null)));
         }
@@ -1568,10 +2530,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 50")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 47")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "53")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[test.var]]")]
-        public virtual void DebugOutputValidationErrors_Variant50()
+        public virtual void DebugOutputValidationErrors_Variant47()
         {
             this.DebugOutputValidationErrors("53", "[[test.var]]", ((string[])(null)));
         }
@@ -1579,10 +2541,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 51")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 48")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "54")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[test. 1]]")]
-        public virtual void DebugOutputValidationErrors_Variant51()
+        public virtual void DebugOutputValidationErrors_Variant48()
         {
             this.DebugOutputValidationErrors("54", "[[test. 1]]", ((string[])(null)));
         }
@@ -1590,10 +2552,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 52")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 49")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "55")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(*).&]]")]
-        public virtual void DebugOutputValidationErrors_Variant52()
+        public virtual void DebugOutputValidationErrors_Variant49()
         {
             this.DebugOutputValidationErrors("55", "[[rec(*).&]]", ((string[])(null)));
         }
@@ -1601,10 +2563,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 53")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 50")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "56")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(),a]]")]
-        public virtual void DebugOutputValidationErrors_Variant53()
+        public virtual void DebugOutputValidationErrors_Variant50()
         {
             this.DebugOutputValidationErrors("56", "[[rec(),a]]", ((string[])(null)));
         }
@@ -1612,10 +2574,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 54")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 51")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "57")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()         a]]")]
-        public virtual void DebugOutputValidationErrors_Variant54()
+        public virtual void DebugOutputValidationErrors_Variant51()
         {
             this.DebugOutputValidationErrors("57", "[[rec()         a]]", ((string[])(null)));
         }
@@ -1623,10 +2585,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 55")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 52")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "58")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(1).[[rec().1]]]]")]
-        public virtual void DebugOutputValidationErrors_Variant55()
+        public virtual void DebugOutputValidationErrors_Variant52()
         {
             this.DebugOutputValidationErrors("58", "[[rec(1).[[rec().1]]]]", ((string[])(null)));
         }
@@ -1634,10 +2596,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 56")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 53")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "59")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(a).[[rec().a]]]]")]
-        public virtual void DebugOutputValidationErrors_Variant56()
+        public virtual void DebugOutputValidationErrors_Variant53()
         {
             this.DebugOutputValidationErrors("59", "[[rec(a).[[rec().a]]]]", ((string[])(null)));
         }
@@ -1645,10 +2607,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 57")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 54")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "60")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[{{rec(_).a}}]]]")]
-        public virtual void DebugOutputValidationErrors_Variant57()
+        public virtual void DebugOutputValidationErrors_Variant54()
         {
             this.DebugOutputValidationErrors("60", "[[{{rec(_).a}}]]]", ((string[])(null)));
         }
@@ -1656,10 +2618,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 58")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 55")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "61")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[*[{{rec(_).a}}]]]")]
-        public virtual void DebugOutputValidationErrors_Variant58()
+        public virtual void DebugOutputValidationErrors_Variant55()
         {
             this.DebugOutputValidationErrors("61", "[[*[{{rec(_).a}}]]]", ((string[])(null)));
         }
@@ -1667,10 +2629,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 59")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 56")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "62")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(23).[[var}]]]]")]
-        public virtual void DebugOutputValidationErrors_Variant59()
+        public virtual void DebugOutputValidationErrors_Variant56()
         {
             this.DebugOutputValidationErrors("62", "[[rec(23).[[var}]]]]", ((string[])(null)));
         }
@@ -1678,10 +2640,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 60")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 57")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "63")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(23).[[var*]]]]")]
-        public virtual void DebugOutputValidationErrors_Variant60()
+        public virtual void DebugOutputValidationErrors_Variant57()
         {
             this.DebugOutputValidationErrors("63", "[[rec(23).[[var*]]]]", ((string[])(null)));
         }
@@ -1689,10 +2651,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 61")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 58")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(23).[[var%^&%]]]]")]
-        public virtual void DebugOutputValidationErrors_Variant61()
+        public virtual void DebugOutputValidationErrors_Variant58()
         {
             this.DebugOutputValidationErrors("64", "[[rec(23).[[var%^&%]]]]", ((string[])(null)));
         }
@@ -1700,10 +2662,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 62")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 59")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "65")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]]234234]]")]
-        public virtual void DebugOutputValidationErrors_Variant62()
+        public virtual void DebugOutputValidationErrors_Variant59()
         {
             this.DebugOutputValidationErrors("65", "[[rec().a]]234234]]", ((string[])(null)));
         }
@@ -1711,10 +2673,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 63")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 60")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "66")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]]=]]")]
-        public virtual void DebugOutputValidationErrors_Variant63()
+        public virtual void DebugOutputValidationErrors_Variant60()
         {
             this.DebugOutputValidationErrors("66", "[[rec().a]]=]]", ((string[])(null)));
         }
@@ -1722,10 +2684,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 64")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 61")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "67")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()..]]")]
-        public virtual void DebugOutputValidationErrors_Variant64()
+        public virtual void DebugOutputValidationErrors_Variant61()
         {
             this.DebugOutputValidationErrors("67", "[[rec()..]]", ((string[])(null)));
         }
@@ -1733,10 +2695,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 65")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 62")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "68")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a.b]]")]
-        public virtual void DebugOutputValidationErrors_Variant65()
+        public virtual void DebugOutputValidationErrors_Variant62()
         {
             this.DebugOutputValidationErrors("68", "[[rec().a.b]]", ((string[])(null)));
         }
@@ -1744,10 +2706,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 66")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 63")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "69")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]].a]]")]
-        public virtual void DebugOutputValidationErrors_Variant66()
+        public virtual void DebugOutputValidationErrors_Variant63()
         {
             this.DebugOutputValidationErrors("69", "[[rec().a]].a]]", ((string[])(null)));
         }
@@ -1755,10 +2717,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 67")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "70")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(@).a]]")]
-        public virtual void DebugOutputValidationErrors_Variant67()
+        public virtual void DebugOutputValidationErrors_Variant64()
         {
             this.DebugOutputValidationErrors("70", "[[rec(@).a]]", ((string[])(null)));
         }
@@ -1766,10 +2728,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 68")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 65")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "71")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(().a]]")]
-        public virtual void DebugOutputValidationErrors_Variant68()
+        public virtual void DebugOutputValidationErrors_Variant65()
         {
             this.DebugOutputValidationErrors("71", "[[rec(().a]]", ((string[])(null)));
         }
@@ -1777,10 +2739,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 69")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 66")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "72")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()).a]]")]
-        public virtual void DebugOutputValidationErrors_Variant69()
+        public virtual void DebugOutputValidationErrors_Variant66()
         {
             this.DebugOutputValidationErrors("72", "[[rec()).a]]", ((string[])(null)));
         }
@@ -1788,10 +2750,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 70")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 67")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "73")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(+).a]]")]
-        public virtual void DebugOutputValidationErrors_Variant70()
+        public virtual void DebugOutputValidationErrors_Variant67()
         {
             this.DebugOutputValidationErrors("73", "[[rec(+).a]]", ((string[])(null)));
         }
@@ -1799,10 +2761,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 71")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 68")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "74")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(-).a]]")]
-        public virtual void DebugOutputValidationErrors_Variant71()
+        public virtual void DebugOutputValidationErrors_Variant68()
         {
             this.DebugOutputValidationErrors("74", "[[rec(-).a]]", ((string[])(null)));
         }
@@ -1810,10 +2772,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 72")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 69")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "75")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(!).a]]")]
-        public virtual void DebugOutputValidationErrors_Variant72()
+        public virtual void DebugOutputValidationErrors_Variant69()
         {
             this.DebugOutputValidationErrors("75", "[[rec(!).a]]", ((string[])(null)));
         }
@@ -1821,10 +2783,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 73")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 70")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "76")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(q).a]]")]
-        public virtual void DebugOutputValidationErrors_Variant73()
+        public virtual void DebugOutputValidationErrors_Variant70()
         {
             this.DebugOutputValidationErrors("76", "[[rec(q).a]]", ((string[])(null)));
         }
@@ -1832,10 +2794,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 74")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 71")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "77")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(w).a]]")]
-        public virtual void DebugOutputValidationErrors_Variant74()
+        public virtual void DebugOutputValidationErrors_Variant71()
         {
             this.DebugOutputValidationErrors("77", "[[rec(w).a]]", ((string[])(null)));
         }
@@ -1843,10 +2805,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 75")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 72")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "78")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(.).a]]")]
-        public virtual void DebugOutputValidationErrors_Variant75()
+        public virtual void DebugOutputValidationErrors_Variant72()
         {
             this.DebugOutputValidationErrors("78", "[[rec(.).a]]", ((string[])(null)));
         }
@@ -1854,10 +2816,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 76")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 73")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "79")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(:).a]]")]
-        public virtual void DebugOutputValidationErrors_Variant76()
+        public virtual void DebugOutputValidationErrors_Variant73()
         {
             this.DebugOutputValidationErrors("79", "[[rec(:).a]]", ((string[])(null)));
         }
@@ -1865,10 +2827,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 77")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 74")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "80")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(,).a]]")]
-        public virtual void DebugOutputValidationErrors_Variant77()
+        public virtual void DebugOutputValidationErrors_Variant74()
         {
             this.DebugOutputValidationErrors("80", "[[rec(,).a]]", ((string[])(null)));
         }
@@ -1876,10 +2838,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 78")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 75")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "81")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
-        public virtual void DebugOutputValidationErrors_Variant78()
+        public virtual void DebugOutputValidationErrors_Variant75()
         {
             this.DebugOutputValidationErrors("81", "[[rec\"()\".a]]", ((string[])(null)));
         }
@@ -1887,10 +2849,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 79")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 76")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "82")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\'()\'.a]]")]
-        public virtual void DebugOutputValidationErrors_Variant79()
+        public virtual void DebugOutputValidationErrors_Variant76()
         {
             this.DebugOutputValidationErrors("82", "[[rec\'()\'.a]]", ((string[])(null)));
         }
@@ -1898,10 +2860,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 80")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 77")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "83")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\").a]]")]
-        public virtual void DebugOutputValidationErrors_Variant80()
+        public virtual void DebugOutputValidationErrors_Variant77()
         {
             this.DebugOutputValidationErrors("83", "[[rec\").a]]", ((string[])(null)));
         }
@@ -1909,10 +2871,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 81")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 78")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "84")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec{a]]")]
-        public virtual void DebugOutputValidationErrors_Variant81()
+        public virtual void DebugOutputValidationErrors_Variant78()
         {
             this.DebugOutputValidationErrors("84", "[[rec{a]]", ((string[])(null)));
         }
@@ -1920,10 +2882,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 82")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 79")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "85")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec{a}]]")]
-        public virtual void DebugOutputValidationErrors_Variant82()
+        public virtual void DebugOutputValidationErrors_Variant79()
         {
             this.DebugOutputValidationErrors("85", "[[rec{a}]]", ((string[])(null)));
         }
@@ -1931,10 +2893,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 83")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 80")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "86")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()*.a]]")]
-        public virtual void DebugOutputValidationErrors_Variant83()
+        public virtual void DebugOutputValidationErrors_Variant80()
         {
             this.DebugOutputValidationErrors("86", "[[rec()*.a]]", ((string[])(null)));
         }
@@ -1942,10 +2904,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 84")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 81")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "89")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(-1).a")]
-        public virtual void DebugOutputValidationErrors_Variant84()
+        public virtual void DebugOutputValidationErrors_Variant81()
         {
             this.DebugOutputValidationErrors("89", "[[rec(-1).a", ((string[])(null)));
         }
@@ -1953,10 +2915,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug output Validation errors")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 85")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 82")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "90")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]")]
-        public virtual void DebugOutputValidationErrors_Variant85()
+        public virtual void DebugOutputValidationErrors_Variant82()
         {
             this.DebugOutputValidationErrors("90", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]", ((string[])(null)));
         }

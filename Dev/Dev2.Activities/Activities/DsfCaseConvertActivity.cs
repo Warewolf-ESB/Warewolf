@@ -18,14 +18,9 @@ using System.Linq;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
-using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Convertors.Case;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Data.Factories;
-using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Interfaces;
@@ -75,15 +70,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugOutputs = new List<DebugItem>();
 
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-            toUpsert.IsDebug = dataObject.IsDebugMode();
-            toUpsert.ReplaceStarWithFixedIndex = true;
 
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
-            Guid executionId = DataListExecutionID.Get(context);
             var env = dataObject.Environment;
             InitializeDebug(dataObject);
             try
@@ -128,6 +117,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
 
             }
+            catch (Exception e)
+            {
+                allErrors.AddError(e.Message);
+            }
             finally
             {
                 // Handle Errors
@@ -135,23 +128,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(hasErrors)
                 {
                     DisplayAndWriteError("DsfCaseConvertActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
                 }
                 if(dataObject.IsDebugMode())
                 {
-                    if(hasErrors)
-                    {
-                        int outIndex = 1;
-                        foreach(ICaseConvertTO item in ConvertCollection)
-                        {
-                            IBinaryDataListEntry tmp = compiler.Evaluate(executionId, enActionType.User, item.StringToConvert, false, out errors);
-                            var debugItem = new DebugItem();
-                            AddDebugItem(new DebugItemStaticDataParams("", outIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
-                            AddDebugItem(new DebugItemVariableParams(item.Result, "", tmp, executionId), debugItem);
-                            _debugOutputs.Add(debugItem);
-                            outIndex++;
-                        }
-                    }
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
@@ -189,26 +170,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             throw  new Exception("Convert option does not exist");
         }
 
-
-        static void ValidateVariable(string fieldName, IDataListCompiler compiler, IDSFDataObject dataObject, out ErrorResultTO errors)
-        {
-            fieldName = DataListUtil.IsValueRecordset(fieldName) ? DataListUtil.ReplaceRecordsetIndexWithBlank(fieldName) : fieldName;
-            var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), Dev2.DataList.Contract.enTranslationDepth.Shape, out errors).ToString();
-            if(!string.IsNullOrEmpty(datalist))
-            {
-                var isValidExpr = new IsValidExpressionRule(() => fieldName, datalist)
-                {
-                    LabelText = fieldName
-                };
-
-                var errorInfo = isValidExpr.Check();
-                if(errorInfo != null)
-                {
-                    errors.AddError(errorInfo.Message);
-                }
-
-            }
-        }
+        
 
         public override enFindMissingType GetFindMissingType()
         {

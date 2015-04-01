@@ -58,10 +58,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             
             var comiler = DataListFactory.CreateDataListCompiler();
-            // 06.01.2014 Line Below is Causing Compile Errors ;)
-           // string fetchErrors = ExecutionEnvironment.WarewolfEvalResultToString(CurrentExecutionEnvironment.Eval(DataListUtil.AddBracketsToValueIfNotExist(enSystemTag.Dev2Error.ToString())));
-            string fetchErrors = comiler.FetchErrors(result.DataListID);
-            //string fetchErrors = RecordSetBases.FetchErrors(result.DataListID);
+            string fetchErrors = string.Join(Environment.NewLine,result.Environment.Errors);
             bool actual = result.Environment.Errors.Count==0;
             string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actual ? "did not occur" : "did occur" + fetchErrors);
@@ -674,9 +671,9 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             for(int i = 0; i < expectedDebugItems.Count; i++)
             {
-                Verify(expectedDebugItems[i].Label, inputDebugItems[i].Label??"", "Labels", i);
-                Verify(expectedDebugItems[i].Value, inputDebugItems[i].Value, "Values", i);
-                Verify(expectedDebugItems[i].Variable, inputDebugItems[i].Variable, "Variables", i);
+                Verify(expectedDebugItems[i].Label ?? "", inputDebugItems[i].Label ?? "", "Labels", i);
+                Verify(expectedDebugItems[i].Value ?? "", inputDebugItems[i].Value ?? "", "Values", i);
+                Verify(expectedDebugItems[i].Variable ?? "", inputDebugItems[i].Variable ?? "", "Variables", i);
             }
         }
 

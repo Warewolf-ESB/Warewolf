@@ -21,10 +21,8 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Data.Factories;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.MathOperations;
@@ -104,13 +102,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugInputs.Clear();
 
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
-            toUpsert.IsDebug = (dataObject.IsDebugMode());
-            toUpsert.ResourceID = dataObject.ResourceID;
-
+            
             InitializeDebug(dataObject);
-
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
 
@@ -182,7 +175,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(hasErrors)
                 {
                     DisplayAndWriteError("DsfAssignActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
+
                 }
                 if(dataObject.IsDebugMode())
                 {                   
@@ -273,6 +268,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     else if (oldValueResult.IsWarewolfAtomResult && newValueResult.IsWarewolfAtomListresult)
                     {
                         AddDebugItem(new DebugItemWarewolfAtomListResult(null, newValueResult, assignValue.Value, assignValue.Name, VariableLabelText, NewFieldLabelText, "="), debugItem);
+                    }
+                    else if (oldValueResult.IsWarewolfAtomListresult && newValueResult.IsWarewolfAtomListresult)
+                    {
+                        var recSetResult = oldValueResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                        AddDebugItem(new DebugItemWarewolfAtomListResult(recSetResult, newValueResult, assignValue.Value, assignValue.Name, VariableLabelText, NewFieldLabelText, "="), debugItem);
                     }
                 }                
             }
