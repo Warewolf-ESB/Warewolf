@@ -120,6 +120,34 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
 
                 toUpsert.IsDebug = dataObject.IsDebugMode();
+               
+
+                if(dataObject.IsDebugMode())
+                {
+                    if (string.IsNullOrEmpty(Input1))
+                    {
+                        AddDebugInputItem(new DebugItemStaticDataParams(DateTime.Now.ToString(CultureInfo.CurrentCulture),"now()","Input 1","="));
+                    }
+                    else
+                    {
+                        AddDebugInputItem(Input1, "Input 1", dataObject.Environment);   
+                    }
+
+                    if (string.IsNullOrEmpty(Input2))
+                    {
+                        AddDebugInputItem(new DebugItemStaticDataParams(DateTime.Now.ToString(CultureInfo.CurrentCulture),"now()","Input 2","="));
+                    }
+                    else
+                    {
+                        AddDebugInputItem(Input2, "Input 2", dataObject.Environment);   
+                    }
+
+                    AddDebugInputItem(InputFormat, "Input Format", dataObject.Environment);
+                    if (!String.IsNullOrEmpty(OutputType))
+                    {
+                        AddDebugInputItem(new DebugItemStaticDataParams(OutputType, "Output In"));
+                    }
+                }
                 var colItr = new WarewolfListIterator();
 
                 var input1Itr = new WarewolfIterator(dataObject.Environment.EvalStrict(string.IsNullOrEmpty(Input1) ? GlobalConstants.CalcExpressionNow : Input1));
@@ -132,15 +160,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 var ifItr = new WarewolfIterator(dataObject.Environment.Eval(InputFormat ?? string.Empty));
                 colItr.AddVariableToIterateOn(ifItr);
-
-                if(dataObject.IsDebugMode())
-                {
-                    AddDebugInputItem(string.IsNullOrEmpty(Input1) ? GlobalConstants.CalcExpressionNow : Input1, "Input 1", dataObject.Environment);
-                    AddDebugInputItem(string.IsNullOrEmpty(Input2) ? GlobalConstants.CalcExpressionNow : Input2, "Input 2", dataObject.Environment);
-                    AddDebugInputItem(InputFormat, "Input Format", dataObject.Environment);
-                    AddDebugInputItem(new DebugItemStaticDataParams(OutputType, "Output In"));
-                }
-
                 int indexToUpsertTo = 1;
 
                 while(colItr.HasMoreData())
