@@ -21,12 +21,10 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data;
-using Dev2.Data.Factories;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Operations;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Dev2.Validation;
@@ -104,31 +102,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDev2ReplaceOperation replaceOperation = Dev2OperationsFactory.CreateReplaceOperation();
-            IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
-            toUpsert.IsDebug = dataObject.IsDebugMode();
             ErrorResultTO errors;
             ErrorResultTO allErrors = new ErrorResultTO();
-            Guid executionId = DataListExecutionID.Get(context);
-
-            IWarewolfListIterator iteratorCollection = new WarewolfListIterator();
-
-            var itrFind = new WarewolfIterator(dataObject.Environment.Eval(Find));
-            iteratorCollection.AddVariableToIterateOn(itrFind);
-
-            
-            var itrReplace = new WarewolfIterator(dataObject.Environment.Eval(ReplaceWith));
-            iteratorCollection.AddVariableToIterateOn(itrReplace);
-            
+           
             int replacementCount = 0;
             int replacementTotal = 0;
 
             InitializeDebug(dataObject);
             try
             {
-
                 IList<string> toSearch = FieldsToSearch.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
                 foreach(var s in toSearch)
@@ -136,8 +120,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if(dataObject.IsDebugMode())
                     {
                         AddDebugInputItem(new DebugEvalResult(s, "In Field(s)", dataObject.Environment));
+                        if (Find!=null)
+                        {
+                            AddDebugInputItem(new DebugEvalResult(Find, "Find", dataObject.Environment));
+                        }
+                        if (ReplaceWith!=null)
+                        {
+                            AddDebugInputItem(new DebugEvalResult(ReplaceWith, "Replace With", dataObject.Environment));
+                        }
                     }
                 }
+                IWarewolfListIterator iteratorCollection = new WarewolfListIterator();
+
+                var itrFind = new WarewolfIterator(dataObject.Environment.Eval(Find));
+                iteratorCollection.AddVariableToIterateOn(itrFind);
+
+
+                var itrReplace = new WarewolfIterator(dataObject.Environment.Eval(ReplaceWith));
+                iteratorCollection.AddVariableToIterateOn(itrReplace);
                 var rule = new IsSingleValueRule(() => Result);
                 var single = rule.Check();
                 if(single != null)
@@ -162,49 +162,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             if(!string.IsNullOrEmpty(findValue))
                             {
                                 dataObject.Environment.ApplyUpdate(s, a => DataASTMutable.WarewolfAtom.NewDataString(replaceOperation.Replace(a.ToString(), findValue, replaceWithValue, CaseMatch, out errors, ref replacementCount)));
-
-                            //    var warewolfEvalResult = dataObject.Environment.Eval(s.Trim());
-                            //    if (warewolfEvalResult.IsWarewolfAtomListresult)
-                            //    {
-                            //        var listResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
-                            //        if (listResult != null)
-                            //        {
-                            //            foreach(var warewolfAtom in listResult.Item)
-                            //            {
-                            //                var newString = replaceOperation.Replace(warewolfAtom.ToString(), findValue, replaceWithValue, CaseMatch, out errors, out replacementCount);
-                            //                dataObject.Environment.Assign(s, newString);
-                            //            }
-                            //        }
-                            //    }
-                            //    else if (warewolfEvalResult.IsWarewolfAtomResult)
-                            //    {
-                            //        var scalarResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
-                            //        if (scalarResult != null)
-                            //        {
-                            //            var newString = replaceOperation.Replace(scalarResult.Item.ToString(), findValue, replaceWithValue, CaseMatch, out errors, out replacementCount);
-                            //            dataObject.Environment.Assign(s, newString); 
-                            //        }
-                            //    }
-
                             }
 
                             replacementTotal += replacementCount;
-
+                            if (dataObject.IsDebugMode() && !allErrors.HasErrors())
+                            {
+                                if (!string.IsNullOrEmpty(Result))
+                                {
+                                    if (replacementCount > 0)
+                                    {
+                                        AddDebugOutputItem(new DebugEvalResult(s, "", dataObject.Environment));
+                                    }
+                                }
+                            }
                         }
                     }
-                }
-                if(dataObject.IsDebugMode())
-                {
-                    AddDebugInputItem(new DebugEvalResult(Find, "Find", dataObject.Environment));
-                    AddDebugInputItem(new DebugEvalResult(ReplaceWith, "Replace With",dataObject.Environment));
                 }
                 if (!string.IsNullOrEmpty(Result))
                 {
                     dataObject.Environment.Assign(Result, replacementTotal.ToString(CultureInfo.InvariantCulture));
                 }
 
-
-                // now push the result to the server
                 if (dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
                     if (!string.IsNullOrEmpty(Result))
@@ -212,6 +190,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
                     }
                 }
+                // now push the result to the server
+               
             }
             // ReSharper disable EmptyGeneralCatchClause
             catch(Exception ex)
@@ -228,8 +208,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
                     DisplayAndWriteError("DsfReplaceActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
-                    compiler.Upsert(executionId, Result, (string)null, out errors);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
+                    dataObject.Environment.Assign(Result, null);
                 }
 
                 if(dataObject.IsDebugMode())
