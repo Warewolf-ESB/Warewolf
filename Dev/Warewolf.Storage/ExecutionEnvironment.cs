@@ -325,14 +325,14 @@ namespace Warewolf.Storage
         {
             foreach(var warewolfAtom in recsetResult.Item)
             {
-                Assign(exp.Replace("*", ""), WarewolfAtomToString(warewolfAtom));
+                AssignWithFrame( new AssignValue(exp.Replace("*", ""), WarewolfAtomToString(warewolfAtom)));
             }
         }
 
         public void EvalAssignFromNestedNumeric(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult)
         {
             if( recsetResult.Item.Any())
-            Assign(exp, WarewolfAtomToString(recsetResult.Item.Last()));
+                AssignWithFrame(new AssignValue(exp, WarewolfAtomToString(recsetResult.Item.Last())));
         }
 
         public void EvalDelete(string exp)
