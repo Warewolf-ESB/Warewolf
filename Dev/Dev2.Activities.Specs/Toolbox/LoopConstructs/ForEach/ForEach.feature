@@ -14,11 +14,11 @@ Scenario: Execute a foreach over a tool using a recordset with 3 rows
 	When the foreach tool is executed
 	Then the foreach executes 3 times
 	And the execution has "NO" error
-#	And the debug inputs as
-#    |                | Recordset           |
-#    | * in Recordset | [[rs(1).field]] = 1 |
-#    |                | [[rs(2).field]] = 2 |
-#    |                | [[rs(3).field]] = 3 |  
+	And the debug inputs as
+    |                | Recordset           |
+    | * in Recordset | [[rs(1).field]] = 1 |
+    |                | [[rs(2).field]] = 2 |
+    |                | [[rs(3).field]] = 3 | 
 
 Scenario: Execute a foreach over a tool using a recordset with 4 rows
 	Given There is a recordset in the datalist with this shape
