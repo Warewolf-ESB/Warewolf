@@ -269,7 +269,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfForEachActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    foreach (var fetchError in allErrors.FetchErrors())
+                    {
+                        dataObject.Environment.AddError(fetchError);
+                    }
+                    
                     dataObject.ParentInstanceID = _previousParentId;
                 }
                 if(dataObject.IsDebugMode())
@@ -497,28 +501,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddDebugItem(new DebugItemStaticDataParams(ForEachType.GetDescription(), ""), debugItem);
                 if(ForEachType == enForEachType.NumOfExecution && !string.IsNullOrEmpty(NumOfExections))
                 {
-                    var numberofExecs = environment.GetEvaluationResultAsInt(NumOfExections);
 
-                    AddDebugItem(new DebugItemWarewolfAtomResult(NumOfExections, numberofExecs.ToString(CultureInfo.InvariantCulture), "Number of Executes"), debugItem);
+
+                    AddDebugItem(new DebugEvalResult(NumOfExections, "Number", environment), debugItem);
                 }
                 if(ForEachType == enForEachType.InCSV && !string.IsNullOrEmpty(CsvIndexes))
                 {
-                    var evalledCSV = Warewolf.Storage.ExecutionEnvironment.WarewolfEvalResultToString( environment.Eval(CsvIndexes));
-                    AddDebugItem(new DebugItemWarewolfAtomResult(NumOfExections, evalledCSV, "Number of Executes"), debugItem);
+                    AddDebugItem(new DebugEvalResult(NumOfExections, "Csv Indexes",environment), debugItem);
      
                 }
                 if(ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(From))
                 {
-                    var from = environment.GetEvaluationResultAsInt(From);
-
-                    AddDebugItem(new DebugItemWarewolfAtomResult(NumOfExections, from.ToString(CultureInfo.InvariantCulture), "Number of Executes"), debugItem);
+                    AddDebugItem(new DebugEvalResult(From, "From", environment), debugItem);
  
                 }
                 if(ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(To))
                 {
-                    var to = environment.GetEvaluationResultAsInt(To);
 
-                    AddDebugItem(new DebugItemWarewolfAtomResult(NumOfExections, to.ToString(CultureInfo.InvariantCulture), "Number of Executes"), debugItem);
+                    AddDebugItem(new DebugEvalResult(To, "To", environment), debugItem);
 
                 }
                 if(ForEachType == enForEachType.InRecordset && !string.IsNullOrEmpty(Recordset))
@@ -531,7 +531,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _debugInputs.Add(debugItem);
             }
 
-            var result = new ForEachBootstrapTO(ForEachType, From, To, CsvIndexes, NumOfExections, Recordset, dlId, environment, out errors);
+            var result = new ForEachBootstrapTO(ForEachType, From, To, CsvIndexes, NumOfExections, Recordset, environment, out errors);
 
             return result;
 
