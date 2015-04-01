@@ -293,7 +293,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, ResultRecordsetVariable);
             var column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, ResultRecordsetVariable);
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            var recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column, out error);
+            var recordSetValues = RetrieveAllRecordSetFieldValues(DataObject.Environment, recordset, column, out error);
             recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
             Assert.AreEqual(numOfIterations, recordSetValues.Count);
         }

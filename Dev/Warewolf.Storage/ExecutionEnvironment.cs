@@ -160,6 +160,14 @@ namespace Warewolf.Storage
                 }
                 return 0;
             }
+                // ReSharper disable once RedundantIfElseBlock
+            else if(result.IsWarewolfRecordSetResult)
+            {
+                var x = result as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult;
+                // ReSharper disable PossibleNullReferenceException
+                return  x.Item.Data[PublicFunctions.PositionColumn].Count;
+                // ReSharper restore PossibleNullReferenceException
+            }
             else
             {
                 // ReSharper disable PossibleNullReferenceException

@@ -523,9 +523,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 if(ForEachType == enForEachType.InRecordset && !string.IsNullOrEmpty(Recordset))
                 {
-                    //var to = environment.GetEvaluationResultAsInt(Recordset);
+                    var to = environment.Eval(Recordset);
 
-                    //AddDebugItem(new DebugItemWarewolfAtomResult(NumOfExections, to.ToString(CultureInfo.InvariantCulture), "Number of Executes"), debugItem);
+                    AddDebugItem(new DebugEvalResult(Recordset, "* in Recordset ", environment), debugItem);
 
                 }
                 _debugInputs.Add(debugItem);
