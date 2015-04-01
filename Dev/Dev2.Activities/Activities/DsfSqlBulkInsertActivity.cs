@@ -25,7 +25,6 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data;
 using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Runtime.Hosting;
@@ -108,13 +107,11 @@ namespace Dev2.Activities
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
             var dataObject = context.GetExtension<IDSFDataObject>();
-            var compiler = DataListFactory.CreateDataListCompiler();
             var toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder();
             toUpsert.IsDebug = dataObject.IsDebugMode();
             toUpsert.ResourceID = dataObject.ResourceID;
             var errorResultTo = new ErrorResultTO();
             var allErrors = new ErrorResultTO();
-            var executionId = DataListExecutionID.Get(context);
             DataTable dataTableToInsert = null;
             bool addExceptionToErrorList = true;
             InitializeDebug(dataObject);
@@ -139,8 +136,6 @@ namespace Dev2.Activities
                 }
                 if(sqlBulkCopy != null)
                 {
-                    // BuiltUsingSingleRecset was very poorly put together it assumes a 1-1 mapping between target and destination columns ?! ;(
-                    // And it forced a need for duplicate logic?!
                     dataTableToInsert = BuildDataTableToInsert();
 
                     if(InputMappings != null && InputMappings.Count > 0)
@@ -149,7 +144,6 @@ namespace Dev2.Activities
                         var listOfIterators = GetIteratorsFromInputMappings(dataObject, iteratorCollection, out errorResultTo);
                         allErrors.MergeErrors(errorResultTo);
 
-                        // oh no, we have an issue, bubble it out ;)
                         if(allErrors.HasErrors())
                         {
                             addExceptionToErrorList = false;
@@ -201,17 +195,12 @@ namespace Dev2.Activities
                 // Handle Errors
                 if(allErrors.HasErrors())
                 {
-                    if(toUpsert.IsDebug)
-                    {
-//                        foreach(var debugOutputTo in toUpsert.DebugOutputs)
-//                        {
-//                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
-//                        }
-                    }
+
 
                     DisplayAndWriteError("DsfSqlBulkInsertActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorsTo);
-                    compiler.Upsert(executionId, Result, (string)null, out errorResultTo);
+                    dataObject.Environment.Assign(Result,"");
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
                 }
                 if(toUpsert.IsDebug)
                 {
@@ -349,9 +338,6 @@ namespace Dev2.Activities
         {
             while(iteratorCollection.HasMoreData())
             {
-                // If the type is numeric blank cannot be added here - causes exception to be thrown even before its added to table ;)
-                // Instead build a list, then check it, then if all good add it ;)
-
                 var tmpData = new List<string>();
                 // ReSharper disable LoopCanBeConvertedToQuery
                 var values = listOfIterators.Select(iteratorCollection.FetchNextValue).Where(val => val != null).Select(val =>
@@ -371,11 +357,15 @@ namespace Dev2.Activities
                     tmpData.Add(value);
                 }
 
-                if(IgnoreBlankRows && tmpData.All(o => o == null || (String.IsNullOrEmpty(o))))
+                if(IgnoreBlankRows && tmpData.All(String.IsNullOrEmpty))
                 {
                     continue;
                 }
 
+                if (!IgnoreBlankRows && tmpData.All(String.IsNullOrEmpty))
+                {
+                    throw new Exception("Ignore Blank Rows not selected and blank data encountered.");
+                }
                 // now we can create the row and add data ;)
                 var dataRow = dataTableToInsert.NewRow();
                 for(int pos = 0; pos < tmpData.Count; pos++)
@@ -399,9 +389,16 @@ namespace Dev2.Activities
                     AddDebugInputItem(row.InputColumn, row.OutputColumn.ColumnName, dataObject.Environment, row.OutputColumn.DataTypeName, indexCounter);
                     indexCounter++;
                 }
-                var itr =new WarewolfIterator(dataObject.Environment.Eval(row.InputColumn));
-                iteratorCollection.AddVariableToIterateOn(itr);
-                listOfIterators.Add(itr);
+                try
+                {
+                    var itr =new WarewolfIterator(dataObject.Environment.Eval(row.InputColumn));
+                    iteratorCollection.AddVariableToIterateOn(itr);
+                    listOfIterators.Add(itr);
+                }
+                catch(Exception e)
+                {
+                    errorsResultTo.AddError(e.Message);
+                }
             }
             return listOfIterators;
         }
