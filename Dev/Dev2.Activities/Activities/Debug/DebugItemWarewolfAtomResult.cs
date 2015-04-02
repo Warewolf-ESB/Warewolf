@@ -21,6 +21,7 @@ namespace Dev2.Activities.Debug
             _value = value;
             _leftLabel = leftLabel;
             _type = DebugItemResultType.Value;
+            _operand = "";
         }
 
         public DebugItemWarewolfAtomResult(string value, string variable, string leftLabel)
@@ -29,6 +30,7 @@ namespace Dev2.Activities.Debug
             _leftLabel = leftLabel;
             _variable = variable;
             _type = DebugItemResultType.Variable;
+            _operand = "=";
         }
 
         public DebugItemWarewolfAtomResult(string value, string newValue, string variable, string assignFromVariable, string leftLabel, string rightLabel, string operand)
@@ -87,7 +89,7 @@ namespace Dev2.Activities.Debug
                     Value = _value,
                     Label = _leftLabel,
                     Variable = Variable,
-                    Operator = string.IsNullOrWhiteSpace(_operand) ? "" : "="
+                    Operator = _operand
                 };
                 debugItemsResults.Add(debugItem);
             }
@@ -98,7 +100,7 @@ namespace Dev2.Activities.Debug
                     Type = Type,
                     Value = _value,
                     Variable = Variable,
-                    Operator = string.IsNullOrWhiteSpace(_operand) ? "" : "="
+                    Operator = _operand
                 };
                 debugItemsResults.Add(debugItem);
             }

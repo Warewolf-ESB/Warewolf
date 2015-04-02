@@ -19,10 +19,10 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
+using Dev2.Data;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
@@ -62,16 +62,14 @@ namespace Dev2.Runtime.ESB.Execution
 
         public void PerformLogExecution(string logUri)
         {
-            var dataListCompiler = DataListFactory.CreateDataListCompiler();
-            ErrorResultTO errors;
-            var expressionsEntry = dataListCompiler.Evaluate(DataObject.DataListID, enActionType.User, logUri, false, out errors);
-            var itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
-            while (itr.HasMoreRecords())
+            
+            var expressionsEntry = DataObject.Environment.Eval(logUri);
+            var itr = new WarewolfIterator(expressionsEntry);
+            while (itr.HasMoreData())
             {
-                var cols = itr.FetchNextRowData();
-                foreach (var c in cols)
+                var val = itr.GetNextValue();
                 {
-                    var buildGetWebRequest = BuildSimpleGetWebRequest(c.TheValue);
+                    var buildGetWebRequest = BuildSimpleGetWebRequest(val);
                     if (buildGetWebRequest == null)
                     {
                         throw new Exception("Invalid Url to execute for logging");
