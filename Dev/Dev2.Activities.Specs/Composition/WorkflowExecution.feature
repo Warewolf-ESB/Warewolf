@@ -2532,145 +2532,6 @@ Examples:
 #      | 13 | [[rec([[[[b]]]]).a]]   |
 
 
-#   
-#Scenario Outline: Testing Date Time Diff with two variables in Result field
-#      Given I have a workflow "WorkflowforDateTimeDiff"
-#      And "WorkflowforDateTimeDiff" contains an Assign "Values" as
-#	  | variable    | value      |
-#	  | [[rec().a]] | 01/01/2001 |
-#	  | [[rec().a]] | 01/01/2010 |
-#	  And "WorkflowforDateTimeDiff" contains Date and Time Difference "DateAndTime" as	
-#	  | Input1       | Input2       | Input Format | Output In | Result               |
-#	  | [[rec(1).a]] | [[rec(2).a]] | dd/mm/yyyy   | Years     | '<Variable>' |	   
-#	  When "WorkflowforDateTimeDiff" is executed  	  
-#	  Then the workflow execution has "AN" error	
-#      And the 'Values' in WorkFlow 'WorkflowforDateTimeDiff' debug inputs as
-#	  | # | Variable      | New Value  |
-#	  | 1 | [[rec().a]] = | 01/01/2001 |
-#	  | 2 | [[rec().a]] = | 01/01/2010 |
-#	  And the 'Values' in Workflow 'WorkflowforDateTimeDiff' debug outputs as    
-#	  | # |                           |
-#	  | 1 | [[rec(1).a]] = 01/01/2001 |
-#	  | 2 | [[rec(2).a]] = 01/01/2010 |
-#	  And the 'DateAndTime' in WorkFlow 'WorkflowforDateTimeDiff' debug inputs as
-#	  | Input 1                   | Input 2                   | Input Format | Output In |
-#	  | [[rec(1).a]] = 01/01/2001 | [[rec(2).a]] = 01/01/2010 | dd/mm/yyyy   | Years     |
-#	  And the 'DateAndTime' in Workflow 'WorkflowforDateTimeDiff' debug outputs as 
-#	  |  |
-#Examples: 
-#      | No | Variable               |
-#      | 1  | [[a]][[Result]]        |
-#      | 2  | [[a]]*]]               |
-#      | 3  | [[var@]]               |
-#      | 4  | [[var]]00]]            |
-#      | 5  | [[(1var)]]             |
-#      | 6  | [[var[[a]]]]           |
-#      | 7  | [[var.a]]              |
-#      | 8  | [[@var]]               |
-#      | 9  | [[var 1]]              |
-#      | 10 | [[rec(1).[[rec().1]]]] |
-#      | 11 | [[rec(@).a]]           |
-#      | 12 | [[rec"()".a]]          |
-#      | 13 | [[rec([[[[b]]]]).a]]   |
-#
-#done
-Scenario: Workflow with Assign and Sort Forward to test gaps
-      Given I have a workflow "workflowithAssignandsortrec"
-      And "workflowithAssignandsortrec" contains an Assign "sortval" as
-	  | variable    | value |
-	  | [[rs(1).a]] | 30    |
-	  | [[rs(5).a]] | 20    |
-	  | [[rs(7).a]] | 10    |
-	  | [[rs(2).b]] | 6     |
-	  | [[rs(4).b]] | 4     |
-	  | [[rs(6).b]] | 2     |
-	  And "workflowithAssignandsortrec" contains an Sort "sortRec" as
-	  | Sort Field | Sort Order |
-	  | [[rs(*).a | Backwards    |
-	  When "workflowithAssignandsortrec" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'sortval' in WorkFlow 'workflowithAssignandsortrec' debug inputs as
-	  | # | Variable      | New Value |
-	  | 1 | [[rs(1).a]] = | 30        |
-	  | 2 | [[rs(5).a]] = | 20        |
-	  | 3 | [[rs(7).a]] = | 10        |
-	  | 4 | [[rs(2).b]] = | 6         |
-	  | 5 | [[rs(4).b]] = | 4         |
-	  | 6 | [[rs(6).b]] = | 2         |
-	  And the 'sortval' in Workflow 'workflowithAssignandsortrec' debug outputs as    
-	  | # |                  |
-	  | 1 | [[rs(1).a]] = 30 |
-	  | 2 | [[rs(5).a]] = 20 |
-	  | 3 | [[rs(7).a]] = 10 |
-	  | 4 | [[rs(2).b]] = 6  |
-	  | 5 | [[rs(4).b]] = 4  |
-	  | 6 | [[rs(6).b]] = 2  |
-	  And the 'sortRec' in WorkFlow 'workflowithAssignandsortrec' debug inputs as
-	  | Sort Field       | Sort Order |
-	  | [[rs(1).a]] = 30 |            |
-	  | [[rs(2).a]] =    |            |
-	  | [[rs(4).a]] =    |            |
-	  | [[rs(5).a]] = 20 |            |
-	  | [[rs(6).a]] =    |            |
-	  | [[rs(7).a]] = 10 | Forward    |
-	  And the 'sortRec' in Workflow 'workflowithAssignandsortrec' debug outputs as
-	  |                  |
-	  | [[rs(1).a]] =  |
-	  | [[rs(2).a]] =  |
-	  | [[rs(4).a]] =  |
-	  | [[rs(5).a]] = 10 |
-	  | [[rs(6).a]] = 20 |
-	  | [[rs(7).a]] = 30 |
-#done
-Scenario: Workflow with Assign and Sort Backward to test gaps
-      Given I have a workflow "workflowithAssignandsortrecBack"
-      And "workflowithAssignandsortrecBack" contains an Assign "sortval" as
-	  | variable    | value |
-	  | [[rs(1).a]] | 10    |
-	  | [[rs(5).a]] | 20    |
-	  | [[rs(7).a]] | 30    |
-	  | [[rs(2).b]] | 6     |
-	  | [[rs(4).b]] | 4     |
-	  | [[rs(6).b]] | 2     |
-	  And "workflowithAssignandsortrecBack" contains an Sort "sortRec" as
-	  | Sort Field | Sort Order |
-	  | [[rs(*).a]] | Backwards   |
-	  When "workflowithAssignandsortrecBack" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'sortval' in WorkFlow 'workflowithAssignandsortrecBack' debug inputs as
-	  | # | Variable      | New Value |
-	  | 1 | [[rs(1).a]] = | 10        |
-	  | 2 | [[rs(5).a]] = | 20        |
-	  | 3 | [[rs(7).a]] = | 30        |
-	  | 4 | [[rs(2).b]] = | 6         |
-	  | 5 | [[rs(4).b]] = | 4         |
-	  | 6 | [[rs(6).b]] = | 2         |
-	  And the 'sortval' in Workflow 'workflowithAssignandsortrecBack' debug outputs as    
-	  | # |                  |
-	  | 1 | [[rs(1).a]] = 10 |
-	  | 2 | [[rs(5).a]] = 20 |
-	  | 3 | [[rs(7).a]] = 30 |
-	  | 4 | [[rs(2).b]] = 6  |
-	  | 5 | [[rs(4).b]] = 4  |
-	  | 6 | [[rs(6).b]] = 2  |
-	  And the 'sortRec' in WorkFlow 'workflowithAssignandsortrecBack' debug inputs as
-	  | Sort Field       | Sort Order |
-	  | [[rs(1).a]] = 10 |            |
-	  | [[rs(2).a]] =    |            |
-	  | [[rs(4).a]] =    |            |
-	  | [[rs(5).a]] = 20 |            |
-	  | [[rs(6).a]] =    |            |
-	  | [[rs(7).a]] = 30 | Backwards    |
-	  And the 'sortRec' in Workflow 'workflowithAssignandsortrecBack' debug outputs as
-	  |                  |
-	  | [[rs(1).a]] = 30 |
-	  | [[rs(2).a]] = 20 |
-	  | [[rs(4).a]] = 10 |
-	  | [[rs(5).a]] =    |
-	  | [[rs(6).a]] =    |
-	  | [[rs(7).a]] =    |
-
-
 #Scenario: Workflow #FIXED ON 11782
 #Scenario: Workflow with Assign and Unique Tool, finding unique data from multiple rows 
 #      Given I have a workflow "workflowithAssignandUnique"
@@ -3503,7 +3364,7 @@ Scenario: Workflow with Assigns DataMerge and DataSplit and testing variables th
 	  | 1 | [[res]]          =  Test |
 	  And the 'Data Merge' in WorkFlow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues' debug inputs as 
 	  | # |             | With  | Using | Pad | Align |
-	  | 1 | "" =   | Index | "4"   | ""  | Left  |
+	  | 1 | [[Value]] =   | Index | "4"   | ""  | Left  |
 	  And the 'Data Merge' in Workflow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues' debug outputs as  
 	  |             |
 	  | [[result]] = |
@@ -3512,7 +3373,6 @@ Scenario: Workflow with Assigns DataMerge and DataSplit and testing variables th
 	  | [[Value12]]  =  | Forward           | No              | 1 | [[rec().b]] = | Index | 4     | No      |        |
 	  And the 'Data Split' in Workflow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues' debug outputs as  
 	  | # |               |
-	  | 1 | [[rec(1).b]] = |
 
 #Bug 18263
 #Scenario: Workflow with Assigns DataMerge and DataSplit and testing variables that hasn't been assigned2

@@ -105,13 +105,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var expression = Expression ?? string.Empty;
                 var roundingDecimalPlaces = RoundingDecimalPlaces ?? string.Empty;
                 var decimalPlacesToShow = DecimalPlacesToShow ?? string.Empty;
-                var colItr = new WarewolfListIterator();
-                var expressionIterator = CreateDataListEvaluateIterator(expression, dataObject.Environment);
-                var roundingDecimalPlacesIterator = CreateDataListEvaluateIterator(roundingDecimalPlaces, dataObject.Environment);
-                var decimalPlacesToShowIterator = CreateDataListEvaluateIterator(decimalPlacesToShow, dataObject.Environment);
-                colItr.AddVariableToIterateOn(expressionIterator);
-                colItr.AddVariableToIterateOn(roundingDecimalPlacesIterator);
-                colItr.AddVariableToIterateOn(decimalPlacesToShowIterator);
+               
                 if(dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(expression, "Number",  dataObject.Environment);
@@ -122,6 +116,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddDebugInputItem(roundingDecimalPlaces, "Rounding Value", dataObject.Environment);
                     AddDebugInputItem(decimalPlacesToShow, "Decimals to show", dataObject.Environment);
                 }
+                var colItr = new WarewolfListIterator();
+                var expressionIterator = CreateDataListEvaluateIterator(expression, dataObject.Environment);
+                var roundingDecimalPlacesIterator = CreateDataListEvaluateIterator(roundingDecimalPlaces, dataObject.Environment);
+                var decimalPlacesToShowIterator = CreateDataListEvaluateIterator(decimalPlacesToShow, dataObject.Environment);
+                colItr.AddVariableToIterateOn(expressionIterator);
+                colItr.AddVariableToIterateOn(roundingDecimalPlacesIterator);
+                colItr.AddVariableToIterateOn(decimalPlacesToShowIterator);
                 // Loop data ;)
                 var rule = new IsSingleValueRule(() => Result);
                 var single = rule.Check();
