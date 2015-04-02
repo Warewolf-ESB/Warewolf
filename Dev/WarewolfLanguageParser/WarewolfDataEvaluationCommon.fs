@@ -35,6 +35,7 @@ let EvalResultToString (a:WarewolfEvalResult) =
     match a with
     | WarewolfAtomResult x -> AtomtoString x
     | WarewolfAtomListresult x -> Seq.map WarewolfAtomRecordtoString x |> fun a->System.String.Join(",",a)
+    | WarewolfRecordSetResult x -> Map.toList x.Data |> List.map snd |> Seq.collect |> fun a->System.String.Join(",",a)
 
 let EvalResultToStringNoCommas (a:WarewolfEvalResult) = 
     match a with
