@@ -280,12 +280,17 @@ and  EvalToExpression  (env: WarewolfEnvironment) (lang:string) : string=
                         let temp = ParseLanguageExpression lang
                         temp
     match buffer with
-        | ComplexExpression  a -> List.map LanguageExpressionToString a|> List.map  (Eval env)  |> List.map EvalResultToString |> fun a-> System.String.Join("",a) |> (fun a ->EvalToExpression env a  )
+        | ComplexExpression  a -> if (List.exists isNotAtom a) 
+                                  then List.map LanguageExpressionToString a|> List.map  (Eval env)  |> List.map EvalResultToString |> fun a-> System.String.Join("",a) |> (fun a ->EvalToExpression env a  )
+                                  else lang
         | RecordSetExpression a -> match a.Index with 
                                     | IndexExpression exp -> sprintf "[[%s(%s).%s]]" a.Name (Eval  env  (LanguageExpressionToString exp)|> EvalResultToString) a.Column  
                                     | _->lang
         | _ -> lang
-
+and isNotAtom (a:LanguageExpression) =
+    match a with
+    | WarewolfAtomAtomExpression x -> false
+    |_ -> true
 and  EvalWithPositions  (env: WarewolfEnvironment) (lang:string) : WarewolfEvalResult=
     let EvalComplex (exp:LanguageExpression list) = 
         if((List.length exp) =1) then
