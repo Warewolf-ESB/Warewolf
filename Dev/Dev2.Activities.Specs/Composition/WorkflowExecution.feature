@@ -4266,8 +4266,6 @@ Scenario: Executing Recordset - Count Records example workflow
 	  Then the workflow execution has "NO" error
 	  And the 'Count Records' in WorkFlow 'Recordset - Count Records' debug inputs as
 	  | Recordset                  |
-	  | [[rec(1).set]] = Warewolf  |
-	  | [[rec(2).set]] = SOA       |
 	  | [[rec(3).set]] = Recordset |
 	  And the 'Count Records' in Workflow 'Recordset - Count Records' debug outputs as  
 	  |               |
@@ -4300,13 +4298,13 @@ Scenario: Executing Recordset - Delete Records example workflow
 	  When "Recordset - Delete Records Test" is executed
 	  Then the workflow execution has "NO" error
 	  And the 'Delete Record1' in WorkFlow 'Recordset - Delete Records' debug inputs as
-	  | Records            |
+	  | Recordset          |
 	  | [[rec(2).set]] = 2 |
 	  And the 'Delete Record1' in Workflow 'Recordset - Delete Records' debug outputs as  
 	  |                      |
 	  | [[result]] = Success |
 	  And the 'Delete Record2' in WorkFlow 'Recordset - Delete Records' debug inputs as
-	  | Records            |
+	  | Recordset          |
 	  | [[rec(1).set]] = 1 |
 	  | [[rec(3).set]] = 3 |
 	  And the 'Delete Record2' in Workflow 'Recordset - Delete Records' debug outputs as  

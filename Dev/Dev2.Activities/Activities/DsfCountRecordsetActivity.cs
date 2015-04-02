@@ -117,7 +117,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
                             var value = count.ToString();
                             dataObject.Environment.Assign(CountNumber, value);
-                            AddDebugOutputItem(new DebugItemWarewolfAtomResult(value,CountNumber,""));
+                            AddDebugOutputItem(new DebugEvalResult(CountNumber,"",dataObject.Environment));
                         }
                     }
                     catch(Exception e)
