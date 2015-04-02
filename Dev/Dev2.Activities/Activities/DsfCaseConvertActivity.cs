@@ -99,9 +99,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
 
                     env.ApplyUpdate(item.StringToConvert, TryConvertFunc(item.ConvertType,env));
-                    string errorMessage;
-                    if (ExecutionEnvironment.IsValidVariableExpression(item.StringToConvert, out errorMessage))
-                    {
+
                         IsSingleValueRule.ApplyIsSingleValueRule(item.ExpressionToConvert, allErrors);
                         if (dataObject.IsDebugMode())
                         {
@@ -114,7 +112,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
 
                    
-                }
+                
 
             }
             catch (Exception e)

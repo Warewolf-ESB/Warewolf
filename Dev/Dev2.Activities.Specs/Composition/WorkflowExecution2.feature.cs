@@ -2734,7 +2734,7 @@ this.FeatureBackground();
                         "To"});
             table157.AddRow(new string[] {
                         "1",
-                        "[[[[a]]]] = 12",
+                        "[[b]] = 12",
                         "Text",
                         "Base 64"});
 #line 896
@@ -2921,7 +2921,7 @@ this.FeatureBackground();
                         "To"});
             table169.AddRow(new string[] {
                         "1",
-                        "[[[[a]]]] = warewolf",
+                        "[[b]] = warewolf",
                         "UPPER"});
 #line 950
   testRunner.And("the \'CaseConvert\' in WorkFlow \'WorkflowWithAssignandcCse\' debug inputs as", ((string)(null)), table169, "And ");
@@ -3012,7 +3012,7 @@ this.FeatureBackground();
                         "To"});
             table175.AddRow(new string[] {
                         "1",
-                        "[[[[rs(1).a]]]] = warewolf",
+                        "[[rec(1).a]] = warewolf",
                         "UPPER"});
 #line 976
   testRunner.And("the \'CaseConvert\' in WorkFlow \'WorkflowWithAssignandcCase\' debug inputs as", ((string)(null)), table175, "And ");

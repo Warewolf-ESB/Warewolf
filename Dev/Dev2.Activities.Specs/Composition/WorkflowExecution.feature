@@ -895,7 +895,7 @@ Scenario: Simple workflow with Assign and Base Convert(Evaluating scalar variabl
 	  | 2 | [[b]] = 12 |
 	   And the 'Base' in WorkFlow 'WorkflowWithAssignandBase' debug inputs as
 	  | # | Convert        | From | To      |
-	  | 1 | [[[[a]]]] = 12 | Text | Base 64 |
+	  | 1 | [[b]] = 12 | Text | Base 64 |
       And the 'Base' in Workflow 'WorkflowWithAssignandBase' debug outputs as  
 	  | # |              |
 	  | 1 | [[b]] = MTI= |
@@ -949,7 +949,7 @@ Scenario: Simple workflow with Assign and Case Convert(Evaluating scalar variabl
 	  | 2 | [[b]] = warewolf |
 	 And the 'CaseConvert' in WorkFlow 'WorkflowWithAssignandcCse' debug inputs as
 	  | # | Convert              | To    |
-	  | 1 | [[[[a]]]] = warewolf | UPPER |
+	  | 1 | [[b]] = warewolf | UPPER |
 	  And the 'CaseConvert' in Workflow 'WorkflowWithAssignandcCse' debug outputs as  
 	  | # |                  |
 	  | 1 | [[b]] = WAREWOLF |
@@ -975,7 +975,7 @@ Scenario: Simple workflow with Assign and Case Convert(Evaluating Recordset vari
 	  | 2 | [[rec(1).a]] = warewolf |
 	 And the 'CaseConvert' in WorkFlow 'WorkflowWithAssignandcCase' debug inputs as
 	  | # | Convert                    | To    |
-	  | 1 | [[[[rs(1).a]]]] = warewolf | UPPER |
+	  | 1 | [[rec(1).a]] = warewolf | UPPER |
 	  And the 'CaseConvert' in Workflow 'WorkflowWithAssignandcCase' debug outputs as  
 	  | # |                         |
 	  | 1 | [[rec(1).a]] = WAREWOLF |
