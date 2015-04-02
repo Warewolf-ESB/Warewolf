@@ -978,25 +978,28 @@ namespace Dev2.Data.Util
             {
                
                 var outPutRecSet = inputs.FirstOrDefault(definition => definition.IsRecordSet && ExtractRecordsetNameFromValue(definition.MapsTo) == recordSetDefinition.SetName);
-                if(outPutRecSet != null)
+                if (outPutRecSet != null)
                 {
                     foreach (var dev2ColumnDefinition in recordSetDefinition.Columns)
                     {
-                        var warewolfEvalResult = outerEnvironment.Eval(dev2ColumnDefinition.RawValue);
-                        var inputRecSet = inputs.FirstOrDefault(definition => definition.MapsTo == dev2ColumnDefinition.Value);
-                        if (inputRecSet != null && inputRecSet.IsRecordSet)
+                        if (dev2ColumnDefinition.IsRecordSet)
                         {
-                            var defn = "[[" + inputRecSet.RecordSetName + "()." + inputRecSet.Name + "]]";
+                            var defn = "[[" + dev2ColumnDefinition.RecordSetName + "()." + dev2ColumnDefinition.Name + "]]";
                             env.AssignDataShape(defn);
+                            var warewolfEvalResult = outerEnvironment.Eval(dev2ColumnDefinition.RawValue);
+
+
+
+
                             if (warewolfEvalResult.IsWarewolfAtomListresult)
                             {
                                 var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
 
-                                GetRecordsetIndexType(inputRecSet.Value);
+                                GetRecordsetIndexType(dev2ColumnDefinition.Value);
 
                                 if (recsetResult != null)
                                 {
-                                    var correctRecSet = "[[" + inputRecSet.RecordSetName + "()." + inputRecSet.Name + "]]";
+                                    var correctRecSet = "[[" + dev2ColumnDefinition.RecordSetName + "()." + dev2ColumnDefinition.Name + "]]";
 
                                     env.EvalAssignFromNestedStar(correctRecSet, recsetResult);
                                 }
@@ -1007,14 +1010,14 @@ namespace Dev2.Data.Util
                             if (warewolfEvalResult.IsWarewolfAtomResult)
                             {
                                 var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
-                     
-                                if (inputRecSet.IsRecordSet)
+
+                                if (dev2ColumnDefinition.IsRecordSet)
                                 {
-                                    var enRecordsetIndexType = GetRecordsetIndexType(inputRecSet.Value);
+                                    var enRecordsetIndexType = GetRecordsetIndexType(dev2ColumnDefinition.Value);
 
                                     if (recsetResult != null)
                                     {
-                                        var correctRecSet = "[[" + inputRecSet.RecordSetName + "(*)." + inputRecSet.Name + "]]";
+                                        var correctRecSet = "[[" + dev2ColumnDefinition.RecordSetName + "(*)." + dev2ColumnDefinition.Name + "]]";
 
                                         env.AssignWithFrame(new AssignValue(correctRecSet, PublicFunctions.AtomtoString(recsetResult.Item)));
                                     }
