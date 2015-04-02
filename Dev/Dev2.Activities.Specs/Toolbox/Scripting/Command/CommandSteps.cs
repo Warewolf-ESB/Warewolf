@@ -93,7 +93,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
                                        out actualValue, out error);
             if(string.IsNullOrEmpty(expectedResult))
             {
-                Assert.IsNull(actualValue);
+                Assert.IsTrue(string.IsNullOrEmpty(actualValue));
             }
             else
             {

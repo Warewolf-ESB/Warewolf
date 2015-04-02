@@ -23,10 +23,7 @@ using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data;
-using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 using Dev2.Runtime.Execution;
 using Dev2.Util;
@@ -104,12 +101,8 @@ namespace Dev2.Activities
             _debugOutputs = new List<DebugItem>();
             _nativeActivityContext = context;
             var dataObject = _nativeActivityContext.GetExtension<IDSFDataObject>();
-            var compiler = DataListFactory.CreateDataListCompiler();
 
-            var dlId = dataObject.DataListID;
             var allErrors = new ErrorResultTO();
-            ErrorResultTO errors;
-
 
             var exeToken = _nativeActivityContext.GetExtension<IExecutionToken>();
             InitializeDebug(dataObject);
@@ -120,8 +113,6 @@ namespace Dev2.Activities
                     AddDebugInputItem(new DebugEvalResult(CommandFileName, "Command", dataObject.Environment));
                 }
                 var itr = new WarewolfIterator(dataObject.Environment.Eval(CommandFileName));
-                IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-                toUpsert.IsDebug = dataObject.IsDebugMode();
                 if(!allErrors.HasErrors())
                 {
                     while(itr.HasMoreData())
@@ -172,9 +163,10 @@ namespace Dev2.Activities
                 if(hasErrors)
                 {
                     DisplayAndWriteError("DsfExecuteCommandLineActivity", allErrors);
-                    compiler.UpsertSystemTag(dlId, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                     if(dataObject.Environment != null)
                     {
+                        var errorString = allErrors.MakeDisplayReady();
+                        dataObject.Environment.AddError(errorString);
                         dataObject.Environment.Assign(CommandResult, null);
                     }
                 }
