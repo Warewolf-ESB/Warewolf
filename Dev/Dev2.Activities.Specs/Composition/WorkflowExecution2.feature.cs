@@ -3244,7 +3244,7 @@ this.FeatureBackground();
                         "Characters",
                         "Direction"});
             table187.AddRow(new string[] {
-                        "[[[[a]]]] = test",
+                        "[[b]] = test",
                         "First Occurence",
                         "s",
                         "Left to Right"});
@@ -3340,7 +3340,7 @@ this.FeatureBackground();
                         "Characters",
                         "Direction"});
             table193.AddRow(new string[] {
-                        "[[[[rec(1).a]]]] = test",
+                        "[[new(1).a]] = test",
                         "First Occurence",
                         "s",
                         "Left to Right"});
@@ -3433,7 +3433,7 @@ this.FeatureBackground();
                         "Find",
                         "Replace With"});
             table199.AddRow(new string[] {
-                        "[[[[a]]]] = test",
+                        "[[b]] = test",
                         "s",
                         "REPLACE"});
 #line 1090
@@ -3527,7 +3527,7 @@ this.FeatureBackground();
                         "Find",
                         "Replace With"});
             table205.AddRow(new string[] {
-                        "[[[[rec(1).a]]]] = test",
+                        "[[new(1).a]] = test",
                         "s",
                         "REPLACE"});
 #line 1118
@@ -3625,7 +3625,7 @@ this.FeatureBackground();
                         "Rounding Value",
                         "Decimals to show"});
             table211.AddRow(new string[] {
-                        "[[[[a]]]] = 12.3412",
+                        "[[b]] = 12.3412",
                         "Up",
                         "3",
                         "3"});
@@ -3722,7 +3722,7 @@ this.FeatureBackground();
                         "Rounding Value",
                         "Decimals to show"});
             table217.AddRow(new string[] {
-                        "[[[[rec(1).a]]]] = 12.3412",
+                        "[[new(1).a]] = 12.3412",
                         "Up",
                         "3",
                         "3"});
@@ -3837,8 +3837,8 @@ this.FeatureBackground();
                         "To"});
             table223.AddRow(new string[] {
                         "Numbers",
-                        "[[[[a]]]] = 10",
-                        "[[[[rec(1).a]]]] = 20"});
+                        "[[b]] = 10",
+                        "[[new(1).a]] = 20"});
 #line 1208
    testRunner.And("the \'Rand\' in WorkFlow \'WorkflowWithAssignandRandom\' debug inputs as", ((string)(null)), table223, "And ");
 #line hidden
@@ -3955,8 +3955,8 @@ this.FeatureBackground();
                         "",
                         "Output Format"});
             table229.AddRow(new string[] {
-                        "[[[[a]]]] = 01/02/2014",
-                        "[[[[rec(1).a]]]] = dd/mm/yyyy",
+                        "[[b]] = 01/02/2014",
+                        "[[new(1).a]] = dd/mm/yyyy",
                         "Years",
                         "1",
                         "dd/mm/yyyy"});
@@ -4076,8 +4076,8 @@ this.FeatureBackground();
                         "Input Format",
                         "Output In"});
             table235.AddRow(new string[] {
-                        "[[[[rec(1).a]]]] = 01/02/2014",
-                        "[[[[a]]]] = 01/02/2016",
+                        "[[new(1).a]] = 01/02/2014",
+                        "[[b]] = 01/02/2016",
                         "dd/mm/yyyy",
                         "Years"});
 #line 1275
@@ -4171,7 +4171,7 @@ this.FeatureBackground();
                         "Find",
                         "Replace With"});
             table241.AddRow(new string[] {
-                        "[[[[a]]]] = test",
+                        "[[b]] = test",
                         "s",
                         "REPLACE"});
 #line 1301
@@ -4269,7 +4269,7 @@ this.FeatureBackground();
                         "Rounding Value",
                         "Decimals to show"});
             table247.AddRow(new string[] {
-                        "[[[[a]]]] = 12.3412",
+                        "[[b]] = 12.3412",
                         "Up",
                         "3",
                         "3"});

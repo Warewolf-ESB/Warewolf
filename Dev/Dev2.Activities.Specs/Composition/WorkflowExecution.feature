@@ -1036,7 +1036,7 @@ Scenario: Simple workflow with Assign and Find Index(Evaluating scalar variable 
 	  | 2 | [[b]] = test |
 	   And the 'Indexchar' in WorkFlow 'WorkflowWithAssignandFindIndex' debug inputs as 	
 	  | In Field         | Index           | Characters | Direction     |
-	  | [[[[a]]]] = test | First Occurence | s          | Left to Right |
+	  | [[b]] = test | First Occurence | s          | Left to Right |
 	  And the 'Indexchar' in Workflow 'WorkflowWithAssignandFindIndex' debug outputs as 
 	  |                     |
 	  | [[indexResult]] = 3 |
@@ -1063,7 +1063,7 @@ Scenario: Simple workflow with Assign and Find Index(Evaluating recordset variab
 	  | 2 | [[new(1).a]] = test    |
 	   And the 'Index char' in WorkFlow 'WorkflowWithAssignandFindIndex1' debug inputs as 	
 	  | In Field               | Index           | Characters | Direction     |
-	  | [[[[rec(1).a]]]] = test | First Occurence | s          | Left to Right |
+	  | [[new(1).a]] = test | First Occurence | s          | Left to Right |
 	  And the 'Index char' in Workflow 'WorkflowWithAssignandFindIndex1' debug outputs as 
 	  |                     |
 	  | [[indexResult]] = 3 |
@@ -1089,7 +1089,7 @@ Scenario: Simple workflow with Assign and Replace(Evaluating scalar variable ins
 	  | 2 | [[b]] = test |
 	  And the 'Replac' in WorkFlow 'WorkflowWithAssignandReplace' debug inputs as 	
 	 | In Field(s)         | Find | Replace With |
-	 | [[[[a]]]] = test | s    | REPLACE      |
+	 | [[b]] = test | s    | REPLACE      |
 	    And the 'Replac' in Workflow 'WorkflowWithAssignandReplace' debug outputs as 
 	  |                       |
 	  | [[b]] = teREPLACEt    |
@@ -1117,7 +1117,7 @@ Scenario: Simple workflow with Assign and Replace(Evaluating Recordset variable 
 	  | 2 | [[new(1).a]] = test    |
 	  And the 'Rep' in WorkFlow 'WorkflowWithAssignandReplacebyrec' debug inputs as 	
 	  | In Field(s)             | Find | Replace With |
-	  | [[[[rec(1).a]]]] = test | s    | REPLACE      |
+	  | [[new(1).a]] = test | s    | REPLACE      |
 	    And the 'Rep' in Workflow 'WorkflowWithAssignandReplacebyrec' debug outputs as 
 	  |                           |
 	  | [[new(1).a]] = teREPLACEt |
@@ -1146,7 +1146,7 @@ Scenario: Simple workflow with Assign and Format Numbers(Evaluating scalar varia
 	  | 2 | [[b]] = 12.3412 |
 	  And the 'Fnumber' in WorkFlow 'WorkflowWithAssignandFormat' debug inputs as 	
 	  | Number              | Rounding | Rounding Value | Decimals to show |
-	  | [[[[a]]]] = 12.3412 | Up       | 3              | 3                |
+	  | [[b]] = 12.3412 | Up       | 3              | 3                |
 	  And the 'Fnumber' in Workflow 'WorkflowWithAssignandFormat' debug outputs as 
 	  |                      |
 	  | [[fresult]] = 12.342 |
@@ -1173,7 +1173,7 @@ Scenario: Simple workflow with Assign and Format Numbers(Evaluating Recordset va
 	  | 2 | [[new(1).a]] = 12.3412 |
 	  And the 'Fnumb' in WorkFlow 'WorkflowWithAssignandFormatn' debug inputs as 	
 	  | Number                    | Rounding | Rounding Value | Decimals to show |
-	  | [[[[rec(1).a]]]] = 12.3412 | Up       | 3              | 3                |
+	  | [[new(1).a]] = 12.3412 | Up       | 3              | 3                |
 	  And the 'Fnumb' in Workflow 'WorkflowWithAssignandFormatn' debug outputs as 
 	  |                      |
 	  | [[fresult]] = 12.342 |
@@ -1207,7 +1207,7 @@ Scenario: Simple workflow with Assign and Random(Evaluating recordset variable i
 	  | 4 | [[new(1).a]] = 20      |
 	  And the 'Rand' in WorkFlow 'WorkflowWithAssignandRandom' debug inputs as 
 	  | Random  | From           | To                   |
-	  | Numbers | [[[[a]]]] = 10 | [[[[rec(1).a]]]] = 20 |
+	  | Numbers | [[b]] = 10 | [[new(1).a]] = 20 |
 	  And the 'Rand' in Workflow 'WorkflowWithAssignandRandom' debug outputs as
 	  |                       |
 	  | [[ranresult]] = Int32 |
@@ -1240,7 +1240,7 @@ Scenario: Simple workflow with Assign and Date and Time(Evaluating recordset var
 	   | 4 | [[new(1).a]] =  dd/mm/yyyy |
 	   And the 'AddDate' in WorkFlow 'WorkflowWithAssignandDateTimetool' debug inputs as
 	   | Input                  | Input Format                  | Add Time |   | Output Format |
-	   | [[[[a]]]] = 01/02/2014 | [[[[rec(1).a]]]] = dd/mm/yyyy | Years    | 1 | dd/mm/yyyy    |	
+	   | [[b]] = 01/02/2014 | [[new(1).a]] = dd/mm/yyyy | Years    | 1 | dd/mm/yyyy    |	
 	   And the 'AddDate' in Workflow 'WorkflowWithAssignandDateTimetool' debug outputs as   
 	   |                      |
 	   | [[res]] = 01/02/2015 |
@@ -1274,7 +1274,7 @@ Scenario: Simple workflow with Assign and DateTimeDiff(Evaluating recordset vari
 	   | 4 | [[new(1).a]] = 01/02/2014 |
 	   And the 'DateTimedif' in WorkFlow 'WorkflowWithAssignandDateTimeDiff' debug inputs as
 	   | Input 1                       | Input 2                | Input Format | Output In |
-	   | [[[[rec(1).a]]]] = 01/02/2014 | [[[[a]]]] = 01/02/2016 | dd/mm/yyyy   | Years     |
+	   | [[new(1).a]] = 01/02/2014 | [[b]] = 01/02/2016 | dd/mm/yyyy   | Years     |
 	   And the 'DateTimedif' in Workflow 'WorkflowWithAssignandDateTimeDiff' debug outputs as   
 	   |                |
 	   | [[result]] = 2 |
@@ -1300,7 +1300,7 @@ Scenario: Simple workflow with Assign and Replace(Evaluating variable inside a v
 	  | 2 | [[b]] = test |
 	  And the 'Replac' in WorkFlow 'WorkflowWithAssignReplace' debug inputs as 	
 	 | In Field(s)      | Find | Replace With |
-	 | [[[[a]]]] = test | s    | REPLACE      |
+	 | [[b]] = test | s    | REPLACE      |
 	    And the 'Replac' in Workflow 'WorkflowWithAssignReplace' debug outputs as 
 	  |                       |
 	  | [[b]] = teREPLACEt    |
@@ -1327,7 +1327,7 @@ Scenario: Simple workflow with Assign and Format Numbers(Evaluating variable ins
 	  | 2 | [[b]] = 12.3412 |
 	  And the 'Fnumber1' in WorkFlow 'WorkflowAssignandFormat' debug inputs as 	
 	  | Number              | Rounding | Rounding Value | Decimals to show |
-	  | [[[[a]]]] = 12.3412 | Up       | 3              | 3                |
+	  | [[b]] = 12.3412 | Up       | 3              | 3                |
 	  And the 'Fnumber1' in Workflow 'WorkflowAssignandFormat' debug outputs as 
 	  |                      |
 	  | [[fresult]] = 12.342 |
