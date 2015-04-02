@@ -1730,16 +1730,10 @@ Scenario: Executing ForEach in Rec with star which contains Sequence
 	  | 3 | [[rec(2).a]] =  Test     |
 	  | 4 | [[rec(2).b]] =  Warewolf |
 	  And the 'ForEachTest1' in WorkFlow 'WorkFWithForEachwithRecContainingSequence' debug inputs as 
-	  |                | Recordset               |
-	  | * in Recordset |                         |
-	  |                | [[rec(1).a]] = 123      |
-	  |                | [[rec(1).b]] = 456      |
-	  |                | [[rec(1).c]] =          |
-	  |                | [[rec(1).d]] =          |
-	  |                | [[rec(2).a]] = Test     |
-	  |                | [[rec(2).b]] = Warewolf |
-	  |                | [[rec(2).c]] =          |
-	  |                | [[rec(2).d]]  =         |
+	  |                | Recordset      |
+	  | * in Recordset |                |
+	  |                | [[rec(1)]] = |
+	  |                | [[rec(2)]] = |
       And the 'ForEachTest1' in WorkFlow 'WorkFWithForEachwithRecContainingSequence' has  "2" nested children
 	  And the 'Data Merge' in "Seq1" in step 1 for 'ForEachTest1' debug inputs as
 	  | # |                    | With | Using | Pad | Align |
