@@ -627,6 +627,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                         }
                     }
 
+                    
                     list.Add(debugItemResult);
                 }
             }

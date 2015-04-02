@@ -99,10 +99,8 @@ namespace Dev2.Activities
             _debugOutputs = new List<DebugItem>();
 
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            Guid executionId = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors;
+        
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
             toUpsert.IsDebug = (dataObject.IsDebugMode());
             toUpsert.ResourceID = dataObject.ResourceID;
@@ -143,14 +141,16 @@ namespace Dev2.Activities
                             }
                         }
                     }
-                    catch(Exception)
+                    catch(Exception err)
                     {
                         dataObject.Environment.Assign(item.Result, null);
+                        allErrors.AddError(err.Message);
                     }
                 }
 
-                compiler.Upsert(executionId, toUpsert, out errors);
-                allErrors.MergeErrors(errors);
+
+               
+              
 
                 if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
@@ -158,7 +158,7 @@ namespace Dev2.Activities
                     foreach (GatherSystemInformationTO item in SystemInformationCollection)
                     {
                         var itemToAdd = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
+                        AddDebugItem(new DebugItemStaticDataParams("","", ""), itemToAdd);
                         AddDebugItem(new DebugEvalResult(item.Result,"",dataObject.Environment), itemToAdd);
                         _debugOutputs.Add(itemToAdd);
                         innerCount++;
@@ -177,7 +177,10 @@ namespace Dev2.Activities
                 if(hasErrors)
                 {
                     DisplayAndWriteError("DsfExecuteCommandLineActivity", allErrors);
-                    compiler.UpsertSystemTag(executionId, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    foreach(var error in allErrors.FetchErrors())
+                    {
+                        dataObject.Environment.AddError(error);
+                    }
                 }
                 if(dataObject.IsDebugMode())
                 {

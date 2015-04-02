@@ -119,8 +119,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     // Handle Errors
                     if(allErrors.HasErrors())
                     {
-                        DisplayAndWriteError("DsfFileActivity", allErrors);
-                        compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                        foreach (var err in allErrors.FetchErrors())
+                        {
+
+
+                            dataObject.Environment.Errors.Add(err);
+                        }
                     }
 
                     if(dataObject.IsDebugMode())
