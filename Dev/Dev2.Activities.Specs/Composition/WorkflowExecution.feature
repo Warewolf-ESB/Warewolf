@@ -436,7 +436,7 @@ Scenario: Workflow with Assigns and DataSplit executing against the server
 	  | 1 | [[test]] =  warewolf |
 	  And the 'DataSpliting' in WorkFlow 'WorkflowWithAssignandDataSplittools' debug inputs as 
 	  | String to Split            | Process Direction | Skip blank rows | # |                | With  | Using         | Include | Escape |
-	  | [[[[rs(1).a]]]] = warewolf | Forward           | No              | 1 | [[rec(1).a]] = | Index | [[[[a]]]] = 2 | No      |        |
+	  | [[test]] = warewolf | Forward           | No              | 1 | [[rec(1).a]] = | Index | [[[[a]]]] = 2 | No      |        |
 	  And the 'DataSpliting' in Workflow 'WorkflowWithAssignandDataSplittools' debug outputs as  
 	  | # |                   |
 	  | 1 | [[rec(1).a]] = lf |
@@ -4773,8 +4773,8 @@ Scenario: Workflow by using For Each with workflow in it
        | 2 | [[rec(2).a]] = 2 |
        And the 'FEach' in WorkFlow 'WFWithForEachInrecordsetTesting' debug inputs as 
          |                | Recordset         |
-         | * in Recordset | [[rec(1).a]] = 1  |
-         |                | [[rec(2).a]] = 2  |
+         | * in Recordset | [[rec(1)]] =   |
+         |                | [[rec(2)]] =   |
        And the 'FEach' in WorkFlow 'WFWithForEachInrecordsetTesting' has  "2" nested children 
        And the 'Random' in step 1 for 'SavedWFwithRandom Test' debug inputs as
             | Random  | From             | To |
@@ -4811,8 +4811,8 @@ Scenario: Workflow by using For Each with workflow
          | 2 | [[rec(2).a]] = 2 |
          And the 'ForEachTest123' in WorkFlow 'WorkFlowWithForEachInRecordsetUtilityRandomTesting' debug inputs as 
            |                | Recordset      |
-           | * in Recordset | [[rec(1).a]] = |
-           |                | [[rec(2).a]] = |
+           | * in Recordset | [[rec(1)]] = |
+           |                | [[rec(2)]] = |
          And the 'ForEachTest123' in WorkFlow 'WorkFlowWithForEachInRecordsetUtilityRandomTesting' has  "4" nested children 
 	     And the 'Random1' in "Utility - Random" in step 1 for 'ForEachTest123' debug inputs as
          | Random  | From | To |

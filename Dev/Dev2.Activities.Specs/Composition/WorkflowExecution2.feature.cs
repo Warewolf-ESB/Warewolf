@@ -1334,7 +1334,7 @@ this.FeatureBackground();
                         "Include",
                         "Escape"});
             table75.AddRow(new string[] {
-                        "[[[[rs(1).a]]]] = warewolf",
+                        "[[test]] = warewolf",
                         "Forward",
                         "No",
                         "1",
@@ -11584,10 +11584,10 @@ this.FeatureBackground();
                         "Recordset"});
             table656.AddRow(new string[] {
                         "* in Recordset",
-                        "[[rec(1).a]] = 1"});
+                        "[[rec(1)]] ="});
             table656.AddRow(new string[] {
                         "",
-                        "[[rec(2).a]] = 2"});
+                        "[[rec(2)]] ="});
 #line 4774
        testRunner.And("the \'FEach\' in WorkFlow \'WFWithForEachInrecordsetTesting\' debug inputs as", ((string)(null)), table656, "And ");
 #line 4778
@@ -11710,10 +11710,10 @@ this.FeatureBackground();
                         "Recordset"});
             table665.AddRow(new string[] {
                         "* in Recordset",
-                        "[[rec(1).a]] ="});
+                        "[[rec(1)]] ="});
             table665.AddRow(new string[] {
                         "",
-                        "[[rec(2).a]] ="});
+                        "[[rec(2)]] ="});
 #line 4812
          testRunner.And("the \'ForEachTest123\' in WorkFlow \'WorkFlowWithForEachInRecordsetUtilityRandomTest" +
                     "ing\' debug inputs as", ((string)(null)), table665, "And ");
