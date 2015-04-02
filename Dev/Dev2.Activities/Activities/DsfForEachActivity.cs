@@ -525,7 +525,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     var to = environment.Eval(Recordset);
 
-                    AddDebugItem(new DebugEvalResult(Recordset, "* in Recordset ", environment), debugItem);
+                    AddDebugItem(new DebugEvalResult(ExecutionEnvironment.GetPositionColumnExpression(Recordset), "Recordset ", environment), debugItem);
 
                 }
                 _debugInputs.Add(debugItem);

@@ -484,5 +484,21 @@ namespace Warewolf.Storage
         {
             return WarewolfDataEvaluationCommon.IsNothing(evalInp1);
         }
+
+        public static string GetPositionColumnExpression(string recordset)
+        {
+            var rec = WarewolfDataEvaluationCommon.ParseLanguageExpression(recordset);
+            if(rec.IsRecordSetExpression)
+            {
+                var index = (rec as LanguageAST.LanguageExpression.RecordSetExpression).Item;
+                return "[[" + index.Name + "(" + "*" + ")." + WarewolfDataEvaluationCommon.PositionColumn + "]]";
+            }
+            if(rec.IsRecordSetNameExpression)
+            {
+                var index = (rec as LanguageAST.LanguageExpression.RecordSetNameExpression).Item;
+                return "[[" + index.Name + "(" + "*" +")."+ WarewolfDataEvaluationCommon.PositionColumn + "]]";
+            }
+            return recordset;
+        }
     }
 }

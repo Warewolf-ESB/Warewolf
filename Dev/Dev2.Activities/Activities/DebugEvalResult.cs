@@ -10,16 +10,20 @@ namespace Dev2.Activities
     public class DebugEvalResult : DebugOutputBase
     {
         string _inputVariable;
+        string _positionInput;
         readonly string _label;
         readonly WarewolfDataEvaluationCommon.WarewolfEvalResult _evalResult;
 
         public DebugEvalResult(string inputVariable, string label,IExecutionEnvironment environment)
         {
             _inputVariable = inputVariable;
+            _positionInput = "";
             _label = label;
             try
             {
                 _evalResult = environment.Eval(inputVariable);
+                if (_inputVariable.Contains(".WarewolfPositionColumn")) _positionInput = _inputVariable.Replace(".WarewolfPositionColumn", ""); 
+
             }
             catch(Exception e)
             {
