@@ -283,6 +283,7 @@ and  EvalToExpression  (env: WarewolfEnvironment) (lang:string) : string=
         | ComplexExpression  a -> List.map LanguageExpressionToString a|> List.map  (Eval env)  |> List.map EvalResultToString |> fun a-> System.String.Join("",a) |> (fun a ->EvalToExpression env a  )
         | RecordSetExpression a -> match a.Index with 
                                     | IndexExpression exp -> sprintf "[[%s(%s).%s]]" a.Name (Eval  env  (LanguageExpressionToString exp)|> EvalResultToString) a.Column  
+        | _ -> lang
 
 and  EvalWithPositions  (env: WarewolfEnvironment) (lang:string) : WarewolfEvalResult=
     let EvalComplex (exp:LanguageExpression list) = 
