@@ -477,7 +477,7 @@ namespace Warewolf.Storage
 
         public string EvalToExpression(string exp)
         {
-            return WarewolfDataEvaluationCommon.EvalToExpression(_env,exp);
+            return string.IsNullOrEmpty(exp) ? "" : WarewolfDataEvaluationCommon.EvalToExpression(_env,exp);
         }
 
         public static string ConvertToIndex(string outputVar, int i)
