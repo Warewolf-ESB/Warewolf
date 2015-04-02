@@ -922,7 +922,7 @@ Scenario: Simple workflow with Assign and Base Convert(Evaluating Recordset vari
 	  | 2 | [[rec(1).a]] = 12      |
 	   And the 'Base' in WorkFlow 'WorkflowWithAssignandBasec' debug inputs as
 	  | # | Convert              | From | To      |
-	  | 1 | [[[[rs(1).a]]]] = 12 | Text | Base 64 |
+	  | 1 | [[rec(1).a]] = 12 | Text | Base 64 |
       And the 'Base' in Workflow 'WorkflowWithAssignandBasec' debug outputs as  
 	  | # |                     |
 	  | 1 | [[rec(1).a]] = MTI= |

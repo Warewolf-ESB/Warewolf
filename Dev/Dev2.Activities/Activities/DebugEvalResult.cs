@@ -30,16 +30,7 @@ namespace Dev2.Activities
                         var length = environment.GetLength(DataListUtil.ExtractRecordsetNameFromValue(_inputVariable));
                         _inputVariable = DataListUtil.ReplaceRecordsetBlankWithIndex(_inputVariable, length);
                     }
-                    var indexVal = DataListUtils.ExtractIndexRegionFromRecordset(_inputVariable);
-                    if (DataListUtils.IsEvaluated(indexVal))
-                    {
-                        var subIndexValResult = environment.Eval(indexVal);
-                        if (subIndexValResult != null)
-                        {
-                            var subIndexVal = ExecutionEnvironment.WarewolfEvalResultToString(subIndexValResult);
-                            _inputVariable = _inputVariable.Replace(indexVal, subIndexVal);
-                        }
-                    }
+                    _inputVariable = environment.EvalToExpression(_inputVariable);
                 }
                 _evalResult = environment.Eval(_inputVariable);
                 if (_inputVariable.Contains(".WarewolfPositionColumn")) _positionInput = _inputVariable.Replace(".WarewolfPositionColumn", ""); 
