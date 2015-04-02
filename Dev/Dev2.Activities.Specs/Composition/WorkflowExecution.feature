@@ -138,8 +138,8 @@ Scenario: Workflow with an assign and webservice different mappings
 	  | [[prefix]] = a |
 	  And the 'InternalCountriesServiceTest' in Workflow 'TestWebServiceDiffMappings' debug outputs as
 	  |                                            |
-	  | [[Countries(10).CountryID]] = 10           |
-	  | [[Countries(10).Description]] = Azerbaijan |
+	  | [[MyCountries(10).ID]] = 10           |
+	  | [[Name]] = Azerbaijan |
 
 	
 Scenario: Workflow with an assign and remote workflow
@@ -2327,8 +2327,6 @@ Scenario: Testing Data Split with two variables in Result field
 	  |                     |                   |                 | 2 | [[fr().b]][[b]] = | Index | 2     | No      |        |
 	  And the 'Data Split' in Workflow 'WorkflowforDatasplit' debug outputs as  
 	  | # |                    |
-	  | 1 | [[fr(1).aa]] = |
-	  | 2 | [[fr(1).bb]] = |
 	
 @ignore
 Scenario Outline: Testing Replace with two variables in Result field
@@ -4812,9 +4810,9 @@ Scenario: Workflow by using For Each with workflow
          | 1 | [[rec(1).a]] = 1 |
          | 2 | [[rec(2).a]] = 2 |
          And the 'ForEachTest123' in WorkFlow 'WorkFlowWithForEachInRecordsetUtilityRandomTesting' debug inputs as 
-           |                | Recordset         |
-           | * in Recordset | [[rec(1).a]] = 1  |
-           |                | [[rec(2).a]] = 2 |
+           |                | Recordset      |
+           | * in Recordset | [[rec(1).a]] = |
+           |                | [[rec(2).a]] = |
          And the 'ForEachTest123' in WorkFlow 'WorkFlowWithForEachInRecordsetUtilityRandomTesting' has  "4" nested children 
 	     And the 'Random1' in "Utility - Random" in step 1 for 'ForEachTest123' debug inputs as
          | Random  | From | To |
