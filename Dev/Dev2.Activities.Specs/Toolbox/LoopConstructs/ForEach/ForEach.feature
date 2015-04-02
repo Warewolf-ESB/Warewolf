@@ -16,9 +16,9 @@ Scenario: Execute a foreach over a tool using a recordset with 3 rows
 	And the execution has "NO" error
 	And the debug inputs as
     |                | Recordset           |
-    | * in Recordset | [[rs(1).field]] = 1 |
-    |                | [[rs(2).field]] = 2 |
-    |                | [[rs(3).field]] = 3 | 
+    | * in Recordset | =[[rs(1)]] |
+    |                | =[[rs(2)]] |
+    |                | =[[rs(3)]] | 
 
 Scenario: Execute a foreach over a tool using a recordset with 4 rows
 	Given There is a recordset in the datalist with this shape
@@ -32,12 +32,12 @@ Scenario: Execute a foreach over a tool using a recordset with 4 rows
 	When the foreach tool is executed	
 	Then the foreach executes 4 times
 	And the execution has "NO" error
-#	And the debug inputs as
-#	|                | Recordset           |
-#	| * in Recordset | [[rs(1).field]] = 1 |
-#	|                | [[rs(2).field]] = 2 |
-#	|                | [[rs(3).field]] = 3 |
-#	|                | [[rs(4).field]] = 6 |
+	And the debug inputs as
+	|                | Recordset           |
+	| * in Recordset | =[[rs(1)]] |
+	|                | =[[rs(2)]] |
+	|                | =[[rs(3)]] |
+	|                | =[[rs(4)]] |
 	
 #This Scenarios should pass after the bug 12021 is fixed
 #Scenario: Execute a foreach over a tool using a recordset with invalid
@@ -329,9 +329,9 @@ Scenario: Execute a foreach over an activity with csv index 2
 	| index |
 	| 2     |
 	And the execution has "NO" error
-#	And the debug inputs as
-#	|          | Csv Indexes |
-#	| * in CSV | 2           |
+	And the debug inputs as
+	|          | Csv Indexes |
+	| * in CSV | 2           |
 
 Scenario: Execute a foreach over an activity with number of executions equals 0
 	Given There is a recordset in the datalist with this shape
@@ -344,9 +344,9 @@ Scenario: Execute a foreach over an activity with number of executions equals 0
 	When the foreach tool is executed
 	Then the foreach executes 0 times
 	And the execution has "NO" error
-#	And the debug inputs as
-#	|                 | Number |
-#	| No. of Executes | 0      |
+	And the debug inputs as
+	|                 | Number |
+	| No. of Executes | 0      |
 
 Scenario: Execute a foreach over an activity with number of executions equals 1
 	Given There is a recordset in the datalist with this shape
@@ -361,9 +361,9 @@ Scenario: Execute a foreach over an activity with number of executions equals 1
 	| index |
 	| *     |	
 	And the execution has "NO" error
-#	And the debug inputs as
-#	|                 | Number |
-#	| No. of Executes | 1      |
+	And the debug inputs as
+	|                 | Number |
+	| No. of Executes | 1      |
 
 Scenario: Execute a foreach over an activity with number of executions equals 8
 	Given There is a recordset in the datalist with this shape
@@ -385,9 +385,9 @@ Scenario: Execute a foreach over an activity with number of executions equals 8
 	| *     |
 	| *     |
 	| *     |			
-#	And the debug inputs as
-#	|                 | Number |
-#	| No. of Executes | 8      |
+	And the debug inputs as
+	|                 | Number |
+	| No. of Executes | 8      |
 
 #Scenario: Execute a foreach over an activity with number of executions equals +1 invalid
 #	And I have selected the foreach type as "NumOfExecution" as "+1"
