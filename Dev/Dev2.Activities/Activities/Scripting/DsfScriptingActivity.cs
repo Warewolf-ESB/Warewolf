@@ -17,11 +17,7 @@ using Dev2.Activities.Debug;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
-using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Builders;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Development.Languages.Scripting;
 using Dev2.Diagnostics;
 using Dev2.Util;
@@ -77,12 +73,8 @@ namespace Dev2.Activities
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            Guid dlID = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
-            Guid executionId = dlID;
             allErrors.MergeErrors(errors);
                     var env = dataObject.Environment;
             InitializeDebug(dataObject);
@@ -90,17 +82,17 @@ namespace Dev2.Activities
             {
                 if(!errors.HasErrors())
                 {
-                    IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
-
-                    var scriptItr = env.EvalAsListOfStrings(Script);
-                    allErrors.MergeErrors(errors);
-
-                    if(dataObject.IsDebugMode())
+                    if (dataObject.IsDebugMode())
                     {
                         var language = ScriptType.GetDescription();
                         AddDebugInputItem(new DebugItemStaticDataParams(language, "Language"));
                         AddDebugInputItem(new DebugEvalResult(Script, "Script", env));
                     }
+
+                    var scriptItr = env.EvalAsListOfStrings(Script);
+                    allErrors.MergeErrors(errors);
+
+                    
                     if(allErrors.HasErrors())
                     {
                         return;
@@ -146,7 +138,8 @@ namespace Dev2.Activities
                 if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfScriptingJavaScriptActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
                 }
 
                 if(dataObject.IsDebugMode())
