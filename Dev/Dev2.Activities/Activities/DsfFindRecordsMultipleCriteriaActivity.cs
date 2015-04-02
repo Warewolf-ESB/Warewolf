@@ -177,7 +177,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfFindRecordsMultipleCriteriaActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
-                    dataObject.Environment.Assign(Result,"");
+                    dataObject.Environment.Assign(Result,"-1");
+                    if (dataObject.IsDebugMode())
+                    {
+                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
+                    }
                 }
 
                 if(dataObject.IsDebugMode())

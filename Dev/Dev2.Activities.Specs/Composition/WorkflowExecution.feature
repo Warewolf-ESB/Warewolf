@@ -4112,6 +4112,7 @@ Scenario: Executing Utility - Replace example workflow
 	  And the 'Replace2' in Workflow 'Utility - Replace' debug outputs as  
 	  |                                       |
 	  | [[rec(1).homeNumber]]   = +1553122442 |
+	  | [[rec(2).homeNumber]]   = +1554682136 |
 	  | [[rec(1).mobileNumber]] = +1655985781 |
 	  | [[rec(2).mobileNumber]] = +1985623145 |
 	  | [[recount]] = 3                       |
@@ -4124,6 +4125,8 @@ Scenario: Executing Recordset - Count Records example workflow
 	  Then the workflow execution has "NO" error
 	  And the 'Count Records' in WorkFlow 'Recordset - Count Records' debug inputs as
 	  | Recordset                  |
+	  | [[rec(1).set]] = Warewolf |
+	  | [[rec(2).set]] = SOA |
 	  | [[rec(3).set]] = Recordset |
 	  And the 'Count Records' in Workflow 'Recordset - Count Records' debug outputs as  
 	  |               |
