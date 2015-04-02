@@ -605,7 +605,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 try
                 {
                     DebugItem itemToAdd = new DebugItem();
-                    AddDebugItem(new DebugEvalResult(dev2Definition.RawValue, "", environment), itemToAdd);
+                     string val = environment.ToLast(dev2Definition.RawValue);
+                    AddDebugItem(new DebugEvalResult(val, "", environment), itemToAdd);
                     results.Add(itemToAdd);
                 }
                 catch (Exception e)

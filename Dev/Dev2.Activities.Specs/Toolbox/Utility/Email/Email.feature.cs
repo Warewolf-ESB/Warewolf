@@ -601,6 +601,11 @@ this.ScenarioSetup(scenarioInfo);
                         "To",
                         "Subject",
                         "Body"});
+            table23.AddRow(new string[] {
+                        "me@freemail.com",
+                        "[[me(-1).to]] =",
+                        "Just testing",
+                        "testing email from the cool specflow"});
 #line 179
  testRunner.And("the debug inputs as", ((string)(null)), table23, "And ");
 #line hidden
@@ -642,6 +647,11 @@ this.ScenarioSetup(scenarioInfo);
                         "To",
                         "Subject",
                         "Body"});
+            table25.AddRow(new string[] {
+                        "me@freemail.com",
+                        "test1@freemail.com",
+                        "[[my(-1).subject]] =",
+                        "testing email from the cool specflow"});
 #line 194
  testRunner.And("the debug inputs as", ((string)(null)), table25, "And ");
 #line hidden
@@ -681,6 +691,11 @@ this.ScenarioSetup(scenarioInfo);
                         "To",
                         "Subject",
                         "Body"});
+            table27.AddRow(new string[] {
+                        "me@freemail.com",
+                        "test1@freemail.com",
+                        "",
+                        "[[my(-1).body]] ="});
 #line 208
  testRunner.And("the debug inputs as", ((string)(null)), table27, "And ");
 #line hidden

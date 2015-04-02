@@ -63,6 +63,8 @@ namespace Warewolf.Storage
         string FetchErrors();
 
         bool HasErrors();
+
+        string ToLast(string rawValue);
     }
     public class ExecutionEnvironment : IExecutionEnvironment
     {
@@ -373,7 +375,17 @@ namespace Warewolf.Storage
                 if(rec != null)
                 {
                 return "[["+rec.Item.Name+"(*)."+rec.Item.Column+"]]";
+                }
             }
+
+            if (exp.IsRecordSetNameExpression)
+            {
+                var rec = exp as LanguageAST.LanguageExpression.RecordSetNameExpression;
+                if (rec != null)
+                {
+                    return "[[" + rec.Item.Name + "(*)." + rec.Item + "]]";
+
+                }
             }
             return expression;
         }
@@ -438,6 +450,26 @@ namespace Warewolf.Storage
         public bool HasErrors()
         {
             return Errors.Count>0;
+        }
+
+        public string ToLast(string rawValue)
+        {
+            var output = WarewolfDataEvaluationCommon.ParseLanguageExpression(rawValue);
+            if (output.IsRecordSetExpression)
+            {
+
+                var outputidentifier = (output as LanguageAST.LanguageExpression.RecordSetExpression).Item;
+                var i = GetLength(outputidentifier.Name);
+                return "[[" + outputidentifier.Name + "(" + i + ")." + outputidentifier.Column + "]]";
+            }
+            if(output.IsRecordSetExpression)
+            {
+                var outputidentifier = (output as LanguageAST.LanguageExpression.RecordSetNameExpression).Item;
+                var i = GetLength(outputidentifier.Name);
+                if (Equals(outputidentifier.Index, LanguageAST.Index.Star))
+                    return "[[" + outputidentifier.Name + "(" + i + ") "+"]]";
+            }
+            return rawValue;
         }
 
         public static string ConvertToIndex(string outputVar, int i)

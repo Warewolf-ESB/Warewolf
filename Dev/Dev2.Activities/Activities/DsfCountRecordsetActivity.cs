@@ -92,15 +92,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         if(dataObject.IsDebugMode())
                         {
-                            var warewolfEvalResult = dataObject.Environment.Eval(RecordsetName);
-                            if (warewolfEvalResult.IsWarewolfRecordSetResult)
-                            {
-                                var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult;
-                                if(recsetResult != null)
-                                {
-                                    AddDebugInputItem(new DebugItemWarewolfRecordset(recsetResult.Item, RecordsetName, "Recordset", "="));
-                                }
-                            }
+                            AddDebugInputItem(new DebugEvalResult(dataObject.Environment.ToStar(RecordsetName), "Recordset", dataObject.Environment));
+
                         }
                         var rule = new IsSingleValueRule(() => CountNumber);
                         var single = rule.Check();

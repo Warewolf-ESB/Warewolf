@@ -46,7 +46,9 @@ namespace Dev2.Activities
         /// The property that holds all the conversions
         /// </summary>
 
+        // ReSharper disable MemberCanBePrivate.Global
         public EmailSource SelectedEmailSource { get; set; }
+        // ReSharper restore MemberCanBePrivate.Global
         [FindMissing]
         public string FromAccount { get; set; }
         [FindMissing]
@@ -58,7 +60,9 @@ namespace Dev2.Activities
         [FindMissing]
         public string Bcc { get; set; }
 
+        // ReSharper disable MemberCanBePrivate.Global
         public enMailPriorityEnum Priority { get; set; }
+        // ReSharper restore MemberCanBePrivate.Global
         [FindMissing]
         public string Subject { get; set; }
         [FindMissing]
@@ -121,21 +125,39 @@ namespace Dev2.Activities
         /// When overridden runs the activity's execution logic
         /// </summary>
         /// <param name="context">The context to be used.</param>
+        // ReSharper disable MethodTooLong
         protected override void OnExecute(NativeActivityContext context)
+            // ReSharper restore MethodTooLong
         {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             _dataObject = dataObject;
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            Guid dlId = dataObject.DataListID;
+
+
             ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors;
             int indexToUpsertTo = 0;
 
             InitializeDebug(dataObject);
             try
             {
+                var runtimeSource = ResourceCatalog.Instance.GetResource<EmailSource>(dataObject.WorkspaceID, SelectedEmailSource.ResourceID);
+                if (IsDebug)
+                {
+                    var fromAccount = FromAccount;
+                    if (String.IsNullOrEmpty(fromAccount))
+                    {
+                        fromAccount = runtimeSource.UserName;
+                        AddDebugInputItem(fromAccount, "From Account");
+                    }
+                    else
+                    {
+                        AddDebugInputItem(new DebugEvalResult(FromAccount, "From Account", dataObject.Environment));
+                    }
+                    AddDebugInputItem(new DebugEvalResult(To, "To", dataObject.Environment));
+                    AddDebugInputItem(new DebugEvalResult(Subject, "Subject", dataObject.Environment));
+                    AddDebugInputItem(new DebugEvalResult(Body, "Body", dataObject.Environment));
+                }
                 var colItr = new WarewolfListIterator();
                 
                 var fromAccountItr = new WarewolfIterator(dataObject.Environment.Eval(FromAccount??string.Empty));
@@ -162,29 +184,13 @@ namespace Dev2.Activities
                 var attachmentsItr = new WarewolfIterator(dataObject.Environment.Eval(Attachments ?? string.Empty));
                 colItr.AddVariableToIterateOn(attachmentsItr);
 
-                var runtimeSource = ResourceCatalog.Instance.GetResource<EmailSource>(dataObject.WorkspaceID, SelectedEmailSource.ResourceID);
+                
 
                 if(!allErrors.HasErrors())
                 {
                     while(colItr.HasMoreData())
                     {
-                        if(IsDebug)
-                        {
-                            var fromAccount = FromAccount;
-                            if(String.IsNullOrEmpty(fromAccount))
-                            {
-                                fromAccount = runtimeSource.UserName;
-                                AddDebugInputItem(fromAccount, "From Account");
-                            }
-                            else
-                            {
-                                AddDebugInputItem(new DebugEvalResult(FromAccount, "From Account", dataObject.Environment));
-                            }
-                            AddDebugInputItem(new DebugEvalResult(To, "To", dataObject.Environment));
-                            AddDebugInputItem(new DebugEvalResult(Subject, "Subject", dataObject.Environment));
-                            AddDebugInputItem(new DebugEvalResult(Body, "Body", dataObject.Environment));
-                        }
-
+                        ErrorResultTO errors;
                         var result = SendEmail(runtimeSource, colItr, fromAccountItr, passwordItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out errors);
                         allErrors.MergeErrors(errors);
                         if(!allErrors.HasErrors())
@@ -270,7 +276,9 @@ namespace Dev2.Activities
             return indexToUpsertTo;
         }
 
+        // ReSharper disable TooManyArguments
         string SendEmail(EmailSource runtimeSource, IWarewolfListIterator colItr, IWarewolfIterator fromAccountItr, IWarewolfIterator passwordItr, IWarewolfIterator toItr, IWarewolfIterator ccItr, IWarewolfIterator bccItr, IWarewolfIterator subjectItr, IWarewolfIterator bodyItr, IWarewolfIterator attachmentsItr, out ErrorResultTO errors)
+            // ReSharper restore TooManyArguments
         {
             errors = new ErrorResultTO();
             var fromAccountValue = colItr.FetchNextValue(fromAccountItr);

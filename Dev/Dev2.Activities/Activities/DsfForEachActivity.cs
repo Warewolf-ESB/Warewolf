@@ -21,7 +21,6 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Util;
@@ -60,7 +59,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Properties
 
+        // ReSharper disable MemberCanBePrivate.Global
         public enForEachType ForEachType { get; set; }
+      
 
         [FindMissing]
         public string From { get; set; }
@@ -120,6 +121,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return 0;
             }
         }
+        // ReSharper restore MemberCanBePrivate.Global
 // ReSharper disable InconsistentNaming
         public Variable test { get; set; }
 // ReSharper restore InconsistentNaming
@@ -203,16 +205,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             
 
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             dataObject.ForEachNestingLevel++;
             ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors;
-            Guid executionId = DataListExecutionID.Get(context);
 
             InitializeDebug(dataObject);
             try
             {
-                ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, executionId, dataObject.Environment,compiler, out errors);
+                ErrorResultTO errors;
+                ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out errors);
 
                 if(errors.HasErrors())
                 {
@@ -488,12 +488,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Fetches the type of the execution.
         /// </summary>        
         /// <param name="dataObject">The data object.</param>
-        /// <param name="dlId">The dl ID.</param>
         /// <param name="environment"></param>
-        /// <param name="compiler">The compiler.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>                
-        private ForEachBootstrapTO FetchExecutionType(IDSFDataObject dataObject, Guid dlId, IExecutionEnvironment environment, IDataListCompiler compiler, out ErrorResultTO errors)
+        private ForEachBootstrapTO FetchExecutionType(IDSFDataObject dataObject, IExecutionEnvironment environment, out ErrorResultTO errors)
         {
             if(dataObject.IsDebugMode())
             {
@@ -523,10 +521,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 if(ForEachType == enForEachType.InRecordset && !string.IsNullOrEmpty(Recordset))
                 {
-                    var to = environment.Eval(Recordset);
+    
 
                     AddDebugItem(new DebugEvalResult(ExecutionEnvironment.GetPositionColumnExpression(Recordset), "Recordset ", environment), debugItem);
-
                 }
                 _debugInputs.Add(debugItem);
             }

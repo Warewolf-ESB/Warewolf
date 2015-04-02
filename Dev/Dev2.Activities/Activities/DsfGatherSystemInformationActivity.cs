@@ -23,7 +23,6 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Enums;
 using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 using Dev2.Enums;
@@ -93,7 +92,9 @@ namespace Dev2.Activities
         /// When overridden runs the activity's execution logic
         /// </summary>
         /// <param name="context">The context to be used.</param>
+        // ReSharper disable MethodTooLong
         protected override void OnExecute(NativeActivityContext context)
+            // ReSharper restore MethodTooLong
         {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
