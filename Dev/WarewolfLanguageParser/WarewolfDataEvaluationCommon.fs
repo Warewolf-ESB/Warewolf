@@ -258,6 +258,30 @@ and  Eval  (env: WarewolfEnvironment) (lang:string) : WarewolfEvalResult=
         | RecordSetNameExpression x ->EvalDataSetExpression env x
         | ComplexExpression  a -> WarewolfAtomResult (EvalComplex ( List.filter (fun b -> "" <> (LanguageExpressionToString b)) a)) 
 
+and  EvalToExpression  (env: WarewolfEnvironment) (lang:string) : string=
+    let EvalComplex (exp:LanguageExpression list) = 
+        if((List.length exp) =1) then
+            match exp.[0] with
+                | RecordSetExpression a ->  evalRecordSetAsString env a
+                | ScalarExpression a ->  (evalScalar a env)
+                | WarewolfAtomAtomExpression a ->  a
+                | _ ->failwith "you should not get here"
+        else    
+            let start = List.map LanguageExpressionToString  exp |> (List.fold (+) "")
+            let evaled = (List.map (LanguageExpressionToString >> (Eval  env)>>EvalResultToString)  exp )|> (List.fold (+) "")
+            if( evaled = start) then
+                DataString evaled
+            else DataString (Eval env evaled|>  EvalResultToString)
+    
+    let exp = ParseCache.TryFind lang
+    let buffer =  match exp with 
+                    | Some a ->  a
+                    | _->    
+                        let temp = ParseLanguageExpression lang
+                        temp
+    match buffer with
+        | ComplexExpression  a -> List.map LanguageExpressionToString a|> List.map  (Eval env)  |> List.map EvalResultToString |> fun a-> System.String.Join("",a) |> (fun a ->EvalToExpression env a  )
+        | _ -> lang 
 and  EvalWithPositions  (env: WarewolfEnvironment) (lang:string) : WarewolfEvalResult=
     let EvalComplex (exp:LanguageExpression list) = 
         if((List.length exp) =1) then

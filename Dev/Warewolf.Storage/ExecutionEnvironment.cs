@@ -65,6 +65,8 @@ namespace Warewolf.Storage
         bool HasErrors();
 
         string ToLast(string rawValue);
+
+        string EvalToExpression(string exp);
     }
     public class ExecutionEnvironment : IExecutionEnvironment
     {
@@ -471,6 +473,11 @@ namespace Warewolf.Storage
                     return "[[" + outputidentifier.Name + "(" + i + ") "+"]]";
             }
             return rawValue;
+        }
+
+        public string EvalToExpression(string exp)
+        {
+            return WarewolfDataEvaluationCommon.EvalToExpression(_env,exp);
         }
 
         public static string ConvertToIndex(string outputVar, int i)
