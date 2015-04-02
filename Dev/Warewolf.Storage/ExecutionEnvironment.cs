@@ -384,7 +384,7 @@ namespace Warewolf.Storage
                 var rec = exp as LanguageAST.LanguageExpression.RecordSetNameExpression;
                 if (rec != null)
                 {
-                    return "[[" + rec.Item.Name + "(*)." + rec.Item + "]]";
+                    return "[[" + rec.Item.Name + "(*)"+ "]]";
 
                 }
             }
@@ -533,6 +533,17 @@ namespace Warewolf.Storage
                 return "[[" + index.Name + "(" + "*" +")."+ WarewolfDataEvaluationCommon.PositionColumn + "]]";
             }
             return recordset;
+        }
+
+        public static string ConvertToColumnWithStar(string inputVariable, string val )
+        {
+           var x = WarewolfDataEvaluationCommon.ParseLanguageExpression(inputVariable);
+            if(x.IsRecordSetNameExpression)
+            {
+                var outputval = x as LanguageAST.LanguageExpression.RecordSetNameExpression;
+                return String.Format( "[[{0}(*).{1}]]",outputval.Item.Name,val);
+            }
+            return inputVariable;
         }
     }
 }

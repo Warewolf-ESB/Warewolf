@@ -83,6 +83,24 @@ namespace Dev2.Activities
                     return new DebugItemWarewolfAtomListResult(listResult, "", "", _inputVariable, LabelText, "", "=").GetDebugItemResult();
                 }
             }
+            else if (_evalResult.IsWarewolfRecordSetResult)
+            {
+                var listResult = _evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult;
+                if (listResult != null)
+                {
+                    List<IDebugItemResult> res = new List<IDebugItemResult>();
+                    foreach(var item in listResult.Item.Data)
+                    {
+                        if (item.Key != WarewolfDataEvaluationCommon.PositionColumn)
+                        {
+                            var data = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomListresult(item.Value) as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult; ;
+                            res.AddRange(new DebugItemWarewolfAtomListResult(data, "", "", ExecutionEnvironment.ConvertToColumnWithStar(_inputVariable, item.Key), LabelText, "", "=").GetDebugItemResult());
+                        }
+                     }
+                    return res;
+                }
+            }
+
             return new DebugItemStaticDataParams("",_inputVariable,LabelText).GetDebugItemResult();
         }
 
