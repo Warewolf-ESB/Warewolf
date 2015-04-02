@@ -202,7 +202,7 @@ namespace Dev2.Activities
                     dataObject.Environment.AddError(errorString);
                     if (dataObject.IsDebugMode())
                     {
-                        AddDebugOutputItem(new DebugItemWarewolfAtomResult("Failure", Result, ""));
+                        AddDebugOutputItem(new DebugItemStaticDataParams("Failure", Result, "","="));
                     }
                 }
                 if(toUpsert.IsDebug)

@@ -436,9 +436,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             Dev2Logger.Log.Info("PRE-SUB_EXECUTE SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb().ToString("####.####") + " MBs ]");
 
-            var resultId = esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors);
+            esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors);
             Dev2Logger.Log.Info("POST-SUB_EXECUTE SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb().ToString("####.####") + " MBs ]");
-            GetDebugOutputsFromEnv(resultId);
             return Guid.NewGuid();
         }
 
@@ -600,36 +599,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             IDev2LanguageParser parser = DataListFactory.CreateOutputParser();
             IList<IDev2Definition> inputs = parser.Parse(OutputMapping);
-
-
             var results = new List<DebugItem>();
             foreach(IDev2Definition dev2Definition in inputs)
             {
                 try
                 {
-                    var tmpEntry = environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(dev2Definition.Name));
-                
-
-                if(tmpEntry.IsWarewolfAtomResult)
-                {
                     DebugItem itemToAdd = new DebugItem();
-                    var warewolfAtomResult = tmpEntry as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
-                    if(warewolfAtomResult != null)
-                    {
-                        AddDebugItem(new DebugEvalResult(dev2Definition.RawValue, "", environment), itemToAdd);
-                    }
+                    AddDebugItem(new DebugEvalResult(dev2Definition.RawValue, "", environment), itemToAdd);
                     results.Add(itemToAdd);
-                }
-                else
-                {
-                    DebugItem itemToAdd = new DebugItem();
-                    var warewolfAtomListResult = tmpEntry as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
-                    if (warewolfAtomListResult != null)
-                    {
-                        AddDebugItem(new DebugEvalResult(dev2Definition.RawValue, "", environment), itemToAdd);
-                    }
-                    results.Add(itemToAdd);
-                }
                 }
                 catch (Exception e)
                 {

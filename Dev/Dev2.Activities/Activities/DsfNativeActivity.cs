@@ -214,57 +214,53 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     OnExecutedCompleted(context, false, resumable);
                     if(compiler != null)
                     {
-                        DoErrorHandling(context, compiler, dataObject);
+                        DoErrorHandling(context, dataObject);
                     }
                 }
 
             }
         }
 
-        protected void DoErrorHandling(NativeActivityContext context, IDataListCompiler compiler, IDSFDataObject dataObject)
+        protected void DoErrorHandling(NativeActivityContext context, IDSFDataObject dataObject)
         {
-            string errorString = compiler.FetchErrors(dataObject.DataListID, true);
-            string currentError = compiler.FetchErrors(dataObject.DataListID);
-            ErrorResultTO _tmpErrorsAfter = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
-            _tmpErrors.MergeErrors(_tmpErrorsAfter);
+            string errorString = dataObject.Environment.FetchErrors();
+            ErrorResultTO tmpErrorsAfter = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
+            _tmpErrors.MergeErrors(tmpErrorsAfter);
             if(_tmpErrors.HasErrors())
             {
                 if(!(this is DsfFlowDecisionActivity))
                 {
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, _tmpErrors.MakeDataListReady(), out errorsTo);
-                    if(!String.IsNullOrEmpty(currentError))
+                    if (!String.IsNullOrEmpty(errorString))
                     {
-                        PerformCustomErrorHandling(context, compiler, dataObject, currentError, _tmpErrors);
+                        PerformCustomErrorHandling(context, dataObject, errorString);
                     }
                 }
             }
         }
 
-        void PerformCustomErrorHandling(NativeActivityContext context, IDataListCompiler compiler, IDSFDataObject dataObject, string currentError, ErrorResultTO tmpErrors)
+        void PerformCustomErrorHandling(NativeActivityContext context, IDSFDataObject dataObject, string currentError)
         {
             try
             {
                 if(!String.IsNullOrEmpty(OnErrorVariable))
                 {
-                    compiler.Upsert(dataObject.DataListID, OnErrorVariable, currentError, out tmpErrors);
+                    dataObject.Environment.Assign(OnErrorVariable,currentError);                    
                 }
                 if(!String.IsNullOrEmpty(OnErrorWorkflow))
                 {
                     var esbChannel = context.GetExtension<IEsbChannel>();
+                    ErrorResultTO tmpErrors;
                     esbChannel.ExecuteLogErrorRequest(dataObject, dataObject.WorkspaceID, OnErrorWorkflow, out tmpErrors);
+                    dataObject.Environment.AddError(tmpErrors.MakeDisplayReady());
                 }
             }
             catch(Exception e)
             {
-                if(tmpErrors == null)
-                {
-                    tmpErrors = new ErrorResultTO();
-                }
-                tmpErrors.AddError(e.Message);
-                compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, tmpErrors.MakeDataListReady(), out errorsTo);
+                dataObject.Environment.AddError(e.Message);
             }
             finally
             {
+                
                 if(IsEndedOnError)
                 {
                     PerformStopWorkflow(context, dataObject);
