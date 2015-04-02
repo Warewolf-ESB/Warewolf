@@ -20,12 +20,10 @@ using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data;
-using Dev2.Data.Factories;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Operations;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Dev2.Validation;
@@ -125,31 +123,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDev2IndexFinder indexFinder = new Dev2IndexFinder();
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
-            Guid executionId = DataListExecutionID.Get(context);
             InitializeDebug(dataObject);
-            IDev2DataListUpsertPayloadBuilder<List<string>> toUpsert = Dev2DataListBuilderFactory.CreateStringListDataListUpsertBuilder();
-            IDev2DataListUpsertPayloadBuilder<string> toUpsertScalar = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder();
-            toUpsert.IsDebug = dataObject.IsDebugMode();
-            toUpsertScalar.IsDebug = dataObject.IsDebugMode();
             try
             {
-
                 var outerIteratorCollection = new WarewolfListIterator();
                 var innerIteratorCollection = new WarewolfListIterator();
 
                 allErrors.MergeErrors(errors);
 
-
-                var itrChar = new WarewolfIterator(dataObject.Environment.Eval(Characters));
-                outerIteratorCollection.AddVariableToIterateOn(itrChar);
-
                 #region Iterate and Find Index
-
-
                 if (dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(new DebugEvalResult(InField, "In Field", dataObject.Environment));
@@ -157,6 +142,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddDebugInputItem(new DebugEvalResult(Characters, "Characters", dataObject.Environment));
                     AddDebugInputItem(new DebugItemStaticDataParams(Direction, "Direction"));
                 }
+
+                var itrChar = new WarewolfIterator(dataObject.Environment.Eval(Characters));
+                outerIteratorCollection.AddVariableToIterateOn(itrChar);
 
                 var completeResultList = new List<string>();
 
@@ -192,21 +180,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
-
-
-
                     if (DataListUtil.IsValueRecordset(Result))
                     {
                         var rsType = DataListUtil.GetRecordsetIndexType(Result);
                         if (rsType == enRecordsetIndexType.Numeric)
                         {
-
                             dataObject.Environment.Assign(Result, string.Join(",", completeResultList));
-                            allErrors.MergeErrors(errors);
-                            if (!allErrors.HasErrors() && dataObject.IsDebugMode())
-                            {
-                                AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
-                            }
+                            allErrors.MergeErrors(errors);                            
                         }
                         else
                         {
@@ -253,8 +233,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (hasErrors)
                 {
                     DisplayAndWriteError("DsfIndexActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
-                    compiler.Upsert(executionId, Result, (string)null, out errors);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
+                    dataObject.Environment.Assign(Result,null);
                 }
 
                 #endregion
@@ -263,10 +244,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if (hasErrors)
                     {
-                        foreach (var debugOutputTo in toUpsert.DebugOutputs)
-                        {
-                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
-                        }
+                        AddDebugOutputItem(new DebugEvalResult(Result,"",dataObject.Environment));
                     }
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
