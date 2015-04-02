@@ -459,10 +459,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public void DispatchDebugState(NativeActivityContext context, StateType stateType)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            var dataList = compiler.FetchBinaryDataList(dataObject.DataListID, out errorsTo);
-
+            
             Guid remoteID;
             Guid.TryParse(dataObject.RemoteInvokerID, out remoteID);
 
@@ -493,8 +490,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     catch (Exception err)
                     {
                         Dev2Logger.Log.Error("DispatchDebugState", err);
-                        AddErrorToDataList(err, compiler, dataObject);
-                        var errorMessage = compiler.FetchErrors(dataObject.DataListID);
+                        AddErrorToDataList(err, dataObject);
+                        var errorMessage = dataObject.Environment.FetchErrors();
                         _debugState.ErrorMessage = errorMessage;
                         _debugState.HasError = true;
                         var debugError = err as DebugCopyException;
@@ -515,12 +512,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             else
             {
-                bool hasError = compiler.HasErrors(dataObject.DataListID);
+                bool hasError = dataObject.Environment.HasErrors();
 
                 var errorMessage = String.Empty;
                 if(hasError)
                 {
-                    errorMessage = compiler.FetchErrors(dataObject.DataListID);
+                    errorMessage = string.Join(Environment.NewLine,dataObject.Environment.Errors);
                 }
 
                 if(_debugState == null)
@@ -553,8 +550,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     catch(Exception e)
                     {
                         Dev2Logger.Log.Error("Debug Dispatch Error", e);
-                        AddErrorToDataList(e,compiler,dataObject);
-                        errorMessage = compiler.FetchErrors(dataObject.DataListID);
+                        AddErrorToDataList(e,dataObject);
+                        errorMessage = dataObject.Environment.FetchErrors();
                         _debugState.ErrorMessage = errorMessage;
                         _debugState.HasError = true;
                     }
@@ -609,12 +606,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        void AddErrorToDataList(Exception err, IDataListCompiler compiler, IDSFDataObject dataObject)
+        void AddErrorToDataList(Exception err, IDSFDataObject dataObject)
         {
             var errorString = err.Message;
-            var errorResultTO = new ErrorResultTO();
-            errorResultTO.AddError(errorString);
-            compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, errorResultTO.MakeUserReady(), out errorsTo);
+            dataObject.Environment.Errors.Add(errorString);
         }
 
         protected void InitializeDebug(IDSFDataObject dataObject)

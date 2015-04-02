@@ -174,7 +174,7 @@ namespace Dev2.Activities
 
                     dataObject.Environment.Assign(Result, "Success");
                     allErrors.MergeErrors(errorResultTo);
-                    if(toUpsert.IsDebug)
+                    if(dataObject.IsDebugMode())
                     {
                        AddDebugOutputItem(new DebugItemWarewolfAtomResult("Success",Result,""));
                     }
@@ -196,11 +196,14 @@ namespace Dev2.Activities
                 if(allErrors.HasErrors())
                 {
 
-
                     DisplayAndWriteError("DsfSqlBulkInsertActivity", allErrors);
-                    dataObject.Environment.Assign(Result,"");
+                    dataObject.Environment.Assign(Result,null);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
+                    if (dataObject.IsDebugMode())
+                    {
+                        AddDebugOutputItem(new DebugItemWarewolfAtomResult("Failure", Result, ""));
+                    }
                 }
                 if(toUpsert.IsDebug)
                 {
