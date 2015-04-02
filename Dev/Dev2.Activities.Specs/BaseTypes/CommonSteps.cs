@@ -604,7 +604,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 {
                     if(!string.IsNullOrEmpty(columnHeader) && columnHeader.Equals("#"))
                     {
-                     
+                        debugItemResult.Label = rowValue;
                         debugItemResult.Value = "";
                         debugItemResult.Type = DebugItemResultType.Value;
                     }

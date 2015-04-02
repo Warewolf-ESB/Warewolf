@@ -19,7 +19,7 @@ Scenario: Assign a system service pack into a scalar
 	Then the value of the variable "[[testvar]]" is a valid "String"
 	And the execution has "NO" error
 	And the debug output as 
-	|  |                      |
+	| # |                      |
 	| 1 | [[testvar]] = String |
 
 Scenario: Assign a system OS Bit Value into a scalar
@@ -28,7 +28,7 @@ Scenario: Assign a system OS Bit Value into a scalar
 	Then the value of the variable "[[testvar]]" is a valid "Int32"
 	And the execution has "NO" error
 	And the debug output as 
-	|  |                     |
+	| # |                     |
 	| 1 | [[testvar]] = Int32 |
 
 Scenario: Assign a system date time into a scalar
@@ -37,7 +37,7 @@ Scenario: Assign a system date time into a scalar
 	Then the value of the variable "[[testvar]]" is a valid "DateTime"
 	And the execution has "NO" error
 	And the debug output as 
-	|  |                        |
+	| # |                        |
 	| 1 | [[testvar]] = DateTime |
 
 Scenario: Assign a system Date Time Format into a scalar
@@ -46,7 +46,7 @@ Scenario: Assign a system Date Time Format into a scalar
 	Then the value of the variable "[[testvar]]" is a valid "String"
 	And the execution has "NO" error
 	And the debug output as 
-	|  |                      |
+	| # |                      |
 	| 1 | [[testvar]] = String |
 
 Scenario: Assign a system Disk Available into a scalar
@@ -55,7 +55,7 @@ Scenario: Assign a system Disk Available into a scalar
 	Then the value of the variable "[[testvar]]" is a valid "String"
 	And the execution has "NO" error
 	And the debug output as 
-	|  |                      |
+	| # |                      |
 	| 1 | [[testvar]] = String |
 
 Scenario: Assign a system Disk Total into a scalar
@@ -64,7 +64,7 @@ Scenario: Assign a system Disk Total into a scalar
 	Then the value of the variable "[[testvar]]" is a valid "String"
 	And the execution has "NO" error
 	And the debug output as 
-	|  |                      |
+	| # |                      |
 	| 1 | [[testvar]] = String |
 
 Scenario: Assign a system Physical Memory Available into a scalar
@@ -73,7 +73,7 @@ Scenario: Assign a system Physical Memory Available into a scalar
 	Then the value of the variable "[[testvar]]" is a valid "Int32"
 	And the execution has "NO" error
 	And the debug output as 
-	|  |                     |
+	| # |                     |
 	| 1 | [[testvar]] = Int32 |
 
 Scenario: Assign a system Physical Memory Total into a scalar
@@ -82,7 +82,7 @@ Scenario: Assign a system Physical Memory Total into a scalar
 	Then the value of the variable "[[testvar]]" is a valid "Int32"
 	And the execution has "NO" error
 	And the debug output as 
-	|  |                     |
+	| # |                     |
 	| 1 | [[testvar]] = Int32 |
 
 Scenario: Assign a system CPU Available into a scalar
@@ -91,7 +91,7 @@ Scenario: Assign a system CPU Available into a scalar
 	Then the value of the variable "[[testvar]]" is a valid "String"
 	And the execution has "NO" error
 	And the debug output as 
-	|  |                      |
+	| # |                      |
 	| 1 | [[testvar]] = String |
 
 Scenario: Assign a system CPU Total into a scalar
@@ -100,7 +100,7 @@ Scenario: Assign a system CPU Total into a scalar
 	Then the value of the variable "[[testvar]]" is a valid "String"
 	And the execution has "NO" error
 	And the debug output as 
-	|  |                      |
+	| # |                      |
 	| 1 | [[testvar]] = String |
 
 Scenario: Assign a system Language into a scalar
@@ -109,7 +109,7 @@ Scenario: Assign a system Language into a scalar
 	Then the value of the variable "[[testvar]]" is a valid "String"
 	And the execution has "NO" error
 	And the debug output as 
-	|  |                      |
+	| # |                      |
 	| 1 | [[testvar]] = String |
 
 Scenario: Assign a system Region into a scalar
@@ -118,7 +118,7 @@ Scenario: Assign a system Region into a scalar
 	Then the value of the variable "[[testvar]]" is a valid "String"
 	And the execution has "NO" error
 	And the debug output as 
-	|  |                      |
+	| # |                      |
 	| 1 | [[testvar]] = String |
 
 Scenario: Assign a system User Roles into a scalar
@@ -127,7 +127,7 @@ Scenario: Assign a system User Roles into a scalar
 	Then the value of the variable "[[testvar]]" is a valid "String"
 	And the execution has "NO" error
 	And the debug output as 
-	|  |                      |
+	| # |                      |
 	| 1 | [[testvar]] = String |
 
 Scenario: Assign a system User Name into a scalar
@@ -136,7 +136,7 @@ Scenario: Assign a system User Name into a scalar
 	Then the value of the variable "[[testvar]]" is a valid "String"
 	And the execution has "NO" error
 	And the debug output as 
-	|  |                      |
+	| # |                      |
 	| 1 | [[testvar]] = String |
 
 Scenario: Assign a system Domain into a scalar
@@ -145,7 +145,7 @@ Scenario: Assign a system Domain into a scalar
 	Then the value of the variable "[[testvar]]" is a valid "String"
 	And the execution has "NO" error
 	And the debug output as 
-	|  |                      |
+	| # |                      |
 	| 1 | [[testvar]] = String |
 
 Scenario: Assign a system Number Of Warewolf Agents into a scalar
@@ -154,7 +154,7 @@ Scenario: Assign a system Number Of Warewolf Agents into a scalar
 	Then the value of the variable "[[testvar]]" is a valid "String"
 	And the execution has "NO" error
 	And the debug output as 
-	|  |                      |
+	| # |                      |
 	| 1 | [[testvar]] = String |
 
 Scenario: Assign User Roles into a recordset
@@ -163,7 +163,7 @@ Scenario: Assign User Roles into a recordset
 	Then the value of the variable "[[my(2).roles]]" is a valid "String"
 	And the execution has "NO" error
 	And the debug output as 
-	|  |                          |
+	| # |                          |
 	| 1 | [[my(2).roles]] = String |
 
 Scenario: Assign User Roles into a multiple fields in recordset
@@ -176,7 +176,7 @@ Scenario: Assign User Roles into a multiple fields in recordset
 	Then the value of the variable "[[my(1).ramtot]]" is a valid "Int32"
 	And the execution has "NO" error
 	And the debug output as 
-	|  |                          |
+	| # |                          |
 	| 1 | [[my(1).roles]] = String |
 	| 2 | [[my(1).ram]] = Int32 |
 	| 3 | [[my(1).ramtot]] = Int32 |
@@ -187,7 +187,7 @@ Scenario: Assign a system Domain into a negative recordset index
 	When the gather system infomartion tool is executed
 	Then the execution has "AN" error
 	And the debug output as 
-	|  |                   |
+	| # |                   |
 	| 1 | [[rec(-1).set]] = |
 
 #This scenario requires the machine the test runs on to have more than 1 drive. You can map a network drive if it only has 1 logical.
@@ -197,7 +197,7 @@ Scenario: Assign Disk Total into a recordset
 	Then the value of the variable "[[my(1).disks]]" is a valid "String"
 	And the execution has "NO" error
 	And the debug output as 
-	|  |                          |
+	| # |                          |
 	| 1 | [[my(1).disks]] = String |
 
 #This scenario requires the machine the test runs on to have more than 1 drive. You can map a network drive if it only has 1 logical.
@@ -207,7 +207,7 @@ Scenario: Assign Disk Available into a recordset
 	Then the value of the variable "[[my(1).disks]]" is a valid "String"
 	And the execution has "NO" error
 	And the debug output as 
-	|  |                           |
+	| # |                           |
 	| 1 | [[my(1).disks]] =  String |
 
 # This Test should be passed after the bug 12236 is fixed 

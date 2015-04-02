@@ -158,7 +158,7 @@ namespace Dev2.Activities
                     foreach (GatherSystemInformationTO item in SystemInformationCollection)
                     {
                         var itemToAdd = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("","", ""), itemToAdd);
+                        AddDebugItem(new DebugItemStaticDataParams("","", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
                         AddDebugItem(new DebugEvalResult(item.Result,"",dataObject.Environment), itemToAdd);
                         _debugOutputs.Add(itemToAdd);
                         innerCount++;
