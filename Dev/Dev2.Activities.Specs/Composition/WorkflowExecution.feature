@@ -3247,10 +3247,8 @@ Scenario: Workflow with Calculation using Star notation
 	  | 3 | [[rs(3).a]] =  40 |
 	   And the 'Calculation' in WorkFlow 'WorkflowWithAssignCalculationUsingStar' debug inputs as
 	  | # | Variable        | New Value |
-	  | 1 | [[rec().sum]] = |           |
 	  And the 'Calculation' in Workflow 'WorkflowWithAssignCalculationUsingStar' debug outputs as  
 	  | # |                   |
-	  | 1 | [[rec(1).sum]] =  |
 
 # This Test should be passed after the bug 12236 is fixed    
 #Scenario: Workflow with Assign and Gather System Information executing with incorrect variable
@@ -3567,8 +3565,8 @@ Scenario: Workflow with Assigns Replace and testing variables that hasn't been a
 	  | # |                |
 	  | 1 | [[Val]] = test |
 	  And the 'Replacing' in WorkFlow 'workflowithAssignandReplaceTestingUnassignedvariablevalues' debug inputs as 
-	  | In Field(s) | Find | Replace With |
-	  | [[rec()]] = |      |              |
+	  | In Field(s) | Find       | Replace With |
+	  | [[rec()]] = | [[Val1]] = | [[Val2]] =   |
 	  And the 'Replacing' in Workflow 'workflowithAssignandReplaceTestingUnassignedvariablevalues' debug outputs as
 	  |              |
 	  | [[replac]] = |
