@@ -872,6 +872,7 @@ Scenario: Workflow with multiple tools Assign and SQL Bulk Insert with negative 
 	  | 2 | Warewolf@dev2.co.za | Email    | varchar (50) |            |         |                   |                 |               |               |                          |                 |
 	  And the 'BulkInsert' in Workflow 'WorkflowWithAssignAndSQLBulk' debug outputs as
 	  |                      |
+	  | [[result]] = Failure |
 
 Scenario: Simple workflow with Assign and Base Convert(Evaluating scalar variable inside variable)executing against the server
 	 Given I have a workflow "WorkflowWithAssignandBase"
