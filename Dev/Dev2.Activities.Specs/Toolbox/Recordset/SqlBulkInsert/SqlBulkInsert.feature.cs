@@ -329,6 +329,8 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
+            table7.AddRow(new string[] {
+                        "[[result]] = Failure"});
 #line 46
  testRunner.And("the debug output as", ((string)(null)), table7, "And ");
 #line hidden
@@ -341,7 +343,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ImportDataIntoTableWithKeepIdentityDisabled()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with keep identity disabled", ((string[])(null)));
-#line 49
+#line 50
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -360,11 +362,11 @@ this.ScenarioSetup(scenarioInfo);
                         "8",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 51
+#line 52
  testRunner.Given("I have this data", ((string)(null)), table8, "Given ");
-#line 56
- testRunner.And("Keep identity is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 57
+ testRunner.And("Keep identity is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 58
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -383,9 +385,9 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 58
+#line 59
  testRunner.Then("the new table will have", ((string)(null)), table9, "Then ");
-#line 63
+#line 64
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -531,14 +533,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO",
                         "NO"});
-#line 64
+#line 65
  testRunner.And("the debug inputs as", ((string)(null)), table10, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table11.AddRow(new string[] {
                         "[[result]] = Success"});
-#line 76
+#line 77
  testRunner.And("the debug output as", ((string)(null)), table11, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -550,7 +552,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ImportDataIntoTableWithKeepIdentityEnabled()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with keep identity enabled", ((string[])(null)));
-#line 80
+#line 81
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
@@ -569,11 +571,11 @@ this.ScenarioSetup(scenarioInfo);
                         "8",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 81
+#line 82
  testRunner.Given("I have this data", ((string)(null)), table12, "Given ");
-#line 86
- testRunner.And("Keep identity is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 87
+ testRunner.And("Keep identity is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 88
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
@@ -592,9 +594,9 @@ this.ScenarioSetup(scenarioInfo);
                         "8",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 88
+#line 89
  testRunner.Then("the new table will have", ((string)(null)), table13, "Then ");
-#line 93
+#line 94
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
@@ -740,14 +742,14 @@ this.ScenarioSetup(scenarioInfo);
                         "YES",
                         "NO",
                         "NO"});
-#line 94
+#line 95
  testRunner.And("the debug inputs as", ((string)(null)), table14, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table15.AddRow(new string[] {
                         "[[result]] = Success"});
-#line 106
+#line 107
  testRunner.And("the debug output as", ((string)(null)), table15, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -759,7 +761,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ImportDataIntoTableWithSkipBlankRowsDisabled()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with skip blank rows disabled", ((string[])(null)));
-#line 110
+#line 111
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -782,15 +784,15 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 112
+#line 113
 testRunner.Given("I have this data", ((string)(null)), table16, "Given ");
-#line 118
- testRunner.And("Skip rows is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 119
- testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("Skip rows is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 120
- testRunner.Then("the new table will will have 0 of rows", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 121
+ testRunner.Then("the new table will will have 0 of rows", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 122
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
@@ -975,12 +977,14 @@ testRunner.Given("I have this data", ((string)(null)), table16, "Given ");
                         "NO",
                         "NO",
                         "NO"});
-#line 122
+#line 123
  testRunner.And("the debug inputs as", ((string)(null)), table17, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-#line 137
+            table18.AddRow(new string[] {
+                        "[[result]] = Failure"});
+#line 138
  testRunner.And("the debug output as", ((string)(null)), table18, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -992,7 +996,7 @@ testRunner.Given("I have this data", ((string)(null)), table16, "Given ");
         public virtual void ImportDataIntoTableWithSkipBlankRowsEnabled()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with skip blank rows enabled", ((string[])(null)));
-#line 140
+#line 142
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1015,15 +1019,15 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 142
+#line 144
 testRunner.Given("I have this data", ((string)(null)), table19, "Given ");
-#line 148
- testRunner.And("Skip rows is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 149
- testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 150
- testRunner.Then("the new table will will have 3 of rows", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("Skip rows is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 151
+ testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 152
+ testRunner.Then("the new table will will have 3 of rows", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 153
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1208,14 +1212,14 @@ testRunner.Given("I have this data", ((string)(null)), table19, "Given ");
                         "NO",
                         "NO",
                         "YES"});
-#line 152
+#line 154
  testRunner.And("the debug inputs as", ((string)(null)), table20, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table21.AddRow(new string[] {
                         "[[result]] = Success"});
-#line 167
+#line 169
  testRunner.And("the debug output as", ((string)(null)), table21, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1227,7 +1231,7 @@ testRunner.Given("I have this data", ((string)(null)), table19, "Given ");
         public virtual void ImportDataIntoTableWithFireTriggersDisabled()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with fire triggers disabled", ((string[])(null)));
-#line 171
+#line 173
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1246,11 +1250,11 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 173
+#line 175
 testRunner.Given("I have this data", ((string)(null)), table22, "Given ");
-#line 178
+#line 180
  testRunner.And("Fire triggers is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 179
+#line 181
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1269,9 +1273,9 @@ testRunner.Given("I have this data", ((string)(null)), table22, "Given ");
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 180
+#line 182
  testRunner.Then("the new table will have", ((string)(null)), table23, "Then ");
-#line 185
+#line 187
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1417,14 +1421,14 @@ testRunner.Given("I have this data", ((string)(null)), table22, "Given ");
                         "NO",
                         "NO",
                         "NO"});
-#line 186
+#line 188
  testRunner.And("the debug inputs as", ((string)(null)), table24, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table25.AddRow(new string[] {
                         "[[result]] = Success"});
-#line 198
+#line 200
  testRunner.And("the debug output as", ((string)(null)), table25, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1436,7 +1440,7 @@ testRunner.Given("I have this data", ((string)(null)), table22, "Given ");
         public virtual void ImportDataIntoTableWithFireTriggersEnabled()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with fire triggers enabled", ((string[])(null)));
-#line 202
+#line 204
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1455,11 +1459,11 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 204
+#line 206
 testRunner.Given("I have this data", ((string)(null)), table26, "Given ");
-#line 209
+#line 211
  testRunner.And("Fire triggers is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 210
+#line 212
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1478,9 +1482,9 @@ testRunner.Given("I have this data", ((string)(null)), table26, "Given ");
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 211
+#line 213
  testRunner.Then("the new table will have", ((string)(null)), table27, "Then ");
-#line 216
+#line 218
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1626,14 +1630,14 @@ testRunner.Given("I have this data", ((string)(null)), table26, "Given ");
                         "NO",
                         "NO",
                         "NO"});
-#line 217
+#line 219
  testRunner.And("the debug inputs as", ((string)(null)), table28, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table29.AddRow(new string[] {
                         "[[result]] = Success"});
-#line 229
+#line 231
  testRunner.And("the debug output as", ((string)(null)), table29, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1645,7 +1649,7 @@ testRunner.Given("I have this data", ((string)(null)), table26, "Given ");
         public virtual void ImportDataIntoTableBatchSizeIs0()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table Batch size is 0", ((string[])(null)));
-#line 233
+#line 235
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1664,15 +1668,15 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 234
+#line 236
 testRunner.Given("I have this data", ((string)(null)), table30, "Given ");
-#line 239
- testRunner.And("Batch size is 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 240
- testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 241
- testRunner.Then("number of inserts is 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("Batch size is 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 242
+ testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 243
+ testRunner.Then("number of inserts is 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 244
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1818,14 +1822,14 @@ testRunner.Given("I have this data", ((string)(null)), table30, "Given ");
                         "NO",
                         "NO",
                         "NO"});
-#line 243
+#line 245
  testRunner.And("the debug inputs as", ((string)(null)), table31, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table32.AddRow(new string[] {
                         "[[result]] = Success"});
-#line 255
+#line 257
  testRunner.And("the debug output as", ((string)(null)), table32, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1837,7 +1841,7 @@ testRunner.Given("I have this data", ((string)(null)), table30, "Given ");
         public virtual void ImportDataIntoTableBatchSizeIs1()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table Batch size is 1", ((string[])(null)));
-#line 259
+#line 261
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1856,15 +1860,15 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 260
+#line 262
 testRunner.Given("I have this data", ((string)(null)), table33, "Given ");
-#line 265
- testRunner.And("Batch size is 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 266
- testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 267
- testRunner.Then("number of inserts is 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("Batch size is 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 268
+ testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 269
+ testRunner.Then("number of inserts is 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 270
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2010,7 +2014,7 @@ testRunner.Given("I have this data", ((string)(null)), table33, "Given ");
                         "NO",
                         "NO",
                         "NO"});
-#line 269
+#line 271
  testRunner.And("the debug inputs as", ((string)(null)), table34, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2022,7 +2026,7 @@ testRunner.Given("I have this data", ((string)(null)), table33, "Given ");
         public virtual void ImportDataIntoTableBatchSizeIs2()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table Batch size is 2", ((string[])(null)));
-#line 282
+#line 284
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2041,15 +2045,15 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 283
+#line 285
 testRunner.Given("I have this data", ((string)(null)), table35, "Given ");
-#line 288
- testRunner.And("Batch size is 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 289
- testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 290
- testRunner.Then("number of inserts is 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("Batch size is 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 291
+ testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 292
+ testRunner.Then("number of inserts is 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 293
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2195,7 +2199,7 @@ testRunner.Given("I have this data", ((string)(null)), table35, "Given ");
                         "NO",
                         "NO",
                         "NO"});
-#line 292
+#line 294
  testRunner.And("the debug inputs as", ((string)(null)), table36, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2207,7 +2211,7 @@ testRunner.Given("I have this data", ((string)(null)), table35, "Given ");
         public virtual void ImportDataIntoTableTimeoutAfter3Second()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table timeout after 3 second", ((string[])(null)));
-#line 305
+#line 307
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2226,15 +2230,15 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 307
+#line 309
 testRunner.Given("I have this data", ((string)(null)), table37, "Given ");
-#line 312
- testRunner.And("Timeout in 3 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 313
- testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 314
- testRunner.Then("number of inserts is 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("Timeout in 3 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 315
+ testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 316
+ testRunner.Then("number of inserts is 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 317
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2380,14 +2384,14 @@ testRunner.Given("I have this data", ((string)(null)), table37, "Given ");
                         "NO",
                         "NO",
                         "NO"});
-#line 316
+#line 318
   testRunner.And("the debug inputs as", ((string)(null)), table38, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table39.AddRow(new string[] {
                         "[[result]] = Success"});
-#line 328
+#line 330
  testRunner.And("the debug output as", ((string)(null)), table39, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2399,7 +2403,7 @@ testRunner.Given("I have this data", ((string)(null)), table37, "Given ");
         public virtual void ImportDataIntoTableTimeoutAfter1Second()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table timeout after 1 second", ((string[])(null)));
-#line 332
+#line 334
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2418,15 +2422,15 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 334
+#line 336
 testRunner.Given("I have this data", ((string)(null)), table40, "Given ");
-#line 339
- testRunner.And("Timeout in 1 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 340
- testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 341
- testRunner.Then("number of inserts is 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("Timeout in 1 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 342
+ testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 343
+ testRunner.Then("number of inserts is 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 344
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2572,12 +2576,14 @@ testRunner.Given("I have this data", ((string)(null)), table40, "Given ");
                         "NO",
                         "NO",
                         "NO"});
-#line 343
+#line 345
   testRunner.And("the debug inputs as", ((string)(null)), table41, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-#line 355
+            table42.AddRow(new string[] {
+                        "[[result]] = Failure"});
+#line 357
  testRunner.And("the debug output as", ((string)(null)), table42, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2589,25 +2595,25 @@ testRunner.Given("I have this data", ((string)(null)), table40, "Given ");
         public virtual void ImportDataIntoTableWithBlankData()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into table with blank data", ((string[])(null)));
-#line 358
+#line 361
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table43 = new TechTalk.SpecFlow.Table(new string[] {
                         "Col1",
                         "Col2",
                         "Col3"});
-#line 359
+#line 362
  testRunner.Given("I have this data", ((string)(null)), table43, "Given ");
-#line 361
+#line 364
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table44 = new TechTalk.SpecFlow.Table(new string[] {
                         "Col1",
                         "Col2",
                         "Col3"});
-#line 362
+#line 365
  testRunner.Then("the new table will have", ((string)(null)), table44, "Then ");
-#line 364
+#line 367
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

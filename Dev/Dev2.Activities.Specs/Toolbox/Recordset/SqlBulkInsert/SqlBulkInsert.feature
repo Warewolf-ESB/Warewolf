@@ -45,6 +45,7 @@ Scenario: Import data into Table with check constraint enabled
 	|   |                                                       |          |        |            |         | YES               | NO              | NO            | NO            | NO                       | NO              |
 	And the debug output as 
 	|                       |
+	| [[result]] = Failure |
 
 Scenario: Import data into Table with keep identity disabled
 #Given that the table is truncated i.e. seed is 1 and increment is 1
@@ -136,6 +137,7 @@ Given I have this data
 	|   |                                                       |          |        |            |         | NO                | NO              | NO            | NO            | NO                       | NO              |
 	And the debug output as 
 	|                       |
+	| [[result]] = Failure |
 
 Scenario: Import data into Table with skip blank rows enabled
 #Note the second row is blank from the source data
@@ -353,7 +355,8 @@ Given I have this data
 	|   | [[rs(3).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34 | Col3     | bigint |            |         |                   |                 |               |               |                          |                 |
 	|   |                                                       |          |        |            | 1       | NO                | NO              | YES           | NO            | NO                       | NO              |
 	And the debug output as 
-	|                       |
+	|                      |
+	| [[result]] = Failure |
 	
 Scenario: Import data into table with blank data
 	Given I have this data
