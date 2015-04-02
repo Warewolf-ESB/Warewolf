@@ -23,8 +23,6 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Value_Objects;
-using log4net.Appender;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 
@@ -43,9 +41,6 @@ namespace Dev2.Data.Util
         public const string RecordsetIndexClosingBracket = ")";
 
         private static readonly HashSet<string> SysTags = new HashSet<string>();
-        const string EmptyTag = "<Empty />";
-        const string CdataStart = "<![CDATA[";
-        const string CdataEnd = "]]>";
         const string AdlRoot = "ADL";
       
         private static readonly string[] StripTags = { "<XmlData>", "</XmlData>", "<Dev2ServiceInput>", "</Dev2ServiceInput>", "<sr>", "</sr>", "<ADL />" };
@@ -131,26 +126,6 @@ namespace Dev2.Data.Util
         }
 
         /// <summary>
-        /// Binds the environment variables.
-        /// </summary>
-        /// <param name="transform">The transform.</param>
-        /// <param name="rootServiceName">Name of the root service.</param>
-        /// <returns></returns>
-        public static string BindEnvironmentVariables(string transform, string rootServiceName = "")
-        {
-            if(string.IsNullOrEmpty(transform))
-            {
-                return transform;
-            }
-
-            transform = transform.Replace("@AppPath", Environment.CurrentDirectory);
-            transform = transform.Replace("@ServiceName", rootServiceName);
-            transform = transform.Replace("@OSVersion", Environment.OSVersion.VersionString);
-
-            return transform;
-        }
-
-        /// <summary>
         /// Composes the into user visible recordset.
         /// </summary>
         /// <param name="rs">The rs.</param>
@@ -172,55 +147,6 @@ namespace Dev2.Data.Util
         public static string ComposeIntoUserVisibleRecordset(string rs, int idx, string field)
         {
             return string.Format("{0}({1}).{2}", rs, idx, field);
-        }
-
-        /// <summary>
-        /// Extracts the fixed data list.
-        /// </summary>
-        /// <param name="dataList">The data list.</param>
-        /// <returns>Only the fixed data list items as a string</returns>
-        public static string ExtractFixedDataList(string dataList)
-        {
-            string result = "<ADL>";
-
-            XmlDocument xDoc = new XmlDocument();
-            xDoc.LoadXml(dataList);
-            if(xDoc.HasChildNodes)
-            {
-                XmlNodeList nodeList = xDoc.FirstChild.SelectNodes(@"./*[@IsEditable = ""False""]");
-
-                if(nodeList != null)
-                {
-                    result = nodeList.Cast<XmlNode>().Aggregate(result, (current, node) => current + node.OuterXml);
-                }
-
-                result += "</ADL>";
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Extracts the editable data list.
-        /// </summary>
-        /// <param name="dataList">The data list.</param>
-        /// <returns>Only the editable data list items as a string</returns>
-        public static string ExtractEditableDataList(string dataList)
-        {
-            string result = string.Empty;
-
-            XmlDocument xDoc = new XmlDocument();
-            xDoc.LoadXml(dataList);
-            if(xDoc.HasChildNodes)
-            {
-                XmlNodeList nodeList = xDoc.FirstChild.SelectNodes(@"./*[@IsEditable = ""True""]");
-
-                if(nodeList != null)
-                {
-                    result = nodeList.Cast<XmlNode>().Aggregate(result, (current, node) => current + node.OuterXml);
-                }
-            }
-            return result;
         }
 
         /// <summary>
@@ -410,145 +336,12 @@ namespace Dev2.Data.Util
             return result;
         }
 
+/*
         public static string ExtractAttributeFromTagAndMakeRecordset(string payload, string tagName, string attribute)
         {
             return ExtractAttributeFromTagAndMakeRecordset(payload, tagName, new[] { attribute }, null);
         }
-
-        /// <summary>
-        /// Extracts the attribute from tag and make recordset.
-        /// </summary>
-        /// <param name="payload">The payload.</param>
-        /// <param name="tagName">Name of the tag.</param>
-        /// <param name="attribute">The attribute.</param>
-        /// <param name="childTags">The child tags.</param>
-        /// <returns></returns>
-        public static string ExtractAttributeFromTagAndMakeRecordset(string payload, string tagName, string[] attribute, string[] childTags)
-        {
-
-            StringBuilder result = new StringBuilder(MakeOpenTag(AdlRoot));
-
-            try
-            {
-                XmlDocument xDoc = new XmlDocument();
-                xDoc.LoadXml(payload);
-                XmlNodeList nl = xDoc.GetElementsByTagName(tagName);
-                foreach(XmlNode n in nl)
-                {
-                    result.Append(MakeOpenTag(tagName));
-                    foreach(string atr in attribute)
-                    {
-                        if(n.Attributes != null)
-                        {
-                            string attrValue = n.Attributes[atr].Value;
-                            result.Append(string.Concat(MakeOpenTag(atr), attrValue, MakeCloseTag(atr)));
-                        }
-                    }
-                    // now fetch the extra tag names ;)
-                    if(childTags != null)
-                    {
-                        foreach(string tag in childTags)
-                        {
-                            string innerXml = n.InnerXml;
-                            // we have a match!
-                            int idx = innerXml.IndexOf(MakeOpenTag(tag), StringComparison.Ordinal);
-                            if(idx >= 0)
-                            {
-                                // we have a match ;)
-                                int end = innerXml.IndexOf(MakeCloseTag(tag), StringComparison.Ordinal);
-                                int properStart = (idx + MakeOpenTag(tag).Length);
-                                string val = innerXml.Substring(properStart, (end - properStart));
-                                result.Append(string.Concat(MakeOpenTag(tag), val, MakeCloseTag(tag)));
-                            }
-                        }
-                    }
-
-                    result.Append(MakeCloseTag(tagName));
-                }
-
-            }
-            catch(Exception ex)
-            {
-                Dev2Logger.Log.Error("DataListUtil", ex);
-                //TODO, EMPTY CATCH, Please add reasoning
-            }
-
-            result.Append(MakeCloseTag(AdlRoot));
-
-            return result.ToString();
-        }
-
-        /// <summary>
-        /// Removes a specified node for the ambient data list.
-        /// </summary>
-        /// <param name="adl">The ambient data list.</param>
-        /// <param name="nodeToRemove">The node to remove.</param>
-        /// <param name="evalNode">The eval node.</param>
-        /// <returns></returns>
-        public static string UpsertCleaning(string adl, string nodeToRemove, string evalNode)
-        {
-            string result = Regex.Replace(adl, @">\r\n*<", "><", RegexOptions.Singleline);
-            // ReSharper disable RedundantAssignment
-            result = Regex.Replace(result, @">\n*<", "><", RegexOptions.Singleline);
-            // ReSharper restore RedundantAssignment
-            result = Regex.Replace(adl, @">\r*<", "><", RegexOptions.Singleline);
-
-            result = result.Replace(MakeOpenTag(nodeToRemove), "").Replace(MakeCloseTag(nodeToRemove), "").Replace(MakeSingleTag(nodeToRemove), "");
-
-            bool isFragment;
-            if(IsXml(result, out isFragment))
-            {
-                if(isFragment)
-                {
-                    result = string.Concat(MakeOpenTag(AdlRoot), result, MakeCloseTag(AdlRoot));
-                }
-                else
-                {
-                    XmlDocument xDoc = new XmlDocument();
-                    xDoc.LoadXml(result);
-                    if(xDoc.DocumentElement != null && xDoc.DocumentElement.Name == StripBracketsFromValue(evalNode))
-                    {
-                        result = string.Concat(MakeOpenTag(AdlRoot), result, MakeCloseTag(AdlRoot));
-                    }
-                }
-            }
-            else
-            {
-                result = string.Concat(MakeOpenTag(AdlRoot), result, MakeCloseTag(AdlRoot));
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Makes the open tag.
-        /// </summary>
-        /// <param name="node">The node.</param>
-        /// <returns></returns>
-        public static string MakeOpenTag(string node)
-        {
-            return string.Concat("<", node, ">");
-        }
-
-        /// <summary>
-        /// Makes the close tag.
-        /// </summary>
-        /// <param name="node">The node.</param>
-        /// <returns></returns>
-        public static string MakeCloseTag(string node)
-        {
-            return string.Concat("</", node, ">");
-        }
-
-        /// <summary>
-        /// Makes a single tag.
-        /// </summary>
-        /// <param name="node">The node.</param>
-        /// <returns></returns>
-        public static string MakeSingleTag(string node)
-        {
-            return string.Concat("<", node, " />");
-        }
+*/
 
         /// <summary>
         /// Used to detect the #text and #cdate-section 'nodes' returned by MS XML parser
@@ -563,142 +356,6 @@ namespace Dev2.Data.Util
         }
 
         /// <summary>
-        /// Used to strip newlines and white space be
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static string FlattenIntoSingleString(string value)
-        {
-            string tmp = value.Replace("\n", "").Replace("\r", "");
-            tmp = Regex.Replace(tmp, @">\s*<", "><", RegexOptions.Singleline);
-            return tmp;
-        }
-
-        /// <summary>
-        /// Used to check and see if the ADL is empty
-        /// </summary>
-        /// <param name="dataList"></param>
-        /// <returns></returns>
-        public static bool IsNullAdl(string dataList)
-        {
-            bool result = false;
-
-            if(dataList == null)
-            {
-                result = true;
-            }
-            else
-            {
-                if(dataList == EmptyTag)
-                {
-                    result = true;
-                }
-                else
-                {
-                    try
-                    {
-                        XmlDocument x = new XmlDocument();
-                        x.LoadXml(dataList);
-
-                        XmlNode xn = x.FirstChild;
-                        XmlNodeList xnl = xn.ChildNodes;
-                        if(xnl.Count == 0)
-                        {
-                            result = true;
-                        }
-                    }
-                    catch(Exception ex)
-                    {
-                        Dev2Logger.Log.Error("DataListUtil", ex);
-                        result = true;
-                    }
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        ///  Used to detect if input defs are null
-        /// </summary>
-        /// <param name="inputs"></param>
-        /// <returns></returns>
-        public static bool IsNullInput(string inputs)
-        {
-            bool result = false;
-
-            if(inputs == null)
-            {
-                result = true;
-            }
-            else
-            {
-
-                try
-                {
-                    XmlDocument x = new XmlDocument();
-                    x.LoadXml(inputs);
-
-                    XmlNode xn = x.FirstChild;
-                    XmlNodeList xnl = xn.ChildNodes;
-                    if(xnl.Count == 0)
-                    {
-                        result = true;
-                    }
-                }
-                catch(Exception ex)
-                {
-                    Dev2Logger.Log.Error("DataListUtil", ex);
-                    result = true;
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Used to remove &lt; and &gt; from HTML data
-        /// </summary>
-        /// <param name="html"></param>
-        /// <returns></returns>
-        public static string RemoveHtmlEncoding(string html)
-        {
-            string resultHtml = html.Replace("&amp;lt;", "<").Replace("&amp;gt;", ">");
-            return resultHtml;
-        }
-
-        /// <summary>
-        /// Used to 
-        /// </summary>
-        /// <param name="region"></param>
-        /// <param name="adl"></param>
-        /// <returns></returns>
-        public static string ExtractDataBetweenRegion(string region, string adl)
-        {
-            string result = string.Concat("Extraction Error For [ ", region, " ]");
-
-            string startTag = string.Concat("<", region, ">");
-            string endTag = string.Concat("</", region, ">");
-
-            int start = adl.IndexOf(startTag, StringComparison.Ordinal);
-
-            if(start >= 0)
-            {
-                int end = adl.IndexOf(endTag, StringComparison.Ordinal);
-
-                if(end > start)
-                {
-                    int realStart = start + startTag.Length;
-                    int len = (end - realStart);
-                    result = adl.Substring(realStart, len);
-
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
         /// Removes the brackets.
         /// </summary>
         /// <param name="val">The value.</param>
@@ -706,67 +363,6 @@ namespace Dev2.Data.Util
         public static string RemoveLanguageBrackets(string val)
         {
             return val.Replace("[", string.Empty).Replace("]", string.Empty);
-        }
-
-        /// <summary>
-        /// Wrap up any text into a CDATA region
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public static string CdataWrapText(string data)
-        {
-            return (string.Concat(CdataStart, data, CdataEnd));
-        }
-
-        /// <summary>
-        /// Unwrap any text from a CDATA region
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public static string CdataUnwrapText(string data)
-        {
-            data = data.Replace("&lt;", "<").Replace("&gt;", ">");
-            return (data.Replace(CdataStart, "").Replace(CdataEnd, ""));
-        }
-
-        /// <summary>
-        /// Wrap HTML in a CDATA region if fragment or FormView
-        /// </summary>
-        /// <param name="field"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static string CdataWrapHtml(string field, string value)
-        {
-            string result = value;
-
-            if(field.ToLower() == "fragment" || field.Equals("FormView"))
-            {
-                // value.Replace("<", "&lt;").Replace(">", "&gt;")
-                if(!value.Contains(CdataStart))
-                {
-                    result = string.Concat(CdataStart, value, CdataEnd);
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Remove CDATA regions wrapping with concerns for HTML
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static string CdataUnwrapHtml(string value)
-        {
-            string result = value;
-            result = result.Replace("&lt;", "<").Replace("&gt;", ">");
-            result = result.Replace("&amp;lt;", "<").Replace("&amp;gt;", ">");
-            while(result.Contains("<![CDATA"))
-            {
-                result = result.Replace(CdataStart, "");
-                result = result.Replace(CdataEnd, "");
-            }
-            return result;
         }
 
         /// <summary>
@@ -798,7 +394,7 @@ namespace Dev2.Data.Util
         /// <param name="defs">The defs.</param>
         /// <param name="withData">if set to <c>true</c> [with data].</param>
         /// <returns></returns>
-        public static StringBuilder GenerateDataListFromDefs(IList<IDev2Definition> defs, bool withData = false)
+        public static StringBuilder GenerateDataListFromDefs(IEnumerable<IDev2Definition> defs, bool withData = false)
         {
             StringBuilder result = new StringBuilder("<" + AdlRoot + ">");
 
@@ -974,88 +570,8 @@ namespace Dev2.Data.Util
 
             IList<IDev2Definition> inputScalarList = DataListFactory.CreateScalarList(inputs, false);
 
-            foreach (var recordSetDefinition in inputRecSets.RecordSets)
-            {
-               
-                var outPutRecSet = inputs.FirstOrDefault(definition => definition.IsRecordSet && ExtractRecordsetNameFromValue(definition.MapsTo) == recordSetDefinition.SetName);
-                if (outPutRecSet != null)
-                {
-                    foreach (var dev2ColumnDefinition in recordSetDefinition.Columns)
-                    {
-                        if (dev2ColumnDefinition.IsRecordSet)
-                        {
-                            var defn = "[[" + dev2ColumnDefinition.RecordSetName + "()." + dev2ColumnDefinition.Name + "]]";
-                            env.AssignDataShape(defn);
-                            var warewolfEvalResult = outerEnvironment.Eval(dev2ColumnDefinition.RawValue);
-
-
-
-
-                            if (warewolfEvalResult.IsWarewolfAtomListresult)
-                            {
-                                var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
-
-                                GetRecordsetIndexType(dev2ColumnDefinition.Value);
-
-                                if (recsetResult != null)
-                                {
-                                    var correctRecSet = "[[" + dev2ColumnDefinition.RecordSetName + "()." + dev2ColumnDefinition.Name + "]]";
-
-                                    env.EvalAssignFromNestedStar(correctRecSet, recsetResult);
-                                }
-
-
-
-                            }
-                            if (warewolfEvalResult.IsWarewolfAtomResult)
-                            {
-                                var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
-
-                                if (dev2ColumnDefinition.IsRecordSet)
-                                {
-                                    var enRecordsetIndexType = GetRecordsetIndexType(dev2ColumnDefinition.Value);
-
-                                    if (recsetResult != null)
-                                    {
-                                        var correctRecSet = "[[" + dev2ColumnDefinition.RecordSetName + "(*)." + dev2ColumnDefinition.Name + "]]";
-
-                                        env.AssignWithFrame(new AssignValue(correctRecSet, PublicFunctions.AtomtoString(recsetResult.Item)));
-                                    }
-
-
-                                }
-                            }
-
-
-                        }
-                    }
-                }
-            }
-            foreach (var dev2Definition in inputScalarList)
-            {
-
-                env.AssignDataShape("[[" + dev2Definition.Name + "]]");
-                if (!dev2Definition.IsRecordSet)
-                {
-                    var warewolfEvalResult = outerEnvironment.Eval(dev2Definition.RawValue);
-                    if (warewolfEvalResult.IsWarewolfAtomListresult)
-                    {
-                        var data = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
-                        if (data != null && data.Item.Any())
-                        {
-                            env.AssignWithFrame(new AssignValue("[[" + dev2Definition.Name + "]]", ExecutionEnvironment.WarewolfAtomToString(data.Item.Last())) );
-                        }
-                    }
-                    else
-                    {
-                        var data = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
-                        if (data != null)
-                        {
-                            env.AssignWithFrame( new AssignValue("[[" + dev2Definition.Name + "]]", ExecutionEnvironment.WarewolfAtomToString(data.Item)) );
-                        }
-                    }
-                }
-            }
+            CreateRecordSetsInputs(outerEnvironment, inputRecSets, inputs, env);
+            CreateScalarInputs(outerEnvironment, inputScalarList, env);
             }
             finally
             {
@@ -1065,6 +581,103 @@ namespace Dev2.Data.Util
             return env;
         }
 
+        static void CreateRecordSetsInputs(IExecutionEnvironment outerEnvironment, IRecordSetCollection inputRecSets, IList<IDev2Definition> inputs, ExecutionEnvironment env)
+        {
+            foreach(var recordSetDefinition in inputRecSets.RecordSets)
+            {
+                var outPutRecSet = inputs.FirstOrDefault(definition => definition.IsRecordSet && ExtractRecordsetNameFromValue(definition.MapsTo) == recordSetDefinition.SetName);
+                if(outPutRecSet != null)
+                {
+                    foreach(var dev2ColumnDefinition in recordSetDefinition.Columns)
+                    {
+                        if(dev2ColumnDefinition.IsRecordSet)
+                        {
+                            var defn = "[[" + dev2ColumnDefinition.RecordSetName + "()." + dev2ColumnDefinition.Name + "]]";
+                            env.AssignDataShape(defn);
+                            var warewolfEvalResult = outerEnvironment.Eval(dev2ColumnDefinition.RawValue);
+
+                            if(warewolfEvalResult.IsWarewolfAtomListresult)
+                            {
+                                AtomListInputs(warewolfEvalResult, dev2ColumnDefinition, env);
+                            }
+                            if(warewolfEvalResult.IsWarewolfAtomResult)
+                            {
+                                AtomInputs(warewolfEvalResult, dev2ColumnDefinition, env);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        static void CreateScalarInputs(IExecutionEnvironment outerEnvironment, IEnumerable<IDev2Definition> inputScalarList, ExecutionEnvironment env)
+        {
+            foreach(var dev2Definition in inputScalarList)
+            {
+                env.AssignDataShape("[[" + dev2Definition.Name + "]]");
+                if(!dev2Definition.IsRecordSet)
+                {
+                    var warewolfEvalResult = outerEnvironment.Eval(dev2Definition.RawValue);
+                    if(warewolfEvalResult.IsWarewolfAtomListresult)
+                    {
+                        ScalarAtomList(warewolfEvalResult, env, dev2Definition);
+                    }
+                    else
+                    {
+                        ScalarAtom(warewolfEvalResult, env, dev2Definition);
+                    }
+                }
+            }
+        }
+
+        static void ScalarAtom(WarewolfDataEvaluationCommon.WarewolfEvalResult warewolfEvalResult, ExecutionEnvironment env, IDev2Definition dev2Definition)
+        {
+            var data = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+            if(data != null)
+            {
+                env.AssignWithFrame(new AssignValue("[[" + dev2Definition.Name + "]]", ExecutionEnvironment.WarewolfAtomToString(data.Item)));
+            }
+        }
+
+        static void ScalarAtomList(WarewolfDataEvaluationCommon.WarewolfEvalResult warewolfEvalResult, ExecutionEnvironment env, IDev2Definition dev2Definition)
+        {
+            var data = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+            if(data != null && data.Item.Any())
+            {
+                env.AssignWithFrame(new AssignValue("[[" + dev2Definition.Name + "]]", ExecutionEnvironment.WarewolfAtomToString(data.Item.Last())));
+            }
+        }
+
+        static void AtomInputs(WarewolfDataEvaluationCommon.WarewolfEvalResult warewolfEvalResult, IDev2Definition dev2ColumnDefinition, ExecutionEnvironment env)
+        {
+            var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+
+            if(dev2ColumnDefinition.IsRecordSet)
+            {
+
+
+                if(recsetResult != null)
+                {
+                    var correctRecSet = "[[" + dev2ColumnDefinition.RecordSetName + "(*)." + dev2ColumnDefinition.Name + "]]";
+
+                    env.AssignWithFrame(new AssignValue(correctRecSet, PublicFunctions.AtomtoString(recsetResult.Item)));
+                }
+            }
+        }
+
+        static void AtomListInputs(WarewolfDataEvaluationCommon.WarewolfEvalResult warewolfEvalResult, IDev2Definition dev2ColumnDefinition, ExecutionEnvironment env)
+        {
+            var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+
+            GetRecordsetIndexType(dev2ColumnDefinition.Value);
+
+            if(recsetResult != null)
+            {
+                var correctRecSet = "[[" + dev2ColumnDefinition.RecordSetName + "()." + dev2ColumnDefinition.Name + "]]";
+
+                env.EvalAssignFromNestedStar(correctRecSet, recsetResult);
+            }
+        }
 
         /// <summary>
         /// Determines whether the value is a recordset.
@@ -1080,28 +693,6 @@ namespace Dev2.Data.Util
             if(!string.IsNullOrEmpty(value))
             {
                 if(value.Contains(RecordsetIndexOpeningBracket) && value.Contains(RecordsetIndexClosingBracket))
-                {
-                    result = true;
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Determines whether the value is a recordset.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>
-        ///   <c>true</c> if [value is recordset] [the specified value]; otherwise, <c>false</c>.
-        /// </returns>
-        public static bool IsValueScalar(string value)
-        {
-            bool result = false;
-
-            if (!string.IsNullOrEmpty(value))
-            {
-                if ( value.StartsWith(OpeningSquareBrackets) && value.EndsWith(ClosingSquareBrackets))
                 {
                     result = true;
                 }
@@ -1234,16 +825,6 @@ namespace Dev2.Data.Util
         public static bool EndsWithClosingTags(string value)
         {
             return !string.IsNullOrEmpty(value) && value.EndsWith(ClosingSquareBrackets);
-        }
-
-        /// <summary>
-        /// Checks if a region is open
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static bool StartsWithOpeningTags(string value)
-        {
-            return !string.IsNullOrEmpty(value) && value.StartsWith(OpeningSquareBrackets);
         }
 
         /// <summary>
@@ -1386,27 +967,6 @@ namespace Dev2.Data.Util
         }
 
         /// <summary>
-        /// Strip the () from a recordset
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static string ConvertRecordsetValueToXmlElement(string value)
-        {
-            string result = string.Empty;
-
-            int start = value.IndexOf(RecordsetIndexOpeningBracket, StringComparison.Ordinal);
-
-            if(start > 0)
-            {
-                result = value.Substring(0, start);
-            }
-
-            return result;
-        }
-
-
-
-        /// <summary>
         /// Gets the type of the recordset index.
         /// </summary>
         /// <param name="idx">The idx.</param>
@@ -1472,69 +1032,7 @@ namespace Dev2.Data.Util
             return result;
         }
 
-        /// <summary>
-        /// Replace a single node in a XML document
-        /// </summary>
-        /// <param name="payload">The payload.</param>
-        /// <param name="tagName">Name of the tag.</param>
-        /// <param name="newValue">The new value.</param>
-        /// <returns></returns>
-        public static string ReplaceXmlNode(string payload, string tagName, string newValue)
-        {
-            XmlDocument xDoc = new XmlDocument();
-            xDoc.LoadXml(payload);
-            XmlNode node = xDoc.SelectSingleNode(string.Concat("//", tagName));
-            if(node != null && node.ParentNode != null)
-            {
-                node.ParentNode.RemoveChild(node);
-            }
-            if(xDoc.DocumentElement != null)
-            {
-                xDoc.DocumentElement.InnerXml = string.Concat(xDoc.DocumentElement.InnerXml, newValue);
-            }
-
-            return xDoc.OuterXml;
-        }
-
         //used in the replace node method
-        private static readonly HashSet<char> Base64Characters = new HashSet<char>
-            { 
-    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 
-    'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 
-    'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 
-    'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/', 
-    '='
-};
-
-        /// <summary>
-        /// Check if a string is a base64 string
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns></returns>
-        public static bool IsBase64String(string value)
-        {
-            if(string.IsNullOrEmpty(value))
-            {
-                return false;
-            }
-            if(value.Any(c => !Base64Characters.Contains(c)))
-            {
-                return false;
-            }
-
-            try
-            {
-                // ReSharper disable ReturnValueOfPureMethodIsNotUsed
-                Convert.FromBase64String(value);
-                // ReSharper restore ReturnValueOfPureMethodIsNotUsed
-                return true;
-            }
-            catch(FormatException fex)
-            {
-                Dev2Logger.Log.Error("DataListUtil", fex);
-                return false;
-            }
-        }
 
         /// <summary>
         /// Checks if the info contained in data is well formed XML
@@ -1559,7 +1057,7 @@ namespace Dev2.Data.Util
         /// <summary>
         /// Checks if the info contained in data is well formed XML
         /// </summary>
-        public static bool IsXml(string data, out bool isFragment, out bool isHtml)
+        static bool IsXml(string data, out bool isFragment, out bool isHtml)
         {
             string trimedData = data.Trim();
             bool result = (trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA["));
@@ -1622,29 +1120,6 @@ namespace Dev2.Data.Util
             return false;
         }
 
-
-        /// <summary>
-        /// Returns all of the possible expression combinations of recordset(*) data
-        /// </summary>
-        /// <param name="expression">The expression.</param>
-        /// <param name="currentDataList">The current data list.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        public static IList<string> GetAllPossibleExpressionsForFunctionOperations(string expression, Guid currentDataList, out ErrorResultTO errors)
-        {
-            IList<string> result = new List<string>();
-            IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
-            IBinaryDataListEntry entry = DataListFactory.CreateDataListCompiler().Evaluate(currentDataList, enActionType.User, expression, false, out errors);
-            IDev2DataListEvaluateIterator expressionIterator = Dev2ValueObjectFactory.CreateEvaluateIterator(entry);
-            colItr.AddIterator(expressionIterator);
-
-            while(colItr.HasMoreData())
-            {
-                result.Add(colItr.FetchNextRow(expressionIterator).TheValue);
-            }
-            return result;
-        }
-
         public static IList<string> GetAllPossibleExpressionsForFunctionOperations(string expression, IExecutionEnvironment env, out ErrorResultTO errors)
         {
             IList<string> result = new List<string>();
@@ -1662,36 +1137,6 @@ namespace Dev2.Data.Util
             
 
             return result;
-        }
-
-
-        /// <summary>
-        /// Gets the regions from expression.
-        /// </summary>
-        /// <param name="expression">The expression.</param>
-        /// <returns></returns>
-        public static IList<string> GetRegionsFromExpression(string expression)
-        {
-            // Retrieve all the regions from an expression
-            const string openRegion = OpeningSquareBrackets;
-            const string closeRegion = ClosingSquareBrackets;
-            StringBuilder expressionBuilder = new StringBuilder();
-            expressionBuilder.Append(expression.Substring(expression.IndexOf(openRegion, StringComparison.Ordinal), expression.LastIndexOf(closeRegion, StringComparison.Ordinal) - expression.IndexOf(openRegion, StringComparison.Ordinal)));
-            string expressionString = (expressionBuilder.ToString().Remove(0, 2));
-            expressionString = expressionString.Remove(expressionString.Length - 2, 2);
-            expressionBuilder.Clear().Append(expressionString);
-            // find the text before the next open region
-            var regions = new List<string> { expressionBuilder.ToString().Substring(0, expressionBuilder.ToString().IndexOf(openRegion, StringComparison.Ordinal)) };
-            // if there are still regions
-            if(expressionBuilder.ToString().Contains(openRegion) && expressionBuilder.ToString().Contains(closeRegion))
-            {
-                regions.AddRange(GetRegionsFromExpression(expressionBuilder.ToString()));
-            }
-            else
-            {
-                return regions;
-            }
-            return regions;
         }
 
         /// <summary>
@@ -1908,63 +1353,6 @@ namespace Dev2.Data.Util
         public static string RemoveRecordsetBracketsFromValue(string value)
         {
             return value.Replace("()", "");
-        }
-
-        /// <summary>
-        /// Gets the value at an index.
-        /// </summary>
-        /// <param name="entry">The entry.</param>
-        /// <param name="index">The index.</param>
-        /// <param name="error">The error.</param>
-        /// <returns></returns>
-        public static string GetValueAtIndex(IBinaryDataListEntry entry, int index, out string error)
-        {
-            error = string.Empty;
-            string result = entry.IsRecordset ? entry.TryFetchIndexedRecordsetUpsertPayload(index, out error).TheValue : entry.FetchScalar().TheValue;
-            return result;
-        }
-
-        /// <summary>
-        /// Makes the data list fixed.
-        /// </summary>
-        /// <param name="datalist">The datalist.</param>
-        /// <returns>The datalist string with all variables fixed/not editable</returns>
-        public static string MakeDataListFixed(string datalist)
-        {
-            string result = datalist;
-
-            if(!string.IsNullOrEmpty(datalist))
-            {
-
-                XmlDocument xDoc = new XmlDocument();
-                xDoc.LoadXml(datalist);
-                foreach(XmlNode root in xDoc.ChildNodes)
-                {
-                    if(root.HasChildNodes)
-                    {
-                        foreach(XmlNode node in root.ChildNodes)
-                        {
-                            foreach(XmlNode childnode in node.ChildNodes)
-                            {
-                                XmlAttribute editableAtt3 = xDoc.CreateAttribute("IsEditable");
-                                editableAtt3.Value = "False";
-                                if(childnode.Attributes != null)
-                                {
-                                    childnode.Attributes.Append(editableAtt3);
-                                }
-                            }
-                            XmlAttribute editableAtt = xDoc.CreateAttribute("IsEditable");
-                            editableAtt.Value = "False";
-                            if(node.Attributes != null)
-                            {
-                                node.Attributes.Append(editableAtt);
-                            }
-                        }
-                    }
-                }
-                result = xDoc.OuterXml;
-            }
-            return result;
         }
 
         /// <summary>

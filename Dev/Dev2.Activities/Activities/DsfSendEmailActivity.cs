@@ -220,13 +220,17 @@ namespace Dev2.Activities
 
                 if(allErrors.HasErrors())
                 {
+                    foreach (var err in allErrors.FetchErrors())
+                    {
+                        dataObject.Environment.Errors.Add(err);
+                    }
                     UpsertResult(indexToUpsertTo, dataObject.Environment, null);
                     if(dataObject.IsDebugMode())
                     {
                         AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
                     DisplayAndWriteError("DsfSendEmailActivity", allErrors);
-                    compiler.UpsertSystemTag(dlId, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+
                 }
                 if(dataObject.IsDebugMode())
                 {

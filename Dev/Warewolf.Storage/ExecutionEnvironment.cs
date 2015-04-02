@@ -291,6 +291,7 @@ namespace Warewolf.Storage
                 if(warewolfAtomResult != null)
                 {
                     var x = warewolfAtomResult.Item;
+                    if (x.IsNothing) return null;
                 // ReSharper restore PossibleNullReferenceException
                 return WarewolfAtomToString(x);
             }

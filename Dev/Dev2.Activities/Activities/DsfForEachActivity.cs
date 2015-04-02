@@ -507,7 +507,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 if(ForEachType == enForEachType.InCSV && !string.IsNullOrEmpty(CsvIndexes))
                 {
-                    AddDebugItem(new DebugEvalResult(NumOfExections, "Csv Indexes",environment), debugItem);
+                    AddDebugItem(new DebugEvalResult(CsvIndexes, "Csv Indexes", environment), debugItem);
      
                 }
                 if(ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(From))
