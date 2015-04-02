@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Data.Util;
+using Dev2.DataList.Contract;
 using Warewolf.Storage;
 
 namespace Dev2.Activities
@@ -23,6 +25,11 @@ namespace Dev2.Activities
             {
                 if (DataListUtils.IsValueRecordset(_inputVariable))
                 {
+                    if (DataListUtil.GetRecordsetIndexType(_inputVariable) == enRecordsetIndexType.Blank)
+                    {
+                        var length = environment.GetLength(DataListUtil.ExtractRecordsetNameFromValue(_inputVariable));
+                        _inputVariable = DataListUtil.ReplaceRecordsetBlankWithIndex(_inputVariable, length);
+                    }
                     var indexVal = DataListUtils.ExtractIndexRegionFromRecordset(_inputVariable);
                     if (DataListUtils.IsEvaluated(indexVal))
                     {

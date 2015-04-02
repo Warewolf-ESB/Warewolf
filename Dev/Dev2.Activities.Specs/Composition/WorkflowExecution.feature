@@ -1730,16 +1730,10 @@ Scenario: Executing ForEach in Rec with star which contains Sequence
 	  | 3 | [[rec(2).a]] =  Test     |
 	  | 4 | [[rec(2).b]] =  Warewolf |
 	  And the 'ForEachTest1' in WorkFlow 'WorkFWithForEachwithRecContainingSequence' debug inputs as 
-	  |                | Recordset               |
-	  | * in Recordset |                         |
-	  |                | [[rec(1).a]] = 123      |
-	  |                | [[rec(1).b]] = 456      |
-	  |                | [[rec(1).c]] =          |
-	  |                | [[rec(1).d]] =          |
-	  |                | [[rec(2).a]] = Test     |
-	  |                | [[rec(2).b]] = Warewolf |
-	  |                | [[rec(2).c]] =          |
-	  |                | [[rec(2).d]]  =         |
+	  |                | Recordset      |
+	  | * in Recordset |                |
+	  |                | [[rec(1)]] = |
+	  |                | [[rec(2)]] = |
       And the 'ForEachTest1' in WorkFlow 'WorkFWithForEachwithRecContainingSequence' has  "2" nested children
 	  And the 'Data Merge' in "Seq1" in step 1 for 'ForEachTest1' debug inputs as
 	  | # |                    | With | Using | Pad | Align |
@@ -3253,10 +3247,8 @@ Scenario: Workflow with Calculation using Star notation
 	  | 3 | [[rs(3).a]] =  40 |
 	   And the 'Calculation' in WorkFlow 'WorkflowWithAssignCalculationUsingStar' debug inputs as
 	  | # | Variable        | New Value |
-	  | 1 | [[rec().sum]] = |           |
 	  And the 'Calculation' in Workflow 'WorkflowWithAssignCalculationUsingStar' debug outputs as  
 	  | # |                   |
-	  | 1 | [[rec(1).sum]] =  |
 
 # This Test should be passed after the bug 12236 is fixed    
 #Scenario: Workflow with Assign and Gather System Information executing with incorrect variable
@@ -3573,8 +3565,8 @@ Scenario: Workflow with Assigns Replace and testing variables that hasn't been a
 	  | # |                |
 	  | 1 | [[Val]] = test |
 	  And the 'Replacing' in WorkFlow 'workflowithAssignandReplaceTestingUnassignedvariablevalues' debug inputs as 
-	  | In Field(s) | Find | Replace With |
-	  | [[rec()]] = |      |              |
+	  | In Field(s) | Find       | Replace With |
+	  | [[rec()]] = | [[Val1]] = | [[Val2]] =   |
 	  And the 'Replacing' in Workflow 'workflowithAssignandReplaceTestingUnassignedvariablevalues' debug outputs as
 	  |              |
 	  | [[replac]] = |
@@ -4272,8 +4264,6 @@ Scenario: Executing Recordset - Count Records example workflow
 	  Then the workflow execution has "NO" error
 	  And the 'Count Records' in WorkFlow 'Recordset - Count Records' debug inputs as
 	  | Recordset                  |
-	  | [[rec(1).set]] = Warewolf  |
-	  | [[rec(2).set]] = SOA       |
 	  | [[rec(3).set]] = Recordset |
 	  And the 'Count Records' in Workflow 'Recordset - Count Records' debug outputs as  
 	  |               |
@@ -4306,13 +4296,13 @@ Scenario: Executing Recordset - Delete Records example workflow
 	  When "Recordset - Delete Records Test" is executed
 	  Then the workflow execution has "NO" error
 	  And the 'Delete Record1' in WorkFlow 'Recordset - Delete Records' debug inputs as
-	  | Records            |
+	  | Recordset          |
 	  | [[rec(2).set]] = 2 |
 	  And the 'Delete Record1' in Workflow 'Recordset - Delete Records' debug outputs as  
 	  |                      |
 	  | [[result]] = Success |
 	  And the 'Delete Record2' in WorkFlow 'Recordset - Delete Records' debug inputs as
-	  | Records            |
+	  | Recordset          |
 	  | [[rec(1).set]] = 1 |
 	  | [[rec(3).set]] = 3 |
 	  And the 'Delete Record2' in Workflow 'Recordset - Delete Records' debug outputs as  
