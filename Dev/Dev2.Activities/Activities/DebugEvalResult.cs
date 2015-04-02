@@ -21,20 +21,20 @@ namespace Dev2.Activities
             _label = label;
             try
             {
-                if (DataListUtils.IsValueRecordset(inputVariable))
+                if (DataListUtils.IsValueRecordset(_inputVariable))
                 {
-                    var indexVal = DataListUtils.ExtractIndexRegionFromRecordset(inputVariable);
+                    var indexVal = DataListUtils.ExtractIndexRegionFromRecordset(_inputVariable);
                     if (DataListUtils.IsEvaluated(indexVal))
                     {
                         var subIndexValResult = environment.Eval(indexVal);
-                        if (subIndexValResult != null && subIndexValResult.IsWarewolfAtomResult)
+                        if (subIndexValResult != null)
                         {
                             var subIndexVal = ExecutionEnvironment.WarewolfEvalResultToString(subIndexValResult);
-                            inputVariable = inputVariable.Replace(indexVal, subIndexVal);
+                            _inputVariable = _inputVariable.Replace(indexVal, subIndexVal);
                         }
                     }
                 }
-                _evalResult = environment.Eval(inputVariable);
+                _evalResult = environment.Eval(_inputVariable);
                 if (_inputVariable.Contains(".WarewolfPositionColumn")) _positionInput = _inputVariable.Replace(".WarewolfPositionColumn", ""); 
 
             }

@@ -3735,8 +3735,8 @@ Scenario: Calculate testing variable values that hasn't been assigned
 	  | # |             |
 	  | 1 | [[Val]] = 1 |
 	  And the 'Calculate1' in WorkFlow 'WorkflowforCalTestingUnassignedvariablevalue' debug inputs as 
-      | fx =                    |
-      | [[Val1]]+1 = [[Val1]]+1 |           
+      | fx =         |
+      | [[Val1]]+1 = |           
       And the 'Calculate1' in Workflow 'WorkflowforCalTestingUnassignedvariablevalue' debug outputs as  
 	  |           |
 	  | [[res]] = |
@@ -3757,8 +3757,8 @@ Scenario: Calculate testing variable values that hasn't been assigned2
 	  | # |             |
 	  | 1 | [[Val]] = 1 |
 	  And the 'Calculate1' in WorkFlow 'WorkflowforCalTestingUnassignedvariablevalue2' debug inputs as 
-      | fx =                        |
-      | [[Val1]]23+1 = [[Val1]]23+1 |           
+      | fx =           |
+      | [[Val1]]23+1 = |           
       And the 'Calculate1' in Workflow 'WorkflowforCalTestingUnassignedvariablevalue2' debug outputs as  
 	  |           |
 	  | [[res]] = |

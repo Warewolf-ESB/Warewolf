@@ -9670,7 +9670,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table527 = new TechTalk.SpecFlow.Table(new string[] {
                         "fx ="});
             table527.AddRow(new string[] {
-                        "[[Val1]]+1 = [[Val1]]+1"});
+                        "[[Val1]]+1 ="});
 #line 3737
    testRunner.And("the \'Calculate1\' in WorkFlow \'WorkflowforCalTestingUnassignedvariablevalue\' debug" +
                     " inputs as", ((string)(null)), table527, "And ");
@@ -9741,7 +9741,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table532 = new TechTalk.SpecFlow.Table(new string[] {
                         "fx ="});
             table532.AddRow(new string[] {
-                        "[[Val1]]23+1 = [[Val1]]23+1"});
+                        "[[Val1]]23+1 ="});
 #line 3759
    testRunner.And("the \'Calculate1\' in WorkFlow \'WorkflowforCalTestingUnassignedvariablevalue2\' debu" +
                     "g inputs as", ((string)(null)), table532, "And ");
