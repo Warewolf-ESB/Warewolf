@@ -175,7 +175,7 @@ namespace Dev2.Activities.Debug
                                 Label = _rightLabel,
                                 Variable = DataListUtil.IsEvaluated(_assignedToVariableName) ? _assignedToVariableName : null,
                                 Operator = string.IsNullOrEmpty(_operand) ? "" : "=",
-                                GroupName = Variable,
+                                GroupName = null,
                                 Value = Warewolf.Storage.ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item),
                                 GroupIndex = 0
                             });
