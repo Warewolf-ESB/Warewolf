@@ -13,6 +13,7 @@ using System;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.Runtime.Diagnostics;
@@ -247,8 +248,20 @@ namespace Dev2.Runtime.ServiceModel
 
         public virtual ServiceMethodList FetchMethods(DbSource dbSource)
         {
-            var broker = CreateDatabaseBroker();
-            return broker.GetServiceMethods(dbSource);
+            switch(dbSource.ServerType)
+            {
+                    case enSourceType.MySqlDatabase:
+                {
+                    var broker = new  MySqlDatabaseBroker();
+                    return broker.GetServiceMethods(dbSource);
+                }
+                default:
+                {
+                            var broker = CreateDatabaseBroker();
+                        return broker.GetServiceMethods(dbSource);
+                }
+            }
+    
         }
 
         #endregion
@@ -264,6 +277,7 @@ namespace Dev2.Runtime.ServiceModel
 
         protected virtual SqlDatabaseBroker CreateDatabaseBroker()
         {
+
             return new SqlDatabaseBroker();
         }
 

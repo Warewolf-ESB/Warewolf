@@ -9,6 +9,7 @@
 */
 
 using System.Data;
+using Dev2.Common.Interfaces.DB;
 
 namespace Dev2.Common.Interfaces.Services.Sql
 {

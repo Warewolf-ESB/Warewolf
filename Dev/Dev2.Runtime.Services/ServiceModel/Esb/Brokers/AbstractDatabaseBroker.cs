@@ -42,7 +42,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         public virtual List<string> GetDatabases(DbSource dbSource)
         {
             VerifyArgument.IsNotNull("dbSource", dbSource);
-            using(var server = CreateDbServer())
+            using(var server = CreateDbServer(dbSource))
             {
                 server.Connect(dbSource.ConnectionString);
                 return server.FetchDatabases();
@@ -89,7 +89,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             //
             // Get stored procedures and functions for this database source
             //
-            using(var server = CreateDbServer())
+            using(var server = CreateDbServer(dbSource))
             {
                 server.Connect(dbSource.ConnectionString);
                 server.FetchStoredProcedures(procedureFunc, functionFunc);
@@ -101,7 +101,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             return GetCachedResult(dbSource, out cacheResult) ? cacheResult : serviceMethods;
         }
 
-        bool GetCachedResult(DbSource dbSource, out ServiceMethodList cacheResult)
+    
+        protected bool GetCachedResult(DbSource dbSource, out ServiceMethodList cacheResult)
         {
             TheCache.TryGetValue(dbSource.ConnectionString, out cacheResult);
             if (cacheResult != null)
@@ -117,7 +118,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             VerifyArgument.IsNotNull("dbService.Source", dbService.Source);
 
             IOutputDescription result;
-            using(var server = CreateDbServer())
+            using(var server = CreateDbServer(dbService.Source as DbSource))
             {
                 server.Connect(((DbSource)dbService.Source).ConnectionString);
                 server.BeginTransaction();
@@ -148,7 +149,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             return result;
         }
 
-        protected virtual TDbServer CreateDbServer()
+        protected virtual TDbServer CreateDbServer(DbSource dbSource)
         {
             return new TDbServer();
         }
@@ -161,7 +162,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             return (payload.Replace("&lt;", "<").Replace("&gt;", ">"));
         }
 
-        static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, string sourceCode,string executeAction)
+        protected static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, string sourceCode,string executeAction)
         {
             return new ServiceMethod(command.CommandText, sourceCode, parameters.Select(MethodParameterFromDataParameter), null, null,executeAction);
         }

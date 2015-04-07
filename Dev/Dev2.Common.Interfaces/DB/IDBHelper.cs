@@ -13,7 +13,8 @@ namespace Dev2.Common.Interfaces.DB
 {
     public enum enSupportedDBTypes
     {
-        MSSQL
+        MSSQL,
+        MySQL
     }
 
     public interface IDBConnectionString

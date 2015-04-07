@@ -15,6 +15,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
@@ -135,12 +136,16 @@ namespace Dev2.Runtime.ServiceModel
         protected virtual DatabaseValidationResult DoDatabaseValidation(DbSource dbSourceDetails)
         {
             var result = new DatabaseValidationResult();
-
+           
             switch(dbSourceDetails.ServerType)
             {
                 case enSourceType.SqlDatabase:
-                    var broker = CreateDatabaseBroker();
+                    var broker = CreateDatabaseBroker(dbSourceDetails.ServerType);
                     result.DatabaseList = broker.GetDatabases(dbSourceDetails);
+                    break;
+                case enSourceType.MySqlDatabase:
+                    var mybroker = CreateMySqlDatabaseBroker(dbSourceDetails.ServerType);
+                    result.DatabaseList = mybroker.GetDatabases(dbSourceDetails);
                     break;
                 default:
                     result.IsValid = false;
@@ -151,9 +156,15 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        protected virtual SqlDatabaseBroker CreateDatabaseBroker()
+        protected virtual SqlDatabaseBroker CreateDatabaseBroker(enSourceType type)
         {
+
             return new SqlDatabaseBroker();
+        }
+        protected virtual MySqlDatabaseBroker CreateMySqlDatabaseBroker(enSourceType type)
+        {
+
+            return new MySqlDatabaseBroker();
         }
     }
 }

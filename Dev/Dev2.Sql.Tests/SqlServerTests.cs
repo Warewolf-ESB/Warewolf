@@ -17,6 +17,7 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Services.Sql;
 using Dev2.Services.Sql;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -717,7 +718,7 @@ namespace Dev2.Sql.Tests
                 var output =sqlServer.FetchDatabases();
                 Assert.AreEqual("Bob",output[0]);
                 Assert.AreEqual("Dave",output[1] );
-                factory.Verify(a => a.GetSchema(It.IsAny<IDbConnection>(), "Databases"),Times.Once());
+                factory.Verify(a => a.GetSchema(It.IsAny<IDbConnection>(), "Databases"), Times.Once());
 
 
                 //------------Assert Results-------------------------

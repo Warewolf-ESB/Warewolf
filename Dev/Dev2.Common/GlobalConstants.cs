@@ -296,6 +296,7 @@ namespace Dev2.Common
 FROM sys.objects
 WHERE type_desc LIKE '%FUNCTION%'
 or type_desc LIKE '%Procedure%'";
+        public const string SchemaQueryMySql = @"SHOW PROCEDURE STATUS;";
         public const string ExplorerItemModelFormat = "Dev2.Models.ExplorerItemModel";
         public const string VersionDownloadPath = "Installers\\";
         public const string VersionFolder = "VersionControl";

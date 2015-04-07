@@ -126,7 +126,7 @@ namespace Dev2.Services.Sql
         public void FetchStoredProcedures(
             Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor,
             Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor,
-            bool continueOnProcessorException = false)
+            bool continueOnProcessorException = false,string dbName = "")
         {
             VerifyArgument.IsNotNull("procedureProcessor", procedureProcessor);
             VerifyArgument.IsNotNull("functionProcessor", functionProcessor);

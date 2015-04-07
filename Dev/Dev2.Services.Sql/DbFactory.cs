@@ -11,9 +11,12 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Services.Sql;
+using MySql.Data.MySqlClient;
 
 namespace Dev2.Services.Sql
 {
@@ -40,8 +43,24 @@ namespace Dev2.Services.Sql
 
         public DataTable GetSchema(IDbConnection connection, string collectionName)
         {
+
+                    return GetSqlServerSchema(connection, collectionName);
+
+        }
+
+        //DataTable GetMySqlServerSchema(IDbConnection connection)
+        //{
+        //    if(! (connection is MySqlConnection))
+        //        throw new Exception("Invalid Mqsql Connection");
+
+        //    return ((MySqlConnection)connection).GetSchema();
+            
+        //}
+
+        static DataTable GetSqlServerSchema(IDbConnection connection, string collectionName)
+        {
             var sqlConnection = connection as SqlConnection;
-            if (sqlConnection != null)
+            if(sqlConnection != null)
             {
                 return sqlConnection.GetSchema(collectionName);
             }
