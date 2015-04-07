@@ -18,7 +18,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using Dev2.Common;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.DataList.Contract;
@@ -586,25 +585,38 @@ namespace Dev2.Data.Util
             foreach(var recordSetDefinition in inputRecSets.RecordSets)
             {
                 var outPutRecSet = inputs.FirstOrDefault(definition => definition.IsRecordSet && ExtractRecordsetNameFromValue(definition.MapsTo) == recordSetDefinition.SetName);
-                if(outPutRecSet != null)
+                if (outPutRecSet != null)
                 {
-                    foreach(var dev2ColumnDefinition in recordSetDefinition.Columns)
+                    var emptyList = new List<string>();
+                    foreach (var dev2ColumnDefinition in recordSetDefinition.Columns)
                     {
-                        if(dev2ColumnDefinition.IsRecordSet)
+                        if (dev2ColumnDefinition.IsRecordSet)
                         {
                             var defn = "[[" + dev2ColumnDefinition.RecordSetName + "()." + dev2ColumnDefinition.Name + "]]";
-                            env.AssignDataShape(defn);
+
+
+                            if (string.IsNullOrEmpty(dev2ColumnDefinition.RawValue))
+                            {
+                                if (!emptyList.Contains(defn))
+                                {
+                                    emptyList.Add(defn);
+                                }
+                            }
                             var warewolfEvalResult = outerEnvironment.Eval(dev2ColumnDefinition.RawValue);
 
-                            if(warewolfEvalResult.IsWarewolfAtomListresult)
+                            if (warewolfEvalResult.IsWarewolfAtomListresult)
                             {
                                 AtomListInputs(warewolfEvalResult, dev2ColumnDefinition, env);
                             }
-                            if(warewolfEvalResult.IsWarewolfAtomResult)
+                            if (warewolfEvalResult.IsWarewolfAtomResult)
                             {
                                 AtomInputs(warewolfEvalResult, dev2ColumnDefinition, env);
                             }
                         }
+                    }
+                    foreach (var defn in emptyList)
+                    {
+                        env.AssignDataShape(defn);
                     }
                 }
             }
@@ -673,7 +685,7 @@ namespace Dev2.Data.Util
 
             if(recsetResult != null)
             {
-                var correctRecSet = "[[" + dev2ColumnDefinition.RecordSetName + "()." + dev2ColumnDefinition.Name + "]]";
+                var correctRecSet = "[[" + dev2ColumnDefinition.RecordSetName + "(*)." + dev2ColumnDefinition.Name + "]]";
 
                 env.EvalAssignFromNestedStar(correctRecSet, recsetResult);
             }
