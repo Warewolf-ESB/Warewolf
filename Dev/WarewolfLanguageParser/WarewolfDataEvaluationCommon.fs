@@ -117,7 +117,7 @@ let evalRecordSetLastIndex (recset:WarewolfRecordset) (identifier:RecordSetIdent
 let evalScalar (scalarName:ScalarIdentifier) (env:WarewolfEnvironment) =
     if env.Scalar.ContainsKey scalarName
     then     ( env.Scalar.[scalarName])
-    else raise (new Dev2.Common.Common.NullValueInVariableException(sprintf "Scalar value{ %s }does not exist" scalarName,scalarName))
+    else raise (new Dev2.Common.Common.NullValueInVariableException(sprintf "Scalar value { %s } is NULL" scalarName,scalarName))
              
 
 let rec IndexToString (x:Index) =

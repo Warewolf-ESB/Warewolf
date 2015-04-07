@@ -600,6 +600,7 @@ namespace Dev2.Data.Util
                                 if (!emptyList.Contains(defn))
                                 {
                                     emptyList.Add(defn);
+                                    continue;
                                 }
                             }
                             var warewolfEvalResult = outerEnvironment.Eval(dev2ColumnDefinition.RawValue);
