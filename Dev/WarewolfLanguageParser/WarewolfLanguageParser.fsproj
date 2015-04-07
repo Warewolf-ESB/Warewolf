@@ -49,7 +49,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Script.fsx" />
-    <Compile Include="DataAST.fs" />
     <Compile Include="DataASTMutable.fs" />
     <None Include="packages.config" />
     <Compile Include="LanguageAST.fs" />
@@ -61,16 +60,13 @@
     </FsLex>
     <Compile Include="WarewolfLanguage.fs" />
     <Compile Include="WarewolfLanguageLex.fs" />
-    <Compile Include="EvalLanguage.fs" />
     <Compile Include="ToolAst.fs" />
     <Compile Include="WarewolfDataEvaluationCommon.fs" />
-	<Compile Include="AssignEvaluation.fs" />
+    <Compile Include="AssignEvaluation.fs" />
     <Compile Include="Where.fs" />
     <Compile Include="UpdateInPlace.fs" />
-    <Compile Include="EvalTools.fs" />
     <Compile Include="PublicFunctions.fs" />
     <Compile Include="WarewolfTestData.fs" />
-
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">

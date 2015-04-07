@@ -1,5 +1,4 @@
 ﻿module LanguageAST
-open DataAST
 open DataASTMutable
 
 type ScalarId = string
@@ -23,7 +22,6 @@ and ScalarIdentifier = string
 and LanguageExpression = 
     | RecordSetExpression of RecordSetIdentifier
     | ScalarExpression of ScalarIdentifier
-    | AtomExpression of Atom
     | WarewolfAtomAtomExpression of WarewolfAtom
     | ComplexExpression of LanguageExpression list
     | RecordSetNameExpression of RecordSetName

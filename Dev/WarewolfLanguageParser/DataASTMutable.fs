@@ -18,6 +18,7 @@ type WarewolfAtom =
                             | Int a -> a.ToString()
                             | DataString a -> a
                             | Nothing -> ""
+                            | PositionedValue (a,b) -> b.ToString()
     override x.Equals y = x.ToString() = y.ToString()
     override x.GetHashCode() = x.ToString().GetHashCode()
     interface System.IComparable with
@@ -27,7 +28,7 @@ type WarewolfAtom =
                                             | ( Int a, Int b ) -> a.CompareTo(b)
                                             | (Float a, Float b ) -> a.CompareTo(b)
                                             | (a,b) -> ( a.ToString()).CompareTo( b.ToString())
-
+                | a ->x.ToString().CompareTo(a.ToString())
 type WarewolfAtomRecord = WarewolfAtom
 
 type WarewolfColumnData = WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>
