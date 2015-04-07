@@ -144,13 +144,21 @@ and EvalMultiAssignOp  (env:WarewolfEnvironment)  (value :IAssignValue ) =
                             |   ScalarExpression a -> AddToScalars env a x
                             |   RecordSetExpression b -> AddToRecordSetFramed env b x
                             |   WarewolfAtomAtomExpression a -> env
-                            |   _ -> failwith "input must be recordset or value"
+                            |   _ -> let expression = (EvalToExpression env value.Name)
+                                     if System.String.IsNullOrEmpty(  expression) || ( expression) = "[[]]" then
+                                        env
+                                     else
+                                        EvalMultiAssignOp env (new WarewolfParserInterop.AssignValue(  expression , value.Value))
                 | WarewolfAtomListresult x -> 
                         match left with 
                         |   ScalarExpression a -> AddToScalars env a (Seq.last x)
                         |   RecordSetExpression b -> AddToRecordSetFramedWithAtomList env b (List.ofSeq x) shouldUseLast value
                         |   WarewolfAtomAtomExpression a -> env
-                        |   _ -> failwith "input must be recordset or value"
+                        |    _ -> let expression = (EvalToExpression env value.Name)
+                                  if System.String.IsNullOrEmpty(  expression) || ( expression) = "[[]]" then
+                                        env
+                                  else
+                                        EvalMultiAssignOp env (new WarewolfParserInterop.AssignValue(  expression , value.Value))
                 |   _ -> failwith "assigning an entire recordset to a variable is not defined"
 and EvalDataShape (exp:string) (env:WarewolfEnvironment) =
     let left = WarewolfDataEvaluationCommon.ParseLanguageExpression exp
