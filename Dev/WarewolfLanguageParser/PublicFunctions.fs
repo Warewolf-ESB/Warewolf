@@ -102,3 +102,5 @@ let EvalWhere (exp:string) (env:WarewolfEnvironment)  (func:System.Func<Warewolf
 
 let EvalUpdate (exp:string) (env:WarewolfEnvironment)  (func:System.Func<WarewolfAtom,WarewolfAtom>) = UpdateInPlace.EvalUpdate  env exp (fun a-> func.Invoke( a))
 //let EvalDistinct (exp:string list)  (env:WarewolfEnvironment)  = Where.EvalDistinct env exp
+
+let EvalDataShape (exp:string) (env:WarewolfEnvironment) = AssignEvaluation.EvalDataShape exp env

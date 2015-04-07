@@ -23,9 +23,7 @@ using Dev2.Common.Interfaces.Core.Convertors.Base;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Converters;
-using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Interfaces;
@@ -86,20 +84,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             ErrorResultTO allErrors = new ErrorResultTO();
-            IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
 
             InitializeDebug(dataObject);
             var env = dataObject.Environment;
             try
             {
                 CleanArgs();
-
-                toUpsert.IsDebug = dataObject.IsDebugMode();
-
-    
 
                 int inputIndex = 1;
                 int outputIndex = 1;
@@ -150,8 +142,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(hasErrors)
                 {
                     DisplayAndWriteError("DsfBaseConvertActivity", allErrors);
-                    ErrorResultTO errors;
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
                 }
                 if(dataObject.IsDebugMode())
                 {
@@ -170,12 +162,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         Func<DataASTMutable.WarewolfAtom, DataASTMutable.WarewolfAtom> TryConvertFunc(BaseConvertTO item, IExecutionEnvironment env)
         {
-         
-
-         
-                    return (a =>
+                return (a =>
                     {
-
                         IBaseConverter from = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.FromType, typeof(enDev2BaseConvertType)));
                         IBaseConverter to = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.ToType, typeof(enDev2BaseConvertType)));
                         IBaseConversionBroker broker = _fac.CreateBroker(from, to);

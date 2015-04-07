@@ -133,7 +133,7 @@ namespace Dev2.Services.Execution
                     var rsType = Data.Util.DataListUtil.GetRecordsetIndexType(expression);
                     var rowIndex = Data.Util.DataListUtil.ExtractIndexRegionFromRecordset(expression);
                     var rsNameUse = def.RecordSetName;
-
+                    environment.AssignDataShape(def.RawValue);
                     if (string.IsNullOrEmpty(rsName))
                     {
                         rsName = rsNameUse;
@@ -161,14 +161,12 @@ namespace Dev2.Services.Execution
 
                         // now convert to binary datalist ;)
                         int rowIdx = 1;
-                        try
-                        {
-                            rowIdx = environment.GetLength(rs);
-                        }
-                        catch (Exception e)
-                        {
-                            Dev2Logger.Log.Error(e.Message, e);
-                        }
+                        
+                            if (environment.HasRecordSet(rs))
+                            {
+                                rowIdx = environment.GetLength(rs);
+                            }
+                        
                         if (rsType == enRecordsetIndexType.Star)
                         {
                             rowIdx = 1;
@@ -191,9 +189,8 @@ namespace Dev2.Services.Execution
 
                                     if (colMapping.TryGetValue(idx, out colName))
                                     {
-                                        var displayExpression = Data.Util.DataListUtil.AddBracketsToValueIfNotExist(Data.Util.DataListUtil.CreateRecordsetDisplayValue(Data.Util.DataListUtil.ExtractRecordsetNameFromValue(def.Value), Data.Util.DataListUtil.ExtractFieldNameFromValue(def.Value), rowIdx.ToString()));
+                                        var displayExpression = Data.Util.DataListUtil.AddBracketsToValueIfNotExist(Data.Util.DataListUtil.CreateRecordsetDisplayValue(Data.Util.DataListUtil.ExtractRecordsetNameFromValue(def.Value), colName, rowIdx.ToString()));
                                         environment.Assign(displayExpression, item.ToString());
-                                        //items.Add(new BinaryDataListItem(item.ToString(), rsNameUse, colName, rowIdx));
                                     }
 
                                     idx++;
@@ -259,10 +256,17 @@ namespace Dev2.Services.Execution
                 foreach (var def in defs)
                 {
                     var idx = dtCols.IndexOf(def.Name);
-
                     if (idx != -1)
                     {
-                        result.Add(idx, def.Name);
+                        if (def.IsRecordSet)
+                        {
+                            result.Add(idx, DataListUtils.ExtractFieldNameFromValue(def.RawValue));
+                        }
+                        else
+                        {
+                            result.Add(idx, def.Name);
+                        }
+
                     }
                 }
             }

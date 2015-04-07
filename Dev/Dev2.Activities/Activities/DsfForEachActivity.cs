@@ -21,7 +21,6 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Util;
@@ -60,7 +59,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Properties
 
+        // ReSharper disable MemberCanBePrivate.Global
         public enForEachType ForEachType { get; set; }
+      
 
         [FindMissing]
         public string From { get; set; }
@@ -120,6 +121,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return 0;
             }
         }
+        // ReSharper restore MemberCanBePrivate.Global
 // ReSharper disable InconsistentNaming
         public Variable test { get; set; }
 // ReSharper restore InconsistentNaming
@@ -203,16 +205,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             
 
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             dataObject.ForEachNestingLevel++;
             ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors;
-            Guid executionId = DataListExecutionID.Get(context);
 
             InitializeDebug(dataObject);
             try
             {
-                ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, executionId, dataObject.Environment,compiler, out errors);
+                ErrorResultTO errors;
+                ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out errors);
 
                 if(errors.HasErrors())
                 {
@@ -269,7 +269,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfForEachActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    foreach (var fetchError in allErrors.FetchErrors())
+                    {
+                        dataObject.Environment.AddError(fetchError);
+                    }
+                    
                     dataObject.ParentInstanceID = _previousParentId;
                 }
                 if(dataObject.IsDebugMode())
@@ -484,12 +488,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Fetches the type of the execution.
         /// </summary>        
         /// <param name="dataObject">The data object.</param>
-        /// <param name="dlId">The dl ID.</param>
         /// <param name="environment"></param>
-        /// <param name="compiler">The compiler.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>                
-        private ForEachBootstrapTO FetchExecutionType(IDSFDataObject dataObject, Guid dlId, IExecutionEnvironment environment, IDataListCompiler compiler, out ErrorResultTO errors)
+        private ForEachBootstrapTO FetchExecutionType(IDSFDataObject dataObject, IExecutionEnvironment environment, out ErrorResultTO errors)
         {
             if(dataObject.IsDebugMode())
             {
@@ -497,41 +499,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddDebugItem(new DebugItemStaticDataParams(ForEachType.GetDescription(), ""), debugItem);
                 if(ForEachType == enForEachType.NumOfExecution && !string.IsNullOrEmpty(NumOfExections))
                 {
-                    var numberofExecs = environment.GetEvaluationResultAsInt(NumOfExections);
 
-                    AddDebugItem(new DebugItemWarewolfAtomResult(NumOfExections, numberofExecs.ToString(CultureInfo.InvariantCulture), "Number of Executes"), debugItem);
+
+                    AddDebugItem(new DebugEvalResult(NumOfExections, "Number", environment), debugItem);
                 }
                 if(ForEachType == enForEachType.InCSV && !string.IsNullOrEmpty(CsvIndexes))
                 {
-                    var evalledCSV = Warewolf.Storage.ExecutionEnvironment.WarewolfEvalResultToString( environment.Eval(CsvIndexes));
-                    AddDebugItem(new DebugItemWarewolfAtomResult(NumOfExections, evalledCSV, "Number of Executes"), debugItem);
+                    AddDebugItem(new DebugEvalResult(CsvIndexes, "Csv Indexes", environment), debugItem);
      
                 }
                 if(ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(From))
                 {
-                    var from = environment.GetEvaluationResultAsInt(From);
-
-                    AddDebugItem(new DebugItemWarewolfAtomResult(NumOfExections, from.ToString(CultureInfo.InvariantCulture), "Number of Executes"), debugItem);
+                    AddDebugItem(new DebugEvalResult(From, "From", environment), debugItem);
  
                 }
                 if(ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(To))
                 {
-                    var to = environment.GetEvaluationResultAsInt(To);
 
-                    AddDebugItem(new DebugItemWarewolfAtomResult(NumOfExections, to.ToString(CultureInfo.InvariantCulture), "Number of Executes"), debugItem);
+                    AddDebugItem(new DebugEvalResult(To, "To", environment), debugItem);
 
                 }
                 if(ForEachType == enForEachType.InRecordset && !string.IsNullOrEmpty(Recordset))
                 {
-                    //var to = environment.GetEvaluationResultAsInt(Recordset);
+    
 
-                    //AddDebugItem(new DebugItemWarewolfAtomResult(NumOfExections, to.ToString(CultureInfo.InvariantCulture), "Number of Executes"), debugItem);
-
+                    AddDebugItem(new DebugEvalResult(ExecutionEnvironment.GetPositionColumnExpression(Recordset), "Recordset ", environment), debugItem);
                 }
                 _debugInputs.Add(debugItem);
             }
 
-            var result = new ForEachBootstrapTO(ForEachType, From, To, CsvIndexes, NumOfExections, Recordset, dlId, environment, out errors);
+            var result = new ForEachBootstrapTO(ForEachType, From, To, CsvIndexes, NumOfExections, Recordset, environment, out errors);
 
             return result;
 

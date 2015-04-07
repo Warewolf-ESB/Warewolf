@@ -16,12 +16,9 @@ using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
-using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Storage;
 
@@ -43,7 +40,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Gets or sets the selected sort.
         /// </summary>
         [Inputs("SelectedSort")]
+        // ReSharper disable MemberCanBePrivate.Global
         public string SelectedSort { get; set; }
+        // ReSharper restore MemberCanBePrivate.Global
 
         public DsfSortRecordsActivity()
             : base("Sort Records")
@@ -65,11 +64,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ErrorResultTO errors;
+
             ErrorResultTO allErrors = new ErrorResultTO();
-            Guid executionId = DataListExecutionID.Get(context);
 
             InitializeDebug(dataObject);
 
@@ -81,7 +79,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 bool descOrder = String.IsNullOrEmpty(SelectedSort) || SelectedSort.Equals("Backwards");
                 if (dataObject.IsDebugMode())
                 {
-                    AddDebugInputItem(SortField, "Sort Field", dataObject.Environment, executionId);
+                    AddDebugInputItem(SortField, "Sort Field", dataObject.Environment);
                 }
                 // Travis.Frisinger : New Stuff....
                 if (!string.IsNullOrEmpty(SortField))
@@ -101,7 +99,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfSortRecordsActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    foreach(var error in allErrors.FetchErrors())
+                    {
+                        dataObject.Environment.AddError(error);
+                    }
+                 
                 }
                 if(dataObject.IsDebugMode())
                 {
@@ -128,7 +130,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Private Methods
 
-        private void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment env, Guid executionId)
+        private void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment env)
         {
             var data =  env.Eval(env.ToStar( expression));
             if (data.IsWarewolfAtomListresult)
@@ -137,24 +139,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddDebugInputItem(new DebugItemWarewolfAtomListResult(lst,"","",expression, labelText,"","="));
                 AddDebugInputItem(new DebugItemStaticDataParams(SelectedSort, "Sort Order"));
             }
-        }
-
-        private string RetrieveItemForEvaluation(enIntellisensePartType partType, string value)
-        {
-
-            string rawRef = DataListUtil.StripBracketsFromValue(value);
-            string objRef = string.Empty;
-
-            if(partType == enIntellisensePartType.RecordsetsOnly)
-            {
-                objRef = DataListUtil.ExtractRecordsetNameFromValue(rawRef);
-            }
-            else if(partType == enIntellisensePartType.RecordsetFields)
-            {
-                objRef = DataListUtil.ExtractFieldNameFromValue(rawRef);
-            }
-
-            return objRef;
         }
 
         #endregion Private Methods

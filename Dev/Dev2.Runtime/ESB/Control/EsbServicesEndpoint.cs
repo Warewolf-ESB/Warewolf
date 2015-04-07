@@ -374,28 +374,7 @@ namespace Dev2.Runtime.ESB.Control
                         errors.MergeErrors(invokeErrors);
                         string errorString = compiler.FetchErrors(dataObject.DataListID, true);
                         invokeErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
-                        errors.MergeErrors(invokeErrors);
-                        // If Web-service or Plugin, skip the final shaping junk ;)
-                        if (SubExecutionRequiresShape(workspaceId, dataObject.ServiceName))
-                        {
-//                            if (!dataObject.IsDataListScoped && remainingMappings != null)
-//                            {
-//                                // Adjust the remaining output mappings ;)
-//                                compiler.SetParentID(dataObject.DataListID, oldID);
-//                                var outputMappings = remainingMappings.FirstOrDefault(c => c.Key == enDev2ArgumentType.Output);
-//                                compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, outputMappings.Value,
-//                                               out invokeErrors);
-//                                errors.MergeErrors(invokeErrors);
-//                            }
-//                            else
-//                            {
-//                                if (!string.IsNullOrEmpty(outputDefs))
-//                                {
-//                                    compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, outputDefs,out invokeErrors);
-//                                    errors.MergeErrors(invokeErrors);
-//                                }
-//                            }
-                        }
+                        errors.MergeErrors(invokeErrors);                        
                         return env;
                     }
                     errors.AddError("Null container returned");
@@ -842,20 +821,6 @@ namespace Dev2.Runtime.ESB.Control
             result.Append(inputFragment);
             result.Append("</DataList>");
             return result;
-        }
-
-
-        /// <summary>
-        /// Subs the execution requires shape.
-        /// </summary>
-        /// <param name="workspaceID">The workspace unique identifier.</param>
-        /// <param name="serviceName">Name of the service.</param>
-        /// <returns></returns>
-        static bool SubExecutionRequiresShape(Guid workspaceID, string serviceName)
-        {
-            var resource = ResourceCatalog.Instance.GetResource(workspaceID, serviceName);
-            return resource == null || (resource.ResourceType != ResourceType.WebService && resource.ResourceType != ResourceType.PluginService);
-
         }
 
         protected virtual IEsbServiceInvoker CreateEsbServicesInvoker(IWorkspace theWorkspace)

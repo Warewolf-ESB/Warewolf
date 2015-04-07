@@ -56,18 +56,20 @@ namespace Dev2.Activities.Debug
         List<IDebugItemResult> BuildDebugItemFromAtomList()
         {
             var results = new List<IDebugItemResult>();
-            var grpIdx = 0;
-            var index = _warewolfRecordset.Data["WarewolfPositionColumn"][0];
+           
+            
             foreach (var item in _warewolfRecordset.Data)
             {
                 if (item.Key == "WarewolfPositionColumn")
                 {
                     continue;
                 }
-                
-                var position = ExecutionEnvironment.WarewolfAtomToString(index);
+
+                var grpIdx = 0;
                 foreach (var warewolfAtom in item.Value)
                 {
+                    var index = _warewolfRecordset.Data["WarewolfPositionColumn"][grpIdx];
+                    var position = ExecutionEnvironment.WarewolfAtomToString(index);
                     grpIdx++;
                     string displayExpression = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(_variable),item.Key,position));
                     var debugType = DebugItemResultType.Value;
@@ -80,16 +82,19 @@ namespace Dev2.Activities.Debug
                     {
                         displayExpression = null;
                     }
-                    results.Add(new DebugItemResult
+                    if (!warewolfAtom.IsNothing)
                     {
-                        Type = debugType,
-                        Label = _labelText,
-                        Variable = displayExpression,
-                        Operator = _operand,
-                        GroupName = _variable,
-                        Value = ExecutionEnvironment.WarewolfAtomToString(warewolfAtom),
-                        GroupIndex = grpIdx
-                    });
+                        results.Add(new DebugItemResult
+                        {
+                            Type = debugType,
+                            Label = _labelText,
+                            Variable = displayExpression,
+                            Operator = _operand,
+                            GroupName = _variable,
+                            Value = ExecutionEnvironment.WarewolfAtomToString(warewolfAtom),
+                            GroupIndex = grpIdx
+                        });
+                    }
                 }
             }
             return results;

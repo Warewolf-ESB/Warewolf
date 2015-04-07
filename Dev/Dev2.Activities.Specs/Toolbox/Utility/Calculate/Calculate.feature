@@ -90,10 +90,10 @@ Scenario: Calculate using a negative index recordset value
 	When the calculate tool is executed
 	Then the execution has "AN" error
 	And the debug inputs as  
-	| fx =                                    |
-	| [[my(-1).formula]] = [[my(-1).formula]] |	
+	| fx =                 |
+	| [[my(-1).formula]] = |	
 	And the debug output as 
-	|               |
+	|              |
 	| [[result]] = |
 
 Scenario: Calculate using isnumber and blank

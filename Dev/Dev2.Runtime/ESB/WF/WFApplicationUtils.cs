@@ -46,11 +46,11 @@ namespace Dev2.Runtime.ESB.WF
                 Guid parentInstanceId;
                 Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceId);
                 IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-                bool hasError = compiler.HasErrors(dataObject.DataListID);
+                bool hasError = dataObject.Environment.HasErrors();
                 var errorMessage = String.Empty;
                 if(hasError)
                 {
-                    errorMessage = compiler.FetchErrors(dataObject.DataListID);
+                    errorMessage = dataObject.Environment.FetchErrors();
                 }
                 if(String.IsNullOrEmpty(existingErrors))
                 {
@@ -81,14 +81,11 @@ namespace Dev2.Runtime.ESB.WF
                     ClientID = dataObject.ClientID,
                     Name = stateType.ToString(),
                     HasError = hasErrors || hasError,
-                    ErrorMessage = existingErrors,
-
-
+                    ErrorMessage = existingErrors
                 };
 
                 if(interrogateInputs)
                 {
-
                     ErrorResultTO invokeErrors;
                     var defs = compiler.GenerateDefsFromDataListForDebug(FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID), enDev2ColumnArgumentDirection.Input);
                     var inputs = GetDebugValues(defs, dataObject, out invokeErrors);
@@ -151,7 +148,7 @@ namespace Dev2.Runtime.ESB.WF
 
                 added.Add(defn);
                 DebugItem itemToAdd = new DebugItem();
-                _add(new DebugEvalResult(GetVariableName(dev2Definition), "", dataObject.Environment), itemToAdd);
+                _add(new DebugEvalResult(defn, "", dataObject.Environment), itemToAdd);
                 results.Add(itemToAdd);
             }
 

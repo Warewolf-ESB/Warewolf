@@ -71,6 +71,8 @@ let tryFloatParseAtom (data:string) =
 
 let CompareAtoms (x:WarewolfAtom) (y:WarewolfAtom) = 
              match (x,y) with
+                                            | (Nothing ,DataString b) when System.String.IsNullOrEmpty(b) -> 0
+                                            | (DataString b ,Nothing) when System.String.IsNullOrEmpty(b) -> 0
                                             | ( Int a, Int b ) -> a.CompareTo(b)
                                             | (Float a, Float b ) -> a.CompareTo(b)
                                             | (Int a, Float b ) -> System.Double.Parse(a.ToString()).CompareTo(b)

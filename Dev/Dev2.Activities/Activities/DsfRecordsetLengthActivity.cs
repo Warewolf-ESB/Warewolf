@@ -12,14 +12,12 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
-using System.Globalization;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Dev2.Validation;
@@ -70,8 +68,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
@@ -93,13 +89,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         if (dataObject.IsDebugMode())
                         {
-                            var warewolfEvalResult = dataObject.Environment.Eval(RecordsetName);
+                            var warewolfEvalResult = dataObject.Environment.Eval(RecordsetName.Replace("()","(*)"));
                             if (warewolfEvalResult.IsWarewolfRecordSetResult)
                             {
                                 var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult;
                                 if (recsetResult != null)
                                 {
                                     AddDebugInputItem(new DebugItemWarewolfRecordset(recsetResult.Item, RecordsetName, "Recordset", "="));
+                                }
+                            }
+                            if (warewolfEvalResult.IsWarewolfAtomListresult)
+                            {
+                                var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                                if (recsetResult != null)
+                                {
+                                    AddDebugInputItem(new DebugEvalResult(RecordsetName, "Recordset", dataObject.Environment));
                                 }
                             }
                         }
@@ -111,7 +115,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            var count = dataObject.Environment.GetLength(rs);
+                            var count = 0;
+                            if (dataObject.Environment.HasRecordSet(RecordsetName))
+                            {
+                                count= dataObject.Environment.GetLength(rs);
+                            }
                             var value = count.ToString();
                             dataObject.Environment.Assign(RecordsLength, value);
                             AddDebugOutputItem(new DebugItemWarewolfAtomResult(value, RecordsLength, ""));
@@ -132,9 +140,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var hasErrors = allErrors.HasErrors();
                 if (hasErrors)
                 {
-                    DisplayAndWriteError("DsfCountRecordsActivity", allErrors);
-                    //dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(enSystemTag.Dev2Error.ToString()), allErrors.MakeDisplayReady());
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    DisplayAndWriteError("DsfRecordsetLengthActivity", allErrors);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
                 }
                 if (dataObject.IsDebugMode())
                 {

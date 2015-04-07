@@ -18,7 +18,6 @@ using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
@@ -62,8 +61,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            Guid executionId = dataObject.DataListID;
 
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
@@ -77,12 +74,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.Environment.EvalDelete(RecordsetName);
 
                 dataObject.Environment.Assign(Result, "Success");
-                AddDebugOutputItem(new DebugItemWarewolfAtomResult("Success", Result, "","","","", "="));
+                AddDebugOutputItem(new DebugEvalResult(Result,"",dataObject.Environment));
             }
             catch(Exception e)
             {
                 allErrors.AddError(e.Message);
-                dataObject.Environment.Assign(Result, "");
             }
             finally
             {
@@ -91,8 +87,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(hasErrors)
                 {
                     DisplayAndWriteError("DsfDeleteRecordsActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
-                    compiler.Upsert(executionId, Result, (string)null, out errors);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
+                    dataObject.Environment.Assign(Result,null);
                 }
 
                 if(dataObject.IsDebugMode())

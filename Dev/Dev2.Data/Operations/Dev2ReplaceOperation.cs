@@ -118,9 +118,9 @@ namespace Dev2.Data.Operations
         /// <param name="errors">The errors.</param>
         /// <param name="replaceCount">The replace count.</param>
         /// <returns></returns>
-        public string Replace(string stringToSearch, string findString, string replacementString, bool caseMatch, out ErrorResultTO errors, out int replaceCount)
+        public string Replace(string stringToSearch, string findString, string replacementString, bool caseMatch, out ErrorResultTO errors, ref int replaceCount)
         {
-            replaceCount = 0;
+
             var oldString = stringToSearch.Replace("\\", "\\\\");
             // ReSharper disable RedundantAssignment
             ErrorResultTO allErrors = new ErrorResultTO();

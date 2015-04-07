@@ -82,11 +82,7 @@ namespace Dev2.Activities
                 return;
             }
             var dataObject = context.GetExtension<IDSFDataObject>();
-            var compiler = DataListFactory.CreateDataListCompiler();
-            var dlId = dataObject.DataListID;
             var allErrors = new ErrorResultTO();
-            var executionId = DataListExecutionID.Get(context);
-
             InitializeDebug(dataObject);
             try
             {
@@ -142,7 +138,8 @@ namespace Dev2.Activities
                 if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfWebGetRequestActivity", allErrors);
-                    compiler.UpsertSystemTag(dlId, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorsTo);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
                     var expression = GetExpression(1);
                     PushResultsToDataList(expression, null, dataObject);
                 }

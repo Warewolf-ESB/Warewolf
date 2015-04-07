@@ -133,7 +133,6 @@ Scenario: Assign all recordset values to a single variable
     |   | [[rec(2).set]] = "" |
     |   | [[rec(3).set]] = "" |
 
-@ignore
 Scenario: Assign all recordset values to all recordset
 	Given I assign the value 10 to a variable "[[rec(1).set]]"	
 	And I assign the value 20 to a variable "[[rec(2).set]]"
@@ -151,17 +150,18 @@ Scenario: Assign all recordset values to all recordset
 	| 2 | [[rec(2).set]] =      | 20                  |
 	| 3 | [[rec(3).set]] =      | 30                  |
 	| 4 | [[rs().val]] =        | Hello               |
-	| 5 | [[rs(1).set]] = Hello | [[rec(1).set]] = 10 |
+	| 5 | [[rs(1).val]] = Hello | [[rec(1).set]] = 10 |
 	|   |                       | [[rec(2).set]] = 20 |
 	|   |                       | [[rec(3).set]] = 30 |
 	And the debug output as
-    | # |                     |
-    | 1 | [[rec(1).set]] = 10 |
-    | 2 | [[rec(2).set]] = 20 |
-    | 3 | [[rec(3).set]] = 30 |
-    | 4 | [[rs(1).val]] = 10  |
-    |   | [[rs(2).val]] = 20  |
-    |   | [[rs(3).val]] = 30  |
+    | # |                       |
+    | 1 | [[rec(1).set]] = 10   |
+    | 2 | [[rec(2).set]] = 20   |
+    | 3 | [[rec(3).set]] = 30   |
+    | 4 | [[rs(1).val]] = Hello |
+    | 5 | [[rs(1).val]] = 10    |
+    |   | [[rs(2).val]] = 20    |
+    |   | [[rs(3).val]] = 30    |
 
 Scenario: Assign a record set to a scalar
 	Given I assign the value 10 to a variable "[[rec(1).set]]"	
@@ -255,40 +255,34 @@ Scenario: Assign multiple recordset to the end of a recordset
 	| 3 | [[rec(3).set]] = 30 |
 	| 4 | [[des(1).val]] = 30 |
 
-#Scenario: Assign the value of a negative recordset index
-#	Given I assign the value 10 to a variable "[[rec().set]]"	
-#	And I assign the value [[rec(-1).set]] to a variable "[[var]]"
-#	When the assign tool is executed
-#	Then the value of "[[var]]" equals ""
-#	And the execution has "AN" error
-#	And the debug inputs as
-#	| # | Variable        | New Value         |
-#	| 1 | [[rec().set]] = | 10                |
-#	| 2 | [[var]]       = | [[rec(-1).set]] = |
-#	And the debug output as
-#	| # |                     |
-#	| 1 | [[rec(1).set]] = 10 |
-#	| 2 | [[var]] =           |
+Scenario: Assign the value of a negative recordset index
+	Given I assign the value 10 to a variable "[[rec().set]]"	
+	And I assign the value [[rec(-1).set]] to a variable "[[var]]"
+	When the assign tool is executed
+	Then the execution has "AN" error
+	And the debug inputs as
+	| # | Variable        | New Value         |
+	| 1 | [[rec().set]] = | 10                |
+	And the debug output as
+	| # |                     |
+	| 1 | [[rec(1).set]] = 10 |
 
-#Scenario: Assign the value of a negative recordset index and another assign after
-#	Given I assign the value 10 to a variable "[[rec().set]]"	
-#	And I assign the value [[rec(-1).set]] to a variable "[[var]]"
-#	And I assign the value 30 to a variable "[[scalar]]"	
-#	When the assign tool is executed
-#	Then the value of "[[rec().set]]" equals "10"
-#	Then the value of "[[var]]" equals ""
-#	Then the value of "[[scalar]]" equals "30"
-#	And the execution has "AN" error
-#	And the debug inputs as
-#    | # | Variable        | New Value         |
-#    | 1 | [[rec().set]] = | 10                |
-#    | 2 | [[var]]       = | [[rec(-1).set]] = |
-#    | 3 | [[scalar]]    = | 30                |    
-#	And the debug output as
-#	| # |                     |
-#	| 1 | [[rec(1).set]] = 10 |
-#	| 2 | [[var]] =           |
-#	| 3 | [[scalar]] = 30     |
+Scenario: Assign the value of a negative recordset index and another assign after
+	Given I assign the value 10 to a variable "[[rec().set]]"	
+	And I assign the value [[rec(-1).set]] to a variable "[[var]]"
+	And I assign the value 30 to a variable "[[scalar]]"	
+	When the assign tool is executed
+	Then the value of "[[rec().set]]" equals "10"
+	Then the value of "[[scalar]]" equals "30"
+	And the execution has "AN" error
+	And the debug inputs as
+    | # | Variable        | New Value         |
+    | 1 | [[rec().set]] = | 10                |
+    | 2 | [[scalar]]    = | 30                |    
+	And the debug output as
+	| # |                     |
+	| 1 | [[rec(1).set]] = 10 |
+	| 2 | [[scalar]] = 30     |
 
 Scenario: Assign to a negative recordset index
 	Given I assign the value 10 to a variable "[[des(-1).val]]"
@@ -302,14 +296,12 @@ Scenario: Assign to a negative recordset index
 Scenario: Assign a scalar equal to a calculation with a blank variable
 	Given I assign the value "=[[cnt]]+1" to a variable "[[cnt]]"
 	When the assign tool is executed
-	Then the value of "[[cnt]]" equals "1"
-	And the execution has "NO" error
+	Then the execution has "AN" error
 	And the debug inputs as
 	| # | Variable  | New Value       |
-	| 1 | [[cnt]] = | String = String |
 	And the debug output as
 	| # |             |
-	| 1 | [[cnt]] = 1 |
+	
 
 #Bug 11499
 Scenario Outline: Assign to a invalid variable
@@ -468,8 +460,7 @@ Scenario: Evaluating recursive invalid recordset variable in a group calculation
 	And I assign the value "rec(1).a*" to a variable "[[rec(1).b]]"
 	And I assign the value "=[[[[rec(1).b]]]]+1" to a variable "[[Result]]"
 	When the assign tool is executed
-	Then the value of "[[Result]]" equals ""
-	And the execution has "AN" error
+	Then the execution has "AN" error
 	And the debug inputs as
 	| # | Variable         | New Value |
 	| 1 | [[rec(1).a]]   = | 1         |

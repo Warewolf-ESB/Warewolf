@@ -321,6 +321,10 @@
       <Project>{E0F7C709-A61B-4829-A659-D7780052326A}</Project>
       <Name>WarewolfLanguageParser</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WarewolfParserInterop\WarewolfParserInterop.csproj">
+      <Project>{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}</Project>
+      <Name>WarewolfParserInterop</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Diagnostics\" />

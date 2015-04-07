@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics;
 using Dev2.Data.Util;
@@ -86,15 +87,24 @@ namespace Dev2.Activities.Debug
                 int grpIdx = 0;
                 if(_warewolfAtomListresult != null)
                 {
-                    foreach (var item in _warewolfAtomListresult.Item)
+                    foreach (var atomItem in _warewolfAtomListresult.Item)
                     {
                         string displayExpression = _variable;
                         string rawExpression = _variable;
+                        var item = atomItem.ToString();
                         if (displayExpression.Contains("().") || displayExpression.Contains("(*)."))
                         {
                             grpIdx++;
-                            groupName = rawExpression;
-                            displayExpression = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(_variable), DataListUtil.ExtractFieldNameFromValue(_variable), grpIdx.ToString()));
+                            string index = grpIdx.ToString(CultureInfo.InvariantCulture);
+                            if (rawExpression.Contains(".WarewolfPositionColumn"))
+                            { 
+                                index = item;
+                                item = "";
+                            }
+                            groupName = rawExpression.Replace(".WarewolfPositionColumn","");
+                            // ReSharper disable EmptyStatement
+                            displayExpression = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(_variable), DataListUtil.ExtractFieldNameFromValue(_variable), index)).Replace(".WarewolfPositionColumn", ""); ;
+                            // ReSharper restore EmptyStatement
                         }
                         else
                         {
@@ -116,7 +126,7 @@ namespace Dev2.Activities.Debug
                         var debugType = DebugItemResultType.Value;
                         if (DataListUtil.IsEvaluated(displayExpression))
                         {
-                            debugOperator = "=";
+                            debugOperator = String.IsNullOrEmpty(item)?"": "=";
                             debugType = DebugItemResultType.Variable;
                         }
                         else
@@ -130,7 +140,7 @@ namespace Dev2.Activities.Debug
                             Variable = DataListUtil.IsEvaluated(displayExpression) ? displayExpression : null,
                             Operator = debugOperator,
                             GroupName = groupName,
-                            Value = Warewolf.Storage.ExecutionEnvironment.WarewolfAtomToString(item),
+                            Value = item,
                             GroupIndex = grpIdx
                         });
                     }

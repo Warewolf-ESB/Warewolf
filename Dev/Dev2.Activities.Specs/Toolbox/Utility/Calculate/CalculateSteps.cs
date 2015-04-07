@@ -113,7 +113,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
                                        out actualValue, out error);
             if(string.IsNullOrEmpty(expectedResult))
             {
-                Assert.IsNull(actualValue);
+                Assert.IsTrue(string.IsNullOrEmpty(actualValue));
             }
             else
             {

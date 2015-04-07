@@ -8,6 +8,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Data;
 using Dev2.Data.Util;
 using Warewolf.Storage;
+using WarewolfParserInterop;
 
 namespace Dev2
 {
@@ -28,7 +29,16 @@ namespace Dev2
                 Dictionary<string, IWarewolfIterator> iterators = new Dictionary<string, IWarewolfIterator>();
                 foreach (var name in groupedRecSet)
                 {
-                    var warewolfIterator = new WarewolfIterator(environment.Eval(name));
+                    var warewolfEvalResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
+                    try
+                    {
+                        warewolfEvalResult = environment.Eval(name);
+                    }
+                    catch(Exception)
+                    {
+                        //Possible that the output defs have variables that were never initialised (i.e. null)
+                    }
+                    var warewolfIterator = new WarewolfIterator(warewolfEvalResult);
                     iterators.Add(DataListUtil.ExtractFieldNameFromValue(name), warewolfIterator);
                     warewolfListIterators.AddVariableToIterateOn(warewolfIterator);
 
@@ -203,6 +213,10 @@ namespace Dev2
 
         static void TryConvert(IDSFDataObject dataObject, XmlNodeList children, List<string> inputDefs, int level = 0)
         {
+            try
+            {
+
+           
             // spin through each element in the XML
             foreach (XmlNode c in children)
             {
@@ -212,21 +226,13 @@ namespace Dev2
                     WarewolfDataEvaluationCommon.WarewolfEvalResult warewolfEvalResult = null;
                     try
                     {
-                        warewolfEvalResult = dataObject.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(c.Name));
-                        if (warewolfEvalResult.IsWarewolfAtomResult && level == 0)
-                        {
-                            var checkNullResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
-                            if (checkNullResult != null && checkNullResult.Item.IsNothing)
-                            {
-                                warewolfEvalResult = null;
-                            }
-                        }
+                        warewolfEvalResult = dataObject.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(c.Name));                        
                     }
                     catch (Exception e)
                     {
                         Dev2Logger.Log.Error(e.Message, e);
                     }
-                    if (warewolfEvalResult != null)
+                    if (warewolfEvalResult != null || level>0)
                     {
                         var c1 = c;
                         var scalars = inputDefs.Where(definition => definition == c1.Name);
@@ -248,7 +254,7 @@ namespace Dev2
                                         if (DataListUtil.ExtractFieldNameFromValue(definition) == subc.Name)
                                         {
                                             var recSetAppend = DataListUtil.ReplaceRecordsetIndexWithBlank(definition);
-                                            dataObject.Environment.Assign(recSetAppend, subc.InnerXml);
+                                            dataObject.Environment.AssignWithFrame(new AssignValue( recSetAppend, subc.InnerXml));
                                         }
                                     }
                                 }
@@ -271,6 +277,11 @@ namespace Dev2
                         }
                     }
                 }
+            }
+            }
+            finally
+            {
+                dataObject.Environment.CommitAssign();
             }
         }
 

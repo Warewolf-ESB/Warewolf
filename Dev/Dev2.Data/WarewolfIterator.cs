@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Dev2.Common.Interfaces;
 using Dev2.Data.Util;
@@ -24,6 +25,30 @@ namespace Dev2.Data
             else if (warewolfEvalResult.IsWarewolfAtomResult)
             {
                 _scalarResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;               
+            }
+            else if (warewolfEvalResult.IsWarewolfRecordSetResult)
+            {
+                var listResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult;
+                if (listResult != null)
+                {
+                    var stringValue = "";
+                    foreach(var item in listResult.Item.Data)
+                    {
+                        if (item.Key != WarewolfDataEvaluationCommon.PositionColumn)
+                        {
+                            var data = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomListresult(item.Value) as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                            var warewolfEvalResultToString = ExecutionEnvironment.WarewolfEvalResultToString(data);
+                            if(string.IsNullOrEmpty(stringValue))
+                            {
+                                stringValue = warewolfEvalResultToString;
+                            }else
+                            {
+                                stringValue += ","+warewolfEvalResultToString;
+                            }
+                        }
+                    }
+                    _scalarResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.NewDataString(stringValue)) as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                }
             }
             _maxValue = _listResult != null ? _listResult.Item.Count(atom => !atom.IsNothing) : 1;
             _currentValue = 0;
@@ -57,8 +82,12 @@ namespace Dev2.Data
             {
                 string eval;
                 string error;
-                functionEvaluator.TryEvaluateFunction(cleanExpression, out eval, out error);
+                var tryEvaluateFunction = functionEvaluator.TryEvaluateFunction(cleanExpression, out eval, out error);
                 warewolfAtomToString = eval;
+                if (!tryEvaluateFunction)
+                {
+                    throw new Exception(error);
+                }
             }
             return warewolfAtomToString;
         }

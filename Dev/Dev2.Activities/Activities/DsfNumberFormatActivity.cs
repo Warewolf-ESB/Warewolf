@@ -19,11 +19,9 @@ using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Data.Factories;
 using Dev2.Data.Operations;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Dev2.Validation;
@@ -98,27 +96,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
             var dataObject = context.GetExtension<IDSFDataObject>();
-            var compiler = DataListFactory.CreateDataListCompiler();
 
             var allErrors = new ErrorResultTO();
-            ErrorResultTO errors;
 
-            var executionId = DataListExecutionID.Get(context);
-            var toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-            toUpsert.IsDebug = dataObject.IsDebugMode();
             InitializeDebug(dataObject);
             try
             {
                 var expression = Expression ?? string.Empty;
                 var roundingDecimalPlaces = RoundingDecimalPlaces ?? string.Empty;
                 var decimalPlacesToShow = DecimalPlacesToShow ?? string.Empty;
-                var colItr = new WarewolfListIterator();
-                var expressionIterator = CreateDataListEvaluateIterator(expression, dataObject.Environment);
-                var roundingDecimalPlacesIterator = CreateDataListEvaluateIterator(roundingDecimalPlaces, dataObject.Environment);
-                var decimalPlacesToShowIterator = CreateDataListEvaluateIterator(decimalPlacesToShow, dataObject.Environment);
-                colItr.AddVariableToIterateOn(expressionIterator);
-                colItr.AddVariableToIterateOn(roundingDecimalPlacesIterator);
-                colItr.AddVariableToIterateOn(decimalPlacesToShowIterator);
+               
                 if(dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(expression, "Number",  dataObject.Environment);
@@ -129,6 +116,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddDebugInputItem(roundingDecimalPlaces, "Rounding Value", dataObject.Environment);
                     AddDebugInputItem(decimalPlacesToShow, "Decimals to show", dataObject.Environment);
                 }
+                var colItr = new WarewolfListIterator();
+                var expressionIterator = CreateDataListEvaluateIterator(expression, dataObject.Environment);
+                var roundingDecimalPlacesIterator = CreateDataListEvaluateIterator(roundingDecimalPlaces, dataObject.Environment);
+                var decimalPlacesToShowIterator = CreateDataListEvaluateIterator(decimalPlacesToShow, dataObject.Environment);
+                colItr.AddVariableToIterateOn(expressionIterator);
+                colItr.AddVariableToIterateOn(roundingDecimalPlacesIterator);
+                colItr.AddVariableToIterateOn(decimalPlacesToShowIterator);
                 // Loop data ;)
                 var rule = new IsSingleValueRule(() => Result);
                 var single = rule.Check();
@@ -160,16 +154,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         allErrors.AddError(single.Message);
                     }
-                    else
+                    else{
                         UpdateResultRegions(dataObject.Environment, result);
-                }
-                if(!allErrors.HasErrors())
+                        if(dataObject.IsDebugMode())
                 {
-                    foreach(var debugOutputTo in toUpsert.DebugOutputs)
-                    {
-                        AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
+                    AddDebugOutputItem(new DebugItemStaticDataParams(result,Result,"","="));
+                }
                     }
                 }
+                
             }
             catch(Exception e)
             {
@@ -185,8 +178,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
                     DisplayAndWriteError("DsfNumberFormatActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
-                    compiler.Upsert(executionId, Result, (string)null, out errors);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
+                    dataObject.Environment.Assign(Result, null);
                 }
 
                 if(dataObject.IsDebugMode())

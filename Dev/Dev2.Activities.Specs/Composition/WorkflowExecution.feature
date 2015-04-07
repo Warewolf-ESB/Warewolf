@@ -8,7 +8,7 @@ Background: Setup for workflow execution
 			Given Debug events are reset
 			And All environments disconnected
 			And Debug states are cleared
-
+#done
 Scenario: Simple workflow executing against the server
 	 Given I have a workflow "WorkflowWithAssign"
 	 And "WorkflowWithAssign" contains an Assign "Rec To Convert" as
@@ -25,7 +25,7 @@ Scenario: Simple workflow executing against the server
 	  | # |                    |
 	  | 1 | [[rec(1).a]] = yes |
 	  | 2 | [[rec(2).a]] = no  |
-	  
+#done	  
 Scenario: Workflow with multiple tools executing against the server
 	  Given I have a workflow "WorkflowWithAssignAndCount"
 	  And "WorkflowWithAssignAndCount" contains an Assign "Rec To Convert" as
@@ -50,7 +50,8 @@ Scenario: Workflow with multiple tools executing against the server
 	  And the 'CountRec' in Workflow 'WorkflowWithAssignAndCount' debug outputs as    
 	  |               |
 	  | [[count]] = 2 |
-	
+
+#done	
 Scenario: Simple workflow executing against the server with a database service
 	 Given I have a workflow "TestWFWithDBService"
 	 And "TestWFWithDBService" contains a "database" service "Fetch" with mappings
@@ -80,6 +81,7 @@ Scenario: Simple workflow executing against the server with a database service
 	 |               |
 	 | [[count]] = 9 |
 
+#done
 Scenario: Workflow with an assign and webservice
 	 Given I have a workflow "TestWebServiceWF"
 	 And "TestWebServiceWF" contains an Assign "Inputs" as
@@ -109,6 +111,7 @@ Scenario: Workflow with an assign and webservice
 	  | [[Countries(10).CountryID]] = 10           |
 	  | [[Countries(10).Description]] = Azerbaijan |
 
+#done
 Scenario: Workflow with an assign and webservice different mappings
 	 Given I have a workflow "TestWebServiceDiffMappings"
 	 And "TestWebServiceDiffMappings" contains an Assign "Inputs" as
@@ -135,8 +138,8 @@ Scenario: Workflow with an assign and webservice different mappings
 	  | [[prefix]] = a |
 	  And the 'InternalCountriesServiceTest' in Workflow 'TestWebServiceDiffMappings' debug outputs as
 	  |                                            |
-	  | [[Countries(10).CountryID]] = 10           |
-	  | [[Countries(10).Description]] = Azerbaijan |
+	  | [[MyCountries(10).ID]] = 10           |
+	  | [[Name]] = Azerbaijan |
 
 	
 Scenario: Workflow with an assign and remote workflow
@@ -177,7 +180,7 @@ Scenario: Workflow with an assign and remote workflow
 	  | [[values(1).up]] = HELLO  |
 	  | [[values(1).low]] = hello |
 
-	  
+#done	  
 Scenario: Workflow with Assign Base Convert and Case Convert tools executing against the server
 	  Given I have a workflow "WorkflowWithAssignBaseConvertandCaseconvert"
 	  And "WorkflowWithAssignBaseConvertandCaseconvert" contains an Assign "Assign1" as
@@ -286,6 +289,7 @@ Scenario: Workflow with Assign Base Convert and Case Convert tools executing aga
 #	  |                       |
 #	  | [[result2]] = Failure |
 
+#done
 Scenario: Workflow with 3 Assigns tools executing against the server
 	  Given I have a workflow "WorkflowWith3Assigntools"
 	  And "WorkflowWith3Assigntools" contains an Assign "Assigntool1" as
@@ -432,7 +436,7 @@ Scenario: Workflow with Assigns and DataSplit executing against the server
 	  | 1 | [[test]] =  warewolf |
 	  And the 'DataSpliting' in WorkFlow 'WorkflowWithAssignandDataSplittools' debug inputs as 
 	  | String to Split            | Process Direction | Skip blank rows | # |                | With  | Using         | Include | Escape |
-	  | [[[[rs(1).a]]]] = warewolf | Forward           | No              | 1 | [[rec(1).a]] = | Index | [[[[a]]]] = 2 | No      |        |
+	  | [[test]] = warewolf | Forward           | No              | 1 | [[rec(1).a]] = | Index | [[[[a]]]] = 2 | No      |        |
 	  And the 'DataSpliting' in Workflow 'WorkflowWithAssignandDataSplittools' debug outputs as  
 	  | # |                   |
 	  | 1 | [[rec(1).a]] = lf |
@@ -868,6 +872,7 @@ Scenario: Workflow with multiple tools Assign and SQL Bulk Insert with negative 
 	  | 2 | Warewolf@dev2.co.za | Email    | varchar (50) |            |         |                   |                 |               |               |                          |                 |
 	  And the 'BulkInsert' in Workflow 'WorkflowWithAssignAndSQLBulk' debug outputs as
 	  |                      |
+	  | [[result]] = Failure |
 
 Scenario: Simple workflow with Assign and Base Convert(Evaluating scalar variable inside variable)executing against the server
 	 Given I have a workflow "WorkflowWithAssignandBase"
@@ -890,7 +895,7 @@ Scenario: Simple workflow with Assign and Base Convert(Evaluating scalar variabl
 	  | 2 | [[b]] = 12 |
 	   And the 'Base' in WorkFlow 'WorkflowWithAssignandBase' debug inputs as
 	  | # | Convert        | From | To      |
-	  | 1 | [[[[a]]]] = 12 | Text | Base 64 |
+	  | 1 | [[b]] = 12 | Text | Base 64 |
       And the 'Base' in Workflow 'WorkflowWithAssignandBase' debug outputs as  
 	  | # |              |
 	  | 1 | [[b]] = MTI= |
@@ -917,7 +922,7 @@ Scenario: Simple workflow with Assign and Base Convert(Evaluating Recordset vari
 	  | 2 | [[rec(1).a]] = 12      |
 	   And the 'Base' in WorkFlow 'WorkflowWithAssignandBasec' debug inputs as
 	  | # | Convert              | From | To      |
-	  | 1 | [[[[rs(1).a]]]] = 12 | Text | Base 64 |
+	  | 1 | [[rec(1).a]] = 12 | Text | Base 64 |
       And the 'Base' in Workflow 'WorkflowWithAssignandBasec' debug outputs as  
 	  | # |                     |
 	  | 1 | [[rec(1).a]] = MTI= |
@@ -944,7 +949,7 @@ Scenario: Simple workflow with Assign and Case Convert(Evaluating scalar variabl
 	  | 2 | [[b]] = warewolf |
 	 And the 'CaseConvert' in WorkFlow 'WorkflowWithAssignandcCse' debug inputs as
 	  | # | Convert              | To    |
-	  | 1 | [[[[a]]]] = warewolf | UPPER |
+	  | 1 | [[b]] = warewolf | UPPER |
 	  And the 'CaseConvert' in Workflow 'WorkflowWithAssignandcCse' debug outputs as  
 	  | # |                  |
 	  | 1 | [[b]] = WAREWOLF |
@@ -970,7 +975,7 @@ Scenario: Simple workflow with Assign and Case Convert(Evaluating Recordset vari
 	  | 2 | [[rec(1).a]] = warewolf |
 	 And the 'CaseConvert' in WorkFlow 'WorkflowWithAssignandcCase' debug inputs as
 	  | # | Convert                    | To    |
-	  | 1 | [[[[rs(1).a]]]] = warewolf | UPPER |
+	  | 1 | [[rec(1).a]] = warewolf | UPPER |
 	  And the 'CaseConvert' in Workflow 'WorkflowWithAssignandcCase' debug outputs as  
 	  | # |                         |
 	  | 1 | [[rec(1).a]] = WAREWOLF |
@@ -1004,8 +1009,8 @@ Scenario: Simple workflow with Assign and Data Merge (Evaluating variables insid
 	  | 4 | [[rec(1).a]] = test    |
 	 And the 'Datamerge' in WorkFlow 'WorkflowWithAssignandData' debug inputs as
 	  | # |                        | With  | Using | Pad | Align |
-	  | 1 | [[[[a]]]] = warewolf   | Index | "8"   | ""  | Left  |
-	  | 2 | [[[[rs(1).a]]]] = test | Index | "4"   | ""  | Left  |
+	  | 1 | [[b]] = warewolf   | Index | "8"   | ""  | Left  |
+	  | 2 | [[rec(1).a]] = test | Index | "4"   | ""  | Left  |
 	  And the 'Datamerge' in Workflow 'WorkflowWithAssignandData' debug outputs as  
 	  | # |                           |
 	  | 1 | [[result]] = warewolftest |
@@ -1031,7 +1036,7 @@ Scenario: Simple workflow with Assign and Find Index(Evaluating scalar variable 
 	  | 2 | [[b]] = test |
 	   And the 'Indexchar' in WorkFlow 'WorkflowWithAssignandFindIndex' debug inputs as 	
 	  | In Field         | Index           | Characters | Direction     |
-	  | [[[[a]]]] = test | First Occurence | s          | Left to Right |
+	  | [[b]] = test | First Occurence | s          | Left to Right |
 	  And the 'Indexchar' in Workflow 'WorkflowWithAssignandFindIndex' debug outputs as 
 	  |                     |
 	  | [[indexResult]] = 3 |
@@ -1058,7 +1063,7 @@ Scenario: Simple workflow with Assign and Find Index(Evaluating recordset variab
 	  | 2 | [[new(1).a]] = test    |
 	   And the 'Index char' in WorkFlow 'WorkflowWithAssignandFindIndex1' debug inputs as 	
 	  | In Field               | Index           | Characters | Direction     |
-	  | [[[[rec(1).a]]]] = test | First Occurence | s          | Left to Right |
+	  | [[new(1).a]] = test | First Occurence | s          | Left to Right |
 	  And the 'Index char' in Workflow 'WorkflowWithAssignandFindIndex1' debug outputs as 
 	  |                     |
 	  | [[indexResult]] = 3 |
@@ -1084,7 +1089,7 @@ Scenario: Simple workflow with Assign and Replace(Evaluating scalar variable ins
 	  | 2 | [[b]] = test |
 	  And the 'Replac' in WorkFlow 'WorkflowWithAssignandReplace' debug inputs as 	
 	 | In Field(s)         | Find | Replace With |
-	 | [[[[a]]]] = test | s    | REPLACE      |
+	 | [[b]] = test | s    | REPLACE      |
 	    And the 'Replac' in Workflow 'WorkflowWithAssignandReplace' debug outputs as 
 	  |                       |
 	  | [[b]] = teREPLACEt    |
@@ -1112,7 +1117,7 @@ Scenario: Simple workflow with Assign and Replace(Evaluating Recordset variable 
 	  | 2 | [[new(1).a]] = test    |
 	  And the 'Rep' in WorkFlow 'WorkflowWithAssignandReplacebyrec' debug inputs as 	
 	  | In Field(s)             | Find | Replace With |
-	  | [[[[rec(1).a]]]] = test | s    | REPLACE      |
+	  | [[new(1).a]] = test | s    | REPLACE      |
 	    And the 'Rep' in Workflow 'WorkflowWithAssignandReplacebyrec' debug outputs as 
 	  |                           |
 	  | [[new(1).a]] = teREPLACEt |
@@ -1141,7 +1146,7 @@ Scenario: Simple workflow with Assign and Format Numbers(Evaluating scalar varia
 	  | 2 | [[b]] = 12.3412 |
 	  And the 'Fnumber' in WorkFlow 'WorkflowWithAssignandFormat' debug inputs as 	
 	  | Number              | Rounding | Rounding Value | Decimals to show |
-	  | [[[[a]]]] = 12.3412 | Up       | 3              | 3                |
+	  | [[b]] = 12.3412 | Up       | 3              | 3                |
 	  And the 'Fnumber' in Workflow 'WorkflowWithAssignandFormat' debug outputs as 
 	  |                      |
 	  | [[fresult]] = 12.342 |
@@ -1168,7 +1173,7 @@ Scenario: Simple workflow with Assign and Format Numbers(Evaluating Recordset va
 	  | 2 | [[new(1).a]] = 12.3412 |
 	  And the 'Fnumb' in WorkFlow 'WorkflowWithAssignandFormatn' debug inputs as 	
 	  | Number                    | Rounding | Rounding Value | Decimals to show |
-	  | [[[[rec(1).a]]]] = 12.3412 | Up       | 3              | 3                |
+	  | [[new(1).a]] = 12.3412 | Up       | 3              | 3                |
 	  And the 'Fnumb' in Workflow 'WorkflowWithAssignandFormatn' debug outputs as 
 	  |                      |
 	  | [[fresult]] = 12.342 |
@@ -1202,7 +1207,7 @@ Scenario: Simple workflow with Assign and Random(Evaluating recordset variable i
 	  | 4 | [[new(1).a]] = 20      |
 	  And the 'Rand' in WorkFlow 'WorkflowWithAssignandRandom' debug inputs as 
 	  | Random  | From           | To                   |
-	  | Numbers | [[[[a]]]] = 10 | [[[[rec(1).a]]]] = 20 |
+	  | Numbers | [[b]] = 10 | [[new(1).a]] = 20 |
 	  And the 'Rand' in Workflow 'WorkflowWithAssignandRandom' debug outputs as
 	  |                       |
 	  | [[ranresult]] = Int32 |
@@ -1235,7 +1240,7 @@ Scenario: Simple workflow with Assign and Date and Time(Evaluating recordset var
 	   | 4 | [[new(1).a]] =  dd/mm/yyyy |
 	   And the 'AddDate' in WorkFlow 'WorkflowWithAssignandDateTimetool' debug inputs as
 	   | Input                  | Input Format                  | Add Time |   | Output Format |
-	   | [[[[a]]]] = 01/02/2014 | [[[[rec(1).a]]]] = dd/mm/yyyy | Years    | 1 | dd/mm/yyyy    |	
+	   | [[b]] = 01/02/2014 | [[new(1).a]] = dd/mm/yyyy | Years    | 1 | dd/mm/yyyy    |	
 	   And the 'AddDate' in Workflow 'WorkflowWithAssignandDateTimetool' debug outputs as   
 	   |                      |
 	   | [[res]] = 01/02/2015 |
@@ -1269,7 +1274,7 @@ Scenario: Simple workflow with Assign and DateTimeDiff(Evaluating recordset vari
 	   | 4 | [[new(1).a]] = 01/02/2014 |
 	   And the 'DateTimedif' in WorkFlow 'WorkflowWithAssignandDateTimeDiff' debug inputs as
 	   | Input 1                       | Input 2                | Input Format | Output In |
-	   | [[[[rec(1).a]]]] = 01/02/2014 | [[[[a]]]] = 01/02/2016 | dd/mm/yyyy   | Years     |
+	   | [[new(1).a]] = 01/02/2014 | [[b]] = 01/02/2016 | dd/mm/yyyy   | Years     |
 	   And the 'DateTimedif' in Workflow 'WorkflowWithAssignandDateTimeDiff' debug outputs as   
 	   |                |
 	   | [[result]] = 2 |
@@ -1295,7 +1300,7 @@ Scenario: Simple workflow with Assign and Replace(Evaluating variable inside a v
 	  | 2 | [[b]] = test |
 	  And the 'Replac' in WorkFlow 'WorkflowWithAssignReplace' debug inputs as 	
 	 | In Field(s)      | Find | Replace With |
-	 | [[[[a]]]] = test | s    | REPLACE      |
+	 | [[b]] = test | s    | REPLACE      |
 	    And the 'Replac' in Workflow 'WorkflowWithAssignReplace' debug outputs as 
 	  |                       |
 	  | [[b]] = teREPLACEt    |
@@ -1322,7 +1327,7 @@ Scenario: Simple workflow with Assign and Format Numbers(Evaluating variable ins
 	  | 2 | [[b]] = 12.3412 |
 	  And the 'Fnumber1' in WorkFlow 'WorkflowAssignandFormat' debug inputs as 	
 	  | Number              | Rounding | Rounding Value | Decimals to show |
-	  | [[[[a]]]] = 12.3412 | Up       | 3              | 3                |
+	  | [[b]] = 12.3412 | Up       | 3              | 3                |
 	  And the 'Fnumber1' in Workflow 'WorkflowAssignandFormat' debug outputs as 
 	  |                      |
 	  | [[fresult]] = 12.342 |
@@ -1634,6 +1639,7 @@ Scenario: Workflow with ForEach which contains assign
 		| 1 | [[rec(2).a]] = Test |
 
 
+#DONE
 ##Bug - 12160  
 Scenario: Workflow with ForEach which contains Sequence
       Given I have a workflow "WorkflowWithForEachContainingSequence"
@@ -1724,16 +1730,10 @@ Scenario: Executing ForEach in Rec with star which contains Sequence
 	  | 3 | [[rec(2).a]] =  Test     |
 	  | 4 | [[rec(2).b]] =  Warewolf |
 	  And the 'ForEachTest1' in WorkFlow 'WorkFWithForEachwithRecContainingSequence' debug inputs as 
-	  |                | Recordset               |
-	  | * in Recordset |                         |
-	  |                | [[rec(1).a]] = 123      |
-	  |                | [[rec(1).b]] = 456      |
-	  |                | [[rec(1).c]] =          |
-	  |                | [[rec(1).d]] =          |
-	  |                | [[rec(2).a]] = Test     |
-	  |                | [[rec(2).b]] = Warewolf |
-	  |                | [[rec(2).c]] =          |
-	  |                | [[rec(2).d]]  =         |
+	  |                | Recordset      |
+	  | * in Recordset |                |
+	  |                | [[rec(1)]] = |
+	  |                | [[rec(2)]] = |
       And the 'ForEachTest1' in WorkFlow 'WorkFWithForEachwithRecContainingSequence' has  "2" nested children
 	  And the 'Data Merge' in "Seq1" in step 1 for 'ForEachTest1' debug inputs as
 	  | # |                    | With | Using | Pad | Align |
@@ -1763,6 +1763,7 @@ Scenario: Executing ForEach in Rec with star which contains Sequence
 	  | 1 | [[rec(2).d]] = String |
 
 ##Bug - 12160  
+#DONE
 Scenario: Executing 2 ForEach's inside a ForEach which contains Assign only
       Given I have a workflow "WFContainsForEachInsideforEach"
 	  And "WFContainsForEachInsideforEach" contains a Foreach "ForEachTest1" as "NumOfExecution" executions "2"
@@ -1797,7 +1798,8 @@ Scenario: Executing 2 ForEach's inside a ForEach which contains Assign only
 	  And the 'Testingoutput' in step 2 for 'ForEachTest3' debug outputs as
 	  | # |                    |
 	  | 1 | [[rec(1).a]] = 123 |	  		
-		
+
+#DONE		
   Scenario: Executing 2 ForEach's inside a ForEach which contains Assign only Large Execution
       Given I have a workflow "WFForEachInsideforEachLargeTenFifty"
 	  And "WFForEachInsideforEachLargeTenFifty" contains a Foreach "ForEachTest1" as "NumOfExecution" executions "10"
@@ -2325,8 +2327,6 @@ Scenario: Testing Data Split with two variables in Result field
 	  |                     |                   |                 | 2 | [[fr().b]][[b]] = | Index | 2     | No      |        |
 	  And the 'Data Split' in Workflow 'WorkflowforDatasplit' debug outputs as  
 	  | # |                    |
-	  | 1 | [[fr(1).aa]] = |
-	  | 2 | [[fr(1).bb]] = |
 	
 @ignore
 Scenario Outline: Testing Replace with two variables in Result field
@@ -2528,145 +2528,6 @@ Examples:
 #      | 11 | [[rec(@).a]]           |
 #      | 12 | [[rec"()".a]]          |
 #      | 13 | [[rec([[[[b]]]]).a]]   |
-
-
-#   
-#Scenario Outline: Testing Date Time Diff with two variables in Result field
-#      Given I have a workflow "WorkflowforDateTimeDiff"
-#      And "WorkflowforDateTimeDiff" contains an Assign "Values" as
-#	  | variable    | value      |
-#	  | [[rec().a]] | 01/01/2001 |
-#	  | [[rec().a]] | 01/01/2010 |
-#	  And "WorkflowforDateTimeDiff" contains Date and Time Difference "DateAndTime" as	
-#	  | Input1       | Input2       | Input Format | Output In | Result               |
-#	  | [[rec(1).a]] | [[rec(2).a]] | dd/mm/yyyy   | Years     | '<Variable>' |	   
-#	  When "WorkflowforDateTimeDiff" is executed  	  
-#	  Then the workflow execution has "AN" error	
-#      And the 'Values' in WorkFlow 'WorkflowforDateTimeDiff' debug inputs as
-#	  | # | Variable      | New Value  |
-#	  | 1 | [[rec().a]] = | 01/01/2001 |
-#	  | 2 | [[rec().a]] = | 01/01/2010 |
-#	  And the 'Values' in Workflow 'WorkflowforDateTimeDiff' debug outputs as    
-#	  | # |                           |
-#	  | 1 | [[rec(1).a]] = 01/01/2001 |
-#	  | 2 | [[rec(2).a]] = 01/01/2010 |
-#	  And the 'DateAndTime' in WorkFlow 'WorkflowforDateTimeDiff' debug inputs as
-#	  | Input 1                   | Input 2                   | Input Format | Output In |
-#	  | [[rec(1).a]] = 01/01/2001 | [[rec(2).a]] = 01/01/2010 | dd/mm/yyyy   | Years     |
-#	  And the 'DateAndTime' in Workflow 'WorkflowforDateTimeDiff' debug outputs as 
-#	  |  |
-#Examples: 
-#      | No | Variable               |
-#      | 1  | [[a]][[Result]]        |
-#      | 2  | [[a]]*]]               |
-#      | 3  | [[var@]]               |
-#      | 4  | [[var]]00]]            |
-#      | 5  | [[(1var)]]             |
-#      | 6  | [[var[[a]]]]           |
-#      | 7  | [[var.a]]              |
-#      | 8  | [[@var]]               |
-#      | 9  | [[var 1]]              |
-#      | 10 | [[rec(1).[[rec().1]]]] |
-#      | 11 | [[rec(@).a]]           |
-#      | 12 | [[rec"()".a]]          |
-#      | 13 | [[rec([[[[b]]]]).a]]   |
-#
-
-Scenario: Workflow with Assign and Sort Forward to test gaps
-      Given I have a workflow "workflowithAssignandsortrec"
-      And "workflowithAssignandsortrec" contains an Assign "sortval" as
-	  | variable    | value |
-	  | [[rs(1).a]] | 30    |
-	  | [[rs(5).a]] | 20    |
-	  | [[rs(7).a]] | 10    |
-	  | [[rs(2).b]] | 6     |
-	  | [[rs(4).b]] | 4     |
-	  | [[rs(6).b]] | 2     |
-	  And "workflowithAssignandsortrec" contains an Sort "sortRec" as
-	  | Sort Field | Sort Order |
-	  | [[rs(*).a | Forward    |
-	  When "workflowithAssignandsortrec" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'sortval' in WorkFlow 'workflowithAssignandsortrec' debug inputs as
-	  | # | Variable      | New Value |
-	  | 1 | [[rs(1).a]] = | 30        |
-	  | 2 | [[rs(5).a]] = | 20        |
-	  | 3 | [[rs(7).a]] = | 10        |
-	  | 4 | [[rs(2).b]] = | 6         |
-	  | 5 | [[rs(4).b]] = | 4         |
-	  | 6 | [[rs(6).b]] = | 2         |
-	  And the 'sortval' in Workflow 'workflowithAssignandsortrec' debug outputs as    
-	  | # |                  |
-	  | 1 | [[rs(1).a]] = 30 |
-	  | 2 | [[rs(5).a]] = 20 |
-	  | 3 | [[rs(7).a]] = 10 |
-	  | 4 | [[rs(2).b]] = 6  |
-	  | 5 | [[rs(4).b]] = 4  |
-	  | 6 | [[rs(6).b]] = 2  |
-	  And the 'sortRec' in WorkFlow 'workflowithAssignandsortrec' debug inputs as
-	  | Sort Field       | Sort Order |
-	  | [[rs(1).a]] = 30 |            |
-	  | [[rs(2).a]] =    |            |
-	  | [[rs(4).a]] =    |            |
-	  | [[rs(5).a]] = 20 |            |
-	  | [[rs(6).a]] =    |            |
-	  | [[rs(7).a]] = 10 | Forward    |
-	  And the 'sortRec' in Workflow 'workflowithAssignandsortrec' debug outputs as
-	  |                  |
-	  | [[rs(1).a]] =  |
-	  | [[rs(2).a]] =  |
-	  | [[rs(4).a]] =  |
-	  | [[rs(5).a]] = 10 |
-	  | [[rs(6).a]] = 20 |
-	  | [[rs(7).a]] = 30 |
-
-Scenario: Workflow with Assign and Sort Backward to test gaps
-      Given I have a workflow "workflowithAssignandsortrecBack"
-      And "workflowithAssignandsortrecBack" contains an Assign "sortval" as
-	  | variable    | value |
-	  | [[rs(1).a]] | 10    |
-	  | [[rs(5).a]] | 20    |
-	  | [[rs(7).a]] | 30    |
-	  | [[rs(2).b]] | 6     |
-	  | [[rs(4).b]] | 4     |
-	  | [[rs(6).b]] | 2     |
-	  And "workflowithAssignandsortrecBack" contains an Sort "sortRec" as
-	  | Sort Field | Sort Order |
-	  | [[rs(*).a]] | Backwards   |
-	  When "workflowithAssignandsortrecBack" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'sortval' in WorkFlow 'workflowithAssignandsortrecBack' debug inputs as
-	  | # | Variable      | New Value |
-	  | 1 | [[rs(1).a]] = | 10        |
-	  | 2 | [[rs(5).a]] = | 20        |
-	  | 3 | [[rs(7).a]] = | 30        |
-	  | 4 | [[rs(2).b]] = | 6         |
-	  | 5 | [[rs(4).b]] = | 4         |
-	  | 6 | [[rs(6).b]] = | 2         |
-	  And the 'sortval' in Workflow 'workflowithAssignandsortrecBack' debug outputs as    
-	  | # |                  |
-	  | 1 | [[rs(1).a]] = 10 |
-	  | 2 | [[rs(5).a]] = 20 |
-	  | 3 | [[rs(7).a]] = 30 |
-	  | 4 | [[rs(2).b]] = 6  |
-	  | 5 | [[rs(4).b]] = 4  |
-	  | 6 | [[rs(6).b]] = 2  |
-	  And the 'sortRec' in WorkFlow 'workflowithAssignandsortrecBack' debug inputs as
-	  | Sort Field       | Sort Order |
-	  | [[rs(1).a]] = 10 |            |
-	  | [[rs(2).a]] =    |            |
-	  | [[rs(4).a]] =    |            |
-	  | [[rs(5).a]] = 20 |            |
-	  | [[rs(6).a]] =    |            |
-	  | [[rs(7).a]] = 30 | Backwards    |
-	  And the 'sortRec' in Workflow 'workflowithAssignandsortrecBack' debug outputs as
-	  |                  |
-	  | [[rs(1).a]] = 30 |
-	  | [[rs(2).a]] = 20 |
-	  | [[rs(4).a]] = 10 |
-	  | [[rs(5).a]] =    |
-	  | [[rs(6).a]] =    |
-	  | [[rs(7).a]] =    |
 
 
 #Scenario: Workflow #FIXED ON 11782
@@ -2902,7 +2763,7 @@ Scenario: Base Convert two varibles on one row
     And the 'Base to Convert' in Workflow 'BaseConvertUsingRecSetInRecursiveEvalution' debug outputs as  
 	  | # |                     |
 	  | 1 | [[rec(1).a]] = Mg== |
-
+#done
 #This should be passed with the bug 12160
 Scenario: Workflow by using For Each with Raandom in it
       Given I have a workflow "WFWithForEachContainsRandom"
@@ -2971,7 +2832,7 @@ Scenario: Workflow by using For Each with Raandom in it
 #	  And the 'DataSplit' in Workflow 'WorkflowDataSplit' debug outputs as  
 #	  | # |                     |
 #	  | 1 | [[rec(1).b]] = abcd |
-
+#done
 #bug 12470
 Scenario: Workflow with Assign and foreach contains calculate. 
       Given I have a workflow "Workflowwithforeachcontainscalculates"
@@ -3022,7 +2883,7 @@ Scenario: Workflow with Assign and foreach with invalid rec and it contains calc
       | [[rs().a]] | 1     |
       | [[rs().a]] | 2     |
       | [[rs().a]] | 3     |
-	  And "WorkflowDwithforeachcontainscalinvalid" contains a Foreach "ForEachTes" as "InRecordset" executions "[[rs()]]+1"
+	  And "WorkflowDwithforeachcontainscalinvalid" contains a Foreach "ForEachTes" as "InRecordset" executions "[[rs()]]"
 	  And "ForEachTes" contains Calculate "Cal" with formula "[[rs(*).a]]+1" into "[[result]]"
 	  When "WorkflowDwithforeachcontainscalinvalid" is executed
 	  Then the workflow execution has "NO" error
@@ -3219,7 +3080,7 @@ Scenario: Workflow with Assign and Unique Tool
        |   | [[rec(2).unique]] = 20 |
        |   | [[rec(3).unique]] = 40 |
        |   | [[rec(4).unique]] = 50 |
-
+#done
 #Bug 12142
 Scenario: Workflow with Calculation using Star notation
       Given I have a workflow "WorkflowWithAssignCalculationUsingStar"
@@ -3245,10 +3106,8 @@ Scenario: Workflow with Calculation using Star notation
 	  | 3 | [[rs(3).a]] =  40 |
 	   And the 'Calculation' in WorkFlow 'WorkflowWithAssignCalculationUsingStar' debug inputs as
 	  | # | Variable        | New Value |
-	  | 1 | [[rec().sum]] = |           |
 	  And the 'Calculation' in Workflow 'WorkflowWithAssignCalculationUsingStar' debug outputs as  
 	  | # |                   |
-	  | 1 | [[rec(1).sum]] =  |
 
 # This Test should be passed after the bug 12236 is fixed    
 #Scenario: Workflow with Assign and Gather System Information executing with incorrect variable
@@ -3274,7 +3133,7 @@ Scenario: Workflow with Calculation using Star notation
 #	  |                        |
 ##	  
  
-#  Bug 12341 
+# not done unique
 Scenario: Workflow with Assign Unique to check debug outputs
       Given I have a workflow "workflowithAssignUniquedebugoutputs"
       And "workflowithAssignUniquedebugoutputs" contains an Assign "Recordset" as
@@ -3309,6 +3168,7 @@ Scenario: Workflow with Assign Unique to check debug outputs
        | 1 | [[List(1).Name]] = test |
        
 
+#done
 #12326
 Scenario: Workflow Saving with Different Versions 
 	 Given I have a workflow "WorkflowWithVersionAssignTest"
@@ -3336,7 +3196,7 @@ Scenario: Workflow Saving with Different Versions
 	  | v.2 DateTime Save   |
 	  | v.1 DateTime Save   |
 
-
+#done
 Scenario: Executing workflow of different versions
 	 Given I have a workflow "WorkflowWithVersionAssignExecuted2"
 	 And "WorkflowWithVersionAssignExecuted2" contains an Assign "VarsAssign" as
@@ -3448,7 +3308,7 @@ Scenario: Executing workflow of different versions
 #	  | 1 | [[rec(1).a]] = Tezt |
 
 
-
+#done
 Scenario: Workflow with Assign Base Convert and Case Convert testing variable that hasn't been assigned
 	  Given I have a workflow "WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues"
 	  And "WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues" contains an Assign "Assign1" as
@@ -3480,7 +3340,7 @@ Scenario: Workflow with Assign Base Convert and Case Convert testing variable th
       And the 'Base to Convert' in Workflow 'WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues' debug outputs as  
 	  | # |             |
 
-
+#done
 Scenario: Workflow with Assigns DataMerge and DataSplit and testing variables that hasn't been assigned
       Given I have a workflow "WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues"
 	  And "WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues" contains an Assign "Assign To merge" as
@@ -3502,7 +3362,7 @@ Scenario: Workflow with Assigns DataMerge and DataSplit and testing variables th
 	  | 1 | [[res]]          =  Test |
 	  And the 'Data Merge' in WorkFlow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues' debug inputs as 
 	  | # |             | With  | Using | Pad | Align |
-	  | 1 | "" =   | Index | "4"   | ""  | Left  |
+	  | 1 | [[Value]] =   | Index | "4"   | ""  | Left  |
 	  And the 'Data Merge' in Workflow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues' debug outputs as  
 	  |             |
 	  | [[result]] = |
@@ -3511,7 +3371,6 @@ Scenario: Workflow with Assigns DataMerge and DataSplit and testing variables th
 	  | [[Value12]]  =  | Forward           | No              | 1 | [[rec().b]] = | Index | 4     | No      |        |
 	  And the 'Data Split' in Workflow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues' debug outputs as  
 	  | # |               |
-	  | 1 | [[rec(1).b]] = |
 
 #Bug 18263
 #Scenario: Workflow with Assigns DataMerge and DataSplit and testing variables that hasn't been assigned2
@@ -3546,7 +3405,7 @@ Scenario: Workflow with Assigns DataMerge and DataSplit and testing variables th
 #	  | # |                     |
 #	  | 1 | [[rec(1).b]] = Test |
 
-
+#done
 Scenario: Workflow with Assigns Replace and testing variables that hasn't been assigned
       Given I have a workflow "workflowithAssignandReplaceTestingUnassignedvariablevalues"
        And "workflowithAssignandReplaceTestingUnassignedvariablevalues" contains an Assign "Assign34" as
@@ -3564,8 +3423,8 @@ Scenario: Workflow with Assigns Replace and testing variables that hasn't been a
 	  | # |                |
 	  | 1 | [[Val]] = test |
 	  And the 'Replacing' in WorkFlow 'workflowithAssignandReplaceTestingUnassignedvariablevalues' debug inputs as 
-	  | In Field(s) | Find | Replace With |
-	  | [[rec()]] = |      |              |
+	  | In Field(s) | Find       | Replace With |
+	  | [[rec()]] = | [[Val1]] = | [[Val2]] =   |
 	  And the 'Replacing' in Workflow 'workflowithAssignandReplaceTestingUnassignedvariablevalues' debug outputs as
 	  |              |
 	  | [[replac]] = |
@@ -3596,6 +3455,7 @@ Scenario: Workflow with Assigns Replace and testing variables that hasn't been a
 #	  |                |
 #	  | [[replac]] = 0 |	 
 
+#done
 Scenario: Workflow with Assign Format Numbers and testing variables that hasn't been assigned
 	  Given I have a workflow "WorkflowWithAssignandFormatTestingUnassignedvariablevalues"
 	  And "WorkflowWithAssignandFormatTestingUnassignedvariablevalues" contains an Assign "IndexVal" as
@@ -3643,7 +3503,7 @@ Scenario: Workflow with Assign Format Numbers and testing variables that hasn't 
 #	  |                      |
 #	  | [[fresult]]  = 234.0 |
 #
-
+#done
 Scenario: Workflow with Assign Create Delete folder and testing variable values that hasn't been assigned
 	  Given I have a workflow "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues"
 	  And "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues" contains an Assign "AssignT" as
@@ -3725,8 +3585,8 @@ Scenario: Calculate testing variable values that hasn't been assigned
 	  | # |             |
 	  | 1 | [[Val]] = 1 |
 	  And the 'Calculate1' in WorkFlow 'WorkflowforCalTestingUnassignedvariablevalue' debug inputs as 
-      | fx =                    |
-      | [[Val1]]+1 = [[Val1]]+1 |           
+      | fx =         |
+      | [[Val1]]+1 = |           
       And the 'Calculate1' in Workflow 'WorkflowforCalTestingUnassignedvariablevalue' debug outputs as  
 	  |           |
 	  | [[res]] = |
@@ -3747,12 +3607,12 @@ Scenario: Calculate testing variable values that hasn't been assigned2
 	  | # |             |
 	  | 1 | [[Val]] = 1 |
 	  And the 'Calculate1' in WorkFlow 'WorkflowforCalTestingUnassignedvariablevalue2' debug inputs as 
-      | fx =                        |
-      | [[Val1]]23+1 = [[Val1]]23+1 |           
+      | fx =           |
+      | [[Val1]]23+1 = |           
       And the 'Calculate1' in Workflow 'WorkflowforCalTestingUnassignedvariablevalue2' debug outputs as  
 	  |           |
 	  | [[res]] = |
-
+#DONE
 Scenario: Workflow with Assign and Random and testing variable values that hasn't been assigned
 	 Given I have a workflow "WorkflowWithAssignandRandomTestingUnassignedvariablevalue"
 	 And "WorkflowWithAssignandRandomTestingUnassignedvariablevalue" contains an Assign "Valforrandno" as
@@ -3800,7 +3660,7 @@ Scenario: Workflow with Assign and Random and testing variable values that hasn'
 #	  |                       |
 #	  | [[ranresult]] = Int32 |
 
-
+#done
 
 Scenario: Workflow with Assign, Date Time Difference tools and testing variable values that hasn't been assigned
 	  Given I have a workflow "WorkflowWithAssignAndDateTimeDifferencetoolsTestingUnassignedvariablevalue"
@@ -3914,7 +3774,7 @@ Scenario: Workflow with Assign, Date Time Difference tools and testing variable 
 #	  |               |
 #	  | [[xs(*).a]] = |
 	 
-
+#not done unique
 Scenario: Workflow with Assign Unique Tool and testing variables in Returnfield hasn't been assigned
       Given I have a workflow "workflowithAssignUni"
       And "workflowithAssignUni" contains an Assign "Records1" as
@@ -3943,7 +3803,7 @@ Scenario: Workflow with Assign Unique Tool and testing variables in Returnfield 
        |                     |
        | [[rec(1).unique]] = |
       
-
+#done 
 Scenario: Executing Utility - Format Number example workflow
 	  Given I have a workflow "Utility - Format Number Test"
 	  And "Utility - Format Number Test" contains "Utility - Format Number" from server "localhost" with mapping as
@@ -3962,7 +3822,8 @@ Scenario: Executing Utility - Format Number example workflow
 	  And the 'Format Number2' in Workflow 'Utility - Format Number' debug outputs as    
 	  |                   |
 	  | [[PriceInK]] = 14 |
-	 
+
+#done 
 Scenario: Executing Utility - Random example workflow
 	  Given I have a workflow "Utility - Random Test"
 	  And "Utility - Random Test" contains "Utility - Random" from server "localhost" with mapping as
@@ -3988,7 +3849,7 @@ Scenario: Executing Utility - Random example workflow
 	  |                      |
 	  | [[License]] = String |
 
-
+#done
 Scenario: Executing Utility - Date and Time example workflow
 	  Given I have a workflow "Utility - Date and Time Test"
 	  And "Utility - Date and Time Test" contains "Utility - Date and Time" from server "localhost" with mapping as
@@ -4022,7 +3883,7 @@ Scenario: Executing Utility - Date and Time example workflow
 	  And the 'Date and Time(5)' in WorkFlow 'Utility - Date and Time' debug inputs as
 	  | Input            | =        | Input Format            | =                      | Add Time |    | Output Format                                 |
 	  | System Date Time | DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       | "" | 'Date format yyyy MM dd yields : ' yyyy MM dd |
-
+#done
 Scenario: Executing Utility - Gather System Information example workflow
 	  Given I have a workflow "Utility - System Information Test"
 	  And "Utility - System Information Test" contains "Utility - System Information" from server "localhost" with mapping as
@@ -4068,7 +3929,7 @@ Scenario: Executing Utility - Gather System Information example workflow
 	   | 16 | [[Domain]]        =    String |
 	   | 17 | [[Agents]]        =    String |
 
-
+#done
 Scenario: Executing Utility - Web Request example workflow
 	  Given I have a workflow "Utility - Web Request Test"
 	  And "Utility - Web Request Test" contains "Utility - Web Request" from server "localhost" with mapping as
@@ -4105,7 +3966,7 @@ Scenario: Executing Utility - Web Request example workflow
 #	  | [[hero(1).name]] =   Chuck Norris                                 |
 
 	
-
+	#done
 
 Scenario: Executing Data - Base Conversion example workflow
 	  Given I have a workflow "Data - Base Conversion Test"
@@ -4120,7 +3981,7 @@ Scenario: Executing Data - Base Conversion example workflow
 	   | # |                          |
 	   | 1 | [[Blob]] = I was mangled |
 	 
-
+#done
 Scenario: Executing Data - Case Conversion example workflow
 	  Given I have a workflow "Data - Case Conversion Test"
 	  And "Data - Case Conversion Test" contains "Data - Case Conversion" from server "localhost" with mapping as
@@ -4212,7 +4073,7 @@ Scenario: Executing Data - Case Conversion example workflow
 #   |                  Bill 003215464987bill@mail.com                 |
 
 
-
+#done
 Scenario: Executing Data - Find Index example workflow
 	  Given I have a workflow "Utility - Find Index Test"
 	  And "Utility - Find Index Test" contains "Utility - Find Index" from server "localhost" with mapping as
@@ -4232,7 +4093,7 @@ Scenario: Executing Data - Find Index example workflow
 	  |                            |
 	  | [[WhereAreTheBs]] = 2,4,11 |
 
-
+#done
 Scenario: Executing Utility - Replace example workflow
 	  Given I have a workflow "Utility - Replace Test"
 	  And "Utility - Replace Test" contains "Utility - Replace" from server "localhost" with mapping as
@@ -4249,6 +4110,7 @@ Scenario: Executing Utility - Replace example workflow
 	  And the 'Replace2' in Workflow 'Utility - Replace' debug outputs as  
 	  |                                       |
 	  | [[rec(1).homeNumber]]   = +1553122442 |
+	  | [[rec(2).homeNumber]]   = +1554682136 |
 	  | [[rec(1).mobileNumber]] = +1655985781 |
 	  | [[rec(2).mobileNumber]] = +1985623145 |
 	  | [[recount]] = 3                       |
@@ -4261,8 +4123,8 @@ Scenario: Executing Recordset - Count Records example workflow
 	  Then the workflow execution has "NO" error
 	  And the 'Count Records' in WorkFlow 'Recordset - Count Records' debug inputs as
 	  | Recordset                  |
-	  | [[rec(1).set]] = Warewolf  |
-	  | [[rec(2).set]] = SOA       |
+	  | [[rec(1).set]] = Warewolf |
+	  | [[rec(2).set]] = SOA |
 	  | [[rec(3).set]] = Recordset |
 	  And the 'Count Records' in Workflow 'Recordset - Count Records' debug outputs as  
 	  |               |
@@ -4295,19 +4157,19 @@ Scenario: Executing Recordset - Delete Records example workflow
 	  When "Recordset - Delete Records Test" is executed
 	  Then the workflow execution has "NO" error
 	  And the 'Delete Record1' in WorkFlow 'Recordset - Delete Records' debug inputs as
-	  | Records            |
+	  | Recordset          |
 	  | [[rec(2).set]] = 2 |
 	  And the 'Delete Record1' in Workflow 'Recordset - Delete Records' debug outputs as  
 	  |                      |
 	  | [[result]] = Success |
 	  And the 'Delete Record2' in WorkFlow 'Recordset - Delete Records' debug inputs as
-	  | Records            |
+	  | Recordset          |
 	  | [[rec(1).set]] = 1 |
 	  | [[rec(3).set]] = 3 |
 	  And the 'Delete Record2' in Workflow 'Recordset - Delete Records' debug outputs as  
 	  |                      |
 	  | [[result]] = Success |
-
+#done
 Scenario: Executing Recordset - Find Records example workflow
 	  Given I have a workflow "Recordset - Find Records Test"
 	  And "Recordset - Find Records Test" contains "Recordset - Find Records" from server "localhost" with mapping as
@@ -4911,8 +4773,8 @@ Scenario: Workflow by using For Each with workflow in it
        | 2 | [[rec(2).a]] = 2 |
        And the 'FEach' in WorkFlow 'WFWithForEachInrecordsetTesting' debug inputs as 
          |                | Recordset         |
-         | * in Recordset | [[rec(1).a]] = 1  |
-         |                | [[rec(2).a]] = 2  |
+         | * in Recordset | [[rec(1)]] =   |
+         |                | [[rec(2)]] =   |
        And the 'FEach' in WorkFlow 'WFWithForEachInrecordsetTesting' has  "2" nested children 
        And the 'Random' in step 1 for 'SavedWFwithRandom Test' debug inputs as
             | Random  | From             | To |
@@ -4948,9 +4810,9 @@ Scenario: Workflow by using For Each with workflow
          | 1 | [[rec(1).a]] = 1 |
          | 2 | [[rec(2).a]] = 2 |
          And the 'ForEachTest123' in WorkFlow 'WorkFlowWithForEachInRecordsetUtilityRandomTesting' debug inputs as 
-           |                | Recordset         |
-           | * in Recordset | [[rec(1).a]] = 1  |
-           |                | [[rec(2).a]] = 2 |
+           |                | Recordset      |
+           | * in Recordset | [[rec(1)]] = |
+           |                | [[rec(2)]] = |
          And the 'ForEachTest123' in WorkFlow 'WorkFlowWithForEachInRecordsetUtilityRandomTesting' has  "4" nested children 
 	     And the 'Random1' in "Utility - Random" in step 1 for 'ForEachTest123' debug inputs as
          | Random  | From | To |

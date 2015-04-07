@@ -23,6 +23,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Framework.Converters.Graph;
 using Warewolf.Storage;
+using WarewolfParserInterop;
 
 namespace Dev2.Services.Execution
 {
@@ -177,7 +178,14 @@ namespace Dev2.Services.Execution
                             var definitions = dev2Definitions as IDev2Definition[] ?? dev2Definitions.ToArray();
                             if (definitions.Count() == 1)
                             {
-                                toInject = DataListUtil.AddBracketsToValueIfNotExist(definitions[0].RawValue);
+                                if (DataListUtil.IsEvaluated(definitions[0].RawValue))
+                                {
+                                    toInject = DataListUtil.AddBracketsToValueIfNotExist(definitions[0].RawValue);
+                                }
+                                else
+                                {
+                                    toInject = definitions[0].RawValue;
+                                }
                             }
 
                         }
@@ -336,21 +344,13 @@ namespace Dev2.Services.Execution
                     WarewolfDataEvaluationCommon.WarewolfEvalResult warewolfEvalResult = null;
                     try
                     {
-                        warewolfEvalResult = DataObj.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(c.Name));
-                        if (warewolfEvalResult.IsWarewolfAtomResult && level == 0)
-                        {
-                            var checkNullResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
-                            if (checkNullResult != null && checkNullResult.Item.IsNothing)
-                            {
-                                warewolfEvalResult = null;
-                            }
-                        }
+                        warewolfEvalResult = DataObj.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(c.Name));                        
                     }
                     catch (Exception e)
                     {
                         Dev2Logger.Log.Error(e.Message, e);
                     }
-                    if (warewolfEvalResult != null)
+                    if (warewolfEvalResult != null || level>0)
                     {
                         var c1 = c;
                         var recSetName = outputDefs.Where(definition => definition.RecordSetName == c1.Name);
@@ -369,32 +369,19 @@ namespace Dev2.Services.Execution
                                 {
                                     if (definition.MapsTo == subc.Name)
                                     {
-                                        DataObj.Environment.Assign(definition.RawValue, subc.InnerXml);
+                                        DataObj.Environment.AssignWithFrame(new AssignValue(definition.RawValue, subc.InnerXml));
                                     }
                                 }
-                                //                                if(CanMapValue(onlyMapInputs, dir))
-                                //                                {
-                                //                                    entry.TryPutRecordItemAtIndex(Dev2BinaryDataListFactory.CreateBinaryItem(subc.InnerXml, c.Name, subc.Name, idx), idx, out error);
-                                //                                }
 
                             }
                             // update this recordset index
+                            DataObj.Environment.CommitAssign();
                             indexCache[c.Name] = ++idx;
                         }
-                        else if (warewolfEvalResult.IsWarewolfAtomResult)
+                        else
                         {
                             DataObj.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(c.Name), c.InnerXml);
                         }
-                        //                        else if(CanMapValue(onlyMapInputs, entry.ColumnIODirection))
-                        //                        {
-                        //                            // process scalar
-                        //                            entry.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(c.InnerXml, c.Name), out error);
-                        //
-                        //                            if(!string.IsNullOrEmpty(error))
-                        //                            {
-                        //                                errors.AddError(error);
-                        //                            }
-                        //                        }
                     }
                     else
                     {

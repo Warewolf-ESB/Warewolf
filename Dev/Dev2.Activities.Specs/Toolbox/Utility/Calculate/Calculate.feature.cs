@@ -312,7 +312,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         "fx ="});
             table14.AddRow(new string[] {
-                        "[[my(-1).formula]] = [[my(-1).formula]]"});
+                        "[[my(-1).formula]] ="});
 #line 92
  testRunner.And("the debug inputs as", ((string)(null)), table14, "And ");
 #line hidden

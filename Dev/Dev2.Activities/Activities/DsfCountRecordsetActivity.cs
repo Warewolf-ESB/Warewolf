@@ -19,7 +19,6 @@ using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Dev2.Validation;
@@ -93,15 +92,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         if(dataObject.IsDebugMode())
                         {
-                            var warewolfEvalResult = dataObject.Environment.Eval(RecordsetName);
-                            if (warewolfEvalResult.IsWarewolfRecordSetResult)
-                            {
-                                var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult;
-                                if(recsetResult != null)
-                                {
-                                    AddDebugInputItem(new DebugItemWarewolfRecordset(recsetResult.Item, RecordsetName, "Recordset", "="));
-                                }
-                            }
+                            AddDebugInputItem(new DebugEvalResult(dataObject.Environment.ToStar(RecordsetName), "Recordset", dataObject.Environment));
+
                         }
                         var rule = new IsSingleValueRule(() => CountNumber);
                         var single = rule.Check();
@@ -111,10 +103,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            var count = dataObject.Environment.GetCount(rs);
+                            var count = 0;
+                            if (dataObject.Environment.HasRecordSet(RecordsetName))
+                            {
+                                count = dataObject.Environment.GetCount(rs);
+                            }
                             var value = count.ToString();
                             dataObject.Environment.Assign(CountNumber, value);
-                            AddDebugOutputItem(new DebugItemWarewolfAtomResult(value,CountNumber,""));
+                            AddDebugOutputItem(new DebugEvalResult(CountNumber,"",dataObject.Environment));
                         }
                     }
                     catch(Exception e)

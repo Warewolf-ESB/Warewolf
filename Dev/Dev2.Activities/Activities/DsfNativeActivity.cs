@@ -214,57 +214,53 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     OnExecutedCompleted(context, false, resumable);
                     if(compiler != null)
                     {
-                        DoErrorHandling(context, compiler, dataObject);
+                        DoErrorHandling(context, dataObject);
                     }
                 }
 
             }
         }
 
-        protected void DoErrorHandling(NativeActivityContext context, IDataListCompiler compiler, IDSFDataObject dataObject)
+        protected void DoErrorHandling(NativeActivityContext context, IDSFDataObject dataObject)
         {
-            string errorString = compiler.FetchErrors(dataObject.DataListID, true);
-            string currentError = compiler.FetchErrors(dataObject.DataListID);
-            ErrorResultTO _tmpErrorsAfter = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
-            _tmpErrors.MergeErrors(_tmpErrorsAfter);
+            string errorString = dataObject.Environment.FetchErrors();
+            ErrorResultTO tmpErrorsAfter = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
+            _tmpErrors.MergeErrors(tmpErrorsAfter);
             if(_tmpErrors.HasErrors())
             {
                 if(!(this is DsfFlowDecisionActivity))
                 {
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, _tmpErrors.MakeDataListReady(), out errorsTo);
-                    if(!String.IsNullOrEmpty(currentError))
+                    if (!String.IsNullOrEmpty(errorString))
                     {
-                        PerformCustomErrorHandling(context, compiler, dataObject, currentError, _tmpErrors);
+                        PerformCustomErrorHandling(context, dataObject, errorString);
                     }
                 }
             }
         }
 
-        void PerformCustomErrorHandling(NativeActivityContext context, IDataListCompiler compiler, IDSFDataObject dataObject, string currentError, ErrorResultTO tmpErrors)
+        void PerformCustomErrorHandling(NativeActivityContext context, IDSFDataObject dataObject, string currentError)
         {
             try
             {
                 if(!String.IsNullOrEmpty(OnErrorVariable))
                 {
-                    compiler.Upsert(dataObject.DataListID, OnErrorVariable, currentError, out tmpErrors);
+                    dataObject.Environment.Assign(OnErrorVariable,currentError);                    
                 }
                 if(!String.IsNullOrEmpty(OnErrorWorkflow))
                 {
                     var esbChannel = context.GetExtension<IEsbChannel>();
+                    ErrorResultTO tmpErrors;
                     esbChannel.ExecuteLogErrorRequest(dataObject, dataObject.WorkspaceID, OnErrorWorkflow, out tmpErrors);
+                    dataObject.Environment.AddError(tmpErrors.MakeDisplayReady());
                 }
             }
             catch(Exception e)
             {
-                if(tmpErrors == null)
-                {
-                    tmpErrors = new ErrorResultTO();
-                }
-                tmpErrors.AddError(e.Message);
-                compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, tmpErrors.MakeDataListReady(), out errorsTo);
+                dataObject.Environment.AddError(e.Message);
             }
             finally
             {
+                
                 if(IsEndedOnError)
                 {
                     PerformStopWorkflow(context, dataObject);
@@ -459,10 +455,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public void DispatchDebugState(NativeActivityContext context, StateType stateType)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            var dataList = compiler.FetchBinaryDataList(dataObject.DataListID, out errorsTo);
-
+            
             Guid remoteID;
             Guid.TryParse(dataObject.RemoteInvokerID, out remoteID);
 
@@ -493,8 +486,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     catch (Exception err)
                     {
                         Dev2Logger.Log.Error("DispatchDebugState", err);
-                        AddErrorToDataList(err, compiler, dataObject);
-                        var errorMessage = compiler.FetchErrors(dataObject.DataListID);
+                        AddErrorToDataList(err, dataObject);
+                        var errorMessage = dataObject.Environment.FetchErrors();
                         _debugState.ErrorMessage = errorMessage;
                         _debugState.HasError = true;
                         var debugError = err as DebugCopyException;
@@ -515,12 +508,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             else
             {
-                bool hasError = compiler.HasErrors(dataObject.DataListID);
+                bool hasError = dataObject.Environment.HasErrors();
 
                 var errorMessage = String.Empty;
                 if(hasError)
                 {
-                    errorMessage = compiler.FetchErrors(dataObject.DataListID);
+                    errorMessage = string.Join(Environment.NewLine,dataObject.Environment.Errors);
                 }
 
                 if(_debugState == null)
@@ -553,8 +546,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     catch(Exception e)
                     {
                         Dev2Logger.Log.Error("Debug Dispatch Error", e);
-                        AddErrorToDataList(e,compiler,dataObject);
-                        errorMessage = compiler.FetchErrors(dataObject.DataListID);
+                        AddErrorToDataList(e,dataObject);
+                        errorMessage = dataObject.Environment.FetchErrors();
                         _debugState.ErrorMessage = errorMessage;
                         _debugState.HasError = true;
                     }
@@ -609,12 +602,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        void AddErrorToDataList(Exception err, IDataListCompiler compiler, IDSFDataObject dataObject)
+        void AddErrorToDataList(Exception err, IDSFDataObject dataObject)
         {
             var errorString = err.Message;
-            var errorResultTO = new ErrorResultTO();
-            errorResultTO.AddError(errorString);
-            compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, errorResultTO.MakeUserReady(), out errorsTo);
+            dataObject.Environment.Errors.Add(errorString);
         }
 
         protected void InitializeDebug(IDSFDataObject dataObject)

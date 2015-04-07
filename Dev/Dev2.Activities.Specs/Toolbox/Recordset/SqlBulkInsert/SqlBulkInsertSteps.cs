@@ -17,8 +17,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using ActivityUnitTests;
-using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Integration.Tests.Services.Sql;
