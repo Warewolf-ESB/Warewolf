@@ -2063,7 +2063,7 @@ this.FeatureBackground();
                         "New Value"});
             table120.AddRow(new string[] {
                         "1",
-                        "[[[[rec(1).a]]]] = rec(2).a",
+                        "[[[[rec(1).a]]]] = test",
                         "warewolf"});
 #line 675
    testRunner.And("the \'rec2\' in WorkFlow \'WorkflowWith2Assigntoolswithrecordsets\' debug inputs as", ((string)(null)), table120, "And ");

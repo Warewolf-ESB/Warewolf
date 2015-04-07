@@ -24,24 +24,25 @@ let AtomtoString (x:WarewolfAtom )=
         | Int a -> a.ToString()
         | DataString a -> a
         | Nothing -> ""
+        | PositionedValue (a,b) -> b.ToString()
 let WarewolfAtomRecordtoString (x:WarewolfAtomRecord )=
     match x with 
         | Float a -> a.ToString()
         | Int a -> a.ToString()
         | DataString a -> a
         | Nothing -> ""
-
+        | PositionedValue (a,b) -> b.ToString()
 let EvalResultToString (a:WarewolfEvalResult) = 
     match a with
     | WarewolfAtomResult x -> AtomtoString x
     | WarewolfAtomListresult x -> Seq.map WarewolfAtomRecordtoString x |> fun a->System.String.Join(",",a)
-    | WarewolfRecordSetResult x -> Map.toList x.Data |> List.map snd |> Seq.collect (fun a->a) |> fun a->System.String.Join(",",a)
+    | WarewolfRecordSetResult x -> Map.toList x.Data |> List.filter (fun (a, b) ->not (a=PositionColumn)) |>  List.map snd |> Seq.collect (fun a->a) |> fun a->System.String.Join(",",a)
 
 let EvalResultToStringNoCommas (a:WarewolfEvalResult) = 
     match a with
     | WarewolfAtomResult x -> AtomtoString x
     | WarewolfAtomListresult x -> Seq.map WarewolfAtomRecordtoString x |> (Seq.fold (+) "")
-
+    | WarewolfRecordSetResult x -> Map.toList x.Data |> List.filter (fun (a, b) ->not (a=PositionColumn)) |> List.map snd |> Seq.collect (fun a->a) |> fun a->System.String.Join("",a)
 let AtomToInt(a:WarewolfAtom) = 
     match a with
     | Int a -> a
@@ -163,11 +164,11 @@ and evalRecordsSet (recset:RecordSetIdentifier) (env: WarewolfEnvironment)  =
                 | Star ->  evalRecordSetStarIndex env.RecordSets.[recset.Name] recset
                 | Last -> let value = evalRecordSetLastIndex env.RecordSets.[recset.Name] recset 
                           let data = match value with
-                                  | Nothing ->List.empty
-                                  | _ ->  [ value]
+                                      | Nothing ->List.empty
+                                      | _ ->  [ value]
                           new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing,data)
                 | IndexExpression a -> new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing,[ evalRecordSetIndex env.RecordSets.[recset.Name] recset ( LanguageExpressionToString a|>(EvalIndex env)) ])
-                | _ -> failwith "Unknown evaluation type"
+
 and evalRecordsSetWithPositions (recset:RecordSetIdentifier) (env: WarewolfEnvironment)  =
     if  not (env.RecordSets.ContainsKey recset.Name)       then 
         raise (new Dev2.Common.Common.NullValueInVariableException(recset.Index.ToString(),recset.Name))
@@ -178,11 +179,11 @@ and evalRecordsSetWithPositions (recset:RecordSetIdentifier) (env: WarewolfEnvir
                 | Star ->  new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing,(evalRecordSetStarIndexWithPositions env.RecordSets.[recset.Name] recset))
                 | Last -> let value = evalRecordSetLastIndex env.RecordSets.[recset.Name] recset 
                           let data = match value with
-                                  | Nothing ->List.empty
-                                  | _ ->  [ value]
+                                      | Nothing ->List.empty
+                                      | _ ->  [ value]
                           new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing,data)
                 | IndexExpression a -> new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing,[ evalRecordSetIndex env.RecordSets.[recset.Name] recset ( LanguageExpressionToString a|>(EvalIndex env)) ])
-                | _ -> failwith "Unknown evaluation type"
+
 
 and evalRecordSetAsString (env: WarewolfEnvironment) (a:RecordSetIdentifier) = 
     match a.Index with
@@ -226,6 +227,7 @@ and EvalDataSetExpression (env: WarewolfEnvironment)  (name:RecordSetName) =
                                         | WarewolfAtomAtomExpression atom ->
                                                     match atom with
                                                     | Int a ->  WarewolfRecordSetResult (evalARow (getRecordSetIndexAsInt recset a) recset name.Name env)
+                                                    | _ -> failwith "non int index found"
                                         | _ ->   Eval env ( sprintf "[[%s(%s)]]" name.Name res)
     else
         raise (new Dev2.Common.Common.NullValueInVariableException("Recordset not found",name.Name))
@@ -433,10 +435,13 @@ let AddAtomToRecordSet (rset:WarewolfRecordset) (columnName:string) (value: Ware
 
 let getPositionFromRecset (rset:WarewolfRecordset) (columnName:string) =
     if rset.Data.ContainsKey( columnName) then
-        let posValue =  rset.Data.[columnName].[rset.Data.[columnName].Count-1]
-        match posValue with
-            |   Nothing -> rset.Frame
-            | _-> rset.LastIndex  + 1    
+        if rset.Data.[columnName].Count = 0 then
+            1
+        else
+            let posValue =  rset.Data.[columnName].[rset.Data.[columnName].Count-1]
+            match posValue with
+                |   Nothing -> rset.Frame
+                | _-> rset.LastIndex  + 1    
     else
         match rset.Frame with
         | 0 ->(rset.LastIndex)+1
@@ -461,8 +466,12 @@ let AddAtomToRecordSetWithFraming (rset:WarewolfRecordset) (columnName:string) (
             if (position = rsAdded.LastIndex+1) || (position = rsAdded.Frame && isFramed)   
             then                  
                 let len = rsAdded.Data.[PositionColumn].Count 
-                rsAdded.Data.[columnName].[len-1] <- value
-                rsAdded
+                if len = 0 then
+                    rsAdded.Data.[columnName].[0] <- value
+                    rsAdded
+                else
+                    rsAdded.Data.[columnName].[len-1] <- value
+                    rsAdded
             else
             if position > rsAdded.LastIndex
                 then

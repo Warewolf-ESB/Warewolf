@@ -42,8 +42,8 @@ and evalRecordsSetExpressionWhere (recset:RecordSetIdentifier) (env: WarewolfEnv
             match recset.Index with
                 | IndexExpression a -> let data = WarewolfDataEvaluationCommon.Eval   env (LanguageExpressionToString a) |> EvalResultToString
                                        EvalWhere env (sprintf "[[%s(%s).%s]]" recset.Name data recset.Column) func 
-                | Star ->  env.RecordSets.[recset.Name].Data.[recset.Column].Where( System.Func<WarewolfAtom,bool>( func))|> Seq.map (fun a-> AtomToInt positions.[a]) |>List.ofSeq
-                
+                | Star ->  let pos = env.RecordSets.[recset.Name].Data.[recset.Column].Where( System.Func<WarewolfAtom,bool>( func))
+                           pos|> Seq.map (fun a-> AtomToInt positions.[a]) |>List.ofSeq                
                 | _ -> failwith "Unknown evaluation type"
 
 and evalListPositions (column: WarewolfAtomList<WarewolfAtom> ) (positions : WarewolfAtomList<WarewolfAtom> ) (func: WarewolfAtom->bool)=

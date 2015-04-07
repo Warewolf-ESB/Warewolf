@@ -265,6 +265,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             AddDebugItem(new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item), ExecutionEnvironment.WarewolfAtomToString(valueResult.Item),assignValue.Name, assignValue.Value, VariableLabelText, NewFieldLabelText, "="), debugItem);
                         }
                     }
+                    else if (newValueResult.IsWarewolfAtomResult && oldValueResult.IsWarewolfAtomListresult)
+                    {
+                        AddDebugItem(new DebugItemWarewolfAtomListResult(null, oldValueResult, assignValue.Value, assignValue.Name, VariableLabelText, NewFieldLabelText, "="), debugItem);
+                    }
                     else if (oldValueResult.IsWarewolfAtomResult && newValueResult.IsWarewolfAtomListresult)
                     {
                         AddDebugItem(new DebugItemWarewolfAtomListResult(null, newValueResult, assignValue.Value, assignValue.Name, VariableLabelText, NewFieldLabelText, "="), debugItem);

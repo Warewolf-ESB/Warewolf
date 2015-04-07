@@ -1,6 +1,5 @@
 ﻿module ToolAst
 open LanguageAST
-open DataAST
 
 type Assign = 
     {

@@ -674,7 +674,7 @@ Scenario: Workflow with 2 Assign tools by using recordsets in fields executing a
 	  | 2 | [[rec(2).a]] = test     |
 	  And the 'rec2' in WorkFlow 'WorkflowWith2Assigntoolswithrecordsets' debug inputs as
 	  | # | Variable                | New Value |
-	  | 1 | [[[[rec(1).a]]]] = rec(2).a | warewolf  |
+	  | 1 | [[[[rec(1).a]]]] = test | warewolf  |
 	  And the 'rec2' in Workflow 'WorkflowWith2Assigntoolswithrecordsets' debug outputs as  
 	  | # |                          |
 	  | 1 | [[rec(2).a]] =  warewolf |
