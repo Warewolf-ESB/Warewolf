@@ -435,10 +435,13 @@ let AddAtomToRecordSet (rset:WarewolfRecordset) (columnName:string) (value: Ware
 
 let getPositionFromRecset (rset:WarewolfRecordset) (columnName:string) =
     if rset.Data.ContainsKey( columnName) then
-        let posValue =  rset.Data.[columnName].[rset.Data.[columnName].Count-1]
-        match posValue with
-            |   Nothing -> rset.Frame
-            | _-> rset.LastIndex  + 1    
+        if rset.Data.[columnName].Count = 0 then
+            1
+        else
+            let posValue =  rset.Data.[columnName].[rset.Data.[columnName].Count-1]
+            match posValue with
+                |   Nothing -> rset.Frame
+                | _-> rset.LastIndex  + 1    
     else
         match rset.Frame with
         | 0 ->(rset.LastIndex)+1
@@ -463,8 +466,12 @@ let AddAtomToRecordSetWithFraming (rset:WarewolfRecordset) (columnName:string) (
             if (position = rsAdded.LastIndex+1) || (position = rsAdded.Frame && isFramed)   
             then                  
                 let len = rsAdded.Data.[PositionColumn].Count 
-                rsAdded.Data.[columnName].[len-1] <- value
-                rsAdded
+                if len = 0 then
+                    rsAdded.Data.[columnName].[0] <- value
+                    rsAdded
+                else
+                    rsAdded.Data.[columnName].[len-1] <- value
+                    rsAdded
             else
             if position > rsAdded.LastIndex
                 then

@@ -295,7 +295,7 @@ namespace Dev2.Services.Execution
             }
             catch (Exception ex)
             {
-                errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
+                errors.AddError(string.Format("{0}{1}","Sql Error: ", ex.Message));
             }
         }
 
