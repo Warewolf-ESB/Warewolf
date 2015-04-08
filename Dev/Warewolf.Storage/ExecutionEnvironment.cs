@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using Dev2.Common.Common;
@@ -84,7 +83,14 @@ namespace Warewolf.Storage
             {
                 return WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
             }
-            return PublicFunctions.EvalEnvExpression(exp, _env);
+            try
+            {
+                return PublicFunctions.EvalEnvExpression(exp, _env);
+            }
+            catch(Exception e)
+            {
+                return WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
+            }
             
         }
 

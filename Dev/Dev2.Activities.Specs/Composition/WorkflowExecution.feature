@@ -436,7 +436,7 @@ Scenario: Workflow with Assigns and DataSplit executing against the server
 	  | 1 | [[test]] =  warewolf |
 	  And the 'DataSpliting' in WorkFlow 'WorkflowWithAssignandDataSplittools' debug inputs as 
 	  | String to Split            | Process Direction | Skip blank rows | # |                | With  | Using         | Include | Escape |
-	  | [[test]] = warewolf | Forward           | No              | 1 | [[rec(1).a]] = | Index | [[[[a]]]] = 2 | No      |        |
+	  | [[test]] = warewolf | Forward           | No              | 1 | [[rec(1).a]] = | Index | [[b]] = 2 | No      |        |
 	  And the 'DataSpliting' in Workflow 'WorkflowWithAssignandDataSplittools' debug outputs as  
 	  | # |                   |
 	  | 1 | [[rec(1).a]] = lf |
@@ -649,7 +649,7 @@ Scenario: Workflow with 2 Assign tools executing against the server
 	  | 1 | [[[[a]]]] = test | [[[[[[a]]]]]] = warewolf |
 	  And the 'tool2' in Workflow 'WorkflowWith2Assigntools' debug outputs as  
 	  | # |                   |
-	  | 1 | [[b]] =  warewolf |
+	  | 1 | [[b]] = warewolf |
 
 
 #This Test Scenario should be passed after the issue 11834 is fixed	  
@@ -797,7 +797,7 @@ Scenario: Workflow with Assign Count Data Merge and 2 Delete  tools executing ag
 	  |                 |
 	  | [[result1]] = 3 |
 	  And the 'Delrec' in WorkFlow 'WorkflowWithAssignCountDataMerge&2Delete' debug inputs as
-	  | Records        |
+	  | Recordset        |
 	  | [[rec(3).a]] = |
 	  And the 'Delrec' in Workflow 'WorkflowWithAssignCountDataMerge&2Delete' debug outputs as  
 	  |                       |

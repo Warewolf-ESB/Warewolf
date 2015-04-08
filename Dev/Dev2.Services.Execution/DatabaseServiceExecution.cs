@@ -220,7 +220,7 @@ namespace Dev2.Services.Execution
                                 }
                                 pos++;
                             }
-                            environment.Assign(Data.Util.DataListUtil.AddBracketsToValueIfNotExist(rsName), row[idx].ToString());
+                            environment.Assign(Data.Util.DataListUtil.AddBracketsToValueIfNotExist(expression), row[idx].ToString());
                         }
                     }
                 }

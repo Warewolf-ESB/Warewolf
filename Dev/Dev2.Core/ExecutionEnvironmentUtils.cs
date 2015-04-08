@@ -223,16 +223,7 @@ namespace Dev2
                 if (c.Name != GlobalConstants.NaughtyTextNode)
                 {
                     // scalars and recordset fetch
-                    WarewolfDataEvaluationCommon.WarewolfEvalResult warewolfEvalResult = null;
-                    try
-                    {
-                        warewolfEvalResult = dataObject.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(c.Name));                        
-                    }
-                    catch (Exception e)
-                    {
-                        Dev2Logger.Log.Error(e.Message, e);
-                    }
-                    if (warewolfEvalResult != null || level>0)
+                   if (level>0)
                     {
                         var c1 = c;
                         var scalars = inputDefs.Where(definition => definition == c1.Name);

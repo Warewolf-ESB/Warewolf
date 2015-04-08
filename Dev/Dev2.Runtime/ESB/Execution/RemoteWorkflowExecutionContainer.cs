@@ -20,7 +20,6 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
 using Dev2.Data;
-using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices.Objects;
@@ -93,11 +92,9 @@ namespace Dev2.Runtime.ESB.Execution
         {
             Dev2Logger.Log.Info(String.Format("Started Remote Execution. Service Name:{0} Resource Id:{1} Mode:{2}", DataObject.ServiceName, DataObject.ResourceID, DataObject.IsDebug ? "Debug" : "Execute"));
 
-            var dataListCompiler = DataListFactory.CreateDataListCompiler();
             var serviceName = DataObject.ServiceName;
 
             errors = new ErrorResultTO();
-            ErrorResultTO invokeErrors;
 
             // get data in a format we can send ;)
             var dataListFragment = ExecutionEnvironmentUtils.GetXmlInputFromEnvironment(DataObject, DataObject.WorkspaceID, DataObject.RemoteInvokeResultShape.ToString());
@@ -119,23 +116,13 @@ namespace Dev2.Runtime.ESB.Execution
             }
             catch (Exception e)
             {
-                errors.AddError(e.Message.Contains("Forbidden") ? "Executing a service requires Execute permissions" : e.Message);
+                var errorMessage = e.Message.Contains("Forbidden") ? "Executing a service requires Execute permissions" : e.Message;
+                DataObject.Environment.Errors.Add(errorMessage);
                 Dev2Logger.Log.Error(e);
             }
 
             // Create tmpDL
             ExecutionEnvironmentUtils.UpdateEnvironmentFromOutputPayload(DataObject,result.ToStringBuilder(),DataObject.RemoteInvokeResultShape.ToString());
-            var tmpId = dataListCompiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), result.ToStringBuilder(), DataObject.RemoteInvokeResultShape, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-
-            // Merge Result into Local DL ;)
-            Guid mergeOp = dataListCompiler.Merge(DataObject.DataListID, tmpId, enDataListMergeTypes.Union, enTranslationDepth.Data, false, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-
-            if (mergeOp == DataObject.DataListID)
-            {
-                return mergeOp;
-            }
             Dev2Logger.Log.Info(String.Format("Completed Remote Execution. Service Name:{0} Resource Id:{1} Mode:{2}", DataObject.ServiceName, DataObject.ResourceID, DataObject.IsDebug ? "Debug" : "Execute"));
 
             return Guid.Empty;

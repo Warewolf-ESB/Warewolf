@@ -1340,7 +1340,7 @@ this.FeatureBackground();
                         "1",
                         "[[rec(1).a]] =",
                         "Index",
-                        "[[[[a]]]] = 2",
+                        "[[b]] = 2",
                         "No",
                         ""});
 #line 437
@@ -1982,7 +1982,7 @@ this.FeatureBackground();
                         ""});
             table115.AddRow(new string[] {
                         "1",
-                        "[[b]] =  warewolf"});
+                        "[[b]] = warewolf"});
 #line 650
    testRunner.And("the \'tool2\' in Workflow \'WorkflowWith2Assigntools\' debug outputs as", ((string)(null)), table115, "And ");
 #line hidden
@@ -2301,7 +2301,7 @@ this.FeatureBackground();
                     "s", ((string)(null)), table134, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table135 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Records"});
+                        "Recordset"});
             table135.AddRow(new string[] {
                         "[[rec(3).a]] ="});
 #line 799

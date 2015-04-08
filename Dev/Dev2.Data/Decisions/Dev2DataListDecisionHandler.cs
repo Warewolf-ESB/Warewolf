@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract;
@@ -198,7 +199,8 @@ namespace Dev2.Data.Decision
                         }
                         else
                         {
-                            dd.Col1 = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval( dd.Col1));
+                            var warewolfEvalResult = GetWarewolfEvalResult(env, dd.Col1);
+                            dd.Col1 = ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
                         }
 
                         if(dd.Col2 != null && DataListUtil.GetRecordsetIndexType(dd.Col2) == enRecordsetIndexType.Star)
@@ -211,7 +213,8 @@ namespace Dev2.Data.Decision
                         }
                         else
                         {
-                            dd.Col2 =  ExecutionEnvironment.WarewolfEvalResultToString(env.Eval( dd.Col2));
+                            var warewolfEvalResult = GetWarewolfEvalResult(env, dd.Col2);
+                            dd.Col2 = ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
                         }
 
                         if(dd.Col3 != null && DataListUtil.GetRecordsetIndexType(dd.Col3) == enRecordsetIndexType.Star)
@@ -224,7 +227,8 @@ namespace Dev2.Data.Decision
                         }
                         else
                         {
-                            dd.Col3 = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval( dd.Col3));
+                            var warewolfEvalResult = GetWarewolfEvalResult(env, dd.Col3);
+                            dd.Col3 = ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
                         }
                     }
                     //Remove those record sets and replace them with a new decision for each resolved value
@@ -240,7 +244,19 @@ namespace Dev2.Data.Decision
             return null;
         }
 
-
+        static WarewolfDataEvaluationCommon.WarewolfEvalResult GetWarewolfEvalResult(IExecutionEnvironment env, string col)
+        {
+            var warewolfEvalResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
+            try
+            {
+                warewolfEvalResult = env.Eval(col);
+            }
+            catch(NullValueInVariableException)
+            {
+                //This is allow for decisions.
+            }
+            return warewolfEvalResult;
+        }
 
         /// <summary>
         /// Fetches the stack value.
