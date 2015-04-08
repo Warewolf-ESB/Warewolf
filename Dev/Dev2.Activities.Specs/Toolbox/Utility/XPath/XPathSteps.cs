@@ -89,7 +89,6 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
             }
-            variableList.Add(new Tuple<string, string>(variable, ""));
         }
 
         [Given(@"I have this xml '(.*)' in a variable ""(.*)""")]

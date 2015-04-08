@@ -231,9 +231,10 @@ namespace Dev2.Activities
             }
         }
 
-        static void AssignResult(string variable, IDSFDataObject dataObject, List<string> eval)
+        void AssignResult(string variable, IDSFDataObject dataObject, List<string> eval)
         {
             var index = 1;
+            var innerCount = 1;
             if(DataListUtils.IsValueScalar(variable))
             {
                 dataObject.Environment.Assign(variable, string.Join(",", eval));
@@ -242,11 +243,16 @@ namespace Dev2.Activities
             {
                 foreach(var val in eval)
                 {
+                    var correctedVariable = variable;
                     if(DataListUtils.IsValueRecordset(variable) && DataListUtils.IsStarIndex(variable))
                     {
-                        variable = DataListUtils.ReplaceStarWithFixedIndex(variable, index);
+                        correctedVariable = DataListUtils.ReplaceStarWithFixedIndex(variable, index);
                     }
-                    dataObject.Environment.Assign(variable, val);
+                    dataObject.Environment.Assign(correctedVariable, val);
+                    var itemToAdd = new DebugItem();
+                    AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
+                    AddDebugItem(new DebugEvalResult(correctedVariable, "", dataObject.Environment), itemToAdd);
+                    _debugOutputs.Add(itemToAdd);
                     index++;
                 }
             }
@@ -264,7 +270,7 @@ namespace Dev2.Activities
                     {
                         var itemToAdd = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", i.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                        AddDebugItem(new DebugEvalResult(xPathDto.OutputVariable, "", environment), itemToAdd);
+                        AddDebugItem(new DebugItemWarewolfAtomResult(xPathDto.XPath,xPathDto.OutputVariable, ""), itemToAdd);
                         _debugInputs.Add(itemToAdd);
                         i++;
                     }

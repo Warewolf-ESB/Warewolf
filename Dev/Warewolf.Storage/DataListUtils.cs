@@ -444,7 +444,7 @@ namespace Warewolf.Storage
 
             if (!string.IsNullOrEmpty(value))
             {
-                if ( value.StartsWith(OpeningSquareBrackets) && value.EndsWith(ClosingSquareBrackets))
+                if (value.StartsWith(OpeningSquareBrackets) && value.EndsWith(ClosingSquareBrackets) && !IsValueRecordset(value))
                 {
                     result = true;
                 }
