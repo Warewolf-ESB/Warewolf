@@ -146,7 +146,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
                 (
                     It.IsAny<Func<IDbCommand, List<IDbDataParameter>, string,string, bool>>(),
                     It.IsAny<Func<IDbCommand, List<IDbDataParameter>, string, string, bool>>(),
-                    It.IsAny<bool>())
+                    It.IsAny<bool>(),It.IsAny<string>())
                 )
                 .Callback(
                     (
@@ -171,7 +171,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
                 (
                     It.IsAny<Func<IDbCommand, List<IDbDataParameter>, string, string, bool>>(),
                     It.IsAny<Func<IDbCommand, List<IDbDataParameter>, string, string, bool>>(),
-                    It.IsAny<bool>())
+                    It.IsAny<bool>(),It.IsAny<string>())
                 );
 
 

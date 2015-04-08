@@ -194,14 +194,58 @@ namespace Dev2.Runtime.ServiceModel
             {
                 throw new ArgumentNullException("dbService");
             }
-
-            var broker = CreateDatabaseBroker();
-            var outputDescription = broker.TestService(dbService);
-
-            if(outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
+                        var  source = dbService.Source as DbSource;
+            if(source != null)
             {
-                throw new Exception("Error retrieving shape from service output.");
+                switch(source.ServerType)
+                {
+                    case enSourceType.SqlDatabase:
+                        {
+                            var broker = CreateDatabaseBroker();
+                            var outputDescription = broker.TestService(dbService);
+
+                            if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
+                            {
+                                throw new Exception("Error retrieving shape from service output.");
+                            }
+
+                            dbService.Recordset.Name = dbService.Recordset.Name.Replace(".", "_");
+                            dbService.Recordset.Fields.Clear();
+
+                            ServiceMappingHelper smh = new ServiceMappingHelper();
+
+                            smh.MapDbOutputs(outputDescription, ref dbService, addFields);
+
+                            return dbService.Recordset;
+                        }
+
+                    case enSourceType.MySqlDatabase:
+                    {
+                        
+                            var broker = new MySqlDatabaseBroker();
+                            var outputDescription = broker.TestService(dbService);
+
+                            if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
+                            {
+                                throw new Exception("Error retrieving shape from service output.");
+                            }
+
+                            dbService.Recordset.Name = dbService.Recordset.Name.Replace(".", "_");
+                            dbService.Recordset.Fields.Clear();
+
+                            ServiceMappingHelper smh = new ServiceMappingHelper();
+
+                            smh.MapDbOutputs(outputDescription, ref dbService, addFields);
+
+                            return dbService.Recordset;
+                        
+                    }
+                    default: return null;
+
+                }
             }
+            return null;
+           
 
             // Clear out the Recordset.Fields list because the sequence and
             // number of fields may have changed since the last invocation.
@@ -210,14 +254,6 @@ namespace Dev2.Runtime.ServiceModel
             // so that we don't lose the user-defined aliases.
             //
 
-            dbService.Recordset.Name = dbService.Recordset.Name.Replace(".", "_");
-            dbService.Recordset.Fields.Clear();
-
-            ServiceMappingHelper smh = new ServiceMappingHelper();
-
-            smh.MapDbOutputs(outputDescription, ref dbService, addFields);
-
-            return dbService.Recordset;
         }
 
         public virtual RecordsetList FetchRecordset(PluginService pluginService, bool addFields)

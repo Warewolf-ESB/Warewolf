@@ -175,7 +175,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             };
         }
 
-        static IDbCommand CommandFromServiceMethod(TDbServer server, ServiceMethod serviceMethod)
+        protected static IDbCommand CommandFromServiceMethod(TDbServer server, ServiceMethod serviceMethod)
         {
             var command = server.CreateCommand();
 

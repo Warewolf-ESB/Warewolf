@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using Dev2.Common.Interfaces.Services.Sql;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
 {
@@ -61,7 +62,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
             return new List<string>();
         }
 
-        public virtual void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, string,string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, string,string, bool> functionProcessor, bool continueOnProcessorException = false)
+        public virtual void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, string,string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, string,string, bool> functionProcessor, bool continueOnProcessorException = false, string a="" )
         {
         }
 

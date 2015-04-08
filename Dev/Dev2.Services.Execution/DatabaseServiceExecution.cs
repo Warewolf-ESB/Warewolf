@@ -16,10 +16,13 @@ using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Core.Graph;
+using Dev2.Common.Interfaces.DB;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Sql;
+using MySql.Data.MySqlClient;
 
 namespace Dev2.Services.Execution
 {
@@ -81,6 +84,41 @@ namespace Dev2.Services.Execution
             }
         }
 
+        private MySqlServer SetupMySqlServer(ErrorResultTO errors)
+        {
+            var server = new MySqlServer();
+            try
+            {
+               
+                bool connected = server.Connect(Source.ConnectionString, CommandType.StoredProcedure,
+                    String.IsNullOrEmpty(Service.Method.ExecuteAction)
+                        ? Service.Method.Name
+                        : Service.Method.ExecuteAction);
+                if (!connected)
+                {
+                    Dev2Logger.Log.Error(string.Format("Failed to connect with the following connection string: '{0}'",
+                        Source.ConnectionString));
+                }
+                return server;
+            }
+            catch (MySqlException sex)
+            {
+                // 2013.06.24 - TWR - added errors logging
+                var errorMessages = new StringBuilder();
+                errorMessages.Append(sex.Message);
+                errors.AddError(errorMessages.ToString());
+                Dev2Logger.Log.Error(errorMessages.ToString());
+            }
+            catch (Exception ex)
+            {
+                // 2013.06.24 - TWR - added errors logging
+                errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
+                Dev2Logger.Log.Error(ex);
+            }
+            return server;
+        }
+
+
         private void DestroySqlServer()
         {
             if (SqlServer == null)
@@ -110,11 +148,29 @@ namespace Dev2.Services.Execution
             errors = new ErrorResultTO();
             var invokeErrors = new ErrorResultTO();
             object executeService;
-            object result = SqlExecution(invokeErrors, out executeService) ? executeService : string.Empty;
 
-            ErrorResult.MergeErrors(invokeErrors);
+            switch(Source.ServerType)
+            {
+                case enSourceType.SqlDatabase:
+                {
+                    object result = SqlExecution(invokeErrors, out executeService) ? executeService : string.Empty;
 
-            return result;
+                    ErrorResult.MergeErrors(invokeErrors);
+
+                    return result;
+                }
+                case enSourceType.MySqlDatabase:
+                {
+                  
+                    object result = MySqlExecution(invokeErrors, out executeService) ? executeService : string.Empty;
+
+                    ErrorResult.MergeErrors(invokeErrors);
+
+                    return result;
+                }
+                    
+            }
+            return null;
         }
 
         private bool SqlExecution(ErrorResultTO errors, out object executeService)
@@ -142,6 +198,43 @@ namespace Dev2.Services.Execution
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
+            }
+            executeService = null;
+            return false;
+        }
+
+        private bool MySqlExecution(ErrorResultTO errors, out object executeService)
+        {
+            try
+            {
+                 
+                    List<MySqlParameter> parameters = GetMySqlParameters(Service.Method.Parameters);
+                    using (
+                    MySqlServer server = SetupMySqlServer(errors))
+                    {
+
+                        if (parameters != null)
+                        {
+                            // ReSharper disable CoVariantArrayConversion
+                            using (DataTable dataSet = server.FetchDataTable(parameters.ToArray()))
+                            // ReSharper restore CoVariantArrayConversion
+                            {
+                                ApplyColumnMappings(dataSet);
+                                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+
+                                executeService =
+                                    compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._DATATABLE),
+                                        dataSet, InstanceOutputDefintions, DataObj.DataListID, out errors);
+
+                                return true;
+                            }
+                        }
+                    }
+                }
+            
             catch (Exception ex)
             {
                 errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
@@ -180,7 +273,32 @@ namespace Dev2.Services.Execution
             }
             return sqlParameters;
         }
+        private static List<MySqlParameter> GetMySqlParameters(IList<MethodParameter> methodParameters)
+        {
+            var sqlParameters = new List<MySqlParameter>();
 
+            if (methodParameters.Count > 0)
+            {
+#pragma warning disable 219
+                int pos = 0;
+#pragma warning restore 219
+                foreach (MethodParameter parameter in methodParameters)
+                {
+                    if (parameter.EmptyToNull &&
+                        (parameter.Value == null ||
+                         string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0))
+                    {
+                        sqlParameters.Add(new MySqlParameter(string.Format("@{0}", parameter.Name), DBNull.Value));
+                    }
+                    else
+                    {
+                        sqlParameters.Add(new MySqlParameter(string.Format("@{0}", parameter.Name), parameter.Value));
+                    }
+                    pos++;
+                }
+            }
+            return sqlParameters;
+        }
         #endregion
 
         private void ApplyColumnMappings(DataTable dataTable)

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using System.Xml;
+using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Sql;
+using Unlimited.Framework.Converters.Graph;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 {
@@ -119,5 +121,42 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         #endregion
 
         #endregion
+
+        public override IOutputDescription TestService(DbService dbService)
+        {
+            VerifyArgument.IsNotNull("dbService", dbService);
+            VerifyArgument.IsNotNull("dbService.Source", dbService.Source);
+
+            IOutputDescription result;
+            using (var server = CreateDbServer(dbService.Source as DbSource))
+            {
+                server.Connect(((DbSource)dbService.Source).ConnectionString);
+                server.BeginTransaction();
+                try
+                {
+                    //
+                    // Execute command and normalize XML
+                    //
+                    var command = CommandFromServiceMethod(server, dbService.Method);
+                    var dataTable = server.FetchDataTable(command);
+
+                    //
+                    // Map shape of XML
+                    //
+                    result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
+                    var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
+                    result.DataSourceShapes.Add(dataSourceShape);
+
+                    var dataBrowser = DataBrowserFactory.CreateDataBrowser();
+                    dataSourceShape.Paths.AddRange(dataBrowser.Map(dataTable));
+                }
+                finally
+                {
+                    server.RollbackTransaction();
+                }
+            }
+
+            return result;
+        }
     }
 }
