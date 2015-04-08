@@ -18,16 +18,27 @@ type WarewolfEvalResult =
     | WarewolfAtomListresult of WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord> 
     | WarewolfRecordSetResult of WarewolfRecordset
 
+let GetDecimalPlaces (decimalNumber:float) =
+    let mutable decimalPlaces = 1;
+    let mutable powers = 10.0;
+    if (decimalNumber > 0.0) then
+        while not(((decimalNumber * powers) % 1.0) = 0.0) do
+            powers <- powers*10.0
+            decimalPlaces <-decimalPlaces+1
+    decimalPlaces;
+
 let AtomtoString (x:WarewolfAtom )=
     match x with 
-        | Float a -> a.ToString()
+        | Float a -> let places = GetDecimalPlaces a
+                     a.ToString(sprintf "F%i" places)
         | Int a -> a.ToString()
         | DataString a -> a
         | Nothing -> ""
         | PositionedValue (a,b) -> b.ToString()
 let WarewolfAtomRecordtoString (x:WarewolfAtomRecord )=
     match x with 
-        | Float a -> a.ToString()
+        | Float a -> let places = GetDecimalPlaces a
+                     a.ToString(sprintf "F%i" places)
         | Int a -> a.ToString()
         | DataString a -> a
         | Nothing -> ""

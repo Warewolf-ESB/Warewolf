@@ -178,14 +178,7 @@ namespace Dev2.Services.Execution
                             var definitions = dev2Definitions as IDev2Definition[] ?? dev2Definitions.ToArray();
                             if (definitions.Count() == 1)
                             {
-                                if (DataListUtil.IsEvaluated(definitions[0].RawValue))
-                                {
-                                    toInject = DataListUtil.AddBracketsToValueIfNotExist(definitions[0].RawValue);
-                                }
-                                else
-                                {
-                                    toInject = definitions[0].RawValue;
-                                }
+                                toInject = DataListUtil.IsEvaluated(definitions[0].RawValue) ? DataListUtil.AddBracketsToValueIfNotExist(definitions[0].RawValue) : definitions[0].RawValue;
                             }
 
                         }
@@ -341,16 +334,7 @@ namespace Dev2.Services.Execution
                 if (c.Name != GlobalConstants.NaughtyTextNode)
                 {
                     // scalars and recordset fetch
-                    WarewolfDataEvaluationCommon.WarewolfEvalResult warewolfEvalResult = null;
-                    try
-                    {
-                        warewolfEvalResult = DataObj.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(c.Name));                        
-                    }
-                    catch (Exception e)
-                    {
-                        Dev2Logger.Log.Error(e.Message, e);
-                    }
-                    if (warewolfEvalResult != null || level>0)
+                    if ( level>0)
                     {
                         var c1 = c;
                         var recSetName = outputDefs.Where(definition => definition.RecordSetName == c1.Name);

@@ -120,7 +120,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
             string error;
             string actualValue;
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
+            GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(variable),
                                        out actualValue, out error);
             if(string.IsNullOrEmpty(value))
             {
@@ -140,7 +140,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
 
             string error;
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column,
+            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
                                                                            out error);
             recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
 
