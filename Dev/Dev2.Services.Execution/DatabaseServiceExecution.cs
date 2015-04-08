@@ -135,11 +135,13 @@ namespace Dev2.Services.Execution
 
         public override void BeforeExecution(ErrorResultTO errors)
         {
+            if(Source.ServerType == enSourceType.SqlDatabase)
             SetupSqlServer(errors);
         }
 
         public override void AfterExecution(ErrorResultTO errors)
         {
+            if (Source.ServerType == enSourceType.SqlDatabase)
             DestroySqlServer();
         }
 

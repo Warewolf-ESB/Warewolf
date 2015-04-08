@@ -4,7 +4,9 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using MySql.Data.MySqlClient;
@@ -136,24 +138,28 @@ namespace Dev2.Services.Sql
             foreach (DataRow row in proceduresDataTable.Rows)
             {
                 string fullProcedureName = row["Name"].ToString();
-
-                using (
-                    IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
-                        fullProcedureName))
+                if (row["Db"].ToString() == dbName)
                 {
-                    try
+                    using (
+                        IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
+                            fullProcedureName))
                     {
-                        List<IDbDataParameter> parameters = GetProcedureParameters(command,dbName,fullProcedureName);
-                        string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
-                        procedureProcessor(command, parameters, helpText, fullProcedureName);
-                    
-                  
-                    }
-                    catch (Exception)
-                    {
-                        if (!continueOnProcessorException)
+                        try
                         {
-                            throw;
+                            bool isOut;
+                            List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName,out isOut);
+                            string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
+                           
+                            if(!isOut) procedureProcessor(command, parameters, helpText, fullProcedureName);
+
+
+                        }
+                        catch (Exception)
+                        {
+                            if (!continueOnProcessorException)
+                            {
+                                throw;
+                            }
                         }
                     }
                 }
@@ -327,8 +333,9 @@ namespace Dev2.Services.Sql
             return schemaName + "." + procedureName;
         }
 
-        private List<IDbDataParameter> GetProcedureParameters(IDbCommand command, string dbName, string procedureName)
+        private List<IDbDataParameter> GetProcedureParameters(IDbCommand command, string dbName, string procedureName,out bool isOut)
         {
+            isOut = false;
             //Please do not use SqlCommandBuilder.DeriveParameters(command); as it does not handle CLR procedures correctly.
             string originalCommandText = command.CommandText;
             var parameters = new List<IDbDataParameter>();
@@ -341,18 +348,27 @@ namespace Dev2.Services.Sql
             DataTable dataTable = FetchDataTable(command);
             foreach (DataRow row in dataTable.Rows)
             {
-                var parameterName = System.Text.Encoding.Default.GetString(row[0] as byte[]);
+                var parameterName = System.Text.Encoding.Default.GetString(row[0] as byte[]); ;
+                parameterName= Regex.Replace(parameterName, @"(\()([0-z,])+(\))", "");
                 var parameternames = parameterName.Split(new[] { ',' });
-                foreach(var parametername in parameternames)
+                foreach(var parameter in parameternames)
                 {
+                  
+                    var direction = ParameterDirection.Input;
+                    if(parameter.Contains("OUT "))
+                        isOut = true;
+                    if (parameter.Contains("INOUT"))
+                        isOut = false;
+                    var parameterx = parameter.Replace("IN ", "").Replace("OUT ", "");
                     if (!String.IsNullOrEmpty(parameterName))
                     {
-                        var split = parameterName.Split(new[] { ' ' });
+                        var split = parameterx.Split(new[] { ' ' });
 
                         MySqlDbType sqlType;
-                        Enum.TryParse(split[1], true, out sqlType);
+                        Enum.TryParse(split.Where(a=>a.Trim().Length>0).ToArray()[1], true, out sqlType);
 
-                        var sqlParameter = new MySqlParameter(split[0], sqlType);
+                        var sqlParameter = new MySqlParameter(split.First(a => a.Trim().Length > 0), sqlType);
+                        sqlParameter.Direction = direction;
                         command.Parameters.Add(sqlParameter);
                         if (parameterName.ToLower() == "@return_value")
                         {

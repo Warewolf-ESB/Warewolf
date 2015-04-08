@@ -235,7 +235,7 @@ namespace Dev2.Runtime.ServiceModel
 
                             ServiceMappingHelper smh = new ServiceMappingHelper();
 
-                            smh.MapDbOutputs(outputDescription, ref dbService, addFields);
+                            smh.MySqlMapDbOutputs(outputDescription, ref dbService, addFields);
 
                             return dbService.Recordset;
                         
