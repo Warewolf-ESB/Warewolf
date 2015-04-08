@@ -66,7 +66,7 @@ namespace Dev2.Data
             _currentValue++;
             if (_listResult != null)
             {
-                var warewolfAtomToString = ExecutionEnvironment.WarewolfAtomToString(_listResult.Item.GetNextValue());                
+                var warewolfAtomToString = ExecutionEnvironment.WarewolfAtomToString(_listResult.Item.GetNextValue());                     
                 warewolfAtomToString = DoCalcution(warewolfAtomToString);
                 return warewolfAtomToString;
             }

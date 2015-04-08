@@ -1341,7 +1341,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Align"});
             table43.AddRow(new string[] {
                         "1",
-                        "[[[[[[[[a]]]]]]]] = Warewolf",
+                        "[[test]] = Warewolf",
                         "Index",
                         "\"8\"",
                         "\"\"",

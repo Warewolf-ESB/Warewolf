@@ -336,7 +336,7 @@ Scenario: Merge a variable inside a variable
 	And the execution has "NO" error
 	And the debug inputs as  
 	| # |                              | With  | Using | Pad | Align |
-	| 1 | [[[[[[[[a]]]]]]]] = Warewolf | Index | "8"   | ""  | Left  |
+	| 1 | [[test]] = Warewolf | Index | "8"   | ""  | Left  |
 	| 2 | [[c]]             = test     | Index | "4"   | ""  | Left  |
 	And the debug output as 
 	|                           |

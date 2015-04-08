@@ -66,6 +66,8 @@ namespace Warewolf.Storage
         string ToLast(string rawValue);
 
         string EvalToExpression(string exp);
+
+        IEnumerable< WarewolfDataEvaluationCommon.WarewolfEvalResult> EvalForDataMerge(string exp);
     }
     public class ExecutionEnvironment : IExecutionEnvironment
     {
@@ -92,6 +94,20 @@ namespace Warewolf.Storage
                 return WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
             }
             
+        }
+
+        public IEnumerable< WarewolfDataEvaluationCommon.WarewolfEvalResult> EvalForDataMerge(string exp)
+        {
+
+            try
+            {
+                return WarewolfDataEvaluationCommon.EvalForDataMerge( _env,exp);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+
         }
 
         public WarewolfDataEvaluationCommon.WarewolfEvalResult EvalStrict(string exp)
