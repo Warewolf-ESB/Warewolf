@@ -1,6 +1,4 @@
-<<<<<<< HEAD
-
-/*
+﻿/*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -393,6 +391,3 @@ this.ScenarioSetup(scenarioInfo);
 }
 #pragma warning restore
 #endregion
-=======
-﻿#error Generation error: The example sets must provide the same parameters.
->>>>>>> f3a8192... database execution feature for mysql
