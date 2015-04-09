@@ -30,6 +30,49 @@ namespace Dev2.Services.Sql
             get { return _connection == null ? null : _connection.ConnectionString; }
         }
 
+        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor, bool continueOnProcessorException = false, string dbName = "")
+        {
+            VerifyArgument.IsNotNull("procedureProcessor", procedureProcessor);
+            VerifyArgument.IsNotNull("functionProcessor", functionProcessor);
+            VerifyConnection();
+
+            DataTable proceduresDataTable = GetSchema(_connection);
+
+
+            // ROUTINE_CATALOG - ROUTINE_SCHEMA ,SPECIFIC_SCHEMA
+
+            foreach (DataRow row in proceduresDataTable.Rows)
+            {
+                string fullProcedureName = row["Name"].ToString();
+                if (row["Db"].ToString() == dbName)
+                {
+                    using (
+                        IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
+                            fullProcedureName))
+                    {
+                        try
+                        {
+                            List<IDbDataParameter> outParameters ;
+
+                            List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName, out outParameters);
+                            string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
+       
+                            procedureProcessor(command, parameters, outParameters, helpText, fullProcedureName);
+
+
+                        }
+                        catch (Exception)
+                        {
+                            if (!continueOnProcessorException)
+                            {
+                                throw;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         public IDbCommand CreateCommand()
         {
             VerifyConnection();
@@ -146,11 +189,11 @@ namespace Dev2.Services.Sql
                     {
                         try
                         {
-                            bool isOut;
+                            List<IDbDataParameter> isOut;
                             List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName,out isOut);
                             string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
                            
-                            if(!isOut) procedureProcessor(command, parameters, helpText, fullProcedureName);
+                            procedureProcessor(command, parameters, helpText, fullProcedureName);
 
 
                         }
@@ -333,9 +376,9 @@ namespace Dev2.Services.Sql
             return schemaName + "." + procedureName;
         }
 
-        private List<IDbDataParameter> GetProcedureParameters(IDbCommand command, string dbName, string procedureName,out bool isOut)
+        private List<IDbDataParameter> GetProcedureParameters(IDbCommand command, string dbName, string procedureName,out List<IDbDataParameter> outParams)
         {
-            isOut = false;
+            outParams = new List<IDbDataParameter>();
             //Please do not use SqlCommandBuilder.DeriveParameters(command); as it does not handle CLR procedures correctly.
             string originalCommandText = command.CommandText;
             var parameters = new List<IDbDataParameter>();
@@ -353,12 +396,12 @@ namespace Dev2.Services.Sql
                 var parameternames = parameterName.Split(new[] { ',' });
                 foreach(var parameter in parameternames)
                 {
-                  
+                    bool isout = false;
                     var direction = ParameterDirection.Input;
                     if(parameter.Contains("OUT "))
-                        isOut = true;
+                        isout = true;
                     if (parameter.Contains("INOUT"))
-                        isOut = false;
+                        isout = false;
                     var parameterx = parameter.Replace("IN ", "").Replace("OUT ", "");
                     if (!String.IsNullOrEmpty(parameterName))
                     {
@@ -369,12 +412,22 @@ namespace Dev2.Services.Sql
 
                         var sqlParameter = new MySqlParameter(split.First(a => a.Trim().Length > 0), sqlType);
                         sqlParameter.Direction = direction;
-                        command.Parameters.Add(sqlParameter);
+                        if (!isout)
+                        {
+                            command.Parameters.Add(sqlParameter);
+                            parameters.Add(sqlParameter);
+                        }
+                        else
+                        {
+                            outParams.Add(sqlParameter);
+                            sqlParameter.Value = "@a";
+                            command.Parameters.Add(sqlParameter);
+                        }
                         if (parameterName.ToLower() == "@return_value")
                         {
                             continue;
                         }
-                        parameters.Add(sqlParameter);
+                       
                     }
                 }
              

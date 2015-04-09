@@ -226,7 +226,7 @@ namespace Dev2.Sql.Tests
             try
             {
                 //------------Execute Test---------------------------
-                sqlServer.FetchStoredProcedures(null, null);
+                sqlServer.FetchStoredProcedures((Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool>)null, null);
 
                 //------------Assert Results-------------------------
             }

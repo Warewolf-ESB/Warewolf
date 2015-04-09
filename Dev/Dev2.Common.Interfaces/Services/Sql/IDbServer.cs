@@ -33,6 +33,10 @@ namespace Dev2.Common.Interfaces.Services.Sql
             Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor,
             bool continueOnProcessorException = false,string dbName="" );
 
+        void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor,
+        Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor,
+        bool continueOnProcessorException = false, string dbName = "");
+
         IDbCommand CreateCommand();
     }
 }

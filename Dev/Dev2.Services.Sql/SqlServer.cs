@@ -38,6 +38,11 @@ namespace Dev2.Services.Sql
             get { return _connection == null ? null : _connection.ConnectionString; }
         }
 
+        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor, bool continueOnProcessorException = false, string dbName = "")
+        {
+           return;
+        }
+
         public IDbCommand CreateCommand()
         {
             VerifyConnection();

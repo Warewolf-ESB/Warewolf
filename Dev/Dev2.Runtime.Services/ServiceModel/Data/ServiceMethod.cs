@@ -40,6 +40,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             SourceCode = sourceCode;
             OutputDescription = outputDescription;
             Parameters = new List<MethodParameter>();
+            OutParameters = new List<MethodParameter>();
             Outputs = new List<MethodOutput>();
             ExecuteAction = executeAction;
             if(parameters != null)
@@ -52,6 +53,8 @@ namespace Dev2.Runtime.ServiceModel.Data
                 Outputs.AddRange(outputs);
             }
         }
+        [DataMember]
+        public List<MethodParameter> OutParameters { get; set; }
 
         #endregion
 

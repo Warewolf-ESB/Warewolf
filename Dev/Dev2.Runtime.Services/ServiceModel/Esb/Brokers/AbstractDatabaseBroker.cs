@@ -162,12 +162,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             return (payload.Replace("&lt;", "<").Replace("&gt;", ">"));
         }
 
-        protected static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, string sourceCode,string executeAction)
+        private static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, string sourceCode,string executeAction)
         {
             return new ServiceMethod(command.CommandText, sourceCode, parameters.Select(MethodParameterFromDataParameter), null, null,executeAction);
         }
 
-        static MethodParameter MethodParameterFromDataParameter(IDataParameter parameter)
+        protected static MethodParameter MethodParameterFromDataParameter(IDataParameter parameter)
         {
             return new MethodParameter
             {
@@ -183,6 +183,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             command.CommandType = serviceMethod.ExecuteAction.Contains("select") ? CommandType.Text : CommandType.StoredProcedure;
 
             foreach(var methodParameter in serviceMethod.Parameters)
+            {
+                var dataParameter = DataParameterFromMethodParameter(command, methodParameter);
+                command.Parameters.Add(dataParameter);
+            }
+            foreach (var methodParameter in serviceMethod.Parameters)
             {
                 var dataParameter = DataParameterFromMethodParameter(command, methodParameter);
                 command.Parameters.Add(dataParameter);

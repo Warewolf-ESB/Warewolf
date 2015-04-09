@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Text;
 using System.Xml;
 using Dev2.Common.Interfaces.Core.Graph;
@@ -79,9 +80,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             //
             // Function to handle procedures returned by the data broker
             //
-            Func<IDbCommand, IList<IDbDataParameter>, string, string, bool> procedureFunc = (command, parameters, helpText, executeAction) =>
+            Func<IDbCommand, IList<IDbDataParameter>, IList<IDbDataParameter>, string, string, bool> procedureFunc = (command, parameters, outparameters, helpText, executeAction) =>
             {
-                var serviceMethod = CreateServiceMethod(command, parameters, helpText, executeAction);
+                var serviceMethod = CreateServiceMethod(command, parameters,outparameters, helpText, executeAction);
                 serviceMethods.Add(serviceMethod);
                 return true;
             };
@@ -89,9 +90,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             //
             // Function to handle functions returned by the data broker
             //
-            Func<IDbCommand, IList<IDbDataParameter>, string, string, bool> functionFunc = (command, parameters, helpText, executeAction) =>
+            Func<IDbCommand, IList<IDbDataParameter>, IList<IDbDataParameter>, string, string, bool> functionFunc = (command, parameters,outparameters, helpText, executeAction) =>
             {
-                var serviceMethod = CreateServiceMethod(command, parameters, helpText, executeAction);
+                var serviceMethod = CreateServiceMethod(command, parameters,outparameters, helpText, executeAction);
                 serviceMethods.Add(serviceMethod);
                 return true;
             };
@@ -117,7 +118,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         {
             return new MySqlServer();
         }
-
+        private static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters,IEnumerable<IDataParameter> outParameters , string sourceCode, string executeAction)
+        {
+            return new ServiceMethod(command.CommandText, sourceCode, parameters.Select(MethodParameterFromDataParameter), null, null, executeAction)
+            {
+                OutParameters = outParameters.Select(MethodParameterFromDataParameter).ToList()
+            };
+        }
         #endregion
 
         #endregion
