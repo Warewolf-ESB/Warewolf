@@ -972,6 +972,20 @@ namespace Dev2.Data.Util
         /// <returns>
         ///   <c>true</c> if the specified payload is evaluated; otherwise, <c>false</c>.
         /// </returns>
+        public static bool IsFullyEvaluated(string payload)
+        {
+            bool result = payload != null && payload.IndexOf(OpeningSquareBrackets, StringComparison.Ordinal) >= 0 && payload.IndexOf(ClosingSquareBrackets, StringComparison.Ordinal) >= 0;
+
+            return result;
+        }      
+        
+        /// <summary>
+        /// Is the expression evaluated
+        /// </summary>  
+        /// <param name="payload">The payload.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified payload is evaluated; otherwise, <c>false</c>.
+        /// </returns>
         public static bool IsEvaluated(string payload)
         {
             bool result = payload != null && payload.IndexOf(OpeningSquareBrackets, StringComparison.Ordinal) >= 0;

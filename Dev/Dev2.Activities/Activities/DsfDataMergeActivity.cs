@@ -29,6 +29,7 @@ using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Interfaces;
 using Warewolf.Storage;
+using WarewolfParserInterop;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -147,7 +148,34 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                         _debugInputs.Add(debugItem);
                     }
-                    var inputIterator = new WarewolfIterator(dataObject.Environment.Eval(row.InputVariable));
+                    var listOfEvalResultsForInput = dataObject.Environment.EvalForDataMerge(row.InputVariable);
+                    var innerIterator = new WarewolfListIterator();
+                    var innerListOfIters = new List<WarewolfIterator>();
+                    
+                    foreach (var listOfIterator in listOfEvalResultsForInput)
+                    {
+                        var inIterator = new WarewolfIterator(listOfIterator);
+                        innerIterator.AddVariableToIterateOn(inIterator);
+                        innerListOfIters.Add(inIterator);
+                    }
+                    var atomList = new List<DataASTMutable.WarewolfAtom>();
+                    while (innerIterator.HasMoreData())
+                    {
+                        var stringToUse = "";
+                        foreach(var warewolfIterator in innerListOfIters)
+                        {
+                            stringToUse += warewolfIterator.GetNextValue();
+                        }                        
+                        atomList.Add(DataASTMutable.WarewolfAtom.NewDataString(stringToUse));
+                    }
+                    var finalString = string.Join("", atomList);
+                    var inputListResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomListresult(new WarewolfAtomList<DataASTMutable.WarewolfAtom>(DataASTMutable.WarewolfAtom.Nothing, atomList));
+                    if (DataListUtil.IsFullyEvaluated(finalString))
+                    {
+                        inputListResult = dataObject.Environment.Eval(finalString);
+                    }
+                    
+                    var inputIterator = new WarewolfIterator(inputListResult);
                     var atIterator = new WarewolfIterator(dataObject.Environment.Eval(row.At));
                     var paddingIterator = new WarewolfIterator(dataObject.Environment.Eval(row.Padding));
                     warewolfListIterator.AddVariableToIterateOn(inputIterator);

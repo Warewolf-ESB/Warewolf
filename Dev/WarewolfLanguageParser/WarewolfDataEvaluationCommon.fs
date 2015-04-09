@@ -272,6 +272,38 @@ and  Eval  (env: WarewolfEnvironment) (lang:string) : WarewolfEvalResult=
         | RecordSetNameExpression x ->EvalDataSetExpression env x
         | ComplexExpression  a -> WarewolfAtomResult (EvalComplex ( List.filter (fun b -> "" <> (LanguageExpressionToString b)) a)) 
 
+and  EvalForDataMerge  (env: WarewolfEnvironment) (lang:string) : WarewolfEvalResult list=
+    let EvalCount (a:WarewolfEvalResult) =
+        match a with
+                | WarewolfAtomResult a -> 1
+                | WarewolfAtomListresult b -> b.Count 
+                | WarewolfRecordSetResult c -> c.Count
+    let EvalComplex (exp:LanguageExpression list) : WarewolfEvalResult list = 
+        if((List.length exp) =1) then
+            match exp.[0] with
+                | RecordSetExpression a ->  [Eval env (LanguageExpressionToString exp.[0])]
+                | ScalarExpression a ->  [Eval env (LanguageExpressionToString exp.[0])]
+                | WarewolfAtomAtomExpression a ->  [WarewolfEvalResult.WarewolfAtomResult a]
+                | _ ->failwith "you should not get here"
+        else
+            List.map  (LanguageExpressionToString>>Eval  env)  exp 
+            
+
+    
+    let exp = ParseCache.TryFind lang
+    let buffer =  match exp with 
+                    | Some a ->  a
+                    | _->    
+                        let temp = ParseLanguageExpression lang
+                        temp
+    match buffer with
+        | RecordSetExpression a -> [WarewolfAtomListresult(  (evalRecordsSet a env) )]
+        | ScalarExpression a -> [WarewolfAtomResult (evalScalar a env)]
+        | WarewolfAtomAtomExpression a -> [WarewolfAtomResult a]
+        | RecordSetNameExpression x ->[EvalDataSetExpression env x]
+        | ComplexExpression  a ->  (EvalComplex ( List.filter (fun b -> "" <> (LanguageExpressionToString b)) a)) 
+
+
 and  EvalToExpression  (env: WarewolfEnvironment) (lang:string) : string=
     let EvalComplex (exp:LanguageExpression list) = 
         if((List.length exp) =1) then

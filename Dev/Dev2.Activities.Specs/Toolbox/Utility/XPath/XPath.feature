@@ -34,12 +34,12 @@ Scenario: Use XPath to build a recordset with 2 fields
 	And I have a variable "[[rec(*).id]]" output with xpath "//root/number/@id"
 	And I have a variable "[[rec2(*).text]]" output with xpath "//root/number/text()"
 	When the xpath tool is executed
-	Then the xpath result for this varibale "[[rec().id]]" will be
+	Then the xpath result for this varibale "[[rec(*).id]]" will be
 	| rec().id |
 	| 1        |
 	| 2        |
 	| 3        |
-	Then the xpath result for this varibale "[[rec2().text]]" will be
+	Then the xpath result for this varibale "[[rec2(*).text]]" will be
 	| rec().text |
 	| One        |
 	| Two        |
@@ -99,7 +99,7 @@ Scenario: Use XPath with append notation should add
 	And the execution has "NO" error
 	And the debug inputs as  
 	| XML                                                                                                               | # |                                    |
-	| [[rec(1).set]] = <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> | 1 | [[rec(1).set]] = //root/number/@id |
+	| [[rec(1).set]] = <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> | 1 | [[rec().set]] = //root/number/@id |
 	And the debug output as 
 	| # |                    |
 	| 1 | [[rec(2).set]] = 1 |
