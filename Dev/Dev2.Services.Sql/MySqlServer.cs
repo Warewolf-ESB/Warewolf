@@ -137,7 +137,7 @@ namespace Dev2.Services.Sql
                 reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
         }
 
-        public DataTable FetchDataTable( IDbDataParameter[] parameters,IDbDataParameter[] outparameters)
+        public DataTable FetchDataTable( IDbDataParameter[] parameters,IEnumerable<IDbDataParameter> outparameters)
         {
             VerifyConnection();
             AddParameters(_command, parameters);

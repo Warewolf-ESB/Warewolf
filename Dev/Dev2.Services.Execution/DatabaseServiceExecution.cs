@@ -18,7 +18,6 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Core.Graph;
-using Dev2.Common.Interfaces.DB;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Sql;
@@ -37,7 +36,7 @@ namespace Dev2.Services.Execution
         {
         }
 
-        public SqlServer SqlServer
+        SqlServer SqlServer
         {
             get { return _sqlServer; }
         }
@@ -215,7 +214,6 @@ namespace Dev2.Services.Execution
                  
                     List<MySqlParameter> parameters = GetMySqlParameters(Service.Method.Parameters);
 
-                    List<MySqlParameter> outparameters = GetMySqlOutParameters(Service.Method.OutParameters);
                     using (
                     MySqlServer server = SetupMySqlServer(errors))
                     {
@@ -223,7 +221,7 @@ namespace Dev2.Services.Execution
                         if (parameters != null)
                         {
                             // ReSharper disable CoVariantArrayConversion
-                            using (DataTable dataSet = server.FetchDataTable(parameters.ToArray(),server.GetProcedureOutParams(Service.Method.Name,Source.DatabaseName).ToArray()))
+                            using (DataTable dataSet = server.FetchDataTable(parameters.ToArray(),server.GetProcedureOutParams(Service.Method.Name,Source.DatabaseName)))
                             // ReSharper restore CoVariantArrayConversion
                             {
                                 ApplyColumnMappings(dataSet);
@@ -304,6 +302,7 @@ namespace Dev2.Services.Execution
             return sqlParameters;
         }
 
+/*
         private static List<MySqlParameter> GetMySqlOutParameters(IList<MethodParameter> methodParameters)
         {
             var sqlParameters = new List<MySqlParameter>();
@@ -324,6 +323,7 @@ namespace Dev2.Services.Execution
             }
             return sqlParameters;
         }
+*/
         #endregion
 
         private void ApplyColumnMappings(DataTable dataTable)
