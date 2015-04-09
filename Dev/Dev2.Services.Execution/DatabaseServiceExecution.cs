@@ -214,6 +214,8 @@ namespace Dev2.Services.Execution
             {
                  
                     List<MySqlParameter> parameters = GetMySqlParameters(Service.Method.Parameters);
+
+                    List<MySqlParameter> outparameters = GetMySqlOutParameters(Service.Method.OutParameters);
                     using (
                     MySqlServer server = SetupMySqlServer(errors))
                     {
@@ -221,7 +223,7 @@ namespace Dev2.Services.Execution
                         if (parameters != null)
                         {
                             // ReSharper disable CoVariantArrayConversion
-                            using (DataTable dataSet = server.FetchDataTable(parameters.ToArray()))
+                            using (DataTable dataSet = server.FetchDataTable(parameters.ToArray(),server.GetProcedureOutParams(Service.Method.Name,Source.DatabaseName).ToArray()))
                             // ReSharper restore CoVariantArrayConversion
                             {
                                 ApplyColumnMappings(dataSet);
@@ -296,6 +298,27 @@ namespace Dev2.Services.Execution
                     {
                         sqlParameters.Add(new MySqlParameter(string.Format("@{0}", parameter.Name), parameter.Value));
                     }
+                    pos++;
+                }
+            }
+            return sqlParameters;
+        }
+
+        private static List<MySqlParameter> GetMySqlOutParameters(IList<MethodParameter> methodParameters)
+        {
+            var sqlParameters = new List<MySqlParameter>();
+
+            if (methodParameters.Count > 0)
+            {
+#pragma warning disable 219
+                int pos = 0;
+#pragma warning restore 219
+                foreach (MethodParameter parameter in methodParameters)
+                {
+
+                        sqlParameters.Add(new MySqlParameter(string.Format("@{0}", parameter.Name),"@a"));
+                    
+
                     pos++;
                 }
             }

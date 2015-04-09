@@ -25,9 +25,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             var nl = xDoc.SelectNodes("//NewDataSet/Table/*[starts-with(local-name(),'XML_')]");
             var foundXMLFrags = 0;
 
-            if(nl != null)
+            if (nl != null)
             {
-                foreach(XmlNode n in nl)
+                foreach (XmlNode n in nl)
                 {
                     var tmp = n.InnerXml;
                     result = result.Append(tmp);
@@ -37,11 +37,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
             var res = result.ToString();
 
-            if(foundXMLFrags >= 1)
+            if (foundXMLFrags >= 1)
             {
                 res = "<FromXMLPayloads>" + res + "</FromXMLPayloads>";
             }
-            else if(foundXMLFrags == 0)
+            else if (foundXMLFrags == 0)
             {
                 res = payload;
             }
@@ -82,7 +82,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             //
             Func<IDbCommand, IList<IDbDataParameter>, IList<IDbDataParameter>, string, string, bool> procedureFunc = (command, parameters, outparameters, helpText, executeAction) =>
             {
-                var serviceMethod = CreateServiceMethod(command, parameters,outparameters, helpText, executeAction);
+                var serviceMethod = CreateServiceMethod(command, parameters, outparameters, helpText, executeAction);
                 serviceMethods.Add(serviceMethod);
                 return true;
             };
@@ -90,9 +90,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             //
             // Function to handle functions returned by the data broker
             //
-            Func<IDbCommand, IList<IDbDataParameter>, IList<IDbDataParameter>, string, string, bool> functionFunc = (command, parameters,outparameters, helpText, executeAction) =>
+            Func<IDbCommand, IList<IDbDataParameter>, IList<IDbDataParameter>, string, string, bool> functionFunc = (command, parameters, outparameters, helpText, executeAction) =>
             {
-                var serviceMethod = CreateServiceMethod(command, parameters,outparameters, helpText, executeAction);
+                var serviceMethod = CreateServiceMethod(command, parameters, outparameters, helpText, executeAction);
                 serviceMethods.Add(serviceMethod);
                 return true;
             };
@@ -103,7 +103,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             using (var server = CreateDbServer(dbSource))
             {
                 server.Connect(dbSource.ConnectionString);
-                server.FetchStoredProcedures(procedureFunc, functionFunc,false,dbSource.DatabaseName);
+                server.FetchStoredProcedures(procedureFunc, functionFunc, false, dbSource.DatabaseName);
             }
 
             // Add to cache ;)
@@ -118,7 +118,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         {
             return new MySqlServer();
         }
-        private static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters,IEnumerable<IDataParameter> outParameters , string sourceCode, string executeAction)
+        private static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, IEnumerable<IDataParameter> outParameters, string sourceCode, string executeAction)
         {
             return new ServiceMethod(command.CommandText, sourceCode, parameters.Select(MethodParameterFromDataParameter), null, null, executeAction)
             {
@@ -145,6 +145,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     // Execute command and normalize XML
                     //
                     var command = CommandFromServiceMethod(server, dbService.Method);
+                    // ReSharper disable PossibleNullReferenceException
+                    var outParams = server.GetProcedureOutParams(dbService.Method.Name, (dbService.Source as DbSource).DatabaseName);
+                    // ReSharper restore PossibleNullReferenceException
+                    foreach (var dbDataParameter in outParams)
+                    {
+                        command.Parameters.Add(dbDataParameter);
+                    }
                     var dataTable = server.FetchDataTable(command);
 
                     //
@@ -164,6 +171,36 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             }
 
             return result;
+        }
+
+
+        public override void UpdateServiceOutParameters(DbService dbService, DbSource dbSource)
+        {
+            dbService.Method.OutParameters = new List<MethodParameter>();
+            using (var server = CreateDbServer(dbSource))
+            {
+                server.Connect(dbSource.ConnectionString);
+                server.BeginTransaction();
+                try
+                {
+                    //
+                    // Execute command and normalize XML
+                    //
+                    var command = CommandFromServiceMethod(server, dbService.Method);
+                    // ReSharper disable PossibleNullReferenceException
+                    var outParams = server.GetProcedureOutParams(dbService.Method.Name, dbSource.DatabaseName);
+                    // ReSharper restore PossibleNullReferenceException
+                    foreach (var dbDataParameter in outParams)
+                    {
+                        dbService.Method.OutParameters.Add(new MethodParameter { Name = dbDataParameter.ParameterName, Value = dbDataParameter.Value.ToString() });
+                    }
+
+                }
+                finally
+                {
+                    server.RollbackTransaction();
+                }
+            }
         }
     }
 }

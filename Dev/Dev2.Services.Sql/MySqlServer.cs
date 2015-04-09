@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Text.RegularExpressions;
 using Dev2.Common;
@@ -136,10 +137,14 @@ namespace Dev2.Services.Sql
                 reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
         }
 
-        public DataTable FetchDataTable(params IDbDataParameter[] parameters)
+        public DataTable FetchDataTable( IDbDataParameter[] parameters,IDbDataParameter[] outparameters)
         {
             VerifyConnection();
             AddParameters(_command, parameters);
+            foreach(var par in outparameters)
+            {
+                _command.Parameters.Add(par);
+            }
             return FetchDataTable(_command);
         }
 
@@ -376,7 +381,19 @@ namespace Dev2.Services.Sql
             return schemaName + "." + procedureName;
         }
 
-        private List<IDbDataParameter> GetProcedureParameters(IDbCommand command, string dbName, string procedureName,out List<IDbDataParameter> outParams)
+        public List<MySqlParameter> GetProcedureOutParams(string fullProcedureName, string dbName)
+        {
+            using (IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,fullProcedureName))
+            {
+
+                List<IDbDataParameter> isOut;
+                GetProcedureParameters(command, dbName, fullProcedureName, out isOut);
+                return isOut.Select(a=>a as MySqlParameter).ToList();
+
+            }
+        }
+
+        public List<IDbDataParameter> GetProcedureParameters(IDbCommand command, string dbName, string procedureName,out List<IDbDataParameter> outParams)
         {
             outParams = new List<IDbDataParameter>();
             //Please do not use SqlCommandBuilder.DeriveParameters(command); as it does not handle CLR procedures correctly.
@@ -419,6 +436,7 @@ namespace Dev2.Services.Sql
                         }
                         else
                         {
+                            sqlParameter.Direction = ParameterDirection.Output; 
                             outParams.Add(sqlParameter);
                             sqlParameter.Value = "@a";
                             command.Parameters.Add(sqlParameter);
