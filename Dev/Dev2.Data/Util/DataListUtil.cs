@@ -1550,8 +1550,12 @@ namespace Dev2.Data.Util
                     var outPutRecSet = outputs.FirstOrDefault(definition => definition.IsRecordSet && definition.RecordSetName == recordSetDefinition.SetName);
                     if (outPutRecSet != null)
                     {
-
-
+                        var startIndex = 0;
+                        var recordSetName = recordSetDefinition.SetName;
+                        if(environment.HasRecordSet(recordSetName))
+                        {
+                            startIndex = environment.GetLength(recordSetName);
+                        }
                         foreach (var outputColumnDefinitions in recordSetDefinition.Columns)
                         {
 
@@ -1575,8 +1579,8 @@ namespace Dev2.Data.Util
                                     {
                                         if (recsetResult != null)
                                         {
-
-                                            environment.EvalAssignFromNestedLast(outputColumnDefinitions.RawValue, recsetResult);
+                                            
+                                            environment.EvalAssignFromNestedLast(outputColumnDefinitions.RawValue, recsetResult, startIndex);
                                         }
                                     }
                                     if (enRecordsetIndexType == enRecordsetIndexType.Numeric)
@@ -1642,6 +1646,16 @@ namespace Dev2.Data.Util
             if (blankIndex != -1)
             {
                 return fullRecSetName.Replace("().", string.Format("({0}).", "*"));
+            }
+            return fullRecSetName;
+        } 
+        
+        public static string ReplaceRecordBlankWithStar(string fullRecSetName)
+        {
+            var blankIndex = fullRecSetName.IndexOf("()", StringComparison.Ordinal);
+            if (blankIndex != -1)
+            {
+                return fullRecSetName.Replace("()", string.Format("({0})", "*"));
             }
             return fullRecSetName;
         }

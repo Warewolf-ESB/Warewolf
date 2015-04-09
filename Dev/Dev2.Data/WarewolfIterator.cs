@@ -55,7 +55,7 @@ namespace Dev2.Data
                     _scalarResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.NewDataString(stringValue)) as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
                 }
             }
-            _maxValue = _listResult != null ? _listResult.Item.Count(atom => !atom.IsNothing) : 1;
+            _maxValue = _listResult != null ? _listResult.Item.Count(atom => atom!=null && !atom.IsNothing) : 1;
             _currentValue = 0;
         }        
 

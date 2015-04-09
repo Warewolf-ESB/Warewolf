@@ -34,7 +34,7 @@ namespace Warewolf.Storage
 
         void EvalAssignFromNestedStar(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult);
 
-        void EvalAssignFromNestedLast(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult);
+        void EvalAssignFromNestedLast(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult,int startIndex);
 
         void EvalAssignFromNestedNumeric(string rawValue, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult);
 
@@ -271,6 +271,10 @@ namespace Warewolf.Storage
 
         public static  string WarewolfAtomToString(DataASTMutable.WarewolfAtom a)
         {
+            if (a == null)
+            {
+                return "";
+            }
             return PublicFunctions.AtomtoString(a);
         }
 
@@ -361,11 +365,13 @@ namespace Warewolf.Storage
             }
         }
 
-        public void EvalAssignFromNestedLast(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult)
+        public void EvalAssignFromNestedLast(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult,int startIndex)
         {
-            foreach(var warewolfAtom in recsetResult.Item)
+            for (int index = 0; index < recsetResult.Item.Count; index++)
             {
-                AssignWithFrame( new AssignValue(exp.Replace("*", ""), WarewolfAtomToString(warewolfAtom)));
+                var warewolfAtom = recsetResult.Item[index];
+                var correctExp = DataListUtils.ReplaceRecordsetBlankWithIndex(exp, index + 1 + startIndex);
+                AssignWithFrame(new AssignValue(correctExp, WarewolfAtomToString(warewolfAtom)));
             }
         }
 

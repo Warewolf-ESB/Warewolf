@@ -19,6 +19,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
@@ -148,7 +149,7 @@ namespace Dev2.Runtime.ESB.WF
 
                 added.Add(defn);
                 DebugItem itemToAdd = new DebugItem();
-                _add(new DebugEvalResult(defn, "", dataObject.Environment), itemToAdd);
+                _add(new DebugEvalResult(DataListUtil.ReplaceRecordBlankWithStar(defn), "", dataObject.Environment), itemToAdd);
                 results.Add(itemToAdd);
             }
 

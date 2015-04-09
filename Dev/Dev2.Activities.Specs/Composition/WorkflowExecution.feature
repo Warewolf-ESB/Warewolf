@@ -2897,7 +2897,6 @@ Scenario: Workflow with Assign and foreach with invalid rec and it contains calc
       | 1 | [[rs(1).a]] = 1 |
       | 2 | [[rs(2).a]] = 2 |
       | 3 | [[rs(3).a]] = 3 |   
-	   And the 'ForEachTes' in WorkFlow 'WorkflowDwithforeachcontainscalinvalid' has  "1" nested children
 
 
 #This should be passed after the bug 12021 is fixed (RECURSIVE EVALUATION)
