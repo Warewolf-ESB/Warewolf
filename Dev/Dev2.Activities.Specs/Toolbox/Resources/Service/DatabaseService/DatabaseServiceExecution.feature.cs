@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 /*
 *  Warewolf - The Easy Service Bus
@@ -392,3 +393,6 @@ this.ScenarioSetup(scenarioInfo);
 }
 #pragma warning restore
 #endregion
+=======
+﻿#error Generation error: The example sets must provide the same parameters.
+>>>>>>> f3a8192... database execution feature for mysql
