@@ -20,6 +20,7 @@ using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data;
 using Dev2.Data.Parsers;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Enums;
@@ -167,8 +168,9 @@ namespace Dev2.Activities
                                                         AssignResult(variable, dataObject, eval,i+1);
                                                     }
                                                 }
-                                                catch(Exception)
+                                                catch(Exception e)
                                                 {
+                                                    allErrors.AddError(e.Message);
                                                     dataObject.Environment.Assign(ResultsCollection[i].OutputVariable, null);
                                                 }
                                             }
@@ -187,7 +189,7 @@ namespace Dev2.Activities
                         {
                             var itemToAdd = new DebugItem();
                             AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                            AddDebugItem(new DebugEvalResult(debugOutputTo.OutputVariable,"",dataObject.Environment), itemToAdd);
+                            AddDebugItem(new DebugEvalResult(DataListUtil.ReplaceRecordsetBlankWithStar(debugOutputTo.OutputVariable),"",dataObject.Environment), itemToAdd);
                             _debugOutputs.Add(itemToAdd);
                             innerCount++;
                         }
@@ -240,6 +242,8 @@ namespace Dev2.Activities
             }
             else
             {
+                
+                //AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
                 foreach(var val in eval)
                 {
                     var correctedVariable = variable;
@@ -248,10 +252,9 @@ namespace Dev2.Activities
                         correctedVariable = DataListUtils.ReplaceStarWithFixedIndex(variable, index);
                     }
                     dataObject.Environment.Assign(correctedVariable, val);
-                    var itemToAdd = new DebugItem();
-                    AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                    AddDebugItem(new DebugEvalResult(correctedVariable, "", dataObject.Environment), itemToAdd);
-                    _debugOutputs.Add(itemToAdd);
+                   // var itemToAdd = new DebugItem();
+                    //AddDebugItem(new DebugEvalResult(correctedVariable, "", dataObject.Environment), itemToAdd);
+                    //_debugOutputs.Add(itemToAdd);
                     index++;
                 }
             }

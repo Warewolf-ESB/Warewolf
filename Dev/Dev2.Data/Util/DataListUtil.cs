@@ -1635,5 +1635,15 @@ namespace Dev2.Data.Util
             }
             return fullRecSetName;
         }
+        
+        public static string ReplaceRecordsetBlankWithStar(string fullRecSetName)
+        {
+            var blankIndex = fullRecSetName.IndexOf("().", StringComparison.Ordinal);
+            if (blankIndex != -1)
+            {
+                return fullRecSetName.Replace("().", string.Format("({0}).", "*"));
+            }
+            return fullRecSetName;
+        }
     }
 }
