@@ -4850,3 +4850,26 @@ Scenario: Workflow by using For Each with workflow
          And the 'Random3' in "Utility - Random" in step 2 for 'ForEachTest123' debug outputs as       
          |                      |
          | [[License]] = String |
+
+Scenario: Workflow to Workflow Mappings 
+Given I have a workflow "WF to WF Mapings"
+And "WF to WF Mapings" contains an Assign "AssignData" as
+        | variable   | value   |
+        | <AssignVariable> | <AssignValue> |
+And "WF to WF Mapings" contains "WorkflowMappingsInnerWorkflow" from server "Localhost" with mapping as
+| From Variable  | Input to Service | Output from Service | To Variable  |
+| <FromVariable> | <ToService>      | <FromService>       | <ToVariable> |
+When "WF to WF Mapings" is executed
+Then the workflow execution has "NO" error
+And the workflow 'WorkflowMappingsInnerWorkflow' debug inputs as
+      | Value                  |
+      | <ToServiceAssignValue> |
+And workflow 'WorkflowMappingsInnerWorkflow' debug outputs as
+      | # | Value                |
+      | 1 | <ToVariableAndResult> |
+Examples: 
+| #                          | AssignVariable | AssignValue | FromVariable   | ToService      | FromService     | ToVariable     | ToServiceAssignValue | ToVariableAndResult    |
+| ScalToRecInAndScaltoRecOut | [[OuterIn]]    | hello       | [[OuterIn]]    | [[in(*).in]]   | [[InnerOutput]] | [[out(*).out]] | [[in(*).in]] = hello | [[out(*).out]] = hello |
+| BlnkToRecIn                |                |             |                | [[in(*).in]]   | [[InnerOutput]] | [[OuterOut]]   | [[in(*).in]] =       | [[OuterPut]] =         |
+| BlnkToScalIn               |                |             |                | [[InnerInput]] | [[InnerOutput]] | [[OuterOut]]   | [[in(*).in]] =       | [[OuterPut]] =         |
+| HdCdScalToRecInSclToSclOut | [[OuterIn]]    | ll          | he[[OuterIn]]o | [[in(*).in]]   | [[InnerOutput]] | [[OuterOut]]   | [[in(*).in]] = hello | [[OuterOut]] = hello   |
