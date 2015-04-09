@@ -109,7 +109,7 @@ namespace Dev2.Activities
                     if(_isDebugMode)
                     {
                         AddSourceStringDebugInputItem(SourceString, dataObject.Environment);
-                        AddResultDebugInputs(ResultsCollection, dataObject.Environment, out errors);
+                        AddResultDebugInputs(ResultsCollection, out errors);
                         allErrors.MergeErrors(errors);
                     }
                     if(!allErrors.HasErrors())
@@ -156,7 +156,7 @@ namespace Dev2.Activities
                                                                 {
                                                                     cleanFieldName = "[[" + newFieldName;
                                                                 }
-                                                                AssignResult(cleanFieldName, dataObject, eval);                                                                
+                                                                AssignResult(cleanFieldName, dataObject, eval, i + 1);                                                                
                                                                 
                                                             }
                                                         }
@@ -164,7 +164,7 @@ namespace Dev2.Activities
                                                     else
                                                     {
                                                         var variable = ResultsCollection[i].OutputVariable;
-                                                        AssignResult(variable, dataObject, eval);
+                                                        AssignResult(variable, dataObject, eval,i+1);
                                                     }
                                                 }
                                                 catch(Exception)
@@ -231,10 +231,9 @@ namespace Dev2.Activities
             }
         }
 
-        void AssignResult(string variable, IDSFDataObject dataObject, List<string> eval)
+        void AssignResult(string variable, IDSFDataObject dataObject, IEnumerable<string> eval,int innerCount)
         {
             var index = 1;
-            var innerCount = 1;
             if(DataListUtils.IsValueScalar(variable))
             {
                 dataObject.Environment.Assign(variable, string.Join(",", eval));
@@ -258,7 +257,7 @@ namespace Dev2.Activities
             }
         }
 
-        void AddResultDebugInputs(IEnumerable<XPathDTO> resultsCollection, IExecutionEnvironment environment, out ErrorResultTO errors)
+        void AddResultDebugInputs(IEnumerable<XPathDTO> resultsCollection, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             var i = 1;

@@ -98,6 +98,26 @@ namespace Dev2.Data.Util
                                         expression.Replace(extractIndexRegionFromRecordset, "()");
         }
 
+        
+        /// <summary>
+        /// Replaces the index of a recordset with a blank index.
+        /// </summary>
+        /// <param name="expression">The expession.</param>
+        /// <returns></returns>
+        public static string ReplaceRecordsetIndexWithStar(string expression)
+        {
+            var index = ExtractIndexRegionFromRecordset(expression);
+
+            if (string.IsNullOrEmpty(index))
+            {
+                return expression;
+            }
+
+            string extractIndexRegionFromRecordset = string.Format("({0})", index);
+            return string.IsNullOrEmpty(extractIndexRegionFromRecordset) ? expression :
+                                        expression.Replace(extractIndexRegionFromRecordset, "(*)");
+        }
+
         /// <summary>
         /// Determines whether [is calc evaluation] [the specified expression].
         /// </summary>
@@ -787,6 +807,24 @@ namespace Dev2.Data.Util
             if(dotIdx > 0)
             {
                 result = value.Substring((dotIdx + 1));
+            }
+
+            return result;
+        }
+        
+        /// <summary>
+        /// Used to extract a field name from our recordset notation
+        /// </summary>
+        /// <param name="value">The value</param>
+        /// <returns></returns>
+        public static string ExtractFieldNameOnlyFromValue(string value)
+        {
+            string result = string.Empty;
+            int dotIdx = value.LastIndexOf(".", StringComparison.Ordinal);
+            int closeIdx = value.LastIndexOf("]]", StringComparison.Ordinal);
+            if(dotIdx > 0)
+            {
+                result = value.Substring((dotIdx + 1),closeIdx-dotIdx-1);
             }
 
             return result;

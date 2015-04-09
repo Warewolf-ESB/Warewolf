@@ -4850,3 +4850,22 @@ Scenario: Workflow by using For Each with workflow
          And the 'Random3' in "Utility - Random" in step 2 for 'ForEachTest123' debug outputs as       
          |                      |
          | [[License]] = String |
+
+Scenario: Workflow to Workflow Mappings Scalar to Recordset Input
+Given I have a workflow "WF to WF Mapings"
+And "WF to WF Mapings" contains an Assign "AssignData" as
+	  | variable | value |
+	  | [[var]]  | hello |
+And "WF to WF Mapings" contains "One" from server "Localhost" with mapping as
+ | From Variable | Input to Service | Output from Service | To Variable |
+ | [[var]]       | rec(*).val       | output              | [[output]]  |
+ |               |                  |                     |             |
+ |               |                  |                     |             |
+When "WF to WF Mapings" is executed
+Then the workflow execution has "NO" error
+And the workflow 'One' debug inputs as
+	| # |                        |
+	| 1 | [[rec(*).val = success |
+And workflow 'One' debug outputs as
+	| # |                      |
+	| 1 | [[output]] = success |

@@ -276,18 +276,7 @@ Scenario: Merge a negative recordset index for String At
 	| # |       | With  | Using          | Pad | Align |
 	| 1 | 12    | Index | [[my(-1).a]] = | " " | Left  |
 	And the debug output as 
-	|               |
-	| [[result]] = |
-
-Scenario: Merge a negative recordset index for Padding
-	Given an Input "12" and merge type "Index" and string at as "10" and Padding "[[my(-1).a]]" and Alignment "Left"	
-	When the data merge tool is executed
-	Then the execution has "AN" error
-	And the debug inputs as  
-	| # |       | With  | Using | Pad            | Align |
-	| 1 | 12    | Index | 10    | [[my(-1).a]] = | Left  |
-	And the debug output as 
-	|               |
+	|              |
 	| [[result]] = |
 
 Scenario: Merge a variable using index that is a variable and is not blank
@@ -336,7 +325,7 @@ Scenario: Merge a variable inside a variable
 	And the execution has "NO" error
 	And the debug inputs as  
 	| # |                              | With  | Using | Pad | Align |
-	| 1 | [[test]] = Warewolf | Index | "8"   | ""  | Left  |
+	| 1 | [[[[[[[[a]]]]]]]] = Warewolf | Index | "8"   | ""  | Left  |
 	| 2 | [[c]]             = test     | Index | "4"   | ""  | Left  |
 	And the debug output as 
 	|                           |

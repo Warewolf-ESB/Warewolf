@@ -20,7 +20,12 @@ namespace Dev2.Data
         {
             if (warewolfEvalResult.IsWarewolfAtomListresult)
             {
-                _listResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;                
+                var warewolfAtomListresult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                if(warewolfAtomListresult != null)
+                {
+                    warewolfAtomListresult.Item.ResetCurrentEnumerator();
+                    _listResult = warewolfAtomListresult;
+                }
             }
             else if (warewolfEvalResult.IsWarewolfAtomResult)
             {

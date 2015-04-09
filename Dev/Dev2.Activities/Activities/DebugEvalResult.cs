@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Data;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Warewolf.Storage;
+using WarewolfParserInterop;
 
 namespace Dev2.Activities
 {
@@ -16,7 +18,7 @@ namespace Dev2.Activities
         readonly string _label;
         readonly WarewolfDataEvaluationCommon.WarewolfEvalResult _evalResult;
 
-        public DebugEvalResult(string inputVariable, string label,IExecutionEnvironment environment)
+        public DebugEvalResult(string inputVariable, string label, IExecutionEnvironment environment, bool isDataMerge = false)
         {
             _inputVariable = inputVariable;
             _positionInput = "";
@@ -29,10 +31,41 @@ namespace Dev2.Activities
                     {
                         var length = environment.GetLength(DataListUtil.ExtractRecordsetNameFromValue(_inputVariable));
                         _inputVariable = DataListUtil.ReplaceRecordsetBlankWithIndex(_inputVariable, length);
+                    }                    
+                }
+                if (isDataMerge)
+                {
+                    var evalForDataMerge = environment.EvalForDataMerge(_inputVariable);
+                    var innerIterator = new WarewolfListIterator();
+                    var innerListOfIters = new List<WarewolfIterator>();
+                    foreach (var listOfIterator in evalForDataMerge)
+                    {
+                        var inIterator = new WarewolfIterator(listOfIterator);
+                        innerIterator.AddVariableToIterateOn(inIterator);
+                        innerListOfIters.Add(inIterator);
+                    }
+                    var atomList = new List<DataASTMutable.WarewolfAtom>();
+                    while (innerIterator.HasMoreData())
+                    {
+                        var stringToUse = "";
+                        foreach (var warewolfIterator in innerListOfIters)
+                        {
+                            stringToUse += warewolfIterator.GetNextValue();
+                        }
+                        atomList.Add(DataASTMutable.WarewolfAtom.NewDataString(stringToUse));
+                    }
+                    var finalString = string.Join("", atomList);
+                    _evalResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomListresult(new WarewolfAtomList<DataASTMutable.WarewolfAtom>(DataASTMutable.WarewolfAtom.Nothing, atomList));
+                    if (DataListUtil.IsFullyEvaluated(finalString))
+                    {
+                        _evalResult = environment.Eval(finalString);
                     }
                 }
-                _inputVariable = environment.EvalToExpression(_inputVariable);
-                _evalResult = environment.Eval(_inputVariable);
+                else
+                {
+                    _inputVariable = environment.EvalToExpression(_inputVariable);
+                    _evalResult = environment.Eval(_inputVariable);
+                }
                 if (_inputVariable.Contains(".WarewolfPositionColumn")) _positionInput = _inputVariable.Replace(".WarewolfPositionColumn", ""); 
 
             }
@@ -91,7 +124,7 @@ namespace Dev2.Activities
                     {
                         if (item.Key != WarewolfDataEvaluationCommon.PositionColumn)
                         {
-                            var data = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomListresult(item.Value) as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult; ;
+                            var data = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomListresult(item.Value) as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
                             res.AddRange(new DebugItemWarewolfAtomListResult(data, "", "", ExecutionEnvironment.ConvertToColumnWithStar(_inputVariable, item.Key), LabelText, "", "=").GetDebugItemResult());
                         }
                      }

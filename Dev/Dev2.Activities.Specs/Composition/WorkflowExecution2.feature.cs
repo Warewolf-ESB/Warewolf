@@ -11831,6 +11831,77 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Workflow to Workflow Mappings Scalar to Recordset Input")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        public virtual void WorkflowToWorkflowMappingsScalarToRecordsetInput()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow to Workflow Mappings Scalar to Recordset Input", ((string[])(null)));
+#line 4854
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 4855
+testRunner.Given("I have a workflow \"WF to WF Mapings\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table678 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table678.AddRow(new string[] {
+                        "[[var]]",
+                        "hello"});
+#line 4856
+testRunner.And("\"WF to WF Mapings\" contains an Assign \"AssignData\" as", ((string)(null)), table678, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table679 = new TechTalk.SpecFlow.Table(new string[] {
+                        "From Variable",
+                        "Input to Service",
+                        "Output from Service",
+                        "To Variable"});
+            table679.AddRow(new string[] {
+                        "[[var]]",
+                        "rec(*).val",
+                        "output",
+                        "[[output]]"});
+            table679.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        ""});
+            table679.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        ""});
+#line 4859
+testRunner.And("\"WF to WF Mapings\" contains \"One\" from server \"Localhost\" with mapping as", ((string)(null)), table679, "And ");
+#line 4864
+testRunner.When("\"WF to WF Mapings\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 4865
+testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table680 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table680.AddRow(new string[] {
+                        "1",
+                        "[[rec(*).val = success"});
+#line 4866
+testRunner.And("the workflow \'One\' debug inputs as", ((string)(null)), table680, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table681 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table681.AddRow(new string[] {
+                        "1",
+                        "[[output]] = success"});
+#line 4869
+testRunner.And("workflow \'One\' debug outputs as", ((string)(null)), table681, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

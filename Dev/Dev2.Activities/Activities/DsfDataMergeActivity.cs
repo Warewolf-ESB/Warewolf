@@ -133,7 +133,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         DebugItem debugItem = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", (MergeCollection.IndexOf(row) + 1).ToString(CultureInfo.InvariantCulture)), debugItem);
-                        AddDebugItem(new DebugEvalResult(row.InputVariable, "",dataObject.Environment), debugItem);
+                        AddDebugItem(new DebugEvalResult(row.InputVariable, "",dataObject.Environment, true), debugItem);
                         AddDebugItem(new DebugItemStaticDataParams(row.MergeType, "With"), debugItem);
                         AddDebugItem(new DebugEvalResult(row.At, "Using", dataObject.Environment), debugItem);
                         AddDebugItem(new DebugEvalResult(row.Padding, "Pad", dataObject.Environment), debugItem);
