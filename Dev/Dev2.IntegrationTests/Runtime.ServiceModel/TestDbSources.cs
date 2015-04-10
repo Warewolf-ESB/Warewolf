@@ -28,9 +28,5 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
             Broker = broker;
         }
 
-        protected override SqlDatabaseBroker CreateDatabaseBroker()
-        {
-            return Broker ?? base.CreateDatabaseBroker();
-        }
     }
 }
