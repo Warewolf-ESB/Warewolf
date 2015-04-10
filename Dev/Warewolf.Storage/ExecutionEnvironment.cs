@@ -68,6 +68,8 @@ namespace Warewolf.Storage
         string EvalToExpression(string exp);
 
         IEnumerable< WarewolfDataEvaluationCommon.WarewolfEvalResult> EvalForDataMerge(string exp);
+
+        void AssignUnique(IEnumerable<string> distinctList, IEnumerable<string> valueList, IEnumerable<string> resList);
     }
     public class ExecutionEnvironment : IExecutionEnvironment
     {
@@ -108,6 +110,11 @@ namespace Warewolf.Storage
                 throw;
             }
 
+        }
+
+        public void AssignUnique(IEnumerable<string> distinctList, IEnumerable<string> valueList, IEnumerable<string> resList)
+        {
+           var output =  Distinct.EvalDistinct(_env, distinctList, valueList,resList);
         }
 
         public WarewolfDataEvaluationCommon.WarewolfEvalResult EvalStrict(string exp)
