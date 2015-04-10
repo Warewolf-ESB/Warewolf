@@ -99,8 +99,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Sql", "Dev2.Sql\Dev2.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.WebServer", "Dev2.Runtime.WebServer\Dev2.Runtime.WebServer.csproj", "{4D0919C0-8FA4-480C-8629-00EB128DDEE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Specs", "Warewolf.Studio.Specs\Warewolf.Studio.Specs.csproj", "{055903B2-8801-4714-B6AF-57DEC358CEEA}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{60905F3A-DA76-4216-B5F3-8FF63D7ED4F1}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
