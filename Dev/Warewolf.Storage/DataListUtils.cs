@@ -68,6 +68,15 @@ namespace Warewolf.Storage
             return idx > 0 ? exp.Replace("(*)", RecordsetIndexOpeningBracket + idx + RecordsetIndexClosingBracket) : exp;
         }
 
+        public static string ReplaceRecordsetBlankWithIndex(string fullRecSetName, int length)
+        {
+            var blankIndex = fullRecSetName.IndexOf("().", StringComparison.Ordinal);
+            if (blankIndex != -1)
+            {
+                return fullRecSetName.Replace("().", string.Format("({0}).", length));
+            }
+            return fullRecSetName;
+        }
         /// <summary>
         /// Replaces the index of a recordset with a blank index.
         /// </summary>

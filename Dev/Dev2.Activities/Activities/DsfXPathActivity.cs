@@ -20,6 +20,7 @@ using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data;
 using Dev2.Data.Parsers;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Enums;
@@ -109,7 +110,7 @@ namespace Dev2.Activities
                     if(_isDebugMode)
                     {
                         AddSourceStringDebugInputItem(SourceString, dataObject.Environment);
-                        AddResultDebugInputs(ResultsCollection, dataObject.Environment, out errors);
+                        AddResultDebugInputs(ResultsCollection, out errors);
                         allErrors.MergeErrors(errors);
                     }
                     if(!allErrors.HasErrors())
@@ -156,7 +157,7 @@ namespace Dev2.Activities
                                                                 {
                                                                     cleanFieldName = "[[" + newFieldName;
                                                                 }
-                                                                AssignResult(cleanFieldName, dataObject, eval);                                                                
+                                                                AssignResult(cleanFieldName, dataObject, eval, i + 1);                                                                
                                                                 
                                                             }
                                                         }
@@ -164,11 +165,12 @@ namespace Dev2.Activities
                                                     else
                                                     {
                                                         var variable = ResultsCollection[i].OutputVariable;
-                                                        AssignResult(variable, dataObject, eval);
+                                                        AssignResult(variable, dataObject, eval,i+1);
                                                     }
                                                 }
-                                                catch(Exception)
+                                                catch(Exception e)
                                                 {
+                                                    allErrors.AddError(e.Message);
                                                     dataObject.Environment.Assign(ResultsCollection[i].OutputVariable, null);
                                                 }
                                             }
@@ -187,7 +189,7 @@ namespace Dev2.Activities
                         {
                             var itemToAdd = new DebugItem();
                             AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                            AddDebugItem(new DebugEvalResult(debugOutputTo.OutputVariable,"",dataObject.Environment), itemToAdd);
+                            AddDebugItem(new DebugEvalResult(DataListUtil.ReplaceRecordsetBlankWithStar(debugOutputTo.OutputVariable),"",dataObject.Environment), itemToAdd);
                             _debugOutputs.Add(itemToAdd);
                             innerCount++;
                         }
@@ -231,16 +233,17 @@ namespace Dev2.Activities
             }
         }
 
-        void AssignResult(string variable, IDSFDataObject dataObject, List<string> eval)
+        void AssignResult(string variable, IDSFDataObject dataObject, IEnumerable<string> eval,int innerCount)
         {
             var index = 1;
-            var innerCount = 1;
             if(DataListUtils.IsValueScalar(variable))
             {
                 dataObject.Environment.Assign(variable, string.Join(",", eval));
             }
             else
             {
+                
+                //AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
                 foreach(var val in eval)
                 {
                     var correctedVariable = variable;
@@ -249,16 +252,15 @@ namespace Dev2.Activities
                         correctedVariable = DataListUtils.ReplaceStarWithFixedIndex(variable, index);
                     }
                     dataObject.Environment.Assign(correctedVariable, val);
-                    var itemToAdd = new DebugItem();
-                    AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                    AddDebugItem(new DebugEvalResult(correctedVariable, "", dataObject.Environment), itemToAdd);
-                    _debugOutputs.Add(itemToAdd);
+                   // var itemToAdd = new DebugItem();
+                    //AddDebugItem(new DebugEvalResult(correctedVariable, "", dataObject.Environment), itemToAdd);
+                    //_debugOutputs.Add(itemToAdd);
                     index++;
                 }
             }
         }
 
-        void AddResultDebugInputs(IEnumerable<XPathDTO> resultsCollection, IExecutionEnvironment environment, out ErrorResultTO errors)
+        void AddResultDebugInputs(IEnumerable<XPathDTO> resultsCollection, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             var i = 1;
