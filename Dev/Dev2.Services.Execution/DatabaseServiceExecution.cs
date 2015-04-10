@@ -18,7 +18,6 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Core.Graph;
-using Dev2.Common.Interfaces.DB;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Sql;
@@ -37,7 +36,7 @@ namespace Dev2.Services.Execution
         {
         }
 
-        public SqlServer SqlServer
+        SqlServer SqlServer
         {
             get { return _sqlServer; }
         }
@@ -135,11 +134,13 @@ namespace Dev2.Services.Execution
 
         public override void BeforeExecution(ErrorResultTO errors)
         {
+            if(Source.ServerType == enSourceType.SqlDatabase)
             SetupSqlServer(errors);
         }
 
         public override void AfterExecution(ErrorResultTO errors)
         {
+            if (Source.ServerType == enSourceType.SqlDatabase)
             DestroySqlServer();
         }
 
@@ -212,6 +213,7 @@ namespace Dev2.Services.Execution
             {
                  
                     List<MySqlParameter> parameters = GetMySqlParameters(Service.Method.Parameters);
+
                     using (
                     MySqlServer server = SetupMySqlServer(errors))
                     {
@@ -219,7 +221,7 @@ namespace Dev2.Services.Execution
                         if (parameters != null)
                         {
                             // ReSharper disable CoVariantArrayConversion
-                            using (DataTable dataSet = server.FetchDataTable(parameters.ToArray()))
+                            using (DataTable dataSet = server.FetchDataTable(parameters.ToArray(),server.GetProcedureOutParams(Service.Method.Name,Source.DatabaseName)))
                             // ReSharper restore CoVariantArrayConversion
                             {
                                 ApplyColumnMappings(dataSet);
@@ -299,6 +301,29 @@ namespace Dev2.Services.Execution
             }
             return sqlParameters;
         }
+
+/*
+        private static List<MySqlParameter> GetMySqlOutParameters(IList<MethodParameter> methodParameters)
+        {
+            var sqlParameters = new List<MySqlParameter>();
+
+            if (methodParameters.Count > 0)
+            {
+#pragma warning disable 219
+                int pos = 0;
+#pragma warning restore 219
+                foreach (MethodParameter parameter in methodParameters)
+                {
+
+                        sqlParameters.Add(new MySqlParameter(string.Format("@{0}", parameter.Name),"@a"));
+                    
+
+                    pos++;
+                }
+            }
+            return sqlParameters;
+        }
+*/
         #endregion
 
         private void ApplyColumnMappings(DataTable dataTable)

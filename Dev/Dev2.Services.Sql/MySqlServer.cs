@@ -4,7 +4,10 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Security;
 using System.Text;
+using System.Text.RegularExpressions;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using MySql.Data.MySqlClient;
@@ -26,6 +29,49 @@ namespace Dev2.Services.Sql
         public string ConnectionString
         {
             get { return _connection == null ? null : _connection.ConnectionString; }
+        }
+
+        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor, bool continueOnProcessorException = false, string dbName = "")
+        {
+            VerifyArgument.IsNotNull("procedureProcessor", procedureProcessor);
+            VerifyArgument.IsNotNull("functionProcessor", functionProcessor);
+            VerifyConnection();
+
+            DataTable proceduresDataTable = GetSchema(_connection);
+
+
+            // ROUTINE_CATALOG - ROUTINE_SCHEMA ,SPECIFIC_SCHEMA
+
+            foreach (DataRow row in proceduresDataTable.Rows)
+            {
+                string fullProcedureName = row["Name"].ToString();
+                if (row["Db"].ToString() == dbName)
+                {
+                    using (
+                        IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
+                            fullProcedureName))
+                    {
+                        try
+                        {
+                            List<IDbDataParameter> outParameters ;
+
+                            List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName, out outParameters);
+                            string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
+       
+                            procedureProcessor(command, parameters, outParameters, helpText, fullProcedureName);
+
+
+                        }
+                        catch (Exception)
+                        {
+                            if (!continueOnProcessorException)
+                            {
+                                throw;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         public IDbCommand CreateCommand()
@@ -91,10 +137,14 @@ namespace Dev2.Services.Sql
                 reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
         }
 
-        public DataTable FetchDataTable(params IDbDataParameter[] parameters)
+        public DataTable FetchDataTable( IDbDataParameter[] parameters,IEnumerable<IDbDataParameter> outparameters)
         {
             VerifyConnection();
             AddParameters(_command, parameters);
+            foreach(var par in outparameters)
+            {
+                _command.Parameters.Add(par);
+            }
             return FetchDataTable(_command);
         }
 
@@ -136,24 +186,28 @@ namespace Dev2.Services.Sql
             foreach (DataRow row in proceduresDataTable.Rows)
             {
                 string fullProcedureName = row["Name"].ToString();
-
-                using (
-                    IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
-                        fullProcedureName))
+                if (row["Db"].ToString() == dbName)
                 {
-                    try
+                    using (
+                        IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
+                            fullProcedureName))
                     {
-                        List<IDbDataParameter> parameters = GetProcedureParameters(command,dbName,fullProcedureName);
-                        string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
-                        procedureProcessor(command, parameters, helpText, fullProcedureName);
-                    
-                  
-                    }
-                    catch (Exception)
-                    {
-                        if (!continueOnProcessorException)
+                        try
                         {
-                            throw;
+                            List<IDbDataParameter> isOut;
+                            List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName,out isOut);
+                            string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
+                           
+                            procedureProcessor(command, parameters, helpText, fullProcedureName);
+
+
+                        }
+                        catch (Exception)
+                        {
+                            if (!continueOnProcessorException)
+                            {
+                                throw;
+                            }
                         }
                     }
                 }
@@ -327,8 +381,21 @@ namespace Dev2.Services.Sql
             return schemaName + "." + procedureName;
         }
 
-        private List<IDbDataParameter> GetProcedureParameters(IDbCommand command, string dbName, string procedureName)
+        public List<MySqlParameter> GetProcedureOutParams(string fullProcedureName, string dbName)
         {
+            using (IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,fullProcedureName))
+            {
+
+                List<IDbDataParameter> isOut;
+                GetProcedureParameters(command, dbName, fullProcedureName, out isOut);
+                return isOut.Select(a=>a as MySqlParameter).ToList();
+
+            }
+        }
+
+        public List<IDbDataParameter> GetProcedureParameters(IDbCommand command, string dbName, string procedureName,out List<IDbDataParameter> outParams)
+        {
+            outParams = new List<IDbDataParameter>();
             //Please do not use SqlCommandBuilder.DeriveParameters(command); as it does not handle CLR procedures correctly.
             string originalCommandText = command.CommandText;
             var parameters = new List<IDbDataParameter>();
@@ -341,24 +408,44 @@ namespace Dev2.Services.Sql
             DataTable dataTable = FetchDataTable(command);
             foreach (DataRow row in dataTable.Rows)
             {
-                var parameterName = System.Text.Encoding.Default.GetString(row[0] as byte[]);
+                var parameterName = System.Text.Encoding.Default.GetString(row[0] as byte[]); ;
+                parameterName= Regex.Replace(parameterName, @"(\()([0-z,])+(\))", "");
                 var parameternames = parameterName.Split(new[] { ',' });
-                foreach(var parametername in parameternames)
+                foreach(var parameter in parameternames)
                 {
+                    bool isout = false;
+                    var direction = ParameterDirection.Input;
+                    if(parameter.Contains("OUT "))
+                        isout = true;
+                    if (parameter.Contains("INOUT"))
+                        isout = false;
+                    var parameterx = parameter.Replace("IN ", "").Replace("OUT ", "");
                     if (!String.IsNullOrEmpty(parameterName))
                     {
-                        var split = parameterName.Split(new[] { ' ' });
+                        var split = parameterx.Split(new[] { ' ' });
 
                         MySqlDbType sqlType;
-                        Enum.TryParse(split[1], true, out sqlType);
+                        Enum.TryParse(split.Where(a=>a.Trim().Length>0).ToArray()[1], true, out sqlType);
 
-                        var sqlParameter = new MySqlParameter(split[0], sqlType);
-                        command.Parameters.Add(sqlParameter);
+                        var sqlParameter = new MySqlParameter(split.First(a => a.Trim().Length > 0), sqlType);
+                        sqlParameter.Direction = direction;
+                        if (!isout)
+                        {
+                            command.Parameters.Add(sqlParameter);
+                            parameters.Add(sqlParameter);
+                        }
+                        else
+                        {
+                            sqlParameter.Direction = ParameterDirection.Output; 
+                            outParams.Add(sqlParameter);
+                            sqlParameter.Value = "@a";
+                            command.Parameters.Add(sqlParameter);
+                        }
                         if (parameterName.ToLower() == "@return_value")
                         {
                             continue;
                         }
-                        parameters.Add(sqlParameter);
+                       
                     }
                 }
              

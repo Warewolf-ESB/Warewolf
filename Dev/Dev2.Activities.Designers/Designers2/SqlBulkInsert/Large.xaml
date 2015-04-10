@@ -213,7 +213,7 @@
 
         <Grid Grid.Row="3"
               Grid.Column="0"
-              Grid.ColumnSpan="3">
+              Grid.ColumnSpan="3" Visibility="{Binding  Path=IsSqlDatabase, Converter={StaticResource BoolToVisibilityConverter}}">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -273,7 +273,7 @@
                                          Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
-
+            
             <CheckBox Grid.Row="1"
                       Grid.Column="0"
                       Grid.ColumnSpan="2"

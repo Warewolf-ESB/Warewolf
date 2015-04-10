@@ -24,6 +24,7 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
+using MySql.Data.MySqlClient;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -105,11 +106,29 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Log.Info("Get Database Tables. " + dbSource.DatabaseName);
                 var tables = new DbTableList();
                 DataTable columnInfo;
-                using(var connection = new SqlConnection(dbSource.ConnectionString))
+                switch(dbSource.ServerType)
                 {
-                    connection.Open();
-                    columnInfo = connection.GetSchema("Tables");
+
+                     case enSourceType.SqlDatabase:
+                    {
+                        using (var connection = new SqlConnection(dbSource.ConnectionString))
+                        {
+                            connection.Open();
+                            columnInfo = connection.GetSchema("Tables");
+                        }
+                        break;
+                    }
+                    default:
+                    {
+                        using (var connection = new MySqlConnection(dbSource.ConnectionString))
+                        {
+                            connection.Open();
+                            columnInfo = connection.GetSchema("Tables");
+                        }
+                        break;
+                    }
                 }
+       
                 if(columnInfo != null)
                 {
                     foreach(DataRow row in columnInfo.Rows)

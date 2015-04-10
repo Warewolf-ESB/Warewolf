@@ -106,7 +106,10 @@ namespace Dev2.Runtime.ServiceModel
         {
             try
             {
-                var service = DeserializeService(args);
+                var service = JsonConvert.DeserializeObject<DbService>(args);
+                var source= _resourceCatalog.GetResource<DbSource>(workspaceId, service.Source.ResourceID);
+                var broker = new MySqlDatabaseBroker();
+                broker.UpdateServiceOutParameters(service,source);
                 _resourceCatalog.SaveResource(workspaceId, service);
 
                 if(workspaceId != GlobalConstants.ServerWorkspaceID)
@@ -235,7 +238,7 @@ namespace Dev2.Runtime.ServiceModel
 
                             ServiceMappingHelper smh = new ServiceMappingHelper();
 
-                            smh.MapDbOutputs(outputDescription, ref dbService, addFields);
+                            smh.MySqlMapDbOutputs(outputDescription, ref dbService, addFields);
 
                             return dbService.Recordset;
                         

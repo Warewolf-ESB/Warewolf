@@ -148,7 +148,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
             return result;
         }
-
+        public virtual void UpdateServiceOutParameters(DbService service, DbSource dbSource)
+        {
+            
+        }
         protected virtual TDbServer CreateDbServer(DbSource dbSource)
         {
             return new TDbServer();
@@ -162,12 +165,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             return (payload.Replace("&lt;", "<").Replace("&gt;", ">"));
         }
 
-        protected static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, string sourceCode,string executeAction)
+        private static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, string sourceCode,string executeAction)
         {
             return new ServiceMethod(command.CommandText, sourceCode, parameters.Select(MethodParameterFromDataParameter), null, null,executeAction);
         }
 
-        static MethodParameter MethodParameterFromDataParameter(IDataParameter parameter)
+        protected static MethodParameter MethodParameterFromDataParameter(IDataParameter parameter)
         {
             return new MethodParameter
             {
@@ -187,6 +190,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 var dataParameter = DataParameterFromMethodParameter(command, methodParameter);
                 command.Parameters.Add(dataParameter);
             }
+
 
             return command;
         }

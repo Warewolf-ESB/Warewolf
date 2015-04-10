@@ -672,6 +672,7 @@ Scenario: Workflow with 2 Assign tools by using Scalars as variables executing a
 	  | # |                   |
 	  | 1 | [[b]] =  warewolf |
 
+
 #This test scenario should be passed after the bug 11818 is fixed
 #Scenario: Workflow with Assign and Gather System Information
 #      Given I have a workflow "workflowithAssignandGatherSystemInformation"
