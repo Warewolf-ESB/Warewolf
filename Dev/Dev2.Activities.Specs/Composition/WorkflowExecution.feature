@@ -4850,7 +4850,6 @@ Scenario: Workflow by using For Each with workflow
          |                      |
          | [[License]] = String |
 
-<<<<<<< HEAD
 Scenario: Workflow to Workflow Mappings 
 Given I have a workflow "WF to WF Mapings"
 And "WF to WF Mapings" contains an Assign "AssignData" as
@@ -4873,7 +4872,7 @@ Examples:
 | BlnkToRecIn                |                |             |                | [[in(*).in]]   | [[InnerOutput]] | [[OuterOut]]   | [[in(*).in]] =       | [[OuterPut]] =         |
 | BlnkToScalIn               |                |             |                | [[InnerInput]] | [[InnerOutput]] | [[OuterOut]]   | [[in(*).in]] =       | [[OuterPut]] =         |
 | HdCdScalToRecInSclToSclOut | [[OuterIn]]    | ll          | he[[OuterIn]]o | [[in(*).in]]   | [[InnerOutput]] | [[OuterOut]]   | [[in(*).in]] = hello | [[OuterOut]] = hello   |
-=======
+
 Scenario: Workflow to Workflow Mappings Scalar to Recordset Input
 Given I have a workflow "WF to WF Mapings"
 And "WF to WF Mapings" contains an Assign "AssignData" as
@@ -4892,4 +4891,3 @@ And the workflow 'One' debug inputs as
 And workflow 'One' debug outputs as
 	| # |                      |
 	| 1 | [[output]] = success |
->>>>>>> af035e10fa1939d66ae293c939dee0a3d1601051
