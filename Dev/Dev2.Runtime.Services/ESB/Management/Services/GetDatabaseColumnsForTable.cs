@@ -23,6 +23,7 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
+using MySql.Data.MySqlClient;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -93,26 +94,52 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var dbSource = serializer.Deserialize<DbSource>(database);
                 var runtTimedbSource = ResourceCatalog.Instance.GetResource<DbSource>(theWorkspace.ID, dbSource.ResourceID);
                 DataTable columnInfo;
-                using(var connection = new SqlConnection(runtTimedbSource.ConnectionString))
+                switch (dbSource.ServerType)
                 {
-                    // Connect to the database then retrieve the schema information.
-                    connection.Open();
-
-                    // GUTTED TO RETURN ALL REQUIRED DATA ;)
-                    if(schema == null)
+                    case enSourceType.MySqlDatabase:
                     {
-                        schema = string.Empty;
-                    }
-
-                    var sql = @"select top 1 * from " + schema.Trim(new[] { '"' }) + "." + tableName.Trim(new[] { '"' });
-                    using(var sqlcmd = new SqlCommand(sql, connection))
-                    {
-                        // force it closed so we just get the proper schema ;)
-                        using(var sdr = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
+                        using (var connection = new MySqlConnection(runtTimedbSource.ConnectionString))
                         {
-                            columnInfo = sdr.GetSchemaTable();
+                            // Connect to the database then retrieve the schema information.
+                            connection.Open();
+                            var sql = @"select  * from  " + tableName.Trim(new[] { '"' }).Replace("[","").Replace("]","") + " Limit 1 ";
+
+                                                     using (var sqlcmd = new MySqlCommand(sql, connection))
+                            {
+                                // force it closed so we just get the proper schema ;)
+                                using (var sdr = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
+                                {
+                                    columnInfo = sdr.GetSchemaTable();
+                                }
+                            }
                         }
+                        break;
                     }
+                    default:
+                        {
+                            using (var connection = new SqlConnection(runtTimedbSource.ConnectionString))
+                            {
+                                // Connect to the database then retrieve the schema information.
+                                connection.Open();
+
+                                // GUTTED TO RETURN ALL REQUIRED DATA ;)
+                                if (schema == null)
+                                {
+                                    schema = string.Empty;
+                                }
+                                var sql = @"select top 1 * from " + schema.Trim(new[] { '"' }) + "." + tableName.Trim(new[] { '"' });
+
+                                using (var sqlcmd = new SqlCommand(sql, connection))
+                                {
+                                    // force it closed so we just get the proper schema ;)
+                                    using (var sdr = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
+                                    {
+                                        columnInfo = sdr.GetSchemaTable();
+                                    }
+                                }
+                            }
+                            break;
+                        }
                 }
 
                 var dbColumns = new DbColumnList();
@@ -127,7 +154,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         var dbColumn = new DbColumn { ColumnName = columnName, IsNullable = isNullable, IsAutoIncrement = isIdentity };
 
                         SqlDbType sqlDataType;
-                        var typeValue = row["DataTypeName"] as string;
+                        var typeValue = dbSource.ServerType == enSourceType.SqlDatabase? row["DataTypeName"] as string:(row["DataType"] as Type).Name;
                         if(Enum.TryParse(typeValue, true, out sqlDataType))
                         {
                             dbColumn.SqlDataType = sqlDataType;

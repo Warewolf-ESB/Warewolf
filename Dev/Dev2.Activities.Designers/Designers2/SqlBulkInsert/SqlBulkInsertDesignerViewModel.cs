@@ -122,6 +122,12 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         public static readonly DependencyProperty IsRefreshingProperty =
             DependencyProperty.Register("IsRefreshing", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
 
+        public bool IsSqlDatabase { get { return (bool)GetValue(IsSqlDatabaseProperty); } set { SetValue(IsSqlDatabaseProperty, value); } }
+
+        public static readonly DependencyProperty IsSqlDatabaseProperty =
+            DependencyProperty.Register("IsSqlDatabase", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
+
+
         public DbSource SelectedDatabase
         {
             get
@@ -131,6 +137,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             set
             {
                 SetValue(SelectedDatabaseProperty, value);
+
                 EditDatabaseCommand.RaiseCanExecuteChanged();
             }
         }
@@ -246,6 +253,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 if (!_isInitializing)
                 {
                     SetProperty(value);
+                   
                 }
             }
         }
@@ -270,6 +278,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         bool KeepIdentity { get { return GetProperty<bool>(); } }
 
+
         #endregion
 
         protected virtual void OnSelectedDatabaseChanged()
@@ -281,7 +290,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             }
 
             IsRefreshing = true;
-
+            IsSqlDatabase = SelectedDatabase.ServerType == enSourceType.SqlDatabase;
             // Save selection
             var selectedTableName = GetTableName(SelectedTable);
 
