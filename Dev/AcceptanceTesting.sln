@@ -99,8 +99,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Sql", "Dev2.Sql\Dev2.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.WebServer", "Dev2.Runtime.WebServer\Dev2.Runtime.WebServer.csproj", "{4D0919C0-8FA4-480C-8629-00EB128DDEE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Specs", "Warewolf.Studio.Specs\Warewolf.Studio.Specs.csproj", "{055903B2-8801-4714-B6AF-57DEC358CEEA}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{60905F3A-DA76-4216-B5F3-8FF63D7ED4F1}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
@@ -764,22 +762,6 @@ Global
 		{4D0919C0-8FA4-480C-8629-00EB128DDEE9}.Release|x64.Build.0 = Release|x64
 		{4D0919C0-8FA4-480C-8629-00EB128DDEE9}.Release|x86.ActiveCfg = Release|x86
 		{4D0919C0-8FA4-480C-8629-00EB128DDEE9}.Release|x86.Build.0 = Release|x86
-		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Debug|x64.Build.0 = Debug|Any CPU
-		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Debug|x86.Build.0 = Debug|Any CPU
-		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Release|x64.ActiveCfg = Release|Any CPU
-		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Release|x64.Build.0 = Release|Any CPU
-		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Release|x86.ActiveCfg = Release|Any CPU
-		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Release|x86.Build.0 = Release|Any CPU
 		{3C4AC14C-4134-48A6-A9EA-9D47218E05C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3C4AC14C-4134-48A6-A9EA-9D47218E05C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C4AC14C-4134-48A6-A9EA-9D47218E05C5}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
