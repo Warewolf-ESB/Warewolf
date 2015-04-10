@@ -5183,7 +5183,7 @@ Examples:
 Examples: 
     | WorkflowName                  | ServiceName          | nameVariable | emailVariable | errorOccured |
     | TestWFWithDBServiceMailsError | willalwayserror      | [[name]]     | [[email]]     | YES          |
-    | TestWFWithDBServiceMailsError | willalwayserrormysql | [[name]]     | [[email]]     | YES          |
+    | TestWFWithDBServiceMailsError | willalwaysErrorMySql | [[name]]     | [[email]]     | YES          |
 
        
 #Scenario: Executing 'country service' with valid input.
