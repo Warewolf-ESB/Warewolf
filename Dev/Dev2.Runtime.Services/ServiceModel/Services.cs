@@ -108,8 +108,11 @@ namespace Dev2.Runtime.ServiceModel
             {
                 var service = JsonConvert.DeserializeObject<DbService>(args);
                 var source= _resourceCatalog.GetResource<DbSource>(workspaceId, service.Source.ResourceID);
-                var broker = new MySqlDatabaseBroker();
-                broker.UpdateServiceOutParameters(service,source);
+                if (source.ServerType == enSourceType.MySqlDatabase)
+                {
+                    var broker = new MySqlDatabaseBroker();
+                    broker.UpdateServiceOutParameters(service, source);
+                }
                 _resourceCatalog.SaveResource(workspaceId, service);
 
                 if(workspaceId != GlobalConstants.ServerWorkspaceID)

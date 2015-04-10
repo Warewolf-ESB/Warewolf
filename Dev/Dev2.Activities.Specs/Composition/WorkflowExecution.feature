@@ -4957,3 +4957,307 @@ Scenario: Workflow by using For Each with workflow
          And the 'Random3' in "Utility - Random" in step 2 for 'ForEachTest123' debug outputs as       
          |                      |
          | [[License]] = String |
+
+
+
+
+
+
+Scenario Outline: Database SqlDB  service using * indexes 
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  |                  |               | [[rec(*).name]]      | <nameVariable>  |
+	  |                  |               | [[rec(*).email]]      | <emailVariable> |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+	 And the 'SqlEmail' in Workflow 'TestWFWithDBServiceMails1' debug outputs as
+	  |                      |
+	  | [[rec(1).name]] = String |
+	  | [[rec(2).name]] = String |
+	  | [[rec(1).email]] = String |
+	  | [[rec(2).email]] = String |
+Examples: 
+    | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
+    | TestWFWithDBServiceMails1 | SqlEmail    | [[rec(*).name]] | [[rec(*).email]] | NO           |
+
+
+
+
+
+
+Scenario Outline: Database MySqlDB Database service using * indexes
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  |                  |               | [[rec(*).name]]      | <nameVariable>  |
+	  |                  |               | [[rec(*).email]]      | <emailVariable> |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+	 And the 'MySQLEmail' in Workflow 'TestMySqlWFWithDBServiceMails2' debug outputs as
+	  |                      |
+	  | [[rec(1).name]] = Max |
+	  | [[rec(2).name]] = Monk |
+	  | [[rec(1).email]] = bob@builders.com |
+	  | [[rec(2).email]] = dora@explorers.com |
+Examples: 
+    | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
+    | TestMySqlWFWithDBServiceMails2 | MySQLEmail  | [[rec(*).name]] | [[rec(*).email]] | NO           |
+
+
+
+Scenario Outline: Database SqlDB  service using int indexes 
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  |                  |               | [[rec(*).name]]      | <nameVariable>  |
+	  |                  |               | [[rec(*).email]]      | <emailVariable> |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+	 And the 'SqlEmail' in Workflow 'TestWFWithDBServiceMails3' debug outputs as
+	  |                      |
+	  | [[rec(1).name]] = bob |
+	  | [[rec(1).email]] = bob@builders.co.za |
+Examples: 
+    | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
+    | TestWFWithDBServiceMails3 | SqlEmail    | [[rec(1).name]] | [[rec(1).email]] | NO           |
+
+
+
+Scenario Outline: Database MySqlDB Database service using int indexes
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  |                  |               | [[rec(*).name]]      | <nameVariable>  |
+	  |                  |               | [[rec(*).email]]      | <emailVariable> |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+	 And the 'MySQLEmail' in Workflow 'TestMySqlWFWithDBServiceMails3' debug outputs as
+	  |                      |
+	  | [[rec(1).name]] = Max |
+	  | [[rec(1).email]] = bob@builders.com |
+Examples: 
+    | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
+    | TestMySqlWFWithDBServiceMails3 | MySQLEmail  | [[rec(1).name]] | [[rec(1).email]] | NO           |
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Scenario Outline: Database SqlDB  service using last indexes 
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  |                  |               | [[rec(*).name]]      | <nameVariable>  |
+	  |                  |               | [[rec(*).email]]      | <emailVariable> |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+	 And the 'SqlEmail' in Workflow 'TestWFWithDBServiceMails4' debug outputs as
+	  |                      |
+	  | [[rec(2).name]] = dora |
+	  | [[rec(2).email]] = dora@explorers.co.za |
+Examples: 
+    | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
+    | TestWFWithDBServiceMails4 | SqlEmail    | [[rec().name]] | [[rec().email]] | NO           |
+
+
+
+Scenario Outline: Database MySqlDB Database service last  indexes
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  |                  |               | [[rec(*).name]]      | <nameVariable>  |
+	  |                  |               | [[rec(*).email]]      | <emailVariable> |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+	 And the 'MySQLEmail' in Workflow 'TestMySqlWFWithDBServiceMails5' debug outputs as
+	  |                      |
+	  | [[rec(2).name]] = Monk |
+	  | [[rec(2).email]] = dora@explorers.com |
+Examples: 
+    | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
+    | TestMySqlWFWithDBServiceMails5 | MySQLEmail  | [[rec().name]] | [[rec().email]] | NO           |
+       
+ 
+ 
+ 
+ 
+  Scenario Outline: Database SqlDB  service using scalar outputs 
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  |                  |               | [[rec(*).name]]      | <nameVariable>  |
+	  |                  |               | [[rec(*).email]]      | <emailVariable> |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+	 And the 'SqlEmail' in Workflow 'TestWFWithDBServiceMails5' debug outputs as
+	  |                      |
+	  | [[name]] = dora |
+	  | [[email]] = dora@explorers.co.za |
+Examples: 
+    | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
+    | TestWFWithDBServiceMails5 | SqlEmail    | [[name]] | [[email]] | NO           |
+
+
+
+Scenario Outline: Database MySqlDB Database service scalar outputs 
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  |                  |               | [[rec(*).name]]      | <nameVariable>  |
+	  |                  |               | [[rec(*).email]]      | <emailVariable> |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+	 And the 'MySQLEmail' in Workflow 'TestMySqlWFWithDBServiceMails6' debug outputs as
+	  |                      |
+	  | [[name]] = Monk |
+	  | [[email]] = dora@explorers.com |
+Examples: 
+    | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
+    | TestMySqlWFWithDBServiceMails6 | MySQLEmail  | [[name]] | [[email]] | NO           |
+ 
+ 
+ 
+ 
+Scenario Outline: Database MySqlDB Database service Error outputs 
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  |                  |               | [[rec(*).name]]      | <nameVariable>  |
+	  |                  |               | [[rec(*).email]]      | <emailVariable> |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+Examples: 
+    | WorkflowName                   | ServiceName | nameVariable         | emailVariable | errorOccured |
+    | TestMySqlWFWithDBServiceMails7 | MySQLEmail  | [[rec(-1).name]]     | [[email]]     | YES          |
+    | TestMySqlWFWithDBServiceMails7 | MySQLEmail  | [[123]]              | [[email]]     | YES          |
+    | TestMySqlWFWithDBServiceMails7 | MySQLEmail  | [[rec(-1).name.bob]] | [[email]]     | YES          |
+
+
+Scenario Outline: Database MySqlDB Database service inputs and outputs
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	  | Input to Service | From Variable | Output from Service | To Variable    |
+	  | afg%                | [[name]]      | [[countries(*).id]] | <nameVariable> |
+	  |                  |               | [[countries(*).description]] | <emailVariable> |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+	 And the 'MySqlGetCountries' in Workflow 'TestMySqlWFWithDBServiceMails8' debug outputs as
+	  |                      |
+	  | [[id]] = 1 |
+	  | [[description]] = Afghanistan |
+Examples: 
+    | WorkflowName                   | ServiceName       | nameVariable        | emailVariable                | errorOccured |
+    | TestMySqlWFWithDBServiceMails8 | MySqlGetCountries | [[countries(*).id]] | [[countries(*).description]] | NO           |
+
+
+Scenario Outline: Database SqlDB Database service inputs and outputs
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	  | Input to Service | From Variable | Output from Service          | To Variable     |
+	  | afg              | [[Prefix]]    | [[countries(*).id]]          | <nameVariable>  |
+	  |                  |               | [[countries(*).description]] | <emailVariable> |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+	 And the 'GetCountriesSqlServer' in Workflow 'TestSqlWFWithDBServiceMails10' debug outputs as
+	  |                      |
+	  | [[id]] = 1 |
+	  | [[description]] = Afghanistan |
+Examples: 
+    | WorkflowName                   | ServiceName       | nameVariable        | emailVariable                | errorOccured |
+    | TestSqlWFWithDBServiceMails10 | GetCountriesSqlServer | [[countries(*).id]] | [[countries(*).description]] | NO           |
+
+
+  Scenario Outline: Database SqlDB  service DBErrors
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	  | Input to Service | From Variable | Output from Service | To Variable |
+	  |                  |               |                     |             |
+
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+Examples: 
+    | WorkflowName                  | ServiceName          | nameVariable | emailVariable | errorOccured |
+    | TestWFWithDBServiceMailsError | willalwayserror      | [[name]]     | [[email]]     | YES          |
+    | TestWFWithDBServiceMailsError | willalwayserrormysql | [[name]]     | [[email]]     | YES          |
+
+       
+#Scenario: Executing 'country service' with valid input.
+#      Given I have a <DataBaseServiceType> "country" 
+#      And the Input as "Alb" 
+#         And the output varaibles as "[[country]]" and "[[Id]]"
+#      When the Service is executed
+#      Then the execution has "NO" error
+#      And the debug input as
+#            | Alb    |
+#       And the debug output as
+#
+#       |DataServiceaseType |             |         |
+#       |SQL               | [[country]] | Albania |
+#       |SQL               | [[Id]]      | 2       |
+#          |MySQL               | [[country]] | Albania |
+#       |MySQL               | [[Id]]      | 2       |
+#
+#Scenario: Executing 'country service' with Invalid input.
+#        Given I have a <DataBaseServiceType> "country" 
+#        And the Input as "jajjj" 
+#              And the output varaibles as "[[country]]" and "[[Id]]"
+#        When the Service is executed
+#        Then the execution has "AN" error
+#        And the debug input as
+#       | jajjj  |
+#        And the debug output as
+#
+#       |DataServiceaseType|             | 
+#       |SQL               | [[country]] | 
+#       |SQL                         | [[Id]]      | 
+#          |MySQL             | [[country]] | 
+#       |MySQL                | [[Id]]      | 
+#
+#Scenario: Executing 'insertdummyuser' with input.      
+#       Given I have a <DataBaseServiceType> "insertdummyuser"
+#       And input name as "Murali"
+#       And input  Iname as "Naidu"
+#       And input username as "Murali1"
+#       And input password as "I can't say"
+#       And input lastAccessDate as "22/01/1992"
+#       Then the execution has "NO" error   
+#       And the debug input as
+#       |DataServiceaseType| fname  | Iname | username | password    | lastAccessDate |
+#       |SQL               | Murali | Naidu | Murali1  | I can't say | 22/01/1992     |                            
+#          |MySQL             | Murali | Naidu | Murali1  | I can't say | 22/01/1992     |
+#
+#Scenario: Executing 'Stored proceedure' with SQL defined error.      
+#       Given I have a <DataBaseServiceType> with Stored proceedure with SQL error
+#       And  the input of the proc used is invalid 
+#          And the output must be  SQL error
+#       When the Service is executed
+#       Then the execution has "AN" error
+#       And the debug output as
+#
+#Examples: 
+#          |DataServiceaseType| Error  |
+#          |SQL               | 1/0    |
+#          |MySQL             | 1/0    |
+#
+#Scenario: Use wildcards values in the Assign tool with SQL/MySQL database connector
+#              Given I have a <DataBaseServiceType> "country with cities table" 
+#              And the Input as "India" for country variable
+#              And the Input as [ja]% or [!ja]%
+#              And the output varaibles as "[[country]]", "[[cities]]" and "[[Id]]"
+#              When the Service is executed
+#              Then the execution has "NO" error
+#              And the debug input as
+#			  | DataServiceaseType |             |                                                                                   |
+#			  | SQL                | [[country]] | India                                                                             |
+#			  | SQL                | [[city]]    | All cities that start with "j" and "a" or cities that dont start with "j" and "a" |
+#			  | SQL                | [[Id]]      | %Numeric%                                                                         |
+#			  | MySQL              | [[country]] | India                                                                             |
+#			  | MySQL              | [[country]] | All cities that start with "j" and "a" or cities that dont start with "j" and "a" |
+#			  | MySQL              | [[Id]]      | %Numeric%                                                                         |                                                                                                             |
+# 
+
