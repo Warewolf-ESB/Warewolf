@@ -320,7 +320,6 @@
     <Compile Include="Configuration\SettingsProvider.cs" />
     <Compile Include="ServiceModel\WebSources.cs" />
     <Compile Include="Utilities.cs" />
-    <Compile Include="ServiceModel\WebModel.cs" />
     <Compile Include="Workspaces\Workspace.cs" />
     <Compile Include="Workspaces\WorkspaceItem.cs" />
     <Compile Include="Workspaces\WorkspaceItemAction.cs" />

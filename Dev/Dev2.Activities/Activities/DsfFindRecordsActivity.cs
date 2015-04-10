@@ -143,10 +143,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugOutputs = new List<DebugItem>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ErrorResultTO errors;
             ErrorResultTO allErrors = new ErrorResultTO();
             Guid executionId = dataObject.DataListID;
-            var env = dataObject.Environment;
             InitializeDebug(dataObject);
             try
             {
@@ -155,6 +153,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // Fetch all fields to search....
       
                 // now process each field for entire evaluated Where expression....
+                ErrorResultTO errors;
                 IBinaryDataListEntry bdle = compiler.Evaluate(executionId, enActionType.User, SearchCriteria, false, out errors);
                 if(dataObject.IsDebugMode())
                 {
@@ -164,14 +163,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 allErrors.MergeErrors(errors);
                 IList<string> toSearch = FieldsToSearch.Split(',');
-                foreach (var exp in toSearch)
-                {
-                    var val = env.EvalAsListOfStrings(exp);
-                    foreach(var atom in val)
-                    {
-                        
-                    }
-                }
                 if(bdle != null)
                 {
                     IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(bdle);
@@ -181,7 +172,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         idx = 1;
                     }
-                    IBinaryDataList toSearchList = compiler.FetchBinaryDataList(executionId, out errors);
                     allErrors.MergeErrors(errors);
                     int iterationIndex = 0;
                     foreach(string s in toSearch)
@@ -263,8 +253,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(hasErrors)
                 {
                     DisplayAndWriteError("DsfFindRecordsActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
-                    compiler.Upsert(executionId, Result, (string)null, out errors);
+                    dataObject.Environment.AddError(allErrors.MakeDataListReady());
+                    dataObject.Environment.Assign(Result,null);
+                    
                 }
 
                 if(dataObject.IsDebugMode())

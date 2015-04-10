@@ -372,7 +372,7 @@ namespace Dev2.Runtime.ESB.Control
                         executionContainer.Execute(out invokeErrors);
                         var env = UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObject, outputDefs);
                         errors.MergeErrors(invokeErrors);
-                        string errorString = compiler.FetchErrors(dataObject.DataListID, true);
+                        string errorString = dataObject.Environment.FetchErrors();
                         invokeErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
                         errors.MergeErrors(invokeErrors);                        
                         return env;

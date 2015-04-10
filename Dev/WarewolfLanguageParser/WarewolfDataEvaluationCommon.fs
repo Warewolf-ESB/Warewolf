@@ -585,7 +585,7 @@ let DeleteIndex  (exp:string) (index:int)   (env:WarewolfEnvironment) =
                      let newData =  Map.map (fun (a:string) (b:WarewolfAtomList<WarewolfAtom>) -> b.DeletePosition( posAsInt ) ) values.Data                  
                      {  values  with Optimisations = (if values.Optimisations = Ordinal then Sorted else values.Optimisations) ;
                                               Data = newData  ;                        
-                                              LastIndex= if index = values.LastIndex then AtomToInt (Seq.max  newData.[PositionColumn]) else values.LastIndex ; 
+                                              LastIndex= if index = values.LastIndex && newData.[PositionColumn].Count>0 then AtomToInt (Seq.max  newData.[PositionColumn]) else values.LastIndex ; 
                      } 
     | None->failwith "recordset does not exist"
 let GetLastIndexFromRecordSet (exp:string)  (env:WarewolfEnvironment)  =

@@ -7,10 +7,7 @@ using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Dev2.Validation;
@@ -53,7 +50,6 @@ namespace Dev2.Activities
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
@@ -66,16 +62,14 @@ namespace Dev2.Activities
                 IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
 
                 var colItr = new WarewolfListIterator();
-                IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
                 var iteratorPropertyDictionary = new Dictionary<string, IWarewolfIterator>();
                 foreach (var propertyInfo in GetType().GetProperties().Where(info => info.IsDefined(typeof(Inputs))))
                 {
                     var attributes = (Inputs[]) propertyInfo.GetCustomAttributes(typeof(Inputs), false);
                     var variableValue = propertyInfo.GetValue(this) as string;
-                    var binaryDataListEntry = compiler.Evaluate(executionId, enActionType.User, variableValue, false, out errors);
                     if (dataObject.IsDebugMode())
                     {
-                        AddDebugInputItem(new DebugItemVariableParams(variableValue, attributes[0].UserVisibleName, binaryDataListEntry, executionId));
+                        AddDebugInputItem(new DebugEvalResult(variableValue, attributes[0].UserVisibleName, dataObject.Environment));
                     }
                     var dtItr = CreateDataListEvaluateIterator(variableValue,dataObject.Environment);
                     colItr.AddVariableToIterateOn(dtItr);
@@ -96,7 +90,6 @@ namespace Dev2.Activities
   
 
                 allErrors.MergeErrors(errors);
-                compiler.Upsert(executionId, toUpsert, out errors);
 
                 if (dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
@@ -120,15 +113,12 @@ namespace Dev2.Activities
                 if (hasErrors)
                 {
                     DisplayAndWriteError(DisplayName, allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
-                    compiler.Upsert(executionId, Result, (string)null, out errors);
+                    var errorList = allErrors.MakeDataListReady();
+                    dataObject.Environment.AddError(errorList);
+                    dataObject.Environment.Assign(Result,null);
                 }
                 if (dataObject.IsDebugMode())
                 {
-                    if (hasErrors)
-                    {
-                       // AddDebugOutputItem(Result, executionId);
-                    }
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }

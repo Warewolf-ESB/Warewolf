@@ -270,13 +270,13 @@ Scenario: Workflow with Assign and 2 Delete tools executing against the server
 	  | # |                   |
 	  | 1 | [[rec(1).a]] = 50 |
 	  And the 'Delet1' in WorkFlow 'WorkflowWithAssignand2Deletetools' debug inputs as
-	  | Records          |
+	  | Recordset          |
 	  | [[rec(1).a]] = 50 |
 	  And the 'Delet1' in Workflow 'WorkflowWithAssignand2Deletetools' debug outputs as  
 	  |                       |
 	  | [[result1]] = Success |
 	  And the 'Delet2' in WorkFlow 'WorkflowWithAssignand2Deletetools' debug inputs as
-	   | Records        |	  
+	   | Recordset        |	  
 	  And the 'Delet2' in Workflow 'WorkflowWithAssignand2Deletetools' debug outputs as  
 	  |                       |
 	  | [[result2]] = Failure |
@@ -311,7 +311,7 @@ Scenario: Workflow with 3 Assigns tools executing against the server
 	  | 2 | [[rec(1).a]] = Warewolf |
 	   And the 'Assigntool3' in WorkFlow 'WorkflowWith3Assigntools' debug inputs as
 	  | # | Variable  | New Value               |
-	  | 1 | [[new]] = | [[[[test]]]] = Warewolf |
+	  | 1 | [[new]] = | [[rec(1).a]] = Warewolf |
 	  And the 'Assigntool3' in Workflow 'WorkflowWith3Assigntools' debug outputs as  
 	  | # |                    |
 	  | 1 | [[new]] = Warewolf |
@@ -627,7 +627,7 @@ Scenario: Workflow with 2 Assign tools executing against the server
 	  | 3 | [[test]] = warewolf |
 	  And the 'tool2' in WorkFlow 'WorkflowWith2Assigntools' debug inputs as
 	  | # | Variable         | New Value                |
-	  | 1 | [[[[a]]]] = test | [[[[[[a]]]]]] = warewolf |
+	  | 1 | [[[[a]]]] = test | [[test]] = warewolf |
 	  And the 'tool2' in Workflow 'WorkflowWith2Assigntools' debug outputs as  
 	  | # |                   |
 	  | 1 | [[b]] = warewolf |
@@ -653,7 +653,7 @@ Scenario: Workflow with 2 Assign tools by using recordsets in fields executing a
 	  | 2 | [[rec(2).a]] = test     |
 	  And the 'rec2' in WorkFlow 'WorkflowWith2Assigntoolswithrecordsets' debug inputs as
 	  | # | Variable                | New Value |
-	  | 1 | [[[[rec(1).a]]]] = test | warewolf  |
+	  | 1 | [[rec(2).a]] = test | warewolf  |
 	  And the 'rec2' in Workflow 'WorkflowWith2Assigntoolswithrecordsets' debug outputs as  
 	  | # |                          |
 	  | 1 | [[rec(2).a]] =  warewolf |
@@ -679,7 +679,7 @@ Scenario: Workflow with 2 Assign tools by using Scalars as variables executing a
 	  | 2 | [[b]] = test |
 	  And the 'scl2' in WorkFlow 'WorkflowWith2Assigntoolswithrscalars' debug inputs as
 	  | # | Variable         | New Value |
-	  | 1 | [[[[a]]]] = test | warewolf  |
+	  | 1 | [[b]] = test | warewolf  |
 	  And the 'scl2' in Workflow 'WorkflowWith2Assigntoolswithrscalars' debug outputs as  
 	  | # |                   |
 	  | 1 | [[b]] =  warewolf |
@@ -700,7 +700,7 @@ Scenario: Workflow with Assign and Gather System Information
 	  | 1 | [[b]] =  | 1         |
 	  And the 'Assign for sys' in Workflow 'workflowithAssignandGatherSystemInformation' debug outputs as    
 	  | # |          |
-	  | 1 | [b]] = 1 |
+	  | 1 | [[b]] = 1 |
 	  And the 'System info' in WorkFlow 'workflowithAssignandGatherSystemInformation' debug inputs as
 	  | # |                 |             |
 	  | 1 | [[test[[b]]]] = | Date & Time |
@@ -980,8 +980,8 @@ Scenario: Simple workflow with Assign and Data Merge (Evaluating variables insid
 	  | 4 | [[rec(1).a]] = test    |
 	 And the 'Datamerge' in WorkFlow 'WorkflowWithAssignandData' debug inputs as
 	  | # |                        | With  | Using | Pad | Align |
-	  | 1 | [[b]] = warewolf   | Index | "8"   | ""  | Left  |
-	  | 2 | [[rec(1).a]] = test | Index | "4"   | ""  | Left  |
+	  | 1 | [[[[a]]]] = warewolf   | Index | "8"   | ""  | Left  |
+	  | 2 | [[[[rs(1).a]]]] = test | Index | "4"   | ""  | Left  |
 	  And the 'Datamerge' in Workflow 'WorkflowWithAssignandData' debug outputs as  
 	  | # |                           |
 	  | 1 | [[result]] = warewolftest |
@@ -1979,11 +1979,7 @@ Scenario: Workflow Assign and Find Record index
 	  | 1 | [[rec(1).a]] = | Warewolf  | 
 	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindexTool' debug outputs as   
 	  | # |                                  |
-	  | 1 | [[rec(1).a]]         =  Warewolf |
-	  And the 'FindRecord0' in WorkFlow 'WFWithAssignandFindRecordindexTool' debug inputs as 
-	  | #           |                         | # |   |          |  | And | Require All Fields To Match | Require All Matches To Be True |
-	  | In Field(s) | [[rec(1).a]] = Warewolf | 1 | = | Warewolf |  |     | YES                         | NO                             |
-		 
+	  | 1 | [[rec(1).a]]         =  Warewolf |	 	 
 
 
 Scenario Outline: Testing Count with two variables in Result field
@@ -2013,31 +2009,6 @@ Examples:
        | No    | Variable       |
        | 1     | [[Count]][[a]] |
 	   | 2     | [[count]]*]]   |
-
-Scenario: Testing Count with two variables in Result field
-      Given I have a workflow "WorkflowforCount"
-      And "WorkflowforCount" contains an Assign "Rec To Convert" as
-	  | variable    | value |
-	  | [[rec().a]] | 1213  |
-	  | [[rec().a]] | 4561  |
-	  And "WorkflowforCount" contains Count Record "CountRec" on "[[rec()]]" into "[[count]][[a]]"
-	  When "WorkflowforCount" is executed
-	  Then the workflow execution has "AN" error	
-      And the 'Rec To Convert' in WorkFlow 'WorkflowforCount' debug inputs as
-	  | # | Variable      | New Value |
-	  | 1 | [[rec().a]] = | 1213      |
-	  | 2 | [[rec().a]] = | 4561      |
-	  And the 'Rec To Convert' in Workflow 'WorkflowforCount' debug outputs as    
-	  | # |                     |
-	  | 1 | [[rec(1).a]] = 1213 |
-	  | 2 | [[rec(2).a]] = 4561 |
-	  And the 'CountRec' in WorkFlow 'WorkflowforCount' debug inputs as
-	  | Recordset            |
-	  | [[rec(1).a]] = 1213 |
-	  | [[rec(2).a]] = 4561 |
-	  And the 'CountRec' in Workflow 'WorkflowforCount' debug outputs as    
-	  |               |
-
 
 Scenario Outline: Testing Length with two variables in Result field
       Given I have a workflow "WorkflowforLength"
@@ -2079,31 +2050,6 @@ Examples:
       | 12 | [[rec"()".a]]          |
       | 13 | [[rec([[[[b]]]]).a]]   |
 
-
- Scenario: Testing Length with two variables in Result field
-      Given I have a workflow "WorkflowforLength"
-      And "WorkflowforLength" contains an Assign "Rec To Convert" as
-	  | variable    | value |
-	  | [[rec().a]] | 1213  |
-	  | [[rec().a]] | 4561  |
-	  And "WorkflowforLength" contains Length "Len" on "[[rec(*)]]" into "[[length]][[a]]"
-	  When "WorkflowforLength" is executed
-	  Then the workflow execution has "AN" error	
-     And the 'Rec To Convert' in WorkFlow 'WorkflowforLength' debug inputs as
-	  | # | Variable      | New Value |
-	  | 1 | [[rec().a]] = | 1213      |
-	  | 2 | [[rec().a]] = | 4561      |
-	  And the 'Rec To Convert' in Workflow 'WorkflowforLength' debug outputs as    
-	  | # |                     |
-	  | 1 | [[rec(1).a]] = 1213 |
-	  | 2 | [[rec(2).a]] = 4561 |
-	  And the 'Len' in WorkFlow 'WorkflowforLength' debug inputs as
-	  | Recordset           |
-	  | [[rec(1).a]] = 1213 |
-	  | [[rec(2).a]] = 4561 |
-	  And the 'Len' in Workflow 'WorkflowforLength' debug outputs as    
-	  |                |
-	  |                |
 
 Scenario Outline: Testing Find Index with two variables in Result field
       Given I have a workflow "WorkflowforFI"
@@ -2322,19 +2268,6 @@ Scenario Outline: Testing Format Numbers with two variables in Result
 Examples: 
        | No | Variable               |
        | 1  | [[a]][[Result]]        |
-       | 2  | [[a]]*]]               |
-       | 3  | [[var@]]               |
-       | 4  | [[var]]00]]            |
-       | 5  | [[(1var)]]             |
-       | 6  | [[var[[a]]]]           |
-       | 7  | [[var.a]]              |
-       | 8  | [[@var]]               |
-       | 9  | [[var 1]]              |
-       | 10 | [[rec(1).[[rec().1]]]] |
-       | 11 | [[rec(@).a]]           |
-       | 12 | [[rec"()".a]]          |
-       | 13 | [[rec([[[[b]]]]).a]]   |
-
 
 Scenario Outline: Testing Random Numbers with two variables in Result
       Given I have a workflow "Workflowforrandom123"
@@ -2359,26 +2292,12 @@ Scenario Outline: Testing Random Numbers with two variables in Result
 	    | Random  | From | To |
 	    | Numbers | 1    | 10  |
       And the 'Randoms' in Workflow 'Workflowforrandom123' debug outputs as
-	  |              |
-	  | '<Variable>' |
+	  |                |
+	  | '<Variable>' = |
 Examples: 
       | No | Variable               |
-      | 1  | [[a]][[Result]]        |
-      | 2  | [[a]]*]]               |
-      | 3  | [[var@]]               |
-      | 4  | [[var]]00]]            |
-      | 5  | [[(1var)]]             |
-      | 6  | [[var[[a]]]]           |
-      | 7  | [[var.a]]              |
-      | 8  | [[@var]]               |
-      | 9  | [[var 1]]              |
-      | 10 | [[rec(1).[[rec().1]]]] |
-      | 11 | [[rec(@).a]]           |
-      | 12 | [[rec"()".a]]          |
-      | 13 | [[rec([[[[b]]]]).a]]   |
+      | 1  | [[a]][[Result]]        |      
 	  							
-
-	 
 Scenario Outline: Testing Date and Time with two variables in Result field
       Given I have a workflow "WorkflowforDT"
       And "WorkflowforDT" contains an Assign "Convert2" as
@@ -2399,23 +2318,11 @@ Scenario Outline: Testing Date and Time with two variables in Result field
 	   | Input                     | Input Format | Add Time |   | Output Format |
 	   | [[rec(1).a]] = 12/01/2001 | dd/mm/yyyy   | Years    | 1 | dd/mm/yyyy    |	
 	  And the 'AddDates' in Workflow 'WorkflowforDT' debug outputs as   
-	   |              |
-	   | '<Variable>' |
+	   |                |
+	   | '<Variable>' = |
 Examples: 
       | No | Variable               |
-      | 1  | [[a]][[Result]]        |
-      | 2  | [[a]]*]]               |
-      | 3  | [[var@]]               |
-      | 4  | [[var]]00]]            |
-      | 5  | [[(1var)]]             |
-      | 6  | [[var[[a]]]]           |
-      | 7  | [[var.a]]              |
-      | 8  | [[@var]]               |
-      | 9  | [[var 1]]              |
-      | 10 | [[rec(1).[[rec().1]]]] |
-      | 11 | [[rec(@).a]]           |
-      | 12 | [[rec"()".a]]          |
-      | 13 | [[rec([[[[b]]]]).a]]   |
+      | 1  | [[a]][[Result]]        |      
 
 
 #Scenario: Workflow with Assign and Unique Tool, finding unique data from multiple rows 
@@ -3117,59 +3024,6 @@ Scenario: Executing workflow of different versions
 	  | # |                     |
 	  | 1 | [[rec(1).a]] = New  |
 	  | 2 | [[rec(2).a]] = Test |
-	  And the 'VarsAssign' in Workflow 'WorkflowWithVersionAssignExecuted2' debug outputs does not exist|
-
-
-
-Scenario Outline: Workflow with 2 Assigns testing variable that hasn't been assigned
-      Given I have a workflow "WFTOTestBlanvValues"
-	  And "WFTOTestBlanvValues" contains an Assign "Record1" as
-      | variable  | value    |
-      | [[Value]] | Warewolf | 
-	  And "WFTOTestBlanvValues" contains an Assign "Record2" as
-      | variable    | value   |
-      | [[rec().a]] | '<Val>' |
-	  When "WFTOTestBlanvValues" is executed
-	  Then the workflow execution has "AN" error
-	  And the 'Record1' in WorkFlow 'WFTOTestBlanvValues' debug inputs as 
-	  | # | Variable    | New Value |
-	  | 1 | [[Value]] = | Warewolf  | 
-	  And the 'Record1' in Workflow 'WFTOTestBlanvValues' debug outputs as   
-	  | # |                          |
-	  | 1 | [[Value]]    =  Warewolf |
-	  And the 'Record2' in WorkFlow 'WFTOTestBlanvValues' debug inputs as 
-	  | # | Variable      | New Value |
-	  | 1 | [[rec().a]] = | <Val> =   |
-	  And the 'Record2' in Workflow 'WFTOTestBlanvValues' debug outputs as   
-	  | # |                |
-	  | 1 | [[rec(1).a]] = |
-Examples: 
-     | No | Val            |
-     | 1  | [[Value1]]Tezt |
-     | 2  | [[Value1]]     |
-
-Scenario: Workflow with 2 Assigns testing variable that hasn't been assigned23
-      Given I have a workflow "WFTOTestBlanvValues2"
-	  And "WFTOTestBlanvValues2" contains an Assign "Record1" as
-      | variable  | value    |
-      | [[Value]] | Warewolf | 
-	  And "WFTOTestBlanvValues2" contains an Assign "Record2" as
-      | variable    | value          |
-      | [[rec().a]] | [[Value1]]Tezt |
-	  When "WFTOTestBlanvValues2" is executed
-	  Then the workflow execution has "AN" error
-	  And the 'Record1' in WorkFlow 'WFTOTestBlanvValues2' debug inputs as 
-	  | # | Variable    | New Value |
-	  | 1 | [[Value]] = | Warewolf  | 
-	  And the 'Record1' in Workflow 'WFTOTestBlanvValues2' debug outputs as   
-	  | # |                          |
-	  | 1 | [[Value]]    =  Warewolf |
-	  And the 'Record2' in WorkFlow 'WFTOTestBlanvValues2' debug inputs as 
-	  | # | Variable      | New Value             |
-	  | 1 | [[rec().a]] = | [[Value1]]Tezt = Tezt |
-	  And the 'Record2' in Workflow 'WFTOTestBlanvValues2' debug outputs as   
-	  | # |                     |
-	  | 1 | [[rec(1).a]] = Tezt |
 
 Scenario: Workflow with Assign Base Convert and Case Convert testing variable that hasn't been assigned
 	  Given I have a workflow "WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues"
@@ -4235,7 +4089,7 @@ Scenario: Executing File and Folder - Move example workflow
 	  Then the workflow execution has "NO" error
 	  And the 'Move' in WorkFlow 'File and Folder - Move' debug inputs as
 	  | Source Path         | Username | Password | Destination Path            | Destination Username | Destination Password | Overwrite |
-	  | \\MyServer\LogFiles | ""       | ""       | ftp://Archive/ForProcessing | ""                   | ""                   | False     |
+	  | \\\MyServer\LogFiles | ""       | ""       | ftp://Archive/ForProcessing | ""                   | ""                   | False     |
 	  And the 'Move' in Workflow 'File and Folder - Move' debug outputs as    
 	  |                        |
 	  | [[Complete]] = Success |
@@ -4419,8 +4273,8 @@ Scenario: Gather System tool throws error when debug with 2 variables in one row
 	  | # |              |             |
 	  | 1 | [[a]][[b]] = | Date & Time |
 	 And the 'System info' in Workflow 'WorkflowW' debug outputs as    
-	  | # |  |
-	  |   |  |
+	  | # |              |
+	  | 1 | [[a]][[b]] = |
 	   
 
 	   
@@ -4443,10 +4297,10 @@ Scenario: Gather System tool throws error when debug with invalid variableb
 	  | 1 | [[a]] = b       |
 	  And the 'System info' in WorkFlow 'WorkflowW1' debug inputs as
 	  | # |                      |             |
-	  | 1 | [[a]][[rec().a]]]] = | Date & Time |
+	  | 1 | [[a]][[rec().a]] = | Date & Time |
 	 And the 'System info' in Workflow 'WorkflowW1' debug outputs as    
-	  | # |  |
-	  |   |  |
+	  | # |                      |
+	  | 1 | [[a]][[rec().a]] = |
 	   
 Scenario: Workflow Base Convert and Case Convert passing invalid variable through execution
 	  Given I have a workflow "WorkflowWithBaseCase1"
@@ -4531,11 +4385,7 @@ Scenario: Workflow Assign and Find Record Index executing with incorrect format 
 	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as   
 	  | # |                                  |
 	  | 1 | [[rec(1).a]]         =  Warewolf |
-	  And the 'FindRecord0' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
-	  | #           |                       | # |   |          |  | And | Require All Fields To Match | Require All Matches To Be True |
-	  | In Field(s) | [[rec().a]][[xr().a]] | 1 | = | Warewolf |  |     | YES                         | NO                             |
-	  And the 'FindRecord0' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as
-	  |         |
+	  
 	
 Scenario: Executing Workflow Service and Decision tool expected bubling out error in workflow service
 	  Given I have a workflow "Utility - Assign WF"

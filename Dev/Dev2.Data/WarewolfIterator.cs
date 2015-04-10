@@ -9,8 +9,8 @@ namespace Dev2.Data
 {
     public class WarewolfIterator : IWarewolfIterator
     {
-        readonly WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult _listResult;
-        readonly WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult _scalarResult;
+        WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult _listResult;
+        WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult _scalarResult;
         readonly int _maxValue;
         int _currentValue;
         /// <summary>
@@ -18,7 +18,53 @@ namespace Dev2.Data
         /// </summary>
         public WarewolfIterator(WarewolfDataEvaluationCommon.WarewolfEvalResult warewolfEvalResult)
         {
-            if (warewolfEvalResult.IsWarewolfAtomListresult)
+            SetupListResult(warewolfEvalResult);
+            SetupScalarResult(warewolfEvalResult);
+            SetupForWarewolfRecordSetResult(warewolfEvalResult);
+            _maxValue = _listResult != null ? _listResult.Item.Count(atom => atom!=null && !atom.IsNothing) : 1;
+            _currentValue = 0;
+        }
+
+        void SetupForWarewolfRecordSetResult(WarewolfDataEvaluationCommon.WarewolfEvalResult warewolfEvalResult)
+        {
+            if(warewolfEvalResult.IsWarewolfRecordSetResult)
+            {
+                var listResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult;
+                if(listResult != null)
+                {
+                    var stringValue = "";
+                    foreach(var item in listResult.Item.Data)
+                    {
+                        if(item.Key != WarewolfDataEvaluationCommon.PositionColumn)
+                        {
+                            var data = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomListresult(item.Value) as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                            var warewolfEvalResultToString = ExecutionEnvironment.WarewolfEvalResultToString(data);
+                            if(string.IsNullOrEmpty(stringValue))
+                            {
+                                stringValue = warewolfEvalResultToString;
+                            }
+                            else
+                            {
+                                stringValue += "," + warewolfEvalResultToString;
+                            }
+                        }
+                    }
+                    _scalarResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.NewDataString(stringValue)) as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                }
+            }
+        }
+
+        void SetupScalarResult(WarewolfDataEvaluationCommon.WarewolfEvalResult warewolfEvalResult)
+        {
+            if(warewolfEvalResult.IsWarewolfAtomResult)
+            {
+                _scalarResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+            }
+        }
+
+        void SetupListResult(WarewolfDataEvaluationCommon.WarewolfEvalResult warewolfEvalResult)
+        {
+            if(warewolfEvalResult.IsWarewolfAtomListresult)
             {
                 var warewolfAtomListresult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
                 if(warewolfAtomListresult != null)
@@ -27,37 +73,7 @@ namespace Dev2.Data
                     _listResult = warewolfAtomListresult;
                 }
             }
-            else if (warewolfEvalResult.IsWarewolfAtomResult)
-            {
-                _scalarResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;               
-            }
-            else if (warewolfEvalResult.IsWarewolfRecordSetResult)
-            {
-                var listResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult;
-                if (listResult != null)
-                {
-                    var stringValue = "";
-                    foreach(var item in listResult.Item.Data)
-                    {
-                        if (item.Key != WarewolfDataEvaluationCommon.PositionColumn)
-                        {
-                            var data = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomListresult(item.Value) as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
-                            var warewolfEvalResultToString = ExecutionEnvironment.WarewolfEvalResultToString(data);
-                            if(string.IsNullOrEmpty(stringValue))
-                            {
-                                stringValue = warewolfEvalResultToString;
-                            }else
-                            {
-                                stringValue += ","+warewolfEvalResultToString;
-                            }
-                        }
-                    }
-                    _scalarResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.NewDataString(stringValue)) as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
-                }
-            }
-            _maxValue = _listResult != null ? _listResult.Item.Count(atom => atom!=null && !atom.IsNothing) : 1;
-            _currentValue = 0;
-        }        
+        }
 
         #region Implementation of IWarewolfIterator
 

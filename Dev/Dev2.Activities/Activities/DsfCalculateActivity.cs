@@ -16,6 +16,7 @@ using System.Linq;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data;
 using Dev2.DataList.Contract;
@@ -87,7 +88,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 string input = string.IsNullOrEmpty(Expression) ? Expression : Expression.Replace("\\r", string.Empty).Replace("\\n", string.Empty).Replace(Environment.NewLine, "");
                 var warewolfListIterator = new WarewolfListIterator();
                 var calc = String.Format(GlobalConstants.CalculateTextConvertFormat,input);
-                var inputIterator = new WarewolfIterator(dataObject.Environment.Eval(calc));
+                var warewolfEvalResult = dataObject.Environment.Eval(calc);
+                var scalarResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                if (scalarResult != null && scalarResult.Item.IsNothing)
+                {
+                    throw new NullValueInVariableException("Error with variables in input.",input);
+                }
+                var inputIterator = new WarewolfIterator(warewolfEvalResult);
                 warewolfListIterator.AddVariableToIterateOn(inputIterator);
                 while(warewolfListIterator.HasMoreData())
                 {

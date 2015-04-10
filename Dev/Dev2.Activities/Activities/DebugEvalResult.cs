@@ -63,7 +63,11 @@ namespace Dev2.Activities
                 }
                 else
                 {
-                    _inputVariable = environment.EvalToExpression(_inputVariable);
+                    var evalToExpression = environment.EvalToExpression(_inputVariable);
+                    if (DataListUtil.IsEvaluated(evalToExpression))
+                    {
+                        _inputVariable = evalToExpression;
+                    }
                     _evalResult = environment.Eval(_inputVariable);
                 }
                 if (_inputVariable.Contains(".WarewolfPositionColumn")) _positionInput = _inputVariable.Replace(".WarewolfPositionColumn", ""); 

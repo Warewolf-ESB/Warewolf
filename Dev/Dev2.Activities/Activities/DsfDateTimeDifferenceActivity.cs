@@ -22,10 +22,8 @@ using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Converters.DateAndTime;
 using Dev2.Data;
-using Dev2.Data.Factories;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Dev2.Validation;
@@ -117,10 +115,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
 
-                IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-
-                toUpsert.IsDebug = dataObject.IsDebugMode();
-               
 
                 if(dataObject.IsDebugMode())
                 {

@@ -368,7 +368,7 @@ namespace ActivityUnitTests.ActivityTests
             //------------Execute Test---------------------------
             IDSFDataObject result = ExecuteProcess();
 
-            var res = Compiler.FetchErrors(result.DataListID);
+            var res = DataObject.Environment.FetchErrors();
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
             //------------Assert Results-------------------------

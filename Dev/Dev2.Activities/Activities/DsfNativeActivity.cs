@@ -165,11 +165,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if(compiler != null)
             {
-                string errorString = compiler.FetchErrors(dataObject.DataListID, true);
+                string errorString = dataObject.Environment.FetchErrors();
                 _tmpErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
                 if(!(this is DsfFlowDecisionActivity))
                 {
-                    compiler.ClearErrors(dataObject.DataListID);
                 }
 
                 DataListExecutionID.Set(context, dataObject.DataListID);
@@ -203,7 +202,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 errorResultTO.AddError(errorString);
                 if(compiler != null)
                 {
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, errorResultTO.MakeDataListReady(), out errorsTo);
+                    dataObject.Environment.AddError(errorResultTO.MakeDataListReady());
                 }
             }
             finally
@@ -362,7 +361,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if(allErrors.HasErrors())
                     {
                         DisplayAndWriteError(rootInfo.ProxyName, allErrors);
-                        compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorsTo);
+                        dataObject.Environment.AddError(allErrors.MakeDataListReady());
                     }
                 }
             }

@@ -21,9 +21,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Converters.DateAndTime;
-using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Dev2.Validation;
@@ -122,20 +120,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
                 IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
-                IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-                toUpsert.IsDebug = (dataObject.IsDebugMode());
-                toUpsert.ResourceID = dataObject.ResourceID;
-                var colItr = new WarewolfListIterator();
-
-                var dtItr = CreateDataListEvaluateIterator(string.IsNullOrEmpty(DateTime) ? GlobalConstants.CalcExpressionNow : DateTime, dataObject.Environment);
-                colItr.AddVariableToIterateOn(dtItr);
-                var ifItr = CreateDataListEvaluateIterator(InputFormat, dataObject.Environment);
-                colItr.AddVariableToIterateOn(ifItr);
-                var ofItr = CreateDataListEvaluateIterator(OutputFormat, dataObject.Environment);
-                colItr.AddVariableToIterateOn(ofItr);
-                var tmaItr = CreateDataListEvaluateIterator(TimeModifierAmountDisplay, dataObject.Environment);
-                colItr.AddVariableToIterateOn(tmaItr);
-
+                
                 if(dataObject.IsDebugMode())
                 {
                     if(string.IsNullOrEmpty(DateTime))
@@ -182,6 +167,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }
 
+                var colItr = new WarewolfListIterator();
+
+                var dtItr = CreateDataListEvaluateIterator(string.IsNullOrEmpty(DateTime) ? GlobalConstants.CalcExpressionNow : DateTime, dataObject.Environment);
+                colItr.AddVariableToIterateOn(dtItr);
+                var ifItr = CreateDataListEvaluateIterator(InputFormat, dataObject.Environment);
+                colItr.AddVariableToIterateOn(ifItr);
+                var ofItr = CreateDataListEvaluateIterator(OutputFormat, dataObject.Environment);
+                colItr.AddVariableToIterateOn(ofItr);
+                var tmaItr = CreateDataListEvaluateIterator(TimeModifierAmountDisplay, dataObject.Environment);
+                colItr.AddVariableToIterateOn(tmaItr);
+
                 if(!allErrors.HasErrors())
                 {
                     while(colItr.HasMoreData())
@@ -193,7 +189,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                                                                 colItr.FetchNextValue(tmaItr)
                                                                                 );
 
-                        //Create a DateTimeFomatter using the DateTimeConverterFactory.DONE
                         IDateTimeFormatter format = DateTimeConverterFactory.CreateFormatter();
                         string result;
                         string error;
@@ -228,7 +223,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfDateTimeActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
-                    dataObject.Environment.Assign(Result, null);
                 }
                 if(dataObject.IsDebugMode())
                 {
