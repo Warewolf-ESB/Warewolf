@@ -336,9 +336,6 @@ namespace Dev2.Runtime.ESB.Control
             var invoker = CreateEsbServicesInvoker(theWorkspace);
             ErrorResultTO invokeErrors;
             var oldID = dataObject.DataListID;
-            var compiler = DataListFactory.CreateDataListCompiler();
-
-            //var remainingMappings = ShapeForSubRequest(dataObject, inputDefs, outputDefs, out errors);
             errors = new ErrorResultTO();
            
             // local non-scoped execution ;)
