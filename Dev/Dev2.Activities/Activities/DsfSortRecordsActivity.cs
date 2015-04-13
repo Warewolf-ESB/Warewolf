@@ -73,20 +73,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             try
             {
-
-               
-
                 bool descOrder = String.IsNullOrEmpty(SelectedSort) || SelectedSort.Equals("Backwards");
                 if (dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(SortField, "Sort Field", dataObject.Environment);
                 }
-                // Travis.Frisinger : New Stuff....
                 if (!string.IsNullOrEmpty(SortField))
                 {
                     dataObject.Environment.SortRecordSet(SortField, descOrder);
-
-                    DebugOutputs(dataObject);
                 }
                 else
                 {
@@ -96,23 +90,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             finally
             {
 
-                if(allErrors.HasErrors())
+                if (allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfSortRecordsActivity", allErrors);
-                    foreach(var error in allErrors.FetchErrors())
+                    foreach (var error in allErrors.FetchErrors())
                     {
                         dataObject.Environment.AddError(error);
                     }
-                 
                 }
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
+                    DebugOutputs(dataObject);
+
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
             }
-
-            // End Travis.Frisinger New Stuff
         }
 
         void DebugOutputs(IDSFDataObject dataObject)
@@ -124,6 +117,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     var lst = data as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
                     AddDebugOutputItem(new DebugItemWarewolfAtomListResult(lst, "", "", SortField, "", "", "="));
+                }
+                else if (data.IsWarewolfAtomResult)
+                {
+                    var atomData = data as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                    if (atomData != null && atomData.Item.IsNothing)
+                    {
+                        AddDebugOutputItem(new DebugItemStaticDataParams("", SortField, "", "="));
+                    }
                 }
             }
         }
@@ -138,6 +139,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var lst = data as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
                 AddDebugInputItem(new DebugItemWarewolfAtomListResult(lst,"","",expression, labelText,"","="));
                 AddDebugInputItem(new DebugItemStaticDataParams(SelectedSort, "Sort Order"));
+            }
+            else if (data.IsWarewolfAtomResult)
+            {
+                var atomData = data as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                if (atomData != null && atomData.Item.IsNothing)
+                {
+                    AddDebugInputItem(new DebugItemStaticDataParams("", expression, labelText, "="));
+                    AddDebugInputItem(new DebugItemStaticDataParams(SelectedSort, "Sort Order"));
+                }
             }
         }
 

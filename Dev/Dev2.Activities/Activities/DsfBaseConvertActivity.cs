@@ -129,10 +129,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         allErrors.AddError(e.Message);
                         if (dataObject.IsDebugMode())
                         {
-                            var debugItem = new DebugItem();
-                            AddDebugItem(new DebugItemStaticDataParams("", outputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
-                            AddDebugItem(new DebugEvalResult(item.FromExpression, "", env), debugItem);
-                            _debugOutputs.Add(debugItem);
+                            //var debugItem = new DebugItem();
+                           // AddDebugItem(new DebugItemStaticDataParams("", outputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
+                           // AddDebugItem(new DebugEvalResult(item.FromExpression, "", env), debugItem);
+                           // _debugOutputs.Add(debugItem);
                             outputIndex++;
                         }
                     }         

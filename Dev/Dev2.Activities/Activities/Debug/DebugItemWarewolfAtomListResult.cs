@@ -4,6 +4,7 @@ using System.Globalization;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics;
 using Dev2.Data.Util;
+using Dev2.DataList.Contract;
 
 namespace Dev2.Activities.Debug
 {
@@ -271,7 +272,14 @@ namespace Dev2.Activities.Debug
                             grpIdx++;
                             groupName = rawExpression;
                             displayExpression = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(_variable), DataListUtil.ExtractFieldNameOnlyFromValue(DataListUtil.AddBracketsToValueIfNotExist(_variable)), grpIdx.ToString()));
-                            displayExpression += _variable.Replace(DataListUtil.ReplaceRecordsetIndexWithStar(displayExpression), "");
+                            if (DataListUtil.GetRecordsetIndexType(_variable) == enRecordsetIndexType.Star)
+                            {
+                                displayExpression += _variable.Replace(DataListUtil.ReplaceRecordsetIndexWithStar(displayExpression), "");
+                            }
+                            else if (DataListUtil.GetRecordsetIndexType(_variable) == enRecordsetIndexType.Blank)
+                            {
+                                displayExpression += _variable.Replace(DataListUtil.ReplaceRecordsetIndexWithBlank(displayExpression), "");
+                            }
                         }
                         else
                         {

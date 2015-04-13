@@ -213,42 +213,6 @@ Scenario: Workflow with Assign Base Convert and Case Convert tools executing aga
 	  | # |                     |
 	  | 1 | [[rec(1).a]] = NTA= |
 
-Scenario: Workflow with Assign Base Convert and Case Convert passing invalid variables through execution
-	  Given I have a workflow "WorkflowWithAssignBaseConvertandCaseconvert"
-	  And "WorkflowWithAssignBaseConvertandCaseconvert" contains an Assign "Assign1" as
-	  | variable       | value    |
-	  | [[rec(1).a]]   | Warewolf |
-	  | [[rec(2).a]]   | test     |
-	  | [[index(1).a]] | a        |
-	  And "WorkflowWithAssignBaseConvertandCaseconvert" contains case convert "Case to Convert" as
-	  | Variable                  | Type  |
-	  | [[rec([[index(1).a]]).a]] | UPPER |
-	  And "WorkflowWithAssignBaseConvertandCaseconvert" contains Base convert "Base to Convert" as
-	  | Variable                  | From | To      |
-	  | [[rec([[index(1).a]]).a]] | Text | Base 64 |
-	  When "WorkflowWithAssignBaseConvertandCaseconvert" is executed
-	  Then the workflow execution has "AN" error
-	  And the 'Assign1' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
-	  | # | Variable         | New Value |
-	  | 1 | [[rec(1).a]] =   | Warewolf  |
-	  | 2 | [[rec(2).a]] =   | test      |
-	  | 3 | [[index(1).a]] = | a         |
-	   And the 'Assign1' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
-	  | # |                          |
-	  | 1 | [[rec(1).a]] =  Warewolf |
-	  | 2 | [[rec(2).a]] =  test     |
-	  | 3 | [[index(1).a]] =  a      |
-	  And the 'Case to Convert' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
-	  | # | Convert                     | To    |
-	  | 1 | [[rec([[index(1).a]]).a]] = | UPPER |
-	  And the 'Case to Convert' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
-	  | # |                     |
-	  And the 'Base to Convert' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
-	  | # | Convert                     | From | To      |
-	  | 1 | [[rec([[index(1).a]]).a]] = | Text | Base 64 |
-      And the 'Base to Convert' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
-	  | # |                     |
-	
 
 Scenario: Workflow with Assign and 2 Delete tools executing against the server
 	  Given I have a workflow "WorkflowWithAssignand2Deletetools"
@@ -597,8 +561,8 @@ Scenario: Workflow with Assign Create and Delete Record tools with incorrect inp
 	   |                    |
 	   | [[res1]] =  |
 	  And the 'Delete' in WorkFlow 'WorkflowWithAssignCreateDeleteRecordNoneExist1' debug inputs as
-	  | Input Path                | Username | Password |
-	  | [[rec(1).a]] = create.txt |   Username =       |    Password =      |
+	  | Input Path                | Username   | Password   |
+	  | [[rec(1).a]] = create.txt | Username = | Password = |
 	  And the 'Delete' in Workflow 'WorkflowWithAssignCreateDeleteRecordNoneExist1' debug outputs as    
 	  |                    |
 	  | [[res1]] =  |
@@ -2889,28 +2853,6 @@ Scenario: Workflow with Calculation using Star notation
 	  And the 'Calculation' in Workflow 'WorkflowWithAssignCalculationUsingStar' debug outputs as  
 	  | # |                   |
 
-Scenario: Workflow with Assign and Gather System Information executing with incorrect variable
-      Given I have a workflow "workfloforGatherSystemInformationtool"
-	  And "workfloforGatherSystemInformationtool" contains an Assign "Assign for sys" as
-	  | variable | value |
-	  | [[a]]    | 123   |
-	   And "workfloforGatherSystemInformationtool" contains Gather System Info "System info" as
-	  | Variable         | Selected    |
-	  | [[rec[[a]]().a]] | Date & Time |
-	  When "workfloforGatherSystemInformationtool" is executed
-	  Then the workflow execution has "AN" error
-	  And the 'Assign for sys' in WorkFlow 'workfloforGatherSystemInformationtool' debug inputs as
-	  | # | Variable | New Value |
-	  | 1 | [[a]]  = | 123       |
-	  And the 'Assign for sys' in Workflow 'workfloforGatherSystemInformationtool' debug outputs as    
-	 | #                  |             |
-	 | 1                  | [[a]] = 123 |
-	  And the 'System info' in WorkFlow 'workfloforGatherSystemInformationtool' debug inputs as
-	  | # |                    |             |
-	  | 1 | [[rec[[a]]().a]] = | Date & Time |
-	  And the 'System info' in Workflow 'workfloforGatherSystemInformationtool' debug outputs as   
-	  |                        |	  
- 
 Scenario: Workflow with Assign Unique to check debug outputs
       Given I have a workflow "workflowithAssignUniquedebugoutputs"
       And "workflowithAssignUniquedebugoutputs" contains an Assign "Recordset" as
@@ -4331,13 +4273,13 @@ Scenario: Workflow Base Convert and Case Convert passing invalid variable throug
 	  | 3 | [[rec(2).a]]  =  Test      |
 	  | 4 | [[index(1).a]] =  a$*      |
 	  And the 'Case1' in WorkFlow 'WorkflowWithBaseCase1' debug inputs as
-	  | # | Convert                   | To    |
-	  | 1 | [[rec([[index(1).a]]).a]] | UPPER |
+	  | # | Convert                     | To    |
+	  | 1 | [[rec(a$*).a]] = | UPPER |
 	  And the 'Case1' in Workflow 'WorkflowWithBaseCase1' debug outputs as  
 	  | # |                     |
 	  And the 'Base1' in WorkFlow 'WorkflowWithBaseCase1' debug inputs as
-	  | # | Convert                   | From | To      |
-	  | 1 | [[rec([[index(1).a]]).a]] | Text | Base 64 |
+	  | # | Convert          | From | To      |
+	  | 1 | [[rec(a$*).a]] = | Text | Base 64 |
       And the 'Base1' in Workflow 'WorkflowWithBaseCase1' debug outputs as  
 	  | # |                     |
 
@@ -4347,9 +4289,9 @@ Scenario: Workflow Base Convert coverting same variable multiple times
 	 | variable | value |
 	 | [[test]] | data  |
 	 And "WorkflowWithBase1" contains Base convert "Base12" as
-	 | Variable | From   | To      |
-	 | [[test]] | Text   | Base 64 |
-	 | [[test]] | Base64 | Text    |
+	 | Variable | From    | To      |
+	 | [[test]] | Text    | Base 64 |
+	 | [[test]] | Base 64 | Text    |
 	 When "WorkflowWithBase1" is executed
 	 Then the workflow execution has "NO" error
 	 And the 'Assign1' in WorkFlow 'WorkflowWithBase1' debug inputs as
@@ -4359,9 +4301,9 @@ Scenario: Workflow Base Convert coverting same variable multiple times
 	 | # |                  |
 	 | 1 | [[test]] =  data |
 	 And the 'Base12' in WorkFlow 'WorkflowWithBase1' debug inputs as
-	 | # | Convert             | From   | To      |
-	 | 1 | [[test]] = data     | Text   | Base 64 |
-	 | 2 | [[test]] = ZGF0YQ== | Base64 | Text    |
+	 | # | Convert             | From    | To      |
+	 | 1 | [[test]] = data     | Text    | Base 64 |
+	 | 2 | [[test]] = ZGF0YQ== | Base 64 | Text    |
     And the 'Base12' in Workflow 'WorkflowWithBase1' debug outputs as  
 	 | # |                     |
 	 | 1 | [[test]] = ZGF0YQ== |
