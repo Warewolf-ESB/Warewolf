@@ -115,6 +115,7 @@ namespace Warewolf.Storage
         public void AssignUnique(IEnumerable<string> distinctList, IEnumerable<string> valueList, IEnumerable<string> resList)
         {
            var output =  Distinct.EvalDistinct(_env, distinctList, valueList,resList);
+           _env = output;
         }
 
         public WarewolfDataEvaluationCommon.WarewolfEvalResult EvalStrict(string exp)
@@ -586,6 +587,11 @@ namespace Warewolf.Storage
                 return String.Format( "[[{0}(*).{1}]]",outputval.Item.Name,val);
             }
             return inputVariable;
+        }
+
+        public static  bool IsValidRecordSetIndex (string exp)
+        {
+            return PublicFunctions.IsValidRecsetExpression(exp);
         }
     }
 }

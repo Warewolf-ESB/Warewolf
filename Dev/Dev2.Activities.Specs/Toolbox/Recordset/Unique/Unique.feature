@@ -41,7 +41,7 @@ Scenario: Find unique records in an empty recordset
 	|             |  | Return Fields |
 	And the debug output as 
 	|  |                    |
-	|  | [[rec(1).unique]] = |
+	| 1 | [[rec(1).unique]] = |
 
 Scenario: Find unique records in a recordset and the in field is blank
 	Given I have the following duplicated recordset
@@ -61,7 +61,7 @@ Scenario: Find unique records in a recordset and the in field is blank
 	| In Field(s) |  | [[rs().row]] = |
 	And the debug output as 
 	|  |                     |
-	|  | [[rec(1).unique]] = |
+	|  | [[rec(*).unique]] = |
 		
 Scenario: Find unique records in a recordset the return field is blank
 	Given I have the following duplicated recordset
@@ -81,7 +81,7 @@ Scenario: Find unique records in a recordset the return field is blank
 	| In Field(s) | [[rs(4).row]] = 3 | ""            |
 	And the debug output as 
 	|  |                     |
-	|  | [[rec(1).unique]] = |
+	|  | [[rec(*).unique]] = |
 	
 Scenario: Find unique records using a negative recordset index for In Field
 	Given I have the following duplicated recordset

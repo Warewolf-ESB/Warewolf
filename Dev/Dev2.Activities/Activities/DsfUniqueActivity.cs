@@ -12,6 +12,7 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common;
@@ -174,22 +175,18 @@ namespace Dev2.Activities
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             var allErrors = new ErrorResultTO();
             InitializeDebug(dataObject);
+            var toresultfields = Result.Split(new[] { ',' });
+            var fromFields = InFields.Split(new[] { ',' });
+            var fromResultFieldresultfields = ResultFields.Split(new[] { ',' });
                  try
             {
 
-
-
-
-                var toresultfields = Result.Split(new[] { ',' });
-                var fromFields = InFields.Split(new[] { ',' });
-                var fromResultFieldresultfields = ResultFields.Split(new[] { ',' });
-
-
-                PreExecution(dataObject, fromFields);
-
+                     PreExecution(dataObject, fromFields);
+                if (String.IsNullOrEmpty(InFields)) throw new Exception("Invalid In fields");
+                if (String.IsNullOrEmpty(ResultFields)) throw new Exception("Invalid from fields");
                 dataObject.Environment.AssignUnique(fromFields, fromResultFieldresultfields, toresultfields);
-
-                PostExecute(dataObject, toresultfields);
+               
+                
                
             }
             catch(Exception e)
@@ -199,6 +196,7 @@ namespace Dev2.Activities
             }
             finally
             {
+                PostExecute(dataObject, toresultfields);
                 // Handle Errors
                 var hasErrors = allErrors.HasErrors();
                 if(hasErrors)
@@ -225,14 +223,19 @@ namespace Dev2.Activities
         {
             if(dataObject.IsDebugMode())
             {
+                int i = 1;
                 foreach(var field in toresultfields)
                 {
-                    // TODO : if EvaluateforDebug
+                    
                     if(!string.IsNullOrEmpty(field))
                     {
                         try
                         {
-                            AddDebugOutputItem(new DebugEvalResult(field, "", dataObject.Environment));
+                            var res = new DebugEvalResult(dataObject.Environment.ToStar(field), "", dataObject.Environment);
+
+                            if (!String.IsNullOrEmpty(InFields)&& !(String.IsNullOrEmpty(ResultFields)))
+                            AddDebugOutputItem(new DebugItemStaticDataParams("","",i.ToString(CultureInfo.InvariantCulture)));
+                            AddDebugOutputItem(res);
                         }
                         catch(Exception)
                         {
@@ -240,6 +243,7 @@ namespace Dev2.Activities
                             throw;
                         }
                     }
+                    i++;
                 }
             }
         }
@@ -256,7 +260,7 @@ namespace Dev2.Activities
                     {
                         try
                         {
-                            AddDebugInputItem(new DebugEvalResult(field, "", dataObject.Environment));
+                            AddDebugInputItem(new DebugEvalResult( field, "", dataObject.Environment));
                         }
                         catch(Exception)
                         {
@@ -264,7 +268,9 @@ namespace Dev2.Activities
                         }
                     }
                 }
+                AddDebugInputItem(new DebugItemStaticDataParams("",ResultFields, "Return Fields"));
             }
+
         }
 
         //static void UpdateStarNotationColumns(DebugItem itemToAdd)
