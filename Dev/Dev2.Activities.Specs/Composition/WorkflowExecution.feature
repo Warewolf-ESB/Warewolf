@@ -1945,35 +1945,6 @@ Scenario: Workflow Assign and Find Record index
 	  | # |                                  |
 	  | 1 | [[rec(1).a]]         =  Warewolf |	 	 
 
-
-Scenario Outline: Testing Count with two variables in Result field
-      Given I have a workflow "WorkflowforCount"
-      And "WorkflowforCount" contains an Assign "Rec To Convert" as
-	  | variable    | value |
-	  | [[rec().a]] | 1213  |
-	  | [[rec().a]] | 4561  |
-	  And "WorkflowforCount" contains Count Record "CountRec" on "[[rec()]]" into '<Variable>'
-	  When "WorkflowforCount" is executed
-	  Then the workflow execution has "AN" error	
-      And the 'Rec To Convert' in WorkFlow 'WorkflowforCount' debug inputs as
-	  | # | Variable      | New Value |
-	  | 1 | [[rec().a]] = | 1213      |
-	  | 2 | [[rec().a]] = | 4561      |
-	  And the 'Rec To Convert' in Workflow 'WorkflowforCount' debug outputs as    
-	  | # |                     |
-	  | 1 | [[rec(1).a]] = 1213 |
-	  | 2 | [[rec(2).a]] = 4561 |
-	  And the 'CountRec' in WorkFlow 'WorkflowforCount' debug inputs as
-	  | Recordset            |
-	  | [[rec(1).a]] = 1213 |
-	  | [[rec(2).a]] = 4561 |
-	  And the 'CountRec' in Workflow 'WorkflowforCount' debug outputs as    
-	  |               |
-Examples: 
-       | No    | Variable       |
-       | 1     | [[Count]][[a]] |
-	   | 2     | [[count]]*]]   |
-
 Scenario Outline: Testing Length with two variables in Result field
       Given I have a workflow "WorkflowforLength"
       And "WorkflowforLength" contains an Assign "Rec To Convert" as
@@ -2014,93 +1985,6 @@ Examples:
       | 12 | [[rec"()".a]]          |
       | 13 | [[rec([[[[b]]]]).a]]   |
 
-
-Scenario Outline: Testing Find Index with two variables in Result field
-      Given I have a workflow "WorkflowforFI"
-      And "WorkflowforFI" contains an Assign "Rec To Convert" as
-	  | variable    | value |
-	  | [[rec().a]] | 141   |
-	  | [[rec().a]] | 4561  |
-	  And "WorkflowforFI" contains Find Index "Index" into '<Variable>' as
-	  | In Fields    | Index         | Character | Direction     |
-	  | [[rec(*).a]] | All Occurence | 1         | Left to Right |	
-	  When "WorkflowforFI" is executed  	  
-	  Then the workflow execution has "AN" error	
-      And the 'Rec To Convert' in WorkFlow 'WorkflowforFI' debug inputs as
-	  | # | Variable      | New Value |
-	  | 1 | [[rec().a]] = | 141       |
-	  | 2 | [[rec().a]] = | 4561      |
-	  And the 'Rec To Convert' in Workflow 'WorkflowforFI' debug outputs as    
-	  | # |                     |
-	  | 1 | [[rec(1).a]] = 141  |
-	  | 2 | [[rec(2).a]] = 4561 |
-	  And the 'Index' in WorkFlow 'WorkflowforFI' debug inputs as
-	  | In Field            | Index         | Characters | Direction     |
-	  | [[rec(1).a]] = 141  |               |            |               |
-	  | [[rec(2).a]] = 4561 | All Occurence | 1          | Left to Right |
-	  And the 'Index' in Workflow 'WorkflowforFI' debug outputs as
-	  |                   |
-Examples: 
-      | No    | Variable       |
-      | 1     | [[a]][[indexResult]] |
-##12180 
-# #     | 2  | [[a]]*]]               |
-# #     | 3  | [[var@]]               |
-# #     | 4  | [[var]]00]]            |
-# #     | 5  | [[(1var)]]             |
-# #     | 6  | [[var[[a]]]]           |
-# #     | 7  | [[var.a]]              |
-# #     | 8  | [[@var]]               |
-# #     | 9  | [[var 1]]              |
-# #     | 10 | [[rec(1).[[rec().1]]]] |
-# #     | 11 | [[rec(@).a]]           |
-# #     | 12 | [[rec"()".a]]          |
-# #     | 13 | [[rec([[[[b]]]]).a]]   |
-##
-
-Scenario Outline: Testing Data Merge with two variables in Result field
-      Given I have a workflow "WorkflowforDataMerge"
-      And "WorkflowforDataMerge" contains an Assign "Rec To Convert" as
-	  | variable    | value    |
-	  | [[rec().a]] | Test     |
-	  | [[rec().a]] | Warewolf |
-	  And "WorkflowforDataMerge" contains Data Merge "Data Merge" into '<Variable>' as	
-	  | Variable     | Type | Using | Padding | Alignment |
-	  | [[rec(1).a]] | None |       |         | Left      |
-	  | [[rec(2).a]] | None |       |         | Left      |
-	  When "WorkflowforDataMerge" is executed  	  
-	  Then the workflow execution has "AN" error	
-      And the 'Rec To Convert' in WorkFlow 'WorkflowforDataMerge' debug inputs as
-	  | # | Variable      | New Value |
-	  | 1 | [[rec().a]] = | Test      |
-	  | 2 | [[rec().a]] = | Warewolf  |
-	  And the 'Rec To Convert' in Workflow 'WorkflowforDataMerge' debug outputs as    
-	  | # |                         |
-	  | 1 | [[rec(1).a]] = Test     |
-	  | 2 | [[rec(2).a]] = Warewolf |
-	 And the 'Data Merge' in WorkFlow 'WorkflowforDataMerge' debug inputs as 
-	  | # |                         | With | Using | Pad | Align |
-	  | 1 | [[rec(1).a]] = Test     | None | ""    | ""  | Left  |
-	  | 2 | [[rec(2).a]] = Warewolf | None | ""    | ""  | Left  |
-	  And the 'Data Merge' in Workflow 'WorkflowforDataMerge' debug outputs as  
-	  |                   |
-	  | [[result]][[a]] = |  
-Examples: 
-      | No    | Variable       |
-      | 1     | [[a]][[Result]] |
-##12180 
-# #     | 2  | [[a]]*]]               |
-# #     | 3  | [[var@]]               |
-# #     | 4  | [[var]]00]]            |
-# #     | 5  | [[(1var)]]             |
-# #     | 6  | [[var[[a]]]]           |
-# #     | 7  | [[var.a]]              |
-# #     | 8  | [[@var]]               |
-# #     | 9  | [[var 1]]              |
-# #     | 10 | [[rec(1).[[rec().1]]]] |
-# #     | 11 | [[rec(@).a]]           |
-# #     | 12 | [[rec"()".a]]          |
-# #     | 13 | [[rec([[[[b]]]]).a]]   |
 
 Scenario: Testing Data Split with two variables in Result field
       Given I have a workflow "WorkflowforDatasplit"
@@ -2171,46 +2055,6 @@ Examples:
  #     | 11 | [[rec(@).a]]           |
  #     | 12 | [[rec"()".a]]          |
  #     | 13 | [[rec([[[[b]]]]).a]]   |
-
-Scenario Outline: Testing Calculate with two variables in Result field
-      Given I have a workflow "WorkflowforCals"
-      And "WorkflowforCals" contains an Assign "Values" as
-	  | variable | value |
-	  | [[a]]    | 1     |
-	  | [[b]]    | 2     |
-	 And "WorkflowforCal" contains Calculate "Calculate1" with formula "[[a]]+[[b]]" into '<Variable>'	 
-	  When "WorkflowforCals" is executed  	  
-	  Then the workflow execution has "AN" error	
-      And the 'Values' in WorkFlow 'WorkflowforCals' debug inputs as
-	  | # | Variable | New Value |
-	  | 1 | [[a]] =  | 1         |
-	  | 2 | [[b]] =  | 2         |
-	  And the 'Values' in Workflow 'WorkflowforCals' debug outputs as    
-	  | # |           |
-	  | 1 | [[a]] = 1 |
-	  | 2 | [[b]] = 2 |
-	  And the 'Calculate1' in WorkFlow 'WorkflowforCals' debug inputs as 
-      | fx =                  |
-      | [[a]]+[[b]] = 1+2 = 2 |           
-      And the 'Calculate1' in Workflow 'WorkflowforCals' debug outputs as  
-	  |              |
-	  | '<Variable>' |
-Examples: 
-      | No | Variable               |
-      | 1  | [[a]][[Result]]        |
-      #| 2  | [[a]]*]]               |
-      #| 3  | [[var@]]               |
-      #| 4  | [[var]]00]]            |
-      #| 5  | [[(1var)]]             |
-      #| 6  | [[var[[a]]]]           |
-      #| 7  | [[var.a]]              |
-      #| 8  | [[@var]]               |
-      #| 9  | [[var 1]]              |
-      #| 10 | [[rec(1).[[rec().1]]]] |
-      #| 11 | [[rec(@).a]]           |
-      #| 12 | [[rec"()".a]]          |
-      #| 13 | [[rec([[[[b]]]]).a]]   |
-
 
 Scenario Outline: Testing Format Numbers with two variables in Result
      Given I have a workflow "Workflowforfn"
@@ -3705,7 +3549,6 @@ Scenario: Executing Data - Data Splitexample workflow
 	  | [[FileContent]] = Brad,5546854,brad@mail.com Bob 000065548912bob@mail.com  Bill 003215464987bill@mail.com | Forward           | No              | 1 | [[cust(*).name]]   = | Chars    | ,     | No      |        |
 	  |                                                                                                           | Forward           | No              | 2 | [[cust(*).number]] = | Chars    | ,     | No      |        |
 	  |                                                                                                           | Forward           | No              | 3 | [[cust(*).email]]  = | New Line |       | No      |        |
-	  |                                                                                                           |                   |                 | 2 | [[rec().b]] =        | Index    | 8     | No      |        |
  And the 'Data Merge (1)' in Workflow 'Data - Data Merge' debug outputs as    
    |                                                  |
    | [[FileContent]] = Brad 000005546854brad@mail.com |

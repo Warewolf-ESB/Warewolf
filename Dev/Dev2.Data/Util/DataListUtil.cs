@@ -1552,7 +1552,7 @@ namespace Dev2.Data.Util
                     {
                         var startIndex = 0;
                         var recordSetName = recordSetDefinition.SetName;
-                        if(environment.HasRecordSet(recordSetName))
+                        if(environment.HasRecordSet(AddBracketsToValueIfNotExist(MakeValueIntoHighLevelRecordset(recordSetName))))
                         {
                             startIndex = environment.GetLength(recordSetName);
                         }
