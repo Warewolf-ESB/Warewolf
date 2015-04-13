@@ -386,6 +386,8 @@ namespace Dev2.Activities
             var indexCounter = 1;
             foreach(var row in InputMappings)
             {
+                if(!ExecutionEnvironment.IsValidRecordSetIndex(row.InputColumn))
+                    errorsResultTo.AddError("Invalid recordset:"+row.InputColumn);
                 if(String.IsNullOrEmpty(row.InputColumn)) continue;
                 if(dataObject.IsDebugMode())
                 {

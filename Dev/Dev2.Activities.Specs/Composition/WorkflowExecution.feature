@@ -1401,12 +1401,12 @@ Scenario: Workflow with Assign recordset calculate field
 	  When "WFWithAssignHasCalculate" is executed
 	  Then the workflow execution has "NO" error
 	  And the 'values1' in WorkFlow 'WFWithAssignHasCalculate' debug inputs as 
-	  | # | Variable       | New Value                        |
-	  | 1 | [[a]] =        | 1                                |
-	  | 2 | [[b]] =        | 2                                |
-	  | 3 | [[rec(1).a]] = | [[a]] = 1                        |
-	  | 4 | [[rec(1).b]] = | [[b]] = 2                        |
-	  | 5 | [[rec(1).c]] = | =[[rec(1).a]]+[[rec(1).b]] ==1+2 |
+	  | # | Variable       | New Value |
+	  | 1 | [[a]] =        | 1         |
+	  | 2 | [[b]] =        | 2         |
+	  | 3 | [[rec(1).a]] = | [[a]] = 1 |
+	  | 4 | [[rec(1).b]] = | [[b]] = 2 |
+	  | 5 | [[rec(1).c]] = |  ‡1+2      |
 	  And the 'values1' in Workflow 'WFWithAssignHasCalculate' debug outputs as   
 	  | # |                  |
 	  | 1 | [[a]] = 1       |
@@ -2486,10 +2486,10 @@ Scenario: Workflow with Assigns DataSplit executing against the server
 	  | 1 | [[a]] =  rec().a |
 	  And the 'DataSplit' in WorkFlow 'WorkflowDataSplit' debug inputs as 
 	  | String to Split | Process Direction | Skip blank rows | # |                         | With  | Using | Include | Escape |
-	  | abcd            | Forward           | No              | 1 | [[[[a]]]] = [[rec().a]] | Index | 4     | No      |        |
+	  | abcd            | Forward           | No              | 1 |  = [[rec().a]] | Index | 4     | No      |        |
 	  And the 'DataSplit' in Workflow 'WorkflowDataSplit' debug outputs as  
 	  | # |                     |
-	  | 1 | [[rec(1).b]] = abcd |
+	  | 1 | [[rec(1).a]] = abcd |
 
 Scenario: Workflow with Assign and foreach contains calculate. 
       Given I have a workflow "Workflowwithforeachcontainscalculates"
@@ -2573,10 +2573,10 @@ Scenario: Workflow with Assigns DataSplit executing against the server 2
 	  | 1 | [[a]] =  rec().a |
 	  And the 'DataSplit' in WorkFlow 'WorkflowDataSplit' debug inputs as 
 	  | String to Split | Process Direction | Skip blank rows | # |                         | With  | Using | Include | Escape |
-	  | abcd            | Forward           | No              | 1 | [[[[a]]]] = [[rec().a]] | Index | 4     | No      |        |
+	  | abcd            | Forward           | No              | 1 |  = [[rec().a]] | Index | 4     | No      |        |
 	  And the 'DataSplit' in Workflow 'WorkflowDataSplit' debug outputs as  
 	  | # |                     |
-	  | 1 | [[rec(1).b]] = abcd |
+	  | 1 | [[rec(1).a]] = abcd |
 
 Scenario: Workflow with Assign and Unique Tool to find unique names in diff rows
       Given I have a workflow "WorkflowUniqueWithNames"
@@ -3013,10 +3013,10 @@ Scenario: Workflow with Assigns Replace and testing variables that hasn't been a
 	  | 2 | [[rec(1).a]] = Warewolf |
 	  And the 'Replacing' in WorkFlow 'workflowithAssignandReplaceTestingUnassignedvariablevalues2' debug inputs as 
 	  | In Field(s)             | Find                | Replace With   |
-	  | [[rec(1).a]] = Warewolf | [[Val1]]Test = Test | [[Val]] = test |
+	  | [[rec(1).a]] = Warewolf | [[Val1]]Test =  | [[Val]] = test |
 	  And the 'Replacing' in Workflow 'workflowithAssignandReplaceTestingUnassignedvariablevalues2' debug outputs as
 	  |                |
-	  | [[replac]] = 0 |	 
+	  | [[replac]] =  |	 
 
 Scenario: Workflow with Assign Format Numbers and testing variables that hasn't been assigned
 	  Given I have a workflow "WorkflowWithAssignandFormatTestingUnassignedvariablevalues"
@@ -3059,10 +3059,10 @@ Scenario: Workflow with Assign Format Numbers and testing variables that hasn't 
 	  | 1 | [[val]]  = 1 |   
 	  And the 'Fnumber' in WorkFlow 'WorkflowWithAssignandFormatTestingUnassignedvariablevalues2' debug inputs as 	
 	  | Number            | Rounding | Rounding Value | Decimals to show |
-	  | [[val1]]234 = 234 | Up       | [[val]] = 1    | [[val]]  = 1     |
+	  | [[val1]]234 =  | Up       | [[val]] = 1    | [[val]]  = 1     |
 	  And the 'Fnumber' in Workflow 'WorkflowWithAssignandFormatTestingUnassignedvariablevalues2' debug outputs as 
 	  |                      |
-	  | [[fresult]]  = 234.0 |
+	  | [[fresult]]  =  |
 
 Scenario: Workflow with Assign Create Delete folder and testing variable values that hasn't been assigned
 	  Given I have a workflow "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues"

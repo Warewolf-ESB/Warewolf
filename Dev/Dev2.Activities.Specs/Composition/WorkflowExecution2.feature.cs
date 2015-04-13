@@ -5348,7 +5348,7 @@ this.FeatureBackground();
             table304.AddRow(new string[] {
                         "5",
                         "[[rec(1).c]] =",
-                        "=[[rec(1).a]]+[[rec(1).b]] ==1+2"});
+                        "‡1+2"});
 #line 1403
    testRunner.And("the \'values1\' in WorkFlow \'WFWithAssignHasCalculate\' debug inputs as", ((string)(null)), table304, "And ");
 #line hidden
@@ -9037,7 +9037,7 @@ this.FeatureBackground();
                         "Forward",
                         "No",
                         "1",
-                        "[[[[a]]]] = [[rec().a]]",
+                        "= [[rec().a]]",
                         "Index",
                         "4",
                         "No",
@@ -9050,7 +9050,7 @@ this.FeatureBackground();
                         ""});
             table495.AddRow(new string[] {
                         "1",
-                        "[[rec(1).b]] = abcd"});
+                        "[[rec(1).a]] = abcd"});
 #line 2490
    testRunner.And("the \'DataSplit\' in Workflow \'WorkflowDataSplit\' debug outputs as", ((string)(null)), table495, "And ");
 #line hidden
@@ -9339,7 +9339,7 @@ this.FeatureBackground();
                         "Forward",
                         "No",
                         "1",
-                        "[[[[a]]]] = [[rec().a]]",
+                        "= [[rec().a]]",
                         "Index",
                         "4",
                         "No",
@@ -9352,7 +9352,7 @@ this.FeatureBackground();
                         ""});
             table513.AddRow(new string[] {
                         "1",
-                        "[[rec(1).b]] = abcd"});
+                        "[[rec(1).a]] = abcd"});
 #line 2577
    testRunner.And("the \'DataSplit\' in Workflow \'WorkflowDataSplit\' debug outputs as", ((string)(null)), table513, "And ");
 #line hidden
@@ -10925,7 +10925,7 @@ this.FeatureBackground();
                         "Replace With"});
             table592.AddRow(new string[] {
                         "[[rec(1).a]] = Warewolf",
-                        "[[Val1]]Test = Test",
+                        "[[Val1]]Test =",
                         "[[Val]] = test"});
 #line 3014
    testRunner.And("the \'Replacing\' in WorkFlow \'workflowithAssignandReplaceTestingUnassignedvariable" +
@@ -10934,7 +10934,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table593 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table593.AddRow(new string[] {
-                        "[[replac]] = 0"});
+                        "[[replac]] ="});
 #line 3017
    testRunner.And("the \'Replacing\' in Workflow \'workflowithAssignandReplaceTestingUnassignedvariable" +
                     "values2\' debug outputs as", ((string)(null)), table593, "And ");
@@ -11109,7 +11109,7 @@ this.FeatureBackground();
                         "Rounding Value",
                         "Decimals to show"});
             table604.AddRow(new string[] {
-                        "[[val1]]234 = 234",
+                        "[[val1]]234 =",
                         "Up",
                         "[[val]] = 1",
                         "[[val]]  = 1"});
@@ -11120,7 +11120,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table605 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table605.AddRow(new string[] {
-                        "[[fresult]]  = 234.0"});
+                        "[[fresult]]  ="});
 #line 3063
    testRunner.And("the \'Fnumber\' in Workflow \'WorkflowWithAssignandFormatTestingUnassignedvariableva" +
                     "lues2\' debug outputs as", ((string)(null)), table605, "And ");
