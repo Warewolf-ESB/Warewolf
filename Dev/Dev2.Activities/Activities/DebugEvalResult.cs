@@ -20,7 +20,7 @@ namespace Dev2.Activities
 
         public DebugEvalResult(string inputVariable, string label, IExecutionEnvironment environment, bool isDataMerge = false)
         {
-            _inputVariable = inputVariable;
+            _inputVariable = inputVariable.Trim();
             _positionInput = "";
             _label = label;
             try

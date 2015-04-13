@@ -56,11 +56,12 @@ let EvalDistinct (env:WarewolfEnvironment) (cols:string seq) (distictcols:string
         |_ -> false
     let EvalDistinctValuesFromExp  (indexes: int seq)  (recset: RecordSetIdentifier) =
          DistinctValues env.RecordSets.[recset.Name] recset.Column indexes      
-    let inter = Seq.map (EvalToExpression env) cols |> Seq.map ParseLanguageExpression |> Seq.map ToRecset
+    let baseexps = Seq.map (EvalToExpression env) cols 
+    let inter = baseexps|> Seq.map ParseLanguageExpression |> Seq.map ToRecset
     let resultsIds = Map.map (fun (a:string) (b:WarewolfRecordset) -> b.Count:int) env.RecordSets
 
     if 1= (Seq.distinctBy (fun (a:RecordSetIdentifier) -> a.Name.GetHashCode()) inter |> Seq.length) then
-        let cols = inter|> Seq.collect EvalDistinctInner |> Seq.distinct   
+        let cols = inter|> Seq.collect EvalDistinctInner |> Seq.distinct |> Seq.sort  
         let values = Seq.map (EvalToExpression env) distictcols  |> Seq.map ParseLanguageExpression  |> Seq.map ToRecset |>   Seq.map (EvalDistinctValuesFromExp cols) |> Seq.zip  result
         let mutable foldingenv = env
         for (a,b) in values do

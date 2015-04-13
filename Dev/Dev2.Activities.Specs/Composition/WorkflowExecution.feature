@@ -3024,6 +3024,7 @@ Scenario: Workflow with Assign and Unique to return unique data
        | 1 | [[emp(1).uni]]  = Gordan   |
        |   | [[emp(2).uni]]  = Cage     |
        |   | [[emp(3).uni]]  = Nicholas |
+       |   | [[emp(4).uni]]  =          |
  
 Scenario: Workflow with Assign and Unique Tool
       Given I have a workflow "WorkflowAssingUnique"
@@ -3800,7 +3801,7 @@ Scenario: Workflow with Assign Unique Tool and testing variables in Returnfield 
       |             |                    | [[new().row]] = |
       And the 'Unrec' in Workflow 'workflowithAssignUni' debug outputs as  
        |                     |
-       | [[rec(1).unique]] = |
+       | [[rec(*).unique]] = |
       
 #done 
 Scenario: Executing Utility - Format Number example workflow

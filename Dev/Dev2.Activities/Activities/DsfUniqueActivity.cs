@@ -64,105 +64,7 @@ namespace Dev2.Activities
         {
             base.CacheMetadata(metadata);
         }
-        //// ReSharper restore RedundantOverridenMember
 
-        ///// <summary>
-        ///// Breaks the InFields and validates they belong to the same recordset ;)
-        ///// </summary>
-        ///// <param name="dlId">The dl ID.</param>
-        ///// <param name="compiler">The compiler.</param>
-        ///// <param name="token">The token.</param>
-        ///// <param name="dataObject">The data object.</param>
-        ///// <param name="evaluateForDebug">if set to <c>true</c> [evaluate for debug].</param>
-        ///// <param name="errors">The errors.</param>
-        ///// <param name="rsEntry">The rs entry.</param>
-        ///// <returns></returns>
-        ///// <exception cref="System.Exception">Mismatched Recordsets. Encountered {  + rs +  } , but already processed {  + masterRs +  }
-        ///// or
-        ///// Invalid field {  + col +  } for recordset {  + masterRs +  }</exception>
-        //private List<string> BreakAndValidate(Guid dlId, IDataListCompiler compiler, string token, IDSFDataObject dataObject, bool evaluateForDebug, out ErrorResultTO errors, out IBinaryDataListEntry rsEntry)
-        //{
-        //    var searchFields = DataListCleaningUtils.SplitIntoRegions(token);
-        //    errors = new ErrorResultTO();
-        //    rsEntry = null;
-        //    var masterRs = string.Empty;
-
-        //    List<string> toProcessColumns = new List<string>();
-        //    // fish out each column name and validate that all belong to same recordset ;)
-        //    foreach(var entry in searchFields)
-        //    {
-        //        // now validate as a RS in the list and extract the field ;)
-        //        var rs = DataListUtil.ExtractRecordsetNameFromValue(entry);
-        //        var field = DataListUtil.ExtractFieldNameFromValue(entry);
-
-        //        if(masterRs != rs && !string.IsNullOrEmpty(masterRs))
-        //        {
-        //            // an issue has been detected ;(
-        //            throw new Exception("Mismatched Recordsets. Encountered { " + rs + " } , but already processed { " + masterRs + " }");
-        //        }
-
-        //        // set the first pass ;)
-        //        if(string.IsNullOrEmpty(masterRs) && !string.IsNullOrEmpty(rs))
-        //        {
-        //            // set it ;)
-        //            masterRs = rs;
-        //        }
-
-        //        // add to column collection ;)
-        //        toProcessColumns.Add(field);
-        //    }
-
-        //    ErrorResultTO invokeErrors;
-
-        //    // Now validate each column ;)
-        //    masterRs = DataListUtil.MakeValueIntoHighLevelRecordset(masterRs, true);
-        //    var myRs = DataListUtil.AddBracketsToValueIfNotExist(masterRs);
-        //    rsEntry = compiler.Evaluate(dlId, enActionType.User, myRs, false, out invokeErrors);
-        //    errors.MergeErrors(invokeErrors);
-
-        //    if(rsEntry != null)
-        //    {
-        //        var cols = rsEntry.Columns;
-        //        foreach(var col in toProcessColumns)
-        //        {
-        //            if(cols.All(c => c.ColumnName != col))
-        //            {
-        //                throw new Exception("Invalid field { " + col + " } for recordset { " + masterRs + " }");
-        //            }
-        //        }
-        //    }
-
-        //    if(dataObject.IsDebugMode())
-        //    {
-        //        if(evaluateForDebug)
-        //        {
-        //            AddDebugInputItem(new DebugItemStaticDataParams("", "In Field(s)"));
-        //            foreach(var field in searchFields)
-        //            {
-        //                // TODO : if EvaluateforDebug
-        //                if(!string.IsNullOrEmpty(field))
-        //                {
-        //                    var debugEval = compiler.Evaluate(dlId, enActionType.User, field, false, out invokeErrors);
-        //                    errors.MergeErrors(invokeErrors);
-        //                    if(errors.HasErrors())
-        //                    {
-        //                        AddDebugInputItem(new DebugItemStaticDataParams("", field, ""));
-        //                    }
-        //                    else
-        //                    {
-        //                        AddDebugInputItem(new DebugItemVariableParams(field, "", debugEval, dlId));
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        else
-        //        {
-        //            AddDebugInputItem(DataListUtil.IsEvaluated(token) ? new DebugItemStaticDataParams("", token, "Return Fields") : new DebugItemStaticDataParams(token, "Return Fields"));
-        //        }
-        //    }
-
-        //    return toProcessColumns;
-        //}
 
         /// <summary>
         /// When overridden runs the activity's execution logic
@@ -178,12 +80,26 @@ namespace Dev2.Activities
             var toresultfields = Result.Split(new[] { ',' });
             var fromFields = InFields.Split(new[] { ',' });
             var fromResultFieldresultfields = ResultFields.Split(new[] { ',' });
-                 try
+        
+            try
             {
 
-                     PreExecution(dataObject, fromFields);
+                PreExecution(dataObject, fromFields);
                 if (String.IsNullOrEmpty(InFields)) throw new Exception("Invalid In fields");
                 if (String.IsNullOrEmpty(ResultFields)) throw new Exception("Invalid from fields");
+                if(toresultfields.Any(a=>!ExecutionEnvironment.IsValidRecordSetIndex(a)))
+                {
+                    throw new Exception("invalid result");
+                }
+                if (fromFields.Any(a => !ExecutionEnvironment.IsValidRecordSetIndex(a)))
+                {
+                    throw new Exception("invalid from");
+                }
+                if (fromResultFieldresultfields.Any(a => !ExecutionEnvironment.IsValidRecordSetIndex(a)))
+                {
+                    throw new Exception("invalid selected fields");
+                }
+                
                 dataObject.Environment.AssignUnique(fromFields, fromResultFieldresultfields, toresultfields);
                
                 
@@ -193,10 +109,11 @@ namespace Dev2.Activities
             {
                 Dev2Logger.Log.Error("DSFUnique", e);
                 allErrors.AddError(e.Message);
+
             }
             finally
             {
-                PostExecute(dataObject, toresultfields);
+                PostExecute(dataObject, toresultfields, fromFields, fromResultFieldresultfields,allErrors.HasErrors());
                 // Handle Errors
                 var hasErrors = allErrors.HasErrors();
                 if(hasErrors)
@@ -219,7 +136,7 @@ namespace Dev2.Activities
 
         }
 
-        void PostExecute(IDSFDataObject dataObject, IEnumerable<string> toresultfields)
+        void PostExecute(IDSFDataObject dataObject, IEnumerable<string> toresultfields, IEnumerable<string> fromFields, IEnumerable<string> fromResultFieldresultfields, bool hasErrors)
         {
             if(dataObject.IsDebugMode())
             {
@@ -233,7 +150,7 @@ namespace Dev2.Activities
                         {
                             var res = new DebugEvalResult(dataObject.Environment.ToStar(field), "", dataObject.Environment);
 
-                            if (!String.IsNullOrEmpty(InFields)&& !(String.IsNullOrEmpty(ResultFields)))
+                            if (!hasErrors)
                             AddDebugOutputItem(new DebugItemStaticDataParams("","",i.ToString(CultureInfo.InvariantCulture)));
                             AddDebugOutputItem(res);
                         }

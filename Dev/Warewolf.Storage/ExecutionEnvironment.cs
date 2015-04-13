@@ -225,12 +225,12 @@ namespace Warewolf.Storage
 
         public int GetLength(string recordSetName)
         {
-            return _env.RecordSets[recordSetName].LastIndex;
+            return _env.RecordSets[recordSetName.Trim()].LastIndex;
         }
 
         public int GetCount(string recordSetName)
         {
-            return _env.RecordSets[recordSetName].Count;
+            return _env.RecordSets[recordSetName.Trim()].Count;
         }
 
 
