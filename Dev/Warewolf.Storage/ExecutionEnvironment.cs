@@ -488,7 +488,7 @@ namespace Warewolf.Storage
 
         public bool HasErrors()
         {
-            return Errors.Count>0;
+            return Errors.Count(s => !string.IsNullOrEmpty(s))>0;
         }
 
         public string ToLast(string rawValue)
