@@ -562,7 +562,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var remoteID = Guid.Empty;
             const bool HasError = true;
             const string ErrorMessage = "Error occurred..";
-            const StateType StateType = StateType.All;
+            const StateType StateType = Dev2.Common.Interfaces.Diagnostics.Debug.StateType.All;
 
             var dataObj = new DsfDataObject(string.Empty, GlobalConstants.NullDataListID)
             {

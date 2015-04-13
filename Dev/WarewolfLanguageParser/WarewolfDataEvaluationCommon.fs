@@ -304,7 +304,8 @@ and  EvalForDataMerge  (env: WarewolfEnvironment) (lang:string) : WarewolfEvalRe
         | ComplexExpression  a ->  (EvalComplex ( List.filter (fun b -> "" <> (LanguageExpressionToString b)) a)) 
 
 
-and  EvalToExpression  (env: WarewolfEnvironment) (lang:string) : string=
+and  EvalToExpression  (env: WarewolfEnvironment) (langs:string) : string=
+    let lang = langs.Trim()
     let EvalComplex (exp:LanguageExpression list) = 
         if((List.length exp) =1) then
             match exp.[0] with
@@ -330,7 +331,9 @@ and  EvalToExpression  (env: WarewolfEnvironment) (lang:string) : string=
                                   then List.map LanguageExpressionToString a|> List.map  (Eval env)  |> List.map EvalResultToString |> fun a-> System.String.Join("",a) |> (fun a ->EvalToExpression env a  )
                                   else lang
         | RecordSetExpression a -> match a.Index with 
-                                    | IndexExpression exp -> sprintf "[[%s(%s).%s]]" a.Name (Eval  env  (LanguageExpressionToString exp)|> EvalResultToString) a.Column  
+                                    | IndexExpression exp -> match exp with
+                                                                | WarewolfAtomAtomExpression a -> lang
+                                                                |_->     sprintf "[[%s(%s).%s]]" a.Name (Eval  env  (LanguageExpressionToString exp)|> EvalResultToString) a.Column  
                                     | _->lang
         | _ -> lang
 and isNotAtom (a:LanguageExpression) =

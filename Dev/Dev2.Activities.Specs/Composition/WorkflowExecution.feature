@@ -2770,6 +2770,7 @@ Scenario: Workflow with Assign and Unique to return unique data
        | 1 | [[emp(1).uni]]  = Gordan   |
        |   | [[emp(2).uni]]  = Cage     |
        |   | [[emp(3).uni]]  = Nicholas |
+       |   | [[emp(4).uni]]  =          |
  
 Scenario: Workflow with Assign and Unique Tool
       Given I have a workflow "WorkflowAssingUnique"
@@ -3444,7 +3445,7 @@ Scenario: Workflow with Assign Unique Tool and testing variables in Returnfield 
       |             |                    | [[new().row]] = |
       And the 'Unrec' in Workflow 'workflowithAssignUni' debug outputs as  
        |                     |
-       | [[rec(1).unique]] = |
+       | [[rec(*).unique]] = |
       
  
 Scenario: Executing Utility - Format Number example workflow
@@ -4414,63 +4415,106 @@ Scenario: Workflow by using For Each with workflow in it
          |                 |
          | [[res]] = Int32 |
 
-Scenario: Workflow by using For Each with workflow
-      Given I have a workflow "WorkFlowWithForEachInRecordsetUtilityRandomTesting"
-         And "WorkFlowWithForEachInRecordsetUtilityRandomTesting" contains an Assign "Recordset1" as
-         | variable    | value |
-         | [[rec().a]] | 1     |
-         | [[rec().a]] | 2     |
-         And "WorkFlowWithForEachInRecordsetUtilityRandomTesting" contains a Foreach "ForEachTest123" as "InRecordset" executions "[[rec()]]"
-		 And "ForEachTest123" contains "Utility - Random" from server "localhost" with mapping as
-         | Input to Service | From Variable | Output from Service | To Variable     |
-         When "WorkFlowWithForEachInRecordsetUtilityRandomTesting" is executed
-         Then the workflow execution has "NO" error
-         And the 'Recordset1' in WorkFlow 'WorkFlowWithForEachInRecordsetUtilityRandomTesting' debug inputs as
-         | # | Variable      | New Value |
-         | 1 | [[rec().a]] = | 1         |
-         | 2 | [[rec().a]] = | 2         |
-         And the 'Recordset1' in Workflow 'WorkFlowWithForEachInRecordsetUtilityRandomTesting' debug outputs as  
-         | # |                  |
-         | 1 | [[rec(1).a]] = 1 |
-         | 2 | [[rec(2).a]] = 2 |
-         And the 'ForEachTest123' in WorkFlow 'WorkFlowWithForEachInRecordsetUtilityRandomTesting' debug inputs as 
-           |                | Recordset      |
-           | * in Recordset | [[rec(1)]] = |
-           |                | [[rec(2)]] = |
-         And the 'ForEachTest123' in WorkFlow 'WorkFlowWithForEachInRecordsetUtilityRandomTesting' has  "4" nested children 
-	     And the 'Random1' in "Utility - Random" in step 1 for 'ForEachTest123' debug inputs as
-         | Random  | From | To |
-         | Numbers | 1    | 6  |
-		 And the 'Random1' in "Utility - Random" in step 1 for 'ForEachTest123' debug outputs as
-         |                      |
-         | [[DiceRoll]] = Int32 |
-		 And the 'Random2' in "Utility - Random" in step 1 for 'ForEachTest123' debug inputs as
-         | Random  | Length |
-         | Letters | 7      |
-		 And the 'Random2' in "Utility - Random" in step 1 for 'ForEachTest123' debug outputs as
-         |                       |
-         | [[Scrabble]] = String |
-         And the 'Random3' in "Utility - Random" in step 1 for 'ForEachTest123' debug inputs as
-         | Random |
-         | GUID   | 
-         And the 'Random3' in "Utility - Random" in step 1 for 'ForEachTest123' debug outputs as
-         |                      |
-         | [[License]] = String |
-         And the 'Random1' in "Utility - Random" in step 2 for 'ForEachTest123' debug inputs as
-         | Random  | From | To |
-         | Numbers | 1    | 6  |
-         And the 'Random1' in "Utility - Random" in step 2 for 'ForEachTest123' debug outputs as  
-         |                      |
-         | [[DiceRoll]] = Int32 |
-          And the 'Random2' in "Utility - Random" in step 2 for 'ForEachTest123' debug inputs as
-         | Random  | Length |
-         | Letters | 7      |
-         And the 'Random2' in "Utility - Random" in step 2 for 'ForEachTest123' debug outputs as       
-         |                       |
-         | [[Scrabble]] = String |
-         And the 'Random3' in "Utility - Random" in step 2 for 'ForEachTest123' debug inputs as
-         | Random |
-         | GUID   | 
-         And the 'Random3' in "Utility - Random" in step 2 for 'ForEachTest123' debug outputs as       
-         |                      |
-         | [[License]] = String |
+#Scenario: Workflow by using For Each with workflow
+#      Given I have a workflow "WorkFlowWithForEachInRecordsetUtilityRandomTesting"
+#         And "WorkFlowWithForEachInRecordsetUtilityRandomTesting" contains an Assign "Recordset1" as
+#         | variable    | value |
+#         | [[rec().a]] | 1     |
+#         | [[rec().a]] | 2     |
+#         And "WorkFlowWithForEachInRecordsetUtilityRandomTesting" contains a Foreach "ForEachTest123" as "InRecordset" executions "[[rec()]]"
+#		 And "ForEachTest123" contains "Utility - Random" from server "localhost" with mapping as
+#         | Input to Service | From Variable | Output from Service | To Variable     |
+#         When "WorkFlowWithForEachInRecordsetUtilityRandomTesting" is executed
+#         Then the workflow execution has "NO" error
+#         And the 'Recordset1' in WorkFlow 'WorkFlowWithForEachInRecordsetUtilityRandomTesting' debug inputs as
+#         | # | Variable      | New Value |
+#         | 1 | [[rec().a]] = | 1         |
+#         | 2 | [[rec().a]] = | 2         |
+#         And the 'Recordset1' in Workflow 'WorkFlowWithForEachInRecordsetUtilityRandomTesting' debug outputs as  
+#         | # |                  |
+#         | 1 | [[rec(1).a]] = 1 |
+#         | 2 | [[rec(2).a]] = 2 |
+#         And the 'ForEachTest123' in WorkFlow 'WorkFlowWithForEachInRecordsetUtilityRandomTesting' debug inputs as 
+#           |                | Recordset      |
+#           | * in Recordset | [[rec(1)]] = |
+#           |                | [[rec(2)]] = |
+#         And the 'ForEachTest123' in WorkFlow 'WorkFlowWithForEachInRecordsetUtilityRandomTesting' has  "4" nested children 
+#	     And the 'Random1' in "Utility - Random" in step 1 for 'ForEachTest123' debug inputs as
+#         | Random  | From | To |
+#         | Numbers | 1    | 6  |
+#		 And the 'Random1' in "Utility - Random" in step 1 for 'ForEachTest123' debug outputs as
+#         |                      |
+#         | [[DiceRoll]] = Int32 |
+#		 And the 'Random2' in "Utility - Random" in step 1 for 'ForEachTest123' debug inputs as
+#         | Random  | Length |
+#         | Letters | 7      |
+#		 And the 'Random2' in "Utility - Random" in step 1 for 'ForEachTest123' debug outputs as
+#         |                       |
+#         | [[Scrabble]] = String |
+#         And the 'Random3' in "Utility - Random" in step 1 for 'ForEachTest123' debug inputs as
+#         | Random |
+#         | GUID   | 
+#         And the 'Random3' in "Utility - Random" in step 1 for 'ForEachTest123' debug outputs as
+#         |                      |
+#         | [[License]] = String |
+#         And the 'Random1' in "Utility - Random" in step 2 for 'ForEachTest123' debug inputs as
+#         | Random  | From | To |
+#         | Numbers | 1    | 6  |
+#         And the 'Random1' in "Utility - Random" in step 2 for 'ForEachTest123' debug outputs as  
+#         |                      |
+#         | [[DiceRoll]] = Int32 |
+#          And the 'Random2' in "Utility - Random" in step 2 for 'ForEachTest123' debug inputs as
+#         | Random  | Length |
+#         | Letters | 7      |
+#         And the 'Random2' in "Utility - Random" in step 2 for 'ForEachTest123' debug outputs as       
+#         |                       |
+#         | [[Scrabble]] = String |
+#         And the 'Random3' in "Utility - Random" in step 2 for 'ForEachTest123' debug inputs as
+#         | Random |
+#         | GUID   | 
+#         And the 'Random3' in "Utility - Random" in step 2 for 'ForEachTest123' debug outputs as       
+#         |                      |
+#         | [[License]] = String |
+#
+#Scenario: Workflow to Workflow Mappings 
+#Given I have a workflow "WF to WF Mapings"
+#And "WF to WF Mapings" contains an Assign "AssignData" as
+#        | variable   | value   |
+#        | <AssignVariable> | <AssignValue> |
+#And "WF to WF Mapings" contains "WorkflowMappingsInnerWorkflow" from server "Localhost" with mapping as
+#| From Variable  | Input to Service | Output from Service | To Variable  |
+#| <FromVariable> | <ToService>      | <FromService>       | <ToVariable> |
+#When "WF to WF Mapings" is executed
+#Then the workflow execution has "NO" error
+#And the workflow 'WorkflowMappingsInnerWorkflow' debug inputs as
+#      | Value                  |
+#      | <ToServiceAssignValue> |
+#And workflow 'WorkflowMappingsInnerWorkflow' debug outputs as
+#      | # | Value                |
+#      | 1 | <ToVariableAndResult> |
+#Examples: 
+#| #                          | AssignVariable | AssignValue | FromVariable   | ToService      | FromService     | ToVariable     | ToServiceAssignValue | ToVariableAndResult    |
+#| ScalToRecInAndScaltoRecOut | [[OuterIn]]    | hello       | [[OuterIn]]    | [[in(*).in]]   | [[InnerOutput]] | [[out(*).out]] | [[in(*).in]] = hello | [[out(*).out]] = hello |
+#| BlnkToRecIn                |                |             |                | [[in(*).in]]   | [[InnerOutput]] | [[OuterOut]]   | [[in(*).in]] =       | [[OuterPut]] =         |
+#| BlnkToScalIn               |                |             |                | [[InnerInput]] | [[InnerOutput]] | [[OuterOut]]   | [[in(*).in]] =       | [[OuterPut]] =         |
+#| HdCdScalToRecInSclToSclOut | [[OuterIn]]    | ll          | he[[OuterIn]]o | [[in(*).in]]   | [[InnerOutput]] | [[OuterOut]]   | [[in(*).in]] = hello | [[OuterOut]] = hello   |
+#
+#Scenario: Workflow to Workflow Mappings Scalar to Recordset Input
+#Given I have a workflow "WF to WF Mapings"
+#And "WF to WF Mapings" contains an Assign "AssignData" as
+#	  | variable | value |
+#	  | [[var]]  | hello |
+#And "WF to WF Mapings" contains "One" from server "Localhost" with mapping as
+# | From Variable | Input to Service | Output from Service | To Variable |
+# | [[var]]       | rec(*).val       | output              | [[output]]  |
+# |               |                  |                     |             |
+# |               |                  |                     |             |
+#When "WF to WF Mapings" is executed
+#Then the workflow execution has "NO" error
+#And the workflow 'One' debug inputs as
+#	| # |                        |
+#	| 1 | [[rec(*).val = success |
+#And workflow 'One' debug outputs as
+#	| # |                      |
+#	| 1 | [[output]] = success |
+#
