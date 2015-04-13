@@ -1780,100 +1780,7 @@ Scenario: Executing 2 ForEach's inside a ForEach which contains Assign only
 	  | 15 | [[rec(50).o]] = 22323asda     |
 		
   
-  #Bug 12159
-#  Before you look into this spec plz connect to "Integration Connection" server and search for Unique data workflow and debug.
-#   Observe the output.	
-#Scenario: Executing remote workflow which contains For Each with assign
-#	      Given I have a workflow "TestAssignAndRemote"
-#          And "TestAssignAndRemote" contains "Unique data" from server "Integration Connection" with mapping as
-#          When "TestAssignAndRemote" is executed
-#	      Then the workflow execution has "NO" error
-#		  And the 'Assign for sequence' in WorkFlow 'workflowithAssignandsequence' debug inputs as
-#	      | # | Variable                         | New Value |
-#	      | 1 | [[Student().firstname]] =        | Murali    |
-#	      | 2 | [[Student().lastname]]  =        | naidu     |
-#	      | 3 | [[Student().firstname]] =        | Rak       |
-#	      | 4 | [[Student().lastname]]  =        | m         |
-#	      | 5 | [[Student().firstname]] =        | Murali    |
-#	      | 6 |
-#	      |   | [[Student(1).lastname]] =  naidu |
-#	      |   | [[Student(2).lastname]] =  m     |
-#	      |   | [[Student(3).lastname]] =        |
-#	       And the 'Assign for sequence' in Workflow 'workflowithAssignandsequence' debug outputs as    
-#	      | # |                                   |
-#	      | 1 | [[Student(1).firstname]] =  Murali |
-#	      | 2 | [[Student(1).lastname]]  =  naidu  |
-#	      | 3 | [[Student(2).firstname]] =  Rak    |
-#	      | 4 | [[Student().lastname]]  =  m      |
-#	      | 5 | [[Student().firstname]] =  Murali |
-#	      | 6 | [[Student(1).lastname]] =  naidu  |
-#	      |   | [[Student(2).lastname]] =  naidu  |
-#	      |   | [[Student(3).lastname]] =  naidu  |
-#		  And the 'ForEachTest1' in WorkFlow 'WFWithForEachInsideforEach' debug inputs as 
-#	       | Recordset                         |
-#	       | [[Student(1).firstname]] = Murali |
-#	       | [[Student(1).lastname]] = naidu   |
-#	       | [[Student(1).fullname]] =         |
-#	       | [[Student(1).date]] =             |
-#	       | [[Student(2).firstname]] = Rak    |
-#	       | [[Student(2).lastname]] = naidu   |
-#	       | [[Student(2).fullname]] =         |
-#	       | [[Student(2).date]] =             |
-#	       | [[Student(3).firstname]] = Murali |
-#	       | [[Student(3).lastname]] = naidu   |
-#	       | [[Student(3).fullname]] =         |
-#	       | [[Student(3).date]] =             |
-#	       And the 'ForEachTest1' in WorkFlow 'WFWithForEachInsideforEach' has  "3" nested children
-#		        And the 'Data Merge' child 1,1 in WorkFlow 'Sequence' debug inputs as
-#	            | # |                                   | With | Using | Pad | Align |
-#	            | 1 | [[Student(1).firstname]] = Murali | None | ""    | ""  | Left  |
-#	            | 2 | [[Student(1).lastname]] = naidu   | None | ""    | ""  | Left  |
-#	            And the 'Data Merge' child 1,1 in Workflow 'Sequence' debug outputs as
-#	            |                                      |
-#	            | [[Student(1).fullname]]= Muralinaidu |
-#	            And the 'System info' child 1,2 in WorkFlow 'Sequence' debug inputs as
-#	            | # |                       |             |
-#	            | 1 | [[Student(1).date]] = | Date & Time |
-#	            And the 'System info' child 1,2 in Workflow 'Sequence' debug outputs as   
-#	            | # |                             |
-#	            | 1 | [[Student(1).date]]= String |
-#				And the 'Data Merge' child 2,1 in WorkFlow 'Sequence' debug inputs as
-#	            | # |                                 | With | Using | Pad | Align |
-#	            | 1 | [[Student(2).firstname]] = Rak  | None | ""    | ""  | Left  |
-#	            | 2 | [[Student(2).lastname]] = naidu | None | ""    | ""  | Left  |
-#	            And the 'Data Merge' child 2,1 in Workflow 'Sequence' debug outputs as
-#	            |                                   |
-#	            | [[Student(2).fullname]]= Raknaidu |
-#	            And the 'System info' child 2,2 in WorkFlow 'Sequence' debug inputs as
-#	            | # |                       |             |
-#	            | 1 | [[Student(2).date]] = | Date & Time |
-#	            And the 'System info' child 2,2 in Workflow 'Sequence' debug outputs as   
-#	            | # |                             |
-#	            | 1 | [[Student(2).date]]= String |
-#				And the 'Data Merge' child 3,1 in WorkFlow 'Sequence' debug inputs as
-#	            | # |                                   | With | Using | Pad | Align |
-#	            | 1 | [[Student(3).firstname]] = Murali | None | ""    | ""  | Left  |
-#	            | 2 | [[Student(3).lastname]] = naidu   | None | ""    | ""  | Left  |
-#	            And the 'Data Merge' child 3,1 in Workflow 'Sequence' debug outputs as
-#	            |                                      |
-#	            | [[Student(3).fullname]]= Muralinaidu |
-#	            And the 'System info' child 3,2 in WorkFlow 'Sequence' debug inputs as
-#	            | # |                       |             |
-#	            | 1 | [[Student(3).date]] = | Date & Time |
-#	            And the 'System info' child 3,2 in Workflow 'Sequence' debug outputs as   
-#	            | # |                             |
-#	            | 1 | [[Student(3).date]]= String |
-#          And the 'Unique rec' in WorkFlow 'workflowithAssignandUnique' debug inputs as
-#            | #           |                                       | Return Fields |
-#            | In Field(s) | [[Student(1).fullname]] = Muralinaidu |               |
-#            |             | [[Student(2).fullname]] = Raknaidu    |               |
-#            |             | [[Student(3).fullname]] = Muralinaidu |               |
-#            |             |                                       | [[rs().row]]  |
-#           And the 'Unique rec' in Workflow 'workflowithAssignandUnique' debug outputs as  
-#            | # |                                    |
-#            | 1 | [[list(1).students]] = Muralinaidu |
-#            |   | [[list(2).students]] = Raknaidu    |
-#             
+         
 
 
 
@@ -2133,60 +2040,60 @@ Examples:
       | 1  | [[a]][[Result]]        |      
 
 
-#Scenario: Workflow with Assign and Unique Tool, finding unique data from multiple rows 
-#      Given I have a workflow "workflowithAssignandUnique"
-#      And "workflowithAssignandUnique" contains an Assign "Records" as
-#	  | variable      | value |
-#	  | [[rs().row]]  | 10    |
-#	  | [[rs().data]] | 10    |
-#	  | [[rs().row]]  | 40    |
-#	  | [[rs().data]] | 20    |
-#	  | [[rs().row]]  | 20    |
-#	  | [[rs().data]] | 20    |
-#	  | [[rs().row]]  | 30    |
-#	  | [[rs().data]] | 40    |
-#	  And "workflowithAssignandUnique" contains an Unique "Unique rec" as
-#	  | In Field(s)                  | Return Fields | Result           |
-#	  | [[rs(*).row]],[[rs(*).data]] | [[rs().row]]  | [[rec().unique]] |
-#	  When "workflowithAssignandUnique" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Records' in WorkFlow 'workflowithAssignandUnique' debug inputs as
-#	  | # | Variable        | New Value |
-#	  | 1 | [[rs().row]] =  | 10        |
-#	  | 2 | [[rs().data]] = | 10        |
-#	  | 3 | [[rs().row]] =  | 40        |
-#	  | 4 | [[rs().data]] = | 20        |
-#	  | 5 | [[rs().row]] =  | 20        |
-#	  | 6 | [[rs().data]] = | 20        |
-#	  | 7 | [[rs().row]] =  | 30        |
-#	  | 8 | [[rs().data]] = | 40        |
-#	  And the 'Records' in Workflow 'workflowithAssignandUnique' debug outputs as  
-#	  | # |                     |
-#	  | 1 | [[rs(1).row]] =  10 |
-#	  | 2 | [[rs(1).data]] =  10 |
-#	  | 3 | [[rs(2).row]] =  40  |
-#	  | 4 | [[rs(2).data]] =  20 |
-#	  | 5 | [[rs(3).row]] =  20  |
-#	  | 6 | [[rs(3).data]] =  20 |
-#	  | 7 | [[rs(4).row]] =  30  |
-#	  | 8 | [[rs(4).data]] =  40 |
-#	  And the 'Unique rec' in WorkFlow 'workflowithAssignandUnique' debug inputs as
-#       | #           |                     | Return Fields |
-#       | In Field(s) | [[rs(1).row]] = 10  |               |
-#       |             | [[rs(2).row]] = 40  |               |
-#       |             | [[rs(3).row]] = 20  |               |
-#       |             | [[rs(4).row]] = 30  |               |
-#       |             | [[rs(1).data]] = 10 |               |
-#       |             | [[rs(2).data]] = 20 |               |
-#       |             | [[rs(3).data]] = 20 |               |
-#       |             | [[rs(4).data]] = 40 |               |
-#       |             |                     | [[rs().row]]  |
-#      And the 'Unique rec' in Workflow 'workflowithAssignandUnique' debug outputs as  
-#       | # |                        |
-#       | 1 | [[rec(1).unique]] = 10 |
-#       |   | [[rec(2).unique]] = 40 |
-#       |   | [[rec(3).unique]] = 20 |
-#       |   | [[rec(4).unique]] = 30 |
+Scenario: Workflow with Assign and Unique Tool, finding unique data from multiple rows 
+      Given I have a workflow "workflowithAssignandUnique"
+      And "workflowithAssignandUnique" contains an Assign "Records" as
+	  | variable      | value |
+	  | [[rs().row]]  | 10    |
+	  | [[rs().data]] | 10    |
+	  | [[rs().row]]  | 40    |
+	  | [[rs().data]] | 20    |
+	  | [[rs().row]]  | 20    |
+	  | [[rs().data]] | 20    |
+	  | [[rs().row]]  | 30    |
+	  | [[rs().data]] | 40    |
+	  And "workflowithAssignandUnique" contains an Unique "Unique rec" as
+	  | In Field(s)                  | Return Fields | Result           |
+	  | [[rs(*).row]],[[rs(*).data]] | [[rs().row]]  | [[rec().unique]] |
+	  When "workflowithAssignandUnique" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Records' in WorkFlow 'workflowithAssignandUnique' debug inputs as
+	  | # | Variable        | New Value |
+	  | 1 | [[rs().row]] =  | 10        |
+	  | 2 | [[rs().data]] = | 10        |
+	  | 3 | [[rs().row]] =  | 40        |
+	  | 4 | [[rs().data]] = | 20        |
+	  | 5 | [[rs().row]] =  | 20        |
+	  | 6 | [[rs().data]] = | 20        |
+	  | 7 | [[rs().row]] =  | 30        |
+	  | 8 | [[rs().data]] = | 40        |
+	  And the 'Records' in Workflow 'workflowithAssignandUnique' debug outputs as  
+	  | # |                     |
+	  | 1 | [[rs(1).row]] =  10 |
+	  | 2 | [[rs(1).data]] =  10 |
+	  | 3 | [[rs(2).row]] =  40  |
+	  | 4 | [[rs(2).data]] =  20 |
+	  | 5 | [[rs(3).row]] =  20  |
+	  | 6 | [[rs(3).data]] =  20 |
+	  | 7 | [[rs(4).row]] =  30  |
+	  | 8 | [[rs(4).data]] =  40 |
+	  And the 'Unique rec' in WorkFlow 'workflowithAssignandUnique' debug inputs as
+       | #           |                     | Return Fields |
+       | In Field(s) | [[rs(1).row]] = 10  |               |
+       |             | [[rs(2).row]] = 40  |               |
+       |             | [[rs(3).row]] = 20  |               |
+       |             | [[rs(4).row]] = 30  |               |
+       |             | [[rs(1).data]] = 10 |               |
+       |             | [[rs(2).data]] = 20 |               |
+       |             | [[rs(3).data]] = 20 |               |
+       |             | [[rs(4).data]] = 40 |               |
+       |             |                     | [[rs().row]]  |
+      And the 'Unique rec' in Workflow 'workflowithAssignandUnique' debug outputs as  
+       | # |                        |
+       | 1 | [[rec(1).unique]] = 10 |
+       |   | [[rec(2).unique]] = 40 |
+       |   | [[rec(3).unique]] = 20 |
+       |   | [[rec(4).unique]] = 30 |
 
 Scenario: Workflow with Assign and Unique Tool, Infields rec without star
       Given I have a workflow "workflowithAssignandUniqueToolc"
