@@ -5266,35 +5266,35 @@ Scenario: Workflow by using For Each with workflow in it
 #| ScalTOScalblnk&ComplexExp | [[var]]        | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec([[int]]).out]] = 1      |
 #|                           | [[int]]        |             |              |                  |                      |                               |
 
-Scenario: Plugin to Workflow Mappings
-#Note: No Plugin service was created for this scenario 
-Given I have a workflow "DLL to WF Mapings"
-And "DLL to WF Mapings" contains an Assign "AssignData" as
-        | variable         | value         |
-        | <AssignVariable> | <AssignValue> |
-And "DLL to WF Mapings" contains "WorkflowMappingsInnerWorkflow" from server "Localhost" with mapping as
-| Input to Service | Output from Service | To Variable  |
-| <ToService>      | <FromService>       | <ToVariable> |
-When "DLL to WF Mapings" is executed
-Then the workflow execution has "NO" error
-And workflow 'WorkflowMappingsInnerWorkflow' debug outputs as
-      | # | Value              |
-      | 1 | <SerivceAndResult> |
-And assume the [[WS Variable]] i.e. Output of WS = [[InnerInput]] i.e. Input of WF
-Examples: 
-| #                        | AssignVariable | AssignValue | ToVariable   | FromService      | DBSerivceAndResult   | WFOutputAndResult             |
-| ScalToScal               | [[Var]]        | 1           | [[Var]]      | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[Output]] = 1                |
-| ScalToBlank              | [[Var]]        |             | [[Var]]      | [[Row(*).BigID]] | [[Row().BigID]] =    | [[Output]] =                  |
-| RecToScal                | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[Output]] = 1                |
-| RecToRec                 | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec(1).out]] = 1            |
-| RecToBlank               | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec(1).out]] =              |
-| RecTOComplexExp          | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec([[rec().in]]).out]] = 1 |
-| RecTOScalToComplexExp    | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[re([[Var]]).out]] = 1       |
-| RecTOScalblnk&ComplexExp | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[Var]][[rc([[Var2]]).out]]=1 |
-|                          | [[var2]]       | 2           |              |                  |                      |                               |
-|                          | [[var]]        |             |              |                  |                      |                               |
-| ScalToRec                 | [[Var]]        | 1           | [[Var]]      | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec(1).out]] = 1            |
-| ScalToComplexExp          | [[Var]]        | 1           | [[Var]]      | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec(1).out]] = 1            |
-| ScalTOScalblnk&ComplexExp | [[var]]        | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec([[int]]).out]] = 1      |
-|                           | [[int]]        |             |              |                  |                      |                               | 
+#Scenario: Plugin to Workflow Mappings
+##Note: No Plugin service was created for this scenario 
+#Given I have a workflow "DLL to WF Mapings"
+#And "DLL to WF Mapings" contains an Assign "AssignData" as
+#        | variable         | value         |
+#        | <AssignVariable> | <AssignValue> |
+#And "DLL to WF Mapings" contains "WorkflowMappingsInnerWorkflow" from server "Localhost" with mapping as
+#| Input to Service | Output from Service | To Variable  |
+#| <ToService>      | <FromService>       | <ToVariable> |
+#When "DLL to WF Mapings" is executed
+#Then the workflow execution has "NO" error
+#And workflow 'WorkflowMappingsInnerWorkflow' debug outputs as
+#      | # | Value              |
+#      | 1 | <SerivceAndResult> |
+#And assume the [[WS Variable]] i.e. Output of WS = [[InnerInput]] i.e. Input of WF
+#Examples: 
+#| #                        | AssignVariable | AssignValue | ToVariable   | FromService      | DBSerivceAndResult   | WFOutputAndResult             |
+#| ScalToScal               | [[Var]]        | 1           | [[Var]]      | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[Output]] = 1                |
+#| ScalToBlank              | [[Var]]        |             | [[Var]]      | [[Row(*).BigID]] | [[Row().BigID]] =    | [[Output]] =                  |
+#| RecToScal                | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[Output]] = 1                |
+#| RecToRec                 | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec(1).out]] = 1            |
+#| RecToBlank               | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec(1).out]] =              |
+#| RecTOComplexExp          | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec([[rec().in]]).out]] = 1 |
+#| RecTOScalToComplexExp    | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[re([[Var]]).out]] = 1       |
+#| RecTOScalblnk&ComplexExp | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[Var]][[rc([[Var2]]).out]]=1 |
+#|                          | [[var2]]       | 2           |              |                  |                      |                               |
+#|                          | [[var]]        |             |              |                  |                      |                               |
+#| ScalToRec                 | [[Var]]        | 1           | [[Var]]      | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec(1).out]] = 1            |
+#| ScalToComplexExp          | [[Var]]        | 1           | [[Var]]      | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec(1).out]] = 1            |
+#| ScalTOScalblnk&ComplexExp | [[var]]        | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec([[int]]).out]] = 1      |
+#|                           | [[int]]        |             |              |                  |                      |                               | 
 
