@@ -221,9 +221,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(allErrors.HasErrors())
                 {
                     var serviceName = GetType().Name;
-                    DisplayAndWriteError(serviceName, allErrors);
-                    ErrorResultTO error;
-                    compiler.UpsertSystemTag(_dataListId, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out error);
+                    DisplayAndWriteError(serviceName, allErrors);                    
                 }
             }
 

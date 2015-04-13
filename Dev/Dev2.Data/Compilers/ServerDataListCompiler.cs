@@ -797,12 +797,6 @@ namespace Dev2.Server.Datalist
             {
                 ErrorResultTO errors;
                 mergeId = Merge(ctx, destinationDatalistID, sourceDatalistID, datalistMergeType, datalistMergeDepth, false, out errors);
-
-                if(errors != null && errors.HasErrors())
-                {
-                    ErrorResultTO tmpErrors;
-                    mergeId = UpsertSystemTag(destinationDatalistID, enSystemTag.Dev2Error, errors.MakeDataListReady(), out tmpErrors);
-                }
             }
 
             return mergeId;

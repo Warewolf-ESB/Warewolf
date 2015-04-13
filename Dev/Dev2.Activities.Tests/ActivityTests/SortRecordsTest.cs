@@ -407,7 +407,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             TestData = ActivityStrings.SortDataList;
             IDSFDataObject result = ExecuteProcess();
 
-            var res = Compiler.FetchErrors(result.DataListID);
+            var res = DataObject.Environment.FetchErrors();
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);

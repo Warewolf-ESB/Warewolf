@@ -241,9 +241,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IEsbChannel esbChannel = context.GetExtension<IEsbChannel>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            ErrorResultTO errors;
             ErrorResultTO allErrors = new ErrorResultTO();
 
             Guid datalistId = DataListExecutionID.Get(context);
@@ -271,7 +268,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             try
             {
-                compiler.ClearErrors(dataObject.DataListID);
+                //compiler.ClearErrors(dataObject.DataListID);
 
                 if(ServiceServer != Guid.Empty)
                 {
@@ -293,8 +290,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
 
                 // scrub it clean ;)
-                ScrubDataList(compiler, datalistId, context.WorkflowInstanceId.ToString(), out errors);
-                allErrors.MergeErrors(errors);
 
                 // set the parent service
                 parentServiceName = dataObject.ParentServiceName;
@@ -339,20 +334,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             dataObject.ServiceName = ServiceName;
                         }
 
-                        // ** THIS IS A HACK OF NOTE, WE NEED TO ADDRESS THIS!
-                        if(dataObject.IsDebugMode())
-                        {
-                            //Dont remove this it is here to fix the data not being returned correctly
-                            string testData = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), enTranslationDepth.Data, out errors).ToString();
-                            if(string.IsNullOrEmpty(testData))
-                            {
-
-                            }
-                        }
 
                     }
 
-                    bool whereErrors = compiler.HasErrors(datalistId);
+                    bool whereErrors = dataObject.Environment.HasErrors();
 
                     Result.Set(context, whereErrors);
                     HasError.Set(context, whereErrors);
@@ -370,12 +355,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if(allErrors.HasErrors())
                     {
                         DisplayAndWriteError("DsfActivity", allErrors);
-                        compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                        dataObject.Environment.AddError(allErrors.MakeDataListReady());
                         // add to datalist in variable specified
                         if(!String.IsNullOrEmpty(OnErrorVariable))
                         {
                             var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
-                            compiler.Upsert(dataObject.DataListID, upsertVariable, allErrors.MakeDataListReady(), out errors);
+                            dataObject.Environment.Assign(upsertVariable, allErrors.MakeDataListReady());
                         }
                     }
                 }
@@ -459,16 +444,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion
 
         #region Private Methods
-
-        private void ScrubDataList(IDataListCompiler compiler, Guid executionId, string workflowId, out ErrorResultTO invokeErrors)
-        {
-            ErrorResultTO errors;
-            invokeErrors = new ErrorResultTO();
-            // Strip System Tags
-            
-            compiler.UpsertSystemTag(executionId, enSystemTag.ParentWorkflowInstanceId, workflowId, out errors);
-            invokeErrors.MergeErrors(errors);
-        }
 
         #endregion
 

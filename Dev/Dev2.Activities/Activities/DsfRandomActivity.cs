@@ -20,9 +20,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Data;
-using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Dev2.Validation;
@@ -87,16 +85,11 @@ namespace Dev2.Activities
             ErrorResultTO errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
 
-            IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-            toUpsert.IsDebug = dataObject.IsDebugMode();
-            toUpsert.ResourceID = dataObject.ResourceID;
             var env = dataObject.Environment;
             InitializeDebug(dataObject);
 
             try
             {
-
-
                 if (!errors.HasErrors())
                 {
                     if (dataObject.IsDebugMode())
@@ -178,14 +171,12 @@ namespace Dev2.Activities
                             env.Assign(Result, value);
                         }
                     }
-
-                    if (dataObject.IsDebugMode())
-                    {
-                        AddDebugOutputItem(new DebugEvalResult(Result, "", env));
-                    }
                 }
                 allErrors.MergeErrors(errors);
-
+                if (!allErrors.HasErrors())
+                {
+                    AddDebugOutputItem(new DebugEvalResult(Result,"",dataObject.Environment));
+                }
             }
             catch (Exception e)
             {
@@ -201,7 +192,6 @@ namespace Dev2.Activities
                     DisplayAndWriteError("DsfRandomActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
-                    dataObject.Environment.Assign(Result, null);
                 }
                 if(dataObject.IsDebugMode())
                 {

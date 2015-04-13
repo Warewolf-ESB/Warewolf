@@ -85,9 +85,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 int inputIndex = 1;
                 int outputIndex = 1;
 
-                foreach(ICaseConvertTO item in ConvertCollection.Where(a=>!String.IsNullOrEmpty(a.StringToConvert)))
+                foreach (ICaseConvertTO item in ConvertCollection.Where(a => !String.IsNullOrEmpty(a.StringToConvert)))
                 {
-
+                    IsSingleValueRule.ApplyIsSingleValueRule(item.ExpressionToConvert, allErrors);
                     if (dataObject.IsDebugMode())
                     {
                         var debugItem = new DebugItem();
@@ -97,11 +97,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         _debugInputs.Add(debugItem);
                         inputIndex++;
                     }
+                    if (!allErrors.HasErrors())
+                    {
+                        try
+                        {
+                            env.ApplyUpdate(item.StringToConvert, TryConvertFunc(item.ConvertType, env));
+                        }
+                        catch (Exception e)
+                        {
+                            allErrors.AddError(e.Message);
+                        }
 
-                    env.ApplyUpdate(item.StringToConvert, TryConvertFunc(item.ConvertType,env));
 
-                        IsSingleValueRule.ApplyIsSingleValueRule(item.ExpressionToConvert, allErrors);
-                        if (dataObject.IsDebugMode())
+                        if (!allErrors.HasErrors() && dataObject.IsDebugMode())
                         {
                             var debugItem = new DebugItem();
                             AddDebugItem(new DebugItemStaticDataParams("", outputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
@@ -110,10 +118,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             outputIndex++;
                         }
                     }
-
-                   
-                
-
+                }
             }
             catch (Exception e)
             {

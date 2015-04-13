@@ -117,15 +117,15 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
         {
             ScenarioContext.Current.Add("resultVariable", resultVariable);
 
-            List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            //List<Tuple<string, string>> variableList;
+            //ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if(variableList == null)
-            {
-                variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
-            }
-            variableList.Add(new Tuple<string, string>(resultVariable, ""));
+            //if(variableList == null)
+            //{
+            //    variableList = new List<Tuple<string, string>>();
+            //    ScenarioContext.Current.Add("variableList", variableList);
+            //}
+            //variableList.Add(new Tuple<string, string>(resultVariable, ""));
         }
 
         [When(@"the unique tool is executed")]
@@ -139,7 +139,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
         [Then(@"the unique result will be")]
         public void ThenTheUniqueResultWillBe(Table table)
         {
-            string error;
+       
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             string resultVariable = ScenarioContext.Current.Get<string>("resultVariable");
 
@@ -148,8 +148,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
 
             //string error;
 
-            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column,
-                                                                           out error);
+            IList<string> recordSetValues = result.Environment.EvalAsListOfStrings(result.Environment.ToStar(resultVariable));
 
             recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
 

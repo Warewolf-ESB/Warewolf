@@ -104,3 +104,22 @@ let EvalUpdate (exp:string) (env:WarewolfEnvironment)  (func:System.Func<Warewol
 //let EvalDistinct (exp:string list)  (env:WarewolfEnvironment)  = Where.EvalDistinct env exp
 
 let EvalDataShape (exp:string) (env:WarewolfEnvironment) = AssignEvaluation.EvalDataShape exp env
+
+let IsValidRecsetExpression (exp:string) = 
+    let parsed = WarewolfDataEvaluationCommon.ParseLanguageExpression exp
+    match parsed with 
+        | LanguageExpression.WarewolfAtomAtomExpression a -> true
+        | LanguageExpression.ComplexExpression b -> true
+        | ScalarExpression b -> true
+        | RecordSetExpression recset -> match recset.Index with
+                                            | IntIndex int -> if int<0 then false else true
+                                            | Last -> true
+                                            | Star -> true
+
+                                            | IndexExpression indexp ->  match indexp with 
+                                                                            |  WarewolfAtomAtomExpression atom -> let inval = AtomToInt atom
+
+                                                                                                                  if inval<0 then false else true
+                                                                            | _ -> true
+        | _ -> true
+    

@@ -70,8 +70,10 @@
     <Compile Include="AssignEvaluation.fs" />
     <Compile Include="Where.fs" />
     <Compile Include="UpdateInPlace.fs" />
+	    <Compile Include="Distinct.fs" />
     <Compile Include="PublicFunctions.fs" />
     <Compile Include="WarewolfTestData.fs" />
+
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">

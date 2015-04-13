@@ -112,7 +112,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             // remove test datalist ;)
             var compiler = DataListFactory.CreateDataListCompiler();
-            var errors = compiler.FetchErrors(result.DataListID);
+            var errors = DataObject.Environment.FetchErrors();
             DataListRemoval(result.DataListID);
             //--------------Assert result----------------------------
             StringAssert.Contains(errors, string.Format("User: SomeUser does not have Execute Permission to resource {0}.", resourceID));
@@ -161,7 +161,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
             var compiler = DataListFactory.CreateDataListCompiler();
-            var errors = compiler.FetchErrors(result.DataListID);
+            var errors = DataObject.Environment.FetchErrors();
             DataListRemoval(result.DataListID);
             //------------Assert Results-------------------------
             StringAssert.Contains(errors, "This is an error");

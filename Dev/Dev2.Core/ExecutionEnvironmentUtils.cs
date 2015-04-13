@@ -176,7 +176,8 @@ namespace Dev2
             }
 
             result.Append("}");
-            return result.ToString();
+            var jsonOutputFromEnvironment = result.ToString();
+            return jsonOutputFromEnvironment.TrimEnd(',');
         }
 
         public static void UpdateEnvironmentFromInputPayload(IDSFDataObject dataObject, StringBuilder rawPayload, string dataList)

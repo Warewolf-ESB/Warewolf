@@ -336,11 +336,8 @@ namespace Dev2.Runtime.ESB.Control
             var invoker = CreateEsbServicesInvoker(theWorkspace);
             ErrorResultTO invokeErrors;
             var oldID = dataObject.DataListID;
-            var compiler = DataListFactory.CreateDataListCompiler();
-
-            //var remainingMappings = ShapeForSubRequest(dataObject, inputDefs, outputDefs, out errors);
             errors = new ErrorResultTO();
-           
+            
             // local non-scoped execution ;)
             var isLocal = !dataObject.IsRemoteWorkflow();
 
@@ -356,10 +353,18 @@ namespace Dev2.Runtime.ESB.Control
             }
             else
             {
-                CreateNewEnvironmentFromInputMappings(dataObject, inputDefs);
+                if (isLocal)
+                {
+                    if (GetResource(workspaceId, dataObject.ResourceID) == null && GetResource(workspaceId, dataObject.ServiceName) == null)
+                    {
+                        errors.AddError(string.Format("Resource {0} not found.", dataObject.ServiceName));
+                        return null;
+                    }
+                }
                 var executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal, oldID);
                 if (executionContainer != null)
                 {
+                    CreateNewEnvironmentFromInputMappings(dataObject, inputDefs);
                     if (!isLocal)
                     {
                         _doNotWipeDataList = true;
@@ -372,12 +377,12 @@ namespace Dev2.Runtime.ESB.Control
                         executionContainer.Execute(out invokeErrors);
                         var env = UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObject, outputDefs);
                         errors.MergeErrors(invokeErrors);
-                        string errorString = compiler.FetchErrors(dataObject.DataListID, true);
+                        string errorString = dataObject.Environment.FetchErrors();
                         invokeErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
                         errors.MergeErrors(invokeErrors);                        
                         return env;
                     }
-                    errors.AddError("Null container returned");
+                    errors.AddError(string.Format("Resource {0} not found.", dataObject.ServiceName));
                 }
             }
             return new ExecutionEnvironment();
@@ -734,14 +739,15 @@ namespace Dev2.Runtime.ESB.Control
 
         static bool IsServiceWorkflow(Guid workspaceID, Guid resourceID)
         {
-            var resource = ResourceCatalog.Instance.GetResource(workspaceID, resourceID) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceID);
-            if(resource == null)
+            IResource resource = GetResource(workspaceID, resourceID);
+            if (resource == null)
             {
                 return false;
             }
 
             return resource.ResourceType == ResourceType.WorkflowService;
         }
+
 
         /// <summary>
         /// Shapes the mappings automatic target data list.

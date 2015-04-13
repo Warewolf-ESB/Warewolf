@@ -34,7 +34,7 @@ namespace Warewolf.Storage
 
         void EvalAssignFromNestedStar(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult);
 
-        void EvalAssignFromNestedLast(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult);
+        void EvalAssignFromNestedLast(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult,int startIndex);
 
         void EvalAssignFromNestedNumeric(string rawValue, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult);
 
@@ -68,6 +68,8 @@ namespace Warewolf.Storage
         string EvalToExpression(string exp);
 
         IEnumerable< WarewolfDataEvaluationCommon.WarewolfEvalResult> EvalForDataMerge(string exp);
+
+        void AssignUnique(IEnumerable<string> distinctList, IEnumerable<string> valueList, IEnumerable<string> resList);
     }
     public class ExecutionEnvironment : IExecutionEnvironment
     {
@@ -108,6 +110,12 @@ namespace Warewolf.Storage
                 throw;
             }
 
+        }
+
+        public void AssignUnique(IEnumerable<string> distinctList, IEnumerable<string> valueList, IEnumerable<string> resList)
+        {
+           var output =  Distinct.EvalDistinct(_env, distinctList, valueList,resList);
+           _env = output;
         }
 
         public WarewolfDataEvaluationCommon.WarewolfEvalResult EvalStrict(string exp)
@@ -217,12 +225,12 @@ namespace Warewolf.Storage
 
         public int GetLength(string recordSetName)
         {
-            return _env.RecordSets[recordSetName].LastIndex;
+            return _env.RecordSets[recordSetName.Trim()].LastIndex;
         }
 
         public int GetCount(string recordSetName)
         {
-            return _env.RecordSets[recordSetName].Count;
+            return _env.RecordSets[recordSetName.Trim()].Count;
         }
 
 
@@ -271,6 +279,10 @@ namespace Warewolf.Storage
 
         public static  string WarewolfAtomToString(DataASTMutable.WarewolfAtom a)
         {
+            if (a == null)
+            {
+                return "";
+            }
             return PublicFunctions.AtomtoString(a);
         }
 
@@ -361,11 +373,13 @@ namespace Warewolf.Storage
             }
         }
 
-        public void EvalAssignFromNestedLast(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult)
+        public void EvalAssignFromNestedLast(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult,int startIndex)
         {
-            foreach(var warewolfAtom in recsetResult.Item)
+            for (int index = 0; index < recsetResult.Item.Count; index++)
             {
-                AssignWithFrame( new AssignValue(exp.Replace("*", ""), WarewolfAtomToString(warewolfAtom)));
+                var warewolfAtom = recsetResult.Item[index];
+                var correctExp = DataListUtils.ReplaceRecordsetBlankWithIndex(exp, index + 1 + startIndex);
+                AssignWithFrame(new AssignValue(correctExp, WarewolfAtomToString(warewolfAtom)));
             }
         }
 
@@ -573,6 +587,11 @@ namespace Warewolf.Storage
                 return String.Format( "[[{0}(*).{1}]]",outputval.Item.Name,val);
             }
             return inputVariable;
+        }
+
+        public static  bool IsValidRecordSetIndex (string exp)
+        {
+            return PublicFunctions.IsValidRecsetExpression(exp);
         }
     }
 }

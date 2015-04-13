@@ -10,6 +10,7 @@ namespace WarewolfParserInterop
         private int _count;
         private readonly T _defaultValue;
       IEnumerator<T> _currentEnumerator;
+      T _currentValue;
 
       public WarewolfAtomList(T defaultValue)
         {
@@ -98,13 +99,29 @@ namespace WarewolfParserInterop
       public T GetNextValue()
       {
           var x = GetCurrentEnumerator();
+          if (x.Current != null)
+          {
+              _currentValue = x.Current;
+          }
           x.MoveNext();
+          if (x.Current == null)
+          {
+              return _currentValue;
+          }
           return x.Current;
       }
 
       IEnumerator<T> GetCurrentEnumerator()
       {
           return _currentEnumerator ?? (_currentEnumerator = GetEnumerator());
+      }
+
+      public void ResetCurrentEnumerator()
+      {
+          if (_currentEnumerator != null)
+          {
+              _currentEnumerator.Reset();
+          }
       }
 
       public bool Apply (Func<T,T> action )
@@ -118,7 +135,7 @@ namespace WarewolfParserInterop
 
       public IEnumerator<T> GetEnumerator()
         {
-            return _values.Take(_count).GetEnumerator();
+            return _values.Take(_count).ToList().GetEnumerator();
         }
 
 

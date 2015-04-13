@@ -89,14 +89,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfDeleteRecordsActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
-                    dataObject.Environment.Assign(Result,null);
+                    dataObject.Environment.Assign(Result,"Failure");
                 }
 
                 if(dataObject.IsDebugMode())
                 {
                     if(hasErrors)
                     {
-                        AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
+                        AddDebugOutputItem(new DebugItemStaticDataParams("Failure", Result, ""));
                     }
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -122,6 +122,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             AddDebugInputItem(new DebugItemWarewolfRecordset(recset, RecordsetName, "Recordset", "="));
                         }
+                    }
+                    else
+                    {
+                        AddDebugInputItem(new DebugItemWarewolfAtomResult("", RecordsetName, "Recordset", "", "", "", "="));
                     }
                 }
 

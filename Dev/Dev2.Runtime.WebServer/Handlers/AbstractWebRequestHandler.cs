@@ -196,10 +196,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                             {
                                 executePayload = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, workspaceGuid,resource.DataList.ToString());
                             }
-                            //executePayload = esbEndpoint.FetchExecutionPayload(dataObject, formatter, out errors);
-                           // allErrors.MergeErrors(errors);
-                            compiler.UpsertSystemTag(executionDlid, enSystemTag.Dev2Error, allErrors.MakeDataListReady(),
-                                                     out errors);
+                            dataObject.Environment.AddError(allErrors.MakeDataListReady());
                         }
                         else
                         {

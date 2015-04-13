@@ -147,7 +147,10 @@ namespace Dev2.Activities
 
                     if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                     {
-                        AddDebugOutputItem(new DebugEvalResult(CommandResult,"",dataObject.Environment));
+                        if (!string.IsNullOrEmpty(CommandResult))
+                        {
+                            AddDebugOutputItem(new DebugEvalResult(CommandResult, "", dataObject.Environment));
+                        }
                     }
                 }
             }

@@ -172,7 +172,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if(errorResultTO.HasErrors())
                     {
                         DisplayAndWriteError("Resumption", errorResultTO);
-                        compiler.UpsertSystemTag(myDO.DataListID, enSystemTag.Dev2Error, errorResultTO.MakeDataListReady(), out errorResultTO);
+                        var errorString = errorResultTO.MakeDataListReady();
+                        myDO.Environment.AddError(errorString);
                     }
                 }
             }

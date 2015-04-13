@@ -150,7 +150,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            var fetchErrors = Compiler.FetchErrors(result.DataListID);
+            var fetchErrors = DataObject.Environment.FetchErrors();
             if(fetchErrors != string.Empty)
             {
                 Assert.Fail(fetchErrors);
@@ -176,7 +176,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            var fetchErrors = Compiler.FetchErrors(result.DataListID);
+            var fetchErrors = DataObject.Environment.FetchErrors();
             if(fetchErrors == string.Empty)
             {
                 Assert.Fail("no error");
@@ -198,7 +198,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            var fetchErrors = Compiler.FetchErrors(result.DataListID);
+            var fetchErrors = DataObject.Environment.FetchErrors();
             if(fetchErrors == string.Empty)
             {
                 Assert.Fail("no error");
@@ -231,7 +231,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            var fetchErrors = Compiler.FetchErrors(result.DataListID);
+            var fetchErrors = DataObject.Environment.FetchErrors();
             if(fetchErrors != string.Empty)
             {
                 Assert.Fail(fetchErrors);
@@ -268,7 +268,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            var fetchErrors = Compiler.FetchErrors(result.DataListID);
+            var fetchErrors = DataObject.Environment.FetchErrors();
             if(fetchErrors != string.Empty)
             {
                 Assert.Fail(fetchErrors);
@@ -299,7 +299,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
             Assert.IsTrue(Compiler.HasErrors(result.DataListID));
-            var fetchErrors = Compiler.FetchErrors(result.DataListID);
+            var fetchErrors = DataObject.Environment.FetchErrors();
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
@@ -325,7 +325,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
             Assert.IsTrue(Compiler.HasErrors(result.DataListID));
-            var fetchErrors = Compiler.FetchErrors(result.DataListID);
+            var fetchErrors = DataObject.Environment.FetchErrors();
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
             StringAssert.Contains(fetchErrors, "Cannot execute explorer from tool.");
@@ -358,7 +358,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsTrue(Compiler.HasErrors(result.DataListID));
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
             Assert.IsNull(actual);
-            var fetchErrors = Compiler.FetchErrors(result.DataListID);
+            var fetchErrors = DataObject.Environment.FetchErrors();
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
             StringAssert.Contains(fetchErrors, "The console errored");

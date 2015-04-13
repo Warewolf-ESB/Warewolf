@@ -136,9 +136,17 @@ namespace Dev2.Activities
                             string val = GetCorrectSystemInformation(item.EnTypeOfSystemInformation);
                             string expression = item.Result;
 
-                            foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
+                            var regions = DataListCleaningUtils.SplitIntoRegions(expression);
+                            if (regions.Count > 1)
                             {
-                                dataObject.Environment.Assign(region, val);
+                                allErrors.AddError("Multiple variables in result field.");
+                            }
+                            else
+                            {
+                                foreach (var region in regions)
+                                {
+                                    dataObject.Environment.Assign(region, val);
+                                }
                             }
                         }
                     }
@@ -148,11 +156,7 @@ namespace Dev2.Activities
                         allErrors.AddError(err.Message);
                     }
                 }
-
-
-               
-              
-
+                
                 if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
                     int innerCount = 1;

@@ -542,7 +542,7 @@ namespace ActivityUnitTests
         #region Retrieve Errors
         public static string FetchErrors(Guid dataListId)
         {
-            return Compiler.FetchErrors(dataListId);
+            return "";
         }
         #endregion
     }

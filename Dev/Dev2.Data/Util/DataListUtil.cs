@@ -98,6 +98,26 @@ namespace Dev2.Data.Util
                                         expression.Replace(extractIndexRegionFromRecordset, "()");
         }
 
+        
+        /// <summary>
+        /// Replaces the index of a recordset with a blank index.
+        /// </summary>
+        /// <param name="expression">The expession.</param>
+        /// <returns></returns>
+        public static string ReplaceRecordsetIndexWithStar(string expression)
+        {
+            var index = ExtractIndexRegionFromRecordset(expression);
+
+            if (string.IsNullOrEmpty(index))
+            {
+                return expression;
+            }
+
+            string extractIndexRegionFromRecordset = string.Format("({0})", index);
+            return string.IsNullOrEmpty(extractIndexRegionFromRecordset) ? expression :
+                                        expression.Replace(extractIndexRegionFromRecordset, "(*)");
+        }
+
         /// <summary>
         /// Determines whether [is calc evaluation] [the specified expression].
         /// </summary>
@@ -787,6 +807,24 @@ namespace Dev2.Data.Util
             if(dotIdx > 0)
             {
                 result = value.Substring((dotIdx + 1));
+            }
+
+            return result;
+        }
+        
+        /// <summary>
+        /// Used to extract a field name from our recordset notation
+        /// </summary>
+        /// <param name="value">The value</param>
+        /// <returns></returns>
+        public static string ExtractFieldNameOnlyFromValue(string value)
+        {
+            string result = string.Empty;
+            int dotIdx = value.LastIndexOf(".", StringComparison.Ordinal);
+            int closeIdx = value.LastIndexOf("]]", StringComparison.Ordinal);
+            if(dotIdx > 0)
+            {
+                result = value.Substring((dotIdx + 1),closeIdx-dotIdx-1);
             }
 
             return result;
@@ -1512,8 +1550,12 @@ namespace Dev2.Data.Util
                     var outPutRecSet = outputs.FirstOrDefault(definition => definition.IsRecordSet && definition.RecordSetName == recordSetDefinition.SetName);
                     if (outPutRecSet != null)
                     {
-
-
+                        var startIndex = 0;
+                        var recordSetName = recordSetDefinition.SetName;
+                        if(environment.HasRecordSet(AddBracketsToValueIfNotExist(MakeValueIntoHighLevelRecordset(recordSetName))))
+                        {
+                            startIndex = environment.GetLength(recordSetName);
+                        }
                         foreach (var outputColumnDefinitions in recordSetDefinition.Columns)
                         {
 
@@ -1537,8 +1579,8 @@ namespace Dev2.Data.Util
                                     {
                                         if (recsetResult != null)
                                         {
-
-                                            environment.EvalAssignFromNestedLast(outputColumnDefinitions.RawValue, recsetResult);
+                                            
+                                            environment.EvalAssignFromNestedLast(outputColumnDefinitions.RawValue, recsetResult, startIndex);
                                         }
                                     }
                                     if (enRecordsetIndexType == enRecordsetIndexType.Numeric)
@@ -1594,6 +1636,26 @@ namespace Dev2.Data.Util
             if (blankIndex != -1)
             {
                 return fullRecSetName.Replace("().", string.Format("({0}).", length));
+            }
+            return fullRecSetName;
+        }
+        
+        public static string ReplaceRecordsetBlankWithStar(string fullRecSetName)
+        {
+            var blankIndex = fullRecSetName.IndexOf("().", StringComparison.Ordinal);
+            if (blankIndex != -1)
+            {
+                return fullRecSetName.Replace("().", string.Format("({0}).", "*"));
+            }
+            return fullRecSetName;
+        } 
+        
+        public static string ReplaceRecordBlankWithStar(string fullRecSetName)
+        {
+            var blankIndex = fullRecSetName.IndexOf("()", StringComparison.Ordinal);
+            if (blankIndex != -1)
+            {
+                return fullRecSetName.Replace("()", string.Format("({0})", "*"));
             }
             return fullRecSetName;
         }

@@ -69,7 +69,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
@@ -129,8 +128,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(hasErrors)
                 {
                     DisplayAndWriteError("DsfCountRecordsActivity", allErrors);
-                    //dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(enSystemTag.Dev2Error.ToString()), allErrors.MakeDisplayReady());
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    var errorString = allErrors.MakeDataListReady();
+                    dataObject.Environment.AddError(errorString);
                 }
                 if(dataObject.IsDebugMode())
                 {

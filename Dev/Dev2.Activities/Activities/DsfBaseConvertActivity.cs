@@ -127,6 +127,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         Dev2Logger.Log.Error("DSFBaseConvert", e);
                         allErrors.AddError(e.Message);
+                        if (dataObject.IsDebugMode())
+                        {
+                            //var debugItem = new DebugItem();
+                           // AddDebugItem(new DebugItemStaticDataParams("", outputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
+                           // AddDebugItem(new DebugEvalResult(item.FromExpression, "", env), debugItem);
+                           // _debugOutputs.Add(debugItem);
+                            outputIndex++;
+                        }
                     }         
                 }
             }
