@@ -607,35 +607,6 @@ Scenario: Workflow with 2 Assign tools by using Scalars as variables executing a
 	  | # |                   |
 	  | 1 | [[b]] =  warewolf |
 
-Scenario: Workflow with assign and webservice with incorrect output variables
-	 Given I have a workflow "TestService"
-	 And "TestService" contains an Assign "Inputsvar" as
-	  | variable | value |
-	  | [[test]] | a&    |
-	  | [[a]]    | d     |
-	 And "TestService" contains a "webservice" service "InternalCountriesServiceTest" with mappings
-	  | Input to Service | From Variable | Output from Service      | To Variable                 |
-	  | extension        | json          | Countries(*).CountryID   | [[Countries().CountryID]]   |
-	  | prefix           | [[[[test]]]]  | Countries(*).Description | [[Countries().Description]] |
-	  When "TestService" is executed
-	  Then the workflow execution has "AN" error
-	   And the 'Inputsvar' in WorkFlow 'TestService' debug inputs as 
-	  | # | Variable   | New Value |
-	  | 1 | [[test]] = | a         |
-	  | 2 | [[a]]    = | d         |
-	  And the 'Inputsvar' in Workflow 'TestService' debug outputs as    
-	  | # |              |
-	  | 1 | [[test]] = a |
-	  | 2 | [[a]] = d    |
-	  And the 'InternalCountriesServiceTest' in WorkFlow 'TestService' debug inputs as
-	  |                       |
-	  | json                  |
-	  | [[[[test]]]] = [[d&]] |
-	  And the 'InternalCountriesServiceTest' in Workflow 'TestService' debug outputs as
-	  |                                 |
-	  | [[Countries(10).CountryID]] =   |
-	  | [[Countries(10).Description]] = |
-
 Scenario: Workflow with Assign Count Data Merge and 2 Delete  tools executing against the server
 	  Given I have a workflow "WorkflowWithAssignCountDataMerge&2Delete"
 	  And "WorkflowWithAssignCountDataMerge&2Delete" contains an Assign "countrecordval1" as
