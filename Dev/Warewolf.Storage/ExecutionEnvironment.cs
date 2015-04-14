@@ -593,5 +593,16 @@ namespace Warewolf.Storage
         {
             return PublicFunctions.IsValidRecsetExpression(exp);
         }
+
+        public static string ConvertToColumnWithNumeric(string inputVariable, string val,string index)
+        {
+            var x = WarewolfDataEvaluationCommon.ParseLanguageExpression(inputVariable);
+            if (x.IsRecordSetNameExpression)
+            {
+                var outputval = x as LanguageAST.LanguageExpression.RecordSetNameExpression;
+                return String.Format("[[{0}({1}).{2}]]", outputval.Item.Name,index, val);
+            }
+            return inputVariable;
+        }
     }
 }
