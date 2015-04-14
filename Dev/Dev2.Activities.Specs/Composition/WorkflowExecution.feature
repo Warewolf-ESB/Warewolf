@@ -3695,12 +3695,7 @@ Scenario: Executing Control Flow - Sequence example workflow
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  When "Control Flow - Sequence Test" is executed
 	  Then the workflow execution has "NO" error
-	  And the 'Split Names (3)' in WorkFlow 'Organize Customers' debug inputs as
-	  | String to Split                                                                                                                                                                                               | Process Direction | Skip blank rows | # |                               | With  | Using | Include | Escape |
-	  | [[CustomerCSV]] = bart,simpson,bart.simpson@couch.com,homer,simpson,homer.simpson@couch.com,marge,simpson,marge.simpson@couch.com,lisa,simpson,lisa.simpson@couch.com,maggie,simpson,maggie.simpson@couch.com | Forward           | No              | 1 | [[TempCustomers().FirstName]] | Chars | ,     | No      |        |
-	  |                                                                                                                                                                                                               | Forward           | No              | 2 | [[TempCustomers().LastName]]  | Chars | ,     | No      |        |
-	  |                                                                                                                                                                                                               | Forward           | No              | 3 | [[TempCustomers().Email]]     | Chars | ,     | No      |        |                                                                                                                                                                   
-	    And the 'Split Names (3)' in Workflow 'Organize Customers' debug outputs as
+      And the 'Split Names (3)' in Workflow 'Organize Customers' debug outputs as
 	   | # |                                                       |
 	   | 1 | [[TempCustomers(1).FirstName]] = bart                 |
 	   |   | [[TempCustomers(2).FirstName]] = homer                |
