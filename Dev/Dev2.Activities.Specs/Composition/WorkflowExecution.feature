@@ -649,30 +649,6 @@ Scenario: Workflow with 2 Assign tools by using Scalars as variables executing a
 	  | # |                   |
 	  | 1 | [[b]] =  warewolf |
 
-
-Scenario: Workflow with Assign and Gather System Information
-      Given I have a workflow "workflowithAssignandGatherSystemInformation"
-	  And "workflowithAssignandGatherSystemInformation" contains an Assign "Assign for sys" as
-	  | variable | value |
-	  | [[b]]    | 1     |    
-	   And "workflowithAssignandGatherSystemInformation" contains Gather System Info "System info" as
-	  | Variable      | Selected    |
-	  | [[test[[b]]]] | Date & Time |
-	  When "workflowithAssignandGatherSystemInformation" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'Assign for sys' in WorkFlow 'workflowithAssignandGatherSystemInformation' debug inputs as
-	  | # | Variable | New Value |
-	  | 1 | [[b]] =  | 1         |
-	  And the 'Assign for sys' in Workflow 'workflowithAssignandGatherSystemInformation' debug outputs as    
-	  | # |          |
-	  | 1 | [[b]] = 1 |
-	  And the 'System info' in WorkFlow 'workflowithAssignandGatherSystemInformation' debug inputs as
-	  | # |                 |             |
-	  | 1 | [[test[[b]]]] = | Date & Time |
-	  And the 'System info' in Workflow 'workflowithAssignandGatherSystemInformation' debug outputs as   
-	  | # |                        |
-	  | 1 | [[test[[1]]]] = String |
-
 Scenario: Workflow with assign and webservice with incorrect output variables
 	 Given I have a workflow "TestService"
 	 And "TestService" contains an Assign "Inputsvar" as
@@ -1307,8 +1283,8 @@ Scenario: Simple workflow with Assign DataMerge and DataSplit(Evaluating records
 
 
 Scenario: Simple workflow with Assign DataMerge and DataSplit(Evaluating index recordset variable)executing against the server
- Given I have a workflow "WorkflowWithAssignamergeandSplit"
- And "WorkflowWithAssignamergeandSplit" contains an Assign "Data" as
+ Given I have a workflow "WorkflowWithAssignMergeandSplit"
+ And "WorkflowWithAssignMergeandSplit" contains an Assign "Data" as
   | variable       | value    |
   | [[a]]          | 1        |
   | [[b]]          | 2        |
@@ -1316,17 +1292,17 @@ Scenario: Simple workflow with Assign DataMerge and DataSplit(Evaluating index r
   | [[rec(2).a]]   | test     |
   | [[index(1).a]] | 1        |
   | [[index(2).a]] | 3        |	
-  And "WorkflowWithAssignamergeandSplit" contains Data Merge "Merge" into "[[result]]" as	
-	 | Variable                             | Type  | Using | Padding | Alignment |
-	 | [[rec([[index(1).a]]).a]] = warewolf | Index | 8     |         | Left      |
-	 | [[a]]                                | Index | 4     |         | Left      |
-	 And "WorkflowWithAssignamergeandSplit" contains Data Split "DataSplit" as
+  And "WorkflowWithAssignMergeandSplit" contains Data Merge "Merge" into "[[result]]" as	
+	 | Variable                  | Type  | Using | Padding | Alignment |
+	 | [[rec([[index(1).a]]).a]] | Index | 8     |         | Left      |
+	 | [[a]]                     | Index | 4     |         | Left      |
+	 And "WorkflowWithAssignMergeandSplit" contains Data Split "DataSplit" as
 	 | String       | Variable                  | Type  | At | Include    | Escape |
 	 | [[rec(1).a]] | [[d]]                     | Index | 4  | Unselected |        |
 	 |              | [[rec([[index(2).a]]).a]] | Index | 4  | Unselected |        |
-	 When "WorkflowWithAssignamergeandSplit" is executed
+	 When "WorkflowWithAssignMergeandSplit" is executed
 	 Then the workflow execution has "NO" error
-	 And the 'Data' in WorkFlow 'WorkflowWithAssignamergeandSplit' debug inputs as
+	 And the 'Data' in WorkFlow 'WorkflowWithAssignMergeandSplit' debug inputs as
 	 | # | Variable         | New Value |
 	 | 1 | [[a]] =          | 1         |
 	 | 2 | [[b]] =          | 2         |
@@ -1334,7 +1310,7 @@ Scenario: Simple workflow with Assign DataMerge and DataSplit(Evaluating index r
 	 | 4 | [[rec(2).a]] =   | test      |
 	 | 5 | [[index(1).a]] = | 1         |
 	 | 6 | [[index(2).a]] = | 3         |
-	 And the 'Data' in Workflow 'WorkflowWithAssignamergeandSplit' debug outputs as 
+	 And the 'Data' in Workflow 'WorkflowWithAssignMergeandSplit' debug outputs as 
 	 | # |                         |
 	 | 1 | [[a]] = 1               |
 	 | 2 | [[b]] = 2               |
@@ -1342,21 +1318,21 @@ Scenario: Simple workflow with Assign DataMerge and DataSplit(Evaluating index r
 	 | 4 | [[rec(2).a]] = test     |
 	 | 5 | [[index(1).a]] = 1      |
 	 | 6 | [[index(2).a]] = 3      |  	
-    And the 'Merge' in WorkFlow 'WorkflowWithAssignamergeandSplit' debug inputs as
+    And the 'Merge' in WorkFlow 'WorkflowWithAssignMergeandSplit' debug inputs as
 	 | # |                                      | With  | Using | Pad | Align |
 	 | 1 | [[rec([[index(1).a]]).a]] = warewolf | Index | "8"   | ""  | Left  |
 	 | 2 | [[a]] = 1                            | Index | "4"   | ""  | Left  |
-	 And the 'Merge' in Workflow 'WorkflowWithAssignamergeandSplit' debug outputs as
+	 And the 'Merge' in Workflow 'WorkflowWithAssignMergeandSplit' debug outputs as
 	 |                        |
 	 | [[result]] = warewolf1 |
-	 And the 'DataSplit' in WorkFlow 'WorkflowWithAssignamergeandSplit' debug inputs as  
-	 | String to Split         | Process Direction | Skip blank rows | # |                                          | With  | Using | Include | Escape |
-	 | [[rec(1).a]] = warewolf | Forward           | No              | 1 | [[d]] =                                  | Index | 4     | No      |        |
-	 |                         |                   |                 | 2 | [[rec([[index(2).a]]).a]] = [[rec(2).a]] | Index | 4     | No      |        |
-	  And the 'DataSplit' in Workflow 'WorkflowWithAssignamergeandSplit' debug outputs as
+	 And the 'DataSplit' in WorkFlow 'WorkflowWithAssignMergeandSplit' debug inputs as  
+	 | String to Split         | Process Direction | Skip blank rows | # |                | With  | Using | Include | Escape |
+	 | [[rec(1).a]] = warewolf | Forward           | No              | 1 | [[d]] =        | Index | 4     | No      |        |
+	 |                         |                   |                 | 2 | [[rec(3).a]] = | Index | 4     | No      |        |
+	  And the 'DataSplit' in Workflow 'WorkflowWithAssignMergeandSplit' debug outputs as
 	  | # |                     |
 	  | 1 | [[d]] = ware        |
-	  | 2 | [[rec(2).a]] = wolf |
+	  | 2 | [[rec(3).a]] = wolf |
 
 Scenario: Simple workflow with 2 Assign tools evaluating recordset index variables.
 	 Given I have a workflow "WorkflowWithAssignandAssign"
@@ -4009,27 +3985,27 @@ Scenario: Workflow Base Convert and Case Convert passing invalid variable throug
 	  | # |                     |
 
 Scenario: Workflow Base Convert coverting same variable multiple times
-	 Given I have a workflow "WorkflowWithBase1"
-	 And "WorkflowWithBase1" contains an Assign "Assign1" as
+	 Given I have a workflow "WorkflowWithBaseConvertUsingSameVariable"
+	 And "WorkflowWithBaseConvertUsingSameVariable" contains an Assign "Assign1" as
 	 | variable | value |
 	 | [[test]] | data  |
-	 And "WorkflowWithBase1" contains Base convert "Base12" as
+	 And "WorkflowWithBaseConvertUsingSameVariable" contains Base convert "Base12" as
 	 | Variable | From    | To      |
 	 | [[test]] | Text    | Base 64 |
 	 | [[test]] | Base 64 | Text    |
-	 When "WorkflowWithBase1" is executed
+	 When "WorkflowWithBaseConvertUsingSameVariable" is executed
 	 Then the workflow execution has "NO" error
-	 And the 'Assign1' in WorkFlow 'WorkflowWithBase1' debug inputs as
+	 And the 'Assign1' in WorkFlow 'WorkflowWithBaseConvertUsingSameVariable' debug inputs as
 	 | # | Variable   | New Value |
 	 | 1 | [[test]] = | data      |
-	  And the 'Assign1' in Workflow 'WorkflowWithBase1' debug outputs as   
+	  And the 'Assign1' in Workflow 'WorkflowWithBaseConvertUsingSameVariable' debug outputs as   
 	 | # |                  |
 	 | 1 | [[test]] =  data |
-	 And the 'Base12' in WorkFlow 'WorkflowWithBase1' debug inputs as
+	 And the 'Base12' in WorkFlow 'WorkflowWithBaseConvertUsingSameVariable' debug inputs as
 	 | # | Convert             | From    | To      |
 	 | 1 | [[test]] = data     | Text    | Base 64 |
 	 | 2 | [[test]] = ZGF0YQ== | Base 64 | Text    |
-    And the 'Base12' in Workflow 'WorkflowWithBase1' debug outputs as  
+    And the 'Base12' in Workflow 'WorkflowWithBaseConvertUsingSameVariable' debug outputs as  
 	 | # |                     |
 	 | 1 | [[test]] = ZGF0YQ== |
 	 | 2 | [[test]] = data     |
