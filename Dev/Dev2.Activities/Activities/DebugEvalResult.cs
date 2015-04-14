@@ -14,14 +14,12 @@ namespace Dev2.Activities
     public class DebugEvalResult : DebugOutputBase
     {
         string _inputVariable;
-        string _positionInput;
         readonly string _label;
         readonly WarewolfDataEvaluationCommon.WarewolfEvalResult _evalResult;
 
         public DebugEvalResult(string inputVariable, string label, IExecutionEnvironment environment, bool isDataMerge = false)
         {
             _inputVariable = inputVariable.Trim();
-            _positionInput = "";
             _label = label;
             try
             {
@@ -70,7 +68,6 @@ namespace Dev2.Activities
                     }
                     _evalResult = environment.Eval(_inputVariable);
                 }
-                if (_inputVariable.Contains(".WarewolfPositionColumn")) _positionInput = _inputVariable.Replace(".WarewolfPositionColumn", ""); 
 
             }
             catch(Exception e)
@@ -123,16 +120,7 @@ namespace Dev2.Activities
                 var listResult = _evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult;
                 if (listResult != null)
                 {
-                    List<IDebugItemResult> res = new List<IDebugItemResult>();
-                    foreach(var item in listResult.Item.Data)
-                    {
-                        if (item.Key != WarewolfDataEvaluationCommon.PositionColumn)
-                        {
-                            var data = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomListresult(item.Value) as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
-                            res.AddRange(new DebugItemWarewolfAtomListResult(data, "", "", ExecutionEnvironment.ConvertToColumnWithStar(_inputVariable, item.Key), LabelText, "", "=").GetDebugItemResult());
-                        }
-                     }
-                    return res;
+                    return new DebugItemWarewolfRecordset(listResult.Item, _inputVariable, LabelText,  "=").GetDebugItemResult();
                 }
             }
 

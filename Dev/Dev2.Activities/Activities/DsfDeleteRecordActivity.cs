@@ -113,7 +113,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (dataObject.IsDebugMode() && ExecutionEnvironment.IsRecordSetName(RecordsetName))
                 {
                     AddDebugInputItem(new DebugEvalResult(RecordsetName, "Records", dataObject.Environment));
-
                 }
 
             }
