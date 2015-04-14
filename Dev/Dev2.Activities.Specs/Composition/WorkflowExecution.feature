@@ -555,17 +555,17 @@ Scenario: Workflow with Assign Create and Delete Record tools with incorrect inp
 	  | # |                            |
 	  | 1 | [[rec(1).a]] = create.txt |
 	  And the 'Create1' in WorkFlow 'WorkflowWithAssignCreateDeleteRecordNoneExist1' debug inputs as
-	  | File or Folder            | Overwrite | Username   | Password   |
-	  | [[rec(1).a]] = create.txt | True      | Username = | Password = |
+	  | File or Folder            | Overwrite | Username | Password |
+	  | [[rec(1).a]] = create.txt | True      | " "      | " "      |
 	  And the 'Create1' in Workflow 'WorkflowWithAssignCreateDeleteRecordNoneExist1' debug outputs as    
 	   |                    |
-	   | [[res1]] =  |
+	   | [[res1]] = Failure  |
 	  And the 'Delete' in WorkFlow 'WorkflowWithAssignCreateDeleteRecordNoneExist1' debug inputs as
 	  | Input Path                | Username   | Password   |
-	  | [[rec(1).a]] = create.txt | Username = | Password = |
+	  | [[rec(1).a]] = create.txt | " " | " " |
 	  And the 'Delete' in Workflow 'WorkflowWithAssignCreateDeleteRecordNoneExist1' debug outputs as    
 	  |                    |
-	  | [[res1]] =  |
+	  | [[res1]] = Failure |
 
 Scenario: Workflow with 2 Assign tools executing against the server
 	  Given I have a workflow "WorkflowWith2Assigntools"
@@ -2743,7 +2743,7 @@ Scenario: Workflow with Assign Base Convert and Case Convert testing variable th
 	  | 1 | [[res12]] = | UPPER |
 	  And the 'Case to Convert' in Workflow 'WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues' debug outputs as  
 	  | # |             |
-	  | 1 | [[res12]] = |
+	  |  |  |
 	  And the 'Base to Convert' in WorkFlow 'WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues' debug inputs as
 	  | # | Convert     | From | To      |
 	  | 1 | [[res12]] = | Text | Base 64 |
@@ -2961,16 +2961,16 @@ Scenario: Workflow with Assign Create Delete folder and testing variable values 
 	  | 1 | [[rec(1).a]] = C:\copied00.txt |
 	 And the 'Create12' in WorkFlow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2' debug inputs as
 	  | File or Folder                           | Overwrite | Username | Password |
-	  | [[NoValue]]\copied00.txt = \copied00.txt | True      | ""       | ""       |  
+	  | [[NoValue]]\copied00.txt = | True      | ""       | ""       |  
 	   And the 'Create12' in Workflow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2' debug outputs as    
 	   |                    |
-	   | [[res1]] = Success |
+	   | [[res1]] = Failure |
 	  And the 'DeleteFolder1' in WorkFlow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2' debug inputs as
 	  | Input Path                               | Username | Password |
-	  | [[NoValue]]\copied00.txt = \copied00.txt | ""       | ""       |
+	  | [[NoValue]]\copied00.txt =  | ""       | ""       |
 	  And the 'DeleteFolder1' in Workflow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2' debug outputs as    
 	  |                    |
-	  | [[res2]] = Success |
+	  | [[res2]] = Failure |
 
 
 Scenario: Calculate testing variable values that hasn't been assigned
@@ -3104,10 +3104,10 @@ Scenario: Workflow with Assign, Date Time Difference tools and testing variable 
 	  | 1 | [[val]]  = 2014 |
 	  And the 'DateTime4' in WorkFlow 'WorkflowContainsDateTimeDifferencetoolsTestingUnassignedvariablevalue2' debug inputs as
 	  | Input 1                                                | Input 2    | Input Format | Output In |
-	  | 10/01/1991  [[val1]]/[[val1]]/[[val1]] = 10/01/1991  // | 10/01/1991 | dd/mm/yyyy   | Years     |
+	  | 10/01/1991  [[val1]]/[[val1]]/[[val1]] =  | 10/01/1991 | dd/mm/yyyy   | Years     |
 	  And the 'DateTime4' in Workflow 'WorkflowContainsDateTimeDifferencetoolsTestingUnassignedvariablevalue2' debug outputs as 
 	  |                |
-	  | [[result]] = 0 |
+	  |  |
 
 Scenario: Workflow with Assign  Delete and testing variables that hasn't been assigned
 	  Given I have a workflow "WorkflowWithAssignDelete12"
