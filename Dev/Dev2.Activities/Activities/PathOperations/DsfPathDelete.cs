@@ -89,7 +89,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 catch(Exception e)
                 {
-                    outputs[0].OutputStrings.Add(null);
+                    outputs.Add(DataListFactory.CreateOutputTO(Result, "Failure"));
+                    //outputs[0].OutputStrings.Add(null);
                     allErrors.AddError(e.Message);
                     break;
                 }
