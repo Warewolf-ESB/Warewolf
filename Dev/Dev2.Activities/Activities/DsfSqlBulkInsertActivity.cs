@@ -175,10 +175,14 @@ namespace Dev2.Activities
         void DoInsertForSqlServer(DbSource runtimeDatabase, SqlBulkCopyOptions currentOptions, IDSFDataObject dataObject, ErrorResultTO allErrors, IWarewolfIterator batchItr, IWarewolfListIterator parametersIteratorCollection, IWarewolfIterator timeoutItr, ref ErrorResultTO errorResultTo, ref bool addExceptionToErrorList)
         {
 
-            SqlBulkCopy sqlBulkCopy = null;
+            SqlBulkCopy sqlBulkCopy;
             if(String.IsNullOrEmpty(BatchSize) && String.IsNullOrEmpty(Timeout))
             {
                 sqlBulkCopy = new SqlBulkCopy(runtimeDatabase.ConnectionString, currentOptions) { DestinationTableName = TableName };
+            }
+            else
+            {
+                sqlBulkCopy = SetupSqlBulkCopy(batchItr, parametersIteratorCollection, timeoutItr, runtimeDatabase, currentOptions);
             }
             
             if(sqlBulkCopy != null)
@@ -190,13 +194,6 @@ namespace Dev2.Activities
                     var iteratorCollection = new WarewolfListIterator();
                     var listOfIterators = GetIteratorsFromInputMappings(dataObject, iteratorCollection, out errorResultTo);
                     allErrors.MergeErrors(errorResultTo);
-
-                    if(allErrors.HasErrors())
-                    {
-                        sqlBulkCopy = SetupSqlBulkCopy(batchItr, parametersIteratorCollection, timeoutItr, runtimeDatabase, currentOptions);
-                    }
-                    AddBatchSizeAndTimeOutToDebug(dataObject.Environment);
-                    AddOptionsDebugItems();
 
                     // oh no, we have an issue, bubble it out ;)
                     if(allErrors.HasErrors())
