@@ -112,21 +112,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (dataObject.IsDebugMode() && ExecutionEnvironment.IsRecordSetName(RecordsetName))
                 {
-                    var res = dataObject.Environment.Eval(RecordsetName);
-                    if (res.IsWarewolfRecordSetResult)
-                    {
-                        // ReSharper disable PossibleNullReferenceException
-                        var recset = (res as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult).Item;
-                        // ReSharper restore PossibleNullReferenceException
-                        if (recset != null)
-                        {
-                            AddDebugInputItem(new DebugItemWarewolfRecordset(recset, RecordsetName, "Recordset", "="));
-                        }
-                    }
-                    else
-                    {
-                        AddDebugInputItem(new DebugItemWarewolfAtomResult("", RecordsetName, "Recordset", "", "", "", "="));
-                    }
+                    AddDebugInputItem(new DebugEvalResult(RecordsetName, "Records", dataObject.Environment));
                 }
 
             }
