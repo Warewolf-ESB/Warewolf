@@ -24,6 +24,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.Decision;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -52,7 +53,7 @@ namespace Dev2.Runtime.WebServer.Handlers
         {
             //lock(ExecutionObject)
             {
-                string executePayload;
+                string executePayload = "";
                 IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
                 Guid workspaceGuid;
 
@@ -187,10 +188,15 @@ namespace Dev2.Runtime.WebServer.Handlers
                         // some silly chicken thinks web request where a good idea for debug ;(
                         if(!dataObject.IsDebug || dataObject.RemoteInvoke)
                         {
-                            executePayload = esbEndpoint.FetchExecutionPayload(dataObject, formatter, out errors);
-                            allErrors.MergeErrors(errors);
-                            compiler.UpsertSystemTag(executionDlid, enSystemTag.Dev2Error, allErrors.MakeDataListReady(),
-                                                     out errors);
+                            if (dataObject.ReturnType == EmitionTypes.JSON)
+                            {
+                                executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, workspaceGuid,resource.DataList.ToString());
+                            }
+                            else if (dataObject.ReturnType == EmitionTypes.XML)
+                            {
+                                executePayload = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, workspaceGuid,resource.DataList.ToString());
+                            }
+                            dataObject.Environment.AddError(allErrors.MakeDataListReady());
                         }
                         else
                         {
@@ -293,7 +299,8 @@ namespace Dev2.Runtime.WebServer.Handlers
                         }
                     }
                 }
-
+                Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
+                dataObject.Environment = null;
                 // else handle the format requested ;)
                 return new StringResponseWriter(executePayload, formatter.ContentType);
             }

@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ServiceModel.Data;
@@ -37,7 +38,7 @@ namespace Dev2.Services.Execution
         {
         }
 
-        protected override object ExecuteService(out ErrorResultTO errors, IOutputFormatter formater = null)
+        protected override object ExecuteService(List<MethodParameter> methodParameters, out ErrorResultTO errors, IOutputFormatter formater = null)
         {
             errors = new ErrorResultTO();
 

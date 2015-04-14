@@ -21,12 +21,12 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -59,7 +59,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Properties
 
+        // ReSharper disable MemberCanBePrivate.Global
         public enForEachType ForEachType { get; set; }
+      
 
         [FindMissing]
         public string From { get; set; }
@@ -119,6 +121,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return 0;
             }
         }
+        // ReSharper restore MemberCanBePrivate.Global
 // ReSharper disable InconsistentNaming
         public Variable test { get; set; }
 // ReSharper restore InconsistentNaming
@@ -202,16 +205,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             
 
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             dataObject.ForEachNestingLevel++;
             ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors;
-            Guid executionId = DataListExecutionID.Get(context);
 
             InitializeDebug(dataObject);
             try
             {
-                ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, executionId, compiler, out errors);
+                ErrorResultTO errors;
+                ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out errors);
 
                 if(errors.HasErrors())
                 {
@@ -268,7 +269,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfForEachActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    foreach (var fetchError in allErrors.FetchErrors())
+                    {
+                        dataObject.Environment.AddError(fetchError);
+                    }
+                    
                     dataObject.ParentInstanceID = _previousParentId;
                 }
                 if(dataObject.IsDebugMode())
@@ -483,11 +488,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Fetches the type of the execution.
         /// </summary>        
         /// <param name="dataObject">The data object.</param>
-        /// <param name="dlId">The dl ID.</param>
-        /// <param name="compiler">The compiler.</param>
+        /// <param name="environment"></param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>                
-        private ForEachBootstrapTO FetchExecutionType(IDSFDataObject dataObject, Guid dlId, IDataListCompiler compiler, out ErrorResultTO errors)
+        private ForEachBootstrapTO FetchExecutionType(IDSFDataObject dataObject, IExecutionEnvironment environment, out ErrorResultTO errors)
         {
             if(dataObject.IsDebugMode())
             {
@@ -495,34 +499,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddDebugItem(new DebugItemStaticDataParams(ForEachType.GetDescription(), ""), debugItem);
                 if(ForEachType == enForEachType.NumOfExecution && !string.IsNullOrEmpty(NumOfExections))
                 {
-                    IBinaryDataListEntry numOfExectionsEntry = compiler.Evaluate(dlId, enActionType.User, NumOfExections, false, out errors);
-                    AddDebugItem(new DebugItemVariableParams(NumOfExections, "Number", numOfExectionsEntry, dlId), debugItem);
+
+
+                    AddDebugItem(new DebugEvalResult(NumOfExections, "Number", environment), debugItem);
                 }
                 if(ForEachType == enForEachType.InCSV && !string.IsNullOrEmpty(CsvIndexes))
                 {
-                    IBinaryDataListEntry csvIndexesEntry = compiler.Evaluate(dlId, enActionType.User, CsvIndexes, false, out errors);
-                    AddDebugItem(new DebugItemVariableParams(CsvIndexes, "Csv Indexes", csvIndexesEntry, dlId), debugItem);
+                    AddDebugItem(new DebugEvalResult(CsvIndexes, "Csv Indexes", environment), debugItem);
+     
                 }
                 if(ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(From))
                 {
-                    IBinaryDataListEntry fromEntry = compiler.Evaluate(dlId, enActionType.User, From, false, out errors);
-                    AddDebugItem(new DebugItemVariableParams(From, "From", fromEntry, dlId), debugItem);
+                    AddDebugItem(new DebugEvalResult(From, "From", environment), debugItem);
+ 
                 }
                 if(ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(To))
                 {
-                    IBinaryDataListEntry toEntry = compiler.Evaluate(dlId, enActionType.User, To, false, out errors);
-                    AddDebugItem(new DebugItemVariableParams(To, "To", toEntry, dlId), debugItem);
+
+                    AddDebugItem(new DebugEvalResult(To, "To", environment), debugItem);
+
                 }
                 if(ForEachType == enForEachType.InRecordset && !string.IsNullOrEmpty(Recordset))
                 {
-                    var toEmit = Recordset.Replace("()", "(*)");
-                    IBinaryDataListEntry toEntry = compiler.Evaluate(dlId, enActionType.User, toEmit, false, out errors);
-                    AddDebugItem(new DebugItemVariableParams(toEmit, "Recordset", toEntry, dlId), debugItem);
+    
+
+                    AddDebugItem(new DebugEvalResult(ExecutionEnvironment.GetPositionColumnExpression(Recordset), "Recordset ", environment), debugItem);
                 }
                 _debugInputs.Add(debugItem);
             }
 
-            var result = new ForEachBootstrapTO(ForEachType, From, To, CsvIndexes, NumOfExections, Recordset, dlId, compiler, out errors);
+            var result = new ForEachBootstrapTO(ForEachType, From, To, CsvIndexes, NumOfExections, Recordset, environment, out errors);
 
             return result;
 
@@ -720,7 +726,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -729,7 +735,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             return DebugItem.EmptyList;
         }

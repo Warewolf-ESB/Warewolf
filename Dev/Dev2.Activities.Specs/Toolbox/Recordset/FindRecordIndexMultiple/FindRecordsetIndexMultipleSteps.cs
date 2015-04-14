@@ -227,17 +227,18 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
                 List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column,
                                                                                out error);
                 recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
+                
                 Assert.AreEqual(recordSetValues[1], expectedResult);
             }
             else
             {
                 string actualValue;
                 expectedResult = expectedResult.Replace('"', ' ').Trim();
-                GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
-                                           out actualValue, out error);
+                GetScalarValueFromEnvironment(result.Environment, ResultVariable,out actualValue,out error);
+
                 if(string.IsNullOrEmpty(expectedResult))
                 {
-                    Assert.IsNull(actualValue);
+                    Assert.IsTrue(String.IsNullOrEmpty(actualValue));
                 }
                 else
                 {

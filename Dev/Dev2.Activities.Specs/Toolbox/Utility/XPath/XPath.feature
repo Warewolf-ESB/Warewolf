@@ -34,12 +34,12 @@ Scenario: Use XPath to build a recordset with 2 fields
 	And I have a variable "[[rec(*).id]]" output with xpath "//root/number/@id"
 	And I have a variable "[[rec2(*).text]]" output with xpath "//root/number/text()"
 	When the xpath tool is executed
-	Then the xpath result for this varibale "[[rec().id]]" will be
+	Then the xpath result for this varibale "[[rec(*).id]]" will be
 	| rec().id |
 	| 1        |
 	| 2        |
 	| 3        |
-	Then the xpath result for this varibale "[[rec2().text]]" will be
+	Then the xpath result for this varibale "[[rec2(*).text]]" will be
 	| rec().text |
 	| One        |
 	| Two        |
@@ -99,12 +99,13 @@ Scenario: Use XPath with append notation should add
 	And the execution has "NO" error
 	And the debug inputs as  
 	| XML                                                                                                               | # |                                    |
-	| [[rec(1).set]] = <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> | 1 | [[rec(1).set]] = //root/number/@id |
+	| [[rec(1).set]] = <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> | 1 | [[rec().set]] = //root/number/@id |
 	And the debug output as 
-	| # |                    |
-	| 1 | [[rec(2).set]] = 1 |
-	|   | [[rec(3).set]] = 2 |
-	|   | [[rec(4).set]] = 3 |  
+	| # |                                                                                                                   |
+	| 1 | [[rec(1).set]] = <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> |
+	|   | [[rec(2).set]] = 1                                                                                                |
+	|   | [[rec(3).set]] = 2                                                                                                |
+	|   | [[rec(4).set]] = 3                                                                                                |  
 
 @ignore
 #Need to work out how to get invalid xml into the DataList we currently using the XML Translator which errors when there is
@@ -131,8 +132,6 @@ Scenario: Use XPath with no  result but valid xpath
 	And the debug inputs as  
 	| XML                                                                                              | # |  |
 	| <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> |   |  |
-	And the debug output as 
-	| #  |  |
 
 Scenario: Use XPath to get multiple results into a scalar in CSV
 	Given I have this xml '<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>'
@@ -187,19 +186,6 @@ Scenario: Use XPath with blank  as XML input
 	| # |           |
 	| 1 | [[ids]] = |
 
-Scenario: Use XPath with negative recordset index as XML input	
-	Given I have this xml '<x></b></x>' in a variable "[[rec(-1).myxml]]"
-	And I assign the variable "[[rec(-1).myxml]]" as xml input
-	And I have a variable "[[ids]]" output with xpath "//b"
-	When the xpath tool is executed
-	Then the variable "[[ids]]" should have a value ""
-	And the execution has "AN" error
-	And the debug inputs as  
-	| XML                 | # |               |
-	| [[rec(-1).myxml]] = | 1 | [[ids]] = //b |
-	And the debug output as 
-	| # |           |
-	| 1 | [[ids]] = |
 
 Scenario: Use XPath with negative recordset index as output 
 	Given I have this xml '<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>' in a variable "[[xml]]"

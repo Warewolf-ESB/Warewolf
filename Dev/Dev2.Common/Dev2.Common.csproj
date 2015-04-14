@@ -137,6 +137,7 @@
     <Compile Include="Lookups\CompressionRatios.cs" />
     <Compile Include="Patterns\SpookyAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RecordSetSearchPayload.cs" />
     <Compile Include="Reflection\GAC.cs" />
     <Compile Include="Serialization\ResourceTypeConvertor.cs" />
     <Compile Include="StringTokenizer\Builders\Dev2TokenizerBuilder.cs" />

@@ -509,21 +509,6 @@ namespace Dev2.DataList.Contract
         /// </returns>
         bool HasErrors(Guid curDlid);
 
-        /// <summary>
-        /// Fetches the errors.
-        /// </summary>
-        /// <param name="curDlid">The cur DLID.</param>
-        /// <param name="returnAsXml">if set to <c>true</c> [return asynchronous XML].</param>
-        /// <returns></returns>
-        string FetchErrors(Guid curDlid, bool returnAsXml = false);
-
-        /// <summary>
-        /// Clears the errors.
-        /// </summary>
-        /// <param name="curDlid">The cur DLID.</param>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/02/06</date>
-        void ClearErrors(Guid curDlid);
 
         /// <summary>
         /// Sets the parent ID.

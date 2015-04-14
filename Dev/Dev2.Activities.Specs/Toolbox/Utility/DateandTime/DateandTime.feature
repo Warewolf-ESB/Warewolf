@@ -179,7 +179,6 @@ Scenario: Date and time input date with a negative index
 	Then the execution has "AN" error
 	 And the debug inputs as  
 	| Input             | Input Format | Add Time |    | Output Format |
-	| [[my(-1).date]] = | yyyy-mm-dd   | Weeks    | 52 | yyyy-mm-dd    |
 	And the debug output as 
 	|               |
 	| [[result]] = |
@@ -193,7 +192,6 @@ Scenario: Date and time input format with a negative index
 	Then the execution has "AN" error
 	And the debug inputs as  
 	| Input      | Input Format        | Add Time |    | Output Format |
-	| 2013-11-29 | [[my(-1).format]] = | Weeks    | 52 | yyyy-mm-dd    |
 	And the debug output as 
 	|               |
 	| [[result]] = |
@@ -207,7 +205,6 @@ Scenario: Date and Time add weeks with a negative index
 	Then the execution has "AN" error
 	And the debug inputs as  
 	| Input      | Input Format | Add Time |                  | Output Format |
-	| 2013-11-29 | yyyy-mm-dd   | Weeks    | [[my(-1).int]] = | yyyy-mm-dd    |
 	And the debug output as 
 	|               |
 	| [[result]] = |
@@ -221,7 +218,6 @@ Scenario: Date and Time output format with a negative index
 	Then the execution has "AN" error
 	And the debug inputs as  
 	| Input      | Input Format | Add Time |    | Output Format       |
-	| 2013-11-29 | yyyy-mm-dd   | Weeks    | 52 | [[my(-1).format]] = |
 	And the debug output as 
 	|               |
 	| [[result]] = |

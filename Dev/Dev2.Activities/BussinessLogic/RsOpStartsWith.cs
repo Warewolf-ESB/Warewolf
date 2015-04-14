@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 
@@ -23,13 +24,13 @@ namespace Dev2.DataList
     /// </summary>
     public class RsOpStartsWith : AbstractRecsetSearchValidation
     {
-        public override Func<IList<string>> BuildSearchExpression(IBinaryDataList scopingObj, IRecsetSearch to)
+        public override Func<IList<string>> BuildSearchExpression(IList<RecordSetSearchPayload> operationRange, IRecsetSearch to)
         {
 
             Func<IList<string>> result = () =>
                 {
-                    ErrorResultTO err;
-                    IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
+               
+             
                     IList<string> fnResult = new List<string>();
 
                     foreach(RecordSetSearchPayload p in operationRange)
@@ -69,7 +70,12 @@ namespace Dev2.DataList
 
             return result;
         }
-
+        public override Func<DataASTMutable.WarewolfAtom, bool> CreateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> warewolfAtoms, IEnumerable<DataASTMutable.WarewolfAtom> to, bool all)
+        {
+            if (all)
+                return (a) => values.All(x => a.ToString().ToLower(CultureInfo.InvariantCulture).StartsWith(x.ToString().ToLower(CultureInfo.InvariantCulture)));
+            return (a) => values.Any(x => a.ToString().ToLower(CultureInfo.InvariantCulture).StartsWith(x.ToString().ToLower(CultureInfo.InvariantCulture)));
+        }
         public override string HandlesType()
         {
             return "Starts With";

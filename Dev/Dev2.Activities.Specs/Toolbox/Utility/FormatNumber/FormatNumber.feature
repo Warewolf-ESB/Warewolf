@@ -50,7 +50,7 @@ Scenario: Format number rounding normal
 	And I selected rounding "Normal" to 2 
 	And I want to show 3 decimals 
 	When the format number is executed
-	Then the result 788.890 will be returned
+	Then the result 788.89 will be returned
 	And the execution has "NO" error
 	And the debug inputs as  
 	| Number           | Rounding | Rounding Value | Decimals to show |
@@ -128,18 +128,13 @@ Scenario: Format number rounding up to a character
 	And the debug output as 
 	|               |
 	| [[result]] = |
-#
-#Scenario: Format number that is blank
-#	Given I have a number ""
-#	When the format number is executed
-#	Then the result "" will be returned
-#   And the execution has "AN" error
-#   And the debug inputs as  
-#	| Number | Rounding | Rounding Value | Decimals to show |
-#	|        |          |                |                  |
-#	And the debug output as 
-#	|               |
-#	| [[result]] = |
+
+Scenario: Format number that is blank
+	Given I have a number ""
+	When the format number is executed
+	Then the result "" will be returned
+   And the execution has "AN" error
+
 
 Scenario: Format non numeric
 	Given I have a number "asdf"
@@ -148,12 +143,7 @@ Scenario: Format non numeric
 	When the format number is executed
 	Then the result "" will be returned
    And the execution has "AN" error
-   And the debug inputs as  
-	| Number | Rounding | Rounding Value | Decimals to show |
-	| asdf   | None     | 0              | -2               |
-	And the debug output as 
-	|               |
-	| [[result]] = |
+
 
 Scenario: Format number to charater decimals
 	Given I have a number 34.2
@@ -162,12 +152,7 @@ Scenario: Format number to charater decimals
 	When the format number is executed
 	Then the result "" will be returned
    And the execution has "AN" error
-   And the debug inputs as  
-	| Number | Rounding | Rounding Value | Decimals to show |
-	| 34.2   | Up       | 1              | asdf             |
-	And the debug output as 
-	|              |
-	| [[result]] = |
+
 
 Scenario: Format number with multipart variables and numbers for number rounding and decimals to show
 	Given I have a formatnumber variable "[[int]]" equal to 788
@@ -186,16 +171,11 @@ Scenario: Format number with multipart variables and numbers for number rounding
 	|                  |
 	| [[result]] = 80 |
 
-#Scenario: Format number with negative recordset index for number
-#	Given I have a number "[[my(-1).int]]"
-#	When the format number is executed
-#	Then the execution has "AN" error
-#	And the debug inputs as  
-#	| Number           | Rounding | Rounding Value | Decimals to show |
-#	| [[my(-1).int]] = |          |                |                  |
-#	And the debug output as 
-#	|               |
-#	| [[result]] = |
+Scenario: Format number with negative recordset index for number
+	Given I have a number "[[my(-1).int]]"
+	When the format number is executed
+	Then the execution has "AN" error
+
 
 Scenario: Format number with negative recordset index for rounding
 	Given I have a formatnumber variable "[[int]]" equal to 788
@@ -203,22 +183,12 @@ Scenario: Format number with negative recordset index for rounding
 	And I selected rounding "Up" to "[[my(-1).rounding]]"
 	When the format number is executed
 	Then the execution has "AN" error
-	And the debug inputs as  
-	| Number                                  | Rounding | Rounding Value        | Decimals to show |
-	| [[int]].894564545645 = 788.894564545645 | Up       | [[my(-1).rounding]] = | ""               |
-	And the debug output as 
-	|              |
-	| [[result]] = |
 
-#Scenario: Format number with negative recordset index for decimals to show
-#	Given I have a formatnumber variable "[[int]]" equal to 788
-#	And I have a number "[[int]].894564545645"
-#	And I want to show "[[my(-1).decimals]]" decimals 
-#	When the format number is executed
-#	Then the execution has "AN" error
-#	And the debug inputs as  
-#	| Number                                  | Rounding | Rounding Value | Decimals to show      |
-#	| [[int]].894564545645 = 788.894564545645 |          |                | [[my(-1).decimals]] = |
-#	And the debug output as 
-#	|               |
-#	| [[result]] = |
+
+Scenario: Format number with negative recordset index for decimals to show
+	Given I have a formatnumber variable "[[int]]" equal to 788
+	And I have a number "[[int]].894564545645"
+	And I want to show "[[my(-1).decimals]]" decimals 
+	When the format number is executed
+	Then the execution has "AN" error
+

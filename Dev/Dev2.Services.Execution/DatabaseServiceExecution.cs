@@ -18,10 +18,12 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Core.Graph;
+using Dev2.Common.Interfaces.Data;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Sql;
 using MySql.Data.MySqlClient;
+using Warewolf.Storage;
 
 namespace Dev2.Services.Execution
 {
@@ -144,12 +146,12 @@ namespace Dev2.Services.Execution
             DestroySqlServer();
         }
 
-        protected override object ExecuteService(out ErrorResultTO errors, IOutputFormatter formater = null)
+        protected override object ExecuteService(List<MethodParameter> methodParameters, out ErrorResultTO errors, IOutputFormatter formater = null)
         {
             errors = new ErrorResultTO();
             var invokeErrors = new ErrorResultTO();
-            object executeService;
-
+            SqlExecution(invokeErrors);
+            
             switch(Source.ServerType)
             {
                 case enSourceType.SqlDatabase:
@@ -174,7 +176,162 @@ namespace Dev2.Services.Execution
             return null;
         }
 
-        private bool SqlExecution(ErrorResultTO errors, out object executeService)
+        void TranslateDataTableToEnvironment(DataTable executeService, IExecutionEnvironment environment)
+        {
+            if (executeService != null && InstanceOutputDefintions != null)
+            {
+                var defs = DataListFactory.CreateOutputParser().Parse(InstanceOutputDefintions);
+                HashSet<string> processedRecNames = new HashSet<string>();
+
+                foreach (var def in defs)
+                {
+                    var expression = def.Value;
+                    var rs = def.RawValue;
+                    var rsName = Data.Util.DataListUtil.ExtractRecordsetNameFromValue(expression);
+                    var rsType = Data.Util.DataListUtil.GetRecordsetIndexType(expression);
+                    var rowIndex = Data.Util.DataListUtil.ExtractIndexRegionFromRecordset(expression);
+                    var rsNameUse = def.RecordSetName;
+                    environment.AssignDataShape(def.RawValue);
+                    if (string.IsNullOrEmpty(rsName))
+                    {
+                        rsName = rsNameUse;
+                    }
+                    if (string.IsNullOrEmpty(rsName))
+                    {
+                        rsName = def.Name;
+                    }
+
+                    if (processedRecNames.Contains(rsName))
+                    {
+                        continue;
+                    }
+
+                    processedRecNames.Add(rsName);
+
+                    // build up the columns ;)
+
+                    if (Data.Util.DataListUtil.IsValueRecordset(rs))
+                    {
+
+                        IDictionary<int, string> colMapping = BuildColumnNameToIndexMap(
+                                                                                        executeService.Columns,
+                                                                                        defs);
+
+                        // now convert to binary datalist ;)
+                        int rowIdx = 1;
+                        
+                            if (environment.HasRecordSet(rs))
+                            {
+                                rowIdx = environment.GetLength(rs);
+                            }
+                        
+                        if (rsType == enRecordsetIndexType.Star)
+                        {
+                            rowIdx = 1;
+                        }
+                        if (rsType == enRecordsetIndexType.Numeric)
+                        {
+                            rowIdx = int.Parse(rowIndex);
+                        }
+
+                        if (executeService.Rows != null)
+                        {
+                            foreach (DataRow row in executeService.Rows)
+                            {
+                                // build up the row
+                                int idx = 0;
+
+                                foreach (var item in row.ItemArray)
+                                {
+                                    string colName;
+
+                                    if (colMapping.TryGetValue(idx, out colName))
+                                    {
+                                        var displayExpression = Data.Util.DataListUtil.AddBracketsToValueIfNotExist(Data.Util.DataListUtil.CreateRecordsetDisplayValue(Data.Util.DataListUtil.ExtractRecordsetNameFromValue(def.Value), colName, rowIdx.ToString()));
+                                        environment.Assign(displayExpression, item.ToString());
+                                    }
+
+                                    idx++;
+                                }
+
+                                rowIdx++;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // handle a scalar coming out ;)
+                        if (executeService.Rows != null && executeService.Rows.Count == 1)
+                        {
+                            var row = executeService.Rows[0].ItemArray;
+                            // Look up the correct index from the columns ;)
+
+                            int pos = 0;
+                            var cols = executeService.Columns;
+                            int idx = -1;
+
+                            while (pos < cols.Count && idx == -1)
+                            {
+                                if (cols[pos].ColumnName == rsName)
+                                {
+                                    idx = pos;
+                                }
+                                pos++;
+                            }
+                            environment.Assign(Data.Util.DataListUtil.AddBracketsToValueIfNotExist(expression), row[idx].ToString());
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Builds the column name to index map.
+        /// </summary>
+        /// <param name="dtCols">The dt cols.</param>
+        /// <param name="defs">Defs to use</param>
+        /// <returns></returns>
+        // ReSharper disable ParameterTypeCanBeEnumerable.Local
+        private IDictionary<int, string> BuildColumnNameToIndexMap(DataColumnCollection dtCols, IList<IDev2Definition> defs)
+        // ReSharper restore ParameterTypeCanBeEnumerable.Local
+        {
+            Dictionary<int, string> result = new Dictionary<int, string>();
+
+//
+//            foreach (var dlC in dlCols)
+//            {
+//                var idx = dtCols.IndexOf(dlC.ColumnName);
+//
+//                if (idx != -1)
+//                {
+//                    result.Add(idx, dlC.ColumnName);
+//                }
+//            }
+
+            if (result.Count == 0 && defs != null)
+            {
+                // use positional adjustment
+                foreach (var def in defs)
+                {
+                    var idx = dtCols.IndexOf(def.Name);
+                    if (idx != -1)
+                    {
+                        if (def.IsRecordSet)
+                        {
+                            result.Add(idx, DataListUtils.ExtractFieldNameFromValue(def.RawValue));
+                        }
+                        else
+                        {
+                            result.Add(idx, def.Name);
+                        }
+
+                    }
+                }
+            }
+
+            return result;
+        }
+        private void SqlExecution(ErrorResultTO errors)
         {
             try
             {
@@ -189,22 +346,15 @@ namespace Dev2.Services.Execution
                             // ReSharper restore CoVariantArrayConversion
                         {
                             ApplyColumnMappings(dataSet);
-                            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-                            executeService =
-                                compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._DATATABLE),
-                                    dataSet, InstanceOutputDefintions, DataObj.DataListID, out errors);
-                            return true;
+                            TranslateDataTableToEnvironment(dataSet, DataObj.Environment);
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
+                errors.AddError(string.Format("{0}{1}","Sql Error: ", ex.Message));
             }
-            executeService = null;
-            return false;
         }
 
         private bool MySqlExecution(ErrorResultTO errors, out object executeService)
@@ -256,6 +406,7 @@ namespace Dev2.Services.Execution
             if (methodParameters.Count > 0)
             {
 #pragma warning disable 219
+                // ReSharper disable once NotAccessedVariable
                 int pos = 0;
 #pragma warning restore 219
                 foreach (MethodParameter parameter in methodParameters)

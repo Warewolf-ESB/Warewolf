@@ -18,12 +18,12 @@ using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Utils;
+using Dev2.Data;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.PathOperations;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -49,57 +49,40 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IList<OutputTO> outputs = new List<OutputTO>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             allErrors = new ErrorResultTO();
-            ErrorResultTO errors;
-            Guid executionId = dataObject.DataListID;
-            IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
+            var colItr = new WarewolfListIterator();
 
             //get all the possible paths for all the string variables
-            IBinaryDataListEntry inputPathEntry = compiler.Evaluate(executionId, enActionType.User, OutputPath, false, out errors);
-            allErrors.MergeErrors(errors);
-            IDev2DataListEvaluateIterator inputItr = Dev2ValueObjectFactory.CreateEvaluateIterator(inputPathEntry);
-            colItr.AddIterator(inputItr);
+            var inputItr = new WarewolfIterator(dataObject.Environment.Eval(OutputPath));
+            colItr.AddVariableToIterateOn(inputItr);
 
-            IBinaryDataListEntry usernameEntry = compiler.Evaluate(executionId, enActionType.User, Username, false, out errors);
-            allErrors.MergeErrors(errors);
-            IDev2DataListEvaluateIterator unameItr = Dev2ValueObjectFactory.CreateEvaluateIterator(usernameEntry);
-            colItr.AddIterator(unameItr);
+            var unameItr = new WarewolfIterator(dataObject.Environment.Eval(Username));
+            colItr.AddVariableToIterateOn(unameItr);
 
-            IBinaryDataListEntry passwordEntry = compiler.Evaluate(executionId, enActionType.User, Password, false, out errors);
-            allErrors.MergeErrors(errors);
-            IDev2DataListEvaluateIterator passItr = Dev2ValueObjectFactory.CreateEvaluateIterator(passwordEntry);
-            colItr.AddIterator(passItr);
+            var passItr = new WarewolfIterator(dataObject.Environment.Eval(Password));
+            colItr.AddVariableToIterateOn(passItr);
 
-            IBinaryDataListEntry contentsEntry = compiler.Evaluate(executionId, enActionType.User, FileContents, false, out errors);
-
-            if(contentsEntry == null)
-            {
-                errors.AddError("Contents could not be evaluated");
-            }
-
-            allErrors.MergeErrors(errors);
-            IDev2DataListEvaluateIterator contentItr = Dev2ValueObjectFactory.CreateEvaluateIterator(contentsEntry);
-            colItr.AddIterator(contentItr);
+            var contentItr =new WarewolfIterator(dataObject.Environment.Eval(FileContents));
+            colItr.AddVariableToIterateOn(contentItr);
 
             outputs.Add(DataListFactory.CreateOutputTO(Result));
 
             if(dataObject.IsDebugMode())
             {
-                AddDebugInputItem(OutputPath, "Output Path", inputPathEntry, executionId);
+                AddDebugInputItem(OutputPath, "Output Path", dataObject.Environment);
                 AddDebugInputItem(new DebugItemStaticDataParams(GetMethod(), "Method"));
-                AddDebugInputItemUserNamePassword(executionId, usernameEntry);
-                AddDebugInputItem(FileContents, "File Contents", contentsEntry, executionId);
+                AddDebugInputItemUserNamePassword(dataObject.Environment);
+                AddDebugInputItem(FileContents, "File Contents", dataObject.Environment);
             }
 
             while(colItr.HasMoreData())
             {
                 IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
                 var writeType = GetCorrectWriteType();
-                Dev2PutRawOperationTO putTo = ActivityIOFactory.CreatePutRawOperationTO(writeType, TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(colItr.FetchNextRow(contentItr).TheValue));
-                IActivityIOPath opath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextRow(inputItr).TheValue,
-                                                                                colItr.FetchNextRow(unameItr).TheValue,
-                                                                                colItr.FetchNextRow(passItr).TheValue,
+                Dev2PutRawOperationTO putTo = ActivityIOFactory.CreatePutRawOperationTO(writeType, TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(colItr.FetchNextValue(contentItr)));
+                IActivityIOPath opath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(inputItr),
+                                                                                colItr.FetchNextValue(unameItr),
+                                                                                colItr.FetchNextValue(passItr),
                                                                                 true);
                 IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(opath);
 

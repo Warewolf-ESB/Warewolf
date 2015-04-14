@@ -12,6 +12,7 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
@@ -96,9 +97,9 @@ namespace Dev2.Runtime.ESB.Execution
             try
             {
                 var theActivity = activity.Value as DynamicActivity;
-
+          
                 // BUG 9304 - 2013.05.08 - TWR - Added CompileExpressions
-                _workflowHelper.CompileExpressions(theActivity);
+                _workflowHelper.CompileExpressions(theActivity,DataObject.ResourceID);
 
                 IDSFDataObject exeResult = wfFactor.InvokeWorkflow(activity.Value, DataObject,
                                                                    new List<object> { EsbChannel, }, instanceId,
@@ -136,19 +137,12 @@ namespace Dev2.Runtime.ESB.Execution
                 throw new ArgumentNullException("errors");
             }
 
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             var results = new List<DebugItem>();
             foreach(IDev2Definition dev2Definition in inputs)
             {
-
-                IBinaryDataListEntry tmpEntry = compiler.Evaluate(dataList.UID, enActionType.User, GetVariableName(dev2Definition), false, out errors);
-
-                var val = tmpEntry.FetchScalar();
-
-                val.TheValue += "";
-
+                var variableName = GetVariableName(dev2Definition);
                 DebugItem itemToAdd = new DebugItem();
-                AddDebugItem(new DebugItemVariableParams(GetVariableName(dev2Definition), "", tmpEntry, dataList.UID), itemToAdd);
+                AddDebugItem(new DebugEvalResult(variableName, "", DataObject.Environment), itemToAdd);
                 results.Add(itemToAdd);
             }
 

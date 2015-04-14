@@ -46,7 +46,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -71,7 +71,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
@@ -93,7 +93,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -160,7 +160,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -238,7 +238,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -258,7 +258,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
@@ -278,7 +278,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
@@ -296,7 +296,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
@@ -314,7 +314,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
@@ -332,7 +332,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);

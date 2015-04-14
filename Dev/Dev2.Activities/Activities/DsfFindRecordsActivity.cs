@@ -17,6 +17,7 @@ using System.Linq;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
+using Dev2.Common;
 using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Factories;
@@ -31,6 +32,7 @@ using Dev2.Util;
 using Dev2.Utilities;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -141,17 +143,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugOutputs = new List<DebugItem>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ErrorResultTO errors;
             ErrorResultTO allErrors = new ErrorResultTO();
             Guid executionId = dataObject.DataListID;
-
             InitializeDebug(dataObject);
             try
             {
+               
                 IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
                 // Fetch all fields to search....
-                IList<string> toSearch = FieldsToSearch.Split(',');
+      
                 // now process each field for entire evaluated Where expression....
+                ErrorResultTO errors;
                 IBinaryDataListEntry bdle = compiler.Evaluate(executionId, enActionType.User, SearchCriteria, false, out errors);
                 if(dataObject.IsDebugMode())
                 {
@@ -160,7 +162,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     _debugInputs.Add(itemToAdd);
                 }
                 allErrors.MergeErrors(errors);
-
+                IList<string> toSearch = FieldsToSearch.Split(',');
                 if(bdle != null)
                 {
                     IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(bdle);
@@ -170,7 +172,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         idx = 1;
                     }
-                    IBinaryDataList toSearchList = compiler.FetchBinaryDataList(executionId, out errors);
                     allErrors.MergeErrors(errors);
                     int iterationIndex = 0;
                     foreach(string s in toSearch)
@@ -187,7 +188,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             foreach(IBinaryDataListItem c in cols)
                             {
                                 IRecsetSearch searchTo = ConvertToSearchTo(c.TheValue, idx.ToString(CultureInfo.InvariantCulture));
-                                IList<string> results = RecordsetInterrogator.FindRecords(toSearchList, searchTo, out errors);
+                                IList<string> results = RecordsetInterrogator.FindRecords(new RecordSetSearchPayload[0], searchTo, out errors);
                                 allErrors.MergeErrors(errors);
                                 string concatRes = string.Empty;
 
@@ -252,8 +253,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(hasErrors)
                 {
                     DisplayAndWriteError("DsfFindRecordsActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
-                    compiler.Upsert(executionId, Result, (string)null, out errors);
+                    dataObject.Environment.AddError(allErrors.MakeDataListReady());
+                    dataObject.Environment.Assign(Result,null);
+                    
                 }
 
                 if(dataObject.IsDebugMode())
@@ -308,21 +310,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
-            foreach(IDebugItem debugInput in _debugInputs)
-            {
-                debugInput.FlushStringBuilder();
-            }
+
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
-            foreach(IDebugItem debugOutput in _debugOutputs)
-            {
-                debugOutput.FlushStringBuilder();
-            }
+
             return _debugOutputs;
         }
 

@@ -32,6 +32,7 @@ using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
+using Warewolf.Storage;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Runtime.ESB.Control
@@ -217,10 +218,11 @@ namespace Dev2.Runtime.ESB.Control
             if(dataObject.DataListID == GlobalConstants.NullDataListID)
             {
                 StringBuilder theShape;
-
+                IResource resource;
                 try
                 {
                     theShape = dataObject.ResourceID == Guid.Empty ? FindServiceShape(workspaceId, dataObject.ServiceName) : FindServiceShape(workspaceId, dataObject.ResourceID);
+                    resource = dataObject.ResourceID == Guid.Empty ? GetResource(workspaceId, dataObject.ServiceName) : GetResource(workspaceId, dataObject.ResourceID);
                 }
                 catch(Exception ex)
                 {
@@ -231,6 +233,7 @@ namespace Dev2.Runtime.ESB.Control
 
                 // TODO : Amend here to respect Inputs only when creating shape ;)
                 ErrorResultTO invokeErrors;
+                ExecutionEnvironmentUtils.UpdateEnvironmentFromInputPayload(dataObject, dataObject.RawPayload, resource.DataList.ToString());
                 dataObject.DataListID = compiler.ConvertAndOnlyMapInputs(DataListFormat.CreateFormat(GlobalConstants._XML), dataObject.RawPayload, theShape, out invokeErrors);
                 // The act of doing this moves the index data correctly ;)
                 // We need to remove this in the future.
@@ -295,6 +298,21 @@ namespace Dev2.Runtime.ESB.Control
             return resultID;
         }
 
+
+        static IResource GetResource(Guid workspaceId, Guid resourceId)
+        {
+            var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceId) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
+            return resource;
+        }
+
+        static IResource GetResource(Guid workspaceId, string resourceName)
+        {
+            var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceName) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
+            return resource;
+        }
+
+       
+
         public void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceId, string uri, out ErrorResultTO errors)
         {
             errors = null;
@@ -312,35 +330,41 @@ namespace Dev2.Runtime.ESB.Control
         /// <param name="outputDefs">The output defs.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public Guid ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs, out ErrorResultTO errors)
+        public IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs, out ErrorResultTO errors)
         {
             var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
             var invoker = CreateEsbServicesInvoker(theWorkspace);
             ErrorResultTO invokeErrors;
             var oldID = dataObject.DataListID;
-            var compiler = DataListFactory.CreateDataListCompiler();
-
-            var remainingMappings = ShapeForSubRequest(dataObject, inputDefs, outputDefs, out errors);
-
+            errors = new ErrorResultTO();
+            
             // local non-scoped execution ;)
             var isLocal = !dataObject.IsRemoteWorkflow();
 
             var principle = Thread.CurrentPrincipal;
             Dev2Logger.Log.Info("SUB-EXECUTION USER CONTEXT IS [ " + principle.Identity.Name + " ] FOR SERVICE  [ " + dataObject.ServiceName + " ]");
 
-            var result = dataObject.DataListID;
             _doNotWipeDataList = false;
             if(dataObject.RunWorkflowAsync)
             {
                 _doNotWipeDataList = true;
-                ExecuteRequestAsync(dataObject, compiler, invoker, isLocal, oldID, out invokeErrors);
+                ExecuteRequestAsync(dataObject, inputDefs, invoker, isLocal, oldID, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
             }
             else
             {
+                if (isLocal)
+                {
+                    if (GetResource(workspaceId, dataObject.ResourceID) == null && GetResource(workspaceId, dataObject.ServiceName) == null)
+                    {
+                        errors.AddError(string.Format("Resource {0} not found.", dataObject.ServiceName));
+                        return null;
+                    }
+                }
                 var executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal, oldID);
                 if (executionContainer != null)
                 {
+                    CreateNewEnvironmentFromInputMappings(dataObject, inputDefs);
                     if (!isLocal)
                     {
                         _doNotWipeDataList = true;
@@ -348,57 +372,34 @@ namespace Dev2.Runtime.ESB.Control
                     }
                     if (!errors.HasErrors())
                     {
+                        executionContainer.InstanceInputDefinition = inputDefs;
                         executionContainer.InstanceOutputDefinition = outputDefs;
-                        result = executionContainer.Execute(out invokeErrors);
+                        executionContainer.Execute(out invokeErrors);
+                        var env = UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObject, outputDefs);
                         errors.MergeErrors(invokeErrors);
-                        string errorString = compiler.FetchErrors(dataObject.DataListID, true);
+                        string errorString = dataObject.Environment.FetchErrors();
                         invokeErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
-                        errors.MergeErrors(invokeErrors);
-                        // If Web-service or Plugin, skip the final shaping junk ;)
-                        if (SubExecutionRequiresShape(workspaceId, dataObject.ServiceName))
-                        {
-                            if (!dataObject.IsDataListScoped && remainingMappings != null)
-                            {
-                                // Adjust the remaining output mappings ;)
-                                compiler.SetParentID(dataObject.DataListID, oldID);
-                                var outputMappings = remainingMappings.FirstOrDefault(c => c.Key == enDev2ArgumentType.Output);
-                                compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, outputMappings.Value,
-                                               out invokeErrors);
-                                errors.MergeErrors(invokeErrors);
-                            }
-                            else
-                            {
-                                if (!string.IsNullOrEmpty(outputDefs))
-                                {
-                                    compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, outputDefs,out invokeErrors);
-                                    errors.MergeErrors(invokeErrors);
-                                }
-                            }
-                        }
-
-                        // The act of doing this moves the index data correctly ;)
-                        // We need to remove this in the future.
-#pragma warning disable 168
-                        // ReSharper disable UnusedVariable
-                        var dl1 = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
-                        if (dl1 == null)
-                        {
-
-                        }
-                        var dl2 = compiler.ConvertFrom(oldID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
-                        if (dl2 == null)
-                        {
-
-                        }
-                        // ReSharper restore UnusedVariable
-#pragma warning restore 168
-
-                        return result;
+                        errors.MergeErrors(invokeErrors);                        
+                        return env;
                     }
-                    errors.AddError("Null container returned");
+                    errors.AddError(string.Format("Resource {0} not found.", dataObject.ServiceName));
                 }
             }
-            return result;
+            return new ExecutionEnvironment();
+        }
+
+        public IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs)
+        {
+            var innerEnvironment = dataObject.Environment;
+            dataObject.PopEnvironment();
+            DataListUtil.OutputsToEnvironment(innerEnvironment, dataObject.Environment, outputDefs);
+            return innerEnvironment;
+        }
+
+        public void CreateNewEnvironmentFromInputMappings(IDSFDataObject dataObject, string inputDefs)
+        {
+            var shapeDefinitionsToEnvironment = DataListUtil.InputsToEnvironment(dataObject.Environment, inputDefs);
+            dataObject.PushEnvironment(shapeDefinitionsToEnvironment);
         }
 
         static void SetRemoteExecutionDataList(IDSFDataObject dataObject, EsbExecutionContainer executionContainer, ErrorResultTO errors)
@@ -422,11 +423,10 @@ namespace Dev2.Runtime.ESB.Control
             }
         }
 
-        void ExecuteRequestAsync(IDSFDataObject dataObject, IDataListCompiler compiler, IEsbServiceInvoker invoker, bool isLocal, Guid oldID, out ErrorResultTO invokeErrors)
+        void ExecuteRequestAsync(IDSFDataObject dataObject, string inputDefs, IEsbServiceInvoker invoker, bool isLocal, Guid oldID, out ErrorResultTO invokeErrors)
         {
             var clonedDataObject = dataObject.Clone();
-            StringBuilder dl1 = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
-            var shapeOfData = FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID);
+            invokeErrors = new ErrorResultTO();
             var executionContainer = invoker.GenerateInvokeContainer(clonedDataObject, clonedDataObject.ServiceName, isLocal, oldID);
             if(executionContainer != null)
             {
@@ -440,20 +440,24 @@ namespace Dev2.Runtime.ESB.Control
                             invokeErrors.AddError("Asynchronous execution failed: Remote server unreachable");
                         }
                         SetRemoteExecutionDataList(dataObject, executionContainer, invokeErrors);
-                        shapeOfData = dataObject.RemoteInvokeResultShape;
                     }
                 }
                 if(!invokeErrors.HasErrors())
                 {
+                    var shapeDefinitionsToEnvironment = DataListUtil.InputsToEnvironment(dataObject.Environment, inputDefs);
                     Task.Factory.StartNew(() =>
                     {
                         Dev2Logger.Log.Info("ASYNC EXECUTION USER CONTEXT IS [ " + Thread.CurrentPrincipal.Identity.Name + " ]");
                         ErrorResultTO error;
-                        clonedDataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), dl1, shapeOfData, out error);
-                        var execute = executionContainer.Execute(out error);
-                        var fetchBinaryDataList = compiler.FetchBinaryDataList(execute, out error);
-                        fetchBinaryDataList.Dispose();
-                        return execute;
+                        clonedDataObject.Environment = shapeDefinitionsToEnvironment;
+                        executionContainer.Execute(out error);
+                        return clonedDataObject;
+                    }).ContinueWith(task =>
+                    {
+                        if (task.Result != null)
+                        {
+                            task.Result.Environment = null;
+                        }
                     });
                    
                 }
@@ -516,30 +520,10 @@ namespace Dev2.Runtime.ESB.Control
                 errors.MergeErrors(invokeErrors);
                 var outputID = compiler.Merge(oldID, shapeID, enDataListMergeTypes.Union, enTranslationDepth.Shape, false, out invokeErrors);             
                 errors.MergeErrors(invokeErrors);
-//                var dl11 = compiler.ConvertFrom(inputID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
-//                if (dl11 == null)
-//                {
-//
-//                }
-//                var dl21 = compiler.ConvertFrom(outputID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
-//                if (dl21 == null)
-//                {
-//
-//                }
+
                 shapeID = compiler.Merge(outputID,inputID, enDataListMergeTypes.Union,enTranslationDepth.Shape,false, out invokeErrors);             
                 errors.MergeErrors(invokeErrors);
-                // ReSharper disable UnusedVariable
-                var dl1 = compiler.ConvertFrom(shapeID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
-                if (dl1 == null)
-                {
-                    
-                }
-                var dl2 = compiler.ConvertFrom(oldID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
-                if (dl2 == null)
-                {
-
-                }
-                // ReSharper restore UnusedVariable
+ 
             }
 
             // set execution ID ;)
@@ -600,7 +584,8 @@ namespace Dev2.Runtime.ESB.Control
             result.Replace(GlobalConstants.SerializableResourceQuote, "\"");
             result.Replace(GlobalConstants.SerializableResourceSingleQuote, "\'");
             return result;
-        }
+        } 
+      
 
         static readonly StringBuilder EmptyDataList = new StringBuilder("<DataList></DataList>");
 
@@ -754,14 +739,15 @@ namespace Dev2.Runtime.ESB.Control
 
         static bool IsServiceWorkflow(Guid workspaceID, Guid resourceID)
         {
-            var resource = ResourceCatalog.Instance.GetResource(workspaceID, resourceID) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceID);
-            if(resource == null)
+            IResource resource = GetResource(workspaceID, resourceID);
+            if (resource == null)
             {
                 return false;
             }
 
             return resource.ResourceType == ResourceType.WorkflowService;
         }
+
 
         /// <summary>
         /// Shapes the mappings automatic target data list.
@@ -843,23 +829,10 @@ namespace Dev2.Runtime.ESB.Control
             return result;
         }
 
-
-        /// <summary>
-        /// Subs the execution requires shape.
-        /// </summary>
-        /// <param name="workspaceID">The workspace unique identifier.</param>
-        /// <param name="serviceName">Name of the service.</param>
-        /// <returns></returns>
-        static bool SubExecutionRequiresShape(Guid workspaceID, string serviceName)
-        {
-            var resource = ResourceCatalog.Instance.GetResource(workspaceID, serviceName);
-            return resource == null || (resource.ResourceType != ResourceType.WebService && resource.ResourceType != ResourceType.PluginService);
-
-        }
-
         protected virtual IEsbServiceInvoker CreateEsbServicesInvoker(IWorkspace theWorkspace)
         {
             return new EsbServiceInvoker(this, this, theWorkspace);
         }
+
     }
 }

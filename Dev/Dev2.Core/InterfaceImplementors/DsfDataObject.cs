@@ -22,6 +22,7 @@ using Dev2.DataList.Contract;
 using Dev2.Diagnostics.Logging;
 using Dev2.DynamicServices.Objects;
 using Dev2.Web;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 
@@ -39,17 +40,21 @@ namespace Dev2.DynamicServices
         private ErrorResultTO _errors;
         private string _parentServiceName = string.Empty;
         private string _parentWorkflowInstanceId = string.Empty;
-
+        private Stack<IExecutionEnvironment> _environments; 
         #endregion Class Members
 
         #region Constructor
 
         private DsfDataObject()
         {
+            Environment = new Warewolf.Storage.ExecutionEnvironment(); ;
+            _environments = new Stack<IExecutionEnvironment>();
         }
 
         public DsfDataObject(string xmldata, Guid dataListId, string rawPayload = "")
         {
+            Environment = new Warewolf.Storage.ExecutionEnvironment(); ;
+            _environments = new Stack<IExecutionEnvironment>();
             ThreadsToDispose = new Dictionary<int, List<Guid>>();
 
             if (xmldata != null)
@@ -210,6 +215,20 @@ namespace Dev2.DynamicServices
             return false;
         }
 
+        public IExecutionEnvironment Environment { get; set; }
+
+        public void PopEnvironment()
+        {
+            Environment=  _environments.Pop();
+
+        }
+
+        public void PushEnvironment(IExecutionEnvironment env)
+        {
+            _environments.Push(Environment);
+            Environment = env;
+        }
+
         public int ForEachNestingLevel { get; set; }
 
         public Guid ClientID { get; set; }
@@ -351,6 +370,7 @@ namespace Dev2.DynamicServices
             result.RunWorkflowAsync = RunWorkflowAsync;
             result.IsDebugNested = IsDebugNested;
             result.ForEachNestingLevel = ForEachNestingLevel;
+            result.Environment = Environment;
             return result;
         }
 

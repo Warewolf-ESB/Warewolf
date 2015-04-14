@@ -7,7 +7,7 @@ Scenario: Ensure that a variable evaluates to the value on the datalist
 	Given I need to switch on variable "[[A]]" with the value "30"		
 	When the switch tool is executed
 	Then the variable "[[A]]" will evaluate to "30"
-	And the execution has "NO" error
+	Then the execution has "NO" error
 	And the debug inputs as
 	| Switch on   |
 	| [[A]] =  30 |
@@ -18,8 +18,8 @@ Scenario: Ensure that a variable evaluates to the value on the datalist
 Scenario: Ensure that a blank variable evaluates to blank
 	Given I need to switch on variable "[[A]]" with the value ""		
 	When the switch tool is executed
-	Then the variable "[[A]]" will evaluate to ""
-	And the execution has "NO" error
+#	Then the variable "[[A]]" will evaluate to ""
+	Then the execution has "NO" error
 	And the debug inputs as
 	| Switch on |
 	| [[A]] =   |

@@ -60,7 +60,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset()]]", "Contains", "", "", "[[Result().res]]", false);
             var op = new RsOpContains();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(6, result.Count, "The count is wrong");
@@ -81,7 +81,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset()]]", "Contains", "", "", "[[Result().res]]", false, true);
             var op = new RsOpContains();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(6, result.Count, "The count is wrong");
@@ -102,7 +102,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset()]]", "Contains", "", "", "[[Result().res]]", false);
             var op = new RsOpContains();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(6, result.Count, "The count is wrong");
@@ -122,7 +122,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("", "Contains", "", "", "[[Result().res]]", false);
             var op = new RsOpContains();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             func.Invoke();
         }
 
@@ -141,7 +141,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset()]]", "Contains", "Mrs", "", "", false);
             var op = new RsOpContains();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(2, result.Count);
@@ -162,7 +162,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset()]]", "Contains", "Mrs", "", "", false, true);
             var op = new RsOpContains();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
@@ -183,7 +183,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset()]]", "Contains", "Mrs", "", "", false, true);
             var op = new RsOpContains();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(3, result.Count);
@@ -203,7 +203,7 @@ namespace Dev2.Tests.RecordsetSearch
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Contains", "test", "", "[[Result().res]]", true);
             var op = new RsOpContains();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(1, result.Count);
@@ -223,7 +223,7 @@ namespace Dev2.Tests.RecordsetSearch
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Contains", "test", "", "[[Result().res]]", true, true);
             var op = new RsOpContains();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
@@ -243,7 +243,7 @@ namespace Dev2.Tests.RecordsetSearch
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Contains", "test", "", "[[Result().res]]", true, true);
             var op = new RsOpContains();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(3, result.Count);
@@ -264,7 +264,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Ends With", "T", "", "[[Result().res]]", false);
             var op = new RsOpEndsWith();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(2, result.Count, "Invalid Count Returned");
@@ -285,7 +285,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Ends With", "T", "", "[[Result().res]]", false, true);
             var op = new RsOpEndsWith();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count, "Invalid Count Returned");
@@ -306,7 +306,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Ends With", "T", "", "[[Result().res]]", false, true);
             var op = new RsOpEndsWith();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(3, result.Count, "Invalid Count Returned");
@@ -327,7 +327,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Ends With", "t", "", "[[Result().res]]", true);
             var op = new RsOpEndsWith();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(2, result.Count);
@@ -348,7 +348,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Ends With", "t", "", "[[Result().res]]", true, true);
             var op = new RsOpEndsWith();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
@@ -369,7 +369,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Ends With", "t", "", "[[Result().res]]", true, true);
             var op = new RsOpEndsWith();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(3, result.Count);
@@ -390,7 +390,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Equals", "1", "", "[[Result().res]]", false);
             var op = new RsOpEqual();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(1, result.Count);
@@ -411,7 +411,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Equals", "1", "", "[[Result().res]]", false, true);
             var op = new RsOpEqual();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
@@ -432,7 +432,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Equals", "1", "", "[[Result().res]]", false, true);
             var op = new RsOpEqual();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(3, result.Count);
@@ -453,7 +453,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Equal", "testdata1", "", "[[Result().res]]", true);
             var op = new RsOpEqual();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(1, result.Count);
@@ -474,7 +474,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Equal", "testdata1", "", "[[Result().res]]", true, true);
             var op = new RsOpEqual();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
@@ -495,7 +495,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Equal", "testdata1", "", "[[Result().res]]", true, true);
             var op = new RsOpEqual();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(3, result.Count);
@@ -516,7 +516,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", ">", "32", "", "[[Result().res]]", false);
             var op = new RsOpGreaterThan();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(1, result.Count);
@@ -537,7 +537,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", ">", "32", "", "[[Result().res]]", false, true);
             var op = new RsOpGreaterThan();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
@@ -558,7 +558,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", ">", "32", "", "[[Result().res]]", false, true);
             var op = new RsOpGreaterThan();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(3, result.Count);
@@ -579,7 +579,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", ">=", "25", "", "[[Result().res]]", false);
             var op = new RsOpGreaterThanOrEqualTo();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(2, result.Count);
@@ -600,7 +600,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", ">=", "25", "", "[[Result().res]]", false, true);
             var op = new RsOpGreaterThanOrEqualTo();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
@@ -621,7 +621,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", ">=", "25", "", "[[Result().res]]", false, true);
             var op = new RsOpGreaterThanOrEqualTo();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(3, result.Count);
@@ -640,7 +640,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Alphanumeric", "", "", "[[Result().res]]", false);
             var op = new RsOpIsAlphanumeric();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(3, result.Count);
@@ -659,7 +659,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Alphanumeric", "", "", "[[Result().res]]", false, true);
             var op = new RsOpIsAlphanumeric();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
@@ -678,7 +678,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Alphanumeric", "", "", "[[Result().res]]", false, true);
             var op = new RsOpIsAlphanumeric();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(3, result.Count);
@@ -697,7 +697,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "<=", "48", "", "[[Result().res]]", false);
             var op = new RsOpLessThanOrEqualTo();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(1, result.Count);
@@ -716,7 +716,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "<=", "48", "", "[[Result().res]]", false, true);
             var op = new RsOpLessThanOrEqualTo();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
@@ -735,7 +735,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "<=", "48", "", "[[Result().res]]", false, true);
             var op = new RsOpLessThanOrEqualTo();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(3, result.Count);
@@ -754,7 +754,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Date", "", "", "[[Result().res]]", false);
             var op = new RsOpIsDate();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(1, result.Count);
@@ -773,7 +773,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Date", "", "", "[[Result().res]]", false, true);
             var op = new RsOpIsDate();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
@@ -792,7 +792,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Date", "", "", "[[Result().res]]", false, true);
             var op = new RsOpIsDate();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(3, result.Count);
@@ -811,7 +811,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Date", "", "", "[[Result().res]]", false);
             var op = new RsOpIsDate();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
@@ -830,7 +830,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Date", "", "", "[[Result().res]]", false);
             var op = new RsOpIsDate();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(1, result.Count);
@@ -849,7 +849,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Date", "", "", "[[Result().res]]", false);
             var op = new RsOpIsDate();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(1, result.Count);
@@ -868,7 +868,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Date", "", "", "[[Result().res]]", false);
             var op = new RsOpIsDate();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(1, result.Count);
@@ -887,7 +887,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Date", "", "", "[[Result().res]]", false);
             var op = new RsOpIsDate();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(1, result.Count);
@@ -906,7 +906,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Date", "", "", "[[Result().res]]", false);
             var op = new RsOpIsDate();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(1, result.Count);
@@ -925,7 +925,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Date", "", "", "[[Result().res]]", false);
             var op = new RsOpIsDate();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(1, result.Count);
@@ -944,7 +944,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Date", "", "", "[[Result().res]]", false);
             var op = new RsOpIsDate();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(1, result.Count);
@@ -963,7 +963,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Date", "", "", "[[Result().res]]", false);
             var op = new RsOpNotDate();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(5, result.Count);
@@ -982,7 +982,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Date", "", "", "[[Result().res]]", false, true);
             var op = new RsOpNotDate();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
@@ -1001,7 +1001,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Date", "", "", "[[Result().res]]", false, true);
             var op = new RsOpNotDate();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(3, result.Count);
@@ -1020,7 +1020,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Email", "", "", "[[Result().res]]", false);
             var op = new RsOpIsEmail();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(1, result.Count);
@@ -1039,7 +1039,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Email", "", "", "[[Result().res]]", false, true);
             var op = new RsOpIsEmail();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
@@ -1058,7 +1058,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Email", "", "", "[[Result().res]]", false, true);
             var op = new RsOpIsEmail();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(3, result.Count);
@@ -1077,7 +1077,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Email", "", "", "[[Result().res]]", false);
             var op = new RsOpIsEmail();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(1, result.Count);
@@ -1096,7 +1096,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Email", "", "", "[[Result().res]]", false);
             var op = new RsOpIsEmail();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
@@ -1115,7 +1115,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Email", "", "", "[[Result().res]]", false);
             var op = new RsOpNotEmail();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(6, result.Count);
@@ -1134,7 +1134,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Numeric", "", "", "[[Result().res]]", false);
             var op = new RsOpIsNumeric();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(1, result.Count);
@@ -1153,7 +1153,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Numeric", "", "", "[[Result().res]]", false, true);
             var op = new RsOpIsNumeric();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
@@ -1172,7 +1172,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Numeric", "", "", "[[Result().res]]", false, true);
             var op = new RsOpIsNumeric();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(3, result.Count);
@@ -1191,7 +1191,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Numeric", "", "", "[[Result().res]]", false);
             var op = new RsOpIsNumeric();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
@@ -1210,7 +1210,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Numeric", "", "", "[[Result().res]]", false);
             var op = new RsOpIsNumeric();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
@@ -1229,7 +1229,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Numeric", "", "", "[[Result().res]]", false);
             var op = new RsOpNotNumeric();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(6, result.Count);
@@ -1248,7 +1248,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Numeric", "", "", "[[Result().res]]", false, true);
             var op = new RsOpNotNumeric();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
@@ -1267,7 +1267,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Numeric", "", "", "[[Result().res]]", false, true);
             var op = new RsOpNotNumeric();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(3, result.Count);
@@ -1286,7 +1286,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Text", "", "", "[[Result().res]]", false);
             var op = new RsOpIsText();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(1, result.Count);
@@ -1305,7 +1305,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Text", "", "", "[[Result().res]]", false, true);
             var op = new RsOpIsText();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
@@ -1324,7 +1324,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Text", "", "", "[[Result().res]]", false, true);
             var op = new RsOpIsText();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(3, result.Count);
@@ -1343,7 +1343,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Text", "", "", "[[Result().res]]", false);
             var op = new RsOpIsText();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(1, result.Count);
@@ -1362,7 +1362,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Text", "", "", "[[Result().res]]", false);
             var op = new RsOpNotText();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(5, result.Count);
@@ -1381,7 +1381,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Text", "", "", "[[Result().res]]", false, true);
             var op = new RsOpNotText();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
@@ -1400,7 +1400,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Text", "", "", "[[Result().res]]", false, true);
             var op = new RsOpNotText();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(3, result.Count);
@@ -1419,7 +1419,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is XML", "", "", "[[Result().res]]", false);
             var op = new RsOpIsXML();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(2, result.Count);
@@ -1438,7 +1438,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is XML", "", "", "[[Result().res]]", false, true);
             var op = new RsOpIsXML();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
@@ -1457,7 +1457,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is XML", "", "", "[[Result().res]]", false, true);
             var op = new RsOpIsXML();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(2, result.Count);
@@ -1476,7 +1476,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not XML", "", "", "[[Result().res]]", false);
             var op = new RsOpNotXML();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(5, result.Count);
@@ -1495,7 +1495,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not XML", "", "", "[[Result().res]]", false, true);
             var op = new RsOpNotXML();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
@@ -1514,7 +1514,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not XML", "", "", "[[Result().res]]", false, true);
             var op = new RsOpNotXML();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(3, result.Count);
@@ -1533,7 +1533,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "<", "48", "", "[[Result().res]]", false);
             var op = new RsOpLessThan();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(1, result.Count);
@@ -1552,7 +1552,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "<", "48", "", "[[Result().res]]", false, true);
             var op = new RsOpLessThan();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
@@ -1571,7 +1571,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "<", "48", "", "[[Result().res]]", false, true);
             var op = new RsOpLessThan();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(3, result.Count);
@@ -1590,7 +1590,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Regex", "^[0-9]*$", "", "[[Result().res]]", false);
             var op = new RsOpRegex();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(1, result.Count);
@@ -1609,7 +1609,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Regex", "^[0-9]*$", "", "[[Result().res]]", false, true);
             var op = new RsOpRegex();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
@@ -1628,7 +1628,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Regex", "^[0-9]*$", "", "[[Result().res]]", false, true);
             var op = new RsOpRegex();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(1, result.Count);
@@ -1647,7 +1647,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Regex", "NotRegexExpression", "", "[[Result().res]]", false);
             var op = new RsOpRegex();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
@@ -1666,7 +1666,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Starts With", "4", "", "[[Result().res]]", false);
             var op = new RsOpStartsWith();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(2, result.Count);
@@ -1686,7 +1686,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Starts With", "4", "", "[[Result().res]]", false, true);
             var op = new RsOpStartsWith();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
@@ -1706,7 +1706,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Starts With", "4", "", "[[Result().res]]", false, true);
             var op = new RsOpStartsWith();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(3, result.Count);
@@ -1725,7 +1725,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Starts With", "test", "", "[[Result().res]]", false);
             var op = new RsOpStartsWith();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(1, result.Count);
@@ -1745,7 +1745,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Starts With", "test", "", "[[Result().res]]", false, true);
             var op = new RsOpStartsWith();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
@@ -1764,7 +1764,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Starts With", "test", "", "[[Result().res]]", false, true);
             var op = new RsOpStartsWith();
-            var func = op.BuildSearchExpression(bdl, props);
+            var func = op.BuildSearchExpression(new RecordSetSearchPayload[0], props);
             var result = func.Invoke();
 
             Assert.AreEqual(3, result.Count);
@@ -1791,7 +1791,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Between", "", "", "[[Result().res]]", false, false, "25", "75");
             var rsOpIsBetween = new RsOpIsBetween();
-            var func = rsOpIsBetween.BuildSearchExpression(bdl, props);
+            var func = rsOpIsBetween.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             var result = func.Invoke();
@@ -1818,7 +1818,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Between", "", "", "[[Result().res]]", false, true, "25", "75");
             var rsOpIsBetween = new RsOpIsBetween();
-            var func = rsOpIsBetween.BuildSearchExpression(bdl, props);
+            var func = rsOpIsBetween.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             var result = func.Invoke();
@@ -1845,7 +1845,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Between", "", "", "[[Result().res]]", false, false, "10/11/2013", "10/22/2013");
             var rsOpIsBetween = new RsOpIsBetween();
-            var func = rsOpIsBetween.BuildSearchExpression(bdl, props);
+            var func = rsOpIsBetween.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             var result = func.Invoke();
@@ -1872,7 +1872,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Between", "", "", "[[Result().res]]", false, true, "10/11/2013", "10/22/2013");
             var rsOpIsBetween = new RsOpIsBetween();
-            var func = rsOpIsBetween.BuildSearchExpression(bdl, props);
+            var func = rsOpIsBetween.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             var result = func.Invoke();
@@ -1900,7 +1900,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Between", "", "", "[[Result().res]]", false, true, "10/11/2013", "10");
             var rsOpIsBetween = new RsOpIsBetween();
-            var func = rsOpIsBetween.BuildSearchExpression(bdl, props);
+            var func = rsOpIsBetween.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             func.Invoke();
@@ -1926,7 +1926,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Between", "", "", "[[Result().res]]", false, true, "10", "10/11/2013");
             var rsOpIsBetween = new RsOpIsBetween();
-            var func = rsOpIsBetween.BuildSearchExpression(bdl, props);
+            var func = rsOpIsBetween.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             func.Invoke();
@@ -1955,7 +1955,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Between", "", "", "[[Result().res]]", false, false, "25", "75");
             var rsOpNotBetween = new RsOpNotBetween();
-            var func = rsOpNotBetween.BuildSearchExpression(bdl, props);
+            var func = rsOpNotBetween.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             var result = func.Invoke();
@@ -1982,7 +1982,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Between", "", "", "[[Result().res]]", false, true, "25", "75");
             var rsOpNotBetween = new RsOpNotBetween();
-            var func = rsOpNotBetween.BuildSearchExpression(bdl, props);
+            var func = rsOpNotBetween.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             var result = func.Invoke();
@@ -2009,7 +2009,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Between", "", "", "[[Result().res]]", false, false, "10/11/2013", "10/22/2013");
             var rsOpNotBetween = new RsOpNotBetween();
-            var func = rsOpNotBetween.BuildSearchExpression(bdl, props);
+            var func = rsOpNotBetween.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             var result = func.Invoke();
@@ -2036,7 +2036,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Between", "", "", "[[Result().res]]", false, true, "10/11/2013", "10/22/2013");
             var rsOpNotBetween = new RsOpNotBetween();
-            var func = rsOpNotBetween.BuildSearchExpression(bdl, props);
+            var func = rsOpNotBetween.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             var result = func.Invoke();
@@ -2064,7 +2064,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Between", "", "", "[[Result().res]]", false, true, "10/11/2013", "10");
             var rsOpNotBetween = new RsOpNotBetween();
-            var func = rsOpNotBetween.BuildSearchExpression(bdl, props);
+            var func = rsOpNotBetween.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             func.Invoke();
@@ -2090,7 +2090,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Between", "", "", "[[Result().res]]", false, true, "10", "10/11/2013");
             var rsOpNotBetween = new RsOpNotBetween();
-            var func = rsOpNotBetween.BuildSearchExpression(bdl, props);
+            var func = rsOpNotBetween.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             func.Invoke();
@@ -2119,7 +2119,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Binary", "", "", "[[Result().res]]", false);
             var rsOpIsBinary = new RsOpIsBinary();
-            var func = rsOpIsBinary.BuildSearchExpression(bdl, props);
+            var func = rsOpIsBinary.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             var result = func.Invoke();
@@ -2145,7 +2145,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Binary", "", "", "[[Result().res]]", false, true);
             var rsOpIsBinary = new RsOpIsBinary();
-            var func = rsOpIsBinary.BuildSearchExpression(bdl, props);
+            var func = rsOpIsBinary.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             var result = func.Invoke();
@@ -2175,7 +2175,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Binary", "", "", "[[Result().res]]", false);
             var RsOpNotBinary = new RsOpNotBinary();
-            var func = RsOpNotBinary.BuildSearchExpression(bdl, props);
+            var func = RsOpNotBinary.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             var result = func.Invoke();
@@ -2201,7 +2201,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Binary", "", "", "[[Result().res]]", false, true);
             var RsOpNotBinary = new RsOpNotBinary();
-            var func = RsOpNotBinary.BuildSearchExpression(bdl, props);
+            var func = RsOpNotBinary.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             var result = func.Invoke();
@@ -2231,7 +2231,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Hex", "", "", "[[Result().res]]", false);
             var RsOpIsHex = new RsOpIsHex();
-            var func = RsOpIsHex.BuildSearchExpression(bdl, props);
+            var func = RsOpIsHex.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             var result = func.Invoke();
@@ -2257,7 +2257,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Hex", "", "", "[[Result().res]]", false, true);
             var RsOpIsHex = new RsOpIsHex();
-            var func = RsOpIsHex.BuildSearchExpression(bdl, props);
+            var func = RsOpIsHex.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             var result = func.Invoke();
@@ -2287,7 +2287,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Hex", "", "", "[[Result().res]]", false);
             var RsOpNotHex = new RsOpNotHex();
-            var func = RsOpNotHex.BuildSearchExpression(bdl, props);
+            var func = RsOpNotHex.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             var result = func.Invoke();
@@ -2313,7 +2313,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Hex", "", "", "[[Result().res]]", false, true);
             var RsOpNotHex = new RsOpNotHex();
-            var func = RsOpNotHex.BuildSearchExpression(bdl, props);
+            var func = RsOpNotHex.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             var result = func.Invoke();
@@ -2343,7 +2343,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Base64", "", "", "[[Result().res]]", false);
             var RsOpNotBase64 = new RsOpNotBase64();
-            var func = RsOpNotBase64.BuildSearchExpression(bdl, props);
+            var func = RsOpNotBase64.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             var result = func.Invoke();
@@ -2369,7 +2369,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Base64", "", "", "[[Result().res]]", false, true);
             var RsOpNotBase64 = new RsOpNotBase64();
-            var func = RsOpNotBase64.BuildSearchExpression(bdl, props);
+            var func = RsOpNotBase64.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             var result = func.Invoke();
@@ -2399,7 +2399,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Doesn't End With", "=", "", "[[Result().res]]", false);
             var RsOpNotEndsWith = new RsOpNotEndsWith();
-            var func = RsOpNotEndsWith.BuildSearchExpression(bdl, props);
+            var func = RsOpNotEndsWith.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             var result = func.Invoke();
@@ -2425,7 +2425,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Doesn't End With", "=", "", "[[Result().res]]", false, true);
             var RsOpNotEndsWith = new RsOpNotEndsWith();
-            var func = RsOpNotEndsWith.BuildSearchExpression(bdl, props);
+            var func = RsOpNotEndsWith.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             var result = func.Invoke();
@@ -2455,7 +2455,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Doesn't Start With", "d", "", "[[Result().res]]", false);
             var RsOpNotStartsWith = new RsOpNotStartsWith();
-            var func = RsOpNotStartsWith.BuildSearchExpression(bdl, props);
+            var func = RsOpNotStartsWith.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             var result = func.Invoke();
@@ -2481,7 +2481,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Doesn't Start With", "d", "", "[[Result().res]]", false, true);
             var RsOpNotStartsWith = new RsOpNotStartsWith();
-            var func = RsOpNotStartsWith.BuildSearchExpression(bdl, props);
+            var func = RsOpNotStartsWith.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             var result = func.Invoke();
@@ -2511,7 +2511,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Regex", @"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b", "", "[[Result().res]]", false);
             var RsOpNotRegex = new RsOpNotRegex();
-            var func = RsOpNotRegex.BuildSearchExpression(bdl, props);
+            var func = RsOpNotRegex.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             var result = func.Invoke();
@@ -2537,7 +2537,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Regex", @"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b", "", "[[Result().res]]", false, true);
             var RsOpNotRegex = new RsOpNotRegex();
-            var func = RsOpNotRegex.BuildSearchExpression(bdl, props);
+            var func = RsOpNotRegex.BuildSearchExpression(new RecordSetSearchPayload[0], props);
 
             //------------Execute Test---------------------------
             var result = func.Invoke();

@@ -19,10 +19,9 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
-using Dev2.Data.Enums;
+using Dev2.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
@@ -62,16 +61,14 @@ namespace Dev2.Runtime.ESB.Execution
 
         public void PerformLogExecution(string logUri)
         {
-            var dataListCompiler = DataListFactory.CreateDataListCompiler();
-            ErrorResultTO errors;
-            var expressionsEntry = dataListCompiler.Evaluate(DataObject.DataListID, enActionType.User, logUri, false, out errors);
-            var itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
-            while (itr.HasMoreRecords())
+            
+            var expressionsEntry = DataObject.Environment.Eval(logUri);
+            var itr = new WarewolfIterator(expressionsEntry);
+            while (itr.HasMoreData())
             {
-                var cols = itr.FetchNextRowData();
-                foreach (var c in cols)
+                var val = itr.GetNextValue();
                 {
-                    var buildGetWebRequest = BuildSimpleGetWebRequest(c.TheValue);
+                    var buildGetWebRequest = BuildSimpleGetWebRequest(val);
                     if (buildGetWebRequest == null)
                     {
                         throw new Exception("Invalid Url to execute for logging");
@@ -95,15 +92,12 @@ namespace Dev2.Runtime.ESB.Execution
         {
             Dev2Logger.Log.Info(String.Format("Started Remote Execution. Service Name:{0} Resource Id:{1} Mode:{2}", DataObject.ServiceName, DataObject.ResourceID, DataObject.IsDebug ? "Debug" : "Execute"));
 
-            var dataListCompiler = DataListFactory.CreateDataListCompiler();
             var serviceName = DataObject.ServiceName;
 
             errors = new ErrorResultTO();
-            ErrorResultTO invokeErrors;
 
             // get data in a format we can send ;)
-            var dataListFragment = dataListCompiler.ConvertFrom(DataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
+            var dataListFragment = ExecutionEnvironmentUtils.GetXmlInputFromEnvironment(DataObject, DataObject.WorkspaceID, DataObject.RemoteInvokeResultShape.ToString());
             string result = string.Empty;
 
             var connection = GetConnection(DataObject.EnvironmentID);
@@ -116,28 +110,19 @@ namespace Dev2.Runtime.ESB.Execution
             try
             {
                 // Invoke Remote WF Here ;)
-                result = ExecuteGetRequest(connection, serviceName, dataListFragment.ToString());
+                result = ExecuteGetRequest(connection, serviceName, dataListFragment);
                 IList<IDebugState> msg = FetchRemoteDebugItems(connection);
                 DataObject.RemoteDebugItems = msg; // set them so they can be acted upon
             }
             catch (Exception e)
             {
-                errors.AddError(e.Message.Contains("Forbidden") ? "Executing a service requires Execute permissions" : e.Message);
+                var errorMessage = e.Message.Contains("Forbidden") ? "Executing a service requires Execute permissions" : e.Message;
+                DataObject.Environment.Errors.Add(errorMessage);
                 Dev2Logger.Log.Error(e);
             }
 
             // Create tmpDL
-            var tmpId = dataListCompiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), result.ToStringBuilder(), DataObject.RemoteInvokeResultShape, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-
-            // Merge Result into Local DL ;)
-            Guid mergeOp = dataListCompiler.Merge(DataObject.DataListID, tmpId, enDataListMergeTypes.Union, enTranslationDepth.Data, false, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-
-            if (mergeOp == DataObject.DataListID)
-            {
-                return mergeOp;
-            }
+            ExecutionEnvironmentUtils.UpdateEnvironmentFromOutputPayload(DataObject,result.ToStringBuilder(),DataObject.RemoteInvokeResultShape.ToString());
             Dev2Logger.Log.Info(String.Format("Completed Remote Execution. Service Name:{0} Resource Id:{1} Mode:{2}", DataObject.ServiceName, DataObject.ResourceID, DataObject.IsDebug ? "Debug" : "Execute"));
 
             return Guid.Empty;

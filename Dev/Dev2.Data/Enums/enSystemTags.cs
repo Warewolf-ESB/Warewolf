@@ -33,7 +33,6 @@ namespace Dev2.DataList.Contract
         ParentWorkflowInstanceId,
         ParentServiceName,
         ParentInstanceID,
-        Dev2Error,
         SystemModel,
         Service,
         WorkflowInstanceId,

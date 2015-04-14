@@ -14,7 +14,6 @@ using ActivityUnitTests;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.Diagnostics;
 using System;
 using System.Activities;
 using System.Collections.Generic;
@@ -36,12 +35,12 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         protected virtual List<IDebugItemResult> GetDebugInputItemResults(Activity activity)
         {
-            return CommonSteps.GetInputDebugItems(activity);
+            return CommonSteps.GetInputDebugItems(activity,DataObject.Environment);
         }
 
         protected virtual List<IDebugItemResult> GetDebugOutputItemResults(Activity activity)
         {
-            return CommonSteps.GetOutputDebugItems(activity);
+            return CommonSteps.GetOutputDebugItems(activity, DataObject.Environment);
         }
 
         protected void BuildShapeAndTestData()
@@ -56,30 +55,44 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             if(variableList != null)
             {
-                foreach(dynamic variable in variableList)
+                try
                 {
-                    Build(variable, shape, data, row);
-                    row++;
+                    foreach (dynamic variable in variableList)
+                    {
+                        if (!string.IsNullOrEmpty(variable.Item1))
+                        {
+                            DataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), variable.Item2);
+                        }
+                        //Build(variable, shape, data, row);
+                        row++;
+                    }
+                }
+                    // ReSharper disable EmptyGeneralCatchClause
+                catch
+                    // ReSharper restore EmptyGeneralCatchClause
+                {
+                    
                 }
             }
 
             List<Tuple<string, string>> emptyRecordset;
             bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
-            if(isAdded)
+            if (isAdded)
             {
-                foreach(Tuple<string, string> emptyRecord in emptyRecordset)
+                foreach (Tuple<string, string> emptyRecord in emptyRecordset)
                 {
-                    var recSetElement = shape
-                                      .Descendants(emptyRecord.Item1)
-                                      .FirstOrDefault();
-                    if(recSetElement == null)
-                    {
-                        shape.Add(new XElement(emptyRecord.Item1, new XElement(emptyRecord.Item2)));
-                    }
-                    else
-                    {
-                        recSetElement.Add(new XElement(emptyRecord.Item2));
-                    }
+                    DataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(emptyRecord.Item1), emptyRecord.Item2);
+                    //var recSetElement = shape
+                    //                  .Descendants(emptyRecord.Item1)
+                    //                  .FirstOrDefault();
+                    //if (recSetElement == null)
+                    //{
+                    //    shape.Add(new XElement(emptyRecord.Item1, new XElement(emptyRecord.Item2)));
+                    //}
+                    //else
+                    //{
+                    //    recSetElement.Add(new XElement(emptyRecord.Item2));
+                    //}
                 }
             }
 
@@ -119,7 +132,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                                             .FirstOrDefault();
                     if(recordSetElement == null)
                     {
-                        shape.Add(new XElement(recordset, new XElement(recordField)));
+                        shape.Add(new XElement(recordset, new XElement(recordField)));                        
                     }
                     else
                     {

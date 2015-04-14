@@ -71,6 +71,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(24, actual.Count);
 
         }
+
+       
+
         /// <summary>
         /// This method takes a recordset as input and outputs a single value
         /// </summary>

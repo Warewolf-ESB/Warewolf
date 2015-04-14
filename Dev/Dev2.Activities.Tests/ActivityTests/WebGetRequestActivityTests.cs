@@ -159,7 +159,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Assert Results-------------------------
             mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url, It.IsAny<List<Tuple<string, string>>>()), Times.Once());
             Assert.IsTrue(Compiler.HasErrors(executeProcess.DataListID));
-            string errorString = Compiler.FetchErrors(executeProcess.DataListID, false);
+            string errorString = DataObject.Environment.FetchErrors();
             StringAssert.Contains(errorString, Message);
         }
 

@@ -565,7 +565,7 @@ namespace Dev2.Runtime.Hosting
 
             try
             {
-
+             
 
                 if(resourceXml == null || resourceXml.Length == 0)
                 {
@@ -576,8 +576,9 @@ namespace Dev2.Runtime.Hosting
                 lock(workspaceLock)
                 {
                     var xml = resourceXml.ToXElement();
-
+              
                     var resource = new Resource(xml);
+                    GlobalConstants.InvalidateCache(resource.ResourceID);
                     Dev2Logger.Log.Info("Save Resource." + resource);
                     _versioningRepository.StoreVersion(resource, user, reason, workspaceID);
 
@@ -612,6 +613,7 @@ namespace Dev2.Runtime.Hosting
                 {
                     resource.ResourceID = Guid.NewGuid();
                 }
+                GlobalConstants.InvalidateCache(resource.ResourceID);
                 resource.ResourcePath = SanitizePath(resource.ResourcePath);
                 var result = resource.ToStringBuilder();
                 return CompileAndSave(workspaceID, resource, result);
