@@ -156,16 +156,16 @@ namespace Dev2.Services.Execution
             {
                 case enSourceType.SqlDatabase:
                 {
-                    object result = SqlExecution(invokeErrors, out executeService) ? executeService : string.Empty;
+                    SqlExecution(invokeErrors);
 
                     ErrorResult.MergeErrors(invokeErrors);
 
-                    return result;
+                    return Guid.NewGuid();
                 }
                 case enSourceType.MySqlDatabase:
                 {
                   
-                    object result = MySqlExecution(invokeErrors, out executeService) ? executeService : string.Empty;
+                    object result = MySqlExecution(invokeErrors);
 
                     ErrorResult.MergeErrors(invokeErrors);
 
@@ -357,7 +357,7 @@ namespace Dev2.Services.Execution
             }
         }
 
-        private bool MySqlExecution(ErrorResultTO errors, out object executeService)
+        private bool MySqlExecution(ErrorResultTO errors)
         {
             try
             {
@@ -377,8 +377,7 @@ namespace Dev2.Services.Execution
                                 ApplyColumnMappings(dataSet);
                                 IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-                                executeService =
-                                    compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._DATATABLE),
+                                compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._DATATABLE),
                                         dataSet, InstanceOutputDefintions, DataObj.DataListID, out errors);
 
                                 return true;
@@ -391,7 +390,6 @@ namespace Dev2.Services.Execution
             {
                 errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
             }
-            executeService = null;
             return false;
         }
 
@@ -432,9 +430,6 @@ namespace Dev2.Services.Execution
 
             if (methodParameters.Count > 0)
             {
-#pragma warning disable 219
-                int pos = 0;
-#pragma warning restore 219
                 foreach (MethodParameter parameter in methodParameters)
                 {
                     if (parameter.EmptyToNull &&
@@ -447,34 +442,11 @@ namespace Dev2.Services.Execution
                     {
                         sqlParameters.Add(new MySqlParameter(string.Format("@{0}", parameter.Name), parameter.Value));
                     }
-                    pos++;
                 }
             }
             return sqlParameters;
         }
 
-/*
-        private static List<MySqlParameter> GetMySqlOutParameters(IList<MethodParameter> methodParameters)
-        {
-            var sqlParameters = new List<MySqlParameter>();
-
-            if (methodParameters.Count > 0)
-            {
-#pragma warning disable 219
-                int pos = 0;
-#pragma warning restore 219
-                foreach (MethodParameter parameter in methodParameters)
-                {
-
-                        sqlParameters.Add(new MySqlParameter(string.Format("@{0}", parameter.Name),"@a"));
-                    
-
-                    pos++;
-                }
-            }
-            return sqlParameters;
-        }
-*/
         #endregion
 
         private void ApplyColumnMappings(DataTable dataTable)
