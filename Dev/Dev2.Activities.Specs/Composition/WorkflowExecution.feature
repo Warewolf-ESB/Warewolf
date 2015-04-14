@@ -393,44 +393,6 @@ Scenario: Workflow with Assigns and DataSplit executing against the server
 	  And the 'DataSpliting' in Workflow 'WorkflowWithAssignandDataSplittools' debug outputs as  
 	  | # |                   |
 	  | 1 | [[rec(1).a]] = lf |
-	
-	  
-Scenario Outline: Workflow with Assign Base Convert and Decision tools executing against the server
-	  Given I have a workflow "WorkflowWithAssignBaseConvertandDecision"
-	  And "WorkflowWithAssignBaseConvertandDecision" contains an Assign "Assign1" as
-	  | variable    | value     |
-	  | [[rec().a]] | '<value>' |
-	  And "WorkflowWithAssignBaseConvertandDecision" contains Base convert "BaseConvert" as
-	  | Variable     | From     | To     |
-	  | [[rec(1).a]] | '<from>' | '<to>' |
-	  And "WorkflowWithAssignBaseConvertandDecision" contains Decision "Decision" as
-	  |       |          |
-	  | [[a]] | '<cond>' |
-	  When "WorkflowWithAssignBaseConvertandDecision" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'Assign1' in WorkFlow 'WorkflowWithAssignBaseConvertandDecision' debug inputs as
-	  | # | Variable       | New Value |
-	  | 1 | [[rec(1).a]] = | <value>   |
-	   And the 'Assign1' in Workflow 'WorkflowWithAssignBaseConvertandDecision' debug outputs as  
-	  | # |                |         |
-	  | 1 | [[rec(1).a]] = | <value> |
-	  And the 'BaseConvert' in WorkFlow 'WorkflowWithAssignBaseConvertandDecision' debug inputs as
-	  | 1 | [[rec(1).a]] = warewolf | <text>  |<to> |
-      And the 'BaseConvert' in Workflow 'WorkflowWithAssignBaseConvertandDecision' debug outputs as  
-	  | # |                         |
-	  | 1 | [[rec(1).a]] = <result> |
-	  And the 'Decision' in WorkFlow 'WorkflowWithAssignBaseConvertandDecision' debug inputs as
-	  |  | Statement | Require All decisions to be True |
-	  |  | String    | YES                              |
-	  And the 'Decision' in Workflow 'WorkflowWithAssignBaseConvertandDecision' debug outputs as  
-	  |          |
-	  | <output> |
-Examples: 
-     | no | Value    | from | to     | result       | cond      | output |
-     | 1  | warewolf | Text | Base64 | d2FyZxdvbGY= | Is Base64 | YES    |
-     | 2  | a        | Text | Binary | 01100001     | Is Binary | YES    |
-     | 3  | a        | Text | Hex    | 0x61         | Is Hex    | YES    |
-     | 4  | 2013/01  | Text | Text   | 2013/01      | Is Date   | YES    |
 
 Scenario: Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Index and Replace) executing against the server
       Given I have a workflow "workflowithAssignandsequence"
@@ -1790,9 +1752,10 @@ Scenario: Executing 2 ForEach's inside a ForEach which contains Assign only
 	  And the 'Rep' in Workflow 'workflowithAssignandreplaces' debug outputs as
 	  |                         |
 	  | [[rec(1).a]] = Warewolf |
+	  | [[rec(2).a]] = b        |
+	  | [[rec(1).a]] = Warewolf |
 	  | [[rec(2).a]] = Warewolf |
-
-	  | [[rec(3).a]] = 2        |
+	  | [[rec(3).a]] = 3        |
 
 Scenario: Workflow Assign and Find Record index tool with two variables in reult field expect error
       Given I have a workflow "WFWithAssignandFindRecordindex"
@@ -1896,49 +1859,6 @@ Scenario: Testing Data Split with two variables in Result field
 	  |                     |                   |                 | 2 | [[fr().b]][[b]] = | Index | 2     | No      |        |
 	  And the 'Data Split' in Workflow 'WorkflowforDatasplit' debug outputs as  
 	  | # |                    |
-	
-Scenario Outline: Testing Replace with two variables in Result field
-      Given I have a workflow "WorkflowforReplace"
-      And "WorkflowforReplace" contains an Assign "Rec To Convert" as
-	  | variable    | value    |
-	  | [[rec().a]] | Test     |
-	  | [[rec().a]] | Warewolf |
-	  And "WorkflowforReplace" contains Replace "Replac" into '<Variable>' as	
-	  | In Fields    | Find | Replace With |
-	  | [[rec(*).a]] | Test | rocks        |
-	  When "WorkflowforReplace" is executed  	  
-	  Then the workflow execution has "AN" error	
-      And the 'Rec To Convert' in WorkFlow 'WorkflowforReplace' debug inputs as
-	  | # | Variable      | New Value |
-	  | 1 | [[rec().a]] = | Test      |
-	  | 2 | [[rec().a]] = | Warewolf  |
-	  And the 'Rec To Convert' in Workflow 'WorkflowforReplace' debug outputs as    
-	  | # |                         |
-	  | 1 | [[rec(1).a]] = Test     |
-	  | 2 | [[rec(2).a]] = Warewolf |
-	  And the 'Replac' in WorkFlow 'WorkflowforReplace' debug inputs as 	
-	  | In Field(s)             | Find | Replace With |
-	  | [[rec(1).a]] = Test     |      |              |
-	  | [[rec(2).a]] = Warewolf | Test | rocks        |
-	  And the 'Replac' in Workflow 'WorkflowforReplace' debug outputs as 
-	  |                   |
-	  | [[a]][[b]][[c]] = |
-Examples: 
-      | No    | Variable       |
-      | 1     | [[a]][[Result]] |
-#12180 
- #     | 2  | [[a]]*]]               |
- #     | 3  | [[var@]]               |
- #     | 4  | [[var]]00]]            |
- #     | 5  | [[(1var)]]             |
- #     | 6  | [[var[[a]]]]           |
- #     | 7  | [[var.a]]              |
- #     | 8  | [[@var]]               |
- #     | 9  | [[var 1]]              |
- #     | 10 | [[rec(1).[[rec().1]]]] |
- #     | 11 | [[rec(@).a]]           |
- #     | 12 | [[rec"()".a]]          |
- #     | 13 | [[rec([[[[b]]]]).a]]   |
 
 Scenario Outline: Testing Format Numbers with two variables in Result
      Given I have a workflow "Workflowforfn"
@@ -2720,7 +2640,6 @@ Scenario: Workflow with Assign Base Convert and Case Convert testing variable th
 	  | 1 | [[res12]] = | UPPER |
 	  And the 'Case to Convert' in Workflow 'WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues' debug outputs as  
 	  | # |             |
-	  |  |  |
 	  And the 'Base to Convert' in WorkFlow 'WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues' debug inputs as
 	  | # | Convert     | From | To      |
 	  | 1 | [[res12]] = | Text | Base 64 |
@@ -3015,30 +2934,6 @@ Scenario: Workflow with Assign and Random and testing variable values that hasn'
 	  And the 'Rand' in Workflow 'WorkflowWithAssignandRandomTestingUnassignedvariablevalue' debug outputs as
 	  |                 |
 	  | [[ranresult]] = |
-
-Scenario: Workflow with Assign and Random and testing variable values that hasn't been assigned2
-	 Given I have a workflow "WorkflowWithAssignandRandomTestingUnassignedvariablevalue2"
-	 And "WorkflowWithAssignandRandomTestingUnassignedvariablevalue2" contains an Assign "Valforrandno" as
-	  | variable    | value   |
-	  | [[a]]       | 1       |	  
-	   And "WorkflowWithAssignandRandomTestingUnassignedvariablevalue2" contains Random "Rand4" as
-	  | Type    | From      | To | Result        |
-	  | Numbers | [[val1]]1 | 10 | [[ranresult]] |
-	  When "WorkflowWithAssignandRandomTestingUnassignedvariablevalue2" is executed
-	  Then the workflow execution has "AN" error
-	  And the 'Valforrandno' in WorkFlow 'WorkflowWithAssignandRandomTestingUnassignedvariablevalue2' debug inputs as
-	  | # | Variable      | New Value |
-	  | 1 | [[a]] =       | 1         |
-	  And the 'Valforrandno' in Workflow 'WorkflowWithAssignandRandomTestingUnassignedvariablevalue2' debug outputs as  
-	  | # |                        |
-	  | 1 | [[a]] = 1              |
-	  And the 'Rand4' in WorkFlow 'WorkflowWithAssignandRandomTestingUnassignedvariablevalue2' debug inputs as 
-	  | Random  | From           | To |
-	  | Numbers | [[val1]]1  = 1 | 10 |
-	  And the 'Rand4' in Workflow 'WorkflowWithAssignandRandomTestingUnassignedvariablevalue2' debug outputs as
-	  |                       |
-	  | [[ranresult]] = Int32 |
-
 
 
 Scenario: Workflow with Assign, Date Time Difference tools and testing variable values that hasn't been assigned
@@ -3697,178 +3592,6 @@ Scenario: Executing Control Flow - Switch example workflow
 	  Then the workflow execution has "NO" error
 
 
-Scenario: Executing File and Folder - Create example workflow
-	  Given I have a workflow "File and Folder - Create Test"
-	  And "File and Folder - Create Test" contains "File and Folder - Create" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  When "File and Folder - Create Test" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'Create' in WorkFlow 'File and Folder - Create' debug inputs as
-	  | File or Folder | Overwrite | Username | Password |
-	  | c:\Temp\Backup | False     | ""       | ""       |  
-	  And the 'Create' in Workflow 'File and Folder - Create' debug outputs as    
-	  |                        |
-	  | [[Complete]] = Success |
-
-
-Scenario: Executing File and Folder - Copy example workflow
-	  Given I have a workflow "File and Folder - Copy Test"
-	  And "File and Folder - Copy Test" contains "File and Folder - Copy" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  When "File and Folder - Copy Test" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'Copy' in WorkFlow 'File and Folder - Copy' debug inputs as
-	  | Source Path      | Username | Password | Destination Path       | Destination Username | Destination Password | Overwrite |
-	  | c:\backups\today | ""       | ""       | ftp://archive/allfiles | ""                   | ""                   | False     |
-	  And the 'Copy' in Workflow 'File and Folder - Copy' debug outputs as    
-	  |                        |
-	  | [[Complete]] = Success |
-
-Scenario: Executing File and Folder - Move example workflow
-	  Given I have a workflow "File and Folder - Move Test"
-	  And "File and Folder - Move Test" contains "File and Folder - Move" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  When "File and Folder - Move Test" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'Move' in WorkFlow 'File and Folder - Move' debug inputs as
-	  | Source Path         | Username | Password | Destination Path            | Destination Username | Destination Password | Overwrite |
-	  | \\\MyServer\LogFiles | ""       | ""       | ftp://Archive/ForProcessing | ""                   | ""                   | False     |
-	  And the 'Move' in Workflow 'File and Folder - Move' debug outputs as    
-	  |                        |
-	  | [[Complete]] = Success |
-
-Scenario: Executing File and Folder - Delete example workflow
-	  Given I have a workflow "File and Folder - Delete Test"
-	  And "File and Folder - Delete Test" contains "File and Folder - Delete" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  When "File and Folder - Delete Test" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'Delete' in WorkFlow 'File and Folder - Delete' debug inputs as
-	  | Input Path                                              | Username | Password |
-	  | c:\Program Files (x86)\Warewolf\Server\5-TUW-SIPPED.txt | ""       | ""       |  
-	  And the 'Delete' in Workflow 'File and Folder - Delete' debug outputs as    
-	  |                        |
-	  | [[Complete]] = Success |
-
-Scenario: Executing File and Folder - Read File example workflow
-	  Given I have a workflow "File and Folder - Read File Test"
-	  And "File and Folder - Read File Test" contains "File and Folder - Read File" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  When "File and Folder - Read File Test" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'Read File' in WorkFlow 'File and Folder - Read File' debug inputs as
-	  | Input Path                 | Username | Password |
-	  | ftp://myserver/logfile.csv | ""       | ""       |  
-	  And the 'Read File' in Workflow 'File and Folder - Read File' debug outputs as    
-	  |                    |
-	  | [[Logs]] = Success |
-
-Scenario: Executing File and Folder - Write File example workflow
-	  Given I have a workflow "File and Folder - Write File Test"
-	  And "File and Folder - Write File Test" contains "File and Folder - Write File" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  When "File and Folder - Write File Test" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'Write' in WorkFlow 'File and Folder - Write File' debug inputs as
-	  | Output Path          | Method    | Username | Password | File Contents        |
-	  | ftp://Files/Cust.csv | Overwrite | ""       | ""       | [[SomeCSV]] = String |
-	  And the 'Write' in Workflow 'File and Folder - Write File' debug outputs as    
-	  |                        |
-	  | [[Complete]] = Success |
-
-Scenario: Executing File and Folder - Read Folder File example workflow
-	  Given I have a workflow "File and Folder - Read Folder Test"
-	  And "File and Folder - Read Folder Test" contains "File and Folder - Read Folder" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  When "File and Folder - Read Folder Test" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'Read Folder1' in WorkFlow 'File and Folder - Read Folder' debug inputs as
-	   | Input Path | Read            | Username | Password |
-	   | c:\users\  | Files & Folders | ""       | ""       |
-	  And the 'Read Folder1' in Workflow 'File and Folder - Read Folder' debug outputs as    
-	  |                    |
-	  | [[users]] = String |
-	  And the 'Read Folder2' in WorkFlow 'File and Folder - Read Folder' debug inputs as
-	   | Input Path | Read            | Username | Password |
-	   | c:\users\  | Files & Folders | ""       | ""       |
-	  And the 'Read Folder2' in Workflow 'File and Folder - Read Folder' debug outputs as    
-	  |                               |
-	  | [[server(1).users]] = String  |
-	  | [[server(2).users]] = String  |
-	  | [[server(3).users]] = String  |
-	  | [[server(4).users]] = String  |
-	  | [[server(5).users]] = String  |
-	  | [[server(6).users]] = String  |
-	  | [[server(7).users]] = String  |
-	  | [[server(8).users]] = String  |
-	  | [[server(9).users]] = String  |
-	  | [[server(10).users]] = String |
-	  | [[server(11).users]] = String |
-	  | [[server(12).users]] = String |
-	  | [[server(13).users]] = String |
-	  | [[server(14).users]] = String |
-	  | [[server(15).users]] = String |
-	  | [[server(16).users]] = String |
-
-Scenario: Executing File and Folder - Rename example workflow
-	  Given I have a workflow "File and Folder - Rename Test"
-	  And "File and Folder - Rename Test" contains "File and Folder - Rename" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  When "File and Folder - Rename Test" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'Rename' in WorkFlow 'File and Folder - Rename' debug inputs as	
-	   | Source Path      | Username | Password | Destination Path         | Destination Username | Destination Password | Overwrite |
-	   | \\\Backups\Today | ""       | ""       | FTPS://Backups/Yesterday | ""                   | ""                   | False     |
-	    And the 'Rename' in Workflow 'File and Folder - Rename' debug outputs as    
-	   |                        |
-	   | [[Complete]] = Success |
-	
-Scenario: Executing File and Folder - Unzip example workflow
-	  Given I have a workflow "File and Folder - Unzip Test"
-	  And "File and Folder - Unzip Test" contains "File and Folder - Unzip" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  When "File and Folder - Unzip Test" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'UnZip' in WorkFlow 'File and Folder - Unzip' debug inputs as	
-	   | Source Path                | Username | Password | Destination Path | Destination Username | Destination Password | Overwrite | Archive Password |
-	   | ftp://Archive/date/day.zip | ""       | ""       | c:\Temp\Day      | ""                   | ""                   | False     | String           |
-	    And the 'UnZip' in Workflow 'File and Folder - Unzip' debug outputs as    
-	   |                        |
-	   | [[Complete]] = Success |
-
-Scenario: Executing File and Folder - Zip example workflow
-	  Given I have a workflow "File and Folder - Zip Test"
-	  And "File and Folder - Zip Test" contains "File and Folder - Zip" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  When "File and Folder - Zip Test" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'Zip' in WorkFlow 'File and Folder - Zip' debug inputs as	
-	  | Source Path                | Username | Password | Destination Path           | Destination Username | Destination Password | Overwrite | Archive Password | Compression Ratio |
-	  | \\\MyServer\LogFiles\Today | ""       | ""       | ftp://Archive/date/day.zip | ""                   | ""                   | False     |                  | Default           |
-	    And the 'Zip' in Workflow 'File and Folder - Zip' debug outputs as    
-	   |                        |
-	   | [[Complete]] = Success |
-
-
-Scenario: Executing Scripting - CMD Line example workflow
-	  Given I have a workflow "Scripting - CMD Line Test"
-	  And "Scripting - CMD Line Test" contains "Scripting - CMD Line" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  When "Scripting - CMD Line Test" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'Execute Command Line1' in WorkFlow 'Scripting - CMD Line' debug inputs as	
-	  | Command      |
-	  | dir c:\*.txt |  
-	  And the 'Execute Command Line1' in Workflow 'Scripting - CMD Line' debug outputs as    
-	  |                        |
-	  | [[TextFiles]] = String | 
-	  And the 'Execute Command Line2' in WorkFlow 'Scripting - CMD Line' debug inputs as	
-	  | Command |
-	  | String  |  
-	  And the 'Execute Command Line2' in Workflow 'Scripting - CMD Line' debug outputs as    
-	  |                     |
-	  | [[Result]] = String | 
-
 
 Scenario: Executing Scripting - Script example workflow
   Given I have a workflow "Scripting - Script Test"
@@ -4018,8 +3741,8 @@ Scenario: Workflow Assign and Find Record Index executing with incorrect format 
       | [[rec(2).a]] | 34    |
       | [[xr(1).a]]  | 10    |
 	  And "WFWithAssignandFindRecordindex" contains Find Record Index "FindRecord0" into result as "[[a]][[b]]"
-      | In Field              | # | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
-      | [[rec().a]][[xr().a]] | 1 | =          | Warewolf | YES                            | NO                          |
+	  | # | In Field              | # | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
+	  | # | [[rec().a]][[xr().a]] | 1 | =          | Warewolf | YES                            | NO                          |
 	  When "WFWithAssignandFindRecordindex" is executed
 	  Then the workflow execution has "AN" error
 	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
