@@ -132,6 +132,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 IWarewolfListIterator iteratorCollection = new WarewolfListIterator();
 
+                 var finRes = dataObject.Environment.Eval(Find);
+                 if( ExecutionEnvironment.IsNothing(finRes))
+                     throw  new Exception("Undefined variable:" +Find);
+
                 var itrFind = new WarewolfIterator(dataObject.Environment.Eval(Find));
                 iteratorCollection.AddVariableToIterateOn(itrFind);
 

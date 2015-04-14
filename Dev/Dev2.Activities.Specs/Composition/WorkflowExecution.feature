@@ -136,7 +136,7 @@ Scenario: Workflow with an assign and webservice different mappings
 	  |                                            |
 	  | [[MyCountries(10).ID]] = 10           |
 	  | [[Name]] = Azerbaijan |
-	
+
 Scenario: Workflow with an assign and remote workflow
 	Given I have a workflow "TestAssignWithRemote"
 	 And "TestAssignWithRemote" contains an Assign "AssignData" as
@@ -1401,12 +1401,12 @@ Scenario: Workflow with Assign recordset calculate field
 	  When "WFWithAssignHasCalculate" is executed
 	  Then the workflow execution has "NO" error
 	  And the 'values1' in WorkFlow 'WFWithAssignHasCalculate' debug inputs as 
-	  | # | Variable       | New Value                        |
-	  | 1 | [[a]] =        | 1                                |
-	  | 2 | [[b]] =        | 2                                |
-	  | 3 | [[rec(1).a]] = | [[a]] = 1                        |
-	  | 4 | [[rec(1).b]] = | [[b]] = 2                        |
-	  | 5 | [[rec(1).c]] = | =[[rec(1).a]]+[[rec(1).b]] ==1+2 |
+	  | # | Variable       | New Value |
+	  | 1 | [[a]] =        | 1         |
+	  | 2 | [[b]] =        | 2         |
+	  | 3 | [[rec(1).a]] = | [[a]] = 1 |
+	  | 4 | [[rec(1).b]] = | [[b]] = 2 |
+	  | 5 | [[rec(1).c]] = |  ‡1+2      |
 	  And the 'values1' in Workflow 'WFWithAssignHasCalculate' debug outputs as   
 	  | # |                  |
 	  | 1 | [[a]] = 1       |
@@ -1780,7 +1780,7 @@ Scenario: Executing 2 ForEach's inside a ForEach which contains Assign only
 	  | 15 | [[rec(50).o]] = 22323asda     |
 		
   
-         
+
 
 
 
@@ -1851,7 +1851,7 @@ Scenario: Workflow Assign and Find Record index
 	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindexTool' debug outputs as   
 	  | # |                                  |
 	  | 1 | [[rec(1).a]]         =  Warewolf |	 	 
-
+		 
 Scenario Outline: Testing Length with two variables in Result field
       Given I have a workflow "WorkflowforLength"
       And "WorkflowforLength" contains an Assign "Rec To Convert" as
@@ -1876,7 +1876,7 @@ Scenario Outline: Testing Length with two variables in Result field
 	  And the 'Len' in Workflow 'WorkflowforLength' debug outputs as    
 	  |                |
 	  |                |
-Examples:
+Examples: 
       | No    | Variable       |
       | 1     | [[length]][[a]] |
       | 2  | [[a]]*]]               |
@@ -1973,7 +1973,7 @@ Scenario Outline: Testing Format Numbers with two variables in Result
 	  | Number  | Rounding Selected | Rounding To | Decimal to show | Result       |
 	  | 123.568 | Up                | 2           | 2               | '<Variable>' |
 	  When "Workflowforfn" is executed  	  
-	  Then the workflow execution has "AN" error
+	  Then the workflow execution has "AN" error	
 	  And the 'Fnumber' in WorkFlow 'Workflowforfn' debug inputs as 	
 	  | Number  | Rounding | Rounding Value | Decimals to show |
 	  | 123.568 | Up       | 2              | 2                |
@@ -2011,8 +2011,8 @@ Scenario Outline: Testing Random Numbers with two variables in Result
 	  | '<Variable>' = |
 Examples: 
       | No | Variable               |
-      | 1  | [[a]][[Result]]        |      
-	  							
+      | 1  | [[a]][[Result]]        |
+
 Scenario Outline: Testing Date and Time with two variables in Result field
       Given I have a workflow "WorkflowforDT"
       And "WorkflowforDT" contains an Assign "Convert2" as
@@ -2330,10 +2330,10 @@ Scenario: Workflow with Assigns DataSplit executing against the server
 	  | 1 | [[a]] =  rec().a |
 	  And the 'DataSplit' in WorkFlow 'WorkflowDataSplit' debug inputs as 
 	  | String to Split | Process Direction | Skip blank rows | # |                         | With  | Using | Include | Escape |
-	  | abcd            | Forward           | No              | 1 | [[[[a]]]] = [[rec().a]] | Index | 4     | No      |        |
+	  | abcd            | Forward           | No              | 1 |  = [[rec().a]] | Index | 4     | No      |        |
 	  And the 'DataSplit' in Workflow 'WorkflowDataSplit' debug outputs as  
 	  | # |                     |
-	  | 1 | [[rec(1).b]] = abcd |
+	  | 1 | [[rec(1).a]] = abcd |
 
 Scenario: Workflow with Assign and foreach contains calculate. 
       Given I have a workflow "Workflowwithforeachcontainscalculates"
@@ -2417,10 +2417,10 @@ Scenario: Workflow with Assigns DataSplit executing against the server 2
 	  | 1 | [[a]] =  rec().a |
 	  And the 'DataSplit' in WorkFlow 'WorkflowDataSplit' debug inputs as 
 	  | String to Split | Process Direction | Skip blank rows | # |                         | With  | Using | Include | Escape |
-	  | abcd            | Forward           | No              | 1 | [[[[a]]]] = [[rec().a]] | Index | 4     | No      |        |
+	  | abcd            | Forward           | No              | 1 |  = [[rec().a]] | Index | 4     | No      |        |
 	  And the 'DataSplit' in Workflow 'WorkflowDataSplit' debug outputs as  
 	  | # |                     |
-	  | 1 | [[rec(1).b]] = abcd |
+	  | 1 | [[rec(1).a]] = abcd |
 
 Scenario: Workflow with Assign and Unique Tool to find unique names in diff rows
       Given I have a workflow "WorkflowUniqueWithNames"
@@ -2857,10 +2857,10 @@ Scenario: Workflow with Assigns Replace and testing variables that hasn't been a
 	  | 2 | [[rec(1).a]] = Warewolf |
 	  And the 'Replacing' in WorkFlow 'workflowithAssignandReplaceTestingUnassignedvariablevalues2' debug inputs as 
 	  | In Field(s)             | Find                | Replace With   |
-	  | [[rec(1).a]] = Warewolf | [[Val1]]Test = Test | [[Val]] = test |
+	  | [[rec(1).a]] = Warewolf | [[Val1]]Test =  | [[Val]] = test |
 	  And the 'Replacing' in Workflow 'workflowithAssignandReplaceTestingUnassignedvariablevalues2' debug outputs as
 	  |                |
-	  | [[replac]] = 0 |	 
+	  | [[replac]] =  |	 
 
 Scenario: Workflow with Assign Format Numbers and testing variables that hasn't been assigned
 	  Given I have a workflow "WorkflowWithAssignandFormatTestingUnassignedvariablevalues"
@@ -2903,10 +2903,10 @@ Scenario: Workflow with Assign Format Numbers and testing variables that hasn't 
 	  | 1 | [[val]]  = 1 |   
 	  And the 'Fnumber' in WorkFlow 'WorkflowWithAssignandFormatTestingUnassignedvariablevalues2' debug inputs as 	
 	  | Number            | Rounding | Rounding Value | Decimals to show |
-	  | [[val1]]234 = 234 | Up       | [[val]] = 1    | [[val]]  = 1     |
+	  | [[val1]]234 =  | Up       | [[val]] = 1    | [[val]]  = 1     |
 	  And the 'Fnumber' in Workflow 'WorkflowWithAssignandFormatTestingUnassignedvariablevalues2' debug outputs as 
 	  |                      |
-	  | [[fresult]]  = 234.0 |
+	  | [[fresult]]  =  |
 
 Scenario: Workflow with Assign Create Delete folder and testing variable values that hasn't been assigned
 	  Given I have a workflow "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues"
@@ -3198,7 +3198,7 @@ Scenario: Workflow with Assign Unique Tool and testing variables in Returnfield 
        |                     |
        | [[rec(*).unique]] = |
       
- 
+      
 Scenario: Executing Utility - Format Number example workflow
 	  Given I have a workflow "Utility - Format Number Test"
 	  And "Utility - Format Number Test" contains "Utility - Format Number" from server "localhost" with mapping as
@@ -3359,7 +3359,7 @@ Scenario: Executing Utility - Assign example workflows
 	  | [[hero(1).pushups]] = All of them.                                |
 	  | [[hero(1).name]] =   Chuck Norris                                 |
 
-	
+
 	
 
 Scenario: Executing Data - Base Conversion example workflow
@@ -3854,7 +3854,7 @@ Scenario: Executing File and Folder - Read Folder File example workflow
 	  | [[server(14).users]] = String |
 	  | [[server(15).users]] = String |
 	  | [[server(16).users]] = String |
-	
+
 Scenario: Executing File and Folder - Rename example workflow
 	  Given I have a workflow "File and Folder - Rename Test"
 	  And "File and Folder - Rename Test" contains "File and Folder - Rename" from server "localhost" with mapping as
@@ -3867,7 +3867,7 @@ Scenario: Executing File and Folder - Rename example workflow
 	    And the 'Rename' in Workflow 'File and Folder - Rename' debug outputs as    
 	   |                        |
 	   | [[Complete]] = Success |
-
+	
 Scenario: Executing File and Folder - Unzip example workflow
 	  Given I have a workflow "File and Folder - Unzip Test"
 	  And "File and Folder - Unzip Test" contains "File and Folder - Unzip" from server "localhost" with mapping as
@@ -3963,10 +3963,10 @@ Scenario: Gather System tool throws error when debug with 2 variables in one row
 	 And the 'System info' in Workflow 'WorkflowW' debug outputs as    
 	  | # |              |
 	  | 1 | [[a]][[b]] = |
-	   
 
 	   
 	  
+	   
 Scenario: Gather System tool throws error when debug with invalid variableb
 	  Given I have a workflow "WorkflowW1"
 	  And "WorkflowW1" contains an Assign "IndexVal" as
@@ -3989,7 +3989,7 @@ Scenario: Gather System tool throws error when debug with invalid variableb
 	 And the 'System info' in Workflow 'WorkflowW1' debug outputs as    
 	  | # |                      |
 	  | 1 | [[a]][[rec().a]] = |
-	   
+
 Scenario: Workflow Base Convert and Case Convert passing invalid variable through execution
 	  Given I have a workflow "WorkflowWithBaseCase1"
 	  And "WorkflowWithBaseCase1" contains an Assign "Assign1" as
@@ -4073,7 +4073,7 @@ Scenario: Workflow Assign and Find Record Index executing with incorrect format 
 	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as   
 	  | # |                                  |
 	  | 1 | [[rec(1).a]]         =  Warewolf |
-	  
+
 	
 Scenario: Executing Workflow Service and Decision tool expected bubling out error in workflow service
 	  Given I have a workflow "Utility - Assign WF"
@@ -4160,71 +4160,11 @@ Scenario: Workflow by using For Each with workflow in it
          |                 |
          | [[res]] = Int32 |
 
-#Scenario: Workflow by using For Each with workflow
-#      Given I have a workflow "WorkFlowWithForEachInRecordsetUtilityRandomTesting"
-#         And "WorkFlowWithForEachInRecordsetUtilityRandomTesting" contains an Assign "Recordset1" as
-#         | variable    | value |
-#         | [[rec().a]] | 1     |
-#         | [[rec().a]] | 2     |
-#         And "WorkFlowWithForEachInRecordsetUtilityRandomTesting" contains a Foreach "ForEachTest123" as "InRecordset" executions "[[rec()]]"
-#		 And "ForEachTest123" contains "Utility - Random" from server "localhost" with mapping as
-#         | Input to Service | From Variable | Output from Service | To Variable     |
-#         When "WorkFlowWithForEachInRecordsetUtilityRandomTesting" is executed
-#         Then the workflow execution has "NO" error
-#         And the 'Recordset1' in WorkFlow 'WorkFlowWithForEachInRecordsetUtilityRandomTesting' debug inputs as
-#         | # | Variable      | New Value |
-#         | 1 | [[rec().a]] = | 1         |
-#         | 2 | [[rec().a]] = | 2         |
-#         And the 'Recordset1' in Workflow 'WorkFlowWithForEachInRecordsetUtilityRandomTesting' debug outputs as  
-#         | # |                  |
-#         | 1 | [[rec(1).a]] = 1 |
-#         | 2 | [[rec(2).a]] = 2 |
-#         And the 'ForEachTest123' in WorkFlow 'WorkFlowWithForEachInRecordsetUtilityRandomTesting' debug inputs as 
-#           |                | Recordset      |
-#           | * in Recordset | [[rec(1)]] = |
-#           |                | [[rec(2)]] = |
-#         And the 'ForEachTest123' in WorkFlow 'WorkFlowWithForEachInRecordsetUtilityRandomTesting' has  "4" nested children 
-#	     And the 'Random1' in "Utility - Random" in step 1 for 'ForEachTest123' debug inputs as
-#         | Random  | From | To |
-#         | Numbers | 1    | 6  |
-#		 And the 'Random1' in "Utility - Random" in step 1 for 'ForEachTest123' debug outputs as
-#         |                      |
-#         | [[DiceRoll]] = Int32 |
-#		 And the 'Random2' in "Utility - Random" in step 1 for 'ForEachTest123' debug inputs as
-#         | Random  | Length |
-#         | Letters | 7      |
-#		 And the 'Random2' in "Utility - Random" in step 1 for 'ForEachTest123' debug outputs as
-#         |                       |
-#         | [[Scrabble]] = String |
-#         And the 'Random3' in "Utility - Random" in step 1 for 'ForEachTest123' debug inputs as
-#         | Random |
-#         | GUID   | 
-#         And the 'Random3' in "Utility - Random" in step 1 for 'ForEachTest123' debug outputs as
-#         |                      |
-#         | [[License]] = String |
-#         And the 'Random1' in "Utility - Random" in step 2 for 'ForEachTest123' debug inputs as
-#         | Random  | From | To |
-#         | Numbers | 1    | 6  |
-#         And the 'Random1' in "Utility - Random" in step 2 for 'ForEachTest123' debug outputs as  
-#         |                      |
-#         | [[DiceRoll]] = Int32 |
-#          And the 'Random2' in "Utility - Random" in step 2 for 'ForEachTest123' debug inputs as
-#         | Random  | Length |
-#         | Letters | 7      |
-#         And the 'Random2' in "Utility - Random" in step 2 for 'ForEachTest123' debug outputs as       
-#         |                       |
-#         | [[Scrabble]] = String |
-#         And the 'Random3' in "Utility - Random" in step 2 for 'ForEachTest123' debug inputs as
-#         | Random |
-#         | GUID   | 
-#         And the 'Random3' in "Utility - Random" in step 2 for 'ForEachTest123' debug outputs as       
-#         |                      |
-#         | [[License]] = String |
-#
+# If did anything incorrectly, please let me know...so I can learn  
 #Scenario: Workflow to Workflow Mappings 
 #Given I have a workflow "WF to WF Mapings"
 #And "WF to WF Mapings" contains an Assign "AssignData" as
-#        | variable   | value   |
+#        | variable         | value         |
 #        | <AssignVariable> | <AssignValue> |
 #And "WF to WF Mapings" contains "WorkflowMappingsInnerWorkflow" from server "Localhost" with mapping as
 #| From Variable  | Input to Service | Output from Service | To Variable  |
@@ -4235,31 +4175,1121 @@ Scenario: Workflow by using For Each with workflow in it
 #      | Value                  |
 #      | <ToServiceAssignValue> |
 #And workflow 'WorkflowMappingsInnerWorkflow' debug outputs as
-#      | # | Value                |
+#      | # | Value                 |
 #      | 1 | <ToVariableAndResult> |
 #Examples: 
-#| #                          | AssignVariable | AssignValue | FromVariable   | ToService      | FromService     | ToVariable     | ToServiceAssignValue | ToVariableAndResult    |
-#| ScalToRecInAndScaltoRecOut | [[OuterIn]]    | hello       | [[OuterIn]]    | [[in(*).in]]   | [[InnerOutput]] | [[out(*).out]] | [[in(*).in]] = hello | [[out(*).out]] = hello |
-#| BlnkToRecIn                |                |             |                | [[in(*).in]]   | [[InnerOutput]] | [[OuterOut]]   | [[in(*).in]] =       | [[OuterPut]] =         |
-#| BlnkToScalIn               |                |             |                | [[InnerInput]] | [[InnerOutput]] | [[OuterOut]]   | [[in(*).in]] =       | [[OuterPut]] =         |
-#| HdCdScalToRecInSclToSclOut | [[OuterIn]]    | ll          | he[[OuterIn]]o | [[in(*).in]]   | [[InnerOutput]] | [[OuterOut]]   | [[in(*).in]] = hello | [[OuterOut]] = hello   |
+#| #                          | AssignVariable			| AssignValue | FromVariable				| ToService            | FromService     | ToVariable			| ToServiceAssignValue  | ToVariableAndResult    |
+#| ScalToRecInAndScaltoRecOut | [[OuterIn]]				| hello       | [[OuterIn]]					| [[in(*).in]]         | [[InnerOutput]] | [[out(*).out]]		| [[in(*).in]] = hello  | [[out(*).out]] = hello |
+#| BlnkToRecIn                |							|	          |								| [[in(*).in]]         | [[InnerOutput]] | [[OuterOut]]			| [[in(*).in]] =        | [[OuterOut]] =         |
+#| BlnkToScalIn               |							|             |								| [[InnerInput]]       | [[InnerOutput]] | [[OuterOut]]			| [[in(*).in]] =        | [[OuterOut]] =         |
+#| HdCdScalToRecInSclToSclOut | [[OuterIn]]				| ll          | he[[OuterIn]]o				| [[in(*).in]]         | [[InnerOutput]] | [[OuterOut]]			| [[in(*).in]] = hello  | [[OuterOut]] = hello   |
+#| RecToRecInAndRecOut        | [[rec().out]]			| hello       | [[rec().out]]				| [[rec(*).out]]       | [[InnerOutput]] | [[out(*).out]]		| [[rec(*).out]] =hello | [[out(*).out]] = hello |
+#| ScalToScalIn&ScalOut       | [[OuterIn]]				| hello       | [[OuterIn]]					| [[OuterIn]]          | [[InnerOutput]] | [[OuterOut]]			| [[OuterIn]] = hello   | [[OuterOut]] = hello   |
+#| ComplexExprToRec           | [[rec([[Var]]).out]]		| 3           | [[rec([[Var]]).out]]		| [[rec([[Var]]).out]] | [[out(*).out]]  | [[out(*).out]]		| [[out(*).out]] = 3    | [[out(*).out]] = 3     |
+#| HdCdRecToReclIn&ToRecOut   | [[rec(1).in]]			| ll          | he[[rec(1).in]]o			| he[[rec(1).in]]o     | [[out(*).in]]   | [[out(*).out]]		| [[in(*).out]] =hello  | [[out(*).out]] = hello |
+#| ComplexExprToRec           | [[rec([[Var]]).out]]		| 3           | [[rec([[Var]]).out]]		| [[rec([[Var]]).out]] | [[out(*).out]]  | [[out(*).out]]		| [[out(*).out]] = 3    | [[out(*).out]] = 3     |
+#| ComplexExprToScal          | [[rec([[Var]]).in]]		| 2           | [[rec([[Var]]).in]]			| [[in(*).in]]         | [[InnerOutput]] | [[out(*).out]]		| [[out(*).out]] = 2    | [[OuterOut]] = 2       |
+#| Static                     |							|             | hello						| [[in(*).in]]         | [[InnerOutput]] | [[out(*).out]]		| [[out(*).out]] = 2    | [[OuterOut]] =         |
+#| RecToScalOut               | [[rec().in]]				| hello       | [[rec().in]]				| [[InnerInput]]       | [[InnerOutput]] | [[Output]]			| [[in(*).in]] =        | [[Output]] = hello     |
+#| RecToBlank                 | [[rec().in]]				| hello       | [[rec().in]]				| [[InnerInput]]       | [[InnerOutput]] |						|                       |						 |
+#| ScalToBlank                | [[var]]					| hello       | [[var]]						| [[InnerInput]]       | [[InnerOutput]] |						|                       |						 |
+#| RecToComplexExpr           | [[rec().in]]				| hello       | [[rec().in]]				| [[InnerInput]]       | [[InnerOutput]] |	[[rec([[Var]]).out]]| [[in(*).in]] =        |[[rec(1).in]] = hello	 |
+#| ScalToComplexExpr          | [[Var]]					| 1           | [[Var]]						| [[in(*).in]]	       | [[InnerOutput]] |	[[rec([[Var]]).out]]| [[in(*).in]] =        |[[rec(1).in]] = 1  	 |
+#| ComplexExprScalToblank     | [[[rec([[Var]]).in]]		| 1           | [[[rec([[Var]]).in]]		| [[InnerInput]]       | [[InnerOutput]] |						|				        |						 |
+#| ComplexExprRecToblank      | [[rec([[rec().in]]).out]]| 1           | [[rec([[rec().in]]).out]]	| [[InnerInput]]       | [[InnerOutput]] |						|				        |					  	 |
 #
 #Scenario: Workflow to Workflow Mappings Scalar to Recordset Input
-#Given I have a workflow "WF to WF Mapings"
-#And "WF to WF Mapings" contains an Assign "AssignData" as
-#	  | variable | value |
-#	  | [[var]]  | hello |
-#And "WF to WF Mapings" contains "One" from server "Localhost" with mapping as
-# | From Variable | Input to Service | Output from Service | To Variable |
-# | [[var]]       | rec(*).val       | output              | [[output]]  |
-# |               |                  |                     |             |
-# |               |                  |                     |             |
-#When "WF to WF Mapings" is executed
-#Then the workflow execution has "NO" error
-#And the workflow 'One' debug inputs as
-#	| # |                        |
-#	| 1 | [[rec(*).val = success |
-#And workflow 'One' debug outputs as
-#	| # |                      |
-#	| 1 | [[output]] = success |
+#    Given I have a workflow "WFtoWFMapings1"
+#    And "WFtoWFMapings1" contains an Assign "AssignData" as
+#        | variable  | value				|
+#        | [[var]]   | hello_			|
+#		| [[var2]]  | there_			|
+#		| [[var3]]  | warewolf user		|
+#    And "WFtoWFMapings1" contains "One" from server "Localhost" with mapping as
+#        | From Variable | Input to Service | Output from Service | To Variable |
+#        | [[var]]       | rec(*).val       | rec(*).val          | [[rec().a]] |
+#        |               |                  |                     |             |
+#        |               |                  |                     |             |
+#    When "WFtoWFMapings1" is executed
+#    Then the workflow execution has "NO" error
+#     And the workflow 'One' debug inputs as
+#	   | # |
+#       | 1 | [[a]] = | [[rec(1).a]] = hello_there_warewolf user     |
+#       | 2 | [[b]] = | [[rec(2).a]] = hello_there_warewolf user     |   
+#     And workflow 'One' debug outputs as
+#       | # |										|
+#       | 1 | [[a]] =  hello_there_warewolf user     |
+#       | 2 | [[b]] =  hello_there_warewolf user     |
 #
+#
+#Scenario: Workflow to Workflow Mappings Blank to Recordset Input
+#    Given I have a workflow "WFtoWFMapings2"
+#    And "WFtoWFMapings2" contains an Assign "AssignData" as
+#        | variable | value |
+#        | [[var]]  |       |
+#    And "WFtoWFMapings2" contains "Two" from server "Localhost" with mapping as
+#        | From Variable | Input to Service | Output from Service | To Variable |
+#        | [[var]]       | rec(*).val       | rec(*).val          | [[rec().a]] |
+#        |               |                  |                     |             |
+#        |               |                  |                     |             |
+#    When "WFtoWFMapings2" is executed
+#    Then the workflow execution has "AN" error
+#    And the workflow 'two' debug inputs as
+#       | |
+#    
+#    And workflow 'two' debug outputs as
+#       | # |                       |
+#      
+#Scenario: Workflow to Workflow Mappings recordset to Recordset Input
+#    Given I have a workflow "WFtoWFMapings3"
+#    And "WFtoWFMapings3" contains an Assign "AssignData" as
+#        | variable     | value |
+#        | [[rec().a]]  | 1     |
+#        | [[rec().a]]  | 2     |
+#		| [[rec().a]]  | 3     |
+#    And "WFtoWFMapings3" contains "Three" from server "Localhost" with mapping as
+#        | From Variable | Input to Service | Output from Service | To Variable |
+#        | [[rec(*).a]]  | rec(*).val       | rec(*).val          | [[rec().a]] |
+#        |               |                  |                     |             |
+#        |               |                  |                     |             |
+#    When "WFtoWFMapings3" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'Three' debug inputs as
+#	   | # |
+#       | 1 | [[a]] = | [[rec(1).a]] = 1|
+#       | 2 | [[b]] = | [[rec(2).a]] = 2|
+#	   | 3 | [[c]] = | [[rec(3).a]] = 3|       
+#     And workflow 'Three' debug outputs as
+#       | # |           |
+#       | 1 | [[a]] =  1|
+#       | 2 | [[b]] =  2|
+#	   | 2 | [[c]] =  3|
+#
+#Scenario: Workflow to Workflow Mappings recordset and scalar to Recordset Input
+#     Given I have a workflow "WFtoWFMapings4"
+#     And "WFtoWFMapings4" contains an Assign "AssignData" as
+#        | variable     | value |
+#        | [[rec().a]]  |   1   |
+#        | [[rec().a]]  |   2   |
+#        | [[a]]        |   9   |
+#     And "WFtoWFMapings4" contains "One" from server "Localhost" with mapping as
+#        | From Variable       | Input to Service | Output from Service | To Variable |
+#        |  [[rec(1).a]][[a]]  | rec(*).val       | rec(*).val          | [[rec().a]] |
+#        |                     |                  |                     |             |
+#    When "WFtoWFMapings4" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'four' debug inputs as
+#	   | # |
+#       | 1 | [[a]] = | [[rec(1).a]] = 19|
+#       | 2 | [[b]] = | [[rec(2).a]] = 29|    
+#     And workflow 'four' debug outputs as
+#       | # |            |
+#       | 1 | [[a]] =  19|
+#       | 2 | [[b]] =  29|
+#
+#Scenario: Workflow to Workflow Mappings ComplexExpression to Recordset
+#    Given I have a workflow "WFtoWFMapings5"
+#    And "WFtoWFMapings5" contains an Assign "AssignData" as
+#        | variable     | value |
+#        | [[rec().a]]  |   1   |
+#        | [[rec().a]]  |   2   |
+#        | [[index]]    |   1   |
+#    And "WFtoWFMapings5" contains "One" from server "Localhost" with mapping as
+#        | From Variable              | Input to Service | Output from Service | To Variable  |
+#        | [[rec([[index]]).a]]       | rec(*).val       | rec(*).val          | [[rec().a]]  |
+#    When "WFtoWFMapings5" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'five' debug inputs as
+#       | 1 | [[a]] = | [[rec(1).a]] = 1|
+#       | 2 | [[b]] = | [[rec(2).a]] = 2|   
+#    And workflow 'five' debug outputs as
+#       | # |           |
+#       | 1 | [[a]] =  1|
+#       | 2 | [[b]] =  2|
+#
+#Scenario: Workflow to Workflow Mappings Scalar to scalar Input
+#    Given I have a workflow "WFtoWFMapings6"
+#    And "WFtoWFMapings6" contains an Assign "AssignData" as
+#        | variable    | value |
+#        | [[value1]]  | 1     |
+#        | [[value2]]  | 2     |
+#    And "WFtoWFMapings6" contains "One" from server "Localhost" with mapping as
+#        | From Variable    | Input to Service | Output from Service | To Variable |
+#        | [[value1]]       | [[var1]]         |          a          | [[a]]       |
+#        | [[value1]]       | [[var2]]         |          b          | [[a]]       |
+#    When "WFtoWFMapings6" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'six' debug inputs as
+#	   | # |
+#       | 1 | [[a]] = | [[var1]] = 1     |
+#       | 2 | [[b]] = | [[var2]] = 2     |
+#    
+#    And workflow 'six' debug outputs as
+#       | # |                |
+#       | 1 | [[a]] =  1     |
+#       | 2 | [[b]] =  2     |
+#
+#Scenario: Workflow to Workflow Mappings Blank to scalar Input
+#    Given I have a workflow "WFtoWFMapings7"
+#    And "WFtoWFMapings7" contains an Assign "AssignData" as
+#        | variable    | value |
+#        | [[value1]]  |       |
+#        | [[value2]]  |       |
+#    And "WFtoWFMapings7" contains "seveen" from server "Localhost" with mapping as
+#        | From Variable    | Input to Service | Output from Service | To Variable |
+#        | [[value1]]       | [[var1]]         |          a          | [[a]]       |
+#        | [[value1]]       | [[var2]]         |          b          | [[a]]       |
+#    When "WFtoWFMapings7" is executed
+#    Then the workflow execution has "AN" error
+#    And the workflow 'seveen' debug inputs as
+#       |   |
+#    
+#    And workflow 'seveen' debug outputs as
+#       | # |                |
+#       
+#Scenario: Workflow to Workflow Mappings recordset to scalar Input
+#    Given I have a workflow "WFtoWFMapings8"
+#    And "WFtoWFMapings8" contains an Assign "AssignData" as
+#        | variable      | value |
+#        | [[rec(1).a]]  | 1     |
+#        | [[rec(1).a]]  | 2     |
+#		| [[rec(1).a]]  | 3     |
+#        | [[rec(1).a]]  | 4     |
+#    And "WFtoWFMapings8" contains "eight" from server "Localhost" with mapping as
+#        | From Variable      | Input to Service | Output from Service | To Variable |
+#        | [[rec(1).a]]       | [[var1]]         |          a          | [[a]]       |
+#        | [[rec(1).a]]       | [[var2]]         |          b          | [[a]]       |
+#		| [[rec(1).a]]       | [[var3]]         |          c          | [[a]]       |
+#        | [[rec(1).a]]       | [[var4]]         |          d          | [[a]]       |
+#    When "WFtoWFMapings8" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'eight' debug inputs as
+#	   | # |
+#       | 1 | [[a]] = | [[var1]] = 1     |
+#       | 2 | [[b]] = | [[var2]] = 2     |
+#	   | 1 | [[c]] = | [[var3]] = 3     |
+#       | 2 | [[d]] = | [[var4]] = 4     |
+#    
+#    And workflow 'eight' debug outputs as
+#       | # |                |
+#       | 1 | [[a]] =  1     |
+#       | 2 | [[b]] =  2     |
+#	   | 3 | [[c]] =  3     |
+#       | 4 | [[d]] =  4     |
+#
+#Scenario: Workflow to Workflow Mappings scalar and recordset to scalar Input
+#    Given I have a workflow "WFtoWFMapings9"
+#    And "WFtoWFMapings9" contains an Assign "AssignData" as
+#        | variable      | value |
+#        | [[rec(1).a]]  | 1     |
+#        | [[rec(1).a]]  | 2     |
+#        | [[a]]         |test   |
+#    And "WFtoWFMapings9" contains "Nine" from server "Localhost" with mapping as
+#        | From Variable           | Input to Service | Output from Service | To Variable |
+#        | [[rec(1).a]][[a]]       | [[var1]]         |          a          | [[a]]       |
+#        | [[rec(1).a]][[a]]       | [[var2]]         |          b          | [[a]]       |
+#		| [[a]][[rec(1).a]]       | [[var3]]         |          c          | [[a]]       |
+#    When "WFtoWFMapings9" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'Nine' debug inputs as
+#	   | # |
+#       | 1 | [[a]] = | [[var1]] = 1test     |
+#       | 2 | [[b]] = | [[var2]] = 2test     |
+#	   | 2 | [[c]] = | [[var3]] = test1     |
+#    
+#    And workflow 'Nine' debug outputs as
+#       | # |                    |
+#       | 1 | [[a]] =  1test     |
+#       | 2 | [[b]] =  2test     |
+#	   | 3 | [[c]] =  test1     |
+#
+#Scenario: Workflow to Workflow Mappings complex expression to scalar Input
+#    Given I have a workflow "WFtoWFMapings10"
+#    And "WFtoWFMapings1" contains an Assign "AssignData" as
+#        | variable      | value |
+#        | [[rec(1).a]]  | 1     |
+#        | [[rec(1).a]]  | 2     |
+#        | [[a]]         | 1     |
+#    And "WFtoWFMapings10" contains "ten" from server "Localhost" with mapping as
+#        | From Variable          | Input to Service | Output from Service | To Variable |
+#        | [[rec([[a]]).a]]       | [[var1]]         |          a          | [[a]]       |
+#        | [[rec([[a]]).a]]       | [[var2]]         |          b          | [[a]]       |
+#    When "WFtoWFMapings1" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'ten' debug inputs as
+#	   | # |
+#       | 1 | [[a]] = | [[var1]] = 1     |
+#       | 2 | [[b]] = | [[var2]] = 2     |
+#    
+#    And workflow 'ten' debug outputs as
+#       | # |               |
+#       | 1 | [[a]] =  1    |
+#       | 2 | [[b]] =  2    |
+#
+#Scenario: Workflow to Database Service Mappings 
+#Given I have a workflow "WF to DB Mapings" using the "Get Rows" table
+#And "WF to DB Mapings" contains an Assign "AssignData" as
+#        | variable         | value         |
+#        | <AssignVariable> | <AssignValue> |
+#And "WF to DB Mapings" contains "WorkflowMappingsInnerWorkflow" from server "Localhost" with mapping as
+#| Input to Service | Output from Service | To Variable  |
+#| <ToService>      | <FromService>       | <ToVariable> |
+#When "WF to DB Mapings" is executed
+#Then the workflow execution has "NO" error
+#And workflow 'WorkflowMappingsInnerWorkflow' debug outputs as
+#      | # | Value              |
+#      | 1 | <SerivceAndResult> |
+#Examples: 
+#| #                          | AssignVariable		| AssignValue | ToService            | FromService			    | SerivceAndResult			|
+#| ScalToDB					 | [[Var]]				| 1		      | [[Var]]              | [[Row(*).BigID]]         | [[Row(1).BigID]] = 1		|
+#| BlankToDB					 | [[Var]]				| 		      | [[Var]]              | [[Row(*).BigID]]         | [[Row().BigID]] = 		|
+#| RecToDB					 | [[rec().in]]			| 1		      | [[rec().in]]         | [[Row(*).BigID]]         | [[Row(1).BigID]] = 1		|
+#| Scal&RecToDB				 | [[Var]]=[[rec().in]] | 1		      | [[Var]]              | [[Row(*).BigID]]         | [[Row(1).BigID]] = 1		|
+#| HCdToDB				     | [[Var]]				| 1		      | [[Var]]3             | [[Row(*).BigID]]         | [[Row(13).BigID]] = 13	|
+#| HCdCScal&RecToDB			 | [[rec().in]]=[[Var]]	| 1		      | [[rec().in]]3        | [[Row(*).BigID]]         | [[Row(13).BigID]] = 13	|
+#| ComplexExpToDB			 | [[rec([[var]]).in]]	| 1		      | [[rec([[var]]).in]]  | [[Row(*).BigID]]         | [[Row(1).BigID]] = 1  	|
+#
+## Note scenarios are not performed to agianst any table
+#Scenario: Workflow to Database Mappings Scalar to Recordset Input
+#    Given I have a workflow "WFtoDBMapings1"
+#    And "WFtoDBMapings1" contains an Assign "AssignData" as
+#        | variable | value				|
+#        | [[var]]  | hello_				|
+#		| [[var2]]  | there_			|
+#		| [[var3]]  | warewolf user		|
+#    And "WFtoDBMapings1" contains "One" from server "Localhost" with mapping as
+#        | From Variable | Input to Service | Output from Service | To Variable |
+#        | [[var]]       | rec(*).val       | rec(*).val          | [[rec().a]] |
+#        |               |                  |                     |             |
+#        |               |                  |                     |             |
+#    When "WFtoDBMapings1" is executed
+#    Then the workflow execution has "NO" error
+#     And the workflow 'One' debug inputs as
+#	   | # |
+#       | 1 | [[a]] = | [[rec(1).a]] = hello_there_warewolf user     |
+#       | 2 | [[b]] = | [[rec(2).a]] = hello_there_warewolf user     |   
+#     And Database 'One' debug outputs as
+#       | # |										|
+#       | 1 | [[a]] =  hello_there_warewolf user     |
+#       | 2 | [[b]] =  hello_there_warewolf user     |
+#
+#Scenario: Workflow to Database Mappings Blank to Recordset Input
+#    Given I have a workflow "WFtoDBMapings2"
+#    And "WFtoDBMapings2" contains an Assign "AssignData" as
+#        | variable | value |
+#        | [[var]]  |       |
+#    And "WFtoDBMapings2" contains "Two" from server "Localhost" with mapping as
+#        | From Variable | Input to Service | Output from Service | To Variable |
+#        | [[var]]       | rec(*).val       | rec(*).val          | [[rec().a]] |
+#        |               |                  |                     |             |
+#        |               |                  |                     |             |
+#    When "WFtoDBMapings2" is executed
+#    Then the workflow execution has "AN" error
+#    And the workflow 'two' debug inputs as
+#       | |
+#    
+#    And Database 'two' debug outputs as
+#       | # |                       |
+#      
+#Scenario: Workflow to Database Mappings recordset to Recordset Input
+#    Given I have a workflow "WFtoDBMapings3"
+#    And "WFtoDBMapings3" contains an Assign "AssignData" as
+#        | variable     | value |
+#        | [[rec().a]]  | 1     |
+#        | [[rec().a]]  | 2     |
+#		| [[rec().a]]  | 3     |
+#    And "WFtoDBMapings3" contains "Three" from server "Localhost" with mapping as
+#        | From Variable | Input to Service | Output from Service | To Variable |
+#        | [[rec(*).a]]  | rec(*).val       | rec(*).val          | [[rec().a]] |
+#        |               |                  |                     |             |
+#        |               |                  |                     |             |
+#    When "WFtoDBMapings3" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'Three' debug inputs as
+#	   | # |
+#       | 1 | [[a]] = | [[rec(1).a]] = 1|
+#       | 2 | [[b]] = | [[rec(2).a]] = 2|
+#	   | 3 | [[c]] = | [[rec(3).a]] = 3|       
+#     And Database 'Three' debug outputs as
+#       | # |           |
+#       | 1 | [[a]] =  1|
+#       | 2 | [[b]] =  2|
+#	   | 2 | [[c]] =  3|
+#
+#Scenario: Workflow to Database Mappings recordset and scalar to Recordset Input
+#     Given I have a workflow "WFtoDBMapings4"
+#     And "WFtoDBMapings4" contains an Assign "AssignData" as
+#        | variable     | value |
+#        | [[rec().a]]  |   1   |
+#        | [[rec().a]]  |   2   |
+#        | [[a]]        |   9   |
+#     And "WFtoDBMapings4" contains "One" from server "Localhost" with mapping as
+#        | From Variable       | Input to Service | Output from Service | To Variable |
+#        |  [[rec(1).a]][[a]]  | rec(*).val       | rec(*).val          | [[rec().a]] |
+#        |                     |                  |                     |             |
+#    When "WFtoDBMapings4" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'four' debug inputs as
+#	   | # |
+#       | 1 | [[a]] = | [[rec(1).a]] = 19|
+#       | 2 | [[b]] = | [[rec(2).a]] = 29|    
+#     And database 'four' debug outputs as
+#       | # |            |
+#       | 1 | [[a]] =  19|
+#       | 2 | [[b]] =  29|
+#
+#Scenario: Workflow to Workflow Mappings ComplexExpression to Recordset
+#    Given I have a workflow "WFtoDBMapings5"
+#    And "WFtoDBMapings5" contains an Assign "AssignData" as
+#        | variable     | value |
+#        | [[rec().a]]  |   1   |
+#        | [[rec().a]]  |   2   |
+#        | [[index]]    |   1   |
+#    And "WFtoDBMapings5" contains "One" from server "Localhost" with mapping as
+#        | From Variable              | Input to Service | Output from Service | To Variable  |
+#        | [[rec([[index]]).a]]       | rec(*).val       | rec(*).val          | [[rec().a]]  |
+#    When "WFtoDBMapings5" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'five' debug inputs as
+#	   | # |
+#	   | 1 | [[a]] = | [[rec(1).a]] = 1|
+#       | 2 | [[b]] = | [[rec(2).a]] = 2|   
+#    And Database 'five' debug outputs as
+#       | # |           |
+#       | 1 | [[a]] =  1|
+#       | 2 | [[b]] =  2|
+#
+#Scenario: Workflow to Database Mappings Scalar to scalar Input
+#    Given I have a workflow "WFtoDBMapings6"
+#    And "WFtoDBMapings6" contains an Assign "AssignData" as
+#        | variable    | value |
+#        | [[value1]]  | 1     |
+#        | [[value2]]  | 2     |
+#    And "WFtoDBMapings6" contains "One" from server "Localhost" with mapping as
+#        | From Variable    | Input to Service | Output from Service | To Variable |
+#        | [[value1]]       | [[var1]]         |          a          | [[a]]       |
+#        | [[value1]]       | [[var2]]         |          b          | [[a]]       |
+#    When "WFtoDBMapings6" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'six' debug inputs as
+#	   | # |
+#       | 1 | [[a]] = | [[var1]] = 1     |
+#       | 2 | [[b]] = | [[var2]] = 2     |
+#    
+#    And Database 'six' debug outputs as
+#       | # |                |
+#       | 1 | [[a]] =  1     |
+#       | 2 | [[b]] =  2     |
+#
+#Scenario: Workflow to Database Mappings Blank to scalar Input
+#    Given I have a workflow "WFtoDBMapings7"
+#    And "WFtoDBMapings7" contains an Assign "AssignData" as
+#        | variable    | value |
+#        | [[value1]]  |       |
+#        | [[value2]]  |       |
+#    And "WFtoDBMapings7" contains "seveen" from server "Localhost" with mapping as
+#        | From Variable    | Input to Service | Output from Service | To Variable |
+#        | [[value1]]       | [[var1]]         |          a          | [[a]]       |
+#        | [[value1]]       | [[var2]]         |          b          | [[a]]       |
+#    When "WFtoDBMapings7" is executed
+#    Then the workflow execution has "AN" error
+#    And the workflow 'seveen' debug inputs as
+#       |   |
+#    
+#    And Database 'seveen' debug outputs as
+#       | # |                |
+#   
+#Scenario: Workflow to Database Mappings recordset to scalar Input
+#    Given I have a workflow "WFtoDBMapings8"
+#    And "WFtoDBMapings8" contains an Assign "AssignData" as
+#        | variable      | value |
+#        | [[rec(1).a]]  | 1     |
+#        | [[rec(1).a]]  | 2     |
+#		| [[rec(1).a]]  | 3     |
+#        | [[rec(1).a]]  | 4     |
+#    And "WFtoDBMapings8" contains "eight" from server "Localhost" with mapping as
+#        | From Variable      | Input to Service | Output from Service | To Variable |
+#        | [[rec(1).a]]       | [[var1]]         |          a          | [[a]]       |
+#        | [[rec(1).a]]       | [[var2]]         |          b          | [[a]]       |
+#		| [[rec(1).a]]       | [[var3]]         |          c          | [[a]]       |
+#        | [[rec(1).a]]       | [[var4]]         |          d          | [[a]]       |
+#    When "WFtoDBMapings8" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'eight' debug inputs as
+#	   | # |
+#       | 1 | [[a]] = | [[var1]] = 1     |
+#       | 2 | [[b]] = | [[var2]] = 2     |
+#	   | 1 | [[c]] = | [[var3]] = 3     |
+#       | 2 | [[d]] = | [[var4]] = 4     |
+#    
+#    And Databsae 'eight' debug outputs as
+#       | # |                |
+#       | 1 | [[a]] =  1     |
+#       | 2 | [[b]] =  2     |
+#	   | 3 | [[c]] =  3     |
+#       | 4 | [[d]] =  4     |
+#
+#Scenario: Workflow to Database Mappings scalar and recordset to scalar Input
+#    Given I have a workflow "WFtoDBMapings9"
+#    And "WFtoDBMapings9" contains an Assign "AssignData" as
+#        | variable      | value |
+#        | [[rec(1).a]]  | 1     |
+#        | [[rec(1).a]]  | 2     |
+#        | [[a]]         |test   |
+#    And "WFtoDBMapings9" contains "Nine" from server "Localhost" with mapping as
+#        | From Variable           | Input to Service | Output from Service | To Variable |
+#        | [[rec(1).a]][[a]]       | [[var1]]         |          a          | [[a]]       |
+#        | [[rec(1).a]][[a]]       | [[var2]]         |          b          | [[a]]       |
+#		| [[a]][[rec(1).a]]       | [[var3]]         |          c          | [[a]]       |
+#    When "WFtoDBMapings9" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'Nine' debug inputs as
+#	   | # |
+#       | 1 | [[a]] = | [[var1]] = 1test     |
+#       | 2 | [[b]] = | [[var2]] = 2test     |
+#	   | 2 | [[c]] = | [[var3]] = test1     |
+#    
+#    And Database 'Nine' debug outputs as
+#       | # |                    |
+#       | 1 | [[a]] =  1test     |
+#       | 2 | [[b]] =  2test     |
+#	   | 3 | [[c]] =  test1     |
+#
+#Scenario: Workflow to Database Mappings complex expression to scalar Input
+#    Given I have a workflow "WFtoDBMapings10"
+#    And "WFtoDBMapings1" contains an Assign "AssignData" as
+#        | variable      | value |
+#        | [[rec(1).a]]  | 1     |
+#        | [[rec(1).a]]  | 2     |
+#        | [[a]]         | 1     |
+#    And "WFtoDBMapings10" contains "ten" from server "Localhost" with mapping as
+#        | From Variable          | Input to Service | Output from Service | To Variable |
+#        | [[rec([[a]]).a]]       | [[var1]]         |          a          | [[a]]       |
+#        | [[rec([[a]]).a]]       | [[var2]]         |          b          | [[a]]       |
+#    When "WFtoDBMapings1" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'ten' debug inputs as
+#	   | # |
+#       | 1 | [[a]] = | [[var1]] = 1     |
+#       | 2 | [[b]] = | [[var2]] = 2     |
+#    
+#    And Database 'ten' debug outputs as
+#       | # |               |
+#       | 1 | [[a]] =  1    |
+#       | 2 | [[b]] =  2    |
+#
+#
+#Scenario: Workflow to Web Service Mappings 
+##Note: No webservice was created for this scenario and please show me how to create internal web service
+#Given I have a workflow "WF to Web Mapings"
+#And "WF to Web Mapings" contains an Assign "AssignData" as
+#        | variable		   | value         |
+#        | <AssignVariable> | <AssignValue> |
+#And "WF to Web Mapings" contains "WorkflowMappingsInnerWorkflow" from server "Localhost" with mapping as
+#| Input to Service | Output from Service | To Variable  |
+#| <ToService>      | <FromService>       | <ToVariable> |
+#When "WF to DB Mapings" is executed
+#Then the workflow execution has "NO" error
+#And workflow 'WorkflowMappingsInnerWorkflow' debug outputs as
+#      | # | Value              |
+#      | 1 | <SerivceAndResult> |
+#Examples: 
+#| #                          | AssignVariable		| AssignValue | ToService            | FromService			    | SerivceAndResult			|
+#| ScalToWeb					 | [[Var]]				| 1		      | [[Var]]              | [[serviceout]]           | [[Output]] = 1			|
+#| BlankToDB					 | [[Var]]				| 		      | [[Var]]              | [[serviceout]]			| [[Output]] = 				|
+#| RecToDB					 | [[rec().in]]			| 1		      | [[rec().in]]         | [[serviceout]]			| [[Output]] = 1			|
+#| Scal&RecToDB				 | [[Var]]=[[rec().in]] | 1		      | [[Var]]              | [[serviceout]]			| [[Output]] = 1			|
+#| HCdToDB				     | [[Var]]				| 1		      | [[Var]]3             | [[serviceout]]			| [[Output]] = 13			|
+#| HCdCScal&RecToDB			 | [[rec().in]]=[[Var]]	| 1		      | [[rec().in]]3        | [[serviceout]]			| [[Output]] = 13			|
+#| ComplexExpToDB			 | [[rec([[var]]).in]]	| 1		      | [[rec([[var]]).in]]  | [[serviceout]]           | [[Output]] = 1  			|
+#
+#Scenario: Workflow to Web service Mappings Scalar to Recordset Input
+#    Given I have a workflow "WFtoWSMapings1"
+#    And "WFtoWSMapings1" contains an Assign "AssignData" as
+#        | variable | value				|
+#        | [[var]]  | hello_				|
+#		| [[var2]]  | there_			|
+#		| [[var3]]  | warewolf user		|
+#    And "WFtoWSMapings1" contains "One" from server "Localhost" with mapping as
+#        | From Variable | Input to Service | Output from Service | To Variable |
+#        | [[var]]       | rec(*).val       | rec(*).val          | [[rec().a]] |
+#        |               |                  |                     |             |
+#        |               |                  |                     |             |
+#    When "WFtoWSMapings1" is executed
+#    Then the workflow execution has "NO" error
+#     And the workflow 'One' debug inputs as
+#	   | # |
+#       | 1 | [[a]] = | [[rec(1).a]] = hello_there_warewolf user     |
+#       | 2 | [[b]] = | [[rec(2).a]] = hello_there_warewolf user     |   
+#     And Web service 'One' debug outputs as
+#       | # |										|
+#       | 1 | [[a]] =  hello_there_warewolf user     |
+#       | 2 | [[b]] =  hello_there_warewolf user     |
+#
+#
+#Scenario: Workflow to Web service Mappings Blank to Recordset Input
+#    Given I have a workflow "WFtoWSMapings2"
+#    And "WFtoWSMapings2" contains an Assign "AssignData" as
+#        | variable | value |
+#        | [[var]]  |       |
+#    And "WFtoWSMapings2" contains "Two" from server "Localhost" with mapping as
+#        | From Variable | Input to Service | Output from Service | To Variable |
+#        | [[var]]       | rec(*).val       | rec(*).val          | [[rec().a]] |
+#        |               |                  |                     |             |
+#        |               |                  |                     |             |
+#    When "WFtoWSMapings2" is executed
+#    Then the workflow execution has "AN" error
+#    And the workflow 'two' debug inputs as
+#       | |
+#    
+#    And Web service 'two' debug outputs as
+#       | # |                       |
+#      
+#Scenario: Workflow to Web service Mappings recordset to Recordset Input
+#    Given I have a workflow "WFtoWSMapings3"
+#    And "WFtoWSMapings3" contains an Assign "AssignData" as
+#        | variable     | value |
+#        | [[rec().a]]  | 1     |
+#        | [[rec().a]]  | 2     |
+#		| [[rec().a]]  | 3     |
+#    And "WFtoWSMapings3" contains "Three" from server "Localhost" with mapping as
+#        | From Variable | Input to Service | Output from Service | To Variable |
+#        | [[rec(*).a]]  | rec(*).val       | rec(*).val          | [[rec().a]] |
+#        |               |                  |                     |             |
+#        |               |                  |                     |             |
+#    When "WFtoWSMapings3" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'Three' debug inputs as
+#	   | # |
+#       | 1 | [[a]] = | [[rec(1).a]] = 1|
+#       | 2 | [[b]] = | [[rec(2).a]] = 2|
+#	   | 3 | [[c]] = | [[rec(3).a]] = 3|       
+#     And Web service 'Three' debug outputs as
+#       | # |           |
+#       | 1 | [[a]] =  1|
+#       | 2 | [[b]] =  2|
+#	   | 2 | [[c]] =  3|
+#
+#Scenario: Workflow to Web service Mappings recordset and scalar to Recordset Input
+#     Given I have a workflow "WFtoWSMapings4"
+#     And "WFtoWSMapings4" contains an Assign "AssignData" as
+#        | variable     | value |
+#        | [[rec().a]]  |   1   |
+#        | [[rec().a]]  |   2   |
+#        | [[a]]        |   9   |
+#     And "WFtoWSMapings4" contains "One" from server "Localhost" with mapping as
+#        | From Variable       | Input to Service | Output from Service | To Variable |
+#        | [[rec(1).a]][[a]]   | rec(*).val       | rec(*).val          | [[rec().a]] |
+#        |                     |                  |                     |             |
+#    When "WFtoWSMapings4" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'four' debug inputs as
+#	   | # |
+#       | 1 | [[a]] = | [[rec(1).a]] = 19|
+#       | 2 | [[b]] = | [[rec(2).a]] = 29|    
+#     And Web service 'four' debug outputs as
+#       | # |            |
+#       | 1 | [[a]] =  19|
+#       | 2 | [[b]] =  29|
+#
+#
+#Scenario: Workflow to Workflow Mappings ComplexExpression to Recordset
+#    Given I have a workflow "WFtoWSMapings5"
+#    And "WFtoWSMapings5" contains an Assign "AssignData" as
+#        | variable     | value |
+#        | [[rec().a]]  |   1   |
+#        | [[rec().a]]  |   2   |
+#        | [[index]]    |   1   |
+#    And "WFtoWSMapings5" contains "One" from server "Localhost" with mapping as
+#        | From Variable              | Input to Service | Output from Service | To Variable  |
+#        | [[rec([[index]]).a]]       | rec(*).val       | rec(*).val          | [[rec().a]]  |
+#    When "WFtoWSMapings5" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'five' debug inputs as
+#	   | # |
+#       | 1 | [[a]] = | [[rec(1).a]] = 1|
+#       | 2 | [[b]] = | [[rec(2).a]] = 2|   
+#    And Web service 'five' debug outputs as
+#       | # |           |
+#       | 1 | [[a]] =  1|
+#       | 2 | [[b]] =  2|
+#
+#
+#Scenario: Workflow to Web service Mappings Scalar to scalar Input
+#    Given I have a workflow "WFtoWSMapings6"
+#    And "WFtoWSMapings6" contains an Assign "AssignData" as
+#        | variable    | value |
+#        | [[value1]]  | 1     |
+#        | [[value2]]  | 2     |
+#    And "WFtoWSMapings6" contains "One" from server "Localhost" with mapping as
+#        | From Variable    | Input to Service | Output from Service | To Variable |
+#        | [[value1]]       | [[var1]]         |          a          | [[a]]       |
+#        | [[value1]]       | [[var2]]         |          b          | [[a]]       |
+#    When "WFtoWSMapings6" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'six' debug inputs as
+#	   | # |
+#       | 1 | [[a]] = | [[var1]] = 1     |
+#       | 2 | [[b]] = | [[var2]] = 2     |
+#    
+#    And Web service 'six' debug outputs as
+#       | # |                |
+#       | 1 | [[a]] =  1     |
+#       | 2 | [[b]] =  2     |
+#
+#
+#Scenario: Workflow to Web service Mappings Blank to scalar Input
+#    Given I have a workflow "WFtoWSMapings7"
+#    And "WFtoWSMapings7" contains an Assign "AssignData" as
+#        | variable    | value |
+#        | [[value1]]  |       |
+#        | [[value2]]  |       |
+#    And "WFtoWSMapings7" contains "seveen" from server "Localhost" with mapping as
+#        | From Variable    | Input to Service | Output from Service | To Variable |
+#        | [[value1]]       | [[var1]]         |          a          | [[a]]       |
+#        | [[value1]]       | [[var2]]         |          b          | [[a]]       |
+#    When "WFtoWSMapings7" is executed
+#    Then the workflow execution has "AN" error
+#    And the workflow 'seveen' debug inputs as
+#       |   |
+#    
+#    And Web service 'seveen' debug outputs as
+#       | # |                |
+#       
+#
+#
+#Scenario: Workflow to Web service Mappings recordset to scalar Input
+#    Given I have a workflow "WFtoWSMapings8"
+#    And "WFtoWSMapings8" contains an Assign "AssignData" as
+#        | variable      | value |
+#        | [[rec(1).a]]  | 1     |
+#        | [[rec(1).a]]  | 2     |
+#		| [[rec(1).a]]  | 3     |
+#        | [[rec(1).a]]  | 4     |
+#    And "WFtoWSMapings8" contains "eight" from server "Localhost" with mapping as
+#        | From Variable      | Input to Service | Output from Service | To Variable |
+#        | [[rec(1).a]]       | [[var1]]         |          a          | [[a]]       |
+#        | [[rec(1).a]]       | [[var2]]         |          b          | [[a]]       |
+#		| [[rec(1).a]]       | [[var3]]         |          c          | [[a]]       |
+#        | [[rec(1).a]]       | [[var4]]         |          d          | [[a]]       |
+#    When "WFtoWSMapings8" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'eight' debug inputs as
+#       | 1 | [[a]] = | [[var1]] = 1     |
+#       | 2 | [[d]] = | [[var4]] = 4     |
+#       | 2 | [[b]] = | [[var2]] = 2     |
+#	   | 1 | [[c]] = | [[var3]] = 3     |
+#    
+#    And Databsae 'eight' debug outputs as
+#       | # |                |
+#       | 1 | [[a]] =  1     |
+#       | 2 | [[b]] =  2     |
+#	   | 3 | [[c]] =  3     |
+#       | 4 | [[d]] =  4     |
+#
+#Scenario: Workflow to Web service Mappings scalar and recordset to scalar Input
+#    Given I have a workflow "WFtoWSMapings9"
+#    And "WFtoWSMapings9" contains an Assign "AssignData" as
+#        | variable      | value |
+#        | [[rec(1).a]]  | 1     |
+#        | [[rec(1).a]]  | 2     |
+#        | [[a]]         |test   |
+#    And "WFtoWSMapings9" contains "Nine" from server "Localhost" with mapping as
+#        | From Variable           | Input to Service | Output from Service | To Variable |
+#        | [[rec(1).a]][[a]]       | [[var1]]         |          a          | [[a]]       |
+#        | [[rec(1).a]][[a]]       | [[var2]]         |          b          | [[a]]       |
+#		| [[a]][[rec(1).a]]       | [[var3]]         |          c          | [[a]]       |
+#    When "WFtoWSMapings9" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'Nine' debug inputs as
+#	   | # 
+#	   | 1 | [[a]] = | [[var1]] = 1test |
+#	   | 2 | [[b]] = | [[var2]] = 2test |
+#	   | 2 | [[c]] = | [[var3]] = test1 |
+#    
+#    And Web service 'Nine' debug outputs as
+#       | # |                    |
+#       | 1 | [[a]] =  1test     |
+#       | 2 | [[b]] =  2test     |
+#	   | 3 | [[c]] =  test1     |
+#
+#
+#Scenario: Workflow to Web service Mappings complex expression to scalar Input
+#    Given I have a workflow "WFtoWSMapings10"
+#    And "WFtoWSMapings1" contains an Assign "AssignData" as
+#        | variable      | value |
+#        | [[rec(1).a]]  | 1     |
+#        | [[rec(1).a]]  | 2     |
+#        | [[a]]         | 1     |
+#    And "WFtoWSMapings10" contains "ten" from server "Localhost" with mapping as
+#        | From Variable          | Input to Service | Output from Service | To Variable |
+#        | [[rec([[a]]).a]]       | [[var1]]         |          a          | [[a]]       |
+#        | [[rec([[a]]).a]]       | [[var2]]         |          b          | [[a]]       |
+#    When "WFtoWSMapings1" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'ten' debug inputs as
+#	   | # |		 |					|
+#       | 1 | [[a]] = | [[var1]] = 1     |
+#       | 2 | [[b]] = | [[var2]] = 2     |
+#    
+#    And Web service 'ten' debug outputs as
+#       | # |               |
+#       | 1 | [[a]] =  1    |
+#       | 2 | [[b]] =  2    |
+#
+#
+#
+#Scenario: Workflow to Plugin Mappings 
+##Note: No DLL was created for this scenario and please show me how to create DLL
+#Given I have a workflow "WF to DLL Mapings"
+#And "WF to DLL Mapings" contains an Assign "AssignData" as
+#        | variable		   | value		   |
+#        | <AssignVariable> | <AssignValue> |
+#And "WF to DLL Mapings" contains "WorkflowMappingsInnerWorkflow" from server "Localhost" with mapping as
+#| Input to Service | Output from Service | To Variable  |
+#| <ToService>      | <FromService>       | <ToVariable> |
+#When "WF to DLL Mapings" is executed
+#Then the workflow execution has "NO" error
+#And workflow 'WorkflowMappingsInnerWorkflow' debug outputs as
+#      | # | Value              |
+#      | 1 | <SerivceAndResult> |
+#Examples: 
+#| #                          | AssignVariable		| AssignValue | ToService            | FromService			    | SerivceAndResult			|
+#| ScalToWeb					 | [[Var]]				| 1		      | [[Var]]              | [[serviceout]]           | [[Output]] = 1			|
+#| BlankToDB					 | [[Var]]				| 		      | [[Var]]              | [[serviceout]]			| [[Output]] = 				|
+#| RecToDB					 | [[rec().in]]			| 1		      | [[rec().in]]         | [[serviceout]]			| [[Output]] = 1			|
+#| Scal&RecToDB				 | [[Var]]=[[rec().in]] | 1		      | [[Var]]              | [[serviceout]]			| [[Output]] = 1			|
+#| HCdToDB				     | [[Var]]				| 1		      | [[Var]]3             | [[serviceout]]			| [[Output]] = 13			|
+#| HCdCScal&RecToDB			 | [[rec().in]]=[[Var]]	| 1		      | [[rec().in]]3        | [[serviceout]]			| [[Output]] = 13			|
+#| ComplexExpToDB			 | [[rec([[var]]).in]]	| 1		      | [[rec([[var]]).in]]  | [[serviceout]]           | [[Output]] = 1  			|
+#
+##Note: No DLL was created for the below scenarios and please show me how to create DLL
+#Scenario: Workflow to Plugin Mappings Scalar to Recordset Input
+#    Given I have a workflow "WFtoDLLMapings1"
+#    And "WFtoDLLMapings1" contains an Assign "AssignData" as
+#        | variable | value				|
+#        | [[var]]  | hello_				|
+#		| [[var2]] | there_			|
+#		| [[var3]] | warewolf user		|
+#    And "WFtoDLLMapings1" contains "One" from server "Localhost" with mapping as
+#        | From Variable | Input to Service | Output from Service | To Variable |
+#        | [[var]]       | rec(*).val       | rec(*).val          | [[rec().a]] |
+#        |               |                  |                     |             |
+#        |               |                  |                     |             |
+#    When "WFtoDLLMapings1" is executed
+#    Then the workflow execution has "NO" error
+#     And the workflow 'One' debug inputs as
+#	   | # |
+#       | 1 | [[a]] = | [[rec(1).a]] = hello_there_warewolf user     |
+#       | 2 | [[b]] = | [[rec(2).a]] = hello_there_warewolf user     |   
+#     And Plugin 'One' debug outputs as
+#       | # |										|
+#       | 1 | [[a]] =  hello_there_warewolf user     |
+#       | 2 | [[b]] =  hello_there_warewolf user     |
+#
+#
+#Scenario: Workflow to Plugin Mappings Blank to Recordset Input
+#    Given I have a workflow "WFtoDLLMapings2"
+#    And "WFtoDLLMapings2" contains an Assign "AssignData" as
+#        | variable | value |
+#        | [[var]]  |       |
+#    And "WFtoDLLMapings2" contains "Two" from server "Localhost" with mapping as
+#        | From Variable | Input to Service | Output from Service | To Variable |
+#        | [[var]]       | rec(*).val       | rec(*).val          | [[rec().a]] |
+#        |               |                  |                     |             |
+#        |               |                  |                     |             |
+#    When "WFtoDLLMapings2" is executed
+#    Then the workflow execution has "AN" error
+#    And the workflow 'two' debug inputs as
+#       |# |
+#    
+#    And Plugin 'two' debug outputs as
+#       | # |                       |
+#      
+#Scenario: Workflow to Plugin Mappings recordset to Recordset Input
+#    Given I have a workflow "WFtoDLLMapings3"
+#    And "WFtoDLLMapings3" contains an Assign "AssignData" as
+#        | variable     | value |
+#        | [[rec().a]]  | 1     |
+#        | [[rec().a]]  | 2     |
+#		| [[rec().a]]  | 3     |
+#    And "WFtoDLLMapings3" contains "Three" from server "Localhost" with mapping as
+#        | From Variable | Input to Service | Output from Service | To Variable |
+#        | [[rec(*).a]]  | rec(*).val       | rec(*).val          | [[rec().a]] |
+#        |               |                  |                     |             |
+#        |               |                  |                     |             |
+#    When "WFtoDLLMapings3" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'Three' debug inputs as
+#	   | # |		 |				   |
+#       | 1 | [[a]] = | [[rec(1).a]] = 1|
+#       | 2 | [[b]] = | [[rec(2).a]] = 2|
+#	   | 3 | [[c]] = | [[rec(3).a]] = 3|       
+#     And Plugin 'Three' debug outputs as
+#       | # |           |
+#       | 1 | [[a]] =  1|
+#       | 2 | [[b]] =  2|
+#	   | 2 | [[c]] =  3|
+#
+#Scenario: Workflow to Plugin Mappings recordset and scalar to Recordset Input
+#     Given I have a workflow "WFtoDLLMapings4"
+#     And "WFtoDLLMapings4" contains an Assign "AssignData" as
+#        | variable     | value |
+#        | [[rec().a]]  |   1   |
+#        | [[rec().a]]  |   2   |
+#        | [[a]]        |   9   |
+#     And "WFtoDLLMapings4" contains "One" from server "Localhost" with mapping as
+#        | From Variable       | Input to Service | Output from Service | To Variable |
+#        |  [[rec(1).a]][[a]]  | rec(*).val       | rec(*).val          | [[rec().a]] |
+#        |                     |                  |                     |             |
+#    When "WFtoDLLMapings4" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'four' debug inputs as
+#	   | # |		 |					|
+#       | 1 | [[a]] = | [[rec(1).a]] = 19|
+#       | 2 | [[b]] = | [[rec(2).a]] = 29|    
+#     And Plugin 'four' debug outputs as
+#       | # |            |
+#       | 1 | [[a]] =  19|
+#       | 2 | [[b]] =  29|
+#
+#
+#Scenario: Workflow to Workflow Mappings ComplexExpression to Recordset
+#    Given I have a workflow "WFtoDLLMapings5"
+#    And "WFtoDLLMapings5" contains an Assign "AssignData" as
+#        | variable     | value |
+#        | [[rec().a]]  |   1   |
+#        | [[rec().a]]  |   2   |
+#        | [[index]]    |   1   |
+#    And "WFtoDLLMapings5" contains "One" from server "Localhost" with mapping as
+#        | From Variable              | Input to Service | Output from Service | To Variable  |
+#        | [[rec([[index]]).a]]       | rec(*).val       | rec(*).val          | [[rec().a]]  |
+#    When "WFtoDLLMapings5" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'five' debug inputs as
+#	   | # |		 |				   |
+#       | 1 | [[a]] = | [[rec(1).a]] = 1|
+#       | 2 | [[b]] = | [[rec(2).a]] = 2|   
+#    And Plugin 'five' debug outputs as
+#       | # |           |
+#       | 1 | [[a]] =  1|
+#       | 2 | [[b]] =  2|
+#
+#
+#Scenario: Workflow to Plugin Mappings Scalar to scalar Input
+#    Given I have a workflow "WFtoDLLMapings6"
+#    And "WFtoDLLMapings6" contains an Assign "AssignData" as
+#        | variable    | value |
+#        | [[value1]]  | 1     |
+#        | [[value2]]  | 2     |
+#    And "WFtoDLLMapings6" contains "One" from server "Localhost" with mapping as
+#        | From Variable    | Input to Service | Output from Service | To Variable |
+#        | [[value1]]       | [[var1]]         |          a          | [[a]]       |
+#        | [[value1]]       | [[var2]]         |          b          | [[a]]       |
+#    When "WFtoDLLMapings6" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'six' debug inputs as
+#	   |#  |         |                  | 
+#       | 1 | [[a]] = | [[var1]] = 1     |
+#       | 2 | [[b]] = | [[var2]] = 2     |
+#    
+#    And Plugin 'six' debug outputs as
+#       | # |                |
+#       | 1 | [[a]] =  1     |
+#       | 2 | [[b]] =  2     |
+#
+#
+#Scenario: Workflow to Plugin Mappings Blank to scalar Input
+#    Given I have a workflow "WFtoDLLMapings7"
+#    And "WFtoDLLMapings7" contains an Assign "AssignData" as
+#        | variable    | value |
+#        | [[value1]]  |       |
+#        | [[value2]]  |       |
+#    And "WFtoDLLMapings7" contains "seveen" from server "Localhost" with mapping as
+#        | From Variable    | Input to Service | Output from Service | To Variable |
+#        | [[value1]]       | [[var1]]         |          a          | [[a]]       |
+#        | [[value1]]       | [[var2]]         |          b          | [[a]]       |
+#    When "WFtoDLLMapings7" is executed
+#    Then the workflow execution has "AN" error
+#    And the workflow 'seveen' debug inputs as
+#      |#|
+#    
+#    And Plugin 'seveen' debug outputs as
+#      |#|
+#       
+#Scenario: Workflow to Plugin Mappings recordset to scalar Input
+#    Given I have a workflow "WFtoDLLMapings8"
+#    And "WFtoDLLMapings8" contains an Assign "AssignData" as
+#        | variable      | value |
+#        | [[rec(1).a]]  | 1     |
+#        | [[rec(1).a]]  | 2     |
+#		| [[rec(1).a]]  | 3     |
+#        | [[rec(1).a]]  | 4     |
+#    And "WFtoDLLMapings8" contains "eight" from server "Localhost" with mapping as
+#        | From Variable      | Input to Service | Output from Service | To Variable |
+#        | [[rec(1).a]]       | [[var1]]         |          a          | [[a]]       |
+#        | [[rec(1).a]]       | [[var2]]         |          b          | [[a]]       |
+#		| [[rec(1).a]]       | [[var3]]         |          c          | [[a]]       |
+#        | [[rec(1).a]]       | [[var4]]         |          d          | [[a]]       |
+#    When "WFtoDLLMapings8" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'eight' debug inputs as
+#	   | # |
+#       | 1 | [[a]] = | [[var1]] = 1     |
+#       | 2 | [[b]] = | [[var2]] = 2     |
+#	   | 1 | [[c]] = | [[var3]] = 3     |
+#       | 2 | [[d]] = | [[var4]] = 4     |
+#    
+#    And Databsae 'eight' debug outputs as
+#       | # |                |
+#       | 1 | [[a]] =  1     |
+#       | 2 | [[b]] =  2     |
+#	   | 3 | [[c]] =  3     |
+#       | 4 | [[d]] =  4     |
+#
+#Scenario: Workflow to Plugin Mappings scalar and recordset to scalar Input
+#    Given I have a workflow "WFtoDLLMapings9"
+#    And "WFtoDLLMapings9" contains an Assign "AssignData" as
+#        | variable      | value |
+#        | [[rec(1).a]]  | 1     |
+#        | [[rec(1).a]]  | 2     |
+#        | [[a]]         |test   |
+#    And "WFtoDLLMapings9" contains "Nine" from server "Localhost" with mapping as
+#        | From Variable           | Input to Service | Output from Service | To Variable |
+#        | [[rec(1).a]][[a]]       | [[var1]]         |          a          | [[a]]       |
+#        | [[rec(1).a]][[a]]       | [[var2]]         |          b          | [[a]]       |
+#		| [[a]][[rec(1).a]]       | [[var3]]         |          c          | [[a]]       |
+#    When "WFtoDLLMapings9" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'Nine' debug inputs as
+#	   | # |
+#       | 1 | [[a]] = | [[var1]] = 1test     |
+#       | 2 | [[b]] = | [[var2]] = 2test     |
+#	   | 2 | [[c]] = | [[var3]] = test1     |
+#    
+#    And Plugin 'Nine' debug outputs as
+#       | # |                    |
+#       | 1 | [[a]] =  1test     |
+#       | 2 | [[b]] =  2test     |
+#	   | 3 | [[c]] =  test1     |
+#
+#
+#Scenario: Workflow to Plugin Mappings complex expression to scalar Input
+#    Given I have a workflow "WFtoDLLMapings10"
+#    And "WFtoDLLMapings1" contains an Assign "AssignData" as
+#        | variable      | value |
+#        | [[rec(1).a]]  | 1     |
+#        | [[rec(1).a]]  | 2     |
+#        | [[a]]         | 1     |
+#    And "WFtoDLLMapings10" contains "ten" from server "Localhost" with mapping as
+#        | From Variable          | Input to Service | Output from Service | To Variable |
+#        | [[rec([[a]]).a]]       | [[var1]]         |          a          | [[a]]       |
+#        | [[rec([[a]]).a]]       | [[var2]]         |          b          | [[a]]       |
+#    When "WFtoDLLMapings1" is executed
+#    Then the workflow execution has "NO" error
+#    And the workflow 'ten' debug inputs as
+#	   | # |         |					|
+#       | 1 | [[a]] = | [[var1]] = 1     |
+#       | 2 | [[b]] = | [[var2]] = 2     |
+#    
+#    And Plugin 'ten' debug outputs as
+#       | # |               |
+#       | 1 | [[a]] =  1    |
+#       | 2 | [[b]] =  2    |
+#
+#
+#Scenario: Database Service to Workflow Mappings 
+#Given I have a workflow "DB to WF Mapings" using the "Get Rows" table
+#And "DB to WF Mapings" contains an Assign "AssignData" as
+#        | variable         | value         |
+#        | <AssignVariable> | <AssignValue> |
+#And "DB to WF Mapings" contains "WorkflowMappingsInnerWorkflow" from server "Localhost" with mapping as
+#| Input to Service | Output from Service | To Variable  |
+#| <ToService>      | <FromService>       | <ToVariable> |
+#When "DB to WF Mapings" is executed
+#Then the workflow execution has "NO" error
+#And workflow 'WorkflowMappingsInnerWorkflow' debug outputs as
+#      | # | Value              |
+#      | 1 | <SerivceAndResult> |
+#And assume the [[Row(1).BigID]] i.e. Output of DB = [[InnerInput]] i.e. Input of WF
+#Examples: 
+#| #                         | AssignVariable | AssignValue | ToVariable   | FromService      | DBSerivceAndResult   | WFOutputAndResult             |
+#| ScalToScal                | [[Var]]        | 1           | [[Var]]      | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[Output]] = 1                |
+#| ScalToBlank               | [[Var]]        |             | [[Var]]      | [[Row(*).BigID]] | [[Row().BigID]] =    | [[Output]] =                  |
+#| RecToScal                 | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[Output]] = 1                |
+#| RecToRec                  | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec(1).out]] = 1            |
+#| RecToBlank                | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec(1).out]] =              |
+#| RecTOComplexExp           | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec([[rec().in]]).out]] = 1 |
+#| RecTOScalToComplexExp     | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[re([[Var]]).out]] = 1       |
+#| RecTOScalblnk&ComplexExp  | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[Var]][[rc([[Var2]]).out]]=1 |
+#|                           | [[var2]]       | 2           |              |                  |                      |                               |
+#|                           | [[var]]        |             |              |                  |                      |                               |
+#| ScalToRec                 | [[Var]]        | 1           | [[Var]]      | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec(1).out]] = 1            |
+#| ScalToComplexExp          | [[Var]]        | 1           | [[Var]]      | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec(1).out]] = 1            |
+#| ScalTOScalblnk&ComplexExp | [[var]]        | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec([[int]]).out]] = 1      |
+#|                           | [[int]]        |             |              |                  |                      |                               | 
+#
+#Scenario: Web Service to Workflow Mappings
+##Note: No webservice was created for this scenario 
+#Given I have a workflow "WS to WF Mapings"
+#And "WS to WF Mapings" contains an Assign "AssignData" as
+#        | variable         | value         |
+#        | <AssignVariable> | <AssignValue> |
+#And "WS to WF Mapings" contains "WorkflowMappingsInnerWorkflow" from server "Localhost" with mapping as
+#| Input to Service | Output from Service | To Variable  |
+#| <ToService>      | <FromService>       | <ToVariable> |
+#When "WS to WF Mapings" is executed
+#Then the workflow execution has "NO" error
+#And workflow 'WorkflowMappingsInnerWorkflow' debug outputs as
+#      | # | Value              |
+#      | 1 | <SerivceAndResult> |
+#And assume the [[WS Variable]] i.e. Output of WS = [[InnerInput]] i.e. Input of WF
+#Examples: 
+#| #                         | AssignVariable | AssignValue | ToVariable   | FromService      | DBSerivceAndResult   | WFOutputAndResult             |
+#| ScalToScal                | [[Var]]        | 1           | [[Var]]      | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[Output]] = 1                |
+#| ScalToBlank               | [[Var]]        |             | [[Var]]      | [[Row(*).BigID]] | [[Row().BigID]] =    | [[Output]] =                  |
+#| RecToScal                 | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[Output]] = 1                |
+#| RecToRec                  | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec(1).out]] = 1            |
+#| RecToBlank                | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec(1).out]] =              |
+#| RecTOComplexExp           | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec([[rec().in]]).out]] = 1 |
+#| RecTOScalToComplexExp     | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[re([[Var]]).out]] = 1       |
+#| RecTOScalblnk&ComplexExp  | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[Var]][[rc([[Var2]]).out]]=1 |
+#|                           | [[var2]]       | 2           |              |                  |                      |                               |
+#|                           | [[var]]        |             |              |                  |                      |                               |
+#| ScalToRec                 | [[Var]]        | 1           | [[Var]]      | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec(1).out]] = 1            |
+#| ScalToComplexExp          | [[Var]]        | 1           | [[Var]]      | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec(1).out]] = 1            |
+#| ScalTOScalblnk&ComplexExp | [[var]]        | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec([[int]]).out]] = 1      |
+#|                           | [[int]]        |             |              |                  |                      |                               |
+
+#Scenario: Plugin to Workflow Mappings
+##Note: No Plugin service was created for this scenario 
+#Given I have a workflow "DLL to WF Mapings"
+#And "DLL to WF Mapings" contains an Assign "AssignData" as
+#        | variable         | value         |
+#        | <AssignVariable> | <AssignValue> |
+#And "DLL to WF Mapings" contains "WorkflowMappingsInnerWorkflow" from server "Localhost" with mapping as
+#| Input to Service | Output from Service | To Variable  |
+#| <ToService>      | <FromService>       | <ToVariable> |
+#When "DLL to WF Mapings" is executed
+#Then the workflow execution has "NO" error
+#And workflow 'WorkflowMappingsInnerWorkflow' debug outputs as
+#      | # | Value              |
+#      | 1 | <SerivceAndResult> |
+#And assume the [[WS Variable]] i.e. Output of WS = [[InnerInput]] i.e. Input of WF
+#Examples: 
+#| #                        | AssignVariable | AssignValue | ToVariable   | FromService      | DBSerivceAndResult   | WFOutputAndResult             |
+#| ScalToScal               | [[Var]]        | 1           | [[Var]]      | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[Output]] = 1                |
+#| ScalToBlank              | [[Var]]        |             | [[Var]]      | [[Row(*).BigID]] | [[Row().BigID]] =    | [[Output]] =                  |
+#| RecToScal                | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[Output]] = 1                |
+#| RecToRec                 | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec(1).out]] = 1            |
+#| RecToBlank               | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec(1).out]] =              |
+#| RecTOComplexExp          | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec([[rec().in]]).out]] = 1 |
+#| RecTOScalToComplexExp    | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[re([[Var]]).out]] = 1       |
+#| RecTOScalblnk&ComplexExp | [[rec().in]]   | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[Var]][[rc([[Var2]]).out]]=1 |
+#|                          | [[var2]]       | 2           |              |                  |                      |                               |
+#|                          | [[var]]        |             |              |                  |                      |                               |
+#| ScalToRec                 | [[Var]]        | 1           | [[Var]]      | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec(1).out]] = 1            |
+#| ScalToComplexExp          | [[Var]]        | 1           | [[Var]]      | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec(1).out]] = 1            |
+#| ScalTOScalblnk&ComplexExp | [[var]]        | 1           | [[rec().in]] | [[Row(*).BigID]] | [[Row(1).BigID]] = 1 | [[rec([[int]]).out]] = 1      |
+#|                           | [[int]]        |             |              |                  |                      |                               | 
+

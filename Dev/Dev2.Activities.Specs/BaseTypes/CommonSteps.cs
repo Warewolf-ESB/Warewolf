@@ -688,6 +688,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         static void Verify(string expectedValue, string actualValue, string name, int index)
         {
+            expectedValue = expectedValue.Replace("‡", "=");
             string type = "";
 
             if(!string.IsNullOrEmpty(expectedValue) && !expectedValue.Equals(actualValue, StringComparison.InvariantCultureIgnoreCase))
