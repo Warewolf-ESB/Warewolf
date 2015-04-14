@@ -342,16 +342,12 @@ Scenario: Workflow with Assigns DataMerge and DataSplit executing against the se
 	  |                           |
 	  | [[result]] = TestWarewolf |
 	  And the 'Data Split' in WorkFlow 'WorkflowWithAssignDataMergeAndDataSplittools' debug inputs as 
-	  | String to Split                                 | Process Direction | Skip blank rows | # |                | With  | Using | Include | Escape |
-	  | [[result]][[split(1).a]] = TestWarewolfWorkflow | Forward           | No              | 1 | [[rec().b]] = | Index | 4     | No      |        |
-	  |                                                 |                   |                 | 2 | [[rec().b]] = | Index | 8     | No      |        |
+	  | String to Split            | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
+	  | [[result]][[split().a]] = | Forward           | No              | 1 | [[rec().b]] = | Index | 4     | No      |        |
+	  |                            |                   |                 | 2 | [[rec().b]] = | Index | 8     | No      |        |
 	  And the 'Data Split' in Workflow 'WorkflowWithAssignDataMergeAndDataSplittools' debug outputs as  
 	  | # |                         |
 	  | 1 | [[rec(1).b]] = Test     |
-	  |   | [[rec(2).b]] = Warewolf |
-	  |   | [[rec(3).b]] = Work     |
-	  |   | [[rec(4).b]] = flow     |
-	  | 2 | [[rec(1).b]] = Test     |
 	  |   | [[rec(2).b]] = Warewolf |
 	  |   | [[rec(3).b]] = Work     |
 	  |   | [[rec(4).b]] = flow     |
@@ -2698,16 +2694,15 @@ Scenario: Workflow with Assigns DataMerge and DataSplit and testing variables th
 	  | 1 | [[res]] =  Test |
 	  And the 'Data Merge' in WorkFlow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2' debug inputs as 
 	  | # |                      | With  | Using | Pad | Align |
-	  | 1 | [[Value]]Test = Test | Index | "4"   | ""  | Left  |
+	  | 1 | [[Value]]Test =  | Index | "4"   | ""  | Left  |
 	  And the 'Data Merge' in Workflow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2' debug outputs as  
-	  |                   |
-	  | [[result]] = Test |
+	  |              |
+	  | [[result]] = |
 	  And the 'Data Split' in WorkFlow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2' debug inputs as 
 	  | String to Split         | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
-	  | [[Value12]]Test  = Test | Forward           | No              | 1 | [[rec().b]] = | Index | 4     | No      |        |
+	  | [[Value12]]Test =  | Forward           | No              | 1 | [[rec().b]] = | Index | 4     | No      |        |
 	  And the 'Data Split' in Workflow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2' debug outputs as  
-	  | # |                     |
-	  | 1 | [[rec(1).b]] = Test |
+	  | # |                |
 
 Scenario: Workflow with Assigns Replace and testing variables that hasn't been assigned
       Given I have a workflow "workflowithAssignandReplaceTestingUnassignedvariablevalues"
