@@ -1715,11 +1715,11 @@ this.FeatureBackground();
                         "",
                         ""});
             table99.AddRow(new string[] {
-                        "[[rec(1).b]] = test",
+                        "[[rec(2).a]] = warewolf",
                         "",
                         ""});
             table99.AddRow(new string[] {
-                        "[[rec(2).a]] = warewolf",
+                        "[[rec(1).b]] = test",
                         "",
                         ""});
             table99.AddRow(new string[] {
@@ -1734,9 +1734,9 @@ this.FeatureBackground();
             table100.AddRow(new string[] {
                         "[[rec(1).a]] = tREPLACEDst"});
             table100.AddRow(new string[] {
-                        "[[rec(1).b]] = tREPLACEDst"});
-            table100.AddRow(new string[] {
                         "[[rec(2).a]] = warREPLACEDwolf"});
+            table100.AddRow(new string[] {
+                        "[[rec(1).b]] = tREPLACEDst"});
             table100.AddRow(new string[] {
                         "[[rec(2).b]] = warREPLACEDwolf"});
             table100.AddRow(new string[] {
@@ -7412,7 +7412,7 @@ this.FeatureBackground();
             table403.AddRow(new string[] {
                         "",
                         "",
-                        "[[rs().row]]"});
+                        "[[rs().row]] ="});
 #line 1977
    testRunner.And("the \'Unique rec\' in WorkFlow \'workflowithAssignandUnique\' debug inputs as", ((string)(null)), table403, "And ");
 #line hidden

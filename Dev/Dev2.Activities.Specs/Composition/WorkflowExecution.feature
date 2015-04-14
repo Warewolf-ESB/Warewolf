@@ -455,14 +455,14 @@ Scenario: Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find 
 	  And the 'Replacing' in WorkFlow 'Test1' debug inputs as 
 	  | In Field(s)             | Find | Replace With |
 	  | [[rec(1).a]] = test     |      |              |
-	  | [[rec(1).b]] = test     |      |              |
 	  | [[rec(2).a]] = warewolf |      |              |
+	  | [[rec(1).b]] = test     |      |              |
 	  | [[rec(2).b]] = warewolf | e    | REPLACED     |
 	  And the 'Replacing' in Workflow 'Test1' debug outputs as
 	  |                                |
 	  | [[rec(1).a]] = tREPLACEDst     |
-	  | [[rec(1).b]] = tREPLACEDst     |
 	  | [[rec(2).a]] = warREPLACEDwolf |
+	  | [[rec(1).b]] = tREPLACEDst     |
 	  | [[rec(2).b]] = warREPLACEDwolf |
 	  | [[replaceResult]] = 4          |
 
@@ -1975,16 +1975,16 @@ Scenario: Workflow with Assign and Unique Tool, finding unique data from multipl
 	  | 7 | [[rs(4).row]] =  30  |
 	  | 8 | [[rs(4).data]] =  40 |
 	  And the 'Unique rec' in WorkFlow 'workflowithAssignandUnique' debug inputs as
-       | #           |                     | Return Fields |
-       | In Field(s) | [[rs(1).row]] = 10  |               |
-       |             | [[rs(2).row]] = 40  |               |
-       |             | [[rs(3).row]] = 20  |               |
-       |             | [[rs(4).row]] = 30  |               |
-       |             | [[rs(1).data]] = 10 |               |
-       |             | [[rs(2).data]] = 20 |               |
-       |             | [[rs(3).data]] = 20 |               |
-       |             | [[rs(4).data]] = 40 |               |
-       |             |                     | [[rs().row]]  |
+       | #           |                     | Return Fields  |
+       | In Field(s) | [[rs(1).row]] = 10  |                |
+       |             | [[rs(2).row]] = 40  |                |
+       |             | [[rs(3).row]] = 20  |                |
+       |             | [[rs(4).row]] = 30  |                |
+       |             | [[rs(1).data]] = 10 |                |
+       |             | [[rs(2).data]] = 20 |                |
+       |             | [[rs(3).data]] = 20 |                |
+       |             | [[rs(4).data]] = 40 |                |
+       |             |                     | [[rs().row]] = |
       And the 'Unique rec' in Workflow 'workflowithAssignandUnique' debug outputs as  
        | # |                        |
        | 1 | [[rec(1).unique]] = 10 |
