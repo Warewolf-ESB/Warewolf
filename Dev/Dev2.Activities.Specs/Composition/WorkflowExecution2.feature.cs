@@ -2387,7 +2387,7 @@ this.FeatureBackground();
                     "s", ((string)(null)), table143, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table144 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Recordset"});
+                        "Records"});
             table144.AddRow(new string[] {
                         "[[rec(3).a]] ="});
 #line 646

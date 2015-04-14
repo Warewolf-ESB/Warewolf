@@ -644,7 +644,7 @@ Scenario: Workflow with Assign Count Data Merge and 2 Delete  tools executing ag
 	  |                 |
 	  | [[result1]] = 3 |
 	  And the 'Delrec' in WorkFlow 'WorkflowWithAssignCountDataMerge&2Delete' debug inputs as
-	  | Recordset        |
+	  | Records        |
 	  | [[rec(3).a]] = |
 	  And the 'Delrec' in Workflow 'WorkflowWithAssignCountDataMerge&2Delete' debug outputs as  
 	  |                       |

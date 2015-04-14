@@ -1659,5 +1659,28 @@ namespace Dev2.Data.Util
             }
             return fullRecSetName;
         }
+
+        public static bool HasNegativeIndex(string variable)
+        {
+            if (IsEvaluated(variable))
+            {
+                var enRecordsetIndexType = GetRecordsetIndexType(variable);
+                if (enRecordsetIndexType != enRecordsetIndexType.Numeric)
+                {
+                    return false;
+                }
+                if (IsValueRecordset(variable))
+                {
+                    var index = ExtractIndexRegionFromRecordset(variable);
+                    int val;
+                    if (!int.TryParse(index, out val))
+                    {
+                        return true;
+                    }
+                    return val < 0;
+                }
+            }
+            return false;
+        }
     }
 }
