@@ -234,13 +234,14 @@ Scenario: Workflow with Assign and 2 Delete tools executing against the server
 	  | # |                   |
 	  | 1 | [[rec(1).a]] = 50 |
 	  And the 'Delet1' in WorkFlow 'WorkflowWithAssignand2Deletetools' debug inputs as
-	  | Recordset          |
+	  | Records          |
 	  | [[rec(1).a]] = 50 |
 	  And the 'Delet1' in Workflow 'WorkflowWithAssignand2Deletetools' debug outputs as  
 	  |                       |
 	  | [[result1]] = Success |
 	  And the 'Delet2' in WorkFlow 'WorkflowWithAssignand2Deletetools' debug inputs as
-	   | Recordset        |	  
+	   | Records      |
+	   | [[rec(1)]] = |	  
 	  And the 'Delet2' in Workflow 'WorkflowWithAssignand2Deletetools' debug outputs as  
 	  |                       |
 	  | [[result2]] = Failure |
@@ -3440,30 +3441,8 @@ Scenario: Executing Data - Data Merge example workflow
 	  Then the workflow execution has "NO" error
 	  And the 'Data - Data Merge' in Workflow 'Data - Data Merge' debug outputs as    
 	    |                                                                |
-	    | [[FileContent]] = Brad           000005546854    brad@mail.com |
-	    | = Bob            000065548912bob@mail.com                      |
-	    | = Bill            003215464987bill@mail.com                    |
+	    | [[FileContent]] = String |
 	   
-
-Scenario: Executing Data - Data Splitexample workflow
-	  Given I have a workflow "Data - Data Split Test"
-	  And "Data - Data Split Test" contains "Data - Data Split" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  When "Data - Data Split Test" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'Data Split1 (3)' in WorkFlow 'Data - Data Split' debug inputs as
-	  | String to Split                                                                                           | Process Direction | Skip blank rows | # |                      | With     | Using | Include | Escape |
-	  | [[FileContent]] = Brad,5546854,brad@mail.com Bob 000065548912bob@mail.com  Bill 003215464987bill@mail.com | Forward           | No              | 1 | [[cust(*).name]]   = | Chars    | ,     | No      |        |
-	  |                                                                                                           | Forward           | No              | 2 | [[cust(*).number]] = | Chars    | ,     | No      |        |
-	  |                                                                                                           | Forward           | No              | 3 | [[cust(*).email]]  = | New Line |       | No      |        |
- And the 'Data Merge (1)' in Workflow 'Data - Data Merge' debug outputs as    
-   |                                                  |
-   | [[FileContent]] = Brad 000005546854brad@mail.com |
-   | Bob 000065548912bob@mail.com                     |
-   | Bill 003215464987bill@mail.com                   |
-
-
-
 Scenario: Executing Data - Find Index example workflow
 	  Given I have a workflow "Utility - Find Index Test"
 	  And "Utility - Find Index Test" contains "Utility - Find Index" from server "localhost" with mapping as
@@ -3547,13 +3526,13 @@ Scenario: Executing Recordset - Delete Records example workflow
 	  When "Recordset - Delete Records Test" is executed
 	  Then the workflow execution has "NO" error
 	  And the 'Delete Record1' in WorkFlow 'Recordset - Delete Records' debug inputs as
-	  | Recordset          |
+	  | Records          |
 	  | [[rec(2).set]] = 2 |
 	  And the 'Delete Record1' in Workflow 'Recordset - Delete Records' debug outputs as  
 	  |                      |
 	  | [[result]] = Success |
 	  And the 'Delete Record2' in WorkFlow 'Recordset - Delete Records' debug inputs as
-	  | Recordset          |
+	  | Records          |
 	  | [[rec(1).set]] = 1 |
 	  | [[rec(3).set]] = 3 |
 	  And the 'Delete Record2' in Workflow 'Recordset - Delete Records' debug outputs as  
