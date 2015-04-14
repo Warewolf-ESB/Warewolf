@@ -25,8 +25,19 @@ type WarewolfAtom =
          member x.CompareTo y = 
              match y with
                 | :? WarewolfAtom as z -> match (x,z) with
+                                            | (Nothing ,DataString b) when System.String.IsNullOrEmpty(b) -> 0
+                                            | (DataString b ,Nothing) when System.String.IsNullOrEmpty(b) -> 0
                                             | ( Int a, Int b ) -> a.CompareTo(b)
                                             | (Float a, Float b ) -> a.CompareTo(b)
+                                            | (Int a, Float b ) -> System.Double.Parse(a.ToString()).CompareTo(b)
+                                            | (Float a, Int b ) -> a.CompareTo(System.Double.Parse((b.ToString())))
+                                            | (Int a, DataString b ) -> a.ToString().CompareTo(b)
+                                            | (Float a, DataString b ) -> a.ToString().CompareTo(b)
+                                            | (DataString a, DataString b ) -> a.CompareTo(b)
+                                            | (DataString a, Float b ) -> a.CompareTo(b.ToString())
+                                            | (DataString a, Int b ) -> a.CompareTo(b.ToString())
+                                            | (Nothing ,Nothing) -> 0
+                                            | (Nothing,_) -> -1
                                             | (a,b) -> ( a.ToString()).CompareTo( b.ToString())
                 | a ->x.ToString().CompareTo(a.ToString())
 type WarewolfAtomRecord = WarewolfAtom
@@ -55,7 +66,7 @@ type WarewolfEnvironment =
 
 
 let tryParseAtom (data:string) = 
-    let mutable value = 0;
+    let mutable value = 0;    
     if data.StartsWith("0") then DataString data
     else
        let success = System.Int32.TryParse(data,&value)

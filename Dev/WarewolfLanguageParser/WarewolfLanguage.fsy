@@ -59,6 +59,8 @@ recsetName :
 	|OPENLANGUAGE VARNAME OPENBRACKET STAR CLOSEDBRACKET CLOSELANGAUGE{{Name = $2; Index = Star;}}
 	|OPENLANGUAGE VARNAME OPENBRACKET langExpression CLOSEDBRACKET CLOSELANGAUGE{{Name = $2;Index = IndexExpression $4;}}
 index :
+	| INT {IntIndex ( System.Int32.Parse (  $1))}
+intindex :
 	| INT {IndexExpression ( WarewolfAtomAtomExpression ( tryParseAtom $1))}
 scalar : 
 	|OPENLANGUAGE VARNAME CLOSELANGAUGE {$2}

@@ -56,8 +56,9 @@ let EvalResultToStringNoCommas (a:WarewolfEvalResult) =
     | WarewolfRecordSetResult x -> Map.toList x.Data |> List.filter (fun (a, b) ->not (a=PositionColumn)) |> List.map snd |> Seq.collect (fun a->a) |> fun a->System.String.Join("",a)
 let AtomToInt(a:WarewolfAtom) = 
     match a with
-    | Int a -> a
-    | _ -> failwith "int expected"
+        | Int x -> if x<= 0 then failwith "invalid recordset index was less than 0" else x
+        |_ ->    let couldParse, parsed = System.Int32.TryParse(a.ToString())
+                 if couldParse then parsed else failwith "index was not an int"
 
 type PositionValue =
     | IndexFoundPosition of int
@@ -138,11 +139,15 @@ let rec IndexToString (x:Index) =
         | Last -> ""
         | IndexExpression a-> LanguageExpressionToString a
 
-and EvalIndex  ( env:WarewolfEnvironment) (exp:string)=
-    let getIntFromAtom (a:WarewolfAtom) =
+and getIntFromAtom (a:WarewolfAtom) =
         match a with
         | Int x -> if x<= 0 then failwith "invalid recordset index was less than 0" else x
-        |_ ->failwith "invalid recordset index was not an int"
+        |_ ->    let couldParse, parsed = System.Int32.TryParse(a.ToString())
+                 if couldParse then parsed else failwith "index was not an int"
+
+and EvalIndex  ( env:WarewolfEnvironment) (exp:string)=
+
+
     
     let getIntFromAtomList (a:WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>) =
         match a.Count with
@@ -210,16 +215,19 @@ and  Clean (buffer :LanguageExpression) =
         | ComplexExpression  a ->  (List.filter (fun b -> "" <> (LanguageExpressionToString b)) a) |> (fun a -> if (List.length a) =1 then Clean a.[0] else ComplexExpression a)
 
 and ParseLanguageExpression  (lang:string) : LanguageExpression=
-    let exp = ParseCache.TryFind lang
-    match exp with 
-    | Some a ->  a
-    | None -> 
-                let lexbuf = LexBuffer<string>.FromString lang 
-                let buffer = Parser.start Lexer.tokenstream lexbuf
-                let res = buffer |> Clean
-                ParseCache<-ParseCache.Add(lang,res)
-                res
-
+    
+    if( lang.Contains"[[")
+    then 
+        let exp = ParseCache.TryFind lang
+        match exp with 
+        | Some a ->  a
+        | None -> 
+                    let lexbuf = LexBuffer<string>.FromString lang 
+                    let buffer = Parser.start Lexer.tokenstream lexbuf
+                    let res = buffer |> Clean
+                    ParseCache<-ParseCache.Add(lang,res)
+                    res
+    else WarewolfAtomAtomExpression (DataString lang)
 and evalARow  ( index:int) (recset:WarewolfRecordset) (name:string) (env:WarewolfEnvironment)=
     let blank = Map.map (fun a b -> new WarewolfAtomList<WarewolfAtom>(WarewolfAtom.Nothing, [ EvalResultToString (Eval env (sprintf "[[%s(%i).%s]]" name index a) ) |> DataString])) recset.Data
     {recset with Data = blank}
@@ -259,12 +267,8 @@ and  Eval  (env: WarewolfEnvironment) (lang:string) : WarewolfEvalResult=
                 DataString evaled
             else DataString (Eval env evaled|>  EvalResultToString)
     
-    let exp = ParseCache.TryFind lang
-    let buffer =  match exp with 
-                    | Some a ->  a
-                    | _->    
-                        let temp = ParseLanguageExpression lang
-                        temp
+    let buffer =  ParseLanguageExpression lang
+                        
     match buffer with
         | RecordSetExpression a -> WarewolfAtomListresult(  (evalRecordsSet a env) )
         | ScalarExpression a -> WarewolfAtomResult (evalScalar a env)
@@ -529,16 +533,20 @@ let AddAtomToRecordSetWithFraming (rset:WarewolfRecordset) (columnName:string) (
 
             else
                 let lstval = rsAdded.Data.[PositionColumn]
-                if Seq.exists (fun vx -> vx=(Int position)) lstval then
-                    let index = Seq.findIndex (fun vx -> vx= (Int position)) lstval
-                    rsAdded.Data.[columnName].[index] <- value
-                    rsAdded
-                else 
-                      let addedAtEnd =  Map.map (fun k v -> if k=columnName then  ( AddToList v value) else (AddNothingToList v Nothing)) rsAdded.Data
-                      let len = addedAtEnd.[PositionColumn].Count 
+                if rsAdded.Optimisations = WarewolfAttribute.Ordinal then 
+                    rsAdded.Data.[columnName].[position-1] <- value
+                    rsAdded    
+                else
+                    if Seq.exists (fun vx -> vx=(Int position)) lstval then
+                        let index = Seq.findIndex (fun vx -> vx= (Int position)) lstval
+                        rsAdded.Data.[columnName].[index] <- value
+                        rsAdded
+                    else 
+                          let addedAtEnd =  Map.map (fun k v -> if k=columnName then  ( AddToList v value) else (AddNothingToList v Nothing)) rsAdded.Data
+                          let len = addedAtEnd.[PositionColumn].Count 
             
-                      addedAtEnd.[PositionColumn].[len-1] <- Int position
-                      { rsAdded with Data=addedAtEnd ; LastIndex = rsAdded.LastIndex; Frame = frame ; Optimisations = WarewolfAttribute.Fragmented }
+                          addedAtEnd.[PositionColumn].[len-1] <- Int position
+                          { rsAdded with Data=addedAtEnd ; LastIndex = rsAdded.LastIndex; Frame = frame ; Optimisations = WarewolfAttribute.Fragmented }
 
 
 
