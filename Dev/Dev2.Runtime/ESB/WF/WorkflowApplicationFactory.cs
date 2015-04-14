@@ -237,8 +237,9 @@ namespace Dev2.Runtime.ESB.WF
                     var wfappUtils = new WfApplicationUtils();
 
                     ErrorResultTO invokeErrors;
+                    if (dataTransferObject.IsDebugMode())
                     wfappUtils.DispatchDebugState(dataTransferObject, StateType.End, AllErrors.HasErrors(), AllErrors.MakeDisplayReady(), out invokeErrors, _runTime, false, true);
-                    AllErrors.MergeErrors(invokeErrors);
+                    //AllErrors.MergeErrors(invokeErrors);
                     // avoid memory leak ;)
                     run.Dispose();
                 }
