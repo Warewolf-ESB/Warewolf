@@ -10454,7 +10454,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table569 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table569.AddRow(new string[] {
-                        "[[res1]] ="});
+                        "[[res1]] = Failure"});
 #line 2829
     testRunner.And("the \'Create12\' in Workflow \'WorkflowWithAssignCreateandDeleteRecordTestingUnassig" +
                     "nedvariablevalues\' debug outputs as", ((string)(null)), table569, "And ");
@@ -10474,7 +10474,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table571 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table571.AddRow(new string[] {
-                        "[[res2]] ="});
+                        "[[res2]] = Failure"});
 #line 2835
    testRunner.And("the \'DeleteFolder1\' in Workflow \'WorkflowWithAssignCreateandDeleteRecordTestingUn" +
                     "assignedvariablevalues\' debug outputs as", ((string)(null)), table571, "And ");

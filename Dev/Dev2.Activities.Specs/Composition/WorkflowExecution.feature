@@ -2827,14 +2827,14 @@ Scenario: Workflow with Assign Create Delete folder and testing variable values 
 	  | File or Folder | Overwrite | Username | Password |
 	  | [[NoValue]] =  | True      | ""       | ""       |  
 	   And the 'Create12' in Workflow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues' debug outputs as    
-	   |            |
-	   | [[res1]] = |
+	   |                    |
+	   | [[res1]] = Failure |
 	  And the 'DeleteFolder1' in WorkFlow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues' debug inputs as
 	  | Input Path    | Username | Password |
 	  | [[NoValue]] = | ""       | ""       |
 	  And the 'DeleteFolder1' in Workflow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues' debug outputs as    
-	  |            |
-	  | [[res2]] = |
+	  |                    |
+	  | [[res2]] = Failure |
 
 Scenario: Workflow with Assign Create Delete folder and testing variable values that hasn't been assigned2
 	  Given I have a workflow "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2"
