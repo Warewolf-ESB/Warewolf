@@ -249,7 +249,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                         {
                                             env.AssignWithFrame(new AssignValue(assignVar, tmp));
                                         }
-                                        else if(  ExecutionEnvironment.IsScalar(assignVar) && positions[outputVar] ==1)
+                                        else if (ExecutionEnvironment.IsScalar(assignVar) && positions[outputVar] == 1)
                                         {
                                             env.AssignWithFrame(new AssignValue(assignVar, tmp));
                                         }

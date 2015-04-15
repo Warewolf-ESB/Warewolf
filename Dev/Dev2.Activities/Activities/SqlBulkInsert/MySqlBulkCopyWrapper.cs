@@ -58,6 +58,11 @@ namespace Dev2.Activities.SqlBulkInsert
             }
         }
 
+        public bool WriteToServer(IDataReader dataTableToInsert)
+        {
+            return false;
+        }
+
         public static void WriteDataTable(DataTable sourceTable, StreamWriter writer)
         {
 

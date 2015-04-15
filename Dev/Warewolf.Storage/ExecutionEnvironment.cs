@@ -365,23 +365,23 @@ namespace Warewolf.Storage
 
         public void EvalAssignFromNestedStar(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult)
         {
-            for(int index = 0; index < recsetResult.Item.Count; index++)
-            {
-                var warewolfAtom = recsetResult.Item[index];
-                var correctExp = DataListUtils.ReplaceStarWithFixedIndex(exp, index + 1);
-                AssignWithFrame(new AssignValue(correctExp, WarewolfAtomToString(warewolfAtom)));
-            }
+            AssignWithFrameAndList(exp, recsetResult.Item, false);
         }
 
         public void EvalAssignFromNestedLast(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult,int startIndex)
         {
-            for (int index = 0; index < recsetResult.Item.Count; index++)
-            {
-                var warewolfAtom = recsetResult.Item[index];
-                var correctExp = DataListUtils.ReplaceRecordsetBlankWithIndex(exp, index + 1 + startIndex);
-                AssignWithFrame(new AssignValue(correctExp, WarewolfAtomToString(warewolfAtom)));
-            }
+            bool exists = PublicFunctions.RecordsetExpressionExists(exp, _env);
+            if (!exists)
+                exp = ToStar(exp);
+            AssignWithFrameAndList(exp, recsetResult.Item, exists);
         }
+
+        void AssignWithFrameAndList(string assignValue, WarewolfAtomList<DataASTMutable.WarewolfAtom> item, bool shouldUseLast)
+        {
+           _env = PublicFunctions.EvalAssignFromList(assignValue, item,_env,shouldUseLast);
+        }
+
+
 
         public void EvalAssignFromNestedNumeric(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult)
         {

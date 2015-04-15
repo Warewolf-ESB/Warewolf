@@ -3790,7 +3790,7 @@ Scenario: Workflow by using For Each with workflow in it
          |                | Recordset         |
          | * in Recordset | [[rec(1)]] =   |
          |                | [[rec(2)]] =   |
-       And the 'FEach' in WorkFlow 'WFWithForEachInrecordsetTesting' has  "2" nested children 
+       And the 'FEach' in WorkFlow 'WFWithForEachInrecordsetTesting' has  "4" nested children 
        And the 'Random' in step 1 for 'SavedWFwithRandom Test' debug inputs as
             | Random  | From             | To |
             | Numbers | [[rec(1).a]] = 1 | 5  |

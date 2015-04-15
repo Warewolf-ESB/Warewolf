@@ -70,8 +70,8 @@ and AddToRecordSetFramed (env:WarewolfEnvironment) (name:RecordSetIdentifier) (v
         let envwithRecset = AddRecsetToEnv name.Name env
         AddToRecordSetFramed envwithRecset name value
 
-and  AddToRecordSetFramedWithAtomList (env:WarewolfEnvironment) (name:RecordSetIdentifier) (value:WarewolfAtom list) (shouldUseLast:bool)  (assignValue :IAssignValue )  =
-
+and  AddToRecordSetFramedWithAtomList (env:WarewolfEnvironment) (name:RecordSetIdentifier) (value:WarewolfAtom seq) (shouldUseLast:bool)  (assignValue :   IAssignValue option  )  =
+    
     if(env.RecordSets.ContainsKey name.Name)
     then
         let data = env.RecordSets.[name.Name]
@@ -82,7 +82,7 @@ and  AddToRecordSetFramedWithAtomList (env:WarewolfEnvironment) (name:RecordSetI
         let recsetAdded = match name.Index with
                           | IntIndex a -> AddAtomToRecordSetWithFraming recordset name.Column (Seq.last value) a false
                           | Star -> 
-                                    let countVals = List.length value 
+                                    let countVals = Seq.length value 
                                     let mutable recsetmutated = recordset
                                     let mutable index = 1 
                                     match  shouldUseLast with  
@@ -99,7 +99,7 @@ and  AddToRecordSetFramedWithAtomList (env:WarewolfEnvironment) (name:RecordSetI
                                                        recsetmutated                                   
                                         
                           | Last -> 
-                                    let countVals = List.length value 
+                                    let countVals = Seq.length value 
                                     let mutable recsetmutated = recordset
                                     let mutable index = recordset.LastIndex+1   
                                     for a in value do  
@@ -108,14 +108,14 @@ and  AddToRecordSetFramedWithAtomList (env:WarewolfEnvironment) (name:RecordSetI
                                     recsetmutated   
                           | IndexExpression b -> 
                                    let res = Eval env (LanguageExpressionToString b) |> EvalResultToString
-                                   match b with 
-                                        | WarewolfAtomAtomExpression atom ->
+                                   match b,assignValue with 
+                                        | WarewolfAtomAtomExpression atom,_ ->
                                                     match atom with
                                                     | Int a ->  AddAtomToRecordSetWithFraming recordset name.Column (Seq.last value) a false
                                                     | _ -> failwith "Invalid index"
-                                        | _ -> let data = (EvalAssignWithFrame  (new WarewolfParserInterop.AssignValue( (sprintf "[[%s(%s).%s]]" name.Name res name.Column), assignValue.Value)) env) :WarewolfEnvironment
-                                               data.RecordSets.[name.Name] 
-
+                                        | _, Some av  ->   let data = (EvalAssignWithFrame  (new WarewolfParserInterop.AssignValue( (sprintf "[[%s(%s).%s]]" name.Name res name.Column), av.Value)) env) :WarewolfEnvironment
+                                                           data.RecordSets.[name.Name] 
+                                        |_,_ ->  failwith "Invalid assign from list"
         let recsets = Map.remove name.Name env.RecordSets |> fun a-> Map.add name.Name recsetAdded a
         { env with RecordSets = recsets}
     else
@@ -152,7 +152,7 @@ and EvalMultiAssignOp  (env:WarewolfEnvironment)  (value :IAssignValue ) =
                 | WarewolfAtomListresult x -> 
                         match left with 
                         |   ScalarExpression a -> AddToScalars env a (Seq.last x)
-                        |   RecordSetExpression b -> AddToRecordSetFramedWithAtomList env b (List.ofSeq x) shouldUseLast value
+                        |   RecordSetExpression b -> AddToRecordSetFramedWithAtomList env b  x shouldUseLast (Some value)
                         |   WarewolfAtomAtomExpression a -> env
                         |    _ -> let expression = (EvalToExpression env value.Name)
                                   if System.String.IsNullOrEmpty(  expression) || ( expression) = "[[]]" then
@@ -160,6 +160,14 @@ and EvalMultiAssignOp  (env:WarewolfEnvironment)  (value :IAssignValue ) =
                                   else
                                         EvalMultiAssignOp env (new WarewolfParserInterop.AssignValue(  expression , value.Value))
                 |   _ -> failwith "assigning an entire recordset to a variable is not defined"
+
+and EvalMultiAssignList (env:WarewolfEnvironment)  (value :WarewolfAtom seq ) (exp :string) (shouldUseLast: bool)=
+    let left = WarewolfDataEvaluationCommon.ParseLanguageExpression exp 
+    match left with 
+        |   RecordSetExpression b -> AddToRecordSetFramedWithAtomList env b  value shouldUseLast None
+        |    _ ->   failwith "only recsets"
+
+
 and EvalDataShape (exp:string) (env:WarewolfEnvironment) =
     let left = WarewolfDataEvaluationCommon.ParseLanguageExpression exp
     match left with 

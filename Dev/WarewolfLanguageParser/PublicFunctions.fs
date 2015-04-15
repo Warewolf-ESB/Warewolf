@@ -81,6 +81,7 @@ let EvalMultiAssign (values :IAssignValue seq) (env:WarewolfEnvironment) = Assig
 
 let EvalAssignWithFrame (value :IAssignValue ) (env:WarewolfEnvironment) = AssignEvaluation.EvalAssignWithFrame value env
 
+let EvalAssignFromList (value :string ) (data:WarewolfAtom seq) (env:WarewolfEnvironment) (shouldUseLast:bool) = AssignEvaluation.EvalMultiAssignList env data value shouldUseLast
 
 let RemoveFraming  (env:WarewolfEnvironment) =
         let recsets = Map.map (fun a b -> {b with Frame = 0 }) env.RecordSets
@@ -122,4 +123,16 @@ let IsValidRecsetExpression (exp:string) =
                                                                                                                   if inval<0 then false else true
                                                                             | _ -> true
         | _ -> true
-    
+  
+  
+let RecordsetExpressionExists (exp:string) (env:WarewolfEnvironment) =
+    let parsed = WarewolfDataEvaluationCommon.ParseLanguageExpression exp
+    match parsed with 
+        | LanguageExpression.WarewolfAtomAtomExpression a -> false
+        | LanguageExpression.ComplexExpression b -> false
+        | ScalarExpression b -> false
+        | RecordSetExpression recset ->  if env.RecordSets.ContainsKey recset.Name then
+                                            env.RecordSets.[recset.Name].Data.ContainsKey recset.Column
+                                         else false
+        | _ -> false
+              

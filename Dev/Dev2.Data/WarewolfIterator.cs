@@ -88,7 +88,7 @@ namespace Dev2.Data
             if (_listResult != null)
             {
                 var warewolfAtomToString = ExecutionEnvironment.WarewolfAtomToString(_listResult.Item.GetNextValue());                     
-                warewolfAtomToString = DoCalcution(warewolfAtomToString);
+               warewolfAtomToString = DoCalcution(warewolfAtomToString);
                 return warewolfAtomToString;
             }
             return _scalarResult!=null ? DoCalcution(ExecutionEnvironment.WarewolfAtomToString(_scalarResult.Item)) : null;
@@ -98,9 +98,10 @@ namespace Dev2.Data
         {
             string cleanExpression;
             var isCalcEvaluation = DataListUtil.IsCalcEvaluation(warewolfAtomToString, out cleanExpression);
-            var functionEvaluator = new FunctionEvaluator();
+            
             if(isCalcEvaluation)
             {
+                var functionEvaluator = new FunctionEvaluator();
                 string eval;
                 string error;
                 var tryEvaluateFunction = functionEvaluator.TryEvaluateFunction(cleanExpression, out eval, out error);

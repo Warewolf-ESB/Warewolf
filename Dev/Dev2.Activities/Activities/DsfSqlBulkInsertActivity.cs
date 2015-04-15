@@ -188,11 +188,14 @@ namespace Dev2.Activities
             if(sqlBulkCopy != null)
             {
                 var dataTableToInsert = BuildDataTableToInsert();
-
+               
+                var types = GETTypesFromMappingTypes();
+                var columns = GetNamesFromMappings();
                 if(InputMappings != null && InputMappings.Count > 0)
                 {
                     var iteratorCollection = new WarewolfListIterator();
-                    var listOfIterators = GetIteratorsFromInputMappings(dataObject, iteratorCollection, out errorResultTo);
+                    iteratorCollection.Types = types;
+                    iteratorCollection.Names = columns;
                     allErrors.MergeErrors(errorResultTo);
 
                     // oh no, we have an issue, bubble it out ;)
@@ -208,8 +211,7 @@ namespace Dev2.Activities
                         AddBatchSizeAndTimeOutToDebug(dataObject.Environment);
                         AddOptionsDebugItems();
                     }
-
-                    FillDataTableWithDataFromDataList(iteratorCollection, dataTableToInsert, listOfIterators);
+                    
 
                     if(InputMappings != null)
                     {
@@ -222,7 +224,7 @@ namespace Dev2.Activities
                         }
                     }
                     var wrapper = new SqlBulkCopyWrapper(sqlBulkCopy);
-                    SqlBulkInserter.Insert(wrapper, dataTableToInsert);
+                    SqlBulkInserter.Insert(wrapper, iteratorCollection);
                     dataObject.Environment.Assign(Result, "Success");
                     if (dataObject.IsDebugMode())
                     {
@@ -451,28 +453,25 @@ namespace Dev2.Activities
                         return "";
                     }
                 });
-                foreach(var value in values)
-                // ReSharper restore LoopCanBeConvertedToQuery
-                {
-                    tmpData.Add(value);
-                }
+                IEnumerable<string> enumerable = values as string[] ?? values.ToArray();
+  
 
-                if(IgnoreBlankRows && tmpData.All(String.IsNullOrEmpty))
+                if (IgnoreBlankRows && enumerable.All(String.IsNullOrEmpty))
                 {
                     continue;
                 }
 
-                if (!IgnoreBlankRows && tmpData.All(String.IsNullOrEmpty))
+                if (!IgnoreBlankRows && enumerable.All(String.IsNullOrEmpty))
                 {
                     throw new Exception("Ignore Blank Rows not selected and blank data encountered.");
                 }
                 // now we can create the row and add data ;)
-                var dataRow = dataTableToInsert.NewRow();
-                for(int pos = 0; pos < tmpData.Count; pos++)
-                {
-                    dataRow[pos] = tmpData[pos];
-                }
-                dataTableToInsert.Rows.Add(dataRow);
+                dataTableToInsert.Rows.Add(enumerable.ToArray());
+                //for(int pos = 0; pos < tmpData.Count; pos++)
+                //{
+                //    dataRow[pos] = tmpData[pos];
+                //}
+                //dataTableToInsert.Rows.Add(dataRow);
             }
         }
 
@@ -545,6 +544,7 @@ namespace Dev2.Activities
         {
             if(InputMappings == null) return null;
             var dataTableToInsert = new DataTable();
+   
             foreach(var dataColumnMapping in InputMappings)
             {
                 if(String.IsNullOrEmpty(dataColumnMapping.InputColumn))
@@ -593,6 +593,19 @@ namespace Dev2.Activities
             return dataTableToInsert;
         }
 
+        List<Type> GETTypesFromMappingTypes()
+        {
+            if (InputMappings == null) return null;
+
+            return InputMappings.Select(dataColumnMapping => dataColumnMapping.OutputColumn.DataType).ToList();
+        }
+
+        List<string> GetNamesFromMappings()
+        {
+            if (InputMappings == null) return null;
+
+            return InputMappings.Select(dataColumnMapping => dataColumnMapping.OutputColumn.ColumnName).ToList();
+        }
         DataTable BuildDataTableToInsertMySql()
         {
             if (InputMappings == null) return null;
