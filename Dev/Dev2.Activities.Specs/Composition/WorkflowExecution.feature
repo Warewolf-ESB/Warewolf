@@ -644,7 +644,7 @@ Scenario: Workflow with Assign Count Data Merge and 2 Delete  tools executing ag
 	  |                 |
 	  | [[result1]] = 3 |
 	  And the 'Delrec' in WorkFlow 'WorkflowWithAssignCountDataMerge&2Delete' debug inputs as
-	  | Recordset        |
+	  | Records        |
 	  | [[rec(3).a]] = |
 	  And the 'Delrec' in Workflow 'WorkflowWithAssignCountDataMerge&2Delete' debug outputs as  
 	  |                       |
@@ -3766,43 +3766,6 @@ Scenario: Error from workflow service is expected to buble out
 	  | 1 | [[output]] = HELLO          |
 	  | 2 | [[values(1).upper]] = HELLO |
 	  | 3 | [[values(1).lower]] = hello |	  	 
-
-Scenario: Workflow by using For Each with workflow in it
-       Given I have a workflow "WFWithForEachInrecordsetTesting"
-       And "WFWithForEachInrecordsetTesting" contains an Assign "Recordset" as
-       | variable    | value |
-       | [[rec().a]] | 1     |
-       | [[rec().a]] | 2     |
-       And "WFWithForEachInrecordsetTesting" contains a Foreach "FEach" as "InRecordset" executions "[[rec(*)]]"		
-	   And "FEach" contains "SavedWFwithRandom" from server "localhost" with mapping as 
-       | Input to Service | From Variable | Output from Service | To Variable     |
-       When "WFWithForEachInrecordsetTesting" is executed
-       Then the workflow execution has "NO" error
-       And the 'Recordset' in WorkFlow 'WFWithForEachInrecordsetTesting' debug inputs as
-       | # | Variable      | New Value |
-       | 1 | [[rec().a]] = | 1         |
-       | 2 | [[rec().a]] = | 2         |
-       And the 'Recordset' in Workflow 'WFWithForEachInrecordsetTesting' debug outputs as  
-       | # |                  |
-       | 1 | [[rec(1).a]] = 1 |
-       | 2 | [[rec(2).a]] = 2 |
-       And the 'FEach' in WorkFlow 'WFWithForEachInrecordsetTesting' debug inputs as 
-         |                | Recordset         |
-         | * in Recordset | [[rec(1)]] =   |
-         |                | [[rec(2)]] =   |
-       And the 'FEach' in WorkFlow 'WFWithForEachInrecordsetTesting' has  "4" nested children 
-       And the 'Random' in step 1 for 'SavedWFwithRandom Test' debug inputs as
-            | Random  | From             | To |
-            | Numbers | [[rec(1).a]] = 1 | 5  |
-       And the 'Random' in step 1 for 'SavedWFwithRandom Test' debug outputs as
-         |                 |
-         | [[res]] = Int32 |	 
-       And the 'Random' in step 2 for 'SavedWFwithRandom Test' debug inputs as
-            | Random  | From              | To |
-            | Numbers | [[rec(2).a]] = 10 | 5  |
-       And the 'Random' in step 2 for 'SavedWFwithRandom Test' debug outputs as
-         |                 |
-         | [[res]] = Int32 |
 
 #If did anything incorrectly, please let me know...so I can learn  
 #Scenario: Workflow to Workflow Mappings 

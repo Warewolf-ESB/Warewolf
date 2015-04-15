@@ -21,6 +21,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Converters.DateAndTime;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Util;
@@ -167,44 +168,60 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }
 
-                var colItr = new WarewolfListIterator();
-
-                var dtItr = CreateDataListEvaluateIterator(string.IsNullOrEmpty(DateTime) ? GlobalConstants.CalcExpressionNow : DateTime, dataObject.Environment);
-                colItr.AddVariableToIterateOn(dtItr);
-                var ifItr = CreateDataListEvaluateIterator(InputFormat, dataObject.Environment);
-                colItr.AddVariableToIterateOn(ifItr);
-                var ofItr = CreateDataListEvaluateIterator(OutputFormat, dataObject.Environment);
-                colItr.AddVariableToIterateOn(ofItr);
-                var tmaItr = CreateDataListEvaluateIterator(TimeModifierAmountDisplay, dataObject.Environment);
-                colItr.AddVariableToIterateOn(tmaItr);
-
-                if(!allErrors.HasErrors())
+                if (DataListUtil.HasNegativeIndex(InputFormat))
                 {
-                    while(colItr.HasMoreData())
-                    {
-                        IDateTimeOperationTO transObj = ConvertToDateTimeTo(colItr.FetchNextValue(dtItr),
-                                                                                colItr.FetchNextValue(ifItr),
-                                                                                colItr.FetchNextValue(ofItr),
-                                                                                TimeModifierType,
-                                                                                colItr.FetchNextValue(tmaItr)
-                                                                                );
+                    allErrors.AddError(string.Format("Negative Recordset Index for Input Format: {0}", InputFormat));
+                }
+                if (DataListUtil.HasNegativeIndex(OutputFormat))
+                {
+                    allErrors.AddError(string.Format("Negative Recordset Index for Output Format: {0}", OutputFormat));
+                }
 
-                        IDateTimeFormatter format = DateTimeConverterFactory.CreateFormatter();
-                        string result;
-                        string error;
-                        if(format.TryFormat(transObj, out result, out error))
-                        {
-                            string expression = Result;
-                            dataObject.Environment.Assign(expression, result);
-                        }
-                        else
-                        {
-                            allErrors.AddError(error);
-                        }
-                    }
-                    if(dataObject.IsDebugMode() && !allErrors.HasErrors())
+                if (DataListUtil.HasNegativeIndex(TimeModifierAmountDisplay))
+                {
+                    allErrors.AddError(string.Format("Negative Recordset Index for Add Time: {0}", TimeModifierAmountDisplay));
+                }
+                if (!allErrors.HasErrors())
+                {
+                    var colItr = new WarewolfListIterator();
+
+                    var dtItr = CreateDataListEvaluateIterator(string.IsNullOrEmpty(DateTime) ? GlobalConstants.CalcExpressionNow : DateTime, dataObject.Environment);
+                    colItr.AddVariableToIterateOn(dtItr);
+                    var ifItr = CreateDataListEvaluateIterator(InputFormat, dataObject.Environment);
+                    colItr.AddVariableToIterateOn(ifItr);
+                    var ofItr = CreateDataListEvaluateIterator(OutputFormat, dataObject.Environment);
+                    colItr.AddVariableToIterateOn(ofItr);
+                    var tmaItr = CreateDataListEvaluateIterator(TimeModifierAmountDisplay, dataObject.Environment);
+                    colItr.AddVariableToIterateOn(tmaItr);
+
+                    if (!allErrors.HasErrors())
                     {
-                            AddDebugOutputItem(new DebugEvalResult(Result,"",dataObject.Environment));
+                        while (colItr.HasMoreData())
+                        {
+                            IDateTimeOperationTO transObj = ConvertToDateTimeTo(colItr.FetchNextValue(dtItr),
+                                                                                    colItr.FetchNextValue(ifItr),
+                                                                                    colItr.FetchNextValue(ofItr),
+                                                                                    TimeModifierType,
+                                                                                    colItr.FetchNextValue(tmaItr)
+                                                                                    );
+
+                            IDateTimeFormatter format = DateTimeConverterFactory.CreateFormatter();
+                            string result;
+                            string error;
+                            if (format.TryFormat(transObj, out result, out error))
+                            {
+                                string expression = Result;
+                                dataObject.Environment.Assign(expression, result);
+                            }
+                            else
+                            {
+                                allErrors.AddError(error);
+                            }
+                        }
+                        if (dataObject.IsDebugMode() && !allErrors.HasErrors())
+                        {
+                            AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
+                        }
                     }
                 }
             }
