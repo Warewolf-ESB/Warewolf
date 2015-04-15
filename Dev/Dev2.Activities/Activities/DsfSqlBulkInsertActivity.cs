@@ -194,6 +194,7 @@ namespace Dev2.Activities
                 if(InputMappings != null && InputMappings.Count > 0)
                 {
                     var iteratorCollection = new WarewolfListIterator();
+                    var listOfIterators = GetIteratorsFromInputMappings(dataObject, iteratorCollection, out errorResultTo);
                     iteratorCollection.Types = types;
                     iteratorCollection.Names = columns;
                     allErrors.MergeErrors(errorResultTo);
@@ -212,7 +213,8 @@ namespace Dev2.Activities
                         AddOptionsDebugItems();
                     }
                     
-
+                   FillDataTableWithDataFromDataList(iteratorCollection, dataTableToInsert, listOfIterators);
+                  
                     if(InputMappings != null)
                     {
                         foreach(var dataColumnMapping in InputMappings)
@@ -224,7 +226,7 @@ namespace Dev2.Activities
                         }
                     }
                     var wrapper = new SqlBulkCopyWrapper(sqlBulkCopy);
-                    SqlBulkInserter.Insert(wrapper, iteratorCollection);
+                    SqlBulkInserter.Insert(wrapper, dataTableToInsert);
                     dataObject.Environment.Assign(Result, "Success");
                     if (dataObject.IsDebugMode())
                     {
@@ -440,7 +442,7 @@ namespace Dev2.Activities
         {
             while(iteratorCollection.HasMoreData())
             {
-                var tmpData = new List<string>();
+
                 // ReSharper disable LoopCanBeConvertedToQuery
                 var values = listOfIterators.Select(iteratorCollection.FetchNextValue).Where(val => val != null).Select(val =>
                 {
@@ -466,7 +468,9 @@ namespace Dev2.Activities
                     throw new Exception("Ignore Blank Rows not selected and blank data encountered.");
                 }
                 // now we can create the row and add data ;)
+                // ReSharper disable CoVariantArrayConversion
                 dataTableToInsert.Rows.Add(enumerable.ToArray());
+                // ReSharper restore CoVariantArrayConversion
                 //for(int pos = 0; pos < tmpData.Count; pos++)
                 //{
                 //    dataRow[pos] = tmpData[pos];
@@ -704,7 +708,7 @@ namespace Dev2.Activities
 
         public override IList<DsfForEachItem> GetForEachInputs()
         {
-            var items = (new[] { BatchSize, Timeout, TableName }).Union(InputMappings.Where(c => !string.IsNullOrEmpty(c.InputColumn)).Select(c => c.InputColumn)).ToArray();
+            var items = new[] { BatchSize, Timeout, TableName }.Union(InputMappings.Where(c => !string.IsNullOrEmpty(c.InputColumn)).Select(c => c.InputColumn)).ToArray();
             return GetForEachItems(items);
         }
 
