@@ -282,6 +282,10 @@ namespace Dev2.Services.Execution
                             : result;
                     PushXmlIntoEnvironment(formattedPayload);
                 }
+                else
+                {
+                    PushXmlIntoEnvironment(result);
+                }
             }
             catch (Exception ex)
             {
