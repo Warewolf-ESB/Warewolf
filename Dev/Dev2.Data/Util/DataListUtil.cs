@@ -647,7 +647,10 @@ namespace Dev2.Data.Util
         {
             foreach(var dev2Definition in inputScalarList)
             {
-                env.AssignDataShape("[[" + dev2Definition.Name + "]]");
+                if (!string.IsNullOrEmpty(dev2Definition.Name))
+                {
+                    env.AssignDataShape("[[" + dev2Definition.Name + "]]");
+                }
                 if(!dev2Definition.IsRecordSet)
                 {
                     var warewolfEvalResult = outerEnvironment.Eval(dev2Definition.RawValue);

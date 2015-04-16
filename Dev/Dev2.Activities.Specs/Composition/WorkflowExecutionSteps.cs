@@ -459,6 +459,20 @@ namespace Dev2.Activities.Specs.Composition
         {
             var webActivity = new WebActivity { ResourceModel = remoteResourceModel as ResourceModel };
             DataMappingViewModel dataMappingViewModel = new DataMappingViewModel(webActivity);
+            foreach(var inputOutputViewModel in dataMappingViewModel.Inputs)
+            {
+                inputOutputViewModel.Value = "";
+                inputOutputViewModel.RecordSetName = "";
+                inputOutputViewModel.Name = "";
+                inputOutputViewModel.MapsTo = "";
+            }
+            
+            foreach(var inputOutputViewModel in dataMappingViewModel.Outputs)
+            {
+                inputOutputViewModel.Value = "";
+                inputOutputViewModel.RecordSetName = "";
+                inputOutputViewModel.Name = "";
+            }
             foreach(var tableRow in mappings.Rows)
             {
                 var output = tableRow["Output from Service"];
@@ -469,6 +483,16 @@ namespace Dev2.Activities.Specs.Composition
                     if(inputOutputViewModel != null)
                     {
                         inputOutputViewModel.Value = toVariable;
+                        if (DataListUtil.IsValueRecordset(output))
+                        {
+                            inputOutputViewModel.RecordSetName = DataListUtil.ExtractRecordsetNameFromValue(output);
+                            inputOutputViewModel.Name = DataListUtil.ExtractFieldNameFromValue(output);
+                        }
+                        else
+                        {
+                            inputOutputViewModel.Name = output;
+                        }
+                        inputOutputViewModel.RecordSetName = DataListUtil.ExtractRecordsetNameFromValue(output);
                         CommonSteps.AddVariableToVariableList(toVariable);
                     }
                 }
@@ -482,6 +506,17 @@ namespace Dev2.Activities.Specs.Composition
                     if(inputOutputViewModel != null)
                     {
                         inputOutputViewModel.MapsTo = fromVariable;
+                        
+                        if (DataListUtil.IsValueRecordset(input))
+                        {
+                            inputOutputViewModel.RecordSetName = DataListUtil.ExtractRecordsetNameFromValue(input);
+                            inputOutputViewModel.Name = DataListUtil.ExtractFieldNameFromValue(input);
+                        }
+                        else
+                        {
+                            inputOutputViewModel.Name = input;
+                        }
+                        inputOutputViewModel.Value = input;
                         CommonSteps.AddVariableToVariableList(fromVariable);
                     }
                 }
