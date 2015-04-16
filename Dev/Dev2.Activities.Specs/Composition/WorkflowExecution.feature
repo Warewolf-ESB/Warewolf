@@ -5126,3 +5126,44 @@ Examples:
     | WorkflowName                  | ServiceName          | nameVariable | emailVariable | errorOccured |
     | TestWFWithDBServiceMailsError | willalwayserror      | [[name]]     | [[email]]     | YES          |
     | TestWFWithDBServiceMailsError | willalwaysErrorMySql | [[name]]     | [[email]]     | YES          |
+
+
+	  #Make the spec passed 688
+ Scenario: Executing Asynchrounous testing workflow
+	  Given I have a workflow "Testing - Async Test Master Test"
+	  And "Testing - Async Test Master Test" contains "Testing - Async Test Master" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  When "Testing - Async Test Master Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Random' in WorkFlow 'Testing - Async Test Master' debug inputs as
+	  | Random |
+	  | GUID   | 
+	  And the 'Random' in Workflow 'Testing - Async Test Master' debug outputs as    
+	  |                   |
+	  | [[guid]] = String |
+	  And the 'Read File' in WorkFlow 'Testing - Async Test Master' debug inputs as
+	  | Input Path | Username | Password |
+	  | String     | ""       | ""       |  
+	  And the 'Read File' in Workflow 'Testing - Async Test Master' debug outputs as    
+	  |                    |
+	  | [[res]] = 1 |
+	   And the "Decision" in workflow 'Testing - Async Test Master' debug input as
+	   |                    | Statement | Require All decisions to be True |
+	   | [[Result]] = Int32 |           |                                  |
+	   |                    |           |                                  |
+	   |                    | String    | YES                              |
+	   And the "Decision" in workflow 'Testing - Async Test Master' debug output as 
+	   |      |
+	   | Pass |
+	    And the 'Assign' in WorkFlow 'Testing - Async Test Master' debug inputs as
+	  | # | Variable     | New Value |
+	  | 1 | [[Result]] = | Pass      |
+	  And the 'Assign' in Workflow 'Testing - Async Test Master' debug outputs as  
+	  | # |                      |
+	  | 1 | [[Result]] =  Pass   |
+	   And the 'Delete' in WorkFlow 'Testing - Async Test Master' debug inputs as
+	  | Input Path | Username | Password |
+	  | String     | ""       | ""       |  
+	  And the 'Delete' in Workflow 'Testing - Async Test Master' debug outputs as  
+	  |                      |
+	  | [[result]] = Success |
