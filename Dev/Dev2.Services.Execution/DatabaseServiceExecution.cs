@@ -374,11 +374,9 @@ namespace Dev2.Services.Execution
                             using (DataTable dataSet = server.FetchDataTable(parameters.ToArray(),server.GetProcedureOutParams(Service.Method.Name,Source.DatabaseName)))
                             // ReSharper restore CoVariantArrayConversion
                             {
+    ;
                                 ApplyColumnMappings(dataSet);
-                                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-                                compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._DATATABLE),
-                                        dataSet, InstanceOutputDefintions, DataObj.DataListID, out errors);
+                                TranslateDataTableToEnvironment(dataSet, DataObj.Environment);
 
                                 return true;
                             }
