@@ -375,10 +375,7 @@ namespace Dev2.Services.Execution
                             // ReSharper restore CoVariantArrayConversion
                             {
                                 ApplyColumnMappings(dataSet);
-                                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-                                compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._DATATABLE),
-                                        dataSet, InstanceOutputDefintions, DataObj.DataListID, out errors);
+                                TranslateDataTableToEnvironment(dataSet, DataObj.Environment);
 
                                 return true;
                             }
