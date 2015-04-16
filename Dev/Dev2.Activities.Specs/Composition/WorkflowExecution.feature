@@ -3926,8 +3926,8 @@ Scenario Outline: Database MySqlDB Database service scalar outputs
 	  | [[name]] = Monk |
 	  | [[email]] = dora@explorers.com |
 Examples: 
-    | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
-    | TestMySqlWFWithDBServiceMails6 | MySQLEmail  | [[name]] | [[email]] | NO           |
+    | WorkflowName                   | ServiceName | nameVariable | emailVariable | errorOccured |
+    | TestMySqlWFWithDBServiceMails6 | MySQLEmail  | [[name]]     | [[email]]     | NO           |
  
 Scenario Outline: Database MySqlDB Database service Error outputs 
      Given I have a workflow "<WorkflowName>"
@@ -3947,14 +3947,16 @@ Scenario Outline: Database MySqlDB Database service inputs and outputs
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
 	  | Input to Service | From Variable | Output from Service | To Variable    |
-	  | afg%                | [[name]]      | [[countries(*).id]] | <nameVariable> |
+	  | name                | afg%      | [[countries(*).countryid]] | <nameVariable> |
 	  |                  |               | [[countries(*).description]] | <emailVariable> |
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
-	 And the '<ServiceName>' in Workflow '<ServiceName>' debug outputs as
-	  |                      |
-	  | [[id]] = 1 |
-	  | [[description]] = Afghanistan |
+	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
+	  |                                            |
+	  | [[countries(1).id]] = 1                    |
+	  | [[countries(2).id]] = 1                    |
+	  | [[countries(1).description]] = Afghanistan |
+	  | [[countries(2).description]] = Afghanistan |
 Examples: 
     | WorkflowName                   | ServiceName       | nameVariable        | emailVariable                | errorOccured |
     | TestMySqlWFWithDBServiceMails10 | MySqlGetCountries | [[countries(*).id]] | [[countries(*).description]] | NO           |
@@ -3963,14 +3965,14 @@ Scenario Outline: Database SqlDB Database service inputs and outputs
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
 	  | Input to Service | From Variable | Output from Service          | To Variable     |
-	  | afg              | [[Prefix]]    | [[countries(*).id]]          | <nameVariable>  |
+	  | Prefix           | afg           | [[countries(*).id]]          | <nameVariable>  |
 	  |                  |               | [[countries(*).description]] | <emailVariable> |
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
 	  |                      |
-	  | [[id]] = 1 |
-	  | [[description]] = Afghanistan |
+	  | [[countries(1).id]] = 1                    |
+	  | [[countries(1).description]] = Afghanistan |
 Examples: 
     | WorkflowName                  | ServiceName           | nameVariable        | emailVariable                | errorOccured |
     | TestSqlWFWithDBServiceMails10 | GetCountriesSqlServer | [[countries(*).id]] | [[countries(*).description]] | NO           |
@@ -3983,5 +3985,4 @@ Examples:
      Then the workflow execution has "<errorOccured>" error
 Examples: 
     | WorkflowName                   | ServiceName          | nameVariable | emailVariable | errorOccured |
-    | TestWFWithDBServiceMailsError1 | willalwayserror      | [[name]]     | [[email]]     | YES          |
     | TestWFWithDBServiceMailsError2 | willalwaysErrorMySql | [[name]]     | [[email]]     | YES          |

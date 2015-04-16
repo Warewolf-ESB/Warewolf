@@ -14485,9 +14485,9 @@ this.FeatureBackground();
                         "Output from Service",
                         "To Variable"});
             table796.AddRow(new string[] {
+                        "name",
                         "afg%",
-                        "[[name]]",
-                        "[[countries(*).id]]",
+                        "[[countries(*).countryid]]",
                         string.Format("{0}", nameVariable)});
             table796.AddRow(new string[] {
                         "",
@@ -14504,11 +14504,15 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table797 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table797.AddRow(new string[] {
-                        "[[id]] = 1"});
+                        "[[countries(1).id]] = 1"});
             table797.AddRow(new string[] {
-                        "[[description]] = Afghanistan"});
+                        "[[countries(2).id]] = 1"});
+            table797.AddRow(new string[] {
+                        "[[countries(1).description]] = Afghanistan"});
+            table797.AddRow(new string[] {
+                        "[[countries(2).description]] = Afghanistan"});
 #line 3954
-  testRunner.And(string.Format("the \'{0}\' in Workflow \'{0}\' debug outputs as", serviceName), ((string)(null)), table797, "And ");
+  testRunner.And(string.Format("the \'{0}\' in Workflow \'{1}\' debug outputs as", serviceName, workflowName), ((string)(null)), table797, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -14531,11 +14535,11 @@ this.FeatureBackground();
         public virtual void DatabaseSqlDBDatabaseServiceInputsAndOutputs(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database SqlDB Database service inputs and outputs", exampleTags);
-#line 3962
+#line 3964
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 3963
+#line 3965
      testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table798 = new TechTalk.SpecFlow.Table(new string[] {
@@ -14544,8 +14548,8 @@ this.FeatureBackground();
                         "Output from Service",
                         "To Variable"});
             table798.AddRow(new string[] {
+                        "Prefix",
                         "afg",
-                        "[[Prefix]]",
                         "[[countries(*).id]]",
                         string.Format("{0}", nameVariable)});
             table798.AddRow(new string[] {
@@ -14553,20 +14557,20 @@ this.FeatureBackground();
                         "",
                         "[[countries(*).description]]",
                         string.Format("{0}", emailVariable)});
-#line 3964
+#line 3966
   testRunner.And(string.Format("\"{0}\" contains a \"database\" service \"{1}\" with mappings", workflowName, serviceName), ((string)(null)), table798, "And ");
-#line 3968
+#line 3970
       testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3969
+#line 3971
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table799 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table799.AddRow(new string[] {
-                        "[[id]] = 1"});
+                        "[[countries(1).id]] = 1"});
             table799.AddRow(new string[] {
-                        "[[description]] = Afghanistan"});
-#line 3970
+                        "[[countries(1).description]] = Afghanistan"});
+#line 3972
   testRunner.And(string.Format("the \'{0}\' in Workflow \'{1}\' debug outputs as", serviceName, workflowName), ((string)(null)), table799, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -14590,11 +14594,11 @@ this.FeatureBackground();
         public virtual void DatabaseSqlDBServiceDBErrors(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database SqlDB  service DBErrors", exampleTags);
-#line 3978
+#line 3980
  this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 3979
+#line 3981
      testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table800 = new TechTalk.SpecFlow.Table(new string[] {
@@ -14602,29 +14606,14 @@ this.FeatureBackground();
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 3980
-  testRunner.And(string.Format("\"{0}\" contains a \"database\" service \"{1}\" with mappings", workflowName, serviceName), ((string)(null)), table800, "And ");
 #line 3982
+  testRunner.And(string.Format("\"{0}\" contains a \"database\" service \"{1}\" with mappings", workflowName, serviceName), ((string)(null)), table800, "And ");
+#line 3984
       testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3983
+#line 3985
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database SqlDB  service DBErrors")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestWFWithDBServiceMailsError1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestWFWithDBServiceMailsError1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "willalwayserror")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[name]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[email]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "YES")]
-        public virtual void DatabaseSqlDBServiceDBErrors_TestWFWithDBServiceMailsError1()
-        {
-            this.DatabaseSqlDBServiceDBErrors("TestWFWithDBServiceMailsError1", "willalwayserror", "[[name]]", "[[email]]", "YES", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
