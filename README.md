@@ -33,12 +33,13 @@ See the list of open issues and bugs [here](https://github.com/Warewolf-ESB/Ware
 
 **Need more info?**
 
-Use the [Community](http://community.warewolf.io) site for: 
-* [Technical Documentation](http://community.warewolf.io/list/35540-knowledge-base/?category=13827)
-* [Getting started quickly](http://community.warewolf.io/topic/517526-getting-started-how-do-i-build-warewolf-from-source/) - Branching, building etc.
-* [Contributing, Pull Requests and more](http://community.warewolf.io/list/35540-knowledge-base/?category=13910)
-* [Roadmap](http://community.warewolf.io/topic/517581-roadmap/)
-* [Help, Support and Info](http://community.warewolf.io)
+Use the [Knowledge Base](http://warewolf.io/knowledge-base/) site for: 
+* [Technical Documentation](http://warewolf.io/knowledge-base/categories/technical-documentation/)
+* [Getting started quickly](http://warewolf.io/knowledge-base/how-to-build-warewolf-from-source/) - Branching, building etc.
+* [Contributing, Pull Requests and more](http://warewolf.io/knowledge-base/categories/contribute/)
+* [Roadmap](http://warewolf.io/knowledge-base/roadmap/)
+
+Get [Community Help, Support and Info](http://community.warewolf.io)
 
 
 
