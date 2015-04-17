@@ -14656,121 +14656,32 @@ this.FeatureBackground();
         public virtual void ExecutingAsynchrounousTestingWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Asynchrounous testing workflow", ((string[])(null)));
-#line 5132
+#line 3992
  this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 5133
+#line 3993
    testRunner.Given("I have a workflow \"Testing - Async Test Master Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table797 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table801 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 5134
-   testRunner.And("\"Testing - Async Test Master Test\" contains \"Testing - Async Test Master\" from se" +
-                    "rver \"localhost\" with mapping as", ((string)(null)), table797, "And ");
-#line 5136
+#line 3994
+   testRunner.And("\"Testing - Async Test Master Test\" contains \"Async Test Master\" from server \"loca" +
+                    "lhost\" with mapping as", ((string)(null)), table801, "And ");
+#line 3996
    testRunner.When("\"Testing - Async Test Master Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 5137
+#line 3997
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table798 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Random"});
-            table798.AddRow(new string[] {
-                        "GUID"});
-#line 5138
-   testRunner.And("the \'Random\' in WorkFlow \'Testing - Async Test Master\' debug inputs as", ((string)(null)), table798, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table799 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table799.AddRow(new string[] {
-                        "[[guid]] = String"});
-#line 5141
-   testRunner.And("the \'Random\' in Workflow \'Testing - Async Test Master\' debug outputs as", ((string)(null)), table799, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table800 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input Path",
-                        "Username",
-                        "Password"});
-            table800.AddRow(new string[] {
-                        "String",
-                        "\"\"",
-                        "\"\""});
-#line 5144
-   testRunner.And("the \'Read File\' in WorkFlow \'Testing - Async Test Master\' debug inputs as", ((string)(null)), table800, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table801 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table801.AddRow(new string[] {
-                        "[[res]] = 1"});
-#line 5147
-   testRunner.And("the \'Read File\' in Workflow \'Testing - Async Test Master\' debug outputs as", ((string)(null)), table801, "And ");
-#line hidden
             TechTalk.SpecFlow.Table table802 = new TechTalk.SpecFlow.Table(new string[] {
-                        "",
-                        "Statement",
-                        "Require All decisions to be True"});
-            table802.AddRow(new string[] {
-                        "[[Result]] = Int32",
-                        "",
                         ""});
             table802.AddRow(new string[] {
-                        "",
-                        "",
-                        ""});
-            table802.AddRow(new string[] {
-                        "",
-                        "String",
-                        "YES"});
-#line 5150
-    testRunner.And("the \"Decision\" in workflow \'Testing - Async Test Master\' debug input as", ((string)(null)), table802, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table803 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table803.AddRow(new string[] {
-                        "Pass"});
-#line 5155
-    testRunner.And("the \"Decision\" in workflow \'Testing - Async Test Master\' debug output as", ((string)(null)), table803, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table804 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "Variable",
-                        "New Value"});
-            table804.AddRow(new string[] {
-                        "1",
-                        "[[Result]] =",
-                        "Pass"});
-#line 5158
-     testRunner.And("the \'Assign\' in WorkFlow \'Testing - Async Test Master\' debug inputs as", ((string)(null)), table804, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table805 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        ""});
-            table805.AddRow(new string[] {
-                        "1",
-                        "[[Result]] =  Pass"});
-#line 5161
-   testRunner.And("the \'Assign\' in Workflow \'Testing - Async Test Master\' debug outputs as", ((string)(null)), table805, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table806 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input Path",
-                        "Username",
-                        "Password"});
-            table806.AddRow(new string[] {
-                        "String",
-                        "\"\"",
-                        "\"\""});
-#line 5164
-    testRunner.And("the \'Delete\' in WorkFlow \'Testing - Async Test Master\' debug inputs as", ((string)(null)), table806, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table807 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table807.AddRow(new string[] {
                         "[[result]] = Success"});
-#line 5167
-   testRunner.And("the \'Delete\' in Workflow \'Testing - Async Test Master\' debug outputs as", ((string)(null)), table807, "And ");
+#line 3998
+   testRunner.And("the \'Async Test Master\' in Workflow \'Async Test Master\' debug outputs as", ((string)(null)), table802, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
