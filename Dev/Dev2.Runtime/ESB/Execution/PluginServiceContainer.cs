@@ -35,7 +35,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         public override Guid Execute(out ErrorResultTO errors)
         {
-            // set the output definition ;)
+            _pluginServiceExecution.InstanceInputDefinitions = InstanceInputDefinition;
             _pluginServiceExecution.InstanceOutputDefintions = InstanceOutputDefinition;
 
             var result = _pluginServiceExecution.Execute(out errors);
