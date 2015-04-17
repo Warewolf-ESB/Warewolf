@@ -3984,10 +3984,8 @@ Examples:
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 Examples: 
-<<<<<<< HEAD
     | WorkflowName                   | ServiceName          | nameVariable | emailVariable | errorOccured |
     | TestWFWithDBServiceMailsError2 | willalwaysErrorMySql | [[name]]     | [[email]]     | YES          |
-=======
     | WorkflowName                  | ServiceName          | nameVariable | emailVariable | errorOccured |
     | TestWFWithDBServiceMailsError | willalwayserror      | [[name]]     | [[email]]     | YES          |
     | TestWFWithDBServiceMailsError | willalwaysErrorMySql | [[name]]     | [[email]]     | YES          |
@@ -4032,4 +4030,3 @@ Examples:
 	  And the 'Delete' in Workflow 'Testing - Async Test Master' debug outputs as  
 	  |                      |
 	  | [[result]] = Success |
->>>>>>> df280672c69f0ac526edbc9774d4d22d1af2e57d
