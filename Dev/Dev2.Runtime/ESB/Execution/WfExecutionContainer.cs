@@ -25,6 +25,8 @@ using Dev2.Runtime.ESB.WF;
 using Dev2.Runtime.Security;
 using Dev2.Utilities;
 using Dev2.Workspaces;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -128,6 +130,11 @@ namespace Dev2.Runtime.ESB.Execution
             }
             Dev2Logger.Log.Info(String.Format("Completed Execution for Service Name:{0} Resource Id: {1} Mode:{2}",DataObject.ServiceName,DataObject.ResourceID,DataObject.IsDebug?"Debug":"Execute"));
             return result;
+        }
+
+        public override IExecutionEnvironment Execute(IDSFDataObject inputs, IDev2Activity activity)
+        {
+            return null;
         }
 
         public List<DebugItem> GetDebugInputs(IList<IDev2Definition> inputs, IBinaryDataList dataList, ErrorResultTO errors)

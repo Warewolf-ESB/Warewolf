@@ -728,6 +728,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return null;
         }
 
+        public IEnumerable<IDev2Activity> NextNodes { get; set; }
+        public Guid ActivityId { get; set; }
+
         #endregion
 
         #region Create Debug Item

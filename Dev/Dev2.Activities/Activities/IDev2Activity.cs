@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
 using Dev2;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
@@ -28,5 +29,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         IList<IActionableErrorInfo> PerformValidation();
         enFindMissingType GetFindMissingType();
         IDev2Activity Execute(IDSFDataObject data);
+        IEnumerable<IDev2Activity> NextNodes { get; set; }
+        Guid ActivityId { get; set; }
     }
 }

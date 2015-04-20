@@ -20,6 +20,8 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Workspaces;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -72,6 +74,11 @@ namespace Dev2.Runtime.ESB.Execution
             }
 
             return result;
+        }
+
+        public override IExecutionEnvironment Execute(IDSFDataObject inputs, IDev2Activity activity)
+        {
+            return null;
         }
 
         private void GenerateRequestDictionaryFromDataObject(out ErrorResultTO errors)

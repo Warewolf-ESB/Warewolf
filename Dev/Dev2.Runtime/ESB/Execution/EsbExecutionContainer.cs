@@ -14,6 +14,8 @@ using Dev2.Communication;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -50,5 +52,7 @@ namespace Dev2.Runtime.ESB.Execution
         }
 
         public abstract Guid Execute(out ErrorResultTO errors);
+
+        public abstract IExecutionEnvironment Execute(IDSFDataObject inputs,IDev2Activity activity);
     }
 }
