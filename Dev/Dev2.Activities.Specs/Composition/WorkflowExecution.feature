@@ -3989,12 +3989,33 @@ Examples:
 
 
 	  #Make the spec passed 688
- Scenario: Executing Asynchrounous testing workflow
-	  Given I have a workflow "Testing - Async Test Master Test"
-	  And "Testing - Async Test Master Test" contains "Async Test Master" from server "localhost" with mapping as
+ Scenario: Executing Asynchrounous testing workflow volume
+	  Given I have a workflow "Testing - Async Test Master Testv"
+	  And "Testing - Async Test Master Test" contains "Volume Async Test" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable |
+	  | Volume           | 1000          |                     |             |
+	  When "Testing - Async Test Master Testv" is executed
+	  Then the workflow execution has "NO" error	  
+	  And the 'Volume Async Test' in Workflow 'Volume Async Test' debug outputs as
+	  |                      |
+	  | [[Result]] = Pass |
+
+ Scenario: Executing Asynchrounous testing workflow base
+	  Given I have a workflow "Testing - Async Test Master Testc"
+	  And "Testing - Async Test Master Testc" contains "Async Test Master" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
-	  When "Testing - Async Test Master Test" is executed
+	  When "Testing - Async Test Master Testc" is executed
 	  Then the workflow execution has "NO" error	  
 	  And the 'Async Test Master' in Workflow 'Async Test Master' debug outputs as
 	  |                      |
-	  | [[result]] = Success |
+	  | [[Result]] = Pass |
+
+ Scenario: Executing Asynchrounous testing workflow error
+	  Given I have a workflow "Testing - Async Test Master Teste"
+	  And "Testing - Async Test Master Teste" contains "Async Must Not Bubble Up Error" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  When "Testing - Async Test Master Teste" is executed
+	  Then the workflow execution has "NO" error	  
+	  And the 'Async Must Not Bubble Up Error' in Workflow 'Async Must Not Bubble Up Error' debug outputs as
+	  |                      |
+	  | [[Result]] = Pass |

@@ -14650,38 +14650,118 @@ this.FeatureBackground();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing Asynchrounous testing workflow")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing Asynchrounous testing workflow volume")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        public virtual void ExecutingAsynchrounousTestingWorkflow()
+        public virtual void ExecutingAsynchrounousTestingWorkflowVolume()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Asynchrounous testing workflow", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Asynchrounous testing workflow volume", ((string[])(null)));
 #line 3992
  this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line 3993
-   testRunner.Given("I have a workflow \"Testing - Async Test Master Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+   testRunner.Given("I have a workflow \"Testing - Async Test Master Testv\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table801 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
+            table801.AddRow(new string[] {
+                        "Volume",
+                        "1000",
+                        "",
+                        ""});
 #line 3994
-   testRunner.And("\"Testing - Async Test Master Test\" contains \"Async Test Master\" from server \"loca" +
+   testRunner.And("\"Testing - Async Test Master Test\" contains \"Volume Async Test\" from server \"loca" +
                     "lhost\" with mapping as", ((string)(null)), table801, "And ");
-#line 3996
-   testRunner.When("\"Testing - Async Test Master Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 3997
+   testRunner.When("\"Testing - Async Test Master Testv\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 3998
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table802 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table802.AddRow(new string[] {
-                        "[[result]] = Success"});
-#line 3998
-   testRunner.And("the \'Async Test Master\' in Workflow \'Async Test Master\' debug outputs as", ((string)(null)), table802, "And ");
+                        "[[Result]] = Pass"});
+#line 3999
+   testRunner.And("the \'Volume Async Test\' in Workflow \'Volume Async Test\' debug outputs as", ((string)(null)), table802, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing Asynchrounous testing workflow base")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        public virtual void ExecutingAsynchrounousTestingWorkflowBase()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Asynchrounous testing workflow base", ((string[])(null)));
+#line 4003
+ this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 4004
+   testRunner.Given("I have a workflow \"Testing - Async Test Master Testc\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table803 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Input to Service",
+                        "From Variable",
+                        "Output from Service",
+                        "To Variable"});
+#line 4005
+   testRunner.And("\"Testing - Async Test Master Testc\" contains \"Async Test Master\" from server \"loc" +
+                    "alhost\" with mapping as", ((string)(null)), table803, "And ");
+#line 4007
+   testRunner.When("\"Testing - Async Test Master Testc\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 4008
+   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table804 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table804.AddRow(new string[] {
+                        "[[Result]] = Pass"});
+#line 4009
+   testRunner.And("the \'Async Test Master\' in Workflow \'Async Test Master\' debug outputs as", ((string)(null)), table804, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing Asynchrounous testing workflow error")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        public virtual void ExecutingAsynchrounousTestingWorkflowError()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Asynchrounous testing workflow error", ((string[])(null)));
+#line 4013
+ this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 4014
+   testRunner.Given("I have a workflow \"Testing - Async Test Master Teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table805 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Input to Service",
+                        "From Variable",
+                        "Output from Service",
+                        "To Variable"});
+#line 4015
+   testRunner.And("\"Testing - Async Test Master Teste\" contains \"Async Must Not Bubble Up Error\" fro" +
+                    "m server \"localhost\" with mapping as", ((string)(null)), table805, "And ");
+#line 4017
+   testRunner.When("\"Testing - Async Test Master Teste\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 4018
+   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table806 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table806.AddRow(new string[] {
+                        "[[Result]] = Pass"});
+#line 4019
+   testRunner.And("the \'Async Must Not Bubble Up Error\' in Workflow \'Async Must Not Bubble Up Error\'" +
+                    " debug outputs as", ((string)(null)), table806, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
