@@ -11,6 +11,7 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Moq;
+using Newtonsoft.Json;
 using Warewolf.Core;
 
 namespace Warewolf.AcceptanceTesting.Core
@@ -139,6 +140,7 @@ namespace Warewolf.AcceptanceTesting.Core
             }
         }
 
+        [JsonIgnore]
         public IQueryManager QueryProxy
         {
             get { throw new NotImplementedException(); }
@@ -182,6 +184,7 @@ namespace Warewolf.AcceptanceTesting.Core
         public event NetworkStateChanged NetworkStateChanged;
         public event ItemAddedEvent ItemAddedEvent;
 
+        [JsonIgnore]
         public IStudioUpdateManager UpdateRepository
         {
             get { throw new NotImplementedException(); }

@@ -10,6 +10,7 @@ using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Explorer;
 using Dev2.Runtime.ServiceModel.Data;
+using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -404,10 +405,13 @@ namespace Warewolf.AcceptanceTesting.Explorer
         [AfterScenario("Explorer")]
         public void AfterScenario()
         {
-            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView") as ExplorerView;
-            // ReSharper disable once PossibleNullReferenceException
-            var tester = explorerView.ExplorerViewTestClass;
-            tester.Reset();
+            var container = FeatureContext.Current.Get<IUnityContainer>("container");
+            var view = ScenarioContext.Current.Get<IExplorerView>("explorerView");
+            var explorerViewModel = new ExplorerViewModel(container.Resolve<IShellViewModel>(),
+                container.Resolve<IEventAggregator>());
+            view.DataContext = explorerViewModel;
+            FeatureContext.Current.Remove("viewModel");
+            FeatureContext.Current.Add("viewModel", explorerViewModel);
         }
 
     }

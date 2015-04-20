@@ -4,17 +4,20 @@ Feature: Explorer
 	As a Warewolf User
 	I want explorer view of my resources with management options
 
+@Explorer
 Scenario: Connected to localhost server
 	Given the explorer is visible
 	When I open "localhost" server
 	Then I should see "5" folders
 
+@Explorer
 Scenario: Expand a folder
 	Given the explorer is visible
 	And I open "localhost" server
 	When I open "Folder 2"
 	Then I should see "18" children for "Folder 2"
 
+@Explorer
 Scenario: Rename folder
 	Given the explorer is visible
 	And I open "localhost" server
@@ -23,6 +26,7 @@ Scenario: Rename folder
 	Then I should see the path "localhost/Folder New" 
 	Then I should not see the path "localhost/Folder 2" 
 
+@Explorer
 Scenario: Search explorer
 	Given the explorer is visible
 	And I open "localhost" server
@@ -33,53 +37,35 @@ Scenario: Search explorer
 	And I should not see "Folder 4"
 	And I should not see "Folder 5"
 
+@Explorer
 Scenario: Creating Folder in localhost
-   #Creating Folder
    Given the explorer is visible
    When I open "localhost" server
    Then I should see "5" folders
    When I add "MyNewFolder" in "localhost"
    Then I should see the path "localhost/MyNewFolder" 
 
-Scenario: Creating And Deleting Folder in localhost
-  #Creating Folder
-  Given the explorer is visible
-  When I open "localhost" server
-  Then I should see "5" folders
-  When I add "MyNewFolder" in "localhost"
-  Then I should see the path "localhost/MyNewFolder" 
-  And I should see "6" folders
-  #Deleting Folders
-  When I delete "localhost/MyNewFolder"
-  Then I should see "5" folders
-  And I should not see "New Folder"
-
-  
+@Explorer  
 Scenario: Creating And Deleting Folder and Popup says cancel in localhost
-  #Creating Folder
   Given the explorer is visible
   When I open "localhost" server
   Then I should see "5" folders
   When I add "MyOtherNewFolder" in "localhost"
   Then I should see the path "localhost/MyOtherNewFolder" 
   And I should see "6" folders
-  #Deleting Folders
   And I choose to "Cancel" Any Popup Messages
   Then I should see "6" folders
-#  #Creating Subfolder In a Folder
   When I open "Folder 2"
   Then I should see "18" children for "Folder 2"
-  When I create "localhost/Folder 2/myNewFolder"
+  When I create "localhost/Folder 2/myTestNewFolder"
   Then I should see "19" children for "Folder 2"
-  Then I should see the path "localhost/Folder 2/myNewFolder"
-  #Deleting Sub Folder
+  Then I should see the path "localhost/Folder 2/myTestNewFolder"
   And I choose to "OK" Any Popup Messages
-  When I delete "localhost/Folder 2/myNewFolder"
+  When I delete "localhost/Folder 2/myTestNewFolder"
   Then I should see "18" children for "Folder 2" 
-  Then I should not see the path "localhost/Folder 2/myNewFolder"
-#
-#
-#
+  Then I should not see the path "localhost/Folder 2/myTestNewFolder"
+
+@Explorer
 Scenario: Deleting Resource in folders
    Given the explorer is visible
    When I open "localhost" server
@@ -90,6 +76,7 @@ Scenario: Deleting Resource in folders
    When I delete "localhost/Folder 5/deleteresource"
    Then I should not see "deleteresouce" in "Folder 5"
 
+@Explorer
 Scenario: Deleting Resource in localhost Server
    Given the explorer is visible
    When I open "localhost" server
@@ -99,28 +86,27 @@ Scenario: Deleting Resource in localhost Server
    When I delete "localhost/Folder 1/Resource 1"
    Then I should not see the path "localhost/Folder 1/Resource 1"
 
-#
-#
-#
-Scenario: Opening Versions in Explorer
-  Given the explorer is visible
-  When I open "localhost" server
-  And I create the "localhost/Folder 1/Resource 1" of type "WorkflowService" 
-  Then I should see the path "localhost/Folder 1/Resource 1"
-  And I Setup  "3" Versions to be returned for "localhost/Folder 1/Resource 1"
-  #Testing Resource Icons  
- # #Opening Version History
- When I Show Version History for "localhost/Folder 1/Resource 1"
- Then I should see "3" versions with "View" Icons in "localhost/Folder 1/Resource 1"
- # And I should not see "3" versions with "View,Execute" Icons
- # When I open "v.1" of "WF1" in "Folder 1"
- # Then "v.1" is opened
-  When I Make "localhost/Folder 1/Resource 1/v.1" the current version of "localhost/Folder 1/Resource 1" 
- Then I should see "4" versions with "View" Icons in "localhost/Folder 1/Resource 1"
- # #Deleting Versions
- When I Delete Version "localhost/Folder 1/Resource 1/v.1"
- # Then I should not see "v.2"
- Then I should see "3" versions with "View" Icons in "localhost/Folder 1/Resource 1"
+
+#@Explorer
+#Scenario: Opening Versions in Explorer
+#  Given the explorer is visible
+#  When I open "localhost" server
+#  And I create the "localhost/Folder 1/Resource 1" of type "WorkflowService" 
+#  Then I should see the path "localhost/Folder 1/Resource 1"
+#  And I Setup  "3" Versions to be returned for "localhost/Folder 1/Resource 1"
+#  #Testing Resource Icons  
+# # #Opening Version History
+# When I Show Version History for "localhost/Folder 1/Resource 1"
+# Then I should see "3" versions with "View" Icons in "localhost/Folder 1/Resource 1"
+# # And I should not see "3" versions with "View,Execute" Icons
+# # When I open "v.1" of "WF1" in "Folder 1"
+# # Then "v.1" is opened
+#  When I Make "localhost/Folder 1/Resource 1/v.1" the current version of "localhost/Folder 1/Resource 1" 
+# Then I should see "4" versions with "View" Icons in "localhost/Folder 1/Resource 1"
+# # #Deleting Versions
+# When I Delete Version "localhost/Folder 1/Resource 1/v.1"
+# # Then I should not see "v.2"
+# Then I should see "3" versions with "View" Icons in "localhost/Folder 1/Resource 1"
 #
 #
 #Scenario: No Version history option for services and sources.
@@ -139,7 +125,7 @@ Scenario: Opening Versions in Explorer
 # 
 #
 #
-Scenario: Creating Services Under Localhost 
+#Scenario: Creating Services Under Localhost 
 #	Given the explorer is visible
 #	When I open "New Service" in "localhost" server
 #	Then "Unsavesd1" is opened
@@ -216,7 +202,8 @@ Scenario: Creating Services Under Localhost
 #	Then "PluginServ1 Dependents" is opened
 #
 #
-#
+
+@Explorer
 Scenario: Renaming Folder And Workflow Service
 	Given the explorer is visible
 	And I open "localhost" server
@@ -279,6 +266,7 @@ Scenario: Renaming Folder And Workflow Service
 #	
 #
 
+@Explorer
 Scenario: Searching resources by using filter
   Given the explorer is visible
   And I open "localhost" server
@@ -326,22 +314,3 @@ Scenario: Clear filter
   Then I should see the path "localhost/Folder 2"
   Then I should see the path "localhost/Folder 2"
   Then I should see the path "localhost/Folder 2"
-
-
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -5,6 +5,7 @@ using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Toolbox;
+using Newtonsoft.Json;
 
 namespace Dev2.Common.Interfaces
 {
@@ -15,8 +16,11 @@ namespace Dev2.Common.Interfaces
         Task<IExplorerItem> LoadExplorer();
         IList<IServer> GetServerConnections();
         IList<IToolDescriptor> LoadTools();
+        [JsonIgnore]
         IExplorerRepository ExplorerRepository { get; }
+        [JsonIgnore]
         IStudioUpdateManager UpdateRepository { get; }
+        [JsonIgnore]
         IQueryManager QueryProxy { get; }
         bool IsConnected();
         void ReloadTools();

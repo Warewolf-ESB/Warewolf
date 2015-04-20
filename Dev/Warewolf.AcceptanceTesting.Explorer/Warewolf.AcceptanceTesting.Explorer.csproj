@@ -472,15 +472,15 @@
       <Name>Dev2.Util</Name>
     </ProjectReference>
     <ProjectReference Include="..\ServerProxyLayer\Warewolf.Studio.ServerProxyLayer.csproj">
-      <Project>{97A827FF-65C4-4267-99D2-DCE6803B2348}</Project>
+      <Project>{97a827ff-65c4-4267-99d2-dce6803b2348}</Project>
       <Name>Warewolf.Studio.ServerProxyLayer</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.AcceptanceTesting.Core\Warewolf.AcceptanceTesting.Core.csproj">
-      <Project>{CB0F5535-5E1D-41F9-A23C-F59FDC816B75}</Project>
+      <Project>{cb0f5535-5e1d-41f9-a23c-f59fdc816b75}</Project>
       <Name>Warewolf.AcceptanceTesting.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
-      <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
+      <Project>{8fd23ce0-02bb-48e1-a914-ba467938ce78}</Project>
       <Name>Warewolf.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Core\Warewolf.Studio.Core.csproj">
@@ -492,19 +492,19 @@
       <Name>Warewolf.Studio.CustomControls</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Models\Warewolf.Studio.Models.csproj">
-      <Project>{3D7EB0D0-41A4-4A83-93DF-45A40E2CBB31}</Project>
+      <Project>{3d7eb0d0-41a4-4a83-93df-45a40e2cbb31}</Project>
       <Name>Warewolf.Studio.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
-      <Project>{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}</Project>
+      <Project>{c4ac2140-5663-4d3c-9fcd-6d65004cd54e}</Project>
       <Name>Warewolf.Studio.Themes.Luna</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
-      <Project>{C870FE6D-5889-4DFC-90D9-68FA3E525BE2}</Project>
+      <Project>{c870fe6d-5889-4dfc-90d9-68fa3e525be2}</Project>
       <Name>Warewolf.Studio.ViewModels</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Views\Warewolf.Studio.Views.csproj">
-      <Project>{81414783-9990-46EA-9668-DFA61E1AAD18}</Project>
+      <Project>{81414783-9990-46ea-9668-dfa61e1aad18}</Project>
       <Name>Warewolf.Studio.Views</Name>
     </ProjectReference>
   </ItemGroup>

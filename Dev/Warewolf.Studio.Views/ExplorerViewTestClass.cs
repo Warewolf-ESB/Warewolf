@@ -4,7 +4,6 @@ using System.Linq;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Infragistics.Controls.Menus;
-using Infragistics.Windows.Editors;
 using Moq;
 using Warewolf.Studio.ViewModels;
 
@@ -17,24 +16,6 @@ namespace Warewolf.Studio.Views
         public ExplorerViewTestClass(ExplorerView explorerView)
         {
             _explorerView = explorerView;
-        }
-
-        XamDataTreeNode GetNode(string nodeName)
-        {
-            var flattenTree = Descendants(_explorerView.ExplorerTree.Nodes[0]);
-            var foundNode = flattenTree.FirstOrDefault(node =>
-            {
-                var explorerItem = node.Data as IExplorerItemViewModel;
-                if (explorerItem != null)
-                {
-                    if (explorerItem.ResourceName.ToLowerInvariant()==nodeName.ToLowerInvariant())
-                    {
-                        return true;
-                    }
-                }
-                return false;
-            });
-            return foundNode;
         }
 
         public IEnvironmentViewModel OpenEnvironmentNode(string nodeName)
@@ -122,8 +103,8 @@ namespace Warewolf.Studio.Views
                 var explorerItem = node.Data as IExplorerItemViewModel;
                 if (explorerItem != null)
                 {
-                    if (explorerItem.ResourceName.ToLowerInvariant().Contains(folderName.ToLowerInvariant()) &&
-                        explorerItem.ResourceType == ResourceType.Folder)
+                    if (explorerItem.ResourceName != null && (explorerItem.ResourceName.ToLowerInvariant().Contains(folderName.ToLowerInvariant()) &&
+                                                              explorerItem.ResourceType == ResourceType.Folder))
                     {
                         return true;
                     }
@@ -140,7 +121,16 @@ namespace Warewolf.Studio.Views
             {
                 XamDataTreeNode node = nodes.Pop();
                 yield return node;
-                foreach (var n in node.Nodes) nodes.Push(n);
+                if(node != null)
+                {
+                    foreach (var n in node.Nodes)
+                    {
+                        if (n != null)
+                        {
+                            nodes.Push(n);
+                        }
+                    }
+                }
             }
         }
 
@@ -367,11 +357,14 @@ namespace Warewolf.Studio.Views
         {
             var node = VerifyItemExists(versionPath.Substring(0, versionPath.LastIndexOf("/", StringComparison.Ordinal)));
             var explorerItemViewModel = node.Data as IExplorerItemViewModel;
-            explorerItemViewModel= explorerItemViewModel.Children.FirstOrDefault(a => a.ResourceName.Contains(versionPath.Substring(1 + versionPath.LastIndexOf("/", StringComparison.Ordinal))));
-
-            if (explorerItemViewModel != null)
+            if(explorerItemViewModel != null)
             {
-               explorerItemViewModel.DeleteVersionCommand.Execute(null);
+                explorerItemViewModel= explorerItemViewModel.Children.FirstOrDefault(a => a.ResourceName.Contains(versionPath.Substring(1 + versionPath.LastIndexOf("/", StringComparison.Ordinal))));
+
+                if (explorerItemViewModel != null)
+                {
+                    explorerItemViewModel.DeleteVersionCommand.Execute(null);
+                }
             }
         }
 
@@ -383,7 +376,10 @@ namespace Warewolf.Studio.Views
         public void Reset()
         {
             var item = (_explorerView.DataContext as ExplorerViewModel);
-            item.RefreshCommand.Execute(null);
+            if(item != null)
+            {
+                item.RefreshCommand.Execute(null);
+            }
         }
     }
 }

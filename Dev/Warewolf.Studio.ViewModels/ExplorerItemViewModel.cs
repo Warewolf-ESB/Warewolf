@@ -227,12 +227,14 @@ namespace Warewolf.Studio.ViewModels
             if (ShellViewModel.ShowPopup(PopupMessages.GetDeleteConfirmation(ResourceName)))
             {
                 _explorerRepository.Delete(this);
-				if (Parent != null)
+                if (Parent != null)
                 {
-                   Parent.RemoveChild(this); 
+                    Parent.RemoveChild(this);
                 }
                 else
-                ShellViewModel.RemoveServiceFromExplorer(this);
+                {
+                    ShellViewModel.RemoveServiceFromExplorer(this);
+                }
             }
         }
 

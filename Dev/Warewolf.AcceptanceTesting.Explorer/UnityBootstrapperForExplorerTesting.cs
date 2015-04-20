@@ -1,5 +1,4 @@
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Studio.ViewModels;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Unity;
 using Warewolf.AcceptanceTesting.Core;
@@ -13,12 +12,10 @@ namespace Warewolf.AcceptanceTesting.Explorer
         protected override void ConfigureContainer()
         {
             base.ConfigureContainer();
-            
-            Container.RegisterInstance<IExplorerViewModel>(new ExplorerViewModel(Container.Resolve<IShellViewModel>(),
-                Container.Resolve<IEventAggregator>()));
 
             var explorerView = new ExplorerView();
-            explorerView.DataContext = Container.Resolve<IExplorerViewModel>();
+            explorerView.DataContext = new ExplorerViewModel(Container.Resolve<IShellViewModel>(),
+                Container.Resolve<IEventAggregator>());
             Container.RegisterInstance<IExplorerView>(explorerView);
         }
     }
