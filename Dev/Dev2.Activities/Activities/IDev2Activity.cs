@@ -10,7 +10,10 @@
 */
 
 using System;
+using System.Activities;
+using System.Activities.Expressions;
 using System.Collections.Generic;
+using System.Windows.Documents;
 using Dev2;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Enums;
@@ -31,5 +34,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         IDev2Activity Execute(IDSFDataObject data);
         IEnumerable<IDev2Activity> NextNodes { get; set; }
         Guid ActivityId { get; set; }
+    }
+
+    public interface IActivityParser
+    {
+        IDev2Activity Parse(DynamicActivity dynamicActivity);
+    }
+
+    public  interface IExecutionEngine:IDisposable
+    {
+        IExecutionEngine Eval(IDev2Activity start, IDSFDataObject env);
     }
 }
