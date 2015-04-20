@@ -355,22 +355,6 @@
       <DependentUpon>Unique.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Recordset\Unique\UniqueSteps.cs" />
-    <Compile Include="Toolbox\Resources\Service\DatabaseService\DatabaseServiceExecution.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DatabaseServiceExecution.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\Resources\Service\PluginService\PluginServiceExecution.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PluginServiceExecution.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\Resources\Service\WebService\WebServiceActivity.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>WebServiceActivity.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\Resources\Service\WebService\WebServiceActivitySteps.cs" />
     <Compile Include="Toolbox\Scripting\Command\Command.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -577,18 +561,6 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Unique.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Resources\Service\DatabaseService\DatabaseServiceExecution.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>DatabaseServiceExecution.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Resources\Service\PluginService\PluginServiceExecution.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>PluginServiceExecution.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Resources\Service\WebService\WebServiceActivity.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>WebServiceActivity.feature.cs</LastGenOutput>
-    </None>
     <None Include="Toolbox\Scripting\Command\Command.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Command.feature.cs</LastGenOutput>
@@ -746,6 +718,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Toolbox\Resources\" />
     <Folder Include="WarewolfVersionUpdater\" />
   </ItemGroup>
   <ItemGroup>
