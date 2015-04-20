@@ -202,8 +202,8 @@ namespace Dev2.Activities
                         }
                     }
 
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
 

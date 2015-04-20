@@ -222,7 +222,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if(dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(context, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.Before);
                 }
 
                 dataObject.ParentInstanceID = UniqueID;
@@ -278,7 +278,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 if(dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }

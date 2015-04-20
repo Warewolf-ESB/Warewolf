@@ -451,9 +451,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region DispatchDebugState
 
-        public void DispatchDebugState(NativeActivityContext context, StateType stateType)
+        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType)
         {
-            var dataObject = context.GetExtension<IDSFDataObject>();
+            
             
             Guid remoteID;
             Guid.TryParse(dataObject.RemoteInvokerID, out remoteID);
@@ -721,6 +721,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public virtual enFindMissingType GetFindMissingType()
         {
             return enFindMissingType.StaticActivity;
+        }
+
+        public IDev2Activity Execute(IDSFDataObject data)
+        {
+            return null;
         }
 
         #endregion

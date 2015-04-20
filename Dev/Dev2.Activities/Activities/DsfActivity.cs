@@ -280,7 +280,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.RunWorkflowAsync = RunWorkflowAsync;
                 if(dataObject.IsDebugMode() || (dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer))
                 {
-                    DispatchDebugState(context, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.Before);
                 }
 
                 var resourceId = context.GetValue(ResourceID);
@@ -367,7 +367,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if(dataObject.IsDebugMode() || (dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer))
                 {
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
 
                 dataObject.ParentInstanceID = _previousInstanceId;

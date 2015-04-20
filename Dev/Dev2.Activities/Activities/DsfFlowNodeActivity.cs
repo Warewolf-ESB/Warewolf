@@ -105,7 +105,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if(_dataObject.IsDebugMode())
             {
-                DispatchDebugState(context, StateType.Before);
+                DispatchDebugState(_dataObject, StateType.Before);
             }
 
        
@@ -130,7 +130,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (dataObject != null && dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
 
                 OnExecutedCompleted(context, false, false);
@@ -152,7 +152,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             dataObject.Environment.AddError(propagatedException.Message);
             if(dataObject != null && dataObject.IsDebugMode())
             {
-                DispatchDebugState(faultContext, StateType.After);
+                DispatchDebugState(dataObject, StateType.After);
             }
             OnExecutedCompleted(faultContext, true, false);
         }

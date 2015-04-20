@@ -119,8 +119,8 @@ namespace Dev2.Activities
                 }
                 if (dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }

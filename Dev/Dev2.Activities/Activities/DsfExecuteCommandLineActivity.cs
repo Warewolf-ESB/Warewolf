@@ -179,8 +179,8 @@ namespace Dev2.Activities
                     {
                         AddDebugOutputItem(new DebugItemStaticDataParams("", CommandResult, ""));
                     }
-                    DispatchDebugState(_nativeActivityContext, StateType.Before);
-                    DispatchDebugState(_nativeActivityContext, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
 
                 if(!string.IsNullOrEmpty(_fullPath))

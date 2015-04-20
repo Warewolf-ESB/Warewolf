@@ -165,8 +165,8 @@ namespace Dev2.Activities
                 }
                 if (toUpsert.IsDebug)
                 {
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
                 
             }

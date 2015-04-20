@@ -264,8 +264,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
 

@@ -10,6 +10,7 @@
 */
 
 using System.Collections.Generic;
+using Dev2;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Enums;
 
@@ -26,5 +27,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         string UniqueID { get; set; }
         IList<IActionableErrorInfo> PerformValidation();
         enFindMissingType GetFindMissingType();
+        IDev2Activity Execute(IDSFDataObject data);
     }
 }

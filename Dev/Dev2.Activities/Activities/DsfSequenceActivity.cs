@@ -143,7 +143,7 @@ namespace Dev2.Activities
             InitializeDebug(context.GetExtension<IDSFDataObject>());
             if(dataObject.IsDebugMode())
             {
-                DispatchDebugState(context, StateType.Before);
+                DispatchDebugState(dataObject, StateType.Before);
             }
             dataObject.ParentInstanceID = UniqueID;
             dataObject.IsDebugNested = true;
@@ -155,7 +155,7 @@ namespace Dev2.Activities
             context.ScheduleActivity(_innerSequence, OnCompleted);
             if(dataObject.IsDebugMode())
             {
-                DispatchDebugState(context, StateType.After);
+                DispatchDebugState(dataObject, StateType.After);
             }
         }
 
