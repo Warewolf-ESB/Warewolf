@@ -723,7 +723,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return enFindMissingType.StaticActivity;
         }
 
-        public IDev2Activity Execute(IDSFDataObject data)
+        public virtual IDev2Activity Execute(IDSFDataObject data)
         {
             return null;
         }
