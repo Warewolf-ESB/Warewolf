@@ -41,4 +41,8 @@ namespace Warewolf.AcceptanceTesting.Core
             Container.RegisterInstance<IShellViewModel>(new ShellViewModel(Container, Container.Resolve<IRegionManager>(), Container.Resolve<IEventAggregator>()){PopupController =  PopupController.Object});         
         }
     }
+
+    public class SimpleUnityBootstrapperForTesting : UnityBootstrapperForTesting
+    {
+    }
 }
