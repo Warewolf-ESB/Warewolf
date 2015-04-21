@@ -4022,3 +4022,16 @@ Examples:
 	  And the 'Async Must Not Bubble Up Error' in Workflow 'Async Must Not Bubble Up Error' debug outputs as
 	  |                      |
 	  | [[Result]] = Pass |
+
+Scenario: SQL/MySQL Server Persisted Connection
+# Note that the result is viewed in the browser
+Given I have a workflow "SQL Persisted DB Connection Test" and contains workflows "Get t1" and "Get t2"
+And "MySQL test" Database service
+And "SQL test" Database service
+When "SQL Persisted DB Connection Test" is exceuted
+Then the execution has "NO" error
+And the debug output as
+Examples: 
+ | DbSource | Result |
+ | SQL      | Pass   |
+ | MySQL    | Pass   |
