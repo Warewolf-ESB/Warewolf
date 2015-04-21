@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Activities;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
@@ -30,6 +31,14 @@ namespace Dev2.Core.Tests.Workflows
         {
             return enFindMissingType.StaticActivity;
         }
+
+        public IDev2Activity Execute(IDSFDataObject data)
+        {
+            return null;
+        }
+
+        public IEnumerable<IDev2Activity> NextNodes { get; set; }
+        public Guid ActivityId { get; set; }
     }
 
     public class TestDecisionActivity : Activity<bool>, IDev2Activity
@@ -45,5 +54,13 @@ namespace Dev2.Core.Tests.Workflows
         {
             return enFindMissingType.StaticActivity;
         }
+
+        public IDev2Activity Execute(IDSFDataObject data)
+        {
+            return null;
+        }
+
+        public IEnumerable<IDev2Activity> NextNodes { get; set; }
+        public Guid ActivityId { get; set; }
     }
 }

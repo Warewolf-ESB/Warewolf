@@ -162,7 +162,7 @@ namespace Dev2.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject)
         {
-         
+            _previousParentID = dataObject.ParentInstanceID;
             dataObject.ForEachNestingLevel++;
             InitializeDebug(dataObject);
             if(dataObject.IsDebugMode())
@@ -171,24 +171,32 @@ namespace Dev2.Activities
             }
             dataObject.ParentInstanceID = UniqueID;
             dataObject.IsDebugNested = true;
-            _innerSequence.Activities.Clear();
-            foreach(var dsfActivity in Activities)
+           foreach(var dsfActivity in Activities)
             {
-                _innerSequence.Activities.Add(dsfActivity);
+                var act = dsfActivity as IDev2Activity;
+                if (act != null)
+                {
+                    act.Execute(dataObject);
+                }
             }
-            
             if(dataObject.IsDebugMode())
             {
                 DispatchDebugState(dataObject, StateType.After);
             }
+            OnCompleted(dataObject);
         }
 
         void OnCompleted(NativeActivityContext context, ActivityInstance completedInstance)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            OnCompleted(dataObject);
+        }
+
+        void OnCompleted(IDSFDataObject dataObject)
+        {
             dataObject.IsDebugNested = false;
             dataObject.ParentInstanceID = _previousParentID;
-            DoErrorHandling(context, dataObject);
+            DoErrorHandling(dataObject);
             dataObject.ForEachNestingLevel--;
         }
 
