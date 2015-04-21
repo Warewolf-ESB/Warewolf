@@ -33,7 +33,8 @@ namespace Dev2.Runtime.ESB.Execution
     public class WfExecutionContainer : EsbExecutionContainer
     {
         readonly IWorkflowHelper _workflowHelper;
-         public static ResourceCache _parser = new ResourceCache();
+        public static ResourceCache _parser = new ResourceCache();
+
         public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : this(sa, dataObj, theWorkspace, esbChannel, new WorkflowHelper())
         {
@@ -55,7 +56,7 @@ namespace Dev2.Runtime.ESB.Execution
         public override Guid Execute(out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            WorkflowApplicationFactory wfFactor = new WorkflowApplicationFactory();
+           // WorkflowApplicationFactory wfFactor = new WorkflowApplicationFactory();
             Guid result = GlobalConstants.NullDataListID;
 
             // set current bookmark as per DataObject ;)
@@ -94,11 +95,16 @@ namespace Dev2.Runtime.ESB.Execution
                 DataObject.ExecutionOrigin = ExecutionOrigin.External;
             }
 
-            PooledServiceActivity activity = ServiceAction.PopActivity();
+            var activity = new Func<DynamicActivity>(()=>
+            {
+                var act =ServiceAction.PopActivity();
+                var theActivity = act.Value as DynamicActivity;
+                return theActivity;
+            });
 
             try
             {
-                var theActivity = activity.Value as DynamicActivity;
+                
           
                 // BUG 9304 - 2013.05.08 - TWR - Added CompileExpressions
                 //_workflowHelper.CompileExpressions(theActivity,DataObject.ResourceID);
@@ -106,7 +112,7 @@ namespace Dev2.Runtime.ESB.Execution
                 //IDSFDataObject exeResult = wfFactor.InvokeWorkflow(activity.Value, DataObject,
                 //                                                   new List<object> { EsbChannel, }, instanceId,
                 //                                                   TheWorkspace, bookmark, out errors);
-                Eval(theActivity,DataObject.ResourceID,DataObject);
+                Eval(activity, DataObject.ResourceID, DataObject);
                 result = DataObject.DataListID;
             }
             catch(InvalidWorkflowException iwe)
@@ -126,13 +132,13 @@ namespace Dev2.Runtime.ESB.Execution
             }
             finally
             {
-                ServiceAction.PushActivity(activity);
+                //ServiceAction.PushActivity(activity);
             }
             Dev2Logger.Log.Info(String.Format("Completed Execution for Service Name:{0} Resource Id: {1} Mode:{2}",DataObject.ServiceName,DataObject.ResourceID,DataObject.IsDebug?"Debug":"Execute"));
             return result;
         }
 
-        public void  Eval(DynamicActivity dynamicActivity, Guid resourceID,IDSFDataObject dataObject)
+        public void Eval(Func<DynamicActivity> dynamicActivity, Guid resourceID, IDSFDataObject dataObject)
         {
             var resource=  _parser.Parse(dynamicActivity,resourceID);
             resource.Execute(dataObject);

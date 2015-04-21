@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Linq;
 using Dev2.Data.SystemTemplates.Models;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage;
 
 namespace Dev2.Activities
 {
@@ -41,8 +43,38 @@ namespace Dev2.Activities
             return null;
         }
 
+        private  Dev2Decision parseDecision(IExecutionEnvironment env , Dev2Decision decision)
+        {
+            var col1 = WarewolfDataEvaluationCommon.EvalResultToString(env.Eval(decision.Col1));
+            var col2 = WarewolfDataEvaluationCommon.EvalResultToString(env.Eval(decision.Col2));
+            var col3 = WarewolfDataEvaluationCommon.EvalResultToString(env.Eval(decision.Col3));
+            return new Dev2Decision() { Col1 = col1, Col2 = col2, Col3 = col3, EvaluationFn = decision.EvaluationFn };
+        }
+
         protected override void ExecuteTool(IDSFDataObject dataObject)
         {
+
+            var stack = Conditions.TheStack.Select(a => parseDecision(dataObject.Environment, a));
+
+            var factory = Data.Decisions.Operations.Dev2DecisionFactory.Instance();
+            var res = stack.Select(a=> factory.FetchDecisionFunction( a.EvaluationFn).Invoke( new []{a.Col1,a.Col2,a.Col3}));
+            var resultval = res.Aggregate(true, (a, b) => a && b);
+            if (resultval)
+            {
+                var activity = TrueArm.FirstOrDefault();
+                if(activity != null)
+                {
+                    activity.Execute(dataObject);
+                }
+            }
+            else
+            {
+                var activity = FalseArm.FirstOrDefault();
+                if(activity != null)
+                {
+                    activity.Execute(dataObject);
+                }
+            }
         }
 
         #endregion

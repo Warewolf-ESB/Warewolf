@@ -32,6 +32,7 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Workspaces;
+using ServiceStack.Net30.Collections.Concurrent;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Runtime.ESB
@@ -52,6 +53,7 @@ namespace Dev2.Runtime.ESB
 
         #endregion
 
+        static ConcurrentDictionary<Guid, ServiceAction> _cache = new ConcurrentDictionary<Guid, ServiceAction>();
         // 2012.10.17 - 5782: TWR - Changed to work off the workspace host and made read only
 
         public bool IsLoggingEnabled
@@ -210,19 +212,26 @@ namespace Dev2.Runtime.ESB
         {
             if(isLocalInvoke)
             {
-                ServiceLocator sl = new ServiceLocator();
-                var theService = sl.FindService(serviceId, _workspace.ID);
-                EsbExecutionContainer executionContainer = null;
-
-
-                if(theService != null && theService.Actions.Any())
+                ServiceAction sa;
+                if(_cache.ContainsKey(dataObject.ResourceID))
                 {
-                    var sa = theService.Actions.FirstOrDefault();
-                    MapServiceActionDependencies(sa, sl);
-                    executionContainer = GenerateContainer(sa, dataObject, _workspace);
+                    sa = _cache[dataObject.ResourceID];
+  
+                    return GenerateContainer(sa, dataObject, _workspace);
                 }
 
-                return executionContainer;
+
+                ServiceLocator sl = new ServiceLocator();
+                var theService = sl.FindService(serviceId, _workspace.ID);
+                if(theService != null && theService.Actions.Any())
+                {
+                    sa = theService.Actions.FirstOrDefault();
+                    MapServiceActionDependencies(sa, sl);
+                    _cache.TryAdd(dataObject.ResourceID, sa);
+                    return GenerateContainer(sa, dataObject, _workspace);
+                }
+
+                return null;
             }
             // we need a remote container ;)
             // TODO : Set Output description for shaping ;)
@@ -241,25 +250,41 @@ namespace Dev2.Runtime.ESB
         {
             if(isLocalInvoke)
             {
-                ServiceLocator sl = new ServiceLocator();
-                var resourceId = dataObject.ResourceID;
-                DynamicService theService = GetService(serviceName, resourceId, sl);
-                EsbExecutionContainer executionContainer = null;
 
-
-                if(theService != null && theService.Actions.Any())
+                if (_cache.ContainsKey(dataObject.ResourceID))
                 {
-                    var sa = theService.Actions.FirstOrDefault();
-                    MapServiceActionDependencies(sa, sl);
-                    executionContainer = GenerateContainer(sa, dataObject, _workspace);
+                    ServiceAction sa = _cache[dataObject.ResourceID];
+
+                    return GenerateContainer(sa, dataObject, _workspace);
+                }
+                    // ReSharper disable RedundantIfElseBlock
+                else
+                    // ReSharper restore RedundantIfElseBlock
+                {
+                    ServiceLocator sl = new ServiceLocator();
+                    var resourceId = dataObject.ResourceID;
+                    DynamicService theService = GetService(serviceName, resourceId, sl);
+                    EsbExecutionContainer executionContainer = null;
+
+
+                    if (theService != null && theService.Actions.Any())
+                    {
+                        var sa = theService.Actions.FirstOrDefault();
+                        MapServiceActionDependencies(sa, sl);
+                        _cache.TryAdd(dataObject.ResourceID, sa);
+                        executionContainer = GenerateContainer(sa, dataObject, _workspace);
+                    }
+
+                    return executionContainer; 
                 }
 
-                return executionContainer;
             }
             // we need a remote container ;)
             // TODO : Set Output description for shaping ;)
             return GenerateContainer(new ServiceAction { ActionType = Common.Interfaces.Core.DynamicServices.enActionType.RemoteService }, dataObject, null);
         }
+
+
 
         DynamicService GetService(string serviceName, Guid resourceId, ServiceLocator sl)
         {
