@@ -214,14 +214,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     OnExecutedCompleted(context, false, resumable);
                     if(compiler != null)
                     {
-                        DoErrorHandling(context, dataObject);
+                        DoErrorHandling(dataObject);
                     }
                 }
 
             }
         }
 
-        protected void DoErrorHandling(NativeActivityContext context, IDSFDataObject dataObject)
+        protected void DoErrorHandling(IDSFDataObject dataObject)
         {
             string errorString = dataObject.Environment.FetchErrors();
             ErrorResultTO tmpErrorsAfter = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
@@ -232,13 +232,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if (!String.IsNullOrEmpty(errorString))
                     {
-                        PerformCustomErrorHandling(context, dataObject, errorString);
+                        PerformCustomErrorHandling(dataObject, errorString);
                     }
                 }
             }
         }
 
-        void PerformCustomErrorHandling(NativeActivityContext context, IDSFDataObject dataObject, string currentError)
+        void PerformCustomErrorHandling(IDSFDataObject dataObject, string currentError)
         {
             try
             {
@@ -248,7 +248,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 if(!String.IsNullOrEmpty(OnErrorWorkflow))
                 {
-                    var esbChannel = context.GetExtension<IEsbChannel>();
+                    var esbChannel = dataObject.EsbChannel;
                     ErrorResultTO tmpErrors;
                     esbChannel.ExecuteLogErrorRequest(dataObject, dataObject.WorkspaceID, OnErrorWorkflow, out tmpErrors);
                     dataObject.Environment.AddError(tmpErrors.MakeDisplayReady());
@@ -263,12 +263,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 
                 if(IsEndedOnError)
                 {
-                    PerformStopWorkflow(context, dataObject);
+                    PerformStopWorkflow(dataObject);
                 }
             }
         }
 
-        void PerformStopWorkflow(NativeActivityContext context, IDSFDataObject dataObject)
+        void PerformStopWorkflow(IDSFDataObject dataObject)
         {
             var service = ExecutableServiceRepository.Instance.Get(dataObject.WorkspaceID, dataObject.ResourceID);
             if(service != null)
@@ -299,7 +299,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     HasError = true
                 };
                 DebugDispatcher.Instance.Write(debugState);
-                context.MarkCanceled();
             }
         }
 
