@@ -145,6 +145,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     }
                 }
                 var esbEndpoint = new EsbServicesEndpoint();
+                dataObject.EsbChannel = esbEndpoint;
                 var canExecute = true;
                 if(ServerAuthorizationService.Instance != null)
                 {

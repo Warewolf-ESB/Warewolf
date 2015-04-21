@@ -102,9 +102,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+
             IDev2MergeOperations mergeOperations = new Dev2MergeOperations();
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errorResultTo = new ErrorResultTO();
@@ -133,7 +139,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         DebugItem debugItem = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", (MergeCollection.IndexOf(row) + 1).ToString(CultureInfo.InvariantCulture)), debugItem);
-                        AddDebugItem(new DebugEvalResult(row.InputVariable, "",dataObject.Environment, true), debugItem);
+                        AddDebugItem(new DebugEvalResult(row.InputVariable, "", dataObject.Environment, true), debugItem);
                         AddDebugItem(new DebugItemStaticDataParams(row.MergeType, "With"), debugItem);
                         AddDebugItem(new DebugEvalResult(row.At, "Using", dataObject.Environment), debugItem);
                         AddDebugItem(new DebugEvalResult(row.Padding, "Pad", dataObject.Environment), debugItem);
@@ -151,30 +157,30 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var listOfEvalResultsForInput = dataObject.Environment.EvalForDataMerge(row.InputVariable);
                     var innerIterator = new WarewolfListIterator();
                     var innerListOfIters = new List<WarewolfIterator>();
-                    
-                    foreach (var listOfIterator in listOfEvalResultsForInput)
+
+                    foreach(var listOfIterator in listOfEvalResultsForInput)
                     {
                         var inIterator = new WarewolfIterator(listOfIterator);
                         innerIterator.AddVariableToIterateOn(inIterator);
                         innerListOfIters.Add(inIterator);
                     }
                     var atomList = new List<DataASTMutable.WarewolfAtom>();
-                    while (innerIterator.HasMoreData())
+                    while(innerIterator.HasMoreData())
                     {
                         var stringToUse = "";
                         foreach(var warewolfIterator in innerListOfIters)
                         {
                             stringToUse += warewolfIterator.GetNextValue();
-                        }                        
+                        }
                         atomList.Add(DataASTMutable.WarewolfAtom.NewDataString(stringToUse));
                     }
                     var finalString = string.Join("", atomList);
                     var inputListResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomListresult(new WarewolfAtomList<DataASTMutable.WarewolfAtom>(DataASTMutable.WarewolfAtom.Nothing, atomList));
-                    if (DataListUtil.IsFullyEvaluated(finalString))
+                    if(DataListUtil.IsFullyEvaluated(finalString))
                     {
                         inputListResult = dataObject.Environment.Eval(finalString);
                     }
-                    
+
                     var inputIterator = new WarewolfIterator(inputListResult);
                     var atIterator = new WarewolfIterator(dataObject.Environment.Eval(row.At));
                     var paddingIterator = new WarewolfIterator(dataObject.Environment.Eval(row.Padding));
@@ -189,6 +195,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 #endregion
 
                 #region Iterate and Merge Data
+
                 if(!allErrors.HasErrors())
                 {
                     while(warewolfListIterator.HasMoreData())
@@ -239,7 +246,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     if(!allErrors.HasErrors())
                     {
-                        if (string.IsNullOrEmpty(Result))
+                        if(string.IsNullOrEmpty(Result))
                         {
                             AddDebugOutputItem(new DebugItemStaticDataParams("", ""));
                         }
@@ -248,7 +255,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             dataObject.Environment.Assign(Result, mergeOperations.MergeData.ToString());
                             allErrors.MergeErrors(errorResultTo);
 
-                            if (dataObject.IsDebugMode() && !allErrors.HasErrors())
+                            if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                             {
                                 AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
                             }
@@ -257,7 +264,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
 
                 #endregion Iterate and Merge Data
-
             }
             catch(Exception e)
             {
@@ -426,7 +432,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get ForEach Inputs/Outputs
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {
@@ -445,7 +451,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

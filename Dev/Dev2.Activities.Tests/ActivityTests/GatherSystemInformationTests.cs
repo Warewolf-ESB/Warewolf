@@ -581,7 +581,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             act.SystemInformationCollection = systemInformationCollection;
 
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(null, null);
+            act.UpdateForEachInputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual("[[testVar]]", act.SystemInformationCollection[0].Result);
         }
@@ -602,7 +602,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple1 = new Tuple<string, string>("[[testVar]]", "Test");
             var tuple2 = new Tuple<string, string>("[[Customers(*).DOB]]", "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.SystemInformationCollection[0].Result);
         }
@@ -623,7 +623,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple1 = new Tuple<string, string>("[[testVar]]", "Test");
             var tuple2 = new Tuple<string, string>("[[Customers(*).DOB]]", "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.SystemInformationCollection[0].Result);
         }
@@ -642,7 +642,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             act.SystemInformationCollection = systemInformationCollection;
 
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(null, null);
+            act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual("[[testVar]]", act.SystemInformationCollection[0].Result);
         }

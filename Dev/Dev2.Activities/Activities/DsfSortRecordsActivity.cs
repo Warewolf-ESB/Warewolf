@@ -62,10 +62,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
             ErrorResultTO allErrors = new ErrorResultTO();
 
@@ -74,11 +78,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
                 bool descOrder = String.IsNullOrEmpty(SelectedSort) || SelectedSort.Equals("Backwards");
-                if (dataObject.IsDebugMode())
+                if(dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(SortField, "Sort Field", dataObject.Environment);
                 }
-                if (!string.IsNullOrEmpty(SortField))
+                if(!string.IsNullOrEmpty(SortField))
                 {
                     dataObject.Environment.SortRecordSet(SortField, descOrder);
                 }
@@ -89,16 +93,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
-
-                if (allErrors.HasErrors())
+                if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfSortRecordsActivity", allErrors);
-                    foreach (var error in allErrors.FetchErrors())
+                    foreach(var error in allErrors.FetchErrors())
                     {
                         dataObject.Environment.AddError(error);
                     }
                 }
-                if (dataObject.IsDebugMode())
+                if(dataObject.IsDebugMode())
                 {
                     DebugOutputs(dataObject);
 
@@ -153,7 +156,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Private Methods
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {
@@ -168,7 +171,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

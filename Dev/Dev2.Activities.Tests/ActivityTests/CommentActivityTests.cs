@@ -85,7 +85,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var act = new DsfCommentActivity { Text = "SomeText" };
             var tuple1 = new Tuple<string, string>("Test1", "Test");
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 });
             //------------Assert Results-------------------------
             Assert.AreEqual("SomeText", act.Text);
         }
@@ -98,7 +98,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var act = new DsfCommentActivity { Text = "SomeText" };
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(null, null);
+            act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual("SomeText", act.Text);
         }
@@ -113,7 +113,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple1 = new Tuple<string, string>("Test1", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual("SomeText", act.Text);
         }
@@ -127,7 +127,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var act = new DsfCommentActivity { Text = "SomeText" };
             var tuple1 = new Tuple<string, string>("Test1", "Test");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.Text);
         }

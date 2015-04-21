@@ -324,26 +324,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Get Inputs/Outputs
 
-        /// <summary>
-        ///Not covered as this Activity has been deprecated and replaced with the <see cref="DsfFindRecordsMultipleCriteriaActivity"/>
-        ///It is here purely for backward compatibility
-        /// </summary>
-        /// <param name="updates"></param>
-        /// <param name="context"></param>
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        ///  <summary>
+        /// Not covered as this Activity has been deprecated and replaced with the <see cref="DsfFindRecordsMultipleCriteriaActivity"/>
+        /// It is here purely for backward compatibility
+        ///  </summary>
+        ///  <param name="updates"></param>
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates.Count == 1)
             {
                 FieldsToSearch = updates[0].Item2;
             }
         }
-        /// <summary>
-        ///Not covered as this Activity has been deprecated and replaced with the <see cref="DsfFindRecordsMultipleCriteriaActivity"/>
-        ///It is here purely for backward compatibility
-        /// </summary>
-        /// <param name="updates"></param>
-        /// <param name="context"></param>
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+
+        ///  <summary>
+        /// Not covered as this Activity has been deprecated and replaced with the <see cref="DsfFindRecordsMultipleCriteriaActivity"/>
+        /// It is here purely for backward compatibility
+        ///  </summary>
+        ///  <param name="updates"></param>
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {
@@ -372,6 +371,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<DsfForEachItem> GetForEachOutputs()
         {
             return GetForEachItems(Result);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
         }
 
         #endregion

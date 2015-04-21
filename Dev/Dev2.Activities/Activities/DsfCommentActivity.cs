@@ -65,11 +65,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DispatchDebugState(dataObject, StateType.After);
         }
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null && updates.Count == 1)
             {
@@ -92,6 +92,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     Name = Text
                 }
             };
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
         }
 
         #endregion

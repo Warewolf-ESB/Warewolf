@@ -62,26 +62,26 @@ namespace Dev2.Activities
 
         #region GetForEachInputs/Outputs
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             foreach(var activity in Activities)
             {
                 var innerActivity = activity as DsfActivityAbstract<string>;
                 if(innerActivity != null)
                 {
-                    innerActivity.UpdateForEachInputs(updates, context);
+                    innerActivity.UpdateForEachInputs(updates);
                 }
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             foreach(var activity in Activities)
             {
                 var innerActivity = activity as DsfActivityAbstract<string>;
                 if(innerActivity != null)
                 {
-                    innerActivity.UpdateForEachOutputs(updates, context);
+                    innerActivity.UpdateForEachOutputs(updates);
                 }
             }
         }
@@ -139,8 +139,15 @@ namespace Dev2.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject);
+            context.ScheduleActivity(_innerSequence, OnCompleted);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
+         
             dataObject.ForEachNestingLevel++;
-            InitializeDebug(context.GetExtension<IDSFDataObject>());
+            InitializeDebug(dataObject);
             if(dataObject.IsDebugMode())
             {
                 DispatchDebugState(dataObject, StateType.Before);
@@ -152,7 +159,7 @@ namespace Dev2.Activities
             {
                 _innerSequence.Activities.Add(dsfActivity);
             }
-            context.ScheduleActivity(_innerSequence, OnCompleted);
+            
             if(dataObject.IsDebugMode())
             {
                 DispatchDebugState(dataObject, StateType.After);

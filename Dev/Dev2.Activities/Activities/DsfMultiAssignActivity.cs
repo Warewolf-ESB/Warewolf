@@ -99,15 +99,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteAssign(dataObject);
+            ExecuteTool(dataObject);
         }
 
         #region Overrides of DsfNativeActivity<string>
 
         public override IDev2Activity Execute(IDSFDataObject data)
         {
-            ExecuteAssign(data);
-            if(NextNodes.Count()>0)
+            ExecuteTool(data);
+            if(NextNodes != null && NextNodes.Count()>0)
             {
                 NextNodes.First().Execute(data);
                 return NextNodes.First();
@@ -117,7 +117,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-        void ExecuteAssign(IDSFDataObject dataObject)
+        protected override void ExecuteTool(IDSFDataObject dataObject)
         {
             _debugOutputs.Clear();
             _debugInputs.Clear();
@@ -407,7 +407,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return enFindMissingType.DataGridActivity;
         }
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             foreach(Tuple<string, string> t in updates)
             {
@@ -423,7 +423,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             foreach(Tuple<string, string> t in updates)
             {

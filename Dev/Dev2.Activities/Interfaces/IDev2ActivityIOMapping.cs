@@ -21,6 +21,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     {
         string InputMapping { get; set; }
         string OutputMapping { get; set; }
-
+        IDev2Activity InnerActivity { get; set; }
     }
 }

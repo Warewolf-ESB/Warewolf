@@ -97,14 +97,22 @@ namespace Dev2.Activities
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
-            _debugInputs = new List<DebugItem>();
-            _debugOutputs = new List<DebugItem>();
             _nativeActivityContext = context;
             var dataObject = _nativeActivityContext.GetExtension<IDSFDataObject>();
+            var exeToken = _nativeActivityContext.GetExtension<IExecutionToken>();
+            dataObject.ExecutionToken = exeToken;
+       
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
+            IExecutionToken exeToken = dataObject.ExecutionToken;
+            _debugInputs = new List<DebugItem>();
+            _debugOutputs = new List<DebugItem>();
 
             var allErrors = new ErrorResultTO();
 
-            var exeToken = _nativeActivityContext.GetExtension<IExecutionToken>();
             InitializeDebug(dataObject);
             try
             {
@@ -126,7 +134,10 @@ namespace Dev2.Activities
 
                             StreamReader errorReader;
                             StringBuilder outputReader;
-                            if(!ExecuteProcess(val, exeToken, out errorReader, out outputReader)) return;
+                            if(!ExecuteProcess(val, exeToken, out errorReader, out outputReader))
+                            {
+                                return;
+                            }
 
                             allErrors.AddError(errorReader.ReadToEnd());
                             var bytes = Encoding.Default.GetBytes(outputReader.ToString().Trim());
@@ -139,15 +150,14 @@ namespace Dev2.Activities
                                 {
                                     dataObject.Environment.Assign(region, readValue);
                                 }
-
                             }
-                            errorReader.Close();                            
+                            errorReader.Close();
                         }
                     }
 
                     if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                     {
-                        if (!string.IsNullOrEmpty(CommandResult))
+                        if(!string.IsNullOrEmpty(CommandResult))
                         {
                             AddDebugOutputItem(new DebugEvalResult(CommandResult, "", dataObject.Environment));
                         }
@@ -403,7 +413,7 @@ namespace Dev2.Activities
             return commandPsi;
         }
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates == null)
             {
@@ -423,7 +433,7 @@ namespace Dev2.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

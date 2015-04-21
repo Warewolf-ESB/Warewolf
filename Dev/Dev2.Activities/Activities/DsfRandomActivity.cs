@@ -77,9 +77,14 @@ namespace Dev2.Activities
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
@@ -90,9 +95,9 @@ namespace Dev2.Activities
 
             try
             {
-                if (!errors.HasErrors())
+                if(!errors.HasErrors())
                 {
-                    if (dataObject.IsDebugMode())
+                    if(dataObject.IsDebugMode())
                     {
                         AddDebugInputItem(Length, From, To, dataObject.Environment, RandomType);
                     }
@@ -105,10 +110,8 @@ namespace Dev2.Activities
                     colItr.AddVariableToIterateOn(fromItr);
                     colItr.AddVariableToIterateOn(toItr);
 
-
-                    
                     Dev2Random dev2Random = new Dev2Random();
-                    while (colItr.HasMoreData())
+                    while(colItr.HasMoreData())
                     {
                         int lengthNum = -1;
                         int fromNum = -1;
@@ -118,14 +121,14 @@ namespace Dev2.Activities
                         string toValue = colItr.FetchNextValue(toItr);
                         string lengthValue = colItr.FetchNextValue(lengthItr);
 
-                        if (RandomType != enRandomType.Guid)
+                        if(RandomType != enRandomType.Guid)
                         {
-                            if (RandomType == enRandomType.Numbers)
+                            if(RandomType == enRandomType.Numbers)
                             {
                                 #region Getting the From
 
                                 fromNum = GetFromValue(fromValue, out errors);
-                                if (errors.HasErrors())
+                                if(errors.HasErrors())
                                 {
                                     allErrors.MergeErrors(errors);
                                     continue;
@@ -136,7 +139,7 @@ namespace Dev2.Activities
                                 #region Getting the To
 
                                 toNum = GetToValue(toValue, out errors);
-                                if (errors.HasErrors())
+                                if(errors.HasErrors())
                                 {
                                     allErrors.MergeErrors(errors);
                                     continue;
@@ -149,7 +152,7 @@ namespace Dev2.Activities
                                 #region Getting the Length
 
                                 lengthNum = GetLengthValue(lengthValue, out errors);
-                                if (errors.HasErrors())
+                                if(errors.HasErrors())
                                 {
                                     allErrors.MergeErrors(errors);
                                     continue;
@@ -162,7 +165,7 @@ namespace Dev2.Activities
 
                         var rule = new IsSingleValueRule(() => Result);
                         var single = rule.Check();
-                        if (single != null)
+                        if(single != null)
                         {
                             allErrors.AddError(single.Message);
                         }
@@ -173,12 +176,12 @@ namespace Dev2.Activities
                     }
                 }
                 allErrors.MergeErrors(errors);
-                if (!allErrors.HasErrors())
+                if(!allErrors.HasErrors())
                 {
-                    AddDebugOutputItem(new DebugEvalResult(Result,"",dataObject.Environment));
+                    AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Dev2Logger.Log.Error("DSFRandomActivity", e);
                 allErrors.AddError(e.Message);
@@ -205,7 +208,7 @@ namespace Dev2.Activities
             }
         }
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {
@@ -230,7 +233,7 @@ namespace Dev2.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

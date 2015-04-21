@@ -439,7 +439,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 new Tuple<string, string>("[[Bcc]]", "BccValue"),
                 new Tuple<string, string>("[[Attachments]]", "AttachmentsValue"),
 
-            }, null);
+            });
             //------------Assert Results-------------------------
             Assert.AreEqual("BodyValue", activity.Body);
             Assert.AreEqual("SubJectValue", activity.Subject);
@@ -474,7 +474,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 new Tuple<string, string>("[[Result]]", "TheResult"),
 
-            }, null);
+            });
             //------------Assert Results-------------------------
             Assert.AreEqual("TheResult", activity.Result);
         }

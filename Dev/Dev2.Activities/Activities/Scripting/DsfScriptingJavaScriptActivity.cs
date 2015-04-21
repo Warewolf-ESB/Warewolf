@@ -72,16 +72,20 @@ namespace Dev2.Activities
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
             Guid dlId = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errorResultTo = new ErrorResultTO();
             Guid executionId = dlId;
             allErrors.MergeErrors(errorResultTo);
-
 
             try
             {
@@ -109,7 +113,6 @@ namespace Dev2.Activities
 
                     while(colItr.HasMoreData())
                     {
-
                         dynamic value = null;
 
                         //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
@@ -144,7 +147,7 @@ namespace Dev2.Activities
                 {
                     DisplayAndWriteError("DsfScriptingJavaScriptActivity", allErrors);
                     dataObject.Environment.AddError(allErrors.MakeDataListReady());
-                    dataObject.Environment.Assign(Result,null);
+                    dataObject.Environment.Assign(Result, null);
                 }
 
                 if(dataObject.IsDebugMode())
@@ -158,10 +161,9 @@ namespace Dev2.Activities
                     DispatchDebugState(dataObject, StateType.After);
                 }
             }
-
         }
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             foreach(Tuple<string, string> t in updates)
             {
@@ -173,7 +175,7 @@ namespace Dev2.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

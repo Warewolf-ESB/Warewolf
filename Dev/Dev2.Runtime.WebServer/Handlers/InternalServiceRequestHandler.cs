@@ -95,6 +95,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
 
             IDSFDataObject dataObject = new DsfDataObject(xmlData, dataListID);
+            dataObject.EsbChannel = channel;
             dataObject.ServiceName = request.ServiceName;
             var resource = ResourceCatalog.Instance.GetResource(workspaceID, request.ServiceName);
             if(resource != null)

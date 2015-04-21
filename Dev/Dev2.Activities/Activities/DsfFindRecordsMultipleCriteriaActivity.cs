@@ -97,9 +97,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="context"></param>
         protected override void OnExecute(NativeActivityContext context)
         {
+            var dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            var dataObject = context.GetExtension<IDSFDataObject>();
 
             var env = dataObject.Environment;
             InitializeDebug(dataObject);
@@ -112,30 +117,34 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     AddDebugInputValues(dataObject, toSearch, ref allErrors);
                 }
-               
+
                 bool hasEvaled = false;
                 foreach(var searchvar in toSearch)
                 {
                     Func<DataASTMutable.WarewolfAtom, bool> func = null;
-                    foreach(FindRecordsTO to in ResultsCollection.Where(a=> !String.IsNullOrEmpty(a.SearchType)))
+                    foreach(FindRecordsTO to in ResultsCollection.Where(a => !String.IsNullOrEmpty(a.SearchType)))
                     {
-                        if ((to.From.Length > 0 && String.IsNullOrEmpty(to.To))
-                            || (to.To.Length > 0 && String.IsNullOrEmpty(to.From)))
+                        if((to.From.Length > 0 && String.IsNullOrEmpty(to.To))
+                           || (to.To.Length > 0 && String.IsNullOrEmpty(to.From)))
                         {
                             throw new Exception("From and to Must be populated");
-                        }  
-                        ValidateRequiredFields(to,out errorsTo);
+                        }
+                        ValidateRequiredFields(to, out errorsTo);
                         var right = env.EvalAsList(to.SearchCriteria);
                         IEnumerable<DataASTMutable.WarewolfAtom> from = new List<DataASTMutable.WarewolfAtom>();
-                        IEnumerable<DataASTMutable.WarewolfAtom> tovalue = new List<DataASTMutable.WarewolfAtom>(); 
+                        IEnumerable<DataASTMutable.WarewolfAtom> tovalue = new List<DataASTMutable.WarewolfAtom>();
 
                         if(!String.IsNullOrEmpty(to.From))
-                         from = env.EvalAsList(to.From);
-                        if (!String.IsNullOrEmpty(to.To))
-                            tovalue = env.EvalAsList(to.To);
-                        if (func == null)
                         {
-                            func = CreateFuncFromOperator(to.SearchType, right, from,tovalue);
+                            @from = env.EvalAsList(to.From);
+                        }
+                        if(!String.IsNullOrEmpty(to.To))
+                        {
+                            tovalue = env.EvalAsList(to.To);
+                        }
+                        if(func == null)
+                        {
+                            func = CreateFuncFromOperator(to.SearchType, right, @from, tovalue);
                         }
                         else
                         {
@@ -143,28 +152,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                     }
                     var output = env.EnvalWhere(dataObject.Environment.ToStar(searchvar), func);
-                    
-                     if(RequireAllFieldsToMatch&& hasEvaled )
-                     {
-                         results = results.Intersect(output).ToList();
-                     }
-                     else
-                     {
-                         results = results.Union(output).ToList();
-                     }
-                     hasEvaled = true;
-                   
+
+                    if(RequireAllFieldsToMatch && hasEvaled)
+                    {
+                        results = results.Intersect(output).ToList();
+                    }
+                    else
+                    {
+                        results = results.Union(output).ToList();
+                    }
+                    hasEvaled = true;
                 }
-                if(!results.Any()) results.Add(-1);
-                var res =String.Join(",", results.Distinct());
+                if(!results.Any())
+                {
+                    results.Add(-1);
+                }
+                var res = String.Join(",", results.Distinct());
                 env.Assign(Result, res);
                 if(dataObject.IsDebugMode())
                 {
-                    AddDebugOutputItem(new DebugEvalResult(Result,"",dataObject.Environment));
+                    AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
                 }
-                
             }
-            catch (Exception exception)
+            catch(Exception exception)
             {
                 Dev2Logger.Log.Error("DSFRecordsMultipleCriteria", exception);
                 allErrors.AddError(exception.Message);
@@ -172,13 +182,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             finally
             {
                 var hasErrors = allErrors.HasErrors();
-                if (hasErrors)
+                if(hasErrors)
                 {
                     DisplayAndWriteError("DsfFindRecordsMultipleCriteriaActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
-                    dataObject.Environment.Assign(Result,"-1");
-                    if (dataObject.IsDebugMode())
+                    dataObject.Environment.Assign(Result, "-1");
+                    if(dataObject.IsDebugMode())
                     {
                         AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
                     }
@@ -411,7 +421,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get ForEach Inputs/Ouputs
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {
@@ -435,7 +445,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

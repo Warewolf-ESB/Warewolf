@@ -1,6 +1,7 @@
 using System;
 using System.Activities;
 using System.Activities.Statements;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities;
@@ -9,6 +10,39 @@ using Newtonsoft.Json;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
+    public  class ResourceCache
+    {
+        ActivityParser _activityParser;
+        ConcurrentDictionary<Guid,IDev2Activity> _cache;
+
+        public ResourceCache(ActivityParser activityParser, ConcurrentDictionary<Guid, IDev2Activity> cache)
+        {
+            _activityParser = activityParser;
+            _cache = cache;
+        }
+
+        public ResourceCache()
+        {
+            _activityParser = new ActivityParser();
+            _cache = new ConcurrentDictionary<Guid, IDev2Activity>();
+        }
+
+        public IDev2Activity Parse(DynamicActivity dynamicActivity,Guid resourceIdGuid)
+        {
+            if(_cache.ContainsKey(resourceIdGuid))
+            {
+                return _cache[resourceIdGuid];
+            }
+            IDev2Activity act = _activityParser.Parse(dynamicActivity);
+            if (_cache.TryAdd(resourceIdGuid, act))
+            {
+                return act;
+            }
+            return _cache[resourceIdGuid];
+        }
+        }
+    
+    
     public  class ActivityParser : IActivityParser
     {
         #region Implementation of IActivityParser
@@ -28,6 +62,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         IEnumerable<IDev2Activity> ParseTools(FlowNode startNode)
         {
+            if (startNode == null)
+                return null;
             FlowStep step = startNode as FlowStep;
             if (step != null)
                 return ParseFlowStep(step);

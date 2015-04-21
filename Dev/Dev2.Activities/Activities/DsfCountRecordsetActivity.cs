@@ -65,10 +65,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-
 
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
@@ -83,38 +87,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     try
                     {
-                       
-                        string rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);                        
-                        if (CountNumber == string.Empty)
+                        string rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);
+                        if(CountNumber == string.Empty)
                         {
                             allErrors.AddError("Blank result variable");
                         }
                         if(dataObject.IsDebugMode())
                         {
                             AddDebugInputItem(new DebugEvalResult(dataObject.Environment.ToStar(RecordsetName), "Recordset", dataObject.Environment));
-
                         }
                         var rule = new IsSingleValueRule(() => CountNumber);
                         var single = rule.Check();
-                        if (single != null)
+                        if(single != null)
                         {
                             allErrors.AddError(single.Message);
                         }
                         else
                         {
                             var count = 0;
-                            if (dataObject.Environment.HasRecordSet(RecordsetName))
+                            if(dataObject.Environment.HasRecordSet(RecordsetName))
                             {
                                 count = dataObject.Environment.GetCount(rs);
                             }
                             var value = count.ToString();
                             dataObject.Environment.Assign(CountNumber, value);
-                            AddDebugOutputItem(new DebugEvalResult(CountNumber,"",dataObject.Environment));
+                            AddDebugOutputItem(new DebugEvalResult(CountNumber, "", dataObject.Environment));
                         }
                     }
                     catch(Exception e)
                     {
-                        AddDebugInputItem(new DebugItemStaticDataParams("",RecordsetName,"Recordset","="));
+                        AddDebugInputItem(new DebugItemStaticDataParams("", RecordsetName, "Recordset", "="));
                         allErrors.AddError(e.Message);
                         dataObject.Environment.Assign(CountNumber, "0");
                         AddDebugOutputItem(new DebugItemStaticDataParams("0", CountNumber, "", "="));
@@ -133,7 +135,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 if(dataObject.IsDebugMode())
                 {
-
                     DispatchDebugState(dataObject, StateType.Before);
                     DispatchDebugState(dataObject, StateType.After);
                 }
@@ -167,7 +168,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Get Inputs/Outputs
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null && updates.Count == 1)
             {
@@ -175,7 +176,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

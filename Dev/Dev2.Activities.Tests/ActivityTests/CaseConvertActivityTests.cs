@@ -405,7 +405,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             dsfCaseConvert.UpdateForEachInputs(new List<Tuple<string, string>>
                 {
 		        new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
-	        }, null);
+	        });
 
             //------------Assert Results-------------------------
 
@@ -432,7 +432,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             dsfCaseConvert.UpdateForEachInputs(new List<Tuple<string, string>>
                 {
 		        new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
-	        }, null);
+	        });
 
             //------------Assert Results-------------------------
 
@@ -458,7 +458,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             dsfCaseConvert.UpdateForEachOutputs(new List<Tuple<string, string>>
                 {
 		        new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
-	        }, null);
+	        });
 
             //------------Assert Results-------------------------
 

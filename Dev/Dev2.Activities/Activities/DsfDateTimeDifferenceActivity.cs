@@ -104,9 +104,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary>       
         protected override void OnExecute(NativeActivityContext context)
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
@@ -114,30 +120,28 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // Process if no errors
             try
             {
-
-
                 if(dataObject.IsDebugMode())
                 {
-                    if (string.IsNullOrEmpty(Input1))
+                    if(string.IsNullOrEmpty(Input1))
                     {
-                        AddDebugInputItem(new DebugItemStaticDataParams(DateTime.Now.ToString(CultureInfo.CurrentCulture),"now()","Input 1","="));
+                        AddDebugInputItem(new DebugItemStaticDataParams(DateTime.Now.ToString(CultureInfo.CurrentCulture), "now()", "Input 1", "="));
                     }
                     else
                     {
-                        AddDebugInputItem(Input1, "Input 1", dataObject.Environment);   
+                        AddDebugInputItem(Input1, "Input 1", dataObject.Environment);
                     }
 
-                    if (string.IsNullOrEmpty(Input2))
+                    if(string.IsNullOrEmpty(Input2))
                     {
-                        AddDebugInputItem(new DebugItemStaticDataParams(DateTime.Now.ToString(CultureInfo.CurrentCulture),"now()","Input 2","="));
+                        AddDebugInputItem(new DebugItemStaticDataParams(DateTime.Now.ToString(CultureInfo.CurrentCulture), "now()", "Input 2", "="));
                     }
                     else
                     {
-                        AddDebugInputItem(Input2, "Input 2", dataObject.Environment);   
+                        AddDebugInputItem(Input2, "Input 2", dataObject.Environment);
                     }
 
                     AddDebugInputItem(InputFormat, "Input Format", dataObject.Environment);
-                    if (!String.IsNullOrEmpty(OutputType))
+                    if(!String.IsNullOrEmpty(OutputType))
                     {
                         AddDebugInputItem(new DebugItemStaticDataParams(OutputType, "Output In"));
                     }
@@ -159,9 +163,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 while(colItr.HasMoreData())
                 {
                     IDateTimeDiffTO transObj = ConvertToDateTimeDiffTo(colItr.FetchNextValue(input1Itr),
-                                                                       colItr.FetchNextValue(input2Itr),
-                                                                       colItr.FetchNextValue(ifItr),
-                                                                       OutputType);
+                        colItr.FetchNextValue(input2Itr),
+                        colItr.FetchNextValue(ifItr),
+                        OutputType);
                     //Create a DateTimeComparer using the DateTimeConverterFactory
                     IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
                     //Call the TryComparer method on the DateTimeComparer and pass it the IDateTimeDiffTO created from the ConvertToDateTimeDiffTO Method                
@@ -171,7 +175,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if(comparer.TryCompare(transObj, out result, out error))
                     {
                         if(DataListUtil.IsValueRecordset(Result) &&
-                            DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
+                           DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
                         {
                             expression = Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
                         }
@@ -188,9 +192,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-
                             dataObject.Environment.Assign(expression, result);
-
                         }
                     }
                     else
@@ -204,7 +206,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 allErrors.MergeErrors(errors);
                 if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
-                    AddDebugOutputItem(new DebugEvalResult(Result,null,dataObject.Environment));
+                    AddDebugOutputItem(new DebugEvalResult(Result, null, dataObject.Environment));
                 }
             }
             catch(Exception e)
@@ -214,14 +216,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
-
                 // Handle Errors
                 if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfDateTimeDifferenceActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
-                    dataObject.Environment.Assign(Result,null);
+                    dataObject.Environment.Assign(Result, null);
                 }
                 if(dataObject.IsDebugMode())
                 {
@@ -230,7 +231,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
         }
-
 
         void DoDebugOutput(IDSFDataObject dataObject, string region)
         {
@@ -286,7 +286,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get ForEach Inputs/Outputs
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             foreach(Tuple<string, string> t in updates)
             {
@@ -309,7 +309,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

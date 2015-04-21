@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Activities;
 using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Activities.PathOperations;
@@ -45,7 +44,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string ArchivePassword { get; set; }
         #endregion Properties
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             foreach(Tuple<string, string> t in updates)
             {

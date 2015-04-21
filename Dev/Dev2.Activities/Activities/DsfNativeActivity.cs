@@ -58,6 +58,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string InputMapping { get; set; }
 
         public string OutputMapping { get; set; }
+        public virtual IDev2Activity InnerActivity { get { return this; } set{} }
 
         public bool IsWorkflow { get; set; }
         public string ParentServiceName { get; set; }
@@ -417,9 +418,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region ForEach Mapping
 
-        public abstract void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context);
+        public abstract void UpdateForEachInputs(IList<Tuple<string, string>> updates);
 
-        public abstract void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context);
+        public abstract void UpdateForEachOutputs(IList<Tuple<string, string>> updates);
 
         #endregion
 
@@ -725,13 +726,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public virtual IDev2Activity Execute(IDSFDataObject data)
         {
+            ExecuteTool(data);
+            if(NextNodes != null && NextNodes.Count()>0)
+            {
+                    NextNodes.First().Execute(data);
+                    return NextNodes.First();
+             }
             return null;
         }
+
+        #endregion
+
+        protected abstract void ExecuteTool(IDSFDataObject dataObject);
 
         public IEnumerable<IDev2Activity> NextNodes { get; set; }
         public Guid ActivityId { get; set; }
 
-        #endregion
+
 
         #region Create Debug Item
 

@@ -21,6 +21,7 @@ using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics.Logging;
 using Dev2.DynamicServices.Objects;
+using Dev2.Runtime.Execution;
 using Dev2.Web;
 using Warewolf.Storage;
 
@@ -216,6 +217,7 @@ namespace Dev2.DynamicServices
         }
 
         public IExecutionEnvironment Environment { get; set; }
+        public IExecutionToken ExecutionToken { get; set; }
 
         public void PopEnvironment()
         {
@@ -228,6 +230,8 @@ namespace Dev2.DynamicServices
             _environments.Push(Environment);
             Environment = env;
         }
+
+        public IEsbChannel EsbChannel { get; set; }
 
         public int ForEachNestingLevel { get; set; }
 

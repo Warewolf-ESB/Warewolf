@@ -72,68 +72,73 @@ namespace Dev2.Activities
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+
             var allErrors = new ErrorResultTO();
             InitializeDebug(dataObject);
             var toresultfields = Result.Split(new[] { ',' });
             var fromFields = InFields.Split(new[] { ',' });
             var fromResultFieldresultfields = ResultFields.Split(new[] { ',' });
-        
+
             try
             {
-
                 PreExecution(dataObject, fromFields);
-                if (String.IsNullOrEmpty(InFields)) throw new Exception("Invalid In fields");
-                if (String.IsNullOrEmpty(ResultFields)) throw new Exception("Invalid from fields");
-                if(toresultfields.Any(a=>!ExecutionEnvironment.IsValidRecordSetIndex(a)))
+                if(String.IsNullOrEmpty(InFields))
+                {
+                    throw new Exception("Invalid In fields");
+                }
+                if(String.IsNullOrEmpty(ResultFields))
+                {
+                    throw new Exception("Invalid from fields");
+                }
+                if(toresultfields.Any(a => !ExecutionEnvironment.IsValidRecordSetIndex(a)))
                 {
                     throw new Exception("invalid result");
                 }
-                if (fromFields.Any(a => !ExecutionEnvironment.IsValidRecordSetIndex(a)))
+                if(fromFields.Any(a => !ExecutionEnvironment.IsValidRecordSetIndex(a)))
                 {
                     throw new Exception("invalid from");
                 }
-                if (fromResultFieldresultfields.Any(a => !ExecutionEnvironment.IsValidRecordSetIndex(a)))
+                if(fromResultFieldresultfields.Any(a => !ExecutionEnvironment.IsValidRecordSetIndex(a)))
                 {
                     throw new Exception("invalid selected fields");
                 }
-                
+
                 dataObject.Environment.AssignUnique(fromFields, fromResultFieldresultfields, toresultfields);
-               
-                
-               
             }
             catch(Exception e)
             {
                 Dev2Logger.Log.Error("DSFUnique", e);
                 allErrors.AddError(e.Message);
-
             }
             finally
             {
-                PostExecute(dataObject, toresultfields, fromFields, fromResultFieldresultfields,allErrors.HasErrors());
+                PostExecute(dataObject, toresultfields, fromFields, fromResultFieldresultfields, allErrors.HasErrors());
                 // Handle Errors
                 var hasErrors = allErrors.HasErrors();
                 if(hasErrors)
                 {
                     DisplayAndWriteError("DsfUniqueActivity", allErrors);
-                    foreach (var error in allErrors.FetchErrors()){
-
-
+                    foreach(var error in allErrors.FetchErrors())
+                    {
                         dataObject.Environment.AddError(error);
                     }
                 }
 
                 if(dataObject.IsDebugMode())
                 {
-
                     DispatchDebugState(dataObject, StateType.Before);
                     DispatchDebugState(dataObject, StateType.After);
                 }
             }
-
         }
 
         void PostExecute(IDSFDataObject dataObject, IEnumerable<string> toresultfields, IEnumerable<string> fromFields, IEnumerable<string> fromResultFieldresultfields, bool hasErrors)
@@ -214,7 +219,7 @@ namespace Dev2.Activities
             return enFindMissingType.StaticActivity;
         }
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {
@@ -233,7 +238,7 @@ namespace Dev2.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

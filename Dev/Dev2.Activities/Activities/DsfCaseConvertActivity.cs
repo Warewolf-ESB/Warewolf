@@ -66,10 +66,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary>       
         protected override void OnExecute(NativeActivityContext context)
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
@@ -79,16 +83,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 CleanArgs();
 
-
                 allErrors.MergeErrors(errors);
 
                 int inputIndex = 1;
                 int outputIndex = 1;
 
-                foreach (ICaseConvertTO item in ConvertCollection.Where(a => !String.IsNullOrEmpty(a.StringToConvert)))
+                foreach(ICaseConvertTO item in ConvertCollection.Where(a => !String.IsNullOrEmpty(a.StringToConvert)))
                 {
                     IsSingleValueRule.ApplyIsSingleValueRule(item.ExpressionToConvert, allErrors);
-                    if (dataObject.IsDebugMode())
+                    if(dataObject.IsDebugMode())
                     {
                         var debugItem = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", inputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
@@ -97,19 +100,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         _debugInputs.Add(debugItem);
                         inputIndex++;
                     }
-                    if (!allErrors.HasErrors())
+                    if(!allErrors.HasErrors())
                     {
                         try
                         {
                             env.ApplyUpdate(item.StringToConvert, TryConvertFunc(item.ConvertType, env));
                         }
-                        catch (Exception e)
+                        catch(Exception e)
                         {
                             allErrors.AddError(e.Message);
                         }
 
-
-                        if (!allErrors.HasErrors() && dataObject.IsDebugMode())
+                        if(!allErrors.HasErrors() && dataObject.IsDebugMode())
                         {
                             var debugItem = new DebugItem();
                             AddDebugItem(new DebugItemStaticDataParams("", outputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
@@ -120,7 +122,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 allErrors.AddError(e.Message);
             }
@@ -141,7 +143,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
         }
-
 
         public Func<DataASTMutable.WarewolfAtom,DataASTMutable.WarewolfAtom> TryConvertFunc(string conversionType,IExecutionEnvironment env)
         {
@@ -348,7 +349,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get ForEach Inputs/Outputs
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             foreach(Tuple<string, string> t in updates)
             {
@@ -364,7 +365,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
 
             foreach(Tuple<string, string> t in updates)

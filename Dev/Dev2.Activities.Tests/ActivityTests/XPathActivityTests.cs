@@ -423,7 +423,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var act = new DsfXPathActivity { ResultsCollection = _resultsCollection, SourceString = "xml" };
 
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(null, null);
+            act.UpdateForEachInputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual("[[recset1(*).field1]]", act.ResultsCollection[0].OutputVariable);
             Assert.AreEqual("//x/a/text()", act.ResultsCollection[0].XPath);
@@ -442,7 +442,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple1 = new Tuple<string, string>("//x/a/text()", "Test");
             var tuple2 = new Tuple<string, string>("xml", "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual("[[recset1(*).field1]]", act.ResultsCollection[0].OutputVariable);
             Assert.AreEqual("Test", act.ResultsCollection[0].XPath);
@@ -459,7 +459,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "//x/a/text()", 1));
             var act = new DsfXPathActivity { ResultsCollection = _resultsCollection, SourceString = "xml" };
 
-            act.UpdateForEachOutputs(null, null);
+            act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual("[[recset1(*).field1]]", act.ResultsCollection[0].OutputVariable);
             Assert.AreEqual("//x/a/text()", act.ResultsCollection[0].XPath);
@@ -478,7 +478,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("[[recset1(*).field1]]", "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test2", act.ResultsCollection[0].OutputVariable);
             Assert.AreEqual("//x/a/text()", act.ResultsCollection[0].XPath);
@@ -496,7 +496,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var tuple1 = new Tuple<string, string>("[[recset1(*).field1]]", "Test");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.ResultsCollection[0].OutputVariable);
             Assert.AreEqual("//x/a/text()", act.ResultsCollection[0].XPath);

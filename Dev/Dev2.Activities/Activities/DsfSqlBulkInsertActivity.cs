@@ -106,9 +106,15 @@ namespace Dev2.Activities
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
+            var dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            var dataObject = context.GetExtension<IDSFDataObject>();
+
             var toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder();
             toUpsert.IsDebug = dataObject.IsDebugMode();
             toUpsert.ResourceID = dataObject.ResourceID;
@@ -121,26 +127,23 @@ namespace Dev2.Activities
                 IWarewolfIterator batchItr;
                 IWarewolfIterator timeoutItr;
                 var parametersIteratorCollection = BuildParametersIteratorCollection(dataObject.Environment, out batchItr, out timeoutItr);
-                
+
                 var currentOptions = BuildSqlBulkCopyOptions();
                 var runtimeDatabase = ResourceCatalog.Instance.GetResource<DbSource>(dataObject.WorkspaceID, Database.ResourceID);
-                if (runtimeDatabase.ServerType == enSourceType.MySqlDatabase)
+                if(runtimeDatabase.ServerType == enSourceType.MySqlDatabase)
                 {
                     DoInsertForMySql(runtimeDatabase, currentOptions, parametersIteratorCollection, batchItr, timeoutItr, dataObject, errorResultTo, allErrors, ref addExceptionToErrorList);
-
                 }
                 else
                 {
                     DoInsertForSqlServer(runtimeDatabase, currentOptions, dataObject, allErrors, batchItr, parametersIteratorCollection, timeoutItr, ref errorResultTo, ref addExceptionToErrorList);
                 }
-                
-                allErrors.MergeErrors(errorResultTo);
-                
 
+                allErrors.MergeErrors(errorResultTo);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
-                if (addExceptionToErrorList)
+                if(addExceptionToErrorList)
                 {
                     allErrors.AddError(e.Message);
                 }
@@ -151,24 +154,22 @@ namespace Dev2.Activities
             finally
             {
                 // Handle Errors
-                if (allErrors.HasErrors())
+                if(allErrors.HasErrors())
                 {
-
                     DisplayAndWriteError("DsfSqlBulkInsertActivity", allErrors);
                     dataObject.Environment.Assign(Result, null);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
-                    if (dataObject.IsDebugMode())
+                    if(dataObject.IsDebugMode())
                     {
                         AddDebugOutputItem(new DebugItemStaticDataParams("Failure", Result, "", "="));
                     }
                 }
-                if (toUpsert.IsDebug)
+                if(toUpsert.IsDebug)
                 {
                     DispatchDebugState(dataObject, StateType.Before);
                     DispatchDebugState(dataObject, StateType.After);
                 }
-                
             }
         }
 
@@ -662,7 +663,7 @@ namespace Dev2.Activities
             return dataTableToInsert;
         }
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {
@@ -694,7 +695,7 @@ namespace Dev2.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

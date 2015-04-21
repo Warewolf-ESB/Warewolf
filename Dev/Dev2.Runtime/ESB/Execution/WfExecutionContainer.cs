@@ -33,11 +33,11 @@ namespace Dev2.Runtime.ESB.Execution
     public class WfExecutionContainer : EsbExecutionContainer
     {
         readonly IWorkflowHelper _workflowHelper;
-
+         public static ResourceCache _parser = new ResourceCache();
         public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : this(sa, dataObj, theWorkspace, esbChannel, new WorkflowHelper())
         {
-
+          
         }
 
         // BUG 9304 - 2013.05.08 - TWR - Added IWorkflowHelper parameter to facilitate testing
@@ -101,13 +101,13 @@ namespace Dev2.Runtime.ESB.Execution
                 var theActivity = activity.Value as DynamicActivity;
           
                 // BUG 9304 - 2013.05.08 - TWR - Added CompileExpressions
-                _workflowHelper.CompileExpressions(theActivity,DataObject.ResourceID);
+                //_workflowHelper.CompileExpressions(theActivity,DataObject.ResourceID);
 
-                IDSFDataObject exeResult = wfFactor.InvokeWorkflow(activity.Value, DataObject,
-                                                                   new List<object> { EsbChannel, }, instanceId,
-                                                                   TheWorkspace, bookmark, out errors);
-
-                result = exeResult.DataListID;
+                //IDSFDataObject exeResult = wfFactor.InvokeWorkflow(activity.Value, DataObject,
+                //                                                   new List<object> { EsbChannel, }, instanceId,
+                //                                                   TheWorkspace, bookmark, out errors);
+                Eval(theActivity,DataObject.ResourceID,DataObject);
+                result = DataObject.DataListID;
             }
             catch(InvalidWorkflowException iwe)
             {
@@ -130,6 +130,12 @@ namespace Dev2.Runtime.ESB.Execution
             }
             Dev2Logger.Log.Info(String.Format("Completed Execution for Service Name:{0} Resource Id: {1} Mode:{2}",DataObject.ServiceName,DataObject.ResourceID,DataObject.IsDebug?"Debug":"Execute"));
             return result;
+        }
+
+        public void  Eval(DynamicActivity dynamicActivity, Guid resourceID,IDSFDataObject dataObject)
+        {
+            var resource=  _parser.Parse(dynamicActivity,resourceID);
+            resource.Execute(dataObject);
         }
 
         public override IExecutionEnvironment Execute(IDSFDataObject inputs, IDev2Activity activity)

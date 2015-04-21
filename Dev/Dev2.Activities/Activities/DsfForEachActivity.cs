@@ -199,12 +199,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
             
 
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+           
             dataObject.ForEachNestingLevel++;
             ErrorResultTO allErrors = new ErrorResultTO();
 
@@ -244,7 +245,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     int idx = exePayload.IndexIterator.FetchNextIndex();
                     if(exePayload.ForEachType != enForEachType.NumOfExecution)
                     {
-                        IterateIOMapping(idx, context);
+                        IterateIOMapping(idx);
                     }
                     else
                     {
@@ -287,7 +288,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <summary>
         /// Iterates the IO mapping.
         /// </summary>
-        private void IterateIOMapping(int idx, NativeActivityContext context)
+        private void IterateIOMapping(int idx)
         {
             string newInputs = string.Empty;
 
@@ -339,7 +340,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
 
                     // push updates for Inputs
-                    tmp.UpdateForEachInputs(updates, context);
+                    tmp.UpdateForEachInputs(updates);
                     if(idx == 1)
                     {
                         operationalData.InnerActivity.OrigCodedInputs = updates;
@@ -357,7 +358,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
 
                     // push updates 
-                    tmp.UpdateForEachOutputs(updates, context);
+                    tmp.UpdateForEachOutputs(updates);
                     if(idx == 1)
                     {
                         operationalData.InnerActivity.OrigCodedOutputs = updates;
@@ -380,7 +381,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
 
                         // push updates 
-                        tmp2.UpdateForEachInputs(updates, context);
+                        tmp2.UpdateForEachInputs(updates);
                         if(idx == 1)
                         {
                             operationalData.InnerActivity.OrigCodedInputs = updates;
@@ -397,7 +398,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
 
                         // push updates 
-                        tmp2.UpdateForEachOutputs(updates, context);
+                        tmp2.UpdateForEachOutputs(updates);
                         if(idx == 1)
                         {
                             operationalData.InnerActivity.OrigCodedOutputs = updates;
@@ -579,7 +580,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
 
                         // push updates for Inputs
-                        tmp.UpdateForEachInputs(updates, context);
+                        tmp.UpdateForEachInputs(updates);
 
 
                         // Restore Outputs ;)
@@ -596,7 +597,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
 
                         // push updates for Inputs
-                        tmp.UpdateForEachOutputs(updates, context);
+                        tmp.UpdateForEachOutputs(updates);
 
                     }
                     else
@@ -619,7 +620,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
 
                             // push updates for Inputs
-                            tmp2.UpdateForEachInputs(updates, context);
+                            tmp2.UpdateForEachInputs(updates);
 
 
                             // Restore Outputs ;)
@@ -636,7 +637,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
 
                             // push updates for Inputs
-                            tmp2.UpdateForEachOutputs(updates, context);
+                            tmp2.UpdateForEachOutputs(updates);
                         }
                     }
                     #endregion
@@ -695,7 +696,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     // Re-jigger the mapping ;)
                     if(operationalData.ForEachType != enForEachType.NumOfExecution)
                     {
-                        IterateIOMapping(idx, context);
+                        IterateIOMapping(idx);
                     }
                     dataObject.ParentInstanceID = UniqueID;
                     // ReSharper disable RedundantTypeArgumentsOfMethod
@@ -742,12 +743,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Get Inputs/Outputs
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             throw new NotImplementedException();
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             throw new NotImplementedException();
         }
@@ -755,6 +756,76 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override enFindMissingType GetFindMissingType()
         {
             return enFindMissingType.ForEach;
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
+            _debugInputs = new List<DebugItem>();
+            _debugOutputs = new List<DebugItem>();
+
+
+
+            dataObject.ForEachNestingLevel++;
+            ErrorResultTO allErrors = new ErrorResultTO();
+
+            InitializeDebug(dataObject);
+            try
+            {
+                ErrorResultTO errors;
+                ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out errors);
+
+                var itr = exePayload.IndexIterator;
+                string error;
+                ForEachInnerActivityTO innerA = GetInnerActivity(out error);
+                var exeAct =innerA.InnerActivity;
+                allErrors.AddError(error);
+
+                exePayload.InnerActivity = innerA;
+                var ind = itr.MaxIndex();
+                var count = 0;
+                while (itr.HasMore() && count<ind)
+                {
+                    
+                    operationalData = exePayload;
+                    int idx = exePayload.IndexIterator.FetchNextIndex();
+                    IterateIOMapping(idx);
+                    exeAct.InnerActivity.Execute(dataObject);
+
+                    count++;
+                }
+                if (errors.HasErrors())
+                {
+                    allErrors.MergeErrors(errors);
+                    return;
+                }
+
+
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Log.Error("DSFForEach", e);
+                allErrors.AddError(e.Message);
+            }
+            finally
+            {
+                // Handle Errors
+                if (allErrors.HasErrors())
+                {
+                    DisplayAndWriteError("DsfForEachActivity", allErrors);
+                    foreach (var fetchError in allErrors.FetchErrors())
+                    {
+                        dataObject.Environment.AddError(fetchError);
+                    }
+
+                    dataObject.ParentInstanceID = _previousParentId;
+                }
+                if (dataObject.IsDebugMode())
+                {
+                    DispatchDebugState(dataObject, StateType.After);
+                }
+
+
+            }
         }
 
         #region GetForEachInputs/Outputs
