@@ -171,6 +171,10 @@ namespace Dev2.Activities
             }
             dataObject.ParentInstanceID = UniqueID;
             dataObject.IsDebugNested = true;
+            if (dataObject.IsDebugMode())
+            {
+                DispatchDebugState(dataObject, StateType.After);
+            }
            foreach(var dsfActivity in Activities)
             {
                 var act = dsfActivity as IDev2Activity;
@@ -179,10 +183,7 @@ namespace Dev2.Activities
                     act.Execute(dataObject);
                 }
             }
-            if(dataObject.IsDebugMode())
-            {
-                DispatchDebugState(dataObject, StateType.After);
-            }
+            
             OnCompleted(dataObject);
         }
 
