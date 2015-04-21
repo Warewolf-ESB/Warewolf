@@ -139,7 +139,24 @@ namespace Dev2.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject);
+            dataObject.ForEachNestingLevel++;
+            InitializeDebug(dataObject);
+            if (dataObject.IsDebugMode())
+            {
+                DispatchDebugState(dataObject, StateType.Before);
+            }
+            dataObject.ParentInstanceID = UniqueID;
+            dataObject.IsDebugNested = true;
+            _innerSequence.Activities.Clear();
+            foreach (var dsfActivity in Activities)
+            {
+                _innerSequence.Activities.Add(dsfActivity);
+            }
+
+            if (dataObject.IsDebugMode())
+            {
+                DispatchDebugState(dataObject, StateType.After);
+            }
             context.ScheduleActivity(_innerSequence, OnCompleted);
         }
 

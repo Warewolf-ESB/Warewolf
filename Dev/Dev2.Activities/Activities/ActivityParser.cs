@@ -67,19 +67,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var tool = ParseTools(start);
                     return tool.FirstOrDefault();
                 }
-                else
+                var flowstart = (chart.StartNode) as FlowSwitch<string>;
+                if(flowstart != null)
                 {
-                    var flowstart = (chart.StartNode) as FlowSwitch<string>;
-                    if(flowstart != null)
-                    {
-                        return ParseSwitch(flowstart).FirstOrDefault();
-                    }
-                    else
-                    {
-                        var flowdec = (chart.StartNode) as FlowDecision;
-                        return ParseDecision(flowdec).FirstOrDefault();
-                    }
+                    return ParseSwitch(flowstart).FirstOrDefault();
                 }
+                var flowdec = (chart.StartNode) as FlowDecision;
+                return ParseDecision(flowdec).FirstOrDefault();
             }
             return null;
         }
