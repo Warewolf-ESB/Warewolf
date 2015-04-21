@@ -139,7 +139,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     TrueArm   = ParseTools(decision.True),
                     FalseArm   = ParseTools(decision.False),
-                    Conditions = decisionStack
+                    Conditions = decisionStack,
+                    And=decisionStack.Mode== Dev2DecisionMode.AND
                 }};
             }
             throw new Exception("Invalid activity");

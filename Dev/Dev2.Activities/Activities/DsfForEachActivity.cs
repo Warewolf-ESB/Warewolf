@@ -760,6 +760,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject)
         {
+            _previousParentId = dataObject.ParentInstanceID;
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
 
@@ -779,7 +780,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 ForEachInnerActivityTO innerA = GetInnerActivity(out error);
                 var exeAct =innerA.InnerActivity;
                 allErrors.AddError(error);
+                if (dataObject.IsDebugMode())
+                {
+                    DispatchDebugState(dataObject, StateType.Before);
 
+                }
+                dataObject.ParentInstanceID = UniqueID;
+                dataObject.IsDebugNested = true;
+                if (dataObject.IsDebugMode())
+                {
+                    DispatchDebugState(dataObject, StateType.After);
+                }
                 exePayload.InnerActivity = innerA;
                 var ind = itr.MaxIndex();
                 var count = 0;
@@ -808,6 +819,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
+                dataObject.ParentInstanceID = _previousParentId;
+                dataObject.ForEachNestingLevel--;
+                dataObject.IsDebugNested = false;
                 // Handle Errors
                 if (allErrors.HasErrors())
                 {
@@ -819,10 +833,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     dataObject.ParentInstanceID = _previousParentId;
                 }
-                if (dataObject.IsDebugMode())
-                {
-                    DispatchDebugState(dataObject, StateType.After);
-                }
+        
 
 
             }
