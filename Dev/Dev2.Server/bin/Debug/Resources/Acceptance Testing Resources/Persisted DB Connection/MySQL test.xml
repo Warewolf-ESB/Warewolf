@@ -23,7 +23,7 @@
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>MySQL test</DisplayName>
-  <Category>Acceptance Testing Resources\Persisted DB Connection\MySQL test</Category>
+  <Category>Testing\Persisted DB Connection\MySQL test</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
@@ -37,9 +37,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>TPY+DAImzG19FlBOjxnvguVozN0=</DigestValue>
+        <DigestValue>K9HgPrMfqH8C9l37LWuGLiSNj4Y=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>P8BkXZTuMTYW5I+O9PjaAOUzpfhN1KMAr3fIqP5EL6G7eTBBNlWTB23IkWOKZbGWm21Kwmarg7MXjgC6vPDGqtkUaleozDImkEbIiy7s9eamcTQTsKD+E1NCtHAwLANtP2T5erS37VWCAwNUptHyUuazmwwes1eUpXfbL8zYUD4=</SignatureValue>
+    <SignatureValue>KLm9VWPxQ+pF+kHKl6CAx3iLkv7z6TfjaTsikd0Liiwhqz7+HD8aCf6x4/VAUbTXQX0a3sHQmYG792Z/+nQUhYTI43Q1SiymO72MxeKDR0KI1zWgx4bD/V/2oPJcAmDNw+JRw3Gal1qUBF2dgBLirP+cqciO91dqePqf8tHsFOo=</SignatureValue>
   </Signature>
 </Service>

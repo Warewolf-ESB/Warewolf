@@ -23,7 +23,7 @@
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>SQL test</DisplayName>
-  <Category>Acceptance Testing Resources\Persisted DB Connection\SQL test</Category>
+  <Category>Testing\Persisted DB Connection\SQL test</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
@@ -37,9 +37,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>7wNLGjahFDQngpI6aM8j6WMK1Rg=</DigestValue>
+        <DigestValue>M/e2uZKkd8oAMWbAzxhzdUV+/p8=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>Tt//ymzheVCPFKpRzY5a33Dj+Tuf3nrTVq9KqLkgogsaqtz/LkHbEE6ybPtFr4ZFx4mpzIOvLHl8Oi88UIRzJSPxwZRhG1Ko0s9CYgRwugqIap3k1oNA0WF0riiFlqNCHc6G4MYniDVd9BEWLGBHKaIUy2O7n6sCL99/lQzvJMI=</SignatureValue>
+    <SignatureValue>OgXZbqVrqr4h18aZEofmzYTp/TDTAi4dmdXmTo0ajAwy2U/hW9gar0XKVlZXWiNoEibSHPjuuIYIFfLKmz5y0P5Kxs4DQG+iiSbNm1zyxg8eTbNhP+thy3M/FHDO+d3/rHraQnGSb33fRbaIxnRbllX8BBLr4c2MH3jFAkkY2Lg=</SignatureValue>
   </Signature>
 </Service>

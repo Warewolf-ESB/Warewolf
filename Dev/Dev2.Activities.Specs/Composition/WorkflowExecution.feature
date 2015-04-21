@@ -4023,15 +4023,14 @@ Examples:
 	  |                      |
 	  | [[Result]] = Pass |
 
-Scenario: SQL/MySQL Server Persisted Connection
+Scenario: Server Persisted Connection
 # Note that the result is viewed in the browser
-Given I have a workflow "SQL Persisted DB Connection Test" and contains workflows "Get t1" and "Get t2"
-And "MySQL test" Database service
-And "SQL test" Database service
+Given I have a workflow "Persisted DB Connection Test" that takes an input <DbService>
 When "SQL Persisted DB Connection Test" is exceuted
 Then the execution has "NO" error
-And the debug output as
+And the debug Result is <Result>
 Examples: 
- | DbSource | Result |
- | SQL      | Pass   |
- | MySQL    | Pass   |
+ | #     | DbService | Result |
+ | SQL   | SQL       | Pass   |
+ | MySQL | MySQL     | Pass   |  
+
