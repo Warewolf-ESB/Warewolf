@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Text;
 using Dev2.Data.Decisions.Operations;
 using Dev2.DataList.Contract;
@@ -30,6 +31,12 @@ namespace Dev2.Data.SystemTemplates.Models
         public string Col2 { get; set; }
 
         public string Col3 { get; set; }
+
+        public IEnumerable<DataASTMutable.WarewolfAtom> Cols1 { get; set; }
+
+        public IEnumerable<DataASTMutable.WarewolfAtom> Cols2 { get; set; }
+
+        public IEnumerable<DataASTMutable.WarewolfAtom> Cols3 { get; set; }
 
         public int PopulatedColumnCount
         {

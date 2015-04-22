@@ -530,12 +530,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         Guid datalistId = dataObject.DataListID;
                         if (datalistId != GlobalConstants.NullDataListID)
                         {
-                            BeforeExecutionStart(dataObject, allErrors);
-                            allErrors.MergeErrors(tmpErrors);
+         
 
                             dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
                             dataObject.ResourceID = ResourceID.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
-
+                            BeforeExecutionStart(dataObject, allErrors);
+                            allErrors.MergeErrors(tmpErrors);
                             // Execute Request
                             ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors);
 

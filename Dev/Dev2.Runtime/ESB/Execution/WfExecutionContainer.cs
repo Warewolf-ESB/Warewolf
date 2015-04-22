@@ -21,7 +21,6 @@ using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices.Objects;
-using Dev2.Runtime.ESB.WF;
 using Dev2.Runtime.Security;
 using Dev2.Utilities;
 using Dev2.Workspaces;
@@ -59,9 +58,8 @@ namespace Dev2.Runtime.ESB.Execution
            // WorkflowApplicationFactory wfFactor = new WorkflowApplicationFactory();
             Guid result = GlobalConstants.NullDataListID;
 
-            // set current bookmark as per DataObject ;)
-            string bookmark = DataObject.CurrentBookmarkName;
-            Guid instanceId = DataObject.WorkflowInstanceId;
+
+
 
             // Set Service Name
             DataObject.ServiceName = ServiceAction.ServiceName;
