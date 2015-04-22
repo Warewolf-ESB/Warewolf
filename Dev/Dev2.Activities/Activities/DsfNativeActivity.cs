@@ -12,6 +12,7 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -58,6 +59,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string InputMapping { get; set; }
 
         public string OutputMapping { get; set; }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual IDev2Activity InnerActivity { get { return this; } set{} }
 
         public bool IsWorkflow { get; set; }
@@ -738,7 +740,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected abstract void ExecuteTool(IDSFDataObject dataObject);
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IEnumerable<IDev2Activity> NextNodes { get; set; }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] 
         public Guid ActivityId { get; set; }
 
 
