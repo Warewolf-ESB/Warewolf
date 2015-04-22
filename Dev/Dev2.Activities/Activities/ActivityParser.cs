@@ -152,13 +152,14 @@ namespace Dev2.Activities
                 return null;
             if (seenActivities.ContainsKey(action.UniqueID))
                 return new List<IDev2Activity> { seenActivities[action.UniqueID]};
+            if (!seenActivities.ContainsKey(action.UniqueID))
+            {
+                seenActivities.Add(action.UniqueID, action);
+            }
             var tools = ParseTools(startNode.Next, seenActivities);
 
             action.NextNodes = tools;
-            if (!seenActivities.ContainsKey(action.UniqueID))
-            {
-                seenActivities.Add(action.UniqueID,action);
-            }
+
             return new List<IDev2Activity> { action };
         }
 

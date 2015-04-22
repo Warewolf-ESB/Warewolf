@@ -798,7 +798,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     
                     operationalData = exePayload;
                     int idx = exePayload.IndexIterator.FetchNextIndex();
-                    IterateIOMapping(idx);
+                    if (exePayload.ForEachType != enForEachType.NumOfExecution)
+                    {
+                        IterateIOMapping(idx);
+                    }
+         
                     exeAct.InnerActivity.Execute(dataObject);
 
                     count++;
