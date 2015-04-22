@@ -36,7 +36,10 @@ let rec  EvalUpdate  (env: WarewolfEnvironment) (lang:string) (func: WarewolfAto
         | RecordSetNameExpression x -> let data = env.RecordSets.[x.Name].Data
                                        let newData = Map.map (fun a b->   (ApplyStarToColumn func env {Name=x.Name;Column =a; Index=Star} )) data
                                        env
-        | ComplexExpression  a -> List.map LanguageExpressionToString a|> List.map  (Eval env)  |> List.map EvalResultToString |> fun a-> System.String.Join("",a) |> (fun a ->EvalUpdate env a func )
+        | ComplexExpression  a -> let bob = List.map LanguageExpressionToString a |> List.map  (Eval env)  |> List.map EvalResultToString |> fun a-> System.String.Join("",a)
+                                  if bob = lang
+                                  then env
+                                  else bob|> (fun a ->EvalUpdate env a func )
 
 and ApplyStarToColumn (func: WarewolfAtom->WarewolfAtom) (env:WarewolfEnvironment) (recset:RecordSetIdentifier)  = 
     if recset.Column = PositionColumn then
