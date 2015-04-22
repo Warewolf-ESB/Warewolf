@@ -532,6 +532,10 @@ namespace Dev2.Runtime.Hosting
 
         void BuildResourceActivityCache(Guid workspaceID, IEnumerable<IResource> userServices)
         {
+            if (_parsers.ContainsKey(workspaceID))
+            {
+                return;
+            }
             foreach(var resource in userServices)
             {
                 AddOrUpdateToResourceActivityCache(workspaceID, resource);
