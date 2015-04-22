@@ -1232,7 +1232,7 @@ namespace Dev2.Activities.Specs.Composition
             {
                 for(int i = 0; i < versions.Count; i++)
                 {
-                    var v1 = table.Rows[i + 1][0].Split(new[] { ' ' });
+                    var v1 = table.Rows[i + 1][0].Split(' ');
                     Assert.IsTrue(versions[i].DisplayName.Contains(v1[0]));
 
                 }

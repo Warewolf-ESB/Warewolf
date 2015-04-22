@@ -239,12 +239,7 @@ namespace Dev2.Runtime.ServiceModel
 
         static string FixResponse(string result)
         {
-            return result;/*
-            if(string.IsNullOrEmpty(result))
-            {
-                return result;
-            }
-            return WebUtility.HtmlDecode(result);*/
+            return result;
         }
 
         #endregion

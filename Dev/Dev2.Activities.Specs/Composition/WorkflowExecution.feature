@@ -101,7 +101,7 @@ Scenario: Workflow with an assign and webservice
 	  | 2 | [[prefix]] = a |
 	  And the 'InternalCountriesServiceTest' in WorkFlow 'TestWebServiceWF' debug inputs as
 	  |  |
-	  | [[ext]] = json |
+	  | [[extension]] = json |
 	  | [[prefix]] = a |
 	  And the 'InternalCountriesServiceTest' in Workflow 'TestWebServiceWF' debug outputs as
 	  |                                            |
@@ -130,7 +130,7 @@ Scenario: Workflow with an assign and webservice different mappings
 	  | 2 | [[prefix]] = a |
 	  And the 'InternalCountriesServiceTest' in WorkFlow 'TestWebServiceDiffMappings' debug inputs as
 	  |  |
-	  | [[ext]] = json |
+	  | [[extension]] = json |
 	  | [[prefix]] = a |
 	  And the 'InternalCountriesServiceTest' in Workflow 'TestWebServiceDiffMappings' debug outputs as
 	  |                                            |
@@ -157,7 +157,7 @@ Scenario: Workflow with an assign and remote workflow
 	  | 1 | [[inputData]] = hello |
 	   And the 'WorkflowUsedBySpecs' in WorkFlow 'TestAssignWithRemote' debug inputs as
 	  |                       |
-	  | [[inputData]] = hello |
+	  | [[input]] = hello |
 	  And the 'Setup Assign (1)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
 	  | # |                |
 	  | 1 | [[in]] = hello |
@@ -3754,7 +3754,7 @@ Scenario: Error from workflow service is expected to buble out
 	  | 1 | [[inputData]] = hello |
 	   And the 'WorkflowUsedBySpecs' in WorkFlow 'TestAssignWithRemote123' debug inputs as
 	  |                       |
-	  | [[inputData]] = hello |
+	  | [[input]] = hello |
 	  And the 'Setup Assign (1)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
 	  | # |                |
 	  | 1 | [[in]] = hello |
@@ -3807,9 +3807,7 @@ Scenario Outline: Database SqlDB  service using * indexes
 	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
 	  |                      |
 	  | [[rec(1).name]] = String |
-	  | [[rec(2).name]] = String |
-	  | [[rec(1).email]] = String |
-	  | [[rec(2).email]] = String |
+	  | [[rec(2).name]] = String |	 
 Examples: 
     | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
     | TestWFWithDBServiceMails1 | SqlEmail    | [[rec(*).name]] | [[rec(*).email]] | NO           |
@@ -3875,8 +3873,8 @@ Examples:
      Then the workflow execution has "<errorOccured>" error
 	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
 	  |                      |
-	  | [[rec(2).name]] = dora |
-	  | [[rec(2).email]] = dora@explorers.co.za |
+	  | [[rec(1).name]] = dora |
+	  | [[rec(1).email]] = dora@explorers.co.za |
 Examples: 
     | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
     | TestWFWithDBServiceMails4 | SqlEmail    | [[rec().name]] | [[rec().email]] | NO           |
