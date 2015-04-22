@@ -14,7 +14,6 @@ using System.Activities;
 using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Enums;
 using Dev2.Factories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

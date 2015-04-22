@@ -20,7 +20,6 @@ using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Enums;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

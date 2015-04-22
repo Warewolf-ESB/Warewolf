@@ -22,10 +22,10 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.WF;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Utilities;
 using Dev2.Workspaces;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 
 namespace Dev2.Runtime.ESB.Execution
@@ -33,7 +33,6 @@ namespace Dev2.Runtime.ESB.Execution
     public class WfExecutionContainer : EsbExecutionContainer
     {
         readonly IWorkflowHelper _workflowHelper;
-        public static ResourceCache _parser = new ResourceCache();
 
         public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : this(sa, dataObj, theWorkspace, esbChannel, new WorkflowHelper())
@@ -150,7 +149,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         public void Eval(Func<DynamicActivity> dynamicActivity, Guid resourceID, IDSFDataObject dataObject)
         {
-            var resource=  _parser.Parse(dynamicActivity,resourceID);
+            var resource=  ResourceCatalog.Instance.Parse(TheWorkspace.ID,dynamicActivity,resourceID);
             resource.Execute(dataObject);
         }
 

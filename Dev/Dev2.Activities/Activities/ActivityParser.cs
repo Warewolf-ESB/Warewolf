@@ -1,57 +1,16 @@
 using System;
 using System.Activities;
 using System.Activities.Statements;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows.Input;
-using Dev2.Activities;
 using Dev2.Data.SystemTemplates.Models;
 using Newtonsoft.Json;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace Unlimited.Applications.BusinessDesignStudio.Activities
+namespace Dev2.Activities
 {
-    public  class ResourceCache
-    {
-        ActivityParser _activityParser;
-        ConcurrentDictionary<Guid,IDev2Activity> _cache;
-
-        public ResourceCache(ActivityParser activityParser, ConcurrentDictionary<Guid, IDev2Activity> cache)
-        {
-            _activityParser = activityParser;
-            _cache = cache;
-        }
-
-        public ResourceCache()
-        {
-            _activityParser = new ActivityParser();
-            _cache = new ConcurrentDictionary<Guid, IDev2Activity>();
-        }
-
-        public IDev2Activity Parse(Func<DynamicActivity> actFunc,Guid resourceIdGuid)
-        {
-            if(_cache.ContainsKey(resourceIdGuid))
-            {
-                return _cache[resourceIdGuid];
-            }
-            var dynamicActivity = actFunc();
-            IDev2Activity act = _activityParser.Parse(dynamicActivity);
-            if (_cache.TryAdd(resourceIdGuid, act))
-            {
-                return act;
-            }
-            return _cache[resourceIdGuid];
-        }
-
-        public bool HasId(Guid resourceID)
-        {
-            return _cache.ContainsKey(resourceID);
-        }
-    }
-    
-    
-    public  class ActivityParser : IActivityParser
+    public class ActivityParser : IActivityParser
     {
         #region Implementation of IActivityParser
 

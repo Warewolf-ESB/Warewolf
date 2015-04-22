@@ -25,7 +25,6 @@ using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Converters;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.Interfaces;
 using Dev2.Validation;
 using Warewolf.Storage;
