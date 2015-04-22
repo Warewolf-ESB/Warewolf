@@ -485,20 +485,20 @@ namespace Dev2.Runtime.Hosting
 
         public void LoadWorkspace(Guid workspaceID)
         {
-            var workspaceLock = GetWorkspaceLock(workspaceID);
+            var @lock = GetWorkspaceLock(workspaceID);
             if (_loading)
             {
                 return;
             }
             _loading = true;
-            lock(workspaceLock)
+            lock(@lock)
             {
                 _workspaceResources.AddOrUpdate(workspaceID,
                     id => LoadWorkspaceImpl(workspaceID),
                     (id, resources) => LoadWorkspaceImpl(workspaceID));
                
             }
-            lock(workspaceLock)
+            lock(@lock)
             {
                 List<IResource> workspaceResources;
                 if(_workspaceResources.TryGetValue(workspaceID, out workspaceResources)){
