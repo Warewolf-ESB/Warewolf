@@ -4,6 +4,7 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2.Common;
 using Dev2.Data.SystemTemplates.Models;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -16,6 +17,10 @@ namespace Dev2.Activities
 
         public IDev2Activity Parse(DynamicActivity dynamicActivity,Dictionary<string,IDev2Activity> seenActivities )
         {
+            try
+            {
+
+    
             var chart = WorkflowInspectionServices.GetActivities(dynamicActivity).FirstOrDefault() as Flowchart;
             if(chart != null)
             {
@@ -35,6 +40,13 @@ namespace Dev2.Activities
                 return ParseDecision(flowdec, seenActivities).FirstOrDefault();
             }
             return null;
+            }
+            catch (InvalidWorkflowException e)
+            {
+
+                Dev2Logger.Log.Error(e);
+                throw;
+            }
         }
 
         IEnumerable<IDev2Activity> ParseTools(FlowNode startNode, Dictionary<string, IDev2Activity> seenActivities)
@@ -130,16 +142,11 @@ namespace Dev2.Activities
                 return null;
             if (seenActivities.ContainsKey(action.UniqueID))
                 return new List<IDev2Activity> { seenActivities[action.UniqueID]};
-            else
-            {
-                var tools = ParseTools(startNode.Next, seenActivities);
+            var tools = ParseTools(startNode.Next, seenActivities);
 
-                action.NextNodes = tools;
-                seenActivities.Add(action.UniqueID, action);
-                return new List<IDev2Activity> { action };
-            }
-           
+            action.NextNodes = tools;
 
+            return new List<IDev2Activity> { action };
         }
 
         #endregion
