@@ -150,7 +150,6 @@ namespace Dev2.Services.Execution
         {
             errors = new ErrorResultTO();
             var invokeErrors = new ErrorResultTO();
-            SqlExecution(invokeErrors);
             
             switch(Source.ServerType)
             {
@@ -192,27 +191,24 @@ namespace Dev2.Services.Execution
                     var rowIndex = Data.Util.DataListUtil.ExtractIndexRegionFromRecordset(expression);
                     var rsNameUse = def.RecordSetName;
                     environment.AssignDataShape(def.RawValue);
-                    if (string.IsNullOrEmpty(rsName))
-                    {
-                        rsName = rsNameUse;
-                    }
-                    if (string.IsNullOrEmpty(rsName))
-                    {
-                        rsName = def.Name;
-                    }
-
-                    if (processedRecNames.Contains(rsName))
-                    {
-                        continue;
-                    }
-
-                    processedRecNames.Add(rsName);
-
-                    // build up the columns ;)
-
+                    
                     if (Data.Util.DataListUtil.IsValueRecordset(rs))
                     {
+                        if (string.IsNullOrEmpty(rsName))
+                        {
+                            rsName = rsNameUse;
+                        }
+                        if (string.IsNullOrEmpty(rsName))
+                        {
+                            rsName = def.Name;
+                        }
 
+                        if (processedRecNames.Contains(rsName))
+                        {
+                            continue;
+                        }
+
+                        processedRecNames.Add(rsName);
                         IDictionary<int, string> colMapping = BuildColumnNameToIndexMap(
                                                                                         executeService.Columns,
                                                                                         defs);
@@ -272,7 +268,7 @@ namespace Dev2.Services.Execution
 
                             while (pos < cols.Count && idx == -1)
                             {
-                                if (cols[pos].ColumnName == rsName)
+                                if (cols[pos].ColumnName == expression)
                                 {
                                     idx = pos;
                                 }

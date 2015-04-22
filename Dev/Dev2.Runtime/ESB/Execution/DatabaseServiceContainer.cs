@@ -50,6 +50,7 @@ namespace Dev2.Runtime.ESB.Execution
             var databaseServiceExecution = _databaseServiceExecution as DatabaseServiceExecution;
             if(databaseServiceExecution != null)
             {
+                databaseServiceExecution.InstanceInputDefinitions = InstanceInputDefinition;
                 databaseServiceExecution.InstanceOutputDefintions = InstanceOutputDefinition;
             }
 

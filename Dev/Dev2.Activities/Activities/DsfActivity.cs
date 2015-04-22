@@ -17,6 +17,7 @@ using System.Security.Authentication;
 using System.Text;
 using Dev2;
 using Dev2.Activities;
+using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
@@ -673,7 +674,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var results = new List<IDebugItem>();
             foreach(IDev2Definition dev2Definition in inputs)
             {
-               
+                if (string.IsNullOrEmpty(dev2Definition.RawValue))
+                {
+                    continue;
+                }
                 var tmpEntry = env.Eval( dev2Definition.RawValue);
 
                 DebugItem itemToAdd = new DebugItem();
@@ -683,7 +687,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var warewolfAtomResult = tmpEntry as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
                     if (warewolfAtomResult != null)
                     {
-                        AddDebugItem(new DebugEvalResult(dev2Definition.RawValue, "", env), itemToAdd);
+                        var variableName = dev2Definition.Name;
+                        if (!string.IsNullOrEmpty(dev2Definition.RecordSetName))
+                        {
+                            variableName = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "1");
+                        }
+                        AddDebugItem(new DebugItemWarewolfAtomResult(warewolfAtomResult.Item.ToString(), DataListUtil.AddBracketsToValueIfNotExist(variableName),""), itemToAdd);
                     }
                     results.Add(itemToAdd);
                 }
@@ -693,7 +702,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var warewolfAtomListResult = tmpEntry as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
                     if (warewolfAtomListResult != null)
                     {
-                        AddDebugItem(new DebugEvalResult(dev2Definition.RawValue, "", env), itemToAdd);
+                        var variableName = dev2Definition.Name;
+                        if (!string.IsNullOrEmpty(dev2Definition.RecordSetName))
+                        {
+                            variableName = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "*");
+                            AddDebugItem(new DebugItemWarewolfAtomListResult(warewolfAtomListResult, "", "", DataListUtil.AddBracketsToValueIfNotExist(variableName), "", "", "="), itemToAdd);
+                        }
+                        else
+                        {
+                            var warewolfAtom = warewolfAtomListResult.Item.Last();
+                            AddDebugItem(new DebugItemWarewolfAtomResult(warewolfAtom.ToString(), DataListUtil.AddBracketsToValueIfNotExist(variableName), ""), itemToAdd);
+                        }
                     }
                     results.Add(itemToAdd);
                 }
@@ -721,15 +740,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public void  GetDebugOutputsFromEnv(IExecutionEnvironment environment)
         {
             IDev2LanguageParser parser = DataListFactory.CreateOutputParser();
-            IList<IDev2Definition> inputs = parser.Parse(OutputMapping);
+            IList<IDev2Definition> outputs = parser.Parse(OutputMapping);
             var results = new List<DebugItem>();
-            foreach(IDev2Definition dev2Definition in inputs)
+            foreach(IDev2Definition dev2Definition in outputs)
             {
                 try
                 {
                     DebugItem itemToAdd = new DebugItem();
-                     string val = environment.ToLast(dev2Definition.RawValue);
-                    AddDebugItem(new DebugEvalResult(val, "", environment), itemToAdd);
+                    AddDebugItem(new DebugEvalResult(dev2Definition.RawValue, "", environment), itemToAdd);
                     results.Add(itemToAdd);
                 }
                 catch (Exception e)

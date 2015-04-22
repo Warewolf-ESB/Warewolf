@@ -150,7 +150,7 @@ and EvalMultiAssignOp  (env:WarewolfEnvironment)  (value :IAssignValue ) =
                             |   RecordSetExpression b -> AddToRecordSetFramed env b x
                             |   WarewolfAtomAtomExpression a -> env
                             |   _ -> let expression = (EvalToExpression env value.Name)
-                                     if System.String.IsNullOrEmpty(  expression) || ( expression) = "[[]]" then
+                                     if System.String.IsNullOrEmpty(  expression) || ( expression) = "[[]]" || ( expression) = value.Name then
                                         env
                                      else
                                         EvalMultiAssignOp env (new WarewolfParserInterop.AssignValue(  expression , value.Value))
@@ -160,7 +160,7 @@ and EvalMultiAssignOp  (env:WarewolfEnvironment)  (value :IAssignValue ) =
                         |   RecordSetExpression b -> AddToRecordSetFramedWithAtomList env b  x shouldUseLast (Some value)
                         |   WarewolfAtomAtomExpression a -> env
                         |    _ -> let expression = (EvalToExpression env value.Name)
-                                  if System.String.IsNullOrEmpty(  expression) || ( expression) = "[[]]" then
+                                  if System.String.IsNullOrEmpty(  expression) || ( expression) = "[[]]" || ( expression) = value.Name then
                                         env
                                   else
                                         EvalMultiAssignOp env (new WarewolfParserInterop.AssignValue(  expression , value.Value))
