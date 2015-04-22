@@ -62,59 +62,65 @@ namespace Dev2.Activities
             ErrorResultTO allErrors = new ErrorResultTO();
             try
             {
-            _debugOutputs.Clear();
-            _debugInputs.Clear();
-            if(dataObject.IsDebugMode())
-                _debugInputs = CreateDebugInputs(dataObject.Environment);
+                _debugOutputs.Clear();
+                _debugInputs.Clear();
+                if (dataObject.IsDebugMode())
+                    _debugInputs = CreateDebugInputs(dataObject.Environment);
 
-            var stack = Conditions.TheStack.Select(a => parseDecision(dataObject.Environment, a));
-     
-            
-            var factory = Data.Decisions.Operations.Dev2DecisionFactory.Instance();
-            var res = stack.SelectMany(a=>
-            {
-                IList<bool> ret = new List<bool>();
-                var iter = new WarewolfListIterator();
-                var c1 = new WarewolfAtomIterator(a.Cols1);
-                 var c2 = new WarewolfAtomIterator(a.Cols2);
-                 var c3 = new WarewolfAtomIterator(a.Cols3);
-                iter.AddVariableToIterateOn(c1);
-                iter.AddVariableToIterateOn(c2);
-                iter.AddVariableToIterateOn(c3);
-                while(iter.HasMoreData())
-                {
-                   ret.Add( factory.FetchDecisionFunction(a.EvaluationFn).Invoke(new[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) }));
-                }
-                return ret;
-                
-            });
-            var resultval = And? res.Aggregate(true, (a, b) => a && b) : res.Any(a=>a);
-            if (dataObject.IsDebugMode())
-                _debugOutputs = GetDebugOutputs(dataObject.Environment,resultval.ToString());
-            if (dataObject.IsDebugMode())
-            {
+                var stack = Conditions.TheStack.Select(a => parseDecision(dataObject.Environment, a));
 
-                DispatchDebugState(dataObject, StateType.Before);
-                DispatchDebugState(dataObject, StateType.After);
-            }
-            if (resultval)
-            {
-                var activity = TrueArm.FirstOrDefault();
-                if(activity != null)
+
+                var factory = Data.Decisions.Operations.Dev2DecisionFactory.Instance();
+                var res = stack.SelectMany(a =>
                 {
-                    activity.Execute(dataObject);
+                    IList<bool> ret = new List<bool>();
+                    var iter = new WarewolfListIterator();
+                    var c1 = new WarewolfAtomIterator(a.Cols1);
+                    var c2 = new WarewolfAtomIterator(a.Cols2);
+                    var c3 = new WarewolfAtomIterator(a.Cols3);
+                    iter.AddVariableToIterateOn(c1);
+                    iter.AddVariableToIterateOn(c2);
+                    iter.AddVariableToIterateOn(c3);
+                    while (iter.HasMoreData())
+                    {
+                        ret.Add(factory.FetchDecisionFunction(a.EvaluationFn).Invoke(new[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) }));
+                    }
+                    return ret;
+
+                });
+                var resultval = And ? res.Aggregate(true, (a, b) => a && b) : res.Any(a => a);
+                if (dataObject.IsDebugMode())
+                    _debugOutputs = GetDebugOutputs(dataObject.Environment, resultval.ToString());
+                if (dataObject.IsDebugMode())
+                {
+
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
+                }
+                if (resultval)
+                {
+                    if (TrueArm != null)
+                    {
+                        var activity = TrueArm.FirstOrDefault();
+                        if (activity != null)
+                        {
+                            activity.Execute(dataObject);
+                        }
+                    }
+                }
+                else
+                {
+                    if (FalseArm != null)
+                    {
+                        var activity = FalseArm.FirstOrDefault();
+                        if (activity != null)
+                        {
+                            activity.Execute(dataObject);
+                        }
+                    }
                 }
             }
-            else
-            {
-                var activity = FalseArm.FirstOrDefault();
-                if(activity != null)
-                {
-                    activity.Execute(dataObject);
-                }
-            }
-                  }
-            catch(Exception e)
+            catch (Exception e)
             {
                 allErrors.AddError(e.Message);
             }
@@ -122,7 +128,7 @@ namespace Dev2.Activities
             {
                 // Handle Errors
                 var hasErrors = allErrors.HasErrors();
-                if(hasErrors)
+                if (hasErrors)
                 {
                     DisplayAndWriteError("DsfDeleteRecordsActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
@@ -130,7 +136,7 @@ namespace Dev2.Activities
 
                 }
 
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
 
                     //DispatchDebugState(dataObject, StateType.Before);

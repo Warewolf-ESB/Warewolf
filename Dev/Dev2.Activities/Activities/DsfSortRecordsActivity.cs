@@ -91,6 +91,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     allErrors.AddError("No recordset given");
                 }
             }
+                catch(Exception err)
+                {
+                    allErrors.AddError(err.Message);
+                }
             finally
             {
                 if(allErrors.HasErrors())

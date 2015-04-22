@@ -25,3 +25,8 @@ and LanguageExpression =
     | WarewolfAtomAtomExpression of WarewolfAtom
     | ComplexExpression of LanguageExpression list
     | RecordSetNameExpression of RecordSetName
+
+let tryParseIndex (x:Index) =
+   match x  with 
+        | IntIndex a -> if a<0 then raise (new System.IndexOutOfRangeException( "negative index") )else x
+        | _->x

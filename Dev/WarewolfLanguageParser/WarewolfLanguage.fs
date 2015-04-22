@@ -363,7 +363,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 52 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                                                                                                          {Name = _2; Column = _7; Index =_4 ;}
+                                                                                                          {Name = _2; Column = _7; Index =tryParseIndex(_4) ;}
                    )
 # 52 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.RecordSetIdentifier));

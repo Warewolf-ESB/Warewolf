@@ -37,12 +37,12 @@ Scenario: Find unique records in an empty recordset
 	Then the unique result will be
 	| rec       | unique |
 	And the execution has "AN" error
-	And the debug inputs as  
-	| #           |  | Return Fields   |
-	| In Field(s) |  | [[rs(*).row]] = |
-	And the debug output as 
-	|  |                    |
-	| 1 | [[rec(1).unique]] = |
+#	And the debug inputs as  
+#	| #           |  | Return Fields   |
+#	| In Field(s) |  | [[rs(*).row]] = |
+#	And the debug output as 
+#	|  |                    |
+#	| 1 | [[rec(1).unique]] = |
 
 Scenario: Find unique records in a recordset and the in field is blank
 	Given I have the following duplicated recordset
