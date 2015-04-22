@@ -24,6 +24,10 @@ namespace Dev2.Activities
             var chart = WorkflowInspectionServices.GetActivities(dynamicActivity).FirstOrDefault() as Flowchart;
             if(chart != null)
             {
+                if (chart.StartNode == null)
+                {
+                    return null;
+                }
                 var start = (chart.StartNode) as FlowStep;
                 
                 if(start != null)
@@ -45,7 +49,7 @@ namespace Dev2.Activities
             {
 
                 Dev2Logger.Log.Error(e);
-                throw;
+                return new DsfActivity();
             }
         }
 
@@ -90,13 +94,16 @@ namespace Dev2.Activities
 
                 var val = new StringBuilder(Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(activity.ExpressionText));
                  Dev2Switch ds = new Dev2Switch { SwitchVariable = val.ToString() };
-                 var swi = new DsfSwitch
-                     {
-                         Switches = switchFlowSwitch.Cases.Select(a => new Tuple<string, IDev2Activity>(a.Key, ParseTools(a.Value, seenActivities).FirstOrDefault())).ToDictionary((a => a.Item1), a => a.Item2),
-                         Default = ParseTools(switchFlowSwitch.Default, seenActivities),
-                         Switch = ds.SwitchVariable
-                     };
-                seenActivities.Add(activity.UniqueID,swi);
+                 var swi = new DsfSwitch();
+                 if (!seenActivities.ContainsKey(activity.UniqueID))
+                 {
+                     seenActivities.Add(activity.UniqueID, swi);
+                 }
+                swi.Switches = switchFlowSwitch.Cases.Select(a => new Tuple<string, IDev2Activity>(a.Key, ParseTools(a.Value, seenActivities).FirstOrDefault())).ToDictionary((a => a.Item1), a => a.Item2);
+                swi.Default = ParseTools(switchFlowSwitch.Default, seenActivities);
+                swi.Switch = ds.SwitchVariable;
+                
+                
                 return new List<IDev2Activity>
                 {  swi
                 };
@@ -121,14 +128,17 @@ namespace Dev2.Activities
                 // ReSharper restore MaximumChainedReferences
                 var activityText = Dev2DecisionStack.FromVBPersitableModelToJSON(activityTextjson);
                 var decisionStack =  JsonConvert.DeserializeObject<Dev2DecisionStack>(activityText);
-                var dec = new DsfDecision
+                var dec = new DsfDecision();
+                if (!seenActivities.ContainsKey(activity.UniqueID))
                 {
-                    TrueArm = ParseTools(decision.True, seenActivities),
-                    FalseArm = ParseTools(decision.False, seenActivities),
-                    Conditions = decisionStack,
-                    And = decisionStack.Mode == Dev2DecisionMode.AND
-                };
-                seenActivities.Add(activity.UniqueID,dec);
+                    seenActivities.Add(activity.UniqueID, dec);
+                }
+                dec.TrueArm = ParseTools(decision.True, seenActivities);
+                dec.FalseArm = ParseTools(decision.False, seenActivities);
+                dec.Conditions = decisionStack;
+                dec.And = decisionStack.Mode == Dev2DecisionMode.AND;
+                
+                
                 return new List<IDev2Activity>
                 { dec};
             }
@@ -145,7 +155,10 @@ namespace Dev2.Activities
             var tools = ParseTools(startNode.Next, seenActivities);
 
             action.NextNodes = tools;
-
+            if (!seenActivities.ContainsKey(action.UniqueID))
+            {
+                seenActivities.Add(action.UniqueID,action);
+            }
             return new List<IDev2Activity> { action };
         }
 
