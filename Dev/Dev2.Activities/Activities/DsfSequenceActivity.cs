@@ -16,7 +16,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 

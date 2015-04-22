@@ -205,7 +205,9 @@
     <Compile Include="Converters\Graph\String\Xml\XmlPathSegment.cs" />
     <Compile Include="Common\TypeExtensionMethods.cs" />
     <Compile Include="Converters\TypeToIconConverter.cs" />
+    <Compile Include="CustomContainer.cs" />
     <Compile Include="DynamicServices\Objects\Dev2XamlLoader.cs" />
+    <Compile Include="enFindMissingType.cs" />
     <Compile Include="ExecutionEnvironmentUtils.cs" />
     <Compile Include="ExtMethods\StringExtension.cs">
       <SubType>Code</SubType>
@@ -214,6 +216,8 @@
     <Compile Include="Factories\SyntaxTreeFactory.cs" />
     <Compile Include="DynamicServices\Objects\UnitTest.cs" />
     <Compile Include="Common\FileIO.cs" />
+    <Compile Include="IActivityParser.cs" />
+    <Compile Include="IDev2Activity.cs" />
     <Compile Include="InterfaceImplementors\DsfDataObject.cs" />
     <Compile Include="InterfaceImplementors\FileSystem.cs" />
     <Compile Include="Interfaces\DataListMergeFrequency.cs" />

@@ -28,6 +28,7 @@ using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
 using CommandLine;
+using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
@@ -1606,6 +1607,7 @@ namespace Dev2
         /// <date>2013/03/13</date>
         bool LoadResourceCatalog()
         {
+            CustomContainer.Register<IActivityParser>(new ActivityParser());
             MigrateOldResources();
             Write("Loading resource catalog...  ");
             // First call initializes instance

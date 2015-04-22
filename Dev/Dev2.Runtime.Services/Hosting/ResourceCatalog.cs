@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Activities;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -17,7 +18,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -39,6 +39,7 @@ using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using ServiceStack.Common.Extensions;
+using Warewolf.ResourceManagement;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Runtime.Hosting
@@ -116,7 +117,7 @@ namespace Dev2.Runtime.Hosting
                     _managementServices.TryAdd(resource.ResourceID, resource);
                 }
             }
-            LoadFrequentlyUsedServices().Wait();
+            LoadFrequentlyUsedServices();
         }
         public ResourceCatalog(IEnumerable<DynamicService> managementServices, IServerVersionRepository serverVersionRepository)
         {
@@ -130,7 +131,7 @@ namespace Dev2.Runtime.Hosting
                     _managementServices.TryAdd(resource.ResourceID, resource);
                 }
             }
-            LoadFrequentlyUsedServices().Wait();
+            LoadFrequentlyUsedServices();
         }
         #endregion
 
@@ -194,13 +195,23 @@ namespace Dev2.Runtime.Hosting
                     resourceNameToSearchFor = resourceNameToSearchFor.Substring(endOfResourcePath + 1);
                 }
                 var resources = GetResources(workspaceID);
-                var foundResource = resources.FirstOrDefault(r => string.Equals(r.ResourcePath ?? "", resourcePath, StringComparison.InvariantCultureIgnoreCase) && string.Equals(r.ResourceName, resourceNameToSearchFor, StringComparison.InvariantCultureIgnoreCase) && (resourceType == ResourceType.Unknown || r.ResourceType == resourceType));
-                if(foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
+                if(resources != null)
                 {
-                    workspaceID = GlobalConstants.ServerWorkspaceID;
-                    continue;
+                    var foundResource = resources.FirstOrDefault(r =>
+                    {
+                        if(r == null)
+                        {
+                            return false;
+                        }
+                        return string.Equals(r.ResourcePath ?? "", resourcePath, StringComparison.InvariantCultureIgnoreCase) && string.Equals(r.ResourceName, resourceNameToSearchFor, StringComparison.InvariantCultureIgnoreCase) && (resourceType == ResourceType.Unknown || r.ResourceType == resourceType);
+                    });
+                    if(foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
+                    {
+                        workspaceID = GlobalConstants.ServerWorkspaceID;
+                        continue;
+                    }
+                    return foundResource;
                 }
-                return foundResource;
             }
         }
 
@@ -475,12 +486,26 @@ namespace Dev2.Runtime.Hosting
         public void LoadWorkspace(Guid workspaceID)
         {
             var workspaceLock = GetWorkspaceLock(workspaceID);
+            if (_loading)
+            {
+                return;
+            }
+            _loading = true;
             lock(workspaceLock)
             {
                 _workspaceResources.AddOrUpdate(workspaceID,
                     id => LoadWorkspaceImpl(workspaceID),
                     (id, resources) => LoadWorkspaceImpl(workspaceID));
+               
             }
+            lock(workspaceLock)
+            {
+                List<IResource> workspaceResources;
+                if(_workspaceResources.TryGetValue(workspaceID, out workspaceResources)){
+                    BuildResourceActivityCache(workspaceID, workspaceResources);
+                }
+            }
+            _loading = false;
         }
 
         #endregion
@@ -499,7 +524,77 @@ namespace Dev2.Runtime.Hosting
                 userServices = LoadWorkspaceViaBuilder(workspacePath, allFolders.ToArray());
             }
             var result = userServices.Union(_managementServices.Values);
-            return result.ToList();
+            var resources = result.ToList();
+            
+            return resources;
+        }
+
+        void BuildResourceActivityCache(Guid workspaceID, IEnumerable<IResource> userServices)
+        {
+            foreach(var resource in userServices)
+            {
+                AddOrUpdateToResourceActivityCache(workspaceID, resource);
+            }
+        }
+
+        void AddOrUpdateToResourceActivityCache(Guid workspaceID, IResource resource)
+        {
+            var service = GetService(workspaceID, resource.ResourceID,resource.ResourceName);
+
+            if(service != null)
+            {
+                var sa = service.Actions.FirstOrDefault();
+                MapServiceActionDependencies(workspaceID, sa);
+                var activity = GetActivity(sa);
+                Parse(workspaceID, activity, resource.ResourceID);
+            }
+        }
+
+        static Func<DynamicActivity> GetActivity(ServiceAction sa)
+        {
+            var activity = new Func<DynamicActivity>(() =>
+            {
+                if(sa != null)
+                {
+                    var act = sa.PopActivity();
+                    var theActivity = act.Value as DynamicActivity;
+                    return theActivity;
+                }
+                return null;
+            });
+            return activity;
+        }
+
+        DynamicService GetService(Guid workspaceID, Guid resourceID, string resourceName)
+        {
+            DynamicService serviceAction = null;
+            if (resourceID != Guid.Empty)
+            {
+                var services = GetDynamicObjects<DynamicService>(workspaceID, resourceID);
+                serviceAction = services.FirstOrDefault();
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(resourceName))
+                {
+                    var services = GetDynamicObjects<DynamicService>(workspaceID, resourceName);
+                    serviceAction = services.FirstOrDefault();
+                }
+            }
+            return serviceAction;
+        }
+
+        private void MapServiceActionDependencies(Guid workspaceID,ServiceAction serviceAction)
+        {
+
+            serviceAction.Service = GetService(workspaceID,serviceAction.ServiceID,serviceAction.ServiceName);
+            if (!string.IsNullOrWhiteSpace(serviceAction.SourceName))
+            {
+                var sources = GetDynamicObjects<Source>(workspaceID, serviceAction.SourceName);
+                var source = sources.FirstOrDefault();
+
+                serviceAction.Source = source;
+            }
         }
 
         #endregion
@@ -525,7 +620,9 @@ namespace Dev2.Runtime.Hosting
 
             builder.BuildCatalogFromWorkspace(workspacePath, folders);
 
-            return builder.ResourceList;
+           
+            var resources = builder.ResourceList;
+            return resources;
         }
 
         #endregion
@@ -775,11 +872,21 @@ namespace Dev2.Runtime.Hosting
             {
                 ServerAuthorizationService.Instance.Remove(resource.ResourceID);
             }
+            RemoveFromResourceActivityCache(workspaceID, resource);
             return new ResourceCatalogResult
                 {
                     Status = ExecStatus.Success,
                     Message = "Success"
                 };
+        }
+
+        void RemoveFromResourceActivityCache(Guid workspaceID, IResource resource)
+        {
+            IResourceActivityCache parser;
+            if (_parsers.TryGetValue(workspaceID,out parser))
+            {
+                parser.RemoveFromCache(resource.ResourceID);
+            }
         }
 
         #endregion
@@ -973,7 +1080,10 @@ namespace Dev2.Runtime.Hosting
                 var workspaceLock = GetWorkspaceLock(workspaceID);
                 lock(workspaceLock)
                 {
-                    return _workspaceResources.GetOrAdd(workspaceID, LoadWorkspaceImpl);
+                    LoadWorkspace(workspaceID);
+                    var resources = _workspaceResources.GetOrAdd(workspaceID, LoadWorkspaceImpl);
+                    
+                    return resources;
                 }
             }
             catch(Exception e)
@@ -1227,7 +1337,7 @@ namespace Dev2.Runtime.Hosting
             resources.Add(resource);
 
             #endregion
-
+            AddOrUpdateToResourceActivityCache(workspaceID, resource);
             return new ResourceCatalogResult
             {
                 Status = ExecStatus.Success,
@@ -1534,7 +1644,7 @@ namespace Dev2.Runtime.Hosting
 
         #endregion
 
-        public async Task LoadFrequentlyUsedServices()
+        public void LoadFrequentlyUsedServices()
         {
             // do we really need this still - YES WE DO ELSE THERE ARE INSTALL ISSUES WHEN LOADING FROM FRESH ;)
 
@@ -1547,15 +1657,11 @@ namespace Dev2.Runtime.Hosting
             {
                 var resourceName = serviceName;
 
-                var theTask = new Task(() =>
-                {
+                
                     var resource = GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
                     var objects = GenerateObjectGraph(resource);
                     _frequentlyUsedServices.TryAdd(resourceName, objects);
-                });
-                theTask.Start();
-                await theTask;
-                theTask.Dispose();
+                
             }
 
         }
@@ -1918,6 +2024,22 @@ namespace Dev2.Runtime.Hosting
             {
                 _workspaceResources.Clear();
             }
+            _parsers = new Dictionary<Guid, IResourceActivityCache>();
+        }
+
+        public static Dictionary<Guid,IResourceActivityCache> _parsers = new Dictionary<Guid,IResourceActivityCache>();
+        bool _loading;
+
+        public IDev2Activity Parse(Guid workspaceID,Func<DynamicActivity> actFunc, Guid resourceID)
+        {
+            IResourceActivityCache parser;
+            if(!_parsers.TryGetValue(workspaceID,out parser))
+            {
+                parser = new ResourceActivityCache(CustomContainer.Get<IActivityParser>(),new ConcurrentDictionary<Guid, IDev2Activity>());
+                _parsers.Add(workspaceID,parser);
+            }
+
+            return parser.Parse(actFunc, resourceID);
         }
     }
 

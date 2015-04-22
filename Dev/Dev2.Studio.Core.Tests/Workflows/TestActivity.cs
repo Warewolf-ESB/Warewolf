@@ -13,8 +13,6 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
-using Dev2.Enums;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests.Workflows
 {

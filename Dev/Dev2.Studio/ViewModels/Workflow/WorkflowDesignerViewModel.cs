@@ -51,7 +51,6 @@ using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Dialogs;
-using Dev2.Enums;
 using Dev2.Factories;
 using Dev2.Factory;
 using Dev2.Interfaces;

@@ -25,7 +25,6 @@ using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
