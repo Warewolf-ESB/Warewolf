@@ -1337,6 +1337,7 @@ namespace Dev2.Runtime.Hosting
             resources.Add(resource);
 
             #endregion
+            RemoveFromResourceActivityCache(workspaceID, resource);
             AddOrUpdateToResourceActivityCache(workspaceID, resource);
             return new ResourceCatalogResult
             {
