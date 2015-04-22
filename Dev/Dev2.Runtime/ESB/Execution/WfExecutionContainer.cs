@@ -22,6 +22,7 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.WF;
+using Dev2.Runtime.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Utilities;
@@ -111,7 +112,8 @@ namespace Dev2.Runtime.ESB.Execution
                 //                                                   new List<object> { EsbChannel, }, instanceId,
                 //                                                   TheWorkspace, bookmark, out errors);
                 var wfappUtils = new WfApplicationUtils();
-
+                IExecutionToken exeToken = new ExecutionToken { IsUserCanceled = false };
+                DataObject.ExecutionToken = exeToken;
                 ErrorResultTO invokeErrors;
                 if (DataObject.IsDebugMode())
                 {
