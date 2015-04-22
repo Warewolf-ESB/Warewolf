@@ -1,7 +1,7 @@
 
 <Service ID="915e5377-148e-47fa-a482-f67064b0a1a5" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Persisted DB Connection Test" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.5589.14152">
   <DisplayName>Persisted DB Connection Test</DisplayName>
-  <Category>Testing\Persisted DB Connection\Persisted DB Connection Test</Category>
+  <Category>Acceptance Testing Resources\Persisted DB Connection\Persisted DB Connection Test</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

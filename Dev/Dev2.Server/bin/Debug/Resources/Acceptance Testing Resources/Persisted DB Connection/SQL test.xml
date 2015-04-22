@@ -23,7 +23,7 @@
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>SQL test</DisplayName>
-  <Category>Testing\Persisted DB Connection\SQL test</Category>
+  <Category>Acceptance Testing Resources\Persisted DB Connection\SQL test</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

@@ -23,7 +23,7 @@
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>MySQL test</DisplayName>
-  <Category>Testing\Persisted DB Connection\MySQL test</Category>
+  <Category>Acceptance Testing Resources\Persisted DB Connection\MySQL test</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
