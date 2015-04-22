@@ -459,6 +459,20 @@ namespace Dev2.Activities.Specs.Composition
         {
             var webActivity = new WebActivity { ResourceModel = remoteResourceModel as ResourceModel };
             DataMappingViewModel dataMappingViewModel = new DataMappingViewModel(webActivity);
+            foreach(var inputOutputViewModel in dataMappingViewModel.Inputs)
+            {
+                inputOutputViewModel.Value = "";
+                inputOutputViewModel.RecordSetName = "";
+                inputOutputViewModel.Name = "";
+                inputOutputViewModel.MapsTo = "";
+            }
+            
+            foreach(var inputOutputViewModel in dataMappingViewModel.Outputs)
+            {
+                inputOutputViewModel.Value = "";
+                inputOutputViewModel.RecordSetName = "";
+                inputOutputViewModel.Name = "";
+            }
             foreach(var tableRow in mappings.Rows)
             {
                 var output = tableRow["Output from Service"];
@@ -469,6 +483,16 @@ namespace Dev2.Activities.Specs.Composition
                     if(inputOutputViewModel != null)
                     {
                         inputOutputViewModel.Value = toVariable;
+                        if (DataListUtil.IsValueRecordset(output))
+                        {
+                            inputOutputViewModel.RecordSetName = DataListUtil.ExtractRecordsetNameFromValue(output);
+                            inputOutputViewModel.Name = DataListUtil.ExtractFieldNameFromValue(output);
+                        }
+                        else
+                        {
+                            inputOutputViewModel.Name = output;
+                        }
+                        inputOutputViewModel.RecordSetName = DataListUtil.ExtractRecordsetNameFromValue(output);
                         CommonSteps.AddVariableToVariableList(toVariable);
                     }
                 }
@@ -482,6 +506,17 @@ namespace Dev2.Activities.Specs.Composition
                     if(inputOutputViewModel != null)
                     {
                         inputOutputViewModel.MapsTo = fromVariable;
+                        
+                        if (DataListUtil.IsValueRecordset(input))
+                        {
+                            inputOutputViewModel.RecordSetName = DataListUtil.ExtractRecordsetNameFromValue(input);
+                            inputOutputViewModel.Name = DataListUtil.ExtractFieldNameFromValue(input);
+                        }
+                        else
+                        {
+                            inputOutputViewModel.Name = input;
+                        }
+                        inputOutputViewModel.Value = input;
                         CommonSteps.AddVariableToVariableList(fromVariable);
                     }
                 }
@@ -542,8 +577,8 @@ namespace Dev2.Activities.Specs.Composition
                     }
 
                     var element = (from elements in outputs.Descendants("Output")
-                                   where (string)elements.Attribute("Recordset") == recordsetName &&
-                                         (string)elements.Attribute("OriginalName") == fieldName
+                                   where String.Equals(((string)elements.Attribute("RecordsetAlias")), recordsetName, StringComparison.InvariantCultureIgnoreCase) &&
+                                         String.Equals(((string)elements.Attribute("OriginalName")), fieldName, StringComparison.InvariantCultureIgnoreCase)      
                                    select elements).SingleOrDefault();
 
                     if(element != null)
@@ -640,8 +675,8 @@ namespace Dev2.Activities.Specs.Composition
                         string fieldName = DataListUtil.ExtractFieldNameFromValue(input);
 
                         element = (from elements in inputs.Descendants("Input")
-                                   where (string)elements.Attribute("Recordset") == recordsetName &&
-                                         (string)elements.Attribute("OriginalName") == fieldName
+                                   where String.Equals(((string)elements.Attribute("Recordset")), recordsetName, StringComparison.InvariantCultureIgnoreCase) &&
+                                         String.Equals(((string)elements.Attribute("OriginalName")), fieldName, StringComparison.InvariantCultureIgnoreCase)      
                                    select elements).SingleOrDefault();
 
                         if(element != null)
@@ -656,7 +691,7 @@ namespace Dev2.Activities.Specs.Composition
                         recordsetName = input;
 
                         element = (from elements in inputs.Descendants("Input")
-                                   where (string)elements.Attribute("Name") == recordsetName
+                                   where( String.Equals(((string)elements.Attribute("Name")), recordsetName, StringComparison.InvariantCultureIgnoreCase))
                                    select elements).SingleOrDefault();
 
                         if(element != null)

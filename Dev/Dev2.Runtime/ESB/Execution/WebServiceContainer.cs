@@ -37,6 +37,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         public override Guid Execute(out ErrorResultTO errors)
         {
+            WebserviceExecution.InstanceInputDefinitions = InstanceInputDefinition;
             WebserviceExecution.InstanceOutputDefintions = InstanceOutputDefinition;
             var result = WebserviceExecution.Execute(out errors);
             return result;

@@ -1337,6 +1337,7 @@ namespace Dev2.Runtime.Hosting
             resources.Add(resource);
 
             #endregion
+            RemoveFromResourceActivityCache(workspaceID, resource);
             AddOrUpdateToResourceActivityCache(workspaceID, resource);
             return new ResourceCatalogResult
             {
@@ -2038,8 +2039,7 @@ namespace Dev2.Runtime.Hosting
                 parser = new ResourceActivityCache(CustomContainer.Get<IActivityParser>(),new ConcurrentDictionary<Guid, IDev2Activity>());
                 _parsers.Add(workspaceID,parser);
             }
-
-            return parser.Parse(actFunc, resourceID);
+               return parser.Parse(actFunc, resourceID);
         }
     }
 
