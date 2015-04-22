@@ -502,6 +502,7 @@ namespace Dev2.Runtime.Hosting
             {
                 List<IResource> workspaceResources;
                 if(_workspaceResources.TryGetValue(workspaceID, out workspaceResources)){
+                    if (!_parsers.ContainsKey(workspaceID))
                     BuildResourceActivityCache(workspaceID, workspaceResources);
                 }
             }
