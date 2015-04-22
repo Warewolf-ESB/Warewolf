@@ -81,6 +81,7 @@ let tryFloatParseAtom (data:string) =
        if success then Float value
        else DataString data
 
+
 let CompareAtoms (x:WarewolfAtom) (y:WarewolfAtom) = 
              match (x,y) with
                                             | (Nothing ,DataString b) when System.String.IsNullOrEmpty(b) -> 0

@@ -123,8 +123,13 @@ and  AddToRecordSetFramedWithAtomList (env:WarewolfEnvironment) (name:RecordSetI
         AddToRecordSetFramedWithAtomList envwithRecset name value shouldUseLast assignValue
 
 and EvalMultiAssignOp  (env:WarewolfEnvironment)  (value :IAssignValue ) =
-    let left = WarewolfDataEvaluationCommon.ParseLanguageExpression value.Name 
-   
+    let l = WarewolfDataEvaluationCommon.ParseLanguageExpression value.Name 
+    let left = match l with 
+                    |ComplexExpression a -> if List.exists (fun a -> match a with
+                                                                            | ScalarExpression a -> true
+                                                                            | RecordSetExpression a -> true
+                                                                            | _->false) a then    l  else LanguageExpression.WarewolfAtomAtomExpression  (LanguageExpressionToString l|> DataString )                         
+                    | _-> l
     let rightParse = if value.Value=null then LanguageExpression.WarewolfAtomAtomExpression Nothing
                      else WarewolfDataEvaluationCommon.ParseLanguageExpression value.Value 
     
