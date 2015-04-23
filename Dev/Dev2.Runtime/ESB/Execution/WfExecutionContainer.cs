@@ -151,7 +151,8 @@ namespace Dev2.Runtime.ESB.Execution
 
         public void Eval(Func<DynamicActivity> dynamicActivity, Guid resourceID, IDSFDataObject dataObject)
         {
-            var resource=  ResourceCatalog.Instance.Parse(TheWorkspace.ID,dynamicActivity,resourceID);
+            IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID,dynamicActivity,resourceID);
+
             resource.Execute(dataObject);
         }
 

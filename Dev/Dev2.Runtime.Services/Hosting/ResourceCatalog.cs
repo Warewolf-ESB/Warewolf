@@ -551,6 +551,7 @@ namespace Dev2.Runtime.Hosting
                 var sa = service.Actions.FirstOrDefault();
                 MapServiceActionDependencies(workspaceID, sa);
                 var activity = GetActivity(sa);
+                if(workspaceID == GlobalConstants.ServerWorkspaceID)
                 Parse(workspaceID, activity, resource.ResourceID);
             }
         }
