@@ -160,15 +160,15 @@ namespace Dev2.Runtime.Hosting
 
         public void RemoveWorkspace(Guid workspaceID)
         {
-            object workspaceLock;
+            object @lock;
             lock(_loadLock)
             {
-                if(!_workspaceLocks.TryRemove(workspaceID, out workspaceLock))
+                if(!_workspaceLocks.TryRemove(workspaceID, out @lock))
                 {
-                    workspaceLock = new object();
+                    @lock = new object();
                 }
             }
-            lock(workspaceLock)
+            lock(@lock)
             {
                 List<IResource> resources;
                 _workspaceResources.TryRemove(workspaceID, out resources);
@@ -675,8 +675,8 @@ namespace Dev2.Runtime.Hosting
                     throw new ArgumentNullException("resourceXml");
                 }
 
-                var workspaceLock = GetWorkspaceLock(workspaceID);
-                lock(workspaceLock)
+                var @lock = GetWorkspaceLock(workspaceID);
+                lock(@lock)
                 {
                     var xml = resourceXml.ToXElement();
               
@@ -709,8 +709,8 @@ namespace Dev2.Runtime.Hosting
                 throw new ArgumentNullException("resource");
             }
 
-            var workspaceLock = GetWorkspaceLock(workspaceID);
-            lock(workspaceLock)
+            var @lock = GetWorkspaceLock(workspaceID);
+            lock(@lock)
             {
                 if(resource.ResourceID == Guid.Empty)
                 {
@@ -755,8 +755,8 @@ namespace Dev2.Runtime.Hosting
 
         public ResourceCatalogResult DeleteResource(Guid workspaceID, string resourceName, string type, string userRoles = null, bool deleteVersions = true)
         {
-            var workspaceLock = GetWorkspaceLock(workspaceID);
-            lock(workspaceLock)
+            var @lock = GetWorkspaceLock(workspaceID);
+            lock(@lock)
             {
                 if(resourceName == "*")
                 {
@@ -807,8 +807,8 @@ namespace Dev2.Runtime.Hosting
             {
 
 
-                var workspaceLock = GetWorkspaceLock(workspaceID);
-                lock(workspaceLock)
+                var @lock = GetWorkspaceLock(workspaceID);
+                lock(@lock)
                 {
                     if(resourceID == Guid.Empty || string.IsNullOrEmpty(type))
                     {
@@ -1083,10 +1083,9 @@ namespace Dev2.Runtime.Hosting
         {
             try
             {
-                var workspaceLock = GetWorkspaceLock(workspaceID);
-                lock(workspaceLock)
+                var @lock = GetWorkspaceLock(workspaceID);
+                lock(@lock)
                 {
-                    LoadWorkspace(workspaceID);
                     var resources = _workspaceResources.GetOrAdd(workspaceID, LoadWorkspaceImpl);
                     
                     return resources;
