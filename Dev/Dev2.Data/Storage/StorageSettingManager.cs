@@ -116,7 +116,7 @@ namespace Dev2.Data.Storage
         private static int AdjustMemoryForPressure(int requestedSize)
         {
             // Ensure we have the memory available ;)
-            double totalSegments = GetSegmentCount() + 1; // account for background worker ;)
+            double totalSegments =  1; // account for background worker ;)
 
             var totalRequiredMemory = totalSegments * requestedSize;
 

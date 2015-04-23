@@ -1614,6 +1614,9 @@ namespace Dev2
 #pragma warning disable 168
             // ReSharper disable UnusedVariable
             var catalog = ResourceCatalog.Instance;
+            WriteLine("done.");
+            Write("Loading resource activity cache...  ");
+            catalog.LoadResourceActivityCache(GlobalConstants.ServerWorkspaceID);
             // ReSharper restore UnusedVariable
 #pragma warning restore 168
             WriteLine("done.");
@@ -1734,17 +1737,8 @@ namespace Dev2
         bool StartDataListServer()
         {
             // PBI : 5376 - Create instance of the Server compiler
-            Write("Starting DataList Server...  ");
-
             DataListFactory.CreateServerDataListCompiler();
             BinaryDataListStorageLayer.Setup();
-
-            var mbReserved = BinaryDataListStorageLayer.GetCapacityMemoryInMb();
-
-            Write(" [ Reserving " + mbReserved.ToString("#") + " MBs of cache ] ");
-
-            Write("done.");
-            WriteLine("");
             return true;
         }
 
