@@ -214,10 +214,21 @@ and  Clean (buffer :LanguageExpression) =
         | WarewolfAtomAtomExpression a -> WarewolfAtomAtomExpression a
         | ComplexExpression  a ->  (List.filter (fun b -> "" <> (LanguageExpressionToString b)) a) |> (fun a -> if (List.length a) =1 then Clean a.[0] else ComplexExpression a)
 
+and ParseAtom (lang:string) =
+    let mutable fl = 0.0
+    let mutable i = 0
+    if System.Int32.TryParse(lang,&i) then
+            Int i
+    else
+       
+        if System.Double.TryParse(lang,&fl) then 
+            Float fl
+        else DataString lang
+            
 and ParseLanguageExpression  (lang:string) : LanguageExpression=
     
-//    if( lang.Contains"[[")
-//    then 
+    if( lang.Contains"[[")
+    then 
         let exp = ParseCache.TryFind lang
         match exp with 
         | Some a ->  a
@@ -227,7 +238,7 @@ and ParseLanguageExpression  (lang:string) : LanguageExpression=
                     let res = buffer |> Clean
                     ParseCache<-ParseCache.Add(lang,res)
                     res
-//    else WarewolfAtomAtomExpression (DataString lang)
+    else WarewolfAtomAtomExpression (ParseAtom lang)
 and evalARow  ( index:int) (recset:WarewolfRecordset) (name:string) (env:WarewolfEnvironment)=
     let blank = Map.map (fun a b -> new WarewolfAtomList<WarewolfAtom>(WarewolfAtom.Nothing, [ EvalResultToString (Eval env (sprintf "[[%s(%i).%s]]" name index a) ) |> DataString])) recset.Data
     {recset with Data = blank}
