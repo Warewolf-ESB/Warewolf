@@ -215,15 +215,12 @@ and  Clean (buffer :LanguageExpression) =
         | ComplexExpression  a ->  (List.filter (fun b -> "" <> (LanguageExpressionToString b)) a) |> (fun a -> if (List.length a) =1 then Clean a.[0] else ComplexExpression a)
 
 and ParseAtom (lang:string) =
-    let mutable fl = 0.0
+    let mutable fl = 0.0m
     let mutable i = 0
-    if System.Int32.TryParse(lang,&i) then
-            Int i
-    else
-       
-        if System.Double.TryParse(lang,&fl) then 
-            Float fl
-        else DataString lang
+    let at =  tryParseAtom lang
+    match at with
+        |   Int a -> at 
+        | _->  tryFloatParseAtom lang
             
 and ParseLanguageExpression  (lang:string) : LanguageExpression=
     

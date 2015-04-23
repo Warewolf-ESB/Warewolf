@@ -74,11 +74,15 @@ let tryParseAtom (data:string) =
        else DataString data
 
 let tryFloatParseAtom (data:string) = 
-    let mutable value=0.0;
+    let mutable value=0.0m;
     if data.StartsWith("0") then DataString data
     else
-       let success = System.Double.TryParse(data,&value)
-       if success then Float value
+       let success = System.Decimal.TryParse(data,&value)
+       if success then
+            if(data.EndsWith("0")) && success then
+                DataString data
+            else
+                Float (System.Convert.ToDouble(value))
        else DataString data
 
 
