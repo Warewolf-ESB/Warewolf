@@ -3920,7 +3920,7 @@ Scenario Outline: Database MySqlDB Database service scalar outputs
 	  | [[email]] = dora@explorers.com |
 Examples: 
     | WorkflowName                   | ServiceName | nameVariable | emailVariable | errorOccured |
-    | TestMySqlWFWithDBServiceMails61 | MySQLEmail  | [[name]]     | [[email]]     | NO           |
+    | TestMySqlWFWithDBServiceMails63 | MySQLEmail  | [[name]]     | [[email]]     | NO           |
  
 Scenario Outline: Database MySqlDB Database service Error outputs 
      Given I have a workflow "<WorkflowName>"

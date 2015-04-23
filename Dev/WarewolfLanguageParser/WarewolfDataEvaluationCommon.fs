@@ -263,7 +263,7 @@ and  Eval  (env: WarewolfEnvironment) (lang:string) : WarewolfEvalResult=
         else    
             let start = List.map LanguageExpressionToString  exp |> (List.fold (+) "")
             let evaled = (List.map (LanguageExpressionToString >> (Eval  env)>>EvalResultToString)  exp )|> (List.fold (+) "")
-            if( evaled = start) then
+            if( evaled = start || (not (evaled.Contains("[[")))) then
                 DataString evaled
             else DataString (Eval env evaled|>  EvalResultToString)
     
@@ -274,7 +274,7 @@ and  Eval  (env: WarewolfEnvironment) (lang:string) : WarewolfEvalResult=
         | ScalarExpression a -> WarewolfAtomResult (evalScalar a env)
         | WarewolfAtomAtomExpression a -> WarewolfAtomResult a
         | RecordSetNameExpression x ->EvalDataSetExpression env x
-        | ComplexExpression  a -> WarewolfAtomResult (EvalComplex ( List.filter (fun b -> "" <> (LanguageExpressionToString b)) a)) 
+        | ComplexExpression  a ->  WarewolfAtomResult (EvalComplex ( List.filter (fun b -> "" <> (LanguageExpressionToString b)) a)) 
 
 and  EvalForDataMerge  (env: WarewolfEnvironment) (lang:string) : WarewolfEvalResult list=
     let EvalCount (a:WarewolfEvalResult) =
