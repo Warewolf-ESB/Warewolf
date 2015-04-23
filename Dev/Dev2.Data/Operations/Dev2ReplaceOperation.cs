@@ -121,7 +121,7 @@ namespace Dev2.Data.Operations
         public string Replace(string stringToSearch, string findString, string replacementString, bool caseMatch, out ErrorResultTO errors, ref int replaceCount)
         {
 
-            var oldString = stringToSearch.Replace("\\", "\\\\");
+            var oldString = stringToSearch;
             // ReSharper disable RedundantAssignment
             ErrorResultTO allErrors = new ErrorResultTO();
             errors = new ErrorResultTO();
@@ -133,10 +133,6 @@ namespace Dev2.Data.Operations
             //Massimo Guerrera -  Added the Regex.Escape to escape certain characters - Bug 9937
             Regex regex = new Regex(Regex.Escape(findString), regexOptions);
             string tmpVal = oldString;
-            if (tmpVal.Contains("\\") && oldString.Contains("\\"))
-            {
-                tmpVal = tmpVal.Replace("\\", "\\\\");
-            }
             replaceCount += regex.Matches(tmpVal).Count;
             var replaceValue = regex.Replace(tmpVal, replacementString);
             errors = allErrors;
