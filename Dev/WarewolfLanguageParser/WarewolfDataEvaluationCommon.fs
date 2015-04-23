@@ -216,12 +216,13 @@ and  Clean (buffer :LanguageExpression) =
 
 and ParseAtom (lang:string) =
     let mutable fl = 0.0
-    if System.Double.TryParse(lang,ref fl)
-        then Float fl
-    else
-        let mutable i = 0
-        if System.Int32.TryParse(lang,ref i) then
+    let mutable i = 0
+    if System.Int32.TryParse(lang,&i) then
             Int i
+    else
+       
+        if System.Double.TryParse(lang,&fl) then 
+            Float fl
         else DataString lang
             
 and ParseLanguageExpression  (lang:string) : LanguageExpression=
