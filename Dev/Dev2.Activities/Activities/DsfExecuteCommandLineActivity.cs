@@ -100,8 +100,11 @@ namespace Dev2.Activities
             _nativeActivityContext = context;
             var dataObject = _nativeActivityContext.GetExtension<IDSFDataObject>();
             var exeToken = _nativeActivityContext.GetExtension<IExecutionToken>();
-            dataObject.ExecutionToken = exeToken;
-       
+            if(exeToken != null)
+            {
+                dataObject.ExecutionToken = exeToken;
+            }
+
             ExecuteTool(dataObject);
         }
 
