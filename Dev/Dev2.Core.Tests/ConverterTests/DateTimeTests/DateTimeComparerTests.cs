@@ -10,8 +10,8 @@
 */
 
 using System.Diagnostics.CodeAnalysis;
+using Dev2.Common.DateAndTime;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
-using Dev2.Converters.DateAndTime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests

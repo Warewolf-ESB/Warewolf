@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Data;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.DataList.Contract;
@@ -38,7 +39,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 {
                     var displayValue = String.IsNullOrEmpty(DisplayValue) ? FieldName : DisplayValue;
                     var variableName = DataListUtil.AddBracketsToValueIfNotExist(displayValue);
-                    throw new Exception(string.Format("No Value assigned for: {0}", variableName)+variableName);
+                    throw new DataException(string.Format("No Value assigned for: {0}", variableName)+variableName);
                 }
                 return theValue;
             }
