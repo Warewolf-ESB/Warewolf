@@ -200,7 +200,10 @@ namespace Dev2.Activities
                     }
                     if(IsDebug && !allErrors.HasErrors())
                     {
-                        AddDebugOutputItem(new DebugEvalResult(Result,"",dataObject.Environment));
+                        if (!string.IsNullOrEmpty(Result))
+                        {
+                            AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
+                        }
                     }
                 }
                 else
