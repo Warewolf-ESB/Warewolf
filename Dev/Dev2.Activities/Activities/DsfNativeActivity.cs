@@ -58,8 +58,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string InputMapping { get; set; }
 
         public string OutputMapping { get; set; }
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public virtual IDev2Activity InnerActivity { get { return this; } set{} }
 
         public bool IsWorkflow { get; set; }
         public string ParentServiceName { get; set; }
