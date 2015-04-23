@@ -17,10 +17,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// Travis.Frisinger : 28.11.2012
     /// Moved there here for the ForEach activity
     /// </summary>
-    public interface IDev2ActivityIOMapping
+    public interface IDev2ActivityIOMapping : IDev2Activity
     {
         string InputMapping { get; set; }
         string OutputMapping { get; set; }
-        IDev2Activity InnerActivity { get; set; }
     }
 }

@@ -803,14 +803,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         IterateIOMapping(idx);
                     }
          
-                    exeAct.InnerActivity.Execute(dataObject);
+                    exeAct.Execute(dataObject);
 
                     count++;
                 }
                 if (errors.HasErrors())
                 {
                     allErrors.MergeErrors(errors);
-                    return;
                 }
 
 
