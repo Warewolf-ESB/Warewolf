@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -20,9 +21,16 @@ namespace Dev2.Activities
        public IEnumerable<IDev2Activity> TrueArm { get; set; }
        public IEnumerable<IDev2Activity> FalseArm { get; set; }
        public Dev2DecisionStack Conditions { get; set; }
-
+       public DsfFlowDecisionActivity _inner;    
         #region Overrides of DsfNativeActivity<string>
-
+        public DsfDecision(DsfFlowDecisionActivity inner)
+        {
+            _inner = inner;
+        }
+        public DsfDecision()
+        {
+ 
+        }
         /// <summary>
         /// When overridden runs the activity's execution logic 
         /// </summary>
@@ -70,9 +78,17 @@ namespace Dev2.Activities
                 var stack = Conditions.TheStack.Select(a => parseDecision(dataObject.Environment, a));
 
 
-                var factory = Data.Decisions.Operations.Dev2DecisionFactory.Instance();
+                var factory = Dev2DecisionFactory.Instance();
                 var res = stack.SelectMany(a =>
                 {
+                    if(a.EvaluationFn == enDecisionType.IsError)
+                    {
+                        return new []{dataObject.Environment.Errors.Count > 0};
+                    }
+                    if (a.EvaluationFn == enDecisionType.IsNotError)
+                    {
+                        return new[] { dataObject.Environment.Errors.Count == 0 };
+                    }
                     IList<bool> ret = new List<bool>();
                     var iter = new WarewolfListIterator();
                     var c1 = new WarewolfAtomIterator(a.Cols1);
@@ -211,7 +227,9 @@ namespace Dev2.Activities
                 }
             }
 
-            return result.Select(a => a as DebugItem).ToList();
+            var val =  result.Select(a => a as DebugItem).ToList();
+            _inner.SetDebugInputs(val);
+            return val;
         }
 
         #region Overrides of DsfNativeActivity<string>
@@ -258,6 +276,7 @@ namespace Dev2.Activities
 
             }
 
+            _inner.SetDebugOutputs(result);
             return result;
         }
 

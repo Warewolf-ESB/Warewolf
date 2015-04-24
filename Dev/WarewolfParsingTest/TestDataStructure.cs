@@ -17,7 +17,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var createDataSet = PublicFunctions.CreateDataSet("a");
 
-            Assert.IsTrue(createDataSet.Data.ContainsKey("WarewolfPositionColumn#"));
+            Assert.IsTrue(createDataSet.Data.ContainsKey("WarewolfPositionColumn"));
             Assert.IsTrue(createDataSet.Optimisations.IsOrdinal);
             Assert.AreEqual(createDataSet.LastIndex, 0);
             Assert.AreEqual(createDataSet.Count,0);

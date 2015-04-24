@@ -18,6 +18,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using Dev2;
+using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.DataList.Contract;
@@ -51,6 +52,7 @@ namespace ActivityUnitTests
         public static IDataListCompiler Compiler;
         public BaseActivityUnitTest()
         {
+            CustomContainer.Register<IActivityParser>(new ActivityParser());
             CallBackData = "Default Data";
             TestStartNode = new FlowStep
             {
