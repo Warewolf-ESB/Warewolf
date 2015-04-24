@@ -109,7 +109,7 @@ Scenario: Convert a sentence starting with a number to Title Case
 	| 1 | [[var]] = 1 WAREWOLF Rocks |
 
 Scenario: Convert a blank to Title Case
-	Given I have a case convert variable "[[var]]" with a value of ""	
+	Given I have a case convert variable "[[var]]" with a value of "blank"	
 	And I convert a variable "[[var]]" to "Title Case"
 	When the case conversion tool is executed
 	Then the sentence will be ""
@@ -122,7 +122,7 @@ Scenario: Convert a blank to Title Case
 	| 1 | [[var]] = |
 
 Scenario: Convert a blank to Sentencecase
-	Given I have a case convert variable "[[var]]" with a value of ""	
+	Given I have a case convert variable "[[var]]" with a value of "blank"	
 	And I convert a variable "[[var]]" to "Sentence"
 	When the case conversion tool is executed
 	Then the sentence will be ""
@@ -135,7 +135,7 @@ Scenario: Convert a blank to Sentencecase
 	| 1 | [[var]] = |
 
 Scenario: Convert a blank to UPPER CASE
-	Given I have a case convert variable "[[var]]" with a value of ""	
+	Given I have a case convert variable "[[var]]" with a value of "blank"	
 	And I convert a variable "[[var]]" to "UPPER"
 	When the case conversion tool is executed
 	Then the sentence will be ""
@@ -148,7 +148,7 @@ Scenario: Convert a blank to UPPER CASE
 	| 1 | [[var]] = |
 
 Scenario: Convert a blank to lowercase
-	Given I have a case convert variable "[[var]]" with a value of ""	
+	Given I have a case convert variable "[[var]]" with a value of "blank"	
 	And I convert a variable "[[var]]" to "lower"
 	When the case conversion tool is executed
 	Then the sentence will be ""
@@ -193,7 +193,7 @@ Scenario: Convert an empty recordset * to Upper
 
 
 Scenario: Convert a empty sentence starting with a number to upper
-	Given I have a case convert variable "[[var]]" with a value of ""	
+	Given I have a case convert variable "[[var]]" with a value of "blank"	
 	And I convert a variable "[[var]]" to "UPPER"
 	When the case conversion tool is executed
 	Then the sentence will be ""

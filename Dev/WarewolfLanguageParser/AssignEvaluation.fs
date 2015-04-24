@@ -148,7 +148,7 @@ and EvalMultiAssignOp  (env:WarewolfEnvironment)  (value :IAssignValue ) =
                             match left with 
                             |   ScalarExpression a -> AddToScalars env a x
                             |   RecordSetExpression b -> AddToRecordSetFramed env b x
-                            |   WarewolfAtomAtomExpression a -> env
+                            |   WarewolfAtomAtomExpression a -> failwith "invalid variabe assigned to"
                             |   _ -> let expression = (EvalToExpression env value.Name)
                                      if System.String.IsNullOrEmpty(  expression) || ( expression) = "[[]]" || ( expression) = value.Name then
                                         env
@@ -158,7 +158,7 @@ and EvalMultiAssignOp  (env:WarewolfEnvironment)  (value :IAssignValue ) =
                         match left with 
                         |   ScalarExpression a -> AddToScalars env a (Seq.last x)
                         |   RecordSetExpression b -> AddToRecordSetFramedWithAtomList env b  x shouldUseLast (Some value)
-                        |   WarewolfAtomAtomExpression a -> env
+                        |   WarewolfAtomAtomExpression a ->  failwith "invalid variabe assigned to"
                         |    _ -> let expression = (EvalToExpression env value.Name)
                                   if System.String.IsNullOrEmpty(  expression) || ( expression) = "[[]]" || ( expression) = value.Name then
                                         env

@@ -787,7 +787,7 @@ this.ScenarioSetup(scenarioInfo);
             table23.AddRow(new string[] {
                         "3",
                         "[[Result]] =",
-                        "=SUM([[var1]],[[var2]]) ==SUM(30,30)"});
+                        "=SUM(30,30)"});
 #line 226
  testRunner.And("the debug inputs as", ((string)(null)), table23, "And ");
 #line hidden

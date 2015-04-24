@@ -141,17 +141,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 var isCalcEvaluation = DataListUtil.IsCalcEvaluation(t.FieldValue, out cleanExpression);
                                 if(isCalcEvaluation)
                                 {
-                                    assignValue = new AssignValue(t.FieldName, "=" + cleanExpression);
+                                    assignValue = new AssignValue(t.FieldName, cleanExpression);
                                 }
                                 DebugItem debugItem = null;
                                 if(dataObject.IsDebugMode())
                                 {
                                     debugItem = AddSingleInputDebugItem(dataObject.Environment, innerCount, assignValue);
                                 }
+                                 isCalcEvaluation = DataListUtil.IsCalcEvaluation(t.FieldValue, out cleanExpression);
+                                if (isCalcEvaluation)
+                                {
+                                    assignValue = new AssignValue(t.FieldName, t.FieldValue);
+                                }
+                                
                                 if(isCalcEvaluation)
                                 {
-                                    assignValue = DoCalculation(dataObject.Environment, t.FieldName, cleanExpression);
+                                    assignValue = DoCalculation(dataObject.Environment, t.FieldName, t.FieldValue);
                                 }
+
                                 dataObject.Environment.AssignWithFrame(assignValue);
                                 if(debugItem != null)
                                 {
@@ -206,15 +213,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var functionEvaluator = new FunctionEvaluator();
             var warewolfEvalResult = environment.Eval(cleanExpression);
+         
             if (warewolfEvalResult.IsWarewolfAtomResult)
             {
                 var result = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
                 if(result != null)
                 {
                     var calcExpression = ExecutionEnvironment.WarewolfAtomToString(result.Item);
+                    string exp;
+                    var isCalcEvaluation = DataListUtil.IsCalcEvaluation(calcExpression, out exp);
                     string eval;
                     string error;
-                    var res = functionEvaluator.TryEvaluateFunction(calcExpression, out eval, out error);
+                    var res = functionEvaluator.TryEvaluateFunction(exp, out eval, out error);
                     if(!res) throw  new Exception("Invalid Calculate");
                     return new AssignValue(fieldName,eval);
                 }

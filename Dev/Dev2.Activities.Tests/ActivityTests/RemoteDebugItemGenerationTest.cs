@@ -75,8 +75,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Guid.TryParse(dObj.RemoteInvokerID, out id);
             var msgs = RemoteDebugMessageRepo.Instance.FetchDebugItems(id);
             // remove test datalist ;)
-            DataListRemoval(dObj.DataListID);
-            Assert.AreEqual(2, msgs.Count);
+            Assert.AreEqual(1, msgs.Count);
         }
 
         [TestMethod]
@@ -101,9 +100,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tmp2 = serialiser.Deserialize<IList<DebugState>>(tmp);
 
             // remove test datalist ;)
-            DataListRemoval(dObj.DataListID);
 
-            Assert.AreEqual(2, tmp2.Count);
+            Assert.AreEqual(1, tmp2.Count);
         }
 
         [TestMethod]
@@ -132,9 +130,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tmp2 = jsonSer.Deserialize<IList<DebugState>>(str.ToString());
 
             // remove test datalist ;)
-            DataListRemoval(dObj.DataListID);
 
-            Assert.AreEqual(2, tmp2.Count);
+            Assert.AreEqual(1, tmp2.Count);
         }
 
     }

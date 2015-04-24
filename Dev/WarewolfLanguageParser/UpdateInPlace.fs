@@ -32,13 +32,13 @@ let rec  EvalUpdate  (env: WarewolfEnvironment) (lang:string) (func: WarewolfAto
         | RecordSetExpression a ->   (evalRecordsSetExpressionUpdate a env func) 
         | ScalarExpression a ->  let data = env.Scalar.[a] |> func
                                  AssignEvaluation.EvalAssign (LanguageExpressionToString ( ScalarExpression a)) (data.ToString()) env
-        | WarewolfAtomAtomExpression a -> env
+        | WarewolfAtomAtomExpression a -> failwith "invalid convert"
         | RecordSetNameExpression x -> let data = env.RecordSets.[x.Name].Data
                                        let newData = Map.map (fun a b->   (ApplyStarToColumn func env {Name=x.Name;Column =a; Index=Star} )) data
                                        env
         | ComplexExpression  a -> let bob = List.map LanguageExpressionToString a |> List.map  (Eval env)  |> List.map EvalResultToString |> fun a-> System.String.Join("",a)
                                   if bob = lang
-                                  then env
+                                  then  failwith "invalid convert"
                                   else bob|> (fun a ->EvalUpdate env a func )
 
 and ApplyStarToColumn (func: WarewolfAtom->WarewolfAtom) (env:WarewolfEnvironment) (recset:RecordSetIdentifier)  = 

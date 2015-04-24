@@ -782,7 +782,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 214
 this.ScenarioSetup(scenarioInfo);
 #line 215
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 216
  testRunner.And("I convert a variable \"[[var]]\" from type \"Text\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 217
@@ -826,7 +826,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 227
 this.ScenarioSetup(scenarioInfo);
 #line 228
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 229
  testRunner.And("I convert a variable \"[[var]]\" from type \"Text\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 230
@@ -870,7 +870,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 240
 this.ScenarioSetup(scenarioInfo);
 #line 241
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 242
  testRunner.And("I convert a variable \"[[var]]\" from type \"Text\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 243
@@ -914,7 +914,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 253
 this.ScenarioSetup(scenarioInfo);
 #line 254
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 255
  testRunner.And("I convert a variable \"[[var]]\" from type \"Binary\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 256
@@ -958,7 +958,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 266
 this.ScenarioSetup(scenarioInfo);
 #line 267
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 268
  testRunner.And("I convert a variable \"[[var]]\" from type \"Binary\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 269
@@ -1002,7 +1002,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 279
 this.ScenarioSetup(scenarioInfo);
 #line 280
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 281
  testRunner.And("I convert a variable \"[[var]]\" from type \"Binary\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 282
@@ -1046,7 +1046,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 292
 this.ScenarioSetup(scenarioInfo);
 #line 293
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 294
  testRunner.And("I convert a variable \"[[var]]\" from type \"Hex\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 295
@@ -1090,7 +1090,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 305
 this.ScenarioSetup(scenarioInfo);
 #line 306
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 307
  testRunner.And("I convert a variable \"[[var]]\" from type \"Hex\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 308
@@ -1134,7 +1134,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 318
 this.ScenarioSetup(scenarioInfo);
 #line 319
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 320
  testRunner.And("I convert a variable \"[[var]]\" from type \"Hex\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 321
@@ -1178,7 +1178,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 331
 this.ScenarioSetup(scenarioInfo);
 #line 332
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 333
  testRunner.And("I convert a variable \"[[var]]\" from type \"Base 64\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 334
@@ -1222,7 +1222,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 344
 this.ScenarioSetup(scenarioInfo);
 #line 345
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 346
  testRunner.And("I convert a variable \"[[var]]\" from type \"Base 64\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 347
@@ -1266,7 +1266,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 357
 this.ScenarioSetup(scenarioInfo);
 #line 358
- testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 359
  testRunner.And("I convert a variable \"[[var]]\" from type \"Base 64\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 360
@@ -1822,12 +1822,6 @@ this.ScenarioSetup(scenarioInfo);
 #line 521
  testRunner.And("the debug inputs as", ((string)(null)), table81, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table82 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        ""});
-#line 524
- testRunner.And("the debug output as", ((string)(null)), table82, "And ");
-#line hidden
             this.ScenarioCleanup();
         }
         
@@ -1978,15 +1972,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ValidationMessagesWhenConvertInvalidVariables(string no, string variable, string value, string from, string to, string error, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validation messages when Convert Invalid Variables", exampleTags);
-#line 573
+#line 571
 this.ScenarioSetup(scenarioInfo);
-#line 574
+#line 572
  testRunner.Given(string.Format("I have a convert variable \'{0}\' with a value of \'{1}\'", variable, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 575
+#line 573
  testRunner.And(string.Format("I convert a variable \'{0}\' from type \'{1}\' to type \'{2}\'", variable, from, to), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 576
+#line 574
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 577
+#line 575
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

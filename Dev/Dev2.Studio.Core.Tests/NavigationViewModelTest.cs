@@ -245,15 +245,6 @@ namespace Dev2.Core.Tests
         }
 
 
-        [TestMethod]
-        public void AddEnvironmentWithShouldLoadResourcesTrueExpectedRootAndChildrenCreated()
-        {
-            var viewModel = Init(false, true);
-            var explorerItemModels = viewModel.ExplorerItemModels;
-            Assert.IsNotNull(explorerItemModels);
-            Assert.AreEqual(1, explorerItemModels.Count);
-            Assert.AreEqual(2, explorerItemModels[0].Children.Count);
-        }
 
 
         #endregion Updating Resources
@@ -342,23 +333,6 @@ namespace Dev2.Core.Tests
             }
 
             return false;
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("NavigationViewModel_Filter")]
-        public void NavigationViewModel_Filter_GivenNull_ShouldOriginalCollection()
-        {
-            //------------Setup for test--------------------------
-            var viewModel = Init(false, true,false);
-            //------------Preconditions---------------------------
-            Assert.AreEqual(4, viewModel.ExplorerItemModels[0].ChildrenCount);
-            viewModel.Filter(model => model.ResourceType == Common.Interfaces.Data.ResourceType.WorkflowService);
-            Assert.AreEqual(2, viewModel.ExplorerItemModels[0].ChildrenCount);
-            //------------Execute Test---------------------------
-            viewModel.Filter(null);
-            //------------Assert Results-------------------------
-            Assert.AreEqual(4, viewModel.ExplorerItemModels[0].ChildrenCount);
         }
 
         [TestMethod]

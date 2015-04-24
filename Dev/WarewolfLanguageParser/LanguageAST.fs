@@ -28,5 +28,5 @@ and LanguageExpression =
 
 let tryParseIndex (x:Index) =
    match x  with 
-        | IntIndex a -> if a<0 then raise (new System.IndexOutOfRangeException( "negative index") )else x
+        | IntIndex a -> if a<=0 then raise (new System.IndexOutOfRangeException( (sprintf "Recordset index [ %i ] is not greater than zero" a)) )else x
         | _->x

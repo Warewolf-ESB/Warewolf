@@ -350,8 +350,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
 
 
-                if(!dataObject.WorkflowResumeable || !dataObject.IsDataListScoped)
-                {
                     // Handle Errors
                     if(allErrors.HasErrors())
                     {
@@ -364,7 +362,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             dataObject.Environment.Assign(upsertVariable, allErrors.MakeDataListReady());
                         }
                     }
-                }
 
                 if(dataObject.IsDebugMode() || (dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer))
                 {
@@ -413,6 +410,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 var message = string.Format("User: {0} does not have Execute Permission to resource {1}.", dataObject.ExecutingUser.Identity.Name, ServiceName);
                 tmpErrors.AddError(message);
+                dataObject.Environment.AddError(message);
                 throw new InvalidCredentialException(message);
             }
         }

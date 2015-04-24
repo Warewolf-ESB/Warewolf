@@ -136,14 +136,18 @@ namespace Dev2.Services.Execution
 
         public override void BeforeExecution(ErrorResultTO errors)
         {
-            if(Source.ServerType == enSourceType.SqlDatabase)
-            SetupSqlServer(errors);
+            if (Source != null && Source.ServerType == enSourceType.SqlDatabase)
+            {
+                SetupSqlServer(errors);
+            }
         }
 
         public override void AfterExecution(ErrorResultTO errors)
         {
-            if (Source.ServerType == enSourceType.SqlDatabase)
-            DestroySqlServer();
+            if (Source != null && Source.ServerType == enSourceType.SqlDatabase)
+            {
+                DestroySqlServer();
+            }
         }
 
         protected override object ExecuteService(List<MethodParameter> methodParameters, out ErrorResultTO errors, IOutputFormatter formater = null)

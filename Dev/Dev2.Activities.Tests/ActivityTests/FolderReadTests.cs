@@ -50,7 +50,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var res = inputs.FetchAllEntries().Count;
 
             // remove test datalist ;)
-            DataListRemoval(inputs.UID);
 
             Assert.AreEqual(7, res);
         }
@@ -65,7 +64,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var res = outputs.FetchAllEntries().Count;
 
             // remove test datalist ;)
-            DataListRemoval(outputs.UID);
 
             Assert.AreEqual(1, res);
         }

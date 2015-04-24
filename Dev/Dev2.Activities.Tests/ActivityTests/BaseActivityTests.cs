@@ -46,7 +46,6 @@ namespace Dev2.Tests.Activities.ActivityTests
                 dataListWithData, out inRes, out outRes);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
             //---------------Test Result -----------------------
         }
 

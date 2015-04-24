@@ -227,7 +227,7 @@ Scenario: Assign a variable equal to a group calculation (sum)
 	| # | Variable     | New Value                             |
 	| 1 | [[var1]]   = | 30                                    |
 	| 2 | [[var2]]   = | 30                                    |
-	| 3 | [[Result]] = | =SUM([[var1]],[[var2]]) ==SUM(30,30) |
+	| 3 | [[Result]] = | =SUM(30,30) |
 	And the debug output as
 	| # |                 |
 	| 1 | [[var1]] = 30   |

@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using Dev2.Common;
 using Dev2.DataList;
 using Dev2.DataList.Contract;
@@ -24,41 +23,6 @@ namespace Dev2.BussinessLogic
 {
     public class RsOpNotBetween : AbstractRecsetSearchValidation
     {
-        public override Func<IList<string>> BuildSearchExpression(IList<RecordSetSearchPayload> operationRange, IRecsetSearch to)
-        {
-            // Default to a null function result
-
-            Func<IList<string>> result = () =>
-                {
-              
-                     
-
-                    DateTime fromDt;
-                    double fromNum;
-                    if(DateTime.TryParse(to.From, out fromDt))
-                    {
-                        DateTime toDt;
-                        if(!DateTime.TryParse(to.To, out toDt))
-                        {
-                            throw new InvalidDataException("IsBetween Numeric and DateTime mis-match");
-                        }
-                        return FindRecordIndexForDateTime(operationRange, to, fromDt, toDt).Distinct().ToList();
-                    }
-                    if(double.TryParse(to.From, out fromNum))
-                    {
-                        double toNum;
-                        if(!double.TryParse(to.To, out toNum))
-                        {
-                            throw new InvalidDataException("IsBetween Numeric and DateTime mis-match");
-                        }
-                        return FindRecordIndexForNumeric(operationRange, to, fromNum, toNum).Distinct().ToList();
-                    }
-                    return new List<string>();
-                };
-
-            return result;
-        }
-
         private static IEnumerable<string> FindRecordIndexForDateTime(IEnumerable<RecordSetSearchPayload> operationRange, IRecsetSearch to, DateTime fromDateTime, DateTime toDateTime)
         {
             IList<string> fnResult = new List<string>();

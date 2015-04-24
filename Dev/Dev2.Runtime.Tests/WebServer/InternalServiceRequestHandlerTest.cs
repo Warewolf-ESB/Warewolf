@@ -93,28 +93,6 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("InternalServiceRequestHandler_ProcessRequest")]
-        public void InternalServiceRequestHandler_ProcessRequest_WhenPassingInUserContext_ExpectThreadHasCorrectUserContext()
-        {
-            //------------Setup for test--------------------------
-            Mock<IPrincipal> principle = new Mock<IPrincipal>();
-            principle.Setup(p => p.Identity.Name).Returns("FakeUser");
-            principle.Setup(p => p.Identity.Name).Verifiable();
-            EsbExecuteRequest eer = new EsbExecuteRequest { ServiceName = "Ping" };
-
-            var internalServiceRequestHandler = new InternalServiceRequestHandler { ExecutingUser = principle.Object };
-
-            //------------Execute Test---------------------------
-            var result = internalServiceRequestHandler.ProcessRequest(eer, Guid.Empty, Guid.Empty, Guid.Empty.ToString());
-
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(result);
-            StringAssert.Contains(result.ToString(), "Pong");
-            principle.Verify(p => p.Identity.Name, Times.Once());
-        }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("InternalServiceRequestHandler_ProcessRequest")]
         public void InternalServiceRequestHandler_ProcessRequest_WhenExecutingUserInFirstOverload_ExpectThreadHasCorrectUserContext()
         {
             //------------Setup for test--------------------------

@@ -17,6 +17,8 @@ using Dev2.Activities.Debug;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
+using Dev2.Data;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Development.Languages.Scripting;
 using Dev2.Diagnostics;
@@ -24,6 +26,7 @@ using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Storage;
+using WarewolfParserInterop;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Activities
@@ -94,18 +97,44 @@ namespace Dev2.Activities
                         AddDebugInputItem(new DebugEvalResult(Script, "Script", env));
                     }
 
-                    var scriptItr = env.EvalAsListOfStrings(Script);
+                    var listOfEvalResultsForInput = dataObject.Environment.EvalForDataMerge(Script);
+                    var innerIterator = new WarewolfListIterator();
+                    var innerListOfIters = new List<WarewolfIterator>();
+
+                    foreach (var listOfIterator in listOfEvalResultsForInput)
+                    {
+                        var inIterator = new WarewolfIterator(listOfIterator);
+                        innerIterator.AddVariableToIterateOn(inIterator);
+                        innerListOfIters.Add(inIterator);
+                    }
+                    var atomList = new List<DataASTMutable.WarewolfAtom>();
+                    while (innerIterator.HasMoreData())
+                    {
+                        var stringToUse = "";
+                        foreach (var warewolfIterator in innerListOfIters)
+                        {
+                            stringToUse += warewolfIterator.GetNextValue();
+                        }
+                        atomList.Add(DataASTMutable.WarewolfAtom.NewDataString(stringToUse));
+                    }
+                    var finalString = string.Join("", atomList);
+                    var inputListResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomListresult(new WarewolfAtomList<DataASTMutable.WarewolfAtom>(DataASTMutable.WarewolfAtom.Nothing, atomList));
+                    if (DataListUtil.IsFullyEvaluated(finalString))
+                    {
+                        inputListResult = dataObject.Environment.Eval(finalString);
+                    }
+
                     allErrors.MergeErrors(errors);
 
                     if(allErrors.HasErrors())
                     {
                         return;
                     }
-
-                    foreach(var scriptValue in scriptItr)
+                    var scriptItr = new WarewolfIterator(inputListResult);
+                    while(scriptItr.HasMoreData())
                     {
                         var engine = new ScriptingEngineRepo().CreateEngine(ScriptType);
-                        var value = engine.Execute(scriptValue);
+                        var value = engine.Execute(scriptItr.GetNextValue());
 
                         //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                         foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
