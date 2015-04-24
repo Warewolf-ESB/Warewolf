@@ -218,29 +218,6 @@ namespace Dev2.Sql.Tests
         [TestCategory("SqlServer_FetchStoredProcedures")]
         [ExpectedException(typeof(ArgumentNullException))]
 // ReSharper disable InconsistentNaming
-        public void SqlServer_FetchStoredProcedures_ProcedureProcessorIsNull_ThrowsArgumentNullException()
-// ReSharper restore InconsistentNaming
-        {
-            //------------Setup for test--------------------------
-            var sqlServer = new SqlServer();
-            try
-            {
-                //------------Execute Test---------------------------
-                sqlServer.FetchStoredProcedures((Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool>)null, null);
-
-                //------------Assert Results-------------------------
-            }
-            finally
-            {
-                sqlServer.Dispose();
-            }
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("SqlServer_FetchStoredProcedures")]
-        [ExpectedException(typeof(ArgumentNullException))]
-// ReSharper disable InconsistentNaming
         public void SqlServer_FetchStoredProcedures_FunctionProcessorIsNull_ThrowsArgumentNullException()
 // ReSharper restore InconsistentNaming
         {

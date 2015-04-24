@@ -66,7 +66,6 @@ namespace Dev2.Tests.Activities.ActivityTests
                 dataListWithData, out inRes, out outRes);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(0, inRes.Count);
             Assert.AreEqual(1, outRes.Count);

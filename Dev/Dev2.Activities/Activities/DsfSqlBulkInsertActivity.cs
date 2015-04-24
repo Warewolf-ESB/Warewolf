@@ -463,10 +463,6 @@ namespace Dev2.Activities
                     continue;
                 }
 
-                if (!IgnoreBlankRows && enumerable.All(String.IsNullOrEmpty))
-                {
-                    throw new Exception("Ignore Blank Rows not selected and blank data encountered.");
-                }
                 // now we can create the row and add data ;)
                 // ReSharper disable CoVariantArrayConversion
                 dataTableToInsert.Rows.Add(enumerable.ToArray());

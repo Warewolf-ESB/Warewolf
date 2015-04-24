@@ -14,11 +14,9 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using Dev2;
 using Dev2.Activities;
-using Dev2.Common.Interfaces.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -32,39 +30,26 @@ namespace ActivityUnitTests.ActivityTest
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
-
     public class WebGetRequestActivityTests : BaseActivityUnitTest
     {
-        private TestContext _testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return _testContextInstance;
-            }
-            set
-            {
-                _testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
-        static object _testGuard = new object();
+        static readonly object TestGuard = new object();
         [TestInitialize]
         public void TestInit()
         {
-            Monitor.Enter(_testGuard);
+            Monitor.Enter(TestGuard);
         }
 
         [TestCleanup]
         public void TestCleanUp()
         {
-            Monitor.Exit(_testGuard);
+            Monitor.Exit(TestGuard);
         }
 
         #endregion
@@ -134,7 +119,6 @@ namespace ActivityUnitTests.ActivityTest
             var executeProcess = ExecuteProcess();
             //------------Assert Results-------------------------
             mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url, It.IsAny<List<Tuple<string, string>>>()), Times.Once());
-            Assert.IsFalse(Compiler.HasErrors(executeProcess.DataListID));
         }
 
         [TestMethod]
@@ -165,75 +149,13 @@ namespace ActivityUnitTests.ActivityTest
 
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("WebGetRequestActivity_Errors")]
-        public void WebGetRequestExecuteWhereErrorVariableAsScalarSpecifiedExpectErrorInsertedInVariable()
-        {
-            //------------Setup for test--------------------------
-            var mock = new Mock<IWebRequestInvoker>();
-            const string Message = "This is a forced exception";
-            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Tuple<string, string>>>())).Throws(new InvalidDataException(Message));
-            var activity = GetWebGetRequestActivity(mock);
-            activity.OnErrorVariable = "[[Err]]";
-            activity.Method = "GET";
-            activity.Url = "BodyValue";
-            TestStartNode = new FlowStep
-            {
-                Action = activity
-            };
-            TestData = "<root><Err/></root>";
-            //------------Execute Test---------------------------
-            var executeProcess = ExecuteProcess();
-            //------------Assert Results-------------------------
-            mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url, It.IsAny<List<Tuple<string, string>>>()), Times.Once());
-            Assert.IsTrue(Compiler.HasErrors(executeProcess.DataListID));
-
-            string actual;
-            string error;
-            GetScalarValueFromDataList(executeProcess.DataListID, "Err", out actual, out error);
-            StringAssert.Contains(actual, Message);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("WebGetRequestActivity_Errors")]
-        public void WebGetRequestExecuteWhereErrorVariableAsRecordSetSpecifiedExpectErrorInsertedInVariable()
-        {
-            //------------Setup for test--------------------------
-            var mock = new Mock<IWebRequestInvoker>();
-            const string Message = "This is a forced exception";
-            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Tuple<string, string>>>())).Throws(new InvalidDataException(Message));
-            var activity = GetWebGetRequestActivity(mock);
-            activity.OnErrorVariable = "[[Errors().Error]]";
-            activity.Method = "GET";
-            activity.Url = "BodyValue";
-            TestStartNode = new FlowStep
-            {
-                Action = activity
-            };
-            TestData = "<root></root>";
-            CurrentDl = "<ADL><Errors><Error></Error></Errors></ADL>";
-            //------------Execute Test---------------------------
-            var executeProcess = ExecuteProcess();
-            //------------Assert Results-------------------------
-            mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url, It.IsAny<List<Tuple<string, string>>>()), Times.Once());
-            Assert.IsTrue(Compiler.HasErrors(executeProcess.DataListID));
-
-            IList<IBinaryDataListItem> actual;
-            string error;
-            GetRecordSetFieldValueFromDataList(executeProcess.DataListID, "Errors", "Error", out actual, out error);
-            List<IBinaryDataListItem> resultData = actual.ToList();
-            StringAssert.Contains(resultData[0].TheValue, Message);
-        }
-
-        [TestMethod]
         public void WebGetRequestExecuteWhereScalarValuesExpectCorrectResults()
         {
             //------------Setup for test--------------------------
             var mock = new Mock<IWebRequestInvoker>();
-            string url = "http://localhost";
-            string expectedResult = "Request Made";
-            mock.Setup(invoker => invoker.ExecuteRequest("GET", url, It.IsAny<List<Tuple<string, string>>>())).Returns(expectedResult);
+            const string Url = "http://localhost";
+            const string ExpectedResult = "Request Made";
+            mock.Setup(invoker => invoker.ExecuteRequest("GET", Url, It.IsAny<List<Tuple<string, string>>>())).Returns(ExpectedResult);
             var activity = GetWebGetRequestActivity(mock);
             activity.Method = "GET";
             activity.Url = "[[Url]]";
@@ -242,17 +164,16 @@ namespace ActivityUnitTests.ActivityTest
             {
                 Action = activity
             };
-            TestData = string.Format("<root><Url>{0}</Url></root>", url);
+            TestData = string.Format("<root><Url>{0}</Url></root>", Url);
             CurrentDl = "<ADL><Res></Res><Url></Url></ADL>";
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            mock.Verify(sender => sender.ExecuteRequest(activity.Method, url, It.IsAny<List<Tuple<string, string>>>()), Times.Once());
-            Assert.IsFalse(Compiler.HasErrors(result.DataListID));
+            mock.Verify(sender => sender.ExecuteRequest(activity.Method, Url, It.IsAny<List<Tuple<string, string>>>()), Times.Once());
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "Res", out actual, out error);
-            Assert.AreEqual(expectedResult, actual);
+            GetScalarValueFromEnvironment(result.Environment, "Res", out actual, out error);
+            Assert.AreEqual(ExpectedResult, actual);
         }
 
         // ReSharper disable InconsistentNaming

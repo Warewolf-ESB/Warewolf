@@ -46,7 +46,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             IBinaryDataList inputs = testAct.GetInputs();
 
             // remove test datalist ;)
-            DataListRemoval(inputs.UID);
 
             Assert.AreEqual(5, inputs.FetchAllEntries().Count);
         }
@@ -59,7 +58,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             IBinaryDataList outputs = testAct.GetOutputs();
 
             // remove test datalist ;)
-            DataListRemoval(outputs.UID);
 
             Assert.AreEqual(1, outputs.FetchAllEntries().Count);
         }

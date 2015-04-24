@@ -11,53 +11,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.DataList;
-using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.BussinessLogic
 {
     public class RsOpNotHex : AbstractRecsetSearchValidation
     {
-        public override Func<IList<string>> BuildSearchExpression(IList<RecordSetSearchPayload> operationRange, IRecsetSearch to)
-        {
-            // Default to a null function result
-            // ReSharper disable RedundantAssignment
-            Func<IList<string>> result = () => null;
-            // ReSharper restore RedundantAssignment
-
-            result = () =>
-            {
-              
-                 
-                IList<string> fnResult = new List<string>();
-
-                foreach(RecordSetSearchPayload p in operationRange)
-                {
-
-                    if(!p.Payload.IsHex())
-                    {
-                        fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
-                    }
-                    else
-                    {
-                        if(to.RequireAllFieldsToMatch)
-                        {
-                            return new List<string>();
-                        }
-                    }
-                }
-
-                return fnResult.Distinct().ToList();
-            };
-
-
-            return result;
-        }
         public override Func<DataASTMutable.WarewolfAtom, bool> CreateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> warewolfAtoms, IEnumerable<DataASTMutable.WarewolfAtom> to, bool all)
         {
 

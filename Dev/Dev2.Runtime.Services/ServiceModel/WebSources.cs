@@ -248,23 +248,26 @@ namespace Dev2.Runtime.ServiceModel
 
         static void EnsureWebClient(WebSource source, IEnumerable<string> headers)
         {
-            if(source.Client != null)
+            if(source != null && source.Client != null)
             {
                 return;
             }
 
-            source.Client = new WebClient();
-
-            if(source.AuthenticationType == AuthenticationType.User)
+            if(source != null)
             {
-                source.Client.Credentials = new NetworkCredential(source.UserName, source.Password);
-            }
+                source.Client = new WebClient();
 
-            if(headers != null)
-            {
-                foreach(var header in headers)
+                if(source.AuthenticationType == AuthenticationType.User)
                 {
-                    source.Client.Headers.Add(header.Trim());
+                    source.Client.Credentials = new NetworkCredential(source.UserName, source.Password);
+                }
+
+                if(headers != null)
+                {
+                    foreach(var header in headers)
+                    {
+                        source.Client.Headers.Add(header.Trim());
+                    }
                 }
             }
         }

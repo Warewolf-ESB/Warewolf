@@ -47,7 +47,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var res = inputs.FetchAllEntries().Count;
 
             // remove test datalist ;)
-            DataListRemoval(inputs.UID);
 
             Assert.AreEqual(4, res);
         }
@@ -62,7 +61,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var res = outputs.FetchAllEntries().Count;
 
             // remove test datalist ;)
-            DataListRemoval(outputs.UID);
 
             Assert.AreEqual(1, res);
         }
@@ -85,13 +83,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = CheckPathOperationActivityDebugInputOutput(dsfPathDelete, "<ADL><FileNames><Name></Name></FileNames><res></res></ADL>",
                                                                 "<ADL><FileNames><Name></Name></FileNames><res></res></ADL>", out inRes, out outRes);
-            GetScalarValueFromDataList(result.DataListID, "Dev2System.Dev2Error", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Dev2System.Dev2Error", out actual, out error);
 
             // Assert Debug Output Error Message Relevant
             Assert.IsTrue(string.IsNullOrEmpty(actual) || !actual.Contains("null reference"), "Irrelevent error displayed for file not found.");
 
             //clean
-            DataListRemoval(result.DataListID);
         }
 
         #endregion
