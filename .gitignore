@@ -233,8 +233,8 @@
 /Dev/Warewolf.Storage/obj
 /Dev/WarewolfParserInterop/bin
 /Dev/WarewolfParserInterop/obj
-/Dev/WarewolfParsingTest/bin
-/Dev/WarewolfParsingTest/obj
+/Dev/WarewolfParsing.Tests/bin
+/Dev/WarewolfParsing.Tests/obj
 /Dev/WarewolfLanguageParser/bin
 /Dev/WarewolfLanguageParser/obj
 /Dev/Warewolf.ResourceManagement/bin
