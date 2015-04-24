@@ -154,8 +154,6 @@ namespace Dev2.MathOperations
                                 maxRecords = Math.Max(totalRecords, maxRecords);
 
                             }
-
-
                         }
                         else if(allNodes[i] is DatalistReferenceNode)
                         {
