@@ -41,12 +41,17 @@ namespace Dev2.Activities.Specs.Permissions
                 environmentModel.Connect();
                 Thread.Sleep(100);
             }
+
+            var currentSettings = environmentModel.ResourceRepository.ReadSettings(environmentModel);
+            ScenarioContext.Current.Add("initialSettings",currentSettings);
             Data.Settings.Settings settings = new Data.Settings.Settings
             {
                 Security = new SecuritySettingsTO(new List<WindowsGroupPermission>())
             };
 
+
             environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
+            
             environmentModel.Disconnect();
         }
 
@@ -328,13 +333,25 @@ namespace Dev2.Activities.Specs.Permissions
             ScenarioContext.Current.TryGetValue("currentEnvironment", out currentEnvironment);
             IEnvironmentModel environmentModel;
             ScenarioContext.Current.TryGetValue("environment", out environmentModel);
-            if(currentEnvironment != null)
-            {
-                currentEnvironment.Disconnect();
-            }
+            Data.Settings.Settings currentSettings;
+            ScenarioContext.Current.TryGetValue("initialSettings",out currentSettings);
+
             if(environmentModel != null)
             {
-                environmentModel.Disconnect();
+                try
+                {
+                    if(currentSettings!= null)
+                    environmentModel.ResourceRepository.WriteSettings(environmentModel, currentSettings);
+
+                }
+                finally { environmentModel.Disconnect(); }
+               
+              
+            }
+            if (currentEnvironment != null)
+            {
+
+                currentEnvironment.Disconnect();
             }
         }
     }

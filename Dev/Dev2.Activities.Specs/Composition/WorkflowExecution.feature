@@ -3985,41 +3985,45 @@ Examples:
 
 
 	  #Make the spec passed 688
- Scenario: Executing Asynchrounous testing workflow
-	  Given I have a workflow "Testing - Async Test Master Test"
-	  And "Testing - Async Test Master Test" contains "Testing - Async Test Master" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable      |
-	  When "Testing - Async Test Master Test" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'Random' in WorkFlow 'Testing - Async Test Master' debug inputs as
-	  | Random |
-	  | GUID   | 
-	  And the 'Random' in Workflow 'Testing - Async Test Master' debug outputs as    
-	  |                   |
-	  | [[guid]] = String |
-	  And the 'Read File' in WorkFlow 'Testing - Async Test Master' debug inputs as
-	  | Input Path | Username | Password |
-	  | String     | ""       | ""       |  
-	  And the 'Read File' in Workflow 'Testing - Async Test Master' debug outputs as    
-	  |                    |
-	  | [[res]] = 1 |
-	   And the "Decision" in workflow 'Testing - Async Test Master' debug input as
-	   |                    | Statement | Require All decisions to be True |
-	   | [[Result]] = Int32 |           |                                  |
-	   |                    |           |                                  |
-	   |                    | String    | YES                              |
-	   And the "Decision" in workflow 'Testing - Async Test Master' debug output as 
-	   |      |
-	   | Pass |
-	    And the 'Assign' in WorkFlow 'Testing - Async Test Master' debug inputs as
-	  | # | Variable     | New Value |
-	  | 1 | [[Result]] = | Pass      |
-	  And the 'Assign' in Workflow 'Testing - Async Test Master' debug outputs as  
-	  | # |                      |
-	  | 1 | [[Result]] =  Pass   |
-	   And the 'Delete' in WorkFlow 'Testing - Async Test Master' debug inputs as
-	  | Input Path | Username | Password |
-	  | String     | ""       | ""       |  
-	  And the 'Delete' in Workflow 'Testing - Async Test Master' debug outputs as  
+ Scenario: Executing Asynchrounous testing workflow volume
+	  Given I have a workflow "Testing - Async Test Master Testv"
+	  And "Testing - Async Test Master Test" contains "Volume Async Test" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable |
+	  | Volume           | 1000          |                     |             |
+	  When "Testing - Async Test Master Testv" is executed
+	  Then the workflow execution has "NO" error	  
+	  And the 'Volume Async Test' in Workflow 'Volume Async Test' debug outputs as
 	  |                      |
-	  | [[result]] = Success |
+	  | [[Result]] = Pass |
+
+ Scenario: Executing Asynchrounous testing workflow base
+	  Given I have a workflow "Testing - Async Test Master Testc"
+	  And "Testing - Async Test Master Testc" contains "Async Test Master" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  When "Testing - Async Test Master Testc" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Async Test Master' in Workflow 'Async Test Master' debug outputs as
+	  |                      |
+	  | [[Result]] = Pass |
+
+ Scenario: Executing Asynchrounous testing workflow error
+	  Given I have a workflow "Testing - Async Test Master Teste"
+	  And "Testing - Async Test Master Teste" contains "Async Must Not Bubble Up Error" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  When "Testing - Async Test Master Teste" is executed
+	  Then the workflow execution has "NO" error	  
+	  And the 'Async Must Not Bubble Up Error' in Workflow 'Async Must Not Bubble Up Error' debug outputs as
+	  |                      |
+	  | [[Result]] = Pass |
+
+Scenario: Server Persisted Connection
+# Note that the result is viewed in the browser
+Given I have a workflow "Persisted DB Connection Test" that takes an input <DbService>
+When "SQL Persisted DB Connection Test" is exceuted
+Then the execution has "NO" error
+And the debug Result is <Result>
+Examples: 
+ | #     | DbService | Result |
+ | SQL   | SQL       | Pass   |
+ | MySQL | MySQL     | Pass   |  
+
