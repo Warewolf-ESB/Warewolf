@@ -4034,3 +4034,21 @@ Examples:
  | SQL   | SQL       | Pass   |
  | MySQL | MySQL     | Pass   |  
 
+ Scenario: Exceution Engine Test with number of runs
+	 Given I have a workflow "Exceution Engine Test"
+	 And "Exceution Engine Test" contains "Execution time testing - inner workflow" from server "localhost" with mapping as
+	 |Comment|
+	 And "Exceution Engine Test" contains "Execution Time Testing - Map data in" from server "localhost" with mapping as
+	 |Comment|
+	  And "Exceution Engine Test" contains "Execution time testing - Map data in and out" from server "localhost" with mapping as
+	 |Comment|
+	 When "<Exceution Engine Test>" is executed
+	 Then the execution has "NO" error
+	 And the debug output as
+	 Examples
+     | # | runs  | result |
+     | 1 | 10    | Pass   |
+     | 2 | 100   | Pass   |
+     | 3 | 1000  | Pass   |
+     | 4 | 9999  | Pass   |
+     | 5 | 10000 | Pass   |
