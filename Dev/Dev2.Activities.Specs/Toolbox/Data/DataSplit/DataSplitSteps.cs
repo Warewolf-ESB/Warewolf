@@ -198,13 +198,12 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         public void ThenTheSplitResultWillBe(Table table)
         {
             List<TableRow> tableRows = table.Rows.ToList();
-            string error;
 
             var recordset = ScenarioContext.Current.Get<string>("recordset");
             var field = ScenarioContext.Current.Get<string>("recordField");
 
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, field, out error).ToList();
+            List<string> recordSetValues = new List<string>(); // TODO RetrieveAllRecordSetFieldValues(result.DataListID, recordset, field, out error).ToList();
 
             Assert.AreEqual(tableRows.Count, recordSetValues.Count);
 
@@ -218,12 +217,10 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         [Then(@"the split result for ""(.*)"" will be ""(.*)""")]
         public void ThenTheSplitResultForWillBe(string variable, string value)
         {
-            string actualValue;
-            string error;
+            string actualValue=""; //TODO
             value = value.Replace('"', ' ').Trim();
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
-                                       out actualValue, out error);
+
             actualValue = actualValue.Replace('"', ' ').Trim();
             Assert.AreEqual(value, actualValue);
         }

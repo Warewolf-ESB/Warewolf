@@ -94,15 +94,14 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
         [Then(@"the value of the variable ""(.*)"" is a valid ""(.*)""")]
         public void ThenTheValueOfTheVariableIsAValid(string variable, string type)
         {
-            string error;
+            string error="";
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
 
             if(DataListUtil.IsValueRecordset(variable))
             {
                 string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
                 string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
-                List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column,
-                                                                               out error);
+                List<string> recordSetValues = new List<string>(); //TODO
                 recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
                 foreach(string recordSetValue in recordSetValues)
                 {

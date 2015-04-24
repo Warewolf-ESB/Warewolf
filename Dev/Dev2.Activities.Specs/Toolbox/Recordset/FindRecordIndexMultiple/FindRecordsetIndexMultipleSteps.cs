@@ -224,8 +224,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
             {
                 string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, ResultVariable);
                 string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, ResultVariable);
-                List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column,
-                                                                               out error);
+                List<string> recordSetValues = new List<string>(); //TODO: RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column,out error);
                 recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
                 
                 Assert.AreEqual(recordSetValues[1], expectedResult);
