@@ -237,6 +237,8 @@
 /Dev/WarewolfParsingTest/obj
 /Dev/WarewolfLanguageParser/bin
 /Dev/WarewolfLanguageParser/obj
+/Dev/Warewolf.ResourceManagement/bin
+/Dev/Warewolf.ResourceManagement/obj
 
 ####################################################################################
 # These release workflows must be stored in "/Dev/BPM Resources - Release/Resources" ONLY!

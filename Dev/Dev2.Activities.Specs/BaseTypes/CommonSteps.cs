@@ -286,13 +286,13 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Then(@"the result from the web service ""(.*)"" will have the same data as variable ""(.*)""")]
         public void ThenTheResultFromTheWebServiceWillHaveTheSameDataAsVariable(string webservice, string errorVariable)
         {
-          //  string error = "";//TODO
+            string error;
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
 
             //Get the error value
-            string errorValue="";
-            //GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(errorVariable),
-            //                           out errorValue, out error);
+            string errorValue;
+            GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(errorVariable),
+                                       out errorValue, out error);
             errorValue = errorValue.Replace('"', ' ').Trim();
 
             //Call the service and get the result
@@ -312,7 +312,8 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
                 string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
-                List<string> recordSetValues = new List<string>(); //TODO; // RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column,out error);
+                List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
+                                                                               out error);
                 recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
                 value = value.Replace('"', ' ').Trim();
 
