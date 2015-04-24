@@ -46,10 +46,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
 
@@ -63,10 +62,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "results", "resField", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "results", "resField", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(24, actual.Count);
 
@@ -89,10 +87,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             //Get the result from Find Index
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "results", "resField", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "results", "resField", out error);
 
             //Datalist dispose
-            DataListRemoval(result.DataListID);
 
             //check that there is only one row
             Assert.AreEqual(Expected, actual.Count);
@@ -109,10 +106,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(Expected, actual);
 
@@ -125,10 +121,9 @@ namespace Dev2.Tests.Activities.ActivityTests
                            "[[recset1(*).field1]]", "First Occurrence", "f1", "Left To Right", "[[Customers(*).FirstName]]", "0");
             IDSFDataObject result = ExecuteProcess();
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "Customers", "FirstName", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "Customers", "FirstName", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(6, actual.Count);
             Assert.AreEqual("-1", actual[0]);
@@ -152,10 +147,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
             
             //get the result
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
 
             //datalist dispose
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(Expected, actual);
         }
@@ -170,9 +164,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(Expected, actual);
 
@@ -188,9 +181,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(Expected, actual);
 
@@ -199,44 +191,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         #endregion Index Positive Tests
 
         #region Index Negative Tests
-
-        [TestMethod]
-        public void Index_Recordset_With_Zero_Index_Expected_Error_In_Error_tag_Returned()
-        {
-            SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListWithData,
-                           "[[recset1(0).field1]]", "First Occurrence", "f1", "Left To Right", "[[res]]", "0");
-            IDSFDataObject result = ExecuteProcess();
-            const string Expected = "<InnerError>Recordset index [ 0 ] is not greater than zero</InnerError>";
-
-            string actual;
-            string error;
-            GetScalarValueFromDataList(result.DataListID, "Dev2System.Dev2Error", out actual, out error);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(Expected, actual);
-
-        }
-
-        [TestMethod]
-        public void Index_Recordset_With_Negative_Index_Expected_Error_In_Error_Tag_Returned()
-        {
-            SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListShape,
-                           "[[recset1(-1).field1]]", "First Occurrence", "f1", "Left To Right", "[[res]]", "0");
-            IDSFDataObject result = ExecuteProcess();
-            const string Expected = "<InnerError>Recordset index [ -1 ] is not greater than zero</InnerError>";
-
-            string actual;
-            string error;
-            GetScalarValueFromDataList(result.DataListID, "Dev2System.Dev2Error", out actual, out error);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(Expected, actual);
-
-        }
 
         [TestMethod]
         public void Index_Raw_Data_AllOccurrences_Expected_Success()
@@ -248,34 +202,14 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(Expected, actual);
         }
 
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("IndexActivity_Execute")]
-        public void IndexActivity_Execute_MultipleResultsFields_Error()
-        {
-            SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListShape,
-                           "ABCFDEFGH", "All Occurrences", "F", "Left To Right", "[[res]][[bes]]", "0");
-            IDSFDataObject result = ExecuteProcess();
-           
-
-
-            string actual;
-            string error;
-            GetScalarValueFromDataList(result.DataListID, "Dev2System.Dev2Error", out actual, out error);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(actual.Contains("The result field only allows a single result"));
-        }
+     
 
         [TestMethod]
         public void Index_Recordset_With_Star_AllOccurrences_Expected_Seven_Different_Indexs_Returned()
@@ -284,10 +218,9 @@ namespace Dev2.Tests.Activities.ActivityTests
                            "[[recset1(*).field2]]", "All Occurrences", "2", "Left To Right", "[[Customers(*).FirstName]]", "0");
             IDSFDataObject result = ExecuteProcess();
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "Customers", "FirstName", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "Customers", "FirstName", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(7, actual.Count);
             Assert.AreEqual("2", actual[1]);
@@ -307,7 +240,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             IBinaryDataList inputs = testAct.GetInputs();
 
             // remove test datalist ;)
-            DataListRemoval(inputs.UID);
 
             Assert.AreEqual(6, inputs.FetchAllEntries().Count);
         }
@@ -320,7 +252,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             IBinaryDataList outputs = testAct.GetOutputs();
 
             // remove test datalist ;)
-            DataListRemoval(outputs.UID);
 
             Assert.AreEqual(1, outputs.FetchAllEntries().Count);
         }

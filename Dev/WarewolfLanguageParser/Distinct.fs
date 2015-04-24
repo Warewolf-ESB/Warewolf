@@ -25,7 +25,7 @@ let AssignFromList (oldenv:WarewolfEnvironment) (datas:string seq) (exp:string) 
         | LanguageExpression.ComplexExpression b -> failwith "this method is not intended for use with complex expressions"
         | ScalarExpression b -> AssignEvaluation.EvalAssign exp (System.String.Join("," ,data)) env
         | RecordSetExpression recset -> match recset.Index with
-                                            | IntIndex int -> if int<0 then failwith "invalid negative index" else  AssignEvaluation.EvalAssign exp (Seq.last data) env
+                                            | IntIndex int -> if int<=0 then failwith (sprintf "Recordset index [ %i ] is not greater than zero" int) else  AssignEvaluation.EvalAssign exp (Seq.last data) env
                                             | Last -> let start = match Map.tryFind recset.Name startPositions with
                                                                     | Some a -> a
                                                                     | None -> 0
@@ -39,7 +39,7 @@ let AssignFromList (oldenv:WarewolfEnvironment) (datas:string seq) (exp:string) 
                                             | IndexExpression indexp ->  match indexp with 
                                                                             |  WarewolfAtomAtomExpression atom -> let inval = AtomToInt atom
 
-                                                                                                                  if inval<0 then failwith "invalid negative index" else AssignEvaluation.EvalAssign exp (Seq.last data) env
+                                                                                                                  if inval<=0 then failwith (sprintf "Recordset index [ %i ] is not greater than zero" inval) else AssignEvaluation.EvalAssign exp (Seq.last data) env
                                                                             | _ -> failwith "this method is not intended for use with complex expressions"
         | _ -> failwith "only recsets and scalars allowed" 
 

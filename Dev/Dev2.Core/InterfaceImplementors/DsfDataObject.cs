@@ -41,20 +41,20 @@ namespace Dev2.DynamicServices
         private ErrorResultTO _errors;
         private string _parentServiceName = string.Empty;
         private string _parentWorkflowInstanceId = string.Empty;
-        private Stack<IExecutionEnvironment> _environments; 
+        private readonly Stack<IExecutionEnvironment> _environments; 
         #endregion Class Members
 
         #region Constructor
 
         private DsfDataObject()
         {
-            Environment = new Warewolf.Storage.ExecutionEnvironment(); ;
+            Environment = new ExecutionEnvironment();
             _environments = new Stack<IExecutionEnvironment>();
         }
 
         public DsfDataObject(string xmldata, Guid dataListId, string rawPayload = "")
         {
-            Environment = new Warewolf.Storage.ExecutionEnvironment(); ;
+            Environment = new ExecutionEnvironment();
             _environments = new Stack<IExecutionEnvironment>();
             ThreadsToDispose = new Dictionary<int, List<Guid>>();
 
@@ -375,6 +375,8 @@ namespace Dev2.DynamicServices
             result.IsDebugNested = IsDebugNested;
             result.ForEachNestingLevel = ForEachNestingLevel;
             result.Environment = Environment;
+            result.EsbChannel = EsbChannel;
+            result.ExecutionToken = ExecutionToken;
             return result;
         }
 

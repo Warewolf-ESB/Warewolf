@@ -244,7 +244,6 @@
     <Compile Include="BussinessLogic\AbstractRecsetSearchValidation.cs" />
     <Compile Include="BussinessLogic\FindRecsetOptions.cs" />
     <Compile Include="BussinessLogic\IFindRecsetOptions.cs" />
-    <Compile Include="BussinessLogic\RecordsetInterrogator.cs" />
     <Compile Include="BussinessLogic\RsOpContains.cs" />
     <Compile Include="BussinessLogic\RsOpEndsWith.cs" />
     <Compile Include="BussinessLogic\RsOpEqual.cs" />

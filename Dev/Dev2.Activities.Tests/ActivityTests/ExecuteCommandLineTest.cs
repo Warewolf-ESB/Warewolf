@@ -87,9 +87,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
 
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
             Assert.IsNull(actual);
         }
 
@@ -122,7 +121,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var res = Compiler.HasErrors(result.DataListID);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
             //------------Assert Results-------------------------
             Assert.IsTrue(res);
         }
@@ -155,10 +153,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Assert.Fail(fetchErrors);
             }
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             StringAssert.Contains(actual, "");
         }
@@ -236,10 +233,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Assert.Fail(fetchErrors);
             }
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             StringAssert.Contains(actual, "This is output from the user");
 
@@ -273,10 +269,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Assert.Fail(fetchErrors);
             }
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             StringAssert.Contains(actual, "This is output from the user");
 
@@ -301,7 +296,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsTrue(Compiler.HasErrors(result.DataListID));
             var fetchErrors = DataObject.Environment.FetchErrors();
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             StringAssert.Contains(fetchErrors, "Cannot execute CMD from tool.");
 
@@ -327,7 +321,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsTrue(Compiler.HasErrors(result.DataListID));
             var fetchErrors = DataObject.Environment.FetchErrors();
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
             StringAssert.Contains(fetchErrors, "Cannot execute explorer from tool.");
         }
 
@@ -356,11 +349,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
             Assert.IsTrue(Compiler.HasErrors(result.DataListID));
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
             Assert.IsNull(actual);
             var fetchErrors = DataObject.Environment.FetchErrors();
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
             StringAssert.Contains(fetchErrors, "The console errored");
 
         }
@@ -389,9 +381,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             var actualArray = actual.ToArray();
             actual.Clear();
@@ -428,10 +419,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             var actualArray = actual.ToArray();
             actual.Clear();
@@ -461,10 +451,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             var actualArray = actual.ToArray();
             actual.Clear();
@@ -497,7 +486,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset2", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset2", "field1", out error);
 
             var actualArray = actual.ToArray();
             actual.Clear();
@@ -527,7 +516,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
 
             StringAssert.Contains(actual, Expected);
         }

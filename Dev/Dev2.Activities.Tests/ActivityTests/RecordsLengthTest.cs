@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ActivityUnitTests;
-using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -48,44 +47,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = @"5";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "TestCountvar", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "TestCountvar", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
-
-        }
-
-        [TestMethod]
-        public void CountOutputToScalar_With_NonExistantRecSet_Expected_Errors()
-        {
-
-            SetupArguments("<root><ADL><TestCountvar/></ADL></root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[TestCountvar]]");
-
-            IDSFDataObject result = ExecuteProcess();
-            var res = Compiler.HasErrors(result.DataListID);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(res);
-        }
-
-        //2013.06.03: Ashley Lewis for bug 9498 - multiple regions in result
-        [TestMethod]
-        public void RecordsetLengthOutputToMultipleScalars_Expected_ErrorReturned()
-        {
-
-            SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShapeWithExtraScalar + "</root>", "<root><recset1><field1/></recset1><TestCountvar/><AnotherTestCountvar/></root>", "[[recset1()]]", "[[TestCountvar]][[AnotherTestCountvar]]");
-
-            IDSFDataObject result = ExecuteProcess();
-            var res = Compiler.HasErrors(result.DataListID);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(res);
 
         }
 
@@ -100,108 +66,20 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             const string expected = "5";
-            IList<IBinaryDataListItem> actual;
+            IList<string> actual;
             string error;
-            GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out actual, out error);
-            string actualSet = actual.First(c => c.FieldName == "field1" && !string.IsNullOrEmpty(c.TheValue)).TheValue;
+            GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out actual, out error);
+            string actualSet = actual.First(c => !string.IsNullOrEmpty(c));
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actualSet);
-
-        }
-
-        //2013.02.12: Ashley Lewis - Bug 8725, Task 8831 DONE
-        [TestMethod]
-        public void RecordsetLengthTwiceWithEmptyRecsetExpectedOutputToRecsetsSelf()
-        {
-            SetupArguments("<root></root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[recset1().field1]]");
-            IDSFDataObject result = ExecuteProcess();
-
-            const string expected = "0";
-            IList<IBinaryDataListItem> actual;
-            string error;
-            GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out actual, out error);
-            string actualSet = actual.First(c => c.FieldName == "field1" && c.ItemCollectionIndex == 1).TheValue;
-
-            SetupArguments("<root></root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[recset1().field1]]");
-            result = ExecuteProcess();
-
-
-            const string expected2 = "1";
-            GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out actual, out error);
-            string actualSet2 = actual.First(c => c.FieldName == "field1" && c.ItemCollectionIndex == 2).TheValue;
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(expected, actualSet);
-            Assert.AreEqual(expected2, actualSet2);
 
         }
 
         #endregion Store To RecordSet Tests
 
         #region Error Test Cases
-
-        [TestMethod]
-        public void RecordsetLengthWithNoRecsetName_Expected_ErrorPopulatedFromDataList()
-        {
-            SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShape + "</root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", string.Empty, "[[TestCountvar]]");
-            IDSFDataObject result = ExecuteProcess();
-
-            var res = Compiler.HasErrors(result.DataListID);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(res);
-        }
-
-        [TestMethod]
-        public void RecordsetLengthWithNoOutputVariable()
-        {
-            SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShape + "</root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", string.Empty);
-            IDSFDataObject result = ExecuteProcess();
-
-            var res = Compiler.HasErrors(result.DataListID);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(res);
-        }
-
-        [TestMethod]
-        public void RecordsetLengthOnScalar()
-        {
-            SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShape + "</root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[TestCountVar]]", "[[TestCountVar]]");
-            IDSFDataObject result = ExecuteProcess();
-
-            var res = Compiler.HasErrors(result.DataListID);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(res);
-        }
-
-
-        [TestMethod]
-        public void RecordsetLengthRecords_ErrorHandeling_Expected_ErrorTag()
-        {
-            SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShape + "</root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[//().rec]]");
-
-            IDSFDataObject result = ExecuteProcess();
-
-            var res = Compiler.HasErrors(result.DataListID);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(res);
-        }
 
         #endregion Error Test Cases
 
@@ -217,7 +95,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = inputs.FetchAllEntries().Count;
 
             // remove test datalist ;)
-            DataListRemoval(inputs.UID);
 
             Assert.AreEqual(1, result);
         }
@@ -232,7 +109,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = outputs.FetchAllEntries().Count;
 
             // remove test datalist ;)
-            DataListRemoval(outputs.UID);
 
             Assert.AreEqual(1, result);
         }

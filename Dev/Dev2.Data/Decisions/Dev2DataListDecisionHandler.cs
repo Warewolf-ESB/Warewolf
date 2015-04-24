@@ -57,10 +57,7 @@ namespace Dev2.Data.Decision
         public string FetchSwitchData(string variableName, IList<string> oldAmbientData)
         {
        
-
-      
             Guid dlId = FetchDataListID(oldAmbientData);
-
             var env = _environments[dlId];
             var output = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(variableName));
         
@@ -79,12 +76,9 @@ namespace Dev2.Data.Decision
         public bool ExecuteDecisionStack(string decisionDataPayload, IList<string> oldAmbientData)
         {
 
-            // Evaluate decisionDataPayload through the EvaluateFunction ;)
             Guid dlId = FetchDataListID(oldAmbientData);
             if(dlId == GlobalConstants.NullDataListID) throw new InvalidExpressionException("Could not evaluate decision data - no DataList ID sent!");
-            // Swap out ! with a new internal token to avoid nasty issues with 
             string newDecisionData = Dev2DecisionStack.FromVBPersitableModelToJSON(decisionDataPayload);
-         //   var env= _environments[dlId];
             var dds = EvaluateRegion(newDecisionData, dlId);
 
 
