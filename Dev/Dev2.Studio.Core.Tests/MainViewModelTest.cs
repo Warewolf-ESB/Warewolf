@@ -2269,25 +2269,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("MainViewModel_Handle_DeleteFolderMessage")]
-        public void MainViewModel_Handle_DeleteFolderMessage_ShouldShowMessage()
-        {
-            //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
-            bool _actionCalled = false;
-            PopupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.YesNo, MessageBoxImage.Warning, null)).Returns(MessageBoxResult.Yes);
-            //------------Execute Test---------------------------
-            MainViewModel.Handle(new DeleteFolderMessage("MyFolder", () =>
-            {
-                _actionCalled = true;
-            }));
-            //------------Assert Results-------------------------
-            Assert.IsTrue(_actionCalled);
-            PopupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.YesNo, MessageBoxImage.Warning, null), Times.Once());
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("MainViewModel_Handle_DeleteFolderMessage")]
         public void MainViewModel_Handle_DeleteFolderMessage_RefreshFilters()
         {
             //------------Setup for test--------------------------
