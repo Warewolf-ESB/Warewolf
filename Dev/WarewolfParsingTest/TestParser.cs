@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
@@ -98,7 +99,7 @@ namespace WarewolfParsingTest
 
                 var x = data[2] as LanguageAST.LanguageExpression.RecordSetExpression;
                 Assert.IsNotNull(x);
-                Assert.IsTrue(x.Item.Index.IsIndexExpression);
+                Assert.IsTrue(x.Item.Index.IsIntIndex);
                 //Assert.AreEqual(((LanguageAST.Index.IntIndex)x.Item.Index).Item , 0);
                 Assert.AreEqual(x.Item.Column,"a");
                 Assert.AreEqual(x.Item.Name, "rec");
@@ -258,40 +259,29 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WarewolfParse_Eval")]
+        [ExpectedException(typeof(NullValueInVariableException))]
         public void WarewolfParse_Eval_Scalar_NonExistent_ExpectException()
         {
 
             var env = CreateTestEnvWithData();
-            try
-            {
+      
                 PublicFunctions.EvalEnvExpression("[[xyz]]", env);
-                Assert.Fail("bob should have thrown an exception if i try to get a value that does not exist");
-            }
-            catch (Exception e)
-            {
-
-                Assert.IsTrue(e.Message.Contains("the scalar xyz does not exist"));
-            }
+                
+  
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WarewolfParse_Eval")]
-        [ExpectedException(typeof(Dev2.Common.Common.NullValueInVariableException))]
+        [ExpectedException(typeof(NullValueInVariableException))]
         public void WarewolfParse_Eval_Recset_NoIndex_ExpectAnException()
         {
 
             var env = WarewolfTestData.CreateTestEnvWithData;
-            try
-            {
-                PublicFunctions.EvalEnvExpression("[[rec(4).a]]", env);
-                Assert.Fail("bob should have thrown an exception if i try to get a value that does not exist");
-            }
-            catch(Exception e)
-            {
 
-                Assert.IsTrue(e.Message.Contains("index not found"));
-            }
+                PublicFunctions.EvalEnvExpression("[[rec(4).a]]", env);
+
+
       
             // ReSharper restore PossibleNullReferenceException
         }
@@ -327,7 +317,7 @@ namespace WarewolfParsingTest
             var data = PublicFunctions.EvalAssign("[[rec(*).a]]", "30", env);
             var recordSet = data.RecordSets["rec"];
             Assert.IsTrue(recordSet.Data.ContainsKey("a"));
-            Assert.AreEqual(recordSet.Data["a"].Count, 0);
+            Assert.AreEqual(recordSet.Data["a"].Count, 1);
 
             // ReSharper rstore PossibleNullReferenceException
         }
@@ -769,16 +759,15 @@ namespace WarewolfParsingTest
 
             var recordSet = testEnv2.RecordSets["rec"];
             Assert.IsTrue(recordSet.Data.ContainsKey("a"));
-            Assert.AreEqual(recordSet.Data["a"].Count, 3);
+            Assert.AreEqual(recordSet.Data["a"].Count, 2);
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
             Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 25);
             Assert.IsTrue((recordSet.Data["a"][1].IsNothing));
-            Assert.IsTrue((recordSet.Data["b"][0].IsNothing));
-            Assert.AreEqual((recordSet.Data["b"][1] as DataASTMutable.WarewolfAtom.Int).Item, 33);
-            Assert.AreEqual((recordSet.Data["b"][2] as DataASTMutable.WarewolfAtom.Int).Item, 26);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 25);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataASTMutable.WarewolfAtom.Int).Item, 26);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][2] as DataASTMutable.WarewolfAtom.Int).Item, 27);
+            Assert.IsFalse((recordSet.Data["b"][0].IsNothing));
+            Assert.AreEqual((recordSet.Data["b"][1] as DataASTMutable.WarewolfAtom.Int).Item, 26);
+            Assert.AreEqual((recordSet.Data["b"][0] as DataASTMutable.WarewolfAtom.Int).Item, 33);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
 
 
         }
@@ -1082,7 +1071,7 @@ namespace WarewolfParsingTest
 
 
             Assert.AreEqual(items[0], "25");
-            Assert.AreEqual(items[1], "26");
+            Assert.AreEqual(items[1], "25");
             Assert.AreEqual(items[2], "28");
             PrivateObject p = new PrivateObject(env);
             var inner = p.GetField("_env") as DataASTMutable.WarewolfEnvironment;

@@ -7,12 +7,19 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Diagnostics;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Warewolf.Storage;
 
 namespace Dev2.Activities
 {
     public class DsfSwitch:DsfActivityAbstract<string>
     {
+              public DsfFlowSwitchActivity _inner;
+
+              public DsfSwitch(DsfFlowSwitchActivity inner)
+              {
+                  _inner = inner;
+              }
+
+              public DsfSwitch() { }
 
         public Dictionary<string,IDev2Activity> Switches { get; set; }
         public IEnumerable<IDev2Activity> Default { get; set; }
@@ -60,18 +67,7 @@ namespace Dev2.Activities
                 var firstOrDefault = dataObject.Environment.EvalAsListOfStrings(ds.SwitchVariable).FirstOrDefault();
 
 
-                if (dataObject.IsDebugMode())
-                {
-
-                    List<DebugItem> result = new List<DebugItem>();
-                    DebugItem itemToAdd = new DebugItem();
-                    var debugResult = new DebugItemWarewolfAtomResult(firstOrDefault, "", ds.SwitchVariable, "", "Switch on", "", "=");
-                    itemToAdd.AddRange(debugResult.GetDebugItemResult());
-                    result.Add(itemToAdd);
-                    _debugInputs = result;
-                    DispatchDebugState(dataObject, StateType.Before);
-                    DispatchDebugState(dataObject, StateType.After);
-                }
+                Debug(dataObject, firstOrDefault, ds);
                 if (firstOrDefault != null)
                 {
                     var a = firstOrDefault;
@@ -99,6 +95,35 @@ namespace Dev2.Activities
             }
         }
 
+        void Debug(IDSFDataObject dataObject, string firstOrDefault, Dev2Switch ds)
+        {
+            try
+            {
+
+    
+            if(dataObject.IsDebugMode())
+            {
+                List<DebugItem> result = new List<DebugItem>();
+                DebugItem itemToAdd = new DebugItem();
+                var debugResult = new DebugItemWarewolfAtomResult(firstOrDefault, "", ds.SwitchVariable, "", "Switch on", "", "=");
+                itemToAdd.AddRange(debugResult.GetDebugItemResult());
+                result.Add(itemToAdd);
+                _debugInputs = result;
+                DispatchDebugState(dataObject, StateType.Before);
+                DispatchDebugState(dataObject, StateType.After);
+                if(_inner != null)
+                {
+                    _inner.SetDebugInputs(_debugInputs);
+                }
+            }
+            }
+                // ReSharper disable EmptyGeneralCatchClause
+            catch 
+                // ReSharper restore EmptyGeneralCatchClause
+            {
+
+            }
+        }
 
         #endregion
     }

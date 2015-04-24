@@ -93,13 +93,6 @@ this.ScenarioSetup(scenarioInfo);
 #line 11
  testRunner.And("the debug inputs as", ((string)(null)), table1, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table2.AddRow(new string[] {
-                        "30"});
-#line 14
- testRunner.And("the debug output as", ((string)(null)), table2, "And ");
-#line hidden
             this.ScenarioCleanup();
         }
         
@@ -109,28 +102,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EnsureThatABlankVariableEvaluatesToBlank()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure that a blank variable evaluates to blank", ((string[])(null)));
-#line 18
+#line 16
 this.ScenarioSetup(scenarioInfo);
-#line 19
+#line 17
  testRunner.Given("I need to switch on variable \"[[A]]\" with the value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 20
+#line 18
  testRunner.When("the switch tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 22
+#line 20
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "Switch on"});
-            table3.AddRow(new string[] {
+            table2.AddRow(new string[] {
                         "[[A]] ="});
-#line 23
- testRunner.And("the debug inputs as", ((string)(null)), table3, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table4.AddRow(new string[] {
-                        "\" \""});
-#line 26
- testRunner.And("the debug output as", ((string)(null)), table4, "And ");
+#line 21
+ testRunner.And("the debug inputs as", ((string)(null)), table2, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -141,29 +127,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EnsureThatANegativeIndexThrowsAnError()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure that a negative index throws an error", ((string[])(null)));
-#line 30
+#line 25
 this.ScenarioSetup(scenarioInfo);
-#line 31
+#line 26
  testRunner.Given("I need to switch on variable \"[[rec(-1).val]]\" with the value \"Moses Mabida Stadi" +
                     "um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 32
+#line 27
  testRunner.When("the switch tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 33
+#line 28
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Switch on"});
-            table5.AddRow(new string[] {
-                        "[[rec(-1).val]] ="});
-#line 34
- testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table6.AddRow(new string[] {
-                        ""});
-#line 37
- testRunner.And("the debug output as", ((string)(null)), table6, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

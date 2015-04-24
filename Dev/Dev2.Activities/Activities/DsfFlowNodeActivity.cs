@@ -164,6 +164,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         // Travis.Frisinger - 28.01.2013 : Amended for Debug
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
         {
+            if (_debugInputs != null && _debugInputs.Count > 0)
+            {
+                return _debugInputs;
+            }
             List<IDebugItem> result = new List<IDebugItem>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             var allErrors = new ErrorResultTO();
@@ -177,7 +181,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 string userModel = dds.GenerateUserFriendlyModel(env, dds.Mode, out error);
                 allErrors.MergeErrors(error);
 
-                foreach(Dev2Decision dev2Decision in dds.TheStack)
+                foreach (Dev2Decision dev2Decision in dds.TheStack)
                 {
                     AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, dds.Mode, dev2Decision.Col1, out  error);
                     allErrors.MergeErrors(error);
@@ -190,10 +194,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var itemToAdd = new DebugItem();
 
                 userModel = userModel.Replace("OR", " OR\r\n")
-                                     .Replace("AND", " AND\r\n")
-                                     .Replace("\r\n ", "\r\n")
-                                     .Replace("\r\n\r\n", "\r\n")
-                                     .Replace("  ", " ");
+                    .Replace("AND", " AND\r\n")
+                    .Replace("\r\n ", "\r\n")
+                    .Replace("\r\n\r\n", "\r\n")
+                    .Replace("  ", " ");
 
                 AddDebugItem(new DebugItemStaticDataParams(userModel, "Statement"), itemToAdd);
                 result.Add(itemToAdd);
@@ -201,27 +205,28 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 itemToAdd = new DebugItem();
                 AddDebugItem(new DebugItemStaticDataParams(dds.Mode == Dev2DecisionMode.AND ? "YES" : "NO", "Require All decisions to be True"), itemToAdd);
                 result.Add(itemToAdd);
+
             }
-            catch(JsonSerializationException)
+            catch (JsonSerializationException)
             {
                 Dev2Switch ds = new Dev2Switch { SwitchVariable = val.ToString() };
                 DebugItem itemToAdd = new DebugItem();
-        
+
                 var a = env.Eval(ds.SwitchVariable);
-                var debugResult = new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfEvalResultToString(a),"", ds.SwitchVariable,"", "Switch on","","=");
+                var debugResult = new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfEvalResultToString(a), "", ds.SwitchVariable, "", "Switch on", "", "=");
                 itemToAdd.AddRange(debugResult.GetDebugItemResult());
                 result.Add(itemToAdd);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 allErrors.AddError(e.Message);
             }
             finally
             {
-                if(allErrors.HasErrors())
+                if (allErrors.HasErrors())
                 {
                     var serviceName = GetType().Name;
-                    DisplayAndWriteError(serviceName, allErrors);                    
+                    DisplayAndWriteError(serviceName, allErrors);
                 }
             }
 
@@ -275,6 +280,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         // Travis.Frisinger - 28.01.2013 : Amended for Debug
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
+            if (_debugOutputs != null && _debugOutputs.Count > 0)
+            {
+                return _debugOutputs;
+            }
             var result = new List<DebugItem>();
             string resultString = _theResult.ToString();
             DebugItem itemToAdd = new DebugItem();

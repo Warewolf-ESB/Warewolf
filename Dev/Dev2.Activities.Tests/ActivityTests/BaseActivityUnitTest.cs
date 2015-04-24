@@ -49,6 +49,7 @@ namespace ActivityUnitTests
         public static IDataListCompiler Compiler;
         public BaseActivityUnitTest()
         {
+            CustomContainer.Register<IActivityParser>(new ActivityParser());
             CallBackData = "Default Data";
             TestStartNode = new FlowStep
             {

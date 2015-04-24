@@ -182,7 +182,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         var value = a.ToString();
                         if (String.IsNullOrEmpty(value))
                         {
+                           
                             return DataASTMutable.WarewolfAtom.NewDataString("");
+                            
                         }
                         var upper = broker.Convert(value);
                         var evalled = env.Eval(upper);

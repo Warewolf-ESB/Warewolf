@@ -61,7 +61,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     {
                         if (!string.IsNullOrEmpty(variable.Item1) && !string.IsNullOrEmpty(variable.Item2))
                         {
-                            DataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), variable.Item2);
+                            DataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), variable.Item2=="blank"?"":variable.Item2);
                         }
                         //Build(variable, shape, data, row);
                         row++;
