@@ -4016,32 +4016,32 @@ Examples:
 	  |                      |
 	  | [[Result]] = Pass |
 
-Scenario: Server Persisted Connection
-# Note that the result is viewed in the browser
-Given I have a workflow "Persisted DB Connection Test" that takes an input <DbService>
-When "SQL Persisted DB Connection Test" is exceuted
-Then the execution has "NO" error
-And the debug Result is <Result>
-Examples: 
- | #     | DbService | Result |
- | SQL   | SQL       | Pass   |
- | MySQL | MySQL     | Pass   |  
-
- Scenario: Exceution Engine Test with number of runs
-	 Given I have a workflow "Exceution Engine Test"
-	 And "Exceution Engine Test" contains "Execution time testing - inner workflow" from server "localhost" with mapping as
-	 |Comment|
-	 And "Exceution Engine Test" contains "Execution Time Testing - Map data in" from server "localhost" with mapping as
-	 |Comment|
-	  And "Exceution Engine Test" contains "Execution time testing - Map data in and out" from server "localhost" with mapping as
-	 |Comment|
-	 When "<Exceution Engine Test>" is executed
-	 Then the execution has "NO" error
-	 And the debug output as
-	 Examples
-     | # | runs  | result |
-     | 1 | 10    | Pass   |
-     | 2 | 100   | Pass   |
-     | 3 | 1000  | Pass   |
-     | 4 | 9999  | Pass   |
-     | 5 | 10000 | Pass   |
+#Scenario: Server Persisted Connection
+## Note that the result is viewed in the browser
+#Given I have a workflow "Persisted DB Connection Test" that takes an input <DbService>
+#When "SQL Persisted DB Connection Test" is exceuted
+#Then the execution has "NO" error
+#And the debug Result is <Result>
+#Examples: 
+# | #     | DbService | Result |
+# | SQL   | SQL       | Pass   |
+# | MySQL | MySQL     | Pass   |  
+#
+# Scenario: Exceution Engine Test with number of runs
+#	 Given I have a workflow "Exceution Engine Test"
+#	 And "Exceution Engine Test" contains "Execution time testing - inner workflow" from server "localhost" with mapping as
+#	 |Comment|
+#	 And "Exceution Engine Test" contains "Execution Time Testing - Map data in" from server "localhost" with mapping as
+#	 |Comment|
+#	  And "Exceution Engine Test" contains "Execution time testing - Map data in and out" from server "localhost" with mapping as
+#	 |Comment|
+#	 When "<Exceution Engine Test>" is executed
+#	 Then the execution has "NO" error
+#	 And the debug output as
+#	 Examples:
+#     | # | runs  | result |
+#     | 1 | 10    | Pass   |
+#     | 2 | 100   | Pass   |
+#     | 3 | 1000  | Pass   |
+#     | 4 | 9999  | Pass   |
+#     | 5 | 10000 | Pass   |
