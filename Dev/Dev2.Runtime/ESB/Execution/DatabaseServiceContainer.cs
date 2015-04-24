@@ -14,6 +14,8 @@ using Dev2.DataList.Contract;
 using Dev2.DynamicServices.Objects;
 using Dev2.Services.Execution;
 using Dev2.Workspaces;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -55,6 +57,11 @@ namespace Dev2.Runtime.ESB.Execution
             var result = _databaseServiceExecution.Execute(out errors);
             _databaseServiceExecution.AfterExecution(errors);
             return result;
+        }
+
+        public override IExecutionEnvironment Execute(IDSFDataObject inputs, IDev2Activity activity)
+        {
+            return null;
         }
 
         #endregion

@@ -54,10 +54,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
+         
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
@@ -74,25 +79,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 try
                 {
                     //Execute the concrete action for the specified activity
-                    IList<OutputTO> outputs = ExecuteConcreteAction(context, out errors);
+                    IList<OutputTO> outputs = ExecuteConcreteAction(dataObject, out errors);
 
                     allErrors.MergeErrors(errors);
 
-                    if (outputs.Count > 0)
+                    if(outputs.Count > 0)
                     {
-                        foreach (OutputTO output in outputs)
+                        foreach(OutputTO output in outputs)
                         {
-                            if (output.OutputStrings.Count > 0)
+                            if(output.OutputStrings.Count > 0)
                             {
-                                foreach (string value in output.OutputStrings)
+                                foreach(string value in output.OutputStrings)
                                 {
-                                    if (output.OutPutDescription == GlobalConstants.ErrorPayload)
+                                    if(output.OutPutDescription == GlobalConstants.ErrorPayload)
                                     {
                                         errors.AddError(value);
                                     }
                                     else
                                     {
-                                        foreach (var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
+                                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
                                         {
                                             dataObject.Environment.Assign(region, value);
                                         }
@@ -100,17 +105,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 }
                             }
                         }
-                        if (dataObject.IsDebugMode())
+                        if(dataObject.IsDebugMode())
                         {
-                            if (!String.IsNullOrEmpty(Result))
+                            if(!String.IsNullOrEmpty(Result))
                             {
-                               AddDebugOutputItem(new DebugEvalResult(Result,"",dataObject.Environment));
+                                AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
                             }
                         }
                         allErrors.MergeErrors(errors);
                     }
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     allErrors.AddError(ex.Message);
                 }
@@ -119,23 +124,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     // Handle Errors
                     if(allErrors.HasErrors())
                     {
-                        foreach (var err in allErrors.FetchErrors())
+                        foreach(var err in allErrors.FetchErrors())
                         {
-
-
                             dataObject.Environment.Errors.Add(err);
                         }
                     }
 
                     if(dataObject.IsDebugMode())
                     {
-                        DispatchDebugState(context, StateType.Before);
-                        DispatchDebugState(context, StateType.After);
+                        DispatchDebugState(dataObject, StateType.Before);
+                        DispatchDebugState(dataObject, StateType.After);
                     }
                 }
             }
         }
-
 
         /// <summary>
         /// Makes the deferred action.
@@ -152,7 +154,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="context">The context.</param>
         /// <param name="error">The error.</param>
         /// <returns></returns>
-        protected abstract IList<OutputTO> ExecuteConcreteAction(NativeActivityContext context, out ErrorResultTO error);
+        protected abstract IList<OutputTO> ExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error);
 
         #region Properties
 

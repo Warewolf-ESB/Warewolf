@@ -361,6 +361,7 @@ namespace Dev2.Runtime.ESB.Control
                         return null;
                     }
                 }
+
                 var executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal, oldID);
                 if (executionContainer != null)
                 {

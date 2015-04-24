@@ -16,7 +16,6 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Data.Enums;
 using Dev2.Diagnostics.Debug;
-using Dev2.Enums;
 using Dev2.Runtime.ESB.Control;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;

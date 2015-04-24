@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Storage.Binary_Objects;
 using Dev2.Data.Storage.ProtocolBuffers;
@@ -161,7 +162,7 @@ namespace Dev2.Data.Storage
         {
             if(_levelZeroCache == null)
             {
-                _levelZeroCache = new Dev2DistributedCache<BinaryDataListRow>(StorageSettingManager.GetSegmentSize(), StorageSettingManager.GetSegmentCount());
+                _levelZeroCache = new Dev2DistributedCache<BinaryDataListRow>(GlobalConstants.DefaultStorageSegmentSize, 1);
             }
         }
 

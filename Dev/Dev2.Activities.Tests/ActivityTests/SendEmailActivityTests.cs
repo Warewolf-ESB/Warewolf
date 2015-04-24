@@ -17,7 +17,6 @@ using System.Net.Mail;
 using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.DataList.Contract;
-using Dev2.Enums;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -439,7 +438,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 new Tuple<string, string>("[[Bcc]]", "BccValue"),
                 new Tuple<string, string>("[[Attachments]]", "AttachmentsValue"),
 
-            }, null);
+            });
             //------------Assert Results-------------------------
             Assert.AreEqual("BodyValue", activity.Body);
             Assert.AreEqual("SubJectValue", activity.Subject);
@@ -474,7 +473,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 new Tuple<string, string>("[[Result]]", "TheResult"),
 
-            }, null);
+            });
             //------------Assert Results-------------------------
             Assert.AreEqual("TheResult", activity.Result);
         }

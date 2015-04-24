@@ -23,7 +23,6 @@ using Dev2.Data.Parsers;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
@@ -92,9 +91,15 @@ namespace Dev2.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugOutputs.Clear();
 
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             _isDebugMode = dataObject.IsDebugMode();
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
@@ -106,7 +111,6 @@ namespace Dev2.Activities
             {
                 if(!errors.HasErrors())
                 {
-
                     if(_isDebugMode)
                     {
                         AddSourceStringDebugInputItem(SourceString, dataObject.Environment);
@@ -125,12 +129,11 @@ namespace Dev2.Activities
                             {
                                 for(i = 0; i < ResultsCollection.Count; i++)
                                 {
-
                                     if(!string.IsNullOrEmpty(ResultsCollection[i].OutputVariable))
                                     {
                                         var xpathEntry = dataObject.Environment.Eval(ResultsCollection[i].XPath);
                                         var xpathIterator = new WarewolfIterator(xpathEntry);
-                                        while (xpathIterator.HasMoreData())
+                                        while(xpathIterator.HasMoreData())
                                         {
                                             var xpathCol = xpathIterator.GetNextValue();
                                             //foreach(IBinaryDataListItem xPathCol in xpathCols)
@@ -157,15 +160,14 @@ namespace Dev2.Activities
                                                                 {
                                                                     cleanFieldName = "[[" + newFieldName;
                                                                 }
-                                                                AssignResult(cleanFieldName, dataObject, eval, i + 1);                                                                
-                                                                
+                                                                AssignResult(cleanFieldName, dataObject, eval, i + 1);
                                                             }
                                                         }
                                                     }
                                                     else
                                                     {
                                                         var variable = ResultsCollection[i].OutputVariable;
-                                                        AssignResult(variable, dataObject, eval,i+1);
+                                                        AssignResult(variable, dataObject, eval, i + 1);
                                                     }
                                                 }
                                                 catch(Exception e)
@@ -189,13 +191,12 @@ namespace Dev2.Activities
                         {
                             var itemToAdd = new DebugItem();
                             AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                            AddDebugItem(new DebugEvalResult(DataListUtil.ReplaceRecordsetBlankWithStar(debugOutputTo.OutputVariable),"",dataObject.Environment), itemToAdd);
+                            AddDebugItem(new DebugEvalResult(DataListUtil.ReplaceRecordsetBlankWithStar(debugOutputTo.OutputVariable), "", dataObject.Environment), itemToAdd);
                             _debugOutputs.Add(itemToAdd);
                             innerCount++;
                         }
                     }
                 }
-
             }
             catch(Exception ex)
             {
@@ -227,8 +228,8 @@ namespace Dev2.Activities
                             _debugOutputs.Add(itemToAdd);
                         }
                     }
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
@@ -412,7 +413,7 @@ namespace Dev2.Activities
 
         #region Get ForEach Inputs/Ouputs
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {
@@ -436,7 +437,7 @@ namespace Dev2.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

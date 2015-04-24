@@ -74,6 +74,7 @@
     <Compile Include="Distinct.fs" />
     <Compile Include="PublicFunctions.fs" />
     <Compile Include="WarewolfTestData.fs" />
+    <Compile Include="EvalTools.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">

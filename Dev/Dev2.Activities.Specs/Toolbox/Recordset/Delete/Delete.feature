@@ -18,7 +18,7 @@ Scenario: Delete last record in a recordset
 	| rs().row | 2   |
 	And the execution has "NO" error
 	And the debug inputs as 
-	| Recordset           |
+	| Records           |
 	| [[rs(3).row]] = 3 |
 	And the debug output as  
 	|                      |
@@ -35,14 +35,14 @@ Scenario: Delete an invalid recordset (recordset with no fields declared)
 	| rs().row | 3   |
 	And I delete a record "[[GG()]]"
 	When the delete tool is executed
-	Then the delete result should be ""
+	Then the delete result should be "Failure"
 	And the execution has "AN" error
 	And the debug inputs as  
-	| Recordset  |
+	| Records  |
 	| [[GG()]] = |
 	And the debug output as  
 	|                       |
-	| [[result]] =  |
+	| [[result]] = Failure |
 		
 Scenario: Delete the first record in a recordset 
 	Given I have the following recordset
@@ -59,7 +59,7 @@ Scenario: Delete the first record in a recordset
 	| rs().row | 3   |	
 	And the execution has "NO" error
 	And the debug inputs as  	
-	| Recordset       |
+	| Records       |
 	| [[rs(1).row]] = 1 |
 	And the debug output as  
 	|                      |
@@ -81,7 +81,7 @@ Scenario: Delete a record using an index from a variable
 	| rs().row | 3   |
 	And the execution has "NO" error
 	And the debug inputs as  	
-	| Recordset       |
+	| Records       |
 	| [[rs(2).row]] = 6 |
 	And the debug output as  
 	|                      |
@@ -100,7 +100,7 @@ Scenario: Delete a record using a star notation
 	| rs       | val |
 	And the execution has "NO" error
 	And the debug inputs as 
-	| Recordset           |
+	| Records           |
 	| [[rs(1).row]] = 1 |
 	| [[rs(2).row]] = 2 |
 	| [[rs(3).row]] = 3 |
@@ -116,7 +116,7 @@ Scenario: Delete a record using a negative integer -1
 	| rs().row | 3   |
 	And I delete a record "[[rs(-1)]]"
 	When the delete tool is executed
-	Then the delete result should be ""
+	Then the delete result should be "Failure"
 	And the recordset "[[rs(*).row]]" will be as follows
 	| rs       | val |
 	| rs().row | 1   |
@@ -124,11 +124,11 @@ Scenario: Delete a record using a negative integer -1
 	| rs().row | 3   |
 	And the execution has "AN" error
 	And the debug inputs as  	
-	| Recordset     |
+	| Records     |
 	| [[rs(-1)]]  = |
 	And the debug output as  
 	|                       |
-	| [[result]] =  |
+	| [[result]] = Failure |
 
 Scenario: Delete a record that does not exist
 	Given I have the following recordset
@@ -138,7 +138,7 @@ Scenario: Delete a record that does not exist
 	| rs().row | 3   |
 	And I delete a record "[[rs(5)]]"
 	When the delete tool is executed
-	Then the delete result should be ""
+	Then the delete result should be "Failure"
 	And the recordset "[[rs(*).row]]" will be as follows
 	| rs       | val |
 	| rs().row | 1   |
@@ -146,37 +146,37 @@ Scenario: Delete a record that does not exist
 	| rs().row | 3   |
 	And the execution has "AN" error
 	And the debug inputs as  	
-	| Recordset          |
+	| Records          |
 	| [[rs(5)]]  = |
 	And the debug output as  
 	|                      |
-	| [[result]] =  |
+	| [[result]] = Failure  |
 
 Scenario: Delete a record an empty recordset
 	Given I have the following recordset
 	| rs       | row |
 	And I delete a record "[[rs()]]"
 	When the delete tool is executed
-	Then the delete result should be ""
+	Then the delete result should be "Failure"
 	And the execution has "AN" error
 	And the debug inputs as  	
-	| Recordset          |
+	| Records          |
 	| [[rs()]]  = |
 	And the debug output as  
 	|              |
-	| [[result]] = |
+	| [[result]] = Failure |
 
 Scenario: Delete a scalar insted of a recordset
 	Given I have a delete variable "[[var]]" equal to ""
 	And I delete a record "[[var]]"
 	When the delete tool is executed
-	Then the delete result should be ""
+	Then the delete result should be "Failure"
 	And the execution has "AN" error
 	And the debug inputs as  	
-	| Recordset |	
+	| Records |	
 	And the debug output as  
 	|                      |
-	| [[result]] =  |
+	| [[result]] = Failure |
 
 Scenario: Delete two recordset data.
 	Given I have the following recordset
@@ -187,7 +187,7 @@ Scenario: Delete two recordset data.
 	| ws().row | 4   |
 	And I delete a record "[[rs(*)]],[[ws(*)]]"
 	When the delete tool is executed
-	Then the delete result should be ""
+	Then the delete result should be "Failure"
 	And the recordset "[[rs(*).row]]" will be as follows
 	| rs            | row |
 	| [[rs(1).row]] | 1   |
@@ -201,7 +201,7 @@ Scenario: Delete two recordset data.
 	| Records      |
 	And the debug output as  
 	|                      |
-	| [[result]] =  |
+	| [[result]] = Failure |
 
 Scenario: Delete two specific recordset data.
 	Given I have the following recordset
@@ -212,7 +212,7 @@ Scenario: Delete two specific recordset data.
 	| rs().row | 4   |
 	And I delete a record "[[rs(1).a]],[[rs(4).a]]"
 	When the delete tool is executed
-	Then the delete result should be ""
+	Then the delete result should be "Failure"
 	And the recordset "[[rs(*).row]]" will be as follows
 	| rs           | row |
 	| [[rs().row]] | 1   |
@@ -224,6 +224,6 @@ Scenario: Delete two specific recordset data.
 	| Records        |	
 	And the debug output as  
 	|                      |
-	| [[result]] =  |
+	| [[result]] = Failure  |
 
 

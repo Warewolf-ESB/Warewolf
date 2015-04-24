@@ -24,7 +24,6 @@ using Dev2.Data.Enums;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Util;
@@ -129,11 +128,16 @@ namespace Dev2.Activities
         protected override void OnExecute(NativeActivityContext context)
             // ReSharper restore MethodTooLong
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            _dataObject = dataObject;
 
+            _dataObject = dataObject;
 
             ErrorResultTO allErrors = new ErrorResultTO();
             int indexToUpsertTo = 0;
@@ -142,10 +146,10 @@ namespace Dev2.Activities
             try
             {
                 var runtimeSource = ResourceCatalog.Instance.GetResource<EmailSource>(dataObject.WorkspaceID, SelectedEmailSource.ResourceID);
-                if (IsDebug)
+                if(IsDebug)
                 {
                     var fromAccount = FromAccount;
-                    if (String.IsNullOrEmpty(fromAccount))
+                    if(String.IsNullOrEmpty(fromAccount))
                     {
                         fromAccount = runtimeSource.UserName;
                         AddDebugInputItem(fromAccount, "From Account");
@@ -159,8 +163,8 @@ namespace Dev2.Activities
                     AddDebugInputItem(new DebugEvalResult(Body, "Body", dataObject.Environment));
                 }
                 var colItr = new WarewolfListIterator();
-                
-                var fromAccountItr = new WarewolfIterator(dataObject.Environment.Eval(FromAccount??string.Empty));
+
+                var fromAccountItr = new WarewolfIterator(dataObject.Environment.Eval(FromAccount ?? string.Empty));
                 colItr.AddVariableToIterateOn(fromAccountItr);
 
                 var passwordItr = new WarewolfIterator(dataObject.Environment.Eval(Password));
@@ -178,13 +182,11 @@ namespace Dev2.Activities
                 var subjectItr = new WarewolfIterator(dataObject.Environment.Eval(Subject));
                 colItr.AddVariableToIterateOn(subjectItr);
 
-                var bodyItr = new WarewolfIterator(dataObject.Environment.Eval(Body??string.Empty));
+                var bodyItr = new WarewolfIterator(dataObject.Environment.Eval(Body ?? string.Empty));
                 colItr.AddVariableToIterateOn(bodyItr);
 
                 var attachmentsItr = new WarewolfIterator(dataObject.Environment.Eval(Attachments ?? string.Empty));
                 colItr.AddVariableToIterateOn(attachmentsItr);
-
-                
 
                 if(!allErrors.HasErrors())
                 {
@@ -229,7 +231,7 @@ namespace Dev2.Activities
 
                 if(allErrors.HasErrors())
                 {
-                    foreach (var err in allErrors.FetchErrors())
+                    foreach(var err in allErrors.FetchErrors())
                     {
                         dataObject.Environment.Errors.Add(err);
                     }
@@ -239,12 +241,11 @@ namespace Dev2.Activities
                         AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
                     DisplayAndWriteError("DsfSendEmailActivity", allErrors);
-
                 }
                 if(dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
@@ -404,7 +405,7 @@ namespace Dev2.Activities
             return enFindMissingType.StaticActivity;
         }
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {
@@ -448,7 +449,7 @@ namespace Dev2.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

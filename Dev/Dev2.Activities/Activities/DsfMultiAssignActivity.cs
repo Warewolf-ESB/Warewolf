@@ -24,7 +24,6 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.MathOperations;
 using Warewolf.Storage;
 using WarewolfParserInterop;
@@ -98,11 +97,30 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject);
+        }
+
+        #region Overrides of DsfNativeActivity<string>
+
+        public override IDev2Activity Execute(IDSFDataObject data)
+        {
+            ExecuteTool(data);
+            if(NextNodes != null && NextNodes.Count()>0)
+            {
+                NextNodes.First().Execute(data);
+                return NextNodes.First();
+            }
+            return null;
+        }
+
+        #endregion
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugOutputs.Clear();
             _debugInputs.Clear();
 
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            
             InitializeDebug(dataObject);
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
@@ -112,38 +130,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(!errors.HasErrors())
                 {
                     int innerCount = 1;
-                    foreach (ActivityDTO t in FieldsCollection)
+                    foreach(ActivityDTO t in FieldsCollection)
                     {
-
                         try
                         {
-                            if (!string.IsNullOrEmpty(t.FieldName))
+                            if(!string.IsNullOrEmpty(t.FieldName))
                             {
                                 string cleanExpression;
                                 var assignValue = new AssignValue(t.FieldName, t.FieldValue);
                                 var isCalcEvaluation = DataListUtil.IsCalcEvaluation(t.FieldValue, out cleanExpression);
-                                if (isCalcEvaluation)
+                                if(isCalcEvaluation)
                                 {
                                     assignValue = new AssignValue(t.FieldName, "=" + cleanExpression);
                                 }
                                 DebugItem debugItem = null;
-                                if (dataObject.IsDebugMode())
+                                if(dataObject.IsDebugMode())
                                 {
                                     debugItem = AddSingleInputDebugItem(dataObject.Environment, innerCount, assignValue);
                                 }
-                                if (isCalcEvaluation)
+                                if(isCalcEvaluation)
                                 {
                                     assignValue = DoCalculation(dataObject.Environment, t.FieldName, cleanExpression);
                                 }
                                 dataObject.Environment.AssignWithFrame(assignValue);
-                                if (debugItem != null)
+                                if(debugItem != null)
                                 {
                                     _debugInputs.Add(debugItem);
                                 }
-                                if (dataObject.IsDebugMode())
+                                if(dataObject.IsDebugMode())
                                 {
-
-                                    if (DataListUtil.IsValueRecordset(assignValue.Name) && DataListUtil.GetRecordsetIndexType(assignValue.Name) == enRecordsetIndexType.Blank)
+                                    if(DataListUtil.IsValueRecordset(assignValue.Name) && DataListUtil.GetRecordsetIndexType(assignValue.Name) == enRecordsetIndexType.Blank)
                                     {
                                         var length = dataObject.Environment.GetLength(DataListUtil.ExtractRecordsetNameFromValue(assignValue.Name));
                                         assignValue = new AssignValue(DataListUtil.ReplaceRecordsetBlankWithIndex(assignValue.Name, length), assignValue.Value);
@@ -153,7 +169,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
                             innerCount++;
                         }
-                        catch (Exception e)
+                        catch(Exception e)
                         {
                             Dev2Logger.Log.Error(e);
                             allErrors.AddError(e.Message);
@@ -177,12 +193,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfAssignActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
-
                 }
                 if(dataObject.IsDebugMode())
-                {                   
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                {
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
@@ -391,7 +406,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return enFindMissingType.DataGridActivity;
         }
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             foreach(Tuple<string, string> t in updates)
             {
@@ -407,7 +422,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             foreach(Tuple<string, string> t in updates)
             {

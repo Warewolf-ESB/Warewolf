@@ -9,15 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Diagnostics.CodeAnalysis;
-using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Data.Factories;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Operations;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -64,15 +60,12 @@ namespace Dev2.Data.Tests.Operations
         public void Replace_NoCaseMatch_Recorset_Expected_Correct_Data_Returned_ReplaceCount_Twenty()
         {
             ErrorResultTO errors;
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            Guid exidx = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestStrings.ReplaceDataListWithData.ToStringBuilder(), TestStrings.ReplaceDataListShape.ToStringBuilder(), out errors);
             IDev2DataListUpsertPayloadBuilder<string> payloadBuilder = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
             IDev2ReplaceOperation replaceOperation = Dev2OperationsFactory.CreateReplaceOperation();
-            IBinaryDataListEntry entry;
             const string Expected = "World0";
             const string Expression = "[[results(*).resfield]]";
-            int replaceCount;
-            payloadBuilder = replaceOperation.Replace(exidx, Expression, "hello", "World", false, payloadBuilder, out errors, out replaceCount,out entry);
+            int replaceCount = 0;
+            replaceOperation.Replace(Expression, "hello", "World", false, out errors, ref replaceCount);
 
             var frames = payloadBuilder.FetchFrames();
             var frame = frames[0].FetchNextFrameItem();
@@ -85,15 +78,11 @@ namespace Dev2.Data.Tests.Operations
         public void Replace_CaseMatch_Recorset_Expected_No_Replaces()
         {
             ErrorResultTO errors;
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            Guid exidx = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestStrings.ReplaceDataListWithData, TestStrings.ReplaceDataListShape.ToStringBuilder(), out errors);
-            IDev2DataListUpsertPayloadBuilder<string> payloadBuilder = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-            IBinaryDataListEntry entry;
             IDev2ReplaceOperation replaceOperation = Dev2OperationsFactory.CreateReplaceOperation();
             const string Expression = "[[results(*).resfield]]";
-            int replaceCount;
+            int replaceCount = 0;
             // ReSharper disable RedundantAssignment
-            payloadBuilder = replaceOperation.Replace(exidx, Expression, "hello", "World", true, payloadBuilder, out errors, out replaceCount, out entry);
+            replaceOperation.Replace(Expression, "hello", "World", true, out errors, ref replaceCount);
             // ReSharper restore RedundantAssignment
 
             Assert.AreEqual(0, replaceCount);
@@ -103,15 +92,11 @@ namespace Dev2.Data.Tests.Operations
         public void Replace_NoCaseMatch_Scalar_Expected_Twenty_Replaces()
         {
             ErrorResultTO errors;
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            Guid exidx = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestStrings.ReplaceDataListWithData.ToStringBuilder(), TestStrings.ReplaceDataListShape.ToStringBuilder(), out errors);
-            IDev2DataListUpsertPayloadBuilder<string> payloadBuilder = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-            IBinaryDataListEntry entry;
             IDev2ReplaceOperation replaceOperation = Dev2OperationsFactory.CreateReplaceOperation();
             const string Expression = "[[scalar]]";
-            int replaceCount;
+            int replaceCount = 0;
             // ReSharper disable RedundantAssignment
-            payloadBuilder = replaceOperation.Replace(exidx, Expression, "test", "World", false, payloadBuilder, out errors, out replaceCount,out entry);
+            replaceOperation.Replace(Expression, "test", "World", false, out errors, ref replaceCount);
             // ReSharper restore RedundantAssignment
 
             Assert.AreEqual(20, replaceCount);

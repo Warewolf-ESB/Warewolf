@@ -399,7 +399,7 @@ WallisBuchan
             var act = new DsfDataMergeActivity { Result = "[[res]]", MergeCollection = _mergeCollection };
 
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(null, null);
+            act.UpdateForEachInputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual("[[CompanyName]]", act.MergeCollection[0].InputVariable);
         }
@@ -418,7 +418,7 @@ WallisBuchan
             var tuple1 = new Tuple<string, string>("[[CompanyName]]", "Test");
             var tuple2 = new Tuple<string, string>("[[CompanyNumber]]", "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.MergeCollection[0].InputVariable);
             Assert.AreEqual("Test2", act.MergeCollection[1].InputVariable);
@@ -435,7 +435,7 @@ WallisBuchan
             DsfDataMergeActivity act = new DsfDataMergeActivity { Result = "[[res]]", MergeCollection = _mergeCollection };
 
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(null, null);
+            act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual("[[res]]", act.Result);
         }
@@ -453,7 +453,7 @@ WallisBuchan
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual("[[res]]", act.Result);
         }
@@ -470,7 +470,7 @@ WallisBuchan
 
             var tuple1 = new Tuple<string, string>("[[res]]", "Test");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.Result);
         }

@@ -101,7 +101,7 @@ Scenario: Workflow with an assign and webservice
 	  | 2 | [[prefix]] = a |
 	  And the 'InternalCountriesServiceTest' in WorkFlow 'TestWebServiceWF' debug inputs as
 	  |  |
-	  | [[ext]] = json |
+	  | [[extension]] = json |
 	  | [[prefix]] = a |
 	  And the 'InternalCountriesServiceTest' in Workflow 'TestWebServiceWF' debug outputs as
 	  |                                            |
@@ -130,7 +130,7 @@ Scenario: Workflow with an assign and webservice different mappings
 	  | 2 | [[prefix]] = a |
 	  And the 'InternalCountriesServiceTest' in WorkFlow 'TestWebServiceDiffMappings' debug inputs as
 	  |  |
-	  | [[ext]] = json |
+	  | [[extension]] = json |
 	  | [[prefix]] = a |
 	  And the 'InternalCountriesServiceTest' in Workflow 'TestWebServiceDiffMappings' debug outputs as
 	  |                                            |
@@ -157,7 +157,7 @@ Scenario: Workflow with an assign and remote workflow
 	  | 1 | [[inputData]] = hello |
 	   And the 'WorkflowUsedBySpecs' in WorkFlow 'TestAssignWithRemote' debug inputs as
 	  |                       |
-	  | [[inputData]] = hello |
+	  | [[input]] = hello |
 	  And the 'Setup Assign (1)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
 	  | # |                |
 	  | 1 | [[in]] = hello |
@@ -1725,19 +1725,19 @@ Scenario: Executing 2 ForEach's inside a ForEach which contains Assign only
 	  | [[rec(3).a]] = 3        |
 
 Scenario: Workflow Assign and Find Record index tool with two variables in reult field expect error
-      Given I have a workflow "WFWithAssignandFindRecordindex"
-	  And "WFWithAssignandFindRecordindex" contains an Assign "Record" as
+      Given I have a workflow "WFWithAssignandFindRecordindexy"
+	  And "WFWithAssignandFindRecordindexy" contains an Assign "Record" as
       | # | variable     | value    |
       | # | [[rec(1).a]] | Warewolf |
-	  And "WFWithAssignandFindRecordindex" contains Find Record Index "FindRecord0" into result as "[[a]][[b]]"
+	  And "WFWithAssignandFindRecordindexy" contains Find Record Index "FindRecord0" into result as "[[a]][[b]]"
       | # | In Field    | # | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
       | # | [[rec().a]] | 1 | =          | Warewolf | YES                            | NO                          |
-	  When "WFWithAssignandFindRecordindex" is executed
+	  When "WFWithAssignandFindRecordindexy" is executed
 	  Then the workflow execution has "AN" error
-	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
+	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindexy' debug inputs as 
 	  | # | Variable       | New Value |
 	  | 1 | [[rec(1).a]] = | Warewolf  | 
-	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as   
+	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindexy' debug outputs as   
 	  | # |                                  |
 	  | 1 | [[rec(1).a]]         =  Warewolf |
 
@@ -3700,23 +3700,18 @@ Scenario: Workflow Base Convert coverting same variable multiple times
 	 | 2 | [[test]] = data     |
 
 Scenario: Workflow Assign and Find Record Index executing with incorrect format of Inputs 
-      Given I have a workflow "WFWithAssignandFindRecordindex"
+      Given I have a workflow "WFWithAssignandFindRecordindexs"
 	  And "WFWithAssignandFindRecordindex" contains an Assign "Record" as
       | variable     | value |
       | [[rec(1).a]] | 23    |
       | [[rec(2).a]] | 34    |
       | [[xr(1).a]]  | 10    |
-	  And "WFWithAssignandFindRecordindex" contains Find Record Index "FindRecord0" into result as "[[a]][[b]]"
+	  And "WFWithAssignandFindRecordindexs" contains Find Record Index "FindRecord0" into result as "[[a]][[b]]"
 	  | # | In Field              | # | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
 	  | # | [[rec().a]][[xr().a]] | 1 | =          | Warewolf | YES                            | NO                          |
-	  When "WFWithAssignandFindRecordindex" is executed
+	  When "WFWithAssignandFindRecordindexs" is executed
 	  Then the workflow execution has "AN" error
-	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
-	  | # | Variable       | New Value |
-	  | 1 | [[rec(1).a]] = | Warewolf  | 
-	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as   
-	  | # |                                  |
-	  | 1 | [[rec(1).a]]         =  Warewolf |
+
 
 	
 Scenario: Executing Workflow Service and Decision tool expected bubling out error in workflow service
@@ -3754,7 +3749,7 @@ Scenario: Error from workflow service is expected to buble out
 	  | 1 | [[inputData]] = hello |
 	   And the 'WorkflowUsedBySpecs' in WorkFlow 'TestAssignWithRemote123' debug inputs as
 	  |                       |
-	  | [[inputData]] = hello |
+	  | [[input]] = hello |
 	  And the 'Setup Assign (1)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
 	  | # |                |
 	  | 1 | [[in]] = hello |
@@ -3807,9 +3802,7 @@ Scenario Outline: Database SqlDB  service using * indexes
 	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
 	  |                      |
 	  | [[rec(1).name]] = String |
-	  | [[rec(2).name]] = String |
-	  | [[rec(1).email]] = String |
-	  | [[rec(2).email]] = String |
+	  | [[rec(2).name]] = String |	 
 Examples: 
     | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
     | TestWFWithDBServiceMails1 | SqlEmail    | [[rec(*).name]] | [[rec(*).email]] | NO           |
@@ -3875,8 +3868,8 @@ Examples:
      Then the workflow execution has "<errorOccured>" error
 	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
 	  |                      |
-	  | [[rec(2).name]] = dora |
-	  | [[rec(2).email]] = dora@explorers.co.za |
+	  | [[rec(1).name]] = dora |
+	  | [[rec(1).email]] = dora@explorers.co.za |
 Examples: 
     | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
     | TestWFWithDBServiceMails4 | SqlEmail    | [[rec().name]] | [[rec().email]] | NO           |
@@ -3927,7 +3920,7 @@ Scenario Outline: Database MySqlDB Database service scalar outputs
 	  | [[email]] = dora@explorers.com |
 Examples: 
     | WorkflowName                   | ServiceName | nameVariable | emailVariable | errorOccured |
-    | TestMySqlWFWithDBServiceMails6 | MySQLEmail  | [[name]]     | [[email]]     | NO           |
+    | TestMySqlWFWithDBServiceMails63 | MySQLEmail  | [[name]]     | [[email]]     | NO           |
  
 Scenario Outline: Database MySqlDB Database service Error outputs 
      Given I have a workflow "<WorkflowName>"
@@ -3959,7 +3952,7 @@ Scenario Outline: Database MySqlDB Database service inputs and outputs
 	  | [[countries(2).description]] = Afghanistan |
 Examples: 
     | WorkflowName                   | ServiceName       | nameVariable        | emailVariable                | errorOccured |
-    | TestMySqlWFWithDBServiceMails10 | MySqlGetCountries | [[countries(*).id]] | [[countries(*).description]] | NO           |
+    | TestMySqlWFWithDBServiceMails15 | MySqlGetCountries | [[countries(*).id]] | [[countries(*).description]] | NO           |
 
 Scenario Outline: Database SqlDB Database service inputs and outputs
      Given I have a workflow "<WorkflowName>"

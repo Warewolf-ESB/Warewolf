@@ -93,9 +93,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
+            var dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            var dataObject = context.GetExtension<IDSFDataObject>();
 
             var allErrors = new ErrorResultTO();
 
@@ -105,10 +110,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var expression = Expression ?? string.Empty;
                 var roundingDecimalPlaces = RoundingDecimalPlaces ?? string.Empty;
                 var decimalPlacesToShow = DecimalPlacesToShow ?? string.Empty;
-               
+
                 if(dataObject.IsDebugMode())
                 {
-                    AddDebugInputItem(expression, "Number",  dataObject.Environment);
+                    AddDebugInputItem(expression, "Number", dataObject.Environment);
                     if(!String.IsNullOrEmpty(RoundingType))
                     {
                         AddDebugInputItem(new DebugItemStaticDataParams(RoundingType, "Rounding"));
@@ -137,7 +142,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         throw new Exception("Decimals to show is not valid");
                     }
 
-
                     var tmpDecimalPlaces = colItr.FetchNextValue(roundingDecimalPlacesIterator);
                     var roundingDecimalPlacesValue = 0;
                     if(!string.IsNullOrEmpty(tmpDecimalPlaces) && !tmpDecimalPlaces.IsRealNumber(out roundingDecimalPlacesValue))
@@ -154,15 +158,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         allErrors.AddError(single.Message);
                     }
-                    else{
+                    else
+                    {
                         UpdateResultRegions(dataObject.Environment, result);
                         if(dataObject.IsDebugMode())
-                {
-                    AddDebugOutputItem(new DebugItemStaticDataParams(result,Result,"","="));
-                }
+                        {
+                            AddDebugOutputItem(new DebugItemStaticDataParams(result, Result, "", "="));
+                        }
                     }
                 }
-                
             }
             catch(Exception e)
             {
@@ -184,8 +188,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if(dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
@@ -240,7 +244,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Update ForEach Inputs/Outputs
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {
@@ -270,7 +274,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

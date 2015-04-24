@@ -598,7 +598,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = "[[OutVar1]]", CommandPriority = ProcessPriorityClass.RealTime };
 
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(null, null);
+            act.UpdateForEachInputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual(command1, act.CommandFileName);
             Assert.AreEqual(ProcessPriorityClass.RealTime, act.CommandPriority);
@@ -618,7 +618,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple3 = new Tuple<string, string>(ProcessPriorityClass.RealTime.ToString(), ProcessPriorityClass.High.ToString());
 
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2, tuple3 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2, tuple3 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test2", act.CommandFileName);
             Assert.AreEqual(ProcessPriorityClass.High, act.CommandPriority);
@@ -635,7 +635,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var tuple1 = new Tuple<string, string>("Test", "Test");
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 });
             //------------Assert Results-------------------------
             Assert.AreEqual(command1, act.CommandFileName);
             Assert.AreEqual(ProcessPriorityClass.RealTime, act.CommandPriority);
@@ -651,7 +651,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string result = "[[OutVar1]]";
             var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = result };
 
-            act.UpdateForEachOutputs(null, null);
+            act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual(result, act.CommandResult);
         }
@@ -669,7 +669,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual(result, act.CommandResult);
         }
@@ -686,7 +686,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var tuple1 = new Tuple<string, string>("[[OutVar1]]", "Test");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.CommandResult);
         }

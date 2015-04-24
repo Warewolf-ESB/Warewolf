@@ -64,9 +64,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
@@ -77,31 +82,30 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 ValidateRecordsetName(RecordsetName, errors);
                 allErrors.MergeErrors(errors);
-                if (!allErrors.HasErrors())
+                if(!allErrors.HasErrors())
                 {
                     try
                     {
-
                         string rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);
-                        if (RecordsLength == string.Empty)
+                        if(RecordsLength == string.Empty)
                         {
                             allErrors.AddError("Blank result variable");
                         }
-                        if (dataObject.IsDebugMode())
+                        if(dataObject.IsDebugMode())
                         {
-                            var warewolfEvalResult = dataObject.Environment.Eval(RecordsetName.Replace("()","(*)"));
-                            if (warewolfEvalResult.IsWarewolfRecordSetResult)
+                            var warewolfEvalResult = dataObject.Environment.Eval(RecordsetName.Replace("()", "(*)"));
+                            if(warewolfEvalResult.IsWarewolfRecordSetResult)
                             {
                                 var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult;
-                                if (recsetResult != null)
+                                if(recsetResult != null)
                                 {
                                     AddDebugInputItem(new DebugItemWarewolfRecordset(recsetResult.Item, RecordsetName, "Recordset", "="));
                                 }
                             }
-                            if (warewolfEvalResult.IsWarewolfAtomListresult)
+                            if(warewolfEvalResult.IsWarewolfAtomListresult)
                             {
                                 var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
-                                if (recsetResult != null)
+                                if(recsetResult != null)
                                 {
                                     AddDebugInputItem(new DebugEvalResult(RecordsetName, "Recordset", dataObject.Environment));
                                 }
@@ -109,23 +113,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         var rule = new IsSingleValueRule(() => RecordsLength);
                         var single = rule.Check();
-                        if (single != null)
+                        if(single != null)
                         {
                             allErrors.AddError(single.Message);
                         }
                         else
                         {
                             var count = 0;
-                            if (dataObject.Environment.HasRecordSet(RecordsetName))
+                            if(dataObject.Environment.HasRecordSet(RecordsetName))
                             {
-                                count= dataObject.Environment.GetLength(rs);
+                                count = dataObject.Environment.GetLength(rs);
                             }
                             var value = count.ToString();
                             dataObject.Environment.Assign(RecordsLength, value);
                             AddDebugOutputItem(new DebugItemWarewolfAtomResult(value, RecordsLength, ""));
                         }
                     }
-                    catch (Exception e)
+                    catch(Exception e)
                     {
                         AddDebugInputItem(new DebugItemStaticDataParams("", RecordsetName, "Recordset", "="));
                         allErrors.AddError(e.Message);
@@ -138,17 +142,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 // Handle Errors
                 var hasErrors = allErrors.HasErrors();
-                if (hasErrors)
+                if(hasErrors)
                 {
                     DisplayAndWriteError("DsfRecordsetLengthActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
                 }
-                if (dataObject.IsDebugMode())
+                if(dataObject.IsDebugMode())
                 {
-
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
@@ -184,7 +187,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Get Inputs/Outputs
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null && updates.Count == 1)
             {
@@ -192,7 +195,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null && updates.Count == 1)
             {

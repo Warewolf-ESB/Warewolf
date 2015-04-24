@@ -8,10 +8,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Xml;
+using Dev2.Common;
+using Dev2.Common.DateAndTime;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
-using Dev2.Converters.DateAndTime;
-using Dev2.Data.Util;
 using Newtonsoft.Json;
 
 namespace Dev2
@@ -66,6 +69,7 @@ namespace Dev2
             }
             return result;
         }
+        private static readonly XmlReaderSettings IsXmlReaderSettings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Auto, DtdProcessing = DtdProcessing.Ignore };
 
         public static bool IsXml(this string payload)
         {
@@ -73,7 +77,7 @@ namespace Dev2
             bool isFragment;
 
 
-            if (DataListUtil.IsXml(payload, out isFragment))
+            if (IsXml(payload, out isFragment))
             {
                 result = true;
             }
@@ -96,6 +100,70 @@ namespace Dev2
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Checks if the info contained in data is well formed XML
+        /// </summary>
+        public static bool IsXml(string data, out bool isFragment)
+        {
+            bool isHtml;
+            return IsXml(data, out isFragment, out isHtml) && !isFragment && !isHtml;
+        }
+
+        /// <summary>
+        /// Checks if the info contained in data is well formed XML
+        /// </summary>
+        static bool IsXml(string data, out bool isFragment, out bool isHtml)
+        {
+            string trimedData = data.Trim();
+            bool result = (trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA["));
+
+            isFragment = false;
+            isHtml = false;
+
+            if (result)
+            {
+                using (TextReader tr = new StringReader(trimedData))
+                {
+                    using (XmlReader reader = XmlReader.Create(tr, IsXmlReaderSettings))
+                    {
+
+                        try
+                        {
+                            long nodeCount = 0;
+                            while (reader.Read() && !isHtml && !isFragment && reader.NodeType != XmlNodeType.Document)
+                            {
+                                nodeCount++;
+
+                                if (reader.NodeType != XmlNodeType.CDATA)
+                                {
+                                    if (reader.NodeType == XmlNodeType.Element && reader.Name.ToLower() == "html" && reader.Depth == 0)
+                                    {
+                                        isHtml = true;
+                                        result = false;
+                                    }
+
+                                    if (reader.NodeType == XmlNodeType.Element && nodeCount > 1 && reader.Depth == 0)
+                                    {
+                                        isFragment = true;
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Dev2Logger.Log.Error("DataListUtil", ex);
+                            tr.Close();
+                            reader.Close();
+                            isFragment = false;
+                            result = false;
+                        }
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }

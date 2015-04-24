@@ -73,16 +73,21 @@ namespace Dev2.Activities
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
-                    var env = dataObject.Environment;
+            var env = dataObject.Environment;
             InitializeDebug(dataObject);
             try
             {
                 if(!errors.HasErrors())
                 {
-                    if (dataObject.IsDebugMode())
+                    if(dataObject.IsDebugMode())
                     {
                         var language = ScriptType.GetDescription();
                         AddDebugInputItem(new DebugItemStaticDataParams(language, "Language"));
@@ -92,7 +97,6 @@ namespace Dev2.Activities
                     var scriptItr = env.EvalAsListOfStrings(Script);
                     allErrors.MergeErrors(errors);
 
-                    
                     if(allErrors.HasErrors())
                     {
                         return;
@@ -100,24 +104,19 @@ namespace Dev2.Activities
 
                     foreach(var scriptValue in scriptItr)
                     {
-
-
                         var engine = new ScriptingEngineRepo().CreateEngine(ScriptType);
                         var value = engine.Execute(scriptValue);
 
                         //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                         foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
                         {
-                            env.Assign(region,value);
-                            if (dataObject.IsDebugMode() && !allErrors.HasErrors())
+                            env.Assign(region, value);
+                            if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                             {
-                             
-                                    AddDebugOutputItem(new DebugEvalResult(region,"",env));
-                              
+                                AddDebugOutputItem(new DebugEvalResult(region, "", env));
                             }
                         }
                     }
-
                 }
             }
             catch(Exception e)
@@ -128,7 +127,6 @@ namespace Dev2.Activities
                 }
                 else
                 {
-
                     allErrors.AddError(e.Message.Replace(" for main:Object", string.Empty));
                 }
             }
@@ -148,14 +146,13 @@ namespace Dev2.Activities
                     {
                         AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
-
         }
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             foreach(Tuple<string, string> t in updates)
             {
@@ -167,7 +164,7 @@ namespace Dev2.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

@@ -120,6 +120,16 @@
     <Compile Include="Common\ExtensionMethods.cs" />
     <Compile Include="Common\GetComputerNames.cs" />
     <Compile Include="Common\NullValueInVariableException.cs" />
+    <Compile Include="DateAndTime\DateTimeComparer.cs" />
+    <Compile Include="DateAndTime\DateTimeConverterFactory.cs" />
+    <Compile Include="DateAndTime\DateTimeFormatter.cs" />
+    <Compile Include="DateAndTime\DateTimeParser.cs" />
+    <Compile Include="DateAndTime\TO\DateTimeDiffTO.cs" />
+    <Compile Include="DateAndTime\TO\DateTimeFormatPartOptionTO.cs" />
+    <Compile Include="DateAndTime\TO\DateTimeFormatPartTO.cs" />
+    <Compile Include="DateAndTime\TO\DateTimeOperationTO.cs" />
+    <Compile Include="DateAndTime\TO\DateTimeResultTO.cs" />
+    <Compile Include="DateAndTime\TO\TimeZoneTO.cs" />
     <Compile Include="DB Support\DBConnectionProperties.cs" />
     <Compile Include="DB Support\DBConnectionString.cs" />
     <Compile Include="DB Support\DB_Helper\DBHelperFactory.cs" />

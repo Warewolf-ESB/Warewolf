@@ -838,7 +838,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             DsfDataSplitActivity act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
 
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(null, null);
+            act.UpdateForEachInputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual("[[CompanyName]]", act.ResultsCollection[0].OutputVariable);
         }
@@ -856,7 +856,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple2 = new Tuple<string, string>("1", "Test2");
             var tuple3 = new Tuple<string, string>("[[CompanyName]]", "Test3");
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2, tuple3 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2, tuple3 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.ResultsCollection[0].At);
             Assert.AreEqual("Test2", act.ResultsCollection[1].At);
@@ -874,7 +874,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
 
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(null, null);
+            act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual("[[CompanyName]]", act.SourceString);
         }
@@ -890,7 +890,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var tuple1 = new Tuple<string, string>("[[CompanyName]]", "Test");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.ResultsCollection[0].OutputVariable);
         }

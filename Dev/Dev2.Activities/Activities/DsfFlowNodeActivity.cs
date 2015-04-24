@@ -105,7 +105,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if(_dataObject.IsDebugMode())
             {
-                DispatchDebugState(context, StateType.Before);
+                DispatchDebugState(_dataObject, StateType.Before);
             }
 
        
@@ -130,7 +130,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (dataObject != null && dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
 
                 OnExecutedCompleted(context, false, false);
@@ -152,7 +152,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             dataObject.Environment.AddError(propagatedException.Message);
             if(dataObject != null && dataObject.IsDebugMode())
             {
-                DispatchDebugState(faultContext, StateType.After);
+                DispatchDebugState(dataObject, StateType.After);
             }
             OnExecutedCompleted(faultContext, true, false);
         }
@@ -409,5 +409,45 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _theResult.ToString();
         }
 
+        #region Overrides of DsfNativeActivity<TResult>
+
+        /// <summary>
+        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// true if the specified object  is equal to the current object; otherwise, false.
+        /// </returns>
+        /// <param name="obj">The object to compare with the current object. </param>
+        public override bool Equals(object obj)
+        {
+            var act = obj as IDev2Activity;
+            if (obj is IFlowNodeActivity)
+            {
+                var flowNodeAct = this as IFlowNodeActivity;
+                var other = act as IFlowNodeActivity;
+                if (other != null)
+                {
+                    return UniqueID == act.UniqueID && flowNodeAct.ExpressionText.Equals(other.ExpressionText);
+                }
+            }
+            return base.Equals(obj);
+        }
+
+        #region Overrides of Object
+
+        /// <summary>
+        /// Serves as a hash function for a particular type. 
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object"/>.
+        /// </returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        #endregion
+
+        #endregion
     }
 }

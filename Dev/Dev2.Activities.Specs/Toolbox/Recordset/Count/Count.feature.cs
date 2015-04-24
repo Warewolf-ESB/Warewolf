@@ -220,12 +220,12 @@ this.ScenarioSetup(scenarioInfo);
 #line 59
  testRunner.Then("the result count should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 60
- testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "Recordset"});
             table8.AddRow(new string[] {
-                        "[[rs()]] ="});
+                        "[[rs(*)]] ="});
 #line 61
  testRunner.And("the debug inputs as", ((string)(null)), table8, "And ");
 #line hidden

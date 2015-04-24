@@ -312,7 +312,7 @@ namespace ActivityUnitTests.ActivityTests
             dsfBaseConvert.UpdateForEachInputs(new List<Tuple<string, string>>
                 {
                 new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
-            }, null);
+            });
 
             //------------Assert Results-------------------------
 
@@ -339,7 +339,7 @@ namespace ActivityUnitTests.ActivityTests
             dsfBaseConvert.UpdateForEachInputs(new List<Tuple<string, string>>
                 {
                 new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
-            }, null);
+            });
 
             //------------Assert Results-------------------------
 
@@ -366,7 +366,7 @@ namespace ActivityUnitTests.ActivityTests
             dsfBaseConvert.UpdateForEachOutputs(new List<Tuple<string, string>>
                 {
                 new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
-            }, null);
+            });
 
             //------------Assert Results-------------------------
 

@@ -107,7 +107,7 @@ namespace Dev2.Runtime.Hosting
                 }
 
                 // Use the parallel task library to process file system ;)
-                Parallel.ForEach(streams.ToArray(), currentItem =>
+                streams.ForEach(currentItem =>
                 {
 
                     XElement xml = null;

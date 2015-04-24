@@ -370,6 +370,7 @@ namespace Dev2.Services.Execution
                             using (DataTable dataSet = server.FetchDataTable(parameters.ToArray(),server.GetProcedureOutParams(Service.Method.Name,Source.DatabaseName)))
                             // ReSharper restore CoVariantArrayConversion
                             {
+    ;
                                 ApplyColumnMappings(dataSet);
                                 TranslateDataTableToEnvironment(dataSet, DataObj.Environment);
 

@@ -28,7 +28,6 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
 using Warewolf.Storage;
@@ -239,14 +238,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // ???? Why is this here....
             context.Properties.ToObservableCollection();
 
-            IEsbChannel esbChannel = context.GetExtension<IEsbChannel>();
+            IEsbChannel esbChannel = DataObject.EsbChannel;
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-
+            dataObject.EnvironmentID = context.GetValue(EnvironmentID);
+            Guid datalistId = DataListExecutionID.Get(context);
+            ParentWorkflowInstanceId = context.WorkflowInstanceId.ToString();
+            dataObject.RemoteServiceType = context.GetValue(Type);
+            var resourceId = context.GetValue(ResourceID);
             ErrorResultTO allErrors = new ErrorResultTO();
 
-            Guid datalistId = DataListExecutionID.Get(context);
+           
             ParentServiceName = dataObject.ServiceName;
-            ParentWorkflowInstanceId = context.WorkflowInstanceId.ToString();
+           
 
             string parentServiceName = string.Empty;
             string serviceName = string.Empty;
@@ -257,7 +260,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // The first time through this value is set correctly when executing those designed resource from our localhost
             // If we change it as per what was here, we always get a localhost tag instead of the remote host we are design against
             var isRemote = dataObject.IsRemoteWorkflow();
-            dataObject.EnvironmentID = context.GetValue(EnvironmentID);
+            
             if((isRemote || dataObject.IsRemoteInvokeOverridden) && dataObject.EnvironmentID == Guid.Empty)
             {
                 dataObject.IsRemoteInvokeOverridden = true;
@@ -277,14 +280,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     dataObject.RemoteInvokerID = ServiceServer.ToString();
                 }
 
-                dataObject.RemoteServiceType = context.GetValue(Type);
+                
                 dataObject.RunWorkflowAsync = RunWorkflowAsync;
                 if(dataObject.IsDebugMode() || (dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer))
                 {
-                    DispatchDebugState(context, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.Before);
                 }
 
-                var resourceId = context.GetValue(ResourceID);
+                
                 if(resourceId != Guid.Empty)
                 {
                     dataObject.ResourceID = resourceId;
@@ -340,10 +343,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     bool whereErrors = dataObject.Environment.HasErrors();
 
-                    Result.Set(context, whereErrors);
-                    HasError.Set(context, whereErrors);
-                    IsValid.Set(context, whereErrors);
-
+                    SetValues(context, whereErrors);
                 }
             }
             finally
@@ -368,7 +368,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if(dataObject.IsDebugMode() || (dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer))
                 {
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
 
                 dataObject.ParentInstanceID = _previousInstanceId;
@@ -380,6 +380,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.EnvironmentID = Guid.Empty;
                 dataObject.ResourceID = oldResourceId;
             }
+        }
+
+        void SetValues(NativeActivityContext context, bool whereErrors)
+        {
+            Result.Set(context, whereErrors);
+            HasError.Set(context, whereErrors);
+            IsValid.Set(context, whereErrors);
         }
 
         internal IAuthorizationService AuthorizationService
@@ -440,6 +447,148 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override enFindMissingType GetFindMissingType()
         {
             return enFindMissingType.DsfActivity;
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
+
+            ErrorResultTO allErrors = new ErrorResultTO();
+
+            dataObject.EnvironmentID = EnvironmentID.Expression == null ? Guid.Empty : Guid.Parse(EnvironmentID.Expression.ToString());
+            dataObject.RemoteServiceType = Type.Expression == null ? "" : Type.Expression.ToString();
+            ParentServiceName = dataObject.ServiceName;
+
+
+            string parentServiceName = string.Empty;
+            string serviceName = string.Empty;
+
+            // BUG 9634 - 2013.07.17 - TWR - changed isRemoteExecution to check EnvironmentID instead
+            // This is now the wrong behavior - We need to keep the original EnvironmentID when not a remote workflow
+            // This is because we put and empty GUID in when designing against a remote server that uses it's resources
+            // The first time through this value is set correctly when executing those designed resource from our localhost
+            // If we change it as per what was here, we always get a localhost tag instead of the remote host we are design against
+            var isRemote = dataObject.IsRemoteWorkflow();
+
+            if ((isRemote || dataObject.IsRemoteInvokeOverridden) && dataObject.EnvironmentID == Guid.Empty)
+            {
+                dataObject.IsRemoteInvokeOverridden = true;
+            }
+
+            var oldResourceId = dataObject.ResourceID;
+
+            InitializeDebug(dataObject);
+
+            try
+            {
+                //compiler.ClearErrors(dataObject.DataListID);
+
+                if (ServiceServer != Guid.Empty)
+                {
+                    // we need to adjust the originating server id so debug reflect remote server instead of localhost ;)
+                    dataObject.RemoteInvokerID = ServiceServer.ToString();
+                }
+
+
+                dataObject.RunWorkflowAsync = RunWorkflowAsync;
+                if (dataObject.IsDebugMode() || (dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer))
+                {
+                    DispatchDebugState(dataObject, StateType.Before);
+                }
+
+                Guid resourceId = dataObject.ResourceID;
+                if (resourceId != Guid.Empty)
+                {
+                    dataObject.ResourceID = resourceId;
+                }
+
+                // scrub it clean ;)
+
+                // set the parent service
+                parentServiceName = dataObject.ParentServiceName;
+                serviceName = dataObject.ServiceName;
+                dataObject.ParentServiceName = serviceName;
+
+                _previousInstanceId = dataObject.ParentInstanceID;
+                dataObject.ParentID = oldResourceId;
+
+                dataObject.ParentInstanceID = UniqueID;
+                dataObject.ParentWorkflowInstanceId = ParentWorkflowInstanceId;
+
+                if (!DeferExecution)
+                {
+                    // In all cases the ShapeOutput will have merged the execution data up into the current
+                    ErrorResultTO tmpErrors = new ErrorResultTO();
+
+                    IEsbChannel esbChannel = dataObject.EsbChannel;
+                    if (esbChannel == null)
+                    {
+                        throw new Exception("FATAL ERROR : Null ESB channel!!");
+                    }
+                    else
+                    {
+                        // NEW EXECUTION MODEL ;)
+                        // PBI 7913
+                        Guid datalistId = dataObject.DataListID;
+                        if (datalistId != GlobalConstants.NullDataListID)
+                        {
+         
+
+                            dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
+                            dataObject.ResourceID = ResourceID.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
+                            BeforeExecutionStart(dataObject, allErrors);
+                            allErrors.MergeErrors(tmpErrors);
+                            // Execute Request
+                            ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors);
+
+                            allErrors.MergeErrors(tmpErrors);
+
+                            AfterExecutionCompleted(tmpErrors);
+                            allErrors.MergeErrors(tmpErrors);
+                            dataObject.DataListID = datalistId; // re-set DL ID
+                            dataObject.ServiceName = ServiceName;
+                        }
+                    }
+
+                    bool whereErrors = dataObject.Environment.HasErrors();
+
+                  //  SetValues(context, whereErrors);
+                }
+            }
+            finally
+            {
+
+
+                if (!dataObject.WorkflowResumeable || !dataObject.IsDataListScoped)
+                {
+                    // Handle Errors
+                    if (allErrors.HasErrors())
+                    {
+                        DisplayAndWriteError("DsfActivity", allErrors);
+                        dataObject.Environment.AddError(allErrors.MakeDataListReady());
+                        // add to datalist in variable specified
+                        if (!String.IsNullOrEmpty(OnErrorVariable))
+                        {
+                            var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
+                            dataObject.Environment.Assign(upsertVariable, allErrors.MakeDataListReady());
+                        }
+                    }
+                }
+
+                if (dataObject.IsDebugMode() || (dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer))
+                {
+                    DispatchDebugState(dataObject, StateType.After);
+                }
+
+                dataObject.ParentInstanceID = _previousInstanceId;
+                dataObject.ParentServiceName = parentServiceName;
+                dataObject.ServiceName = serviceName;
+                dataObject.RemoteInvokeResultShape = new StringBuilder(); // reset targnet shape ;)
+                dataObject.RunWorkflowAsync = false;
+                dataObject.RemoteInvokerID = Guid.Empty.ToString();
+                dataObject.EnvironmentID = Guid.Empty;
+                dataObject.ResourceID = oldResourceId;
+            }
+
         }
 
         #endregion
@@ -620,12 +769,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get ForEach Input/Output Updates
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             throw new NotImplementedException();
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             throw new NotImplementedException();
         }
