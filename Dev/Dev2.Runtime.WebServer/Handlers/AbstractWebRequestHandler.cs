@@ -69,7 +69,6 @@ namespace Dev2.Runtime.WebServer.Handlers
                     workspaceGuid = WorkspaceRepository.Instance.ServerWorkspace.ID;
                 }
 
-                ErrorResultTO errors;
                 var allErrors = new ErrorResultTO();
                 var dataObject = new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload) { IsFromWebServer = true, ExecutingUser = user, ServiceName = serviceName, WorkspaceID = workspaceGuid };
 
@@ -161,13 +160,17 @@ namespace Dev2.Runtime.WebServer.Handlers
                 var executionDlid = GlobalConstants.NullDataListID;
                 if(canExecute)
                 {
-
+                    ErrorResultTO errors;
                     executionDlid = esbEndpoint.ExecuteRequest(dataObject, esbExecuteRequest, workspaceGuid, out errors);
                     allErrors.MergeErrors(errors);
                 }
                 else
                 {
                     allErrors.AddError("Executing a service externally requires View and Execute permissions");
+                }
+                foreach(var error in dataObject.Environment.Errors)
+                {
+                    allErrors.AddError(error,true);
                 }
                 // Fetch return type ;)
                 var formatter = publicFormats.FirstOrDefault(c => c.PublicFormatName == dataObject.ReturnType)
@@ -176,7 +179,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 // force it to XML if need be ;)
 
                 // Fetch and convert DL ;)
-                if(executionDlid != GlobalConstants.NullDataListID)
+                if(executionDlid != GlobalConstants.NullDataListID && !dataObject.Environment.HasErrors())
                 {
                     // a normal service request
                     if(!esbExecuteRequest.WasInternalService)
