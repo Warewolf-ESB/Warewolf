@@ -100,13 +100,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarewolfParserInterop", "Wa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Storage", "Warewolf.Storage\Warewolf.Storage.csproj", "{B3D070E0-11C1-4C1C-81A5-E680C1494945}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarewolfParsingTest", "WarewolfParsingTest\WarewolfParsingTest.csproj", "{2A765154-2288-4FD3-A008-F0B7173F4074}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RunDatalistEval", "RunDatalistEval\RunDatalistEval.csproj", "{3C0AEBD8-EEE6-4D26-B92F-D8A7D476CE7A}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ExecutionEngine", "ExecutionEngine\ExecutionEngine.fsproj", "{78714370-6661-4206-A89E-66F13FF768A8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.ResourceManagement", "Warewolf.ResourceManagement\Warewolf.ResourceManagement.csproj", "{F36B2034-94BF-485C-B584-4E590CCC6DD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarewolfParsing.Tests", "WarewolfParsingTest\WarewolfParsing.Tests.csproj", "{2A765154-2288-4FD3-A008-F0B7173F4074}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -639,18 +639,6 @@ Global
 		{B3D070E0-11C1-4C1C-81A5-E680C1494945}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{B3D070E0-11C1-4C1C-81A5-E680C1494945}.Release|x64.ActiveCfg = Release|Any CPU
 		{B3D070E0-11C1-4C1C-81A5-E680C1494945}.Release|x86.ActiveCfg = Release|Any CPU
-		{2A765154-2288-4FD3-A008-F0B7173F4074}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2A765154-2288-4FD3-A008-F0B7173F4074}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2A765154-2288-4FD3-A008-F0B7173F4074}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{2A765154-2288-4FD3-A008-F0B7173F4074}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{2A765154-2288-4FD3-A008-F0B7173F4074}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{2A765154-2288-4FD3-A008-F0B7173F4074}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{2A765154-2288-4FD3-A008-F0B7173F4074}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2A765154-2288-4FD3-A008-F0B7173F4074}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2A765154-2288-4FD3-A008-F0B7173F4074}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{2A765154-2288-4FD3-A008-F0B7173F4074}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{2A765154-2288-4FD3-A008-F0B7173F4074}.Release|x64.ActiveCfg = Release|Any CPU
-		{2A765154-2288-4FD3-A008-F0B7173F4074}.Release|x86.ActiveCfg = Release|Any CPU
 		{3C0AEBD8-EEE6-4D26-B92F-D8A7D476CE7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3C0AEBD8-EEE6-4D26-B92F-D8A7D476CE7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C0AEBD8-EEE6-4D26-B92F-D8A7D476CE7A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -687,6 +675,18 @@ Global
 		{F36B2034-94BF-485C-B584-4E590CCC6DD3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F36B2034-94BF-485C-B584-4E590CCC6DD3}.Release|x64.ActiveCfg = Release|Any CPU
 		{F36B2034-94BF-485C-B584-4E590CCC6DD3}.Release|x86.ActiveCfg = Release|Any CPU
+		{2A765154-2288-4FD3-A008-F0B7173F4074}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A765154-2288-4FD3-A008-F0B7173F4074}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A765154-2288-4FD3-A008-F0B7173F4074}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2A765154-2288-4FD3-A008-F0B7173F4074}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2A765154-2288-4FD3-A008-F0B7173F4074}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2A765154-2288-4FD3-A008-F0B7173F4074}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2A765154-2288-4FD3-A008-F0B7173F4074}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A765154-2288-4FD3-A008-F0B7173F4074}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A765154-2288-4FD3-A008-F0B7173F4074}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2A765154-2288-4FD3-A008-F0B7173F4074}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2A765154-2288-4FD3-A008-F0B7173F4074}.Release|x64.ActiveCfg = Release|Any CPU
+		{2A765154-2288-4FD3-A008-F0B7173F4074}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

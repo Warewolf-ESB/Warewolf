@@ -77,7 +77,7 @@ namespace Dev2.Data.Decision
         {
 
             Guid dlId = FetchDataListID(oldAmbientData);
-            if(dlId == GlobalConstants.NullDataListID) throw new InvalidExpressionException("Could not evaluate decision data - no DataList ID sent!");
+//            if(dlId == GlobalConstants.NullDataListID) throw new InvalidExpressionException("Could not evaluate decision data - no DataList ID sent!");
             string newDecisionData = Dev2DecisionStack.FromVBPersitableModelToJSON(decisionDataPayload);
             var dds = EvaluateRegion(newDecisionData, dlId);
 

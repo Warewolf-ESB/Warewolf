@@ -21,7 +21,7 @@ Scenario: Replace placeholders in a sentence with names
 	| [[sentence]] = Dear Mr Warewolf user, We welcome you as a customer | [[result]] = 1 |
 
 Scenario: Replace when the in field(s) is blank
-	Given I have a replace variable "[[sentence]]" equal to ""
+	Given I have a replace variable "[[sentence]]" equal to "blank"
 	And I have a sentence "[[sentence]]"
 	And I want to find the characters "XXXX"
 	And I want to replace them with "Warewolf user"

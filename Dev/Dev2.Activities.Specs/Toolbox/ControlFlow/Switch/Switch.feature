@@ -14,7 +14,7 @@ Scenario: Ensure that a variable evaluates to the value on the datalist
 
 
 Scenario: Ensure that a blank variable evaluates to blank
-	Given I need to switch on variable "[[A]]" with the value ""		
+	Given I need to switch on variable "[[A]]" with the value "blank"		
 	When the switch tool is executed
 #	Then the variable "[[A]]" will evaluate to ""
 	Then the execution has "NO" error
