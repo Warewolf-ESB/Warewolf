@@ -92,7 +92,7 @@ namespace Dev2.Activities
 
                 var val = new StringBuilder(Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(activity.ExpressionText));
                  Dev2Switch ds = new Dev2Switch { SwitchVariable = val.ToString() };
-                 var swi = new DsfSwitch();
+                 var swi = new DsfSwitch(activity);
                  if (!seenActivities.Contains(activity))
                  {
                      seenActivities.Add(swi);
@@ -126,7 +126,7 @@ namespace Dev2.Activities
                 // ReSharper restore MaximumChainedReferences
                 var activityText = Dev2DecisionStack.FromVBPersitableModelToJSON(activityTextjson);
                 var decisionStack =  JsonConvert.DeserializeObject<Dev2DecisionStack>(activityText);
-                var dec = new DsfDecision();
+                var dec = new DsfDecision(activity);
                 if (!seenActivities.Contains(activity))
                 {
                     seenActivities.Add( dec);

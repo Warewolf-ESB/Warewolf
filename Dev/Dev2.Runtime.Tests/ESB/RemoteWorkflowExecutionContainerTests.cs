@@ -15,7 +15,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices.Objects;
@@ -24,6 +23,7 @@ using Dev2.Tests.Runtime.XML;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Storage;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.ESB
@@ -123,7 +123,7 @@ namespace Dev2.Tests.Runtime.ESB
             const string ExpectedLogUri = "http://localhost:1234/Services?Error=Error Message";
             var resourceCatalog = new Mock<IResourceCatalog>();
             resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(_connectionXml.ToString()));
-            var container = CreateExecutionContainer(resourceCatalog.Object, "<DataList><Err/></DataList>", "<ADL><Err>Error Message</Err></ADL>");
+            var container = CreateExecutionContainer(resourceCatalog.Object, "<DataList><Err/></DataList>", "<root><ADL><Err>Error Message</Err></ADL></root>");
             //------------Execute Test---------------------------
             container.PerformLogExecution(LogUri);
             //------------Assert Results-------------------------
@@ -142,7 +142,7 @@ namespace Dev2.Tests.Runtime.ESB
             const string ExpectedLogUri = "http://localhost:1234/Services?Error=Error Message";
             var resourceCatalog = new Mock<IResourceCatalog>();
             resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(_connectionXml.ToString()));
-            var container = CreateExecutionContainer(resourceCatalog.Object, "<DataList><Errors><Err></Err></Errors></DataList>", "<ADL><Errors><Err>Error Message</Err></Errors></ADL>");
+            var container = CreateExecutionContainer(resourceCatalog.Object, "<DataList><Errors><Err></Err></Errors></DataList>", "<root><ADL><Errors><Err>Error Message</Err></Errors></ADL></root>");
             //------------Execute Test---------------------------
             container.PerformLogExecution(LogUri);
             //------------Assert Results-------------------------
@@ -154,16 +154,13 @@ namespace Dev2.Tests.Runtime.ESB
 
         static RemoteWorkflowExecutionContainerMock CreateExecutionContainer(IResourceCatalog resourceCatalog, string dataListShape = "<DataList></DataList>", string dataListData = "")
         {
-            ErrorResultTO errors;
-            var compiler = DataListFactory.CreateDataListCompiler();
-            var dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), dataListData.ToStringBuilder(), dataListShape.ToStringBuilder(), out errors);
 
             var dataObj = new Mock<IDSFDataObject>();
-            dataObj.Setup(d => d.DataListID).Returns(dataListID);
             dataObj.Setup(d => d.EnvironmentID).Returns(_connection.ResourceID);
             dataObj.Setup(d => d.ServiceName).Returns("Test");
             dataObj.Setup(d => d.RemoteInvokeResultShape).Returns(new StringBuilder("<ADL><NumericGUID></NumericGUID></ADL>"));
-
+            dataObj.Setup(d => d.Environment).Returns(new ExecutionEnvironment());
+            ExecutionEnvironmentUtils.UpdateEnvironmentFromXmlPayload(dataObj.Object,new StringBuilder(dataListData),dataListShape);
             var sa = new ServiceAction();
             var workspace = new Mock<IWorkspace>();
             var esbChannel = new Mock<IEsbChannel>();

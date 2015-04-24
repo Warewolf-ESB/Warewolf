@@ -47,8 +47,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [GeneralSettings("IsSimulationEnabled")]
         public bool IsSimulationEnabled { get; set; }
         // ReSharper disable RedundantAssignment
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] 
         public IDSFDataObject DataObject { get { return null; } set { value = null; } }
         // ReSharper restore RedundantAssignment
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] 
         public IDataListCompiler Compiler { get; set; }
         // END TODO: Remove legacy properties 
 

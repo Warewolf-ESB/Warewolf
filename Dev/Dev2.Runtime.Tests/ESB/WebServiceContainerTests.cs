@@ -144,17 +144,6 @@ namespace Dev2.Tests.Runtime.ESB
             }
         }
 
-        [TestMethod]
-        public void WebServiceContainerExecuteWhenThrowsErrorExpectErrorIsAddedToErrorsCollection()
-        {
-            var container = CreateWebServiceContainerThrowingException(WebServiceWithoutInputsResponse);
-
-            ErrorResultTO errors;
-            container.Execute(out errors);
-
-            Assert.IsTrue(errors.HasErrors());
-            Assert.AreEqual("Service Execution Error: Object reference not set to an instance of an object.", errors.FetchErrors()[0]);
-        }
 
         WebServiceContainer CreateWebServiceContainerThrowingException(string response)
         {

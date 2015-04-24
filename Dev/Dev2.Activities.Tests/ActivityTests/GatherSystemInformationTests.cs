@@ -353,10 +353,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = ExecuteProcess();
 
             //------------Assert Results-------------------------
-            Assert.IsFalse(Compiler.HasErrors(result.DataListID));
-            GetScalarValueFromDataList(result.DataListID, "testVar", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "testVar", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(ExpectedValue, actual);
         }
@@ -381,11 +379,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
 
             var actualArray = actual.ToArray();
             actual.Clear();
@@ -415,7 +411,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             ExecuteProcess(isDebug: true);
             //------------Assert Results-------------------------
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
             var debugOutputs = activity.GetDebugOutputs(null);
             var debugInputs = activity.GetDebugInputs(null);
 
@@ -443,10 +438,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
 
             var actualArray = actual.ToArray();
             actual.Clear();
@@ -474,11 +467,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
 
             var actualArray = actual.ToArray();
             actual.Clear();

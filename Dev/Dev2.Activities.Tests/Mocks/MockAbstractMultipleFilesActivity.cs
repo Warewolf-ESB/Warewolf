@@ -16,6 +16,10 @@ namespace Dev2.Tests.Activities.Mocks
 {
     public class MockAbstractMultipleFilesActivity : DsfAbstractMultipleFilesActivity
     {
+        public MockAbstractMultipleFilesActivity():base("")
+        {
+            
+        }
         public MockAbstractMultipleFilesActivity(string displayName)
             : base(displayName)
         {

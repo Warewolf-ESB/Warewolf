@@ -13,10 +13,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Dev2.Common;
-using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.DataList
 {
     /// <summary>
@@ -24,60 +22,14 @@ namespace Dev2.DataList
     /// </summary>
     public class RsOpContains : AbstractRecsetSearchValidation
     {
-        public override Func<IList<string>> BuildSearchExpression(IList<RecordSetSearchPayload> operationRange, IRecsetSearch to)
-        {
-            Func<IList<string>> result = () =>
-                {
- 
-
-                    IList<string> fnResult = new List<string>();
-
-                    foreach(RecordSetSearchPayload p in operationRange)
-                    {
-                        if(to.MatchCase)
-                        {
-                            if(p.Payload.Contains(to.SearchCriteria))
-                            {
-                                fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
-                            }
-                            else
-                            {
-                                if(to.RequireAllFieldsToMatch)
-                                {
-                                    return new List<string>();
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if(p.Payload.ToLower().Contains(to.SearchCriteria.ToLower()))
-                            {
-                                fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
-                            }
-                            else
-                            {
-                                if(to.RequireAllFieldsToMatch)
-                                {
-                                    return new List<string>();
-                                }
-                            }
-                        }
-                    }
-
-                    return fnResult.Distinct().ToList();
-                };
-
-            return result;
-        }
-
         #region Overrides of AbstractRecsetSearchValidation
 
 
         public override Func<DataASTMutable.WarewolfAtom, bool> CreateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> warewolfAtoms, IEnumerable<DataASTMutable.WarewolfAtom> to, bool all)
         {
             if (all)
-                return (a) => values.All(x => a.ToString().ToLower(CultureInfo.InvariantCulture) .Contains(x.ToString().ToLower(CultureInfo.InvariantCulture)));
-            return (a) => values.Any(x => a.ToString().ToLower(CultureInfo.InvariantCulture).Contains(x.ToString().ToLower(CultureInfo.InvariantCulture)));
+                return a => values.All(x => a.ToString().ToLower(CultureInfo.InvariantCulture) .Contains(x.ToString().ToLower(CultureInfo.InvariantCulture)));
+            return a => values.Any(x => a.ToString().ToLower(CultureInfo.InvariantCulture).Contains(x.ToString().ToLower(CultureInfo.InvariantCulture)));
         }
 
         #endregion

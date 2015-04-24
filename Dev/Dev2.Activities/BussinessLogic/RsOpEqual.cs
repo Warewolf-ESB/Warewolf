@@ -11,10 +11,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using Dev2.Common;
-using Dev2.DataList.Contract;
 
 namespace Dev2.DataList
 {
@@ -23,59 +20,6 @@ namespace Dev2.DataList
     /// </summary>
     public class RsOpEqual : AbstractRecsetSearchValidation
     {
-
-        public override Func<IList<string>> BuildSearchExpression(IList<RecordSetSearchPayload> operationRange, IRecsetSearch to)
-        {
-            Func<IList<string>> result = () =>
-                {
-                    
-                     
-                    IList<string> fnResult = new List<string>();
-
-                    string toFind = to.SearchCriteria.Trim();
-                    string toFindLower = toFind.ToLower();
-
-                    foreach(RecordSetSearchPayload p in operationRange)
-                    {
-                        string toMatch = p.Payload.Trim();
-
-                        if(to.MatchCase)
-                        {
-                            if(toMatch.Equals(toFind, StringComparison.CurrentCulture))
-                            {
-                                fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
-                            }
-                            else
-                            {
-                                if(to.RequireAllFieldsToMatch)
-                                {
-                                    return new List<string>();
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if(toMatch.ToLower().Equals(toFindLower, StringComparison.CurrentCulture))
-                            {
-                                fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
-                            }
-                            else
-                            {
-                                if(to.RequireAllFieldsToMatch)
-                                {
-                                    return new List<string>();
-                                }
-                            }
-                        }
-
-                    }
-
-                    return fnResult.Distinct().ToList();
-                };
-
-            return result;
-        }
-
         #region Overrides of AbstractRecsetSearchValidation
 
         public override Func<DataASTMutable.WarewolfAtom, bool> CreateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> warewolfAtoms, IEnumerable<DataASTMutable.WarewolfAtom> to, bool all)

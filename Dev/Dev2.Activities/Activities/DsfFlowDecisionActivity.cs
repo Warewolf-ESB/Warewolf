@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using Dev2;
 using Dev2.Activities;
+using Dev2.Diagnostics;
 
 // ReSharper disable CheckNamespace
 
@@ -52,6 +53,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject)
         {
+        }
+
+        public void SetDebugOutputs(List<DebugItem> result)
+        {
+            _debugOutputs = result;
+        }
+
+        public void SetDebugInputs(List<DebugItem> val)
+        {
+            _debugInputs = val;
         }
     }
 

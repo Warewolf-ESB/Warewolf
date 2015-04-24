@@ -44,6 +44,7 @@ namespace Dev2.Runtime.ESB.Execution
             TheWorkspace = theWorkspace;
             EsbChannel = esbChannel;
             Request = request;
+            DataObject.EsbChannel = EsbChannel;
         }
 
         protected EsbExecutionContainer()

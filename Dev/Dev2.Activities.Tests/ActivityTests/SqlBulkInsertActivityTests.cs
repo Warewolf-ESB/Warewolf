@@ -19,7 +19,6 @@ using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Activities.SqlBulkInsert;
 using Dev2.Common.Interfaces.Enums;
-using Dev2.DataList.Contract;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
@@ -99,7 +98,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             ExecuteProcess();
             //------------Assert Results-------------------------
-            mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<ISqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
+            mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<ISqlBulkCopy>(), It.IsAny<DataTable>()), Times.Never());
             Assert.IsNull(returnedDataTable);
         }
 
@@ -907,16 +906,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             SetupArguments("<root><recset1><field1>Bob</field1><field2>2</field2><field3>C</field3><field4>21.2</field4></recset1><recset1><field1>Jane</field1><field2>3</field2><field3>G</field3><field4>26.4</field4></recset1><recset1><field1>Jill</field1><field2>1999</field2><field3>Z</field3><field4>60</field4></recset1><val>Hello</val></root>", "<root><recset1><field1/><field2/><field3/><field4/></recset1><val/></root>", mockSqlBulkInserter.Object, dataColumnMappings, "[[result]]");
             //------------Execute Test---------------------------
-            var dataObject = ExecuteProcess() as IDSFDataObject;
+            var dataObject = ExecuteProcess();
             //------------Assert Results-------------------------
             mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<ISqlBulkCopy>(), It.IsAny<DataTable>()), Times.Never());
             Assert.IsNull(returnedDataTable);
             if(dataObject != null)
             {
-                var dlID = dataObject.DataListID;
-                var compiler = DataListFactory.CreateDataListCompiler();
-                ErrorResultTO errors;
-                var bdl = compiler.FetchBinaryDataList(dlID, out errors);
                 var executionErrors = dataObject.Environment.FetchErrors();
                 StringAssert.Contains(executionErrors, "The column TestCol2 is an IDENTITY and you have the Keep Identity option disabled. Either enable it or remove the mapping.");
             }
@@ -963,19 +958,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             SetupArguments("<root><recset1><field1>Bob</field1><field2>2</field2><field3>C</field3><field4>21.2</field4></recset1><recset1><field1>Jane</field1><field2>3</field2><field3>G</field3><field4>26.4</field4></recset1><recset1><field1>Jill</field1><field2>1999</field2><field3>Z</field3><field4>60</field4></recset1><val>Hello</val></root>", "<root><recset1><field1/><field2/><field3/><field4/></recset1><val/></root>", mockSqlBulkInserter.Object, dataColumnMappings, "[[result]]");
             //------------Execute Test---------------------------
-            var dataObject = ExecuteProcess() as IDSFDataObject;
+            var dataObject = ExecuteProcess();
             //------------Assert Results-------------------------
             mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<ISqlBulkCopy>(), It.IsAny<DataTable>()), Times.Never());
             Assert.IsNull(returnedDataTable);
             if(dataObject != null)
             {
-                var dlID = dataObject.DataListID;
-                var compiler = DataListFactory.CreateDataListCompiler();
-                ErrorResultTO errors;
-                var bdl = compiler.FetchBinaryDataList(dlID, out errors);
                 var executionErrors = dataObject.Environment.FetchErrors();
-                StringAssert.Contains(executionErrors, "Recordset index [ -1 ] is not greater than zero");
-                Assert.IsFalse(executionErrors.Contains("Problems with Iterators for SQLBulkInsert"), "Iterator exception has been added ;(");
+                StringAssert.Contains(executionErrors, "Invalid recordset:[[recset1(-1).field2]]");
             }
             else
             {
@@ -1020,16 +1010,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             SetupArguments("<root><recset1><field1>Bob</field1><field2>2</field2><field3>C</field3><field4>21.2</field4></recset1><recset1><field1>Jane</field1><field2>3</field2><field3>G</field3><field4>26.4</field4></recset1><recset1><field1>Jill</field1><field2>1999</field2><field3>Z</field3><field4>60</field4></recset1><val>Hello</val></root>", "<root><recset1><field1/><field2/><field3/><field4/></recset1><val/></root>", mockSqlBulkInserter.Object, dataColumnMappings, "[[result]]");
             //------------Execute Test---------------------------
-            var dataObject = ExecuteProcess() as IDSFDataObject;
+            var dataObject = ExecuteProcess();
             //------------Assert Results-------------------------
             mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<ISqlBulkCopy>(), It.IsAny<DataTable>()), Times.Never());
             Assert.IsNull(returnedDataTable);
             if(dataObject != null)
             {
-                var dlID = dataObject.DataListID;
-                var compiler = DataListFactory.CreateDataListCompiler();
-                ErrorResultTO errors;
-                var bdl = compiler.FetchBinaryDataList(dlID, out errors);
                 var executionErrors = dataObject.Environment.FetchErrors();
                 StringAssert.Contains(executionErrors, "Input string was not in a correct format");
                 Assert.IsFalse(executionErrors.Contains("Problems with Iterators for SQLBulkInsert"), "Iterator exception has been added ;(");
@@ -1077,16 +1063,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             SetupArguments("<root><recset1><field1>Bob</field1><field2>2</field2><field3>C</field3><field4>21.2</field4></recset1><recset1><field1>Jane</field1><field2>3</field2><field3>G</field3><field4>26.4</field4></recset1><recset1><field1>Jill</field1><field2>1999</field2><field3>Z</field3><field4>60</field4></recset1><val>Hello</val></root>", "<root><recset1><field1/><field2/><field3/><field4/></recset1><val/></root>", mockSqlBulkInserter.Object, dataColumnMappings, "[[result]]", null, null, PopulateOptions.IgnoreBlankRows, true);
             //------------Execute Test---------------------------
-            var dataObject = ExecuteProcess() as IDSFDataObject;
+            var dataObject = ExecuteProcess();
             //------------Assert Results-------------------------
             mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<ISqlBulkCopy>(), It.IsAny<DataTable>()), Times.Never());
             Assert.IsNull(returnedDataTable);
             if(dataObject != null)
             {
-                var dlID = dataObject.DataListID;
-                var compiler = DataListFactory.CreateDataListCompiler();
-                ErrorResultTO errors;
-                var bdl = compiler.FetchBinaryDataList(dlID, out errors);
                 var executionErrors = dataObject.Environment.FetchErrors();
                 StringAssert.Contains(executionErrors, "The column TestCol2 is an IDENTITY and you have the Keep Identity option enabled. Either disable this option or map data.");
             }
@@ -1379,16 +1361,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             SetupArguments("<root><recset1><field1>Bob</field1><field2>2</field2><field3>C</field3><field4>21.2</field4></recset1><recset1><field1>Jane</field1><field2>3</field2><field3>G</field3><field4>26.4</field4></recset1><recset1><field1>Jill</field1><field2>1999</field2><field3>Z</field3><field4>60</field4></recset1><val>Hello</val></root>", "<root><recset1><field1/><field2/><field3/><field4/></recset1><val/></root>", mockSqlBulkInserter.Object, dataColumnMappings, "[[result]]");
             //------------Execute Test---------------------------
-            var dataObject = ExecuteProcess() as IDSFDataObject;
+            var dataObject = ExecuteProcess();
             //------------Assert Results-------------------------
             mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<ISqlBulkCopy>(), It.IsAny<DataTable>()), Times.Never());
             Assert.IsNull(returnedDataTable);
             if(dataObject != null)
             {
-                var dlID = dataObject.DataListID;
-                var compiler = DataListFactory.CreateDataListCompiler();
-                ErrorResultTO errors;
-                var bdl = compiler.FetchBinaryDataList(dlID, out errors);
                 var executionErrors = dataObject.Environment.FetchErrors();
                 StringAssert.Contains(executionErrors, "The column TestCol2 does not allow NULL. Please check your mappings to ensure you have mapped data into it.");
             }

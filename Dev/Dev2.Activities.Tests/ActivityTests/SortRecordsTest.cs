@@ -66,123 +66,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset", "Id", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfSortRecordsActivity_Execute_Gaps")]
-        public void FieldSpecifiedSortForwards_Numeric_GapsInNonSortedField_Expected_Recordset_Sorted_Top_To_Bottom()
-        {
-            TestStartNode = new FlowStep
-            {
-                Action = new DsfSortRecordsActivity { SortField = "[[recset().Id]]", SelectedSort = "Forward" }
-
-            };
-
-            SetupArguments(
-                            ActivityStrings.SortDataList_Shape
-                          , ActivityStrings.SortDataListGaps
-                          , "[[recset().Id]]"
-                          , "Forward"
-                          );
-            IDSFDataObject result = ExecuteProcess();
-            List<string> expected = new List<string> { ""
-                                                     , ""
-                                                     , "1"
-                                                     , "1"
-                                                     , "2"
-                                                     , "3"
-                                                     , "6"
-                                                     , "7"
-                                                     , "9"
-                                                     , "10" };
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset", "Id", out error);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
 
 
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfSortRecordsActivity_Execute_Gaps")]
-        public void FieldSpecifiedSortForwards_String_GapsInNonSortedField_Expected_Recordset_Sorted_Backwards()
-        {
-            TestStartNode = new FlowStep
-            {
-                Action = new DsfSortRecordsActivity { SortField = "[[recset().Name]]", SelectedSort = "Forward" }
-
-            };
-
-            SetupArguments(
-                            ActivityStrings.SortDataList_Shape
-                          , ActivityStrings.SortDataListGaps
-                          , "[[recset().Name]]"
-                          , "Forward"
-                          );
-            IDSFDataObject result = ExecuteProcess();
-            List<string> expected = new List<string> { ""
-                                                     , ""
-                                                     , ""
-                                                     , "A"
-                                                     , "B"
-                                                     , "F"
-                                                     , "F"
-                                                     , "L"
-                                                     , "Y"
-                                                     , "Z" };
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset", "Name", out error);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
-        }
-
-
-
-
-        [TestMethod]
-        public void SortActivity_DateTimeSortForward_Expected_RecordSetSortedAscendingDateTime()
-        {
-            TestStartNode = new FlowStep
-            {
-                Action = new DsfSortRecordsActivity { SortField = "[[recset().Time]]", SelectedSort = "Forward" }
-
-            };
-
-            SetupArguments(
-                            ActivityStrings.SortDataList_Shape
-                          , ActivityStrings.SortDataList
-                          , "[[recset().Time]]"
-                          , "Forward"
-                          );
-            IDSFDataObject result = ExecuteProcess();
-            List<string> expected = new List<string> { "Monday, November 17, 2008 02:11:59 AM"
-                                                     , "Monday, November 17, 2008 04:11:59 AM"
-                                                     , "Monday, November 17, 2008 05:11:59 AM"
-                                                     , "Monday, November 17, 2008 09:11:59 AM"
-                                                     , "Monday, November 17, 2008 10:11:59 AM"
-                                                     , "Monday, November 17, 2008 11:11:59 AM"
-                                                     , "Monday, November 17, 2008 05:11:59 PM"
-                                                     , "Monday, November 17, 2008 11:10:59 PM"
-                                                     , "Sunday, November 30, 2008 05:11:59 PM"
-                                                     , "Wednesday, June 27, 2012 08:10:00 AM"  };
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset", "Time", out error);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
-        }
 
         [TestMethod]
         public void String_ForwardSort_String_Expected_RecordSetSortedAscending()
@@ -214,46 +102,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset", "Name", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
-        }
-
-        [TestMethod]
-        public void SortActivity_MultipleRecordSetContainingSameSortValue_DateTime_SortedWithTheRecordSetAppearingMultipleTimes()
-        {
-            SetupArguments(
-                            ActivityStrings.SortActivity_SingleEmptyField_Shape
-                          , ActivityStrings.SortActivity_SingleEmptyField
-                          , "[[recordSet().Id]]"
-                          , "Forward"
-                          );
-            IDSFDataObject result = ExecuteProcess();
-            List<string> expected = new List<string> {string.Empty 
-                                                     ,"1"
-                                                     , "2"
-                                                     , "3"
-                                                     , "4"
-                                                     , "5"
-                                                     , "6"
-                                                     , "7"
-                                                     , "8"
-                                                     , "9"
-                                                     , "11"
-                                                     , "12"
-                                                     , "13"
-                                                     , "14"
-                                                     , "15"
-                                                     , "16"
-                                                     , "17"
-                                                     , "18"
-                                                     , "19"
-                                                     , "20" };
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recordSet", "Id", out error);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
@@ -274,7 +122,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset", "Id", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             CollectionAssert.AreEqual(expected, actual);
         }
@@ -300,7 +147,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset", "Id", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
@@ -320,7 +166,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset", "Id", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
@@ -345,7 +190,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset", "Id", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
@@ -367,7 +211,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset", "Id", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             CollectionAssert.AreEqual(expected, actual);
         }
@@ -387,31 +230,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var res = Compiler.HasErrors(result.DataListID);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.IsTrue(res);
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfSortRecordsActivity_Execute")]
-        public void DsfSortRecordsActivity_Execute_MultipleColumnSort_ExpectError()
-        {
-            SetupArguments(
-                            TestData = ActivityStrings.SortDataList_Shape
-                          , TestData = ActivityStrings.SortDataList
-                          , "[[recset().DoesntExisit]],[[recset().DoesntExisit]]"
-                          , "Forward"
-                          );
-
-            TestData = ActivityStrings.SortDataList;
-            IDSFDataObject result = ExecuteProcess();
-
-            var res = DataObject.Environment.FetchErrors();
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-            Assert.AreEqual("1 The sort field is invalid. You may only sort on a single RecordSet columns", res.Trim());
         }
 
         #endregion Negative Test Cases
@@ -428,7 +248,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var res = inputs.FetchAllEntries().Count;
 
             // remove test datalist ;)
-            DataListRemoval(inputs.UID);
 
             Assert.AreEqual(2, res);
         }
@@ -443,7 +262,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var res = outputs.FetchAllEntries().Count;
 
             // remove test datalist ;)
-            DataListRemoval(outputs.UID);
 
             Assert.AreEqual(0, res);
         }
@@ -597,8 +415,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var debug = act.GetDebugInputs(null);
             Assert.AreEqual(debug.Count,2);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-          }
+        }
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfSortRecordsActivity_Execute")]
@@ -622,7 +439,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
             var debugOut = act.GetDebugOutputs(null);
             Assert.AreEqual(1,debugOut.Count);
             Assert.AreEqual(10,debugOut[0].ResultsList.Count);
@@ -648,7 +464,6 @@ namespace Dev2.Tests.Activities.ActivityTests
                           );
             IDSFDataObject result = ExecuteProcess(isDebug: true);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
             var debugOut = act.GetDebugOutputs(null);
             Assert.AreEqual(0, debugOut.Count);
         }
