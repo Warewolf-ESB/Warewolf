@@ -967,24 +967,6 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
-        public void GetResourceContentsWithExistingResourceIDExpectedReturnsResourceContents()
-        {
-            List<IResource> resources;
-            var workspaceID = Guid.NewGuid();
-            SaveResources(workspaceID, out resources);
-
-            var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            foreach(var expected in resources)
-            {
-                var xml = catalog.GetResourceContents(workspaceID, expected.ResourceID);
-
-                var actual = new Resource(XElement.Parse(xml.ToString()));
-                Assert.AreEqual(expected.ResourceID, actual.ResourceID);
-                Assert.AreEqual(expected.ResourceName, actual.ResourceName);
-            }
-        }
-
-        [TestMethod]
         public void GetResourceContentsWithNonExistentResourceIDExpectedReturnsEmptyString()
         {
             List<IResource> resources;
