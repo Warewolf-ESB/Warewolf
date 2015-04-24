@@ -291,7 +291,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             //Get the error value
             string errorValue;
-            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(errorVariable),
+            GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(errorVariable),
                                        out errorValue, out error);
             errorValue = errorValue.Replace('"', ' ').Trim();
 
@@ -312,7 +312,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
                 string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
-                List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column,
+                List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
                                                                                out error);
                 recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
                 value = value.Replace('"', ' ').Trim();
