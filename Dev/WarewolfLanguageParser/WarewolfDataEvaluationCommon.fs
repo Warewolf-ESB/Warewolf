@@ -210,8 +210,9 @@ and ParseAtom (lang:string) =
     let mutable i = 0
     let at =  tryParseAtom lang
     match at with
-        |   Int a -> at 
-        | _->  tryFloatParseAtom lang
+        | Int a -> at 
+        | Float a ->  tryFloatParseAtom lang
+        | _ -> at
             
 and ParseLanguageExpression  (lang:string) : LanguageExpression=
     
