@@ -386,7 +386,9 @@ and  EvalToExpression  (env: WarewolfEnvironment) (langs:string) : string=
                         temp
     match buffer with
         | ComplexExpression  a -> if (List.exists isNotAtom a) 
-                                  then List.map LanguageExpressionToString a|> List.map  (Eval env)  |> List.map EvalResultToString |> fun a-> System.String.Join("",a) |> (fun a ->EvalToExpression env a  )
+                                  then 
+                                        let ev =List.map LanguageExpressionToString a|> List.map  (Eval env)  |> List.map EvalResultToString |> fun a-> System.String.Join("",a) |> (fun a ->EvalToExpression env a  )
+                                        if ev.Contains("[[") then ev else lang                                  
                                   else lang
         | RecordSetExpression a -> match a.Index with 
                                     | IndexExpression exp -> match exp with

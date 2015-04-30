@@ -25,6 +25,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data;
 using Dev2.Data.Factories;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Runtime.Hosting;
@@ -194,7 +195,7 @@ namespace Dev2.Activities
                 if(InputMappings != null && InputMappings.Count > 0)
                 {
                     var iteratorCollection = new WarewolfListIterator();
-                    var listOfIterators = GetIteratorsFromInputMappings(dataObject, iteratorCollection, out errorResultTo);
+                    GetIteratorsFromInputMappings(dataObject, iteratorCollection, out errorResultTo);
                     iteratorCollection.Types = types;
                     iteratorCollection.Names = columns;
                     allErrors.MergeErrors(errorResultTo);
@@ -213,7 +214,6 @@ namespace Dev2.Activities
                         AddOptionsDebugItems();
                     }
                     
-                   FillDataTableWithDataFromDataList(iteratorCollection, dataTableToInsert, listOfIterators);
                   
                     if(InputMappings != null)
                     {
@@ -226,7 +226,7 @@ namespace Dev2.Activities
                         }
                     }
                     var wrapper = new SqlBulkCopyWrapper(sqlBulkCopy);
-                    SqlBulkInserter.Insert(wrapper, dataTableToInsert);
+                    SqlBulkInserter.Insert(wrapper, iteratorCollection);
                     dataObject.Environment.Assign(Result, "Success");
                     if (dataObject.IsDebugMode())
                     {
@@ -463,15 +463,7 @@ namespace Dev2.Activities
                     continue;
                 }
 
-                // now we can create the row and add data ;)
-                // ReSharper disable CoVariantArrayConversion
-                dataTableToInsert.Rows.Add(enumerable.ToArray());
-                // ReSharper restore CoVariantArrayConversion
-                //for(int pos = 0; pos < tmpData.Count; pos++)
-                //{
-                //    dataRow[pos] = tmpData[pos];
-                //}
-                //dataTableToInsert.Rows.Add(dataRow);
+                dataTableToInsert.Rows.Add(enumerable.ToArray());                
             }
         }
 
@@ -480,6 +472,7 @@ namespace Dev2.Activities
             errorsResultTo = new ErrorResultTO();
             var listOfIterators = new List<IWarewolfIterator>();
             var indexCounter = 1;
+            
             foreach(var row in InputMappings)
             {
                 try
@@ -496,17 +489,21 @@ namespace Dev2.Activities
                     AddDebugInputItem(row.InputColumn, row.OutputColumn.ColumnName, dataObject.Environment, row.OutputColumn.DataTypeName, indexCounter);
                     indexCounter++;
                 }
-                try
-                {
-                    var itr =new WarewolfIterator(dataObject.Environment.Eval(row.InputColumn));
-                    iteratorCollection.AddVariableToIterateOn(itr);
-                    listOfIterators.Add(itr);
-                }
-                catch(Exception e)
-                {
-                    errorsResultTo.AddError(e.Message);
-                }
+                
+                    try
+                    {
+                        var itr = new WarewolfIterator(dataObject.Environment.Eval(row.InputColumn));
+                        iteratorCollection.AddVariableToIterateOn(itr);
+                        listOfIterators.Add(itr);
+                    }
+                    catch (Exception e)
+                    {
+                        errorsResultTo.AddError(e.Message);
+                    }
+                
+
             }
+            
             return listOfIterators;
         }
 

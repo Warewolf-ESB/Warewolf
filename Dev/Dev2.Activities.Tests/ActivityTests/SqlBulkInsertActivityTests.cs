@@ -14,10 +14,13 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Activities.SqlBulkInsert;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
@@ -28,12 +31,6 @@ using Moq;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities.ActivityTests
 {
-    /// <summary>
-    /// There are some very awkward corners in this tool.
-    /// Seems as though it WAS NOT DEVELOPMED WITH TDD.
-    /// I would say it was built, then testing was applied to it after the fact ;(
-    /// I do not understand how else we could miss-null checks and have this string property grab to check values in test scenario. 
-    /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
     public class SqlBulkInsertActivityTests : BaseActivityUnitTest
@@ -1946,6 +1943,88 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Assert Results-------------------------
             Assert.AreEqual(enFindMissingType.MixedActivity, findMissingType);
+        }
+
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfSqlBulkInsertActivity_Load")]
+        public void DsfSqlBulkInsertActivity_Load_HalfMillionRows_6Cols()
+        {
+            //------------Setup for test--------------------------
+            IDataReader returnedDataTable = null;
+            var mockSqlBulkInserter = new Mock<ISqlBulkInserter>();
+            mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<ISqlBulkCopy>(), It.IsAny<IDataReader>()))
+                .Callback<ISqlBulkCopy, IDataReader>((sqlBulkCopy, dataTable) => returnedDataTable = dataTable);
+            var dataColumnMappings = new List<DataColumnMapping>
+            {
+                new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field1]]",
+                    OutputColumn = new DbColumn {ColumnName = "TestCol",
+                    DataType = typeof(String),
+                    MaxLength = 100},
+                }, new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field2]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol2",
+                    DataType = typeof(Int32)
+                    }
+                }, new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field3]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol3",
+                    DataType = typeof(char),
+                    MaxLength = 100 }
+                }, new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field4]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol4",
+                    DataType = typeof(decimal) }
+                }, new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field5]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol5",
+                    DataType = typeof(Guid)
+                     }
+                }, new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field6]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol6",
+                    DataType = typeof(TimeSpan)
+                    }
+                }
+            };
+            var data = new StringBuilder();
+            var randomizer = new Dev2Random();
+            var random = new Random();
+            const int rowCount = 500000;
+            for (int i = 0; i < rowCount; i++)
+            {
+                
+                data.Append("<recset1>");
+                data.Append(string.Format("<field1>{0}</field1>", randomizer.GetRandom(enRandomType.LetterAndNumbers, 7,1,10)));
+                data.Append(string.Format("<field2>{0}</field2>", randomizer.GetRandom(enRandomType.Numbers, 4,20,10000)));
+                data.Append(string.Format("<field3>{0}</field3>", randomizer.GetRandom(enRandomType.Letters, 1,1,22)));
+                data.Append(string.Format("<field4>{0}</field4>", random.NextDouble()+random.Next()));
+                data.Append(string.Format("<field5>{0}</field5>", randomizer.GetRandom(enRandomType.Guid, 4,20,22)));
+                data.Append(string.Format("<field6>{0}</field6>", new TimeSpan(0,0,random.Next(0,50),random.Next(0,50),random.Next(0,100))));
+                data.Append("</recset1>");
+            }
+
+            SetupArguments(string.Format("<root>{0}</root>", data), "<root><recset1><field1/><field2/><field3/><field4/><field5/><field6/></recset1></root>", mockSqlBulkInserter.Object, dataColumnMappings, "[[result]]");
+
+            //------------Execute Test---------------------------
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+            ExecuteProcess();
+            stopWatch.Stop();
+            var elapsedTime = stopWatch.ElapsedMilliseconds;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(returnedDataTable);
+            var actualElapsedTime = elapsedTime-11000; //The 11000 is for the XML to environment conversion.
+            Assert.IsTrue(actualElapsedTime < 500, string.Format("Total elapsed ms: {0}", actualElapsedTime));
         }
 
         #region Private Test Methods
