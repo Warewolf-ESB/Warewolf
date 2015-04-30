@@ -252,7 +252,7 @@ this.ScenarioSetup(scenarioInfo);
             table7.AddRow(new string[] {
                         "3",
                         "[[value]] =",
-                        "HelloWorld"});
+                        "[[var]][[test]] = HelloWorld"});
 #line 59
  testRunner.And("the debug inputs as", ((string)(null)), table7, "And ");
 #line hidden
@@ -310,7 +310,7 @@ this.ScenarioSetup(scenarioInfo);
             table9.AddRow(new string[] {
                         "3",
                         "[[value]]      =",
-                        "Hello World !"});
+                        "[[var]] [[rec(1).set]] ! = Hello World !"});
 #line 77
  testRunner.And("the debug inputs as", ((string)(null)), table9, "And ");
 #line hidden
@@ -732,7 +732,7 @@ this.ScenarioSetup(scenarioInfo);
             table21.AddRow(new string[] {
                         "2",
                         "[[Result]] =",
-                        "30-30"});
+                        "30-[[var]] = 30-30"});
 #line 210
  testRunner.And("the debug inputs as", ((string)(null)), table21, "And ");
 #line hidden
@@ -787,7 +787,7 @@ this.ScenarioSetup(scenarioInfo);
             table23.AddRow(new string[] {
                         "3",
                         "[[Result]] =",
-                        "SUM(30,30)"});
+                        "SUM([[var1]],[[var2]]) = SUM(30,30)"});
 #line 226
  testRunner.And("the debug inputs as", ((string)(null)), table23, "And ");
 #line hidden
@@ -1544,7 +1544,7 @@ this.ScenarioSetup(scenarioInfo);
             table39.AddRow(new string[] {
                         "3",
                         "[[Result]] =",
-                        "SUM(30,30)"});
+                        "SUM([[rec(1).a]],[[rec(1).b]]) = SUM(30,30)"});
 #line 385
  testRunner.And("the debug inputs as", ((string)(null)), table39, "And ");
 #line hidden
@@ -1614,7 +1614,7 @@ this.ScenarioSetup(scenarioInfo);
             table41.AddRow(new string[] {
                         "5",
                         "[[Result]] =",
-                        "SUM(1,2)"});
+                        "SUM([[rec(1).a]],[[rec(1).b]]) = SUM(1,2)"});
 #line 406
  testRunner.And("the debug inputs as", ((string)(null)), table41, "And ");
 #line hidden
@@ -1678,7 +1678,7 @@ this.ScenarioSetup(scenarioInfo);
             table43.AddRow(new string[] {
                         "3",
                         "[[Result]] =",
-                        "=SUM([[[[b]]]],1) ==SUM(1,1)"});
+                        "SUM([[a]],1) = SUM(1,1)"});
 #line 429
  testRunner.And("the debug inputs as", ((string)(null)), table43, "And ");
 #line hidden
@@ -1736,7 +1736,7 @@ this.ScenarioSetup(scenarioInfo);
             table45.AddRow(new string[] {
                         "3",
                         "[[Result]] =",
-                        "=[[[[rec(1).b]]]]+1 ==1+1"});
+                        "[[rec(1).a]]+1 = 1+1"});
 #line 447
  testRunner.And("the debug inputs as", ((string)(null)), table45, "And ");
 #line hidden
@@ -1902,7 +1902,7 @@ this.ScenarioSetup(scenarioInfo);
             table51.AddRow(new string[] {
                         "3",
                         "[[Lr(1).a]] =",
-                        "Test1.Warewolf2"});
+                        "Test[[rec(1).a]].Warewolf[[rec(2).a]] = Test1.Warewolf2"});
 #line 498
  testRunner.And("the debug inputs as", ((string)(null)), table51, "And ");
 #line hidden
@@ -2167,7 +2167,9 @@ this.ScenarioSetup(scenarioInfo);
             table57.AddRow(new string[] {
                         "12",
                         "[[new(1).a]]      =",
-                        "12345678910Warewolf"});
+                        "[[rec(1).test]][[rec(2).test]][[rec(3).test]][[rec(4).test]][[rec(5).test]][[rec(" +
+                            "6).test]][[rec(7).test]][[rec(8).test]][[rec(9).test]][[rec(10).test]][[Lr(1).a]" +
+                            "] = 12345678910Warewolf"});
 #line 572
  testRunner.And("the debug inputs as", ((string)(null)), table57, "And ");
 #line hidden

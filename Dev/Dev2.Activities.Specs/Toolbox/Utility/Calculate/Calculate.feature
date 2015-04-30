@@ -115,7 +115,7 @@ Scenario: Calculate Assign by evaluating a variable inside a variable
 	And the execution has "NO" error
 	And the debug inputs as  
 	| fx =               |
-	| [[[[a]]]]+1 = 20+1 |	
+	| [[b]]+1 = 20+1 |	
 	And the debug output as 
 	|                 |
 	| [[result]] = 21 |
@@ -129,7 +129,7 @@ Scenario: Calculate Assign by evaluating a variable inside a variable with funct
 	And the execution has "NO" error
 	And the debug inputs as  
 	| fx =                              |
-	| SUM([[[[a]]]],[[b]]) = SUM(20,20) |
+	| SUM([[b]],20) = SUM(20,20) |
 	And the debug output as 
 	|                 |
 	| [[result]] = 40 |

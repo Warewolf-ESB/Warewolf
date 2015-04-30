@@ -377,7 +377,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
                         "fx ="});
             table17.AddRow(new string[] {
-                        "[[[[a]]]]+1 = 20+1"});
+                        "[[b]]+1 = 20+1"});
 #line 116
  testRunner.And("the debug inputs as", ((string)(null)), table17, "And ");
 #line hidden
@@ -415,7 +415,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
                         "fx ="});
             table19.AddRow(new string[] {
-                        "SUM([[[[a]]]],[[b]]) = SUM(20,20)"});
+                        "SUM([[b]],20) = SUM(20,20)"});
 #line 130
  testRunner.And("the debug inputs as", ((string)(null)), table19, "And ");
 #line hidden

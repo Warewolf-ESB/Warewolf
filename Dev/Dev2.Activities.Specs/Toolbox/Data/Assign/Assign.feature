@@ -60,7 +60,7 @@ Scenario: Assign multiple variables to a variable
 	| # | Variable    | New Value  |
 	| 1 | [[var]]   = | Hello      |
 	| 2 | [[test]]  = | World      |
-	| 3 | [[value]] = | HelloWorld |
+	| 3 | [[value]] = | [[var]][[test]] = HelloWorld |
 	And the debug output as
     | # |                         |
     | 1 | [[var]] = Hello         |
@@ -78,7 +78,7 @@ Scenario: Assign a variable to mixed scalar, char and recordset values
 	| # | Variable         | New Value     |
 	| 1 | [[var]]        = | Hello         |
 	| 2 | [[rec(1).set]] = | World         |
-	| 3 | [[value]]      = | Hello World ! |
+	| 3 | [[value]]      = | [[var]] [[rec(1).set]] ! = Hello World ! |
 	And the debug output as
     | # |                           |
     | 1 | [[var]] = Hello           |
@@ -208,9 +208,9 @@ Scenario: Assign a scalar equal to a calculation
 	Then the value of "[[Result]]" equals "0"
 	And the execution has "NO" error
 	And the debug inputs as
-	| # | Variable     | New Value |
-	| 1 | [[var]]    = | 30        |
-	| 2 | [[Result]] = | 30-30     |
+	| # | Variable     | New Value          |
+	| 1 | [[var]]    = | 30                 |
+	| 2 | [[Result]] = | 30-[[var]] = 30-30 |
 	And the debug output as
 	| # |                |
 	| 1 | [[var]] = 30   |
@@ -227,7 +227,7 @@ Scenario: Assign a variable equal to a group calculation (sum)
 	| # | Variable     | New Value    |
 	| 1 | [[var1]]   = | 30           |
 	| 2 | [[var2]]   = | 30           |
-	| 3 | [[Result]] = | SUM(30,30) |
+	| 3 | [[Result]] = | SUM([[var1]],[[var2]]) = SUM(30,30) |
 	And the debug output as
 	| # |                 |
 	| 1 | [[var1]] = 30   |
@@ -386,7 +386,7 @@ Scenario: Assign a record set variable equal to a group calculation (sum)
 	| # | Variable         | New Value    |
 	| 1 | [[rec(1).a]]   = | 30           |
 	| 2 | [[rec(1).b]]   = | 30           |
-	| 3 | [[Result]] =     | SUM(30,30) |
+	| 3 | [[Result]] =     | SUM([[rec(1).a]],[[rec(1).b]]) = SUM(30,30) |
 	And the debug output as
 	| # |                   |
 	| 1 | [[rec(1).a]] = 30 |
@@ -409,7 +409,7 @@ Scenario: Assign a variable equal to a group calculation with scalar and records
 	| 2 | [[b]]          = | 2         |
 	| 3 | [[rec(1).a]]   = | [[a]] = 1 |
 	| 4 | [[rec(1).b]]   = | [[b]] = 2 |
-	| 5 | [[Result]] =     | SUM(1,2)  |
+	| 5 | [[Result]] =     | SUM([[rec(1).a]],[[rec(1).b]]) = SUM(1,2)  |
 	And the debug output as
 	| # |                  |
 	| 1 | [[a]] = 1        |
@@ -430,7 +430,7 @@ Scenario: Evaluating recursive variable in a group calculation
 	| # | Variable     | New Value                   |
 	| 1 | [[a]]    =   | 1                           |
 	| 2 | [[b]]    =   | a                           |
-	| 3 | [[Result]] = | =SUM([[[[b]]]],1) ==SUM(1,1) |
+	| 3 | [[Result]] = | SUM([[a]],1) = SUM(1,1) |
 	And the debug output as
 	| # |                      |
 	| 1 | [[a]]     =        1 |
@@ -448,7 +448,7 @@ Scenario: Evaluating recursive recordset variable in a group calculation
 	| # | Variable         | New Value                               |
 	| 1 | [[rec(1).a]]   = | 1                                       |
 	| 2 | [[rec(1).b]]   = | rec(1).a                                |
-	| 3 | [[Result]] =     | =[[[[rec(1).b]]]]+1 ==1+1 |
+	| 3 | [[Result]] =     | [[rec(1).a]]+1 = 1+1 |
 	And the debug output as
 	| # |                         |
 	| 1 | [[rec(1).a]] = 1        |
@@ -499,7 +499,7 @@ Scenario: Assign two recordsets and data
 	| # | Variable       | New Value       |
 	| 1 | [[rec(1).a]] = | 1               |
 	| 2 | [[rec(2).a]] = | 2               |
-	| 3 | [[Lr(1).a]] =  | Test1.Warewolf2 |
+	| 3 | [[Lr(1).a]] =  | Test[[rec(1).a]].Warewolf[[rec(2).a]] = Test1.Warewolf2 |
 	And the debug output as
 	| # |                                |
 	| 1 | [[rec(1).a]] = 1               |
@@ -582,7 +582,7 @@ Scenario: Assign addition of all variables to scalar2
 	| 9  | [[rec(9).test]]   = | 9                   |
 	| 10 | [[rec(10).test]]  = | 10                  |
 	| 11 | [[Lr(1).a]]    =    | Warewolf            |
-	| 12 | [[new(1).a]]      = | 12345678910Warewolf |
+	| 12 | [[new(1).a]]      = | [[rec(1).test]][[rec(2).test]][[rec(3).test]][[rec(4).test]][[rec(5).test]][[rec(6).test]][[rec(7).test]][[rec(8).test]][[rec(9).test]][[rec(10).test]][[Lr(1).a]] = 12345678910Warewolf |
 	And the debug output as
 	| #  |                                         |
 	| 1  | [[rec(1).test]]   =  1                  |
