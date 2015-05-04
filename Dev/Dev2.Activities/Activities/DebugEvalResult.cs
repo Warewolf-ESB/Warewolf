@@ -23,7 +23,7 @@ namespace Dev2.Activities
             _label = label;
             try
             {
-                if (DataListUtil.IsValueRecordset(_inputVariable) && DataListUtil.IsEvaluated(_inputVariable))
+                if (ExecutionEnvironment.IsRecordsetIdentifier(_inputVariable) && DataListUtil.IsEvaluated(_inputVariable))
                 {
                     if (DataListUtil.GetRecordsetIndexType(_inputVariable) == enRecordsetIndexType.Blank)
                     {
