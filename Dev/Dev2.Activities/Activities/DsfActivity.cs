@@ -526,9 +526,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         // NEW EXECUTION MODEL ;)
                         // PBI 7913
-                        Guid datalistId = dataObject.DataListID;
-                        if (datalistId != GlobalConstants.NullDataListID)
-                        {
          
 
                             dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
@@ -542,14 +539,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                             AfterExecutionCompleted(tmpErrors);
                             allErrors.MergeErrors(tmpErrors);
-                            dataObject.DataListID = datalistId; // re-set DL ID
                             dataObject.ServiceName = ServiceName;
-                        }
                     }
-
-                    bool whereErrors = dataObject.Environment.HasErrors();
-
-                  //  SetValues(context, whereErrors);
                 }
             }
             finally

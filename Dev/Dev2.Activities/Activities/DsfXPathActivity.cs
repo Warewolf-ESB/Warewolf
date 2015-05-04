@@ -160,14 +160,14 @@ namespace Dev2.Activities
                                                                 {
                                                                     cleanFieldName = "[[" + newFieldName;
                                                                 }
-                                                                AssignResult(cleanFieldName, dataObject, eval, i + 1);
+                                                                AssignResult(cleanFieldName, dataObject, eval);
                                                             }
                                                         }
                                                     }
                                                     else
                                                     {
                                                         var variable = ResultsCollection[i].OutputVariable;
-                                                        AssignResult(variable, dataObject, eval, i + 1);
+                                                        AssignResult(variable, dataObject, eval);
                                                     }
                                                 }
                                                 catch(Exception e)
@@ -213,7 +213,10 @@ namespace Dev2.Activities
                     DisplayAndWriteError("DsfXPathActivity", allErrors);
                     var errorString = allErrors.MakeDataListReady();
                     dataObject.Environment.AddError(errorString);
-                    dataObject.Environment.Assign(ResultsCollection[actualIndex].OutputVariable, null);
+                    if (actualIndex > -1)
+                    {
+                        dataObject.Environment.Assign(ResultsCollection[actualIndex].OutputVariable, null);
+                    }
                 }
                 if(_isDebugMode)
                 {
@@ -221,9 +224,13 @@ namespace Dev2.Activities
                     {
                         if(_isDebugMode)
                         {
-                            ResultsCollection[actualIndex].XPath = "";
                             var itemToAdd = new DebugItem();
+                            if (actualIndex < 0)
+                            {
+                                actualIndex = 0;
+                            }
                             AddDebugItem(new DebugItemStaticDataParams("", (actualIndex + 1).ToString(CultureInfo.InvariantCulture)), itemToAdd);
+
                             AddDebugItem(new DebugEvalResult(ResultsCollection[actualIndex].OutputVariable, "", dataObject.Environment), itemToAdd);
                             _debugOutputs.Add(itemToAdd);
                         }
@@ -234,28 +241,24 @@ namespace Dev2.Activities
             }
         }
 
-        void AssignResult(string variable, IDSFDataObject dataObject, IEnumerable<string> eval,int innerCount)
+        void AssignResult(string variable, IDSFDataObject dataObject, IEnumerable<string> eval)
         {
             var index = 1;
-            if(DataListUtils.IsValueScalar(variable))
+            if(DataListUtil.IsValueScalar(variable))
             {
                 dataObject.Environment.Assign(variable, string.Join(",", eval));
             }
             else
             {
                 
-                //AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
                 foreach(var val in eval)
                 {
                     var correctedVariable = variable;
-                    if(DataListUtils.IsValueRecordset(variable) && DataListUtils.IsStarIndex(variable))
+                    if(DataListUtil.IsValueRecordset(variable) && DataListUtil.IsStarIndex(variable))
                     {
-                        correctedVariable = DataListUtils.ReplaceStarWithFixedIndex(variable, index);
+                        correctedVariable = DataListUtil.ReplaceStarWithFixedIndex(variable, index);
                     }
                     dataObject.Environment.Assign(correctedVariable, val);
-                   // var itemToAdd = new DebugItem();
-                    //AddDebugItem(new DebugEvalResult(correctedVariable, "", dataObject.Environment), itemToAdd);
-                    //_debugOutputs.Add(itemToAdd);
                     index++;
                 }
             }

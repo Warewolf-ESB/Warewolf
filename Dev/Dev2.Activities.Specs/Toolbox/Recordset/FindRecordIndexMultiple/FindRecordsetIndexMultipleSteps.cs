@@ -238,7 +238,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
 
                 if(string.IsNullOrEmpty(expectedResult))
                 {
-                    Assert.IsTrue(String.IsNullOrEmpty(actualValue));
+                    Assert.AreEqual("-1",actualValue);
                 }
                 else
                 {

@@ -152,7 +152,8 @@ Scenario: Find a negative recordset index in a string
 	| In Field                         | Index            | Characters        | Direction     |
 	| [[a]] = <x><b id="1">One</b></x> | First Occurrence | [[my(-1).data]] = | Left to Right |
 	And the debug output as
-	|                  |
+	|                   |
+	| [[result]] = |
 
 Scenario: Find something with a negative recordset index as Input
 	Given the sentence "[[a(-1).b]]"
@@ -166,6 +167,7 @@ Scenario: Find something with a negative recordset index as Input
 	| [[a(-1).b]] = | First Occurrence | 12         | Left to Right |
 	And the debug output as
 	|                  |
+	|    [[result]] =              |
 
 Scenario: Output values in recordset with star notation
     Given the sentence "abc3cde3fgh3"

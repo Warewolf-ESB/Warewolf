@@ -19,6 +19,7 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Sql;
@@ -318,7 +319,7 @@ namespace Dev2.Services.Execution
                     {
                         if (def.IsRecordSet)
                         {
-                            result.Add(idx, DataListUtils.ExtractFieldNameFromValue(def.RawValue));
+                            result.Add(idx, DataListUtil.ExtractFieldNameFromValue(def.RawValue));
                         }
                         else
                         {

@@ -69,7 +69,7 @@ Scenario: Write file when contents has variables that cannot be evealuated
 	And result as '[[res]]'
 	When the write file tool is executed	
 	Then the result variable '[[res]]' will be ''
-	And the execution has "AN" error
+	And the execution has "NO" error
 
 
 	

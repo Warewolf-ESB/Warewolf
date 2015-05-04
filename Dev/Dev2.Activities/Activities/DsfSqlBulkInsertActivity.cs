@@ -25,7 +25,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data;
 using Dev2.Data.Factories;
-using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Runtime.Hosting;
@@ -195,11 +194,11 @@ namespace Dev2.Activities
                 if(InputMappings != null && InputMappings.Count > 0)
                 {
                     var iteratorCollection = new WarewolfListIterator();
-                    GetIteratorsFromInputMappings(dataObject, iteratorCollection, out errorResultTo);
+                    var listOfIterators = GetIteratorsFromInputMappings(dataObject, iteratorCollection, out errorResultTo);
                     iteratorCollection.Types = types;
                     iteratorCollection.Names = columns;
                     allErrors.MergeErrors(errorResultTo);
-
+                    FillDataTableWithDataFromDataList(iteratorCollection, dataTableToInsert, listOfIterators);
                     // oh no, we have an issue, bubble it out ;)
                     if(allErrors.HasErrors())
                     {
@@ -226,7 +225,7 @@ namespace Dev2.Activities
                         }
                     }
                     var wrapper = new SqlBulkCopyWrapper(sqlBulkCopy);
-                    SqlBulkInserter.Insert(wrapper, iteratorCollection);
+                    SqlBulkInserter.Insert(wrapper, dataTableToInsert);
                     dataObject.Environment.Assign(Result, "Success");
                     if (dataObject.IsDebugMode())
                     {
@@ -463,6 +462,7 @@ namespace Dev2.Activities
                     continue;
                 }
 
+                // ReSharper disable once CoVariantArrayConversion
                 dataTableToInsert.Rows.Add(enumerable.ToArray());                
             }
         }

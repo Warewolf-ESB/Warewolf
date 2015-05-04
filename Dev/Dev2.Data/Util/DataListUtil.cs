@@ -738,6 +738,27 @@ namespace Dev2.Data.Util
         }
 
         /// <summary>
+        /// Determines whether the value is a recordset.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>
+        ///   <c>true</c> if [value is recordset] [the specified value]; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsValueScalar(string value)
+        {
+            bool result = false;
+
+            if (!string.IsNullOrEmpty(value))
+            {
+                if (value.StartsWith(OpeningSquareBrackets) && value.EndsWith(ClosingSquareBrackets) && !IsValueRecordset(value))
+                {
+                    result = true;
+                }
+            }
+
+            return result;
+        }
+        /// <summary>
         /// Determines whether is a recordset with fields
         /// </summary>
         /// <param name="value"></param>
@@ -1606,7 +1627,7 @@ namespace Dev2.Data.Util
                 {
                     if (!dev2Definition.IsRecordSet)
                     {
-                        var warewolfEvalResult = innerEnvironment.Eval(DataListUtils.AddBracketsToValueIfNotExist(dev2Definition.Name));
+                        var warewolfEvalResult = innerEnvironment.Eval(AddBracketsToValueIfNotExist(dev2Definition.Name));
                         if (warewolfEvalResult.IsWarewolfAtomListresult)
                         {
                             var data = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
@@ -1620,7 +1641,7 @@ namespace Dev2.Data.Util
                             var data = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
                             if (data != null)
                             {
-                                environment.Assign(DataListUtils.AddBracketsToValueIfNotExist(dev2Definition.Value), ExecutionEnvironment.WarewolfAtomToString(data.Item));
+                                environment.Assign(AddBracketsToValueIfNotExist(dev2Definition.Value), ExecutionEnvironment.WarewolfAtomToString(data.Item));
                             }
                         }
                     }
