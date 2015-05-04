@@ -1845,7 +1845,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table104.AddRow(new string[] {
                         "1",
-                        "[[test(11).date]] = String"});
+                        "[[test(6).date]] = String"});
 #line 499
      testRunner.And("the \"Sys info\" debug outputs as", ((string)(null)), table104, "And ");
 #line hidden
@@ -1865,7 +1865,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table106 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table106.AddRow(new string[] {
-                        "[[test(12).result1]] = 37"});
+                        "[[test(6).result1]] = 37"});
 #line 505
    testRunner.And("the \"Date&Time\" debug outputs as", ((string)(null)), table106, "And ");
 #line hidden
@@ -1887,7 +1887,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table108 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table108.AddRow(new string[] {
-                        "[[test(13).result2]] = 2014-11-29"});
+                        "[[test(6).result2]] = 2014-11-29"});
 #line 511
    testRunner.And("the \"Date\" debug outputs as", ((string)(null)), table108, "And ");
 #line hidden
@@ -1905,7 +1905,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table110 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table110.AddRow(new string[] {
-                        "[[test(14).result3]] = Int32"});
+                        "[[test(6).result3]] = Int32"});
 #line 517
    testRunner.And("the \"Random\" debug outputs as", ((string)(null)), table110, "And ");
 #line hidden
@@ -1925,7 +1925,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table112 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table112.AddRow(new string[] {
-                        "[[test(15).result4]] = 788.895"});
+                        "[[test().result4]] = 788.895"});
 #line 523
    testRunner.And("the \"Fnumber\" debug outputs as", ((string)(null)), table112, "And ");
 #line hidden

@@ -4973,7 +4973,7 @@ this.FeatureBackground();
             table283.AddRow(new string[] {
                         "5",
                         "[[rec(1).c]] =",
-                        "[[rec(1).a]]+[[rec(1).b]]"});
+                        "[[rec(1).a]]+[[rec(1).b]] = 1+2"});
 #line 1309
    testRunner.And("the \'values1\' in WorkFlow \'WFWithAssignHasCalculate\' debug inputs as", ((string)(null)), table283, "And ");
 #line hidden
@@ -8160,7 +8160,7 @@ this.FeatureBackground();
                         "Forward",
                         "No",
                         "1",
-                        "= [[rec().a]]",
+                        "[[rec().a]] =",
                         "Index",
                         "4",
                         "No",
@@ -8462,7 +8462,7 @@ this.FeatureBackground();
                         "Forward",
                         "No",
                         "1",
-                        "= [[rec().a]]",
+                        "[[rec().a]] =",
                         "Index",
                         "4",
                         "No",

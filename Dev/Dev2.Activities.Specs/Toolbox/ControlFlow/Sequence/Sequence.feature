@@ -498,31 +498,31 @@ Scenario: Execute a Sequence with For each with 3 executions
 	  | 1 | [[test().date]] =  | Date & Time |
 	    And the "Sys info" debug outputs as 
 	  | # |                   |
-	  | 1 | [[test(11).date]] = String |
+	  | 1 | [[test(6).date]] = String |
 	   And the "Date&Time" debug inputs as  
 	  | Input 1    | Input 2    | Input Format | Output In |
 	  | 2013-11-29 | 2050-11-29 | yyyy-mm-dd   | Years     |
 	  And the "Date&Time" debug outputs as 
 	  |                 |
-	  | [[test(12).result1]] = 37 |
+	  | [[test(6).result1]] = 37 |
 	  And the "Date" debug inputs as  
 	  | Input      | Input Format | Add Time |   | Output Format |
 	  | 2013-11-29 | yyyy-mm-dd   | Years    | 1 | yyyy-mm-dd    |	
 	  And the "Date" debug outputs as 
 	  |                          |
-	  | [[test(13).result2]] = 2014-11-29 |
+	  | [[test(6).result2]] = 2014-11-29 |
 	  And the "Random" debug inputs as  
 	  | Random  | From | To |
 	  | Numbers | 1    | 10 |
 	  And the "Random" debug outputs as 
 	  |                    |
-	  | [[test(14).result3]] = Int32 |
+	  | [[test(6).result3]] = Int32 |
 	  And the "Fnumber" debug inputs as  
 	  | Number           | Rounding | Rounding Value | Decimals to show |
 	  | 788.894564545645 | Up       | 3              | 3                |
 	  And the "Fnumber" debug outputs as 
 	  |                                |
-	  | [[test(15).result4]] = 788.895 |
+	  | [[test().result4]] = 788.895 |
 
 Scenario: Sending Error in error variable and calling webservice when inner activity errors
     Given I have a Sequence "Test"

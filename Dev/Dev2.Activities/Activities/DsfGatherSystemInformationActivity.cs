@@ -28,6 +28,7 @@ using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
+using WarewolfParserInterop;
 
 namespace Dev2.Activities
 {
@@ -149,7 +150,7 @@ namespace Dev2.Activities
                             {
                                 foreach(var region in regions)
                                 {
-                                    dataObject.Environment.Assign(region, val);
+                                    dataObject.Environment.AssignWithFrame(new AssignValue(region, val));
                                 }
                             }
                         }
@@ -160,7 +161,7 @@ namespace Dev2.Activities
                         allErrors.AddError(err.Message);
                     }
                 }
-
+                dataObject.Environment.CommitAssign();
                 if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
                     int innerCount = 1;
