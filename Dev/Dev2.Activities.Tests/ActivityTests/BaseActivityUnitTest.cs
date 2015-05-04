@@ -28,6 +28,7 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.ESB.Execution;
+using Dev2.Runtime.Execution;
 using Dev2.Workspaces;
 using Microsoft.VisualBasic.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -206,6 +207,7 @@ namespace ActivityUnitTests
                 {
                     esbChannel = channel;
                 }
+            dataObject.ExecutionToken = new ExecutionToken();
                 WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, esbChannel);
 
                 errors.ClearErrors();
@@ -442,7 +444,7 @@ namespace ActivityUnitTests
             }
             try
             {
-                result = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(DataListUtils.AddBracketsToValueIfNotExist(fieldToRetrieve)));
+                result = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(DataListUtil.AddBracketsToValueIfNotExist(fieldToRetrieve)));
             }
             catch( Exception err)
             {

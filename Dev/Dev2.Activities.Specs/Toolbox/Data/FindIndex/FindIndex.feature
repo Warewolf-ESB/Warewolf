@@ -152,7 +152,8 @@ Scenario: Find a negative recordset index in a string
 	| In Field                         | Index            | Characters        | Direction     |
 	| [[a]] = <x><b id="1">One</b></x> | First Occurrence | [[my(-1).data]] = | Left to Right |
 	And the debug output as
-	|                  |
+	|                   |
+	| [[my(-1).data]] = |
 
 Scenario: Find something with a negative recordset index as Input
 	Given the sentence "[[a(-1).b]]"

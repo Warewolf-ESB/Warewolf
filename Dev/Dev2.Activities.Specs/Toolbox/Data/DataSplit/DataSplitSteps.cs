@@ -224,8 +224,15 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(variable),
                                        out actualValue, out error);
-            actualValue = actualValue.Replace('"', ' ').Trim();
-            Assert.AreEqual(value, actualValue);
+            if (!string.IsNullOrEmpty(actualValue))
+            {
+                actualValue = actualValue.Replace('"', ' ').Trim();
+                Assert.AreEqual(value, actualValue);
+            }
+            if (string.IsNullOrEmpty(value))
+            {
+                Assert.IsTrue(string.IsNullOrEmpty(actualValue));
+            }
         }
     }
 }
