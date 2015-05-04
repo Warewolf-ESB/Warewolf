@@ -229,48 +229,15 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Dev2.Activities.Tests\ActivityTests\BaseActivityUnitTest.cs">
-      <Link>Dev2.Activities.Tests\BaseActivityUnitTest.cs</Link>
-    </Compile>
     <Compile Include="Activities\FileSystemTests.cs" />
     <Compile Include="Activities\FtpTests.cs" />
     <Compile Include="Activities\PathIOTestingUtils.cs">
       <SubType>
       </SubType>
     </Compile>
-    <Compile Include="Dev2.Activities.Tests\RecursiveEvaluationTest.cs" />
-    <Compile Include="Dev2.Activities.Tests\WorkflowInputMapping.cs" />
     <Compile Include="Internal Services\GetComputerNamesTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DecisionWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfBaseConvertActivityWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfCalculateActivityTest.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfCaseConvertActivityWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfDataMergeActivityWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfDataSplitActivityWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfDateTimeDifferenceWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfDeleteActivityWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfFindRecordsActivityWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfForEachActivityWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfFormatNumberActivityWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfIndexActivityWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfMultiAssignActivityWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfReplaceActiviryWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfSortActivityTest.cs" />
-    <Compile Include="Dev2.Activities.Tests\PathOperationsWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfDateTimeActivityWFTest.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfActivityAbstractTest.cs" />
-    <Compile Include="Dev2.Activities.Tests\ToolingWorkflowTest.cs" />
     <Compile Include="Internal Services\RenameResourceServiceTests.cs" />
-    <Compile Include="Server Test\Bpm unit tests\DatabaseTest.cs" />
-    <Compile Include="Server Test\Bpm unit tests\NestedWorkflow.cs" />
-    <Compile Include="Server Test\Bpm unit tests\OnErrorTest.cs" />
-    <Compile Include="Server Test\Bpm unit tests\PluginTest.cs" />
-    <Compile Include="Server Test\Bpm unit tests\RemoteInvokeTest.cs" />
-    <Compile Include="Server Test\Bpm unit tests\WebServiceTest.cs" />
-    <Compile Include="Server Test\Bpm unit tests\WorkflowInvokeTest.cs" />
     <Compile Include="Server Test\Build.Test\ApplicationServerBuildTests.cs" />
-    <Compile Include="Server Test\DeleteResourceTest.cs" />
-    <Compile Include="Server Test\DynamicServicesHostTest.cs" />
     <Compile Include="Server Test\InternalServices\FindDependenciesServiceTest.cs" />
     <Compile Include="Server Test\InternalServices\FindDirectoryServiceTest.cs" />
     <Compile Include="Server Test\InternalServices\FindDriveServiceTest.cs" />
@@ -279,9 +246,7 @@
     <Compile Include="Server Test\InternalServices\SaveResourceServiceTest.cs" />
     <Compile Include="Server Test\RelativeUriResourceTest.cs" />
     <Compile Include="Server Test\ServerLifecycleManagerTest.cs" />
-    <Compile Include="Runtime.ServiceModel\ConnectionTests.cs" />
     <Compile Include="Server Test\TimeZoneChanges.cs" />
-    <Compile Include="Server Test\WebServerTests\WebServerTests.cs" />
     <Compile Include="Server Test\Workspace\XML\XmlResource.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\Models\EnviromentModelTests.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\MoqConfigurationReader.cs" />
@@ -304,10 +269,6 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server Test\ComplexWebpageTest.cs" />
-    <Compile Include="Runtime.ServiceModel\DbServiceTests.cs" />
-    <Compile Include="Runtime.ServiceModel\PluginSourceTests.cs" />
-    <Compile Include="Runtime.ServiceModel\TestDbServices.cs" />
-    <Compile Include="Runtime.ServiceModel\TestDbSources.cs" />
     <Compile Include="ServerSettings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -315,8 +276,6 @@
     </Compile>
     <Compile Include="Services.Sql\SqlServerTests.cs" />
     <Compile Include="Services.Sql\SqlDatabaseBrokerTests.cs" />
-    <Compile Include="Runtime.ServiceModel\EmailSourceTest.cs" />
-    <Compile Include="Runtime.ServiceModel\DbSourceTests.cs" />
     <Compile Include="Sql\WorkflowsTests.cs" />
     <Compile Include="Helpers\TestHelper.cs" />
     <Compile Include="Test utils\ServerCommonDirectory.cs" />
@@ -366,6 +325,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CommonTest\" />
+    <Folder Include="Server Test\WebServerTests\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Server Test\Workspace\XML\Calculate_RecordSet_Subtract.xml" />

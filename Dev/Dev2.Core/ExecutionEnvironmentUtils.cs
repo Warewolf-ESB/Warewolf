@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -188,12 +187,15 @@ namespace Dev2
             XmlDocument xDoc = new XmlDocument();
             toLoad = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), toLoad);
             xDoc.LoadXml(toLoad);
-            dataList = dataList.Replace("ADL>", "DataList>").Replace("root>","DataList>");
-            if (xDoc.DocumentElement != null)
+            if(dataList != null)
             {
-                XmlNodeList children = xDoc.DocumentElement.ChildNodes;
-                var dataListTO = new DataListTO(dataList,true);
-                TryConvert(dataObject, children, dataListTO.Inputs);
+                dataList = dataList.Replace("ADL>", "DataList>").Replace("root>","DataList>");
+                if (xDoc.DocumentElement != null)
+                {
+                    XmlNodeList children = xDoc.DocumentElement.ChildNodes;
+                    var dataListTO = new DataListTO(dataList,true);
+                    TryConvert(dataObject, children, dataListTO.Inputs);
+                }
             }
         }
 

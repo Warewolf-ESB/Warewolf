@@ -134,7 +134,6 @@ Given I have this data
 	|   | [[rs(2).Col3]] =                                      |          |        |            |         |                   |                 |               |               |                          |                 |
 	|   | [[rs(3).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34 |          |        |            |         |                   |                 |               |               |                          |                 |
 	|   | [[rs(4).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34 | Col3     | bigint |            |         |                   |                 |               |               |                          |                 |
-	|   |                                                       |          |        |            |         | NO                | NO              | NO            | NO            | NO                       | NO              |
 	And the debug output as 
 	|                       |
 	| [[result]] = Failure |
