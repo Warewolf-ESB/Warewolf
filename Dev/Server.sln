@@ -106,7 +106,7 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ExecutionEngine", "Executio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.ResourceManagement", "Warewolf.ResourceManagement\Warewolf.ResourceManagement.csproj", "{F36B2034-94BF-485C-B584-4E590CCC6DD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarewolfParsing.Tests", "WarewolfParsingTest\WarewolfParsing.Tests.csproj", "{2A765154-2288-4FD3-A008-F0B7173F4074}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarewolfParsing.Tests", "WarewolfParsing.Tests\WarewolfParsing.Tests.csproj", "{2A765154-2288-4FD3-A008-F0B7173F4074}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
