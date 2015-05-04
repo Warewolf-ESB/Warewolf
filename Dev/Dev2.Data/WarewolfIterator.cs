@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Data.Util;
 using Dev2.MathOperations;
@@ -106,6 +107,24 @@ namespace Dev2.Data
                 string error;
                 var tryEvaluateFunction = functionEvaluator.TryEvaluateFunction(cleanExpression, out eval, out error);
                 warewolfAtomToString = eval;
+                if (eval == cleanExpression.Replace("\"", "") && cleanExpression.Contains("\""))
+                {
+                    try
+                    {
+                        string eval2;
+                        var b = functionEvaluator.TryEvaluateFunction(cleanExpression.Replace("\"", ""), out eval2, out error);
+                        if (b)
+                        {
+                            warewolfAtomToString = eval2;
+
+                        }
+                    }
+                    catch (Exception err)
+                    {
+
+                        Dev2Logger.Log.Warn(err);
+                    }
+                }
                 if (!tryEvaluateFunction)
                 {
                     throw new Exception(error);
