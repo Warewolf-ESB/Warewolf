@@ -197,7 +197,7 @@ this.ScenarioSetup(scenarioInfo);
             table5.AddRow(new string[] {
                         "2",
                         "[[test]] =",
-                        "=[[var]] ==SUM(1,2,3)-5"});
+                        "[[var]] =SUM(1,2,3)-5"});
 #line 43
  testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
 #line hidden

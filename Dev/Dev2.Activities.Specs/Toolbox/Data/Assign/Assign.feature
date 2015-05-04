@@ -43,7 +43,7 @@ Scenario: Assign multiple variables with a calculate expression to a variable
 	And the debug inputs as
 	| # | Variable   | New Value                |
 	| 1 | [[var]]  = | SUM(1,2,3)-5             |
-	| 2 | [[test]] = | =[[var]] ==SUM(1,2,3)-5 |
+	| 2 | [[test]] = | [[var]] =SUM(1,2,3)-5 |
 	And the debug output as
     | # |                        |
     | 1 | [[var]] = SUM(1,2,3)-5 |
