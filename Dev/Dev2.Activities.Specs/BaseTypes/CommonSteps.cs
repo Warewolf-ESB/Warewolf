@@ -595,7 +595,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
                 else if (rowValue.StartsWith("="))
                 {
-                    debugItemResult.Value = "";
+                    debugItemResult.Value = rowValue;
                     debugItemResult.Type = DebugItemResultType.Value;
                     debugItemResult.Variable = rowValue.Replace("=", "");
                     list.Add(debugItemResult);

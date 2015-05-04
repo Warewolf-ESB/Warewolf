@@ -39,6 +39,7 @@ Scenario: Find an index of data in an empty recordset
 	| In Field(s) | [[rs(*).value]] = | 1 | Is Between |  | 16 | 33  | NO                          | NO                             |
 	And the debug output as
 	|                  |
+	| [[result]] = -1                 |
 
 Scenario: Find an index of data in a recordset with a blank from
 	Given I have the following recordset to search for multiple criteria
@@ -60,6 +61,7 @@ Scenario: Find an index of data in a recordset with a blank from
 	|           | [[rs(4).field]] = 34 | 1 | Is Between |  | " " | 33  | NO                          | NO                             |
 	And the debug output as
 	|                 |
+	| [[result]] = -1                 |
 
 	Scenario: Find an index of data in a recordset with blank to
 	Given I have the following recordset to search for multiple criteria
@@ -81,6 +83,7 @@ Scenario: Find an index of data in a recordset with a blank from
 	|           | [[rs(4).field]] = 34 | 1 | Is Between |  | 16 | " " | NO                          | NO                             |
 	And the debug output as
 	|                  |
+	| [[result]] = -1                 |
 	
 Scenario: Find an index of data in a recordset with Is Between DateTime
 	Given I have the following recordset to search for multiple criteria
