@@ -83,7 +83,7 @@ namespace WarewolfParsingTest
         public void WarewolfParse_Parse_NestedDataSet_ExpectComplex_MultiNested()
         {
 
-            var ast = WarewolfDataEvaluationCommon.ParseLanguageExpression("[[[[[[rec(0).a]]]]]]");
+            var ast = WarewolfDataEvaluationCommon.ParseLanguageExpression("[[[[[[rec(1).a]]]]]]");
             Assert.IsTrue(ast.IsComplexExpression);
             var astval = ast as LanguageAST.LanguageExpression.ComplexExpression;
             if (astval != null)
