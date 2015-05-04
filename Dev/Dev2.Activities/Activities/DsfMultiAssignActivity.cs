@@ -221,10 +221,28 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     var calcExpression = ExecutionEnvironment.WarewolfAtomToString(result.Item);
                     string exp;
-                    var isCalcEvaluation = DataListUtil.IsCalcEvaluation(calcExpression, out exp);
+                    DataListUtil.IsCalcEvaluation(calcExpression, out exp);
                     string eval;
                     string error;
                     var res = functionEvaluator.TryEvaluateFunction(exp, out eval, out error);
+                    if (eval == exp.Replace("\"", "") && exp.Contains("\""))
+                    {
+                        try
+                        {
+                            string eval2;
+                            var b = functionEvaluator.TryEvaluateFunction(exp.Replace("\"",""), out eval2, out error);
+                            if(b)
+                            {
+                                eval = eval2;
+                                
+                            }
+                        }
+                        catch(Exception err)
+                        {
+
+                            Dev2Logger.Log.Warn(err);
+                        } 
+                    }
                     if(!res) throw  new Exception("Invalid Calculate");
                     return new AssignValue(fieldName,eval);
                 }
