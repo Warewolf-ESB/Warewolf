@@ -213,4 +213,5 @@ Scenario: Output values in multiple result variables
 	| In Field     | Index           | Characters | Direction     |
 	| abc3cde3fgh3 | All Occurrences | 3          | Left to Right |
 	And the debug output as
-	|                   |
+	|                       |
+	| [[res]],[[rs(*).a]] = |
