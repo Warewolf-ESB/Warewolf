@@ -225,8 +225,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected void DoErrorHandling(IDSFDataObject dataObject)
         {
             string errorString = dataObject.Environment.FetchErrors();
-            ErrorResultTO tmpErrorsAfter = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
-            _tmpErrors.MergeErrors(tmpErrorsAfter);
+            _tmpErrors.AddError(errorString);
             if(_tmpErrors.HasErrors())
             {
                 if(!(this is DsfFlowDecisionActivity))
@@ -726,7 +725,31 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public virtual IDev2Activity Execute(IDSFDataObject data)
         {
-            ExecuteTool(data);
+            try
+            {
+                var className = GetType().Name;
+                Tracker.TrackEvent(TrackerEventGroup.ActivityExecution, className);
+
+                ExecuteTool(data);
+            }
+            catch (Exception ex)
+            {
+
+                Dev2Logger.Log.Error("OnExecute", ex);
+                var errorString = ex.Message;
+                var errorResultTO = new ErrorResultTO();
+                errorResultTO.AddError(errorString);                
+            }
+            finally
+            {
+                if (!_isExecuteAsync || _isOnDemandSimulation)
+                {
+                    DoErrorHandling(data);
+                }
+
+            }
+
+            
             if(NextNodes != null && NextNodes.Count()>0)
             {
                     NextNodes.First().Execute(data);
