@@ -128,6 +128,8 @@ namespace Dev2.Core.Tests
             MainViewModel.ActiveEnvironment = ActiveEnvironment.Object;
         }
 
+        protected Mock<IBrowserPopupController> BrowserPopupController;
+
         protected Mock<IContextualResourceModel> CreateResource(ResourceType resourceType)
         {
             var result = new Mock<IContextualResourceModel>();
