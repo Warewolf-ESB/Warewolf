@@ -72,10 +72,14 @@ namespace Dev2.Common
                                              "<!-- Alternate layout using XML			" +
                                              "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
                                              "</appender>" +
+                                             "<appender name=\"asyncForwarder\" type=\"Log4Net.Async.AsyncForwardingAppender,Log4Net.Async\">" +
+                                             "    <appender-ref ref=\"LogFileAppender\" />" +
+                                             "</appender>" +
                                              "<!-- Setup the root category, add the appenders and set the default level -->" +
                                              "<root>" +
                                              "<level value=\"DEBUG\" />" +
-                                             "<appender-ref ref=\"LogFileAppender\" />" +
+                                             "<!-- kr: before asnync <appender-ref ref=\"LogFileAppender\" /> -->" +
+                                             "<appender-ref ref=\"asyncForwarder\" />" +
                                              "</root>" +
                                              "</log4net>";
 
