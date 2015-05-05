@@ -3283,7 +3283,7 @@ Scenario: Executing Data - Data Merge example workflow
 Scenario: Executing Data - Find Index example workflow
 	  Given I have a workflow "Utility - Find Index Test"
 	  And "Utility - Find Index Test" contains "Utility - Find Index" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
+
 	  When "Utility - Find Index Test" is executed
 	  Then the workflow execution has "NO" error
 	  And the 'Find Index1' in WorkFlow 'Utility - Find Index' debug inputs as
@@ -3299,6 +3299,105 @@ Scenario: Executing Data - Find Index example workflow
 	  |                            |
 	  | [[WhereAreTheBs]] = 2,4,11 |
 
+Scenario: Excuting File and Folder - Copy
+	  Given I have a workflow "File and Folder - Copy Test"
+	  And "File and Folder - Copy Test" contains "File and Folder - Copy" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "File and Folder - Copy Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Copy' in Workflow 'File and Folder - Copy Test' debug outputs as 
+	  | Result                 |
+	  | [[Complete]] = Success |
+
+Scenario: Excuting File and Folder - Create
+	  Given I have a workflow "File and Folder - Create Test"
+	  And "File and Folder - Create Test" contains "File and Folder - Create" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "File and Folder - Create Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Create' in Workflow 'File and Folder - Create Test' debug outputs as 
+	  | Result                 |
+	  | [[Complete]] = Success |
+
+Scenario: Excuting File and Folder - Delete
+	  Given I have a workflow "File and Folder - Delete Test"
+	  And "File and Folder - Delete Test" contains "File and Folder -Delete" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "File and Folder - Delete Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Delete' in Workflow 'File and Folder - Delete Test' debug outputs as 
+	  | Result                 |
+	  | [[Complete]] = Success |
+
+Scenario: Excuting File and Folder - Move
+	  Given I have a workflow "File and Folder - Move Test"
+	  And "File and Folder - Move Test" contains "File and Folder - Move" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "File and Folder - Move Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Move' in Workflow 'File and Folder - Move Test' debug outputs as 
+	  | Result                 |
+	  | [[Complete]] = Success |
+
+Scenario: Excuting File and Folder - Read File
+	  Given I have a workflow "File and Folder - Read File Test"
+	  And "File and Folder - Read File Test" contains "File and Folder - Read File" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "File and Folder - Read File Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Read File' in Workflow 'File and Folder - Read File Test' debug outputs as 
+	  | Result                 |
+	  | [[Complete]] = Success |
+
+Scenario: Excuting File and Folder - Read Folder
+	  Given I have a workflow "File and Folder - Read Folder Test"
+	  And "File and Folder - Read Folder Test" contains "File and Folder - Read Folder" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "File and Folder - Read Folder Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Read Folder' in Workflow 'File and Folder - Read Folder Test' debug outputs as 
+	  | Result                 |
+	  | [[Complete]] = Success |
+
+Scenario: Excuting File and Folder - Rename
+	  Given I have a workflow "File and Folder - Rename Test"
+	  And "File and Folder - Rename Test" contains "File and Folder - Rename" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "File and Folder - Rename Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Rename' in Workflow 'File and Folder - Rename Test' debug outputs as 
+	  | Result                 |
+	  | [[Complete]] = Success |
+
+Scenario: Excuting File and Folder - Unzip
+	  Given I have a workflow "File and Folder - Unzip Test"
+	  And "File and Folder - Unzip Test" contains "File and Folder - Unzip" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "File and Folder - Unzip Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Unzip' in Workflow 'File and Folder - Unzip Test' debug outputs as 
+	  | Result                 |
+	  | [[Complete]] = Success |
+
+Scenario: Excuting File and Folder - Write File
+	  Given I have a workflow "File and Folder - Write File Test"
+	  And "File and Folder - Write File Test" contains "File and Folder - Write File" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "File and Folder - Write File Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Write File' in Workflow 'File and Folder - Write File Test' debug outputs as 
+	  | Result                 |
+	  | [[Complete]] = Success |
+
+Scenario: Excuting File and Folder - Zip
+	  Given I have a workflow "File and Folder - Zip Test"
+	  And "File and Folder - Zip Test" contains "File and Folder - Zip" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "File and Folder - Zip Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Zip' in Workflow 'File and Folder - Zip Test' debug outputs as 
+	  | Result                 |
+	  | [[Complete]] = Success |
 
 Scenario: Executing Utility - Replace example workflow
 	  Given I have a workflow "Utility - Replace Test"
