@@ -525,12 +525,12 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         {
             DsfSequenceActivity sequence;
             ScenarioContext.Current.TryGetValue("activity", out sequence);
-            //            var activityList = CommonSteps.GetActivityList();
-            //
-            //            foreach(var activity in activityList)
-            //            {
-            //                sequence.Activities.Add(activity.Value);
-            //            }
+//                        var activityList = CommonSteps.GetActivityList();
+//            
+//                        foreach(var activity in activityList)
+//                        {
+//                            sequence.Activities.Add(activity.Value);
+//                        }
             return sequence;
         }
 

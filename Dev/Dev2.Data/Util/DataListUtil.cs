@@ -653,14 +653,17 @@ namespace Dev2.Data.Util
                 }
                 if(!dev2Definition.IsRecordSet)
                 {
-                    var warewolfEvalResult = outerEnvironment.Eval(dev2Definition.RawValue);
-                    if(warewolfEvalResult.IsWarewolfAtomListresult)
+                    if (!string.IsNullOrEmpty(dev2Definition.RawValue))
                     {
-                        ScalarAtomList(warewolfEvalResult, env, dev2Definition);
-                    }
-                    else
-                    {
-                        ScalarAtom(warewolfEvalResult, env, dev2Definition);
+                        var warewolfEvalResult = outerEnvironment.Eval(dev2Definition.RawValue);
+                        if (warewolfEvalResult.IsWarewolfAtomListresult)
+                        {
+                            ScalarAtomList(warewolfEvalResult, env, dev2Definition);
+                        }
+                        else
+                        {
+                            ScalarAtom(warewolfEvalResult, env, dev2Definition);
+                        }
                     }
                 }
             }

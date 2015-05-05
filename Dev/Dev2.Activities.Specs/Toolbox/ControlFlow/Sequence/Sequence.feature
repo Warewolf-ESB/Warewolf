@@ -199,17 +199,18 @@ Scenario: Execute a Sequence with Assign and Unique Records
 	  |             | [[rec(8).a]] = 13 | [[rec().a]]  = |
 	  And the "Unique" debug outputs as 
 	  | # |                         |
-	  | 1 | [[rec(1).unique]] =   |
-	  |   | [[rec(2).unique]] =   |
-	  |   | [[rec(3).unique]] =   |
-	  |   | [[rec(4).unique]] =   |
-	  |   | [[rec(5).unique]] =   |
-	  |   | [[rec(6).unique]] =   |
-	  |   | [[rec(7).unique]] =   |
-	  |   | [[rec(8).unique]] =   |
+	  | 1 | [[rec(1).unique]] =     |
+	  |   | [[rec(2).unique]] =     |
+	  |   | [[rec(3).unique]] =     |
+	  |   | [[rec(4).unique]] =     |
+	  |   | [[rec(5).unique]] =     |
+	  |   | [[rec(6).unique]] =     |
+	  |   | [[rec(7).unique]] =     |
+	  |   | [[rec(8).unique]] =     |
 	  |   | [[rec(9).unique]] = 11  |
 	  |   | [[rec(10).unique]] = 12 |
-	  |   | [[rec(11).unique]] = 13 |
+	  |   | !!MoreLink!!            |
+	  
 
 
 
@@ -259,11 +260,11 @@ Scenario: Execute a Sequence with Assign, Data Merge and Data Split
 	  And "Test" contains Data Merge "Data Merge" into "[[result]]" as	
 	  | Variable     | Type  | Using | Padding | Alignment |
 	  | [[rec(1).a]] | Index | 4      |         | Left       |
-	  | [[rec(2).a]]  | Index | 8      |         | Left       |
+	  | [[rec(3).a]]  | Index | 8      |         | Left       |
 	  And "Test" contains Data Split "Data Split" as
 	  | String       | Variable     | Type  | At | Include    | Escape |
-	  | testwarewolf | [[rec(1).b]] | Index | 4  | Unselected |        |
-	  |              | [[rec(2).b]] | Index | 8  | Unselected |        |
+	  | testwarewolf | [[rec(2).b]] | Index | 4  | Unselected |        |
+	  |              | [[rec(4).b]] | Index | 8  | Unselected |        |
 	  When the Sequence tool is executed
 	  Then the execution has "NO" error
 	  And the "Assign To Merge" debug inputs as
@@ -275,24 +276,24 @@ Scenario: Execute a Sequence with Assign, Data Merge and Data Split
 	  And the "Assign To Merge" debug outputs as    
 	  | # |                        |
 	  | 1 | [[rec(1).a]] =  test   |
-	  | 2 | [[rec(1).b]] = nothing |
-	  | 3 | [[rec(2).a]] =  warewolf |
-	  | 4 | [[rec(2).b]] =  nothing |
+	  | 2 | [[rec(2).b]] = nothing |
+	  | 3 | [[rec(3).a]] =  warewolf |
+	  | 4 | [[rec(4).b]] =  nothing |
 	  And the "Data Merge" debug inputs as  
 	  | # |                          | With | Using | Pad | Align |
 	  | 1 | [[rec(1).a]] =  test     | Index | "4"   | ""  | Left  |
-	  | 2 | [[rec(2).a]] =  warewolf | Index | "8"   | ""  | Left  |
+	  | 2 | [[rec(3).a]] =  warewolf | Index | "8"   | ""  | Left  |
 	  And the "Data Merge" debug outputs as 
 	  |                           |
 	  | [[result]] = testwarewolf |
 	  And the "Data Split" debug inputs as  
 	  | String to Split | Process Direction | Skip blank rows | # |                        | With  | Using | Include | Escape |
-	  | testwarewolf    | Forward           | No              | 1 | [[rec(1).b]] = nothing | Index | 4     | No      |        |
-	  |                 |                   |                 | 2 | [[rec(2).b]] = nothing | Index | 8     | No      |        |
+	  | testwarewolf    | Forward           | No              | 1 | [[rec(2).b]] = nothing | Index | 4     | No      |        |
+	  |                 |                   |                 | 2 | [[rec(4).b]] = nothing | Index | 8     | No      |        |
 	  And the "Data Split" debug outputs as
 	  | # |                         |
-	  | 1 | [[rec(1).b]] = test     |
-	  | 2 | [[rec(2).b]] = warewolf |
+	  | 1 | [[rec(2).b]] = test     |
+	  | 2 | [[rec(4).b]] = warewolf |
 
 
 Scenario: Execute a Sequence with Assign, Data Merge, Data Split, Find Index and Replace
@@ -355,14 +356,14 @@ Scenario: Execute a Sequence with Assign, Data Merge, Data Split, Find Index and
 	  And the "Replacing" debug inputs as 
 	  | In Field(s)              | Find | Replace With |
 	  | [[rec(1).a]] = test     |      |              |
-	  | [[rec(1).b]] = test     |      |              |
 	  | [[rec(2).a]] = warewolf |      |              |
+	  | [[rec(1).b]] = test     |      |              |
 	  | [[rec(2).b]] = warewolf | e    | REPLACED     |
 	  And the "Replacing" debug outputs as 
 	  |                                 |  
 	  | [[rec(1).a]] = tREPLACEDst     |  
-	  | [[rec(1).b]] = tREPLACEDst     |
 	  | [[rec(2).a]] = warREPLACEDwolf |
+	  | [[rec(1).b]] = tREPLACEDst     |
 	  | [[rec(2).b]] = warREPLACEDwolf |
 	  | [[replaceResult]] = 4 |
 

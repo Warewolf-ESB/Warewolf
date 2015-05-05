@@ -682,7 +682,14 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 Verify(expectedDebugItems[i].Label ?? "", inputDebugItems[i].Label ?? "", "Labels", i);
                 Verify(expectedDebugItems[i].Variable ?? "", inputDebugItems[i].Variable ?? "", "Variables", i);
-                Verify(expectedDebugItems[i].Value ?? "", inputDebugItems[i].Value ?? "", "Values", i);
+                if (expectedDebugItems[i].Value != null && expectedDebugItems[i].Value.Equals("!!MoreLink!!"))
+                {
+                    Assert.IsFalse(string.IsNullOrEmpty(inputDebugItems[i].MoreLink));
+                }
+                else
+                {
+                    Verify(expectedDebugItems[i].Value ?? "", inputDebugItems[i].Value ?? "", "Values", i);
+                }
             }
         }
 

@@ -3802,7 +3802,7 @@ Scenario Outline: Database SqlDB  service using * indexes
 	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
 	  |                      |
 	  | [[rec(1).name]] = String |
-	  | [[rec(2).name]] = String |	 
+	  | [[rec(1).email]] = String |	 
 Examples: 
     | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
     | TestWFWithDBServiceMails1 | SqlEmail    | [[rec(*).name]] | [[rec(*).email]] | NO           |
@@ -3836,8 +3836,8 @@ Scenario Outline: Database SqlDB  service using int indexes
      Then the workflow execution has "<errorOccured>" error
 	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
 	  |                      |
-	  | [[rec(1).name]] = bob |
-	  | [[rec(1).email]] = bob@builders.co.za |
+	  | [[rec(1).name]] = dora |
+	  | [[rec(1).email]] = dora@explorers.co.za |
 Examples: 
     | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
     | TestWFWithDBServiceMails3 | SqlEmail    | [[rec(1).name]] | [[rec(1).email]] | NO           |
@@ -3958,8 +3958,8 @@ Scenario Outline: Database SqlDB Database service inputs and outputs
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
 	  | Input to Service | From Variable | Output from Service          | To Variable     |
-	  | Prefix           | afg           | [[countries(*).id]]          | <nameVariable>  |
-	  |                  |               | [[countries(*).description]] | <emailVariable> |
+	  | Prefix           | afg           | countries(*).countryid          | <nameVariable>  |
+	  |                  |               | countries(*).description | <emailVariable> |
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
@@ -3978,8 +3978,6 @@ Examples:
      Then the workflow execution has "<errorOccured>" error
 Examples: 
     | WorkflowName                   | ServiceName          | nameVariable | emailVariable | errorOccured |
-    | TestWFWithDBServiceMailsError2 | willalwaysErrorMySql | [[name]]     | [[email]]     | YES          |
-    | WorkflowName                  | ServiceName          | nameVariable | emailVariable | errorOccured |
     | TestWFWithDBServiceMailsError | willalwayserror      | [[name]]     | [[email]]     | YES          |
     | TestWFWithDBServiceMailsError | willalwaysErrorMySql | [[name]]     | [[email]]     | YES          |
 
