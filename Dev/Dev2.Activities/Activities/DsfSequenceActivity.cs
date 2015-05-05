@@ -196,7 +196,6 @@ namespace Dev2.Activities
         {
             dataObject.IsDebugNested = false;
             dataObject.ParentInstanceID = _previousParentID;
-            DoErrorHandling(dataObject);
             dataObject.ForEachNestingLevel--;
         }
 

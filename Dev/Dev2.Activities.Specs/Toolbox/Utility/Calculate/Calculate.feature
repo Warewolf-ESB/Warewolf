@@ -135,10 +135,18 @@ Scenario: Calculate Assign by evaluating a variable inside a variable with funct
 	| [[result]] = 40 |
 
 #Scenario Outline: Calculate Assign by evaluating variables with functions
-#	Given I have a calculate variable ""
+#	Given I have a calculate variable "[[x]]" equal to "1"
+#	And I have a calculate variable "[[y]]" equal to "2"
+#	And I have a calculate variable "[[z]]" equal to "10"
+#	And I have a calculate variable "[[rc(1).set]]" equal to "5"
+#	And I have a calculate variable "[[s]]" equal to "-1"
+#	And I have a calculate variable "[[t]]" equal to "0"
+#	And I have a calculate variable "[[a]]" equal to "b"
+#	And I have a calculate variable "[[b]]" equal to "3"
 #	And I have the formula "fx="
 #	When the calculate tool is executed
-#	And the execution has "NO" error
+#	Then the workflow execution has "NO" error
+#	And the output = "result"
 #	Examples: 
 #	| #   | fx=                                                        | result                    |
 #	| 1   | abs([[e]])                                                 | 1000                      |
@@ -172,7 +180,7 @@ Scenario: Calculate Assign by evaluating a variable inside a variable with funct
 #	| 30  | DAY([[x]])                                                 | 1/10/1900                 |
 #	| 31  | DAYS360([[x]],[[y]])                                       | 1/9/1900                  |
 #	| 32  | DB([[e]],[[z]],12,12,12)                                   | 4.66                      |
-#	| 33  | DBNull                                                     |                           |
+#	| 33  | DBNull()                                                   |                           |
 #	| 34  | DDB([[e]],[[z]],12,12,[[x]])                               | 32.00                     |
 #	| 35  | DEC2BIN([[x]],[[z]])                                       | 0000000001                |
 #	| 36  | DEC2HEX(1,10)                                              | 0000000001                |
@@ -219,7 +227,7 @@ Scenario: Calculate Assign by evaluating a variable inside a variable with funct
 #	| 77  | INT([[s]])                                                 | -1                        |
 #	| 78  | INTRATE(2015,2030,1000,1,4)                                | -23.976                   |
 #	| 79  | IPMT(5,12,100,1000,2000,1)                                 | -833.3333333              |
-#	| 80  | IRR(10,0.01)                                               |                           |
+#	| 80  | IRR([[z]],[[rc(1).set]],2)                                 | -1.5                      |
 #	| 81  | isdbnull([[x]])                                            | False                     |
 #	| 82  | ISBLANK(1)                                                 | False                     |
 #	| 83  | ISERR([[e]])                                               | False                     |
@@ -255,7 +263,7 @@ Scenario: Calculate Assign by evaluating a variable inside a variable with funct
 #	| 113 | NOW()                                                      | 4/24/2015 15:18           |
 #	| 114 | NPER(0.1, 100, 1000, 999,0)                                | ######################### |
 #	| 115 | NPV([[z]],[[z]],[[rc(1).set]],[[y]])                       | 0.951915853               |
-#	| 116 | NULL                                                       |                           |
+#	| 116 | NULL()                                                     |                           |
 #	| 117 | OCT2BIN([[z]],[[z]])                                       | 0000001000                |
 #	| 118 | OCT2DEC([[z]])                                             | 8                         |
 #	| 119 | OCT2HEX(10,2)                                              | 08                        |
@@ -270,7 +278,7 @@ Scenario: Calculate Assign by evaluating a variable inside a variable with funct
 #	| 128 | QUOTIENT([[z]],[[rc(1).set]])                              | 2                         |
 #	| 129 | RADIANS([[z]])                                             | 0.174532925               |
 #	| 130 | RANDBETWEEN([[x]],10)                                      | 7                         |
-#	| 131 | RATE(2,100,100,20,0,0.1)                                   |                           |
+#	| 131 | RATE(360,-600,100000,0,1)                                  | 1%                        |
 #	| 132 | REPT([[y]],[[y]])                                          | 22                        |
 #	| 133 | RIGHT([[x]],[[x]])                                         | 1                         |
 #	| 134 | ROMAN(10,0)                                                | X                         |
@@ -288,11 +296,28 @@ Scenario: Calculate Assign by evaluating a variable inside a variable with funct
 #	| 146 | SQRT(16)                                                   | 4                         |
 #	| 147 | SQRTPI(16)                                                 | 7.089815404               |
 #	| 148 | STDEV(1,10,5)                                              | 4.509249753               |
+#	| 149 | SUBTOTAL(2,[[x]],[[z]],0)                                  | 3                         |
+#	| 150 | SUM([[rc(1).set]],[[z]],[[s]])                             | 14                        |
+#	| 151 | SYD(1000,[[z]],[[rc(1).set]],[[x]])                        | $330.00                   |
+#	| 152 | TAN([[z]])                                                 | 0.648360827               |
+#	| 153 | TANH([[z]])                                                | 0.999999996               |
+#	| 154 | TEXT([[y]],[[rc(1).set]])                                  | 5                         |
+#	| 155 | TIME(24,[[x]],[[x]])                                       | 12:01 AM                  |
+#	| 156 | TIMEVALUE("2:24 AM")                                       | 2:24 AM                   |
+#	| 157 | TODAY()-1                                                  | 5/4/2015                  |
+#	| 158 | TRIM(10)                                                   | 10                        |
+#	| 159 | TRUNC(1000,[[rc(1).set]])                                  | 1000                      |
+#	| 160 | TYPE(-1)                                                   | 1                         |
+#	| 161 | UPPER(-1)                                                  | -1                        |
+#	| 162 | VALUE([[x]])                                               | 1                         |
+#	| 163 | VAR([[rc(1).set]],[[z]])                                   | 12.5                      |
+#	| 164 | WEEKDAY(11011,[[x]])                                       | 7                         |
+#	| 165 | WEEKNUM(11011,[[y]])                                       | 8                         |
+#	| 166 | WORKDAY([[rc(1).set]],[[rc(1).set]],[[z]])                 | 13                        |
+#	| 167 | YEAR(11011)                                                | 1930                      |
+#	| 168 | FALSE                                                      | FALSE                     |
+#	| 169 | TRUE                                                       | TRUE                      |
 
-
-
-
-#incomplete
 
 
 

@@ -239,7 +239,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfIndexActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
-                    dataObject.Environment.Assign(Result, null);
                 }
 
                 #endregion
