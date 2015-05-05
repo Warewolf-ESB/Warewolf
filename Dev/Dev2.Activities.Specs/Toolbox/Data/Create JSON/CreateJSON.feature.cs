@@ -192,15 +192,15 @@ this.ScenarioSetup(scenarioInfo);
             this.SingleScalarVariable("Null", "", "{\"a\":null}", ((string[])(null)));
         }
         
-        public virtual void SimpleRecordsetSingleField(string , string value, string result, string[] exampleTags)
+        public virtual void SingleScalarVariableWithChangedName(string , string value, string result, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Simple Recordset single field", exampleTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Single Scalar Variable with changed name", exampleTags);
 #line 30
 this.ScenarioSetup(scenarioInfo);
 #line 31
- testRunner.Given(string.Format("I have a variable \"[[rec().a]]\" with value {0}", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a variable \"[[a]]\" with value {0}", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 32
- testRunner.And("I select variable \"[[rec().a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I select variable \"[[a]]\" with name \"myVar\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 33
  testRunner.And("a result variable \"[[json]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 34
@@ -215,7 +215,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table3.AddRow(new string[] {
                         "1",
-                        string.Format("[[rec(1).a]] = {0}", value)});
+                        string.Format("[[a]] = {0}", value)});
 #line 37
  testRunner.And("the debug inputs as", ((string)(null)), table3, "And ");
 #line hidden
@@ -227,6 +227,129 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("[[json]] = {0}", result)});
 #line 40
  testRunner.And("debug output as", ((string)(null)), table4, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Single Scalar Variable with changed name")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Character")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Character")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "c")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"myVar\":\"c\"}")]
+        public virtual void SingleScalarVariableWithChangedName_Character()
+        {
+            this.SingleScalarVariableWithChangedName("Character", "c", "{\"myVar\":\"c\"}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Single Scalar Variable with changed name")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Integer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Integer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"myVar\":2}")]
+        public virtual void SingleScalarVariableWithChangedName_Integer()
+        {
+            this.SingleScalarVariableWithChangedName("Integer", "2", "{\"myVar\":2}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Single Scalar Variable with changed name")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Decimal")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Decimal")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "5.6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"myVar\":5.6}")]
+        public virtual void SingleScalarVariableWithChangedName_Decimal()
+        {
+            this.SingleScalarVariableWithChangedName("Decimal", "5.6", "{\"myVar\":5.6}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Single Scalar Variable with changed name")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "String")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "String")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "Hello")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"myVar\":\"Hello\"}")]
+        public virtual void SingleScalarVariableWithChangedName_String()
+        {
+            this.SingleScalarVariableWithChangedName("String", "Hello", "{\"myVar\":\"Hello\"}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Single Scalar Variable with changed name")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Boolean_True")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Boolean_True")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "true")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"myVar\":true}")]
+        public virtual void SingleScalarVariableWithChangedName_Boolean_True()
+        {
+            this.SingleScalarVariableWithChangedName("Boolean_True", "true", "{\"myVar\":true}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Single Scalar Variable with changed name")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Boolean_False")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Boolean_False")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "false")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"myVar\":false}")]
+        public virtual void SingleScalarVariableWithChangedName_Boolean_False()
+        {
+            this.SingleScalarVariableWithChangedName("Boolean_False", "false", "{\"myVar\":false}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Single Scalar Variable with changed name")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Null")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Null")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"myVar\":null}")]
+        public virtual void SingleScalarVariableWithChangedName_Null()
+        {
+            this.SingleScalarVariableWithChangedName("Null", "", "{\"myVar\":null}", ((string[])(null)));
+        }
+        
+        public virtual void SimpleRecordsetSingleField(string , string value, string result, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Simple Recordset single field", exampleTags);
+#line 53
+this.ScenarioSetup(scenarioInfo);
+#line 54
+ testRunner.Given(string.Format("I have a variable \"[[rec().a]]\" with value {0}", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 55
+ testRunner.And("I select variable \"[[rec().a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 56
+ testRunner.And("a result variable \"[[json]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 57
+ testRunner.When("the create json tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 58
+ testRunner.Then(string.Format("the value of \"[[json]]\" should be {0}", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 59
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table5.AddRow(new string[] {
+                        "1",
+                        string.Format("[[rec(1).a]] = {0}", value)});
+#line 60
+ testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                        "",
+                        ""});
+            table6.AddRow(new string[] {
+                        "",
+                        string.Format("[[json]] = {0}", result)});
+#line 63
+ testRunner.And("debug output as", ((string)(null)), table6, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -318,45 +441,45 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void MultipleScalarsVariable(string , string valueA, string valueB, string result, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple Scalars Variable", exampleTags);
-#line 53
+#line 76
 this.ScenarioSetup(scenarioInfo);
-#line 54
+#line 77
  testRunner.Given(string.Format("I have a variable \"[[a]]\" with value {0}", valueA), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 55
+#line 78
  testRunner.And(string.Format("I have a variable \"[[b]]\" with value {0}", valueB), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 56
+#line 79
  testRunner.And("I select variable \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 57
+#line 80
  testRunner.And("I select variable \"[[b]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 58
+#line 81
  testRunner.And("a result variable \"[[json]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 59
+#line 82
  testRunner.When("the create json tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 60
+#line 83
  testRunner.Then(string.Format("the value of \"[[json]]\" should be {0}", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 61
+#line 84
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table5.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "1",
                         string.Format("[[a]] = {0}", valueA)});
-            table5.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "2",
                         string.Format("[[b]] = {0}", valueB)});
-#line 62
- testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
+#line 85
+ testRunner.And("the debug inputs as", ((string)(null)), table7, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         ""});
-            table6.AddRow(new string[] {
+            table8.AddRow(new string[] {
                         "",
                         string.Format("[[json]] = {0}", result)});
-#line 66
- testRunner.And("debug output as", ((string)(null)), table6, "And ");
+#line 89
+ testRunner.And("debug output as", ((string)(null)), table8, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -452,46 +575,183 @@ this.ScenarioSetup(scenarioInfo);
             this.MultipleScalarsVariable("Null", "", "false", "{\"a\":null,\"b\":false}", ((string[])(null)));
         }
         
+        public virtual void MultipleRecordsetVariable(string , string valueA, string valueB, string result, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple Recordset Variable", exampleTags);
+#line 102
+this.ScenarioSetup(scenarioInfo);
+#line 103
+ testRunner.Given(string.Format("I have a variable \"[[rec().a]]\" with value {0}", valueA), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 104
+ testRunner.And(string.Format("I have a variable \"[[rec().b]]\" with value {0}", valueB), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 105
+ testRunner.And("I select variable \"[[rec().a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 106
+ testRunner.And("I select variable \"[[rec().b]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 107
+ testRunner.And("a result variable \"[[json]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 108
+ testRunner.When("the create json tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 109
+ testRunner.Then(string.Format("the value of \"[[json]]\" should be {0}", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 110
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table9.AddRow(new string[] {
+                        "1",
+                        string.Format("[[a]] = {0}", valueA)});
+            table9.AddRow(new string[] {
+                        "2",
+                        string.Format("[[b]] = {0}", valueB)});
+#line 111
+ testRunner.And("the debug inputs as", ((string)(null)), table9, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                        "",
+                        ""});
+            table10.AddRow(new string[] {
+                        "",
+                        string.Format("[[json]] = {0}", result)});
+#line 115
+ testRunner.And("debug output as", ((string)(null)), table10, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Multiple Recordset Variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Character")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Character")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "c")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":\"c\",\"b\":3}")]
+        public virtual void MultipleRecordsetVariable_Character()
+        {
+            this.MultipleRecordsetVariable("Character", "c", "3", "{\"a\":\"c\",\"b\":3}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Multiple Recordset Variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Integer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Integer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "a")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":2,\"b\":\"a\"}")]
+        public virtual void MultipleRecordsetVariable_Integer()
+        {
+            this.MultipleRecordsetVariable("Integer", "2", "a", "{\"a\":2,\"b\":\"a\"}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Multiple Recordset Variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Decimal")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Decimal")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "5.6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "World")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":5.6,\"b\":\"World\"}")]
+        public virtual void MultipleRecordsetVariable_Decimal()
+        {
+            this.MultipleRecordsetVariable("Decimal", "5.6", "World", "{\"a\":5.6,\"b\":\"World\"}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Multiple Recordset Variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "String")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "String")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "Hello")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "10.1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":\"Hello\",\"b\":10.1}")]
+        public virtual void MultipleRecordsetVariable_String()
+        {
+            this.MultipleRecordsetVariable("String", "Hello", "10.1", "{\"a\":\"Hello\",\"b\":10.1}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Multiple Recordset Variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Boolean_True")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Boolean_True")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "true")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":true,\"b\":null}")]
+        public virtual void MultipleRecordsetVariable_Boolean_True()
+        {
+            this.MultipleRecordsetVariable("Boolean_True", "true", "", "{\"a\":true,\"b\":null}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Multiple Recordset Variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Boolean_False")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Boolean_False")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "false")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "true")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":false,\"b\":true}")]
+        public virtual void MultipleRecordsetVariable_Boolean_False()
+        {
+            this.MultipleRecordsetVariable("Boolean_False", "false", "true", "{\"a\":false,\"b\":true}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Multiple Recordset Variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Null")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Null")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "false")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":null,\"b\":false}")]
+        public virtual void MultipleRecordsetVariable_Null()
+        {
+            this.MultipleRecordsetVariable("Null", "", "false", "{\"a\":null,\"b\":false}", ((string[])(null)));
+        }
+        
         public virtual void MultipleScalarsVariableCommaSeperated(string , string valueA, string valueB, string result, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple Scalars Variable comma seperated", exampleTags);
-#line 79
+#line 128
 this.ScenarioSetup(scenarioInfo);
-#line 80
+#line 129
  testRunner.Given(string.Format("I have a variable \"[[a]]\" with value {0}", valueA), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 81
+#line 130
  testRunner.And(string.Format("I have a variable \"[[b]]\" with value {0}", valueB), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 82
+#line 131
  testRunner.And("I select variable \"[[a]],[[b]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 83
+#line 132
  testRunner.And("a result variable \"[[json]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 84
+#line 133
  testRunner.When("the create json tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 85
+#line 134
  testRunner.Then(string.Format("the value of \"[[json]]\" should be {0}", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 86
+#line 135
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table7.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "1",
                         string.Format("[[a]] = {0}", valueA)});
-            table7.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "2",
                         string.Format("[[b]] = {0}", valueB)});
-#line 87
- testRunner.And("the debug inputs as", ((string)(null)), table7, "And ");
+#line 136
+ testRunner.And("the debug inputs as", ((string)(null)), table11, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         ""});
-            table8.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         "",
                         string.Format("[[json]] = {0}", result)});
-#line 91
- testRunner.And("debug output as", ((string)(null)), table8, "And ");
+#line 140
+ testRunner.And("debug output as", ((string)(null)), table12, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -503,10 +763,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Character")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "c")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{{\"a\":\"c\",\"b\":3}}")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"\":{\"a\":\"c\",\"b\":3}}")]
         public virtual void MultipleScalarsVariableCommaSeperated_Character()
         {
-            this.MultipleScalarsVariableCommaSeperated("Character", "c", "3", "{{\"a\":\"c\",\"b\":3}}", ((string[])(null)));
+            this.MultipleScalarsVariableCommaSeperated("Character", "c", "3", "{\"\":{\"a\":\"c\",\"b\":3}}", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -516,10 +776,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Integer")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "a")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{{\"a\":2,\"b\":\"a\"}}")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"\":{\"a\":2,\"b\":\"a\"}}")]
         public virtual void MultipleScalarsVariableCommaSeperated_Integer()
         {
-            this.MultipleScalarsVariableCommaSeperated("Integer", "2", "a", "{{\"a\":2,\"b\":\"a\"}}", ((string[])(null)));
+            this.MultipleScalarsVariableCommaSeperated("Integer", "2", "a", "{\"\":{\"a\":2,\"b\":\"a\"}}", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -529,10 +789,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Decimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "5.6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "World")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{{\"a\":5.6,\"b\":\"World\"}}")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"\":{\"a\":5.6,\"b\":\"World\"}}")]
         public virtual void MultipleScalarsVariableCommaSeperated_Decimal()
         {
-            this.MultipleScalarsVariableCommaSeperated("Decimal", "5.6", "World", "{{\"a\":5.6,\"b\":\"World\"}}", ((string[])(null)));
+            this.MultipleScalarsVariableCommaSeperated("Decimal", "5.6", "World", "{\"\":{\"a\":5.6,\"b\":\"World\"}}", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -542,10 +802,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "Hello")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "10.1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{{\"a\":\"Hello\",\"b\":10.1}}")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"\":{\"a\":\"Hello\",\"b\":10.1}}")]
         public virtual void MultipleScalarsVariableCommaSeperated_String()
         {
-            this.MultipleScalarsVariableCommaSeperated("String", "Hello", "10.1", "{{\"a\":\"Hello\",\"b\":10.1}}", ((string[])(null)));
+            this.MultipleScalarsVariableCommaSeperated("String", "Hello", "10.1", "{\"\":{\"a\":\"Hello\",\"b\":10.1}}", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -555,10 +815,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Boolean_True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{{\"a\":true,\"b\":null}}")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"\":{\"a\":true,\"b\":null}}")]
         public virtual void MultipleScalarsVariableCommaSeperated_Boolean_True()
         {
-            this.MultipleScalarsVariableCommaSeperated("Boolean_True", "true", "", "{{\"a\":true,\"b\":null}}", ((string[])(null)));
+            this.MultipleScalarsVariableCommaSeperated("Boolean_True", "true", "", "{\"\":{\"a\":true,\"b\":null}}", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -568,10 +828,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Boolean_False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "true")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{{\"a\":false,\"b\":true}}")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"\":{\"a\":false,\"b\":true}}")]
         public virtual void MultipleScalarsVariableCommaSeperated_Boolean_False()
         {
-            this.MultipleScalarsVariableCommaSeperated("Boolean_False", "false", "true", "{{\"a\":false,\"b\":true}}", ((string[])(null)));
+            this.MultipleScalarsVariableCommaSeperated("Boolean_False", "false", "true", "{\"\":{\"a\":false,\"b\":true}}", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -581,10 +841,268 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Null")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "false")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{{\"a\":null,\"b\":false}}")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"\":{\"a\":null,\"b\":false}}")]
         public virtual void MultipleScalarsVariableCommaSeperated_Null()
         {
-            this.MultipleScalarsVariableCommaSeperated("Null", "", "false", "{{\"a\":null,\"b\":false}}", ((string[])(null)));
+            this.MultipleScalarsVariableCommaSeperated("Null", "", "false", "{\"\":{\"a\":null,\"b\":false}}", ((string[])(null)));
+        }
+        
+        public virtual void MultipleRecordsetVariableCommaSeperated(string , string valueA, string valueB, string result, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple Recordset Variable comma seperated", exampleTags);
+#line 153
+this.ScenarioSetup(scenarioInfo);
+#line 154
+ testRunner.Given(string.Format("I have a variable \"[[rec().a]]\" with value {0}", valueA), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 155
+ testRunner.And(string.Format("I have a variable \"[[rec().b]]\" with value {0}", valueB), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 156
+ testRunner.And("I select variable \"[[rec().a]],[[rec().b]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 157
+ testRunner.And("a result variable \"[[json]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 158
+ testRunner.When("the create json tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 159
+ testRunner.Then(string.Format("the value of \"[[json]]\" should be {0}", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 160
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table13.AddRow(new string[] {
+                        "1",
+                        string.Format("[[a]] = {0}", valueA)});
+            table13.AddRow(new string[] {
+                        "2",
+                        string.Format("[[b]] = {0}", valueB)});
+#line 161
+ testRunner.And("the debug inputs as", ((string)(null)), table13, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                        "",
+                        ""});
+            table14.AddRow(new string[] {
+                        "",
+                        string.Format("[[json]] = {0}", result)});
+#line 165
+ testRunner.And("debug output as", ((string)(null)), table14, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Multiple Recordset Variable comma seperated")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Character")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Character")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "c")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":{\"a\":\"c\",\"b\":3}}")]
+        public virtual void MultipleRecordsetVariableCommaSeperated_Character()
+        {
+            this.MultipleRecordsetVariableCommaSeperated("Character", "c", "3", "{\"rec\":{\"a\":\"c\",\"b\":3}}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Multiple Recordset Variable comma seperated")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Integer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Integer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "a")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":{\"a\":2,\"b\":\"a\"}}")]
+        public virtual void MultipleRecordsetVariableCommaSeperated_Integer()
+        {
+            this.MultipleRecordsetVariableCommaSeperated("Integer", "2", "a", "{\"rec\":{\"a\":2,\"b\":\"a\"}}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Multiple Recordset Variable comma seperated")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Decimal")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Decimal")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "5.6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "World")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":{\"a\":5.6,\"b\":\"World\"}}")]
+        public virtual void MultipleRecordsetVariableCommaSeperated_Decimal()
+        {
+            this.MultipleRecordsetVariableCommaSeperated("Decimal", "5.6", "World", "{\"rec\":{\"a\":5.6,\"b\":\"World\"}}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Multiple Recordset Variable comma seperated")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "String")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "String")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "Hello")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "10.1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":{\"a\":\"Hello\",\"b\":10.1}}")]
+        public virtual void MultipleRecordsetVariableCommaSeperated_String()
+        {
+            this.MultipleRecordsetVariableCommaSeperated("String", "Hello", "10.1", "{\"rec\":{\"a\":\"Hello\",\"b\":10.1}}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Multiple Recordset Variable comma seperated")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Boolean_True")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Boolean_True")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "true")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":{\"a\":true,\"b\":null}}")]
+        public virtual void MultipleRecordsetVariableCommaSeperated_Boolean_True()
+        {
+            this.MultipleRecordsetVariableCommaSeperated("Boolean_True", "true", "", "{\"rec\":{\"a\":true,\"b\":null}}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Multiple Recordset Variable comma seperated")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Boolean_False")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Boolean_False")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "false")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "true")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":{\"a\":false,\"b\":true}}")]
+        public virtual void MultipleRecordsetVariableCommaSeperated_Boolean_False()
+        {
+            this.MultipleRecordsetVariableCommaSeperated("Boolean_False", "false", "true", "{\"rec\":{\"a\":false,\"b\":true}}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Multiple Recordset Variable comma seperated")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Null")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Null")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "false")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":{\"a\":null,\"b\":false}}")]
+        public virtual void MultipleRecordsetVariableCommaSeperated_Null()
+        {
+            this.MultipleRecordsetVariableCommaSeperated("Null", "", "false", "{\"rec\":{\"a\":null,\"b\":false}}", ((string[])(null)));
+        }
+        
+        public virtual void SimpleRecordsetWithSingleField(string , string value, string result, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Simple Recordset with * single field", exampleTags);
+#line 178
+this.ScenarioSetup(scenarioInfo);
+#line 179
+ testRunner.Given(string.Format("I have a variable \"[[rec(*).a]]\" with value {0}", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 180
+ testRunner.And("I select variable \"[[rec(*).a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 181
+ testRunner.And("a result variable \"[[json]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 182
+ testRunner.When("the create json tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 183
+ testRunner.Then(string.Format("the value of \"[[json]]\" should be {0}", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 184
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table15.AddRow(new string[] {
+                        "1",
+                        string.Format("[[rec(1).a]] = {0}", value)});
+#line 185
+ testRunner.And("the debug inputs as", ((string)(null)), table15, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+                        "",
+                        ""});
+            table16.AddRow(new string[] {
+                        "",
+                        string.Format("[[json]] = {0}", result)});
+#line 188
+ testRunner.And("debug output as", ((string)(null)), table16, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Simple Recordset with * single field")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Character")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Character")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "c")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[\"a\":\"c\"]}")]
+        public virtual void SimpleRecordsetWithSingleField_Character()
+        {
+            this.SimpleRecordsetWithSingleField("Character", "c", "{\"rec\":[\"a\":\"c\"]}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Simple Recordset with * single field")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Integer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Integer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[\"a\":2]}")]
+        public virtual void SimpleRecordsetWithSingleField_Integer()
+        {
+            this.SimpleRecordsetWithSingleField("Integer", "2", "{\"rec\":[\"a\":2]}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Simple Recordset with * single field")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Decimal")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Decimal")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "5.6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[\"a\":5.6]}")]
+        public virtual void SimpleRecordsetWithSingleField_Decimal()
+        {
+            this.SimpleRecordsetWithSingleField("Decimal", "5.6", "{\"rec\":[\"a\":5.6]}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Simple Recordset with * single field")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "String")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "String")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "Hello")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[\"a\":\"Hello\"]}")]
+        public virtual void SimpleRecordsetWithSingleField_String()
+        {
+            this.SimpleRecordsetWithSingleField("String", "Hello", "{\"rec\":[\"a\":\"Hello\"]}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Simple Recordset with * single field")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Boolean_True")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Boolean_True")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "true")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[\"a\":true]}")]
+        public virtual void SimpleRecordsetWithSingleField_Boolean_True()
+        {
+            this.SimpleRecordsetWithSingleField("Boolean_True", "true", "{\"rec\":[\"a\":true]}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Simple Recordset with * single field")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Boolean_False")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Boolean_False")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "false")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[\"a\":false]}")]
+        public virtual void SimpleRecordsetWithSingleField_Boolean_False()
+        {
+            this.SimpleRecordsetWithSingleField("Boolean_False", "false", "{\"rec\":[\"a\":false]}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Simple Recordset with * single field")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Null")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:#", "Null")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[\"a\":null]}")]
+        public virtual void SimpleRecordsetWithSingleField_Null()
+        {
+            this.SimpleRecordsetWithSingleField("Null", "", "{\"rec\":[\"a\":null]}", ((string[])(null)));
         }
     }
 }
