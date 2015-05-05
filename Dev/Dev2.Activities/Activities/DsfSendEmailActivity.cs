@@ -146,6 +146,12 @@ namespace Dev2.Activities
             try
             {
                 var runtimeSource = ResourceCatalog.Instance.GetResource<EmailSource>(dataObject.WorkspaceID, SelectedEmailSource.ResourceID);
+               
+                if(runtimeSource==null)
+                {
+                    dataObject.Environment.Errors.Add("Invalid Email Source");
+                    return;
+                }
                 if(IsDebug)
                 {
                     var fromAccount = FromAccount;
