@@ -14,7 +14,6 @@ namespace ConsoleAppToTestExecuteCommandLineActivity
 {
     internal class Program
     {
-        // test comment for git workflow
         private static void Main(string[] args)
         {
             if (args.Length == 0)
