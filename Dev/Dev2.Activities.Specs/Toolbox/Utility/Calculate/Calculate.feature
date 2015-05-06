@@ -143,6 +143,7 @@ Scenario: Calculate Assign by evaluating a variable inside a variable with funct
 #	And I have a calculate variable "[[t]]" equal to "0"
 #	And I have a calculate variable "[[a]]" equal to "b"
 #	And I have a calculate variable "[[b]]" equal to "3"
+#	And I have a calculate variable "[[e]]" equal to "1000"
 #	And I have the formula "fx="
 #	When the calculate tool is executed
 #	Then the workflow execution has "NO" error
