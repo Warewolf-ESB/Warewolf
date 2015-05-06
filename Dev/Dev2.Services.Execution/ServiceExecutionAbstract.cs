@@ -156,10 +156,10 @@ namespace Dev2.Services.Execution
                 var itrs = new List<IWarewolfIterator>(5);
                 IWarewolfListIterator itrCollection = new WarewolfListIterator();
                 ServiceMethod method = Service.Method;
-                List<MethodParameter> inputs = method.Parameters;
+                var inputs = method.Parameters;
                 if (inputs.Count == 0)
                 {
-                    ExecuteService(Service.Method.Parameters, out invokeErrors, outputFormatter);
+                    ExecuteService(inputs as IEnumerable<MethodParameter>, out invokeErrors, outputFormatter);
                     errors.MergeErrors(invokeErrors);
                 }
                 else
