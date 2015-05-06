@@ -13,6 +13,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using CefSharp;
+using CefSharp.Wpf;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
