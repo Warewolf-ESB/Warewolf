@@ -14,9 +14,9 @@ Scenario Outline: Single Scalar Variable
 	And the debug inputs as
 	| # |                 |
 	| 1 | [[a]] = <value> |
-	And debug output as
-	|  |                     |
-	|  | [[json]] = <result> |
+	And the debug output as
+	|                       |
+	|   [[json]] = <result> |
 Examples: 
 	| #             | value | result        |
 	| Character     | c     | {"a":"c"}     |
@@ -37,9 +37,9 @@ Scenario Outline: Single Scalar Variable with changed name
 	And the debug inputs as
 	| # |                 |
 	| 1 | [[a]] = <value> |
-	And debug output as
-	|  |                     |
-	|  | [[json]] = <result> |
+	And the debug output as
+	|                     |
+	| [[json]] = <result> |
 Examples: 
 	| #             | value | result        |
 	| Character     | c     | {"myVar":"c"}     |
@@ -60,9 +60,9 @@ Scenario Outline: Simple Recordset single field
 	And the debug inputs as
 	| # |                        |
 	| 1 | [[rec(1).a]] = <value> |
-	And debug output as
-	|  |                     |
-	|  | [[json]] = <result> |
+	And the debug output as
+	|                       |
+	|   [[json]] = <result> |
 Examples: 
 	| #             | value | result        |
 	| Character     | c     | {"a":"c"}     |
@@ -86,9 +86,9 @@ Scenario Outline: Multiple Scalars Variable
 	| # |                  |
 	| 1 | [[a]] = <valueA> |
 	| 2 | [[b]] = <valueB> |
-	And debug output as
-	|  |                     |
-	|  | [[json]] = <result> |
+	And the debug output as
+	|                     |
+	| [[json]] = <result> |
 Examples: 
 	| #             | valueA | valueB | result                 |
 	| Character     | c      | 3      | {"a":"c","b":3}        |
@@ -112,9 +112,9 @@ Scenario Outline: Multiple Recordset Variable
 	| # |                  |
 	| 1 | [[a]] = <valueA> |
 	| 2 | [[b]] = <valueB> |
-	And debug output as
-	|  |                     |
-	|  | [[json]] = <result> |
+	And the debug output as
+	|                     |
+	| [[json]] = <result> |
 Examples: 
 	| #             | valueA | valueB | result                 |
 	| Character     | c      | 3      | {"a":"c","b":3}        |
@@ -137,9 +137,9 @@ Scenario Outline: Multiple Scalars Variable comma seperated
 	| # |                  |
 	| 1 | [[a]] = <valueA> |
 	| 2 | [[b]] = <valueB> |
-	And debug output as
-	|  |                     |
-	|  | [[json]] = <result> |
+	And the debug output as
+	|                     |
+	| [[json]] = <result> |
 Examples: 
 	| #             | valueA | valueB | result                      |
 	| Character     | c      | 3      | {"":{"a":"c","b":3}}        |
@@ -160,11 +160,11 @@ Scenario Outline: Multiple Recordset Variable comma seperated
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                  |
-	| 1 | [[a]] = <valueA> |
-	| 2 | [[b]] = <valueB> |
-	And debug output as
-	|  |                     |
-	|  | [[json]] = <result> |
+	| 1 | [[rec(1).a]] = <valueA> |
+	| 2 | [[rec(1).b]] = <valueB> |
+	And the debug output as
+	|                     |
+	| [[json]] = <result> |
 Examples: 
 	| #             | valueA | valueB | result                         |
 	| Character     | c      | 3      | {"rec":{"a":"c","b":3}}        |
@@ -185,9 +185,9 @@ Scenario Outline: Simple Recordset with * single field
 	And the debug inputs as
 	| # |                        |
 	| 1 | [[rec(1).a]] = <value> |
-	And debug output as
-	|  |                     |
-	|  | [[json]] = <result> |
+	And the debug output as
+	|                       |
+	|   [[json]] = <result> |
 Examples: 
 	| #             | value | result                |
 	| Character     | c     | {"rec":["a":"c"]}     |
@@ -211,11 +211,16 @@ Scenario Outline: Recordset with * multiple fields and values
 	Then the value of "[[json]]" should be <result>
 	And the execution has "NO" error
 	And the debug inputs as
-	| # |                        |
-	| 1 | [[rec(1).a]] = <value> |
-	And debug output as
-	|  |                     |
-	|  | [[json]] = <result> |
+	| # |                          |
+	| 1 | [[rec(1).a]] = <valueA1> |
+	|   | [[rec(2).a]] = <valueA2> |
+	|   | [[rec(3).a]] = <valueA3> |
+	|   | [[rec(1).a]] = <valueB1> |
+	|   | [[rec(2).b]] = <valueB2> |
+	|   | [[rec(3).b]] = <valueB3> |
+	And the debug output as
+	|                       |
+	|   [[json]] = <result> |
 Examples: 
 	| #             | valueA1 | valueA2 | valueA3 | valueB1 | valueB2 | valueB3 | result                                                                       |
 	| Character     | c       | b       | g       | 1       | 2       | 3       | {"rec":[{"a":"c","b":1},{"a":"b","b":2},{"a":"g","b":3}]}                    |
@@ -238,8 +243,12 @@ Scenario: Recordset with * multiple fields and values
 	Then the value of "[[json]]" should be <result>
 	And the execution has "NO" error
 	And the debug inputs as
-	| # |                        |
-	| 1 | [[rec(1).a]] = <value> |
-	And debug output as
-	|  |                                                                         |
-	|  | [[json]] = {"rec":[{"a":"c","b":1},{"a":"b","b":2},{"a":"g","b":null}]} |
+	| # |                  |
+	| 1 | [[rec(1).a]] = c |
+	|   | [[rec(2).a]] = b |
+	|   | [[rec(3).a]] = g |
+	|   | [[rec(1).b]] = 1 |
+	|   | [[rec(2).b]] = 2 |
+	And the debug output as
+	|                                                                           |
+	|   [[json]] = {"rec":[{"a":"c","b":1},{"a":"b","b":2},{"a":"g","b":null}]} |
