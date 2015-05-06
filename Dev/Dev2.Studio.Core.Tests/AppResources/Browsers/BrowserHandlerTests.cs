@@ -24,6 +24,7 @@ namespace Dev2.Core.Tests.AppResources.Browsers
     // BUG 9798 - 2013.06.25 - TWR : refactored for external
     [TestClass]
     [ExcludeFromCodeCoverage]
+    [Ignore]
     public class BrowserHandlerTests
     {
         #region CTOR
@@ -196,6 +197,20 @@ namespace Dev2.Core.Tests.AppResources.Browsers
 
             //------------Assert Results-------------------------
             browser.Verify(b => b.Load(It.Is<string>(s => s.EndsWith(StringResources.Uri_Studio_PageRestrictedAccess))), Times.Exactly(hitCount));
+        }
+
+        #endregion
+
+        #region OnLoadSafe
+
+        [TestMethod]
+        public void BrowserLoadSafeExpectedAttachesBrowserHandler()
+        {
+            var browser = new WebView();
+            browser.LoadSafe("myfake.url");
+            Assert.IsNotNull(browser.LoadHandler);
+            Assert.IsNotNull(browser.LifeSpanHandler);
+            Assert.IsNotNull(browser.RequestHandler);
         }
 
         #endregion
