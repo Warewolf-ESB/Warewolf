@@ -177,13 +177,21 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
 
                 for (int i = 0; i < resultCount; i++)
                 {
-                    var recordsetNode = new XElement(recordsetNodeName);
-
-                    foreach (IPath path in paths)
+                    XElement recordsetNode;
+                    if (string.IsNullOrEmpty(recordsetNodeName))
                     {
-                        recordsetNode.Add(new XElement(nodeNames[path], selectResults[path][i]));
+                        var path = paths[0];
+                        recordsetNode = new XElement(nodeNames[path], selectResults[path][0]);
                     }
+                    else
+                    {
+                        recordsetNode = new XElement(recordsetNodeName);
 
+                        foreach (IPath path in paths)
+                        {
+                            recordsetNode.Add(new XElement(nodeNames[path], selectResults[path][i]));
+                        }
+                    }
                     returnNodes.Add(recordsetNode);
                 }
             }
