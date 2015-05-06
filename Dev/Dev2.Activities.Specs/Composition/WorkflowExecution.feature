@@ -3305,8 +3305,8 @@ Scenario: Excuting File and Folder - Copy
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  When "File and Folder - Copy Test" is executed
 	  Then the workflow execution has "NO" error
-	  And the 'Copy' in Workflow 'File and Folder - Copy Test' debug outputs as 
-	  | Result                 |
+	  And the 'Copy' in Workflow 'File and Folder - Copy' debug outputs as 
+	  |                  |
 	  | [[Complete]] = Success |
 
 Scenario: Excuting File and Folder - Create
@@ -3315,18 +3315,18 @@ Scenario: Excuting File and Folder - Create
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  When "File and Folder - Create Test" is executed
 	  Then the workflow execution has "NO" error
-	  And the 'Create' in Workflow 'File and Folder - Create Test' debug outputs as 
-	  | Result                 |
+	  And the 'Create' in Workflow 'File and Folder - Create' debug outputs as 
+	  |                        |
 	  | [[Complete]] = Success |
 
 Scenario: Excuting File and Folder - Delete
 	  Given I have a workflow "File and Folder - Delete Test"
-	  And "File and Folder - Delete Test" contains "File and Folder -Delete" from server "localhost" with mapping as
+	  And "File and Folder - Delete Test" contains "File and Folder - Delete" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  When "File and Folder - Delete Test" is executed
 	  Then the workflow execution has "NO" error
-	  And the 'Delete' in Workflow 'File and Folder - Delete Test' debug outputs as 
-	  | Result                 |
+	  And the 'Delete' in Workflow 'File and Folder - Delete' debug outputs as 
+	  |                        |
 	  | [[Complete]] = Success |
 
 Scenario: Excuting File and Folder - Move
@@ -3335,8 +3335,8 @@ Scenario: Excuting File and Folder - Move
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  When "File and Folder - Move Test" is executed
 	  Then the workflow execution has "NO" error
-	  And the 'Move' in Workflow 'File and Folder - Move Test' debug outputs as 
-	  | Result                 |
+	  And the 'Move' in Workflow 'File and Folder - Move' debug outputs as 
+	  |                        |
 	  | [[Complete]] = Success |
 
 Scenario: Excuting File and Folder - Read File
@@ -3345,9 +3345,9 @@ Scenario: Excuting File and Folder - Read File
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  When "File and Folder - Read File Test" is executed
 	  Then the workflow execution has "NO" error
-	  And the 'Read File' in Workflow 'File and Folder - Read File Test' debug outputs as 
-	  | Result                 |
-	  | [[Complete]] = Success |
+	  And the 'Read File' in Workflow 'File and Folder - Read File' debug outputs as 
+	  |                                         |
+	  | [[Logs]] = the contents of the log file |
 
 Scenario: Excuting File and Folder - Read Folder
 	  Given I have a workflow "File and Folder - Read Folder Test"
@@ -3355,9 +3355,15 @@ Scenario: Excuting File and Folder - Read Folder
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  When "File and Folder - Read Folder Test" is executed
 	  Then the workflow execution has "NO" error
-	  And the 'Read Folder' in Workflow 'File and Folder - Read Folder Test' debug outputs as 
-	  | Result                 |
-	  | [[Complete]] = Success |
+	  And the 'Read Folder1' in Workflow 'File and Folder - Read Folder' debug outputs as 
+	  |                                                     |
+	  | [[users]] = c:\temp\WarewolfExamples\ReadFolder\sub |
+	  And the 'Read Folder 2' in Workflow 'File and Folder - Read Folder' debug outputs as 
+	  |                                                               |
+	  | [[server(1).users]] = c:\temp\WarewolfExamples\ReadFolder\sub |
+	  And the 'Read Folder 3' in Workflow 'File and Folder - Read Folder' debug outputs as 
+	  |                                                                           |
+	  | [[server(1).userfolders]] = c:\temp\WarewolfExamples\ReadFolder\sub\inner |
 
 Scenario: Excuting File and Folder - Rename
 	  Given I have a workflow "File and Folder - Rename Test"
@@ -3365,8 +3371,8 @@ Scenario: Excuting File and Folder - Rename
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  When "File and Folder - Rename Test" is executed
 	  Then the workflow execution has "NO" error
-	  And the 'Rename' in Workflow 'File and Folder - Rename Test' debug outputs as 
-	  | Result                 |
+	  And the 'Rename' in Workflow 'File and Folder - Rename' debug outputs as 
+	  |                        |
 	  | [[Complete]] = Success |
 
 Scenario: Excuting File and Folder - Unzip
@@ -3375,8 +3381,8 @@ Scenario: Excuting File and Folder - Unzip
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  When "File and Folder - Unzip Test" is executed
 	  Then the workflow execution has "NO" error
-	  And the 'Unzip' in Workflow 'File and Folder - Unzip Test' debug outputs as 
-	  | Result                 |
+	  And the 'UnZip' in Workflow 'File and Folder - Unzip' debug outputs as 
+	  |                        |
 	  | [[Complete]] = Success |
 
 Scenario: Excuting File and Folder - Write File
@@ -3385,8 +3391,8 @@ Scenario: Excuting File and Folder - Write File
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  When "File and Folder - Write File Test" is executed
 	  Then the workflow execution has "NO" error
-	  And the 'Write File' in Workflow 'File and Folder - Write File Test' debug outputs as 
-	  | Result                 |
+	  And the 'Write' in Workflow 'File and Folder - Write File' debug outputs as 
+	  |                        |
 	  | [[Complete]] = Success |
 
 Scenario: Excuting File and Folder - Zip
@@ -3395,8 +3401,8 @@ Scenario: Excuting File and Folder - Zip
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  When "File and Folder - Zip Test" is executed
 	  Then the workflow execution has "NO" error
-	  And the 'Zip' in Workflow 'File and Folder - Zip Test' debug outputs as 
-	  | Result                 |
+	  And the 'Zip' in Workflow 'File and Folder - Zip' debug outputs as 
+	  |                        |
 	  | [[Complete]] = Success |
 
 Scenario: Executing Utility - Replace example workflow
