@@ -197,3 +197,49 @@ Examples:
 	| Boolean_True  | true  | {"rec":["a":true]}    |
 	| Boolean_False | false | {"rec":["a":false]}   |
 	| Null          |       | {"rec":["a":null]}    |
+
+Scenario Outline: Recordset with * multiple fields and values
+	Given I have a variable "[[rec(1).a]]" with value <valueA1>
+	Given I have a variable "[[rec(2).a]]" with value <valueA2>
+	Given I have a variable "[[rec(3).a]]" with value <valueA3>
+	Given I have a variable "[[rec(1).b]]" with value <valueB1>
+	Given I have a variable "[[rec(2).b]]" with value <valueB2>
+	Given I have a variable "[[rec(3).b]]" with value <valueB3>
+	And I select variable "[[rec(*)]]"
+	And a result variable "[[json]]"
+	When the create json tool is executed
+	Then the value of "[[json]]" should be <result>
+	And the execution has "NO" error
+	And the debug inputs as
+	| # |                        |
+	| 1 | [[rec(1).a]] = <value> |
+	And debug output as
+	|  |                     |
+	|  | [[json]] = <result> |
+Examples: 
+	| #             | valueA1 | valueA2 | valueA3 | valueB1 | valueB2 | valueB3 | result                                                                       |
+	| Character     | c       | b       | g       | 1       | 2       | 3       | {"rec":[{"a":"c","b":1},{"a":"b","b":2},{"a":"g","b":3}]}                    |
+	| Integer       | 2       | 56      | 100     | g       | h       | i       | {"rec":[{"a":2,"b":"g"},{"a":56,"b":"h"},{"a":100,"b":"i"}]}                 |
+	| Decimal       | 5.6     | 7.1     | 100.34  | Hello   | World   | bob     | {"rec":[{"a":5.6,"b":"Hello"},{"a":7.1,"b":"World"},{"a":100.34,"b":"bob"}]} |
+	| String        | Hello   | name    | dora    | 34      |         | 56      | {"rec":[{"a":"Hello","b":34},{"a":"name","b":null},{"a":"dora","b":56}]}     |
+	| Boolean_True  | true    | false   |         | 78.1    | 145.25  | 90.2    | {"rec":[{"a":true,"b":78.1},{"a":false,"b":145.25},{"a":null,"b":90.2}]}     |
+	| Boolean_False | false   | bob     | dora    |         |         |         | {"rec":[{"a":false,"b":null},{"a":"bob","b":null},{"a":"dora","b":null}]}    |
+	| Null          |         |         |         | true    | false   |         | {"rec":[{"a":null,"b":true},{"a":null,"b":false},{"a":null,"b":null}]}       |
+
+Scenario: Recordset with * multiple fields and values
+	Given I have a variable "[[rec(1).a]]" with value "c"
+	Given I have a variable "[[rec(2).a]]" with value "b"
+	Given I have a variable "[[rec(3).a]]" with value "g"
+	Given I have a variable "[[rec(1).b]]" with value 1
+	Given I have a variable "[[rec(2).b]]" with value 2
+	And I select variable "[[rec(*)]]"
+	And a result variable "[[json]]"
+	When the create json tool is executed
+	Then the value of "[[json]]" should be <result>
+	And the execution has "NO" error
+	And the debug inputs as
+	| # |                        |
+	| 1 | [[rec(1).a]] = <value> |
+	And debug output as
+	|  |                                                                         |
+	|  | [[json]] = {"rec":[{"a":"c","b":1},{"a":"b","b":2},{"a":"g","b":null}]} |
