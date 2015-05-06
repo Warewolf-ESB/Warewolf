@@ -18,7 +18,7 @@ Scenario Outline: Single Scalar Variable
 	|                       |
 	|   [[json]] = <result> |
 Examples: 
-	| #             | value | result        |
+	| Name             | value | result        |
 	| Character     | c     | {"a":"c"}     |
 	| Integer       | 2     | {"a":2}       |
 	| Decimal       | 5.6   | {"a":5.6}     |
@@ -41,7 +41,7 @@ Scenario Outline: Single Scalar Variable with changed name
 	|                     |
 	| [[json]] = <result> |
 Examples: 
-	| #             | value | result        |
+	|  Name            | value | result        |
 	| Character     | c     | {"myVar":"c"}     |
 	| Integer       | 2     | {"myVar":2}       |
 	| Decimal       | 5.6   | {"myVar":5.6}     |
@@ -64,7 +64,7 @@ Scenario Outline: Simple Recordset single field
 	|                       |
 	|   [[json]] = <result> |
 Examples: 
-	| #             | value | result        |
+	|    Name          | value | result        |
 	| Character     | c     | {"a":"c"}     |
 	| Integer       | 2     | {"a":2}       |
 	| Decimal       | 5.6   | {"a":5.6}     |
@@ -90,7 +90,7 @@ Scenario Outline: Multiple Scalars Variable
 	|                     |
 	| [[json]] = <result> |
 Examples: 
-	| #             | valueA | valueB | result                 |
+	| Name             | valueA | valueB | result                 |
 	| Character     | c      | 3      | {"a":"c","b":3}        |
 	| Integer       | 2      | a      | {"a":2,"b":"a"}        |
 	| Decimal       | 5.6    | World  | {"a":5.6,"b":"World"}  |
@@ -116,7 +116,7 @@ Scenario Outline: Multiple Recordset Variable
 	|                     |
 	| [[json]] = <result> |
 Examples: 
-	| #             | valueA | valueB | result                 |
+	|  Name            | valueA | valueB | result                 |
 	| Character     | c      | 3      | {"a":"c","b":3}        |
 	| Integer       | 2      | a      | {"a":2,"b":"a"}        |
 	| Decimal       | 5.6    | World  | {"a":5.6,"b":"World"}  |
@@ -141,7 +141,7 @@ Scenario Outline: Multiple Scalars Variable comma seperated
 	|                     |
 	| [[json]] = <result> |
 Examples: 
-	| #             | valueA | valueB | result                      |
+	|   Name           | valueA | valueB | result                      |
 	| Character     | c      | 3      | {"":{"a":"c","b":3}}        |
 	| Integer       | 2      | a      | {"":{"a":2,"b":"a"}}        |
 	| Decimal       | 5.6    | World  | {"":{"a":5.6,"b":"World"}}  |
@@ -166,7 +166,7 @@ Scenario Outline: Multiple Recordset Variable comma seperated
 	|                     |
 	| [[json]] = <result> |
 Examples: 
-	| #             | valueA | valueB | result                         |
+	|   Name           | valueA | valueB | result                         |
 	| Character     | c      | 3      | {"rec":{"a":"c","b":3}}        |
 	| Integer       | 2      | a      | {"rec":{"a":2,"b":"a"}}        |
 	| Decimal       | 5.6    | World  | {"rec":{"a":5.6,"b":"World"}}  |
@@ -189,7 +189,7 @@ Scenario Outline: Simple Recordset with * single field
 	|                       |
 	|   [[json]] = <result> |
 Examples: 
-	| #             | value | result                |
+	|  Name           | value | result                |
 	| Character     | c     | {"rec":["a":"c"]}     |
 	| Integer       | 2     | {"rec":["a":2]}       |
 	| Decimal       | 5.6   | {"rec":["a":5.6]}     |
@@ -222,7 +222,7 @@ Scenario Outline: Recordset with * multiple fields and values
 	|                       |
 	|   [[json]] = <result> |
 Examples: 
-	| #             | valueA1 | valueA2 | valueA3 | valueB1 | valueB2 | valueB3 | result                                                                       |
+	|   Name           | valueA1 | valueA2 | valueA3 | valueB1 | valueB2 | valueB3 | result                                                                       |
 	| Character     | c       | b       | g       | 1       | 2       | 3       | {"rec":[{"a":"c","b":1},{"a":"b","b":2},{"a":"g","b":3}]}                    |
 	| Integer       | 2       | 56      | 100     | g       | h       | i       | {"rec":[{"a":2,"b":"g"},{"a":56,"b":"h"},{"a":100,"b":"i"}]}                 |
 	| Decimal       | 5.6     | 7.1     | 100.34  | Hello   | World   | bob     | {"rec":[{"a":5.6,"b":"Hello"},{"a":7.1,"b":"World"},{"a":100.34,"b":"bob"}]} |
