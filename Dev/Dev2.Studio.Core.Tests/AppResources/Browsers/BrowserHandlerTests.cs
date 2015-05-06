@@ -201,6 +201,20 @@ namespace Dev2.Core.Tests.AppResources.Browsers
 
         #endregion
 
+        #region OnLoadSafe
+
+        [TestMethod]
+        public void BrowserLoadSafeExpectedAttachesBrowserHandler()
+        {
+            var browser = new WebView();
+            browser.LoadSafe("myfake.url");
+            Assert.IsNotNull(browser.LoadHandler);
+            Assert.IsNotNull(browser.LifeSpanHandler);
+            Assert.IsNotNull(browser.RequestHandler);
+        }
+
+        #endregion
+
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("BrowserHandler_GetAuthCredentials")]
