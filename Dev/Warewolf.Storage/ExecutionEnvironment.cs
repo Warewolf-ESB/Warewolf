@@ -97,7 +97,7 @@ namespace Warewolf.Storage
             }
             catch (Exception e)
             {
-                if (e is IndexOutOfRangeException) throw;
+                if (e is IndexOutOfRangeException || e.Message.Contains("index was not an int")) throw;
                 return WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
             }
 
