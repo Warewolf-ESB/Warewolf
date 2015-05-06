@@ -28,11 +28,11 @@ Examples:
 	| Null          |       | {"a":null}    |
 
 Scenario Outline: Single Scalar Variable with changed name
-	Given I have a variable "[[a]]" with value <value>
+	Given I have a variable "[[a]]" with value '<value>'
 	And I select variable "[[a]]" with name "myVar"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be <result>
+	Then the value of "[[json]]" should be '<result>'
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                 |
@@ -231,7 +231,7 @@ Examples:
 	| Boolean_False | false   | bob     | dora    |         |         |         | {"rec":[{"a":false,"b":null},{"a":"bob","b":null},{"a":"dora","b":null}]}    |
 	| Null          |         |         |         | true    | false   |         | {"rec":[{"a":null,"b":true},{"a":null,"b":false},{"a":null,"b":null}]}       |
 
-Scenario: Recordset with * multiple fields and values
+Scenario: Recordset with * multiple fields and values different length for columns
 	Given I have a variable "[[rec(1).a]]" with value "c"
 	Given I have a variable "[[rec(2).a]]" with value "b"
 	Given I have a variable "[[rec(3).a]]" with value "g"
