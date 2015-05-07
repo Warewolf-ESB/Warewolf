@@ -4162,3 +4162,17 @@ Scenario: Workflow with AsyncLogging and ForEach
 	 	 When "WFWithAsyncLoggingForEach" is executed "second time"
 	 Then the workflow execution has "NO" error
 	 And the delta between "first time" and "second time" is less than "1200" milliseconds
+
+@ignore
+Scenario: Check outputs json (.json)
+	Given I have a workflow "Json Outputs"
+	When "Json Outputs" is executed as JSON
+	Then the execution has "NO" error
+	And Output is "{"rc" : [{"test":"a"}], "rc" : [{"test":""}], "st" : [{"test":"b"}], "sam" : [{"test":"c"}], "test":"1","t1":"test"}"
+
+@ignore
+Scenario: Check outputs json (.xml)
+	Given I have a workflow "Json Outputs"
+	When "Json Outputs" is executed as xml.
+	Then the execution has "NO" error
+	And Output is "<DataList><rc Index="1"><test>a</test></rc><rc Index="2"><test/></rc><st Index="1"><test>b</test></st><sam Index="1"><test>c</test></sam><test>1</test><t1>test</t1></DataList>"
