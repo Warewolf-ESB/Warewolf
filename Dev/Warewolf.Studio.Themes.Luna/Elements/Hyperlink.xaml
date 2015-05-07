@@ -12,26 +12,24 @@
     <SolidColorBrush x:Key="TextBoxBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
     <SolidColorBrush x:Key="TextBoxBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
     <SolidColorBrush x:Key="TextBoxHoverBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
+    <SolidColorBrush x:Key="TextBoxDisabledBackgroundBrush" Color="{StaticResource Color_025}" />
     <!--  DO NOT make TextBoxHoverBackgroundBrush transparent!  -->
     <SolidColorBrush x:Key="TextBoxHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
     <SolidColorBrush x:Key="TextBoxFocusedBrush" Color="{StaticResource WarewolfOrange}" />
     <SolidColorBrush x:Key="TextBoxReadOnlyBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
     <Style TargetType="{x:Type Hyperlink}">
-
         <Style.Triggers>
-
             <Trigger Property="IsMouseOver" Value="True">
-
                 <Setter Property="Foreground" Value="{StaticResource TextBoxHoverBorderBrush}" />
                 <Setter Property="TextBlock.TextDecorations" Value="Underline" />
             </Trigger>
-
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{StaticResource TextBoxDisabledBackgroundBrush}" />
+                <Setter Property="TextBlock.TextDecorations" Value="Underline" />
+            </Trigger>
         </Style.Triggers>
-
         <Setter Property="Foreground" Value="{StaticResource TextBoxHoverBorderBrush}" />
-
         <Setter Property="TextBlock.TextDecorations" Value="{x:Null}" />
-
     </Style>
 
 </ResourceDictionary>

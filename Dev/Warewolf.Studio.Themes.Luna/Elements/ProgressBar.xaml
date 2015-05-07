@@ -9,7 +9,7 @@
 
     <!--  ProgressBar Brushes  -->
     <SolidColorBrush x:Key="ProgressBarBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
-    <SolidColorBrush x:Key="ProgressBarForegroundBrush" Color="{StaticResource Color_024}" />
+    <SolidColorBrush x:Key="ProgressBarForegroundBrush" Color="{StaticResource Color_025}" />
     <LinearGradientBrush x:Key="ProgressBarIndeterminateBackgroundBrush" MappingMode="Absolute" Opacity="0.8" SpreadMethod="Repeat" StartPoint="20,1" EndPoint="0,1">
         <LinearGradientBrush.Transform>
             <TransformGroup>

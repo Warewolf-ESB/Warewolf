@@ -26,7 +26,7 @@
 
     <!--  ComboBox Brushes  -->
     <SolidColorBrush x:Key="ComboBoxBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
-    <SolidColorBrush x:Key="ComboBoxBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="ComboBoxBorderBrush" Color="{StaticResource WarewolfLineGrey}" />
     <SolidColorBrush x:Key="ComboBoxReadOnlyBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
     <SolidColorBrush x:Key="ComboBoxHoverBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
     <SolidColorBrush x:Key="ComboBoxHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />

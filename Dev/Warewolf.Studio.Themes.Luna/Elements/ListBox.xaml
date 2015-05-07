@@ -15,7 +15,7 @@
 
     <!--  ListBox Brushes  -->
     <SolidColorBrush x:Key="ListBoxBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
-    <SolidColorBrush x:Key="ListBoxBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="ListBoxBorderBrush" Color="{StaticResource WarewolfLineGrey}" />
     <SolidColorBrush x:Key="ListBoxItemBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
     <SolidColorBrush x:Key="ListBoxItemBorderBrush" Color="{StaticResource WarewolfWhite}" />
     <SolidColorBrush x:Key="ListBoxItemHoverBackgroundBrush" Color="{StaticResource WarewolfWhite}" />

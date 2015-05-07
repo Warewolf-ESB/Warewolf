@@ -108,8 +108,11 @@
         </DataGrid.Columns>
         </DataGrid>
         <TextBlock Width="Auto">
-            <Hyperlink NavigateUri="http://www.google.co.in">Click here</Hyperlink>
+            <Hyperlink IsEnabled="False" NavigateUri="http://www.google.co.in">Click here Disabled</Hyperlink>
        </TextBlock>
+        <TextBlock Width="Auto">
+            <Hyperlink IsEnabled="True" NavigateUri="http://www.google.co.in">Click here Enabled</Hyperlink>
+        </TextBlock>
         <ProgressBar Name="ProgressBar" Height="30" Width="200"  Minimum="0" Maximum="100" Value="0"></ProgressBar>
 
 
