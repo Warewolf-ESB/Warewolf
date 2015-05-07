@@ -4085,7 +4085,7 @@ Examples:
      | TestWFWithDBServiceMailsError | willalwaysErrorMySql | [[name]]     | [[email]]     | YES          |
 
 
-	  #Make the spec passed 688
+@ignore
  Scenario: Executing Asynchrounous testing workflow volume
 	  Given I have a workflow "Testing - Async Test Master Testv"
 	  And "Testing - Async Test Master Test" contains "Volume Async Test" from server "localhost" with mapping as
@@ -4107,7 +4107,7 @@ Examples:
 	  |                      |
 	  | [[Result]] = Pass |
 
- Scenario: Executing Asynchrounous testing workflow error
+Scenario: Executing Asynchrounous testing workflow error
 	  Given I have a workflow "Testing - Async Test Master Teste"
 	  And "Testing - Async Test Master Teste" contains "Async Must Not Bubble Up Error" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
