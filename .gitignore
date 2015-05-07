@@ -239,6 +239,22 @@ vbcs.cache
 /Dev/WarewolfParserInterop/obj
 /Dev/WarewolfParsingTest/bin
 /Dev/WarewolfParsingTest/obj
+/Dev/Warewolf.AcceptanceTesting.DatabaseService/bin
+/Dev/Warewolf.AcceptanceTesting.DatabaseService/obj
+/Dev/Warewolf.AcceptanceTesting.Deploy/bin
+/Dev/Warewolf.AcceptanceTesting.Deploy/obj
+/Dev/Warewolf.AcceptanceTesting.Interactions/bin
+/Dev/Warewolf.AcceptanceTesting.Interactions/obj
+/Dev/Warewolf.AcceptanceTesting.ServerSource/bin
+/Dev/Warewolf.AcceptanceTesting.ServerSource/obj
+/Dev/Warewolf.AcceptanceTesting.Toolbox/bin
+/Dev/Warewolf.AcceptanceTesting.Toolbox/obj
+/Dev/Warewolf.AcceptanceTesting.Variables/bin
+/Dev/Warewolf.AcceptanceTesting.Variables/obj
+/Dev/Warewolf.AcceptanceTesting.WebService/bin
+/Dev/Warewolf.AcceptanceTesting.WebService/obj
+/Dev/Warewolf.AcceptanceTesting.Scheduler/bin
+/Dev/Warewolf.AcceptanceTesting.Scheduler/obj
 
 ####################################################################################
 # These release workflows must be stored in "/Dev/BPM Resources - Release/Resources" ONLY!
