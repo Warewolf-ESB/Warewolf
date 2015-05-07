@@ -455,12 +455,13 @@ namespace Dev2.Tests.Runtime.Hosting
             var expected = new DbSource { ResourceID = resourceID, ResourceName = "TestSource", DatabaseName = "TestNewDb", Server = "TestNewServer", ServerType = enSourceType.MySqlDatabase };
 
             //------------Execute Test---------------------------
-            catalog.SaveResource(workspaceID, new StringBuilder(expected.ToXml().ToString()), null, "reason", "bob");
+            catalog.SaveResource(workspaceID, expected.ToStringBuilder(), null, "reason", "bob");
             expected.ResourceName = "federatedresource";
            
             try
             {
-                catalog.SaveResource(workspaceID, new StringBuilder("<stupid xml>"), null, "reason", "bob");
+                expected.ResourceName = "";
+                catalog.SaveResource(workspaceID, expected.ToStringBuilder(), null, "reason", "bob");
             }
                 // ReSharper disable EmptyGeneralCatchClause
             catch(Exception)
