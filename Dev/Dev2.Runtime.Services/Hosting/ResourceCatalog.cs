@@ -1972,7 +1972,8 @@ namespace Dev2.Runtime.Hosting
         {
             var resourceContents = GetResourceContents(workspaceID, resource.ResourceID);
             var oldPath = resource.ResourcePath;
-            var newPath = Regex.Replace(oldPath,oldCategory, newCategory,RegexOptions.IgnoreCase);
+            var cat = oldCategory.Replace("\\", "\\\\");
+            var newPath = Regex.Replace(oldPath, cat, newCategory, RegexOptions.IgnoreCase);
             resource.ResourcePath = newPath;
             var resourceElement = resourceContents.ToXElement();
             var categoryElement = resourceElement.Element("Category");
