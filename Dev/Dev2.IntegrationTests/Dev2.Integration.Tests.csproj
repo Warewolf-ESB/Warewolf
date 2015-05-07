@@ -238,6 +238,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ServerSettings.resx</DependentUpon>
     </Compile>
+    <Compile Include="Services.Sql\SqlServerTests.cs" />
     <Compile Include="Services.Sql\SqlDatabaseBrokerTests.cs" />
     <Compile Include="Runtime.ServiceModel\EmailSourceTest.cs" />
     <Compile Include="Runtime.ServiceModel\DbSourceTests.cs" />
