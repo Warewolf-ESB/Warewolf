@@ -133,7 +133,7 @@
                             <Rectangle Margin="-3,0" Fill="{StaticResource TransparentBrush}" />
                             <Path x:Name="ExpansionIndicatorCollapsed"
                                   Width="6"
-                                  Margin="0,1,-10,5"
+                                  Margin="0,1,-10,7"
                                   Height="10"
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Top"

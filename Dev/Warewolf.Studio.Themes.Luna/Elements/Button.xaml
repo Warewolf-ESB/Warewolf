@@ -15,6 +15,7 @@
     <SolidColorBrush x:Key="ButtonHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
     <SolidColorBrush x:Key="ButtonPressedBackgroundBrush" Color="{StaticResource WarewolfHeaderButtonGrey}" />
     <SolidColorBrush x:Key="ButtonPressedBorderBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="ButtonPressedTransparentBrush" Color="{StaticResource WarewolfTransparent}" />
 
 
     <SolidColorBrush x:Key="ButtonForeGroundBrush" Color="{StaticResource WarewolfWhite}" />
@@ -384,7 +385,7 @@
         <Setter Property="MinWidth" Value="14" />
         <Setter Property="Padding" Value="0" />
         <Setter Property="Margin" Value="0,0,0,0" />
-        <Setter Property="Background" Value="{StaticResource ButtonBorderBrush}" />
+        <Setter Property="Background" Value="{StaticResource ButtonHoverBackgroundBrush}" />
         <Setter Property="Foreground" Value="{StaticResource ButtonBackgroundBrush}" />
 
         <Setter Property="Template">
@@ -407,7 +408,7 @@
                                 <VisualState x:Name="Pressed">
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Bd" Storyboard.TargetProperty="Fill">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ButtonPressedBackgroundBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ButtonPressedTransparentBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>

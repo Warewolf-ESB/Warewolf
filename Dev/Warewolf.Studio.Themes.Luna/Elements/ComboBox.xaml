@@ -401,8 +401,8 @@
                         HorizontalAlignment="Stretch"
                         Background="{StaticResource PopupBackgroundBrush}"
                         BorderBrush="{StaticResource PopupBorderBrush}"
-                        BorderThickness="1"
-                        CornerRadius="2">
+                        BorderThickness="0,1,0,1"
+                        CornerRadius="0">
                     <ScrollViewer x:Name="DropDownScrollViewer" Style="{StaticResource ScrollViewerStyle}">
                         <Grid RenderOptions.ClearTypeHint="Enabled">
                             <Canvas Width="0"
@@ -469,7 +469,7 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Background" Value="{StaticResource TextBoxBackgroundBrush}" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
-        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderThickness" Value="0,1,0,1" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBoxItem">
@@ -478,8 +478,6 @@
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Normal" >
                                     <Storyboard>
-
-
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="contentControl" Storyboard.TargetProperty="Foreground">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TextBoxForegroundBrush}">
 
@@ -581,14 +579,12 @@
                         <Rectangle x:Name="CheckedBd"
                                    Fill="{StaticResource ComboBoxItemPressedBackgroundBrush}"
                                    IsHitTestVisible="False"
-                                   
                                    Stroke="{StaticResource ComboBoxItemPressedBorderBrush}"
                                    StrokeThickness="{TemplateBinding BorderThickness}"
                                    Visibility="Collapsed" />
                         <ContentControl x:Name="contentControl"
                                         KeyboardNavigation.IsTabStop="False"
                                         Margin="{TemplateBinding Padding}"
-                                        
                                         HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                         VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                        >
@@ -724,19 +720,17 @@
                                Margin="1"
                                KeyboardNavigation.IsTabStop="False"
                                AllowsTransparency="true"
-                               IsOpen="{Binding IsDropDownOpen,
-                                                RelativeSource={RelativeSource TemplatedParent}}"
+                               IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
                                Placement="Bottom"
                                PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
                             <Border x:Name="DropDownBorder"
-                                    MinWidth="{Binding ActualWidth,
-                                                       ElementName=MainGrid}"
+                                    MinWidth="{Binding ActualWidth, ElementName=MainGrid}"
                                     MaxHeight="{TemplateBinding MaxDropDownHeight}"
                                     HorizontalAlignment="Stretch"
                                     Background="{StaticResource PopupBackgroundBrush}"
                                     BorderBrush="{StaticResource PopupBorderBrush}"
-                                    BorderThickness="1"
-                                    CornerRadius="2">
+                                    BorderThickness="1,0,1,1"
+                                    CornerRadius="0">
                                 <ScrollViewer KeyboardNavigation.IsTabStop="False" x:Name="DropDownScrollViewer" Style="{StaticResource ScrollViewerStyle}">
                                     <Grid RenderOptions.ClearTypeHint="Enabled">
                                         <Canvas Width="0"
@@ -798,17 +792,17 @@
                         <Rectangle x:Name="normal"
                                    Grid.ColumnSpan="2"
                                    Stroke="{StaticResource ComboBoxBorderBrush}"
-                                   StrokeThickness="2"
+                                   StrokeThickness="1"
                                    Visibility="Visible" />
                         <Rectangle x:Name="hover"
                                    Grid.ColumnSpan="2"
                                    Stroke="{StaticResource WareWolfOrangeBrush}"
-                                   StrokeThickness="2"
+                                   StrokeThickness="1"
                                    Visibility="Collapsed" />
                         <Rectangle x:Name="focused"
                                    Grid.ColumnSpan="2"
                                    Stroke="{StaticResource ComboBoxFocusedBorderBrush}"
-                                   StrokeThickness="2"
+                                   StrokeThickness="1"
                                    Visibility="Collapsed" />
                         <Rectangle x:Name="disabled"
                                    Grid.ColumnSpan="2"

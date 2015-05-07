@@ -209,7 +209,6 @@
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 Opacity="1">
                             <Grid>                               
-                                
                                 <Border x:Name="ReadOnlyVisualElement"
                                         Background="{StaticResource TextBoxReadOnlyBackgroundBrush}"
                                         Opacity="0" />
@@ -218,8 +217,6 @@
                                               IsTabStop="False"
                                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                               Padding="{TemplateBinding Padding}" />
-
-
                             </Grid>
                         </Border>
                         <Border x:Name="DisabledVisualElement"
@@ -256,8 +253,6 @@
                                 <Path Margin="1,3,0,0"
                                       Data="M 0,0 L2,0 L 8,6 L8,8"
                                       Fill="{StaticResource LightForegroundBrush}" />
-
-
                             </Grid>
                         </Border>
                     </Grid>
@@ -282,7 +277,7 @@
 
     <!--  *********************************  TextBox Style  *********************************  -->
     <Style x:Key="SearchTextboxStyle" TargetType="{x:Type customControls:SearchTextBox}">
-        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
@@ -397,7 +392,6 @@
                                 Grid.ColumnSpan="2"
                                 >
                             <Grid>                              
-
                                 <Border x:Name="ReadOnlyVisualElement"
                                         Background="{StaticResource TextBoxReadOnlyBackgroundBrush}"
                                         Opacity="0" />
@@ -407,14 +401,12 @@
                                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                               Padding="{TemplateBinding Padding}" />
                                 <Label x:Name="LabelText"
-                     Margin="2,4,2,2"
-                     Grid.Column="0"
-                     Foreground="{StaticResource SearchBoxWatermarkTextForeground}"
-                     Content="{Binding RelativeSource={RelativeSource TemplatedParent},
-                                       Path=LabelText}"
-                     Padding="2,0,0,0"
-                     FontStyle="Italic" />
-
+                                       Margin="2,4,2,2"
+                                       Grid.Column="0"
+                                       Foreground="{StaticResource SearchBoxWatermarkTextForeground}"
+                                       Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=LabelText}"
+                                       Padding="2,0,0,0"
+                                       FontStyle="Italic" />
                             </Grid>
                         </Border>
                         <Border x:Name="DisabledVisualElement"  Grid.Column="0" Grid.ColumnSpan="2"
@@ -451,24 +443,28 @@
                                 <Path Margin="1,3,0,0"
                                       Data="M 0,0 L2,0 L 8,6 L8,8"
                                       Fill="{StaticResource LightForegroundBrush}" />
-
                             </Grid>
                         </Border>
                         <Border x:Name="PART_SearchIconBorder"
-                      Grid.Column="1"
-                      VerticalAlignment="Stretch"
-                      HorizontalAlignment="Stretch" Margin="0,0,0,0" Padding="0,1,0,0"
-                      >
+                                Grid.Column="1"
+                                VerticalAlignment="Stretch"
+                                HorizontalAlignment="Stretch" 
+                                Margin="0,0,0,0" 
+                                Padding="0,1,0,0">
                             <Grid>
-
-                                <fa:ImageAwesome Foreground="{StaticResource SearchBoxButtonForegroundEmpty }" x:Name="ClearSearchDisabled" Visibility="Visible"  Icon="Times" Width="10" Height="10"  HorizontalAlignment="Left"/>
+                                <fa:ImageAwesome Foreground="{StaticResource SearchBoxButtonForegroundEmpty }" 
+                                                 x:Name="ClearSearchDisabled" 
+                                                 Visibility="Visible" 
+                                                 Icon="Times" 
+                                                 Width="10" 
+                                                 Height="10" 
+                                                 HorizontalAlignment="Left"/>
                                 <Button Command="{Binding RelativeSource={RelativeSource TemplatedParent},
                                        Path=ClearSearchCommand}"
-                                    x:Name="ClearSearchButton"
-                                    HorizontalContentAlignment="Left"
-                                    HorizontalAlignment="Left" 
-                                    Visibility="Hidden"
-                                    >
+                                        x:Name="ClearSearchButton"
+                                        HorizontalContentAlignment="Left"
+                                        HorizontalAlignment="Left" 
+                                        Visibility="Hidden">
                                 <Button.Template>
                                     <ControlTemplate TargetType="{x:Type Button}">
                                         <Grid>
@@ -487,9 +483,7 @@
                                             <Trigger Property="IsMouseOver" Value="True">
                                                 <Setter  TargetName="ClearSearch" Property="Foreground" Value="{StaticResource ClearSearchButtonHoverBorderBrush}"/>
                                                     <Setter  TargetName="ClearSearch" Property="Foreground" Value="{StaticResource ClearSearchButtonHoverBorderBrush}"/>
-
                                                 </Trigger>
-                                            
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>
                                 </Button.Template>
@@ -507,10 +501,8 @@
                             <Setter Property="Visibility" TargetName="ClearSearchDisabled" Value="Hidden" />
                             <Setter Property="Visibility" TargetName="ClearSearchButton" Value="Visible" />
                         </Trigger>
-                        
                         <Trigger Property="IsFocused" Value="True">
                             <Setter Property="Visibility" TargetName="LabelText" Value="Hidden" />
-             
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
