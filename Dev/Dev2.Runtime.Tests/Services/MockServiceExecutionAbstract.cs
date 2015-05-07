@@ -23,7 +23,7 @@ namespace Dev2.Services.Execution
     {
 
         public bool DidExecuteServiceInvoke { get; private set; }
-
+        public string ReturnFromExecute { get; set; }
         public MockServiceExecutionAbstract(IDSFDataObject dataObj, bool handlesOutputFormatting = false)
             : base(dataObj, handlesOutputFormatting, false)
         {
@@ -43,7 +43,7 @@ namespace Dev2.Services.Execution
         {
             errors = new ErrorResultTO();
             DidExecuteServiceInvoke = true;
-            return null;
+            return ReturnFromExecute;
         }
 
         #endregion
@@ -55,7 +55,11 @@ namespace Dev2.Services.Execution
             CreateService(catalog);
         }
 
-        public void MockExecuteImpl(IDataListCompiler compiler, out DataList.Contract.ErrorResultTO errors)
+        #region Overrides of ServiceExecutionAbstract<TService,TSource>
+
+        #endregion
+
+        public void MockExecuteImpl(IDataListCompiler compiler, out ErrorResultTO errors)
         {
             ExecuteImpl(compiler, out errors);
         }
