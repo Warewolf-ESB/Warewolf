@@ -440,6 +440,39 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ResourceCatalog_SaveResource")]
+        public void SaveResource_Expects_A_RollbackOnError()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var version = new Mock<IServerVersionRepository>();
+            var catalog = new ResourceCatalog(null, version.Object);
+
+            var expected = new DbSource { ResourceID = Guid.NewGuid(), ResourceName = "TestSource", DatabaseName = "TestNewDb", Server = "TestNewServer", ServerType = enSourceType.MySqlDatabase };
+
+            //------------Execute Test---------------------------
+            catalog.SaveResource(workspaceID, new StringBuilder(expected.ToXml().ToString()), null, "reason", "bob");
+            expected.ResourceName = "federatedresource";
+            PrivateType p = new PrivateType(typeof(ResourceCatalog));
+            p.SetStaticField("_parsers", null); // force an error
+            try
+            {
+
+                catalog.SaveResource(workspaceID, new StringBuilder(expected.ToXml().ToString()), null, "reason", "bob");
+            }
+                // ReSharper disable EmptyGeneralCatchClause
+            catch(Exception)
+                // ReSharper restore EmptyGeneralCatchClause
+            { }
+
+            var res = catalog.GetResourceContents(workspaceID, expected.ResourceID).ToString();
+            Assert.IsFalse(res.Contains("federatedresource"));
+
+        }
+
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ResourceCatalog_SaveResource")]
         public void SaveResource_WithNoResourcePath_ServerWorkspace_ExpectedResourceSavedEventFired()

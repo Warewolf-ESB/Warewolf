@@ -63,7 +63,7 @@ namespace Dev2.Runtime.ESB.WF
                 }
                 var debugState = new DebugState
                 {
-                    ID = dataObject.DataListID,
+                    ID = dataObject.OriginalInstanceID,
                     ParentID = parentInstanceId,
                     WorkspaceID = dataObject.WorkspaceID,
                     StateType = stateType,

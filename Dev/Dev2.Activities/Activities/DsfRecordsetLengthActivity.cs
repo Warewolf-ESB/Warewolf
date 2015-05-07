@@ -131,7 +131,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     catch(Exception e)
                     {
-                        AddDebugInputItem(new DebugItemStaticDataParams("", RecordsetName, "Recordset", "="));
+                        //AddDebugInputItem(new DebugItemStaticDataParams("", RecordsetName, "Recordset", "="));
                         allErrors.AddError(e.Message);
                         dataObject.Environment.Assign(RecordsLength, "0");
                         AddDebugOutputItem(new DebugItemStaticDataParams("0", RecordsLength, "", "="));
