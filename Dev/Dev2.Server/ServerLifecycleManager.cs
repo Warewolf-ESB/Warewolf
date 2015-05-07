@@ -312,7 +312,14 @@ namespace Dev2
             {
                 File.WriteAllText(settingsConfigFile, GlobalConstants.DefaultServerLogFileConfig);
             }
-            XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
+            try
+            {
+                XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+            }
             InitializeCommandLineArguments();
         }
 
