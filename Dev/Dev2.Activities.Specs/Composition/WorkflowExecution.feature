@@ -3037,7 +3037,7 @@ Scenario: Workflow with Assign Unique Tool and testing variables in Returnfield 
        | [[rec(*).unique]] = |
       
       
-Scenario: Executing Utility - Format Number example workflow
+Scenario: Example Executing Utility - Format Number example workflow
 	  Given I have a workflow "Utility - Format Number Test"
 	  And "Utility - Format Number Test" contains "Utility - Format Number" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
@@ -3057,7 +3057,7 @@ Scenario: Executing Utility - Format Number example workflow
 	  | [[PriceInK]] = 14 |
 
  
-Scenario: Executing Utility - Random example workflow
+Scenario: Example Executing Utility - Random example workflow
 	  Given I have a workflow "Utility - Random Test"
 	  And "Utility - Random Test" contains "Utility - Random" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
@@ -3083,15 +3083,15 @@ Scenario: Executing Utility - Random example workflow
 	  | [[License]] = String |
 
 
-Scenario: Executing Utility - Date and Time example workflow
+Scenario: Example Executing Utility - Date and Time example workflow
 	  Given I have a workflow "Utility - Date and Time Test"
 	  And "Utility - Date and Time Test" contains "Utility - Date and Time" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
 	  When "Utility - Date and Time Test" is executed
 	  Then the workflow execution has "NO" error
 	  And the 'Date and Time(1)' in WorkFlow 'Utility - Date and Time' debug inputs as
-	  | Input            | =        | Input Format            | =                      | Add Time |    | Output Format           | =                      |
-	  | System Date Time | DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       | "" | System Date Time Format | yyyy/MM/dd hh:mm:ss tt |
+	  | Input            | =        | Input Format            | =                   | Add Time |    | Output Format           | =                   |
+	  | System Date Time | DateTime | System Date Time Format | M/d/yyyy h:mm:ss tt | ""       | "" | System Date Time Format | M/d/yyyy h:mm:ss tt |
 	  And the 'Date and Time(1)' in Workflow 'Utility - Date and Time' debug outputs as    
 	  |                       |
 	  | [[nowish]] = DateTime |   
@@ -3117,7 +3117,7 @@ Scenario: Executing Utility - Date and Time example workflow
 	  | Input            | =        | Input Format            | =                      | Add Time |    | Output Format                                 |
 	  | System Date Time | DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       | "" | 'Date format yyyy MM dd yields : ' yyyy MM dd |
 
-Scenario: Executing Utility - Gather System Information example workflow
+Scenario: Example Executing Utility - Gather System Information example workflow
 	  Given I have a workflow "Utility - System Information Test"
 	  And "Utility - System Information Test" contains "Utility - System Information" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
@@ -3163,7 +3163,7 @@ Scenario: Executing Utility - Gather System Information example workflow
 	   | 17 | [[Agents]]        =    String |
 
 
-Scenario: Executing Utility - Web Request example workflow
+Scenario: Example Executing Utility - Web Request example workflow
 	  Given I have a workflow "Utility - Web Request Test"
 	  And "Utility - Web Request Test" contains "Utility - Web Request" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
@@ -3182,25 +3182,24 @@ Scenario: Executing Utility - Web Request example workflow
 	  |                             |
 	  | [[GecodedAddress]] = String |
 
-Scenario: Executing Utility - Assign example workflows
-	  Given I have a workflow "Utility - Assign Test"
-	  And "Utility - Assign Test" contains "Utility - Assign" from server "localhost" with mapping as
+Scenario: Example Executing Utility - Assign example workflows
+	  Given I have a workflow "Test Example Utility - Assign"
+	  And "Test Example Utility - Assign" contains "Utility - Assign" from server "localhost" with mapping as
 	 | Input to Service | From Variable | Output from Service | To Variable        |
-	 |                  |               | [[rec(*).set]]      | [[rec().set]]      |
-	 |                  |               | [[hero(*).pushups]] | [[hero().pushups]] |
-	 |                  |               | [[hero(*).name]]    | [[hero().name]]    |
-	  When "Utility - Assign Test" is executed
+	 |                  |               | rec(*).set      | [[rec().set]]      |
+	 |                  |               | hero(*).pushups | [[hero().pushups]] |
+	 |                  |               | hero(*).name    | [[hero().name]]    |
+	  When "Test Example Utility - Assign" is executed
 	  Then the workflow execution has "NO" error
-	  And the 'Utility - Assign' in Workflow 'Utility - Assign Test' debug outputs as    
-	  |                                                                   |
-	  | [[rec(1).set]] =    Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
-	  | [[hero(1).pushups]] = All of them.                                |
-	  | [[hero(1).name]] =   Chuck Norris                                 |
-
+	  And the 'Utility - Assign' in Workflow 'Test Example Utility - Assign' debug outputs as    
+	  |                                                                |
+	  | [[rec(1).set]] = Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
+	  | [[hero(1).pushups]] = All of them.                             |
+	  | [[hero(1).name]] = Chuck Norris                                |
 
 	
 
-Scenario: Executing Data - Base Conversion example workflow
+Scenario: Example Executing Data - Base Conversion example workflow
 	  Given I have a workflow "Data - Base Conversion Test"
 	  And "Data - Base Conversion Test" contains "Data - Base Conversion" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
@@ -3212,8 +3211,9 @@ Scenario: Executing Data - Base Conversion example workflow
 	  And the 'Base Conversion (1)' in Workflow 'Data - Base Conversion' debug outputs as    
 	   | # |                          |
 	   | 1 | [[Blob]] = I was mangled |
-	 
-Scenario: Executing Data - Case Conversion example workflow
+
+
+Scenario: Example Executing Data - Case Conversion example workflow
 	  Given I have a workflow "Data - Case Conversion Test"
 	  And "Data - Case Conversion Test" contains "Data - Case Conversion" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
@@ -3269,7 +3269,7 @@ Scenario: Executing Data - Case Conversion example workflow
 	   | 1 | [[sometext]] = 1mixed Up 5om3 |
 
 
-Scenario: Executing Data - Data Merge example workflow
+Scenario: Example Executing Data - Data Merge example workflow
 	  Given I have a workflow "Data - Data Merge Test"
 	  And "Data - Data Merge Test" contains "Data - Data Merge" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -3280,10 +3280,10 @@ Scenario: Executing Data - Data Merge example workflow
 	    |                                                                |
 	    | [[FileContent]] = String |
 	   
-Scenario: Executing Data - Find Index example workflow
+Scenario: Example Executing Data - Find Index example workflow
 	  Given I have a workflow "Utility - Find Index Test"
 	  And "Utility - Find Index Test" contains "Utility - Find Index" from server "localhost" with mapping as
-
+	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  When "Utility - Find Index Test" is executed
 	  Then the workflow execution has "NO" error
 	  And the 'Find Index1' in WorkFlow 'Utility - Find Index' debug inputs as
@@ -3299,7 +3299,7 @@ Scenario: Executing Data - Find Index example workflow
 	  |                            |
 	  | [[WhereAreTheBs]] = 2,4,11 |
 
-Scenario: Excuting File and Folder - Copy
+Scenario: Example Excuting File and Folder - Copy
 	  Given I have a workflow "File and Folder - Copy Test"
 	  And "File and Folder - Copy Test" contains "File and Folder - Copy" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -3309,7 +3309,7 @@ Scenario: Excuting File and Folder - Copy
 	  |                  |
 	  | [[Complete]] = Success |
 
-Scenario: Excuting File and Folder - Create
+Scenario: Example Excuting File and Folder - Create
 	  Given I have a workflow "File and Folder - Create Test"
 	  And "File and Folder - Create Test" contains "File and Folder - Create" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -3319,7 +3319,7 @@ Scenario: Excuting File and Folder - Create
 	  |                        |
 	  | [[Complete]] = Success |
 
-Scenario: Excuting File and Folder - Delete
+Scenario: Example Excuting File and Folder - Delete
 	  Given I have a workflow "File and Folder - Delete Test"
 	  And "File and Folder - Delete Test" contains "File and Folder - Delete" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -3329,7 +3329,7 @@ Scenario: Excuting File and Folder - Delete
 	  |                        |
 	  | [[Complete]] = Success |
 
-Scenario: Excuting File and Folder - Move
+Scenario: Example Excuting File and Folder - Move
 	  Given I have a workflow "File and Folder - Move Test"
 	  And "File and Folder - Move Test" contains "File and Folder - Move" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -3339,7 +3339,7 @@ Scenario: Excuting File and Folder - Move
 	  |                        |
 	  | [[Complete]] = Success |
 
-Scenario: Excuting File and Folder - Read File
+Scenario:Example Excuting File and Folder - Read File
 	  Given I have a workflow "File and Folder - Read File Test"
 	  And "File and Folder - Read File Test" contains "File and Folder - Read File" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -3349,7 +3349,7 @@ Scenario: Excuting File and Folder - Read File
 	  |                                         |
 	  | [[Logs]] = the contents of the log file |
 
-Scenario: Excuting File and Folder - Read Folder
+Scenario: Example Excuting File and Folder - Read Folder
 	  Given I have a workflow "File and Folder - Read Folder Test"
 	  And "File and Folder - Read Folder Test" contains "File and Folder - Read Folder" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -3365,7 +3365,7 @@ Scenario: Excuting File and Folder - Read Folder
 	  |                                                                           |
 	  | [[server(1).userfolders]] = c:\temp\WarewolfExamples\ReadFolder\sub\inner |
 
-Scenario: Excuting File and Folder - Rename
+Scenario: Example Excuting File and Folder - Rename
 	  Given I have a workflow "File and Folder - Rename Test"
 	  And "File and Folder - Rename Test" contains "File and Folder - Rename" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -3375,7 +3375,7 @@ Scenario: Excuting File and Folder - Rename
 	  |                        |
 	  | [[Complete]] = Success |
 
-Scenario: Excuting File and Folder - Unzip
+Scenario: Example Excuting File and Folder - Unzip
 	  Given I have a workflow "File and Folder - Unzip Test"
 	  And "File and Folder - Unzip Test" contains "File and Folder - Unzip" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -3385,7 +3385,7 @@ Scenario: Excuting File and Folder - Unzip
 	  |                        |
 	  | [[Complete]] = Success |
 
-Scenario: Excuting File and Folder - Write File
+Scenario: Example Excuting File and Folder - Write File
 	  Given I have a workflow "File and Folder - Write File Test"
 	  And "File and Folder - Write File Test" contains "File and Folder - Write File" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -3395,7 +3395,7 @@ Scenario: Excuting File and Folder - Write File
 	  |                        |
 	  | [[Complete]] = Success |
 
-Scenario: Excuting File and Folder - Zip
+Scenario: Example Excuting File and Folder - Zip
 	  Given I have a workflow "File and Folder - Zip Test"
 	  And "File and Folder - Zip Test" contains "File and Folder - Zip" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -3405,7 +3405,7 @@ Scenario: Excuting File and Folder - Zip
 	  |                        |
 	  | [[Complete]] = Success |
 
-Scenario: Executing Utility - Replace example workflow
+Scenario: Example Executing Utility - Replace example workflow
 	  Given I have a workflow "Utility - Replace Test"
 	  And "Utility - Replace Test" contains "Utility - Replace" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -3426,7 +3426,7 @@ Scenario: Executing Utility - Replace example workflow
 	  | [[rec(2).mobileNumber]] = +1985623145 |
 	  | [[recount]] = 3                       |
 
-Scenario: Executing Recordset - Count Records example workflow
+Scenario: Example Executing Recordset - Count Records example workflow
 	  Given I have a workflow "Recordset - Count Records Test"
 	  And "Recordset - Count Records Test" contains "Recordset - Count Records" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -3441,7 +3441,7 @@ Scenario: Executing Recordset - Count Records example workflow
 	  |               |
 	  | [[count]] = 3 |
 
-Scenario: Executing Recordset - Records Length example workflow
+Scenario: Example Executing Recordset - Records Length example workflow
 	  Given I have a workflow "Recordset - Records Length Test"
 	  And "Recordset - Records Length Test" contains "Recordset - Records Length" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -3461,7 +3461,7 @@ Scenario: Executing Recordset - Records Length example workflow
 	  |                |
 	  | [[length]] = 5 |
 
-Scenario: Executing Recordset - Delete Records example workflow
+Scenario: Example Executing Recordset - Delete Records example workflow
 	  Given I have a workflow "Recordset - Delete Records Test"
 	  And "Recordset - Delete Records Test" contains "Recordset - Delete Records" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -3481,17 +3481,17 @@ Scenario: Executing Recordset - Delete Records example workflow
 	  |                      |
 	  | [[result]] = Success |
 
-Scenario: Executing Recordset - Find Records example workflow
+Scenario: Example Executing Recordset - Find Records example workflow
 	  Given I have a workflow "Recordset - Find Records Test"
 	  And "Recordset - Find Records Test" contains "Recordset - Find Records" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  When "Recordset - Find Records Test" is executed
 	  Then the workflow execution has "NO" error
 	  And the 'Find Record Index (2)' in Workflow 'Recordset - Find Records' debug outputs as  
-	  |                  |
-	  | [[Results]] = -1 |
+	  |                   |
+	  | [[Results]] = 6,8 |
 	  
-Scenario: Executing Recordset - Sort Records example workflow
+Scenario:Example Executing Recordset - Sort Records example workflow
 	  Given I have a workflow "Recordset - Sort Records Test"
 	  And "Recordset - Sort Records Test" contains "Recordset - Sort Records" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -3546,7 +3546,7 @@ Scenario: Executing Recordset - Sort Records example workflow
 	  | [[rec(9).set]] = y |
 	  | [[rec(10).set]] =z |
 
-Scenario: Executing Recordset - Unique Records example workflow
+Scenario: Example Executing Recordset - Unique Records example workflow
 	  Given I have a workflow "Recordset - Unique Records Test"
 	  And "Recordset - Unique Records Test" contains "Recordset - Unique Records" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -3569,7 +3569,7 @@ Scenario: Executing Recordset - Unique Records example workflow
 	   |   | [[Result(2).example2]] = 2 |
 	   |   | [[Result(3).example2]] = 4 |
      
-Scenario: Executing Loop Constructs - For Each example workflow
+Scenario: Example Executing Loop Constructs - For Each example workflow
 	  Given I have a workflow "Loop Constructs - For Each Test"
 	  And "Loop Constructs - For Each Test" contains "Loop Constructs - For Each" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -3610,7 +3610,7 @@ Scenario: Executing Loop Constructs - For Each example workflow
         |                         |
         | [[rec(5).set]] = String |
 
-Scenario: Executing Control Flow - Sequence example workflow
+Scenario: Example Executing Control Flow - Sequence example workflow
 	  Given I have a workflow "Control Flow - Sequence Test"
 	  And "Control Flow - Sequence Test" contains "Control Flow - Sequence" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -3648,14 +3648,14 @@ Scenario: Executing Control Flow - Sequence example workflow
 	   | [[Customers(4).FirstName]] = maggie |
 	   | [[Customers(5).FirstName]] = marge  |
 
-Scenario: Executing Control Flow - Decision example workflow
+Scenario: Example Executing Control Flow - Decision example workflow
 	  Given I have a workflow "Control Flow - Decision Test"
 	  And "Control Flow - Decision Test" contains "Control Flow - Decision" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  When "Control Flow - Decision Test" is executed
 	  Then the workflow execution has "NO" error
 
-Scenario: Executing Control Flow - Switch example workflow
+Scenario: Example Executing Control Flow - Switch example workflow
 	  Given I have a workflow "Control Flow - Switch Test"
 	  And "Control Flow - Switch Test" contains "Control Flow - Switch" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -3664,7 +3664,7 @@ Scenario: Executing Control Flow - Switch example workflow
 
 
 
-Scenario: Executing Scripting - Script example workflow
+Scenario: Example Executing Scripting - Script example workflow
   Given I have a workflow "Scripting - Script Test"
   And "Scripting - Script Test" contains "Scripting - Script" from server "localhost" with mapping as
   | Input to Service | From Variable | Output from Service | To Variable     |
