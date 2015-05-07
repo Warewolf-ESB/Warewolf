@@ -850,8 +850,8 @@ Scenario: Simple workflow with Assign and Data Merge (Evaluating variables insid
 	  | 4 | [[rec(1).a]] = test    |
 	 And the 'Datamerge' in WorkFlow 'WorkflowWithAssignandData' debug inputs as
 	  | # |                        | With  | Using | Pad | Align |
-	  | 1 | [[[[a]]]] = warewolf   | Index | "8"   | ""  | Left  |
-	  | 2 | [[[[rs(1).a]]]] = test | Index | "4"   | ""  | Left  |
+	  | 1 | [[b]] = warewolf   | Index | "8"   | ""  | Left  |
+	  | 2 | [[rec(1).a]] = test | Index | "4"   | ""  | Left  |
 	  And the 'Datamerge' in Workflow 'WorkflowWithAssignandData' debug outputs as  
 	  | # |                           |
 	  | 1 | [[result]] = warewolftest |
