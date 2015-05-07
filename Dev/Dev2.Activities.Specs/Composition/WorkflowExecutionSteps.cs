@@ -1359,7 +1359,7 @@ namespace Dev2.Activities.Specs.Composition
                 !allowedLogLevels.Contains(logLevel = logLevel.ToUpper()))
                 return;
 
-            var loggingSettingsTo = new LoggingSettingsTo() { LogLevel = logLevel };
+            var loggingSettingsTo = new LoggingSettingsTo() { LogLevel = logLevel, LogSize = 200};
             var controller = (new CommunicationControllerFactory()).CreateController("LoggingSettingsWriteService");
             var serializer = new Dev2JsonSerializer();
             controller.AddPayloadArgument("LoggingSettings", serializer.SerializeToBuilder(loggingSettingsTo).ToString());
@@ -1380,8 +1380,8 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"the delta between ""(.*)"" and ""(.*)"" is less than ""(.*)"" milliseconds")]
         public void ThenTheDeltaBetweenAndIsLessThanMilliseconds(string executionLabelFirst, string executionLabelSecond, int maxDeltaMilliseconds)
         {
-            int e1 = (int)ScenarioContext.Current[executionLabelFirst],
-                e2 = (int)ScenarioContext.Current[executionLabelSecond],
+            int e1 = Convert.ToInt32(ScenarioContext.Current[executionLabelFirst]),
+                e2 = Convert.ToInt32(ScenarioContext.Current[executionLabelSecond]),
                 d = maxDeltaMilliseconds;
             d.Should().BeGreaterThan(Math.Abs(e1 - e2), string.Format("async logging should not add more than {0} milliseconds to the execution", d));
         }
