@@ -229,7 +229,6 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server Test\ComplexWebpageTest.cs" />
-    <Compile Include="Runtime.ServiceModel\DbServiceTests.cs" />
     <Compile Include="Runtime.ServiceModel\PluginSourceTests.cs" />
     <Compile Include="Runtime.ServiceModel\TestDbServices.cs" />
     <Compile Include="Runtime.ServiceModel\TestDbSources.cs" />
