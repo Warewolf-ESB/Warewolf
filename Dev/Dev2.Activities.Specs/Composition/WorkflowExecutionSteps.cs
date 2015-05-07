@@ -49,7 +49,6 @@ using Dev2.Threading;
 using Dev2.TO;
 using Dev2.Util;
 using Dev2.Utilities;
-using Dev2.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
