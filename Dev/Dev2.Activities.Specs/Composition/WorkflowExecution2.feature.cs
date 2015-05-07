@@ -15148,7 +15148,8 @@ this.FeatureBackground();
 #line 4163
   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 4164
-  testRunner.And("the delta between \"first time\" and \"second time\" is less than \"500\" milliseconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the delta between \"first time\" and \"second time\" is less than \"1200\" milliseconds" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

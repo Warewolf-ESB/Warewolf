@@ -236,7 +236,6 @@
       </SubType>
     </Compile>
     <Compile Include="Internal Services\GetComputerNamesTests.cs" />
-    <Compile Include="Internal Services\RenameResourceServiceTests.cs" />
     <Compile Include="Server Test\Build.Test\ApplicationServerBuildTests.cs" />
     <Compile Include="Server Test\InternalServices\FindDependenciesServiceTest.cs" />
     <Compile Include="Server Test\InternalServices\FindDirectoryServiceTest.cs" />
