@@ -1247,7 +1247,7 @@ this.FeatureBackground();
                         "Include",
                         "Escape"});
             table75.AddRow(new string[] {
-                        "[[result]][[split().a]] =",
+                        "[[result]][[split().a]] = TestWarewolfWorkflow",
                         "Forward",
                         "No",
                         "1",
@@ -14891,12 +14891,12 @@ this.FeatureBackground();
             table816.AddRow(new string[] {
                         "Prefix",
                         "afg",
-                        "countries(*).countryid",
+                        "[[countries(*).countryid]]",
                         string.Format("{0}", nameVariable)});
             table816.AddRow(new string[] {
                         "",
                         "",
-                        "countries(*).description",
+                        "[[countries(*).description]]",
                         string.Format("{0}", emailVariable)});
 #line 4062
   testRunner.And(string.Format("\"{0}\" contains a \"database\" service \"{1}\" with mappings", workflowName, serviceName), ((string)(null)), table816, "And ");
@@ -14921,15 +14921,15 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database SqlDB Database service inputs and outputs")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestSqlWFWithDBServiceMails10")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestSqlWFWithDBServiceMails10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestSqlWFWithDBServiceMailsCountries")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestSqlWFWithDBServiceMailsCountries")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "GetCountriesSqlServer")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[countries(*).id]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[countries(*).description]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void DatabaseSqlDBDatabaseServiceInputsAndOutputs_TestSqlWFWithDBServiceMails10()
+        public virtual void DatabaseSqlDBDatabaseServiceInputsAndOutputs_TestSqlWFWithDBServiceMailsCountries()
         {
-            this.DatabaseSqlDBDatabaseServiceInputsAndOutputs("TestSqlWFWithDBServiceMails10", "GetCountriesSqlServer", "[[countries(*).id]]", "[[countries(*).description]]", "NO", ((string[])(null)));
+            this.DatabaseSqlDBDatabaseServiceInputsAndOutputs("TestSqlWFWithDBServiceMailsCountries", "GetCountriesSqlServer", "[[countries(*).id]]", "[[countries(*).description]]", "NO", ((string[])(null)));
         }
         
         public virtual void DatabaseSqlDBServiceDBErrors(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
