@@ -3066,7 +3066,7 @@ Scenario: Workflow by using For Each with workflow in it
 	  | [[rec().a]] | 1     |
 	  | [[rec().a]] | 2     |
 	  And "WFWithForEachInrecordsetTesting" contains a Foreach "FEach" as "in recordset" executions "[[rec(*)]]"
-	  And "ForEachTest123" contains "SavedWFwithRandom Test" from server "localhost" with mapings as
+	  And "ForEachTest123" contains "SavedWFwithRandom Test" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  When "WFWithForEachInrecordsetTesting" is executed
 	  Then the workflow execution has "NO" error
@@ -3104,7 +3104,7 @@ Scenario: Workflow by using For Each with workflow
 	  | [[rec().a]] | 1     |
 	  | [[rec().a]] | 2     |
 	  And "WFWithForEachInrecordsetUtilityRandomTesting" contains a Foreach "FEach" as "in recordset" executions "[[rec(*)]]"
-	  And "ForEachTest123" contains "Utility - Random Test" from server "localhost" with mapings as
+	  And "ForEachTest123" contains "Utility - Random Test" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  When "WFWithForEachInrecordsetUtilityRandomTesting" is executed
 	  Then the workflow execution has "NO" error

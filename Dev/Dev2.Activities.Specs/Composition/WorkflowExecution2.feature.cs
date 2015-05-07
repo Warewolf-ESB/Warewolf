@@ -8124,7 +8124,7 @@ this.FeatureBackground();
                         "To Variable"});
 #line 3069
    testRunner.And("\"ForEachTest123\" contains \"SavedWFwithRandom Test\" from server \"localhost\" with m" +
-                    "apings as", ((string)(null)), table439, "And ");
+                    "apping as", ((string)(null)), table439, "And ");
 #line 3071
    testRunner.When("\"WFWithForEachInrecordsetTesting\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 3072
@@ -8248,7 +8248,7 @@ this.FeatureBackground();
                         "To Variable"});
 #line 3107
    testRunner.And("\"ForEachTest123\" contains \"Utility - Random Test\" from server \"localhost\" with ma" +
-                    "pings as", ((string)(null)), table448, "And ");
+                    "pping as", ((string)(null)), table448, "And ");
 #line 3109
    testRunner.When("\"WFWithForEachInrecordsetUtilityRandomTesting\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 3110
