@@ -878,7 +878,7 @@ namespace Dev2.Runtime.Hosting
         void RemoveFromResourceActivityCache(Guid workspaceID, IResource resource)
         {
             IResourceActivityCache parser;
-            if (_parsers.TryGetValue(workspaceID,out parser))
+            if (_parsers != null && _parsers.TryGetValue(workspaceID,out parser))
             {
                 parser.RemoveFromCache(resource.ResourceID);
             }            
@@ -1260,95 +1260,95 @@ namespace Dev2.Runtime.Hosting
                 try
                 {
 
-          
-                var resources = GetResources(workspaceID);
-                var conflicting = resources.FirstOrDefault(r => resource.ResourceID != r.ResourceID && r.ResourcePath != null && (r.ResourcePath.Equals(resource.ResourcePath, StringComparison.InvariantCultureIgnoreCase) && r.ResourceName.Equals(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase)));
-                if ((conflicting != null && !conflicting.IsNewResource) || ((conflicting != null && !overwriteExisting)))
-                {
+
+                    var resources = GetResources(workspaceID);
+                    var conflicting = resources.FirstOrDefault(r => resource.ResourceID != r.ResourceID && r.ResourcePath != null && (r.ResourcePath.Equals(resource.ResourcePath, StringComparison.InvariantCultureIgnoreCase) && r.ResourceName.Equals(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase)));
+                    if ((conflicting != null && !conflicting.IsNewResource) || ((conflicting != null && !overwriteExisting)))
+                    {
+                        return new ResourceCatalogResult
+                        {
+                            Status = ExecStatus.DuplicateMatch,
+                            Message = string.Format("Compilation Error: There is a {0} with the same name.", conflicting.ResourceType)
+                        };
+                    }
+
+                    var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+                    var originalRes = resource.ResourcePath ?? "";
+                    int indexOfName = originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal);
+                    var resPath = resource.ResourcePath;
+                    if (indexOfName >= 0)
+                        resPath = originalRes.Substring(0, originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal));
+                    var directoryName = Path.Combine(workspacePath, resPath ?? string.Empty);
+
+                    resource.FilePath = String.Format("{0}\\{1}.xml", directoryName, resource.ResourceName);
+
+                    #region Save to disk
+
+                    if (!Directory.Exists(directoryName))
+                    {
+                        Directory.CreateDirectory(directoryName);
+                    }
+
+
+
+                    if (File.Exists(resource.FilePath))
+                    {
+                        // Remove readonly attribute if it is set
+                        var attributes = File.GetAttributes(resource.FilePath);
+                        if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                        {
+                            File.SetAttributes(resource.FilePath, attributes ^ FileAttributes.ReadOnly);
+                        }
+                    }
+
+                    XElement xml = contents.ToXElement();
+                    xml = resource.UpgradeXml(xml, resource);
+                    if (resource.ResourcePath != null && !resource.ResourcePath.EndsWith(resource.ResourceName))
+                    {
+                        var resourcePath = (resPath == "" ? "" : resource.ResourcePath + "\\") + resource.ResourceName;
+                        resource.ResourcePath = resourcePath;
+                        xml.SetElementValue("Category", resourcePath);
+
+                    }
+                    StringBuilder result = xml.ToStringBuilder();
+
+                    var signedXml = HostSecurityProvider.Instance.SignXml(result);
+
+                    lock (GetFileLock(resource.FilePath))
+                    {
+
+                        signedXml.WriteToFile(resource.FilePath, Encoding.UTF8, fileManager);
+                    }
+
+                    #endregion
+
+                    #region Add to catalog
+
+                    var index = resources.IndexOf(resource);
+                    var updated = false;
+                    if (index != -1)
+                    {
+                        resources.RemoveAt(index);
+                        updated = true;
+                    }
+                    resource.GetInputsOutputs(xml);
+                    resource.ReadDataList(xml);
+                    resource.SetIsNew(xml);
+                    resource.UpdateErrorsBasedOnXML(xml);
+
+                    resources.Add(resource);
+
+                    #endregion
+                    RemoveFromResourceActivityCache(workspaceID, resource);
+                    AddOrUpdateToResourceActivityCache(workspaceID, resource);
+                    tx.Complete();
                     return new ResourceCatalogResult
                     {
-                        Status = ExecStatus.DuplicateMatch,
-                        Message = string.Format("Compilation Error: There is a {0} with the same name.", conflicting.ResourceType)
+                        Status = ExecStatus.Success,
+                        Message = string.Format("{0} {1} '{2}'", (updated ? "Updated" : "Added"), resource.ResourceType, resource.ResourceName)
                     };
                 }
-
-                var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-                var originalRes = resource.ResourcePath ?? "";
-                int indexOfName = originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal);
-                var resPath = resource.ResourcePath;
-                if (indexOfName >= 0)
-                    resPath = originalRes.Substring(0, originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal));
-                var directoryName = Path.Combine(workspacePath, resPath ?? string.Empty);
-
-                resource.FilePath = String.Format("{0}\\{1}.xml", directoryName, resource.ResourceName);
-
-                #region Save to disk
-
-                if (!Directory.Exists(directoryName))
-                {
-                    Directory.CreateDirectory(directoryName);
-                }
-
-
-
-                if (File.Exists(resource.FilePath))
-                {
-                    // Remove readonly attribute if it is set
-                    var attributes = File.GetAttributes(resource.FilePath);
-                    if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
-                    {
-                        File.SetAttributes(resource.FilePath, attributes ^ FileAttributes.ReadOnly);
-                    }
-                }
-
-                XElement xml = contents.ToXElement();
-                xml = resource.UpgradeXml(xml, resource);
-                if (resource.ResourcePath != null && !resource.ResourcePath.EndsWith(resource.ResourceName))
-                {
-                    var resourcePath = (resPath == "" ? "" : resource.ResourcePath + "\\") + resource.ResourceName;
-                    resource.ResourcePath = resourcePath;
-                    xml.SetElementValue("Category", resourcePath);
-
-                }
-                StringBuilder result = xml.ToStringBuilder();
-
-                var signedXml = HostSecurityProvider.Instance.SignXml(result);
-
-                lock (GetFileLock(resource.FilePath))
-                {
-
-                    signedXml.WriteToFile(resource.FilePath, Encoding.UTF8,fileManager);
-                }
-
-                #endregion
-
-                #region Add to catalog
-
-                var index = resources.IndexOf(resource);
-                var updated = false;
-                if (index != -1)
-                {
-                    resources.RemoveAt(index);
-                    updated = true;
-                }
-                resource.GetInputsOutputs(xml);
-                resource.ReadDataList(xml);
-                resource.SetIsNew(xml);
-                resource.UpdateErrorsBasedOnXML(xml);
-
-                resources.Add(resource);
-
-                #endregion
-                RemoveFromResourceActivityCache(workspaceID, resource);
-                AddOrUpdateToResourceActivityCache(workspaceID, resource);
-                tx.Complete();
-                return new ResourceCatalogResult
-                {
-                    Status = ExecStatus.Success,
-                    Message = string.Format("{0} {1} '{2}'", (updated ? "Updated" : "Added"), resource.ResourceType, resource.ResourceName)
-                };
-                    }
-                catch(Exception)
+                catch (Exception)
                 {
                     Transaction.Current.Rollback();
                     throw;
@@ -2056,13 +2056,13 @@ namespace Dev2.Runtime.Hosting
 
         public IDev2Activity Parse(Guid workspaceID,  Guid resourceID)
         {
-            IResourceActivityCache parser;
-            if(!_parsers.TryGetValue(workspaceID,out parser))
+            IResourceActivityCache parser = null;
+            if(_parsers != null && !_parsers.TryGetValue(workspaceID,out parser))
             {
                 parser = new ResourceActivityCache(CustomContainer.Get<IActivityParser>(),new ConcurrentDictionary<Guid, IDev2Activity>());
                 _parsers.Add(workspaceID,parser);
             }
-            if (parser.HasActivityInCache(resourceID))
+            if (parser != null && parser.HasActivityInCache(resourceID))
             {
                 return parser.GetActivity(resourceID);
             }
@@ -2073,7 +2073,10 @@ namespace Dev2.Runtime.Hosting
                 var sa = service.Actions.FirstOrDefault();
                 MapServiceActionDependencies(workspaceID, sa);
                 var activity = GetActivity(sa);
-                return parser.Parse(activity, resourceID);
+                if(parser != null)
+                {
+                    return parser.Parse(activity, resourceID);
+                }
             }
             return null;
         }
