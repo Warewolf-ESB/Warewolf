@@ -173,6 +173,8 @@
 /Dev/Dev2.TaskScheduler.Wrappers.Test/obj
 /Dev/Example Shipper/Example Shipper/bin
 /Dev/Example Shipper/Example Shipper/obj
+/Dev/ExecutionEngine/bin
+/Dev/ExecutionEngine/obj
 /Dev/ServerProxyLayer/bin
 /Dev/ServerProxyLayer/obj
 /Dev/ServerProxyLayerTests/bin
