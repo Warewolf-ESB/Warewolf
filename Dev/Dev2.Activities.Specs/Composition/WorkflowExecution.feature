@@ -4158,7 +4158,8 @@ Scenario: Workflow with AsyncLogging and ForEach
 	 And I set logging to "Debug"
 	 When "WFWithAsyncLoggingForEach" is executed "first time"
 	 Then the workflow execution has "NO" error
-	 And I set logging to "None"
+	 And I set logging to "OFF"
 	 	 When "WFWithAsyncLoggingForEach" is executed "second time"
 	 Then the workflow execution has "NO" error
 	 And the delta between "first time" and "second time" is less than "1200" milliseconds
+	 And I set logging to "Debug"
