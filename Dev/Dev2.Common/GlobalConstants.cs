@@ -67,7 +67,7 @@ namespace Dev2.Common
     "<layout type=\"log4net.Layout.PatternLayout\">"+
     "<header value=\"[Header]&#xD;&#xA;\" />" +
                                              "<footer value=\"[Footer]&#xD;&#xA;\" />" +
-                                             "<conversionPattern value=\"%date [%thread] %-5level %type{3} - %message%newline\" />" +
+                                             "<conversionPattern value=\"%date [%thread] %-5level - %message%newline\" />" +
                                              "</layout>" +
                                              "<!-- Alternate layout using XML			" +
                                              "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
@@ -97,7 +97,7 @@ namespace Dev2.Common
     "<layout type=\"log4net.Layout.PatternLayout\">"+
     "<header value=\"[Header]&#xD;&#xA;\" />" +
                                              "<footer value=\"[Footer]&#xD;&#xA;\" />" +
-                                             "<conversionPattern value=\"%date [%thread] %-5level %type{3} - %message%newline\" />" +
+                                             "<conversionPattern value=\"%date [%thread] %-5level - %message%newline\" />" +
                                              "</layout>" +
                                              "<!-- Alternate layout using XML			" +
                                              "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
