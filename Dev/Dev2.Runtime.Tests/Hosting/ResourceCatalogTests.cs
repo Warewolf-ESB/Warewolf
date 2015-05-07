@@ -437,6 +437,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
             //------------Assert Results-------------------------
             version.Verify(a => a.StoreVersion(It.IsAny<Resource>(), "bob", "reason", workspaceID));
+
+           
         }
 
         [TestMethod]
@@ -456,6 +458,7 @@ namespace Dev2.Tests.Runtime.Hosting
             expected.ResourceName = "federatedresource";
             PrivateType p = new PrivateType(typeof(ResourceCatalog));
             p.SetStaticField("_parsers", null); // force an error
+            var a = p.GetStaticField("_parsers"); // force an error
             try
             {
 
@@ -465,7 +468,7 @@ namespace Dev2.Tests.Runtime.Hosting
             catch(Exception)
                 // ReSharper restore EmptyGeneralCatchClause
             { }
-
+            p.SetStaticField("_parsers", a); // force an error
             var res = catalog.GetResourceContents(workspaceID, expected.ResourceID).ToString();
             Assert.IsFalse(res.Contains("federatedresource"));
 

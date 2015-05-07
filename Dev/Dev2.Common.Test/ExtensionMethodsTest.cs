@@ -456,7 +456,7 @@ namespace Dev2.Common.Tests
             StringBuilder value = new StringBuilder(val);
 
             //------------Execute Test---------------------------
-            value.WriteToFile(tmpFile, Encoding.UTF8,null);
+            value.WriteToFile(tmpFile, Encoding.UTF8,new TxFileManager());
 
             //------------Assert Results-------------------------
             var result = File.ReadAllText(tmpFile);
