@@ -343,7 +343,7 @@ Scenario: Workflow with Assigns DataMerge and DataSplit executing against the se
 	  | [[result]] = TestWarewolf |
 	  And the 'Data Split' in WorkFlow 'WorkflowWithAssignDataMergeAndDataSplittools' debug inputs as 
 	  | String to Split            | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
-	  | [[result]][[split().a]] = | Forward           | No              | 1 | [[rec().b]] = | Index | 4     | No      |        |
+	  | [[result]][[split().a]] = TestWarewolfWorkflow | Forward           | No              | 1 | [[rec().b]] = | Index | 4     | No      |        |
 	  |                            |                   |                 | 2 | [[rec().b]] = | Index | 8     | No      |        |
 	  And the 'Data Split' in Workflow 'WorkflowWithAssignDataMergeAndDataSplittools' debug outputs as  
 	  | # |                         |
@@ -4061,8 +4061,8 @@ Scenario Outline: Database SqlDB Database service inputs and outputs
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
 	  | Input to Service | From Variable | Output from Service          | To Variable     |
-	  | Prefix           | afg           | countries(*).countryid          | <nameVariable>  |
-	  |                  |               | countries(*).description | <emailVariable> |
+	  | Prefix           | afg           | [[countries(*).countryid]]         | <nameVariable>  |
+	  |                  |               | [[countries(*).description]] | <emailVariable> |
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
@@ -4071,7 +4071,7 @@ Scenario Outline: Database SqlDB Database service inputs and outputs
 	  | [[countries(1).description]] = Afghanistan |
 Examples: 
     | WorkflowName                  | ServiceName           | nameVariable        | emailVariable                | errorOccured |
-    | TestSqlWFWithDBServiceMails10 | GetCountriesSqlServer | [[countries(*).id]] | [[countries(*).description]] | NO           |
+    | TestSqlWFWithDBServiceMailsCountries | GetCountriesSqlServer | [[countries(*).id]] | [[countries(*).description]] | NO           |
 
  Scenario Outline: Database SqlDB  service DBErrors
      Given I have a workflow "<WorkflowName>"

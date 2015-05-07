@@ -1298,7 +1298,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Align"});
             table41.AddRow(new string[] {
                         "1",
-                        "[[[[[[[[a]]]]]]]] = Warewolf",
+                        "[[[[[[b]]]]]] = Warewolf",
                         "Index",
                         "\"8\"",
                         "\"\"",
@@ -1336,8 +1336,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 336
  testRunner.And("a merge variable \"[[b]]\" equal to \"warewolf \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 337
- testRunner.And("an Input \"[[[[a]]]]\" and merge type \"Index\" and string at as \"\" and Padding \"\" an" +
-                    "d Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("an Input \"[[test%$]]\" and merge type \"Index\" and string at as \"\" and Padding \"\" a" +
+                    "nd Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 338
  testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 339
@@ -1354,7 +1354,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Align"});
             table43.AddRow(new string[] {
                         "1",
-                        "[[[[a]]]] =",
+                        "[[test%$]] =",
                         "Index",
                         "\"\"",
                         "\"\"",
