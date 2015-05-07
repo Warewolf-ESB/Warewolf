@@ -102,7 +102,8 @@ namespace Dev2
             var scalarOutputs = dataListTO.Outputs.Where(s => !DataListUtil.IsValueRecordset(s));
             var recSetOutputs = dataListTO.Outputs.Where(DataListUtil.IsValueRecordset);
             var groupedRecSets = recSetOutputs.GroupBy(DataListUtil.ExtractRecordsetNameFromValue);
-            foreach (var groupedRecSet in groupedRecSets)
+            var recSets = groupedRecSets as IGrouping<string, string>[] ?? groupedRecSets.ToArray();
+            foreach (var groupedRecSet in recSets)
             {
                 var i = 0;
                 var warewolfListIterators = new WarewolfListIterator();
@@ -114,15 +115,18 @@ namespace Dev2
                     warewolfListIterators.AddVariableToIterateOn(warewolfIterator);
 
                 }
+                result.Append("\"");
+                result.Append(groupedRecSet.Key);
+                result.Append("\" : [");
+                
+                
                 while (warewolfListIterators.HasMoreData())
                 {
-                    result.Append("\"");
-                    result.Append(groupedRecSet.Key);
-                    result.Append("\" : [");
                     int colIdx = 0;
+                    result.Append("{");
                     foreach (var namedIterator in iterators)
                     {
-                        result.Append("{");
+                        
                         var value = warewolfListIterators.FetchNextValue(namedIterator.Value);
                         result.Append("\"");
                         result.Append(namedIterator.Key);
@@ -137,17 +141,19 @@ namespace Dev2
                         }
 
                     }
-
-                    result.Append("}");
-                    result.Append("]");
-                    i++;
-                    if (i <= warewolfListIterators.GetMax())
+                    if (warewolfListIterators.HasMoreData())
                     {
-                        result.Append(", ");
+                        result.Append("}");
+                        result.Append(",");
                     }
-
                 }
-
+                result.Append("}");
+                result.Append("]");
+                i++;
+                if (i < recSets.Count())
+                {
+                    result.Append(",");
+                }
 
             }
 
@@ -174,10 +180,9 @@ namespace Dev2
                     result.Append(",");
                 }
             }
-
-            result.Append("}");
             var jsonOutputFromEnvironment = result.ToString();
-            return jsonOutputFromEnvironment.TrimEnd(',');
+            jsonOutputFromEnvironment += "}";
+            return jsonOutputFromEnvironment;
         }
 
         public static void UpdateEnvironmentFromXmlPayload(IDSFDataObject dataObject, StringBuilder rawPayload, string dataList)
