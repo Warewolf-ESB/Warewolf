@@ -67,7 +67,7 @@ type WarewolfEnvironment =
 
 let tryParseAtom (data:string) = 
     let mutable value = 0;    
-    if data.StartsWith("0") then DataString data
+    if data.StartsWith("0") || data.StartsWith("+") then DataString data
     else
        let success = System.Int32.TryParse(data,&value)
        if success then Int value
