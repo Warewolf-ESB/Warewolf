@@ -354,6 +354,7 @@ namespace Dev2.Services.Execution
             }
             catch (Exception ex)
             {
+                Dev2Logger.Log.Error("Sql Error:",ex);
                 errors.AddError(string.Format("{0}{1}","Sql Error: ", ex.Message));
             }
         }

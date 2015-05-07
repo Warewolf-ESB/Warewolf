@@ -451,24 +451,22 @@ namespace Dev2.Tests.Runtime.Hosting
             var version = new Mock<IServerVersionRepository>();
             var catalog = new ResourceCatalog(null, version.Object);
 
-            var expected = new DbSource { ResourceID = Guid.NewGuid(), ResourceName = "TestSource", DatabaseName = "TestNewDb", Server = "TestNewServer", ServerType = enSourceType.MySqlDatabase };
+            var resourceID = Guid.NewGuid();
+            var expected = new DbSource { ResourceID = resourceID, ResourceName = "TestSource", DatabaseName = "TestNewDb", Server = "TestNewServer", ServerType = enSourceType.MySqlDatabase };
 
             //------------Execute Test---------------------------
-            catalog.SaveResource(workspaceID, new StringBuilder(expected.ToXml().ToString()), null, "reason", "bob");
+            catalog.SaveResource(workspaceID, expected.ToStringBuilder(), null, "reason", "bob");
             expected.ResourceName = "federatedresource";
-            PrivateType p = new PrivateType(typeof(ResourceCatalog));
-            p.SetStaticField("_parsers", null); // force an error
-            var a = p.GetStaticField("_parsers"); // force an error
+           
             try
             {
-
-                catalog.SaveResource(workspaceID, new StringBuilder(expected.ToXml().ToString()), null, "reason", "bob");
+                expected.ResourceName = "";
+                catalog.SaveResource(workspaceID, expected.ToStringBuilder(), null, "reason", "bob");
             }
                 // ReSharper disable EmptyGeneralCatchClause
             catch(Exception)
                 // ReSharper restore EmptyGeneralCatchClause
             { }
-            p.SetStaticField("_parsers", a); // force an error
             var res = catalog.GetResourceContents(workspaceID, expected.ResourceID).ToString();
             Assert.IsFalse(res.Contains("federatedresource"));
 

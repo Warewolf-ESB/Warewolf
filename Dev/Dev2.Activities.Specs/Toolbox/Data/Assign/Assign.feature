@@ -14,6 +14,18 @@ Scenario: Assign a value to a variable
 	And the debug output as 
 	| # |              |
 	| 1 | [[var]] = 10 |
+	
+Scenario: Assign a value with plus in it to a variable
+	Given I assign the value +10 to a variable "[[var]]"	
+	When the assign tool is executed
+	Then the value of "[[var]]" equals +10
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable  | New Value |
+	| 1 | [[var]] = | +10        |
+	And the debug output as 
+	| # |              |
+	| 1 | [[var]] = +10 |
 
 Scenario: Assign a variable to a variable
 	Given I assign the value 20 to a variable "[[var]]"	
