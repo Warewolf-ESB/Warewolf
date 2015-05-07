@@ -16,13 +16,13 @@ namespace Warewolf.ResourceManagement
             _cache = cache;
         }        
 
-        public IDev2Activity Parse(Func<DynamicActivity> actFunc,Guid resourceIdGuid)
+        public IDev2Activity Parse(DynamicActivity activity,Guid resourceIdGuid)
         {
-            if(_cache.ContainsKey(resourceIdGuid))
+            if(HasActivityInCache(resourceIdGuid))
             {
-                return _cache[resourceIdGuid];
+                return GetActivity(resourceIdGuid);
             }
-            var dynamicActivity = actFunc();
+            var dynamicActivity = activity;
             if (dynamicActivity != null)
             {
                 IDev2Activity act = _activityParser.Parse(dynamicActivity);
@@ -32,6 +32,16 @@ namespace Warewolf.ResourceManagement
                 }
             }
             return null;
+        }
+
+        public IDev2Activity GetActivity(Guid resourceIdGuid)
+        {
+            return _cache[resourceIdGuid];
+        }
+
+        public bool HasActivityInCache(Guid resourceIdGuid)
+        {
+            return _cache.ContainsKey(resourceIdGuid);
         }
 
         public void RemoveFromCache(Guid resourceID)
@@ -45,9 +55,5 @@ namespace Warewolf.ResourceManagement
             _cache.Clear();
         }
 
-        public bool HasId(Guid resourceID)
-        {
-            return _cache.ContainsKey(resourceID);
-        }
     }
 }

@@ -94,17 +94,8 @@ namespace Dev2.Runtime.ESB.Execution
                 DataObject.ExecutionOrigin = ExecutionOrigin.External;
             }
 
-            var activity = new Func<DynamicActivity>(()=>
-            {
-                var act =ServiceAction.PopActivity();
-                var theActivity = act.Value as DynamicActivity;
-                return theActivity;
-            });
-
             try
             {
-                
-          
                 // BUG 9304 - 2013.05.08 - TWR - Added CompileExpressions
                 //_workflowHelper.CompileExpressions(theActivity,DataObject.ResourceID);
 
@@ -119,7 +110,7 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     wfappUtils.DispatchDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, null, true);
                 }
-                Eval(activity, DataObject.ResourceID, DataObject);
+                Eval(DataObject.ResourceID, DataObject);
                 if (DataObject.IsDebugMode())
                 {
                     wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DateTime.Now, false, true);
@@ -149,9 +140,9 @@ namespace Dev2.Runtime.ESB.Execution
             return result;
         }
 
-        public void Eval(Func<DynamicActivity> dynamicActivity, Guid resourceID, IDSFDataObject dataObject)
+        public void Eval(Guid resourceID, IDSFDataObject dataObject)
         {
-            IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID,dynamicActivity,resourceID);
+            IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID,resourceID);
 
             resource.Execute(dataObject);
         }
@@ -197,5 +188,11 @@ namespace Dev2.Runtime.ESB.Execution
             debugItem.AddRange(debugItemResults);
         }
 
+        public void Eval(DynamicActivity flowchartProcess, Guid resourceID, IDSFDataObject dsfDataObject)
+        {
+            IDev2Activity resource = new ActivityParser().Parse(flowchartProcess);
+
+            resource.Execute(dsfDataObject);
+        }
     }
 }

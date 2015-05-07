@@ -550,30 +550,14 @@ namespace Dev2.Runtime.Hosting
 
         void AddOrUpdateToResourceActivityCache(Guid workspaceID, IResource resource)
         {
-            var service = GetService(workspaceID, resource.ResourceID,resource.ResourceName);
-
-            if(service != null)
-            {
-                var sa = service.Actions.FirstOrDefault();
-                MapServiceActionDependencies(workspaceID, sa);
-                var activity = GetActivity(sa);
-                Parse(workspaceID, activity, resource.ResourceID);
-            }
+            Parse(workspaceID, resource.ResourceID);
         }
 
-        static Func<DynamicActivity> GetActivity(ServiceAction sa)
+        static DynamicActivity GetActivity(ServiceAction sa)
         {
-            var activity = new Func<DynamicActivity>(() =>
-            {
-                if(sa != null)
-                {
-                    var act = sa.PopActivity();
-                    var theActivity = act.Value as DynamicActivity;
-                    return theActivity;
-                }
-                return null;
-            });
-            return activity;
+            var act = sa.PopActivity();
+            var theActivity = act.Value as DynamicActivity;
+            return theActivity;
         }
 
         DynamicService GetService(Guid workspaceID, Guid resourceID, string resourceName)
@@ -897,7 +881,7 @@ namespace Dev2.Runtime.Hosting
             if (_parsers.TryGetValue(workspaceID,out parser))
             {
                 parser.RemoveFromCache(resource.ResourceID);
-            }
+            }            
         }
 
         #endregion
@@ -2070,7 +2054,7 @@ namespace Dev2.Runtime.Hosting
         public static Dictionary<Guid,IResourceActivityCache> _parsers = new Dictionary<Guid,IResourceActivityCache>();
         bool _loading;
 
-        public IDev2Activity Parse(Guid workspaceID,Func<DynamicActivity> actFunc, Guid resourceID)
+        public IDev2Activity Parse(Guid workspaceID,  Guid resourceID)
         {
             IResourceActivityCache parser;
             if(!_parsers.TryGetValue(workspaceID,out parser))
@@ -2078,7 +2062,20 @@ namespace Dev2.Runtime.Hosting
                 parser = new ResourceActivityCache(CustomContainer.Get<IActivityParser>(),new ConcurrentDictionary<Guid, IDev2Activity>());
                 _parsers.Add(workspaceID,parser);
             }
-               return parser.Parse(actFunc, resourceID);
+            if (parser.HasActivityInCache(resourceID))
+            {
+                return parser.GetActivity(resourceID);
+            }
+            var resource = GetResource(workspaceID, resourceID);
+            var service = GetService(workspaceID, resourceID, resource.ResourceName);
+            if (service != null)
+            {
+                var sa = service.Actions.FirstOrDefault();
+                MapServiceActionDependencies(workspaceID, sa);
+                var activity = GetActivity(sa);
+                return parser.Parse(activity, resourceID);
+            }
+            return null;
         }
     }
 

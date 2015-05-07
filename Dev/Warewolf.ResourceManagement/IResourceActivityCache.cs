@@ -6,12 +6,14 @@ namespace Warewolf.ResourceManagement
 {
     public interface IResourceActivityCache
     {
-        IDev2Activity Parse(Func<DynamicActivity> actFunc,Guid resourceIdGuid);
-
-        bool HasId(Guid resourceID);
+        IDev2Activity Parse(DynamicActivity activity, Guid resourceIdGuid);
 
         void RemoveFromCache(Guid resourceID);
 
         void ClearCache();
+
+        bool HasActivityInCache(Guid resourceIdGuid);
+
+        IDev2Activity GetActivity(Guid resourceIdGuid);
     }
 }
