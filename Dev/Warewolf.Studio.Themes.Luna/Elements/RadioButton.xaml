@@ -129,7 +129,7 @@
                                  Fill="{StaticResource RadioButtonHoverBackgroundBrush}"
                                  Opacity="0"
                                  Stroke="{StaticResource WareWolfOrangeBrush}"
-                                 StrokeThickness="2" />
+                                 StrokeThickness="1" />
                         <Ellipse x:Name="pressed"
                                  Width="18"
                                  Height="18"
@@ -161,7 +161,7 @@
                         <Ellipse x:Name="Checked1"
                                  Width="10"
                                  Height="10"
-                                 Fill="{StaticResource WareWolfButtonBrush}"
+                                 Fill="{StaticResource WareWolfOrangeBrush}"
                                  Opacity="0" />
                         <Ellipse x:Name="disabled"
                                  Width="18"

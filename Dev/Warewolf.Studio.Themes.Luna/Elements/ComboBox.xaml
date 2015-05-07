@@ -14,16 +14,15 @@
 
     <!--  TextBox Brushes  -->
     <SolidColorBrush x:Key="TextBoxBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
-
     <SolidColorBrush x:Key="TextBoxBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
     <SolidColorBrush x:Key="TextBoxHoverBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
     <SolidColorBrush x:Key="TextBoxForegroundBrush" Color="{StaticResource WarewolfButtonGrey}" />
     <SolidColorBrush x:Key="LightForegroundBrush" Color="{StaticResource WarewolfButtonGrey}" />
+    
     <!--  DO NOT make TextBoxHoverBackgroundBrush transparent!  -->
     <SolidColorBrush x:Key="TextBoxHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
     <SolidColorBrush x:Key="TextBoxFocusedBrush" Color="{StaticResource WarewolfOrange}" />
     <SolidColorBrush x:Key="TextBoxReadOnlyBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
-
 
     <!--  ComboBox Brushes  -->
     <SolidColorBrush x:Key="ComboBoxBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
@@ -37,7 +36,6 @@
     <SolidColorBrush x:Key="PopupBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
     <SolidColorBrush x:Key="PopupBorderBrush" Color="{StaticResource WarewolfOrange}" />
 
-
     <!--  ComboBoxItem Brushes  -->
     <SolidColorBrush x:Key="ComboBoxItemHoverBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
     <SolidColorBrush x:Key="ComboBoxItemHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
@@ -50,9 +48,7 @@
     <SolidColorBrush x:Key="ComboBoxToggleButtonDropDownSeparatorBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
     <SolidColorBrush x:Key="ComboBoxToggleButtonPressedBorderBrush" Color="{StaticResource WarewolfOrange}" />
 
-
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-
 
     <!--  *********************************  ComboBoxEditableTextBox Style  *********************************  -->
     <Style x:Key="ComboBoxEditableTextBoxStyle" TargetType="TextBox">
@@ -164,7 +160,6 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-
                         <Border x:Name="DisabledVisualElement"
                                 Background="{StaticResource DisabledVisualElement}"
                                 BorderBrush="{StaticResource DisabledVisualElement}"
@@ -200,24 +195,19 @@
                                 <Path Margin="1,3,0,0"
                                       Data="M 0,0 L2,0 L 8,6 L8,8"
                                       Fill="{StaticResource LightForegroundBrush}" />
-
-
                             </Grid>
                         </Border>
                     </Grid>
-
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="True">
                             <Setter Property="Background" Value="White" />
                             <Setter Property="Foreground" Value="{StaticResource TextBoxForegroundBrush}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
-
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-
 
     <!--  *********************************  ComboBoxToggleButton Style   *********************************  -->
     <Style x:Key="ComboBoxToggleButtonStyle" TargetType="ToggleButton">
@@ -458,7 +448,6 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-
     <!--  *********************************  ComboBoxItem Style  *********************************  -->
     <Style x:Key="ComboBoxItemStyle" TargetType="ComboBoxItem">
         <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
@@ -567,7 +556,7 @@
                                    Fill="{StaticResource ComboBoxBackgroundBrush}"
                                    IsHitTestVisible="False"
                                    Visibility="Collapsed"
-                                    Opacity="0"
+                                   Opacity="0"
                                    Stroke="{StaticResource WareWolfOrangeBrush}"
                                    StrokeThickness="5" />
                         <Rectangle x:Name="fillColor"
@@ -586,9 +575,7 @@
                                         KeyboardNavigation.IsTabStop="False"
                                         Margin="{TemplateBinding Padding}"
                                         HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                       >
-
+                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}" >
                             <ContentPresenter x:Name="contentPresenter" />
                         </ContentControl>
                         <ContentControl x:Name="contentControl1"
@@ -613,10 +600,7 @@
         </Setter>
     </Style>
 
-
     <!--  *********************************  ComboBox Style  *********************************  -->
-
-
     <Style x:Key="MainTextBlock" TargetType="TextBlock">
         <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
@@ -634,15 +618,12 @@
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource TextBoxBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorderBrush}" />
-
         <Setter Property="ItemContainerStyle" Value="{StaticResource ComboBoxItemStyle}" />
-
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
         <Setter Property="ScrollViewer.PanningMode" Value="Both" />
         <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
-
         <Setter Property="Opacity" Value="1" />
         <Setter Property="Template">
             <Setter.Value>
@@ -731,19 +712,18 @@
                                     BorderBrush="{StaticResource PopupBorderBrush}"
                                     BorderThickness="1,0,1,1"
                                     CornerRadius="0">
-                                <ScrollViewer KeyboardNavigation.IsTabStop="False" x:Name="DropDownScrollViewer" Style="{StaticResource ScrollViewerStyle}">
+                                <ScrollViewer KeyboardNavigation.IsTabStop="False" 
+                                              x:Name="DropDownScrollViewer" 
+                                              Style="{StaticResource ScrollViewerStyle}">
                                     <Grid RenderOptions.ClearTypeHint="Enabled">
                                         <Canvas Width="0"
                                                 Height="0"
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Top">
                                             <Rectangle x:Name="OpaqueRect"
-                                                       Width="{Binding ActualWidth,
-                                                                       ElementName=DropDownBorder}"
-                                                       Height="{Binding ActualHeight,
-                                                                        ElementName=DropDownBorder}"
-                                                       Fill="{Binding Background,
-                                                                      ElementName=DropDownBorder}" />
+                                                       Width="{Binding ActualWidth, ElementName=DropDownBorder}"
+                                                       Height="{Binding ActualHeight, ElementName=DropDownBorder}"
+                                                       Fill="{Binding Background, ElementName=DropDownBorder}" />
                                         </Canvas>
                                         <ItemsPresenter x:Name="ItemsPresenter"
                                                         KeyboardNavigation.DirectionalNavigation="Contained"
@@ -760,8 +740,6 @@
                                                           RelativeSource={RelativeSource TemplatedParent}}"
                                       Style="{StaticResource ComboBoxToggleButtonStyle}"
                                       KeyboardNavigation.IsTabStop="False"/>
-
-
                         <ContentControl x:Name="MainTextBox"
                                         Margin="{TemplateBinding Margin}"
                                         HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -780,15 +758,11 @@
                                           ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
                                           IsHitTestVisible="false"
                                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" >
-
                                 <ContentPresenter.Resources>
                                     <Style BasedOn="{StaticResource MainTextBlock}" TargetType="{x:Type TextBlock}" />
                                 </ContentPresenter.Resources>
-
                             </ContentPresenter>
-
                         </ContentControl>
-
                         <Rectangle x:Name="normal"
                                    Grid.ColumnSpan="2"
                                    Stroke="{StaticResource ComboBoxBorderBrush}"
@@ -836,9 +810,6 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-
-
-
 
     <!--  *********************************  Implicit Styles  *********************************  -->
     <Style BasedOn="{StaticResource ComboBoxStyle}" TargetType="{x:Type ComboBox}" />
