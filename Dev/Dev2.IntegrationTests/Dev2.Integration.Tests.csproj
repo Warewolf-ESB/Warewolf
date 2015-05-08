@@ -242,6 +242,7 @@
     <Compile Include="Services.Sql\SqlDatabaseBrokerTests.cs" />
     <Compile Include="Runtime.ServiceModel\EmailSourceTest.cs" />
     <Compile Include="Runtime.ServiceModel\DbSourceTests.cs" />
+    <Compile Include="Services.Sql\SqlServerTestsUtils.cs" />
     <Compile Include="Sql\WorkflowsTests.cs" />
     <Compile Include="Helpers\TestHelper.cs" />
     <Compile Include="Test utils\ServerCommonDirectory.cs" />

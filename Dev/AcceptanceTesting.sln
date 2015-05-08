@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40121.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server", "Dev2.Server\Dev2.Server.csproj", "{87AEFD04-29F3-45B6-A7C6-4161F9190876}"
 EndProject
@@ -137,9 +137,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.WebService", "Warewolf.AcceptanceTesting.WebService\Warewolf.AcceptanceTesting.WebService.csproj", "{FCD5E320-6E0E-4650-97F4-297027E0536D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.Scheduler", "Warwolf.AcceptanceTesting.Scheduler\Warewolf.AcceptanceTesting.Scheduler.csproj", "{065A0726-120C-4FBC-B069-E7A32DE6A1F4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.ServerSource", "Warewolf.AcceptanceTesting.ServerSource\Warewolf.AcceptanceTesting.ServerSource.csproj", "{486F3480-A011-4E3A-878C-E7A23F661045}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.Scheduler", "Warewolf.AcceptanceTesting.Scheduler\Warewolf.AcceptanceTesting.Scheduler.csproj", "{065A0726-120C-4FBC-B069-E7A32DE6A1F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -961,18 +961,6 @@ Global
 		{FCD5E320-6E0E-4650-97F4-297027E0536D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{FCD5E320-6E0E-4650-97F4-297027E0536D}.Release|x64.ActiveCfg = Release|Any CPU
 		{FCD5E320-6E0E-4650-97F4-297027E0536D}.Release|x86.ActiveCfg = Release|Any CPU
-		{065A0726-120C-4FBC-B069-E7A32DE6A1F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{065A0726-120C-4FBC-B069-E7A32DE6A1F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{065A0726-120C-4FBC-B069-E7A32DE6A1F4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{065A0726-120C-4FBC-B069-E7A32DE6A1F4}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{065A0726-120C-4FBC-B069-E7A32DE6A1F4}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{065A0726-120C-4FBC-B069-E7A32DE6A1F4}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{065A0726-120C-4FBC-B069-E7A32DE6A1F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{065A0726-120C-4FBC-B069-E7A32DE6A1F4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{065A0726-120C-4FBC-B069-E7A32DE6A1F4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{065A0726-120C-4FBC-B069-E7A32DE6A1F4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{065A0726-120C-4FBC-B069-E7A32DE6A1F4}.Release|x64.ActiveCfg = Release|Any CPU
-		{065A0726-120C-4FBC-B069-E7A32DE6A1F4}.Release|x86.ActiveCfg = Release|Any CPU
 		{486F3480-A011-4E3A-878C-E7A23F661045}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{486F3480-A011-4E3A-878C-E7A23F661045}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{486F3480-A011-4E3A-878C-E7A23F661045}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -985,6 +973,18 @@ Global
 		{486F3480-A011-4E3A-878C-E7A23F661045}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{486F3480-A011-4E3A-878C-E7A23F661045}.Release|x64.ActiveCfg = Release|Any CPU
 		{486F3480-A011-4E3A-878C-E7A23F661045}.Release|x86.ActiveCfg = Release|Any CPU
+		{065A0726-120C-4FBC-B069-E7A32DE6A1F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{065A0726-120C-4FBC-B069-E7A32DE6A1F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{065A0726-120C-4FBC-B069-E7A32DE6A1F4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{065A0726-120C-4FBC-B069-E7A32DE6A1F4}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{065A0726-120C-4FBC-B069-E7A32DE6A1F4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{065A0726-120C-4FBC-B069-E7A32DE6A1F4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{065A0726-120C-4FBC-B069-E7A32DE6A1F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{065A0726-120C-4FBC-B069-E7A32DE6A1F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{065A0726-120C-4FBC-B069-E7A32DE6A1F4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{065A0726-120C-4FBC-B069-E7A32DE6A1F4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{065A0726-120C-4FBC-B069-E7A32DE6A1F4}.Release|x64.ActiveCfg = Release|Any CPU
+		{065A0726-120C-4FBC-B069-E7A32DE6A1F4}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
