@@ -202,14 +202,14 @@ namespace Dev2.Runtime.ESB.Control
         /// <returns></returns>
         public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceId, out ErrorResultTO errors)
         {
-            Dev2Logger.Log.Info("START MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb().ToString("####.####") + " MBs ]");
+
             var resultID = GlobalConstants.NullDataListID;
             errors = new ErrorResultTO();
             var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
 
             var principle = Thread.CurrentPrincipal;
             var name = principle.Identity.Name;
-            Dev2Logger.Log.Info("EXECUTION USER CONTEXT IS [ " + name + " ] FOR SERVICE [ " + dataObject.ServiceName + " ]");
+
 
             // If no DLID, we need to make it based upon the request ;)
             if(dataObject.DataListID == GlobalConstants.NullDataListID)
@@ -257,16 +257,7 @@ namespace Dev2.Runtime.ESB.Control
                 errors.AddError(ex.Message);
             }
 
-            var memoryUse = BinaryDataListStorageLayer.GetUsedMemoryInMb();
-            var logMemoryValue = memoryUse.ToString("####.####");
 
-            // ReSharper disable CompareOfFloatsByEqualityOperator
-            if(memoryUse == 0.0)
-            // ReSharper restore CompareOfFloatsByEqualityOperator
-            {
-                logMemoryValue = "0.0";
-            }
-            Dev2Logger.Log.Info("FINAL MEMORY USAGE AFTER DISPOSE [ " + logMemoryValue + " MBs ]");
 
             return resultID;
         }

@@ -214,7 +214,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Storage\ProtocolBuffers\BinaryDataListRow.cs" />
-    <Compile Include="Storage\BinaryDataListStorageLayer.cs" />
     <Compile Include="Builders\DataListIntellisenseBuilder.cs" />
     <Compile Include="Builders\DefinitionBuilder.cs" />
     <Compile Include="Builders\RecordSetCollectionBuilder.cs" />

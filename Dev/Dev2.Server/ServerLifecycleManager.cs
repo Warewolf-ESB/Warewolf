@@ -1387,7 +1387,7 @@ namespace Dev2
             // shutdown the storage layer ;)
             try
             {
-                BinaryDataListStorageLayer.Teardown();
+   
             }
             catch(Exception e)
             {

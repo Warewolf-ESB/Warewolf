@@ -44,8 +44,8 @@ namespace Dev2.Data
     Number of Requests: {3} 
     Time Taken(Ms): {4}   
     Uptime: {5}",
-                                                  BinaryDataListStorageLayer.GetCapacityMemoryInMb().ToString("####.####"),
-                                                  BinaryDataListStorageLayer.GetUsedMemoryInMb().ToString("####.####"),
+                                                0,
+                                                  0,
                                                   GC.GetTotalMemory(false) / 10000000,
                                                   ServerStats.TotalRequests,
                                                   ServerStats.TotalTime,
