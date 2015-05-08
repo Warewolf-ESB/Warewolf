@@ -169,7 +169,6 @@
     <Compile Include="Decisions\Operations\NotEndsWith.cs" />
     <Compile Include="Decisions\Operations\NotRegex.cs" />
     <Compile Include="Decisions\Operations\NotStartsWith.cs" />
-    <Compile Include="Dev2BinaryDataListFactory.cs" />
     <Compile Include="Dev2Column.cs" />
     <Compile Include="enDev2ColumnArgumentDirection.cs" />
     <Compile Include="Enums\enForEachType.cs" />
