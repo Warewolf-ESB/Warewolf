@@ -22,7 +22,6 @@ using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
-using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
@@ -160,7 +159,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
             // we need to register this child thread with the DataListRegistar so we can scope correctly ;)
-            DataListRegistar.RegisterActivityThreadToParentId(dataObject.ParentThreadID, Thread.CurrentThread.ManagedThreadId);
 
            
                 string errorString = dataObject.Environment.FetchErrors();

@@ -19,8 +19,6 @@ using System.Reflection;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Data.Binary_Objects;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
 using Dev2.Simulation;
@@ -195,72 +193,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         #endregion
 
         #region ValidateRecordSet
-
-        static void ValidateRecordSet(IBinaryDataList dataList, string name, KeyValuePair<string, string[]>[] expectedValues)
-        {
-            string error;
-            IBinaryDataListEntry entry;
-            dataList.TryGetEntry(name, out entry, out error);
-            if(!string.IsNullOrEmpty(error))
-            {
-                Assert.Fail("Error fetching RecordSet '{0}' from Binary DataList", name);
-            }
-            else
-            {
-                IIndexIterator idxItr = entry.FetchRecordsetIndexes();
-                while(idxItr.HasMore())
-                {
-                    var fields = entry.FetchRecordAt(idxItr.FetchNextIndex(), out error);
-                    if(!string.IsNullOrEmpty(error))
-                    {
-                        Assert.Fail("Error fetching RecordSet '{0}' fields", name);
-                    }
-                    else
-                    {
-                        var foundCount = 0;
-                        // ReSharper disable LoopCanBeConvertedToQuery
-                        foreach(var field in fields)
-                        // ReSharper restore LoopCanBeConvertedToQuery
-                        {
-                            // ReSharper disable LoopCanBeConvertedToQuery
-                            foreach(var expectedValue in expectedValues)
-                            // ReSharper restore LoopCanBeConvertedToQuery
-                            {
-                                if(field.FieldName == expectedValue.Key && expectedValue.Value.Contains(field.TheValue))
-                                {
-                                    foundCount++;
-                                }
-                            }
-                        }
-                        Assert.AreEqual(expectedValues.Length, foundCount);
-                    }
-                }
-
-                //foreach(var index in entry.FetchRecordsetIndexes())
-                //{
-                //    var fields = entry.FetchRecordAt(index, out error);
-                //    if (!string.IsNullOrEmpty(error))
-                //    {
-                //        Assert.Fail("Error fetching RecordSet '{0}' fields", name);
-                //    }
-                //    else
-                //    {
-                //        var foundCount = 0;
-                //        foreach (var field in fields)
-                //        {
-                //            foreach (var expectedValue in expectedValues)
-                //            {
-                //                if (field.FieldName == expectedValue.Key && expectedValue.Value.Contains(field.TheValue))
-                //                {
-                //                    foundCount++;
-                //                }
-                //            }
-                //        }
-                //        Assert.AreEqual(expectedValues.Length, foundCount);
-                //    }
-                //}
-            }
-        }
 
         #endregion
 

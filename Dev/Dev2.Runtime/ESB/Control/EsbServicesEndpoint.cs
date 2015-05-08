@@ -47,7 +47,6 @@ namespace Dev2.Runtime.ESB.Control
         #region IFrameworkDuplexDataChannel Members
 
         readonly Dictionary<string, IFrameworkDuplexCallbackChannel> _users = new Dictionary<string, IFrameworkDuplexCallbackChannel>();
-        bool _doNotWipeDataList;
 
         public void Register(string userName)
         {
@@ -257,24 +256,6 @@ namespace Dev2.Runtime.ESB.Control
             {
                 errors.AddError(ex.Message);
             }
-            finally
-            {
-                // clean up after the request has executed ;)
-                if (dataObject.IsDebug && !_doNotWipeDataList && !dataObject.IsRemoteInvoke)
-                {
-                    DataListRegistar.ClearDataList();
-                }
-                else
-                {
-                    foreach (var thread in dataObject.ThreadsToDispose)
-                    {
-                        DataListRegistar.DisposeScope(thread.Key, resultID);
-                    }
-
-                    DataListRegistar.DisposeScope(Thread.CurrentThread.ManagedThreadId, resultID);
-                }
-
-            }
 
             var memoryUse = BinaryDataListStorageLayer.GetUsedMemoryInMb();
             var logMemoryValue = memoryUse.ToString("####.####");
@@ -336,10 +317,8 @@ namespace Dev2.Runtime.ESB.Control
             var principle = Thread.CurrentPrincipal;
             Dev2Logger.Log.Info("SUB-EXECUTION USER CONTEXT IS [ " + principle.Identity.Name + " ] FOR SERVICE  [ " + dataObject.ServiceName + " ]");
 
-            _doNotWipeDataList = false;
             if(dataObject.RunWorkflowAsync)
             {
-                _doNotWipeDataList = true;
                 ExecuteRequestAsync(dataObject, inputDefs, invoker, isLocal, oldID, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
             }
@@ -360,7 +339,6 @@ namespace Dev2.Runtime.ESB.Control
                     CreateNewEnvironmentFromInputMappings(dataObject, inputDefs);
                     if (!isLocal)
                     {
-                        _doNotWipeDataList = true;
                         SetRemoteExecutionDataList(dataObject, executionContainer, errors);
                     }
                     if (!errors.HasErrors())

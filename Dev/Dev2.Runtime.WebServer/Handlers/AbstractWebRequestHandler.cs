@@ -18,12 +18,10 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Security.Principal;
-using System.Threading;
 using System.Web;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
-using Dev2.Data.Binary_Objects;
 using Dev2.Data.Decision;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -248,24 +246,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                 Dev2Logger.Log.Debug("Execution Result [ " + executePayload + " ]");
 
-                // Clean up the datalist from the server
-                if(!dataObject.WorkflowResumeable && executionDlid != GlobalConstants.NullDataListID)
-                {
-                    if(dataObject.IsDebug && !dataObject.IsRemoteInvoke && !dataObject.RunWorkflowAsync)
-                    {
-                        DataListRegistar.ClearDataList();
-                    }
-                    else
-                    {
-                        foreach(var thread in dataObject.ThreadsToDispose)
-                        {
-                            DataListRegistar.DisposeScope(thread.Key, executionDlid);
-                        }
-
-                        DataListRegistar.DisposeScope(Thread.CurrentThread.ManagedThreadId, executionDlid);
-                    }
-                }
-
+                
                 // JSON Data ;)
                 if(executePayload.IndexOf("</JSON>", StringComparison.Ordinal) >= 0)
                 {

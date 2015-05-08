@@ -11,12 +11,13 @@
 
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Data.Binary_Objects;
 using Dev2.Data.Builders;
 using Dev2.Data.DataListCache;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Parsers;
+using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Interfaces;
-using Dev2.Server.Datalist;
 using Dev2.Server.DataList;
 using Dev2.Server.DataList.Translators;
 
@@ -29,7 +30,6 @@ namespace Dev2.DataList.Contract
         #region Class Members
 
         private static readonly object CacheGuard = new object();
-        private static volatile IEnvironmentModelDataListCompiler _serverCompilerCache;
         private static volatile IDataListServer _serverCache;
 
         #endregion Class Members
@@ -135,25 +135,6 @@ namespace Dev2.DataList.Contract
         }
 
 
-        public static IEnvironmentModelDataListCompiler CreateServerDataListCompiler()
-        {
-            if(_serverCompilerCache == null)
-            {
-                lock(CacheGuard)
-                {
-                    if(_serverCompilerCache == null)
-                    {
-                        _serverCompilerCache = CreateServerDataListCompiler(CreateDataListServer());
-                    }
-                }
-            }
-            return _serverCompilerCache;
-        }
-
-        public static IEnvironmentModelDataListCompiler CreateServerDataListCompiler(IDataListServer dataListServer)
-        {
-            return new ServerDataListCompiler(dataListServer);
-        }
 
         public static IDataListServer CreateDataListServer()
         {
@@ -276,7 +257,31 @@ namespace Dev2.DataList.Contract
             return new SearchTO(fieldsToSearch, searchType, searchCriteria, startIndex, result, matchCase, from, to, requireAllFieldsToMatch);
         }
 
-        
+
+
+        /// <summary>
+        /// Creates a new Dev2Column object for a recordset
+        /// </summary>
+        public static Dev2Column CreateDev2Column(string columnName, string columnDescription)
+        {
+            return new Dev2Column(columnName, columnDescription);
+        }
+
+        /// <summary>
+        /// Creates a new Dev2Column object for a recordset
+        /// </summary>
+        public static Dev2Column CreateDev2Column(string columnName, string columnDescription, bool isEditable)
+        {
+            return new Dev2Column(columnName, columnDescription, isEditable);
+        }
+
+        /// <summary>
+        /// Creates a new Dev2Column object for a recordset
+        /// </summary>
+        public static Dev2Column CreateDev2Column(string columnName, string columnDescription, bool isEditable, enDev2ColumnArgumentDirection colIODir)
+        {
+            return new Dev2Column(columnName, columnDescription, isEditable, colIODir);
+        }
 
         #endregion Methods
     }

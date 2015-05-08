@@ -156,12 +156,10 @@
     </Compile>
     <Compile Include="Audit\ComplexExpressionAuditor.cs" />
     <Compile Include="BackgroundDispatcher.cs" />
-    <Compile Include="BinaryDataListUtil.cs" />
     <Compile Include="Compilers\RecordsetGroup.cs" />
     <Compile Include="Compilers\TransientRecordsetProcessGroup.cs" />
     <Compile Include="DataListItem.cs" />
     <Compile Include="DataListModel.cs" />
-    <Compile Include="DataListRegistar.cs" />
     <Compile Include="DataListTO.cs" />
     <Compile Include="Decisions\Operations\DecisionUtils.cs" />
     <Compile Include="Decisions\Operations\NotBetween.cs" />
@@ -180,6 +178,7 @@
     <Compile Include="IIndexIterator.cs" />
     <Compile Include="IndexIterator.cs" />
     <Compile Include="IndexList.cs" />
+    <Compile Include="Interfaces\IDataListItem.cs" />
     <Compile Include="ListIndexIterator.cs" />
     <Compile Include="ListOfIndex.cs" />
     <Compile Include="LoopedIndexIterator.cs" />
@@ -316,7 +315,6 @@
     <Compile Include="Factories\IntellisenseFactory.cs" />
     <Compile Include="Interfaces\IDataListCompiler.cs" />
     <Compile Include="Interfaces\IDataListInjectionContents.cs" />
-    <Compile Include="Interfaces\IDataListItem.cs" />
     <Compile Include="Interfaces\IDataListVerifyPart.cs" />
     <Compile Include="Interfaces\IDataListVerifyPartDuplicationParser.cs" />
     <Compile Include="Interfaces\IDataValue.cs" />
@@ -346,8 +344,6 @@
     <Compile Include="MathOperations\Interfaces\IFunction.cs" />
     <Compile Include="MathOperations\Interfaces\IFunctionEvaluator.cs" />
     <Compile Include="MathOperations\MathOpsFactory.cs" />
-    <Compile Include="Interfaces\IServerDataListCompiler.cs" />
-    <Compile Include="Compilers\ServerDataListCompiler.cs" />
     <Compile Include="Network\DeleteDataListMessage.cs" />
     <Compile Include="Network\PersistChildChainMessage.cs" />
     <Compile Include="Network\ReadDataListMessage.cs" />
