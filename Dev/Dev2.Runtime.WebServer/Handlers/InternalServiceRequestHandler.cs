@@ -62,7 +62,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     Thread.CurrentPrincipal = ExecutingUser;
 
-                    var responseWriter = CreateForm(formData, serviceName, workspaceID, ctx.FetchHeaders(), PublicFormats);
+                    var responseWriter = CreateForm(formData, serviceName, workspaceID, ctx.FetchHeaders());
                     ctx.Send(responseWriter);
                 });
 

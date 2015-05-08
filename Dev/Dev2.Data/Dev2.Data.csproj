@@ -171,7 +171,6 @@
     <Compile Include="Enums\enForEachType.cs" />
     <Compile Include="Enums\enTypeOfSystemInformationToGather.cs" />
     <Compile Include="EnvironmentIndexIterator.cs" />
-    <Compile Include="IBinaryDataList.cs" />
     <Compile Include="IBinaryDataListEntry.cs" />
     <Compile Include="IDataListModel.cs" />
     <Compile Include="IIndexIterator.cs" />

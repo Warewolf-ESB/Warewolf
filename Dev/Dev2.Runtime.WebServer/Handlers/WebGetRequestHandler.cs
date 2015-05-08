@@ -41,7 +41,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             // Execute in its own thread to give proper context ;)
             Thread.CurrentPrincipal = ctx.Request.User;
 
-            var responseWriter = CreateForm(requestTO, serviceName, workspaceID, ctx.FetchHeaders(), PublicFormats);
+            var responseWriter = CreateForm(requestTO, serviceName, workspaceID, ctx.FetchHeaders());
             ctx.Send(responseWriter);
         }
     }
