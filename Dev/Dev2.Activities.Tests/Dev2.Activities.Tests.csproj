@@ -133,7 +133,6 @@
     <Compile Include="ActivityTests\DateTimeActivityTests.cs" />
     <Compile Include="ActivityTests\DateTimeDifferenceTests.cs" />
     <Compile Include="ActivityTests\DeleteRecordsActivityTests.cs" />
-    <Compile Include="ActivityTests\DsfActivityAbstractTest.cs" />
     <Compile Include="ActivityTests\ExecuteCommandLineTest.cs" />
     <Compile Include="ActivityTests\FindRecordsMultipleCriteriaActivityTest.cs" />
     <Compile Include="ActivityTests\ForEachActivityTest.cs" />

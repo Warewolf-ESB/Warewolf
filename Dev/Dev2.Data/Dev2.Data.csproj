@@ -165,7 +165,6 @@
     <Compile Include="Binary Objects\ReverseIndexIterator.cs" />
     <Compile Include="Binary Objects\ListIndexIterator.cs" />
     <Compile Include="Binary Objects\Structs\InternalFederatedTO.cs" />
-    <Compile Include="Compilers\EvaluateRuleSet.cs" />
     <Compile Include="Compilers\RecordsetGroup.cs" />
     <Compile Include="Compilers\TransientRecordsetProcessGroup.cs" />
     <Compile Include="DataListModel.cs" />
@@ -224,14 +223,12 @@
     <Compile Include="Binary Objects\IIndexIterator.cs" />
     <Compile Include="Binary Objects\IndexIterator.cs" />
     <Compile Include="Binary Objects\IndexList.cs" />
-    <Compile Include="Binary Objects\LiveFlushIterator.cs" />
     <Compile Include="Binary Objects\LoopedIndexIterator.cs" />
     <Compile Include="Binary Objects\Structs\SBinaryDataList.cs" />
     <Compile Include="Binary Objects\Structs\SBinaryDataListEntry.cs" />
     <Compile Include="Binary Objects\Structs\SBinaryDataListItem.cs" />
     <Compile Include="Builders\DataListIntellisenseBuilder.cs" />
     <Compile Include="Builders\DefinitionBuilder.cs" />
-    <Compile Include="Builders\Dev2DataListUpsertPayloadBuilder.cs" />
     <Compile Include="Builders\RecordSetCollectionBuilder.cs" />
     <Compile Include="Builders\RecordSetDefintionMutator.cs" />
     <Compile Include="Compilers\DataListCompiler.cs" />
@@ -325,13 +322,11 @@
     <Compile Include="Exceptions\RecordsetNotFoundException.cs" />
     <Compile Include="Extensions\ErrorResultTOExtensionMethods.cs" />
     <Compile Include="Factories\DataListFactory.cs" />
-    <Compile Include="Factories\Dev2DataListBuilderFactory.cs" />
     <Compile Include="Factories\Dev2OperationsFactory.cs" />
     <Compile Include="Factories\IntellisenseFactory.cs" />
     <Compile Include="Interfaces\IDataListCompiler.cs" />
     <Compile Include="Interfaces\IDataListInjectionContents.cs" />
     <Compile Include="Interfaces\IDataListItem.cs" />
-    <Compile Include="Interfaces\IDataListPayloadIterationFrame.cs" />
     <Compile Include="Interfaces\IDataListVerifyPart.cs" />
     <Compile Include="Interfaces\IDataListVerifyPartDuplicationParser.cs" />
     <Compile Include="Interfaces\IDataValue.cs" />
@@ -339,7 +334,6 @@
     <Compile Include="Interfaces\IDev2DataLanguageIntellisensePart.cs" />
     <Compile Include="Interfaces\IDev2DataLanguageParser.cs" />
     <Compile Include="Interfaces\IDev2DataListEvaluateIterator.cs" />
-    <Compile Include="Interfaces\IDev2DataListUpsertPayloadBuilder.cs" />
     <Compile Include="Interfaces\IDev2IndexFinder.cs" />
     <Compile Include="Interfaces\IDev2IteratorCollection.cs" />
     <Compile Include="Interfaces\IDev2LanguageParser.cs" />
@@ -424,7 +418,6 @@
     <Compile Include="TO\XMLPopulateIndexTO.cs" />
     <Compile Include="Translators\EmitionTypes.cs" />
     <Compile Include="Translators\StudioDebugTranslator.cs" />
-    <Compile Include="Translators\DataListXMLTranslatorWithOutSystemTags.cs" />
     <Compile Include="Translators\StudioDataListXMLTranslator.cs" />
     <Compile Include="Translators\DataListBinaryTranslator.cs" />
     <Compile Include="Translators\DatalistFormat.cs" />

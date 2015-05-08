@@ -118,7 +118,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             TestData = "<root><OutVar1 /></root>";
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
-            var res = Compiler.HasErrors(result.DataListID);
+            var res = result.Environment.HasErrors();
 
             // remove test datalist ;)
             //------------Assert Results-------------------------
@@ -173,7 +173,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            var fetchErrors = DataObject.Environment.FetchErrors();
+            var fetchErrors = result.Environment.FetchErrors();
             if(fetchErrors == string.Empty)
             {
                 Assert.Fail("no error");
@@ -195,7 +195,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            var fetchErrors = DataObject.Environment.FetchErrors();
+            var fetchErrors = result.Environment.FetchErrors();
             if(fetchErrors == string.Empty)
             {
                 Assert.Fail("no error");
@@ -293,7 +293,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+            Assert.IsTrue(result.Environment.HasErrors());
             var fetchErrors = DataObject.Environment.FetchErrors();
             // remove test datalist ;)
 
@@ -318,7 +318,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+            Assert.IsTrue(result.Environment.HasErrors());
             var fetchErrors = DataObject.Environment.FetchErrors();
             // remove test datalist ;)
             StringAssert.Contains(fetchErrors, "Cannot execute explorer from tool.");
@@ -348,7 +348,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+            Assert.IsTrue(result.Environment.HasErrors());
             GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
             Assert.IsNull(actual);
             var fetchErrors = DataObject.Environment.FetchErrors();

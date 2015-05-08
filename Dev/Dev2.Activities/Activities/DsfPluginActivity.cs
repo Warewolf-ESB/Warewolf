@@ -24,16 +24,7 @@ namespace Dev2.Activities
 
         protected override Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors)
         {
-            _errorsTo = new ErrorResultTO();
-            var compiler = DataListFactory.CreateDataListCompiler();
-
-            ErrorResultTO invokeErrors;
-            esbChannel.CorrectDataList(dataObject, dataObject.WorkspaceID, out invokeErrors, compiler);
-
-            dataObject.DataListID = compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Input, inputs, out invokeErrors);
-            _errorsTo.MergeErrors(invokeErrors);
-
-            _errorsTo.MergeErrors(invokeErrors);
+            _errorsTo = new ErrorResultTO();           
             var pluginServiceExecution = GetNewPluginServiceExecution(dataObject);
             pluginServiceExecution.InstanceInputDefinitions = inputs;
             pluginServiceExecution.InstanceOutputDefintions = outputs;

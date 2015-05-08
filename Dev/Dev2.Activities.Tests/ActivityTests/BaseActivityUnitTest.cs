@@ -47,7 +47,6 @@ namespace ActivityUnitTests
 
         public IEsbWorkspaceChannel DsfChannel;
         public Mock<IEsbWorkspaceChannel> MockChannel;
-        public static IDataListCompiler Compiler;
         public BaseActivityUnitTest()
         {
             CustomContainer.Register<IActivityParser>(new ActivityParser());
@@ -240,9 +239,7 @@ namespace ActivityUnitTests
                 CurrentDl = TestData;
             }
 
-            Compiler = DataListFactory.CreateDataListCompiler();
-            ErrorResultTO errors;
-            Guid exId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(TestData), new StringBuilder(CurrentDl), out errors);
+            ErrorResultTO errors = new ErrorResultTO();
 
 
             if(errors.HasErrors())
@@ -252,7 +249,7 @@ namespace ActivityUnitTests
                 throw new Exception(errorString);
             }
 
-            dataObject = new DsfDataObject(CurrentDl, exId)
+            dataObject = new DsfDataObject(CurrentDl, new Guid())
             {
                 // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
                 //       if this is NOT provided which will cause the tests to fail!
@@ -292,11 +289,7 @@ namespace ActivityUnitTests
                 CurrentDl = TestData;
             }
 
-            Compiler = DataListFactory.CreateDataListCompiler();
-            ErrorResultTO errors;
-            Guid exId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(TestData), new StringBuilder(CurrentDl), out errors);
-
-
+            ErrorResultTO errors = new ErrorResultTO();
             if(errors.HasErrors())
             {
                 string errorString = errors.FetchErrors().Aggregate(string.Empty, (current, item) => current + item);
@@ -304,7 +297,7 @@ namespace ActivityUnitTests
                 throw new Exception(errorString);
             }
 
-            dataObject = new DsfDataObject(CurrentDl, exId)
+            dataObject = new DsfDataObject(CurrentDl, new Guid())
             {
                 // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
                 //       if this is NOT provided which will cause the tests to fail!

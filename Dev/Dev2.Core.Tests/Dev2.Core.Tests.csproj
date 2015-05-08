@@ -169,7 +169,6 @@
     <Compile Include="DataList\BinaryDataListTest.cs" />
     <Compile Include="DataList\BrokerTest.cs" />
     <Compile Include="DataList\DebugToTests.cs" />
-    <Compile Include="DataList\Dev2DataListBuilderTest.cs" />
     <Compile Include="Dev2.Network\MockNetworkServer.cs" />
     <Compile Include="Dev2.Network\MockNetworkContext.cs" />
     <Compile Include="Dev2RandomTests.cs" />
@@ -202,8 +201,6 @@
     <Compile Include="Parsing\TokenizerTest.cs" />
     <Compile Include="Parsing\LanguageParserTest.cs" />
     <Compile Include="PathOperationTests\ActivityIOFactoryTests.cs" />
-    <Compile Include="DataListCompilerTest.cs" />
-    <Compile Include="DataListFactoryTest.cs" />
     <Compile Include="DataListCleaningUtilTest.cs" />
     <Compile Include="Dev2DataLanguageParserTest.cs" />
     <Compile Include="ParserStrings.Designer.cs">

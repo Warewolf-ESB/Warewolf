@@ -18,7 +18,6 @@ using System.Linq;
 using System.Reflection;
 using Dev2.Activities;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
@@ -191,160 +190,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         #endregion
 
         #region ExecuteSimulation
-
-        [TestMethod]
-        public void ExecuteSimulation_Expected_UpdatesDataList()
-        {
-            var dataObject = CreateDataObject(false, true);
-            var compiler = DataListFactory.CreateDataListCompiler();
-
-            ErrorResultTO errors;
-            dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, _simulationShape.ToStringBuilder(), out errors);
-
-            var simulationDataID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), _simulationData, _simulationShape.ToStringBuilder(), out errors);
-            var simulationDataList = compiler.FetchBinaryDataList(simulationDataID, out errors);
-
-            #region Setup simulation repository
-
-            var random = new Random();
-            var simulationKey = new SimulationKey
-            {
-                WorkflowID = "TestActivity", // class name of activity used below
-                ActivityID = string.Format("AID-{0}", random.Next()),
-                ScenarioID = string.Format("SID-{0}", random.Next())
-            };
-            var simulationResult = new SimulationResult
-            {
-                Key = simulationKey,
-                Value = simulationDataList
-            };
-            SimulationRepository.Instance.Save(simulationResult);
-
-            #endregion
-
-            var activity = new TestActivity(DebugDispatcher.Instance)
-            {
-                SimulationMode = SimulationMode.Always,
-                UniqueID = simulationKey.ActivityID,
-                ScenarioID = simulationKey.ScenarioID
-            };
-
-            Run(activity, dataObject,
-                () =>
-                {
-                    SimulationRepository.Instance.Delete(simulationResult);
-
-                    ErrorResultTO resultErrors;
-                    var resultDataList = compiler.FetchBinaryDataList(dataObject.DataListID, out resultErrors);
-                    if(errors.HasErrors())
-                    {
-                        Assert.Fail("Errors fetching Binary DataList result");
-                    }
-
-                    // See SimulationData.xml in XML folder
-                    ValidateRecordSet(resultDataList, "Golfer", new[]
-                    {
-                        new KeyValuePair<string, string[]>("FirstName", new[]
-                        {
-                            "Tiger", "Ernie"
-                        }),
-                         new KeyValuePair<string, string[]>("LastName", new[]
-                        {
-                            "Woods", "Els"
-                        })
-                    });
-
-
-                    ValidateScalar(resultDataList, "A", "6");
-                    ValidateScalar(resultDataList, "B", "7");
-                    ValidateScalar(resultDataList, "Result", "13");
-
-                    Assert.IsTrue(true);
-                });
-
-        }
-
-        [TestMethod]
-        public void ExecuteSimulation_NoValidSimulationKeyInRepository_Expected_NoDataInjectedIntoDataList()
-        {
-            var dataObject = CreateDataObject(false, true);
-            var compiler = DataListFactory.CreateDataListCompiler();
-
-            ErrorResultTO errors;
-            dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, _simulationShape.ToStringBuilder(), out errors);
-
-            var simulationDataID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), _simulationData, _simulationShape.ToStringBuilder(), out errors);
-            compiler.FetchBinaryDataList(simulationDataID, out errors);
-
-            #region Setup simulation repository
-
-            var random = new Random();
-            var simulationKey = new SimulationKey
-            {
-                WorkflowID = "TestActivity", // class name of activity used below
-                ActivityID = string.Format("AID-{0}", random.Next()),
-                ScenarioID = string.Format("SID-{0}", random.Next())
-            };
-            //var simulationResult = new SimulationResult {
-            //    Key = simulationKey,
-            //    Value = simulationDataList
-            //};
-            //SimulationRepository.Instance.Save(simulationResult);
-
-            #endregion
-
-            var activity = new TestActivity(DebugDispatcher.Instance)
-            {
-                SimulationMode = SimulationMode.Always,
-                UniqueID = simulationKey.ActivityID,
-                ScenarioID = simulationKey.ScenarioID
-            };
-
-            Run(activity, dataObject,
-                () =>
-                {
-                    //SimulationRepository.Instance.Delete(simulationResult);
-
-                    ErrorResultTO resultErrors;
-                    var resultDataList = compiler.FetchBinaryDataList(dataObject.DataListID, out resultErrors);
-                    if(errors.HasErrors())
-                    {
-                        Assert.Fail("Errors fetching Binary DataList result");
-                    }
-
-                    // See SimulationData.xml in XML folder
-                    try
-                    {
-                        ValidateRecordSet(resultDataList, "Golfer", new[]
-                    {
-                        new KeyValuePair<string, string[]>("FirstName", new[]
-                        {
-                            "Tiger", "Ernie"
-                        }),
-                         new KeyValuePair<string, string[]>("LastName", new[]
-                        {
-                            "Woods", "Els"
-                        })
-                    });
-                    }
-                    catch(AssertFailedException)
-                    {
-                        // we know that we could not find the value in the datalist
-                        Assert.IsTrue(true);
-                    }
-
-
-                    try
-                    {
-                        ValidateScalar(resultDataList, "A", "6");
-                    }
-                    catch(AssertFailedException)
-                    {
-                        // we know that we could not find the value in the datalist
-                        Assert.IsTrue(true);
-                    }
-                });
-        }
 
         #region ValidateScalar
 
@@ -524,7 +369,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 wfApp.Extensions.Add(dataObject);
             }
-            wfApp.Extensions.Add(DataListFactory.CreateDataListCompiler());
             wfApp.Completed += args => completed(null, args.Outputs);
             wfApp.OnUnhandledException += args =>
             {

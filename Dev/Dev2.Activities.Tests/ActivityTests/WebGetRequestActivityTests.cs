@@ -142,7 +142,7 @@ namespace ActivityUnitTests.ActivityTest
             var executeProcess = ExecuteProcess();
             //------------Assert Results-------------------------
             mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url, It.IsAny<List<Tuple<string, string>>>()), Times.Once());
-            Assert.IsTrue(Compiler.HasErrors(executeProcess.DataListID));
+            Assert.IsTrue(executeProcess.Environment.HasErrors());
             string errorString = DataObject.Environment.FetchErrors();
             StringAssert.Contains(errorString, Message);
         }

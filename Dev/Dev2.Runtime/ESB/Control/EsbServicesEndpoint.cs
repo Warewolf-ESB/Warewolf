@@ -23,7 +23,6 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.Data.Binary_Objects;
-using Dev2.Data.Enums;
 using Dev2.Data.Storage;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -476,70 +475,6 @@ namespace Dev2.Runtime.ESB.Control
 
         }
 
-        /// <summary>
-        /// Shapes for sub request. Returns a key valid pair with remaining output mappings to be processed later!
-        /// </summary>
-        /// <param name="dataObject">The data object.</param>
-        /// <param name="inputDefs">The input defs.</param>
-        /// <param name="outputDefs">The output defs.</param>
-        /// <param name="errors">The errors.</param>
-        public IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> ShapeForSubRequest(IDSFDataObject dataObject, string inputDefs, string outputDefs, out ErrorResultTO errors)
-        {
-            // We need to make it based upon the request ;)
-            var oldID = dataObject.DataListID;
-            var compiler = DataListFactory.CreateDataListCompiler();
-
-            ErrorResultTO invokeErrors;
-            errors = new ErrorResultTO();
-
-            StringBuilder theShape;
-
-            if(IsServiceWorkflow(dataObject.WorkspaceID, dataObject.ResourceID))
-            {
-                theShape = FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID);
-            }
-            else
-            {
-                var isDbService = dataObject.RemoteServiceType == "DbService" || dataObject.RemoteServiceType == "InvokeStoredProc";
-                theShape = ShapeMappingsToTargetDataList(inputDefs, outputDefs, out invokeErrors, isDbService);
-                errors.MergeErrors(invokeErrors);
-            }
-
-            var shapeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(), theShape, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-            dataObject.RawPayload = new StringBuilder();
-
-
-            IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> remainingMappings = null;
-
-            if(!dataObject.IsDataListScoped)
-            {
-                // Now ID flow through mappings ;)
-                remainingMappings = compiler.ShapeForSubExecution(oldID, shapeID, inputDefs, outputDefs, out invokeErrors);
-                errors.MergeErrors(invokeErrors);
-            }
-            else
-            {
-                // we have a scoped datalist ;)
-                
-                compiler.SetParentID(shapeID, oldID);                
-                var inputID = compiler.Shape(oldID, enDev2ArgumentType.Input, inputDefs, out invokeErrors,oldID);
-                errors.MergeErrors(invokeErrors);
-                var outputID = compiler.Merge(oldID, shapeID, enDataListMergeTypes.Union, enTranslationDepth.Shape, false, out invokeErrors);             
-                errors.MergeErrors(invokeErrors);
-
-                shapeID = compiler.Merge(outputID,inputID, enDataListMergeTypes.Union,enTranslationDepth.Shape,false, out invokeErrors);             
-                errors.MergeErrors(invokeErrors);
- 
-            }
-
-            // set execution ID ;)
-            dataObject.DataListID = shapeID;
-
-            return remainingMappings;
-
-        }
-
         public T FetchServerModel<T>(IDSFDataObject dataObject, Guid workspaceId, out ErrorResultTO errors)
         {
             var serviceID = dataObject.ResourceID;
@@ -663,47 +598,7 @@ namespace Dev2.Runtime.ESB.Control
             return result.ToString();
         }
 
-        /// <summary>
-        /// Gets the correct data list.
-        /// </summary>
-        /// <param name="dataObject">The data object.</param>
-        /// <param name="workspaceId">The workspace unique identifier.</param>
-        /// <param name="errors">The errors.</param>
-        /// <param name="compiler">The compiler.</param>
-        /// <returns></returns>
-        public Guid CorrectDataList(IDSFDataObject dataObject, Guid workspaceId, out ErrorResultTO errors, IDataListCompiler compiler)
-        {
-            StringBuilder theShape;
-            ErrorResultTO invokeErrors;
-            errors = new ErrorResultTO();
-
-            // If no DLID, we need to make it based upon the request ;)
-            if(dataObject.DataListID == GlobalConstants.NullDataListID)
-            {
-                theShape = FindServiceShape(workspaceId, dataObject.ResourceID);
-                dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), dataObject.RawPayload, theShape, out invokeErrors);
-                errors.MergeErrors(invokeErrors);
-                dataObject.RawPayload = new StringBuilder();
-            }
-
-            // force all items to exist in the DL ;)
-            theShape = FindServiceShape(workspaceId, dataObject.ResourceID);
-            var innerDatalistID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), new StringBuilder(), theShape, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-
-            // Add left to right
-            var left = compiler.FetchBinaryDataList(dataObject.DataListID, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-            var right = compiler.FetchBinaryDataList(innerDatalistID, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-
-            DataListUtil.MergeDataList(left, right, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-            compiler.PushBinaryDataList(left.UID, left, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-
-            return innerDatalistID;
-        }
+       
 
         /// <summary>
         /// Manipulates the data list shape for output.
@@ -756,27 +651,6 @@ namespace Dev2.Runtime.ESB.Control
         }
 
 
-        /// <summary>
-        /// Shapes the mappings automatic target data list.
-        /// </summary>
-        /// <param name="inputs">The inputs.</param>
-        /// <param name="outputs">The outputs.</param>
-        /// <param name="errors">The errors.</param>
-        /// <param name="isDbService"></param>
-        /// <returns></returns>
-        StringBuilder ShapeMappingsToTargetDataList(string inputs, string outputs, out ErrorResultTO errors, bool isDbService)
-        {
-            errors = new ErrorResultTO();
-            ErrorResultTO invokeErrors;
-            var oDL = DataListUtil.ShapeDefinitionsToDataList(outputs, enDev2ArgumentType.Output, out invokeErrors, isDbService: isDbService);
-            errors.MergeErrors(invokeErrors);
-            var iDL = DataListUtil.ShapeDefinitionsToDataList(inputs, enDev2ArgumentType.Input, out invokeErrors, isDbService: isDbService);
-            errors.MergeErrors(invokeErrors);
-
-            var result = GlueInputAndOutputMappingSegments(iDL.ToString(), oDL.ToString(), out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-            return result;
-        }
 
         /// <summary>
         /// Glues the input and output mapping segments.

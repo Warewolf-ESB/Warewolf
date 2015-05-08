@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
@@ -218,18 +217,5 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
 
             return result;
         }
-
-        IDev2DataListEvaluateIterator CreateDataListEvaluateIterator(string expression, Guid executionId, IDataListCompiler compiler, IDev2IteratorCollection iteratorCollection, ErrorResultTO allErrors)
-        {
-            ErrorResultTO errors;
-
-            IBinaryDataListEntry expressionEntry = compiler.Evaluate(executionId, enActionType.User, expression, false, out errors);
-            allErrors.MergeErrors(errors);
-            IDev2DataListEvaluateIterator expressionIterator = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionEntry);
-            iteratorCollection.AddIterator(expressionIterator);
-
-            return expressionIterator;
-        }
-
     }
 }

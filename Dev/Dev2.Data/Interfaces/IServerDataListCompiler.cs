@@ -19,7 +19,6 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.TO;
 
 namespace Dev2.Server.Datalist
@@ -29,18 +28,6 @@ namespace Dev2.Server.Datalist
     {
 
         #region Evaluation Operations
-
-        /// <summary>
-        /// Used to evaluate an expression against a given datalist
-        /// </summary>
-        /// <param name="ctx">The CTX.</param>
-        /// <param name="curDLID">The cur DL ID.</param>
-        /// <param name="typeOf">The type of evaluation.</param>
-        /// <param name="expression">The expression.</param>
-        /// <param name="errors">The errors.</param>
-        /// <param name="returnExpressionIfNoMatch">if set to <c>true</c> [return expression if no match].</param>
-        /// <returns></returns>
-        IBinaryDataListEntry Evaluate(NetworkContext ctx, Guid curDLID, enActionType typeOf, string expression, out ErrorResultTO errors, bool returnExpressionIfNoMatch = false);
 
         /// <summary>
         /// Builds the input expression extractor.
@@ -80,104 +67,7 @@ namespace Dev2.Server.Datalist
         #endregion
 
         #region Manipulation Operations
-        /// <summary>
-        /// Upserts the value to the specified cur DL ID's expression.
-        /// </summary>
-        /// <param name="ctx">The CTX.</param>
-        /// <param name="curDLID">The cur DLID.</param>
-        /// <param name="expression">The expression.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        Guid Upsert(NetworkContext ctx, Guid curDLID, string expression, IBinaryDataListEntry value, out ErrorResultTO errors);
-
-        /// <summary>
-        /// Upserts the specified cur DLID.
-        /// </summary>
-        /// <param name="ctx">The CTX.</param>
-        /// <param name="curDLID">The cur DLID.</param>
-        /// <param name="expression">The expression.</param>
-        /// <param name="values">The values.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        Guid Upsert(NetworkContext ctx, Guid curDLID, IList<string> expression, IList<IBinaryDataListEntry> values, out ErrorResultTO errors);
-
-        /// <summary>
-        /// Upserts the values against the specified cur DL ID's expression list.
-        /// </summary>
-        /// <param name="ctx">The CTX.</param>
-        /// <param name="curDLID">The cur DLID.</param>
-        /// <param name="expressions">The expressions.</param>
-        /// <param name="values">The values.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        Guid Upsert(NetworkContext ctx, Guid curDLID, IList<string> expressions, IList<string> values, out ErrorResultTO errors);
-
-        /// <summary>
-        /// Upserts the specified cur DLID.
-        /// </summary>
-        /// <param name="ctx">The CTX.</param>
-        /// <param name="curDLID">The cur DLID.</param>
-        /// <param name="payload">The payload.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        Guid Upsert(NetworkContext ctx, Guid curDLID, IDev2DataListUpsertPayloadBuilder<string> payload, out ErrorResultTO errors);
-
-        /// <summary>
-        /// Upserts the specified cur DLID.
-        /// </summary>
-        /// <param name="ctx">The CTX.</param>
-        /// <param name="curDLID">The cur DLID.</param>
-        /// <param name="payload">The payload.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        Guid Upsert(NetworkContext ctx, Guid curDLID, IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> payload, out ErrorResultTO errors);
-
-
-        /// <summary>
-        /// Upserts the specified CTX.
-        /// </summary>
-        /// <param name="ctx">The CTX.</param>
-        /// <param name="curDLID">The current dlid.</param>
-        /// <param name="payload">The payload.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        Guid Upsert(NetworkContext ctx, Guid curDLID, IDev2DataListUpsertPayloadBuilder<List<string>> payload, out ErrorResultTO errors);
-
-        /// <summary>
-        /// Shapes the definitions in string form to create/amended a DL.
-        /// </summary>
-        /// <param name="ctx">The CTX.</param>
-        /// <param name="curDLID">The cur DL ID.</param>
-        /// <param name="typeOf">The type of.</param>
-        /// <param name="defs">The defs.</param>
-        /// <param name="errors">The errors.</param>
-        /// <param name="overrideID">The override unique identifier.</param>
-        /// <returns></returns>
-        Guid Shape(NetworkContext ctx, Guid curDLID, enDev2ArgumentType typeOf, string defs, out ErrorResultTO errors, Guid overrideID = default(Guid));
-
-        /// <summary>
-        /// Shapes the specified CTX.
-        /// </summary>
-        /// <param name="ctx">The CTX.</param>
-        /// <param name="curDLID">The current dlid.</param>
-        /// <param name="typeOf">The type of.</param>
-        /// <param name="definitions">The definitions.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        Guid Shape(NetworkContext ctx, Guid curDLID, enDev2ArgumentType typeOf, IList<IDev2Definition> definitions, out ErrorResultTO errors);
-
-        /// <summary>
-        /// Shapes for sub execution.
-        /// </summary>
-        /// <param name="ctx">The CTX.</param>
-        /// <param name="parentDLID">The parent dlid.</param>
-        /// <param name="childDLID">The child dlid.</param>
-        /// <param name="inputDefs">The input defs.</param>
-        /// <param name="outputDefs">The output defs.</param>
-        /// <param name="errors">The errors.</param>
-        IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> ShapeForSubExecution(NetworkContext ctx, Guid parentDLID, Guid childDLID, string inputDefs, string outputDefs, out ErrorResultTO errors);
-
+       
         /// <summary>
         /// Merges the specified left ID with the right ID
         /// </summary>
@@ -303,12 +193,6 @@ namespace Dev2.Server.Datalist
         #endregion
 
         #region Admin Operations
-
-        /// <summary>
-        /// Fetches the DebugItems created during a upsert
-        /// </summary>
-        List<KeyValuePair<string, IBinaryDataListEntry>> GetDebugItems();
-
         /// <summary>
         /// Fetches the change log for pre ( inputs ) or post execute ( outputs )
         /// </summary>

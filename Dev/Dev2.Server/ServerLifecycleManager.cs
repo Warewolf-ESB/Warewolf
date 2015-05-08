@@ -391,13 +391,6 @@ namespace Dev2
                 didBreak = true;
             }
 
-            // Start DataList Server
-            if(!didBreak && !StartDataListServer())
-            {
-                result = 99;
-                didBreak = true;
-            }
-
             if(!didBreak && !LoadResourceCatalog())
             {
                 result = 94;
@@ -1738,14 +1731,6 @@ namespace Dev2
             var instance = HostSecurityProvider.Instance;
 
             // ReSharper restore UnusedVariable
-            return true;
-        }
-
-        bool StartDataListServer()
-        {
-            // PBI : 5376 - Create instance of the Server compiler
-            DataListFactory.CreateServerDataListCompiler();
-            BinaryDataListStorageLayer.Setup();
             return true;
         }
 

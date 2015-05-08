@@ -24,6 +24,7 @@ using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
+using Newtonsoft.Json;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 
@@ -512,67 +513,6 @@ namespace Dev2.Data.Util
             return result;
         }
 
-        /// <summary>
-        /// Shapes the definitions to data list.
-        /// </summary>
-        /// <param name="arguments">The arguments.</param>
-        /// <param name="typeOf">The type of.</param>
-        /// <param name="errors">The errors.</param>
-        /// <param name="flipGeneration">if set to <c>true</c> [flip generation].</param>
-        /// <param name="isDbService"></param>
-        /// <returns></returns>
-        public static StringBuilder ShapeDefinitionsToDataList(string arguments, enDev2ArgumentType typeOf, out ErrorResultTO errors, bool flipGeneration = false, bool isDbService = false)
-        {
-            StringBuilder result = new StringBuilder();
-            IList<IDev2Definition> defs = null;
-            bool isInput = false;
-            errors = new ErrorResultTO();
-
-            if(typeOf == enDev2ArgumentType.Output)
-            {
-                defs = DataListFactory.CreateOutputParser().Parse(arguments);
-            }
-            else if(typeOf == enDev2ArgumentType.Input)
-            {
-                defs = DataListFactory.CreateInputParser().Parse(arguments);
-                isInput = true;
-            }
-
-            if(defs == null)
-            {
-                errors.AddError(string.Concat("could not locate any data of type [ ", typeOf, " ]"));
-            }
-            else
-            {
-                IRecordSetCollection recCol = isDbService ?
-                    DataListFactory.CreateRecordSetCollectionForDbService(defs, !(isInput)) :
-                    DataListFactory.CreateRecordSetCollection(defs, !(isInput));
-
-                IList<IDev2Definition> scalarList = DataListFactory.CreateScalarList(defs, !(isInput));
-
-                // open datashape
-                result.Append(string.Concat("<", AdlRoot, ">"));
-                result.Append(Environment.NewLine);
-
-                // do we want to do funky things ?!
-                if(flipGeneration)
-                {
-                    isInput = true;
-                }
-
-                // append scalar shape
-                result.Append(BuildDev2ScalarShape(scalarList, isInput));
-                // append record set shape
-                result.Append(BuildDev2RecordSetShape(recCol, isInput));
-
-                // close datashape
-                result.Append(Environment.NewLine);
-                result.Append(string.Concat("</", AdlRoot, ">"));
-            }
-
-            return result;
-        }
-        
         /// <summary>
         /// Shapes the definitions to data list.
         /// </summary>
@@ -1860,5 +1800,31 @@ namespace Dev2.Data.Util
             return result;
         }
 
+        /// <summary>
+        /// Converts from to.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="payload">The payload.</param>
+        /// <returns></returns>
+        public static T ConvertFromJsonToModel<T>(StringBuilder payload)
+        {
+
+            T obj = JsonConvert.DeserializeObject<T>(payload.ToString());
+
+            return obj;
+        }
+
+        /// <summary>
+        /// Converts the model to json.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="payload">The payload.</param>
+        /// <returns></returns>
+        public static StringBuilder ConvertModelToJson<T>(T payload)
+        {
+            var result = new StringBuilder(JsonConvert.SerializeObject(payload));
+
+            return result;
+        }
     }
 }

@@ -17,9 +17,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Data.Binary_Objects;
-using Dev2.Data.Enums;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Builders;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.DataList.Contract
@@ -32,26 +30,6 @@ namespace Dev2.DataList.Contract
         #region New External Methods
 
         #region Evaluation Operations
-
-        /// <summary>
-        /// Used to evaluate an expression against a given datalist
-        /// </summary>
-        /// <param name="curDlid">The cur DL ID.</param>
-        /// <param name="typeOf">The type of evaluation.</param>
-        /// <param name="expression">The expression.</param>
-        /// <param name="toRoot">if set to <c>true</c> [automatic root].</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        IBinaryDataListEntry Evaluate(Guid curDlid, enActionType typeOf, string expression, bool toRoot, out ErrorResultTO errors);
-
-        /// <summary>
-        /// Evaluates the system entry.
-        /// </summary>
-        /// <param name="curDlid">The cur DL ID.</param>
-        /// <param name="sysTag">The system tag.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        string EvaluateSystemEntry(Guid curDlid, enSystemTag sysTag, out ErrorResultTO errors);
 
         #endregion
 
@@ -118,28 +96,7 @@ namespace Dev2.DataList.Contract
         /// <param name="dev2ColumnArgumentDirection">The dev2 column argument direction.</param>
         /// <returns></returns>
         IList<IDev2Definition> GenerateDefsFromDataListForDebug(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection);
-
-        /// <summary>
-        /// Shapes the dev2 definitions to data list.
-        /// </summary>
-        /// <param name="definitions">The definitions as string</param>
-        /// <param name="defType">Type of the def.</param>
-        /// <param name="pushToServer">if set to <c>true</c> [push to server].</param>
-        /// <param name="errors">The errors.</param>
-        /// <param name="flipGeneration">if set to <c>true</c> [flip generation].</param>
-        /// <returns></returns>
-        StringBuilder ShapeDev2DefinitionsToDataList(string definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors, bool flipGeneration = false);
-
-        /// <summary>
-        /// Shapes the dev2 definitions to data list.
-        /// </summary>
-        /// <param name="definitions">The definitions as binary objects</param>
-        /// <param name="defType">Type of the def Input or Output</param>
-        /// <param name="pushToServer">if set to <c>true</c> [push automatic server].</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        StringBuilder ShapeDev2DefinitionsToDataList(IList<IDev2Definition> definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors);
-
+      
         /// <summary>
         /// Fetches the binary data list.
         /// </summary>
@@ -181,134 +138,7 @@ namespace Dev2.DataList.Contract
         #endregion
 
         #region Manipulation Operations
-        /// <summary>
-        /// Upserts the value to the specified cur DL ID's expression.
-        /// </summary>
-        /// <param name="curDlid">The cur DLID.</param>
-        /// <param name="expression">The expression.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        Guid Upsert(Guid curDlid, string expression, IBinaryDataListEntry value, out ErrorResultTO errors);
-
-        /// <summary>
-        /// Upserts the specified cur DLID.
-        /// </summary>
-        /// <param name="curDlid">The cur DLID.</param>
-        /// <param name="expressions">The expressions.</param>
-        /// <param name="values">The values.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        Guid Upsert(Guid curDlid, IList<string> expressions, IList<string> values, out ErrorResultTO errors);
-
-        /// <summary>
-        /// Upserts the specified cur DLID.
-        /// </summary>
-        /// <param name="curDlid">The cur DLID.</param>
-        /// <param name="expression">The expression.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        Guid Upsert(Guid curDlid, string expression, string value, out ErrorResultTO errors);
-
-        /// <summary>
-        /// Upserts the values against the specified cur DL ID's expression list.
-        /// </summary>
-        /// <param name="curDlid">The cur DLID.</param>
-        /// <param name="expressions">The expressions.</param>
-        /// <param name="values">The values.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        Guid Upsert(Guid curDlid, IList<string> expressions, IList<IBinaryDataListEntry> values, out ErrorResultTO errors);
-
-
-        /// <summary>
-        /// Upserts the specified cur DLID.
-        /// </summary>
-        /// <param name="curDlid">The cur DLID.</param>
-        /// <param name="payload">The payload.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        Guid Upsert(Guid curDlid, IDev2DataListUpsertPayloadBuilder<string> payload, out ErrorResultTO errors);
-
-        /// <summary>
-        /// Upserts the specified cur DLID.
-        /// </summary>
-        /// <param name="curDlid">The cur DLID.</param>
-        /// <param name="payload">The payload.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        Guid Upsert(Guid curDlid, IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> payload, out ErrorResultTO errors);
-
-        /// <summary>
-        /// Shapes for sub execution.
-        /// </summary>
-        /// <param name="parentDlid">The parent dlid.</param>
-        /// <param name="childDlid">The child dlid.</param>
-        /// <param name="inputDefs">The input defs.</param>
-        /// <param name="outputDefs">The output defs.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> ShapeForSubExecution(Guid parentDlid, Guid childDlid, string inputDefs, string outputDefs, out ErrorResultTO errors);
-
-        /// <summary>
-        /// Shapes the specified current dlid.
-        /// </summary>
-        /// <param name="curDlid">The current dlid.</param>
-        /// <param name="typeOf">The type of.</param>
-        /// <param name="inputDefinitions">The input definitions.</param>
-        /// <param name="errors">The errors.</param>
-        /// <param name="overrideID">The override unique identifier.</param>
-        /// <returns></returns>
-        Guid Shape(Guid curDlid, enDev2ArgumentType typeOf, string inputDefinitions, out ErrorResultTO errors, Guid overrideID = default(Guid));
-
-        /// <summary>
-        /// Shapes the definitions in binary form to create/amended a DL.
-        /// </summary>
-        /// <param name="curDlid">The cur DL ID.</param>
-        /// <param name="typeOf">The type of.</param>
-        /// <param name="definitions">The definitions.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        Guid Shape(Guid curDlid, enDev2ArgumentType typeOf, IList<IDev2Definition> definitions, out ErrorResultTO errors);
-
-
-        /// <summary>
-        /// Merges the specified left ID with the right ID
-        /// </summary>
-        /// <param name="leftID">The left ID.</param>
-        /// <param name="rightID">The right ID.</param>
-        /// <param name="mergeType">Type of the merge.</param>
-        /// <param name="depth">The depth.</param>
-        /// <param name="createNewList">if set to <c>true</c> [create new list].</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        Guid Merge(Guid leftID, Guid rightID, enDataListMergeTypes mergeType, enTranslationDepth depth, bool createNewList, out ErrorResultTO errors);
-
-        void ConditionalMerge(DataListMergeFrequency conditions, Guid destinationDatalistID, Guid sourceDatalistID, DataListMergeFrequency datalistMergeFrequency, enDataListMergeTypes datalistMergeType, enTranslationDepth datalistMergeDepth);
-
-        /// <summary>
-        /// Merges the specified left.
-        /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="right">The right.</param>
-        /// <param name="mergeType">Type of the merge.</param>
-        /// <param name="depth">The depth.</param>
-        /// <param name="createNewList">if set to <c>true</c> [create new list].</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        IBinaryDataList Merge(IBinaryDataList left, IBinaryDataList right, enDataListMergeTypes mergeType, enTranslationDepth depth, bool createNewList, out ErrorResultTO errors);
-
-        /// <summary>
-        /// Upserts the system tag, keep val == string.Empty to erase the tag
-        /// </summary>
-        /// <param name="curDlid">The cur DLID.</param>
-        /// <param name="tag">The tag.</param>
-        /// <param name="val">The val.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        Guid UpsertSystemTag(Guid curDlid, enSystemTag tag, string val, out ErrorResultTO errors);
-
+  
         #endregion
 
         #region External Translation
@@ -429,25 +259,6 @@ namespace Dev2.DataList.Contract
         Guid PushSystemModelToDataList<T>(Guid dlID, T model, out ErrorResultTO errors);
 
         /// <summary>
-        /// Pushes the system model to data list.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="dlID">The dl ID.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        T FetchSystemModelFromDataList<T>(Guid dlID, out ErrorResultTO errors);
-
-
-        /// <summary>
-        /// Fetches the system model as web model.
-        /// </summary>
-        /// <param name="dlID">The dl ID.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        string FetchSystemModelAsWebModel<T>(Guid dlID, out ErrorResultTO errors);
-
-
-        /// <summary>
         /// Pushes the binary data list.
         /// </summary>
         /// <param name="dlID">The dl ID.</param>
@@ -459,12 +270,6 @@ namespace Dev2.DataList.Contract
         #endregion
 
         #region Admin Operations
-
-        /// <summary>
-        /// Fetches the DebugItems created during a upsert
-        /// </summary>
-        List<KeyValuePair<string, IBinaryDataListEntry>> GetDebugData();
-
         /// <summary>
         /// Fetches the change log for pre ( inputs ) or post execute ( outputs )
         /// </summary>
@@ -485,14 +290,7 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         bool ForceDeleteDataListByID(Guid curDlid);
 
-        /// <summary>
-        /// Gets the max number of executions.
-        /// </summary>
-        /// <param name="curDlid">The cur DLID.</param>
-        /// <param name="expressions">The expressions.</param>
-        /// <returns></returns>
-        int GetMaxNumberOfExecutions(Guid curDlid, IList<string> expressions);
-
+        
         /// <summary>
         /// Fetches the parent ID.
         /// </summary>
@@ -537,6 +335,5 @@ namespace Dev2.DataList.Contract
 
         #endregion External Methods
 
-        Guid Upsert(Guid curDlid, IDev2DataListUpsertPayloadBuilder<List<string>> payload, out ErrorResultTO errors);
     }
 }

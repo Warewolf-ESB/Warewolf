@@ -135,10 +135,8 @@
     <Compile Include="BinaryDataList\LoopedIndexIteratorTest.cs" />
     <Compile Include="BinaryDataList\RecordsetGroupTest.cs" />
     <Compile Include="BinaryDataList\ServerTest.cs" />
-    <Compile Include="BinaryDataList\BinaryDataListEntryTest.cs" />
     <Compile Include="BinaryDataList\IndexListTest.cs" />
     <Compile Include="BinaryDataList\DataListUtilTest.cs" />
-    <Compile Include="BinaryDataList\Dev2DataListUpsertPayloadBuilderTest.cs" />
     <Compile Include="Builders\RecordSetCollectionBuilderTest.cs" />
     <Compile Include="DecisionsTests\NotBetweenTests.cs" />
     <Compile Include="DecisionsTests\NotContainsTests.cs" />

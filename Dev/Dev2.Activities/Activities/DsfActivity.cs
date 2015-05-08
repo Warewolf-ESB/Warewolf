@@ -26,7 +26,6 @@ using Dev2.Data.Decision;
 using Dev2.Data.Storage;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
@@ -522,25 +521,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         throw new Exception("FATAL ERROR : Null ESB channel!!");
                     }
-                    else
-                    {
-                        // NEW EXECUTION MODEL ;)
-                        // PBI 7913
+                    // NEW EXECUTION MODEL ;)
+                    // PBI 7913
          
 
-                            dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
-                            dataObject.ResourceID = ResourceID.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
-                            BeforeExecutionStart(dataObject, allErrors);
-                            allErrors.MergeErrors(tmpErrors);
-                            // Execute Request
-                            ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors);
+                    dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
+                    dataObject.ResourceID = ResourceID.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
+                    BeforeExecutionStart(dataObject, allErrors);
+                    allErrors.MergeErrors(tmpErrors);
+                    // Execute Request
+                    ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors);
 
-                            allErrors.MergeErrors(tmpErrors);
+                    allErrors.MergeErrors(tmpErrors);
 
-                            AfterExecutionCompleted(tmpErrors);
-                            allErrors.MergeErrors(tmpErrors);
-                            dataObject.ServiceName = ServiceName;
-                    }
+                    AfterExecutionCompleted(tmpErrors);
+                    allErrors.MergeErrors(tmpErrors);
+                    dataObject.ServiceName = ServiceName;
                 }
             }
                 catch(Exception err)

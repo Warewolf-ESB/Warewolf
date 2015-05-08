@@ -14,7 +14,6 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
-using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -227,7 +226,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             TestData = ActivityStrings.SortDataList;
             IDSFDataObject result = ExecuteProcess();
 
-            var res = Compiler.HasErrors(result.DataListID);
+            var res = result.Environment.HasErrors();
 
             // remove test datalist ;)
 
