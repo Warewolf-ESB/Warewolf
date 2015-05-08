@@ -51,10 +51,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             string error;
             string entry;
 
-            GetScalarValueFromDataList(result.DataListID, "result", out entry, out error);
+            GetScalarValueFromEnvironment(result.Environment, "result", out entry, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             DateTime res = DateTime.Parse(entry);
 
@@ -62,7 +61,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Thread.Sleep(10);
                 result = ExecuteProcess();
-                GetScalarValueFromDataList(result.DataListID, "result", out entry, out error);
+                GetScalarValueFromEnvironment(result.Environment, "result", out entry, out error);
                 res = DateTime.Parse(entry);
                 Assert.IsTrue(res.Millisecond != 0);
             }
@@ -84,10 +83,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             string error;
             string entry;
 
-            GetScalarValueFromDataList(result.DataListID, "result", out entry, out error);
+            GetScalarValueFromEnvironment(result.Environment, "result", out entry, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(entry, "12");
 
@@ -108,83 +106,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             string error;
             string entry;
 
-            GetScalarValueFromDataList(result.DataListID, "scalar", out entry, out error);
+            GetScalarValueFromEnvironment(result.Environment, "scalar", out entry, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(entry, "30");
         }
 
-        [TestMethod]
-        public void CalculateActivity_ErrorHandeling_Expected_ErrorTag()
-        {
-
-            TestStartNode = new FlowStep
-            {
-                Action = new DsfCalculateActivity { Expression = @"sum(10,20)", Result = "[[//().rec]]" }
-            };
-
-
-            TestData = @"<ADL><scalar></scalar></ADL>";
-            IDSFDataObject result = ExecuteProcess();
-
-            string error;
-            string entry;
-
-            GetScalarValueFromDataList(result.DataListID, "//().rec", out entry, out error);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(!string.IsNullOrEmpty(error));
-        }
-
         // SN - 07-09-2012 - Commented out until intellisense issue is patched up
-
-        [TestMethod]
-        public void CalculateActivity_InValidFunction_Expected_Error()
-        {
-
-            TestStartNode = new FlowStep
-            {
-                Action = new DsfCalculateActivity { Expression = @"Sum([[RecordSet(1).Field]];[[RecordSet().Field]])", Result = "[[result]]" }
-            };
-
-            CurrentDl = "<ADL><RecordSet><Field></Field></RecordSet><scalar></scalar><result></result></ADL>";
-            TestData = ActivityStrings.CalculateActivityADL;
-            IDSFDataObject result = ExecuteProcess();
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
-
-        }
-
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfCalculateActivity_OnExecute")]
-        public void DsfCalculateActivity_OnExecute_Error_MultipleResultFields()
-        {
-
-            TestStartNode = new FlowStep
-            {
-                Action = new DsfCalculateActivity { Expression = @"sum(10,20)", Result = "[[scalar]][[rec]]" }
-            };
-
-            TestData = @"<ADL><scalar></scalar></ADL>";
-            //TestData = ActivityStrings.CalculateActivityDataList;
-            IDSFDataObject result = ExecuteProcess();
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
-        }
-
-
         [TestMethod]
         public void CalculateActivity_CommaSeperatedArgs_Expected_EvalPerformed()
         {
@@ -201,37 +130,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             string error;
             string actual;
 
-            GetScalarValueFromDataList(result.DataListID, "result", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "result", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void CalculateActivity_RangedArgs_Expected_EvalPerformed()
-        {
-
-            TestStartNode = new FlowStep
-            {
-                Action = new DsfCalculateActivity { Expression = @"Sum([[RecordSet(1).Field]]:[[RecordSet(2).Field]])", Result = "[[result]]" }
-            };
-
-            CurrentDl = "<ADL><RecordSet><Field></Field></RecordSet><scalar></scalar><result></result></ADL>";
-            TestData = "<root><ADL><RecordSet><Field>10</Field></RecordSet><RecordSet><Field>20</Field></RecordSet><scalar>2</scalar><result></result></ADL></root>";
-            IDSFDataObject result = ExecuteProcess();
-            const string expected = "30";
-            string error;
-            string actual;
-
-            GetScalarValueFromDataList(result.DataListID, "result", out actual, out error);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(expected, actual);
-
         }
 
         //Bug 6438
@@ -250,10 +153,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             string error;
             string actual;
 
-            GetScalarValueFromDataList(result.DataListID, "NewTestVar", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "NewTestVar", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -272,10 +174,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             string error;
             string actual;
 
-            GetScalarValueFromDataList(result.DataListID, "NewTestVar", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "NewTestVar", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -294,10 +195,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             string error;
             string actual;
 
-            GetScalarValueFromDataList(result.DataListID, "NewTestVar", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "NewTestVar", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -317,10 +217,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             string error;
             string actual;
 
-            GetScalarValueFromDataList(result.DataListID, "NewTestVar", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "NewTestVar", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -341,10 +240,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             string error;
             string actual;
 
-            GetScalarValueFromDataList(result.DataListID, "sumResult", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "sumResult", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -364,10 +262,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             string error;
             string actual;
 
-            GetScalarValueFromDataList(result.DataListID, "sumResult", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "sumResult", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -388,14 +285,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 string error;
                 string actual;
-                GetScalarValueFromDataList(result.DataListID, "sumResult", out actual, out error);
+                GetScalarValueFromEnvironment(result.Environment, "sumResult", out actual, out error);
             }
             catch(Exception e)
             {
                 StringAssert.Contains(e.Message, "No Value assigned for: [[sumResult]]");
             }
-
-            DataListRemoval(result.DataListID);
         }
 
         [TestMethod]
@@ -437,7 +332,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string result = "[[res]]";
             var act = new DsfCalculateActivity { Expression = expression, Result = result };
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(null, null);
+            act.UpdateForEachInputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual(expression, act.Expression);
         }
@@ -454,7 +349,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test2");
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual(expression, act.Expression);
         }
@@ -470,7 +365,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var act = new DsfCalculateActivity { Expression = expression, Result = result };
             //------------Execute Test---------------------------
             var tuple1 = new Tuple<string, string>("Test1", "Test");
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.Expression);
         }
@@ -485,7 +380,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string result = "[[res]]";
             var act = new DsfCalculateActivity { Expression = expression, Result = result };
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(null, null);
+            act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual(expression, act.Expression);
         }
@@ -502,7 +397,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual(expression, act.Expression);
         }
@@ -518,7 +413,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var act = new DsfCalculateActivity { Expression = expression, Result = result };
             var tuple1 = new Tuple<string, string>("[[res]]", "Test");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.Result);
         }

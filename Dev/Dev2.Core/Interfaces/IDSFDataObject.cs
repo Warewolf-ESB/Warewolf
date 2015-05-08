@@ -18,6 +18,7 @@ using Dev2.DataList.Contract;
 
 using Dev2.Web;
 using Warewolf.Storage;
+using Dev2.Runtime.Execution;
 namespace Dev2
 {
     public interface IDSFDataObject
@@ -89,8 +90,11 @@ namespace Dev2
         bool IsDebugMode();
         bool IsRemoteWorkflow();
         IExecutionEnvironment Environment { get; set; }
+        IExecutionToken ExecutionToken   { get; set; }
 
         void PopEnvironment();
         void PushEnvironment(IExecutionEnvironment env);
+
+        IEsbChannel EsbChannel { get; set; }
     }
 }

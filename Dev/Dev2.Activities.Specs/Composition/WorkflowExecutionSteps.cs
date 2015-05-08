@@ -37,6 +37,7 @@ using Dev2.Models;
 using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services;
+using Dev2.Services.Security;
 using Dev2.Session;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Repositories;
@@ -51,6 +52,9 @@ using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Dev2.Controller;
+using Dev2.Communication;
+using FluentAssertions;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -1232,7 +1236,7 @@ namespace Dev2.Activities.Specs.Composition
             {
                 for(int i = 0; i < versions.Count; i++)
                 {
-                    var v1 = table.Rows[i + 1][0].Split(new[] { ' ' });
+                    var v1 = table.Rows[i + 1][0].Split(' ');
                     Assert.IsTrue(versions[i].DisplayName.Contains(v1[0]));
 
                 }
@@ -1344,5 +1348,43 @@ namespace Dev2.Activities.Specs.Composition
                 _resetEvt.Close();
             }
         }
+
+        [Then(@"I set logging to ""(.*)""")]
+        public void ThenISetLoggingTo(string logLevel)
+        {
+            var allowedLogLevels = new []{"DEBUG","NONE"};
+            // TODO: refactor null empty checking into extension method
+            if (logLevel == null || 
+                !allowedLogLevels.Contains(logLevel = logLevel.ToUpper()))
+                return;
+
+            var loggingSettingsTo = new LoggingSettingsTo() { LogLevel = logLevel, LogSize = 200};
+            var controller = (new CommunicationControllerFactory()).CreateController("LoggingSettingsWriteService");
+            var serializer = new Dev2JsonSerializer();
+            controller.AddPayloadArgument("LoggingSettings", serializer.SerializeToBuilder(loggingSettingsTo).ToString());
+            IEnvironmentModel environmentModel;
+            TryGetValue("environment", out environmentModel);
+            controller.ExecuteCommand<StringBuilder>(environmentModel.Connection, Guid.Empty);
+        }
+
+        [When(@"""(.*)"" is executed ""(.*)""")]
+        public void WhenIsExecuted(string workflowName, string executionLabel)
+        {
+            Stopwatch st = new Stopwatch();
+            st.Start();
+            WhenIsExecuted(workflowName);
+            ScenarioContext.Current.Add(executionLabel, st.ElapsedMilliseconds);
+        }
+
+        [Then(@"the delta between ""(.*)"" and ""(.*)"" is less than ""(.*)"" milliseconds")]
+        public void ThenTheDeltaBetweenAndIsLessThanMilliseconds(string executionLabelFirst, string executionLabelSecond, int maxDeltaMilliseconds)
+        {
+            int e1 = Convert.ToInt32(ScenarioContext.Current[executionLabelFirst]),
+                e2 = Convert.ToInt32(ScenarioContext.Current[executionLabelSecond]),
+                d = maxDeltaMilliseconds;
+            d.Should().BeGreaterThan(Math.Abs(e1 - e2), string.Format("async logging should not add more than {0} milliseconds to the execution", d));
+        }
+
+
     }
 }

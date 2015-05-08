@@ -25,10 +25,10 @@ using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
+using WarewolfParserInterop;
 
 namespace Dev2.Activities
 {
@@ -96,12 +96,17 @@ namespace Dev2.Activities
         protected override void OnExecute(NativeActivityContext context)
             // ReSharper restore MethodTooLong
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
 
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             ErrorResultTO allErrors = new ErrorResultTO();
-        
+
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
             toUpsert.IsDebug = (dataObject.IsDebugMode());
             toUpsert.ResourceID = dataObject.ResourceID;
@@ -137,15 +142,15 @@ namespace Dev2.Activities
                             string expression = item.Result;
 
                             var regions = DataListCleaningUtils.SplitIntoRegions(expression);
-                            if (regions.Count > 1)
+                            if(regions.Count > 1)
                             {
                                 allErrors.AddError("Multiple variables in result field.");
                             }
                             else
                             {
-                                foreach (var region in regions)
+                                foreach(var region in regions)
                                 {
-                                    dataObject.Environment.Assign(region, val);
+                                    dataObject.Environment.AssignWithFrame(new AssignValue(region, val));
                                 }
                             }
                         }
@@ -156,15 +161,15 @@ namespace Dev2.Activities
                         allErrors.AddError(err.Message);
                     }
                 }
-                
+                dataObject.Environment.CommitAssign();
                 if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
                     int innerCount = 1;
-                    foreach (GatherSystemInformationTO item in SystemInformationCollection)
+                    foreach(GatherSystemInformationTO item in SystemInformationCollection)
                     {
                         var itemToAdd = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("","", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                        AddDebugItem(new DebugEvalResult(item.Result,"",dataObject.Environment), itemToAdd);
+                        AddDebugItem(new DebugItemStaticDataParams("", "", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
+                        AddDebugItem(new DebugEvalResult(item.Result, "", dataObject.Environment), itemToAdd);
                         _debugOutputs.Add(itemToAdd);
                         innerCount++;
                     }
@@ -192,7 +197,7 @@ namespace Dev2.Activities
                     if(hasErrors)
                     {
                         int innerCount = 1;
-                        foreach (GatherSystemInformationTO item in SystemInformationCollection)
+                        foreach(GatherSystemInformationTO item in SystemInformationCollection)
                         {
                             var itemToAdd = new DebugItem();
                             AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
@@ -202,11 +207,10 @@ namespace Dev2.Activities
                         }
                     }
 
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
-
         }
 
         public string GetCorrectSystemInformation(enTypeOfSystemInformationToGather enTypeOfSystemInformation)
@@ -269,7 +273,7 @@ namespace Dev2.Activities
             return enFindMissingType.DataGridActivity;
         }
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {
@@ -288,7 +292,7 @@ namespace Dev2.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

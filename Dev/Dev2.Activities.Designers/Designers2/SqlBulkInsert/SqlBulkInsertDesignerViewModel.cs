@@ -99,6 +99,10 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             RefreshTablesCommand = new RelayCommand(o => RefreshTables(), o => IsTableSelected);
 
             RefreshDatabases(true);
+            if(SelectedDatabase != null)
+            {
+                IsSqlDatabase = SelectedDatabase.ServerType == enSourceType.SqlDatabase;
+            }
         }
 
         #region Properties

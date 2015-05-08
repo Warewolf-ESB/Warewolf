@@ -48,11 +48,11 @@ namespace Dev2.Tests.Activities.Utils
         {
         }
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
         }
 
@@ -64,6 +64,10 @@ namespace Dev2.Tests.Activities.Utils
         public override IList<DsfForEachItem> GetForEachOutputs()
         {
             return null;
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
         }
 
         protected override void OnExecutedCompleted(NativeActivityContext context, bool hasError, bool isResumable)

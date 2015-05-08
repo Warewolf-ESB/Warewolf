@@ -110,7 +110,14 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment,ResultVariable,out actualValue,out error);
-            Assert.AreEqual(expectedResult, actualValue);
+            if (string.IsNullOrEmpty(expectedResult))
+            {
+                Assert.IsTrue(string.IsNullOrEmpty(actualValue));
+            }
+            else
+            {
+                Assert.AreEqual(expectedResult, actualValue);
+            }
         }
     }
 }

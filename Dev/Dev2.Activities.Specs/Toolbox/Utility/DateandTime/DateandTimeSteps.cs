@@ -137,11 +137,14 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             {
                 actualValue = actualValue.Replace("(GMT+", "(UTC+").Replace("(GMT-", "(UTC-");
             }
-            if(string.IsNullOrEmpty(expectedResult))
+            if (string.IsNullOrEmpty(expectedResult))
             {
                 Assert.IsTrue(string.IsNullOrEmpty(actualValue));
             }
-            Assert.AreEqual(expectedResult, actualValue);
+            else
+            {
+                Assert.AreEqual(expectedResult, actualValue);
+            }
         }
     }
 }

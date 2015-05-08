@@ -11,6 +11,9 @@
 *.user
 *.ide
 *.bkp
+*.cache
+*.fsi
+*.tmp
 
 ####################################################################################
 # Build working directories
@@ -170,6 +173,8 @@
 /Dev/Dev2.TaskScheduler.Wrappers.Test/obj
 /Dev/Example Shipper/Example Shipper/bin
 /Dev/Example Shipper/Example Shipper/obj
+/Dev/ExecutionEngine/bin
+/Dev/ExecutionEngine/obj
 /Dev/ServerProxyLayer/bin
 /Dev/ServerProxyLayer/obj
 /Dev/ServerProxyLayerTests/bin
@@ -224,6 +229,18 @@
 /Dev/Warewolf.Studio.CustomControls/obj
 /Dev/Warewolf.Studio.CustomControls.Tests/bin
 /Dev/Warewolf.Studio.CustomControls.Tests/obj
+/Dev/RunDatalistEval/bin
+/Dev/RunDatalistEval/obj
+/Dev/Warewolf.Storage/bin
+/Dev/Warewolf.Storage/obj
+/Dev/WarewolfParserInterop/bin
+/Dev/WarewolfParserInterop/obj
+/Dev/WarewolfParsing.Tests/bin
+/Dev/WarewolfParsing.Tests/obj
+/Dev/WarewolfLanguageParser/bin
+/Dev/WarewolfLanguageParser/obj
+/Dev/Warewolf.ResourceManagement/bin
+/Dev/Warewolf.ResourceManagement/obj
 
 ####################################################################################
 # These release workflows must be stored in "/Dev/BPM Resources - Release/Resources" ONLY!

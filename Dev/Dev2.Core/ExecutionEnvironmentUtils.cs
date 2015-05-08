@@ -102,7 +102,8 @@ namespace Dev2
             var scalarOutputs = dataListTO.Outputs.Where(s => !DataListUtil.IsValueRecordset(s));
             var recSetOutputs = dataListTO.Outputs.Where(DataListUtil.IsValueRecordset);
             var groupedRecSets = recSetOutputs.GroupBy(DataListUtil.ExtractRecordsetNameFromValue);
-            foreach (var groupedRecSet in groupedRecSets)
+            var recSets = groupedRecSets as IGrouping<string, string>[] ?? groupedRecSets.ToArray();
+            foreach (var groupedRecSet in recSets)
             {
                 var i = 0;
                 var warewolfListIterators = new WarewolfListIterator();
@@ -114,15 +115,18 @@ namespace Dev2
                     warewolfListIterators.AddVariableToIterateOn(warewolfIterator);
 
                 }
+                result.Append("\"");
+                result.Append(groupedRecSet.Key);
+                result.Append("\" : [");
+                
+                
                 while (warewolfListIterators.HasMoreData())
                 {
-                    result.Append("\"");
-                    result.Append(groupedRecSet.Key);
-                    result.Append("\" : [");
                     int colIdx = 0;
+                    result.Append("{");
                     foreach (var namedIterator in iterators)
                     {
-                        result.Append("{");
+                        
                         var value = warewolfListIterators.FetchNextValue(namedIterator.Value);
                         result.Append("\"");
                         result.Append(namedIterator.Key);
@@ -137,17 +141,19 @@ namespace Dev2
                         }
 
                     }
-
-                    result.Append("}");
-                    result.Append("]");
-                    i++;
-                    if (i <= warewolfListIterators.GetMax())
+                    if (warewolfListIterators.HasMoreData())
                     {
-                        result.Append(", ");
+                        result.Append("}");
+                        result.Append(",");
                     }
-
                 }
-
+                result.Append("}");
+                result.Append("]");
+                i++;
+                if (i < recSets.Count())
+                {
+                    result.Append(",");
+                }
 
             }
 
@@ -174,10 +180,28 @@ namespace Dev2
                     result.Append(",");
                 }
             }
-
-            result.Append("}");
             var jsonOutputFromEnvironment = result.ToString();
-            return jsonOutputFromEnvironment.TrimEnd(',');
+            jsonOutputFromEnvironment += "}";
+            return jsonOutputFromEnvironment;
+        }
+
+        public static void UpdateEnvironmentFromXmlPayload(IDSFDataObject dataObject, StringBuilder rawPayload, string dataList)
+        {
+
+            string toLoad = DataListUtil.StripCrap(rawPayload.ToString()); // clean up the rubish ;)
+            XmlDocument xDoc = new XmlDocument();
+            toLoad = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), toLoad);
+            xDoc.LoadXml(toLoad);
+            if(dataList != null)
+            {
+                dataList = dataList.Replace("ADL>", "DataList>").Replace("root>","DataList>");
+                if (xDoc.DocumentElement != null)
+                {
+                    XmlNodeList children = xDoc.DocumentElement.ChildNodes;
+                    var dataListTO = new DataListTO(dataList,true);
+                    TryConvert(dataObject, children, dataListTO.Inputs);
+                }
+            }
         }
 
         public static void UpdateEnvironmentFromInputPayload(IDSFDataObject dataObject, StringBuilder rawPayload, string dataList)
@@ -187,7 +211,7 @@ namespace Dev2
             XmlDocument xDoc = new XmlDocument();
             toLoad = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), toLoad);
             xDoc.LoadXml(toLoad);
-
+            dataList = dataList.Replace("ADL>", "DataList>").Replace("root>", "DataList>");
             if (xDoc.DocumentElement != null)
             {
                 XmlNodeList children = xDoc.DocumentElement.ChildNodes;
@@ -203,7 +227,7 @@ namespace Dev2
             XmlDocument xDoc = new XmlDocument();
             toLoad = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), toLoad);
             xDoc.LoadXml(toLoad);
-
+            dataList = dataList.Replace("ADL>", "DataList>").Replace("root>", "DataList>");
             if (xDoc.DocumentElement != null)
             {
                 XmlNodeList children = xDoc.DocumentElement.ChildNodes;

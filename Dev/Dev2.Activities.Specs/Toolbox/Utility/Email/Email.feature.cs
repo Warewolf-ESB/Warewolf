@@ -694,7 +694,7 @@ this.ScenarioSetup(scenarioInfo);
             table27.AddRow(new string[] {
                         "me@freemail.com",
                         "test1@freemail.com",
-                        "",
+                        "\"\"",
                         "[[my(-1).body]] ="});
 #line 208
  testRunner.And("the debug inputs as", ((string)(null)), table27, "And ");

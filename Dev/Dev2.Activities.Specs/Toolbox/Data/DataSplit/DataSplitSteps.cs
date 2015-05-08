@@ -204,7 +204,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             var field = ScenarioContext.Current.Get<string>("recordField");
 
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, field, out error).ToList();
+            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, field, out error).ToList();
 
             Assert.AreEqual(tableRows.Count, recordSetValues.Count);
 
@@ -222,10 +222,17 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             string error;
             value = value.Replace('"', ' ').Trim();
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
+            GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(variable),
                                        out actualValue, out error);
-            actualValue = actualValue.Replace('"', ' ').Trim();
-            Assert.AreEqual(value, actualValue);
+            if (!string.IsNullOrEmpty(actualValue))
+            {
+                actualValue = actualValue.Replace('"', ' ').Trim();
+                Assert.AreEqual(value, actualValue);
+            }
+            if (string.IsNullOrEmpty(value))
+            {
+                Assert.IsTrue(string.IsNullOrEmpty(actualValue));
+            }
         }
     }
 }

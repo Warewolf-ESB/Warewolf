@@ -58,17 +58,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
+            var dataObject = context.GetExtension<IDSFDataObject>();
             InitializeDebug(context.GetExtension<IDSFDataObject>());
-            DispatchDebugState(context, StateType.Before);
+            DispatchDebugState(dataObject, StateType.Before);
 
-            DispatchDebugState(context, StateType.After);
+            DispatchDebugState(dataObject, StateType.After);
         }
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null && updates.Count == 1)
             {
@@ -91,6 +92,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     Name = Text
                 }
             };
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
         }
 
         #endregion

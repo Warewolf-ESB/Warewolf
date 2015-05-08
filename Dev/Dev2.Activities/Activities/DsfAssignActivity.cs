@@ -12,6 +12,7 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using Dev2;
 using Dev2.Activities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -54,12 +55,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             throw new NotImplementedException("Nothing here...");
         }
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             throw new NotImplementedException();
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             throw new NotImplementedException();
         }
@@ -75,6 +76,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<DsfForEachItem> GetForEachOutputs()
         {
             return GetForEachItems(FieldValue);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
         }
 
         #endregion

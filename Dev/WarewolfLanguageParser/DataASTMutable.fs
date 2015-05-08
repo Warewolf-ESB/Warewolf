@@ -67,19 +67,25 @@ type WarewolfEnvironment =
 
 let tryParseAtom (data:string) = 
     let mutable value = 0;    
-    if data.StartsWith("0") then DataString data
+    if data.StartsWith("0") || data.StartsWith("+") then DataString data
     else
        let success = System.Int32.TryParse(data,&value)
        if success then Int value
        else DataString data
 
 let tryFloatParseAtom (data:string) = 
-    let mutable value=0.0;
+    let mutable value=0.0m;
+    let mutable valuse=0.0;
     if data.StartsWith("0") then DataString data
     else
-       let success = System.Double.TryParse(data,&value)
-       if success then Float value
+       let success = System.Decimal.TryParse(data,&value) && System.Double.TryParse(data,&valuse)
+       if success then
+            if(data.EndsWith("0")) && success then
+                DataString data
+            else
+                Float (System.Convert.ToDouble(value))
        else DataString data
+
 
 let CompareAtoms (x:WarewolfAtom) (y:WarewolfAtom) = 
              match (x,y) with
@@ -91,7 +97,7 @@ let CompareAtoms (x:WarewolfAtom) (y:WarewolfAtom) =
                                             | (Float a, Int b ) -> a.CompareTo(System.Double.Parse((b.ToString())))
                                             | (Int a, DataString b ) -> a.ToString().CompareTo(b)
                                             | (Float a, DataString b ) -> a.ToString().CompareTo(b)
-                                            | (DataString a, DataString b ) -> a.CompareTo(b)
+                                            | (DataString a, DataString b ) -> a.ToLower().CompareTo(b.ToLower())
                                             | (DataString a, Float b ) -> a.CompareTo(b.ToString())
                                             | (DataString a, Int b ) -> a.CompareTo(b.ToString())
                                             | (Nothing ,Nothing) -> 0

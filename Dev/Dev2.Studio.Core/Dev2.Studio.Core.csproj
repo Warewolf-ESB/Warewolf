@@ -279,7 +279,6 @@
     <Compile Include="ConnectionHelpers\IConnectControlSingleton.cs" />
     <Compile Include="Controller\CommunicationController.cs" />
     <Compile Include="Controller\ICommunicationControllerFactory.cs" />
-    <Compile Include="CustomContainer.cs" />
     <Compile Include="Interfaces\IMainViewModel.cs" />
     <Compile Include="Messages\DeleteFolderMessage.cs" />
     <Compile Include="Messages\DisplayMessageBoxMessage.cs" />

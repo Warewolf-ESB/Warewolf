@@ -123,7 +123,6 @@
     <Compile Include="ActivityTests\BaseActivityTests.cs" />
     <Compile Include="ActivityTests\CalculateActivityTest.cs" />
     <Compile Include="ActivityTests\CaseConvertActivityTests.cs" />
-    <Compile Include="ActivityTests\BaseConvertActivityTests.cs" />
     <Compile Include="ActivityTests\CommentActivityTests.cs" />
     <Compile Include="ActivityTests\DsfDropBoxFileActivityTest.cs" />
     <Compile Include="ActivityTests\RecordsLengthTest.cs" />
@@ -135,9 +134,7 @@
     <Compile Include="ActivityTests\DateTimeDifferenceTests.cs" />
     <Compile Include="ActivityTests\DeleteRecordsActivityTests.cs" />
     <Compile Include="ActivityTests\DsfActivityAbstractTest.cs" />
-    <Compile Include="ActivityTests\DsfFlowNodeTests.cs" />
     <Compile Include="ActivityTests\ExecuteCommandLineTest.cs" />
-    <Compile Include="ActivityTests\FindRecordsActivityTest.cs" />
     <Compile Include="ActivityTests\FindRecordsMultipleCriteriaActivityTest.cs" />
     <Compile Include="ActivityTests\ForEachActivityTest.cs" />
     <Compile Include="ActivityTests\GatherSystemInformationTests.cs" />
@@ -282,6 +279,10 @@
     <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
       <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
       <Name>WarewolfLanguageParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WarewolfParserInterop\WarewolfParserInterop.csproj">
+      <Project>{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}</Project>
+      <Name>WarewolfParserInterop</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

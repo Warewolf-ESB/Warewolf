@@ -233,7 +233,13 @@ namespace Dev2.Runtime.ESB.Control
 
                 // TODO : Amend here to respect Inputs only when creating shape ;)
                 ErrorResultTO invokeErrors;
-                ExecutionEnvironmentUtils.UpdateEnvironmentFromInputPayload(dataObject, dataObject.RawPayload, resource.DataList.ToString());
+                if(resource != null)
+                {
+                    if(resource.DataList != null)
+                    {
+                        ExecutionEnvironmentUtils.UpdateEnvironmentFromInputPayload(dataObject, dataObject.RawPayload, resource.DataList.ToString());
+                    }
+                }
                 dataObject.DataListID = compiler.ConvertAndOnlyMapInputs(DataListFormat.CreateFormat(GlobalConstants._XML), dataObject.RawPayload, theShape, out invokeErrors);
                 // The act of doing this moves the index data correctly ;)
                 // We need to remove this in the future.
@@ -361,6 +367,7 @@ namespace Dev2.Runtime.ESB.Control
                         return null;
                     }
                 }
+
                 var executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal, oldID);
                 if (executionContainer != null)
                 {

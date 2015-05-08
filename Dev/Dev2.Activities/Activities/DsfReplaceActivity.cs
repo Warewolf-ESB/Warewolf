@@ -100,13 +100,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="context"></param>
         protected override void OnExecute(NativeActivityContext context)
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+
             IDev2ReplaceOperation replaceOperation = Dev2OperationsFactory.CreateReplaceOperation();
             ErrorResultTO errors;
             ErrorResultTO allErrors = new ErrorResultTO();
-           
+
             int replacementCount = 0;
             int replacementTotal = 0;
 
@@ -120,11 +126,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if(dataObject.IsDebugMode())
                     {
                         AddDebugInputItem(new DebugEvalResult(s, "In Field(s)", dataObject.Environment));
-                        if (Find!=null)
+                        if(Find != null)
                         {
                             AddDebugInputItem(new DebugEvalResult(Find, "Find", dataObject.Environment));
                         }
-                        if (ReplaceWith!=null)
+                        if(ReplaceWith != null)
                         {
                             AddDebugInputItem(new DebugEvalResult(ReplaceWith, "Replace With", dataObject.Environment));
                         }
@@ -132,72 +138,75 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 IWarewolfListIterator iteratorCollection = new WarewolfListIterator();
 
-                 var finRes = dataObject.Environment.Eval(Find);
-                 if( ExecutionEnvironment.IsNothing(finRes))
-                     throw  new Exception("Undefined variable:" +Find);
-
-                var itrFind = new WarewolfIterator(dataObject.Environment.Eval(Find));
-                iteratorCollection.AddVariableToIterateOn(itrFind);
-
-
-                var itrReplace = new WarewolfIterator(dataObject.Environment.Eval(ReplaceWith));
-                iteratorCollection.AddVariableToIterateOn(itrReplace);
-                var rule = new IsSingleValueRule(() => Result);
-                var single = rule.Check();
-                if(single != null)
+                var finRes = dataObject.Environment.Eval(Find);
+                if (ExecutionEnvironment.IsNothing(finRes))
                 {
-                    allErrors.AddError(single.Message);
+                    if (!string.IsNullOrEmpty(Result))
+                    {
+                        dataObject.Environment.Assign(Result, replacementTotal.ToString(CultureInfo.InvariantCulture));
+                    }
                 }
                 else
                 {
-                    while(iteratorCollection.HasMoreData())
+                    var itrFind = new WarewolfIterator(dataObject.Environment.Eval(Find));
+                    iteratorCollection.AddVariableToIterateOn(itrFind);
+
+                    var itrReplace = new WarewolfIterator(dataObject.Environment.Eval(ReplaceWith));
+                    iteratorCollection.AddVariableToIterateOn(itrReplace);
+                    var rule = new IsSingleValueRule(() => Result);
+                    var single = rule.Check();
+                    if (single != null)
                     {
-                        // now process each field for entire evaluated Where expression....                    
-                        var findValue = iteratorCollection.FetchNextValue(itrFind);
-                        var replaceWithValue = iteratorCollection.FetchNextValue(itrReplace);
-                        foreach(string s in toSearch)
+                        allErrors.AddError(single.Message);
+                    }
+                    else
+                    {
+                        while (iteratorCollection.HasMoreData())
                         {
-
-                             if(!DataListUtil.IsEvaluated(s))
+                            // now process each field for entire evaluated Where expression....                    
+                            var findValue = iteratorCollection.FetchNextValue(itrFind);
+                            var replaceWithValue = iteratorCollection.FetchNextValue(itrReplace);
+                            foreach (string s in toSearch)
                             {
-                                allErrors.AddError("Please insert only variables into Fields To Search");
-                                return;
-                            }
-                            if(!string.IsNullOrEmpty(findValue))
-                            {
-                                dataObject.Environment.ApplyUpdate(s, a => DataASTMutable.WarewolfAtom.NewDataString(replaceOperation.Replace(a.ToString(), findValue, replaceWithValue, CaseMatch, out errors, ref replacementCount)));
-                            }
-
-                            replacementTotal += replacementCount;
-                            if (dataObject.IsDebugMode() && !allErrors.HasErrors())
-                            {
-                                if (!string.IsNullOrEmpty(Result))
+                                if (!DataListUtil.IsEvaluated(s))
                                 {
-                                    if (replacementCount > 0)
+                                    allErrors.AddError("Please insert only variables into Fields To Search");
+                                    return;
+                                }
+                                if (!string.IsNullOrEmpty(findValue))
+                                {
+                                    dataObject.Environment.ApplyUpdate(s, a => DataASTMutable.WarewolfAtom.NewDataString(replaceOperation.Replace(a.ToString(), findValue, replaceWithValue, CaseMatch, out errors, ref replacementCount)));
+                                }
+
+                                replacementTotal += replacementCount;
+                                if (dataObject.IsDebugMode() && !allErrors.HasErrors())
+                                {
+                                    if (!string.IsNullOrEmpty(Result))
                                     {
-                                        AddDebugOutputItem(new DebugEvalResult(s, "", dataObject.Environment));
+                                        if (replacementCount > 0)
+                                        {
+                                            AddDebugOutputItem(new DebugEvalResult(s, "", dataObject.Environment));
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                }
-                if (!string.IsNullOrEmpty(Result))
-                {
-                    dataObject.Environment.Assign(Result, replacementTotal.ToString(CultureInfo.InvariantCulture));
-                }
-
-                if (dataObject.IsDebugMode() && !allErrors.HasErrors())
-                {
                     if (!string.IsNullOrEmpty(Result))
+                    {
+                        dataObject.Environment.Assign(Result, replacementTotal.ToString(CultureInfo.InvariantCulture));
+                    }
+                }
+                if(dataObject.IsDebugMode() && !allErrors.HasErrors())
+                {
+                    if(!string.IsNullOrEmpty(Result))
                     {
                         AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
                     }
                 }
                 // now push the result to the server
-               
             }
-            // ReSharper disable EmptyGeneralCatchClause
+                // ReSharper disable EmptyGeneralCatchClause
             catch(Exception ex)
             {
                 Dev2Logger.Log.Error("DSFReplace", ex);
@@ -219,11 +228,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if(dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
-
         }
 
         #region Private Methods
@@ -254,7 +262,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get ForEach Inputs/Outputs Updates
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {
@@ -279,7 +287,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

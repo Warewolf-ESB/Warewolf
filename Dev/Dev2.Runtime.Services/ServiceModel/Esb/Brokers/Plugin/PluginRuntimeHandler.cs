@@ -51,7 +51,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             var methodToRun = type.GetMethod(setupInfo.Method, typeList);
             var instance = Activator.CreateInstance(type);
             var pluginResult = methodToRun.Invoke(instance, parameters);
-
+            AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
             // do formating here to avoid object serialization issues ;)
             var formater = setupInfo.OutputFormatter;
             if(formater != null)
@@ -81,7 +81,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             var methodToRun = type.GetMethod(setupInfo.Method, typeList);
             var instance = Activator.CreateInstance(type);
             var pluginResult = methodToRun.Invoke(instance, parameters);
-
+            AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
             // do formating here to avoid object serialization issues ;)
             var dataBrowser = DataBrowserFactory.CreateDataBrowser();
             var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
@@ -96,7 +96,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
             var result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             result.DataSourceShapes.Add(dataSourceShape);
-
             return result;
         }
 

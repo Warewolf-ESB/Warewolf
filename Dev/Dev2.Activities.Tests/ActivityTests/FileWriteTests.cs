@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
+using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -33,7 +34,36 @@ namespace Dev2.Tests.Activities.ActivityTests
         ///</summary>
         public TestContext TestContext { get; set; }
 
-       
+        #region Get Input/Output Tests
+
+        [TestMethod]
+// ReSharper disable InconsistentNaming
+        public void FileWriteActivity_GetInputs_Expected_Seven_Input()
+// ReSharper restore InconsistentNaming
+        {
+            DsfFileWrite testAct = new DsfFileWrite();
+
+            IBinaryDataList inputs = testAct.GetInputs();
+
+            // remove test datalist ;)
+
+            Assert.AreEqual(9, inputs.FetchAllEntries().Count);
+        }
+
+        [TestMethod]
+        public void FileWriteActivity_GetOutputs_Expected_One_Output()
+        {
+            DsfFileWrite testAct = new DsfFileWrite();
+
+            IBinaryDataList outputs = testAct.GetOutputs();
+
+            // remove test datalist ;)
+
+            Assert.AreEqual(1, outputs.FetchAllEntries().Count);
+        }
+
+        #endregion Get Input/Output Tests
+
         // ReSharper disable InconsistentNaming
 
         [TestMethod]
@@ -48,7 +78,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var act = new DsfFileWrite { FileContents = inputPath, OutputPath = outputPath, Result = "[[CompanyName]]" };
 
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(null, null);
+            act.UpdateForEachInputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual(inputPath, act.FileContents);
             Assert.AreEqual(outputPath, act.OutputPath);
@@ -68,7 +98,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple1 = new Tuple<string, string>(outputPath, "Test");
             var tuple2 = new Tuple<string, string>(inputPath, "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test2", act.FileContents);
             Assert.AreEqual("Test", act.OutputPath);
@@ -85,7 +115,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string result = "[[CompanyName]]";
             var act = new DsfFileWrite { FileContents = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt"), OutputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt"), Result = result };
 
-            act.UpdateForEachOutputs(null, null);
+            act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual(result, act.Result);
         }
@@ -103,7 +133,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual(result, act.Result);
         }
@@ -121,7 +151,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var tuple1 = new Tuple<string, string>("[[CompanyName]]", "Test");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.Result);
         }

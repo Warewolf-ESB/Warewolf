@@ -41,12 +41,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
         }
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             throw new NotImplementedException();
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             throw new NotImplementedException();
         }
@@ -59,6 +59,10 @@ namespace Dev2.Tests.Activities.ActivityTests
         public override IList<DsfForEachItem> GetForEachOutputs()
         {
             throw new NotImplementedException();
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
         }
 
         public IDebugState TestInitializeDebugState(StateType stateType, IDSFDataObject dataObject, Guid remoteID, bool hasError, string errorMessage)

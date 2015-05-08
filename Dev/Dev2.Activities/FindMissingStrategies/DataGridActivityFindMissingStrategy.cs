@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Dev2.Activities;
-using Dev2.Enums;
 using Dev2.Interfaces;
 using Dev2.Util;
 using Dev2.Utilities;

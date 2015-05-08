@@ -20,7 +20,6 @@ using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Enums;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -354,10 +353,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = ExecuteProcess();
 
             //------------Assert Results-------------------------
-            Assert.IsFalse(Compiler.HasErrors(result.DataListID));
-            GetScalarValueFromDataList(result.DataListID, "testVar", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "testVar", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(ExpectedValue, actual);
         }
@@ -382,11 +379,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
 
             var actualArray = actual.ToArray();
             actual.Clear();
@@ -416,7 +411,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             ExecuteProcess(isDebug: true);
             //------------Assert Results-------------------------
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
             var debugOutputs = activity.GetDebugOutputs(null);
             var debugInputs = activity.GetDebugInputs(null);
 
@@ -444,10 +438,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
 
             var actualArray = actual.ToArray();
             actual.Clear();
@@ -475,11 +467,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
 
             var actualArray = actual.ToArray();
             actual.Clear();
@@ -581,7 +571,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             act.SystemInformationCollection = systemInformationCollection;
 
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(null, null);
+            act.UpdateForEachInputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual("[[testVar]]", act.SystemInformationCollection[0].Result);
         }
@@ -602,7 +592,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple1 = new Tuple<string, string>("[[testVar]]", "Test");
             var tuple2 = new Tuple<string, string>("[[Customers(*).DOB]]", "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.SystemInformationCollection[0].Result);
         }
@@ -623,7 +613,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple1 = new Tuple<string, string>("[[testVar]]", "Test");
             var tuple2 = new Tuple<string, string>("[[Customers(*).DOB]]", "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.SystemInformationCollection[0].Result);
         }
@@ -642,7 +632,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             act.SystemInformationCollection = systemInformationCollection;
 
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(null, null);
+            act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual("[[testVar]]", act.SystemInformationCollection[0].Result);
         }

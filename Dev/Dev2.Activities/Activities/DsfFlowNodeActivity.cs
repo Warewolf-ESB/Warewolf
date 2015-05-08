@@ -105,7 +105,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if(_dataObject.IsDebugMode())
             {
-                DispatchDebugState(context, StateType.Before);
+                DispatchDebugState(_dataObject, StateType.Before);
             }
 
        
@@ -130,7 +130,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (dataObject != null && dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
 
                 OnExecutedCompleted(context, false, false);
@@ -152,7 +152,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             dataObject.Environment.AddError(propagatedException.Message);
             if(dataObject != null && dataObject.IsDebugMode())
             {
-                DispatchDebugState(faultContext, StateType.After);
+                DispatchDebugState(dataObject, StateType.After);
             }
             OnExecutedCompleted(faultContext, true, false);
         }
@@ -164,6 +164,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         // Travis.Frisinger - 28.01.2013 : Amended for Debug
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
         {
+            if (_debugInputs != null && _debugInputs.Count > 0)
+            {
+                return _debugInputs;
+            }
             List<IDebugItem> result = new List<IDebugItem>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             var allErrors = new ErrorResultTO();
@@ -177,7 +181,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 string userModel = dds.GenerateUserFriendlyModel(env, dds.Mode, out error);
                 allErrors.MergeErrors(error);
 
-                foreach(Dev2Decision dev2Decision in dds.TheStack)
+                foreach (Dev2Decision dev2Decision in dds.TheStack)
                 {
                     AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, dds.Mode, dev2Decision.Col1, out  error);
                     allErrors.MergeErrors(error);
@@ -190,10 +194,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var itemToAdd = new DebugItem();
 
                 userModel = userModel.Replace("OR", " OR\r\n")
-                                     .Replace("AND", " AND\r\n")
-                                     .Replace("\r\n ", "\r\n")
-                                     .Replace("\r\n\r\n", "\r\n")
-                                     .Replace("  ", " ");
+                    .Replace("AND", " AND\r\n")
+                    .Replace("\r\n ", "\r\n")
+                    .Replace("\r\n\r\n", "\r\n")
+                    .Replace("  ", " ");
 
                 AddDebugItem(new DebugItemStaticDataParams(userModel, "Statement"), itemToAdd);
                 result.Add(itemToAdd);
@@ -201,27 +205,28 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 itemToAdd = new DebugItem();
                 AddDebugItem(new DebugItemStaticDataParams(dds.Mode == Dev2DecisionMode.AND ? "YES" : "NO", "Require All decisions to be True"), itemToAdd);
                 result.Add(itemToAdd);
+
             }
-            catch(JsonSerializationException)
+            catch (JsonSerializationException)
             {
                 Dev2Switch ds = new Dev2Switch { SwitchVariable = val.ToString() };
                 DebugItem itemToAdd = new DebugItem();
-        
+
                 var a = env.Eval(ds.SwitchVariable);
-                var debugResult = new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfEvalResultToString(a),"", ds.SwitchVariable,"", "Switch on","","=");
+                var debugResult = new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfEvalResultToString(a), "", ds.SwitchVariable, "", "Switch on", "", "=");
                 itemToAdd.AddRange(debugResult.GetDebugItemResult());
                 result.Add(itemToAdd);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 allErrors.AddError(e.Message);
             }
             finally
             {
-                if(allErrors.HasErrors())
+                if (allErrors.HasErrors())
                 {
                     var serviceName = GetType().Name;
-                    DisplayAndWriteError(serviceName, allErrors);                    
+                    DisplayAndWriteError(serviceName, allErrors);
                 }
             }
 
@@ -275,6 +280,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         // Travis.Frisinger - 28.01.2013 : Amended for Debug
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
+            if (_debugOutputs != null && _debugOutputs.Count > 0)
+            {
+                return _debugOutputs;
+            }
             var result = new List<DebugItem>();
             string resultString = _theResult.ToString();
             DebugItem itemToAdd = new DebugItem();
@@ -409,5 +418,45 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _theResult.ToString();
         }
 
+        #region Overrides of DsfNativeActivity<TResult>
+
+        /// <summary>
+        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// true if the specified object  is equal to the current object; otherwise, false.
+        /// </returns>
+        /// <param name="obj">The object to compare with the current object. </param>
+        public override bool Equals(object obj)
+        {
+            var act = obj as IDev2Activity;
+            if (obj is IFlowNodeActivity)
+            {
+                var flowNodeAct = this as IFlowNodeActivity;
+                var other = act as IFlowNodeActivity;
+                if (other != null)
+                {
+                    return UniqueID == act.UniqueID && flowNodeAct.ExpressionText.Equals(other.ExpressionText);
+                }
+            }
+            return base.Equals(obj);
+        }
+
+        #region Overrides of Object
+
+        /// <summary>
+        /// Serves as a hash function for a particular type. 
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object"/>.
+        /// </returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        #endregion
+
+        #endregion
     }
 }

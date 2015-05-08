@@ -325,7 +325,7 @@ Scenario: Merge a variable inside a variable
 	And the execution has "NO" error
 	And the debug inputs as  
 	| # |                              | With  | Using | Pad | Align |
-	| 1 | [[[[[[[[a]]]]]]]] = Warewolf | Index | "8"   | ""  | Left  |
+	| 1 | [[[[[[b]]]]]] = Warewolf | Index | "8"   | ""  | Left  |
 	| 2 | [[c]]             = test     | Index | "4"   | ""  | Left  |
 	And the debug output as 
 	|                           |
@@ -334,13 +334,13 @@ Scenario: Merge a variable inside a variable
 Scenario: Merge a variable inside the invalid varaible
 	Given a merge variable "[[a]]" equal to "test%$ "
 	And a merge variable "[[b]]" equal to "warewolf "
-	And an Input "[[[[a]]]]" and merge type "Index" and string at as "" and Padding "" and Alignment "Left"
+	And an Input "[[test%$]]" and merge type "Index" and string at as "" and Padding "" and Alignment "Left"
 	When the data merge tool is executed
 	Then the merged result is ""
 	And the execution has "AN" error
 	And the debug inputs as  
 	| # |             | With  | Using | Pad | Align |
-	| 1 | [[[[a]]]] = | Index | ""    | ""  | Left  |
+	| 1 | [[test%$]] = | Index | ""    | ""  | Left  |
 	And the debug output as 
 	|              |
 	| [[result]] = |

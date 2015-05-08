@@ -92,6 +92,10 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         void PermissionsHaveBeenModified(object sender, PermissionsModifiedEventArgs permissionsModifiedEventArgs)
         {
+            if(Context == null)
+            {
+                return;
+            }
             var user = Context.User;
             var permissionsMemo = new PermissionsModifiedMemo
             {
@@ -99,7 +103,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                 ServerID = HostSecurityProvider.Instance.ServerID
             };
             var serializedMemo = _serializer.Serialize(permissionsMemo);
-            Clients.Caller.SendPermissionsMemo(serializedMemo);        
+            Clients.Caller.SendPermissionsMemo(serializedMemo);
         }
 
         void SendResourceMessages(Guid resourceId, IList<ICompileMessageTO> compileMessageTos)
@@ -398,6 +402,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             SetupEvents();
 
             var workspaceId = Server.GetWorkspaceID(Context.User.Identity);
+            ResourceCatalog.Instance.LoadResourceActivityCache(workspaceId);
             var hubCallerConnectionContext = Clients;
             var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
             user.SendWorkspaceID(workspaceId);

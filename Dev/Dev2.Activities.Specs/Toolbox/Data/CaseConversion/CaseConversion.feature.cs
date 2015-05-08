@@ -414,7 +414,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 111
 this.ScenarioSetup(scenarioInfo);
 #line 112
- testRunner.Given("I have a case convert variable \"[[var]]\" with a value of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a case convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 113
  testRunner.And("I convert a variable \"[[var]]\" to \"Title Case\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 114
@@ -456,7 +456,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 124
 this.ScenarioSetup(scenarioInfo);
 #line 125
- testRunner.Given("I have a case convert variable \"[[var]]\" with a value of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a case convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 126
  testRunner.And("I convert a variable \"[[var]]\" to \"Sentence\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 127
@@ -498,7 +498,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 137
 this.ScenarioSetup(scenarioInfo);
 #line 138
- testRunner.Given("I have a case convert variable \"[[var]]\" with a value of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a case convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 139
  testRunner.And("I convert a variable \"[[var]]\" to \"UPPER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 140
@@ -540,7 +540,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 150
 this.ScenarioSetup(scenarioInfo);
 #line 151
- testRunner.Given("I have a case convert variable \"[[var]]\" with a value of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a case convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 152
  testRunner.And("I convert a variable \"[[var]]\" to \"lower\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 153
@@ -682,7 +682,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 195
 this.ScenarioSetup(scenarioInfo);
 #line 196
- testRunner.Given("I have a case convert variable \"[[var]]\" with a value of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a case convert variable \"[[var]]\" with a value of \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 197
  testRunner.And("I convert a variable \"[[var]]\" to \"UPPER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 198

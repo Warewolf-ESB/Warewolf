@@ -59,10 +59,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual("Dev2,0317641234", actual);
         }
@@ -76,9 +75,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual("Wallis,Barney,Trevor,Travis,Jurie,Brendon,Massimo,Ashley,Sashen,Wallis,", actual);
         }
@@ -94,9 +92,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual("WallissBarneysTrevorsTravissJuriesBrendonsMassimosAshleysSashensWalliss", actual);
         }
@@ -111,31 +108,10 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual("Travis works at Dev2.", actual);
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfDataMergeActivity_Execute")]
-        public void DsfDataMergeActivity_Execute_MultipleResults_ExpectError()
-        {
-            _mergeCollection.Add(new DataMergeDTO("[[Customers(4).FirstName]]", "Chars", " works at ", 1, "", "Left"));
-            _mergeCollection.Add(new DataMergeDTO("[[CompanyName]]", "Chars", ".", 2, "", "Left"));
-            SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]],[[bob]]", _mergeCollection);
-            IDSFDataObject result = ExecuteProcess();
-
-
-            string actual;
-            string error;
-            GetScalarValueFromDataList(result.DataListID, "Dev2System.Dev2Error", out actual, out error);
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(actual.Contains("The result field only allows a single result"));
         }
 
         [TestMethod]
@@ -148,9 +124,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual("Wallis's phone number is 0811452368.Barney's phone number is 0821452368.Trevor's phone number is 0831452368.Travis's phone number is 0841452368.Jurie's phone number is 0851452368.Brendon's phone number is 0861452368.Massimo's phone number is 0871452368.Ashley's phone number is 0881452368.Sashen's phone number is 0891452368.Wallis's phone number is 0801452368.", actual);
         }
@@ -169,9 +144,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, @"res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, @"res", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             const string expected = @"Wallis,Buchan
 Barney,Buchan
@@ -201,9 +175,8 @@ Wallis,Buchan
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(@"Wallis,Buchan	Barney,Buchan	Trevor,Williams-Ros	Travis,Frisigner	Jurie,Smit	Brendon,Page	Massimo,Guerrera	Ashley,Lewis	Sashen,Naidoo	Wallis,Buchan	", actual);
         }
@@ -222,10 +195,8 @@ Wallis,Buchan
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
 
             const string expected = @"WBuchan
 BBuchan
@@ -252,9 +223,8 @@ WBuchan
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             const string expected = @"Wallis0000Buchan
 Barney0000Buchan
@@ -281,9 +251,8 @@ Wallis0000Buchan
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             const string expected = @"0000WallisBuchan
 0000BarneyBuchan
@@ -311,9 +280,8 @@ Wallis0000Buchan
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             const string expected = @"WallisBuchan
 BarneyBuchan
@@ -341,50 +309,13 @@ WallisBuchan
             //------------Execute Test---------------------------
             IDSFDataObject result = ExecuteProcess();
             //------------Assert Results-------------------------
-            DataListRemoval(result.DataListID);
-            string actual;
-            string error;
-            GetScalarValueFromDataList(result.DataListID, "Dev2System.Dev2Error", out actual, out error);
+            string actual = result.Environment.FetchErrors();
             StringAssert.Contains(actual, "The 'Using' value must be a real number.");
         }
 
         #endregion Index Tests
 
         #region Negative Tests
-
-        [TestMethod]
-        public void Merge_Two_Fields_In_Recordsets_Zero_Index_In_Recordset_Expected_No_Data_Merged()
-        {
-            _mergeCollection.Add(new DataMergeDTO("[[Customers(0).FirstName]]", "Index", "1", 1, "", "Left"));
-            _mergeCollection.Add(new DataMergeDTO("[[Customers(1).LastName]]", "New Line", "", 2, "", "Left"));
-            SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
-            IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-            GetScalarValueFromDataList(result.DataListID, "Dev2System.Dev2Error", out actual, out error);
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(@"<InnerError>Recordset index [ 0 ] is not greater than zero</InnerError>", actual);
-        }
-
-        [TestMethod]
-        public void Merge_Two_Fields_In_Recordsets_Negative_Index_In_Recordset_Expected_No_Data_Merged()
-        {
-            _mergeCollection.Add(new DataMergeDTO("[[Customers(-1).FirstName]]", "Index", "1", 1, "", "Left"));
-            _mergeCollection.Add(new DataMergeDTO("[[Customers(1).LastName]]", "New Line", "", 2, "", "Left"));
-            SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
-            IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-            GetScalarValueFromDataList(result.DataListID, "Dev2System.Dev2Error", out actual, out error);
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(@"<InnerError>Recordset index [ -1 ] is not greater than zero</InnerError>", actual);
-        }
 
         #endregion
 
@@ -399,7 +330,7 @@ WallisBuchan
             var act = new DsfDataMergeActivity { Result = "[[res]]", MergeCollection = _mergeCollection };
 
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(null, null);
+            act.UpdateForEachInputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual("[[CompanyName]]", act.MergeCollection[0].InputVariable);
         }
@@ -418,7 +349,7 @@ WallisBuchan
             var tuple1 = new Tuple<string, string>("[[CompanyName]]", "Test");
             var tuple2 = new Tuple<string, string>("[[CompanyNumber]]", "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.MergeCollection[0].InputVariable);
             Assert.AreEqual("Test2", act.MergeCollection[1].InputVariable);
@@ -435,7 +366,7 @@ WallisBuchan
             DsfDataMergeActivity act = new DsfDataMergeActivity { Result = "[[res]]", MergeCollection = _mergeCollection };
 
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(null, null);
+            act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual("[[res]]", act.Result);
         }
@@ -453,7 +384,7 @@ WallisBuchan
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual("[[res]]", act.Result);
         }
@@ -470,7 +401,7 @@ WallisBuchan
 
             var tuple1 = new Tuple<string, string>("[[res]]", "Test");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.Result);
         }

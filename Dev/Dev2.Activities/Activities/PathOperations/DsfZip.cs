@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities;
@@ -112,7 +111,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ColItr.FetchNextValue(_archNameItr);
         }
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             foreach(Tuple<string, string> t in updates)
             {
@@ -143,7 +142,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

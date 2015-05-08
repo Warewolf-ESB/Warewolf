@@ -17,6 +17,8 @@ using Dev2.Activities.Debug;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
+using Dev2.Data;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Development.Languages.Scripting;
 using Dev2.Diagnostics;
@@ -24,6 +26,7 @@ using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Storage;
+using WarewolfParserInterop;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Activities
@@ -73,51 +76,76 @@ namespace Dev2.Activities
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
-                    var env = dataObject.Environment;
+            var env = dataObject.Environment;
             InitializeDebug(dataObject);
             try
             {
                 if(!errors.HasErrors())
                 {
-                    if (dataObject.IsDebugMode())
+                    if(dataObject.IsDebugMode())
                     {
                         var language = ScriptType.GetDescription();
                         AddDebugInputItem(new DebugItemStaticDataParams(language, "Language"));
                         AddDebugInputItem(new DebugEvalResult(Script, "Script", env));
                     }
 
-                    var scriptItr = env.EvalAsListOfStrings(Script);
+                    var listOfEvalResultsForInput = dataObject.Environment.EvalForDataMerge(Script);
+                    var innerIterator = new WarewolfListIterator();
+                    var innerListOfIters = new List<WarewolfIterator>();
+
+                    foreach (var listOfIterator in listOfEvalResultsForInput)
+                    {
+                        var inIterator = new WarewolfIterator(listOfIterator);
+                        innerIterator.AddVariableToIterateOn(inIterator);
+                        innerListOfIters.Add(inIterator);
+                    }
+                    var atomList = new List<DataASTMutable.WarewolfAtom>();
+                    while (innerIterator.HasMoreData())
+                    {
+                        var stringToUse = "";
+                        foreach (var warewolfIterator in innerListOfIters)
+                        {
+                            stringToUse += warewolfIterator.GetNextValue();
+                        }
+                        atomList.Add(DataASTMutable.WarewolfAtom.NewDataString(stringToUse));
+                    }
+                    var finalString = string.Join("", atomList);
+                    var inputListResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomListresult(new WarewolfAtomList<DataASTMutable.WarewolfAtom>(DataASTMutable.WarewolfAtom.Nothing, atomList));
+                    if (DataListUtil.IsFullyEvaluated(finalString))
+                    {
+                        inputListResult = dataObject.Environment.Eval(finalString);
+                    }
+
                     allErrors.MergeErrors(errors);
 
-                    
                     if(allErrors.HasErrors())
                     {
                         return;
                     }
-
-                    foreach(var scriptValue in scriptItr)
+                    var scriptItr = new WarewolfIterator(inputListResult);
+                    while(scriptItr.HasMoreData())
                     {
-
-
                         var engine = new ScriptingEngineRepo().CreateEngine(ScriptType);
-                        var value = engine.Execute(scriptValue);
+                        var value = engine.Execute(scriptItr.GetNextValue());
 
                         //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                         foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
                         {
-                            env.Assign(region,value);
-                            if (dataObject.IsDebugMode() && !allErrors.HasErrors())
+                            env.Assign(region, value);
+                            if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                             {
-                             
-                                    AddDebugOutputItem(new DebugEvalResult(region,"",env));
-                              
+                                AddDebugOutputItem(new DebugEvalResult(region, "", env));
                             }
                         }
                     }
-
                 }
             }
             catch(Exception e)
@@ -128,7 +156,6 @@ namespace Dev2.Activities
                 }
                 else
                 {
-
                     allErrors.AddError(e.Message.Replace(" for main:Object", string.Empty));
                 }
             }
@@ -148,14 +175,13 @@ namespace Dev2.Activities
                     {
                         AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
-
         }
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             foreach(Tuple<string, string> t in updates)
             {
@@ -167,7 +193,7 @@ namespace Dev2.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

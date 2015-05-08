@@ -66,14 +66,24 @@ namespace Dev2.Runtime.ServiceModel
                 var pluginSourceFromCatalog = _resourceCatalog.GetResource<PluginSource>(workspaceId, service.Source.ResourceID);
                 if (pluginSourceFromCatalog == null)
                 {
-                    var xmlStr = Resources.ReadXml(workspaceId, ResourceType.PluginSource, service.Source.ResourceID.ToString());
-                    if (!string.IsNullOrEmpty(xmlStr))
+                    try
                     {
-                        var xml = XElement.Parse(xmlStr);
-                        pluginSourceFromCatalog = new PluginSource(xml);
+                        var xmlStr = Resources.ReadXml(workspaceId, ResourceType.PluginSource, service.Source.ResourceID.ToString());
+                        if (!string.IsNullOrEmpty(xmlStr))
+                        {
+                            var xml = XElement.Parse(xmlStr);
+                            pluginSourceFromCatalog = new PluginSource(xml);
+                        }
+                    }
+                    catch(Exception)
+                    {
+                        //ignore the exception
                     }
                 }
-                service.Source = pluginSourceFromCatalog;
+                if (pluginSourceFromCatalog != null)
+                {
+                    service.Source = pluginSourceFromCatalog;
+                }
                 return FetchRecordset(service, true);
             }
             catch(Exception ex)
@@ -122,14 +132,24 @@ namespace Dev2.Runtime.ServiceModel
                 var pluginSourceFromCatalog = _resourceCatalog.GetResource<PluginSource>(workspaceId, service.Source.ResourceID);
                 if (pluginSourceFromCatalog == null)
                 {
-                    var xmlStr = Resources.ReadXml(workspaceId, ResourceType.PluginSource, service.Source.ResourceID.ToString());
-                    if (!string.IsNullOrEmpty(xmlStr))
+                    try
                     {
-                        var xml = XElement.Parse(xmlStr);
-                        pluginSourceFromCatalog = new PluginSource(xml);
+                        var xmlStr = Resources.ReadXml(workspaceId, ResourceType.PluginSource, service.Source.ResourceID.ToString());
+                        if (!string.IsNullOrEmpty(xmlStr))
+                        {
+                            var xml = XElement.Parse(xmlStr);
+                            pluginSourceFromCatalog = new PluginSource(xml);
+                        }
+                    }
+                    catch(Exception)
+                    {
+                        //ignore this
                     }
                 }
-                service.Source = pluginSourceFromCatalog;
+                if (pluginSourceFromCatalog != null)
+                {
+                    service.Source = pluginSourceFromCatalog;
+                }
                 var broker = new PluginBroker();
                 var pluginSource = (PluginSource)service.Source;
                 if(pluginSource != null)

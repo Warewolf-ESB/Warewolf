@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Activities;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -45,12 +44,11 @@ namespace Dev2.Activities.PathOperations
 
         protected IWarewolfListIterator ColItr;
 
-        protected override IList<OutputTO> ExecuteConcreteAction(NativeActivityContext context,
+        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject dataObject,
                                                                  out ErrorResultTO allErrors)
         {
             IList<OutputTO> outputs = new List<OutputTO>();
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-
+  
             allErrors = new ErrorResultTO();
             ColItr = new WarewolfListIterator();
 
@@ -201,7 +199,7 @@ namespace Dev2.Activities.PathOperations
 
         #endregion Properties
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {
@@ -221,7 +219,7 @@ namespace Dev2.Activities.PathOperations
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

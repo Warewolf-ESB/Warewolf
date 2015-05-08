@@ -12,7 +12,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.Core.Convertors.Case;
-using Dev2.Enums;
 using Dev2.Factories;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

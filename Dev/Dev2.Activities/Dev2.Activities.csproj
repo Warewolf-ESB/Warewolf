@@ -19,6 +19,8 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -82,7 +84,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\DropNet.dll</HintPath>
     </Reference>
-    <Reference Include="FSharp.Core, Version=4.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="FSharp.Core, Version=4.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\FSharp.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Jurassic">
       <HintPath>..\Binaries\Jurassic.dll</HintPath>
     </Reference>
@@ -99,6 +104,10 @@
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="policy.2.3.FSharp.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\policy.2.3.FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -131,16 +140,22 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="Activities\ActivityParser.cs" />
     <Compile Include="Activities\DebugCopyException.cs" />
     <Compile Include="Activities\DebugEvalResult.cs" />
     <Compile Include="Activities\Debug\DebugItemWarewolfAtomListResult.cs" />
     <Compile Include="Activities\Debug\DebugItemWarewolfAtomResult.cs" />
     <Compile Include="Activities\Debug\DebugItemWarewolfRecordset.cs" />
+    <Compile Include="Activities\Debug\DebugTOParams.cs" />
     <Compile Include="Activities\DsfBaseActivity.cs" />
+    <Compile Include="Activities\DsfDecision.cs" />
     <Compile Include="Activities\DsfDropBoxFileActivity.cs" />
     <Compile Include="Activities\DsfRecordsetLengthActivity.cs" />
     <Compile Include="Activities\Debug\DebugItemStaticDataParams.cs" />
+    <Compile Include="Activities\Debug\DebugItemVariableParams.cs" />
+    <Compile Include="Activities\Debug\DebugOutputParams.cs" />
     <Compile Include="Activities\Debug\DebugOutputBase.cs" />
+    <Compile Include="Activities\Debug\DebugUtil.cs" />
     <Compile Include="Activities\DsfFindRecordsMultipleCriteriaActivity.cs" />
     <Compile Include="Activities\DsfPluginActivity.cs" />
     <Compile Include="Activities\DsfDatabaseActivity.cs" />
@@ -171,6 +186,7 @@
     <Compile Include="Activities\DsfCountRecordsetActivity.cs" />
     <Compile Include="Activities\DsfMultiAssignActivity.cs" />
     <Compile Include="Activities\DsfSqlBulkInsertActivity.cs" />
+    <Compile Include="Activities\DsfSwitch.cs" />
     <Compile Include="Activities\DsfUniqueActivity.cs" />
     <Compile Include="Activities\DsfWebGetRequestActivity.cs" />
     <Compile Include="Activities\DsfCommentActivity.cs" />
@@ -217,7 +233,6 @@
     <Compile Include="BussinessLogic\RsOpNotHex.cs" />
     <Compile Include="BussinessLogic\RsOpNotRegex.cs" />
     <Compile Include="BussinessLogic\RsOpNotStartsWith.cs" />
-    <Compile Include="Enums\enFindMissingType.cs" />
     <Compile Include="Factories\Dev2FindMissingStrategyFactory.cs" />
     <Compile Include="FindMissingStrategies\DataGridActivityFindMissingStrategy.cs" />
     <Compile Include="FindMissingStrategies\DsfActivityFindMissingStrategy.cs" />
@@ -229,7 +244,6 @@
     <Compile Include="BussinessLogic\AbstractRecsetSearchValidation.cs" />
     <Compile Include="BussinessLogic\FindRecsetOptions.cs" />
     <Compile Include="BussinessLogic\IFindRecsetOptions.cs" />
-    <Compile Include="BussinessLogic\RecordsetInterrogator.cs" />
     <Compile Include="BussinessLogic\RsOpContains.cs" />
     <Compile Include="BussinessLogic\RsOpEndsWith.cs" />
     <Compile Include="BussinessLogic\RsOpEqual.cs" />
@@ -392,6 +406,13 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <!--<PropertyGroup Condition=" '$(BuildingInsideVisualStudio)' == 'true' ">
     <PostBuildEvent>
       xcopy /Y /Q /R "$(TargetPath)" "C:\Development\Dev Source\Dev2 Application Server\ApplicationServer\Unlimited.Applications.DynamicServicesHost\Binaries"
