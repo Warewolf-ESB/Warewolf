@@ -6,7 +6,7 @@
 
 Scenario Outline: Single Scalar Variable
 	Given I have a variable "[[a]]" with value <value>
-	And I select variable "[[a]]"
+	And I select variable "[[a]]" with name "a"
 	And a result variable "[[json]]"
 	When the create json tool is executed
 	Then the value of "[[json]]" should be <result>
@@ -18,7 +18,7 @@ Scenario Outline: Single Scalar Variable
 	|                       |
 	|   [[json]] = <result> |
 Examples: 
-	| Name             | value | result        |
+	| type | value | result        |
 	| Character     | c     | {"a":"c"}     |
 	| Integer       | 2     | {"a":2}       |
 	| Decimal       | 5.6   | {"a":5.6}     |
@@ -41,7 +41,7 @@ Scenario Outline: Single Scalar Variable with changed name
 	|                     |
 	| [[json]] = <result> |
 Examples: 
-	|  Name            | value | result        |
+	|  type | value | result        |
 	| Character     | c     | {"myVar":"c"}     |
 	| Integer       | 2     | {"myVar":2}       |
 	| Decimal       | 5.6   | {"myVar":5.6}     |
@@ -52,7 +52,7 @@ Examples:
 
 Scenario Outline: Simple Recordset single field
 	Given I have a variable "[[rec().a]]" with value <value>
-	And I select variable "[[rec().a]]"
+	And I select variable "[[rec().a]]" with name "a"
 	And a result variable "[[json]]"
 	When the create json tool is executed
 	Then the value of "[[json]]" should be <result>
@@ -64,7 +64,7 @@ Scenario Outline: Simple Recordset single field
 	|                       |
 	|   [[json]] = <result> |
 Examples: 
-	|    Name          | value | result        |
+	|    type | value | result        |
 	| Character     | c     | {"a":"c"}     |
 	| Integer       | 2     | {"a":2}       |
 	| Decimal       | 5.6   | {"a":5.6}     |
@@ -90,7 +90,7 @@ Scenario Outline: Multiple Scalars Variable
 	|                     |
 	| [[json]] = <result> |
 Examples: 
-	| Name             | valueA | valueB | result                 |
+	| type | valueA | valueB | result                 |
 	| Character     | c      | 3      | {"a":"c","b":3}        |
 	| Integer       | 2      | a      | {"a":2,"b":"a"}        |
 	| Decimal       | 5.6    | World  | {"a":5.6,"b":"World"}  |
@@ -102,8 +102,8 @@ Examples:
 Scenario Outline: Multiple Recordset Variable
 	Given I have a variable "[[rec().a]]" with value <valueA>
 	And I have a variable "[[rec().b]]" with value <valueB>
-	And I select variable "[[rec().a]]"
-	And I select variable "[[rec().b]]"
+	And I select variable "[[rec().a]]" with name "a"
+	And I select variable "[[rec().b]]" with name "b"
 	And a result variable "[[json]]"
 	When the create json tool is executed
 	Then the value of "[[json]]" should be <result>
@@ -116,7 +116,7 @@ Scenario Outline: Multiple Recordset Variable
 	|                     |
 	| [[json]] = <result> |
 Examples: 
-	|  Name            | valueA | valueB | result                 |
+	|  type | valueA | valueB | result                 |
 	| Character     | c      | 3      | {"a":"c","b":3}        |
 	| Integer       | 2      | a      | {"a":2,"b":"a"}        |
 	| Decimal       | 5.6    | World  | {"a":5.6,"b":"World"}  |
@@ -128,7 +128,7 @@ Examples:
 Scenario Outline: Multiple Scalars Variable comma seperated
 	Given I have a variable "[[a]]" with value <valueA>
 	And I have a variable "[[b]]" with value <valueB>
-	And I select variable "[[a]],[[b]]"
+	And I select variable "[[a]],[[b]]" with name "rec"
 	And a result variable "[[json]]"
 	When the create json tool is executed
 	Then the value of "[[json]]" should be <result>
@@ -141,19 +141,19 @@ Scenario Outline: Multiple Scalars Variable comma seperated
 	|                     |
 	| [[json]] = <result> |
 Examples: 
-	|   Name           | valueA | valueB | result                      |
-	| Character     | c      | 3      | {"":{"a":"c","b":3}}        |
-	| Integer       | 2      | a      | {"":{"a":2,"b":"a"}}        |
-	| Decimal       | 5.6    | World  | {"":{"a":5.6,"b":"World"}}  |
-	| String        | Hello  | 10.1   | {"":{"a":"Hello","b":10.1}} |
-	| Boolean_True  | true   |        | {"":{"a":true,"b":null}}    |
-	| Boolean_False | false  | true   | {"":{"a":false,"b":true}}   |
-	| Null          |        | false  | {"":{"a":null,"b":false}}   |
+	|   type | valueA | valueB | result                      |
+	| Character     | c      | 3      | {"rec":{"a":"c","b":3}}        |
+	| Integer       | 2      | a      | {"rec":{"a":2,"b":"a"}}        |
+	| Decimal       | 5.6    | World  | {"rec":{"a":5.6,"b":"World"}}  |
+	| String        | Hello  | 10.1   | {"rec":{"a":"Hello","b":10.1}} |
+	| Boolean_True  | true   |        | {"rec":{"a":true,"b":null}}    |
+	| Boolean_False | false  | true   | {"rec":{"a":false,"b":true}}   |
+	| Null          |        | false  | {"rec":{"a":null,"b":false}}   |
 
 Scenario Outline: Multiple Recordset Variable comma seperated
 	Given I have a variable "[[rec().a]]" with value <valueA>
 	And I have a variable "[[rec().b]]" with value <valueB>
-	And I select variable "[[rec().a]],[[rec().b]]"
+	And I select variable "[[rec().a]],[[rec().b]]" with name "rec"
 	And a result variable "[[json]]"
 	When the create json tool is executed
 	Then the value of "[[json]]" should be <result>
@@ -166,7 +166,7 @@ Scenario Outline: Multiple Recordset Variable comma seperated
 	|                     |
 	| [[json]] = <result> |
 Examples: 
-	|   Name           | valueA | valueB | result                         |
+	|   type | valueA | valueB | result                         |
 	| Character     | c      | 3      | {"rec":{"a":"c","b":3}}        |
 	| Integer       | 2      | a      | {"rec":{"a":2,"b":"a"}}        |
 	| Decimal       | 5.6    | World  | {"rec":{"a":5.6,"b":"World"}}  |
@@ -177,7 +177,7 @@ Examples:
 
 Scenario Outline: Simple Recordset with * single field
 	Given I have a variable "[[rec(*).a]]" with value <value>
-	And I select variable "[[rec(*).a]]"
+	And I select variable "[[rec(*).a]]" with name "rec"
 	And a result variable "[[json]]"
 	When the create json tool is executed
 	Then the value of "[[json]]" should be <result>
@@ -189,7 +189,7 @@ Scenario Outline: Simple Recordset with * single field
 	|                       |
 	|   [[json]] = <result> |
 Examples: 
-	|  Name           | value | result                |
+	|  type | value | result                |
 	| Character     | c     | {"rec":["a":"c"]}     |
 	| Integer       | 2     | {"rec":["a":2]}       |
 	| Decimal       | 5.6   | {"rec":["a":5.6]}     |
@@ -205,7 +205,7 @@ Scenario Outline: Recordset with * multiple fields and values
 	Given I have a variable "[[rec(1).b]]" with value <valueB1>
 	Given I have a variable "[[rec(2).b]]" with value <valueB2>
 	Given I have a variable "[[rec(3).b]]" with value <valueB3>
-	And I select variable "[[rec(*)]]"
+	And I select variable "[[rec(*)]]" with name "rec"
 	And a result variable "[[json]]"
 	When the create json tool is executed
 	Then the value of "[[json]]" should be <result>
@@ -222,7 +222,7 @@ Scenario Outline: Recordset with * multiple fields and values
 	|                       |
 	|   [[json]] = <result> |
 Examples: 
-	|   Name           | valueA1 | valueA2 | valueA3 | valueB1 | valueB2 | valueB3 | result                                                                       |
+	|   type | valueA1 | valueA2 | valueA3 | valueB1 | valueB2 | valueB3 | result                                                                       |
 	| Character     | c       | b       | g       | 1       | 2       | 3       | {"rec":[{"a":"c","b":1},{"a":"b","b":2},{"a":"g","b":3}]}                    |
 	| Integer       | 2       | 56      | 100     | g       | h       | i       | {"rec":[{"a":2,"b":"g"},{"a":56,"b":"h"},{"a":100,"b":"i"}]}                 |
 	| Decimal       | 5.6     | 7.1     | 100.34  | Hello   | World   | bob     | {"rec":[{"a":5.6,"b":"Hello"},{"a":7.1,"b":"World"},{"a":100.34,"b":"bob"}]} |
@@ -237,7 +237,7 @@ Scenario: Recordset with * multiple fields and values different length for colum
 	Given I have a variable "[[rec(3).a]]" with value "g"
 	Given I have a variable "[[rec(1).b]]" with value 1
 	Given I have a variable "[[rec(2).b]]" with value 2
-	And I select variable "[[rec(*)]]"
+	And I select variable "[[rec(*)]]" with name "rec"
 	And a result variable "[[json]]"
 	When the create json tool is executed
 	Then the value of "[[json]]" should be <result>
