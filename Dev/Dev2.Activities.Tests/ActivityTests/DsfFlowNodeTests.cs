@@ -40,6 +40,11 @@ namespace Dev2.Tests.Activities.ActivityTests
     [ExcludeFromCodeCoverage]
     public class DsfFlowNodeTests : BaseActivityUnitTest
     {
+        [TestInitialize]
+        public void Init()
+        {
+            GlobalConstants.Resultscache.Clear();
+        }
         #region Decision Tests
 
         // 2013.02.13: Ashley Lewis - Bug 8725, Task 8913
@@ -380,7 +385,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // we need to set this now ;)
             dataObject.ParentThreadID = 1;
 
-            new WorkflowHelper().CompileExpressions(workflow);
+            new WorkflowHelper().CompileExpressions(workflow,dataObject.ResourceID);
 
             var actual = string.Empty;
             var reset = new AutoResetEvent(false);

@@ -11,8 +11,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
+using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -22,98 +22,80 @@ namespace Dev2.ViewModels.Workflow
 {
     public class DataListConversionUtils
     {
-        public OptomizedObservableCollection<IDataListItem> CreateListToBindTo(IBinaryDataList dataList)
+        public OptomizedObservableCollection<IDataListItem> CreateListToBindTo(IDataListModel dataList)
         {
             var result = new OptomizedObservableCollection<IDataListItem>();
 
             if(dataList != null)
             {
-                var listOfEntries = dataList.FetchScalarEntries();
+                var listOfScalars = dataList.Scalars;
 
                 // process scalars ;)
-                foreach(var entry in listOfEntries
-                    .Where(e => ((e.ColumnIODirection == enDev2ColumnArgumentDirection.Input ||
-                                 e.ColumnIODirection == enDev2ColumnArgumentDirection.Both))))
+                foreach (var entry in listOfScalars
+                    .Where(e => ((e.IODirection == enDev2ColumnArgumentDirection.Input ||
+                                 e.IODirection == enDev2ColumnArgumentDirection.Both))))
                 {
-                    result.AddRange(ConvertIBinaryDataListEntryToIDataListItem(entry));
+                    result.AddRange(ConvertToIDataListItem(entry));
                 }
 
                 // now process recordsets ;)
-                listOfEntries = dataList.FetchRecordsetEntries();
-                foreach(var entry in listOfEntries)
+                var listOfRecordSets = dataList.RecordSets;
+                foreach (var entry in listOfRecordSets)
                 {
-                    result.AddRange(ConvertIBinaryDataListEntryToIDataListItem(entry));
+                    result.AddRange(ConvertToIDataListItem(entry));
                 }
             }
 
             return result;
         }
 
-        IList<IDataListItem> ConvertIBinaryDataListEntryToIDataListItem(IBinaryDataListEntry dataListEntry)
+        IList<IDataListItem> ConvertToIDataListItem(IScalar scalar)
         {
             IList<IDataListItem> result = new List<IDataListItem>();
-            if(dataListEntry.IsRecordset)
+            var item = scalar;
+            if (item != null)
             {
-                var sizeOfCollection = dataListEntry.ItemCollectionSize();
-                if(sizeOfCollection == 0) { sizeOfCollection++; }
-                var count = 0;
-
-                var fields = dataListEntry.Columns.Where(c => c.ColumnIODirection == enDev2ColumnArgumentDirection.Both || c.ColumnIODirection == enDev2ColumnArgumentDirection.Input).ToList();
-
-                while(count < sizeOfCollection)
+                IDataListItem singleRes = new DataListItem();
+                singleRes.IsRecordset = false;
+                singleRes.Field = item.Name;
+                singleRes.DisplayValue = item.Name;
+                try
                 {
-                    string error;
-                    var items = dataListEntry.FetchRecordAt(count + 1, out error);
-                    foreach(var item in items)
-                    {
-                        // check field mapping ;)
-                        if(fields.Any(f => f.ColumnName == item.FieldName))
-                        {
-                            IDataListItem singleRes = new DataListItem();
-                            singleRes.IsRecordset = true;
-                            singleRes.Recordset = item.Namespace;
-                            singleRes.Field = item.FieldName;
-                            singleRes.RecordsetIndex = (count + 1).ToString(CultureInfo.InvariantCulture);
-                            try
-                            {
-                                singleRes.Value = item.TheValue;
-                            }
-                            catch(Exception)
-                            {
-                                singleRes.Value = null;
-                            }
-
-                            singleRes.DisplayValue = item.DisplayValue;
-                            var desc = dataListEntry.Columns.FirstOrDefault(c => c.ColumnName == item.FieldName);
-                            singleRes.Description = desc == null ? null : desc.ColumnDescription;
-                            result.Add(singleRes);
-                        }
-                    }
-                    count++;
+                    singleRes.Value = item.Value;
                 }
+                catch (Exception)
+                {
+                    singleRes.Value = null;
+                }
+                var desc = item.Description;
+                singleRes.Description = string.IsNullOrWhiteSpace(desc) ? null : desc;
+                result.Add(singleRes);
             }
-            else
+            return result;
+        }
+
+        IList<IDataListItem> ConvertToIDataListItem(IRecordSet recordSet)
+        {
+            IList<IDataListItem> result = new List<IDataListItem>();
+            var dataListEntry = recordSet;
+            
+            foreach(var column in dataListEntry.Columns)
             {
-                var item = dataListEntry.FetchScalar();
-                if(item != null)
+                var fields = column.Value.Where(c => c.IODirection == enDev2ColumnArgumentDirection.Both || c.IODirection == enDev2ColumnArgumentDirection.Input).ToList();
+                foreach (var col in fields)
                 {
                     IDataListItem singleRes = new DataListItem();
-                    singleRes.IsRecordset = false;
-                    singleRes.Field = item.FieldName;
-                    singleRes.DisplayValue = item.FieldName;
-                    try
-                    {
-                        singleRes.Value = item.TheValue;
-                    }
-                    catch(Exception)
-                    {
-                        singleRes.Value = null;
-                    }
-                    var desc = dataListEntry.Description;
-                    singleRes.Description = string.IsNullOrWhiteSpace(desc) ? null : desc;
+                    singleRes.IsRecordset = true;
+                    singleRes.Recordset = recordSet.Name;
+                    singleRes.Field = col.Name;
+                    singleRes.RecordsetIndex = column.Key.ToString();
+                    singleRes.Value = col.Value;
+                    singleRes.Description = col.Description;
                     result.Add(singleRes);
-                }
+
+                }      
             }
+                                 
             return result;
         }
     }

@@ -364,40 +364,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsTrue(res);
         }
 
-        #region Get Input/Output Tests
-
-        [TestMethod]
-        public void FindRecords_GetInputs_Expected_Five_Input()
-        {
-            DsfFindRecordsActivity testAct = new DsfFindRecordsActivity();
-
-            IBinaryDataList inputs = testAct.GetInputs();
-
-            var res = inputs.FetchAllEntries().Count;
-
-            // remove test datalist ;)
-            DataListRemoval(inputs.UID);
-
-
-            Assert.AreEqual(5, res);
-        }
-
-        [TestMethod]
-        public void FindRecords_GetOutputs_Expected_One_Output()
-        {
-            DsfFindRecordsActivity testAct = new DsfFindRecordsActivity();
-
-            IBinaryDataList outputs = testAct.GetOutputs();
-
-            var res = outputs.FetchAllEntries().Count;
-
-            // remove test datalist ;)
-            DataListRemoval(outputs.UID);
-
-            Assert.AreEqual(1, res);
-        }
-
-        #endregion Get Input/Output Tests
+  
 
     }
 }

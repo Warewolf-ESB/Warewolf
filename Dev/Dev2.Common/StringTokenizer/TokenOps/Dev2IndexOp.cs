@@ -49,6 +49,7 @@ namespace Dev2.Common
             if (isReversed)
             {
                 start = (startIdx - ToIndex) + 1;
+                if (start < 0) start = 0;
                 end = startIdx + 1;
             }
 

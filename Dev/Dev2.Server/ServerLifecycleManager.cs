@@ -79,18 +79,33 @@ namespace Dev2
         /// <param name="arguments">Command line arguments passed to executable.</param>
         static int Main(string[] arguments)
         {
-            var result = 0;
-
             try
             {
+                using (new System.Runtime.MemoryFailPoint(1000)) // 20 megabytes
+                {
+                   return RunMain(arguments);
+                }
+            }
+            catch (InsufficientMemoryException)
+            {
+                return RunMain(arguments);
+            }
+            
+        }
 
+        static int RunMain(string[] arguments)
+        {
+            var result = 0;
+           
+            try
+            {
                 CommandLineParameters options = new CommandLineParameters();
                 CommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
                 if(!parser.ParseArguments(arguments, options))
                 {
                     return 80;
                 }
-                
+
                 bool commandLineParameterProcessed = false;
                 if(options.Install)
                 {
@@ -169,10 +184,7 @@ namespace Dev2
                     Dev2Logger.Log.Info("Command line processed. Returning");
                     return result;
                 }
-                AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
-                {
-                    Dev2Logger.Log.Fatal("Server has crashed!!!", args.ExceptionObject as Exception);
-                };
+                AppDomain.CurrentDomain.UnhandledException += (sender, args) => { Dev2Logger.Log.Fatal("Server has crashed!!!", args.ExceptionObject as Exception); };
                 if(Environment.UserInteractive || options.IntegrationTestMode)
                 {
                     Dev2Logger.Log.Info("** Starting In Interactive Mode ( " + options.IntegrationTestMode + " ) **");
@@ -196,9 +208,9 @@ namespace Dev2
             catch(Exception err)
             {
                 Dev2Logger.Log.Error("Error Starting Server", err);
-// ReSharper disable InvokeAsExtensionMethod
+                // ReSharper disable InvokeAsExtensionMethod
                 Dev2Logger.Log.Error("Error Starting Server. Stack trace", err);
-// ReSharper restore InvokeAsExtensionMethod
+                // ReSharper restore InvokeAsExtensionMethod
                 throw;
             }
             return result;

@@ -409,56 +409,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
             return result;
         }
 
-
-        /// <summary>
-        /// Fetches the errors.
-        /// </summary>
-        /// <returns></returns>
-        public string FetchErrors(bool returnAsXml = false)
-        {
-            string error;
-            IBinaryDataListEntry entry;
-            string result = String.Empty;
-
-            TryGetEntry(GlobalConstants.ErrorPayload, out entry, out error);
-            if(entry != null)
-            {
-                try
-                {
-                    result = entry.FetchScalar().TheValue;
-                }
-                catch(Exception)
-                {
-                    result = string.Empty;
-                }
-
-                if(!returnAsXml)
-                {
-                    result = XmlHelper.MakeErrorsUserReadable(result);
-                }
-            }
-
-            return result;
-        }
-
-
-        /// <summary>
-        /// Clears the errors.
-        /// </summary>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/02/06</date>
-        public void ClearErrors()
-        {
-            IBinaryDataListEntry entry;
-            string error;
-            TryGetEntry(DataListUtil.BuildSystemTagForDataList(enSystemTag.Dev2Error, false), out entry, out error);
-            if(entry != null)
-            {
-                entry.TryPutScalar(new BinaryDataListItem(string.Empty, GlobalConstants.ErrorPayload), out error);
-            }
-
-        }
-
         #endregion
 
         #region Private Methods

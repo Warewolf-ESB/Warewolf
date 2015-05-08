@@ -38,10 +38,11 @@ Scenario: Find unique records in an empty recordset
 	| rec       | unique |
 	And the execution has "AN" error
 	And the debug inputs as  
-	|             |  | Return Fields |
+	| #           |  | Return Fields   |
+	| In Field(s) |  | [[rs(*).row]] = |
 	And the debug output as 
 	|  |                    |
-	|  | [[rec(1).unique]] = |
+	| 1 | [[rec(1).unique]] = |
 
 Scenario: Find unique records in a recordset and the in field is blank
 	Given I have the following duplicated recordset
@@ -61,7 +62,7 @@ Scenario: Find unique records in a recordset and the in field is blank
 	| In Field(s) |  | [[rs().row]] = |
 	And the debug output as 
 	|  |                     |
-	|  | [[rec(1).unique]] = |
+	|  | [[rec(*).unique]] = |
 		
 Scenario: Find unique records in a recordset the return field is blank
 	Given I have the following duplicated recordset
@@ -81,7 +82,7 @@ Scenario: Find unique records in a recordset the return field is blank
 	| In Field(s) | [[rs(4).row]] = 3 | ""            |
 	And the debug output as 
 	|  |                     |
-	|  | [[rec(1).unique]] = |
+	|  | [[rec(*).unique]] = |
 	
 Scenario: Find unique records using a negative recordset index for In Field
 	Given I have the following duplicated recordset
@@ -102,7 +103,7 @@ Scenario: Find unique records using a negative recordset index for In Field
 	|             |                  | [[rs().row]]  = |
 	And the debug output as 
 	|  |                    |
-	|  | [[rec(1).unique]] = |
+	|  | [[rec(*).unique]] = |
 
 Scenario: Find unique records using a * for In Field
 	Given I have the following duplicated recordset
@@ -151,7 +152,7 @@ Scenario: Find unique records using a negative recordset index for Return Field
 	| In Field(s) | [[rs(4).row]] = 3 | [[rs(-1).row]] = |	
 	And the debug output as 
 	|  |                    |
-	|  | [[rec(1).unique]] = |
+	|  | [[rec(*).unique]] = |
 
 Scenario: Find unique records using a * for Return Field
 	Given I have the following duplicated recordset

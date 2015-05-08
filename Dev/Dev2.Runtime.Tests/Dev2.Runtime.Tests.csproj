@@ -19,6 +19,8 @@
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
     <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -261,7 +263,6 @@
     <Compile Include="Services\GetDatabaseTablesTests.cs" />
     <Compile Include="Services\GetVersionsTest.cs" />
     <Compile Include="Services\HostSecureConfigMock.cs" />
-    <Compile Include="ServiceModel\WebModelTests.cs" />
     <Compile Include="ServiceModel\ResourcesTests.cs" />
     <Compile Include="ServiceModel\ServicesTests.cs" />
     <Compile Include="Services\HostSecurityProviderTest.cs" />
@@ -398,6 +399,10 @@
     <ProjectReference Include="..\Dev2.UnitTestUtils\Dev2.UnitTestUtils.csproj">
       <Project>{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}</Project>
       <Name>Dev2.UnitTestUtils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
+      <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
+      <Name>Warewolf.Storage</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -578,6 +583,13 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

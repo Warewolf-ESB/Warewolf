@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 
@@ -25,12 +26,12 @@ namespace Dev2.DataList
     {
 
         // Bug 8725 - Fixed to be double rather than int
-        public override Func<IList<string>> BuildSearchExpression(IBinaryDataList scopingObj, IRecsetSearch to)
+        public override Func<IList<string>> BuildSearchExpression(IList<RecordSetSearchPayload> operationRange, IRecsetSearch to)
         {
             Func<IList<string>> result = () =>
                 {
-                    ErrorResultTO err;
-                    IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
+               
+                     
                     IList<string> fnResult = new List<string>();
                     double search;
 
@@ -60,6 +61,12 @@ namespace Dev2.DataList
             return result;
         }
 
+        public override Func<DataASTMutable.WarewolfAtom, bool> CreateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> warewolfAtoms, IEnumerable<DataASTMutable.WarewolfAtom> to, bool all)
+        {
+            if (all)
+                return (a) => values.All(x => DataASTMutable.CompareAtoms(a, x) > 0);
+            return (a) => values.Any(x => DataASTMutable.CompareAtoms(a, x) > 0);
+        }
         public override string HandlesType()
         {
             return ">";

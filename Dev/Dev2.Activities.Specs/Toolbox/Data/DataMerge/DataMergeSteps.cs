@@ -145,11 +145,11 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
             string error;
             string actualValue;
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+            GetScalarValueFromEnvironment(result.Environment, ResultVariable,
                                        out actualValue, out error);
             if(string.IsNullOrEmpty(value))
             {
-                Assert.IsNull(actualValue);
+                Assert.IsTrue(string.IsNullOrEmpty(actualValue));
             }
             else
             {
@@ -166,7 +166,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
             string error;
             string actualValue;
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+            GetScalarValueFromEnvironment(result.Environment, ResultVariable,
                                        out actualValue, out error);
             Assert.AreEqual(value, actualValue);
         }

@@ -85,6 +85,7 @@
     <Reference Include="DiffieHellman">
       <HintPath>..\Binaries\DiffieHellman.dll</HintPath>
     </Reference>
+    <Reference Include="FSharp.Core, Version=4.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v12.1, Version=12.1.20121.2059, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll</HintPath>
@@ -150,6 +151,7 @@
     <Compile Include="Binary Objects\BinaryDataListEntry.cs" />
     <Compile Include="Binary Objects\BinaryDataListItem.cs" />
     <Compile Include="Binary Objects\DataListRegistar.cs" />
+    <Compile Include="Binary Objects\EnvironmentIndexIterator.cs" />
     <Compile Include="Binary Objects\ListOfIndex.cs" />
     <Compile Include="Binary Objects\ReverseIndexIterator.cs" />
     <Compile Include="Binary Objects\ListIndexIterator.cs" />
@@ -157,6 +159,8 @@
     <Compile Include="Compilers\EvaluateRuleSet.cs" />
     <Compile Include="Compilers\RecordsetGroup.cs" />
     <Compile Include="Compilers\TransientRecordsetProcessGroup.cs" />
+    <Compile Include="DataListModel.cs" />
+    <Compile Include="DataListTO.cs" />
     <Compile Include="Decisions\Operations\DecisionUtils.cs" />
     <Compile Include="Decisions\Operations\NotBetween.cs" />
     <Compile Include="Decisions\Operations\NotContains.cs" />
@@ -165,6 +169,7 @@
     <Compile Include="Decisions\Operations\NotStartsWith.cs" />
     <Compile Include="Enums\enForEachType.cs" />
     <Compile Include="Enums\enTypeOfSystemInformationToGather.cs" />
+    <Compile Include="IDataListModel.cs" />
     <Compile Include="Network\DataListMessage.cs" />
     <Compile Include="Parsers\XPathParser.cs" />
     <Compile Include="PathOperations\Enums\WriteType.cs" />
@@ -172,6 +177,8 @@
     <Compile Include="PathOperations\Extension\PathExtensions.cs" />
     <Compile Include="PathOperations\Interfaces\IDestinationUserNamePassword.cs" />
     <Compile Include="PulseLogger.cs" />
+    <Compile Include="RecordSet.cs" />
+    <Compile Include="Scalar.cs" />
     <Compile Include="ServiceModel\AuthenticationType.cs" />
     <Compile Include="ServiceModel\Connection.cs" />
     <Compile Include="ServiceModel\OauthSource.cs" />
@@ -399,7 +406,6 @@
     <Compile Include="TO\ParseTO.cs" />
     <Compile Include="TO\RecordSetCollection.cs" />
     <Compile Include="TO\RecordSetDefinition.cs" />
-    <Compile Include="TO\RecordSetSearchPayload.cs" />
     <Compile Include="TO\SearchTO.cs" />
     <Compile Include="TO\StringSegments.cs" />
     <Compile Include="TO\SystemTag.cs" />
@@ -407,7 +413,6 @@
     <Compile Include="TO\UpsertTO.cs" />
     <Compile Include="TO\WizardDataListMergeTO.cs" />
     <Compile Include="TO\XMLPopulateIndexTO.cs" />
-    <Compile Include="Translators\DataListDataTableTranslator.cs" />
     <Compile Include="Translators\EmitionTypes.cs" />
     <Compile Include="Translators\StudioDebugTranslator.cs" />
     <Compile Include="Translators\DataListXMLTranslatorWithOutSystemTags.cs" />
@@ -418,7 +423,6 @@
     <Compile Include="Translators\DataListTranslatorFactory.cs" />
     <Compile Include="Translators\DataListXMLTranslator.cs" />
     <Compile Include="Translators\IDataListTranslator.cs" />
-    <Compile Include="Translators\ITranslate.cs" />
     <Compile Include="Translators\StudioTranslator.cs" />
     <Compile Include="Translators\XmlInputsOnlyTranslator.cs" />
     <Compile Include="Translators\TranslationConstants.cs" />
@@ -433,6 +437,7 @@
     <Compile Include="Value Objects\Dev2RecordsetIndexScope.cs" />
     <Compile Include="Value Objects\Dev2TokenConverter.cs" />
     <Compile Include="Value Objects\Dev2ValueObjectFactory.cs" />
+    <Compile Include="WarewolfIterator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
@@ -454,6 +459,18 @@
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
+      <Project>{b3d070e0-11c1-4c1c-81a5-e680c1494945}</Project>
+      <Name>Warewolf.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
+      <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
+      <Name>WarewolfLanguageParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WarewolfParserInterop\WarewolfParserInterop.csproj">
+      <Project>{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}</Project>
+      <Name>WarewolfParserInterop</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

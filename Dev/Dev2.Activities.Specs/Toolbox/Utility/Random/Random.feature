@@ -184,7 +184,6 @@ Scenario: Generate a Number between a negative index in a recordset and 5
 	| Numbers | [[rec(-1).set]] = | 5  |
 	And the debug output as 
 	|               |
-	| [[result]] = |
 
 Scenario: Generate a Number between 5 and a negative index in a recordset
 	Given I have a type as "Numbers"
@@ -196,7 +195,6 @@ Scenario: Generate a Number between 5 and a negative index in a recordset
 	| Numbers | 5    | [[rec(-1).set]]  = |
 	And the debug output as 
 	|               |
-	| [[result]] = |
 
 Scenario: Generate Letters with a negative recordset index for length
 	Given I have a type as "Letters"
@@ -208,7 +206,6 @@ Scenario: Generate Letters with a negative recordset index for length
 	| Letters | [[rec(-1).set]]  = | 
 	And the debug output as 
 	|              |
-	| [[result]] = |
 
 Scenario: Generate Letters and Numbers with a negative recordset index for length
 	Given I have a type as "LetterAndNumbers"
@@ -220,5 +217,4 @@ Scenario: Generate Letters and Numbers with a negative recordset index for lengt
 	| Letters & Numbers | [[rec(-1).set]] = |
 	And the debug output as 
 	|              |
-	| [[result]] = |
 

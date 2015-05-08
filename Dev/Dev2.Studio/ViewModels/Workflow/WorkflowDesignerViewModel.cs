@@ -82,6 +82,7 @@ using Dev2.Utilities;
 using Dev2.Utils;
 using Dev2.ViewModels.Workflow;
 using Dev2.Workspaces;
+using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable CheckNamespace
@@ -874,10 +875,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                 string decisionValue = expression.Substring(startIndex, endindex - startIndex);
 
                 //2013.06.21: Ashley Lewis for bug 9698 - avoid parsing entire decision stack, instantiate model and just parse column data only
-                IDataListCompiler c = DataListFactory.CreateDataListCompiler();
                 try
                 {
-                    var dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(decisionValue.Replace('!', '\"').ToStringBuilder());
+                    var dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(decisionValue.Replace('!', '\"'));
                     foreach (var decision in dds.TheStack)
                     {
                         var getCols = new[] { decision.Col1, decision.Col2, decision.Col3 };

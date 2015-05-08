@@ -18,20 +18,14 @@ using System.Linq;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
-using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Convertors.Case;
-using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Data.Factories;
-using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Builders;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Interfaces;
 using Dev2.Validation;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -76,100 +70,59 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugOutputs = new List<DebugItem>();
 
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-            toUpsert.IsDebug = dataObject.IsDebugMode();
-            toUpsert.ReplaceStarWithFixedIndex = true;
 
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
-            Guid executionId = DataListExecutionID.Get(context);
+            var env = dataObject.Environment;
             InitializeDebug(dataObject);
             try
             {
                 CleanArgs();
-                ICaseConverter converter = CaseConverterFactory.CreateCaseConverter();
+
 
                 allErrors.MergeErrors(errors);
 
-                int index = 1;
-                int outIndex = 0;
-                foreach(ICaseConvertTO item in ConvertCollection)
+                int inputIndex = 1;
+                int outputIndex = 1;
+
+                foreach (ICaseConvertTO item in ConvertCollection.Where(a => !String.IsNullOrEmpty(a.StringToConvert)))
                 {
-                    outIndex++;
-                    IBinaryDataListEntry tmp = compiler.Evaluate(executionId, enActionType.User, item.StringToConvert, false, out errors);
-                    allErrors.MergeErrors(errors);
-                    ValidateVariable(item.Result, compiler, dataObject, out errors);
-                    allErrors.MergeErrors(errors);
                     IsSingleValueRule.ApplyIsSingleValueRule(item.ExpressionToConvert, allErrors);
-                    if(dataObject.IsDebugMode())
+                    if (dataObject.IsDebugMode())
                     {
                         var debugItem = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("", index.ToString(CultureInfo.InvariantCulture)), debugItem);
-                        AddDebugItem(new DebugItemVariableParams(item.StringToConvert, "Convert", tmp, executionId), debugItem);
+                        AddDebugItem(new DebugItemStaticDataParams("", inputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
+                        AddDebugItem(new DebugEvalResult(item.StringToConvert, "Convert", env), debugItem);
                         AddDebugItem(new DebugItemStaticDataParams(item.ConvertType, "To"), debugItem);
                         _debugInputs.Add(debugItem);
-                        index++;
+                        inputIndex++;
                     }
-
-                    if(tmp != null)
+                    if (!allErrors.HasErrors())
                     {
-
-                        IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(tmp);
-
-                        while(itr.HasMoreRecords())
+                        try
                         {
-
-                            foreach(IBinaryDataListItem itm in itr.FetchNextRowData())
-                            {
-                                try
-                                {
-                                    IBinaryDataListItem res = converter.TryConvert(item.ConvertType, itm);
-                                    string expression = item.Result;
-
-                                    // 27.08.2013
-                                    // NOTE : The result must remain [ as this is how the fliping studio generates the result when using (*) notation
-                                    // There is a proper bug in to fix this issue, but since the studio is spaghetti I will leave this to the experts ;)
-                                    // This is a tmp fix to the issue
-                                    if(expression == "[" || DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Star)
-                                    {
-                                        expression = DataListUtil.AddBracketsToValueIfNotExist(res.DisplayValue);
-                                    }
-                                    //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                                    IsSingleValueRule rule = new IsSingleValueRule(() => expression);
-                                    var singleresError = rule.Check();
-                                    if(singleresError != null)
-                                        allErrors.AddError(singleresError.Message);
-                                    else
-                                    {
-                                        toUpsert.Add(expression, res.TheValue);
-                                        // Upsert the entire payload
-                                    }
-                                    allErrors.MergeErrors(errors);
-                                }
-                                catch(Exception e)
-                                {
-                                    allErrors.AddError(e.Message);
-                                    toUpsert.Add(item.Result, null);
-                                }
-                            }
+                            env.ApplyUpdate(item.StringToConvert, TryConvertFunc(item.ConvertType, env));
                         }
-                        compiler.Upsert(executionId, toUpsert, out errors);
-                        if(!allErrors.HasErrors() && dataObject.IsDebugMode())
+                        catch (Exception e)
                         {
-                            foreach(var debugOutputTo in toUpsert.DebugOutputs)
-                            {
-                                var debugItem = new DebugItem();
-                                AddDebugItem(new DebugItemStaticDataParams("", outIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
-                                AddDebugItem(new DebugItemVariableParams(debugOutputTo), debugItem);
-                                _debugOutputs.Add(debugItem);
-                            }
-                            toUpsert.DebugOutputs.Clear();
+                            allErrors.AddError(e.Message);
+                        }
+
+
+                        if (!allErrors.HasErrors() && dataObject.IsDebugMode())
+                        {
+                            var debugItem = new DebugItem();
+                            AddDebugItem(new DebugItemStaticDataParams("", outputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
+                            AddDebugItem(new DebugEvalResult(item.StringToConvert, "", env), debugItem);
+                            _debugOutputs.Add(debugItem);
+                            outputIndex++;
                         }
                     }
                 }
-
+            }
+            catch (Exception e)
+            {
+                allErrors.AddError(e.Message);
             }
             finally
             {
@@ -178,48 +131,49 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(hasErrors)
                 {
                     DisplayAndWriteError("DsfCaseConvertActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
                 }
                 if(dataObject.IsDebugMode())
                 {
-                    if(hasErrors)
-                    {
-                        int outIndex = 1;
-                        foreach(ICaseConvertTO item in ConvertCollection)
-                        {
-                            IBinaryDataListEntry tmp = compiler.Evaluate(executionId, enActionType.User, item.StringToConvert, false, out errors);
-                            var debugItem = new DebugItem();
-                            AddDebugItem(new DebugItemStaticDataParams("", outIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
-                            AddDebugItem(new DebugItemVariableParams(item.Result, "", tmp, executionId), debugItem);
-                            _debugOutputs.Add(debugItem);
-                            outIndex++;
-                        }
-                    }
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
             }
         }
 
-        static void ValidateVariable(string fieldName, IDataListCompiler compiler, IDSFDataObject dataObject, out ErrorResultTO errors)
+
+        public Func<DataASTMutable.WarewolfAtom,DataASTMutable.WarewolfAtom> TryConvertFunc(string conversionType,IExecutionEnvironment env)
         {
-            fieldName = DataListUtil.IsValueRecordset(fieldName) ? DataListUtil.ReplaceRecordsetIndexWithBlank(fieldName) : fieldName;
-            var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), Dev2.DataList.Contract.enTranslationDepth.Shape, out errors).ToString();
-            if(!string.IsNullOrEmpty(datalist))
+            var convertFunct = CaseConverter.GetFuncs();
+            Func<string, string> returnedFunc;
+
+            if (convertFunct.TryGetValue(conversionType, out returnedFunc))
             {
-                var isValidExpr = new IsValidExpressionRule(() => fieldName, datalist)
+                if (returnedFunc != null)
                 {
-                    LabelText = fieldName
-                };
+                    return (a=>
+                    {
+                        var upper = returnedFunc.Invoke(a.ToString());
+                        var evalled = env.Eval(upper);
+                        if(evalled.IsWarewolfAtomResult)
+                        {
+                            var warewolfAtomResult = evalled as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                            if(warewolfAtomResult != null)
+                            {
+                                return warewolfAtomResult.Item;
+                            }
+                            return DataASTMutable.WarewolfAtom.Nothing;
+                        }
 
-                var errorInfo = isValidExpr.Check();
-                if(errorInfo != null)
-                {
-                    errors.AddError(errorInfo.Message);
+                        return DataASTMutable.WarewolfAtom.NewDataString(  WarewolfDataEvaluationCommon.EvalResultToString(evalled));
+                    });
                 }
-
             }
+            throw  new Exception("Convert option does not exist");
         }
+
+        
 
         public override enFindMissingType GetFindMissingType()
         {
@@ -371,7 +325,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment environment)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -380,7 +334,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment environment)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

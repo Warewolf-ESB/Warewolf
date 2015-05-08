@@ -497,7 +497,7 @@ Scenario: Convert negative recordset index from base64 to text
 	| # | Convert          | From    | To   |
 	| 1 | [[my(-1).var]] = | Base 64 | Text |
 	And the debug output as  
-	| # |                  |	
+	|  |                  |	
 
 Scenario: Convert negative recordset index from base64 to binary 
 	Given I have a convert variable "[[my(-1).var]]" with a value of "QUE="
@@ -509,10 +509,9 @@ Scenario: Convert negative recordset index from base64 to binary
 	| # | Convert          | From    | To     |
 	| 1 | [[my(-1).var]] = | Base 64 | Binary |
 	And the debug output as  
-	| #  |              |
+	|   |              |
 
 
-#This Test scenarios should be passed after the bug 11994 is fixed
 Scenario Outline: Converting two varibles on one row 
 	Given I have a convert variable "[[a]]" with a value of "QUE="
 	And I have a convert variable "[[b]]" with a value of "QUE="
@@ -576,11 +575,11 @@ Scenario Outline: Validation messages when Convert Invalid Variables
 	And I convert a variable '<Variable>' from type '<From>' to type '<To>' 	
 	When the base conversion tool is executed
 	Then the execution has "AN" error
-	And the debug inputs as  
-	| #  | Convert      | From    | To   |
-	| 1  | <Variable> = | <From>  | <To> |
-	And the debug output as  
-	| #   |   |
+#	And the debug inputs as  
+#	| #  | Convert      | From    | To   |
+#	| 1  | <Variable> = | <From>  | <To> |
+#	And the debug output as  
+#	| #   |   |
 Examples: 
 	| No  | Variable                                  | Value            | From    | To      | Error                                                                                                                                                                                                                                                   |
 	| 1   | [[my(-1).var]]                            | QUE=             | Base 64 | Binary  | Recordset index -1 is not greater than zero                                                                                                                                                                                                             |

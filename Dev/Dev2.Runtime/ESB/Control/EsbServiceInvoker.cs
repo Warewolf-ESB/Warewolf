@@ -102,15 +102,14 @@ namespace Dev2.Runtime.ESB
         public Guid Invoke(IDSFDataObject dataObject, out ErrorResultTO errors)
         {
             var result = GlobalConstants.NullDataListID;
-            var compiler = DataListFactory.CreateDataListCompiler();
             var time = new System.Diagnostics.Stopwatch();
             time.Start();
             errors = new ErrorResultTO();
 
             // BUG 9706 - 2013.06.22 - TWR : added pre debug dispatch
-            if(compiler.HasErrors(dataObject.DataListID))
+            if(dataObject.Environment.HasErrors())
             {
-                errors.AddError(compiler.FetchErrors(dataObject.DataListID));
+                errors.AddError(dataObject.Environment.FetchErrors());
                 DispatchDebugErrors(errors, dataObject, StateType.Before);
             }
             errors.ClearErrors();
@@ -172,17 +171,14 @@ namespace Dev2.Runtime.ESB
                     }
                     finally
                     {
-                        var executionDlid = dataObject.DataListID;
-                        if (compiler.HasErrors(executionDlid) && executionDlid != GlobalConstants.NullDataListID)
+                        if (dataObject.Environment.HasErrors())
                         {
-                            var errorString = compiler.FetchErrors(executionDlid,true);
+                            var errorString = dataObject.Environment.FetchErrors();
                             var executionErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
                             errors.MergeErrors(executionErrors);
                         }
 
-                        ErrorResultTO tmpErrors;
-                        compiler.UpsertSystemTag(executionDlid, enSystemTag.Dev2Error,
-                        errors.MakeDataListReady(), out tmpErrors);
+                        dataObject.Environment.AddError(errors.MakeDataListReady());
 
                         if(errors.HasErrors())
                         {

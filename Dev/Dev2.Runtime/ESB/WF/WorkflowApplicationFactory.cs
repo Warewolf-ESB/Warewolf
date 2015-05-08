@@ -237,8 +237,11 @@ namespace Dev2.Runtime.ESB.WF
                     var wfappUtils = new WfApplicationUtils();
 
                     ErrorResultTO invokeErrors;
-                    wfappUtils.DispatchDebugState(dataTransferObject, StateType.End, AllErrors.HasErrors(), AllErrors.MakeDisplayReady(), out invokeErrors, _runTime, false, true);
-                    AllErrors.MergeErrors(invokeErrors);
+                    if (dataTransferObject.IsDebugMode())
+                    {
+                        wfappUtils.DispatchDebugState(dataTransferObject, StateType.End, AllErrors.HasErrors(), AllErrors.MakeDisplayReady(), out invokeErrors, _runTime, false, true);
+                    }
+                    //AllErrors.MergeErrors(invokeErrors);
                     // avoid memory leak ;)
                     run.Dispose();
                 }
@@ -348,9 +351,13 @@ namespace Dev2.Runtime.ESB.WF
                     // here is space at the inn ;)
                     var wfappUtils = new WfApplicationUtils();
 
-                    ErrorResultTO invokeErrors;
-                    wfappUtils.DispatchDebugState(DataTransferObject, StateType.Start, AllErrors.HasErrors(), AllErrors.MakeDisplayReady(), out invokeErrors, null, true);
-                    AllErrors.MergeErrors(invokeErrors);
+                    if (DataTransferObject.IsDebugMode())
+                    {
+                        ErrorResultTO invokeErrors;
+                        wfappUtils.DispatchDebugState(DataTransferObject, StateType.Start, AllErrors.HasErrors(), AllErrors.MakeDisplayReady(), out invokeErrors, null, true);
+                        AllErrors.MergeErrors(invokeErrors);
+                    }
+                    
                     _previousNumberOfSteps = DataTransferObject.NumberOfSteps;
                     DataTransferObject.NumberOfSteps = 0;
                     _instance.Run();

@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -43,7 +44,7 @@ namespace Dev2.Services.Execution
             WebServices.ExecuteRequest(service, true, out errors);
         }
 
-        protected override object ExecuteService(out ErrorResultTO errors, IOutputFormatter formater = null)
+        protected override object ExecuteService(List<MethodParameter> methodParameters, out ErrorResultTO errors, IOutputFormatter formater = null)
         {
             Service.Source = Source;
             ExecuteWebRequest(Service, out errors);

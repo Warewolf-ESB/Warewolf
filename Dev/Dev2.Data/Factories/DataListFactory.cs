@@ -16,7 +16,6 @@ using Dev2.Data.Builders;
 using Dev2.Data.DataListCache;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Parsers;
-using Dev2.Data.Util;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Interfaces;
 using Dev2.Server.Datalist;
@@ -102,18 +101,16 @@ namespace Dev2.DataList.Contract
             {
                 if(isOutput)
                 {
-                    var rsName = DataListUtil.ExtractRecordsetNameFromValue(def.Value);
 
-                    if(!def.IsRecordSet && string.IsNullOrEmpty(rsName))
+                    if(!def.IsRecordSet)
                     {
                         result.Add(def);
                     }
                 }
                 else
                 {
-                    var rsName = DataListUtil.ExtractRecordsetNameFromValue(def.Name);
 
-                    if(!def.IsRecordSet && string.IsNullOrEmpty(rsName))
+                    if(!def.IsRecordSet)
                     {
                         result.Add(def);
                     }

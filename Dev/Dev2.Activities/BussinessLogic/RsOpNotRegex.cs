@@ -14,6 +14,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Dev2.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 
@@ -25,14 +27,14 @@ namespace Dev2.DataList
     public class RsOpNotRegex : AbstractRecsetSearchValidation
     {
 
-        public override Func<IList<string>> BuildSearchExpression(IBinaryDataList scopingObj, IRecsetSearch to)
+        public override Func<IList<string>> BuildSearchExpression(IList<RecordSetSearchPayload> operationRange, IRecsetSearch to)
         {
             // Default to a null function result
 
             Func<IList<string>> result = () =>
                 {
-                    ErrorResultTO err;
-                    IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
+           
+                     
                     IList<string> fnResult = new List<string>();
 
                     foreach(RecordSetSearchPayload p in operationRange)
@@ -56,7 +58,25 @@ namespace Dev2.DataList
 
             return result;
         }
+        public override Func<DataASTMutable.WarewolfAtom, bool> CreateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> warewolfAtoms, IEnumerable<DataASTMutable.WarewolfAtom> to, bool all)
+        {
 
+
+            if (all)
+                return (a) => !values.All(x =>
+                {
+                    Regex exp = new Regex(x.ToString());
+                    return exp.IsMatch(a.ToString());
+
+                });
+            return (a) => !values.Any(x =>
+            {
+                Regex exp = new Regex(x.ToString());
+                return exp.IsMatch(a.ToString());
+
+            });
+
+        }
         public override string HandlesType()
         {
             return "Not Regex";

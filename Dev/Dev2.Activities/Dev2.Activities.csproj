@@ -82,6 +82,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\DropNet.dll</HintPath>
     </Reference>
+    <Reference Include="FSharp.Core, Version=4.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Jurassic">
       <HintPath>..\Binaries\Jurassic.dll</HintPath>
     </Reference>
@@ -92,7 +93,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.JScript" />
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="MySql.Data, Version=6.9.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
+    <Reference Include="MySql.Data, Version=6.9.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\Binaries\MySql.Data.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -129,15 +132,15 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="Activities\DebugCopyException.cs" />
-    <Compile Include="Activities\Debug\DebugTOParams.cs" />
+    <Compile Include="Activities\DebugEvalResult.cs" />
+    <Compile Include="Activities\Debug\DebugItemWarewolfAtomListResult.cs" />
+    <Compile Include="Activities\Debug\DebugItemWarewolfAtomResult.cs" />
+    <Compile Include="Activities\Debug\DebugItemWarewolfRecordset.cs" />
     <Compile Include="Activities\DsfBaseActivity.cs" />
     <Compile Include="Activities\DsfDropBoxFileActivity.cs" />
     <Compile Include="Activities\DsfRecordsetLengthActivity.cs" />
     <Compile Include="Activities\Debug\DebugItemStaticDataParams.cs" />
-    <Compile Include="Activities\Debug\DebugItemVariableParams.cs" />
-    <Compile Include="Activities\Debug\DebugOutputParams.cs" />
     <Compile Include="Activities\Debug\DebugOutputBase.cs" />
-    <Compile Include="Activities\Debug\DebugUtil.cs" />
     <Compile Include="Activities\DsfFindRecordsMultipleCriteriaActivity.cs" />
     <Compile Include="Activities\DsfPluginActivity.cs" />
     <Compile Include="Activities\DsfDatabaseActivity.cs" />
@@ -292,6 +295,7 @@
     </Compile>
     <Compile Include="Validation\VariableUtils.cs" />
     <Compile Include="Value Objects\ForEachBootstrapTO.cs" />
+    <Compile Include="Value Objects\ForEachBootstrapTOEnvironment.cs" />
     <Compile Include="Value Objects\ForEachInnerActivityTO.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -343,6 +347,10 @@
       <Project>{52f26184-cb50-4d82-b8a2-83f73d2b5011}</Project>
       <Name>Dev2.Instrumentation</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
+      <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>
+      <Name>Dev2.Runtime.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
       <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
       <Name>Dev2.Runtime.Services</Name>
@@ -354,6 +362,18 @@
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
+      <Project>{b3d070e0-11c1-4c1c-81a5-e680c1494945}</Project>
+      <Name>Warewolf.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
+      <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
+      <Name>WarewolfLanguageParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WarewolfParserInterop\WarewolfParserInterop.csproj">
+      <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
+      <Name>WarewolfParserInterop</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

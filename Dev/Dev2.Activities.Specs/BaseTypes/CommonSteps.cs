@@ -30,6 +30,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Specs.Toolbox.FileAndFolder;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Warewolf.Storage;
 
 namespace Dev2.Activities.Specs.BaseTypes
 {
@@ -55,11 +56,10 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             bool expected = anError.Equals("NO");
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            
             var comiler = DataListFactory.CreateDataListCompiler();
-            // 06.01.2014 Line Below is Causing Compile Errors ;)
-            string fetchErrors = comiler.FetchErrors(result.DataListID);
-            //string fetchErrors = RecordSetBases.FetchErrors(result.DataListID);
-            bool actual = string.IsNullOrEmpty(fetchErrors);
+            string fetchErrors = string.Join(Environment.NewLine,result.Environment.Errors);
+            bool actual = result.Environment.Errors.Count==0;
             string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actual ? "did not occur" : "did occur" + fetchErrors);
 
@@ -69,7 +69,8 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Then(@"the debug inputs as")]
         public void ThenTheDebugInputsAs(Table table)
         {
-            var inputDebugItems = GetInputDebugItems();
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var inputDebugItems = GetInputDebugItems(null, result.Environment);
             ThenTheDebugInputsAs(table, inputDebugItems);
         }
 
@@ -82,7 +83,8 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Then(@"the debug output as")]
         public void ThenTheDebugOutputAs(Table table)
         {
-            var outputDebugItems = GetOutputDebugItems();
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var outputDebugItems = GetOutputDebugItems(null, result.Environment);
             ThenTheDebugOutputAs(table, outputDebugItems);
         }
 
@@ -328,7 +330,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 string actualValue;
                 value = value.Replace('"', ' ').Trim();
-                GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
+                GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(variable),
                                            out actualValue, out error);
                 if(string.IsNullOrEmpty(value))
                 {
@@ -470,7 +472,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             return objRef;
         }
 
-        public static List<IDebugItemResult> GetInputDebugItems(Activity act = null)
+        public static List<IDebugItemResult> GetInputDebugItems(Activity act,IExecutionEnvironment env)
         {
             ErrorResultTO errors;
             var comiler = DataListFactory.CreateDataListCompiler();
@@ -482,38 +484,37 @@ namespace Dev2.Activities.Specs.BaseTypes
                 DsfActivityAbstract<string> dsfActivityAbstractString = act as DsfActivityAbstract<string>;
                 if(dsfActivityAbstractString != null)
                 {
-                    return DebugItemResults(dsfActivityAbstractString, dl);
+                    return DebugItemResults(dsfActivityAbstractString, result.Environment);
                 }
                 DsfActivityAbstract<bool> dsfActivityAbstractBool = act as DsfActivityAbstract<bool>;
                 if(dsfActivityAbstractBool != null)
                 {
-                    return DebugItemResults(dsfActivityAbstractBool, dl);
+                    return DebugItemResults(dsfActivityAbstractBool, result.Environment);
                 }
                 var activity = ScenarioContext.Current.Get<DsfActivityAbstract<string>>("activity");
-                return DebugItemResults(activity, dl);
+                return DebugItemResults(activity, env);
             }
             catch
             {
                 var activity = ScenarioContext.Current.Get<DsfActivityAbstract<bool>>("activity");
-                return activity.GetDebugInputs(dl)
+                return activity.GetDebugInputs(result.Environment)
                     .SelectMany(r => r.ResultsList)
                     .ToList();
             }
         }
 
-        static List<IDebugItemResult> DebugItemResults<T>(DsfActivityAbstract<T> dsfActivityAbstractString, IBinaryDataList dl)
+
+        static List<IDebugItemResult> DebugItemResults<T>(DsfActivityAbstract<T> dsfActivityAbstractString, IExecutionEnvironment dl)
         {
             return dsfActivityAbstractString.GetDebugInputs(dl)
                 .SelectMany(r => r.ResultsList)
                 .ToList();
         }
-
-        public static List<IDebugItemResult> GetOutputDebugItems(Activity act = null)
+        public static List<IDebugItemResult> GetOutputDebugItems(Activity act , IExecutionEnvironment dl)
         {
-            ErrorResultTO errors;
-            var comiler = DataListFactory.CreateDataListCompiler();
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            IBinaryDataList dl = comiler.FetchBinaryDataList(result.DataListID, out errors);
+      
+
+
 
             try
             {
@@ -592,10 +593,18 @@ namespace Dev2.Activities.Specs.BaseTypes
                         }
                     }
                 }
+                else if (rowValue.StartsWith("="))
+                {
+                    debugItemResult.Value = "";
+                    debugItemResult.Type = DebugItemResultType.Value;
+                    debugItemResult.Variable = rowValue.Replace("=", "");
+                    list.Add(debugItemResult);
+                }
                 else
                 {
                     if(!string.IsNullOrEmpty(columnHeader) && columnHeader.Equals("#"))
                     {
+
                         debugItemResult.Label = rowValue;
                         debugItemResult.Value = "";
                         debugItemResult.Type = DebugItemResultType.Value;
@@ -619,6 +628,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                         }
                     }
 
+                    
                     list.Add(debugItemResult);
                 }
             }
@@ -670,14 +680,15 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             for(int i = 0; i < expectedDebugItems.Count; i++)
             {
-                Verify(expectedDebugItems[i].Label, inputDebugItems[i].Label, "Labels", i);
-                Verify(expectedDebugItems[i].Value, inputDebugItems[i].Value, "Values", i);
-                Verify(expectedDebugItems[i].Variable, inputDebugItems[i].Variable, "Variables", i);
+                Verify(expectedDebugItems[i].Label ?? "", inputDebugItems[i].Label ?? "", "Labels", i);
+                Verify(expectedDebugItems[i].Variable ?? "", inputDebugItems[i].Variable ?? "", "Variables", i);
+                Verify(expectedDebugItems[i].Value ?? "", inputDebugItems[i].Value ?? "", "Values", i);
             }
         }
 
         static void Verify(string expectedValue, string actualValue, string name, int index)
         {
+            expectedValue = expectedValue.Replace("‡", "=");
             string type = "";
 
             if(!string.IsNullOrEmpty(expectedValue) && !expectedValue.Equals(actualValue, StringComparison.InvariantCultureIgnoreCase))

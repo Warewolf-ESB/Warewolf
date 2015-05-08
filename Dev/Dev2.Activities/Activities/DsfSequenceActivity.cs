@@ -15,11 +15,10 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage;
 
 namespace Dev2.Activities
 {
@@ -54,7 +53,7 @@ namespace Dev2.Activities
             return DebugItem.EmptyList;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             return DebugItem.EmptyList;
         }
@@ -165,11 +164,7 @@ namespace Dev2.Activities
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             dataObject.IsDebugNested = false;
             dataObject.ParentInstanceID = _previousParentID;
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            if(compiler != null)
-            {
-                DoErrorHandling(context, compiler, dataObject);
-            }
+            DoErrorHandling(context, dataObject);
             dataObject.ForEachNestingLevel--;
         }
 

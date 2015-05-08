@@ -27,6 +27,7 @@ using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -111,7 +112,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             // remove test datalist ;)
             var compiler = DataListFactory.CreateDataListCompiler();
-            var errors = compiler.FetchErrors(result.DataListID);
+            var errors = DataObject.Environment.FetchErrors();
             DataListRemoval(result.DataListID);
             //--------------Assert result----------------------------
             StringAssert.Contains(errors, string.Format("User: SomeUser does not have Execute Permission to resource {0}.", resourceID));
@@ -160,7 +161,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
             var compiler = DataListFactory.CreateDataListCompiler();
-            var errors = compiler.FetchErrors(result.DataListID);
+            var errors = DataObject.Environment.FetchErrors();
             DataListRemoval(result.DataListID);
             //------------Assert Results-------------------------
             StringAssert.Contains(errors, "This is an error");
@@ -273,7 +274,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             dl.Setup(a => a.UID).Returns(guid);
             try
             {
-                act.GetDebugInputs(dl.Object, compiler.Object, parser.Object);
+                act.GetDebugInputs(new ExecutionEnvironment());
             }
             catch(Exception err)
             {

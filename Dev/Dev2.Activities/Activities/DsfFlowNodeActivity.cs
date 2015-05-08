@@ -19,6 +19,7 @@ using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Data.Decision;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -28,6 +29,7 @@ using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Microsoft.CSharp.Activities;
 using Newtonsoft.Json;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -105,6 +107,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 DispatchDebugState(context, StateType.Before);
             }
+
+       
+            Dev2DataListDecisionHandler.Instance.AddEnvironment(_dataListId, _dataObject.Environment);
             context.ScheduleActivity(_expression, OnCompleted, OnFaulted);
         }
 
@@ -114,16 +119,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void OnCompleted(NativeActivityContext context, ActivityInstance completedInstance, TResult result)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            Result.Set(context, result);
-            _theResult = result;
-
-            if(dataObject != null && dataObject.IsDebugMode())
+            try
             {
-                DispatchDebugState(context, StateType.After);
-            }
 
-            OnExecutedCompleted(context, false, false);
+
+
+                IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+                Result.Set(context, result);
+                _theResult = result;
+
+                if (dataObject != null && dataObject.IsDebugMode())
+                {
+                    DispatchDebugState(context, StateType.After);
+                }
+
+                OnExecutedCompleted(context, false, false);
+            }
+            finally
+            {
+
+                Dev2DataListDecisionHandler.Instance.RemoveEnvironment(_dataListId);
+            }
         }
 
         #endregion
@@ -133,6 +149,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void OnFaulted(NativeActivityFaultContext faultContext, Exception propagatedException, ActivityInstance propagatedFrom)
         {
             IDSFDataObject dataObject = faultContext.GetExtension<IDSFDataObject>();
+            dataObject.Environment.AddError(propagatedException.Message);
             if(dataObject != null && dataObject.IsDebugMode())
             {
                 DispatchDebugState(faultContext, StateType.After);
@@ -145,7 +162,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Get Debug Inputs/Outputs
 
         // Travis.Frisinger - 28.01.2013 : Amended for Debug
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
         {
             List<IDebugItem> result = new List<IDebugItem>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
@@ -157,16 +174,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 Dev2DecisionStack dds = compiler.ConvertFromJsonToModel<Dev2DecisionStack>(val);
                 ErrorResultTO error;
-                string userModel = dds.GenerateUserFriendlyModel(dataList.UID, dds.Mode, out error);
+                string userModel = dds.GenerateUserFriendlyModel(env, dds.Mode, out error);
                 allErrors.MergeErrors(error);
 
                 foreach(Dev2Decision dev2Decision in dds.TheStack)
                 {
-                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, dataList, dds.Mode, dev2Decision.Col1, out  error);
+                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, dds.Mode, dev2Decision.Col1, out  error);
                     allErrors.MergeErrors(error);
-                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, dataList, dds.Mode, dev2Decision.Col2, out error);
+                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, dds.Mode, dev2Decision.Col2, out error);
                     allErrors.MergeErrors(error);
-                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, dataList, dds.Mode, dev2Decision.Col3, out error);
+                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, dds.Mode, dev2Decision.Col3, out error);
                     allErrors.MergeErrors(error);
                 }
 
@@ -189,9 +206,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 Dev2Switch ds = new Dev2Switch { SwitchVariable = val.ToString() };
                 DebugItem itemToAdd = new DebugItem();
-                ErrorResultTO errors;
-                IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dataList.UID, enActionType.User, ds.SwitchVariable, false, out errors);
-                var debugResult = new DebugItemVariableParams(ds.SwitchVariable, "Switch on", expressionsEntry, dataList.UID);
+        
+                var a = env.Eval(ds.SwitchVariable);
+                var debugResult = new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfEvalResultToString(a),"", ds.SwitchVariable,"", "Switch on","","=");
                 itemToAdd.AddRange(debugResult.GetDebugItemResult());
                 result.Add(itemToAdd);
             }
@@ -204,16 +221,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(allErrors.HasErrors())
                 {
                     var serviceName = GetType().Name;
-                    DisplayAndWriteError(serviceName, allErrors);
-                    ErrorResultTO error;
-                    compiler.UpsertSystemTag(_dataListId, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out error);
+                    DisplayAndWriteError(serviceName, allErrors);                    
                 }
             }
 
             return result.Select(a => a as DebugItem).ToList();
         }
 
-        void AddInputDebugItemResultsAfterEvaluate(List<IDebugItem> result, ref string userModel, IBinaryDataList dataList, Dev2DecisionMode decisionMode, string expression, out ErrorResultTO error, DebugItem parent = null)
+        void AddInputDebugItemResultsAfterEvaluate(List<IDebugItem> result, ref string userModel, IExecutionEnvironment env, Dev2DecisionMode decisionMode, string expression, out ErrorResultTO error, DebugItem parent = null)
         {
             error = new ErrorResultTO();
             if(expression != null && DataListUtil.IsEvaluated(expression))
@@ -225,12 +240,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
-                    var expressiomToStringValue = EvaluateExpressiomToStringValue(expression, decisionMode, dataList);
+                    var expressiomToStringValue = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(expression));// EvaluateExpressiomToStringValue(expression, decisionMode, dataList);
                     userModel = userModel.Replace(expression, expressiomToStringValue);
-                    ErrorResultTO errors;
-                    IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-                    IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dataList.UID, enActionType.User, expression, false, out errors);
-                    debugResult = new DebugItemVariableParams(expression, "", expressionsEntry, dataList.UID);
+                    debugResult = new DebugItemWarewolfAtomResult(expressiomToStringValue, expression, "");
                 }
 
                 var itemResults = debugResult.GetDebugItemResult();
@@ -261,7 +273,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         // Travis.Frisinger - 28.01.2013 : Amended for Debug
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             var result = new List<DebugItem>();
             string resultString = _theResult.ToString();
@@ -285,13 +297,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
                 result.Add(itemToAdd);
             }
+                // ReSharper disable EmptyGeneralCatchClause
             catch(Exception)
+                // ReSharper restore EmptyGeneralCatchClause
             {
-                if(!dataList.HasErrors())
-                {
+
                     itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
                     result.Add(itemToAdd);
-                }
+                
             }
 
             return result;

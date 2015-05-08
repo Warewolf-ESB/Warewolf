@@ -140,6 +140,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\SpecFlow.1.9.0\lib\net35\TechTalk.SpecFlow.dll</HintPath>
     </Reference>
+    <Reference Include="Warewolf.Storage">
+      <HintPath>..\Warewolf.Storage\bin\Debug\Warewolf.Storage.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <Choose>
@@ -343,12 +346,6 @@
       <DependentUpon>FindRecordsetIndexMultiple.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Recordset\FindRecordIndexMultiple\FindRecordsetIndexMultipleSteps.cs" />
-    <Compile Include="Toolbox\Recordset\FindRecordIndex\FindRecordIndex.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FindRecordIndex.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\Recordset\FindRecordIndex\FindRecordIndexSteps.cs" />
     <Compile Include="Toolbox\Recordset\Sort\Sort.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -457,9 +454,6 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>WorkflowExecution2.feature.cs</LastGenOutput>
     </None>
-    <None Include="Default.srprofile">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Explorer\Explorer.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Explorer.feature.cs</LastGenOutput>
@@ -473,13 +467,9 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Settings Permissions1.feature.cs</LastGenOutput>
     </None>
-    <None Include="runtests.cmd" />
     <None Include="Scheduler\Scheduler.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Scheduler.feature.cs</LastGenOutput>
-    </None>
-    <None Include="SpecRunTestProfile.xsd">
-      <SubType>Designer</SubType>
     </None>
     <None Include="Toolbox\ControlFlow\Decision\Decision.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -581,10 +571,6 @@
     <None Include="Toolbox\Recordset\FindRecordIndexMultiple\FindRecordsetIndexMultiple.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>FindRecordsetIndexMultiple.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Recordset\FindRecordIndex\FindRecordIndex.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>FindRecordIndex.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Recordset\Sort\Sort.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -727,6 +713,14 @@
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
+      <Project>{E0F7C709-A61B-4829-A659-D7780052326A}</Project>
+      <Name>WarewolfLanguageParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WarewolfParserInterop\WarewolfParserInterop.csproj">
+      <Project>{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}</Project>
+      <Name>WarewolfParserInterop</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

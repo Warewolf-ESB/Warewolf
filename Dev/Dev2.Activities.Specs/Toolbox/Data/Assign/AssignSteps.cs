@@ -12,7 +12,6 @@
 
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Data.Util;
-using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Activities.Statements;
@@ -78,8 +77,35 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
             }
 
             fieldCollection.Add(new ActivityDTO(variable, value, 1, true));
-            variableList.Add(new Tuple<string, string>(variable, ""));
         }
+
+        [Then(@"the value of ""(.*)"" is null")]
+        public void ThenTheValueOfIsNull(string variable)
+        {
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            try
+            {
+                if (DataListUtil.IsValueRecordset(variable))
+                {
+                    result.Environment.EvalAsListOfStrings(variable);
+                }
+                else
+                {
+                    string actualValue;
+                    string error;
+                    GetScalarValueFromEnvironment(result.Environment, variable,
+                        out actualValue, out error);
+                    
+
+                }
+                Assert.Fail("Should have thrown NullReferenceException");
+            }
+            catch (NullReferenceException)
+            {
+                Assert.IsTrue(true, "Exception thrown");
+            }
+        }
+
 
         [When(@"the assign tool is executed")]
         public void WhenTheAssignToolIsExecuted()
@@ -92,15 +118,11 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
         [Then(@"the value of ""(.*)"" equals (.*)")]
         public void ThenTheValueOfEquals(string variable, string value)
         {
-            string error;
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
 
             if(DataListUtil.IsValueRecordset(variable))
             {
-                string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
-                string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
-                List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column,
-                                                                               out error);
+                var recordSetValues =result.Environment.EvalAsListOfStrings(variable);
                 recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
                 value = value.Replace('"', ' ').Trim();
 
@@ -117,7 +139,8 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
             {
                 string actualValue;
                 value = value.Replace('"', ' ').Trim();
-                GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
+                string error;
+                GetScalarValueFromEnvironment(result.Environment,variable,
                                            out actualValue, out error);
                 actualValue = actualValue.Replace('"', ' ').Trim();
                 Assert.AreEqual(value, actualValue);

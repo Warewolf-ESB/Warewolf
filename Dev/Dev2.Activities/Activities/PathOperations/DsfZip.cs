@@ -15,13 +15,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities;
 using Dev2.Activities.PathOperations;
+using Dev2.Common.Interfaces;
+using Dev2.Data;
 using Dev2.Data.PathOperations.Interfaces;
-using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.PathOperations;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -46,11 +46,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ArchivePassword = string.Empty;
         }
 
-        IDev2DataListEvaluateIterator _archPassItr;
-        IDev2DataListEvaluateIterator _compresItr;
-        IBinaryDataListEntry _archiveNameEntry;
-        IDev2DataListEvaluateIterator _archNameItr;
-        IBinaryDataListEntry _compressionRatioEntry;
+        IWarewolfIterator _archPassItr;
+        IWarewolfIterator _compresItr;
+        IWarewolfIterator _archNameItr;
 
         #region Properties
         /// <summary>
@@ -78,41 +76,30 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
         #endregion Properties
 
-        protected override void AddDebugInputItems(Guid executionId)
+        protected override void AddDebugInputItems(IExecutionEnvironment environment)
         {
-            AddDebugInputItem(CompressionRatio, "Compression Ratio", _compressionRatioEntry, executionId);
+            AddDebugInputItem(CompressionRatio, "Compression Ratio",environment);
         }
 
-        protected override void AddItemsToIterator(Guid executionId, IDataListCompiler compiler, List<ErrorResultTO> errors)
+        protected override void AddItemsToIterator(IExecutionEnvironment environment)
         {
-            ErrorResultTO error;
-            _compressionRatioEntry = compiler.Evaluate(executionId, enActionType.User,
-                                                                          CompressionRatio, false, out error);
-            errors.Add(error);
-            _compresItr =
-                Dev2ValueObjectFactory.CreateEvaluateIterator(_compressionRatioEntry);
-            ColItr.AddIterator(_compresItr);
+            _compresItr = new WarewolfIterator(environment.Eval(CompressionRatio));
+            ColItr.AddVariableToIterateOn(_compresItr);
 
-            _archiveNameEntry = compiler.Evaluate(executionId, enActionType.User, ArchiveName, false,
-                                                                      out error);
-            errors.Add(error);
-            _archNameItr = Dev2ValueObjectFactory.CreateEvaluateIterator(_archiveNameEntry);
-            ColItr.AddIterator(_archNameItr);
+            _archNameItr = new WarewolfIterator(environment.Eval(ArchiveName));
+            ColItr.AddVariableToIterateOn(_archNameItr);
 
-            IBinaryDataListEntry archPassEntry = compiler.Evaluate(executionId, enActionType.User, ArchivePassword,
-                                                                  false, out error);
-            errors.Add(error);
-            _archPassItr = Dev2ValueObjectFactory.CreateEvaluateIterator(archPassEntry);
-            ColItr.AddIterator(_archPassItr);
+            _archPassItr = new WarewolfIterator(environment.Eval(ArchivePassword));
+            ColItr.AddVariableToIterateOn(_archPassItr);
 
         }
 
         protected override string ExecuteBroker(IActivityOperationsBroker broker, IActivityIOOperationsEndPoint scrEndPoint, IActivityIOOperationsEndPoint dstEndPoint)
         {
 
-            Dev2ZipOperationTO zipTo = ActivityIOFactory.CreateZipTO(ColItr.FetchNextRow(_compresItr).TheValue,
-                                                                         ColItr.FetchNextRow(_archPassItr).TheValue,
-                                                                         ColItr.FetchNextRow(_archNameItr).TheValue,
+            Dev2ZipOperationTO zipTo = ActivityIOFactory.CreateZipTO(ColItr.FetchNextValue(_compresItr),
+                                                                         ColItr.FetchNextValue(_archPassItr),
+                                                                         ColItr.FetchNextValue(_archNameItr),
                                                                          Overwrite);
 
             return broker.Zip(scrEndPoint, dstEndPoint, zipTo);
@@ -120,9 +107,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void MoveRemainingIterators()
         {
-            ColItr.FetchNextRow(_compresItr);
-            ColItr.FetchNextRow(_archPassItr);
-            ColItr.FetchNextRow(_archNameItr);
+            ColItr.FetchNextValue(_compresItr);
+            ColItr.FetchNextValue(_archPassItr);
+            ColItr.FetchNextValue(_archNameItr);
         }
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)

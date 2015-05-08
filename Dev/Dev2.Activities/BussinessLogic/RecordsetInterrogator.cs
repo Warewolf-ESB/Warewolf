@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 
@@ -22,7 +23,7 @@ namespace Dev2.DataList
     public static class RecordsetInterrogator
     {
 
-        public static IList<string> FindRecords(IBinaryDataList scopingObj, IRecsetSearch searchTO, out ErrorResultTO errors)
+        public static IList<string> FindRecords(IList<RecordSetSearchPayload> scopingObj, IRecsetSearch searchTO, out ErrorResultTO errors)
         {
             IFindRecsetOptions searchOp = FindRecsetOptions.FindMatch(searchTO.SearchType);
             IList<string> result = new List<string>();
@@ -39,5 +40,7 @@ namespace Dev2.DataList
 
             return result;
         }
+
+
     }
 }

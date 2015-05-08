@@ -35,6 +35,7 @@ using Microsoft.VisualBasic.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace ActivityUnitTests
@@ -48,7 +49,6 @@ namespace ActivityUnitTests
         public IEsbWorkspaceChannel DsfChannel;
         public Mock<IEsbWorkspaceChannel> MockChannel;
         public static IDataListCompiler Compiler;
-
         public BaseActivityUnitTest()
         {
             CallBackData = "Default Data";
@@ -56,6 +56,7 @@ namespace ActivityUnitTests
             {
                 Action = new DsfCommentActivity()
             };
+           DataObject = new DsfDataObject("",Guid.NewGuid());
         }
 
         public Guid ExecutionId { get; set; }
@@ -65,6 +66,8 @@ namespace ActivityUnitTests
         public string CurrentDl { get; set; }
 
         public FlowStep TestStartNode { get; set; }
+
+        public IDSFDataObject DataObject { get; set; }
 
         public string CallBackData { get; set; }
 
@@ -209,8 +212,13 @@ namespace ActivityUnitTests
                 WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, esbChannel);
 
                 errors.ClearErrors();
-                dataObject.DataListID = wfec.Execute(out errors);
-
+            if(dataObject.ResourceID == Guid.Empty)
+            {
+                dataObject.ResourceID = Guid.NewGuid();
+            }
+            dataObject.Environment = DataObject.Environment;
+            dataObject.DataListID = wfec.Execute(out errors);
+            DataObject = dataObject;
             return dataObject;
         }
 
@@ -331,12 +339,16 @@ namespace ActivityUnitTests
 
             Compiler = DataListFactory.CreateDataListCompiler();
             ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(TestData), new StringBuilder(CurrentDl), out errors);
-            IBinaryDataList dl = Compiler.FetchBinaryDataList(ExecutionId, out errors);
+            inputResults = null;
+            outputResults = null;
+            var result = ExecuteProcess(null, true, null, isRemoteInvoke) as IDSFDataObject;
+            if(result != null)
+            {
+                inputResults = activity.GetDebugInputs(result.Environment);
+                outputResults = activity.GetDebugOutputs(result.Environment);
 
-            var result = ExecuteProcess(null, true, null, isRemoteInvoke);
-            inputResults = activity.GetDebugInputs(dl);
-            outputResults = activity.GetDebugOutputs(dl);
-
+               
+            }
             return result;
         }
 
@@ -355,10 +367,17 @@ namespace ActivityUnitTests
             Compiler = DataListFactory.CreateDataListCompiler();
             ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(TestData), new StringBuilder(CurrentDl), out errors);
             IBinaryDataList dl = Compiler.FetchBinaryDataList(ExecutionId, out errors);
-            var result = ExecuteProcess(null, true);
-            inputResults = activity.GetDebugInputs(dl);
-            outputResults = activity.GetDebugOutputs(dl);
+            var result = ExecuteProcess(null, true) as IDSFDataObject;
+            inputResults = null;
+            outputResults = null;
+            if(result != null)
+            {
+                inputResults = activity.GetDebugInputs(result.Environment);
+                outputResults = activity.GetDebugOutputs(result.Environment);
 
+                
+            }
+            
             return result;
         }
 
@@ -440,6 +459,24 @@ namespace ActivityUnitTests
             return true;
         }
 
+        public bool GetScalarValueFromEnvironment(IExecutionEnvironment env, string fieldToRetrieve, out string result, out string error)
+        {
+
+            error = "";
+            result = null;
+            try
+            {
+                result = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(DataListUtils.AddBracketsToValueIfNotExist(fieldToRetrieve)));
+            }
+            catch( Exception err)
+            {
+                error = err.Message;
+            }
+            return true;
+        }
+
+
+
         public bool GetRecordSetFieldValueFromDataList(Guid dataListId, string recordSet, string fieldNameToRetrieve, out IList<IBinaryDataListItem> result, out string error)
         {
             IList<IBinaryDataListItem> dLItems = new List<IBinaryDataListItem>();
@@ -478,25 +515,21 @@ namespace ActivityUnitTests
             return isCool;
         }
 
-        protected List<string> RetrieveAllRecordSetFieldValues(Guid dataListId, string recordSetName, string fieldToRetrieve, out string error)
+        protected List<string> RetrieveAllRecordSetFieldValues(Guid dataListID, string recordSetName, string fieldToRetrieve, out string error)
         {
-            var retVals = new List<string>();
-            IList<IBinaryDataListItem> dataListItems;
-            if(GetRecordSetFieldValueFromDataList(dataListId, recordSetName, fieldToRetrieve, out dataListItems, out error))
-            {
-                retVals.AddRange(dataListItems.Select(item =>
-                {
-                    try
-                    {
-                        return item.TheValue;
-                    }
-                    catch(Exception)
-                    {
-                        return "";
-                    }
-                }));
-            }
-            return retVals;
+            //todo: do not fix make work with environment
+           
+            error = null;
+            return null;
+        }
+
+        protected List<string> RetrieveAllRecordSetFieldValues(IExecutionEnvironment environment, string recordSetName, string fieldToRetrieve, out string error)
+        {
+
+
+            var retVals = environment.EvalAsListOfStrings("[[" + recordSetName + "(*)." + fieldToRetrieve + "]]");
+            error = "";
+            return (List<string>)retVals;
         }
 
         protected void DataListRemoval(Guid dlId)
@@ -509,7 +542,7 @@ namespace ActivityUnitTests
         #region Retrieve Errors
         public static string FetchErrors(Guid dataListId)
         {
-            return Compiler.FetchErrors(dataListId);
+            return "";
         }
         #endregion
     }

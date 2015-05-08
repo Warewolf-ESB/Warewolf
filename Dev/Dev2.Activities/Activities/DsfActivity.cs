@@ -22,14 +22,15 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Data.Decision;
 using Dev2.Data.Storage;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -240,9 +241,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IEsbChannel esbChannel = context.GetExtension<IEsbChannel>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            ErrorResultTO errors;
             ErrorResultTO allErrors = new ErrorResultTO();
 
             Guid datalistId = DataListExecutionID.Get(context);
@@ -270,7 +268,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             try
             {
-                compiler.ClearErrors(dataObject.DataListID);
+                //compiler.ClearErrors(dataObject.DataListID);
 
                 if(ServiceServer != Guid.Empty)
                 {
@@ -292,8 +290,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
 
                 // scrub it clean ;)
-                ScrubDataList(compiler, datalistId, context.WorkflowInstanceId.ToString(), out errors);
-                allErrors.MergeErrors(errors);
 
                 // set the parent service
                 parentServiceName = dataObject.ParentServiceName;
@@ -326,9 +322,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                             dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
                             dataObject.ResourceID = ResourceID.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
-
+                            
                             // Execute Request
                             ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors);
+                            
                             allErrors.MergeErrors(tmpErrors);
 
                             AfterExecutionCompleted(tmpErrors);
@@ -337,20 +334,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             dataObject.ServiceName = ServiceName;
                         }
 
-                        // ** THIS IS A HACK OF NOTE, WE NEED TO ADDRESS THIS!
-                        if(dataObject.IsDebugMode())
-                        {
-                            //Dont remove this it is here to fix the data not being returned correctly
-                            string testData = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), enTranslationDepth.Data, out errors).ToString();
-                            if(string.IsNullOrEmpty(testData))
-                            {
-
-                            }
-                        }
 
                     }
 
-                    bool whereErrors = compiler.HasErrors(datalistId);
+                    bool whereErrors = dataObject.Environment.HasErrors();
 
                     Result.Set(context, whereErrors);
                     HasError.Set(context, whereErrors);
@@ -368,12 +355,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if(allErrors.HasErrors())
                     {
                         DisplayAndWriteError("DsfActivity", allErrors);
-                        compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                        dataObject.Environment.AddError(allErrors.MakeDataListReady());
                         // add to datalist in variable specified
                         if(!String.IsNullOrEmpty(OnErrorVariable))
                         {
                             var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
-                            compiler.Upsert(dataObject.DataListID, upsertVariable, allErrors.MakeDataListReady(), out errors);
+                            dataObject.Environment.Assign(upsertVariable, allErrors.MakeDataListReady());
                         }
                     }
                 }
@@ -424,16 +411,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected virtual void AfterExecutionCompleted(ErrorResultTO tmpErrors)
         {
+            if(DataObject != null)
+            {
+                Dev2DataListDecisionHandler.Instance.RemoveEnvironment(DataObject.DataListID);
+            }
         }
 
         protected virtual Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors)
         {
             Dev2Logger.Log.Info("PRE-SUB_EXECUTE SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb().ToString("####.####") + " MBs ]");
 
-            var resultId = esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors);
+            esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors);
             Dev2Logger.Log.Info("POST-SUB_EXECUTE SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb().ToString("####.####") + " MBs ]");
-
-            return resultId;
+            return Guid.NewGuid();
         }
 
         public override IList<DsfForEachItem> GetForEachInputs()
@@ -455,109 +445,68 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Private Methods
 
-        private void ScrubDataList(IDataListCompiler compiler, Guid executionId, string workflowId, out ErrorResultTO invokeErrors)
-        {
-            ErrorResultTO errors;
-            invokeErrors = new ErrorResultTO();
-            // Strip System Tags
-            
-            compiler.UpsertSystemTag(executionId, enSystemTag.ParentWorkflowInstanceId, workflowId, out errors);
-            invokeErrors.MergeErrors(errors);
-        }
-
         #endregion
 
         #region Overridden ActivityAbstact Methods
 
-        public override IBinaryDataList GetInputs()
-        {
-            IBinaryDataList result;
-            ErrorResultTO errors;
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            var inputDlString = compiler.GenerateWizardDataListFromDefs(InputMapping, enDev2ArgumentType.Input, false, out errors, true);
-            var inputDlShape = compiler.GenerateWizardDataListFromDefs(InputMapping, enDev2ArgumentType.Input, false, out errors);
-            if(!errors.HasErrors())
-            {
-                Guid dlId = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), inputDlString, inputDlShape, out errors);
-                if(!errors.HasErrors())
-                {
-                    result = compiler.FetchBinaryDataList(dlId, out errors);
-                }
-                else
-                {
-                    string errorString = string.Join(",", errors.FetchErrors());
-                    throw new Exception(errorString);
-                }
-            }
-            else
-            {
-                string errorString = string.Join(",", errors.FetchErrors());
-                throw new Exception(errorString);
-            }
-
-            return result;
-        }
-
-        public override IBinaryDataList GetOutputs()
-        {
-            IBinaryDataList result;
-            ErrorResultTO errors;
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            var outputDlString = compiler.GenerateWizardDataListFromDefs(OutputMapping, enDev2ArgumentType.Output, false, out errors, true);
-            var outputDlShape = compiler.GenerateWizardDataListFromDefs(OutputMapping, enDev2ArgumentType.Output, false, out errors);
-            if(!errors.HasErrors())
-            {
-                Guid dlId = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), outputDlString, outputDlShape, out errors);
-                if(!errors.HasErrors())
-                {
-                    result = compiler.FetchBinaryDataList(dlId, out errors);
-                }
-                else
-                {
-                    string errorString = string.Join(",", errors.FetchErrors());
-                    throw new Exception(errorString);
-                }
-            }
-            else
-            {
-                string errorString = string.Join(",", errors.FetchErrors());
-                throw new Exception(errorString);
-            }
-
-            return result;
-        }
-
         #endregion Overridden ActivityAbstact Methods
 
         #region Debug IO
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
         {
             IDev2LanguageParser parser = DataListFactory.CreateInputParser();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            return GetDebugInputs(dataList, compiler, parser).Select(a => (DebugItem)a).ToList();
+            return GetDebugInputs(env, parser).Select(a => (DebugItem)a).ToList();
 
         }
-        public List<IDebugItem> GetDebugInputs(IBinaryDataList dataList, IDataListCompiler compiler, IDev2LanguageParser parser)
+        public List<IDebugItem> GetDebugInputs( IExecutionEnvironment env, IDev2LanguageParser parser)
         {
             IList<IDev2Definition> inputs = parser.Parse(InputMapping);
 
             var results = new List<IDebugItem>();
             foreach(IDev2Definition dev2Definition in inputs)
             {
-                ErrorResultTO errors;
-                IBinaryDataListEntry tmpEntry = compiler.Evaluate(dataList.UID, enActionType.User, dev2Definition.RawValue, false, out errors);
+                if (string.IsNullOrEmpty(dev2Definition.RawValue))
+                {
+                    continue;
+                }
+                var tmpEntry = env.Eval( dev2Definition.RawValue);
 
                 DebugItem itemToAdd = new DebugItem();
-                AddDebugItem(new DebugItemVariableParams(dev2Definition.RawValue, "", tmpEntry, dataList.UID), itemToAdd);
-
-                if(errors.HasErrors())
+                if (tmpEntry.IsWarewolfAtomResult)
                 {
-                    itemToAdd.FlushStringBuilder();
-                    throw new DebugCopyException(errors.MakeDisplayReady(), itemToAdd);
+        
+                    var warewolfAtomResult = tmpEntry as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                    if (warewolfAtomResult != null)
+                    {
+                        var variableName = dev2Definition.Name;
+                        if (!string.IsNullOrEmpty(dev2Definition.RecordSetName))
+                        {
+                            variableName = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "1");
+                        }
+                        AddDebugItem(new DebugItemWarewolfAtomResult(warewolfAtomResult.Item.ToString(), DataListUtil.AddBracketsToValueIfNotExist(variableName),""), itemToAdd);
+                    }
+                    results.Add(itemToAdd);
                 }
-                results.Add(itemToAdd);
+                else
+                {
+                   
+                    var warewolfAtomListResult = tmpEntry as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                    if (warewolfAtomListResult != null)
+                    {
+                        var variableName = dev2Definition.Name;
+                        if (!string.IsNullOrEmpty(dev2Definition.RecordSetName))
+                        {
+                            variableName = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "*");
+                            AddDebugItem(new DebugItemWarewolfAtomListResult(warewolfAtomListResult, "", "", DataListUtil.AddBracketsToValueIfNotExist(variableName), "", "", "="), itemToAdd);
+                        }
+                        else
+                        {
+                            var warewolfAtom = warewolfAtomListResult.Item.Last();
+                            AddDebugItem(new DebugItemWarewolfAtomResult(warewolfAtom.ToString(), DataListUtil.AddBracketsToValueIfNotExist(variableName), ""), itemToAdd);
+                        }
+                    }
+                    results.Add(itemToAdd);
+                }
 
             }
 
@@ -569,30 +518,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return results;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        #region Overrides of DsfNativeActivity<bool>
+
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env)
+        {
+            GetDebugOutputsFromEnv(env);
+            return _debugOutputs;
+        }
+
+        #endregion
+
+        public void  GetDebugOutputsFromEnv(IExecutionEnvironment environment)
         {
             IDev2LanguageParser parser = DataListFactory.CreateOutputParser();
-            IList<IDev2Definition> inputs = parser.Parse(OutputMapping);
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
+            IList<IDev2Definition> outputs = parser.Parse(OutputMapping);
             var results = new List<DebugItem>();
-            foreach(IDev2Definition dev2Definition in inputs)
+            foreach(IDev2Definition dev2Definition in outputs)
             {
-                ErrorResultTO errors;
-                IBinaryDataListEntry tmpEntry = compiler.Evaluate(dataList.UID, enActionType.User, dev2Definition.RawValue, false, out errors);
-
-                if(tmpEntry != null)
+                try
                 {
                     DebugItem itemToAdd = new DebugItem();
-                    AddDebugItem(new DebugItemVariableParams(dev2Definition.RawValue, "", tmpEntry, dataList.UID), itemToAdd);
+                    AddDebugItem(new DebugEvalResult(dev2Definition.RawValue, "", environment), itemToAdd);
                     results.Add(itemToAdd);
                 }
-                else
+                catch (Exception e)
                 {
-                    if(errors.HasErrors())
-                    {
-                        throw new Exception(errors.MakeDisplayReady());
-                    }
+                    Dev2Logger.Log.Error(e.Message,e);
                 }
             }
 
@@ -601,7 +552,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 debugOutput.FlushStringBuilder();
             }
 
-            return results;
+            _debugOutputs = results;
         }
 
         #endregion

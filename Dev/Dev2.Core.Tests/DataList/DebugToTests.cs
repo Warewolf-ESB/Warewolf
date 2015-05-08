@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Data;
 using Dev2.Session;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -17,7 +17,7 @@ namespace Dev2.Tests.DataList
         {
             // bootstrap
             var dto = new Mock<DebugTO>();
-            var dl = new Mock<IBinaryDataList>();
+            var dl = new Mock<IDataListModel>();
             bool disposed = false;
             dto.CallBase = true;
             DebugTO to = dto.Object;
@@ -29,7 +29,6 @@ namespace Dev2.Tests.DataList
             to.ServiceName = "DummyService";
             to.WorkflowID = "DummyService";
             to.BinaryDataList = dl.Object;
-            dl.Setup(a => a.Dispose()).Callback(() => disposed = true);
             to.CleanUp();
 
             Assert.IsTrue(disposed);
@@ -42,7 +41,7 @@ namespace Dev2.Tests.DataList
         {
             // bootstrap
             var dto = new Mock<DebugTO>();
-            var dl = new Mock<IBinaryDataList>();
+            var dl = new Mock<IDataListModel>();
   
             dto.CallBase = true;
             DebugTO to = dto.Object;

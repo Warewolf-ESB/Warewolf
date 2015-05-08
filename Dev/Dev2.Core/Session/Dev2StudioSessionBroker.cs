@@ -16,12 +16,9 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using Dev2.Common;
-using Dev2.Common.Common;
-using Dev2.Data.Enums;
-using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Data;
+using Dev2.Data.Binary_Objects;
 using Dev2.PathOperations;
-using Dev2.Server.Datalist;
 
 namespace Dev2.Session
 {
@@ -83,38 +80,24 @@ namespace Dev2.Session
                 to.DataListHash = -1; // default value
             }
 
-            IEnvironmentModelDataListCompiler svrCompiler = DataListFactory.CreateServerDataListCompiler();
-            ErrorResultTO errors;
-
-            if (_debugPersistSettings.TryGetValue(to.WorkflowID, out tmp))
+            lock(SettingsLock)
             {
-                string convertData = tmp.XmlData;
-                Guid mergeGuid = svrCompiler.ConvertTo(null,
-                    DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), Encoding.UTF8.GetBytes(convertData),
-                    new StringBuilder(to.DataList), out errors);
-                tmp.XmlData =
-                    svrCompiler.ConvertFrom(null, mergeGuid, enTranslationDepth.Data,
-                        DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), out errors)
-                        .FetchAsString()
-                        .ToString();
-                to.XmlData = tmp.RememberInputs
-                    ? (tmp.XmlData)
-                    : (to.XmlData ?? "<DataList></DataList>");
-                tmp.CleanUp();
-                to.BinaryDataList = svrCompiler.FetchBinaryDataList(null, mergeGuid, out errors);
-            }
-            else
-            {
-                // if no XML data copy over the DataList
-                to.XmlData = to.XmlData != null && to.XmlData == string.Empty
-                    ? (to.DataList ?? "<DataList></DataList>")
-                    : (to.XmlData ?? "<DataList></DataList>");
-
-                Guid createGuid = svrCompiler.ConvertTo(null,
-                    DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), Encoding.UTF8.GetBytes(to.XmlData),
-                    new StringBuilder(to.DataList), out errors);
-
-                to.BinaryDataList = to.BinaryDataList = svrCompiler.FetchBinaryDataList(null, createGuid, out errors);
+                if (_debugPersistSettings.TryGetValue(to.WorkflowID, out tmp))
+                {
+                    to.XmlData = tmp.RememberInputs
+                        ? (tmp.XmlData)
+                        : (to.XmlData ?? "<DataList></DataList>");
+                    tmp.CleanUp();
+                }
+                else
+                {
+                    // if no XML data copy over the DataList
+                    to.XmlData = to.XmlData != null && to.XmlData == string.Empty
+                        ? (to.DataList ?? "<DataList></DataList>")
+                        : (to.XmlData ?? "<DataList></DataList>");                    
+                }
+                to.BinaryDataList = new DataListModel();
+                to.BinaryDataList.Create(to.XmlData, to.DataList);
             }
 
             if (tmp != null) tmp.CleanUp();
@@ -176,51 +159,82 @@ namespace Dev2.Session
 
             return to;
         }
-
-     
-
-        public IBinaryDataList DeSerialize(string data, string targetShape, enTranslationTypes typeOf, out string error)
+        protected const string RootTag = "DataList";
+        public string GetXMLForInputs(IDataListModel dataListModel)
         {
-            error = string.Empty;
-            IBinaryDataList result = Dev2BinaryDataListFactory.CreateDataList();
-
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            if (typeOf == enTranslationTypes.XML)
+            StringBuilder result = new StringBuilder("<" + RootTag + ">");
+            foreach(var item in dataListModel.Scalars.Where(scalar => scalar.IODirection==enDev2ColumnArgumentDirection.Input || scalar.IODirection==enDev2ColumnArgumentDirection.Both))
             {
-                ErrorResultTO errors;
-
-
-                Guid resultId = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML),
-                    data.ToStringBuilder(),
-                    new StringBuilder(targetShape), out errors);
-                if (errors.HasErrors())
-                {
-                    error = errors.FetchErrors()[0]; // take the first error ;)
-                }
-                else
-                {
-                    if (result != null) compiler.ForceDeleteDataListByID(result.UID);
-                    result = compiler.FetchBinaryDataList(resultId, out errors);
-                    if (errors.HasErrors())
-                    {
-                        error = errors.FetchErrors()[0]; // take the first error ;)
-                    }
-                }
+                DoScalarAppending(result, item);    
             }
-
-            return result;
+            foreach (var recordSet in dataListModel.RecordSets.Where(scalar => scalar.IODirection == enDev2ColumnArgumentDirection.Input || scalar.IODirection == enDev2ColumnArgumentDirection.Both))
+            {
+                DoRecordSetAppending(recordSet, result);
+            }
+            result.Append("</" + RootTag + ">");
+            return result.ToString();
         }
 
-        public string GetXMLForInputs(IBinaryDataList binaryDataList)
+        internal static void DoRecordSetAppending(IRecordSet recordSet, StringBuilder result)
         {
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            ErrorResultTO errors;
-            return
-                compiler.ConvertFrom(binaryDataList.UID, DataListFormat.CreateFormat(GlobalConstants._XML_Inputs_Only),
-                    enTranslationDepth.Data, out errors).ToString();
+            var cnt = recordSet.Columns.Max(pair => pair.Key);
+
+            for (var i = 1; i <= cnt; i++)
+            {
+                var rowData = recordSet.Columns[i];
+
+                result.Append("<");
+                result.Append(recordSet.Name);
+                result.Append(">");
+                foreach (var col in rowData)
+                {
+
+                    var fName = col.Name;
+
+
+
+                    result.Append("<");
+                    result.Append(fName);
+                    result.Append(">");
+                    try
+                    {
+                        result.Append(col.Value);
+                    }
+                    // ReSharper disable EmptyGeneralCatchClause
+                    catch (Exception)
+                    {
+                    }
+                    result.Append("</");
+                    result.Append(fName);
+                    result.Append(">");
+                }
+
+                result.Append("</");
+                result.Append(recordSet.Name);
+                result.Append(">");
+            }
         }
 
+        internal static void DoScalarAppending(StringBuilder result, IScalar val)
+        {
+
+            var fName = val.Name;
+            result.Append("<");
+            result.Append(fName);
+            result.Append(">");
+            try
+            {
+                result.Append(val.Value);
+            }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch (Exception)
+            // ReSharper restore EmptyGeneralCatchClause
+            {
+            }
+            result.Append("</");
+            result.Append(fName);
+            result.Append(">");
+        }
         #region Private Method
 
         private void BootstrapPersistence(string baseDir)
@@ -284,12 +298,6 @@ namespace Dev2.Session
                                     {
                                         var tmp = new DebugTO();
                                         tmp.CopyFromSaveDebugTO(dto);
-                                        string error;
-
-                                        tmp.BinaryDataList = DeSerialize(tmp.XmlData, tmp.DataList,
-                                            enTranslationTypes.XML, out error);
-
-                          
                                         _debugPersistSettings[dto.WorkflowID] = tmp;
                                     }
                                 }

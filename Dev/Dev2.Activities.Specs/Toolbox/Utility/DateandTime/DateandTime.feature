@@ -178,7 +178,7 @@ Scenario: Date and time input date with a negative index
 	When the datetime tool is executed
 	Then the execution has "AN" error
 	 And the debug inputs as  
-	| Input             | Input Format | Add Time |    | Output Format |
+	| Input             | Input Format | Add Time |                  | Output Format |
 	| [[my(-1).date]] = | yyyy-mm-dd   | Weeks    | 52 | yyyy-mm-dd    |
 	And the debug output as 
 	|               |

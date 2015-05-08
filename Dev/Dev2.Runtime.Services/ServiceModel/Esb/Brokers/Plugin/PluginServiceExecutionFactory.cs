@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Security.Policy;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Runtime.ServiceModel.Data;
 
@@ -33,9 +34,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 ApplicationName = AppDomain.CurrentDomain.SetupInformation.ApplicationName,
                 LoaderOptimization = LoaderOptimization.MultiDomainHost
             };
-
+            Evidence adevidence = AppDomain.CurrentDomain.Evidence;
             // Create the child AppDomain used for the service tool at runtime.
-            childDomain = AppDomain.CreateDomain(Guid.NewGuid().ToString(), null, domainSetup);
+            childDomain = AppDomain.CreateDomain(Guid.NewGuid().ToString(), adevidence, domainSetup);
 
             // Create an instance of the runtime in the second AppDomain. 
             // A proxy to the object is returned.

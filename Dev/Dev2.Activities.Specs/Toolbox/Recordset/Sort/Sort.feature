@@ -16,7 +16,7 @@ Scenario: Sort a recordset forwards using star notation
 	And I sort a record "[[rs(*).row]]"
 	And my sort order is "Forward"
 	When the sort records tool is executed
-	Then the sorted recordset "[[rs().row]]"  will be 
+	Then the sorted recordset "[[rs(*).row]]"  will be 
 	| rs       | value    |
 	| rs().row | are      |
 	| rs().row | best     |
@@ -58,7 +58,7 @@ Scenario: Sort a recordset backwards using star notation
 	And I sort a record "[[rs(*).row]]"
 	And my sort order is "Backwards"
 	When the sort records tool is executed
-	Then the sorted recordset "[[rs().row]]"  will be 
+	Then the sorted recordset "[[rs(*).row]]"  will be 
 	| rs       | value    |
 	| rs().row | You      |
 	| rs().row | Warewolf |
@@ -100,7 +100,7 @@ Scenario: Sort a recordset forwards
 	And I sort a record "[[rs().row]]"
 	And my sort order is "Forward"
 	When the sort records tool is executed
-	Then the sorted recordset "[[rs().row]]"  will be 
+	Then the sorted recordset "[[rs(*).row]]"  will be 
 	| rs       | value    |
 	| rs().row | are      |
 	| rs().row | best     |
@@ -142,7 +142,7 @@ Scenario: Sort a recordset backwards
 	And I sort a record "[[rs(*).row]]"
 	And my sort order is "Backwards"
 	When the sort records tool is executed
-	Then the sorted recordset "[[rs().row]]"  will be 
+	Then the sorted recordset "[[rs(*).row]]"  will be 
 	| rs       | value    |
 	| rs().row | You      |
 	| rs().row | Warewolf |
@@ -177,31 +177,16 @@ Scenario: Sort a recordset forwards empty recordset
 	And I sort a record "[[rs().row]]"
 	And my sort order is "Forward"
 	When the sort records tool is executed
-	Then the sorted recordset "[[rs().row]]"  will be 
-	| rs       | value    |
-	And the execution has "NO" error
-	And the debug inputs as  
-	| Sort Field      | Sort Order |
-	| [[rs(*).row]] = | Forward    |
-	And the debug output as
-    |  |
-    |  |
+	Then the execution has "AN" error
+
 	
 Scenario: Sort a recordset backwards empty recordset
 	Given I have the following recordset to sort
-	| rs       | row    |	
+	| rs       | value    |	
 	And I sort a record "[[rs().row]]"
 	And my sort order is "Backwards"
 	When the sort records tool is executed
-	Then the sorted recordset "[[rs().row]]"  will be 
-	| rs       | row    |
-	And the execution has "NO" error
-	And the debug inputs as  
-	| Sort Field      | Sort Order |
-	| [[rs(*).row]] = | Backwards  |
-	And the debug output as
-    |                 |
-    | [[rs(*).row]] = |
+	Then the execution has "AN" error
 			
 Scenario: Sort a recordset forwards with one row
 	Given I have the following recordset to sort
@@ -210,7 +195,7 @@ Scenario: Sort a recordset forwards with one row
 	And I sort a record "[[rs().row]]"
 	And my sort order is "Forward"
 	When the sort records tool is executed
-	Then the sorted recordset "[[rs().row]]"  will be 
+	Then the sorted recordset "[[rs(*).row]]"  will be 
 	| rs       | value    |
 	| rs().row | Warewolf |
 	And the execution has "NO" error
@@ -228,7 +213,7 @@ Scenario: Sort a recordset backwards recordset  with one row
 	And I sort a record "[[rs().row]]"
 	And my sort order is "Backwards"
 	When the sort records tool is executed
-	Then the sorted recordset "[[rs().row]]"  will be 
+	Then the sorted recordset "[[rs(*).row]]"  will be 
 	| rs       | value    |
 	| rs().row | Warewolf |
 	And the execution has "NO" error
@@ -289,12 +274,7 @@ Scenario: Sort Recordset without field Forwards
 	And my sort order is "Forward"
 	When the sort records tool is executed
 	Then the execution has "AN" error
-	And the debug inputs as  
-	| Sort Field            | Sort Order |
-	| [[rs(1).a]] = Zambia  |            |
-	| [[rs(2).a]] = America | Forward    |
-	And the debug output as
-    |                          |
+
 #				
 Scenario: Sort Recordset without field Backwards
 	Given I have the following recordset to sort
@@ -307,12 +287,7 @@ Scenario: Sort Recordset without field Backwards
 	And my sort order is "Backwards"
 	When the sort records tool is executed
 	Then the execution has "AN" error
-	And the debug inputs as  
-	| Sort Field            | Sort Order |
-	| [[rs(1).a]] = Zambia  |            |
-	| [[rs(2).a]] = America | Backwards  |
-	And the debug output as
-    |                          |
+
 
 
 

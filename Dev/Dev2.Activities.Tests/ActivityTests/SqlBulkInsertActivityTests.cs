@@ -918,7 +918,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 var compiler = DataListFactory.CreateDataListCompiler();
                 ErrorResultTO errors;
                 var bdl = compiler.FetchBinaryDataList(dlID, out errors);
-                var executionErrors = bdl.FetchErrors();
+                var executionErrors = dataObject.Environment.FetchErrors();
                 StringAssert.Contains(executionErrors, "The column TestCol2 is an IDENTITY and you have the Keep Identity option disabled. Either enable it or remove the mapping.");
             }
             else
@@ -974,7 +974,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 var compiler = DataListFactory.CreateDataListCompiler();
                 ErrorResultTO errors;
                 var bdl = compiler.FetchBinaryDataList(dlID, out errors);
-                var executionErrors = bdl.FetchErrors();
+                var executionErrors = dataObject.Environment.FetchErrors();
                 StringAssert.Contains(executionErrors, "Recordset index [ -1 ] is not greater than zero");
                 Assert.IsFalse(executionErrors.Contains("Problems with Iterators for SQLBulkInsert"), "Iterator exception has been added ;(");
             }
@@ -1031,7 +1031,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 var compiler = DataListFactory.CreateDataListCompiler();
                 ErrorResultTO errors;
                 var bdl = compiler.FetchBinaryDataList(dlID, out errors);
-                var executionErrors = bdl.FetchErrors();
+                var executionErrors = dataObject.Environment.FetchErrors();
                 StringAssert.Contains(executionErrors, "Input string was not in a correct format");
                 Assert.IsFalse(executionErrors.Contains("Problems with Iterators for SQLBulkInsert"), "Iterator exception has been added ;(");
             }
@@ -1088,7 +1088,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 var compiler = DataListFactory.CreateDataListCompiler();
                 ErrorResultTO errors;
                 var bdl = compiler.FetchBinaryDataList(dlID, out errors);
-                var executionErrors = bdl.FetchErrors();
+                var executionErrors = dataObject.Environment.FetchErrors();
                 StringAssert.Contains(executionErrors, "The column TestCol2 is an IDENTITY and you have the Keep Identity option enabled. Either disable this option or map data.");
             }
             else
@@ -1390,7 +1390,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 var compiler = DataListFactory.CreateDataListCompiler();
                 ErrorResultTO errors;
                 var bdl = compiler.FetchBinaryDataList(dlID, out errors);
-                var executionErrors = bdl.FetchErrors();
+                var executionErrors = dataObject.Environment.FetchErrors();
                 StringAssert.Contains(executionErrors, "The column TestCol2 does not allow NULL. Please check your mappings to ensure you have mapped data into it.");
             }
             else

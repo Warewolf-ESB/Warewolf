@@ -35,7 +35,7 @@ namespace Dev2.Runtime.ServiceModel
 
     public class Services : ExceptionManager
     {
-        readonly IResourceCatalog _resourceCatalog;
+        protected readonly IResourceCatalog _resourceCatalog;
         readonly IAuthorizationService _authorizationService;
 
         #region CTOR
@@ -106,10 +106,17 @@ namespace Dev2.Runtime.ServiceModel
         {
             try
             {
-                var service = JsonConvert.DeserializeObject<DbService>(args);
-                var source= _resourceCatalog.GetResource<DbSource>(workspaceId, service.Source.ResourceID);
-                var broker = new MySqlDatabaseBroker();
-                broker.UpdateServiceOutParameters(service,source);
+                var service = DeserializeService(args);
+                var dbService = service as DbService;
+                if (dbService != null)
+                {
+                    var source = _resourceCatalog.GetResource<DbSource>(workspaceId, dbService.Source.ResourceID);
+                    if (source.ServerType == enSourceType.MySqlDatabase)
+                    {
+                        var broker = new MySqlDatabaseBroker();
+                        broker.UpdateServiceOutParameters(dbService, source);
+                    }
+                }
                 _resourceCatalog.SaveResource(workspaceId, service);
 
                 if(workspaceId != GlobalConstants.ServerWorkspaceID)

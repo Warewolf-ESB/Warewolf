@@ -87,13 +87,13 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
         {
             string error;
             string actualValue;
-            expectedResult.Replace('"', ' ').Trim();
+            expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+            GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
             if(string.IsNullOrEmpty(expectedResult))
             {
-                Assert.IsNull(actualValue);
+                Assert.IsTrue(string.IsNullOrEmpty(actualValue));
             }
             else
             {

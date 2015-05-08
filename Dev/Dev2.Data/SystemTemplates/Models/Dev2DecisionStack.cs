@@ -18,6 +18,7 @@ using Dev2.Data.Decisions.Operations;
 using Dev2.DataList.Contract;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Warewolf.Storage;
 
 namespace Dev2.Data.SystemTemplates.Models
 {
@@ -80,7 +81,7 @@ namespace Dev2.Data.SystemTemplates.Models
             return result;
         }
 
-        public string GenerateUserFriendlyModel(Guid dlid, Dev2DecisionMode mode, out ErrorResultTO errors)
+        public string GenerateUserFriendlyModel(IExecutionEnvironment env, Dev2DecisionMode mode, out ErrorResultTO errors)
         {
             StringBuilder result = new StringBuilder("");
 
@@ -90,7 +91,7 @@ namespace Dev2.Data.SystemTemplates.Models
             // build the output for decisions
             foreach(Dev2Decision dd in TheStack)
             {
-                result.Append(dd.GenerateUserFriendlyModel(dlid, Mode, out errors));
+                result.Append(dd.GenerateUserFriendlyModel(env, Mode, out errors));
                 // append mode if not at end
                 if((cnt + 1) < TheStack.Count)
                 {
@@ -150,7 +151,6 @@ namespace Dev2.Data.SystemTemplates.Models
         /// <returns></returns>
         public static string RemoveDummyOptionsFromModel(StringBuilder val)
         {
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             var tmp = val.Replace(@"""EvaluationFn"":""Choose...""", @"""EvaluationFn"":""Choose""");
 
@@ -158,7 +158,7 @@ namespace Dev2.Data.SystemTemplates.Models
 
             try
             {
-                Dev2DecisionStack dds = compiler.ConvertFromJsonToModel<Dev2DecisionStack>(tmp);
+                Dev2DecisionStack dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(tmp.ToString());
 
                 if(dds.TheStack != null)
                 {
@@ -167,7 +167,7 @@ namespace Dev2.Data.SystemTemplates.Models
                     dds.TheStack = toKeep;
                 }
 
-                tmp = compiler.ConvertModelToJson(dds);
+                tmp = new StringBuilder(JsonConvert.SerializeObject(dds));
             }
             catch(Exception ex)
             {

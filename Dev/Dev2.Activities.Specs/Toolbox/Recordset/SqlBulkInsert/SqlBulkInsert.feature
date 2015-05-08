@@ -45,6 +45,7 @@ Scenario: Import data into Table with check constraint enabled
 	|   |                                                       |          |        |            |         | YES               | NO              | NO            | NO            | NO                       | NO              |
 	And the debug output as 
 	|                       |
+	| [[result]] = Failure |
 
 Scenario: Import data into Table with keep identity disabled
 #Given that the table is truncated i.e. seed is 1 and increment is 1
@@ -136,6 +137,7 @@ Given I have this data
 	|   |                                                       |          |        |            |         | NO                | NO              | NO            | NO            | NO                       | NO              |
 	And the debug output as 
 	|                       |
+	| [[result]] = Failure |
 
 Scenario: Import data into Table with skip blank rows enabled
 #Note the second row is blank from the source data
@@ -353,7 +355,8 @@ Given I have this data
 	|   | [[rs(3).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34 | Col3     | bigint |            |         |                   |                 |               |               |                          |                 |
 	|   |                                                       |          |        |            | 1       | NO                | NO              | YES           | NO            | NO                       | NO              |
 	And the debug output as 
-	|                       |
+	|                      |
+	| [[result]] = Failure |
 	
 Scenario: Import data into table with blank data
 	Given I have this data
@@ -362,16 +365,3 @@ Scenario: Import data into table with blank data
 	Then the new table will have
 		| Col1 | Col2     | Col3                           |
 	And the execution has "AN" error
-	And the debug inputs as  
-	| # |                  | To Field | Type   | Batch Size | Timeout | Check Constraints | Keep Table Lock | Fire Triggers | Keep Identity | Use Internal Transaction | Skip Blank Rows |
-	| 1 | [[rs(1).Col1]] = | Col1     | bigint |            |         |                   |                 |               |               |                          |                 |
-	| 2 | [[rs(1).Col2]] = | Col2     | bigint |            |         |                   |                 |               |               |                          |                 |
-	| 3 | [[rs(1).Col3]] = | Col3     | bigint |            |         |                   |                 |               |               |                          |                 |
-	|   |                  |          |        |            |         | NO                | NO              | NO           | NO            | NO                       | NO              |
-	And the debug output as 
-	|                       |
-
-
-	#Not tested are :-			
-		# Keep table lock
-		# Use internal transaction

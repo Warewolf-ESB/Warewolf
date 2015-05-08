@@ -92,12 +92,7 @@ Scenario: Replace when text to find is negative recordset index
 	And I want to replace them with "Warewolf user"
 	When the replace tool is executed
 	Then the execution has "AN" error
-	And the debug inputs as 
-	| In Field(s)                                               | Find | Replace With |
-	| [[sentence]] = Dear Mr XXXX, We welcome you as a customer |      |              |
-	And the debug output as 
-	|                |
-	| [[result]] =  |
+	
 
 Scenario: Replace when the replace with is negative recordset index
 	Given I have a replace variable "[[sentence]]" equal to "Dear Mr XXXX, We welcome you as a customer"
@@ -106,12 +101,6 @@ Scenario: Replace when the replace with is negative recordset index
 	And I want to replace them with "[[my(-1).text]]"
 	When the replace tool is executed
 	Then the execution has "AN" error
-	And the debug inputs as 
-	| In Field(s)                                               | Find | Replace With      |
-	| [[sentence]] = Dear Mr XXXX, We welcome you as a customer |  | |
-	And the debug output as 
-	|                 |
-	| [[result]] =  |
 
 Scenario: Replace when negative recordset index is input
 	Given I have a sentence "[[my(-1).sentence]]"
@@ -119,9 +108,3 @@ Scenario: Replace when negative recordset index is input
 	And I want to replace them with "YYYY"
 	When the replace tool is executed
 	Then the execution has "AN" error
-	And the debug inputs as 
-	| In Field(s)           | Find | Replace With |
-	| [[my(-1).sentence]] = | XXXX | YYYY         |
-	And the debug output as 
-	|                |
-	| [[result]] =  |

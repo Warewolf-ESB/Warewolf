@@ -15,7 +15,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using Dev2.Data.PathOperations.Interfaces;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.PathOperations;
 using Dev2.Tests.Activities;
@@ -91,29 +90,7 @@ namespace ActivityUnitTests.ActivityTests
 
         #endregion
 
-        #region Get Input/Output Tests
-
-        [TestMethod]
-        public void ZipActivity_GetInputs_Expected_Eight_Input()
-        {
-            DsfZip testAct = new DsfZip();
-
-            IBinaryDataList inputs = testAct.GetInputs();
-
-            Assert.IsTrue(inputs.FetchAllEntries().Count == 11);
-        }
-
-        [TestMethod]
-        public void ZipActivity_GetOutputs_Expected_One_Output()
-        {
-            DsfZip testAct = new DsfZip();
-
-            IBinaryDataList outputs = testAct.GetOutputs();
-
-            Assert.IsTrue(outputs.FetchAllEntries().Count == 1);
-        }
-
-        #endregion Get Input/Output Tests
+     
 
         #region Blank Output Test
         [TestMethod]

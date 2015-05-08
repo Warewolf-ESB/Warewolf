@@ -14,7 +14,6 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
-using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -71,6 +70,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(24, actual.Count);
 
         }
+
+       
+
         /// <summary>
         /// This method takes a recordset as input and outputs a single value
         /// </summary>
@@ -294,35 +296,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #endregion Index Negative Tests
 
-        #region Get Input/Output Tests
-
-        [TestMethod]
-        public void IndexActivity_GetInputs_Expected_Five_Input()
-        {
-            DsfIndexActivity testAct = new DsfIndexActivity();
-
-            IBinaryDataList inputs = testAct.GetInputs();
-
-            // remove test datalist ;)
-            DataListRemoval(inputs.UID);
-
-            Assert.AreEqual(6, inputs.FetchAllEntries().Count);
-        }
-
-        [TestMethod]
-        public void IndexActivity_GetOutputs_Expected_One_Output()
-        {
-            DsfIndexActivity testAct = new DsfIndexActivity();
-
-            IBinaryDataList outputs = testAct.GetOutputs();
-
-            // remove test datalist ;)
-            DataListRemoval(outputs.UID);
-
-            Assert.AreEqual(1, outputs.FetchAllEntries().Count);
-        }
-
-        #endregion Get Input/Output Tests
+     
 
 
         [TestMethod]

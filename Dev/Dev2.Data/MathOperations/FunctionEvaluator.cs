@@ -14,10 +14,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Parsing.Intellisense;
-using System.Text;
 using Dev2.Common;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Infragistics.Calculations.CalcManager;
 using Infragistics.Calculations.Engine;
 
@@ -52,260 +50,261 @@ namespace Dev2.MathOperations
         /// <returns></returns>
         public string EvaluateFunction(IEvaluationFunction expressionTO, Guid curDLID, out ErrorResultTO errors)
         {
-            string expression = expressionTO.Function;
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            SyntaxTreeBuilder builder = new SyntaxTreeBuilder();
-            ErrorResultTO allErrors = new ErrorResultTO();
+            //            string expression = expressionTO.Function;
+//            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+//            SyntaxTreeBuilder builder = new SyntaxTreeBuilder();
+//            ErrorResultTO allErrors = new ErrorResultTO();
+//
+//
+//            // Travis.Frisinger : 31.01.2013 - Hi-jack this and evaluate all our internal 
+//            IBinaryDataListEntry bde = compiler.Evaluate(curDLID, enActionType.CalculateSubstitution, expression, false, out errors);
+//            allErrors.MergeErrors(errors);
+//            if(bde != null)
+//            {
+//                expression = bde.FetchScalar().TheValue;
+//                if(expression.StartsWith("\""))
+//                {
+//                    expression = expression.Replace("\"", "").Trim();
+//                }
+//            }
+//
+//            Node[] nodes = builder.Build(expression);
+//            string result = string.Empty;
+//
+//            if(builder.EventLog.HasEventLogs)
+//            {
+//                IEnumerable<string> err = EvaluateEventLogs(expression);
+//
+//                foreach(string e in err)
+//                {
+//                    allErrors.AddError(e);
+//                }
+//            }
+//            else
+//            {
+//
+//                List<Node> allNodes = new List<Node>();
+//                nodes[0].CollectNodes(allNodes);
+//
+//                IterationNodeValueSource valueSource = null;
+//                bool startedIteration = false;
+//                bool isIteration = false;
+//                bool pendingIterationRecordSet = false;
+//                int maxRecords = -1;
+//                int currentRecord = 0;
+//
+//                do
+//                {
+//                    if(startedIteration)
+//                        foreach(Node t in allNodes)
+//                            t.EvaluatedValue = null;
+//
+//                    for(int i = allNodes.Count - 1; i >= 0; i--)
+//                    {
+//                        if(allNodes[i] is IterationNode)
+//                        {
+//                            IterationNode refNode = allNodes[i] as IterationNode;
+//                            if(valueSource == null) valueSource = new IterationNodeValueSource(1);
+//                            refNode.ValueSource = valueSource;
+//                            pendingIterationRecordSet = true;
+//                            isIteration = true;
+//                        }
+//                        else if(allNodes[i] is DatalistRecordSetNode)
+//                        {
+//                            DatalistRecordSetNode refNode = allNodes[i] as DatalistRecordSetNode;
+//
+//                            if(refNode.Parameter != null)
+//                            {
+//                                if((refNode.Parameter.Items != null && refNode.Parameter.Items.Length != 0) || refNode.Parameter.Statement != null)
+//                                    refNode.Parameter.EvaluatedValue = InternalEval(refNode.Parameter.GetEvaluatedValue());
+//                            }
+//
+//
+//                            // this way we fetch the correct field with the data...
+//                            IBinaryDataListEntry e = compiler.Evaluate(curDLID, enActionType.User, refNode.GetRepresentationForEvaluation(), false, out errors);
+//                            allErrors.MergeErrors(errors);
+//                            string error;
+//                            refNode.EvaluatedValue = e.TryFetchLastIndexedRecordsetUpsertPayload(out error).TheValue;
+//                            allErrors.AddError(error);
+//
+//                            if(pendingIterationRecordSet)
+//                            {
+//                                pendingIterationRecordSet = false;
+//
+//                                if(refNode.NestedIdentifier != null)
+//                                {
+//                                    allErrors.AddError("An error occurred while parsing { " + expression + " } Iteration operator can not be used with nested recordset identifiers.");
+//                                    break;
+//                                }
+//
+//                                string evaluateRecordLeft = refNode.GetRepresentationForEvaluation();
+//                                evaluateRecordLeft = evaluateRecordLeft.Substring(2, evaluateRecordLeft.IndexOf('(') - 2);
+//
+//                                int totalRecords = 0;
+//                                IBinaryDataList bdl = compiler.FetchBinaryDataList(curDLID, out errors);
+//                                IBinaryDataListEntry entry;
+//                                if(bdl.TryGetEntry(evaluateRecordLeft, out entry, out error))
+//                                {
+//                                    totalRecords = entry.FetchLastRecordsetIndex();
+//                                }
+//                                allErrors.AddError(error);
+//
+//                                maxRecords = Math.Max(totalRecords, maxRecords);
+//
+//                            }
+//
+//
+//                        }
+//                        else if(allNodes[i] is DatalistReferenceNode)
+//                        {
+//                            DatalistReferenceNode refNode = allNodes[i] as DatalistReferenceNode;
+//                            IBinaryDataListEntry entry = compiler.Evaluate(curDLID, enActionType.User, refNode.GetRepresentationForEvaluation(), false, out errors);
+//                            allErrors.MergeErrors(errors);
+//
+//                            if(entry.IsRecordset)
+//                            {
+//                                string error;
+//                                refNode.EvaluatedValue = entry.TryFetchLastIndexedRecordsetUpsertPayload(out error).TheValue;
+//                                double testParse;
+//                                if(!Double.TryParse(refNode.EvaluatedValue, out testParse)) refNode.EvaluatedValue = String.Concat("\"", refNode.EvaluatedValue, "\"");//Bug 6438
+//                            }
+//                            else
+//                            {
+//                                refNode.EvaluatedValue = entry.FetchScalar().TheValue;
+//                                double testParse;
+//                                if(!Double.TryParse(refNode.EvaluatedValue, out testParse)) refNode.EvaluatedValue = String.Concat("\"", refNode.EvaluatedValue, "\"");//Bug 6438
+//                            }
+//                        }
+//                        else if(allNodes[i] is BinaryOperatorNode && allNodes[i].Identifier.Start.Definition == TokenKind.Colon)
+//                        {
+//                            BinaryOperatorNode biNode = (BinaryOperatorNode)allNodes[i];
+//
+//                            if(!(biNode.Left is DatalistRecordSetFieldNode))
+//                            {
+//                                allErrors.AddError("An error occurred while parsing { " + expression + " } Range operator can only be used with record set fields.");
+//                                break;
+//                            }
+//
+//                            if(!(biNode.Right is DatalistRecordSetFieldNode))
+//                            {
+//                                allErrors.AddError("An error occurred while parsing { " + expression + " } Range operator can only be used with record set fields.");
+//                                break;
+//                            }
+//
+//                            DatalistRecordSetFieldNode fieldLeft = (DatalistRecordSetFieldNode)biNode.Left;
+//                            DatalistRecordSetFieldNode fieldRight = (DatalistRecordSetFieldNode)biNode.Right;
+//
+//                            string evaluateFieldLeft = (fieldLeft.Field != null) ? fieldLeft.Field.GetEvaluatedValue() : fieldLeft.Identifier.Content;
+//                            string evaluateFieldRight = (fieldRight.Field != null) ? fieldRight.Field.GetEvaluatedValue() : fieldRight.Identifier.Content;
+//
+//                            if(!String.Equals(evaluateFieldLeft, evaluateFieldRight, StringComparison.Ordinal))
+//                            {
+//                                allErrors.AddError("An error occurred while parsing { " + expression + " } Range operator must be used with the same record set fields.");
+//                                break;
+//                            }
+//
+//                            string evaluateRecordLeft = fieldLeft.RecordSet.GetRepresentationForEvaluation();
+//                            evaluateRecordLeft = evaluateRecordLeft.Substring(2, evaluateRecordLeft.IndexOf('(') - 2);
+//                            string evaluateRecordRight = fieldRight.RecordSet.GetRepresentationForEvaluation();
+//                            evaluateRecordRight = evaluateRecordRight.Substring(2, evaluateRecordRight.IndexOf('(') - 2);
+//
+//                            if(!String.Equals(evaluateRecordLeft, evaluateRecordRight, StringComparison.Ordinal))
+//                            {
+//                                allErrors.AddError("An error occurred while parsing { " + expression + " } Range operator must be used with the same record sets.");
+//                                break;
+//                            }
+//
+//                            int totalRecords = 0;
+//                            IBinaryDataList bdl = compiler.FetchBinaryDataList(curDLID, out errors);
+//                            string error;
+//                            IBinaryDataListEntry entry;
+//                            if(bdl.TryGetEntry(evaluateRecordLeft, out entry, out error))
+//                            {
+//                                totalRecords = entry.FetchLastRecordsetIndex();
+//                            }
+//
+//                            string rawParamLeft = fieldLeft.RecordSet.Parameter.GetEvaluatedValue();
+//                            rawParamLeft = rawParamLeft.Length == 2 ? "" : rawParamLeft.Substring(1, rawParamLeft.Length - 2);
+//                            string rawParamRight = fieldRight.RecordSet.Parameter.GetEvaluatedValue();
+//                            rawParamRight = rawParamRight.Length == 2 ? "" : rawParamRight.Substring(1, rawParamRight.Length - 2);
+//
+//                            int startIndex;
+//                            int endIndex;
+//
+//                            if(!String.IsNullOrEmpty(rawParamLeft))
+//                            {
+//                                if(!Int32.TryParse(rawParamLeft, out startIndex) || startIndex <= 0)
+//                                {
+//                                    allErrors.AddError("An error occurred while parsing { " + expression + " } Recordset index must be a positive whole number that is greater than zero.");
+//                                    break;
+//                                }
+//                            }
+//                            else
+//                            {
+//                                startIndex = 1;
+//                            }
+//
+//                            if(!String.IsNullOrEmpty(rawParamRight))
+//                            {
+//                                if(!Int32.TryParse(rawParamRight, out endIndex) || endIndex <= 0)
+//                                {
+//                                    allErrors.AddError("An error occurred while parsing { " + expression + " } Recordset index must be a positive whole number that is greater than zero.");
+//                                    break;
+//                                }
+//
+//                                if(endIndex > totalRecords)
+//                                {
+//                                    allErrors.AddError("An error occurred while parsing { " + expression + " } Recordset end index must be a positive whole number that is less than the number of entries in the recordset.");
+//                                    break;
+//                                }
+//                            }
+//                            else
+//                            {
+//                                endIndex = totalRecords;
+//                            }
+//
+//                            endIndex++;
+//
+//                            StringBuilder rangeBuilder = new StringBuilder();
+//
+//                            for(int k = startIndex; k < endIndex; k++)
+//                            {
+//                                if(k != startIndex)
+//                                {
+//                                    rangeBuilder.Append("," + entry.TryFetchRecordsetColumnAtIndex(evaluateFieldLeft, k, out error).TheValue);
+//                                    allErrors.AddError(error);
+//                                }
+//                                else
+//                                {
+//                                    rangeBuilder.Append(entry.TryFetchRecordsetColumnAtIndex(evaluateFieldLeft, k, out error).TheValue);
+//                                    allErrors.AddError(error);
+//                                }
+//                            }
+//                            allNodes[i].EvaluatedValue = rangeBuilder.ToString();
+//                        }
+//                    }
+//
+//                    string evaluatedValue = nodes[0].GetEvaluatedValue();
+//                    result = InternalEval(evaluatedValue);
+//
+//                    if(startedIteration)
+//                    {
+//                        currentRecord = valueSource.Index++;
+//                    }
+//
+//                    if(isIteration && !startedIteration)
+//                    {
+//                        startedIteration = true;
+//                        currentRecord = valueSource.Index++;
+//                    }
+//                }
+//                while(startedIteration && currentRecord < maxRecords);
+//            }
+//
+//            errors = allErrors;
 
-
-            // Travis.Frisinger : 31.01.2013 - Hi-jack this and evaluate all our internal 
-            IBinaryDataListEntry bde = compiler.Evaluate(curDLID, enActionType.CalculateSubstitution, expression, false, out errors);
-            allErrors.MergeErrors(errors);
-            if(bde != null)
-            {
-                expression = bde.FetchScalar().TheValue;
-                if(expression.StartsWith("\""))
-                {
-                    expression = expression.Replace("\"", "").Trim();
-                }
-            }
-
-            Node[] nodes = builder.Build(expression);
-            string result = string.Empty;
-
-            if(builder.EventLog.HasEventLogs)
-            {
-                IEnumerable<string> err = EvaluateEventLogs(expression);
-
-                foreach(string e in err)
-                {
-                    allErrors.AddError(e);
-                }
-            }
-            else
-            {
-
-                List<Node> allNodes = new List<Node>();
-                nodes[0].CollectNodes(allNodes);
-
-                IterationNodeValueSource valueSource = null;
-                bool startedIteration = false;
-                bool isIteration = false;
-                bool pendingIterationRecordSet = false;
-                int maxRecords = -1;
-                int currentRecord = 0;
-
-                do
-                {
-                    if(startedIteration)
-                        foreach(Node t in allNodes)
-                            t.EvaluatedValue = null;
-
-                    for(int i = allNodes.Count - 1; i >= 0; i--)
-                    {
-                        if(allNodes[i] is IterationNode)
-                        {
-                            IterationNode refNode = allNodes[i] as IterationNode;
-                            if(valueSource == null) valueSource = new IterationNodeValueSource(1);
-                            refNode.ValueSource = valueSource;
-                            pendingIterationRecordSet = true;
-                            isIteration = true;
-                        }
-                        else if(allNodes[i] is DatalistRecordSetNode)
-                        {
-                            DatalistRecordSetNode refNode = allNodes[i] as DatalistRecordSetNode;
-
-                            if(refNode.Parameter != null)
-                            {
-                                if((refNode.Parameter.Items != null && refNode.Parameter.Items.Length != 0) || refNode.Parameter.Statement != null)
-                                    refNode.Parameter.EvaluatedValue = InternalEval(refNode.Parameter.GetEvaluatedValue());
-                            }
-
-
-                            // this way we fetch the correct field with the data...
-                            IBinaryDataListEntry e = compiler.Evaluate(curDLID, enActionType.User, refNode.GetRepresentationForEvaluation(), false, out errors);
-                            allErrors.MergeErrors(errors);
-                            string error;
-                            refNode.EvaluatedValue = e.TryFetchLastIndexedRecordsetUpsertPayload(out error).TheValue;
-                            allErrors.AddError(error);
-
-                            if(pendingIterationRecordSet)
-                            {
-                                pendingIterationRecordSet = false;
-
-                                if(refNode.NestedIdentifier != null)
-                                {
-                                    allErrors.AddError("An error occurred while parsing { " + expression + " } Iteration operator can not be used with nested recordset identifiers.");
-                                    break;
-                                }
-
-                                string evaluateRecordLeft = refNode.GetRepresentationForEvaluation();
-                                evaluateRecordLeft = evaluateRecordLeft.Substring(2, evaluateRecordLeft.IndexOf('(') - 2);
-
-                                int totalRecords = 0;
-                                IBinaryDataList bdl = compiler.FetchBinaryDataList(curDLID, out errors);
-                                IBinaryDataListEntry entry;
-                                if(bdl.TryGetEntry(evaluateRecordLeft, out entry, out error))
-                                {
-                                    totalRecords = entry.FetchLastRecordsetIndex();
-                                }
-                                allErrors.AddError(error);
-
-                                maxRecords = Math.Max(totalRecords, maxRecords);
-
-                            }
-
-
-                        }
-                        else if(allNodes[i] is DatalistReferenceNode)
-                        {
-                            DatalistReferenceNode refNode = allNodes[i] as DatalistReferenceNode;
-                            IBinaryDataListEntry entry = compiler.Evaluate(curDLID, enActionType.User, refNode.GetRepresentationForEvaluation(), false, out errors);
-                            allErrors.MergeErrors(errors);
-
-                            if(entry.IsRecordset)
-                            {
-                                string error;
-                                refNode.EvaluatedValue = entry.TryFetchLastIndexedRecordsetUpsertPayload(out error).TheValue;
-                                double testParse;
-                                if(!Double.TryParse(refNode.EvaluatedValue, out testParse)) refNode.EvaluatedValue = String.Concat("\"", refNode.EvaluatedValue, "\"");//Bug 6438
-                            }
-                            else
-                            {
-                                refNode.EvaluatedValue = entry.FetchScalar().TheValue;
-                                double testParse;
-                                if(!Double.TryParse(refNode.EvaluatedValue, out testParse)) refNode.EvaluatedValue = String.Concat("\"", refNode.EvaluatedValue, "\"");//Bug 6438
-                            }
-                        }
-                        else if(allNodes[i] is BinaryOperatorNode && allNodes[i].Identifier.Start.Definition == TokenKind.Colon)
-                        {
-                            BinaryOperatorNode biNode = (BinaryOperatorNode)allNodes[i];
-
-                            if(!(biNode.Left is DatalistRecordSetFieldNode))
-                            {
-                                allErrors.AddError("An error occurred while parsing { " + expression + " } Range operator can only be used with record set fields.");
-                                break;
-                            }
-
-                            if(!(biNode.Right is DatalistRecordSetFieldNode))
-                            {
-                                allErrors.AddError("An error occurred while parsing { " + expression + " } Range operator can only be used with record set fields.");
-                                break;
-                            }
-
-                            DatalistRecordSetFieldNode fieldLeft = (DatalistRecordSetFieldNode)biNode.Left;
-                            DatalistRecordSetFieldNode fieldRight = (DatalistRecordSetFieldNode)biNode.Right;
-
-                            string evaluateFieldLeft = (fieldLeft.Field != null) ? fieldLeft.Field.GetEvaluatedValue() : fieldLeft.Identifier.Content;
-                            string evaluateFieldRight = (fieldRight.Field != null) ? fieldRight.Field.GetEvaluatedValue() : fieldRight.Identifier.Content;
-
-                            if(!String.Equals(evaluateFieldLeft, evaluateFieldRight, StringComparison.Ordinal))
-                            {
-                                allErrors.AddError("An error occurred while parsing { " + expression + " } Range operator must be used with the same record set fields.");
-                                break;
-                            }
-
-                            string evaluateRecordLeft = fieldLeft.RecordSet.GetRepresentationForEvaluation();
-                            evaluateRecordLeft = evaluateRecordLeft.Substring(2, evaluateRecordLeft.IndexOf('(') - 2);
-                            string evaluateRecordRight = fieldRight.RecordSet.GetRepresentationForEvaluation();
-                            evaluateRecordRight = evaluateRecordRight.Substring(2, evaluateRecordRight.IndexOf('(') - 2);
-
-                            if(!String.Equals(evaluateRecordLeft, evaluateRecordRight, StringComparison.Ordinal))
-                            {
-                                allErrors.AddError("An error occurred while parsing { " + expression + " } Range operator must be used with the same record sets.");
-                                break;
-                            }
-
-                            int totalRecords = 0;
-                            IBinaryDataList bdl = compiler.FetchBinaryDataList(curDLID, out errors);
-                            string error;
-                            IBinaryDataListEntry entry;
-                            if(bdl.TryGetEntry(evaluateRecordLeft, out entry, out error))
-                            {
-                                totalRecords = entry.FetchLastRecordsetIndex();
-                            }
-
-                            string rawParamLeft = fieldLeft.RecordSet.Parameter.GetEvaluatedValue();
-                            rawParamLeft = rawParamLeft.Length == 2 ? "" : rawParamLeft.Substring(1, rawParamLeft.Length - 2);
-                            string rawParamRight = fieldRight.RecordSet.Parameter.GetEvaluatedValue();
-                            rawParamRight = rawParamRight.Length == 2 ? "" : rawParamRight.Substring(1, rawParamRight.Length - 2);
-
-                            int startIndex;
-                            int endIndex;
-
-                            if(!String.IsNullOrEmpty(rawParamLeft))
-                            {
-                                if(!Int32.TryParse(rawParamLeft, out startIndex) || startIndex <= 0)
-                                {
-                                    allErrors.AddError("An error occurred while parsing { " + expression + " } Recordset index must be a positive whole number that is greater than zero.");
-                                    break;
-                                }
-                            }
-                            else
-                            {
-                                startIndex = 1;
-                            }
-
-                            if(!String.IsNullOrEmpty(rawParamRight))
-                            {
-                                if(!Int32.TryParse(rawParamRight, out endIndex) || endIndex <= 0)
-                                {
-                                    allErrors.AddError("An error occurred while parsing { " + expression + " } Recordset index must be a positive whole number that is greater than zero.");
-                                    break;
-                                }
-
-                                if(endIndex > totalRecords)
-                                {
-                                    allErrors.AddError("An error occurred while parsing { " + expression + " } Recordset end index must be a positive whole number that is less than the number of entries in the recordset.");
-                                    break;
-                                }
-                            }
-                            else
-                            {
-                                endIndex = totalRecords;
-                            }
-
-                            endIndex++;
-
-                            StringBuilder rangeBuilder = new StringBuilder();
-
-                            for(int k = startIndex; k < endIndex; k++)
-                            {
-                                if(k != startIndex)
-                                {
-                                    rangeBuilder.Append("," + entry.TryFetchRecordsetColumnAtIndex(evaluateFieldLeft, k, out error).TheValue);
-                                    allErrors.AddError(error);
-                                }
-                                else
-                                {
-                                    rangeBuilder.Append(entry.TryFetchRecordsetColumnAtIndex(evaluateFieldLeft, k, out error).TheValue);
-                                    allErrors.AddError(error);
-                                }
-                            }
-                            allNodes[i].EvaluatedValue = rangeBuilder.ToString();
-                        }
-                    }
-
-                    string evaluatedValue = nodes[0].GetEvaluatedValue();
-                    result = InternalEval(evaluatedValue);
-
-                    if(startedIteration)
-                    {
-                        currentRecord = valueSource.Index++;
-                    }
-
-                    if(isIteration && !startedIteration)
-                    {
-                        startedIteration = true;
-                        currentRecord = valueSource.Index++;
-                    }
-                }
-                while(startedIteration && currentRecord < maxRecords);
-            }
-
-            errors = allErrors;
-
-            return result;
+            errors = null;
+            return "";
         }
 
         private sealed class IterationNodeValueSource : INodeValueSource

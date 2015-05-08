@@ -14,7 +14,6 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
-using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -46,7 +45,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -71,7 +70,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
@@ -93,7 +92,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -160,7 +159,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -238,7 +237,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -258,7 +257,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
@@ -278,7 +277,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
@@ -296,7 +295,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
@@ -314,7 +313,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
@@ -332,7 +331,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -344,35 +343,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #endregion Error Test Cases
 
-        #region Get Input/Output Tests
-
-        [TestMethod]
-        public void DeleteRecordActivity_GetInputs_Expected_One_Input()
-        {
-            DsfCountRecordsetActivity testAct = new DsfCountRecordsetActivity();
-
-            IBinaryDataList inputs = testAct.GetInputs();
-
-            // remove test datalist ;)
-            DataListRemoval(inputs.UID);
-
-            Assert.AreEqual(1, inputs.FetchAllEntries().Count);
-        }
-
-        [TestMethod]
-        public void DeleteRecordActivity_GetOutputs_Expected_One_Output()
-        {
-            DsfCountRecordsetActivity testAct = new DsfCountRecordsetActivity();
-
-            IBinaryDataList outputs = testAct.GetOutputs();
-
-            // remove test datalist ;)
-            DataListRemoval(outputs.UID);
-
-            Assert.AreEqual(1, outputs.FetchAllEntries().Count);
-        }
-
-        #endregion Get Input/Output Tests
+  
 
         #region Private Test Methods
 

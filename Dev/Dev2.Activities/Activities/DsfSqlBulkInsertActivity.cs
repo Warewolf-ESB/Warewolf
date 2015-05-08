@@ -16,18 +16,16 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
-using System.Xml.Schema;
 using Dev2.Activities.Debug;
 using Dev2.Activities.SqlBulkInsert;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Data;
 using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Builders;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Runtime.Hosting;
@@ -37,6 +35,7 @@ using Dev2.Util;
 using MySql.Data.MySqlClient;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 namespace Dev2.Activities
 {
@@ -110,97 +109,34 @@ namespace Dev2.Activities
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
             var dataObject = context.GetExtension<IDSFDataObject>();
-            var compiler = DataListFactory.CreateDataListCompiler();
             var toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder();
             toUpsert.IsDebug = dataObject.IsDebugMode();
             toUpsert.ResourceID = dataObject.ResourceID;
             var errorResultTo = new ErrorResultTO();
             var allErrors = new ErrorResultTO();
-            var executionId = DataListExecutionID.Get(context);
-            DataTable dataTableToInsert = null;
             bool addExceptionToErrorList = true;
             InitializeDebug(dataObject);
             try
             {
-                IDev2DataListEvaluateIterator batchItr;
-                IDev2DataListEvaluateIterator timeoutItr;
-                var parametersIteratorCollection = BuildParametersIteratorCollection(compiler, executionId, out batchItr, out timeoutItr);
-                SqlBulkCopy sqlBulkCopy = null;
+                IWarewolfIterator batchItr;
+                IWarewolfIterator timeoutItr;
+                var parametersIteratorCollection = BuildParametersIteratorCollection(dataObject.Environment, out batchItr, out timeoutItr);
+                
                 var currentOptions = BuildSqlBulkCopyOptions();
                 var runtimeDatabase = ResourceCatalog.Instance.GetResource<DbSource>(dataObject.WorkspaceID, Database.ResourceID);
                 if (runtimeDatabase.ServerType == enSourceType.MySqlDatabase)
                 {
-                    dataTableToInsert = GetDataMySql( runtimeDatabase, currentOptions, parametersIteratorCollection, batchItr, timeoutItr, dataTableToInsert, compiler, executionId, dataObject, errorResultTo, allErrors, toUpsert, ref addExceptionToErrorList);
+                    DoInsertForMySql(runtimeDatabase, currentOptions, parametersIteratorCollection, batchItr, timeoutItr, dataObject, errorResultTo, allErrors, ref addExceptionToErrorList);
 
                 }
                 else
                 {
-
-
-                    if (String.IsNullOrEmpty(BatchSize) && String.IsNullOrEmpty(Timeout))
-                    {
-                        sqlBulkCopy = new SqlBulkCopy(runtimeDatabase.ConnectionString, currentOptions) { DestinationTableName = TableName };
-                    }
-                    else
-                    {
-                        while (parametersIteratorCollection.HasMoreData())
-                        {
-                            sqlBulkCopy = SetupSqlBulkCopy(batchItr, parametersIteratorCollection, timeoutItr, runtimeDatabase, currentOptions);
-                        }
-                    }
-                    if (sqlBulkCopy != null)
-                    {
-                        // BuiltUsingSingleRecset was very poorly put together it assumes a 1-1 mapping between target and destination columns ?! ;(
-                        // And it forced a need for duplicate logic?!
-                        dataTableToInsert = BuildDataTableToInsert();
-
-                        if (InputMappings != null && InputMappings.Count > 0)
-                        {
-                            var iteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
-                            var listOfIterators = GetIteratorsFromInputMappings(compiler, executionId, dataObject, iteratorCollection, out errorResultTo);
-                            allErrors.MergeErrors(errorResultTo);
-
-                            // oh no, we have an issue, bubble it out ;)
-                            if (allErrors.HasErrors())
-                            {
-                                addExceptionToErrorList = false;
-                                throw new Exception("Problems with Iterators for SQLBulkInsert");
-                            }
-
-                            // emit options to debug as per acceptance test ;)
-                            if (dataObject.IsDebugMode())
-                            {
-                                AddBatchSizeAndTimeOutToDebug(compiler, executionId);
-                                AddOptionsDebugItems();
-                            }
-
-                            FillDataTableWithDataFromDataList(iteratorCollection, dataTableToInsert, listOfIterators);
-
-                            foreach (var dataColumnMapping in InputMappings)
-                            {
-                                if (!String.IsNullOrEmpty(dataColumnMapping.InputColumn))
-                                {
-                                    sqlBulkCopy.ColumnMappings.Add(new SqlBulkCopyColumnMapping(dataColumnMapping.OutputColumn.ColumnName, dataColumnMapping.OutputColumn.ColumnName));
-                                }
-                            }
-                        }
-
-                        // Pass in wrapper now ;)
-                        var wrapper = new SqlBulkCopyWrapper(sqlBulkCopy);
-                        SqlBulkInserter.Insert(wrapper, dataTableToInsert);
-
-                        toUpsert.Add(Result, "Success");
-                        compiler.Upsert(executionId, toUpsert, out errorsTo);
-                        allErrors.MergeErrors(errorResultTo);
-                        if (toUpsert.IsDebug)
-                        {
-                            foreach (var debugOutputTo in toUpsert.DebugOutputs)
-                            {
-                                AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
-                            }
-                        }
-                    }
+                    DoInsertForSqlServer(runtimeDatabase, currentOptions, dataObject, allErrors, batchItr, parametersIteratorCollection, timeoutItr, ref errorResultTo, ref addExceptionToErrorList);
                 }
+                
+                allErrors.MergeErrors(errorResultTo);
+                
+
             }
             catch (Exception e)
             {
@@ -217,22 +153,85 @@ namespace Dev2.Activities
                 // Handle Errors
                 if (allErrors.HasErrors())
                 {
-                    if (toUpsert.IsDebug)
-                    {
-                        foreach (var debugOutputTo in toUpsert.DebugOutputs)
-                        {
-                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
-                        }
-                    }
 
                     DisplayAndWriteError("DsfSqlBulkInsertActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorsTo);
-                    compiler.Upsert(executionId, Result, (string)null, out errorResultTo);
+                    dataObject.Environment.Assign(Result, null);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
+                    if (dataObject.IsDebugMode())
+                    {
+                        AddDebugOutputItem(new DebugItemStaticDataParams("Failure", Result, "", "="));
+                    }
                 }
                 if (toUpsert.IsDebug)
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
+                }
+                
+            }
+        }
+
+        void DoInsertForSqlServer(DbSource runtimeDatabase, SqlBulkCopyOptions currentOptions, IDSFDataObject dataObject, ErrorResultTO allErrors, IWarewolfIterator batchItr, IWarewolfListIterator parametersIteratorCollection, IWarewolfIterator timeoutItr, ref ErrorResultTO errorResultTo, ref bool addExceptionToErrorList)
+        {
+
+            SqlBulkCopy sqlBulkCopy;
+            if(String.IsNullOrEmpty(BatchSize) && String.IsNullOrEmpty(Timeout))
+            {
+                sqlBulkCopy = new SqlBulkCopy(runtimeDatabase.ConnectionString, currentOptions) { DestinationTableName = TableName };
+            }
+            else
+            {
+                sqlBulkCopy = SetupSqlBulkCopy(batchItr, parametersIteratorCollection, timeoutItr, runtimeDatabase, currentOptions);
+            }
+            
+            if(sqlBulkCopy != null)
+            {
+                var dataTableToInsert = BuildDataTableToInsert();
+               
+                var types = GETTypesFromMappingTypes();
+                var columns = GetNamesFromMappings();
+                if(InputMappings != null && InputMappings.Count > 0)
+                {
+                    var iteratorCollection = new WarewolfListIterator();
+                    var listOfIterators = GetIteratorsFromInputMappings(dataObject, iteratorCollection, out errorResultTo);
+                    iteratorCollection.Types = types;
+                    iteratorCollection.Names = columns;
+                    allErrors.MergeErrors(errorResultTo);
+
+                    // oh no, we have an issue, bubble it out ;)
+                    if(allErrors.HasErrors())
+                    {
+                        addExceptionToErrorList = false;
+                        throw new Exception("Problems with Iterators for SQLBulkInsert");
+                    }
+
+                    // emit options to debug as per acceptance test ;)
+                    if(dataObject.IsDebugMode())
+                    {
+                        AddBatchSizeAndTimeOutToDebug(dataObject.Environment);
+                        AddOptionsDebugItems();
+                    }
+                    
+                   FillDataTableWithDataFromDataList(iteratorCollection, dataTableToInsert, listOfIterators);
+                  
+                    if(InputMappings != null)
+                    {
+                        foreach(var dataColumnMapping in InputMappings)
+                        {
+                            if(!String.IsNullOrEmpty(dataColumnMapping.InputColumn))
+                            {
+                                sqlBulkCopy.ColumnMappings.Add(new SqlBulkCopyColumnMapping(dataColumnMapping.OutputColumn.ColumnName, dataColumnMapping.OutputColumn.ColumnName));
+                            }
+                        }
+                    }
+                    var wrapper = new SqlBulkCopyWrapper(sqlBulkCopy);
+                    SqlBulkInserter.Insert(wrapper, dataTableToInsert);
+                    dataObject.Environment.Assign(Result, "Success");
+                    if (dataObject.IsDebugMode())
+                    {
+                        AddDebugOutputItem(new DebugItemWarewolfAtomResult("Success", Result, ""));
+                    }
                 }
                 if (dataTableToInsert != null)
                 {
@@ -241,12 +240,12 @@ namespace Dev2.Activities
             }
         }
 
-        DataTable GetDataMySql( DbSource runtimeDatabase, SqlBulkCopyOptions currentOptions, IDev2IteratorCollection parametersIteratorCollection, IDev2DataListEvaluateIterator batchItr, IDev2DataListEvaluateIterator timeoutItr, DataTable dataTableToInsert, IDataListCompiler compiler, Guid executionId, IDSFDataObject dataObject, ErrorResultTO errorResultTo, ErrorResultTO allErrors, IDev2DataListUpsertPayloadBuilder<string> toUpsert, ref bool addExceptionToErrorList)
+        void DoInsertForMySql(DbSource runtimeDatabase, SqlBulkCopyOptions currentOptions, IWarewolfListIterator parametersIteratorCollection, IWarewolfIterator batchItr, IWarewolfIterator timeoutItr, IDSFDataObject dataObject, ErrorResultTO errorResultTo, ErrorResultTO allErrors, ref bool addExceptionToErrorList)
         {
             MySqlBulkLoader sqlBulkCopy = new MySqlBulkLoader(new MySqlConnection(runtimeDatabase.ConnectionString));
             TableName = TableName.Replace("[", "").Replace("]", "");
             if (TableName.Contains("."))
-                TableName = TableName.Substring(TableName.IndexOf(".")+1);
+                TableName = TableName.Substring(TableName.IndexOf(".", StringComparison.Ordinal)+1);
             if (String.IsNullOrEmpty(BatchSize) && String.IsNullOrEmpty(Timeout))
             {
                 sqlBulkCopy = new MySqlBulkLoader(new MySqlConnection(runtimeDatabase.ConnectionString)) { TableName = TableName, FieldTerminator = ",", LineTerminator = "\n" };
@@ -260,14 +259,12 @@ namespace Dev2.Activities
             }
             if (sqlBulkCopy != null)
             {
-                // BuiltUsingSingleRecset was very poorly put together it assumes a 1-1 mapping between target and destination columns ?! ;(
-                // And it forced a need for duplicate logic?!
-                dataTableToInsert = BuildDataTableToInsertMySql();
+                var dataTableToInsert = BuildDataTableToInsertMySql();
 
                 if (InputMappings != null && InputMappings.Count > 0)
                 {
-                    var iteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
-                    var listOfIterators = GetIteratorsFromInputMappings(compiler, executionId, dataObject, iteratorCollection, out errorResultTo);
+                    var iteratorCollection = new WarewolfListIterator();
+                    var listOfIterators = GetIteratorsFromInputMappings(dataObject, iteratorCollection, out errorResultTo);
                     allErrors.MergeErrors(errorResultTo);
 
                     // oh no, we have an issue, bubble it out ;)
@@ -280,7 +277,7 @@ namespace Dev2.Activities
                     // emit options to debug as per acceptance test ;)
                     if (dataObject.IsDebugMode())
                     {
-                        AddBatchSizeAndTimeOutToDebug(compiler, executionId);
+                        AddBatchSizeAndTimeOutToDebug(dataObject.Environment);
                         AddOptionsDebugItems();
                     }
 
@@ -297,20 +294,20 @@ namespace Dev2.Activities
 
                 // Pass in wrapper now ;)
                 var wrapper = new MySqlBulkCopyWrapper(sqlBulkCopy);
-                SqlBulkInserter.Insert(wrapper, dataTableToInsert);
-
-                toUpsert.Add(Result, "Success");
-                compiler.Upsert(executionId, toUpsert, out errorsTo);
-                allErrors.MergeErrors(errorResultTo);
-                if (toUpsert.IsDebug)
+                var inserted = SqlBulkInserter.Insert(wrapper, dataTableToInsert);
+                var resultString = inserted ? "Success" : "Failure";
+                
+                dataObject.Environment.Assign(Result,resultString);
+                if (dataObject.IsDebugMode())
                 {
-                    foreach (var debugOutputTo in toUpsert.DebugOutputs)
-                    {
-                        AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
-                    }
+                    AddDebugOutputItem(new DebugItemWarewolfAtomResult(resultString, Result, ""));
+                }
+                allErrors.MergeErrors(errorResultTo);
+                if (dataTableToInsert != null)
+                {
+                    dataTableToInsert.Dispose();
                 }
             }
-            return dataTableToInsert;
         }
 
         void AddOptionsDebugItems()
@@ -331,28 +328,26 @@ namespace Dev2.Activities
             _debugInputs.Add(debugItem);
         }
 
-        void AddBatchSizeAndTimeOutToDebug(IDataListCompiler compiler, Guid executionId)
+        void AddBatchSizeAndTimeOutToDebug(IExecutionEnvironment executionEnvironment)
         {
             DebugItem debugItem = new DebugItem();
             if(!string.IsNullOrEmpty(BatchSize))
             {
-                AddDebugInputItemFromEntry(BatchSize, "Batch Size ", compiler, executionId, debugItem);
+                AddDebugInputItemFromEntry(BatchSize, "Batch Size ", executionEnvironment, debugItem);
             }
             if(!String.IsNullOrEmpty(Timeout))
             {
-                AddDebugInputItemFromEntry(Timeout, "Timeout  ", compiler, executionId, debugItem);
+                AddDebugInputItemFromEntry(Timeout, "Timeout  ", executionEnvironment, debugItem);
             }
             _debugInputs.Add(debugItem);
         }
 
-        void AddDebugInputItemFromEntry(string expression, string parameterName, IDataListCompiler compiler, Guid executionId, DebugItem debugItem)
+        void AddDebugInputItemFromEntry(string expression, string parameterName, IExecutionEnvironment environment, DebugItem debugItem)
         {
-            ErrorResultTO errorsResultTo;
-            var expressionsEntry = compiler.Evaluate(executionId, DataList.Contract.enActionType.User, expression, false, out errorsResultTo);
-            AddDebugItem(new DebugItemVariableParams(expression, parameterName, expressionsEntry, executionId), debugItem);
+            AddDebugItem(new DebugEvalResult(expression, parameterName, environment), debugItem);
         }
 
-        public SqlBulkCopy SetupSqlBulkCopy(IDev2DataListEvaluateIterator batchItr, IDev2IteratorCollection parametersIteratorCollection, IDev2DataListEvaluateIterator timeoutItr, DbSource runtimeDatabase, SqlBulkCopyOptions copyOptions)
+        public SqlBulkCopy SetupSqlBulkCopy(IWarewolfIterator batchItr, IWarewolfListIterator parametersIteratorCollection, IWarewolfIterator timeoutItr, DbSource runtimeDatabase, SqlBulkCopyOptions copyOptions)
         {
             var batchSize = -1;
             var timeout = -1;
@@ -368,28 +363,26 @@ namespace Dev2.Activities
             }
             return sqlBulkCopy;
         }
-        public MySqlBulkLoader SetupMySqlBulkCopy(IDev2DataListEvaluateIterator batchItr, IDev2IteratorCollection parametersIteratorCollection, IDev2DataListEvaluateIterator timeoutItr, DbSource runtimeDatabase, SqlBulkCopyOptions copyOptions)
+        public MySqlBulkLoader SetupMySqlBulkCopy(IWarewolfIterator batchItr, IWarewolfListIterator parametersIteratorCollection, IWarewolfIterator timeoutItr, DbSource runtimeDatabase, SqlBulkCopyOptions copyOptions)
         {
             var batchSize = -1;
             var timeout = -1;
             GetParameterValuesForBatchSizeAndTimeOut(batchItr, parametersIteratorCollection, timeoutItr, ref batchSize, ref timeout);
             var sqlBulkCopy = new MySqlBulkLoader(new MySqlConnection(runtimeDatabase.ConnectionString)) { TableName = TableName, FieldTerminator = ",", LineTerminator = "\n" };
-
             return sqlBulkCopy;
         }
 
-
-        void GetParameterValuesForBatchSizeAndTimeOut(IDev2DataListEvaluateIterator batchItr, IDev2IteratorCollection parametersIteratorCollection, IDev2DataListEvaluateIterator timeoutItr, ref int batchSize, ref int timeout)
+        void GetParameterValuesForBatchSizeAndTimeOut(IWarewolfIterator batchItr, IWarewolfListIterator parametersIteratorCollection, IWarewolfIterator timeoutItr, ref int batchSize, ref int timeout)
         {
             GetBatchSize(batchItr, parametersIteratorCollection, ref batchSize);
             GetTimeOut(parametersIteratorCollection, timeoutItr, ref timeout);
         }
 
-        void GetTimeOut(IDev2IteratorCollection parametersIteratorCollection, IDev2DataListEvaluateIterator timeoutItr, ref int timeout)
+        void GetTimeOut(IWarewolfListIterator parametersIteratorCollection, IWarewolfIterator timeoutItr, ref int timeout)
         {
             if(timeoutItr != null)
             {
-                var timeoutString = parametersIteratorCollection.FetchNextRow(timeoutItr).TheValue;
+                var timeoutString = parametersIteratorCollection.FetchNextValue(timeoutItr);
                 if(!String.IsNullOrEmpty(timeoutString))
                 {
                     int parsedValue;
@@ -405,11 +398,11 @@ namespace Dev2.Activities
             }
         }
 
-        void GetBatchSize(IDev2DataListEvaluateIterator batchItr, IDev2IteratorCollection parametersIteratorCollection, ref int batchSize)
+        void GetBatchSize(IWarewolfIterator batchItr, IWarewolfListIterator parametersIteratorCollection, ref int batchSize)
         {
             if(batchItr != null)
             {
-                var batchSizeString = parametersIteratorCollection.FetchNextRow(batchItr).TheValue;
+                var batchSizeString = parametersIteratorCollection.FetchNextValue(batchItr);
                 if(!String.IsNullOrEmpty(batchSizeString))
                 {
                     int parsedValue;
@@ -425,98 +418,101 @@ namespace Dev2.Activities
             }
         }
 
-        IDev2IteratorCollection BuildParametersIteratorCollection(IDataListCompiler compiler, Guid executionId, out IDev2DataListEvaluateIterator batchIterator, out IDev2DataListEvaluateIterator timeOutIterator)
+        IWarewolfListIterator BuildParametersIteratorCollection(IExecutionEnvironment executionEnvironment, out IWarewolfIterator batchIterator, out IWarewolfIterator timeOutIterator)
         {
-            ErrorResultTO errorResultTo;
-            var parametersIteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
+            var parametersIteratorCollection = new WarewolfListIterator();
             batchIterator = null;
             timeOutIterator = null;
             if(!String.IsNullOrEmpty(BatchSize))
             {
-                var batchSizeEntry = compiler.Evaluate(executionId, DataList.Contract.enActionType.User, BatchSize, false, out errorResultTo);
-                var batchItr = Dev2ValueObjectFactory.CreateEvaluateIterator(batchSizeEntry);
-                parametersIteratorCollection.AddIterator(batchItr);
+                var batchItr = new WarewolfIterator(executionEnvironment.Eval(BatchSize));
+                parametersIteratorCollection.AddVariableToIterateOn(batchItr);
                 batchIterator = batchItr;
             }
             if(!String.IsNullOrEmpty(Timeout))
             {
-                var timeoutEntry = compiler.Evaluate(executionId, DataList.Contract.enActionType.User, Timeout, false, out errorResultTo);
-                var timeoutItr = Dev2ValueObjectFactory.CreateEvaluateIterator(timeoutEntry);
-                parametersIteratorCollection.AddIterator(timeoutItr);
+                var timeoutItr = new WarewolfIterator(executionEnvironment.Eval(Timeout));
+                parametersIteratorCollection.AddVariableToIterateOn(timeoutItr);
                 timeOutIterator = timeoutItr;
             }
             return parametersIteratorCollection;
         }
 
-        void FillDataTableWithDataFromDataList(IDev2IteratorCollection iteratorCollection, DataTable dataTableToInsert, List<IDev2DataListEvaluateIterator> listOfIterators)
+        void FillDataTableWithDataFromDataList(WarewolfListIterator iteratorCollection, DataTable dataTableToInsert, List<IWarewolfIterator> listOfIterators)
         {
             while(iteratorCollection.HasMoreData())
             {
-                // If the type is numeric blank cannot be added here - causes exception to be thrown even before its added to table ;)
-                // Instead build a list, then check it, then if all good add it ;)
 
-                var tmpData = new List<string>();
                 // ReSharper disable LoopCanBeConvertedToQuery
-                var values = listOfIterators.Select(iteratorCollection.FetchNextRow).Where(val => val != null).Select(val =>
+                var values = listOfIterators.Select(iteratorCollection.FetchNextValue).Where(val => val != null).Select(val =>
                 {
                     try
                     {
-                        return val.TheValue;
+                        return val;
                     }
                     catch(NullValueInVariableException)
                     {
                         return "";
                     }
                 });
-                foreach(var value in values)
-                // ReSharper restore LoopCanBeConvertedToQuery
-                {
-                    tmpData.Add(value);
-                }
+                IEnumerable<string> enumerable = values as string[] ?? values.ToArray();
+  
 
-                if(IgnoreBlankRows && tmpData.All(o => o == null || (String.IsNullOrEmpty(o))))
+                if (IgnoreBlankRows && enumerable.All(String.IsNullOrEmpty))
                 {
                     continue;
                 }
 
-                // now we can create the row and add data ;)
-                var dataRow = dataTableToInsert.NewRow();
-                for(int pos = 0; pos < tmpData.Count; pos++)
+                if (!IgnoreBlankRows && enumerable.All(String.IsNullOrEmpty))
                 {
-                    dataRow[pos] = tmpData[pos];
+                    throw new Exception("Ignore Blank Rows not selected and blank data encountered.");
                 }
-                dataTableToInsert.Rows.Add(dataRow);
+                // now we can create the row and add data ;)
+                // ReSharper disable CoVariantArrayConversion
+                dataTableToInsert.Rows.Add(enumerable.ToArray());
+                // ReSharper restore CoVariantArrayConversion
+                //for(int pos = 0; pos < tmpData.Count; pos++)
+                //{
+                //    dataRow[pos] = tmpData[pos];
+                //}
+                //dataTableToInsert.Rows.Add(dataRow);
             }
         }
 
-        List<IDev2DataListEvaluateIterator> GetIteratorsFromInputMappings(IDataListCompiler compiler, Guid executionId, IDSFDataObject dataObject, IDev2IteratorCollection iteratorCollection, out ErrorResultTO errorsResultTo)
+        List<IWarewolfIterator> GetIteratorsFromInputMappings(IDSFDataObject dataObject, IWarewolfListIterator iteratorCollection, out ErrorResultTO errorsResultTo)
         {
             errorsResultTo = new ErrorResultTO();
-            var listOfIterators = new List<IDev2DataListEvaluateIterator>();
+            var listOfIterators = new List<IWarewolfIterator>();
             var indexCounter = 1;
             foreach(var row in InputMappings)
             {
+                if(!ExecutionEnvironment.IsValidRecordSetIndex(row.InputColumn))
+                    errorsResultTo.AddError("Invalid recordset:"+row.InputColumn);
                 if(String.IsNullOrEmpty(row.InputColumn)) continue;
-                ErrorResultTO invokeErrors;
-                var expressionsEntry = compiler.Evaluate(executionId, DataList.Contract.enActionType.User, row.InputColumn, false, out invokeErrors);
-                errorsResultTo.MergeErrors(invokeErrors);
                 if(dataObject.IsDebugMode())
                 {
-                    AddDebugInputItem(row.InputColumn, row.OutputColumn.ColumnName, expressionsEntry, row.OutputColumn.DataTypeName, executionId, indexCounter);
+                    AddDebugInputItem(row.InputColumn, row.OutputColumn.ColumnName, dataObject.Environment, row.OutputColumn.DataTypeName, indexCounter);
                     indexCounter++;
                 }
-                var itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
-                iteratorCollection.AddIterator(itr);
-                listOfIterators.Add(itr);
+                try
+                {
+                    var itr =new WarewolfIterator(dataObject.Environment.Eval(row.InputColumn));
+                    iteratorCollection.AddVariableToIterateOn(itr);
+                    listOfIterators.Add(itr);
+                }
+                catch(Exception e)
+                {
+                    errorsResultTo.AddError(e.Message);
+                }
             }
             return listOfIterators;
         }
 
-        void AddDebugInputItem(string inputColumn, string outputColumnName, IBinaryDataListEntry expressionsEntry, string outputColumnDataType, Guid executionId, int indexCounter)
+        void AddDebugInputItem(string inputColumn, string outputColumnName, IExecutionEnvironment executionEnvironment, string outputColumnDataType, int indexCounter)
         {
             var itemToAdd = new DebugItem();
             AddDebugItem(new DebugItemStaticDataParams("", indexCounter.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-            AddDebugItem(new DebugItemVariableParams(inputColumn, "", expressionsEntry, executionId), itemToAdd);
+            AddDebugItem(new DebugEvalResult(inputColumn, "", executionEnvironment), itemToAdd);
             AddDebugItem(new DebugItemStaticDataParams(outputColumnName, "To Field"), itemToAdd);
             AddDebugItem(new DebugItemStaticDataParams(outputColumnDataType, "Type"), itemToAdd);
             _debugInputs.Add(itemToAdd);
@@ -552,6 +548,7 @@ namespace Dev2.Activities
         {
             if(InputMappings == null) return null;
             var dataTableToInsert = new DataTable();
+   
             foreach(var dataColumnMapping in InputMappings)
             {
                 if(String.IsNullOrEmpty(dataColumnMapping.InputColumn))
@@ -600,6 +597,19 @@ namespace Dev2.Activities
             return dataTableToInsert;
         }
 
+        List<Type> GETTypesFromMappingTypes()
+        {
+            if (InputMappings == null) return null;
+
+            return InputMappings.Select(dataColumnMapping => dataColumnMapping.OutputColumn.DataType).ToList();
+        }
+
+        List<string> GetNamesFromMappings()
+        {
+            if (InputMappings == null) return null;
+
+            return InputMappings.Select(dataColumnMapping => dataColumnMapping.OutputColumn.ColumnName).ToList();
+        }
         DataTable BuildDataTableToInsertMySql()
         {
             if (InputMappings == null) return null;
@@ -698,7 +708,7 @@ namespace Dev2.Activities
 
         public override IList<DsfForEachItem> GetForEachInputs()
         {
-            var items = (new[] { BatchSize, Timeout, TableName }).Union(InputMappings.Where(c => !string.IsNullOrEmpty(c.InputColumn)).Select(c => c.InputColumn)).ToArray();
+            var items = new[] { BatchSize, Timeout, TableName }.Union(InputMappings.Where(c => !string.IsNullOrEmpty(c.InputColumn)).Select(c => c.InputColumn)).ToArray();
             return GetForEachItems(items);
         }
 
@@ -710,7 +720,7 @@ namespace Dev2.Activities
 
         #region GetDebugInputs
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -723,7 +733,7 @@ namespace Dev2.Activities
 
         #region GetDebugOutputs
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

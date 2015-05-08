@@ -51,6 +51,22 @@ namespace Dev2.Activities.SqlBulkInsert
             return true;
         }
 
+        public bool WriteToServer(IDataReader dt)
+        {
+            if (_sbc == null)
+            {
+                throw new ArgumentException("_sbc");
+            }
+
+            using (_sbc)
+            {
+              
+                _sbc.WriteToServer(dt);
+            }
+
+            return true;
+        }
+
         #endregion
     }
 }

@@ -17,16 +17,13 @@ using Dev2.Activities.Debug;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
-using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Builders;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Development.Languages.Scripting;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Activities
@@ -76,43 +73,34 @@ namespace Dev2.Activities
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            Guid dlID = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
-            Guid executionId = dlID;
             allErrors.MergeErrors(errors);
-            IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder();
-            toUpsert.IsDebug = (dataObject.IsDebugMode());
-            toUpsert.ResourceID = dataObject.ResourceID;
-
+                    var env = dataObject.Environment;
             InitializeDebug(dataObject);
             try
             {
                 if(!errors.HasErrors())
                 {
-                    IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
-
-                    IDev2DataListEvaluateIterator scriptItr = CreateDataListEvaluateIterator(Script, executionId, compiler, colItr, allErrors);
-
-                    IBinaryDataListEntry scriptEntry = compiler.Evaluate(executionId, enActionType.User, Script, false, out errors);
-                    allErrors.MergeErrors(errors);
-
-                    if(dataObject.IsDebugMode())
+                    if (dataObject.IsDebugMode())
                     {
                         var language = ScriptType.GetDescription();
                         AddDebugInputItem(new DebugItemStaticDataParams(language, "Language"));
-                        AddDebugInputItem(new DebugItemVariableParams(Script, "Script", scriptEntry, executionId));
+                        AddDebugInputItem(new DebugEvalResult(Script, "Script", env));
                     }
+
+                    var scriptItr = env.EvalAsListOfStrings(Script);
+                    allErrors.MergeErrors(errors);
+
+                    
                     if(allErrors.HasErrors())
                     {
                         return;
                     }
 
-                    while(colItr.HasMoreData())
+                    foreach(var scriptValue in scriptItr)
                     {
-                        string scriptValue = colItr.FetchNextRow(scriptItr).TheValue;
+
 
                         var engine = new ScriptingEngineRepo().CreateEngine(ScriptType);
                         var value = engine.Execute(scriptValue);
@@ -120,19 +108,16 @@ namespace Dev2.Activities
                         //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                         foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
                         {
-                            toUpsert.Add(region, value);
-                            toUpsert.FlushIterationFrame();
+                            env.Assign(region,value);
+                            if (dataObject.IsDebugMode() && !allErrors.HasErrors())
+                            {
+                             
+                                    AddDebugOutputItem(new DebugEvalResult(region,"",env));
+                              
+                            }
                         }
                     }
-                    compiler.Upsert(executionId, toUpsert, out errors);
-                    allErrors.MergeErrors(errors);
-                    if(dataObject.IsDebugMode() && !allErrors.HasErrors())
-                    {
-                        foreach(var debugOutputTo in toUpsert.DebugOutputs)
-                        {
-                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
-                        }
-                    }
+
                 }
             }
             catch(Exception e)
@@ -153,7 +138,8 @@ namespace Dev2.Activities
                 if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfScriptingJavaScriptActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
                 }
 
                 if(dataObject.IsDebugMode())
@@ -201,7 +187,7 @@ namespace Dev2.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -210,7 +196,7 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {
