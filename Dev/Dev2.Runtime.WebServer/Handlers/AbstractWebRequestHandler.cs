@@ -27,7 +27,6 @@ using Dev2.Data.Binary_Objects;
 using Dev2.Data.Decision;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.Hosting;
@@ -398,7 +397,6 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         static string ExtractKeyValuePairs(NameValueCollection pairs)
         {
-            IBinaryDataList bdl = Dev2BinaryDataListFactory.CreateDataList();
             // Extract request keys ;)
             foreach(var key in pairs.AllKeys)
             {
@@ -410,27 +408,8 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     return key; //We have a workspace id and XML DataList
                 }
-                string error;
-                bdl.TryCreateScalarTemplate(string.Empty, key, string.Empty, true, out error);
-                if(!string.IsNullOrEmpty(error))
-                {
-                    Dev2Logger.Log.Error(error);
-                }
-
-                IBinaryDataListEntry entry;
-                if(bdl.TryGetEntry(key, out entry, out error))
-                {
-                    var item = Dev2BinaryDataListFactory.CreateBinaryItem(pairs[key], key);
-                    entry.TryPutScalar(item, out error);
-                    if(!string.IsNullOrEmpty(error))
-                    {
-                        Dev2Logger.Log.Error(error);
-                    }
-                }
-                else
-                {
-                    Dev2Logger.Log.Error(error);
-                }
+                //dataObject.Environment.Assign(DataListUtil.AddBrack(key),pairs[key]);
+                
             }
 
             ErrorResultTO errors = new ErrorResultTO();
