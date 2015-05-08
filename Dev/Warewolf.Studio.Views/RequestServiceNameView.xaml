@@ -18,15 +18,13 @@
                     FocusManager.IsFocusScope="True"
                     mc:Ignorable="d">
     <ig:XamDialogWindow.InputBindings>
-        <KeyBinding Command="{Binding Path=CancelCommand}" 
-                Key="Escape" 
-                />
+        <KeyBinding Command="{Binding Path=CancelCommand}" Key="Escape" />
     </ig:XamDialogWindow.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="40" />
-            <RowDefinition Height="40" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -36,7 +34,6 @@
                    HorizontalAlignment="Stretch"
                    VerticalAlignment="Top"
                    Background="Transparent">
-
             <!--  EMBEDDED CLIENT PANEL  -->
             <views:ExplorerView HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
@@ -44,49 +41,50 @@
                                 VerticalContentAlignment="Stretch"
                                 x:Name="ExplorerView"
                                 DataContext="{Binding SingleEnvironmentExplorerViewModel}" />
-
         </DockPanel>
-        <Grid Margin="0,-15,0,0" Grid.Row="1"
+        <Grid Grid.Row="1"
               HorizontalAlignment="Stretch"
-              VerticalAlignment="Stretch">
+              VerticalAlignment="Stretch"
+              Margin="0,-4,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0"  Margin="{StaticResource ElementBorderLeftRight}" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <TextBlock Grid.Column="0" 
+                       Margin="{StaticResource ContainerBorderControlLeftRight}" 
+                       HorizontalAlignment="Left" 
+                       VerticalAlignment="Center">
                 Name:
             </TextBlock>
             <TextBox Grid.Column="1"
                      HorizontalAlignment="Stretch"
                      VerticalAlignment="Center"
                      x:Name="ServiceNameTextBox"
-                      Margin="{StaticResource ElementBorderRight}"
-                     Text="{Binding Name,
-                                    UpdateSourceTrigger=PropertyChanged}" />
+                     Margin="{StaticResource ElementBorderRight}" 
+                     Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
         <DockPanel Grid.Row="2"
-                   HorizontalAlignment="Right" VerticalAlignment="Center">
-
-
+                   HorizontalAlignment="Right" VerticalAlignment="Center"
+                   Margin="0,0,1,0" >
             <TextBlock HorizontalAlignment="Right"
-                           VerticalAlignment="Center"
-                           x:Name="ErrorMessageTextBlock"
-                       Margin="{StaticResource ElementBorderRight}"
-                           Style="{StaticResource ErrorTextBlockStyle}"
-                           Text="{Binding Path=ErrorMessage}"
-                           TextAlignment="Right" />
-            
+                       VerticalAlignment="Center"
+                       x:Name="ErrorMessageTextBlock"
+                       Margin="{StaticResource ControlBorderBottomRight}"
+                       Style="{StaticResource ErrorTextBlockStyle}"
+                       Text="{Binding Path=ErrorMessage}"
+                       TextAlignment="Right" />
+            <!--Margin="{StaticResource ElementBorderRight}"-->
             <Button x:Name="OkButton"
                     Width="60"
                     Command="{Binding Path=OkCommand}"
-                   Margin="{StaticResource ElementBorderRight}"
+                    Margin="{StaticResource ControlBorderBottomRight}"
                     Content="Ok"
                     Style="{StaticResource ButtonStyle}" />
             <Button x:Name="CancelButton"
                     Width="60"
                     Command="{Binding Path=CancelCommand}"
                     Content="Cancel"
-                    Margin="{StaticResource ElementBorderRight}"
+                    Margin="{StaticResource ControlBorderBottomRight}"
                     Style="{StaticResource ButtonStyle}" />
         </DockPanel>
     </Grid>

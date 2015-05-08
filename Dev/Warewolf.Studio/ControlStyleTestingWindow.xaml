@@ -15,7 +15,7 @@
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <core:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter" />
         </Window.Resources>
-    <WrapPanel Orientation="Vertical">
+    <WrapPanel Orientation="Vertical" Margin="{StaticResource ContainerBorder}">
        
        
         <CheckBox AutomationProperties.AutomationId="Testing_CheckBox">This is a check box</CheckBox>
@@ -66,6 +66,7 @@
             </StackPanel>
         </Button>
         <PasswordBox AutomationProperties.AutomationId="Testing_PasswordBox"
+                     Margin="{StaticResource ControlBorderBottomTop}"
                      customControls:PasswordBoxAssistant.BindPassword="true"
                      customControls:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
         </PasswordBox>

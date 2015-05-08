@@ -12,33 +12,30 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="29" />
+            <RowDefinition Height="25" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="30" />
-            <ColumnDefinition Width="30" />
+            <ColumnDefinition Width="25" />
+            <ColumnDefinition Width="25" />
         </Grid.ColumnDefinitions>
 
-        <ComboBox Margin="{StaticResource ElementBorderRight}"
-            Grid.Row="0"
+        <ComboBox Margin="{StaticResource ElementBorderControlRight}"
+                  Grid.Row="0"
                   Grid.Column="0"
                   ToolTip="{Binding Path=ConnectionsToolTip}"
                   ItemsSource="{Binding Servers}"
                   SelectedItem="{Binding SelectedConnection}">            
         </ComboBox>
-
-
-        <Button Margin="{StaticResource ElementBorderRight}"
-            Grid.Row="0"
+        <Button Margin="{StaticResource ElementBorderControlRight}"
+                Grid.Row="0"
                 Grid.Column="1"
                 Width="25"
                 Height="25"
                 Command="{Binding EditConnectionCommand}"
                 Padding="4"
                 VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left"
-                ToolTip="{Binding Path=EditConnectionToolTip}"
-                >
+                ToolTip="{Binding Path=EditConnectionToolTip}" >
             <TextBlock>
             <fa:FontAwesome FontSize="4" Icon="Square" HorizontalAlignment="Left"/>
             <fa:FontAwesome FontSize="4" Icon="Square" HorizontalAlignment="Left"/>
@@ -51,7 +48,7 @@
                 Height="25"
                 Command="{Binding ToggleConnectionStateCommand}"
                 ToolTip ="{Binding Path=ToggleConnectionToolTip}"
-                Padding="4"
+                Padding="3,4,3,3"
                 HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom">
             <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="16" FontWeight="DemiBold" Icon="Link" VerticalAlignment="Top" HorizontalAlignment="Center"/>
         </Button>
