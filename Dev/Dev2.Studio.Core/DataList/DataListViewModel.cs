@@ -1083,38 +1083,6 @@ namespace Dev2.Studio.ViewModels.DataList
             return result;
         }
 
-//
-//        /// <summary>
-//        ///     Converts a list of data list item view models to a binary data list.
-//        /// </summary>
-//        /// <param name="errorString">The error string.</param>
-//        /// <returns></returns>
-//        private IBinaryDataList ConvertIDataListItemModelsToIBinaryDataList(out string errorString)
-//        {
-//            errorString = string.Empty;
-//            IBinaryDataList result = Dev2BinaryDataListFactory.CreateDataList();
-//
-//            IList<IDataListItemModel> filledScalars =
-//                ScalarCollection != null ? ScalarCollection.Where(scalar => !scalar.IsBlank && !scalar.HasError).ToList() : new List<IDataListItemModel>();
-//            foreach(var scalar in filledScalars)
-//            {
-//                result.TryCreateScalarTemplate
-//                    (string.Empty, scalar.Name, scalar.Description
-//                     , true, scalar.IsEditable, scalar.ColumnIODirection, out errorString);
-//            }
-//
-//            foreach(var recset in RecsetCollection ?? new OptomizedObservableCollection<IDataListItemModel>())
-//            {
-//                if(recset.IsBlank) continue;
-//                IEnumerable<IDataListItemModel> filledRecordSets = recset.Children.Where(c => !c.IsBlank && !c.HasError);
-//                IList<Dev2Column> cols = filledRecordSets.Select(child => DataListFactory.CreateDev2Column(child.Name, child.Description, child.IsEditable, child.ColumnIODirection))
-//                                                         .ToList();
-//
-//                result.TryCreateRecordsetTemplate(recset.Name, recset.Description, cols, true, recset.IsEditable, recset.ColumnIODirection, out errorString);
-//            }
-//
-//            return result;
-//        }
 
         private const string RootTag = "DataList";
         private const string Description = "Description";

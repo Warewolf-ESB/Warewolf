@@ -1377,7 +1377,6 @@ namespace Dev2
             try
             {
                 DebugDispatcher.Instance.Shutdown();
-                BackgroundDispatcher.Instance.Shutdown();
             }
             catch(Exception ex)
             {

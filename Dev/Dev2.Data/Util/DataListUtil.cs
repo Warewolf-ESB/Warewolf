@@ -23,7 +23,6 @@ using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Newtonsoft.Json;
 using Warewolf.Storage;
 using WarewolfParserInterop;
@@ -169,75 +168,6 @@ namespace Dev2.Data.Util
         public static string ComposeIntoUserVisibleRecordset(string rs, int idx, string field)
         {
             return string.Format("{0}({1}).{2}", rs, idx, field);
-        }
-
-        /// <summary>
-        /// Adds the missing from right.
-        /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="right">The right.</param>
-        /// <param name="errors">The errors.</param>
-        /// <exception cref="System.ArgumentNullException">right</exception>
-        public static void MergeDataList(IBinaryDataList left, IBinaryDataList right, out ErrorResultTO errors)
-        {
-
-            if(right == null)
-            {
-                throw new ArgumentNullException("right");
-            }
-
-            if(left == null)
-            {
-                throw new ArgumentException("left");
-            }
-
-            errors = new ErrorResultTO();
-            ErrorResultTO invokeErrors;
-            MergeOp(left, right, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-            MergeOp(right, left, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-
-        }
-
-        private static void MergeOp(IBinaryDataList left, IBinaryDataList right, out ErrorResultTO errors)
-        {
-            IList<string> itemKeys = right.FetchAllUserKeys();
-            errors = new ErrorResultTO();
-
-            foreach(string key in itemKeys)
-            {
-                IBinaryDataListEntry entry;
-
-                string error;
-                if(!left.TryGetEntry(key, out entry, out error))
-                {
-                    // NOTE : DO NOT ADD ERROR, IT IS A MISS AND WE ACCOUNT FOR THIS BELOW
-
-                    // Left does not contain key, get it from the right and add ;)
-                    if(right.TryGetEntry(key, out entry, out error))
-                    {
-                        errors.AddError(error);
-                        // we found it add it to the left ;)
-                        if(entry.IsRecordset)
-                        {
-                            left.TryCreateRecordsetTemplate(entry.Namespace, entry.Description, entry.Columns, false,
-                                                            true, out error);
-                            errors.AddError(error);
-                        }
-                        else
-                        {
-                            left.TryCreateScalarTemplate(string.Empty, entry.Namespace, entry.Description, false,
-                                                         out error);
-                            errors.AddError(error);
-                        }
-                    }
-                    else
-                    {
-                        errors.AddError(error);
-                    }
-                }
-            }
         }
 
 

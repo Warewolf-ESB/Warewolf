@@ -155,7 +155,6 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="Audit\ComplexExpressionAuditor.cs" />
-    <Compile Include="BackgroundDispatcher.cs" />
     <Compile Include="Compilers\RecordsetGroup.cs" />
     <Compile Include="Compilers\TransientRecordsetProcessGroup.cs" />
     <Compile Include="DataListItem.cs" />
@@ -346,8 +345,6 @@
     <Compile Include="MathOperations\MathOpsFactory.cs" />
     <Compile Include="Network\DeleteDataListMessage.cs" />
     <Compile Include="Network\PersistChildChainMessage.cs" />
-    <Compile Include="Network\ReadDataListMessage.cs" />
-    <Compile Include="Network\WriteDataListMessage.cs" />
     <Compile Include="Operations\Dev2IndexFinder.cs" />
     <Compile Include="Operations\Dev2MergeOperations.cs" />
     <Compile Include="Interfaces\IDev2MergeOperations.cs" />
@@ -396,10 +393,7 @@
     <Compile Include="TO\WizardDataListMergeTO.cs" />
     <Compile Include="TO\XMLPopulateIndexTO.cs" />
     <Compile Include="Translators\EmitionTypes.cs" />
-    <Compile Include="Translators\DataListBinaryTranslator.cs" />
     <Compile Include="Translators\DatalistFormat.cs" />
-    <Compile Include="Translators\DataListTranslatorFactory.cs" />
-    <Compile Include="Translators\IDataListTranslator.cs" />
     <Compile Include="Translators\TranslationConstants.cs" />
     <Compile Include="Util\DataListCleaningUtils.cs" />
     <Compile Include="Util\DataListUtil.cs" />
