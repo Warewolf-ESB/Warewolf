@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ActivityUnitTests;
-using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -100,37 +99,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #endregion Store To RecordSet Tests
 
 
-        #region Get Input/Output Tests
-
-        [TestMethod]
-        public void CountRecordsetActivity_GetInputs_Expected_One_Input()
-        {
-            DsfCountRecordsetActivity testAct = new DsfCountRecordsetActivity();
-
-            IBinaryDataList inputs = testAct.GetInputs();
-
-            var result = inputs.FetchAllEntries().Count;
-
-            // remove test datalist ;)
-
-            Assert.AreEqual(1, result);
-        }
-
-        [TestMethod]
-        public void CountRecordsetActivity_GetOutputs_Expected_One_Output()
-        {
-            DsfCountRecordsetActivity testAct = new DsfCountRecordsetActivity();
-
-            IBinaryDataList outputs = testAct.GetOutputs();
-
-            var result = outputs.FetchAllEntries().Count;
-
-            // remove test datalist ;)
-
-            Assert.AreEqual(1, result);
-        }
-
-        #endregion Get Input/Output Tests
+        
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

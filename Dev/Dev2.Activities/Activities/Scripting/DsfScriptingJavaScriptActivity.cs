@@ -109,12 +109,8 @@ namespace Dev2.Activities
                         AddDebugInputItem(Script, dataObject.Environment);
                     }
 
-                    int iterationCounter = 0;
-
                     while(colItr.HasMoreData())
                     {
-                        dynamic value = null;
-
                         //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                         foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
                         {
@@ -124,12 +120,11 @@ namespace Dev2.Activities
                             if(dataObject.IsDebugMode())
                             {
                                 // ReSharper disable ExpressionIsAlwaysNull
-                                AddDebugOutputItem(new DebugOutputParams(region, value, executionId, iterationCounter));
+                                AddDebugOutputItem(new DebugEvalResult(region,"", dataObject.Environment));
                                 // ReSharper restore ExpressionIsAlwaysNull
                             }
                         }
 
-                        iterationCounter++;
                     }
 
                     allErrors.MergeErrors(errorResultTo);

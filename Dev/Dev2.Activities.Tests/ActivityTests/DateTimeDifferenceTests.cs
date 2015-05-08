@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Dev2;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -142,33 +141,7 @@ namespace ActivityUnitTests.ActivityTests
 
         #endregion Error Test Cases
 
-        #region Get Input/Output Tests
-
-        [TestMethod]
-        public void DateTimeDifference_GetInputs_Expected_Four_Input()
-        {
-            DsfDateTimeDifferenceActivity testAct = new DsfDateTimeDifferenceActivity { Input1 = "27-10-2012", Input2 = "28-10-2012", InputFormat = "dd-mm-yyyy", OutputType = "Years", Result = "[[result]]" };
-
-            IBinaryDataList inputs = testAct.GetInputs();
-
-            // remove test datalist ;)
-
-            Assert.AreEqual(4, inputs.FetchAllEntries().Count);
-        }
-
-        [TestMethod]
-        public void DateTimeDifference_GetOutputs_Expected_One_Output()
-        {
-            DsfDateTimeDifferenceActivity testAct = new DsfDateTimeDifferenceActivity { Input1 = "27-10-2012", Input2 = "28-10-2012", InputFormat = "dd-mm-yyyy", OutputType = "Years", Result = "[[result]]" };
-
-            IBinaryDataList outputs = testAct.GetOutputs();
-
-            // remove test datalist ;)
-
-            Assert.AreEqual(1, outputs.FetchAllEntries().Count);
-        }
-
-        #endregion Get Input/Output Tests
+        
 
         #region Private Test Methods
 

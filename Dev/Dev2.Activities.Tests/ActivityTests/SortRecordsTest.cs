@@ -236,37 +236,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #endregion Negative Test Cases
 
-        #region Get Input/Output Tests
-
-        [TestMethod]
-        public void SortRecords_GetInputs_Expected_Two_Input()
-        {
-            DsfSortRecordsActivity testAct = new DsfSortRecordsActivity();
-
-            IBinaryDataList inputs = testAct.GetInputs();
-
-            var res = inputs.FetchAllEntries().Count;
-
-            // remove test datalist ;)
-
-            Assert.AreEqual(2, res);
-        }
-
-        [TestMethod]
-        public void SortRecords_GetOutputs_Expected_Zero_Output()
-        {
-            DsfSortRecordsActivity testAct = new DsfSortRecordsActivity();
-
-            IBinaryDataList outputs = testAct.GetOutputs();
-
-            var res = outputs.FetchAllEntries().Count;
-
-            // remove test datalist ;)
-
-            Assert.AreEqual(0, res);
-        }
-
-        #endregion Get Input/Output Tests
+        
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

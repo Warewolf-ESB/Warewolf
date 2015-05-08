@@ -15,7 +15,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using ActivityUnitTests;
 using Dev2.Data.PathOperations.Interfaces;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -91,37 +90,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #endregion
 
-        #region Get Input/Output Tests
-
-        [TestMethod]
-        public void PathMoveActivity_GetInputs_Expected_Six_Input()
-        {
-            DsfPathMove testAct = new DsfPathMove();
-
-            IBinaryDataList inputs = testAct.GetInputs();
-
-            var res = inputs.FetchAllEntries().Count;
-
-            // remove test datalist ;)
-
-            Assert.AreEqual(8, res);
-        }
-
-        [TestMethod]
-        public void PathMoveActivity_GetOutputs_Expected_One_Output()
-        {
-            DsfPathMove testAct = new DsfPathMove();
-
-            IBinaryDataList outputs = testAct.GetOutputs();
-
-            var res = outputs.FetchAllEntries().Count;
-
-            // remove test datalist ;)
-
-            Assert.AreEqual(1, res);
-        }
-
-        #endregion Get Input/Output Tests
+        
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

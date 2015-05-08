@@ -168,6 +168,7 @@
     <Compile Include="Compilers\EvaluateRuleSet.cs" />
     <Compile Include="Compilers\RecordsetGroup.cs" />
     <Compile Include="Compilers\TransientRecordsetProcessGroup.cs" />
+    <Compile Include="DataListModel.cs" />
     <Compile Include="DataListTO.cs" />
     <Compile Include="Decisions\Operations\DecisionUtils.cs" />
     <Compile Include="Decisions\Operations\NotBetween.cs" />
@@ -177,6 +178,7 @@
     <Compile Include="Decisions\Operations\NotStartsWith.cs" />
     <Compile Include="Enums\enForEachType.cs" />
     <Compile Include="Enums\enTypeOfSystemInformationToGather.cs" />
+    <Compile Include="IDataListModel.cs" />
     <Compile Include="Network\DataListMessage.cs" />
     <Compile Include="Parsers\XPathParser.cs" />
     <Compile Include="PathOperations\Enums\WriteType.cs" />
@@ -184,6 +186,8 @@
     <Compile Include="PathOperations\Extension\PathExtensions.cs" />
     <Compile Include="PathOperations\Interfaces\IDestinationUserNamePassword.cs" />
     <Compile Include="PulseLogger.cs" />
+    <Compile Include="RecordSet.cs" />
+    <Compile Include="Scalar.cs" />
     <Compile Include="ServiceModel\AuthenticationType.cs" />
     <Compile Include="ServiceModel\Connection.cs" />
     <Compile Include="ServiceModel\OauthSource.cs" />
@@ -418,7 +422,6 @@
     <Compile Include="TO\UpsertTO.cs" />
     <Compile Include="TO\WizardDataListMergeTO.cs" />
     <Compile Include="TO\XMLPopulateIndexTO.cs" />
-    <Compile Include="Translators\DataListDataTableTranslator.cs" />
     <Compile Include="Translators\EmitionTypes.cs" />
     <Compile Include="Translators\StudioDebugTranslator.cs" />
     <Compile Include="Translators\DataListXMLTranslatorWithOutSystemTags.cs" />
@@ -429,7 +432,6 @@
     <Compile Include="Translators\DataListTranslatorFactory.cs" />
     <Compile Include="Translators\DataListXMLTranslator.cs" />
     <Compile Include="Translators\IDataListTranslator.cs" />
-    <Compile Include="Translators\ITranslate.cs" />
     <Compile Include="Translators\StudioTranslator.cs" />
     <Compile Include="Translators\XmlInputsOnlyTranslator.cs" />
     <Compile Include="Translators\TranslationConstants.cs" />

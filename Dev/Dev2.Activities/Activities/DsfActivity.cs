@@ -592,66 +592,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Overridden ActivityAbstact Methods
 
-        public override IBinaryDataList GetInputs()
-        {
-            IBinaryDataList result;
-            ErrorResultTO errors;
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            var inputDlString = compiler.GenerateWizardDataListFromDefs(InputMapping, enDev2ArgumentType.Input, false, out errors, true);
-            var inputDlShape = compiler.GenerateWizardDataListFromDefs(InputMapping, enDev2ArgumentType.Input, false, out errors);
-            if(!errors.HasErrors())
-            {
-                Guid dlId = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), inputDlString, inputDlShape, out errors);
-                if(!errors.HasErrors())
-                {
-                    result = compiler.FetchBinaryDataList(dlId, out errors);
-                }
-                else
-                {
-                    string errorString = string.Join(",", errors.FetchErrors());
-                    throw new Exception(errorString);
-                }
-            }
-            else
-            {
-                string errorString = string.Join(",", errors.FetchErrors());
-                throw new Exception(errorString);
-            }
-
-            return result;
-        }
-
-        public override IBinaryDataList GetOutputs()
-        {
-            IBinaryDataList result;
-            ErrorResultTO errors;
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            var outputDlString = compiler.GenerateWizardDataListFromDefs(OutputMapping, enDev2ArgumentType.Output, false, out errors, true);
-            var outputDlShape = compiler.GenerateWizardDataListFromDefs(OutputMapping, enDev2ArgumentType.Output, false, out errors);
-            if(!errors.HasErrors())
-            {
-                Guid dlId = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), outputDlString, outputDlShape, out errors);
-                if(!errors.HasErrors())
-                {
-                    result = compiler.FetchBinaryDataList(dlId, out errors);
-                }
-                else
-                {
-                    string errorString = string.Join(",", errors.FetchErrors());
-                    throw new Exception(errorString);
-                }
-            }
-            else
-            {
-                string errorString = string.Join(",", errors.FetchErrors());
-                throw new Exception(errorString);
-            }
-
-            return result;
-        }
-
         #endregion Overridden ActivityAbstact Methods
 
         #region Debug IO

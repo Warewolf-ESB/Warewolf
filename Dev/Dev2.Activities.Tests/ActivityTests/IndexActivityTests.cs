@@ -14,7 +14,6 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
-using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -230,33 +229,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #endregion Index Negative Tests
 
-        #region Get Input/Output Tests
-
-        [TestMethod]
-        public void IndexActivity_GetInputs_Expected_Five_Input()
-        {
-            DsfIndexActivity testAct = new DsfIndexActivity();
-
-            IBinaryDataList inputs = testAct.GetInputs();
-
-            // remove test datalist ;)
-
-            Assert.AreEqual(6, inputs.FetchAllEntries().Count);
-        }
-
-        [TestMethod]
-        public void IndexActivity_GetOutputs_Expected_One_Output()
-        {
-            DsfIndexActivity testAct = new DsfIndexActivity();
-
-            IBinaryDataList outputs = testAct.GetOutputs();
-
-            // remove test datalist ;)
-
-            Assert.AreEqual(1, outputs.FetchAllEntries().Count);
-        }
-
-        #endregion Get Input/Output Tests
+        
 
 
         [TestMethod]
