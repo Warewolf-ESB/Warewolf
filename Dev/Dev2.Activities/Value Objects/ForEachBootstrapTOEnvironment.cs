@@ -16,7 +16,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
         public enForEachExecutionType ExeType { get; set; }
         public int MaxExecutions { get; set; }
         public int IterationCount { get; set; }
-        public IDev2DataListEvaluateIterator DataIterator { get; set; }
         public ForEachInnerActivityTO InnerActivity { get; set; }
         public IIndexIterator IndexIterator { get; set; }
         public enForEachType ForEachType { get; private set; }
@@ -165,22 +164,5 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
             return result;
         }
 
-
-        public bool HasMoreData()
-        {
-
-            bool result = (IterationCount < MaxExecutions);
-
-            if(ExeType == enForEachExecutionType.GhostService)
-            {
-                if(DataIterator != null && result)
-                {
-                    // check that there is still data to iterate across ;)
-                    result = DataIterator.HasMoreRecords();
-                }
-            }
-
-            return result;
-        }
     }
 }

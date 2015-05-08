@@ -155,7 +155,6 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="Audit\ComplexExpressionAuditor.cs" />
-    <Compile Include="Compilers\RecordsetGroup.cs" />
     <Compile Include="Compilers\TransientRecordsetProcessGroup.cs" />
     <Compile Include="DataListItem.cs" />
     <Compile Include="DataListModel.cs" />
@@ -171,7 +170,6 @@
     <Compile Include="Enums\enForEachType.cs" />
     <Compile Include="Enums\enTypeOfSystemInformationToGather.cs" />
     <Compile Include="EnvironmentIndexIterator.cs" />
-    <Compile Include="IBinaryDataListEntry.cs" />
     <Compile Include="IDataListModel.cs" />
     <Compile Include="IIndexIterator.cs" />
     <Compile Include="IndexIterator.cs" />
@@ -210,9 +208,6 @@
     <Compile Include="Storage\Dev2DistributedCache.cs" />
     <Compile Include="Storage\IndexBasedBinaryDataListRow.cs" />
     <Compile Include="Storage\IndexMemoryRanageAllocator.cs" />
-    <Compile Include="Storage\ProtocolBuffers\BinaryDataListAlias.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Storage\ProtocolBuffers\BinaryDataListRow.cs" />
     <Compile Include="Builders\DataListIntellisenseBuilder.cs" />
     <Compile Include="Builders\DefinitionBuilder.cs" />
@@ -318,7 +313,6 @@
     <Compile Include="Interfaces\IDev2DataLangaugeParseError.cs" />
     <Compile Include="Interfaces\IDev2DataLanguageIntellisensePart.cs" />
     <Compile Include="Interfaces\IDev2DataLanguageParser.cs" />
-    <Compile Include="Interfaces\IDev2DataListEvaluateIterator.cs" />
     <Compile Include="Interfaces\IDev2IndexFinder.cs" />
     <Compile Include="Interfaces\IDev2LanguageParser.cs" />
     <Compile Include="Interfaces\IDev2NumberFormatter.cs" />
@@ -365,7 +359,6 @@
     <Compile Include="SystemTemplates\Models\Dev2ModelType.cs" />
     <Compile Include="SystemTemplates\Models\IDev2FlowModel.cs" />
     <Compile Include="TO\ActivityMappingTO.cs" />
-    <Compile Include="TO\ActivityUpsertTO.cs" />
     <Compile Include="TO\DataListMergeOpsTO.cs" />
     <Compile Include="TO\DataListPayloadFrameTO.cs" />
     <Compile Include="TO\DataListTranslatedPayloadTO.cs" />
@@ -388,7 +381,6 @@
     <Compile Include="TO\SystemTag.cs" />
     <Compile Include="TO\SystemTagsTO.cs" />
     <Compile Include="TO\UpsertTO.cs" />
-    <Compile Include="TO\WizardDataListMergeTO.cs" />
     <Compile Include="TO\XMLPopulateIndexTO.cs" />
     <Compile Include="Translators\EmitionTypes.cs" />
     <Compile Include="Translators\DatalistFormat.cs" />
@@ -398,8 +390,6 @@
     <Compile Include="Util\Scrubber.cs" />
     <Compile Include="Util\ScrubType.cs" />
     <Compile Include="Util\XmlHelper.cs" />
-    <Compile Include="Value Objects\Dev2DataListEvaluateIterator.cs" />
-    <Compile Include="Value Objects\Dev2RecordsetIndexScope.cs" />
     <Compile Include="Value Objects\Dev2TokenConverter.cs" />
     <Compile Include="WarewolfIterator.cs" />
   </ItemGroup>
