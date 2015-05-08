@@ -1,13 +1,11 @@
 using System.Collections.Generic;
 using System.Dynamic;
-using System.Linq;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Value_Objects;
 using Warewolf.Storage;
 
+// ReSharper disable once CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
 {
     /// <summary>
@@ -15,37 +13,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
     /// </summary>
     public class ForEachBootstrapTO : DynamicObject
     {
-        public enForEachExecutionType ExeType { get; private set; }
-        public int MaxExecutions { get; private set; }
-        public int IterationCount { get; private set; }
-        public IDev2DataListEvaluateIterator DataIterator { get; private set; }
+        public enForEachExecutionType ExeType { get; set; }
+        public int MaxExecutions { get; set; }
+        public int IterationCount { get; set; }
+        public IDev2DataListEvaluateIterator DataIterator { get; set; }
         public ForEachInnerActivityTO InnerActivity { get; set; }
         public IIndexIterator IndexIterator { get; set; }
         public enForEachType ForEachType { get; private set; }
 
-
-        public ForEachBootstrapTO(enForEachExecutionType typeOf, int maxExe, IBinaryDataListEntry data)
-        {
-            ExeType = typeOf;
-            MaxExecutions = maxExe;
-            if(data != null)
-            {
-                DataIterator = Dev2ValueObjectFactory.CreateEvaluateIterator(data);
-            }
-            else
-            {
-                DataIterator = null;
-            }
-        }
 
         //MO - Changed : new ctor that accepts the new arguments
         public ForEachBootstrapTO(enForEachType forEachType, string from, string to, string csvNumbers, string numberOfExecutes, string recordsetName, IExecutionEnvironment compiler, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             ForEachType = forEachType;
-            IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
             IIndexIterator localIndexIterator;
-            IndexList indexList;
 
             switch(forEachType)
             {
@@ -58,17 +40,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
                         break;
                     }
 
-
-                    var isEmpty =! records.Any();
-                    if(isEmpty)
-                    {
-
-                        localIndexIterator = new IndexListIndexIterator(records);
-                    }
-                    else
-                    {
-                        localIndexIterator = new IndexListIndexIterator(records);
-                    }
+                    localIndexIterator = new IndexListIndexIterator(records);
 
                     
                     IndexIterator = localIndexIterator;
@@ -95,7 +67,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
 
                     
 
-                    var evalledFrom = Warewolf.Storage.ExecutionEnvironment.WarewolfEvalResultToString( compiler.Eval(@from));
+                    var evalledFrom = ExecutionEnvironment.WarewolfEvalResultToString( compiler.Eval(@from));
                     int intFrom;
                     if (!int.TryParse(evalledFrom, out intFrom) || intFrom < 1)
                     {
@@ -109,7 +81,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
                         break;
                     }
 
-                    var evalledTo= Warewolf.Storage.ExecutionEnvironment.WarewolfEvalResultToString( compiler.Eval(@to));
+                    var evalledTo= ExecutionEnvironment.WarewolfEvalResultToString( compiler.Eval(@to));
                
                     int intTo;
                     if (!int.TryParse(evalledTo, out intTo) || intTo < 1)
@@ -117,6 +89,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
                         errors.AddError("To range must be a whole number from 1 onwards.");
                         break;
                     }
+                    IndexList indexList;
                     if(intFrom > intTo)
                     {
                         indexList = new IndexList(new HashSet<int>(), 0) { MinValue = intFrom, MaxValue = intTo };
@@ -132,7 +105,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
 
                     break;
                 case enForEachType.InCSV:
-                    var csvIndexedsItr = Warewolf.Storage.ExecutionEnvironment.WarewolfEvalResultToString( compiler.Eval(csvNumbers));
+                    var csvIndexedsItr = ExecutionEnvironment.WarewolfEvalResultToString( compiler.Eval(csvNumbers));
 
                     ErrorResultTO allErrors;
                     List<int> listOfIndexes = SplitOutCsvIndexes(csvIndexedsItr, out allErrors);
@@ -155,7 +128,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
                     }
 
                     int intExNum;
-                    var numOfExItr = Warewolf.Storage.ExecutionEnvironment.WarewolfEvalResultToString( compiler.Eval(numberOfExecutes));
+                    var numOfExItr = ExecutionEnvironment.WarewolfEvalResultToString( compiler.Eval(numberOfExecutes));
 
                     if (!int.TryParse(numOfExItr, out intExNum))
                     {
@@ -192,14 +165,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
             return result;
         }
 
-        public void IncIterationCount()
-        {
-            IterationCount++;
-            if(DataIterator != null)
-            {
-                DataIterator.FetchNextRowData(); // TODO : Replace this with another method?!
-            }
-        }
 
         public bool HasMoreData()
         {

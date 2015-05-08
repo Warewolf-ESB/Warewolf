@@ -132,8 +132,6 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="BinaryDataList\IndexIteratorTest.cs" />
-    <Compile Include="BinaryDataList\LoopedIndexIteratorTest.cs" />
-    <Compile Include="BinaryDataList\RecordsetGroupTest.cs" />
     <Compile Include="BinaryDataList\IndexListTest.cs" />
     <Compile Include="BinaryDataList\DataListUtilTest.cs" />
     <Compile Include="Builders\RecordSetCollectionBuilderTest.cs" />

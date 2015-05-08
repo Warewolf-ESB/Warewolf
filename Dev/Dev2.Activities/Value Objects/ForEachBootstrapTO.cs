@@ -10,7 +10,6 @@
 */
 
 using System.Dynamic;
-using Dev2.Data.Binary_Objects;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 
@@ -24,22 +23,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
     {
         public enForEachExecutionType ExeType { get; set; }
         public int MaxExecutions { get; set; }
-        public int IterationCount { get; private set; }
+        public int IterationCount { get; set; }
         public IDev2DataListEvaluateIterator DataIterator { get; set; }
         public ForEachInnerActivityTO InnerActivity { get; set; }
-        public IIndexIterator IndexIterator { get; set; }
         public enForEachType ForEachType { get; set; }
 
 
 
-        public void IncIterationCount()
-        {
-            IterationCount++;
-            if(DataIterator != null)
-            {
-                DataIterator.FetchNextRowData(); // TODO : Replace this with another method?!
-            }
-        }
 
         public bool HasMoreData()
         {

@@ -219,26 +219,7 @@ namespace Dev2.Server.Datalist
         void SetParentUID(Guid curDLID, Guid parentID, out ErrorResultTO errors);
 
 
-        /// <summary>
-        /// Upserts the system tag.
-        /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
-        /// <param name="tag">The tag.</param>
-        /// <param name="val">The val.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        Guid UpsertSystemTag(Guid curDLID, enSystemTag tag, string val, out ErrorResultTO errors);
-
-        /// <summary>
-        /// Upserts the system tag.
-        /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
-        /// <param name="tag">The tag.</param>
-        /// <param name="val">The val.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        Guid UpsertSystemTag(Guid curDLID, enSystemTag tag, IBinaryDataListEntry val, out ErrorResultTO errors);
-
+       
         #endregion
 
         DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors, PopulateOptions populateOptions);

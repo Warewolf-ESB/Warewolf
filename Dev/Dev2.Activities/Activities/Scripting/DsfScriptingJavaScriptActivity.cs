@@ -16,7 +16,6 @@ using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -87,7 +86,6 @@ namespace Dev2.Activities
             {
                 if(!errorResultTo.HasErrors())
                 {
-                    IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
 
                     if(allErrors.HasErrors())
                     {
@@ -104,21 +102,7 @@ namespace Dev2.Activities
                         AddDebugInputItem(Script, dataObject.Environment);
                     }
 
-                    while(colItr.HasMoreData())
-                    {
-                        //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
-                        {
-
-                            if(dataObject.IsDebugMode())
-                            {
-                                // ReSharper disable ExpressionIsAlwaysNull
-                                AddDebugOutputItem(new DebugEvalResult(region,"", dataObject.Environment));
-                                // ReSharper restore ExpressionIsAlwaysNull
-                            }
-                        }
-
-                    }
+                   
 
                     allErrors.MergeErrors(errorResultTo);
                 }

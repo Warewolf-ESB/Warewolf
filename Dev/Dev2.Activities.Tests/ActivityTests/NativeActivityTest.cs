@@ -20,7 +20,6 @@ using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Binary_Objects;
-using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
@@ -192,22 +191,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region ExecuteSimulation
 
         #region ValidateScalar
-
-        static void ValidateScalar(IBinaryDataList dataList, string name, string expectedValue)
-        {
-            string error;
-            IBinaryDataListEntry entry;
-            dataList.TryGetEntry(name, out entry, out error);
-            if(!string.IsNullOrEmpty(error))
-            {
-                Assert.Fail("Error fetching scalar '{0}' from Binary DataList", name);
-            }
-            else
-            {
-                var scalar = entry.FetchScalar();
-                Assert.AreEqual(expectedValue, scalar.TheValue);
-            }
-        }
 
         #endregion
 

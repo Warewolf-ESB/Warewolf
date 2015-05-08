@@ -15,7 +15,6 @@ using System.Data;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Data.Enums;
@@ -455,16 +454,6 @@ namespace Dev2.Server.Datalist
             return _dlServer.FetchTranslatorTypes();
         }
 
-        public Guid UpsertSystemTag(Guid curDLID, enSystemTag tag, string val, out ErrorResultTO errors)
-        {
-            return UpsertSystemTag<string>(curDLID, tag, val, out errors);
-        }
-
-        public Guid UpsertSystemTag(Guid curDLID, enSystemTag tag, IBinaryDataListEntry val, out ErrorResultTO errors)
-        {
-            return UpsertSystemTag<IBinaryDataListEntry>(curDLID, tag, val, out errors);
-        }
-
         public DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors, PopulateOptions populateOptions)
         {
             errors = new ErrorResultTO();
@@ -481,70 +470,6 @@ namespace Dev2.Server.Datalist
         }
 
         #region Private Methods
-
-        /// <summary>
-        /// Upserts the system tag.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="curDLID">The cur DLID.</param>
-        /// <param name="tag">The tag.</param>
-        /// <param name="val">The val.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        private Guid UpsertSystemTag<T>(Guid curDLID, enSystemTag tag, T val, out ErrorResultTO errors)
-        {
-            ErrorResultTO allErrors = new ErrorResultTO();
-            errors = new ErrorResultTO();
-            string error;
-            IBinaryDataList bdl = TryFetchDataList(curDLID, out error);
-
-            Guid result = GlobalConstants.NullDataListID;
-
-            if(error != string.Empty)
-            {
-                allErrors.AddError(error);
-            }
-
-            if(bdl != null)
-            {
-                string tt = DataListUtil.BuildSystemTagForDataList(tag, false);
-                allErrors.MergeErrors(errors);
-                IBinaryDataListItem itm = null;
-
-                if(typeof(T) == typeof(string))
-                {
-                    itm = Dev2BinaryDataListFactory.CreateBinaryItem(val.ToString(), tt);
-
-                }
-                else if(typeof(T) == typeof(IBinaryDataListEntry))
-                {
-                    itm = ((IBinaryDataListEntry)val).FetchScalar();
-                }
-
-                result = GlobalConstants.NullDataListID;
-
-
-                if(bdl.TryCreateScalarTemplate(string.Empty, tt, string.Empty, true, out error))
-                {
-                    IBinaryDataListEntry et;
-                    bdl.TryGetEntry(tt, out et, out error);
-
-                    if(et != null)
-                    {
-                        et.TryPutScalar(itm, out error);
-                        result = bdl.UID;
-                        allErrors.MergeErrors(errors);
-                        TryPushDataList(bdl, out error);
-                    }
-
-                }
-
-            }
-
-            errors = allErrors;
-
-            return result;
-        }
 
         public Func<IDev2Definition, string> BuildInputExpressionExtractor(enDev2ArgumentType typeOf)
         {

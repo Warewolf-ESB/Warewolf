@@ -156,17 +156,12 @@
     </Compile>
     <Compile Include="Audit\ComplexExpressionAuditor.cs" />
     <Compile Include="BackgroundDispatcher.cs" />
-    <Compile Include="Binary Objects\BinaryDataListEntry.cs" />
-    <Compile Include="Binary Objects\BinaryDataListItem.cs" />
-    <Compile Include="Binary Objects\DataListRegistar.cs" />
-    <Compile Include="Binary Objects\EnvironmentIndexIterator.cs" />
-    <Compile Include="Binary Objects\ListOfIndex.cs" />
-    <Compile Include="Binary Objects\ReverseIndexIterator.cs" />
-    <Compile Include="Binary Objects\ListIndexIterator.cs" />
-    <Compile Include="Binary Objects\Structs\InternalFederatedTO.cs" />
+    <Compile Include="BinaryDataListUtil.cs" />
     <Compile Include="Compilers\RecordsetGroup.cs" />
     <Compile Include="Compilers\TransientRecordsetProcessGroup.cs" />
+    <Compile Include="DataListItem.cs" />
     <Compile Include="DataListModel.cs" />
+    <Compile Include="DataListRegistar.cs" />
     <Compile Include="DataListTO.cs" />
     <Compile Include="Decisions\Operations\DecisionUtils.cs" />
     <Compile Include="Decisions\Operations\NotBetween.cs" />
@@ -174,9 +169,21 @@
     <Compile Include="Decisions\Operations\NotEndsWith.cs" />
     <Compile Include="Decisions\Operations\NotRegex.cs" />
     <Compile Include="Decisions\Operations\NotStartsWith.cs" />
+    <Compile Include="Dev2BinaryDataListFactory.cs" />
+    <Compile Include="Dev2Column.cs" />
+    <Compile Include="enDev2ColumnArgumentDirection.cs" />
     <Compile Include="Enums\enForEachType.cs" />
     <Compile Include="Enums\enTypeOfSystemInformationToGather.cs" />
+    <Compile Include="EnvironmentIndexIterator.cs" />
+    <Compile Include="IBinaryDataList.cs" />
+    <Compile Include="IBinaryDataListEntry.cs" />
     <Compile Include="IDataListModel.cs" />
+    <Compile Include="IIndexIterator.cs" />
+    <Compile Include="IndexIterator.cs" />
+    <Compile Include="IndexList.cs" />
+    <Compile Include="ListIndexIterator.cs" />
+    <Compile Include="ListOfIndex.cs" />
+    <Compile Include="LoopedIndexIterator.cs" />
     <Compile Include="Network\DataListMessage.cs" />
     <Compile Include="Parsers\XPathParser.cs" />
     <Compile Include="PathOperations\Enums\WriteType.cs" />
@@ -185,6 +192,7 @@
     <Compile Include="PathOperations\Interfaces\IDestinationUserNamePassword.cs" />
     <Compile Include="PulseLogger.cs" />
     <Compile Include="RecordSet.cs" />
+    <Compile Include="ReverseIndexIterator.cs" />
     <Compile Include="Scalar.cs" />
     <Compile Include="ServiceModel\AuthenticationType.cs" />
     <Compile Include="ServiceModel\Connection.cs" />
@@ -210,22 +218,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Storage\ProtocolBuffers\BinaryDataListRow.cs" />
-    <Compile Include="Binary Objects\BinaryDataListUtil.cs" />
-    <Compile Include="Binary Objects\DataListItem.cs" />
-    <Compile Include="Binary Objects\Dev2BinaryDataListFactory.cs" />
     <Compile Include="Storage\BinaryDataListStorageLayer.cs" />
-    <Compile Include="Binary Objects\Dev2Column.cs" />
-    <Compile Include="Binary Objects\enDev2ColumnArgumentDirection.cs" />
-    <Compile Include="Binary Objects\IBinaryDataList.cs" />
-    <Compile Include="Binary Objects\IBinaryDataListEntry.cs" />
-    <Compile Include="Binary Objects\BinaryDataListEntryBuilder.cs" />
-    <Compile Include="Binary Objects\IIndexIterator.cs" />
-    <Compile Include="Binary Objects\IndexIterator.cs" />
-    <Compile Include="Binary Objects\IndexList.cs" />
-    <Compile Include="Binary Objects\LoopedIndexIterator.cs" />
-    <Compile Include="Binary Objects\Structs\SBinaryDataList.cs" />
-    <Compile Include="Binary Objects\Structs\SBinaryDataListEntry.cs" />
-    <Compile Include="Binary Objects\Structs\SBinaryDataListItem.cs" />
     <Compile Include="Builders\DataListIntellisenseBuilder.cs" />
     <Compile Include="Builders\DefinitionBuilder.cs" />
     <Compile Include="Builders\RecordSetCollectionBuilder.cs" />
@@ -334,7 +327,6 @@
     <Compile Include="Interfaces\IDev2DataLanguageParser.cs" />
     <Compile Include="Interfaces\IDev2DataListEvaluateIterator.cs" />
     <Compile Include="Interfaces\IDev2IndexFinder.cs" />
-    <Compile Include="Interfaces\IDev2IteratorCollection.cs" />
     <Compile Include="Interfaces\IDev2LanguageParser.cs" />
     <Compile Include="Interfaces\IDev2NumberFormatter.cs" />
     <Compile Include="Interfaces\IDev2ReplaceOperation.cs" />
@@ -396,7 +388,6 @@
     <Compile Include="TO\DataListVerifyPart.cs" />
     <Compile Include="TO\DataValue.cs" />
     <Compile Include="TO\DateTimeVerifyPart.cs" />
-    <Compile Include="TO\DebugTO.cs" />
     <Compile Include="TO\Dev2DataLanguageIntellisensePart.cs" />
     <Compile Include="TO\Dev2Definition.cs" />
     <Compile Include="TO\ErrorResultTO.cs" />
@@ -427,10 +418,8 @@
     <Compile Include="Util\ScrubType.cs" />
     <Compile Include="Util\XmlHelper.cs" />
     <Compile Include="Value Objects\Dev2DataListEvaluateIterator.cs" />
-    <Compile Include="Value Objects\Dev2IteratorCollection.cs" />
     <Compile Include="Value Objects\Dev2RecordsetIndexScope.cs" />
     <Compile Include="Value Objects\Dev2TokenConverter.cs" />
-    <Compile Include="Value Objects\Dev2ValueObjectFactory.cs" />
     <Compile Include="WarewolfIterator.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -471,6 +460,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
