@@ -358,14 +358,9 @@
     <Compile Include="Parsers\InputLanguageParser.cs" />
     <Compile Include="Parsers\LanguageParser.cs" />
     <Compile Include="Parsers\OutputLanguageParser.cs" />
-    <Compile Include="DataListCache\DataListPersistenceProviderFactory.cs" />
-    <Compile Include="DataListCache\DataListTemporalProvider.cs" />
-    <Compile Include="DataListCache\IDatalistPersistenceProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server\DataListIDProvider.cs" />
-    <Compile Include="Server\DataListServer.cs" />
     <Compile Include="Server\IDatalistIDProvider.cs" />
-    <Compile Include="Server\IDatalistServer.cs" />
     <Compile Include="DataListConstants.cs" />
     <Compile Include="SystemTemplates\Models\Dev2Decision.cs" />
     <Compile Include="SystemTemplates\Models\Dev2DecisionStack.cs" />
@@ -454,7 +449,9 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="DataListCache\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
