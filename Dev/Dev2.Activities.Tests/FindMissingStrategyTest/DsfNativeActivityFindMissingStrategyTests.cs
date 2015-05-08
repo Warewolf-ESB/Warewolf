@@ -14,7 +14,6 @@ using System.Activities;
 using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Enums;
 using Dev2.Factories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -66,11 +65,11 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         {
         }
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
         }
 
@@ -82,6 +81,10 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         public override IList<DsfForEachItem> GetForEachOutputs()
         {
             return null;
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
         }
 
         #endregion

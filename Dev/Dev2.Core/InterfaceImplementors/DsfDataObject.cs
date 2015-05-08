@@ -21,6 +21,7 @@ using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics.Logging;
 using Dev2.DynamicServices.Objects;
+using Dev2.Runtime.Execution;
 using Dev2.Web;
 using Warewolf.Storage;
 
@@ -40,20 +41,20 @@ namespace Dev2.DynamicServices
         private ErrorResultTO _errors;
         private string _parentServiceName = string.Empty;
         private string _parentWorkflowInstanceId = string.Empty;
-        private Stack<IExecutionEnvironment> _environments; 
+        private readonly Stack<IExecutionEnvironment> _environments; 
         #endregion Class Members
 
         #region Constructor
 
         private DsfDataObject()
         {
-            Environment = new Warewolf.Storage.ExecutionEnvironment(); ;
+            Environment = new ExecutionEnvironment();
             _environments = new Stack<IExecutionEnvironment>();
         }
 
         public DsfDataObject(string xmldata, Guid dataListId, string rawPayload = "")
         {
-            Environment = new Warewolf.Storage.ExecutionEnvironment(); ;
+            Environment = new ExecutionEnvironment();
             _environments = new Stack<IExecutionEnvironment>();
             ThreadsToDispose = new Dictionary<int, List<Guid>>();
 
@@ -216,6 +217,7 @@ namespace Dev2.DynamicServices
         }
 
         public IExecutionEnvironment Environment { get; set; }
+        public IExecutionToken ExecutionToken { get; set; }
 
         public void PopEnvironment()
         {
@@ -228,6 +230,8 @@ namespace Dev2.DynamicServices
             _environments.Push(Environment);
             Environment = env;
         }
+
+        public IEsbChannel EsbChannel { get; set; }
 
         public int ForEachNestingLevel { get; set; }
 
@@ -371,6 +375,8 @@ namespace Dev2.DynamicServices
             result.IsDebugNested = IsDebugNested;
             result.ForEachNestingLevel = ForEachNestingLevel;
             result.Environment = Environment;
+            result.EsbChannel = EsbChannel;
+            result.ExecutionToken = ExecutionToken;
             return result;
         }
 

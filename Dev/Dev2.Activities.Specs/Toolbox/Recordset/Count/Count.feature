@@ -57,10 +57,10 @@ Scenario: Count a number of records in a recordset with 0 rows
 	And count on record "[[rs()]]"	
 	When the count tool is executed
 	Then the result count should be 0
-	And the execution has "AN" error
+	And the execution has "NO" error
 	And the debug inputs as  
 	| Recordset  |
-	| [[rs()]] = |
+	| [[rs(*)]] = |
 	And the debug output as 
 	|                |
 	| [[result]] = 0 |

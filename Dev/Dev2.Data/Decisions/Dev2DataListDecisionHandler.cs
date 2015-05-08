@@ -13,12 +13,12 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
+using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract;
-using Newtonsoft.Json;
 using Warewolf.Storage;
 using DataListUtil = Dev2.Data.Util.DataListUtil;
 // ReSharper disable CheckNamespace
@@ -27,6 +27,7 @@ namespace Dev2.Data.Decision
 {
     public class Dev2DataListDecisionHandler
     {
+        private static readonly IDataListCompiler Compiler = DataListFactory.CreateDataListCompiler();
         private static Dev2DataListDecisionHandler _inst;
         private static readonly IDictionary<Guid, IExecutionEnvironment> _environments = new ConcurrentDictionary<Guid, IExecutionEnvironment>();
         public static Dev2DataListDecisionHandler Instance
@@ -56,10 +57,7 @@ namespace Dev2.Data.Decision
         public string FetchSwitchData(string variableName, IList<string> oldAmbientData)
         {
        
-
-      
             Guid dlId = FetchDataListID(oldAmbientData);
-
             var env = _environments[dlId];
             var output = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(variableName));
         
@@ -78,12 +76,9 @@ namespace Dev2.Data.Decision
         public bool ExecuteDecisionStack(string decisionDataPayload, IList<string> oldAmbientData)
         {
 
-            // Evaluate decisionDataPayload through the EvaluateFunction ;)
             Guid dlId = FetchDataListID(oldAmbientData);
-            if(dlId == GlobalConstants.NullDataListID) throw new InvalidExpressionException("Could not evaluate decision data - no DataList ID sent!");
-            // Swap out ! with a new internal token to avoid nasty issues with 
+//            if(dlId == GlobalConstants.NullDataListID) throw new InvalidExpressionException("Could not evaluate decision data - no DataList ID sent!");
             string newDecisionData = Dev2DecisionStack.FromVBPersitableModelToJSON(decisionDataPayload);
-         //   var env= _environments[dlId];
             var dds = EvaluateRegion(newDecisionData, dlId);
 
 
@@ -180,7 +175,7 @@ namespace Dev2.Data.Decision
             if(payload.StartsWith("{\"TheStack\":[{") || payload.StartsWith("{'TheStack':[{"))
             {
                 //2013.05.06: Ashley Lewis for PBI 9460 - handle record-sets with stars in their index by resolving them
-                var dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(payload);
+                var dds = Compiler.ConvertFromJsonToModel<Dev2DecisionStack>(new StringBuilder(payload));
 
                 if(dds.TheStack != null)
                 {

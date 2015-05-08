@@ -57,7 +57,6 @@ namespace Dev2.Activities.Specs.BaseTypes
             bool expected = anError.Equals("NO");
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             
-            var comiler = DataListFactory.CreateDataListCompiler();
             string fetchErrors = string.Join(Environment.NewLine,result.Environment.Errors);
             bool actual = result.Environment.Errors.Count==0;
             string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
@@ -291,7 +290,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             //Get the error value
             string errorValue;
-            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(errorVariable),
+            GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(errorVariable),
                                        out errorValue, out error);
             errorValue = errorValue.Replace('"', ' ').Trim();
 
@@ -312,7 +311,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
                 string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
-                List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column,
+                List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
                                                                                out error);
                 recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
                 value = value.Replace('"', ' ').Trim();
@@ -595,7 +594,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
                 else if (rowValue.StartsWith("="))
                 {
-                    debugItemResult.Value = "";
+                    debugItemResult.Value = rowValue;
                     debugItemResult.Type = DebugItemResultType.Value;
                     debugItemResult.Variable = rowValue.Replace("=", "");
                     list.Add(debugItemResult);
@@ -682,7 +681,14 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 Verify(expectedDebugItems[i].Label ?? "", inputDebugItems[i].Label ?? "", "Labels", i);
                 Verify(expectedDebugItems[i].Variable ?? "", inputDebugItems[i].Variable ?? "", "Variables", i);
-                Verify(expectedDebugItems[i].Value ?? "", inputDebugItems[i].Value ?? "", "Values", i);
+                if (expectedDebugItems[i].Value != null && expectedDebugItems[i].Value.Equals("!!MoreLink!!"))
+                {
+                    Assert.IsFalse(string.IsNullOrEmpty(inputDebugItems[i].MoreLink));
+                }
+                else
+                {
+                    Verify(expectedDebugItems[i].Value ?? "", inputDebugItems[i].Value ?? "", "Values", i);
+                }
             }
         }
 

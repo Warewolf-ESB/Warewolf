@@ -368,12 +368,7 @@ namespace Dev2.Runtime.ESB.WF
             {
                 try
                 {
-                    // signal user termination ;)
-                    _executionToken.IsUserCanceled = true;
-
-                    // This was cancel which left the activities resident in the background and caused chaos!
-                    _instance.Terminate(new Exception("User Termination"), new TimeSpan(0, 0, 0, 60, 0));
-
+                    DataTransferObject.ExecutionToken.IsUserCanceled = true;
                 }
                 catch(Exception e)
                 {

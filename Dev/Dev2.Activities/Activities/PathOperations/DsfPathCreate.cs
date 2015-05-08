@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2;
@@ -42,11 +41,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             OutputPath = string.Empty;
         }
 
-        protected override IList<OutputTO> ExecuteConcreteAction(NativeActivityContext context, out ErrorResultTO allErrors)
+        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject dataObject, out ErrorResultTO allErrors)
         {
 
             IList<OutputTO> outputs = new List<OutputTO>();
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
             allErrors = new ErrorResultTO();
             var colItr = new WarewolfListIterator();
@@ -121,7 +119,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Properties
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null && updates.Count == 1)
             {
@@ -129,7 +127,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

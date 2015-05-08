@@ -91,11 +91,16 @@ namespace Warewolf.Storage
             {
                 return PublicFunctions.EvalEnvExpression(exp, _env);
             }
-            catch(Exception e)
+            catch (IndexOutOfRangeException)
             {
+                throw;
+            }
+            catch (Exception e)
+            {
+                if (e is IndexOutOfRangeException || e.Message.Contains("index was not an int")) throw;
                 return WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
             }
-            
+
         }
 
         public IEnumerable< WarewolfDataEvaluationCommon.WarewolfEvalResult> EvalForDataMerge(string exp)

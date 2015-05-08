@@ -48,19 +48,19 @@ Scenario: Execute a Sequence with Assign and Calculate
       Given I have a Sequence "Test"
 	  And "Test" contains an Assign "Records" as
       | variable    | value |
-      | [[rec().a]] | 1     |
-      | [[rec().a]] | 2     |
-      | [[rec().a]] | 3     |
-      | [[rec().a]] | 4     |
+      | [[rec(1).a]] | 1     |
+      | [[rec(2).a]] | 2     |
+      | [[rec(3).a]] | 3     |
+      | [[rec(4).a]] | 4     |
 	  And "Test" contains Count Record "Count" on "[[rec()]]" into "[[result]]"
 	  When the Sequence tool is executed
       Then the execution has "NO" error
 	  And the "Records" debug inputs as
 	  | # | Variable      | New Value |
-	  | 1 | [[rec().a]] = | 1         |
-	  | 2 | [[rec().a]] = | 2         |
-	  | 3 | [[rec().a]] = | 3         |
-	  | 4 | [[rec().a]] = | 4         |  
+	  | 1 | [[rec(1).a]] = | 1         |
+	  | 2 | [[rec(2).a]] = | 2         |
+	  | 3 | [[rec(3).a]] = | 3         |
+	  | 4 | [[rec(4).a]] = | 4         |  
 	  And the "Records" debug outputs as
 	  | # |                   |
 	  | 1 | [[rec(1).a]] =  1 |
@@ -81,10 +81,10 @@ Scenario: Execute a Sequence with Assign and Delete
       Given I have a Sequence "Test"
 	  And "Test" contains an Assign "All Records" as
       | variable    | value |
-      | [[rec().a]] | 1         |
-      | [[rec().a]] | 2         |
-      | [[rec().a]] | 3         |
-      | [[rec().a]] | 4         |
+      | [[rec(1).a]] | 1         |
+      | [[rec(2).a]] | 2         |
+      | [[rec(3).a]] | 3         |
+      | [[rec(4).a]] | 4         |
 	  And "Test" contains Delete "Delete Record" as
 	  | Variable   | result     |
 	  | [[rec(2)]] | [[result]] |
@@ -92,13 +92,13 @@ Scenario: Execute a Sequence with Assign and Delete
 	   | variable    | value |
 	   | [[check]] | [[rec(2).a]] |
 	  When the Sequence tool is executed
-      Then the execution has "NO" error
+      Then the execution has "AN" error
 	  And the "All Records" debug inputs as
 	  | # | Variable      | New Value |
-	  | 1 | [[rec().a]] = | 1         |
-	  | 2 | [[rec().a]] = | 2         |
-	  | 3 | [[rec().a]] = | 3         |
-	  | 4 | [[rec().a]] = | 4         |  
+	  | 1 | [[rec(1).a]] = | 1         |
+	  | 2 | [[rec(2).a]] = | 2         |
+	  | 3 | [[rec(3).a]] = | 3         |
+	  | 4 | [[rec(4).a]] = | 4         |  
 	  And the "All Records" debug outputs as
 	  |  # |            |
 	  | 1 | [[rec(1).a]] = 1 |
@@ -111,22 +111,17 @@ Scenario: Execute a Sequence with Assign and Delete
 	  And the "Delete Record" debug outputs as 
 	  |                      |
 	  | [[result]] = Success |
-	  And the "Delete check" debug inputs as
-	  | # | Variable    | New Value    |
-	  | 1 | [[check]] = | [[rec(2).a]] = |
-	  And the "Delete check" debug outputs as
-	  | #  |      |
-	  | 1 | [[check]] = |
+
 	
 
 Scenario: Execute a Sequence with Assign and Find Record Index
       Given I have a Sequence "Test"
 	  And "Test" contains an Assign "Assign Records" as
       | variable    | value |
-      | [[rec().a]] | 1         |
-      | [[rec().a]] | 2         |
-      | [[rec().a]] | 3         |
-      | [[rec().a]] | 4         |
+      | [[rec(1).a]] | 1         |
+      | [[rec(2).a]] | 2         |
+      | [[rec(3).a]] | 3         |
+      | [[rec(4).a]] | 4         |
 	  And "Test" contains Find Record Index "Find Record" search "[[rec().a]]" and result "[[result]]" as
 	  | Match Type | Match | 
 	  | =          | 1     | 
@@ -134,10 +129,10 @@ Scenario: Execute a Sequence with Assign and Find Record Index
       Then the execution has "NO" error
 	  And the "Assign Records" debug inputs as
 	  | # | Variable      | New Value |
-	  | 1 | [[rec().a]] = | 1         |
-	  | 2 | [[rec().a]] = | 2         |
-	  | 3 | [[rec().a]] = | 3         |
-	  | 4 | [[rec().a]] = | 4         |  
+	  | 1 | [[rec(1).a]] = | 1         |
+	  | 2 | [[rec(2).a]] = | 2         |
+	  | 3 | [[rec(3).a]] = | 3         |
+	  | 4 | [[rec(4).a]] = | 4         |  
 	  And the "Assign Records" debug outputs as    
 	  | # |                   |
 	  | 1 | [[rec(1).a]] = 1 |
@@ -159,14 +154,14 @@ Scenario: Execute a Sequence with Assign and Unique Records
       Given I have a Sequence "Test"
 	  And "Test" contains an Assign "Assign data" as
       | variable    | value |
-      | [[rec().a]] | 11        |
-      | [[rec().a]] | 11        |
-      | [[rec().a]] | 11        |
-      | [[rec().a]] | 12        |
-      | [[rec().a]] | 12        |
-      | [[rec().a]] | 13        |
-      | [[rec().a]] | 13        |
-      | [[rec().a]] | 13        |
+      | [[rec(1).a]] | 11        |
+      | [[rec(2).a]] | 11        |
+      | [[rec(3).a]] | 11        |
+      | [[rec(4).a]] | 12        |
+      | [[rec(5).a]] | 12        |
+      | [[rec(6).a]] | 13        |
+      | [[rec(7).a]] | 13        |
+      | [[rec(8).a]] | 13        |
       And "Test" contains find unique "Unique" as
 	  | In Fields   | Return Fields | Result           |
 	  | [[rec(*).a]] | [[rec().a]]   | [[rec().unique]] |
@@ -174,14 +169,14 @@ Scenario: Execute a Sequence with Assign and Unique Records
 	  Then the execution has "NO" error
 	  And the "Assign data" debug inputs as
 	  | # | Variable      | New Value |
-	  | 1 | [[rec().a]] = | 11        |
-	  | 2 | [[rec().a]] = | 11        |
-	  | 3 | [[rec().a]] = | 11        |
-	  | 4 | [[rec().a]] = | 12        |
-	  | 5 | [[rec().a]] = | 12        |
-	  | 6 | [[rec().a]] = | 13        |
-	  | 7 | [[rec().a]] = | 13        |
-	  | 8 | [[rec().a]] = | 13        |    
+	  | 1 | [[rec(1).a]] = | 11        |
+	  | 2 | [[rec(2).a]] = | 11        |
+	  | 3 | [[rec(3).a]] = | 11        |
+	  | 4 | [[rec(4).a]] = | 12        |
+	  | 5 | [[rec(5).a]] = | 12        |
+	  | 6 | [[rec(6).a]] = | 13        |
+	  | 7 | [[rec(7).a]] = | 13        |
+	  | 8 | [[rec(8).a]] = | 13        |    
 	  And the "Assign data" debug outputs as    
 	  | # |                    |
 	  | 1 | [[rec(1).a]] =  11 |
@@ -204,17 +199,27 @@ Scenario: Execute a Sequence with Assign and Unique Records
 	  |             | [[rec(8).a]] = 13 | [[rec().a]]  = |
 	  And the "Unique" debug outputs as 
 	  | # |                         |
-	  | 1 | [[rec(9).unique]] = 11  |
+	  | 1 | [[rec(1).unique]] =     |
+	  |   | [[rec(2).unique]] =     |
+	  |   | [[rec(3).unique]] =     |
+	  |   | [[rec(4).unique]] =     |
+	  |   | [[rec(5).unique]] =     |
+	  |   | [[rec(6).unique]] =     |
+	  |   | [[rec(7).unique]] =     |
+	  |   | [[rec(8).unique]] =     |
+	  |   | [[rec(9).unique]] = 11  |
 	  |   | [[rec(10).unique]] = 12 |
-	  |   | [[rec(11).unique]] = 13 |
+	  |   | !!MoreLink!!            |
+	  
+
 
 
 Scenario: Execute a Sequence with Assign, Base Convert and Case Convert
       Given I have a Sequence "Test"
 	  And "Test" contains an Assign "Rec To Convert" as
       | variable    | value |
-      | [[rec().a]] | 0x4141    |
-      | [[rec().a]] | warewolf  |
+      | [[rec(1).a]] | 0x4141    |
+      | [[rec(2).a]] | warewolf  |
       And "Test" contains case convert "Case Convert" as
 	  | Variable     | Type  |
 	  | [[rec(2).a]] | UPPER |
@@ -225,8 +230,8 @@ Scenario: Execute a Sequence with Assign, Base Convert and Case Convert
 	  Then the execution has "NO" error
 	  And the "Rec To Convert" debug inputs as
 	  | # | Variable      | New Value |
-	  | 1 | [[rec().a]] = | 0x4141    |
-	  | 2 | [[rec().a]] = | warewolf  |
+	  | 1 | [[rec(1).a]] = | 0x4141    |
+	  | 2 | [[rec(2).a]] = | warewolf  |
 	  And the "Rec To Convert" debug outputs as    
 	  | # |                         |
 	  | 1 | [[rec(1).a]] = 0x4141   |
@@ -248,57 +253,57 @@ Scenario: Execute a Sequence with Assign, Data Merge and Data Split
       Given I have a Sequence "Test"
 	  And "Test" contains an Assign "Assign To Merge" as
       | variable    | value    |
-      | [[rec().a]] | test     |
-      | [[rec().b]] | nothing  |
-      | [[rec().a]] | warewolf |
-      | [[rec().b]] | nothing  |
+      | [[rec(1).a]] | test     |
+      | [[rec(2).b]] | nothing  |
+      | [[rec(3).a]] | warewolf |
+      | [[rec(4).b]] | nothing  |
 	  And "Test" contains Data Merge "Data Merge" into "[[result]]" as	
 	  | Variable     | Type  | Using | Padding | Alignment |
 	  | [[rec(1).a]] | Index | 4      |         | Left       |
-	  | [[rec(2).a]]  | Index | 8      |         | Left       |
+	  | [[rec(3).a]]  | Index | 8      |         | Left       |
 	  And "Test" contains Data Split "Data Split" as
 	  | String       | Variable     | Type  | At | Include    | Escape |
-	  | testwarewolf | [[rec(1).b]] | Index | 4  | Unselected |        |
-	  |              | [[rec(2).b]] | Index | 8  | Unselected |        |
+	  | testwarewolf | [[rec(2).b]] | Index | 4  | Unselected |        |
+	  |              | [[rec(4).b]] | Index | 8  | Unselected |        |
 	  When the Sequence tool is executed
 	  Then the execution has "NO" error
 	  And the "Assign To Merge" debug inputs as
 	  | # | Variable      | New Value |
-	  | 1 | [[rec().a]] = | test      |
-	  | 2 | [[rec().b]] = | nothing   |
-	  | 3 | [[rec().a]] = | warewolf  |
-	  | 4 | [[rec().b]] = | nothing   |
+	  | 1 | [[rec(1).a]] = | test      |
+	  | 2 | [[rec(2).b]] = | nothing   |
+	  | 3 | [[rec(3).a]] = | warewolf  |
+	  | 4 | [[rec(4).b]] = | nothing   |
 	  And the "Assign To Merge" debug outputs as    
 	  | # |                        |
 	  | 1 | [[rec(1).a]] =  test   |
-	  | 2 | [[rec(1).b]] = nothing |
-	  | 3 | [[rec(2).a]] =  warewolf |
-	  | 4 | [[rec(2).b]] =  nothing |
+	  | 2 | [[rec(2).b]] = nothing |
+	  | 3 | [[rec(3).a]] =  warewolf |
+	  | 4 | [[rec(4).b]] =  nothing |
 	  And the "Data Merge" debug inputs as  
 	  | # |                          | With | Using | Pad | Align |
 	  | 1 | [[rec(1).a]] =  test     | Index | "4"   | ""  | Left  |
-	  | 2 | [[rec(2).a]] =  warewolf | Index | "8"   | ""  | Left  |
+	  | 2 | [[rec(3).a]] =  warewolf | Index | "8"   | ""  | Left  |
 	  And the "Data Merge" debug outputs as 
 	  |                           |
 	  | [[result]] = testwarewolf |
 	  And the "Data Split" debug inputs as  
 	  | String to Split | Process Direction | Skip blank rows | # |                        | With  | Using | Include | Escape |
-	  | testwarewolf    | Forward           | No              | 1 | [[rec(1).b]] = nothing | Index | 4     | No      |        |
-	  |                 |                   |                 | 2 | [[rec(2).b]] = nothing | Index | 8     | No      |        |
+	  | testwarewolf    | Forward           | No              | 1 | [[rec(2).b]] = nothing | Index | 4     | No      |        |
+	  |                 |                   |                 | 2 | [[rec(4).b]] = nothing | Index | 8     | No      |        |
 	  And the "Data Split" debug outputs as
 	  | # |                         |
-	  | 1 | [[rec(1).b]] = test     |
-	  | 2 | [[rec(2).b]] = warewolf |
+	  | 1 | [[rec(2).b]] = test     |
+	  | 2 | [[rec(4).b]] = warewolf |
 
 
 Scenario: Execute a Sequence with Assign, Data Merge, Data Split, Find Index and Replace
       Given I have a Sequence "Test"
 	  And "Test" contains an Assign "Assign To Merge" as
       | variable    | value    |
-      | [[rec().a]] | test     |
-      | [[rec().b]] | nothing  |
-      | [[rec().a]] | warewolf |
-      | [[rec().b]] | nothing  |
+      | [[rec(1).a]] | test     |
+      | [[rec(1).b]] | nothing  |
+      | [[rec(2).a]] | warewolf |
+      | [[rec(2).b]] | nothing  |
 	  And "Test" contains Data Merge "Data Merge" into "[[result]]" as	
 	  | Variable     | Type  | Using | Padding | Alignment |
 	  | [[rec(1).a]] | Index | 4      |         | Left       |
@@ -317,10 +322,10 @@ Scenario: Execute a Sequence with Assign, Data Merge, Data Split, Find Index and
 	  Then the execution has "NO" error
 	  And the "Assign To Merge" debug inputs as
 	  | # | Variable      | New Value |
-	  | 1 | [[rec().a]] = | test      |
-	  | 2 | [[rec().b]] = | nothing   |
-	  | 3 | [[rec().a]] = | warewolf  |
-	  | 4 | [[rec().b]] = | nothing   |
+	  | 1 | [[rec(1).a]] = | test      |
+	  | 2 | [[rec(1).b]] = | nothing   |
+	  | 3 | [[rec(2).a]] = | warewolf  |
+	  | 4 | [[rec(2).b]] = | nothing   |
 	  And the "Assign To Merge" debug outputs as    
 	  | # |                         |
 	  | 1 | [[rec(1).a]] = test     |
@@ -351,14 +356,14 @@ Scenario: Execute a Sequence with Assign, Data Merge, Data Split, Find Index and
 	  And the "Replacing" debug inputs as 
 	  | In Field(s)              | Find | Replace With |
 	  | [[rec(1).a]] = test     |      |              |
-	  | [[rec(1).b]] = test     |      |              |
 	  | [[rec(2).a]] = warewolf |      |              |
+	  | [[rec(1).b]] = test     |      |              |
 	  | [[rec(2).b]] = warewolf | e    | REPLACED     |
 	  And the "Replacing" debug outputs as 
 	  |                                 |  
 	  | [[rec(1).a]] = tREPLACEDst     |  
-	  | [[rec(1).b]] = tREPLACEDst     |
 	  | [[rec(2).a]] = warREPLACEDwolf |
+	  | [[rec(1).b]] = tREPLACEDst     |
 	  | [[rec(2).b]] = warREPLACEDwolf |
 	  | [[replaceResult]] = 4 |
 
@@ -494,31 +499,31 @@ Scenario: Execute a Sequence with For each with 3 executions
 	  | 1 | [[test().date]] =  | Date & Time |
 	    And the "Sys info" debug outputs as 
 	  | # |                   |
-	  | 1 | [[test(11).date]] = String |
+	  | 1 | [[test(6).date]] = String |
 	   And the "Date&Time" debug inputs as  
 	  | Input 1    | Input 2    | Input Format | Output In |
 	  | 2013-11-29 | 2050-11-29 | yyyy-mm-dd   | Years     |
 	  And the "Date&Time" debug outputs as 
 	  |                 |
-	  | [[test(12).result1]] = 37 |
+	  | [[test(6).result1]] = 37 |
 	  And the "Date" debug inputs as  
 	  | Input      | Input Format | Add Time |   | Output Format |
 	  | 2013-11-29 | yyyy-mm-dd   | Years    | 1 | yyyy-mm-dd    |	
 	  And the "Date" debug outputs as 
 	  |                          |
-	  | [[test(13).result2]] = 2014-11-29 |
+	  | [[test(6).result2]] = 2014-11-29 |
 	  And the "Random" debug inputs as  
 	  | Random  | From | To |
 	  | Numbers | 1    | 10 |
 	  And the "Random" debug outputs as 
 	  |                    |
-	  | [[test(14).result3]] = Int32 |
+	  | [[test(6).result3]] = Int32 |
 	  And the "Fnumber" debug inputs as  
 	  | Number           | Rounding | Rounding Value | Decimals to show |
 	  | 788.894564545645 | Up       | 3              | 3                |
 	  And the "Fnumber" debug outputs as 
 	  |                                |
-	  | [[test(15).result4]] = 788.895 |
+	  | [[test().result4]] = 788.895 |
 
 Scenario: Sending Error in error variable and calling webservice when inner activity errors
     Given I have a Sequence "Test"

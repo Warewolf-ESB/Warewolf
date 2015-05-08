@@ -25,7 +25,6 @@ using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Converters;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.Interfaces;
 using Dev2.Validation;
 using Warewolf.Storage;
@@ -81,9 +80,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
             // ReSharper restore MethodTooLong
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
             ErrorResultTO allErrors = new ErrorResultTO();
 
@@ -96,10 +101,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 int inputIndex = 1;
                 int outputIndex = 1;
 
-                foreach (var item in ConvertCollection.Where(a => !String.IsNullOrEmpty(a.FromExpression)))
+                foreach(var item in ConvertCollection.Where(a => !String.IsNullOrEmpty(a.FromExpression)))
                 {
-
-                    if (dataObject.IsDebugMode())
+                    if(dataObject.IsDebugMode())
                     {
                         var debugItem = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", inputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
@@ -114,7 +118,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         env.ApplyUpdate(item.FromExpression, TryConvertFunc(item, env));
                         IsSingleValueRule.ApplyIsSingleValueRule(item.FromExpression, allErrors);
-                        if (dataObject.IsDebugMode())
+                        if(dataObject.IsDebugMode())
                         {
                             var debugItem = new DebugItem();
                             AddDebugItem(new DebugItemStaticDataParams("", outputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
@@ -127,15 +131,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         Dev2Logger.Log.Error("DSFBaseConvert", e);
                         allErrors.AddError(e.Message);
-                        if (dataObject.IsDebugMode())
+                        if(dataObject.IsDebugMode())
                         {
                             //var debugItem = new DebugItem();
-                           // AddDebugItem(new DebugItemStaticDataParams("", outputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
-                           // AddDebugItem(new DebugEvalResult(item.FromExpression, "", env), debugItem);
-                           // _debugOutputs.Add(debugItem);
+                            // AddDebugItem(new DebugItemStaticDataParams("", outputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
+                            // AddDebugItem(new DebugEvalResult(item.FromExpression, "", env), debugItem);
+                            // _debugOutputs.Add(debugItem);
                             outputIndex++;
                         }
-                    }         
+                    }
                 }
             }
             catch(Exception e)
@@ -155,8 +159,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 if(dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
@@ -178,7 +182,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         var value = a.ToString();
                         if (String.IsNullOrEmpty(value))
                         {
+                           
                             return DataASTMutable.WarewolfAtom.NewDataString("");
+                            
                         }
                         var upper = broker.Convert(value);
                         var evalled = env.Eval(upper);
@@ -328,7 +334,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get ForEach Inputs/Outputs
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
 
             foreach(Tuple<string, string> t in updates)
@@ -345,7 +351,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
 
             foreach(Tuple<string, string> t in updates)

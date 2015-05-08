@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
 using Dev2.Common.Interfaces.Core.Convertors.Case;
-using Dev2.Common.Interfaces.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -47,11 +46,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "testVar", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "testVar", out actual, out error);
             const string expected = @"CHANGE THIS TO UPPER CASE";
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -66,17 +64,16 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             string actualScalar;
-            IList<IBinaryDataListItem> actualRecset;
+            IList<string> actualRecset;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "testVar", out actualScalar, out error);
-            GetRecordSetFieldValueFromDataList(result.DataListID, "testRecSet", "field", out actualRecset, out error);
+            GetScalarValueFromEnvironment(result.Environment, "testVar", out actualScalar, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "testRecSet", "field", out actualRecset, out error);
             const string expected = @"CHANGE THIS TO UPPER CASE";
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actualScalar);
-            Assert.AreEqual(expected, actualRecset[1].TheValue);
+            Assert.AreEqual(expected, actualRecset[1]);
         }
 
         [TestMethod]
@@ -93,7 +90,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "NewVar", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "NewVar", out actual, out error);
 
             //------------Assert Results-------------------------
             const string expected = @"CHANGE THIS TO UPPER CASE";
@@ -110,17 +107,16 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             string actualScalar;
-            IList<IBinaryDataListItem> actualRecset;
+            IList<string> actualRecset;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "testVar", out actualScalar, out error);
-            GetRecordSetFieldValueFromDataList(result.DataListID, "testRecSet", "field", out actualRecset, out error);
+            GetScalarValueFromEnvironment(result.Environment, "testVar", out actualScalar, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "testRecSet", "field", out actualRecset, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             const string expected = @"CHANGE THIS TO UPPER CASE";
-            StringAssert.Contains(actualRecset[1].TheValue, expected);
-            StringAssert.Contains(actualScalar, "change this to upper case");
+            StringAssert.Contains(actualRecset[1], expected);
+            StringAssert.Contains(actualScalar, expected);
         }
 
         [TestMethod]
@@ -140,17 +136,16 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             IDSFDataObject result = ExecuteProcess();
             string actualScalar;
-            IList<IBinaryDataListItem> actualRecset;
+            IList<string> actualRecset;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "testVar", out actualScalar, out error);
-            GetRecordSetFieldValueFromDataList(result.DataListID, "testRecSet", "field", out actualRecset, out error);
+            GetScalarValueFromEnvironment(result.Environment, "testVar", out actualScalar, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "testRecSet", "field", out actualRecset, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             //------------Assert Results-------------------------
             const string expected = @"CHANGE THIS TO UPPER CASE";
-            Assert.AreEqual(expected, actualRecset[0].TheValue);
+            Assert.AreEqual(expected, actualRecset[0]);
         }
 
         [TestMethod]
@@ -170,17 +165,16 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             IDSFDataObject result = ExecuteProcess();
             string actualScalar;
-            IList<IBinaryDataListItem> actualRecset;
+            IList<string> actualRecset;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "testVar", out actualScalar, out error);
-            GetRecordSetFieldValueFromDataList(result.DataListID, "testRecSet", "field", out actualRecset, out error);
+            GetScalarValueFromEnvironment(result.Environment, "testVar", out actualScalar, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "testRecSet", "field", out actualRecset, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             //------------Assert Results-------------------------
             const string expected = @"CHANGE THIS TO UPPER CASE";
-            Assert.AreEqual(expected, actualRecset[0].TheValue);
+            Assert.AreEqual(expected, actualRecset[0]);
         }
 
         #endregion AllUpper Tests
@@ -198,10 +192,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = @"change this to lower case";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "testVar", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "testVar", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
 
@@ -221,10 +214,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = @"Change this to first leter upper case";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "testVar", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "testVar", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
 
@@ -245,10 +237,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = @"Change This To First Leter Upper Case";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "testVar", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "testVar", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
 
@@ -265,10 +256,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = @"Change This To First Leter Upper Case";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "testVar", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "testVar", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
 
@@ -287,10 +277,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
 
-            GetScalarValueFromDataList(result.DataListID, "testVar", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "testVar", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
 
@@ -309,10 +298,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
 
-            GetScalarValueFromDataList(result.DataListID, "testVar", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "testVar", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
 
@@ -332,10 +320,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = @"";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "testVar", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "testVar", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
 
@@ -345,43 +332,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Error Handling Tests
 
-        [TestMethod]
-        public void CaseConvert_ErrorHandeling_Expected_ErrorTag()
-        {
-            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[//().rec]]", "Title Case", "", 1) };
-            SetupArguments(@"<root><testVar>change this 5435123130t lete2435r upper case</testVar></root>", ActivityStrings.CaseConvert_DLShape, convertCollection);
-
-            IDSFDataObject result = ExecuteProcess();
-            string actual;
-            string error;
-
-            GetScalarValueFromDataList(result.DataListID, "testVar", out actual, out error);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("DsfCaseConvert_Execute")]
-        public void CaseConvert_Execute_InvalidVariable_Expected_Error()
-        {
-            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[rec().a]]", "Title Case", "", 1) };
-            SetupArguments(@"<root><testVar>change this 5435123130t lete2435r upper case</testVar></root>", ActivityStrings.CaseConvert_DLShape, convertCollection);
-
-            IDSFDataObject result = ExecuteProcess();
-            string actual;
-            string error;
-
-            GetScalarValueFromDataList(result.DataListID, "testVar", out actual, out error);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
-        }
 
         #endregion Error Handling Tests
 
@@ -405,7 +355,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             dsfCaseConvert.UpdateForEachInputs(new List<Tuple<string, string>>
                 {
 		        new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
-	        }, null);
+	        });
 
             //------------Assert Results-------------------------
 
@@ -432,7 +382,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             dsfCaseConvert.UpdateForEachInputs(new List<Tuple<string, string>>
                 {
 		        new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
-	        }, null);
+	        });
 
             //------------Assert Results-------------------------
 
@@ -458,7 +408,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             dsfCaseConvert.UpdateForEachOutputs(new List<Tuple<string, string>>
                 {
 		        new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
-	        }, null);
+	        });
 
             //------------Assert Results-------------------------
 
@@ -511,26 +461,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("[[result]]", inputs[0].Value);
             Assert.AreEqual("[[rs(*).val]]", inputs[0].Name);
         }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfCaseConvert_Execute")]
-        public void DsfCaseConvert_Execute_MultipleVariablesinResults_ExpectError()
-        {
-            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testVar]]", "UPPER", "[[testVar]][[b]]", 1) };
-
-            SetupArguments(@"<root><testVar>change this to upper case</testVar></root>", ActivityStrings.CaseConvert_DLShape, convertCollection);
-
-            IDSFDataObject result = ExecuteProcess();
-            string actual;
-            string error;
-            GetScalarValueFromDataList(result.DataListID, "testVar", out actual, out error);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
-        }
         #endregion
 
         #region RecordSet Tests
@@ -544,16 +474,14 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = @"Change This To First Leter Upper Case";
-            IList<IBinaryDataListItem> actual;
+            IList<string> actual;
             string error;
-            GetRecordSetFieldValueFromDataList(result.DataListID, "testRecSet", "testVar", out actual, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "testRecSet", "testVar", out actual, out error);
 
 
-            string actualValue = actual[2].TheValue;
+            string actualValue = actual[1];
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
 
             Assert.AreEqual(expected, actualValue);
         }
@@ -567,39 +495,19 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = @"Change This To First Leter Upper Case";
-            IList<IBinaryDataListItem> actual;
+            IList<string> actual;
             string error;
-            GetRecordSetFieldValueFromDataList(result.DataListID, "testRecSet", "testVar", out actual, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "testRecSet", "testVar", out actual, out error);
 
 
             // This should be an index of 2
-            string actualValue = actual[1].TheValue;
+            string actualValue = actual[1];
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
-
-            Assert.AreEqual(@"Do Not Change This To First Leter Upper Case", actual[0].TheValue);
+            Assert.AreEqual(@"Do Not Change This To First Leter Upper Case", actual[0]);
             Assert.AreEqual(expected, actualValue);
         }
-
-        // Bug 7912 - Travis.Frisinger 
-        [TestMethod]
-        public void CaseConvert_WithRecordSetDataWithInvalidIndex_Expected_Error()
-        {
-            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testRecSet(0+1).testVar]]", "Title Case", "[[testRecSet(0+1).testVar]]", 3) };
-
-            SetupArguments(@"<root><testRecSet><testVar>do not change this to first leter upper case</testVar></testRecSet><testRecSet><testVar>change this to first leter upper case</testVar></testRecSet></root>", ActivityStrings.CaseConvert_DLWithRecordSetShape, convertCollection);
-
-            IDSFDataObject result = ExecuteProcess();
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
-
-        }
-
         #endregion RecordSet Tests
 
         #region Private Test Methods

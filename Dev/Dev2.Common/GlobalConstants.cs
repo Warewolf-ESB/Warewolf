@@ -67,15 +67,19 @@ namespace Dev2.Common
     "<layout type=\"log4net.Layout.PatternLayout\">"+
     "<header value=\"[Header]&#xD;&#xA;\" />" +
                                              "<footer value=\"[Footer]&#xD;&#xA;\" />" +
-                                             "<conversionPattern value=\"%date [%thread] %-5level %type{3} - %message%newline\" />" +
+                                             "<conversionPattern value=\"%date [%thread] %-5level - %message%newline\" />" +
                                              "</layout>" +
                                              "<!-- Alternate layout using XML			" +
                                              "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
                                              "</appender>" +
+                                             "<appender name=\"asyncForwarder\" type=\"Log4Net.Async.AsyncForwardingAppender,Log4Net.Async\">" +
+                                             "    <appender-ref ref=\"LogFileAppender\" />" +
+                                             "</appender>" +
                                              "<!-- Setup the root category, add the appenders and set the default level -->" +
                                              "<root>" +
                                              "<level value=\"DEBUG\" />" +
-                                             "<appender-ref ref=\"LogFileAppender\" />" +
+                                             "<!-- kr: before asnync <appender-ref ref=\"LogFileAppender\" /> -->" +
+                                             "<appender-ref ref=\"asyncForwarder\" />" +
                                              "</root>" +
                                              "</log4net>";
 
@@ -93,15 +97,19 @@ namespace Dev2.Common
     "<layout type=\"log4net.Layout.PatternLayout\">"+
     "<header value=\"[Header]&#xD;&#xA;\" />" +
                                              "<footer value=\"[Footer]&#xD;&#xA;\" />" +
-                                             "<conversionPattern value=\"%date [%thread] %-5level %type{3} - %message%newline\" />" +
+                                             "<conversionPattern value=\"%date [%thread] %-5level - %message%newline\" />" +
                                              "</layout>" +
                                              "<!-- Alternate layout using XML			" +
                                              "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
                                              "</appender>" +
+                                             "<appender name=\"asyncForwarder\" type=\"Log4Net.Async.AsyncForwardingAppender,Log4Net.Async\">" +
+                                             "    <appender-ref ref=\"LogFileAppender\" />" +
+                                             "</appender>" +
                                              "<!-- Setup the root category, add the appenders and set the default level -->" +
                                              "<root>" +
                                              "<level value=\"DEBUG\" />" +
-                                             "<appender-ref ref=\"LogFileAppender\" />" +
+                                             "<-- kr: before async <appender-ref ref=\"LogFileAppender\" /> -->" +
+                                             "<appender-ref ref=\"asyncForwarder\" />" +
                                              "</root>" +
                                              "</log4net>";
 

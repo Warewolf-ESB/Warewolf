@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
+using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -34,7 +35,40 @@ namespace Dev2.Tests.Activities.ActivityTests
         ///</summary>
         public TestContext TestContext { get; set; }
 
-    
+        #region Get Input/Output Tests
+
+        [TestMethod]
+
+// ReSharper disable InconsistentNaming
+        public void FolderReadActivity_GetInputs_Expected_Four_Input()
+// ReSharper restore InconsistentNaming
+        {
+            DsfFolderRead testAct = new DsfFolderRead();
+
+            IBinaryDataList inputs = testAct.GetInputs();
+
+            var res = inputs.FetchAllEntries().Count;
+
+            // remove test datalist ;)
+
+            Assert.AreEqual(7, res);
+        }
+
+        [TestMethod]
+        public void FolderReadActivity_GetOutputs_Expected_One_Output()
+        {
+            DsfFolderRead testAct = new DsfFolderRead();
+
+            IBinaryDataList outputs = testAct.GetOutputs();
+
+            var res = outputs.FetchAllEntries().Count;
+
+            // remove test datalist ;)
+
+            Assert.AreEqual(1, res);
+        }
+
+        #endregion Get Input/Output Tests
 
         // ReSharper disable InconsistentNaming
 
@@ -48,7 +82,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var act = new DsfFolderRead { InputPath = inputPath, Result = "[[res]]" };
 
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(null, null);
+            act.UpdateForEachInputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual(inputPath, act.InputPath);
         }
@@ -65,7 +99,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>(inputPath, "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual(inputPath, act.InputPath);
         }
@@ -81,7 +115,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var tuple1 = new Tuple<string, string>("Test", "Test");
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.InputPath);
         }
@@ -95,7 +129,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string result = "[[res]]";
             var act = new DsfFolderRead { InputPath = string.Concat(TestContext.TestRunDirectory, "\\", "[[CompanyName]]"), Result = result };
 
-            act.UpdateForEachOutputs(null, null);
+            act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual(result, act.Result);
         }
@@ -112,7 +146,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual(result, act.Result);
         }
@@ -128,7 +162,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var tuple1 = new Tuple<string, string>("[[res]]", "Test");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.Result);
         }

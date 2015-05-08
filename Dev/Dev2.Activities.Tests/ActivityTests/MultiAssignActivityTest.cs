@@ -17,7 +17,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ActivityUnitTests;
 using Dev2.Common;
-using Dev2.Common.Interfaces.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -61,7 +60,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out error).FirstOrDefault();
 
             // remove test datalist
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
 
@@ -109,7 +107,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error).First();
 
             // remove test datalist
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -134,7 +131,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual = vals[0];
 
             // remove test datalist
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -156,7 +152,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error).First();
 
             // remove test datalist
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -182,7 +177,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual = vals[0];
 
             // remove test datalist
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -210,187 +204,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error).First();
 
             // remove test datalist
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
-
-        [TestMethod]
-        public void AssignRecordSetWithEvaluatedSingleOutOfBoundRightIndexExpressionMultRecords()
-        {
-            var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[cRec().opt]]", "[[gRec(100).opt]]", fieldCollection.Count));
-
-            SetupArguments(
-                           ActivityStrings.mult_assign_expression_both_sides_mult_rs_adl
-                         , ActivityStrings.mult_assign_expression_both_sides_mult_rs_adl, fieldCollection);
-            IDSFDataObject result = ExecuteProcess();
-            string error;
-            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error).First();
-
-            // remove test datalist
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(actual == string.Empty);
-        }
-
-        [TestMethod]
-        public void AssignRecordSetWithEvaluatedSingleOutOfBoundLeftIndexExpressionMultRecords()
-        {
-            var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[cRec(100).opt]]", "[[gRec().opt]]", fieldCollection.Count));
-
-            const string shape = @"<ADL>
-<gRec>
-<opt></opt>
-<display></display>
-</gRec>
-<cRec>
-<opt/>
-<display/>
-</cRec>
-</ADL>";
-
-            SetupArguments(
-                            shape
-                          , ActivityStrings.mult_assign_expression_both_sides_mult_rs_adl, fieldCollection);
-            IDSFDataObject result = ExecuteProcess();
-
-            string error;
-            List<string> resultCollection = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error);
-
-            // remove test datalist
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(2, resultCollection.Count);
-            Assert.AreEqual("Value2", resultCollection[1]);
-        }
-
-        [TestMethod]
-        public void AssignRecordSetWithEvaluatedSingleOutOfBoundBothIndexExpressionMultRecords()
-        {
-            var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[cRec(100).opt]]", "[[gRec(100).opt]]", fieldCollection.Count));
-
-            SetupArguments(
-                            ActivityStrings.mult_assign_expression_both_sides_mult_rs_adl
-                          , ActivityStrings.mult_assign_expression_both_sides_mult_rs_adl, fieldCollection);
-
-            IDSFDataObject result = ExecuteProcess();
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error);
-
-            // remove test datalist
-            DataListRemoval(result.DataListID);
-
-            // two cols at row 100
-            Assert.IsTrue(actual.Count == 1 && actual.First() == string.Empty);
-        }
-
-        [TestMethod]
-        public void AssignRecordSetWithEvaluatedMultOutOfBoundLeftIndexExpressionMultRecords()
-        {
-            var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[cRec(100).opt]]", "[[gRec().opt]]", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDTO("[[cRec(100).display]]", "[[gRec().display]]", fieldCollection.Count));
-
-            const string shape = @"<ADL>
-<gRec>
-<opt></opt>
-<display></display>
-</gRec>
-<cRec>
-<opt/>
-<display/>
-</cRec>
-</ADL>";
-
-            SetupArguments(
-                            shape
-                          , ActivityStrings.mult_assign_expression_both_sides_mult_rs_adl, fieldCollection);
-            IDSFDataObject result = ExecuteProcess();
-
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error);
-
-            // remove test datalist
-            DataListRemoval(result.DataListID);
-
-            // first and row 100
-            Assert.AreEqual(2, actual.Count);
-            Assert.AreEqual("Value2", actual.Last());
-        }
-
-        [TestMethod]
-        public void AssignRecordSetWithEvaluatedMultOutOfBoundBothIndexExpressionMultRecords()
-        {
-            var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[cRec(3).opt]]", "[[gRec(3).opt]]", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDTO("[[cRec(3).display]]", "[[gRec(3).display]]", fieldCollection.Count));
-
-            SetupArguments(@"<ADL>
-<gRec>
-<opt>Value1</opt>
-<display>display1</display>
-</gRec>
-<gRec>
-<opt>Value2</opt>
-<display>display2</display>
-</gRec>
-<cRec>
-<opt/>
-<display/>
-</cRec>
-</ADL>"
-                          , @"<ADL>
-<gRec>
-<opt>Value1</opt>
-<display>display1</display>
-</gRec>
-<gRec>
-<opt>Value2</opt>
-<display>display2</display>
-</gRec>
-<cRec>
-<opt/>
-<display/>
-</cRec>
-</ADL>"
-                          , fieldCollection);
-            IDSFDataObject result = ExecuteProcess();
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error);
-
-            // remove test datalist
-            DataListRemoval(result.DataListID);
-
-            // first and row 100
-            Assert.AreEqual(1, actual.Count);
-            Assert.AreEqual(string.Empty, actual.First());
-            Assert.AreEqual(string.Empty, actual.Last());
-        }
-
-        [TestMethod]
-        public void AssignRecordSetWithEvaluatedMultOutOfBoundRightIndexExpressionMultRecords()
-        {
-            var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[cRec().opt]]", "[[gRec(100).opt]]", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDTO("[[cRec().display]]", "[[gRec(100).display]]", fieldCollection.Count));
-            SetupArguments(
-                            ActivityStrings.mult_assign_expression_both_sides_mult_rs_adl
-                          , ActivityStrings.mult_assign_expression_both_sides_mult_rs_adl
-                          , fieldCollection);
-            IDSFDataObject result = ExecuteProcess();
-
-            string error;
-            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error).First();
-
-            // remove test datalist
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(actual == string.Empty);
-        }
-
 
         [TestMethod]
         public void AssignRecordSetWithEvaluatedMultLeftIndexInBoundsExpressionMultRecords()
@@ -411,7 +227,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual = vals[0];
 
             // remove test datalist
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -434,7 +249,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetScalarValueFromEnvironment(result.Environment, "testName1", out actual, out error);
 
             // remove test datalist
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -458,7 +272,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetScalarValueFromEnvironment(result.Environment, "testValue1", out actual, out error);
 
             // remove test datalist
-            DataListRemoval(result.DataListID);
 
             Assert.IsTrue(actual == string.Empty);
         }
@@ -483,7 +296,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetScalarValueFromEnvironment(result.Environment, "testValue1", out actual, out error);
 
             // remove test datalist
-            DataListRemoval(result.DataListID);
 
             Assert.IsTrue(actual == string.Empty);
         }
@@ -507,7 +319,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetScalarValueFromEnvironment(result.Environment, "testValue1", out actual, out error);
 
             // remove test datalist
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -530,7 +341,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual = RetrieveAllRecordSetFieldValues(result.Environment, "testRecSet1", "testRec1", out error).First();
 
             // remove test datalist
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -548,13 +358,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            List<string> expected = new List<string> { ""
-                                                     , "testRecValue1" };
+            List<string> expected = new List<string> {  "testRecValue1" };
             string error;
             List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "testRecSet1", "testRec1", out error);
 
             // remove test datalist
-            DataListRemoval(result.DataListID);
 
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
@@ -577,7 +385,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual = RetrieveAllRecordSetFieldValues(result.Environment, "testRecSet1", "testRec1", out error).First();
 
             // remove test datalist
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -605,41 +412,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset", "a", out error).First();
 
             // remove test datalist
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
 
-
-        [TestMethod]
-        public void AssignRecordSetWithNoIndexAndJustOneExistingRecordExpectedRecordAppended()
-        {
-            var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[cRec().opt]]", "New Value", fieldCollection.Count));
-
-            SetupArguments(
-                            @"<root>
-  <cRec>
-    <opt></opt>
-    <display />
-  </cRec>
-</root>"
-                          , @"<root>
-  <cRec>
-    <opt>Existing Value</opt>
-    <display />
-  </cRec>
-</root>"
-                          , fieldCollection);
-            IDSFDataObject result = ExecuteProcess();
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error);
-
-            // remove test datalist
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(2, actual.Count());
-        }
 
         [TestMethod]
         public void AssignRecordSetWithAppendRecordAndNoExistingRecordExpectedRecordInFirst()
@@ -661,38 +437,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error);
 
             // remove test datalist
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual("New Value", actual[0]);
-        }
-
-        [TestMethod]
-        public void MutiAssignWithAddingTenRecSetsExpectedRecordSetAppended()
-        {
-            var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[cRec(10).opt]]", "testRecValue1", fieldCollection.Count));
-
-            SetupArguments(
-                                        @"<root>
-  <cRec>
-    <opt />
-  </cRec>
-</root>"
-                                      , "<root></root>"
-                                      , fieldCollection);
-
-            IDSFDataObject result = ExecuteProcess();
-
-            string error;
-            IList<IBinaryDataListItem> actual;
-            GetRecordSetFieldValueFromDataList(result.DataListID, "cRec", "opt", out actual, out error);
-
-            // remove test datalist
-            DataListRemoval(result.DataListID);
-
-            var binaryDataListItem = actual.FirstOrDefault(c => c.DisplayValue == "cRec(10).opt");
-            if(binaryDataListItem != null)
-                Assert.AreEqual("testRecValue1", binaryDataListItem.TheValue);
         }
 
         [TestMethod]
@@ -713,13 +459,12 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            const string expected = "";
+            const string expected = null;
             string error;
             string actual;
             GetScalarValueFromEnvironment(result.Environment, "scalar", out actual, out error);
 
             // remove test datalist
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -746,7 +491,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
@@ -769,15 +513,13 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            List<string> expected = new List<string> { "" };
+            List<string> expected = new List<string>();
             string error;
             List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
         }
 
         [TestMethod]
@@ -802,7 +544,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetScalarValueFromEnvironment(result.Environment, "var", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -828,7 +569,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetScalarValueFromEnvironment(result.Environment, "var", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -876,7 +616,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             CollectionAssert.AreEqual(expected, actual);
         }
@@ -909,7 +648,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             IList<string> data = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(17, data.Count);
             Assert.AreEqual("Value1", data[7]);
@@ -945,7 +683,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             IList<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(7, actual.Count);
             Assert.AreEqual("Value10", actual[6]);
@@ -987,7 +724,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
@@ -1022,7 +758,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out error)[1];
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -1055,44 +790,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetScalarValueFromEnvironment(result.Environment, "testScalar", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void ScalarToStar_Expected_AllRecordsOverwrittenWithScalarValue()
-        {
-
-            var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[testScalar]]", "testData", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDTO("[[gRec(*).opt]]", "[[testScalar]]", fieldCollection.Count));
-
-            TestStartNode = new FlowStep
-            {
-                Action = new DsfMultiAssignActivity { OutputMapping = null, FieldsCollection = fieldCollection }
-            };
-
-            SetupArguments(
-                ActivityStrings.MultiAssignStarDataListWithScalar
-              , ActivityStrings.MultiAssignStarDataListWithScalar
-              , fieldCollection);
-            IDSFDataObject result = ExecuteProcess();
-
-            List<string> expected = new List<string>{ "testData"
-                                                    , "testData"
-                                                    , "testData"
-                                                    , "testData"
-                                                    , "testData"
-                                                    , "testData"
-                                                    , "testData" };
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out error);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
 
         [TestMethod]
@@ -1117,7 +816,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
             Assert.AreEqual("some value \"testData\" another", actual[1]);
         }
 
@@ -1144,107 +842,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetScalarValueFromEnvironment(result.Environment, "testScalar", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
             Assert.AreEqual("some value \"testData\" another", actual);
-        }
-
-        [TestMethod]
-        public void ValueToInvalidRecordsetIndexExpectedError()
-        {
-            var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[cRec(xx).opt]]", "testData", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDTO("", "", fieldCollection.Count));
-
-            SetupArguments(
-                            ActivityStrings.MultiAssignStarDataListWithScalar
-                          , ActivityStrings.MultiAssignStarDataListWithScalar
-                          , fieldCollection);
-
-            IDSFDataObject result = ExecuteProcess();
-
-            const string expected = "<InnerError>Recordset index (xx) contains invalid character(s)</InnerError>";
-
-            string error;
-            string actual;
-            GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(expected, actual, "Assigning to an invalid recordset index did not return an error");
-        }
-
-        [TestMethod]
-        public void ValueToInvalidRecordsetIndexAndSquareBracesAroundIndexExpectedError()
-        {
-            var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[cRec([xx]).opt]]", "testData", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDTO("", "", fieldCollection.Count));
-
-            SetupArguments(
-                            ActivityStrings.MultiAssignStarDataListWithScalar
-                          , ActivityStrings.MultiAssignStarDataListWithScalar
-                          , fieldCollection);
-
-            IDSFDataObject result = ExecuteProcess();
-
-            const string expected = "<InnerError>Recordset index ([xx]) contains invalid character(s)</InnerError>";
-            string error;
-            string actual;
-            GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(expected, actual, "Assigning to an invalid recordset index did not return an error");
-        }
-        [TestMethod]
-        public void ValueToInvalidRecordsetIndexAndDoubleOpenningSquareBracesAroundIndexExpectedError()
-        {
-            var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[cRec([[xx]).opt]]", "testData", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDTO("", "", fieldCollection.Count));
-
-            SetupArguments(
-                            ActivityStrings.MultiAssignStarDataListWithScalar
-                          , ActivityStrings.MultiAssignStarDataListWithScalar
-                          , fieldCollection);
-
-            IDSFDataObject result = ExecuteProcess();
-
-            const string expected = "<InnerError>Invalid region detected: An open [[ without a related close ]]</InnerError><InnerError>Invalid Data : Either empty expression or empty token list. Please check that your variable list does not contain errors.</InnerError><InnerError>Invalid Region [[cRec([[xx]).opt]]</InnerError>";
-            string error;
-            string actual;
-            GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(expected, actual, "Assigning to an invalid recordset index did not return an error");
-        }
-        [TestMethod]
-        public void ValueToInvalidRecordsetIndexAndTwoBrokenIndexRegionsExpectedError()
-        {
-            var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[cRec([[xx]][aa]]).opt]]", "testData", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDTO("", "", fieldCollection.Count));
-
-            SetupArguments(
-                            ActivityStrings.MultiAssignStarDataListWithScalar
-                          , ActivityStrings.MultiAssignStarDataListWithScalar
-                          , fieldCollection);
-
-            IDSFDataObject result = ExecuteProcess();
-
-            const string expected = "<InnerError>Invalid region detected: A close ]] without a related open [[</InnerError><InnerError>Invalid Data : Either empty expression or empty token list. Please check that your variable list does not contain errors.</InnerError><InnerError>Invalid Region [[cRec([[xx]][aa]]).opt]]</InnerError>";
-            string error;
-            string actual;
-            GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(expected, actual, "Assigning to an invalid recordset index did not return an error");
         }
 
         #endregion Language Tests
@@ -1270,7 +868,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetScalarValueFromEnvironment(result.Environment, "Variable", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -1294,7 +891,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetScalarValueFromEnvironment(result.Environment, "Variable", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -1318,13 +914,10 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             GetScalarValueFromEnvironment(result.Environment, "Variable", out actual, out error);
 
-            var res = Compiler.HasErrors(result.DataListID);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
-            Assert.IsFalse(res);
         }
 
         [TestMethod]
@@ -1341,7 +934,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.IsTrue(Compiler.HasErrors(result.DataListID));
         }
@@ -1368,7 +960,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             act.UpdateForEachInputs(new List<Tuple<string, string>>
             {
                 new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
-            }, null);
+            });
 
             //------------Assert Results-------------------------
 
@@ -1395,7 +987,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             act.UpdateForEachInputs(new List<Tuple<string, string>>
             {
                 new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
-            }, null);
+            });
 
             //------------Assert Results-------------------------
 
@@ -1422,7 +1014,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             act.UpdateForEachOutputs(new List<Tuple<string, string>>
             {
                 new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
-            }, null);
+            });
 
             //------------Assert Results-------------------------
 

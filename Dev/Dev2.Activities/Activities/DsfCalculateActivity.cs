@@ -19,6 +19,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Util;
@@ -68,9 +69,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary> 
         protected override void OnExecute(NativeActivityContext context)
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
@@ -87,12 +94,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 string input = string.IsNullOrEmpty(Expression) ? Expression : Expression.Replace("\\r", string.Empty).Replace("\\n", string.Empty).Replace(Environment.NewLine, "");
                 var warewolfListIterator = new WarewolfListIterator();
-                var calc = String.Format(GlobalConstants.CalculateTextConvertFormat,input);
+                var calc = String.Format(GlobalConstants.CalculateTextConvertFormat, input);
                 var warewolfEvalResult = dataObject.Environment.Eval(calc);
                 var scalarResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
-                if (scalarResult != null && scalarResult.Item.IsNothing)
+                if(scalarResult != null && scalarResult.Item.IsNothing)
                 {
-                    throw new NullValueInVariableException("Error with variables in input.",input);
+                    throw new NullValueInVariableException("Error with variables in input.", input);
                 }
                 var inputIterator = new WarewolfIterator(warewolfEvalResult);
                 warewolfListIterator.AddVariableToIterateOn(inputIterator);
@@ -101,7 +108,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var result = warewolfListIterator.FetchNextValue(inputIterator);
                     dataObject.Environment.Assign(Result, result);
                 }
-                
+
                 if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
                     AddDebugOutputItem(Result, dataObject.Environment);
@@ -110,7 +117,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception ex)
             {
-
                 Dev2Logger.Log.Error("Calculate Exception", ex);
                 allErrors.AddError(ex.Message);
             }
@@ -123,7 +129,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfCalculateActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
-                    dataObject.Environment.Assign(Result, null);
                 }
                 if(dataObject.IsDebugMode())
                 {
@@ -131,11 +136,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         AddDebugOutputItem(Result, dataObject.Environment);
                     }
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
-
         }
 
         #endregion Override Abstract Methods
@@ -176,7 +180,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Get Inputs/Outputs
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
 
             if(updates != null && updates.Count == 1)
@@ -185,7 +189,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

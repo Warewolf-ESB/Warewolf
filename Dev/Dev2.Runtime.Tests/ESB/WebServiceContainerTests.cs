@@ -17,7 +17,6 @@ using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
@@ -29,7 +28,6 @@ using Dev2.Tests.Runtime.XML;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Unlimited.Framework.Converters.Graph.Ouput;
 
 namespace Dev2.Tests.Runtime.ESB
 {
@@ -142,39 +140,6 @@ namespace Dev2.Tests.Runtime.ESB
                     }
                 }
             }
-        }
-
-        [TestMethod]
-        public void WebServiceContainerExecuteWhenThrowsErrorExpectErrorIsAddedToErrorsCollection()
-        {
-            var container = CreateWebServiceContainerThrowingException(WebServiceWithoutInputsResponse);
-
-            ErrorResultTO errors;
-            container.Execute(out errors);
-
-            Assert.IsTrue(errors.HasErrors());
-            Assert.AreEqual("Service Execution Error: Object reference not set to an instance of an object.", errors.FetchErrors()[0]);
-        }
-
-        WebServiceContainer CreateWebServiceContainerThrowingException(string response)
-        {
-            ErrorResultTO errors;
-            var compiler = DataListFactory.CreateDataListCompiler();
-            var dataListId = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "", "<DataList></DataList>".ToStringBuilder(), out errors);
-
-            var dataObj = new Mock<IDSFDataObject>();
-            dataObj.Setup(d => d.DataListID).Returns(dataListId);
-
-            var serviceExecution = new WebserviceExecution(dataObj.Object, true);
-            var webService = new WebService { Method = new ServiceMethod() };
-            var outputDescription = new OutputDescription { Format = OutputFormats.ShapedXML };
-            webService.OutputDescription = outputDescription;
-            serviceExecution.Service = webService;
-            var container = new WebServiceContainerMockWithError(serviceExecution)
-            {
-                WebRequestRespsonse = response,
-            };
-            return container;
         }
 
         #endregion

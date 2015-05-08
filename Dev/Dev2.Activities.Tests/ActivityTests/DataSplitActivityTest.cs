@@ -15,9 +15,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ActivityUnitTests;
-using Dev2.Common.Interfaces.DataList.Contract;
-using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -72,9 +69,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             _resultsCollection.Add(new DataSplitDTO("[[rs().data]]", "New Line", "", 4));
             _resultsCollection.Add(new DataSplitDTO("[[rs().data]]", "New Line", "", 5));
 
-            SetupArguments("<ADL><testData>RSA ID|FirstName|LastName" + Environment.NewLine +
+            SetupArguments("<root><ADL><testData>RSA ID|FirstName|LastName" + Environment.NewLine +
                            "13456456789|Samantha Some|Jones" + Environment.NewLine +
-                           "09123456646|James|Apple</testData></ADL>",
+                           "09123456646|James|Apple</testData></ADL></root>",
                            "<ADL><rs><col1/><col2/><col3/><data/></rs><testData/></ADL>",
                            "[[testData]]",
                            _resultsCollection);
@@ -83,19 +80,18 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
             string error;
 
-            var col1List = RetrieveAllRecordSetFieldValues(result.DataListID, "rs", "col1", out error);
-            var col2List = RetrieveAllRecordSetFieldValues(result.DataListID, "rs", "col2", out error);
-            var col3List = RetrieveAllRecordSetFieldValues(result.DataListID, "rs", "col3", out error);
-            var dataList = RetrieveAllRecordSetFieldValues(result.DataListID, "rs", "data", out error);
+            var col1List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col1", out error);
+            var col2List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col2", out error);
+            var col3List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col3", out error);
+            var dataList = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "data", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             //------------Assert Results-------------------------
 
-            var col1Expected = new List<string> { "RSA ID", "" };
-            var col2Expected = new List<string> { "FirstName", "" };
-            var col3Expected = new List<string> { "LastName", "" };
+            var col1Expected = new List<string> { "RSA ID" };
+            var col2Expected = new List<string> { "FirstName" };
+            var col3Expected = new List<string> { "LastName"};
             var dataExpected = new List<string> { "13456456789|Samantha Some|Jones", "09123456646|James|Apple" };
 
             var comparer = new ActivityUnitTests.Utils.StringComparer();
@@ -120,9 +116,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             _resultsCollection.Add(new DataSplitDTO("[[rs(*).data]]", "New Line", "", 4));
             _resultsCollection.Add(new DataSplitDTO("[[rs(*).data]]", "New Line", "", 5));
 
-            SetupArguments("<ADL><testData>RSA ID|FirstName|LastName" + Environment.NewLine +
+            SetupArguments("<root><ADL><testData>RSA ID|FirstName|LastName" + Environment.NewLine +
                            "13456456789|Samantha Some|Jones" + Environment.NewLine +
-                           "09123456646|James|Apple</testData></ADL>",
+                           "09123456646|James|Apple</testData></ADL></root>",
                            "<ADL><rs><col1/><col2/><col3/><data/></rs><testData/></ADL>",
                            "[[testData]]",
                            _resultsCollection);
@@ -131,19 +127,18 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
             string error;
 
-            var col1List = RetrieveAllRecordSetFieldValues(result.DataListID, "rs", "col1", out error);
-            var col2List = RetrieveAllRecordSetFieldValues(result.DataListID, "rs", "col2", out error);
-            var col3List = RetrieveAllRecordSetFieldValues(result.DataListID, "rs", "col3", out error);
-            var dataList = RetrieveAllRecordSetFieldValues(result.DataListID, "rs", "data", out error);
+            var col1List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col1", out error);
+            var col2List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col2", out error);
+            var col3List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col3", out error);
+            var dataList = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "data", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             //------------Assert Results-------------------------
 
-            var col1Expected = new List<string> { "RSA ID", "" };
-            var col2Expected = new List<string> { "FirstName", "" };
-            var col3Expected = new List<string> { "LastName", "" };
+            var col1Expected = new List<string> { "RSA ID" };
+            var col2Expected = new List<string> { "FirstName" };
+            var col3Expected = new List<string> { "LastName" };
             var dataExpected = new List<string> { "13456456789|Samantha Some|Jones", "09123456646|James|Apple" };
 
             var comparer = new ActivityUnitTests.Utils.StringComparer();
@@ -164,37 +159,10 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(string.Empty, actual);
-        }
-
-        [TestMethod]
-        public void RecordsetWithAnIndexWithNoRecordsInRecSet_Expected_Split_And_Append_Records()
-        {
-            _resultsCollection.Add(new DataSplitDTO("[[recset1(3).field1]]", "Index", "15", 1));
-
-            SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>"
-                         , ActivityStrings.DataSplit_preDataList
-                         , _source
-                         , _resultsCollection);
-            List<string> expected = new List<string> { "896" };
-
-            IDSFDataObject result = ExecuteProcess();
-
-            IList<IBinaryDataListItem> actual;
-            string error;
-
-            GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out actual, out error);
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            List<string> actualRet = new List<string>();
-            actual.Where(c => c.ItemCollectionIndex >= 3).ToList().ForEach(d => actualRet.Add(d.TheValue));
-            var comparer = new ActivityUnitTests.Utils.StringComparer();
-            CollectionAssert.AreEqual(expected, actualRet, comparer);
         }
 
         [TestMethod]
@@ -207,10 +175,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = @"Title|Fname|LNa";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual, "Got " + actual + " expected " + expected);
 
@@ -236,11 +203,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 string returnVal;
                 string error;
-                GetScalarValueFromDataList(result.DataListID, "OutVar" + i, out returnVal, out error);
+                GetScalarValueFromEnvironment(result.Environment, "OutVar" + i, out returnVal, out error);
                 actual.Add(returnVal.Trim());
             }
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             ActivityUnitTests.Utils.StringComparer comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expected, actual, comparer);
@@ -260,18 +226,17 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                      };
             string actualScalar;
             string error;
-            IList<IBinaryDataListItem> actualRecordSet;
+            IList<string> actualRecordSet;
 
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actualScalar, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actualScalar, out error);
 
             Assert.AreEqual("896", actualScalar);
 
-            GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out actualRecordSet, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out actualRecordSet, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
-            List<string> actual = actualRecordSet.Select(entry => entry.TheValue).ToList();
+            List<string> actual = actualRecordSet.Select(entry => entry).ToList();
             ActivityUnitTests.Utils.StringComparer comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expected, actual, comparer);
         }
@@ -298,13 +263,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<string> actual = new List<string>();
             string actualScalar;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actualScalar, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actualScalar, out error);
             Assert.AreEqual("896", actualScalar);
 
-            actual.AddRange(RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error));
+            actual.AddRange(RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error));
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             string[] foo = actual.ToArray();
             actual.Clear();
@@ -327,41 +291,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 1.Mr";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
             Assert.AreEqual(expected, actual, "Got " + actual + " expected " + expected);
-        }
-
-        // Bug : 8725
-        [TestMethod]
-        public void NoResultVariableInAnyRow_Expected_Still_Split_But_Dont_Insert_Any()
-        {
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            _resultsCollection.Add(new DataSplitDTO("", "Index", "15", 1));
-            _resultsCollection.Add(new DataSplitDTO("", "Index", "15", 2));
-            SetupArguments("<root></root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
-
-            IDSFDataObject result = ExecuteProcess();
-
-            List<bool> isPopulated = new List<bool>();
-            ErrorResultTO errors;
-            IBinaryDataList dList = compiler.FetchBinaryDataList(result.DataListID, out errors);
-
-
-
-            foreach(string data in dList.FetchAllUserKeys())
-            {
-                IBinaryDataListEntry entry;
-                string error;
-                dList.TryGetEntry(data, out entry, out error);
-                isPopulated.Add(entry.FetchAppendRecordsetIndex() != 1);
-            }
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            CollectionAssert.DoesNotContain(isPopulated, true);
         }
 
         [TestMethod]
@@ -375,9 +307,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
 
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual, "Got " + actual + " but expected " + expected);
         }
@@ -396,35 +327,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
 
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void CharsTypeSplitMultiple_Expected_Split_Mutiple_At_Chars()
-        {
-            _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "Chars", "|", 1));
-            _resultsCollection.Add(new DataSplitDTO("[[OutVar2]]", "Chars", "1.", 1));
-
-            SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
-            IDSFDataObject result = ExecuteProcess();
-
-
-            string tempResult;
-            string error;
-
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out tempResult, out error);
-            Assert.AreEqual("Title", tempResult);
-            GetScalarValueFromDataList(result.DataListID, "OutVar2", out tempResult, out error);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(@"Fname|LName|TelNo|", tempResult.Trim());
-
         }
 
         [TestMethod]
@@ -446,9 +352,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
 
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
 
@@ -470,12 +375,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             string tempActual;
             string error;
 
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out tempActual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out tempActual, out error);
             actual.Add(tempActual);
-            GetScalarValueFromDataList(result.DataListID, "OutVar2", out tempActual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar2", out tempActual, out error);
             actual.Add(tempActual);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
@@ -490,10 +394,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = @"Title|Fname|LName|TelNo|";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual, "Got " + actual + " expected " + expected);
 
@@ -510,10 +413,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             List<string> expected = new List<string> { "Test", "Data", "To", "Split" };
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset2", "field2", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset2", "field2", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
@@ -534,9 +436,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
 
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
 
@@ -561,49 +462,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            List<string> actual1 = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
-            List<string> actual2 = RetrieveAllRecordSetFieldValues(result.DataListID, "recset2", "field2", out error);
+            List<string> actual1 = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
+            List<string> actual2 = RetrieveAllRecordSetFieldValues(result.Environment, "recset2", "field2", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual("Branson", actual1[0]);
             Assert.AreEqual("0812457896", actual2[0]);
-        }
-
-        [TestMethod]
-        public void CleaningArgs_Expected_Clean_Arguments_Coming_In()
-        {
-            /*
-             *  Expected Tokenization...
-             *  
-             *  1. Title|Fname|LNa
-                2. me|TelNo| 1.Mr
-                3. |Frank|Williams
-                4. |07956284432.
-                4. Mr|Enzo|Ferrari
-                5. |0821169853 3.
-                6. Mrs|Jenny|Smith
-                7. |0762458963 4.
-                8. Ms|Kerrin|deSil
-                9. via|0724587310
-                10. 5.Sir|Richard|
-                11. Branson|0812457
-                12. 896
-             */
-
-            _resultsCollection.Add(new DataSplitDTO("[[recset1(5).field1]]", "Index", "15", 1));
-            _resultsCollection.Add(new DataSplitDTO("[[recset2(2).field2]]", "Char", "", 2));
-            SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
-            IDSFDataObject result = ExecuteProcess();
-
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual("896", actual[1]);
         }
 
         [TestMethod]
@@ -624,7 +489,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 4."
                                                      , @"via|0724587310"
                                                      , @"Branson|0812457",
-                                                       @"",
                                                        @"Title|Fname|LNa",
                                                         @"|Frank|Williams",
                                                         @"Mr|Enzo|Ferrari",
@@ -635,11 +499,10 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                         
                                                         };
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "rec1", out error);
-            actual.AddRange(RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error));
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "rec1", out error);
+            actual.AddRange(RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error));
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             string[] foo = actual.ToArray();
             actual.Clear();
@@ -647,23 +510,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             actual.AddRange(foo.Select(s => s.Trim()));
 
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
-        }
-
-        [TestMethod]
-        public void RecsetWithExistingIndex_Expected_Split_Insert_at_Index_Specified()
-        {
-            _resultsCollection.Add(new DataSplitDTO("[[recset1(2).field1]]", "Index", "15", 1));
-
-            SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_DataListShape, _source, _resultsCollection);
-            IDSFDataObject result = ExecuteProcess();
-
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual("896", actual[1]);
         }
 
 
@@ -695,10 +541,9 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                     , "Branson|0812457"
                                                     , "896" };
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             string[] foo = actual.ToArray();
             actual.Clear();
@@ -707,69 +552,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
 
-        [TestMethod]
-        public void RecsetWithZeroAsIndex_Expected_No_Splits()
-        {
-            _resultsCollection.Clear();
-            _resultsCollection.Add(new DataSplitDTO("[[recset1(0).field1]]", "Index", "15", 1));
-
-            SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
-            IDSFDataObject result = ExecuteProcess();
-
-            var res = Compiler.HasErrors(result.DataListID);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(res);
-
-        }
-
-        [TestMethod]
-        public void CharsSplitWithNoChars_Expected_No_Splits()
-        {
-            _resultsCollection.Add(new DataSplitDTO("[[recset1().field1]]", "Chars", "", 1));
-            SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
-
-            IDSFDataObject result = ExecuteProcess();
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(1, actual.Count);
-            Assert.AreEqual(string.Empty, actual[0]);
-        }
-
-        [TestMethod]
-        public void IndexSplitWithZeroIndex_Expected_No_Splits()
-        {
-            _resultsCollection.Add(new DataSplitDTO("[[recset1().field1]]", "Index", "0", 1));
-            SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
-            IDSFDataObject result = ExecuteProcess();
-
-            var res = Compiler.HasErrors(result.DataListID);
-
-
-
-            Assert.IsTrue(res);
-        }
-
-        [TestMethod]
-        public void IndexSplitWithNegitiveNumberIndex_Expected_No_Splits()
-        {
-            _resultsCollection.Add(new DataSplitDTO("[[recset1().field1]]", "Index", "-4", 1));
-            SetupArguments(ActivityStrings.DataSplit_preDataList, ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
-
-            IDSFDataObject result = ExecuteProcess();
-
-            var res = Compiler.HasErrors(result.DataListID);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(res);
-        }
 
         [TestMethod]
         public void RecorsetWithStarAsIndexInSourceString_Expected_Split_For_Last_Value_In_Recordset()
@@ -820,10 +602,9 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                             , "to"
                                                             , "split" };
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             CollectionAssert.AreEqual(expectedRecSet1, actual, new ActivityUnitTests.Utils.StringComparer());
         }
@@ -838,7 +619,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             DsfDataSplitActivity act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
 
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(null, null);
+            act.UpdateForEachInputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual("[[CompanyName]]", act.ResultsCollection[0].OutputVariable);
         }
@@ -856,7 +637,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple2 = new Tuple<string, string>("1", "Test2");
             var tuple3 = new Tuple<string, string>("[[CompanyName]]", "Test3");
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2, tuple3 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2, tuple3 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.ResultsCollection[0].At);
             Assert.AreEqual("Test2", act.ResultsCollection[1].At);
@@ -874,7 +655,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
 
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(null, null);
+            act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual("[[CompanyName]]", act.SourceString);
         }
@@ -890,7 +671,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var tuple1 = new Tuple<string, string>("[[CompanyName]]", "Test");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.ResultsCollection[0].OutputVariable);
         }

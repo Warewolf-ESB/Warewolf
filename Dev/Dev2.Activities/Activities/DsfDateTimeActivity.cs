@@ -14,13 +14,15 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
+using System.Threading;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
+using Dev2.Common.DateAndTime;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Converters.DateAndTime;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
@@ -110,10 +112,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary>       
         protected override void OnExecute(NativeActivityContext context)
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-
 
             ErrorResultTO allErrors = new ErrorResultTO();
             InitializeDebug(dataObject);
@@ -121,7 +127,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
                 IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
-                
+
                 if(dataObject.IsDebugMode())
                 {
                     if(string.IsNullOrEmpty(DateTime))
@@ -135,8 +141,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         AddDebugInputItem(new DebugEvalResult(DateTime, "Input", dataObject.Environment));
                     }
-
-                    var dateTimePattern = string.Format("{0} {1}", CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern, CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern);
+                    var cultureType = typeof(CultureInfo);
+                    var fieldInfo = cultureType.GetField("s_userDefaultCulture",BindingFlags.NonPublic | BindingFlags.Static);
+                    if (fieldInfo != null)
+                    {
+                        var val = fieldInfo.GetValue(CultureInfo.CurrentCulture);
+                        var newCul = val as CultureInfo;
+                        if (newCul != null)
+                        {
+                            Thread.CurrentThread.CurrentCulture = newCul;      
+                        }
+                    }
+                    var dateTimePattern = string.Format("{0} {1}", Thread.CurrentThread.CurrentCulture.DateTimeFormat.ShortDatePattern, Thread.CurrentThread.CurrentCulture.DateTimeFormat.LongTimePattern);
 
                     if(string.IsNullOrEmpty(InputFormat))
                     {
@@ -168,20 +184,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }
 
-                if (DataListUtil.HasNegativeIndex(InputFormat))
+                if(DataListUtil.HasNegativeIndex(InputFormat))
                 {
                     allErrors.AddError(string.Format("Negative Recordset Index for Input Format: {0}", InputFormat));
                 }
-                if (DataListUtil.HasNegativeIndex(OutputFormat))
+                if(DataListUtil.HasNegativeIndex(OutputFormat))
                 {
                     allErrors.AddError(string.Format("Negative Recordset Index for Output Format: {0}", OutputFormat));
                 }
 
-                if (DataListUtil.HasNegativeIndex(TimeModifierAmountDisplay))
+                if(DataListUtil.HasNegativeIndex(TimeModifierAmountDisplay))
                 {
                     allErrors.AddError(string.Format("Negative Recordset Index for Add Time: {0}", TimeModifierAmountDisplay));
                 }
-                if (!allErrors.HasErrors())
+                if(!allErrors.HasErrors())
                 {
                     var colItr = new WarewolfListIterator();
 
@@ -194,21 +210,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var tmaItr = CreateDataListEvaluateIterator(TimeModifierAmountDisplay, dataObject.Environment);
                     colItr.AddVariableToIterateOn(tmaItr);
 
-                    if (!allErrors.HasErrors())
+                    if(!allErrors.HasErrors())
                     {
-                        while (colItr.HasMoreData())
+                        while(colItr.HasMoreData())
                         {
                             IDateTimeOperationTO transObj = ConvertToDateTimeTo(colItr.FetchNextValue(dtItr),
-                                                                                    colItr.FetchNextValue(ifItr),
-                                                                                    colItr.FetchNextValue(ofItr),
-                                                                                    TimeModifierType,
-                                                                                    colItr.FetchNextValue(tmaItr)
-                                                                                    );
+                                colItr.FetchNextValue(ifItr),
+                                colItr.FetchNextValue(ofItr),
+                                TimeModifierType,
+                                colItr.FetchNextValue(tmaItr)
+                                );
 
                             IDateTimeFormatter format = DateTimeConverterFactory.CreateFormatter();
                             string result;
                             string error;
-                            if (format.TryFormat(transObj, out result, out error))
+                            if(format.TryFormat(transObj, out result, out error))
                             {
                                 string expression = Result;
                                 dataObject.Environment.Assign(expression, result);
@@ -218,7 +234,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 allErrors.AddError(error);
                             }
                         }
-                        if (dataObject.IsDebugMode() && !allErrors.HasErrors())
+                        if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                         {
                             AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
                         }
@@ -232,7 +248,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
-
                 // Handle Errors
                 var hasErrors = allErrors.HasErrors();
                 if(hasErrors)
@@ -247,8 +262,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
@@ -299,7 +314,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get ForEach Inputs/Outputs
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             foreach(Tuple<string, string> t in updates)
             {
@@ -326,7 +341,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

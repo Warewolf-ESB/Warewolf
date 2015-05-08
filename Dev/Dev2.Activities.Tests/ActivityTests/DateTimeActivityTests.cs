@@ -16,7 +16,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Threading;
 using ActivityUnitTests;
-using Dev2.Common.Interfaces.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -57,10 +57,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(Expected, actual);
 
@@ -84,10 +83,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
 
@@ -112,43 +110,15 @@ namespace Dev2.Tests.Activities.ActivityTests
             string firstDateTimeExpected = firstDateTime.ToString("yyyy/MM/dd hh:mm:ss tt");
             DateTime secondDateTime = DateTime.Parse("2012/12/27 04:12:41 PM").AddHours(10);
             string secondDateTimeExpected = secondDateTime.ToString("yyyy/MM/dd hh:mm:ss tt");
-            IList<IBinaryDataListItem> actual;
+            IList<string> actual;
             string error;
-            GetRecordSetFieldValueFromDataList(result.DataListID, "MyDateRecordSet", "Date", out actual, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "MyDateRecordSet", "Date", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-            var firstResult = actual[2].TheValue;
-            var secondResult = actual[3].TheValue;
+            var firstResult = actual[2];
+            var secondResult = actual[3];
             // Assert to a result please
             Assert.AreEqual(firstDateTimeExpected, firstResult);
             Assert.AreEqual(secondDateTimeExpected, secondResult);
-        }
-
-        [TestMethod]
-        public void DateTime_RecordSetWithStar_Expected_DateTimeReturnedCorrectly()
-        {
-            SetupArguments(ActivityStrings.DateTimeDifferenceDataListShape
-                         , ActivityStrings.DateTimeDifferenceDataListWithData
-                         , "[[recset1(*).f1]]"
-                         , "dd/mm/yyyy"
-                         , "dd/mm/yyyy"
-                         , "Years"
-                         , 2
-                         , "[[resCol(*).res]]");
-
-            IDSFDataObject result = ExecuteProcess();
-
-            string error;
-            IList<IBinaryDataListItem> resultsList;
-            IList<IBinaryDataListItem> other;
-            GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "f1", out other, out error);
-            GetRecordSetFieldValueFromDataList(result.DataListID, "resCol", "res", out resultsList, out error);
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual("14/10/1990", resultsList[0].TheValue);
-            Assert.AreEqual("10/01/1990", resultsList[1].TheValue);
-            Assert.AreEqual("05/05/1990", resultsList[2].TheValue);
         }
 
         //2013.02.12: Ashley Lewis - Bug 8725, Task 8840 DONE
@@ -170,9 +140,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
 
-            GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             const string expected = "2013/02/07 08:38:57.280 PM";
             Assert.AreEqual(expected, actual);
@@ -196,9 +165,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -226,7 +194,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
             DateTime actualdt = DateTime.Parse(actual);
             var timeSpan = actualdt - now;
 
@@ -254,50 +222,46 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
             if(actual == "0")
             {
                 Thread.Sleep(11);
 
                 result = ExecuteProcess();
 
-                GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);
+                GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
 
                 Assert.IsTrue(actual != "0");
             }
             Assert.IsTrue(actual != "0");
         }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfDateTimeTool_Execute")]
-        public void DsfDateTimeTool_Execute_MultipleResults_ExpectError()
-        {
-            const string currDL = @"<root><MyTestResult></MyTestResult></root>";
-            SetupArguments(currDL
-                         , currDL
-                         , "2012/11/27 04:12:41 PM"
-                         , "yyyy/mm/dd 12h:min:ss am/pm"
-                         , "yyyy/mm/dd 12h:min:ss am/pm"
-                         , "Hours"
-                         , 10
-                         , "[[MyTestResult]][[moot]]");
-
-            IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-            GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID)); 
-        }
-
         #endregion DateTime Tests
 
         #region Get Input/Output Tests
+
+        [TestMethod]
+        public void DateTimeActivity_GetInputs_Expected_Five_Input()
+        {
+            DsfDateTimeActivity testAct = new DsfDateTimeActivity { DateTime = "27-10-2012", InputFormat = "DD-mm-yyyy", TimeModifierType = "Days", TimeModifierAmount = 5, TimeModifierAmountDisplay = "5", OutputFormat = "DD-mm-yyyy", Result = "[[result]]" };
+
+            IBinaryDataList inputs = testAct.GetInputs();
+
+            // remove test datalist ;)
+
+            Assert.AreEqual(5, inputs.FetchAllEntries().Count);
+        }
+
+        [TestMethod]
+        public void DateTimeActivity_GetOutputs_Expected_One_Output()
+        {
+            DsfDateTimeActivity testAct = new DsfDateTimeActivity { DateTime = "27-10-2012", InputFormat = "DD-mm-yyyy", TimeModifierType = "Days", TimeModifierAmount = 5, TimeModifierAmountDisplay = "5", OutputFormat = "DD-mm-yyyy", Result = "[[result]]" };
+
+            IBinaryDataList outputs = testAct.GetOutputs();
+
+            // remove test datalist ;)
+
+            Assert.AreEqual(1, outputs.FetchAllEntries().Count);
+        }
 
         #endregion Get Input/Output Tests
 

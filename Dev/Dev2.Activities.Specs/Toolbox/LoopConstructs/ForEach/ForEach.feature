@@ -15,10 +15,10 @@ Scenario: Execute a foreach over a tool using a recordset with 3 rows
 	Then the foreach executes 3 times
 	And the execution has "NO" error
 	And the debug inputs as
-    |                | Recordset           |
-    | * in Recordset | =[[rs(1)]] |
-    |                | =[[rs(2)]] |
-    |                | =[[rs(3)]] | 
+    |                | Recordset   |
+    | * in Recordset | [[rs(1)]] = |
+    |                | [[rs(2)]] = |
+    |                | [[rs(3)]] = | 
 
 Scenario: Execute a foreach over a tool using a recordset with 4 rows
 	Given There is a recordset in the datalist with this shape
@@ -33,11 +33,11 @@ Scenario: Execute a foreach over a tool using a recordset with 4 rows
 	Then the foreach executes 4 times
 	And the execution has "NO" error
 	And the debug inputs as
-	|                | Recordset           |
-	| * in Recordset | =[[rs(1)]] |
-	|                | =[[rs(2)]] |
-	|                | =[[rs(3)]] |
-	|                | =[[rs(4)]] |
+	|                | Recordset   |
+	| * in Recordset | [[rs(1)]] = |
+	|                | [[rs(2)]] = |
+	|                | [[rs(3)]] = |
+	|                | [[rs(4)]] = |
 	
 #This Scenarios should pass after the bug 12021 is fixed
 #Scenario: Execute a foreach over a tool using a recordset with invalid

@@ -75,13 +75,19 @@ namespace Dev2.Activities
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
+            var dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugOutputs.Clear();
             _debugInputs.Clear();
             if(WebRequestInvoker == null)
             {
                 return;
             }
-            var dataObject = context.GetExtension<IDSFDataObject>();
+
             var allErrors = new ErrorResultTO();
             InitializeDebug(dataObject);
             try
@@ -104,8 +110,8 @@ namespace Dev2.Activities
                     var c = colItr.FetchNextValue(urlitr);
                     var headerValue = colItr.FetchNextValue(headerItr);
                     var headers = string.IsNullOrEmpty(headerValue)
-                                      ? new string[0]
-                                      : headerValue.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries);
+                        ? new string[0]
+                        : headerValue.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries);
 
                     var headersEntries = new List<Tuple<string, string>>();
 
@@ -145,8 +151,8 @@ namespace Dev2.Activities
                 }
                 if(dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
@@ -213,7 +219,7 @@ namespace Dev2.Activities
 
         #endregion
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {
@@ -228,7 +234,7 @@ namespace Dev2.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

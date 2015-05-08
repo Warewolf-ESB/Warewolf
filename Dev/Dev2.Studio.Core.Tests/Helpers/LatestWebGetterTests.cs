@@ -53,7 +53,7 @@ namespace Dev2.Core.Tests.Helpers
             Assert.IsFalse(File.Exists(path));
 
             var getter = new LatestWebGetter();
-            getter.GetLatest("http://rsaklfsvrdevstats:9000/", path);
+            getter.GetLatest("http://rsaklfdevstats:9000/", path);
 
             Assert.IsTrue(File.Exists(path), "Could not create  [ " + path + " ]");
         }

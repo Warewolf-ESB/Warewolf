@@ -21,6 +21,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -80,6 +81,8 @@ namespace Dev2.Tests.Runtime.Hosting
                     //Ashley: Bad unit isolation.
                 }
             }
+            CustomContainer.Register<IActivityParser>(new ActivityParser());
+            LoadActivitiesPresentationDll();
         }
         #region Instance
 
@@ -375,25 +378,6 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
-        public void SaveResourceWithUnsignedServiceExpectedSignsFile()
-        {
-            var workspaceID = Guid.NewGuid();
-            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-            var path = workspacePath;
-
-            var xml = XmlResource.Fetch("TestDecisionUnsigned");
-            var resource = new Workflow(xml);
-            var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            catalog.SaveResource(workspaceID, resource);
-
-            var signedXml = File.ReadAllText(Path.Combine(path, (resource.ResourcePath ?? string.Empty) + ".xml"));
-
-            var isValid = HostSecurityProvider.Instance.VerifyXml(new StringBuilder(signedXml));
-
-            Assert.IsTrue(isValid);
-        }
-
-        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ResourceCatalog_SaveResource")]
         public void SaveResource_WithNoResourcePath_ExpectedSavedAtRootLevel()
@@ -453,7 +437,41 @@ namespace Dev2.Tests.Runtime.Hosting
 
             //------------Assert Results-------------------------
             version.Verify(a => a.StoreVersion(It.IsAny<Resource>(), "bob", "reason", workspaceID));
+
+           
         }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ResourceCatalog_SaveResource")]
+        public void SaveResource_Expects_A_RollbackOnError()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var version = new Mock<IServerVersionRepository>();
+            var catalog = new ResourceCatalog(null, version.Object);
+
+            var resourceID = Guid.NewGuid();
+            var expected = new DbSource { ResourceID = resourceID, ResourceName = "TestSource", DatabaseName = "TestNewDb", Server = "TestNewServer", ServerType = enSourceType.MySqlDatabase };
+
+            //------------Execute Test---------------------------
+            catalog.SaveResource(workspaceID, expected.ToStringBuilder(), null, "reason", "bob");
+            expected.ResourceName = "federatedresource";
+           
+            try
+            {
+                expected.ResourceName = "";
+                catalog.SaveResource(workspaceID, expected.ToStringBuilder(), null, "reason", "bob");
+            }
+                // ReSharper disable EmptyGeneralCatchClause
+            catch(Exception)
+                // ReSharper restore EmptyGeneralCatchClause
+            { }
+            var res = catalog.GetResourceContents(workspaceID, expected.ResourceID).ToString();
+            Assert.IsFalse(res.Contains("federatedresource"));
+
+        }
+
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -983,24 +1001,6 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
-        public void GetResourceContentsWithExistingResourceIDExpectedReturnsResourceContents()
-        {
-            List<IResource> resources;
-            var workspaceID = Guid.NewGuid();
-            SaveResources(workspaceID, out resources);
-
-            var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            foreach(var expected in resources)
-            {
-                var xml = catalog.GetResourceContents(workspaceID, expected.ResourceID);
-
-                var actual = new Resource(XElement.Parse(xml.ToString()));
-                Assert.AreEqual(expected.ResourceID, actual.ResourceID);
-                Assert.AreEqual(expected.ResourceName, actual.ResourceName);
-            }
-        }
-
-        [TestMethod]
         public void GetResourceContentsWithNonExistentResourceIDExpectedReturnsEmptyString()
         {
             List<IResource> resources;
@@ -1332,30 +1332,6 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             var result = catalog.CopyResource(null, targetWorkspaceID);
             Assert.IsFalse(result);
-        }
-
-
-
-        [TestMethod]
-        public void CopyResourceWithExistingResourceNameExpectedCopiesResourceToTarget()
-        {
-            List<IResource> sourceResources;
-            var sourceWorkspaceID = Guid.NewGuid();
-            SaveResources(sourceWorkspaceID, out sourceResources);
-
-            List<IResource> targetResources;
-            var targetWorkspaceID = Guid.NewGuid();
-            SaveResources(targetWorkspaceID, out targetResources);
-
-            var sourceResource = sourceResources[0];
-            var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
-            var targetFile = new FileInfo(targetResource.FilePath);
-
-
-            var result = new ResourceCatalog().CopyResource(sourceResource.ResourceID, sourceWorkspaceID, targetWorkspaceID);
-            Assert.IsTrue(result);
-            targetFile.Refresh();
-            Assert.IsTrue(targetFile.Exists);
         }
 
         [TestMethod]

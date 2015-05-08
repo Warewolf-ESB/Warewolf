@@ -23,7 +23,7 @@ namespace Dev2.Activities
             _label = label;
             try
             {
-                if (DataListUtils.IsValueRecordset(_inputVariable))
+                if (ExecutionEnvironment.IsRecordsetIdentifier(_inputVariable) && DataListUtil.IsEvaluated(_inputVariable))
                 {
                     if (DataListUtil.GetRecordsetIndexType(_inputVariable) == enRecordsetIndexType.Blank)
                     {
@@ -46,6 +46,7 @@ namespace Dev2.Activities
                     while (innerIterator.HasMoreData())
                     {
                         var stringToUse = "";
+                        // ReSharper disable once LoopCanBeConvertedToQuery
                         foreach (var warewolfIterator in innerListOfIters)
                         {
                             stringToUse += warewolfIterator.GetNextValue();
@@ -56,6 +57,7 @@ namespace Dev2.Activities
                     _evalResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomListresult(new WarewolfAtomList<DataASTMutable.WarewolfAtom>(DataASTMutable.WarewolfAtom.Nothing, atomList));
                     if (DataListUtil.IsFullyEvaluated(finalString))
                     {
+                        _inputVariable = finalString;
                         _evalResult = environment.Eval(finalString);
                     }
                 }
@@ -96,11 +98,11 @@ namespace Dev2.Activities
                 if (scalarResult != null && !scalarResult.Item.IsNothing)
                 {
                     var warewolfAtomToString = ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item);
-                    if (warewolfAtomToString == _inputVariable && DataListUtils.IsEvaluated(_inputVariable))
+                    if (warewolfAtomToString == _inputVariable && DataListUtil.IsEvaluated(_inputVariable))
                     {
                         warewolfAtomToString = null;
                     }
-                    if (!DataListUtils.IsEvaluated(_inputVariable))
+                    if (!DataListUtil.IsEvaluated(_inputVariable))
                     {
                         _inputVariable = null;
                     }

@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
-using Dev2.Converters.DateAndTime;
+using Dev2.Common.DateAndTime;
 
 namespace Dev2.Activities.Designers2.DateTime
 {

@@ -34,6 +34,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using System.Xaml;
 using System.Xml.Linq;
 using Caliburn.Micro;
@@ -51,7 +52,6 @@ using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Dialogs;
-using Dev2.Enums;
 using Dev2.Factories;
 using Dev2.Factory;
 using Dev2.Interfaces;
@@ -226,8 +226,8 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 if (_changeIsPossible)
                 {
-                    AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
                     _changeIsPossible = false;
+                    AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
                 }
 
         }
@@ -1639,8 +1639,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
         private void RunUpdateOnDispatcher(IList<IDataListVerifyPart> workflowFields)
         {
-            Application.Current.Dispatcher.Invoke(() =>
-            DataListSingleton.ActiveDataList.UpdateDataListItems(ResourceModel, workflowFields));
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Send,new System.Action(() =>
+            DataListSingleton.ActiveDataList.UpdateDataListItems(ResourceModel, workflowFields)));
         }
 
         public void Handle(UpdateWorksurfaceFlowNodeDisplayName message)

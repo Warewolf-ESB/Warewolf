@@ -28,6 +28,7 @@ using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
 using CommandLine;
+using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
@@ -311,7 +312,14 @@ namespace Dev2
             {
                 File.WriteAllText(settingsConfigFile, GlobalConstants.DefaultServerLogFileConfig);
             }
-            XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
+            try
+            {
+                XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+            }
             InitializeCommandLineArguments();
         }
 
@@ -1606,12 +1614,16 @@ namespace Dev2
         /// <date>2013/03/13</date>
         bool LoadResourceCatalog()
         {
+            CustomContainer.Register<IActivityParser>(new ActivityParser());
             MigrateOldResources();
             Write("Loading resource catalog...  ");
             // First call initializes instance
 #pragma warning disable 168
             // ReSharper disable UnusedVariable
             var catalog = ResourceCatalog.Instance;
+            WriteLine("done.");
+            Write("Loading resource activity cache...  ");
+            catalog.LoadResourceActivityCache(GlobalConstants.ServerWorkspaceID);
             // ReSharper restore UnusedVariable
 #pragma warning restore 168
             WriteLine("done.");
@@ -1732,17 +1744,8 @@ namespace Dev2
         bool StartDataListServer()
         {
             // PBI : 5376 - Create instance of the Server compiler
-            Write("Starting DataList Server...  ");
-
             DataListFactory.CreateServerDataListCompiler();
             BinaryDataListStorageLayer.Setup();
-
-            var mbReserved = BinaryDataListStorageLayer.GetCapacityMemoryInMb();
-
-            Write(" [ Reserving " + mbReserved.ToString("#") + " MBs of cache ] ");
-
-            Write("done.");
-            WriteLine("");
             return true;
         }
 

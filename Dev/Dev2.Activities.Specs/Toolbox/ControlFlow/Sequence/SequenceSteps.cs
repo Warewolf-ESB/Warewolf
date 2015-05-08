@@ -16,7 +16,6 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Data.Enums;
 using Dev2.Diagnostics.Debug;
-using Dev2.Enums;
 using Dev2.Runtime.ESB.Control;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -526,12 +525,12 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         {
             DsfSequenceActivity sequence;
             ScenarioContext.Current.TryGetValue("activity", out sequence);
-            //            var activityList = CommonSteps.GetActivityList();
-            //
-            //            foreach(var activity in activityList)
-            //            {
-            //                sequence.Activities.Add(activity.Value);
-            //            }
+//                        var activityList = CommonSteps.GetActivityList();
+//            
+//                        foreach(var activity in activityList)
+//                        {
+//                            sequence.Activities.Add(activity.Value);
+//                        }
             return sequence;
         }
 

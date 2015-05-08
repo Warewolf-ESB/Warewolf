@@ -17,7 +17,6 @@ using System.Net.Mail;
 using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.DataList.Contract;
-using Dev2.Enums;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -109,13 +108,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             TestData = "<root><testVar /></root>";
             //------------Execute Test---------------------------
-            var result = ExecuteProcess(channel: esbChannelMock.Object);
+            ExecuteProcess(channel: esbChannelMock.Object);
             //------------Assert Results-------------------------
             mock.Verify(sender => sender.Send(emailSourceForTesting, It.IsAny<MailMessage>()), Times.Once());
-            Assert.IsFalse(Compiler.HasErrors(result.DataListID));
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(activity.Body, mailMessage.Body);
             Assert.AreEqual(activity.FromAccount, mailMessage.From.Address);
@@ -150,13 +147,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             TestData = "<root><Subject>SubJectValue</Subject><Body>BodyValue</Body><FromAccount>from.someone@amail.account</FromAccount><ToAccount>to.someone@amail.account</ToAccount></root>";
             CurrentDl = "<ADL><Subject></Subject><Body></Body><FromAccount></FromAccount><ToAccount></ToAccount></ADL>";
             //------------Execute Test---------------------------
-            var result = ExecuteProcess(channel: esbChannelMock.Object);
+            ExecuteProcess(channel: esbChannelMock.Object);
             //------------Assert Results-------------------------
             mock.Verify(sender => sender.Send(emailSourceForTesting, It.IsAny<MailMessage>()), Times.Once());
-            Assert.IsFalse(Compiler.HasErrors(result.DataListID));
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual("from.someone@amail.account", mailMessage.From.Address);
             Assert.AreEqual("to.someone@amail.account", mailMessage.To[0].Address);
@@ -191,12 +186,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             TestData = "<root><Subject>SubJectValue</Subject><Body>BodyValue</Body><FromAccount>from.someone@amail.account</FromAccount><ToAccount>to.someone@amail.account,to1.someone@amail.account,to.someone1@amail.account;to.someone@amail1.account;to.so2meone@amail.account,,</ToAccount></root>";
             CurrentDl = "<ADL><Subject></Subject><Body></Body><FromAccount></FromAccount><ToAccount></ToAccount></ADL>";
             //------------Execute Test---------------------------
-            var result = ExecuteProcess(channel: esbChannelMock.Object);
+            ExecuteProcess(channel: esbChannelMock.Object);
             //------------Assert Results-------------------------
             mock.Verify(sender => sender.Send(emailSourceForTesting, It.IsAny<MailMessage>()), Times.Once());
-            Assert.IsFalse(Compiler.HasErrors(result.DataListID));
+            
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
             Assert.AreEqual("to.someone@amail.account", mailMessage.To[0].Address);
             Assert.AreEqual("to1.someone@amail.account", mailMessage.To[1].Address);
             Assert.AreEqual("to.someone1@amail.account", mailMessage.To[2].Address);
@@ -232,12 +226,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             TestData = "<root><Subject>SubJectValue</Subject><Body>BodyValue</Body><FromAccount>from.someone@amail.account</FromAccount><BCC>to.someone@amail.account,to1.someone@amail.account,to.someone1@amail.account;to.someone@amail1.account;to.so2meone@amail.account,,</BCC></root>";
             CurrentDl = "<ADL><Subject></Subject><Body></Body><FromAccount></FromAccount><BCC></BCC></ADL>";
             //------------Execute Test---------------------------
-            var result = ExecuteProcess(channel: esbChannelMock.Object);
+            ExecuteProcess(channel: esbChannelMock.Object);
             //------------Assert Results-------------------------
             mock.Verify(sender => sender.Send(emailSourceForTesting, It.IsAny<MailMessage>()), Times.Once());
-            Assert.IsFalse(Compiler.HasErrors(result.DataListID));
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
             Assert.AreEqual("to.someone@amail.account", mailMessage.Bcc[0].Address);
             Assert.AreEqual("to1.someone@amail.account", mailMessage.Bcc[1].Address);
             Assert.AreEqual("to.someone1@amail.account", mailMessage.Bcc[2].Address);
@@ -272,12 +264,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             TestData = "<root><Subject>SubJectValue</Subject><Body>BodyValue</Body><FromAccount>from.someone@amail.account</FromAccount><CC>to.someone@amail.account,to1.someone@amail.account,to.someone1@amail.account;to.someone@amail1.account;to.so2meone@amail.account,,</CC></root>";
             CurrentDl = "<ADL><Subject></Subject><Body></Body><FromAccount></FromAccount><CC></CC></ADL>";
             //------------Execute Test---------------------------
-            var result = ExecuteProcess(channel: esbChannelMock.Object);
+            ExecuteProcess(channel: esbChannelMock.Object);
             //------------Assert Results-------------------------
             mock.Verify(sender => sender.Send(emailSourceForTesting, It.IsAny<MailMessage>()), Times.Once());
-            Assert.IsFalse(Compiler.HasErrors(result.DataListID));
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
             Assert.AreEqual("to.someone@amail.account", mailMessage.CC[0].Address);
             Assert.AreEqual("to1.someone@amail.account", mailMessage.CC[1].Address);
             Assert.AreEqual("to.someone1@amail.account", mailMessage.CC[2].Address);
@@ -310,7 +300,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess(channel: esbChannelMock.Object, isDebug: true);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
             //------------Assert Results-------------------------
             mock.Verify(sender => sender.Send(emailSourceForTesting, It.IsAny<MailMessage>()), Times.Exactly(4));
         }
@@ -379,7 +368,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = ExecuteProcess(channel: esbChannelMock.Object, isDebug: true);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             //------------Assert Results-------------------------
             emailSender.Verify(sender => sender.Send(It.IsAny<EmailSource>(), It.IsAny<MailMessage>()), Times.Once());
@@ -439,7 +427,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 new Tuple<string, string>("[[Bcc]]", "BccValue"),
                 new Tuple<string, string>("[[Attachments]]", "AttachmentsValue"),
 
-            }, null);
+            });
             //------------Assert Results-------------------------
             Assert.AreEqual("BodyValue", activity.Body);
             Assert.AreEqual("SubJectValue", activity.Subject);
@@ -474,7 +462,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 new Tuple<string, string>("[[Result]]", "TheResult"),
 
-            }, null);
+            });
             //------------Assert Results-------------------------
             Assert.AreEqual("TheResult", activity.Result);
         }

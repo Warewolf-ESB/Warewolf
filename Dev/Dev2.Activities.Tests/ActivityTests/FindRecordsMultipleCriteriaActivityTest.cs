@@ -14,7 +14,6 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
-using Dev2.Common.Interfaces.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -103,96 +102,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             TestData = "<root>" + data + "</root>";
             IDSFDataObject result = ExecuteProcess();
 
-            IList<IBinaryDataListItem> actual;
+            IList<string> actual;
             string error;
-            GetRecordSetFieldValueFromDataList(result.DataListID, "Result", "res", out actual, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "Result", "res", out actual, out error);
 
             Assert.AreEqual(1, actual.Count);
-            Assert.AreEqual("-1", actual[0].TheValue);
+            Assert.AreEqual("-1", actual[0]);
         }
-
-
-        [TestMethod]
-        public void FindRecordsMulitpleCriteriaActivity_FindWithMultipleCriteria_Expected_Results_For_2_3_6_7_8_9()
-        {
-            TestStartNode = new FlowStep
-            {
-                Action = new DsfFindRecordsMultipleCriteriaActivity
-                {
-                    FieldsToSearch = "[[Recset().Field1]],[[Recset().Field2]],[[Recset().Field3]]",
-                    ResultsCollection = new List<FindRecordsTO> { new FindRecordsTO("32", ">", 1), new FindRecordsTO("Mr A", "=", 2) },
-                    StartIndex = "",
-                    Result = "[[Result().res]]",
-                    RequireAllTrue = false
-                }
-            };
-
-            const string data = @"<ADL>
-  <Recset>
-	<Field1>Mr A</Field1>
-	<Field2>25</Field2>
-	<Field3>a@abc.co.za</Field3>
-  </Recset>
-  <Recset>
-	<Field1>Mr B</Field1>
-	<Field2>651</Field2>
-	<Field3>b@abc.co.za</Field3>
-  </Recset>
-  <Recset>
-	<Field1>Mr C</Field1>
-	<Field2>48</Field2>
-	<Field3>c@abc.co.za</Field3>
-  </Recset>
-  <Recset>
-	<Field1>Mr D</Field1>
-	<Field2>1</Field2>
-	<Field3>d@abc.co.za</Field3>
-  </Recset>
-  <Recset>
-	<Field1>Mr E</Field1>
-	<Field2>22</Field2>
-	<Field3>e@abc.co.za</Field3>
-  </Recset>
-  <Recset>
-	<Field1>Mr F</Field1>
-	<Field2>321</Field2>
-	<Field3>f@abc.co.za</Field3>
-  </Recset>
-  <Recset>
-	<Field1>Mr G</Field1>
-	<Field2>51</Field2>
-	<Field3>g@abc.co.za</Field3>
-  </Recset>
-  <Recset>
-	<Field1>Mr H</Field1>
-	<Field2>2120</Field2>
-	<Field3>h@abc.co.za</Field3>
-  </Recset>
-  <Recset>
-	<Field1>Mr I</Field1>
-	<Field2>46</Field2>
-	<Field3>i@abc.co.za</Field3>
-  </Recset>
-</ADL>";
-
-            CurrentDl = "<DL><Recset><Field1/><Field2/><Field3/></Recset><Result><res/></Result></DL>";
-            TestData = "<root>" + data + "</root>";
-            IDSFDataObject result = ExecuteProcess();
-
-            IList<IBinaryDataListItem> actual;
-            string error;
-            GetRecordSetFieldValueFromDataList(result.DataListID, "Result", "res", out actual, out error);
-
-            Assert.AreEqual(7, actual.Count);
-            Assert.AreEqual("2", actual[0].TheValue);
-            Assert.AreEqual("3", actual[1].TheValue);
-            Assert.AreEqual("6", actual[2].TheValue);
-            Assert.AreEqual("7", actual[3].TheValue);
-            Assert.AreEqual("8", actual[4].TheValue);
-            Assert.AreEqual("9", actual[5].TheValue);
-            Assert.AreEqual("1", actual[6].TheValue);
-        }
-
 
         [TestMethod]
         public void FindRecordsMulitpleCriteriaActivity_FindWithMultipleCriteriaExpectAllTrue_Expected_NoResults()
@@ -261,12 +177,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             TestData = "<root>" + data + "</root>";
             IDSFDataObject result = ExecuteProcess();
 
-            IList<IBinaryDataListItem> actual;
+            IList<string> actual;
             string error;
-            GetRecordSetFieldValueFromDataList(result.DataListID, "Result", "res", out actual, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "Result", "res", out actual, out error);
 
             Assert.AreEqual(1, actual.Count);
-            Assert.AreEqual("-1", actual[0].TheValue);
+            Assert.AreEqual("-1", actual[0]);
         }
 
         [TestMethod]
@@ -283,7 +199,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
 
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(null, null);
+            act.UpdateForEachInputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual("/", act.ResultsCollection[0].SearchCriteria);
             Assert.AreEqual("[[Customers(*).DOB]]", act.FieldsToSearch);
@@ -305,7 +221,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple1 = new Tuple<string, string>("/", "Test");
             var tuple2 = new Tuple<string, string>("[[Customers(*).DOB]]", "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.ResultsCollection[0].SearchCriteria);
             Assert.AreEqual("Test2", act.FieldsToSearch);
@@ -325,7 +241,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
 
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(null, null);
+            act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual("[[res]]", act.Result);
         }
@@ -346,7 +262,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual("[[res]]", act.Result);
         }
@@ -366,7 +282,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var tuple1 = new Tuple<string, string>("[[res]]", "Test");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.Result);
         }

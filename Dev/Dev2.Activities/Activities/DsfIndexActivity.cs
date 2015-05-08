@@ -119,9 +119,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary>       
         protected override void OnExecute(NativeActivityContext context)
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
             IDev2IndexFinder indexFinder = new Dev2IndexFinder();
             ErrorResultTO allErrors = new ErrorResultTO();
@@ -135,7 +141,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 allErrors.MergeErrors(errors);
 
                 #region Iterate and Find Index
-                if (dataObject.IsDebugMode())
+
+                if(dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(new DebugEvalResult(InField, "In Field", dataObject.Environment));
                     AddDebugInputItem(new DebugItemStaticDataParams(Index, "Index"));
@@ -148,7 +155,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 var completeResultList = new List<string>();
 
-                while (outerIteratorCollection.HasMoreData())
+                while(outerIteratorCollection.HasMoreData())
                 {
                     allErrors.MergeErrors(errors);
                     errors.ClearErrors();
@@ -156,48 +163,46 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     innerIteratorCollection.AddVariableToIterateOn(itrInField);
 
                     string chars = outerIteratorCollection.FetchNextValue(itrChar);
-                    while (innerIteratorCollection.HasMoreData())
+                    while(innerIteratorCollection.HasMoreData())
                     {
-                        if (!string.IsNullOrEmpty(InField) && !string.IsNullOrEmpty(Characters))
+                        if(!string.IsNullOrEmpty(InField) && !string.IsNullOrEmpty(Characters))
                         {
                             var val = innerIteratorCollection.FetchNextValue(itrInField);
-                            if (val != null)
+                            if(val != null)
                             {
                                 IEnumerable<int> returedData = indexFinder.FindIndex(val, Index, chars, Direction, MatchCase, StartIndex);
                                 completeResultList.AddRange(returedData.Select(value => value.ToString(CultureInfo.InvariantCulture)).ToList());
                                 //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-
                             }
                         }
                     }
-
                 }
                 var rule = new IsSingleValueRule(() => Result);
                 var single = rule.Check();
-                if (single != null)
+                if(single != null)
                 {
                     allErrors.AddError(single.Message);
                 }
                 else
                 {
-                    if (DataListUtil.IsValueRecordset(Result))
+                    if(DataListUtil.IsValueRecordset(Result))
                     {
                         var rsType = DataListUtil.GetRecordsetIndexType(Result);
-                        if (rsType == enRecordsetIndexType.Numeric)
+                        if(rsType == enRecordsetIndexType.Numeric)
                         {
                             dataObject.Environment.Assign(Result, string.Join(",", completeResultList));
-                            allErrors.MergeErrors(errors);                            
+                            allErrors.MergeErrors(errors);
                         }
                         else
                         {
                             var idx = 1;
-                            foreach (var res in completeResultList)
+                            foreach(var res in completeResultList)
                             {
-                                if (rsType == enRecordsetIndexType.Blank)
+                                if(rsType == enRecordsetIndexType.Blank)
                                 {
                                     dataObject.Environment.Assign(Result, res);
                                 }
-                                if (rsType == enRecordsetIndexType.Star)
+                                if(rsType == enRecordsetIndexType.Star)
                                 {
                                     var expression = DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(Result), DataListUtil.ExtractFieldNameFromValue(Result), idx.ToString());
                                     dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(expression), res);
@@ -211,17 +216,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         dataObject.Environment.Assign(Result, string.Join(",", completeResultList));
                     }
                     allErrors.MergeErrors(errors);
-                    if (!allErrors.HasErrors() && dataObject.IsDebugMode())
+                    if(!allErrors.HasErrors() && dataObject.IsDebugMode())
                     {
-                        AddDebugOutputItem(new DebugEvalResult(Result,"",dataObject.Environment));
+                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
                     }
                 }
 
                 #endregion
-
-
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Dev2Logger.Log.Error("DSFFindActivity", e);
                 allErrors.AddError(e.Message);
@@ -229,25 +232,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             finally
             {
                 #region Handle Errors
+
                 var hasErrors = allErrors.HasErrors();
-                if (hasErrors)
+                if(hasErrors)
                 {
                     DisplayAndWriteError("DsfIndexActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
-                    dataObject.Environment.Assign(Result,null);
                 }
 
                 #endregion
 
-                if (dataObject.IsDebugMode())
+                if(dataObject.IsDebugMode())
                 {
-                    if (hasErrors)
+                    if(hasErrors)
                     {
-                        AddDebugOutputItem(new DebugEvalResult(Result,"",dataObject.Environment));
+                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
                     }
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
@@ -282,7 +285,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Update ForEach Inputs/Outputs
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {
@@ -302,7 +305,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

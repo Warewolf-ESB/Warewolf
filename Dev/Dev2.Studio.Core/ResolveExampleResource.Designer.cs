@@ -44,7 +44,7 @@ namespace Dev2 {
         internal ResolveExampleResource() {
         }
         
-        /// <summary>
+        /// <summary>esio
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]

@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Dev2;
-using Dev2.Common.Interfaces.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -57,9 +57,8 @@ namespace ActivityUnitTests.ActivityTests
             const string expected = "209";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -79,14 +78,13 @@ namespace ActivityUnitTests.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             string error;
-            IList<IBinaryDataListItem> results;
-            GetRecordSetFieldValueFromDataList(result.DataListID, "resCol", "res", out results, out error);
+            IList<string> results;
+            GetRecordSetFieldValueFromDataList(result.Environment, "resCol", "res", out results, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
-            Assert.AreEqual("8847", results[0].TheValue);
-            Assert.AreEqual("9477", results[1].TheValue);
-            Assert.AreEqual("9090", results[2].TheValue);
+            Assert.AreEqual("8847", results[0]);
+            Assert.AreEqual("9477", results[1]);
+            Assert.AreEqual("9090", results[2]);
         }
 
         //2013.03.11: Ashley Lewis - PBI 9167 Moved to positive tests
@@ -106,10 +104,9 @@ namespace ActivityUnitTests.ActivityTests
             const string expected = "209";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -134,7 +131,7 @@ namespace ActivityUnitTests.ActivityTests
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
 
             Assert.AreEqual("0", actual);
         }
@@ -143,98 +140,35 @@ namespace ActivityUnitTests.ActivityTests
 
         #region Error Test Cases
 
-        [TestMethod]
-        public void Input1_Not_Matching_InputFormat_Expected_Error()
-        {
-            SetupArguments(
-                           "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
-                         , ActivityStrings.DateTimeDiff_DataListShape
-                         , "2012 09:20:30 AM"
-                         , "2012/10/01 07:15:50 AM"
-                         , "yyyy/mm/dd 12h:min:ss am/pm"
-                         , "Days"
-                         , "[[Result]]"
-                         );
-            IDSFDataObject result = ExecuteProcess();
-
-            var res = Compiler.HasErrors(result.DataListID);
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(res);
-        }
-
-        [TestMethod]
-        public void Input2_Not_Matching_InputFormat_Expected_Error()
-        {
-
-            SetupArguments(
-                            "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
-                          , ActivityStrings.DateTimeDiff_DataListShape
-                          , "2012/03/05 09:20:30 AM"
-                          , "2012 07:15:50 AM"
-                          , "yyyy/mm/dd 12h:min:ss am/pm"
-                          , "Days"
-                          , "[[Result]]"
-                          );
-
-            IDSFDataObject result = ExecuteProcess();
-
-            var res = Compiler.HasErrors(result.DataListID);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-
-            Assert.IsTrue(res);
-        }
-
-        [TestMethod]
-        public void Invalid_InputFormat_Expected_Error()
-        {
-            SetupArguments(
-                           "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
-                         , ActivityStrings.DateTimeDiff_DataListShape
-                         , "2012/03/05 09:20:30 AM"
-                         , "2012/10/01 07:15:50 AM"
-                         , "yyyy/wrongFromat/dd 12h:min:ss am/pm"
-                         , "Days"
-                         , "[[Result]]"
-                         );
-            IDSFDataObject result = ExecuteProcess();
-
-            var res = Compiler.HasErrors(result.DataListID);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(res);
-        }
-
-        [TestMethod]
-        public void ErrorHandeling_Expected_ErrorTags()
-        {
-            SetupArguments(
-                            "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
-                          , ActivityStrings.DateTimeDiff_DataListShape
-                          , "2012/10/01 07:15:50 AM"
-                          , "2012/10/01 07:15:50 AM"
-                          , "yyyy/mm/dd 12h:min:ss am/pm"
-                          , "Days"
-                          , "[[//().rec]]"
-                          );
-
-            IDSFDataObject result = ExecuteProcess();
-
-            var res = Compiler.HasErrors(result.DataListID);
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(res);
-        }
-
         #endregion Error Test Cases
 
-      
+        #region Get Input/Output Tests
+
+        [TestMethod]
+        public void DateTimeDifference_GetInputs_Expected_Four_Input()
+        {
+            DsfDateTimeDifferenceActivity testAct = new DsfDateTimeDifferenceActivity { Input1 = "27-10-2012", Input2 = "28-10-2012", InputFormat = "dd-mm-yyyy", OutputType = "Years", Result = "[[result]]" };
+
+            IBinaryDataList inputs = testAct.GetInputs();
+
+            // remove test datalist ;)
+
+            Assert.AreEqual(4, inputs.FetchAllEntries().Count);
+        }
+
+        [TestMethod]
+        public void DateTimeDifference_GetOutputs_Expected_One_Output()
+        {
+            DsfDateTimeDifferenceActivity testAct = new DsfDateTimeDifferenceActivity { Input1 = "27-10-2012", Input2 = "28-10-2012", InputFormat = "dd-mm-yyyy", OutputType = "Years", Result = "[[result]]" };
+
+            IBinaryDataList outputs = testAct.GetOutputs();
+
+            // remove test datalist ;)
+
+            Assert.AreEqual(1, outputs.FetchAllEntries().Count);
+        }
+
+        #endregion Get Input/Output Tests
 
         #region Private Test Methods
 
