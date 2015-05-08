@@ -135,7 +135,6 @@
     <Compile Include="Core\Graph\IPathSegment.cs" />
     <Compile Include="Core\Graph\OutputFormats.cs" />
     <Compile Include="DataList\Contract\enTranslationDepth.cs" />
-    <Compile Include="DataList\Contract\IBinaryDataListItem.cs" />
     <Compile Include="Data\IDev2Definition.cs" />
     <Compile Include="Data\IInputOutputViewModel.cs" />
     <Compile Include="Data\IResource.cs" />
