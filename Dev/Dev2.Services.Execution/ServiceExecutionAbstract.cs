@@ -73,8 +73,7 @@ namespace Dev2.Services.Execution
             //This execution will throw errors from the constructor
             errors = new ErrorResultTO();
             errors.MergeErrors(ErrorResult);
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            ExecuteImpl(compiler, out errors);
+            ExecuteImpl(out errors);
             return DataObj.DataListID;
         }
 
@@ -116,7 +115,7 @@ namespace Dev2.Services.Execution
         public TService Service { get; set; }
         public string InstanceInputDefinitions { get; set; }
 
-        protected void ExecuteImpl(IDataListCompiler compiler, out ErrorResultTO errors)
+        protected void ExecuteImpl(out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
 

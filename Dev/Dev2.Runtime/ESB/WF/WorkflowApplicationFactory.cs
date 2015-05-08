@@ -125,12 +125,10 @@ namespace Dev2.Runtime.ESB.WF
                 }
 
                 // Force a save to the server ;)
-                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
                 IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
 
 
                 wfApp.Extensions.Add(dataTransferObject);
-                wfApp.Extensions.Add(compiler);
                 wfApp.Extensions.Add(parser);
 
             }

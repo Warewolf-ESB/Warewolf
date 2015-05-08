@@ -223,7 +223,6 @@
     <Compile Include="Builders\DefinitionBuilder.cs" />
     <Compile Include="Builders\RecordSetCollectionBuilder.cs" />
     <Compile Include="Builders\RecordSetDefintionMutator.cs" />
-    <Compile Include="Compilers\DataListCompiler.cs" />
     <Compile Include="Decisions\Dev2DataListDecisionHandler.cs" />
     <Compile Include="Decisions\Operations\Dev2DecisionFactory.cs" />
     <Compile Include="Decisions\Operations\enDecisionType.cs" />

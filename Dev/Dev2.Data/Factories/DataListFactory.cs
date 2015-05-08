@@ -136,15 +136,6 @@ namespace Dev2.DataList.Contract
             return new InputLanguageParser();
         }
 
-        public static IDataListCompiler CreateDataListCompiler()
-        {
-            return CreateDataListCompiler(CreateServerDataListCompiler());
-        }
-
-        public static IDataListCompiler CreateDataListCompiler(IEnvironmentModelDataListCompiler serverDataListCompiler)
-        {
-            return new DataListCompiler(CreateServerDataListCompiler());
-        }
 
         public static IEnvironmentModelDataListCompiler CreateServerDataListCompiler()
         {
