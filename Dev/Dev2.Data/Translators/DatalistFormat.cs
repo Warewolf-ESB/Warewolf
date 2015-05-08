@@ -67,7 +67,7 @@ namespace Dev2.DataList.Contract
 
         #region Constructor
 
-        private DataListFormat(string formatName, EmitionTypes publicType, string headerType)
+        DataListFormat(string formatName, EmitionTypes publicType, string headerType)
         {
             _formatName = formatName;
             PublicFormatName = publicType;

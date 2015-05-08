@@ -54,7 +54,6 @@ namespace Dev2.Runtime.WebServer.Handlers
             //lock(ExecutionObject)
             {
                 string executePayload = "";
-                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
                 Guid workspaceGuid;
 
                 if(workspaceId != null)
@@ -173,8 +172,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     allErrors.AddError(error,true);
                 }
                 // Fetch return type ;)
-                var formatter = publicFormats.FirstOrDefault(c => c.PublicFormatName == dataObject.ReturnType)
-                                ?? publicFormats.FirstOrDefault(c => c.PublicFormatName == EmitionTypes.XML);
+                var formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
 
                 // force it to XML if need be ;)
 
@@ -194,6 +192,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                         {
                             if (dataObject.ReturnType == EmitionTypes.JSON)
                             {
+                                formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                                 executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, workspaceGuid,resource.DataList.ToString());
                             }
                             else if (dataObject.ReturnType == EmitionTypes.XML)
@@ -265,24 +264,6 @@ namespace Dev2.Runtime.WebServer.Handlers
                         }
 
                         DataListRegistar.DisposeScope(Thread.CurrentThread.ManagedThreadId, executionDlid);
-                    }
-                }
-
-                // old HTML throw back ;)
-                if(dataObject.ReturnType == EmitionTypes.WIZ)
-                {
-                    int start = (executePayload.IndexOf("<Dev2System.FormView>", StringComparison.Ordinal) + 21);
-                    int end = (executePayload.IndexOf("</Dev2System.FormView>", StringComparison.Ordinal));
-                    int len = (end - start);
-                    if(len > 0)
-                    {
-                        if(dataObject.ReturnType == EmitionTypes.WIZ)
-                        {
-                            string tmp = executePayload.Substring(start, (end - start));
-                            string result = CleanupHtml(tmp);
-                            const string DocType = @"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"">";
-                            return new StringResponseWriter(String.Format("{0}\r\n{1}", DocType, result), ContentTypes.Html);
-                        }
                     }
                 }
 
