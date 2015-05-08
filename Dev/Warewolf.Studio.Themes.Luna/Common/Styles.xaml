@@ -12,8 +12,6 @@
     </ResourceDictionary.MergedDictionaries>
 
     <!--  *********************************  FONTS   *********************************  -->
-
-
     <FontFamily x:Key="DefaultFontFamily">Source Sans Pro</FontFamily>
     <FontFamily x:Key="IconFont">FontAwesome</FontFamily>
     <FontWeight x:Key="DefaultFontWeight">Normal</FontWeight>
@@ -28,6 +26,7 @@
     <system:Double x:Key="DefaultElementBorderValue">5</system:Double>
     <system:Double x:Key="DefaultContainerBorderValue">5</system:Double>
     
+    <!-- CONTAINER THICKNESS -->
     <Thickness x:Key="ContainerBorder">
         <Thickness.Bottom>7</Thickness.Bottom>
         <Thickness.Left>7</Thickness.Left>
@@ -40,32 +39,11 @@
         <Thickness.Right>5</Thickness.Right>
         <Thickness.Top>5</Thickness.Top>
     </Thickness>
-    <Thickness x:Key="ElementBorderBottom">
-        <Thickness.Bottom>5</Thickness.Bottom>
+    <!-- LEFT/TOP -->
+    <Thickness x:Key="ElementBorderTop">
+        <Thickness.Bottom>0</Thickness.Bottom>
         <Thickness.Left>0</Thickness.Left>
         <Thickness.Right>0</Thickness.Right>
-        <Thickness.Top>0</Thickness.Top>
-    </Thickness>
-    
-    <Thickness x:Key="ElementBottomRightBorder">
-        <Thickness.Bottom>0</Thickness.Bottom>
-        <Thickness.Left>0</Thickness.Left>
-        <Thickness.Right>7</Thickness.Right>
-        <Thickness.Top>5</Thickness.Top>
-    </Thickness>
-    
-
-    <Thickness x:Key="ElementBorderLeftRight">
-        <Thickness.Bottom>0</Thickness.Bottom>
-        <Thickness.Left>7</Thickness.Left>
-        <Thickness.Right>5</Thickness.Right>
-        <Thickness.Top>0</Thickness.Top>
-    </Thickness>
-
-    <Thickness x:Key="ElementBorderLeftRightTop">
-        <Thickness.Bottom>0</Thickness.Bottom>
-        <Thickness.Left>7</Thickness.Left>
-        <Thickness.Right>5</Thickness.Right>
         <Thickness.Top>5</Thickness.Top>
     </Thickness>
     <Thickness x:Key="ElementBorderLeftTop">
@@ -80,22 +58,53 @@
         <Thickness.Right>0</Thickness.Right>
         <Thickness.Top>0</Thickness.Top>
     </Thickness>
-    
+    <!-- RIGHT/BOTTOM -->
+    <Thickness x:Key="ElementBorderBottom">
+        <Thickness.Bottom>5</Thickness.Bottom>
+        <Thickness.Left>0</Thickness.Left>
+        <Thickness.Right>0</Thickness.Right>
+        <Thickness.Top>0</Thickness.Top>
+    </Thickness>
+    <Thickness x:Key="ElementBottomRightBorder">
+        <Thickness.Bottom>0</Thickness.Bottom>
+        <Thickness.Left>0</Thickness.Left>
+        <Thickness.Right>7</Thickness.Right>
+        <Thickness.Top>5</Thickness.Top>
+    </Thickness>
     <Thickness x:Key="ElementBorderRight">
         <Thickness.Bottom>0</Thickness.Bottom>
         <Thickness.Left>0</Thickness.Left>
         <Thickness.Right>5</Thickness.Right>
         <Thickness.Top>0</Thickness.Top>
     </Thickness>
-
+    <Thickness x:Key="ElementBorderBottomRight">
+        <Thickness.Bottom>5</Thickness.Bottom>
+        <Thickness.Left>0</Thickness.Left>
+        <Thickness.Right>5</Thickness.Right>
+        <Thickness.Top>0</Thickness.Top>
+    </Thickness>
+    <!-- LEFT/RIGHT -->
+    <Thickness x:Key="ElementBorderLeftRight">
+        <Thickness.Bottom>0</Thickness.Bottom>
+        <Thickness.Left>5</Thickness.Left>
+        <Thickness.Right>5</Thickness.Right>
+        <Thickness.Top>0</Thickness.Top>
+    </Thickness>
+    <Thickness x:Key="ElementBorderLeftRightTop">
+        <Thickness.Bottom>0</Thickness.Bottom>
+        <Thickness.Left>7</Thickness.Left>
+        <Thickness.Right>5</Thickness.Right>
+        <Thickness.Top>5</Thickness.Top>
+    </Thickness>
     <Thickness x:Key="ElementBorderLeftTopRight">
         <Thickness.Bottom>0</Thickness.Bottom>
         <Thickness.Left>5</Thickness.Left>
         <Thickness.Right>7</Thickness.Right>
         <Thickness.Top>5</Thickness.Top>
     </Thickness>
-    <Thickness x:Key="ElementBorderTop">
-        <Thickness.Bottom>0</Thickness.Bottom>
+    <!-- TOP/BOTTOM -->
+    <Thickness x:Key="ElementBorderBottomTop">
+        <Thickness.Bottom>5</Thickness.Bottom>
         <Thickness.Left>0</Thickness.Left>
         <Thickness.Right>0</Thickness.Right>
         <Thickness.Top>5</Thickness.Top>
@@ -106,6 +115,70 @@
         <Thickness.Left>5</Thickness.Left>
         <Thickness.Right>7</Thickness.Right>
         <Thickness.Top>7</Thickness.Top>
+    </Thickness>
+
+    
+    
+    <!-- CONTROL THICKNESS -->
+    <Thickness x:Key="ControlBorderBottom">
+        <Thickness.Bottom>3</Thickness.Bottom>
+        <Thickness.Left>0</Thickness.Left>
+        <Thickness.Right>0</Thickness.Right>
+        <Thickness.Top>0</Thickness.Top>
+    </Thickness>
+    <Thickness x:Key="ControlBorderTop">
+        <Thickness.Bottom>0</Thickness.Bottom>
+        <Thickness.Left>0</Thickness.Left>
+        <Thickness.Right>0</Thickness.Right>
+        <Thickness.Top>3</Thickness.Top>
+    </Thickness>
+    <Thickness x:Key="ControlBorderBottomTop">
+        <Thickness.Bottom>3</Thickness.Bottom>
+        <Thickness.Left>0</Thickness.Left>
+        <Thickness.Right>0</Thickness.Right>
+        <Thickness.Top>3</Thickness.Top>
+    </Thickness>
+    <Thickness x:Key="ControlBorderTopRight">
+        <Thickness.Bottom>0</Thickness.Bottom>
+        <Thickness.Left>0</Thickness.Left>
+        <Thickness.Right>3</Thickness.Right>
+        <Thickness.Top>3</Thickness.Top>
+    </Thickness>
+    <Thickness x:Key="ControlBorderBottomRight">
+        <Thickness.Bottom>3</Thickness.Bottom>
+        <Thickness.Left>0</Thickness.Left>
+        <Thickness.Right>3</Thickness.Right>
+        <Thickness.Top>0</Thickness.Top>
+    </Thickness>
+    <Thickness x:Key="ElementBorderControlLeft">
+        <Thickness.Bottom>0</Thickness.Bottom>
+        <Thickness.Left>3</Thickness.Left>
+        <Thickness.Right>0</Thickness.Right>
+        <Thickness.Top>0</Thickness.Top>
+    </Thickness>
+    <Thickness x:Key="ElementBorderControlRight">
+        <Thickness.Bottom>0</Thickness.Bottom>
+        <Thickness.Left>0</Thickness.Left>
+        <Thickness.Right>3</Thickness.Right>
+        <Thickness.Top>0</Thickness.Top>
+    </Thickness>
+    <Thickness x:Key="ElementBorderControlLeftRight">
+        <Thickness.Bottom>0</Thickness.Bottom>
+        <Thickness.Left>3</Thickness.Left>
+        <Thickness.Right>3</Thickness.Right>
+        <Thickness.Top>0</Thickness.Top>
+    </Thickness>
+    <Thickness x:Key="ContainerBorderControlLeftRight">
+        <Thickness.Bottom>0</Thickness.Bottom>
+        <Thickness.Left>5</Thickness.Left>
+        <Thickness.Right>3</Thickness.Right>
+        <Thickness.Top>0</Thickness.Top>
+    </Thickness>
+    <Thickness x:Key="ContainerBorderControlRightLeft">
+        <Thickness.Bottom>0</Thickness.Bottom>
+        <Thickness.Left>3</Thickness.Left>
+        <Thickness.Right>5</Thickness.Right>
+        <Thickness.Top>0</Thickness.Top>
     </Thickness>
 </ResourceDictionary>
 

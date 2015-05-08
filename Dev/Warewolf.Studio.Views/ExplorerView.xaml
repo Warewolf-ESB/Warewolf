@@ -32,10 +32,10 @@
             </Grid.Background>
         </Grid>
 
-        <Grid x:Name="LayoutRoot" Margin="{StaticResource ContainerBorder}">
+        <Grid x:Name="LayoutRoot" Margin="{StaticResource ElementBorder}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="29" />
+                <RowDefinition Height="30" />
                 <RowDefinition Height="422*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -43,7 +43,9 @@
             </Grid.ColumnDefinitions>
 
             <!--  URI LOOKUP  -->
-            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding ShowConnectControl, Converter={StaticResource BoolToVisibilityConverter}}" >
+            <StackPanel HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch" 
+                        Visibility="{Binding ShowConnectControl, Converter={StaticResource BoolToVisibilityConverter}}" >
                 <views:ConnectControlView DataContext="{Binding ConnectControlViewModel}"/>
             </StackPanel>
             <!--  SERVICE FILTER  -->
@@ -53,36 +55,42 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="30" />
+                    <ColumnDefinition Width="25" />
                 </Grid.ColumnDefinitions>
 
-                <customControls:SearchTextBox Grid.Row="0" Margin="{StaticResource ElementBorderRight}"
-                     Grid.Column="0"
-                     x:Name="SearchTextBox"     
-                                          Style="{StaticResource SearchTextboxStyle}"
-                                          ClearSearchCommand="{Binding ClearSearchTextCommand}"
-                                          LabelText="Filter"
-                     Text="{Binding SearchText,
-                                    Delay=300,
-                                    UpdateSourceTrigger=PropertyChanged}"
-                      />
+                <!--Margin="{StaticResource ElementBorderRight}"-->
+                <customControls:SearchTextBox Grid.Row="0" 
+                                              Margin="{StaticResource ControlBorderTopRight}"
+                                              Grid.Column="0"
+                                              x:Name="SearchTextBox" 
+                                              Style="{StaticResource SearchTextboxStyle}"
+                                              ClearSearchCommand="{Binding ClearSearchTextCommand}"
+                                              LabelText="Filter"
+                                              HorizontalAlignment="Stretch"
+                                              Text="{Binding SearchText, Delay=300, UpdateSourceTrigger=PropertyChanged}" />
                 <Button Grid.Row="0"
-                    Grid.Column="1"
-                    Width="25"
-                    Height="25"
-                    Command="{Binding RefreshCommand}"
-                    Visibility="{Binding Path=IsRefreshing,
+                        Grid.Column="1"
+                        Width="25"
+                        Height="25"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Margin="{StaticResource ControlBorderTop}"
+                        Command="{Binding RefreshCommand}"
+                        Visibility="{Binding Path=IsRefreshing,
                                          Converter={StaticResource NotConverter}}">
-                    <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="16" Icon="Refresh" VerticalAlignment="Top" HorizontalAlignment="Center"/>
-
+                    <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
+                                    FontSize="16" 
+                                    Icon="Refresh" 
+                                    VerticalAlignment="Top" 
+                                    HorizontalAlignment="Center"/>
                 </Button>
                 <views:CircularProgressBar Grid.Row="0"
-                                       Grid.Column="1"
-                                       Width="25"
-                                       Height="25"
-                                       Margin="4,0,0,0"
-                                       Padding="2.5"
-                                       Visibility="{Binding Path=IsRefreshing,
+                                           Grid.Column="1"
+                                           Width="25"
+                                           Height="25"
+                                           
+                                           Padding="2.5"
+                                           Visibility="{Binding Path=IsRefreshing,
                                                             Converter={StaticResource BoolToVisibilityConverter}}" />
 
             </Grid>
