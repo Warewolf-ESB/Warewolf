@@ -253,7 +253,6 @@ namespace Dev2.Runtime.WebServer.Handlers
                 // Clean up the datalist from the server
                 if(!dataObject.WorkflowResumeable && executionDlid != GlobalConstants.NullDataListID)
                 {
-                    compiler.ForceDeleteDataListByID(executionDlid);
                     if(dataObject.IsDebug && !dataObject.IsRemoteInvoke && !dataObject.RunWorkflowAsync)
                     {
                         DataListRegistar.ClearDataList();
@@ -453,21 +452,9 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
             }
 
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            ErrorResultTO errors;
-            Guid pushedId = compiler.PushBinaryDataList(bdl.UID, bdl, out errors);
+            ErrorResultTO errors = new ErrorResultTO();
 
-            if(pushedId != Guid.Empty)
-            {
-                var result = compiler.ConvertFrom(pushedId, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
-                if(errors.HasErrors())
-                {
-                    Dev2Logger.Log.Error(errors.MakeDisplayReady());
-                }
-
-                return result.ToString();
-            }
-
+            
             Dev2Logger.Log.Error(errors.MakeDisplayReady());
 
             return string.Empty;

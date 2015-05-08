@@ -48,7 +48,6 @@ namespace Dev2.Activities
             errors.MergeErrors(execErrors);
 
             // Adjust the remaining output mappings ;)
-            compiler.SetParentID(dataObject.DataListID, oldID);
             return result;
         }
 

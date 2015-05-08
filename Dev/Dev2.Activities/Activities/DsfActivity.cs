@@ -418,7 +418,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if(DataObject != null)
             {
-                Dev2DataListDecisionHandler.Instance.RemoveEnvironment(DataObject.DataListID);
             }
         }
 

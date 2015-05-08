@@ -165,8 +165,6 @@
     <Compile Include="ConverterTests\GraphTests\StringTests\XmlTests\XmlNavigatorTests.cs" />
     <Compile Include="ConverterTests\GraphTests\StringTests\XmlTests\XmlPathSegmentTests.cs" />
     <Compile Include="ConverterTests\GraphTests\StringTests\XmlTests\XmlPathTests.cs" />
-    <Compile Include="DataList\BinaryDataListItemTest.cs" />
-    <Compile Include="DataList\BinaryDataListTest.cs" />
     <Compile Include="DataList\BrokerTest.cs" />
     <Compile Include="DataList\DebugToTests.cs" />
     <Compile Include="Dev2.Network\MockNetworkServer.cs" />
@@ -202,7 +200,6 @@
     <Compile Include="Parsing\LanguageParserTest.cs" />
     <Compile Include="PathOperationTests\ActivityIOFactoryTests.cs" />
     <Compile Include="DataListCleaningUtilTest.cs" />
-    <Compile Include="Dev2DataLanguageParserTest.cs" />
     <Compile Include="ParserStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -215,7 +212,6 @@
       <DependentUpon>TestStrings.resx</DependentUpon>
     </Compile>
     <Compile Include="RecordsetSearch\AbstractRecsetSearchValidation_GenerateInputRange.cs" />
-    <Compile Include="Repository\SimulationRespositoryTest.cs" />
     <Compile Include="TokenizerTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -281,7 +277,9 @@
     <CodeAnalysisDictionary Include="Fakes\mscorlib.fakes" />
     <CodeAnalysisDictionary Include="Fakes\System.fakes" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Repository\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
     <PreBuildEvent>"$(DevEnvDir)tf" get /recursive $(ProjectDir)</PreBuildEvent>

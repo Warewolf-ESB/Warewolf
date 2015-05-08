@@ -206,8 +206,8 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <param name="errors">The errors.</param>
         public void AdjustForIOMapping(Guid parentDlid, string parentColumn, string parentNamespace, string childColumn, out ErrorResultTO errors)
         {
+            errors = null;
             // Need to adjust the storage layer to retain the parent DLID storage location ;)
-            _internalObj.AddAlias(parentDlid, parentColumn, parentNamespace, childColumn, out errors);
         }
 
         /// <summary>

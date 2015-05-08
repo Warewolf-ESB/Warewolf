@@ -219,7 +219,6 @@
     <Compile Include="Poco\PocoTestFactory.cs" />
     <Compile Include="CompileMessages\ServiceModelCompilerTest.cs" />
     <Compile Include="Configuration\SettingsProviderTests.cs" />
-    <Compile Include="DynamicServicesEndPointTest.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\PluginBrokerTests.cs" />
     <Compile Include="ESB\PluginServiceContainerTests.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\AbstractDataBaseBrokerTests.cs" />

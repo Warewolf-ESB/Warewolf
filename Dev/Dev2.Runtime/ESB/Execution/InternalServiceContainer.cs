@@ -83,35 +83,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         private void GenerateRequestDictionaryFromDataObject(out ErrorResultTO errors)
         {
-            var compiler = DataListFactory.CreateDataListCompiler();
-            errors = new ErrorResultTO();
-
-            ErrorResultTO invokeErrors;
-            IBinaryDataList bdl = compiler.FetchBinaryDataList(DataObject.DataListID, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-
-            if(!invokeErrors.HasErrors())
-            {
-                foreach(IBinaryDataListEntry entry in bdl.FetchScalarEntries())
-                {
-                    IBinaryDataListItem itm = entry.FetchScalar();
-
-                    if(!DataListUtil.IsSystemTag(itm.FieldName))
-                    {
-                        var stringBuilder = new StringBuilder("");
-                        try
-                        {
-                            stringBuilder = new StringBuilder(itm.TheValue);
-                        }
-                        // ReSharper disable EmptyGeneralCatchClause
-                        catch(Exception)
-                        // ReSharper restore EmptyGeneralCatchClause
-                        {
-                        }
-                        Request.AddArgument(itm.FieldName, stringBuilder);
-                    }
-                }
-            }
+            errors = null;
         }
     }
 }

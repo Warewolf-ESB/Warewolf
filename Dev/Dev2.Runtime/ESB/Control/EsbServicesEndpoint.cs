@@ -207,7 +207,6 @@ namespace Dev2.Runtime.ESB.Control
             var resultID = GlobalConstants.NullDataListID;
             errors = new ErrorResultTO();
             var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
-            var compiler = DataListFactory.CreateDataListCompiler();
 
             var principle = Thread.CurrentPrincipal;
             var name = principle.Identity.Name;
@@ -216,11 +215,9 @@ namespace Dev2.Runtime.ESB.Control
             // If no DLID, we need to make it based upon the request ;)
             if(dataObject.DataListID == GlobalConstants.NullDataListID)
             {
-                StringBuilder theShape;
                 IResource resource;
                 try
                 {
-                    theShape = dataObject.ResourceID == Guid.Empty ? FindServiceShape(workspaceId, dataObject.ServiceName) : FindServiceShape(workspaceId, dataObject.ResourceID);
                     resource = dataObject.ResourceID == Guid.Empty ? GetResource(workspaceId, dataObject.ServiceName) : GetResource(workspaceId, dataObject.ResourceID);
                 }
                 catch(Exception ex)
@@ -231,7 +228,6 @@ namespace Dev2.Runtime.ESB.Control
                 }
 
                 // TODO : Amend here to respect Inputs only when creating shape ;)
-                ErrorResultTO invokeErrors;
                 if(resource != null)
                 {
                     if(resource.DataList != null)
@@ -239,15 +235,6 @@ namespace Dev2.Runtime.ESB.Control
                         ExecutionEnvironmentUtils.UpdateEnvironmentFromInputPayload(dataObject, dataObject.RawPayload, resource.DataList.ToString());
                     }
                 }
-                dataObject.DataListID = compiler.ConvertAndOnlyMapInputs(DataListFormat.CreateFormat(GlobalConstants._XML), dataObject.RawPayload, theShape, out invokeErrors);
-                // The act of doing this moves the index data correctly ;)
-                // We need to remove this in the future.
-#pragma warning disable 168
-                // ReSharper disable UnusedVariable
-                var convertFrom = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out errors);
-                // ReSharper restore UnusedVariable
-#pragma warning restore 168
-                errors.MergeErrors(invokeErrors);
                 dataObject.RawPayload = new StringBuilder();
 
                 // We need to create the parentID around the system ;)
@@ -481,11 +468,10 @@ namespace Dev2.Runtime.ESB.Control
             var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
             var invoker = new EsbServiceInvoker(this, this, theWorkspace);
             var generateInvokeContainer = invoker.GenerateInvokeContainer(dataObject, serviceID, true);
-            var curDlid = generateInvokeContainer.Execute(out errors);
-            var compiler = DataListFactory.CreateDataListCompiler();
-            var convertFrom = compiler.ConvertFrom(curDlid, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
+            generateInvokeContainer.Execute(out errors);
+            var convertFrom = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, workspaceId, "");
             var jsonSerializerSettings = new JsonSerializerSettings();
-            var deserializeObject = JsonConvert.DeserializeObject<T>(convertFrom.ToString(), jsonSerializerSettings);
+            var deserializeObject = JsonConvert.DeserializeObject<T>(convertFrom, jsonSerializerSettings);
             return deserializeObject;
         }
 
@@ -567,38 +553,7 @@ namespace Dev2.Runtime.ESB.Control
             result.Replace(GlobalConstants.SerializableResourceQuote, "\"");
             result.Replace(GlobalConstants.SerializableResourceSingleQuote, "\'");
             return result;
-        }
-
-        /// <summary>
-        /// Fetches the execution payload.
-        /// </summary>
-        /// <param name="dataObj">The data obj.</param>
-        /// <param name="targetFormat">The target format.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        public string FetchExecutionPayload(IDSFDataObject dataObj, DataListFormat targetFormat, out ErrorResultTO errors)
-        {
-            errors = new ErrorResultTO();
-            var targetShape = FindServiceShape(dataObj.WorkspaceID, dataObj.ResourceID).ToString();
-            var result = new StringBuilder();
-
-            if(!string.IsNullOrEmpty(targetShape))
-            {
-                string translatorShape = ManipulateDataListShapeForOutput(targetShape);
-                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-                ErrorResultTO invokeErrors;
-                result = compiler.ConvertAndFilter(dataObj.DataListID, targetFormat, new StringBuilder(translatorShape), out invokeErrors);
-                errors.MergeErrors(invokeErrors);
-            }
-            else
-            {
-                errors.AddError("Could not locate service shape for " + dataObj.ServiceName);
-            }
-
-            return result.ToString();
-        }
-
-       
+        }       
 
         /// <summary>
         /// Manipulates the data list shape for output.
@@ -638,19 +593,6 @@ namespace Dev2.Runtime.ESB.Control
                 return xDoc.ToString();
             }
         }
-
-        static bool IsServiceWorkflow(Guid workspaceID, Guid resourceID)
-        {
-            IResource resource = GetResource(workspaceID, resourceID);
-            if (resource == null)
-            {
-                return false;
-            }
-
-            return resource.ResourceType == ResourceType.WorkflowService;
-        }
-
-
 
         /// <summary>
         /// Glues the input and output mapping segments.
