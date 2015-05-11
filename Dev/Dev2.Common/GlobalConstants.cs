@@ -54,17 +54,17 @@ namespace Dev2.Common
         // ReSharper restore UnusedMember.Global
 
         public static string DefaultServerLogFileConfig = "<log4net>" +
-                                             "<appender name=\"LogFileAppender\" type=\"log4net.Appender.RollingFileAppender\">"+
-                                            "<file type=\"log4net.Util.PatternString\" value=\"wareWolf-Server.log\" />"+
-    "<!-- Example using environment variables in params -->"+
-    "<!-- <file value=\"${TMP}\\log-file.txt\" /> -->"+
-    "<appendToFile value=\"true\" />"+
-    "<rollingStyle value=\"Size\" />"+
-    "<maxSizeRollBackups value=\"1\" />"+
-    "<maximumFileSize value=\"200MB\" />"+
-    "<!-- An alternate output encoding can be specified -->"+
-    "<!-- <encoding value=\"unicodeFFFE\" /> -->"+
-    "<layout type=\"log4net.Layout.PatternLayout\">"+
+                                             "<appender name=\"LogFileAppender\" type=\"Log4Net.Async.AsyncRollingFileAppender,Log4Net.Async\">" +
+                                            "<file type=\"log4net.Util.PatternString\" value=\"wareWolf-Server.log\" />" +
+    "<!-- Example using environment variables in params -->" +
+    "<!-- <file value=\"${TMP}\\log-file.txt\" /> -->" +
+    "<appendToFile value=\"true\" />" +
+    "<rollingStyle value=\"Size\" />" +
+    "<maxSizeRollBackups value=\"1\" />" +
+    "<maximumFileSize value=\"200MB\" />" +
+    "<!-- An alternate output encoding can be specified -->" +
+    "<!-- <encoding value=\"unicodeFFFE\" /> -->" +
+    "<layout type=\"log4net.Layout.PatternLayout\">" +
     "<header value=\"[Header]&#xD;&#xA;\" />" +
                                              "<footer value=\"[Footer]&#xD;&#xA;\" />" +
                                              "<conversionPattern value=\"%date [%thread] %-5level - %message%newline\" />" +
@@ -72,19 +72,15 @@ namespace Dev2.Common
                                              "<!-- Alternate layout using XML			" +
                                              "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
                                              "</appender>" +
-                                             "<appender name=\"asyncForwarder\" type=\"Log4Net.Async.AsyncForwardingAppender,Log4Net.Async\">" +
-                                             "    <appender-ref ref=\"LogFileAppender\" />" +
-                                             "</appender>" +
                                              "<!-- Setup the root category, add the appenders and set the default level -->" +
                                              "<root>" +
                                              "<level value=\"DEBUG\" />" +
-                                             "<!-- kr: before asnync <appender-ref ref=\"LogFileAppender\" /> -->" +
-                                             "<appender-ref ref=\"asyncForwarder\" />" +
+                                             "<appender-ref ref=\"LogFileAppender\" />" +
                                              "</root>" +
                                              "</log4net>";
 
         public static string DefaultStudioLogFileConfig = "<log4net>" +
-                                             "<appender name=\"LogFileAppender\" type=\"log4net.Appender.RollingFileAppender\">"+
+                                             "<appender name=\"LogFileAppender\" type=\"Log4Net.Async.AsyncRollingFileAppender,Log4Net.Async\">" +
                                             "<file type=\"log4net.Util.PatternString\" value=\"${LOCALAPPDATA}\\Warewolf\\Studio Logs\\Warewolf Studio.log\" />"+
     "<!-- Example using environment variables in params -->"+
     "<!-- <file value=\"${TMP}\\log-file.txt\" /> -->"+
@@ -102,14 +98,11 @@ namespace Dev2.Common
                                              "<!-- Alternate layout using XML			" +
                                              "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
                                              "</appender>" +
-                                             "<appender name=\"asyncForwarder\" type=\"Log4Net.Async.AsyncForwardingAppender,Log4Net.Async\">" +
-                                             "    <appender-ref ref=\"LogFileAppender\" />" +
-                                             "</appender>" +
                                              "<!-- Setup the root category, add the appenders and set the default level -->" +
                                              "<root>" +
                                              "<level value=\"DEBUG\" />" +
-                                             "<-- kr: before async <appender-ref ref=\"LogFileAppender\" /> -->" +
-                                             "<appender-ref ref=\"asyncForwarder\" />" +
+                                             "<appender-ref ref=\"LogFileAppender\" />" +
+                                           
                                              "</root>" +
                                              "</log4net>";
 
