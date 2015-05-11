@@ -625,6 +625,7 @@
                                         <Button x:Name="EditButton"
                                                 Width="22"
                                                 Grid.Column="1"
+                                                HorizontalAlignment="Right"
                                                 Style="{StaticResource ExplorerTreeButtonStyle}"
                                                 Visibility="{Binding Data.CanEdit,
                                                                     Converter={StaticResource BoolToVisibilityConverter}}"
@@ -654,7 +655,8 @@
                                             </Button.Triggers>
                                             <!-- CHANGE TOP MARGIN TO ALIGN EDIT IMAGE WITH TEXTBLOCK -->
                                             <Image x:Name="EditPermissionImage"
-                                                   Width="17"
+                                                   Width="14"
+                                                   Height="15"
                                                    Margin="0,-5,0,0"
                                                    Stretch="Uniform"
                                                    HorizontalAlignment="Center"
@@ -679,6 +681,7 @@
                                         <Button x:Name="ExecuteButton"
                                                 Width="22"
                                                 Grid.Column="2"
+                                                HorizontalAlignment="Right"
                                                 Style="{StaticResource ExplorerTreeButtonStyle}"
                                                 ToolTip="{Binding Path=Data.ExecuteToolTip}"
                                                 Visibility="{Binding Path=Data.CanExecute,
@@ -709,7 +712,8 @@
                                             <!-- CHANGE TOP MARGIN TO ALIGN EXECUTE IMAGE WITH TEXTBLOCK -->
                                             <Image x:Name="ExecutePermissionImage"
                                                    Stretch="Uniform"
-                                                   Width="16"
+                                                   Width="14"
+                                                   Height="15"
                                                    Margin="0,-5,0,0"
                                                    HorizontalAlignment="Center"
                                                    VerticalAlignment="Center"

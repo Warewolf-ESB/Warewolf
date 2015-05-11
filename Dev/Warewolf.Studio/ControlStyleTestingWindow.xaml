@@ -19,13 +19,7 @@
        
        
         <CheckBox AutomationProperties.AutomationId="Testing_CheckBox">This is a check box</CheckBox>
-        <ComboBox Name="ComboBox" AutomationProperties.AutomationId="Testing_Combobox">
-            <ComboBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VirtualizingStackPanel Orientation="Vertical" />
-                </ItemsPanelTemplate>
-            </ComboBox.ItemsPanel>
-        </ComboBox>
+       
         <RadioButton AutomationProperties.AutomationId="Testing_RadioButton"></RadioButton>
         
         <Label AutomationProperties.AutomationId="Testing_Lable"></Label>
@@ -70,7 +64,18 @@
                      customControls:PasswordBoxAssistant.BindPassword="true"
                      customControls:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
         </PasswordBox>
+        <ComboBox Name="ComboBox" AutomationProperties.AutomationId="Testing_Combobox">
+            <ComboBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Orientation="Vertical" />
+                </ItemsPanelTemplate>
+            </ComboBox.ItemsPanel>
+        </ComboBox>
         <customControls:SearchTextBox Style="{StaticResource SearchTextboxStyle}"></customControls:SearchTextBox>
+        <customControls:SearchTextBox Margin="{StaticResource ControlBorderTopRight}"
+                                      Style="{StaticResource SearchTextboxStyle}"
+                                      LabelText="Filter New"
+                                      HorizontalAlignment="Stretch" />
         <TextBox Style="{StaticResource MultiLineTextBoxStyle}" ToolTip="Bob the builder" TextWrapping="Wrap" Height="90" AcceptsReturn="True"  VerticalScrollBarVisibility="Auto"> Multi Line </TextBox>
         <TextBox ToolTip="Bob the builder">ToolTip</TextBox>
        

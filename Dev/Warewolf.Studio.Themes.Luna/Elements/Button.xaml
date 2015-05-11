@@ -379,13 +379,13 @@
 
 
     <Style x:Key="ExplorerTreeButtonStyle" TargetType="{x:Type Button}">
-        <Setter Property="Width" Value="14" />
+        <!--<Setter Property="Width" Value="14" />
         <Setter Property="Height" Value="14" />
         <Setter Property="MinHeight" Value="14" />
-        <Setter Property="MinWidth" Value="14" />
+        <Setter Property="MinWidth" Value="14" />-->
         <Setter Property="Padding" Value="0" />
         <Setter Property="Margin" Value="0,0,0,0" />
-        <Setter Property="Background" Value="{StaticResource ButtonHoverBackgroundBrush}" />
+        <Setter Property="Background" Value="{StaticResource ButtonBorderBrush}" />
         <Setter Property="Foreground" Value="{StaticResource ButtonBackgroundBrush}" />
 
         <Setter Property="Template">
@@ -408,7 +408,7 @@
                                 <VisualState x:Name="Pressed">
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Bd" Storyboard.TargetProperty="Fill">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ButtonPressedTransparentBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ButtonPressedBackgroundBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>

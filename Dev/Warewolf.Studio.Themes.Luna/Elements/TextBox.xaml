@@ -26,8 +26,9 @@
     <SolidColorBrush x:Key="ClearSearchButtonHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
     <SolidColorBrush x:Key="ClearSearchButtonHoverBorderBrushSelected" Color="{StaticResource WarewolfButtonGrey}" />
     <SolidColorBrush x:Key="TextBoxFocusedBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="TextBoxTestFocusedBrush" Color="{StaticResource WarewolfOrange}" />
     <SolidColorBrush x:Key="TextBoxReadOnlyBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
-    <SolidColorBrush x:Key="SearchBoxWatermarkTextForeground" Color="#FFD4D3D3"/>
+    <SolidColorBrush x:Key="SearchBoxWatermarkTextForeground" Color="{StaticResource WarewolfWatermark}" />
     <SolidColorBrush x:Key="SearchBoxButtonForeground" Color="{StaticResource WarewolfButtonGrey}"/>
     <SolidColorBrush x:Key="SearchBoxButtonForegroundEmpty" Color="#FFD4D3D3"/>
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
@@ -405,7 +406,7 @@
                                        Grid.Column="0"
                                        Foreground="{StaticResource SearchBoxWatermarkTextForeground}"
                                        Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=LabelText}"
-                                       Padding="2,0,0,0"
+                                       Padding="2,0,0,0" FontWeight="Normal"
                                        FontStyle="Italic" />
                             </Grid>
                         </Border>
