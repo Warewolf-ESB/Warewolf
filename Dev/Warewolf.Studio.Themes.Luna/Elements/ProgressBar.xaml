@@ -27,7 +27,7 @@
     <Style x:Key="ProgressBarStyle" TargetType="{x:Type ProgressBar}">
         <Setter Property="Foreground" Value="{StaticResource ProgressBarForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource ProgressBarBackgroundBrush}" />
-        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="BorderBrush" Value="{StaticResource WarewolfHeaderGreyBrush}" />
         <Setter Property="Height" Value="6" />
         <Setter Property="Template">
