@@ -161,7 +161,7 @@
                         <Ellipse x:Name="Checked1"
                                  Width="10"
                                  Height="10"
-                                 Fill="{StaticResource WareWolfOrangeBrush}"
+                                 Fill="{StaticResource WareWolfButtonBrush}"
                                  Opacity="0" />
                         <Ellipse x:Name="disabled"
                                  Width="18"
