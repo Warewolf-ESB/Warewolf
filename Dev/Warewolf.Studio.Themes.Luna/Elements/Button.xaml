@@ -94,7 +94,7 @@
                             <Setter TargetName="Bd" Property="Stroke" Value="{StaticResource ButtonHoverBackgroundBrush}" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="False">
-                            <Setter TargetName="Bd" Property="Stroke" Value="{StaticResource ButtonBorderBrush}" />
+                            <Setter TargetName="Bd" Property="Stroke" Value="{StaticResource ButtonPressedTransparentBrush}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -385,7 +385,7 @@
         <Setter Property="MinWidth" Value="14" />-->
         <Setter Property="Padding" Value="0" />
         <Setter Property="Margin" Value="0,0,0,0" />
-        <Setter Property="Background" Value="{StaticResource ButtonBorderBrush}" />
+        <Setter Property="Background" Value="{StaticResource ButtonPressedTransparentBrush}" />
         <Setter Property="Foreground" Value="{StaticResource ButtonBackgroundBrush}" />
 
         <Setter Property="Template">
@@ -398,7 +398,7 @@
                                 <VisualState x:Name="MouseOver">
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Bd" Storyboard.TargetProperty="Stroke">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ButtonBorderBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ButtonPressedTransparentBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Bd" Storyboard.TargetProperty="StrokeThickness">
                                             <DiscreteDoubleKeyFrame KeyTime="0" Value="1" />
@@ -440,7 +440,7 @@
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                         <Rectangle x:Name="Bd"
-                                   Fill="{StaticResource ButtonBorderBrush}"
+                                   Fill="{StaticResource ButtonPressedTransparentBrush}"
                                    Stroke="{StaticResource ButtonBorderBrush}"
                                    StrokeThickness="0" />
                         <ContentControl x:Name="ContentControl"
