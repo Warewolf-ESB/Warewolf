@@ -10,6 +10,7 @@ namespace Warewolf.Storage
 
         readonly int _maxValue;
         int _currentValue;
+        DataASTMutable.WarewolfAtom _currentResult;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
@@ -30,10 +31,15 @@ namespace Warewolf.Storage
 
         public string GetNextValue()
         {
-            _currentValue++;
-            if (_listResult != null && _listResult.MoveNext())
+            _currentValue++; 
+            if (_listResult != null)
             {
-                return ExecutionEnvironment.WarewolfAtomToString(_listResult.Current);
+                if (_listResult.MoveNext())
+                {
+                    _currentResult = _listResult.Current;
+                    return ExecutionEnvironment.WarewolfAtomToString(_listResult.Current);
+                }
+                return ExecutionEnvironment.WarewolfAtomToString(_currentResult);
             }
             return null;
           
