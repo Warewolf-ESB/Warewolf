@@ -12,7 +12,7 @@
     <SolidColorBrush x:Key="RadioButtonFocusedBackgroundBrush" Color="{StaticResource Color_009}" />
     <SolidColorBrush x:Key="RadioButtonInvalidUnfocusedBackgroundBrush" Color="{StaticResource Color_009}" />
     <SolidColorBrush x:Key="RadioButtonInvalidFocusedBackgroundBrush" Color="{StaticResource Color_009}" />
-    <SolidColorBrush x:Key="RadioButtonBorderBrush" Color="{StaticResource WarewolfLineGrey}" />
+    <SolidColorBrush x:Key="RadioButtonBorderBrush" Color="{StaticResource WarewolfWatermark}" />
     <SolidColorBrush x:Key="RadioButtonHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
     <SolidColorBrush x:Key="RadioButtonPressedBorderBrush" Color="{StaticResource WarewolfOrange}" />
     <SolidColorBrush x:Key="RadioButtonFocusedBorderBrush" Color="{StaticResource WarewolfOrange}" />
@@ -121,7 +121,7 @@
                                  Height="18"
                                  Fill="{StaticResource RadioButtonBackgroundBrush}"
                                  Opacity="2"
-                                 Stroke="{StaticResource WarewolfHeaderGreyBrush}"
+                                 Stroke="{StaticResource RadioButtonBorderBrush}"
                                  StrokeThickness="1" />
                         <Ellipse x:Name="hover"
                                  Width="18"

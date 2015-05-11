@@ -9,7 +9,7 @@
     <!--  Button Brushes  -->
     <SolidColorBrush x:Key="ButtonBackgroundBrush" Color="{StaticResource WarewolfButtonGrey}" />
     <SolidColorBrush x:Key="ButtonMenuBackgroundBrush" Color="{StaticResource WarewolfMenuGrey}" />
-    <SolidColorBrush x:Key="ButtonBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="ButtonBorderBrush" Color="{StaticResource WarewolfWatermark}" />
     <SolidColorBrush x:Key="ButtonMenuBorderBrush" Color="{StaticResource WarewolfMenuGrey}" />
     <SolidColorBrush x:Key="ButtonHoverBackgroundBrush" Color="{StaticResource WarewolfOrange}" />
     <SolidColorBrush x:Key="ButtonHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />

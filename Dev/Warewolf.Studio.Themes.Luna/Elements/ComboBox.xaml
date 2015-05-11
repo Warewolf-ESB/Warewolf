@@ -14,7 +14,7 @@
 
     <!--  TextBox Brushes  -->
     <SolidColorBrush x:Key="TextBoxBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
-    <SolidColorBrush x:Key="TextBoxBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="TextBoxBorderBrush" Color="{StaticResource WarewolfWatermark}" />
     <SolidColorBrush x:Key="TextBoxHoverBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
     <SolidColorBrush x:Key="TextBoxForegroundBrush" Color="{StaticResource WarewolfButtonGrey}" />
     <SolidColorBrush x:Key="LightForegroundBrush" Color="{StaticResource WarewolfButtonGrey}" />
@@ -26,8 +26,8 @@
 
     <!--  ComboBox Brushes  -->
     <SolidColorBrush x:Key="ComboBoxBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
-    <SolidColorBrush x:Key="ComboBoxBorderBrush" Color="{StaticResource WarewolfLineGrey}" />
-    <SolidColorBrush x:Key="ComboBoxReadOnlyBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="ComboBoxBorderBrush" Color="{StaticResource WarewolfWatermark}" />
+    <SolidColorBrush x:Key="ComboBoxReadOnlyBorderBrush" Color="{StaticResource WarewolfWatermark}" />
     <SolidColorBrush x:Key="ComboBoxHoverBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
     <SolidColorBrush x:Key="ComboBoxHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
     <SolidColorBrush x:Key="ComboBoxFocusedBorderBrush" Color="{StaticResource WarewolfOrange}" />
@@ -43,7 +43,7 @@
     <SolidColorBrush x:Key="ComboBoxItemPressedBorderBrush" Color="{StaticResource Color_006}" />
 
     <!--  ComboBoxToggleButton Brushes  -->
-    <SolidColorBrush x:Key="ComboBoxToggleButtonBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="ComboBoxToggleButtonBorderBrush" Color="{StaticResource WarewolfWatermark}" />
     <SolidColorBrush x:Key="ComboBoxToggleButtonPressedBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
     <SolidColorBrush x:Key="ComboBoxToggleButtonDropDownSeparatorBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
     <SolidColorBrush x:Key="ComboBoxToggleButtonPressedBorderBrush" Color="{StaticResource WarewolfOrange}" />
