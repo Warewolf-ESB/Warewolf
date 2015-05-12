@@ -74,7 +74,7 @@
                         Height="25"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        Margin="{StaticResource ControlBorderTop}"
+                        Margin="0,3,0,-1"
                         Command="{Binding RefreshCommand}"
                         Visibility="{Binding Path=IsRefreshing,
                                          Converter={StaticResource NotConverter}}">
@@ -367,6 +367,22 @@
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger>
+                                    <EventTrigger RoutedEvent="Button.MouseEnter">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetName="EditPermissionImage"
+                                                                           Storyboard.TargetProperty="Source">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Permission-Disabled}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetName="ExecutePermissionImage"
+                                                                           Storyboard.TargetProperty="Source">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Run-Disabled}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
                                     <EventTrigger RoutedEvent="ig:XamDataTreeNodeControl.MouseLeave">
                                         <BeginStoryboard>
                                             <Storyboard>
@@ -384,13 +400,19 @@
                                         </BeginStoryboard>
                                     </EventTrigger>
                                 </DataTemplate.Triggers>
-                                <DockPanel x:Name="ItemDockPanel" Height="Auto">
-                                    <DockPanel.Width>
+                                    <!-- ADD NEW GRID LAYOUT TO ALIGN DATA TREE ITEMS -->
+                                <Grid Margin="0,0,-20,0">
+                                    <Grid.Width>
                                         <MultiBinding Converter="{StaticResource WidthConverter}">
                                             <Binding RelativeSource="{RelativeSource AncestorType={x:Type ig:XamDataTreeNodeControl}}" />
                                             <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type ig:XamDataTree}}" />
                                         </MultiBinding>
-                                    </DockPanel.Width>
+                                    </Grid.Width>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="22"></ColumnDefinition>
+                                        <ColumnDefinition Width="22"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
 
                                     <!--  CONTEXT MENU FOR THE EXPLORER TREE  -->
                                     <ig:ContextMenuService.Manager>
@@ -597,20 +619,13 @@
                                         </ig:ContextMenuManager>
                                     </ig:ContextMenuService.Manager>
 
-                                    <!-- ADD NEW GRID LAYOUT TO ALIGN DATA TREE ITEMS -->
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"></ColumnDefinition>
-                                            <ColumnDefinition Width="22"></ColumnDefinition>
-                                            <ColumnDefinition Width="22"></ColumnDefinition>
-                                        </Grid.ColumnDefinitions>
-
-                                        <!-- ADD TEXT TRIMMING TO DISPLAY ECLIPSE ON VIEW WIDTH SETTING -->
-                                        <TextBlock x:Name="ResourceNameTextBlock"
+                                    <!-- ADD TEXT TRIMMING TO DISPLAY ECLIPSE ON VIEW WIDTH SETTING -->
+                                    <TextBlock x:Name="ResourceNameTextBlock"
                                                    MinWidth="5"
                                                    Height="20"
                                                    Focusable="True"
                                                    TextTrimming="CharacterEllipsis"
+                                                   Margin="0,0,-10,0"
                                                    VerticalAlignment="Center"
                                                    HorizontalAlignment="Stretch"
                                                    Text="{Binding Path=Data.ResourceName}">
@@ -619,20 +634,62 @@
                                                     <interactivity:InvokeCommandAction Command="{Binding Path=Data.Expand}" TriggerParameterPath="ClickCount" />
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
-                                        </TextBlock>
+                                    </TextBlock>
 
-                                        <!-- VIEW ICON -->
-                                        <Button x:Name="EditButton"
+                                    <!-- VIEW ICON -->
+                                    <Button x:Name="EditButton"
                                                 Width="22"
                                                 Grid.Column="1"
                                                 HorizontalAlignment="Right"
+                                                Margin="0,0,-10,0"
                                                 Style="{StaticResource ExplorerTreeButtonStyle}"
                                                 Visibility="{Binding Data.CanEdit,
                                                                     Converter={StaticResource BoolToVisibilityConverter}}"
                                                 ToolTip="{Binding Path=Data.EditToolTip}">
-                                            <!-- ADD BUTTON TRIGGER TO HANDLE IMAGE TRIGGER ON BUTTON MOUSE ENTER -->
-                                            <Button.Triggers>
-                                                <EventTrigger RoutedEvent="Button.MouseEnter">
+                                        <!-- ADD BUTTON TRIGGER TO HANDLE IMAGE TRIGGER ON BUTTON MOUSE ENTER -->
+                                        <Button.Triggers>
+                                            <EventTrigger RoutedEvent="Button.MouseEnter">
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetProperty="Source" Storyboard.TargetName="EditPermissionImage">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Permission-Enabled}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                            <EventTrigger RoutedEvent="Button.GotFocus">
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetProperty="Source" Storyboard.TargetName="EditPermissionImage">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Permission-Enabled}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                            <EventTrigger RoutedEvent="Button.MouseLeave">
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetProperty="Source" Storyboard.TargetName="EditPermissionImage">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Permission-Disabled}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                        </Button.Triggers>
+                                        <!-- CHANGE TOP MARGIN TO ALIGN EDIT IMAGE WITH TEXTBLOCK -->
+                                        <Image x:Name="EditPermissionImage"
+                                                   Width="14"
+                                                   Height="15"
+                                                   Margin="0,-5,0,0"
+                                                   Stretch="Uniform"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   Source="{StaticResource System-Spacer}" >
+                                            <Image.Triggers>
+                                                <EventTrigger RoutedEvent="Image.MouseEnter">
                                                     <BeginStoryboard>
                                                         <Storyboard>
                                                             <ObjectAnimationUsingKeyFrames Duration="0"
@@ -642,53 +699,54 @@
                                                         </Storyboard>
                                                     </BeginStoryboard>
                                                 </EventTrigger>
-                                                <EventTrigger RoutedEvent="Button.MouseLeave">
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                           Storyboard.TargetProperty="Source" Storyboard.TargetName="EditPermissionImage">
-                                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Permission-Disabled}" />
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </EventTrigger>
-                                            </Button.Triggers>
-                                            <!-- CHANGE TOP MARGIN TO ALIGN EDIT IMAGE WITH TEXTBLOCK -->
-                                            <Image x:Name="EditPermissionImage"
-                                                   Width="14"
-                                                   Height="15"
-                                                   Margin="0,-5,0,0"
-                                                   Stretch="Uniform"
-                                                   HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"
-                                                   Source="{StaticResource System-Spacer}" >
-                                                <Image.Triggers>
-                                                    <EventTrigger RoutedEvent="Image.MouseEnter">
-                                                        <BeginStoryboard>
-                                                            <Storyboard>
-                                                                <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                           Storyboard.TargetProperty="Source" Storyboard.TargetName="EditPermissionImage">
-                                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Permission-Enabled}" />
-                                                                </ObjectAnimationUsingKeyFrames>
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </EventTrigger>
-                                                </Image.Triggers>
-                                            </Image>
-                                        </Button>
-                                        
-                                        <!-- PLAY ICON -->
-                                        <Button x:Name="ExecuteButton"
+                                            </Image.Triggers>
+                                        </Image>
+                                    </Button>
+
+                                    <!-- PLAY ICON -->
+                                    <Button x:Name="ExecuteButton"
                                                 Width="22"
                                                 Grid.Column="2"
                                                 HorizontalAlignment="Right"
+                                                Margin="0,0,-10,0"
                                                 Style="{StaticResource ExplorerTreeButtonStyle}"
                                                 ToolTip="{Binding Path=Data.ExecuteToolTip}"
                                                 Visibility="{Binding Path=Data.CanExecute,
                                                                     Converter={StaticResource BoolToVisibilityConverter}}">
-                                            <!-- ADD BUTTON TRIGGER TO HANDLE IMAGE TRIGGER ON BUTTON MOUSE ENTER -->
-                                            <Button.Triggers>
-                                                <EventTrigger RoutedEvent="Button.MouseEnter">
+                                        <!-- ADD BUTTON TRIGGER TO HANDLE IMAGE TRIGGER ON BUTTON MOUSE ENTER -->
+                                        <Button.Triggers>
+                                            <EventTrigger RoutedEvent="Button.MouseEnter">
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetProperty="Source" Storyboard.TargetName="ExecutePermissionImage">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Run-Enabled}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                            <EventTrigger RoutedEvent="Button.MouseLeave">
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetProperty="Source" Storyboard.TargetName="ExecutePermissionImage">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Run-Disabled}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                        </Button.Triggers>
+                                        <!-- CHANGE TOP MARGIN TO ALIGN EXECUTE IMAGE WITH TEXTBLOCK -->
+                                        <Image x:Name="ExecutePermissionImage"
+                                                   Stretch="Uniform"
+                                                   Width="14"
+                                                   Height="15"
+                                                   Margin="0,-6,0,0"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   Source="{StaticResource System-Spacer}" >
+                                            <Image.Triggers>
+                                                <EventTrigger RoutedEvent="Image.MouseEnter">
                                                     <BeginStoryboard>
                                                         <Storyboard>
                                                             <ObjectAnimationUsingKeyFrames Duration="0"
@@ -698,42 +756,10 @@
                                                         </Storyboard>
                                                     </BeginStoryboard>
                                                 </EventTrigger>
-                                                <EventTrigger RoutedEvent="Button.MouseLeave">
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                           Storyboard.TargetProperty="Source" Storyboard.TargetName="ExecutePermissionImage">
-                                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Run-Disabled}" />
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </EventTrigger>
-                                            </Button.Triggers>
-                                            <!-- CHANGE TOP MARGIN TO ALIGN EXECUTE IMAGE WITH TEXTBLOCK -->
-                                            <Image x:Name="ExecutePermissionImage"
-                                                   Stretch="Uniform"
-                                                   Width="14"
-                                                   Height="15"
-                                                   Margin="0,-5,0,0"
-                                                   HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"
-                                                   Source="{StaticResource System-Spacer}" >
-                                                <Image.Triggers>
-                                                    <EventTrigger RoutedEvent="Image.MouseEnter">
-                                                        <BeginStoryboard>
-                                                            <Storyboard>
-                                                                <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                           Storyboard.TargetProperty="Source" Storyboard.TargetName="ExecutePermissionImage">
-                                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Run-Enabled}" />
-                                                                </ObjectAnimationUsingKeyFrames>
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </EventTrigger>
-                                                </Image.Triggers>
-                                            </Image>
-                                        </Button>
-                                    </Grid>
-                                </DockPanel>
+                                            </Image.Triggers>
+                                        </Image>
+                                    </Button>
+                                </Grid>
                             </DataTemplate>
                         </ig:NodeLayout.ItemTemplate>
                         <ig:NodeLayout.ExpandedIconTemplate>
