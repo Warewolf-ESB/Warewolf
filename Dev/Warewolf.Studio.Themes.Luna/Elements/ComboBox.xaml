@@ -59,7 +59,7 @@
         <Setter Property="Background" Value="{StaticResource TextBoxBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorderBrush}" />
         <Setter Property="Height" Value="25" />
-        <Setter Property="Padding" Value="6,3" />
+        <Setter Property="Padding" Value="6,0,0,0" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="TextWrapping" Value="NoWrap" />
@@ -216,7 +216,7 @@
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource ComboBoxToggleButtonBorderBrush}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Padding" Value="2" />
+        <Setter Property="Padding" Value="6,0,0,6" />
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Template">
             <Setter.Value>
@@ -453,7 +453,7 @@
         <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="Height" Value="25" />
-        <Setter Property="Padding" Value="6,3" />
+        <Setter Property="Padding" Value="6,0,0,6" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Background" Value="{StaticResource TextBoxBackgroundBrush}" />
@@ -573,14 +573,14 @@
                                    Visibility="Collapsed" />
                         <ContentControl x:Name="contentControl"
                                         KeyboardNavigation.IsTabStop="False"
-                                        Margin="{TemplateBinding Padding}"
+                                        
                                         HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                         VerticalAlignment="{TemplateBinding VerticalContentAlignment}" >
                             <ContentPresenter x:Name="contentPresenter" />
                         </ContentControl>
                         <ContentControl x:Name="contentControl1"
                                         KeyboardNavigation.IsTabStop="False"
-                                        Margin="{TemplateBinding Padding}"
+                                        
                                         HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                         VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                         Foreground="{StaticResource LightForegroundBrush}"
@@ -610,8 +610,8 @@
     </Style>
 
     <Style x:Key="ComboBoxStyle" TargetType="{x:Type ComboBox}">
-        <Setter Property="Padding" Value="6,5,6,3" />
         <Setter Property="Margin" Value="0" />
+        <Setter Property="Padding" Value="6,6,0,4" />
         <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="Height" Value="25" />

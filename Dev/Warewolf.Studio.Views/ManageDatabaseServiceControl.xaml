@@ -14,7 +14,6 @@
         <Style TargetType="{x:Type ListBox}">
             <!-- Set the ItemTemplate of the ListBox to a DataTemplate which
            explains how to display an object of type BitmapImage. -->
-
             <Setter Property="ItemsPanel">
                 <Setter.Value>
                     <ItemsPanelTemplate>
@@ -26,29 +25,21 @@
         <Style TargetType="{x:Type ListBoxItem}">
             <!-- Set the ItemTemplate of the ListBox to a DataTemplate which
            explains how to display an object of type BitmapImage. -->
-
             <Setter Property="BorderBrush" Value="Transparent">
             </Setter>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                        <Border Background="Transparent"
-
-                    x:Name="IconBorder">
+                        <Border Background="Transparent" x:Name="IconBorder">
                             <ContentPresenter />
                         </Border>
-
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-
-
-
-
     </UserControl.Resources>
     <ScrollViewer>
-        <Grid Margin="{StaticResource ContainerBorder}">
+        <Grid Margin="{StaticResource ContainerBorder}" Focusable="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto" ></RowDefinition>
@@ -60,8 +51,6 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-
-
             <Grid Grid.Row="0" HorizontalAlignment="Stretch"  >
                 <!-- Select an Source-->
                 <Grid.RowDefinitions>
@@ -70,37 +59,72 @@
                     <RowDefinition Height="Auto" ></RowDefinition>
                     <RowDefinition Height="7" ></RowDefinition>
                 </Grid.RowDefinitions>
-                <StackPanel  Grid.Row="0" Grid.Column="0"  Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" Orientation="Horizontal">
-                    <TextBlock Margin="10"  Text="{Binding DataSourceHeader, Mode=OneWay}" Style="{StaticResource SourceHeader}"></TextBlock>
+                <StackPanel  Grid.Row="0" 
+                             Grid.Column="0" 
+                             Background="{StaticResource WareWolfMenuBrush}" 
+                             HorizontalAlignment="Stretch" 
+                             Orientation="Horizontal">
+                    <TextBlock Margin="10" 
+                               Text="{Binding DataSourceHeader, Mode=OneWay}" 
+                               Style="{StaticResource SourceHeader}"></TextBlock>
                 </StackPanel>
                 <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
-                    <ComboBox x:Name="SourcesComboBox" ItemsSource="{Binding Sources}" DisplayMemberPath="Name" Width="250" Margin="{StaticResource ElementBorderTop}"  SelectedItem="{Binding SelectedSource}" />
-                    <Button  Command="{Binding EditSourceCommand}" IsEnabled="{Binding CanEditSource}" Width="25" Content=" ... " Margin="{StaticResource ElementBorderLeftTop}"></Button>
-                    <TextBlock Text="or" Margin="{StaticResource ElementBorderLeftTop}"></TextBlock>
-                    <Button  Content="{Binding NewButtonLabel}" Margin="{StaticResource ElementBorderLeftTop}" Command="{Binding CreateNewSourceCommand}" Width="100" ></Button>
+                    <ComboBox x:Name="SourcesComboBox" 
+                              ItemsSource="{Binding Sources}" 
+                              DisplayMemberPath="Name" 
+                              Width="250" 
+                              Padding="6,3,0,0"
+                              Focusable="True"
+                              Margin="{StaticResource ControlBorderTop}" 
+                              SelectedItem="{Binding SelectedSource}" />
+                    <Button Command="{Binding EditSourceCommand}" 
+                            IsEnabled="{Binding CanEditSource}" 
+                            Width="25" 
+                            Content=" ... " 
+                            Margin="{StaticResource ElementBorderControlLeftTop}"></Button>
+                    <TextBlock Text="or" Margin="{StaticResource ElementBorderControlLeftTop}"></TextBlock>
+                    <Button Content="{Binding NewButtonLabel}" 
+                            Margin="{StaticResource ElementBorderControlLeftTop}" 
+                            Command="{Binding CreateNewSourceCommand}" 
+                            Width="100" ></Button>
                 </StackPanel>
             </Grid>
-
-            <Grid x:Name="SelectAnActionGrid" Grid.Row="1" Grid.Column="0" Visibility="{Binding Path=CanSelectProcedure, Converter={StaticResource BoolToVis}}">
-                
+            <Grid x:Name="SelectAnActionGrid" 
+                  Grid.Row="1" 
+                  Margin="0,-3,0,0"
+                  Grid.Column="0" 
+                  Visibility="{Binding Path=CanSelectProcedure, Converter={StaticResource BoolToVis}}">
                 <Grid.RowDefinitions>
                     <RowDefinition ></RowDefinition>
                     <RowDefinition></RowDefinition>
                     <RowDefinition Height="7" ></RowDefinition>
                 </Grid.RowDefinitions>
-                <StackPanel  Grid.Row="0" Grid.Column="0"  Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" Orientation="Horizontal">
-                    <TextBlock Margin="10" Text="{Binding DataSourceActionHeader, Mode=OneWay}" Style="{StaticResource SourceHeader}" ></TextBlock>
+                <StackPanel Grid.Row="0" 
+                            Grid.Column="0" 
+                            Background="{StaticResource WareWolfMenuBrush}" 
+                            HorizontalAlignment="Stretch" 
+                            Orientation="Horizontal">
+                    <TextBlock Margin="10" 
+                               Text="{Binding DataSourceActionHeader, Mode=OneWay}" 
+                               Style="{StaticResource SourceHeader}" ></TextBlock>
                 </StackPanel>
                 <StackPanel Grid.Row="1" HorizontalAlignment="Left" >
                     <!-- Choose data Source Action-->
-
-                    <ComboBox x:Name="ActionsComboBox" Width="280" ItemsSource="{Binding AvalaibleActions}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedAction}" Text="Choose" Margin="{StaticResource ElementBorderTop}"></ComboBox>
-
+                    <ComboBox x:Name="ActionsComboBox" 
+                              Width="280" 
+                              Padding="6,3,0,0"
+                              ItemsSource="{Binding AvalaibleActions}" 
+                              DisplayMemberPath="Name" 
+                              SelectedItem="{Binding SelectedAction}" 
+                              Text="Choose" 
+                              Margin="{StaticResource ControlBorderTop}"></ComboBox>
                 </StackPanel>
             </Grid>
-
-
-            <Grid x:Name="TestActionGrid" Grid.Row="3" Grid.Column="0" Visibility="{Binding Path=CanTest, Converter={StaticResource BoolToVis}}">
+            <Grid x:Name="TestActionGrid" 
+                  Grid.Row="3" 
+                  Margin="0,-3,0,0"
+                  Grid.Column="0" 
+                  Visibility="{Binding Path=CanTest, Converter={StaticResource BoolToVis}}">
                 <!-- Test-->
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
@@ -111,10 +135,19 @@
                     <RowDefinition></RowDefinition>
                     <RowDefinition Height="7" ></RowDefinition>
                 </Grid.RowDefinitions>
-                <StackPanel  Grid.Row="0" Grid.Column="0"  Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" Orientation="Horizontal">
-                    <TextBlock Margin="10" Text="{Binding TestHeader, Mode=OneWay}" Style="{StaticResource SourceHeader}" ></TextBlock>
+                <StackPanel Grid.Row="0" 
+                            Grid.Column="0" 
+                            Background="{StaticResource WareWolfMenuBrush}" 
+                            HorizontalAlignment="Stretch" 
+                            Orientation="Horizontal">
+                    <TextBlock Margin="10" 
+                               Text="{Binding TestHeader, Mode=OneWay}" 
+                               Style="{StaticResource SourceHeader}" ></TextBlock>
                 </StackPanel>
-                <TextBlock Grid.Row="1" Margin="{StaticResource ElementBorderTop}"  Text="Inputs" FontWeight="Bold"></TextBlock>
+                <TextBlock Grid.Row="1" 
+                           Margin="{StaticResource ControlBorderTop}" 
+                           Text="Inputs" 
+                           FontWeight="Bold"></TextBlock>
                 <Grid Grid.Row="2" >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -128,24 +161,51 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="db:IDbInput">
                                 <StackPanel Orientation="Horizontal" Style="{x:Null}" >
-                                    <TextBlock  Margin="{StaticResource ElementBorderTop}" Text="{Binding Path=Name }" Width="75"></TextBlock>
-                                    <TextBox Margin="{StaticResource ElementBorderLeftTop}" Text="{Binding Path=Value}" Width="200"></TextBox>
+                                    <TextBlock  Margin="{StaticResource ControlBorderTop}" Text="{Binding Path=Name }" Width="85"></TextBlock>
+                                    <TextBox Margin="{StaticResource ControlBorderLeftTop}" Text="{Binding Path=Value}" Width="200"></TextBox>
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
-
                     </ListBox>
-                    <Button x:Name="TestActionButton" Grid.Column="0" Grid.Row="1" Margin="{StaticResource ElementBorderTop}" HorizontalAlignment="Right" Command="{Binding TestProcedureCommand}" VerticalAlignment="Bottom"  Width="100">Test</Button>
+                    <views:CircularProgressBar Grid.Row="1"
+                                       Grid.Column="0"
+                                       Width="14"
+                                       Height="14"
+                                       Visibility="{Binding Path=TestProcedureCommand,Converter={StaticResource BoolToVis}}" />
+                    <Button x:Name="TestActionButton" 
+                            Grid.Column="0" 
+                            Grid.Row="1" 
+                            Margin="0,3,1,0" 
+                            HorizontalAlignment="Right" 
+                            Command="{Binding TestProcedureCommand}" 
+                            VerticalAlignment="Bottom" 
+                            Width="100">Test</Button>
                 </Grid>
-
-                <TextBlock Grid.Row="4" Text="{Binding OutputsLabel}" Margin="{StaticResource ElementBorderTop}" FontWeight="Bold" Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}"></TextBlock>
-                <DataGrid x:Name="OutputsDataGrid" Grid.Row="5" Margin="{StaticResource ElementBorderTop}"  HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding TestResults}"  Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}"  GridLinesVisibility="Vertical" CanUserSortColumns="True" ColumnWidth="*" AutoGenerateColumns="True"  BorderBrush="Transparent" 
-                  CanUserResizeColumns="True" CanUserReorderColumns="True"  VerticalGridLinesBrush="Transparent" >
-
+                <TextBlock Grid.Row="4" 
+                           Text="{Binding OutputsLabel}" 
+                           Margin="{StaticResource ControlBorderTop}" 
+                           FontWeight="Bold" 
+                           Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}"></TextBlock>
+                <DataGrid x:Name="OutputsDataGrid" 
+                          Grid.Row="5" 
+                          Margin="{StaticResource ControlBorderTop}" 
+                          HorizontalScrollBarVisibility="Disabled" 
+                          ItemsSource="{Binding TestResults}" 
+                          Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}" 
+                          GridLinesVisibility="Vertical" 
+                          CanUserSortColumns="True" 
+                          ColumnWidth="*" 
+                          AutoGenerateColumns="True" 
+                          BorderBrush="Transparent" 
+                          CanUserResizeColumns="True" 
+                          CanUserReorderColumns="True" 
+                          VerticalGridLinesBrush="Transparent" >
                 </DataGrid>
             </Grid>
-
-            <Grid x:Name="MappingsGrid" Grid.Row="4" Grid.Column="0" Visibility="{Binding Path=CanEditMappings,Converter={StaticResource BoolToVis}}">
+            <Grid x:Name="MappingsGrid" 
+                  Grid.Row="4" 
+                  Grid.Column="0" 
+                  Visibility="{Binding Path=CanEditMappings,Converter={StaticResource BoolToVis}}">
                 <!-- Mappings-->
                 <Grid.RowDefinitions>
                     <RowDefinition></RowDefinition>
@@ -156,12 +216,31 @@
                     <RowDefinition></RowDefinition>
                     <RowDefinition Height="7" ></RowDefinition>
                 </Grid.RowDefinitions>
-                <StackPanel  Grid.Row="0" Grid.Column="0"  Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" Orientation="Horizontal">
-                    <TextBlock Margin="10" Text="{Binding MappingsHeader, Mode=OneWay}" Style="{StaticResource SourceHeader}" ></TextBlock>
+                <StackPanel Grid.Row="0" 
+                            Grid.Column="0" 
+                            Background="{StaticResource WareWolfMenuBrush}" 
+                            HorizontalAlignment="Stretch" 
+                            Orientation="Horizontal">
+                    <TextBlock Margin="10" 
+                               Text="{Binding MappingsHeader, Mode=OneWay}" 
+                               Style="{StaticResource SourceHeader}" ></TextBlock>
                 </StackPanel>
-                <TextBlock FontWeight="Bold" Grid.Row="1" Margin="{StaticResource ElementBorderTop}" Text="{Binding InputsLabel}"></TextBlock>
-                <DataGrid x:Name="InputsMappingDataGrid" Grid.Row="2" ItemsSource="{Binding Inputs}" Margin="{StaticResource ElementBorderTop}" HorizontalScrollBarVisibility="Disabled"    GridLinesVisibility="Vertical" CanUserSortColumns="True"  AutoGenerateColumns="False"  BorderBrush="Transparent" 
-                  CanUserResizeColumns="True" CanUserReorderColumns="True" VerticalGridLinesBrush="Transparent">
+                <TextBlock FontWeight="Bold" 
+                           Grid.Row="1" 
+                           Margin="{StaticResource ControlBorderTop}" 
+                           Text="{Binding InputsLabel}"></TextBlock>
+                <DataGrid x:Name="InputsMappingDataGrid" 
+                          Grid.Row="2" 
+                          ItemsSource="{Binding Inputs}" 
+                          Margin="{StaticResource ControlBorderTop}" 
+                          HorizontalScrollBarVisibility="Disabled" 
+                          GridLinesVisibility="Vertical" 
+                          CanUserSortColumns="True" 
+                          AutoGenerateColumns="False" 
+                          BorderBrush="Transparent" 
+                          CanUserResizeColumns="True" 
+                          CanUserReorderColumns="True" 
+                          VerticalGridLinesBrush="Transparent">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Header="Input" CanUserResize="True" Width="150" SortMemberPath="Name">
                             <DataGridTemplateColumn.CellTemplate>
@@ -170,7 +249,6 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-
                         <DataGridTemplateColumn Header="Default Value" CanUserResize="True" Width="*" SortMemberPath="Name">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -192,14 +270,24 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-
                     </DataGrid.Columns>
                 </DataGrid>
-
-
-                <TextBlock Grid.Row="3" FontWeight="Bold" Text="{Binding OutputsLabel}" Margin="{StaticResource ElementBorderTop}" ></TextBlock>
-                <DataGrid x:Name="OutputsMappingDataGrid" Grid.Row="4" ItemsSource="{Binding OutputMapping}"  Margin="{StaticResource ElementBorderTop}" HorizontalScrollBarVisibility="Disabled"    GridLinesVisibility="Vertical" CanUserSortColumns="True"  AutoGenerateColumns="False"  BorderBrush="Transparent" 
-                  CanUserResizeColumns="True" CanUserReorderColumns="True" VerticalGridLinesBrush="Transparent">
+                <TextBlock Grid.Row="3" 
+                           FontWeight="Bold" 
+                           Text="{Binding OutputsLabel}" 
+                           Margin="{StaticResource ControlBorderTop}" ></TextBlock>
+                <DataGrid x:Name="OutputsMappingDataGrid" 
+                          Grid.Row="4" 
+                          ItemsSource="{Binding OutputMapping}" 
+                          Margin="{StaticResource ControlBorderTop}" 
+                          HorizontalScrollBarVisibility="Disabled" 
+                          GridLinesVisibility="Vertical" 
+                          CanUserSortColumns="True" 
+                          AutoGenerateColumns="False" 
+                          BorderBrush="Transparent" 
+                          CanUserResizeColumns="True" 
+                          CanUserReorderColumns="True" 
+                          VerticalGridLinesBrush="Transparent">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Header="Output" CanUserResize="True" Width="350" SortMemberPath="Name">
                             <DataGridTemplateColumn.CellTemplate>
@@ -208,7 +296,6 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-
                         <DataGridTemplateColumn Header="Alias" CanUserResize="True" Width="*" SortMemberPath="OutputName">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -218,9 +305,10 @@
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
-                <StackPanel Orientation="Horizontal" Grid.Row="5" Margin="{StaticResource ElementBorderTop}">
-                    <TextBlock Text="Recordset Name:" Margin="{StaticResource ElementBorderRight}"></TextBlock>
-                    <TextBox MinWidth="100" Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}" Margin="{StaticResource ElementBorderRight}"></TextBox>
+                <StackPanel Orientation="Horizontal" Grid.Row="5" Margin="{StaticResource ControlBorderTop}">
+                    <TextBlock Text="Recordset Name:" Margin="{StaticResource ElementBorderControlRight}"></TextBlock>
+                    <TextBox MinWidth="100" Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}" 
+                             Margin="{StaticResource ElementBorderControlRight}"></TextBox>
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="5" Grid.Column="0">
@@ -228,10 +316,18 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                
-                    <TextBlock Grid.Column="0" Text="{Binding ErrorText}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow" x:Name="ErrorTextBlock" ></TextBlock>
-                    <Button x:Name="SaveButton" Grid.Column="1" Margin="{StaticResource ElementBorderTop}" HorizontalAlignment="Right" Command="{Binding SaveCommand}" VerticalAlignment="Bottom"  Width="100">Save</Button>
-
+                    <TextBlock Grid.Column="0" 
+                               Text="{Binding ErrorText}" 
+                               HorizontalAlignment="Left" 
+                               TextWrapping="WrapWithOverflow" 
+                               x:Name="ErrorTextBlock" ></TextBlock>
+                <Button x:Name="SaveButton" 
+                        Grid.Column="1" 
+                        Margin="{StaticResource ControlBorderTop}" 
+                        HorizontalAlignment="Right" 
+                        Command="{Binding SaveCommand}" 
+                        VerticalAlignment="Bottom" 
+                        Width="100">Save</Button>
             </Grid>
         </Grid>
     </ScrollViewer>
