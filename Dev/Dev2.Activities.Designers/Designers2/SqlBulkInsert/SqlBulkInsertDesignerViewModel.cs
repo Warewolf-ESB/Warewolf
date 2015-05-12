@@ -356,7 +356,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             LoadDatabaseTables(() =>
             {
                 SetSelectedTable(TableName);
-                ModelItemCollection.Clear();
+
                 LoadTableColumns(() =>
                 {
                     IsRefreshing = false;
@@ -466,7 +466,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                             inputcolumn = inputcolumn.Replace("[", "");
                             inputcolumn = inputcolumn.Replace("]", "");
                             inputcolumn = inputcolumn.Replace(" ", "");
-                            mapping.InputColumn = inputcolumn;
+                            mapping.InputColumn = string.Format("[[{0}]]", inputcolumn);
                         }
                     }
                     if (string.IsNullOrEmpty(mapping.InputColumn))
