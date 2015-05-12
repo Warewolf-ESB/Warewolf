@@ -21,6 +21,18 @@
     <SolidColorBrush x:Key="DataGridPressedBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
     <SolidColorBrush x:Key="DataGridSelectedBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
     <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <Thickness x:Key="BorderLessTop">
+        <Thickness.Left>1</Thickness.Left>
+        <Thickness.Top>0</Thickness.Top>
+        <Thickness.Right>1</Thickness.Right>
+        <Thickness.Bottom>1</Thickness.Bottom>
+    </Thickness>
+    <Thickness x:Key="BorderFull">
+        <Thickness.Left>1</Thickness.Left>
+        <Thickness.Top>0</Thickness.Top>
+        <Thickness.Right>1</Thickness.Right>
+        <Thickness.Bottom>1</Thickness.Bottom>
+    </Thickness>
 
     <Style x:Key="ColumnHeaderGripperStyle" TargetType="{x:Type Thumb}">
         <Setter Property="Width" Value="2"/>
@@ -79,14 +91,15 @@
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                         <Border x:Name="columnHeaderBorder"
-                                Margin="2,0,0,0"
+                                Margin="0,0,0,0"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="0,0,0,1"
+                                BorderThickness="0,0,1,1"
                                 Padding="0,0,0,0">
                             <ContentControl x:Name="contentControl"
-                                        KeyboardNavigation.IsTabStop="False"
-                                        Foreground="{TemplateBinding Foreground}">
+                                            KeyboardNavigation.IsTabStop="False"
+                                            Margin="2,0,2,0"
+                                            Foreground="{TemplateBinding Foreground}">
                                         <ContentPresenter x:Name="contentPresenter" 
                                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -162,9 +175,10 @@
                                 </VisualState>
                                 <VisualState x:Name="MouseOver">
                                     <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="DGR_Border" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)">
+                                        <!--<ColorAnimationUsingKeyFrames Storyboard.TargetName="DGR_Border" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)">
                                             <EasingColorKeyFrame KeyTime="0" Value="{StaticResource WarewolfOrange}" />
                                         </ColorAnimationUsingKeyFrames>
+                                        <ThicknessAnimation Duration="0" To="1" Storyboard.TargetProperty="BorderThickness" />-->
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
@@ -400,11 +414,11 @@
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Focusable" Value="False" />
         <Setter Property="Padding" Value="0" />
+        <Setter Property="Margin" Value="0,0,-1,0" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type DataGridCell}">
                     <Border x:Name="border"
-                            Margin="2,0,0,0"
                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                             Background="Transparent"
@@ -427,7 +441,7 @@
                                     </Storyboard>-->
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <ContentPresenter Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        <ContentPresenter Margin="2,0,2,0" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
