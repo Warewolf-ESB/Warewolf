@@ -1,7 +1,7 @@
 
-<Service ID="71f89bbb-be69-4810-8296-3fa68507752c" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MakePaypalPayment" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.5603.15824">
+<Service ID="71f89bbb-be69-4810-8296-3fa68507752c" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MakePaypalPayment" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.5610.13744">
   <DisplayName>MakePaypalPayment</DisplayName>
-  <Category>Payment Gateway\Microservices\MakePaypalPayment</Category>
+  <Category>Examples\Payment Gateway Example\Microservices\MakePaypalPayment</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>
@@ -102,9 +102,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>2BQS4tgFPVXYTG9EYPJsySGP09o=</DigestValue>
+        <DigestValue>gsjJ28WE1B88X2cE2eYNEEs3S2w=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>R6iTD/RfJlk1Rbj7KOmVcZy7EdEH8D92FJbJ70uyOJ/4WrVS0LTJgsO8srtBSY3r53lp/In4nR7OJJtUPB1U8gpFDXGOnzAFXJkb0yXXvFFXgYqEmD960QPsvwLpZa8g0ldTnkPceS5Tt5OHUBhXuk1vMWWBp0vL50/wYGu6YV8=</SignatureValue>
+    <SignatureValue>RhCWMK/Hb5MufkwIjxf+enYw/txbMnLGDahOw8CgTdCzwPu6ZFNLisN4sXOvwfMo0IMRVQ0KEQoGbB/XCCBvqJYTHgjG9siBXi3gGJlpOx49ouRfoymIvvuFcDDEda43Eg9poEHzTaU51X+bZPki0qZ/KMXFBSXarUy7Sg0aiMU=</SignatureValue>
   </Signature>
 </Service>

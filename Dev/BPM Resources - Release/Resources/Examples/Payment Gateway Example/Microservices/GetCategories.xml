@@ -1,7 +1,7 @@
 
-<Service ID="147a1131-5c0c-4861-836b-a0d16af4f8a4" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="GetCategories" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.5603.15824">
+<Service ID="147a1131-5c0c-4861-836b-a0d16af4f8a4" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="GetCategories" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.5610.13744">
   <DisplayName>GetCategories</DisplayName>
-  <Category>Payment Gateway\Microservices\GetCategories</Category>
+  <Category>Examples\Payment Gateway Example\Microservices\GetCategories</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>
@@ -34,9 +34,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>eeGNzIADZ8u2sHKSbfa8Z0+vZ4I=</DigestValue>
+        <DigestValue>h1bvRNSdidUHgEe7qytnGOQHCZU=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>HJtge721AFN/eMD21C83SwKR1r1UV87hrQTF6MnbGqVrRHIHsPDQ1RaOd6C+NNYMHs4tVYwKmO5AcgNc+CbUUQVN6IpiwDaHebiFk+OZsZjn2o6iPTw4RNRf4VWSCFEv8P9BBx0ERC4vZavTsoPWB+dCXL45JvzylhiUd8/WaD4=</SignatureValue>
+    <SignatureValue>LQnQhqCdtrCBrlpKRI7MOjovGRXwS8qvXVuEQ4kMybBkk3OZGtlQMRhOMgEjYmY6XfxOqx0KewgSJ3dW482d/r6ytLOWj5ulfA36oIkt/fVkSt0YnHfEunWYOWyyqT14BNI72y3obCdhZ+N69xGJAolwF60XDKTTRP4Nmgrgo5s=</SignatureValue>
   </Signature>
 </Service>

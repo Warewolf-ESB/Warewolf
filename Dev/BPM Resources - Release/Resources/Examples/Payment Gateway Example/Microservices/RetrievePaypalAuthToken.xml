@@ -1,7 +1,7 @@
 
-<Service ID="c0d41f8e-0ab8-4eae-89ec-23ed6f26f605" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="RetrievePaypalAuthToken" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.5603.15824">
+<Service ID="c0d41f8e-0ab8-4eae-89ec-23ed6f26f605" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="RetrievePaypalAuthToken" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.5610.13744">
   <DisplayName>RetrievePaypalAuthToken</DisplayName>
-  <Category>Payment Gateway\Microservices\RetrievePaypalAuthToken</Category>
+  <Category>Examples\Payment Gateway Example\Microservices\RetrievePaypalAuthToken</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>
@@ -37,9 +37,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>O/Z5sekwyS6IYN5NYnAHDMt3W3o=</DigestValue>
+        <DigestValue>jGPRGPoDflDx4vQLLaOnBFZtoEU=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>QSVZbdd3SPxzmoP7GbXvRx2R2JYpuJMfH/Z9j2koJ7bTOBSr+sKbnipgzWz7wMs3cwCX7h6J+qP2k5AEucZz49yCyW8kMkIMlz/JTjK6TINyXHZhJm8rLfXd//SYApGQ9jy57Oh3Bsu5S1Q71Krbc+t35LIML0oIIjFnVc7ZqEQ=</SignatureValue>
+    <SignatureValue>t3OOrBhMwyv0GkUTPYnzgXNf7Yd9L4V01JbWflhCX5UoAnva/iQDss/PYm2SVG0UNbqjfGUPWx802TaYz7IcWUMkHhtPN5UjuSU6W+fSGTxsSZFmZ4Irky6fv+bz6AvcABmMV47TdludppHhf5GXCAoGBDREe1V12VLl0IYr1k0=</SignatureValue>
   </Signature>
 </Service>

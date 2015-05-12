@@ -1,5 +1,5 @@
 
-<Service ID="16fb3a82-5ff2-42fe-9aa5-4604c5f370ba" Version="1.0" Name="GetCategories" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.5603.15824">
+<Service ID="16fb3a82-5ff2-42fe-9aa5-4604c5f370ba" Version="1.0" Name="GetCategories" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.5610.13744">
   <Actions>
     <Action Name="dbo_spGetAllCategories" Type="InvokeStoredProc" SourceID="c5d6f18a-f0a1-45ab-824a-f61bdcd26d62" SourceName="WarewolfShoppingCartDB" SourceMethod="dbo.spGetAllCategories">
       <Inputs />
@@ -21,7 +21,7 @@
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>GetCategories</DisplayName>
-  <Category>Payment Gateway\ShoppingCart Database Services\GetCategories</Category>
+  <Category>Examples\Payment Gateway Example\ShoppingCart Database Services\GetCategories</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
@@ -35,9 +35,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>iJkOiAXFRbV6ehMRLVIEdLW6cNs=</DigestValue>
+        <DigestValue>XpyR102My87AJdXMWZKYCbSZT2A=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>d28m5RKVJA5EIqJ2ltW7t2Sn0riDAxfimxGdBdF3/8IjAtKgZQ3fS5gG3Luscjpti+YkF0+dqrtBriHFw8HmC8sJoAymmT6mdFxzCehaRvGj7WFeGIjajF2zifsM8+AXFUQTSqEMPf17NYrJ3g4nCt62rEU8zr2PGkfiUTxg67Y=</SignatureValue>
+    <SignatureValue>J2DoTNLBb814iWzdS2qHb6pRgBOGCDIGbA06MsJkH1J+/PuS62cyk+JtSSiYgFvxB7sB4jmRZFGusAMpN3U2LptUXVE0eoYfn31gh5mu0mXAsY1/IqtnUnmzGT3Ztfz/YZKQeaFmVKxveuR53kxaR+ejpkyGK9dUIQjVlY/16mo=</SignatureValue>
   </Signature>
 </Service>
