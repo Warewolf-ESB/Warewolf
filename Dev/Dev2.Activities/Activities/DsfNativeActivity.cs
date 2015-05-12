@@ -251,7 +251,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var esbChannel = dataObject.EsbChannel;
                     ErrorResultTO tmpErrors;
                     esbChannel.ExecuteLogErrorRequest(dataObject, dataObject.WorkspaceID, OnErrorWorkflow, out tmpErrors);
-                    dataObject.Environment.AddError(tmpErrors.MakeDisplayReady());
+                    if(tmpErrors != null)
+                    {
+                        dataObject.Environment.AddError(tmpErrors.MakeDisplayReady());
+                    }
                 }
             }
             catch(Exception e)

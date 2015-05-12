@@ -32,6 +32,7 @@ using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
+using ServiceStack.Common.Extensions;
 using Warewolf.Storage;
 
 // ReSharper disable InconsistentNaming
@@ -400,6 +401,7 @@ namespace Dev2.Runtime.ESB.Control
             var innerEnvironment = dataObject.Environment;
             dataObject.PopEnvironment();
             DataListUtil.OutputsToEnvironment(innerEnvironment, dataObject.Environment, outputDefs);
+            innerEnvironment.Errors.ForEach(s => dataObject.Environment.AddError(s));
             return innerEnvironment;
         }
 

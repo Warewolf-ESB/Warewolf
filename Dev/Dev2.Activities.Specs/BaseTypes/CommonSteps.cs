@@ -165,6 +165,10 @@ namespace Dev2.Activities.Specs.BaseTypes
                         }
                     }
                 }
+                else if(sourceEndPoint.PathIs(sourceEndPoint.IOPath)==enPathType.Directory && source.Path.Contains("emptydir"))
+                {
+                    broker.Create(sourceEndPoint, new Dev2CRUDOperationTO(true,false), false);
+                }
             }
             catch(Exception e)
             {
