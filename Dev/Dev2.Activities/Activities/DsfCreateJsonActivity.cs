@@ -25,7 +25,8 @@ using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Storage;
 using Newtonsoft.Json.Linq;
- 
+using Dev2.TO;
+
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -81,68 +82,97 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (JsonMappings == null)
                     dataObject.Environment.AddError("Json Mappings supplied to activity is null.");
 
-                if (!dataObject.Environment.Errors.Count() > 0 && JsonMappings.Count() == 0)
+                if (dataObject.Environment.Errors.Count() == 0 && JsonMappings.Count() == 0)
                     dataObject.Environment.AddError("No Json Mappings supplied to activity.");
-
+                if (dataObject.IsDebugMode())
+                {
+                    int j = 0;
+                    foreach (var a in JsonMappings)
+                    {
+                        var debugItem = new DebugItem();
+                        AddDebugItem(new DebugItemStaticDataParams(string.Empty, (++j).ToString()), debugItem);
+                        AddDebugItem(new DebugEvalResult(a.SourceName, string.Empty, dataObject.Environment), debugItem);
+                        _debugInputs.Add(debugItem);
+                    }
+                }
+                // TODO: More validation through IRule, IRuleSet to throw out anything not in spec
                 if (!dataObject.Environment.Errors.Any())
                 {
-                    try
+                    // JsonMappings.Count() is larger than zero
+                    JObject json = new JObject();  // outermost JSON would always be a single JObject, i.e. {'name': value}
+                    var jsonMappingList = JsonMappings.ToList();
+
+                    // build the list of JsonMappingCompoundTo - a compound is either a single expression or a comma seperated list of expressions
+                    var results = new List<JsonMappingCompoundTo>();
+                    results =
+                    jsonMappingList.Select(jsonMapping =>
+                        new JsonMappingCompoundTo(
+                            env: dataObject.Environment,
+                            compound: jsonMapping
+                            )).ToList();
+
+                    // get the longest list
+                    int maxCount = results.Select(r => r.MaxCount).Max();
+
+                    // main loop for producing largest list of zipped values
+                    for (int i = 0; i < maxCount; i++)
                     {
-                        // JsonMappings.Count() is larger than zero
-                        JObject json = new JObject();  // outermost JSON would always be a single JObject, i.e. {'name': value}
-                        var jsonMappingList = JsonMappings.ToList();
-                        var results =
-                        jsonMappingList.Select(jsonMapping =>
-                            new JsonMappingCompoundTo(
-                                jsonMapping
-                                )
-                            ).ToList();
-
-                        // get the longest list
-                        int maxCount = results.Select(r =>r.MaxCount).Max(); 
-                            
-                        for (int i=0;i < maxCount;i++)
-                        {
-                                results.ForEach(x =>
-                                    {
-
-                                    }
-                                );
-                        }
-
-                        /*
-                        if (dataObject.IsDebugMode())
-                        {
-                            AddDebugInputItem(new DebugEvalResult(dataObject.Environment.ToStar(RecordsetName), "Recordset", dataObject.Environment));
-                        }
-                        var rule = new IsSingleValueRule(() => CountNumber);
-                        var single = rule.Check();
-                        if (single != null)
-                        {
-                            allErrors.AddError(single.Message);
-                        }
-                        else
-                        {
-                            var count = 0;
-                            if (dataObject.Environment.HasRecordSet(RecordsetName))
+                        results.ForEach(x =>
                             {
-                                count = dataObject.Environment.GetCount(rs);
+                                // if it is not a compound,
+                                if (!x.IsCompound)
+
+                                    // add JProperty, with name x.DestinationName, and value eval(x.SourceName)
+                                    json.Add(new JProperty(
+                                        x.DestinationName,
+                                        x.EvaluatedResultIndexed(i))
+                                        );
+                                // if it is a compound, 
                             }
-                            var value = count.ToString();
-                            dataObject.Environment.Assign(CountNumber, value);
-                            AddDebugOutputItem(new DebugEvalResult(CountNumber, "", dataObject.Environment));
-                        }
-                         * */
+                        );
                     }
-                    catch (Exception e)
+
+                    dataObject.Environment.Assign(JsonString, json.ToString(Newtonsoft.Json.Formatting.None));
+
+
+
+                    if (dataObject.IsDebugMode())
                     {
-                        /*
-                        AddDebugInputItem(new DebugItemStaticDataParams("", RecordsetName, "Recordset", "="));
-                        allErrors.AddError(e.Message);
-                        dataObject.Environment.Assign(CountNumber, "0");
-                        AddDebugOutputItem(new DebugItemStaticDataParams("0", CountNumber, "", "="));
-                         * */
+                        AddDebugOutputItem(new DebugEvalResult(JsonString, string.Empty, dataObject.Environment));
+
                     }
+
+                    /*var rule = new IsSingleValueRule(() => CountNumber);
+                    var single = rule.Check();
+                    if (single != null)
+                    {
+                        allErrors.AddError(single.Message);
+                    }
+                    else
+                    {
+                        var count = 0;
+                        if (dataObject.Environment.HasRecordSet(RecordsetName))
+                        {
+                            count = dataObject.Environment.GetCount(rs);
+                        }
+                        var value = count.ToString();
+                        dataObject.Environment.Assign(CountNumber, value);
+                        AddDebugOutputItem(new DebugEvalResult(CountNumber, "", dataObject.Environment));
+                    }
+                     * */
+                }
+            }
+            catch (Exception e)
+            {
+                JsonMappings.ToList().ForEach(x =>
+                {
+                    AddDebugInputItem(new DebugItemStaticDataParams("", x.SourceName, "SourceName", "="));
+                    AddDebugInputItem(new DebugItemStaticDataParams("", x.DestinationName, "DestinationName", "="));
+                });
+
+                allErrors.AddError(e.Message);
+                dataObject.Environment.Assign(JsonString, string.Empty);
+                AddDebugOutputItem(new DebugItemStaticDataParams(string.Empty, JsonString, "", "="));
             }
             finally
             {
@@ -150,7 +180,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var hasErrors = allErrors.HasErrors();
                 if (hasErrors)
                 {
-                    DisplayAndWriteError("DsfCountRecordsActivity", allErrors);
+                    DisplayAndWriteError("DsfCreateJsonActivity", allErrors);
                     var errorString = allErrors.MakeDataListReady();
                     dataObject.Environment.AddError(errorString);
                 }
@@ -191,23 +221,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
-            if (updates != null && updates.Count == 1)
-            {
-                RecordsetName = updates[0].Item2;
-            }
+            /*
+                        if (updates != null && updates.Count >= 1)
+                        {
+                        }
+             * */
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
-            if (updates != null)
-            {
-                var itemUpdate = updates.FirstOrDefault(tuple => tuple.Item1 == CountNumber);
-                if (itemUpdate != null)
-                {
-                    CountNumber = itemUpdate.Item2;
-                }
-            }
-
+            /*
+                        if (updates != null)
+                        {
+                            var itemUpdate = updates.FirstOrDefault(tuple => tuple.Item1 == CountNumber);
+                            if (itemUpdate != null)
+                            {
+                                CountNumber = itemUpdate.Item2;
+                            }
+                        }
+            */
         }
 
 
@@ -215,12 +247,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IList<DsfForEachItem> GetForEachInputs()
         {
-            return GetForEachItems(RecordsetName);
+            return null;
+            //return GetForEachItems(RecordsetName);
         }
 
         public override IList<DsfForEachItem> GetForEachOutputs()
         {
-            return GetForEachItems(CountNumber);
+            return null;
+            //return GetForEachItems(CountNumber);
         }
 
         #endregion

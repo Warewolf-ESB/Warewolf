@@ -65,15 +65,15 @@ type WarewolfEnvironment =
     }
 
 
-let tryParseAtom (data:string) = 
+let rec tryParseAtom (data:string) = 
     let mutable value = 0;    
     if data.StartsWith("0") then DataString data
     else
        let success = System.Int32.TryParse(data,&value)
        if success then Int value
-       else DataString data
+       else tryFloatParseAtom data
 
-let tryFloatParseAtom (data:string) = 
+and tryFloatParseAtom (data:string) = 
     let mutable value=0.0m;
     let mutable valuse=0.0;
     if data.StartsWith("0") then DataString data

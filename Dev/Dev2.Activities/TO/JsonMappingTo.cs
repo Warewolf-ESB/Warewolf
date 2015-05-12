@@ -27,7 +27,7 @@ namespace Dev2.TO
         public string DestinationName { get { return _destinationName; } set { OnPropertyChanged(ref _destinationName, value); } }
 
         #region Implementation of IDev2TOFn
-
+        int _indexNumber;
         public int IndexNumber { get { return _indexNumber; } set { OnPropertyChanged(ref _indexNumber, value); } }
 
         public bool CanRemove()

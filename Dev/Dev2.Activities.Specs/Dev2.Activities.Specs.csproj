@@ -231,6 +231,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CreateJSON.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\Data\Create JSON\CreateJsonSteps.cs" />
     <Compile Include="Toolbox\Data\DataMerge\DataMerge.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

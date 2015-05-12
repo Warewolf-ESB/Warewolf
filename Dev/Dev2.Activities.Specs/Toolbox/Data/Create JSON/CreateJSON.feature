@@ -5,11 +5,11 @@
 
 
 Scenario Outline: Single Scalar Variable
-	Given I have a variable "[[a]]" with value <value>
+	Given I have a variable "[[a]]" with value "<value>"
 	And I select variable "[[a]]" with name "a"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be <result>
+	Then the value of "[[json]]" should be '<result>'
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                 |
@@ -28,7 +28,7 @@ Examples:
 	| Null          |       | {"a":null}    |
 
 Scenario Outline: Single Scalar Variable with changed name
-	Given I have a variable "[[a]]" with value '<value>'
+	Given I have a variable "[[a]]" with value "<value>"
 	And I select variable "[[a]]" with name "myVar"
 	And a result variable "[[json]]"
 	When the create json tool is executed
@@ -51,11 +51,11 @@ Examples:
 	| Null          |       | {"myVar":null}    |
 
 Scenario Outline: Simple Recordset single field
-	Given I have a variable "[[rec().a]]" with value <value>
+	Given I have a variable "[[rec().a]]" with value "<value>"
 	And I select variable "[[rec().a]]" with name "a"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be <result>
+	Then the value of "[[json]]" should be '<result>'
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                        |
@@ -65,22 +65,22 @@ Scenario Outline: Simple Recordset single field
 	|   [[json]] = <result> |
 Examples: 
 	|    type | value | result        |
-	| Character     | c     | {"a":"c"}     |
-	| Integer       | 2     | {"a":2}       |
-	| Decimal       | 5.6   | {"a":5.6}     |
-	| String        | Hello | {"a":"Hello"} |
-	| Boolean_True  | true  | {"a":true}    |
-	| Boolean_False | false | {"a":false}   |
-	| Null          |       | {"a":null}    |
+	| Character     | c     | {"a":["c"]}     |
+	| Integer       | 2     | {"a":[2]}       |
+	| Decimal       | 5.6   | {"a":[5.6]}     |
+	| String        | Hello | {"a":["Hello"]} |
+	| Boolean_True  | true  | {"a":[true]}    |
+	| Boolean_False | false | {"a":[false]}   |
+	| Null          |       | {"a":[null]}    |
 
 Scenario Outline: Multiple Scalars Variable
-	Given I have a variable "[[a]]" with value <valueA>
-	And I have a variable "[[b]]" with value <valueB>
-	And I select variable "[[a]]"
-	And I select variable "[[b]]"
+	Given I have a variable "[[a]]" with value "<valueA>"
+	And I have a variable "[[b]]" with value "<valueB>"
+	And I select variable "[[a]]" with name "a"
+	And I select variable "[[b]]" with name "b"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be <result>
+	Then the value of "[[json]]" should be '<result>'
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                  |

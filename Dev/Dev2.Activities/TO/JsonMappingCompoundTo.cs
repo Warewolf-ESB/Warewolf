@@ -16,16 +16,22 @@ using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Interfaces;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
+using Warewolf.Storage;
 
 namespace Dev2.TO
 {
     public class JsonMappingEvaluated
     {
-        public JsonMappingTo Simple { get; }
+        IExecutionEnvironment _env;
+        public JsonMappingTo Simple { get; set; }
+        object _evalResultAsObject = null;
         WarewolfDataEvaluationCommon.WarewolfEvalResult _evalResult = null;
 
-        public JsonMappingEvaluated(string sourceName)
+        public JsonMappingEvaluated(
+            IExecutionEnvironment env,
+            string sourceName)
         {
+            this._env = env;
             this.Simple = new JsonMappingTo
             {
                 SourceName = sourceName,
@@ -35,7 +41,7 @@ namespace Dev2.TO
 
         private string CalculateDestinationNameFromSourceName(string sourceName)
         {
-            var parsed = WarewolfDataEvaluationCommon.ParseLanguageExpression(this.Simple.SourceName);
+            var parsed = WarewolfDataEvaluationCommon.ParseLanguageExpression(sourceName);
             if (parsed.IsScalarExpression)
                 return (parsed as LanguageAST.LanguageExpression.ScalarExpression).Item;
             if (parsed.IsRecordSetExpression)
@@ -50,9 +56,46 @@ namespace Dev2.TO
             get
             {
                 if (_evalResult == null)
-                    _evalResult = WarewolfDataEvaluationCommon.Eval()Simple.SourceName);
+                    _evalResult = _env.Eval(
+                         Simple.SourceName);
                 return _evalResult;
             }
+        }
+
+        public object EvalResultAsObject
+        {
+            get
+            {
+                if (_evalResultAsObject == null)
+                {
+                    var e = this.EvalResult;
+                    _evalResultAsObject = WarewolfDataEvaluationCommon.EvalResultToJsonCompatibleObject(e);
+                    if (e.IsWarewolfAtomResult)
+                    {
+                        var x = e as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                        if (x != null && x.Item.IsDataString)
+                        {
+                            if ((x.Item as DataASTMutable.WarewolfAtom.DataString).Item == "true") _evalResultAsObject = (bool)true;
+                            else if ((x.Item as DataASTMutable.WarewolfAtom.DataString).Item == "false") _evalResultAsObject = (bool)false;
+                        }
+                    }
+                }
+                return _evalResultAsObject;
+            }
+        }
+
+        public object EvalResultIndexed(int index)
+        {
+            if (this.EvalResult.IsWarewolfAtomResult)
+                return index > 0 ? null :
+                    (this.EvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult).Item;
+            if (this.EvalResult.IsWarewolfAtomListresult)
+                return index >= this.Count ? null :
+                    (this.EvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult).Item.ElementAt(index);
+            if (this.EvalResult.IsWarewolfRecordSetResult)
+                return index >= this.Count ? null :
+                    (this.EvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult).Item.Data;
+            return null;
         }
 
         public int Count
@@ -64,36 +107,46 @@ namespace Dev2.TO
                     return (this.EvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult).Item.Count;
                 if (this.EvalResult.IsWarewolfRecordSetResult)
                     return (this.EvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult).Item.Count;
+                return 0;
             }
         }
     }
 
     public class JsonMappingCompoundTo
     {
+        IExecutionEnvironment _env;
         public JsonMappingTo Compound { get; set; }
         public List<JsonMappingEvaluated> Evaluations { get; set; }
 
-        public JsonMappingCompoundTo(JsonMappingTo compound)
+        public JsonMappingCompoundTo(
+            IExecutionEnvironment env,
+            JsonMappingTo compound)
         {
+            this._env = env;
+
             Compound = compound;
             this.Evaluations = new List<JsonMappingEvaluated>();
 
             if (!this.IsCompound)
             {
-                this.Evaluations.Add(new JsonMappingEvaluated( )compound.SourceName));
+                this.Evaluations.Add(new JsonMappingEvaluated(
+                    env: this._env,
+sourceName: compound.SourceName));
             }
             else
             {
-                // we assume this is a comma seperated list of expressions
+                // we know this is a comma seperated list of expressions
                 this.Evaluations =
                     (WarewolfDataEvaluationCommon.ParseLanguageExpression(this.Compound.SourceName)
                 as LanguageAST.LanguageExpression.ComplexExpression)
                 .Item
                 .Where(x => !x.IsWarewolfAtomAtomExpression)
-                .Select(x => 
+                .Select(x =>
                     WarewolfDataEvaluationCommon.LanguageExpressionToString(x))
-                .Select(x => 
-                    new JsonMappingEvaluated(x))
+                .Select(x =>
+                    new JsonMappingEvaluated(
+                        env: this._env,
+                        sourceName: x))
                 .ToList();
             }
         }
@@ -107,9 +160,9 @@ namespace Dev2.TO
             {
                 if (_isCompound == null)
                     _isCompound = WarewolfDataEvaluationCommon.ParseLanguageExpression(
-                        Compound.SourceName
-                        ).IsComplexExpression;
-                return _isCompound;
+                        Compound.SourceName)
+                        .IsComplexExpression;
+                return (bool)_isCompound;
             }
         }
 
@@ -120,5 +173,20 @@ namespace Dev2.TO
                 return this.Evaluations.Select(x => x.Count).Max();
             }
         }
+
+        public string DestinationName
+        {
+            get
+            {
+                return this.Compound.DestinationName;
+            }
+        }
+
+        public object EvaluatedResultIndexed(int i)
+        {
+            return i < this.MaxCount ?
+                this.Evaluations.First().EvalResultAsObject : null;
+        }
+
     }
 }
