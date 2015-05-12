@@ -85,13 +85,8 @@ namespace Dev2.Activities
             string result;
             string err;
             DateTimeConverterFactory.CreateFormatter().TryFormat(new DateTimeOperationTO(DateTime.Now.ToString("G"), "", "", "", 0, ""), out result, out err);
-            string fullPattern = CultureInfo.CurrentUICulture.DateTimeFormat.FullDateTimePattern;
-            if(fullPattern.Contains("ss"))
-            {
-                fullPattern = fullPattern.Insert(fullPattern.IndexOf("ss", StringComparison.Ordinal) + 2, ".fff");
-            }
-            var dateTimeString = DateTime.Now.ToString(fullPattern);
-            return dateTimeString;
+            
+            return result;
         }
 
         public string GetDateTimeFormatInformation()
