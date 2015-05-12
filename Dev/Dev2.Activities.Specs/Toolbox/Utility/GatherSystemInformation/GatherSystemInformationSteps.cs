@@ -120,6 +120,10 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
 
         private static void Verify(string type, string actualValue, string error)
         {
+            if(type == "DateTime")
+            {
+                Assert.IsTrue(actualValue.Contains("."));
+            }
             Type component = Type.GetType("System." + type);
             if(component != null)
             {
