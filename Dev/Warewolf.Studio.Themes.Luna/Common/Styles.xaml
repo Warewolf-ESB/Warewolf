@@ -68,7 +68,7 @@
     <Thickness x:Key="ElementBottomRightBorder">
         <Thickness.Bottom>0</Thickness.Bottom>
         <Thickness.Left>0</Thickness.Left>
-        <Thickness.Right>7</Thickness.Right>
+        <Thickness.Right>5</Thickness.Right>
         <Thickness.Top>5</Thickness.Top>
     </Thickness>
     <Thickness x:Key="ElementBorderRight">
@@ -92,14 +92,14 @@
     </Thickness>
     <Thickness x:Key="ElementBorderLeftRightTop">
         <Thickness.Bottom>0</Thickness.Bottom>
-        <Thickness.Left>7</Thickness.Left>
+        <Thickness.Left>5</Thickness.Left>
         <Thickness.Right>5</Thickness.Right>
         <Thickness.Top>5</Thickness.Top>
     </Thickness>
     <Thickness x:Key="ElementBorderLeftTopRight">
         <Thickness.Bottom>0</Thickness.Bottom>
         <Thickness.Left>5</Thickness.Left>
-        <Thickness.Right>7</Thickness.Right>
+        <Thickness.Right>5</Thickness.Right>
         <Thickness.Top>5</Thickness.Top>
     </Thickness>
     <!-- TOP/BOTTOM -->
@@ -113,8 +113,8 @@
     <Thickness x:Key="BoundaryElementBorderLeftRightTop">
         <Thickness.Bottom>0</Thickness.Bottom>
         <Thickness.Left>5</Thickness.Left>
-        <Thickness.Right>7</Thickness.Right>
-        <Thickness.Top>7</Thickness.Top>
+        <Thickness.Right>5</Thickness.Right>
+        <Thickness.Top>5</Thickness.Top>
     </Thickness>
 
     
@@ -179,6 +179,18 @@
         <Thickness.Left>3</Thickness.Left>
         <Thickness.Right>5</Thickness.Right>
         <Thickness.Top>0</Thickness.Top>
+    </Thickness>
+    <Thickness x:Key="ElementBorderControlLeftTop">
+        <Thickness.Bottom>0</Thickness.Bottom>
+        <Thickness.Left>3</Thickness.Left>
+        <Thickness.Right>0</Thickness.Right>
+        <Thickness.Top>3</Thickness.Top>
+    </Thickness>
+    <Thickness x:Key="ControlBorderLeftTop">
+        <Thickness.Bottom>0</Thickness.Bottom>
+        <Thickness.Left>3</Thickness.Left>
+        <Thickness.Right>0</Thickness.Right>
+        <Thickness.Top>3</Thickness.Top>
     </Thickness>
 </ResourceDictionary>
 
