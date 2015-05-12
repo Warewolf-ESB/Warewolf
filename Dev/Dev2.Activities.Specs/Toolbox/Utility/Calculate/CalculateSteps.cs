@@ -111,14 +111,53 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-            if(string.IsNullOrEmpty(expectedResult))
+
+            if (expectedResult == "[Now]")
             {
-                Assert.IsTrue(string.IsNullOrEmpty(actualValue));
+
+                Assert.IsTrue( DateTime.Parse(actualValue).Subtract(DateTime.Now).TotalMilliseconds < 1000);
+                return;
+            }
+            if (expectedResult == "[Today]")
+            {
+
+                Assert.IsTrue(DateTime.Parse(actualValue).Day== DateTime.Now.Day);
+                return;
+            }
+            if (expectedResult == "[Int]")
+            {
+                int outval;
+                Assert.IsTrue(int.TryParse(actualValue,out outval));
+                return;
             }
             else
             {
-                Assert.AreEqual(expectedResult, actualValue);
+
+                if (string.IsNullOrEmpty(expectedResult))
+                {
+                    Assert.IsTrue(string.IsNullOrEmpty(actualValue));
+                }
+                else
+                {
+                    Assert.AreEqual(expectedResult, actualValue);
+                }
             }
         }
+
+        [Given(@"I have the Example formula '(.*)'")]
+        public void GivenIHaveTheExampleFormula(string formula)
+        {
+            ScenarioContext.Current.Add("formula", formula);
+        
+        }
+
+
+        [Then(@"the example output = '(.*)'")]
+        public void ThenTheExampleOutput(int p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+
     }
 }
