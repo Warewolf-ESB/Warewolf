@@ -192,5 +192,13 @@
         <Thickness.Right>0</Thickness.Right>
         <Thickness.Top>3</Thickness.Top>
     </Thickness>
+    
+    <!-- COMBOBOX ITEM PADDING -->
+    <Thickness x:Key="ComboBoxItemPadding">
+        <Thickness.Bottom>0</Thickness.Bottom>
+        <Thickness.Left>6</Thickness.Left>
+        <Thickness.Right>0</Thickness.Right>
+        <Thickness.Top>3</Thickness.Top>
+    </Thickness>
 </ResourceDictionary>
 

@@ -73,7 +73,7 @@
                               ItemsSource="{Binding Sources}" 
                               DisplayMemberPath="Name" 
                               Width="250" 
-                              Padding="6,3,0,0"
+                              Padding="{StaticResource ComboBoxItemPadding}"
                               Focusable="True"
                               Margin="{StaticResource ControlBorderTop}" 
                               SelectedItem="{Binding SelectedSource}" />
@@ -112,7 +112,7 @@
                     <!-- Choose data Source Action-->
                     <ComboBox x:Name="ActionsComboBox" 
                               Width="280" 
-                              Padding="6,3,0,0"
+                              Padding="{StaticResource ComboBoxItemPadding}"
                               ItemsSource="{Binding AvalaibleActions}" 
                               DisplayMemberPath="Name" 
                               SelectedItem="{Binding SelectedAction}" 
