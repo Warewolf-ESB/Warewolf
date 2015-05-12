@@ -1,7 +1,7 @@
 
-<Service ID="69262eb5-3544-45d3-a016-acb7699340c9" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="GetPaymentsFromPaypal" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.5603.15824">
+<Service ID="69262eb5-3544-45d3-a016-acb7699340c9" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="GetPaymentsFromPaypal" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.5610.13744">
   <DisplayName>GetPaymentsFromPaypal</DisplayName>
-  <Category>Payment Gateway\Microservices\GetPaymentsFromPaypal</Category>
+  <Category>Examples\Payment Gateway Example\Microservices\GetPaymentsFromPaypal</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>
@@ -90,9 +90,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>iNRKcWIwHAHf5l9v3Hd7q1lSupA=</DigestValue>
+        <DigestValue>VcFolSkHE5RRPa9OI4fvmdV/fC4=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>FqOV/EE6Klek3O85O9e5XmelRh6aPSdPhxiCs/jQ+5MPZLnV1mxDfxWv3Gt+In5SzPvhnMptTcJKThP4pTssK+jCqyD/JYXN2Mk3gd/fXeZJ/SCez8GfLEO8MqcaYtwQ/i8l+t7wNmwV6o8RjY9za25HNL87nJ4VtFwpEreoh78=</SignatureValue>
+    <SignatureValue>NE60pE8J2gATUYh7mgnDpD2SJgIKTyWo0U8Pfy4acfsYop8+ZY8wq5SfX2itcXrXwYPCpeax8yUQSaqd6EZJbz3gtVS9ENnm/AGBSnW8mTkdTSHGj64gR/otnfu3Y0i9r6LlJDQ//dF+nnM26VTw1oyKXYlCETWo1qV5Crosm2U=</SignatureValue>
   </Signature>
 </Service>
