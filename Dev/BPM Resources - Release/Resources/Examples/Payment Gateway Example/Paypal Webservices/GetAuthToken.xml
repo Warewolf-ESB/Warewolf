@@ -1,5 +1,5 @@
 
-<Service ID="69e6d309-91fe-4121-b048-5be457176b91" Version="1.0" Name="GetAuthToken" ResourceType="WebService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.5603.15824">
+<Service ID="69e6d309-91fe-4121-b048-5be457176b91" Version="1.0" Name="GetAuthToken" ResourceType="WebService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.5610.13744">
   <Actions>
     <Action Name="paypal_gettoken" Type="InvokeWebService" SourceID="6197be96-64ba-4cf0-bc32-2158dde4ed09" SourceName="paypal" SourceMethod="" RequestUrl="" RequestMethod="Post" JsonPath="">
       <RequestHeaders><![CDATA[Authorization: Basic [[auth]];Accept: application/json;Content-Type:application/x-www-form-urlencoded]]></RequestHeaders>
@@ -28,7 +28,7 @@
   <DataList />
   <TypeOf>InvokeWebService</TypeOf>
   <DisplayName>GetAuthToken</DisplayName>
-  <Category>Payment Gateway\Paypal Webservices\GetAuthToken</Category>
+  <Category>Examples\Payment Gateway Example\Paypal Webservices\GetAuthToken</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
@@ -42,9 +42,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>EHIcuhTjInWHSjVJIciZUEBvUS4=</DigestValue>
+        <DigestValue>bdaGUC2+evbMrjSuLJzxX/Ak47o=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>YYV7TpDRn3odp2kbBIUKLTayTyZdYOO9ABnu5YTAOg2CtsItO43Re1r1A49shN0P8o6AzKXE1Mvh90q9ewfK9buRuyVtzfpnd0KIxMjS3BgkrMrhRl+cN30RS6ItafM9eEx6R9RstX5jf9XbXMCfv/c7tEFnNcX/MaVy1Jwovgo=</SignatureValue>
+    <SignatureValue>OlO9PWhFs2jUMH1j/Q69SyGkpziM6VcXTQFsRlLX1J384V3FZjx5jY0CPMRdtECHNjVSLW6CWsLqWAv8jKyZynlkWIMh9jT1l2xRIoRVBtzq1JPX8VlRuN5ef/g8RlxcCIYucZaI35aLSqunyN0s4GvWMuS2VR09r5Km1x3Di2I=</SignatureValue>
   </Signature>
 </Service>

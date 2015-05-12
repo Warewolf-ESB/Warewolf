@@ -1,7 +1,7 @@
 
-<Service ID="19de360c-4581-4d98-8f4d-60c50ccc03f0" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Dice Roll_test" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.5602.29834">
+<Service ID="19de360c-4581-4d98-8f4d-60c50ccc03f0" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Dice Roll_test" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.5610.13744">
   <DisplayName>Dice Roll_test</DisplayName>
-  <Category>Dice Roll Example\Tests\Dice Roll_test</Category>
+  <Category>Examples\Dice Roll Example\Tests\Dice Roll_test</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>
@@ -32,9 +32,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>x4MwHfCC0KWuNG/HdPE8nJeB9ak=</DigestValue>
+        <DigestValue>FbgyM+PN8nZQlSs3+dktbq1CIJk=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>KLc2sfFl582HT8hE9DJHN0xZd6bND1dMSGoYugiuc7e89iPWBAQoOlciED2NpU2g3RcI0EeehdBMVpvGpYEbwUlf+FEGjO3JeEODChmQ/jZM5cMH4ra/stPzCY6p/rLD716/Ixhpzejl7eJVMWhIf34aKAo7lt4K5bzqvpYbzg4=</SignatureValue>
+    <SignatureValue>owtHg2Eh8cLwuMCXYRWoWsjcD1U707wyAG9hq1jboZ9C8t0XTw3B7vXqLCuyKhVbAM+M9+7F+vTBwHWQtm0cxRBg5bRTKd1WUix22V31GWyccvLpyep6AXNX8UcrH8IS1KvTYcxMZHyW/c9OyVNfkVZ1YSz3y3GrcF6R0jBg1EY=</SignatureValue>
   </Signature>
 </Service>

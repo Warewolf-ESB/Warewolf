@@ -1,7 +1,7 @@
 
-<Service ID="1abcbf0d-be98-448d-b2bd-500033743f48" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Double Roll and Check_test" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.5602.29834">
+<Service ID="1abcbf0d-be98-448d-b2bd-500033743f48" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Double Roll and Check_test" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.5610.13744">
   <DisplayName>Double Roll and Check_test</DisplayName>
-  <Category>Dice Roll Example\Tests\Double Roll and Check_test</Category>
+  <Category>Examples\Dice Roll Example\Tests\Double Roll and Check_test</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>
@@ -33,9 +33,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>0HLvKyFQHAv5AqFEiJGXmXXqeVw=</DigestValue>
+        <DigestValue>bbsu04B4YALpwGlO+Xr2GMZsUew=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>PXcrStSwWXnyStDRcBhzbHRVv62IVUHH3n73hwS8NU3DQX2MYO3pMDwKHlQcswQUryOTRO9rItdVIlN1fl3L0eFRN5dh2xfKNF3zqknUvJZ9AqSU8glAWG6KiO93CyxNvYh4bgHO02v7SZqmZuCa95/5vaC2sPRrwadg/NGBpGM=</SignatureValue>
+    <SignatureValue>p5rAySHg05E1R4nf1TKnc/GvGEWYoGlldaHbC9ZceNp4L9oPppDvp7qkcnjPr2sEYJbbjfibirfrOILL5ZUZfl7gXEV44rUWysHUAF8CqVTgyq4zfN/7P7HzYomwAwx9Gu7Rz0TZq/NbnJGjvVTCbdxc4X9yx1DjfXMtySBSp7c=</SignatureValue>
   </Signature>
 </Service>
