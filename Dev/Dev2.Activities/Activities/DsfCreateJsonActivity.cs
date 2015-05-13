@@ -143,10 +143,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
                             else
                             {
+                                if(!x.EvalResult.IsWarewolfRecordSetResult)
                                 json.Add(new JProperty(
                                         x.DestinationName,
                                         x.ComplexEvaluatedResultIndexed(i))
                                         );
+                                else if (x.EvalResult.IsWarewolfRecordSetResult && i==0)
+                                {
+                                    json.Add(
+                                   x.ComplexEvaluatedResultIndexed(i));
+                                }
                             }
                             // if it is a compound, 
                         }
