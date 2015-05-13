@@ -9,8 +9,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
+using System.Activities.Expressions;
+using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json.Linq;
 using Warewolf.Storage;
 
 namespace Dev2.TO
@@ -18,7 +22,7 @@ namespace Dev2.TO
     public class JsonMappingEvaluated
     {
         readonly IExecutionEnvironment _env;
-        JsonMappingTo Simple { get; set; }
+        public JsonMappingTo Simple { get; set; }
         object _evalResultAsObject;
         WarewolfDataEvaluationCommon.WarewolfEvalResult _evalResult;
 
@@ -212,6 +216,113 @@ namespace Dev2.TO
             return i < MaxCount ?
                 Evaluations.First().EvalResultAsObject :
                 Evaluations.First().EvalResult.IsWarewolfAtomListresult ? new object[] { null } : null;
+        }
+        public object ComplexEvaluatedResultIndexed(int i)
+        {
+            JObject a = new JObject();
+            if(Evaluations.Any(x=>x.EvalResult.IsWarewolfAtomListresult))
+            {
+                return CreateArrayOfResults(i);
+            }
+            if (Evaluations.Any(x => x.EvalResult.IsWarewolfRecordSetResult))
+            {
+                return CreateArrayOfObjectsFromRecordSet(i);
+            }
+
+            CreateScalarObject(a);
+            return a;
+        }
+
+        void CreateScalarObject(JObject a)
+        {
+            foreach(var jsonMappingEvaluated in Evaluations)
+            {
+                a.Add(new JProperty(
+                    jsonMappingEvaluated.Simple.DestinationName,
+                    WarewolfDataEvaluationCommon.EvalResultToJsonCompatibleObject(jsonMappingEvaluated.EvalResult))
+                    );
+            }
+        }
+
+        object CreateArrayOfObjectsFromRecordSet(int i)
+        {
+            List<JObject> objects = new List<JObject>(MaxCount);
+            for (int j = 0; j < MaxCount; j++)
+            {
+                var obj = new JObject();
+                foreach (var jsonMappingEvaluated in Evaluations)
+                {
+                    obj.Add(new JProperty(
+                        jsonMappingEvaluated.Simple.DestinationName,
+                        GetEvalResult(jsonMappingEvaluated.EvalResult, i))
+                        );
+                }
+                objects.Add(obj);
+            }
+            return objects.ToArray();
+        }
+        object CreateArrayOfResults(int i)
+        {
+            List<JObject> objects = new List<JObject>(MaxCount);
+            for(int j = 0; j < MaxCount; j++)
+            {
+                var obj = new JObject();
+                foreach(var jsonMappingEvaluated in Evaluations)
+                {
+                    obj.Add(new JProperty(
+                        jsonMappingEvaluated.Simple.DestinationName,
+                        GetEvalResult(jsonMappingEvaluated.EvalResult, i))
+                        );
+                }
+                objects.Add(obj);
+            }
+            return objects.ToArray();
+        }
+
+        object GetEvalResult(WarewolfDataEvaluationCommon.WarewolfEvalResult evalResult, int i)
+        {
+            if(EvalResult.IsWarewolfAtomListresult)
+            {
+                var lst = ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult)evalResult).Item;
+                if (i > lst.Count)
+                    return null;
+                return  WarewolfDataEvaluationCommon.AtomToJsonCompatibleObject(lst[i]);
+            }
+            if(EvalResult.IsWarewolfAtomResult)
+            {
+                if (i == 0)
+                    return WarewolfDataEvaluationCommon.EvalResultToJsonCompatibleObject(evalResult);
+                return null;
+            }
+            if (EvalResult.IsWarewolfRecordSetResult)
+            {
+                var recset = ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult)EvalResult).Item;
+                var data = recset.Data.ToArray();
+                var jObjects = new List<JObject>();
+                for(int j = 0; j < recset.Count; j++)
+                {
+                    JObject a = new JObject();
+                    for(int k = 0; k < data.Length; k++)
+                    {
+                        try
+                        {
+                            a.Add( new JProperty( data[k].Key,WarewolfDataEvaluationCommon.AtomToJsonCompatibleObject(data[k].Value[j])));
+                        }
+                        catch(Exception)
+                        {
+
+                            a.Add(new JProperty(data[k].Key, null)); 
+                        }
+
+                    }
+                    jObjects.Add(a);
+                }
+                return jObjects;
+            }
+            else
+            {
+                throw new Exception("Invalid result type was encountered from warewolfstorage");
+            }
         }
     }
 }

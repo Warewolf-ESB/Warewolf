@@ -141,6 +141,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     x.EvaluatedResultIndexed(i))
                                     );
                             }
+                            else
+                            {
+                                json.Add(new JProperty(
+                                        x.DestinationName,
+                                        x.ComplexEvaluatedResultIndexed(i))
+                                        );
+                            }
                             // if it is a compound, 
                         }
                             );

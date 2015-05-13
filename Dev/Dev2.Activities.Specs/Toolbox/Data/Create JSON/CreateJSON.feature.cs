@@ -722,25 +722,6 @@ this.ScenarioSetup(scenarioInfo);
 #line 135
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        ""});
-            table11.AddRow(new string[] {
-                        "1",
-                        string.Format("[[a]] = {0}", valueA)});
-            table11.AddRow(new string[] {
-                        "2",
-                        string.Format("[[b]] = {0}", valueB)});
-#line 136
- testRunner.And("the debug inputs as", ((string)(null)), table11, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table12.AddRow(new string[] {
-                        string.Format("[[json]] = {0}", result)});
-#line 140
- testRunner.And("the debug output as", ((string)(null)), table12, "And ");
-#line hidden
             this.ScenarioCleanup();
         }
         
@@ -841,9 +822,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 153
 this.ScenarioSetup(scenarioInfo);
 #line 154
- testRunner.Given(string.Format("I have a variable \"[[rec().a]]\" with value \"{0}\"", valueA), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a variable \"[[rec(1).a]]\" with value \"{0}\"", valueA), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 155
- testRunner.And(string.Format("I have a variable \"[[rec().b]]\" with value \"{0}\"", valueB), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("I have a variable \"[[rec(1).b]]\" with value \"{0}\"", valueB), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 156
  testRunner.And("I select variable \"[[rec().a]],[[rec().b]]\" with name \"rec\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 157
@@ -854,25 +835,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then(string.Format("the value of \"[[json]]\" should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 160
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        ""});
-            table13.AddRow(new string[] {
-                        "1",
-                        string.Format("[[rec(1).a]] = {0}", valueA)});
-            table13.AddRow(new string[] {
-                        "2",
-                        string.Format("[[rec(1).b]] = {0}", valueB)});
-#line 161
- testRunner.And("the debug inputs as", ((string)(null)), table13, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table14.AddRow(new string[] {
-                        string.Format("[[json]] = {0}", result)});
-#line 165
- testRunner.And("the debug output as", ((string)(null)), table14, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -982,25 +944,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 182
  testRunner.When("the create json tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 183
- testRunner.Then("the value of \"[[json]]\" should be \'result>\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("the value of \"[[json]]\" should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 184
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        ""});
-            table15.AddRow(new string[] {
-                        "1",
-                        string.Format("[[rec(1).a]] = {0}", value)});
-#line 185
- testRunner.And("the debug inputs as", ((string)(null)), table15, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table16.AddRow(new string[] {
-                        string.Format("[[json]] = {0}", result)});
-#line 188
- testRunner.And("the debug output as", ((string)(null)), table16, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1011,10 +957,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Character")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Character")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "c")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[\"a\":\"c\"]}")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[\"c\"]}")]
         public virtual void SimpleRecordsetWithSingleField_Character()
         {
-            this.SimpleRecordsetWithSingleField("Character", "c", "{\"rec\":[\"a\":\"c\"]}", ((string[])(null)));
+            this.SimpleRecordsetWithSingleField("Character", "c", "{\"rec\":[\"c\"]}", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -1023,10 +969,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Integer")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Integer")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[\"a\":2]}")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[2]}")]
         public virtual void SimpleRecordsetWithSingleField_Integer()
         {
-            this.SimpleRecordsetWithSingleField("Integer", "2", "{\"rec\":[\"a\":2]}", ((string[])(null)));
+            this.SimpleRecordsetWithSingleField("Integer", "2", "{\"rec\":[2]}", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -1035,10 +981,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Decimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Decimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "5.6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[\"a\":5.6]}")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[5.6]}")]
         public virtual void SimpleRecordsetWithSingleField_Decimal()
         {
-            this.SimpleRecordsetWithSingleField("Decimal", "5.6", "{\"rec\":[\"a\":5.6]}", ((string[])(null)));
+            this.SimpleRecordsetWithSingleField("Decimal", "5.6", "{\"rec\":[5.6]}", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -1047,10 +993,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "Hello")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[\"a\":\"Hello\"]}")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[\"Hello\"]}")]
         public virtual void SimpleRecordsetWithSingleField_String()
         {
-            this.SimpleRecordsetWithSingleField("String", "Hello", "{\"rec\":[\"a\":\"Hello\"]}", ((string[])(null)));
+            this.SimpleRecordsetWithSingleField("String", "Hello", "{\"rec\":[\"Hello\"]}", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -1059,10 +1005,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Boolean_True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Boolean_True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "true")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[\"a\":true]}")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[true]}")]
         public virtual void SimpleRecordsetWithSingleField_Boolean_True()
         {
-            this.SimpleRecordsetWithSingleField("Boolean_True", "true", "{\"rec\":[\"a\":true]}", ((string[])(null)));
+            this.SimpleRecordsetWithSingleField("Boolean_True", "true", "{\"rec\":[true]}", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -1071,10 +1017,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Boolean_False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Boolean_False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "false")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[\"a\":false]}")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[false]}")]
         public virtual void SimpleRecordsetWithSingleField_Boolean_False()
         {
-            this.SimpleRecordsetWithSingleField("Boolean_False", "false", "{\"rec\":[\"a\":false]}", ((string[])(null)));
+            this.SimpleRecordsetWithSingleField("Boolean_False", "false", "{\"rec\":[false]}", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -1083,10 +1029,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Null")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Null")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[\"a\":null]}")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[null]}")]
         public virtual void SimpleRecordsetWithSingleField_Null()
         {
-            this.SimpleRecordsetWithSingleField("Null", "", "{\"rec\":[\"a\":null]}", ((string[])(null)));
+            this.SimpleRecordsetWithSingleField("Null", "", "{\"rec\":[null]}", ((string[])(null)));
         }
         
         public virtual void RecordsetWithMultipleFieldsAndValues(string type, string valueA1, string valueA2, string valueA3, string valueB1, string valueB2, string valueB3, string result, string[] exampleTags)
@@ -1117,36 +1063,36 @@ this.ScenarioSetup(scenarioInfo);
 #line 212
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table17.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "1",
                         string.Format("[[rec(1).a]] = {0}", valueA1)});
-            table17.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "",
                         string.Format("[[rec(2).a]] = {0}", valueA2)});
-            table17.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "",
                         string.Format("[[rec(3).a]] = {0}", valueA3)});
-            table17.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "",
                         string.Format("[[rec(1).a]] = {0}", valueB1)});
-            table17.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "",
                         string.Format("[[rec(2).b]] = {0}", valueB2)});
-            table17.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "",
                         string.Format("[[rec(3).b]] = {0}", valueB3)});
 #line 213
- testRunner.And("the debug inputs as", ((string)(null)), table17, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table11, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table18.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         string.Format("[[json]] = {0}", result)});
 #line 221
- testRunner.And("the debug output as", ((string)(null)), table18, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table12, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1299,33 +1245,33 @@ this.ScenarioSetup(scenarioInfo);
 #line 244
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table19.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "1",
                         "[[rec(1).a]] = c"});
-            table19.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "",
                         "[[rec(2).a]] = b"});
-            table19.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "",
                         "[[rec(3).a]] = g"});
-            table19.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "",
                         "[[rec(1).b]] = 1"});
-            table19.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "",
                         "[[rec(2).b]] = 2"});
 #line 245
- testRunner.And("the debug inputs as", ((string)(null)), table19, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table13, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table20.AddRow(new string[] {
+            table14.AddRow(new string[] {
                         "[[json]] = {\"rec\":[{\"a\":\"c\",\"b\":1},{\"a\":\"b\",\"b\":2},{\"a\":\"g\",\"b\":null}]}"});
 #line 252
- testRunner.And("the debug output as", ((string)(null)), table20, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table14, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

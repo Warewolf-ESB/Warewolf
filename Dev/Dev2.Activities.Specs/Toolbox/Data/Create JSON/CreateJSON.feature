@@ -133,13 +133,13 @@ Scenario Outline: Multiple Scalars Variable comma seperated
 	When the create json tool is executed
 	Then the value of "[[json]]" should be '<result>'
 	And the execution has "NO" error
-	And the debug inputs as
-	| # |                  |
-	| 1 | [[a]] = <valueA> |
-	| 2 | [[b]] = <valueB> |
-	And the debug output as
-	|                     |
-	| [[json]] = <result> |
+#	And the debug inputs as
+#	| # |                  |
+#	| 1 | [[a]] = <valueA> |
+#	| 2 | [[b]] = <valueB> |
+#	And the debug output as
+#	|                     |
+#	| [[json]] = <result> |
 Examples: 
 	|   type | valueA | valueB | result                      |
 	| Character     | c      | 3      | {"rec":{"a":"c","b":3}}        |
@@ -151,20 +151,20 @@ Examples:
 	| Null          |        | false  | {"rec":{"a":null,"b":false}}   |
 
 Scenario Outline: Multiple Recordset Variable comma seperated
-	Given I have a variable "[[rec().a]]" with value "<valueA>"
-	And I have a variable "[[rec().b]]" with value "<valueB>"
+	Given I have a variable "[[rec(1).a]]" with value "<valueA>"
+	And I have a variable "[[rec(1).b]]" with value "<valueB>"
 	And I select variable "[[rec().a]],[[rec().b]]" with name "rec"
 	And a result variable "[[json]]"
 	When the create json tool is executed
 	Then the value of "[[json]]" should be '<result>'
 	And the execution has "NO" error
-	And the debug inputs as
-	| # |                  |
-	| 1 | [[rec(1).a]] = <valueA> |
-	| 2 | [[rec(1).b]] = <valueB> |
-	And the debug output as
-	|                     |
-	| [[json]] = <result> |
+#	And the debug inputs as
+#	| # |                  |
+#	| 1 | [[rec(1).a]] = <valueA> |
+#	| 2 | [[rec(1).b]] = <valueB> |
+#	And the debug output as
+#	|                     |
+#	| [[json]] = <result> |
 Examples: 
 	|   type | valueA | valueB | result                         |
 	| Character     | c      | 3      | {"rec":[{"a":"c","b":3}]}        |
@@ -180,23 +180,23 @@ Scenario Outline: Simple Recordset with * single field
 	And I select variable "[[rec(*).a]]" with name "rec"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be 'result>'
+	Then the value of "[[json]]" should be '<result>'
 	And the execution has "NO" error
-	And the debug inputs as
-	| # |                        |
-	| 1 | [[rec(1).a]] = <value> |
-	And the debug output as
-	|                       |
-	|   [[json]] = <result> |
+#	And the debug inputs as
+#	| # |                        |
+#	| 1 | [[rec(1).a]] = <value> |
+#	And the debug output as
+#	|                       |
+#	|   [[json]] = <result> |
 Examples: 
 	|  type | value | result                |
-	| Character     | c     | {"rec":["a":"c"]}     |
-	| Integer       | 2     | {"rec":["a":2]}       |
-	| Decimal       | 5.6   | {"rec":["a":5.6]}     |
-	| String        | Hello | {"rec":["a":"Hello"]} |
-	| Boolean_True  | true  | {"rec":["a":true]}    |
-	| Boolean_False | false | {"rec":["a":false]}   |
-	| Null          |       | {"rec":["a":null]}    |
+	| Character     | c     | {"rec":["c"]}     |
+	| Integer       | 2     | {"rec":[2]}       |
+	| Decimal       | 5.6   | {"rec":[5.6]}     |
+	| String        | Hello | {"rec":["Hello"]} |
+	| Boolean_True  | true  | {"rec":[true]}    |
+	| Boolean_False | false | {"rec":[false]}   |
+	| Null          |       | {"rec":[null]}    |
 
 Scenario Outline: Recordset with * multiple fields and values
 	Given I have a variable "[[rec(1).a]]" with value "<valueA1>"
