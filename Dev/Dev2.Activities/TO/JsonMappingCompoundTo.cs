@@ -70,6 +70,8 @@ namespace Dev2.TO
                 {
                     var e = this.EvalResult;
                     _evalResultAsObject = WarewolfDataEvaluationCommon.EvalResultToJsonCompatibleObject(e);
+                    if (this.EvalResult.IsWarewolfAtomListresult && _evalResultAsObject == null)
+                        _evalResultAsObject = new object[] { null };
                     if (e.IsWarewolfAtomResult)
                     {
                         var x = e as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
@@ -106,7 +108,7 @@ namespace Dev2.TO
                 if (this.EvalResult.IsWarewolfAtomListresult)
                     return (this.EvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult).Item.Count;
                 if (this.EvalResult.IsWarewolfRecordSetResult)
-                    return (this.EvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult).Item.Count;
+                    return (this.EvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult).Item.Data.Count;
                 return 0;
             }
         }
@@ -185,7 +187,9 @@ sourceName: compound.SourceName));
         public object EvaluatedResultIndexed(int i)
         {
             return i < this.MaxCount ?
-                this.Evaluations.First().EvalResultAsObject : null;
+
+                this.Evaluations.First().EvalResultAsObject :
+                this.Evaluations.First().EvalResult.IsWarewolfAtomListresult ? new object[] { null } : null;
         }
 
     }

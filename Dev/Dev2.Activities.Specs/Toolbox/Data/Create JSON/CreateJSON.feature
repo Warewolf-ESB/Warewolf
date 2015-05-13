@@ -100,30 +100,30 @@ Examples:
 	| Null          |        | false  | {"a":null,"b":false}   |
 
 Scenario Outline: Multiple Recordset Variable
-	Given I have a variable "[[rec().a]]" with value <valueA>
-	And I have a variable "[[rec().b]]" with value <valueB>
+	Given I have a variable "[[rec(1).a]]" with value "<valueA>"
+	And I have a variable "[[rec(1).b]]" with value "<valueB>"
 	And I select variable "[[rec().a]]" with name "a"
 	And I select variable "[[rec().b]]" with name "b"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be <result>
+	Then the value of "[[json]]" should be '<result>'
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                  |
-	| 1 | [[a]] = <valueA> |
-	| 2 | [[b]] = <valueB> |
+	| 1 | [[rec(1).a]] = <valueA> |
+	| 2 | [[rec(1).b]] = <valueB> |
 	And the debug output as
 	|                     |
 	| [[json]] = <result> |
 Examples: 
 	|  type | valueA | valueB | result                 |
-	| Character     | c      | 3      | {"a":"c","b":3}        |
-	| Integer       | 2      | a      | {"a":2,"b":"a"}        |
-	| Decimal       | 5.6    | World  | {"a":5.6,"b":"World"}  |
-	| String        | Hello  | 10.1   | {"a":"Hello","b":10.1} |
-	| Boolean_True  | true   |        | {"a":true,"b":null}    |
-	| Boolean_False | false  | true   | {"a":false,"b":true}   |
-	| Null          |        | false  | {"a":null,"b":false}   |
+	| Character     | c      | 3      | {"a":["c"],"b":[3]}        |
+	| Integer       | 2      | a      | {"a":[2],"b":["a"]}        |
+	| Decimal       | 5.6    | World  | {"a":[5.6],"b":["World"]}  |
+	| String        | Hello  | 10.1   | {"a":["Hello"],"b":[10.1]} |
+	| Boolean_True  | true   |        | {"a":[true],"b":[null]}    |
+	| Boolean_False | false  | true   | {"a":[false],"b":[true]}   |
+	| Null          |        | false  | {"a":[null],"b":[false]}   |
 	
 Scenario Outline: Multiple Scalars Variable comma seperated
 	Given I have a variable "[[a]]" with value <valueA>

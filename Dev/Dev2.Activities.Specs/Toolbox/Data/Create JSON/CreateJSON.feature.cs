@@ -573,9 +573,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 102
 this.ScenarioSetup(scenarioInfo);
 #line 103
- testRunner.Given(string.Format("I have a variable \"[[rec().a]]\" with value {0}", valueA), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a variable \"[[rec(1).a]]\" with value \"{0}\"", valueA), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 104
- testRunner.And(string.Format("I have a variable \"[[rec().b]]\" with value {0}", valueB), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("I have a variable \"[[rec(1).b]]\" with value \"{0}\"", valueB), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 105
  testRunner.And("I select variable \"[[rec().a]]\" with name \"a\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 106
@@ -585,7 +585,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 108
  testRunner.When("the create json tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 109
- testRunner.Then(string.Format("the value of \"[[json]]\" should be {0}", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("the value of \"[[json]]\" should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 110
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -594,10 +594,10 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table9.AddRow(new string[] {
                         "1",
-                        string.Format("[[a]] = {0}", valueA)});
+                        string.Format("[[rec(1).a]] = {0}", valueA)});
             table9.AddRow(new string[] {
                         "2",
-                        string.Format("[[b]] = {0}", valueB)});
+                        string.Format("[[rec(1).b]] = {0}", valueB)});
 #line 111
  testRunner.And("the debug inputs as", ((string)(null)), table9, "And ");
 #line hidden
@@ -618,10 +618,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Character")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "c")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":\"c\",\"b\":3}")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":[\"c\"],\"b\":[3]}")]
         public virtual void MultipleRecordsetVariable_Character()
         {
-            this.MultipleRecordsetVariable("Character", "c", "3", "{\"a\":\"c\",\"b\":3}", ((string[])(null)));
+            this.MultipleRecordsetVariable("Character", "c", "3", "{\"a\":[\"c\"],\"b\":[3]}", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -631,10 +631,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Integer")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "a")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":2,\"b\":\"a\"}")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":[2],\"b\":[\"a\"]}")]
         public virtual void MultipleRecordsetVariable_Integer()
         {
-            this.MultipleRecordsetVariable("Integer", "2", "a", "{\"a\":2,\"b\":\"a\"}", ((string[])(null)));
+            this.MultipleRecordsetVariable("Integer", "2", "a", "{\"a\":[2],\"b\":[\"a\"]}", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -644,10 +644,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Decimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "5.6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "World")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":5.6,\"b\":\"World\"}")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":[5.6],\"b\":[\"World\"]}")]
         public virtual void MultipleRecordsetVariable_Decimal()
         {
-            this.MultipleRecordsetVariable("Decimal", "5.6", "World", "{\"a\":5.6,\"b\":\"World\"}", ((string[])(null)));
+            this.MultipleRecordsetVariable("Decimal", "5.6", "World", "{\"a\":[5.6],\"b\":[\"World\"]}", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -657,10 +657,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "Hello")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "10.1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":\"Hello\",\"b\":10.1}")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":[\"Hello\"],\"b\":[10.1]}")]
         public virtual void MultipleRecordsetVariable_String()
         {
-            this.MultipleRecordsetVariable("String", "Hello", "10.1", "{\"a\":\"Hello\",\"b\":10.1}", ((string[])(null)));
+            this.MultipleRecordsetVariable("String", "Hello", "10.1", "{\"a\":[\"Hello\"],\"b\":[10.1]}", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -670,10 +670,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Boolean_True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":true,\"b\":null}")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":[true],\"b\":[null]}")]
         public virtual void MultipleRecordsetVariable_Boolean_True()
         {
-            this.MultipleRecordsetVariable("Boolean_True", "true", "", "{\"a\":true,\"b\":null}", ((string[])(null)));
+            this.MultipleRecordsetVariable("Boolean_True", "true", "", "{\"a\":[true],\"b\":[null]}", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -683,10 +683,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Boolean_False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "true")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":false,\"b\":true}")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":[false],\"b\":[true]}")]
         public virtual void MultipleRecordsetVariable_Boolean_False()
         {
-            this.MultipleRecordsetVariable("Boolean_False", "false", "true", "{\"a\":false,\"b\":true}", ((string[])(null)));
+            this.MultipleRecordsetVariable("Boolean_False", "false", "true", "{\"a\":[false],\"b\":[true]}", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -696,10 +696,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Null")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "false")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":null,\"b\":false}")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":[null],\"b\":[false]}")]
         public virtual void MultipleRecordsetVariable_Null()
         {
-            this.MultipleRecordsetVariable("Null", "", "false", "{\"a\":null,\"b\":false}", ((string[])(null)));
+            this.MultipleRecordsetVariable("Null", "", "false", "{\"a\":[null],\"b\":[false]}", ((string[])(null)));
         }
         
         public virtual void MultipleScalarsVariableCommaSeperated(string type, string valueA, string valueB, string result, string[] exampleTags)
