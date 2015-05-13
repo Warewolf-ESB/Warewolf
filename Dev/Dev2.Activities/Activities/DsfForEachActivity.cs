@@ -297,7 +297,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             // Now mutate the mappings ;)
             //Bug 8725 do not mutate mappings
-            if(operationalData.InnerActivity.OrigInnerInputMapping != null)
+            if(!string.IsNullOrEmpty(operationalData.InnerActivity.OrigInnerInputMapping))
             {
                 // (*) == ({idx}) ;)
                 newInputs = operationalData.InnerActivity.OrigInnerInputMapping;
