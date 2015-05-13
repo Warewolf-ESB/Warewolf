@@ -24,6 +24,7 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Communication;
 using Dev2.Data.Enums;
+using Dev2.Data.Util;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -220,12 +221,48 @@ namespace Dev2.Activities.Designers2.Email
             }
             testSource.TestFromAddress = testSource.UserName;
             testSource.TestToAddress = testEmailAccount;
-
+            if (EmailAddresssIsAVariable(testEmailAccount))
+            {
+                return;
+            }
             Uri uri = new Uri(new Uri(AppSettings.LocalHost), "wwwroot/sources/Service/EmailSources/Test");
             var jsonData = testSource.ToString();
 
             var requestInvoker = CreateWebRequestInvoker();
             requestInvoker.ExecuteRequest("POST", uri.ToString(), jsonData, null, OnTestCompleted);
+        }
+
+        bool EmailAddresssIsAVariable(string testEmailAccount)
+        {
+            var postResult = "";
+            var hasVariable = false;
+            if(DataListUtil.IsFullyEvaluated(testEmailAccount))
+            {
+                postResult += "Variable " + testEmailAccount + " cannot be used while testing.";
+                hasVariable = true;
+            }
+            if(DataListUtil.IsFullyEvaluated(FromAccount))
+            {
+                var errorMessage = "Variable " + FromAccount + " cannot be used while testing.";
+                if(string.IsNullOrEmpty(postResult))
+                {
+                    postResult += errorMessage;
+                }
+                else
+                {
+                    postResult += Environment.NewLine + errorMessage;
+                }
+                hasVariable = true;
+            }
+            if(hasVariable)
+            {
+                var validationResult = new ValidationResult();
+                validationResult.ErrorMessage = postResult;
+                validationResult.IsValid = false;
+                OnTestCompleted(new Dev2JsonSerializer().Serialize(validationResult));
+                return true;
+            }
+            return false;
         }
 
         void OnTestCompleted(string postResult)
