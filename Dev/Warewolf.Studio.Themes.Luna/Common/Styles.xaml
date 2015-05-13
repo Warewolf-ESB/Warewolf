@@ -109,7 +109,6 @@
         <Thickness.Right>0</Thickness.Right>
         <Thickness.Top>5</Thickness.Top>
     </Thickness>
-
     <Thickness x:Key="BoundaryElementBorderLeftRightTop">
         <Thickness.Bottom>0</Thickness.Bottom>
         <Thickness.Left>5</Thickness.Left>
@@ -117,7 +116,12 @@
         <Thickness.Top>5</Thickness.Top>
     </Thickness>
 
-    
+    <Thickness x:Key="ElementBorderControlLeftTop">
+        <Thickness.Bottom>0</Thickness.Bottom>
+        <Thickness.Left>3</Thickness.Left>
+        <Thickness.Right>0</Thickness.Right>
+        <Thickness.Top>5</Thickness.Top>
+    </Thickness>
     
     <!-- CONTROL THICKNESS -->
     <Thickness x:Key="ControlBorderBottom">
@@ -180,12 +184,6 @@
         <Thickness.Right>5</Thickness.Right>
         <Thickness.Top>0</Thickness.Top>
     </Thickness>
-    <Thickness x:Key="ElementBorderControlLeftTop">
-        <Thickness.Bottom>0</Thickness.Bottom>
-        <Thickness.Left>3</Thickness.Left>
-        <Thickness.Right>0</Thickness.Right>
-        <Thickness.Top>3</Thickness.Top>
-    </Thickness>
     <Thickness x:Key="ControlBorderLeftTop">
         <Thickness.Bottom>0</Thickness.Bottom>
         <Thickness.Left>3</Thickness.Left>
@@ -198,7 +196,7 @@
         <Thickness.Bottom>0</Thickness.Bottom>
         <Thickness.Left>6</Thickness.Left>
         <Thickness.Right>0</Thickness.Right>
-        <Thickness.Top>3</Thickness.Top>
+        <Thickness.Top>-5</Thickness.Top>
     </Thickness>
 </ResourceDictionary>
 
