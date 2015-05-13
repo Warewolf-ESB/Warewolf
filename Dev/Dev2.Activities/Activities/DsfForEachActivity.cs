@@ -537,7 +537,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <summary>
         /// Restores the handler fn.
         /// </summary>
-        private void RestoreHandlerFn(NativeActivityContext context)
+        private void RestoreHandlerFn()
         {
 
             var activity = (DataFunc.Handler as IDev2ActivityIOMapping);
@@ -709,7 +709,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // return it all to normal
                 if(ForEachType != enForEachType.NumOfExecution)
                 {
-                    RestoreHandlerFn(context);
+                    RestoreHandlerFn();
                 }
 
                 dataObject.ParentInstanceID = _previousParentId;
@@ -821,6 +821,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
+                if (ForEachType != enForEachType.NumOfExecution)
+                {
+                    RestoreHandlerFn();
+                }
+
                 dataObject.ParentInstanceID = _previousParentId;
                 dataObject.ForEachNestingLevel--;
                 dataObject.IsDebugNested = false;
