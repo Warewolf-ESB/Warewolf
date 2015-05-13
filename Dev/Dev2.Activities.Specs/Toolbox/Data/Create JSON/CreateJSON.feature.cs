@@ -190,22 +190,24 @@ this.ScenarioSetup(scenarioInfo);
             this.SingleScalarVariable("Null", "", "{\"a\":null}", ((string[])(null)));
         }
         
-        public virtual void SingleScalarVariableWithChangedName(string type, string value, string result, string[] exampleTags)
+        public virtual void SingleScalarVariableMultipleSelections(string type, string value, string result, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Single Scalar Variable with changed name", exampleTags);
-#line 30
-this.ScenarioSetup(scenarioInfo);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Single Scalar VariableMultipleSelections", exampleTags);
 #line 31
- testRunner.Given(string.Format("I have a variable \"[[a]]\" with value \"{0}\"", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 32
- testRunner.And("I select variable \"[[a]]\" with name \"myVar\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given(string.Format("I have a variable \"[[a]]\" with value \"{0}\"", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 33
- testRunner.And("a result variable \"[[json]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given(string.Format("I have a variable \"[[b]]\" with value \"{0}\"", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 34
- testRunner.When("the create json tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I select variable \"[[a]]\" with name \"a\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
- testRunner.Then(string.Format("the value of \"[[json]]\" should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("a result variable \"[[json]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 36
+ testRunner.When("the create json tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 37
+ testRunner.Then(string.Format("the value of \"[[json]]\" should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 38
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -214,15 +216,136 @@ this.ScenarioSetup(scenarioInfo);
             table3.AddRow(new string[] {
                         "1",
                         string.Format("[[a]] = {0}", value)});
-#line 37
+#line 39
  testRunner.And("the debug inputs as", ((string)(null)), table3, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table4.AddRow(new string[] {
                         string.Format("[[json]] = {0}", result)});
-#line 40
+#line 42
  testRunner.And("the debug output as", ((string)(null)), table4, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Single Scalar VariableMultipleSelections")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Character")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Character")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "c")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":\"c\"}")]
+        public virtual void SingleScalarVariableMultipleSelections_Character()
+        {
+            this.SingleScalarVariableMultipleSelections("Character", "c", "{\"a\":\"c\"}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Single Scalar VariableMultipleSelections")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Integer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Integer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":2}")]
+        public virtual void SingleScalarVariableMultipleSelections_Integer()
+        {
+            this.SingleScalarVariableMultipleSelections("Integer", "2", "{\"a\":2}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Single Scalar VariableMultipleSelections")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Decimal")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Decimal")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "5.6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":5.6}")]
+        public virtual void SingleScalarVariableMultipleSelections_Decimal()
+        {
+            this.SingleScalarVariableMultipleSelections("Decimal", "5.6", "{\"a\":5.6}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Single Scalar VariableMultipleSelections")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "String")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "String")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "Hello")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":\"Hello\"}")]
+        public virtual void SingleScalarVariableMultipleSelections_String()
+        {
+            this.SingleScalarVariableMultipleSelections("String", "Hello", "{\"a\":\"Hello\"}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Single Scalar VariableMultipleSelections")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Boolean_True")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Boolean_True")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "true")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":true}")]
+        public virtual void SingleScalarVariableMultipleSelections_Boolean_True()
+        {
+            this.SingleScalarVariableMultipleSelections("Boolean_True", "true", "{\"a\":true}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Single Scalar VariableMultipleSelections")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Boolean_False")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Boolean_False")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "false")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":false}")]
+        public virtual void SingleScalarVariableMultipleSelections_Boolean_False()
+        {
+            this.SingleScalarVariableMultipleSelections("Boolean_False", "false", "{\"a\":false}", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Single Scalar VariableMultipleSelections")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Null")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Null")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":null}")]
+        public virtual void SingleScalarVariableMultipleSelections_Null()
+        {
+            this.SingleScalarVariableMultipleSelections("Null", "", "{\"a\":null}", ((string[])(null)));
+        }
+        
+        public virtual void SingleScalarVariableWithChangedName(string type, string value, string result, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Single Scalar Variable with changed name", exampleTags);
+#line 55
+this.ScenarioSetup(scenarioInfo);
+#line 56
+ testRunner.Given(string.Format("I have a variable \"[[a]]\" with value \"{0}\"", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 57
+ testRunner.And("I select variable \"[[a]]\" with name \"myVar\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 58
+ testRunner.And("a result variable \"[[json]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 59
+ testRunner.When("the create json tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 60
+ testRunner.Then(string.Format("the value of \"[[json]]\" should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 61
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table5.AddRow(new string[] {
+                        "1",
+                        string.Format("[[a]] = {0}", value)});
+#line 62
+ testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table6.AddRow(new string[] {
+                        string.Format("[[json]] = {0}", result)});
+#line 65
+ testRunner.And("the debug output as", ((string)(null)), table6, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -314,36 +437,36 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SimpleRecordsetSingleField(string type, string value, string result, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Simple Recordset single field", exampleTags);
-#line 53
+#line 78
 this.ScenarioSetup(scenarioInfo);
-#line 54
+#line 79
  testRunner.Given(string.Format("I have a variable \"[[rec().a]]\" with value \"{0}\"", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 55
+#line 80
  testRunner.And("I select variable \"[[rec().a]]\" with name \"a\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 56
+#line 81
  testRunner.And("a result variable \"[[json]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 57
+#line 82
  testRunner.When("the create json tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 58
+#line 83
  testRunner.Then(string.Format("the value of \"[[json]]\" should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 59
+#line 84
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table5.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "1",
                         string.Format("[[rec(1).a]] = {0}", value)});
-#line 60
- testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
+#line 85
+ testRunner.And("the debug inputs as", ((string)(null)), table7, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table6.AddRow(new string[] {
+            table8.AddRow(new string[] {
                         string.Format("[[json]] = {0}", result)});
-#line 63
- testRunner.And("the debug output as", ((string)(null)), table6, "And ");
+#line 88
+ testRunner.And("the debug output as", ((string)(null)), table8, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -423,36 +546,36 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SimpleRecordsetSingleFieldNull(string type, string value, string result, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Simple Recordset single field Null", exampleTags);
-#line 75
+#line 100
 this.ScenarioSetup(scenarioInfo);
-#line 76
+#line 101
  testRunner.Given(string.Format("I have a variable \"[[rec().a]]\" with value \"{0}\"", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 77
+#line 102
  testRunner.And("I select variable \"[[rec().a]]\" with name \"a\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 78
+#line 103
  testRunner.And("a result variable \"[[json]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 79
+#line 104
  testRunner.When("the create json tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 80
+#line 105
  testRunner.Then(string.Format("the value of \"[[json]]\" should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 81
+#line 106
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table7.AddRow(new string[] {
+            table9.AddRow(new string[] {
                         "1",
                         string.Format("[[rec().a]] = {0}", value)});
-#line 82
- testRunner.And("the debug inputs as", ((string)(null)), table7, "And ");
+#line 107
+ testRunner.And("the debug inputs as", ((string)(null)), table9, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table8.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         string.Format("[[json]] = {0}", result)});
-#line 85
- testRunner.And("the debug output as", ((string)(null)), table8, "And ");
+#line 110
+ testRunner.And("the debug output as", ((string)(null)), table10, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -472,43 +595,43 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void MultipleScalarsVariable(string type, string valueA, string valueB, string result, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple Scalars Variable", exampleTags);
-#line 92
+#line 117
 this.ScenarioSetup(scenarioInfo);
-#line 93
+#line 118
  testRunner.Given(string.Format("I have a variable \"[[a]]\" with value \"{0}\"", valueA), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 94
+#line 119
  testRunner.And(string.Format("I have a variable \"[[b]]\" with value \"{0}\"", valueB), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 95
+#line 120
  testRunner.And("I select variable \"[[a]]\" with name \"a\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 96
+#line 121
  testRunner.And("I select variable \"[[b]]\" with name \"b\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 97
+#line 122
  testRunner.And("a result variable \"[[json]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 98
+#line 123
  testRunner.When("the create json tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 99
+#line 124
  testRunner.Then(string.Format("the value of \"[[json]]\" should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 100
+#line 125
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table9.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "1",
                         string.Format("[[a]] = {0}", valueA)});
-            table9.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "2",
                         string.Format("[[b]] = {0}", valueB)});
-#line 101
- testRunner.And("the debug inputs as", ((string)(null)), table9, "And ");
+#line 126
+ testRunner.And("the debug inputs as", ((string)(null)), table11, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table10.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         string.Format("[[json]] = {0}", result)});
-#line 105
- testRunner.And("the debug output as", ((string)(null)), table10, "And ");
+#line 130
+ testRunner.And("the debug output as", ((string)(null)), table12, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -607,43 +730,43 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void MultipleRecordsetVariable(string type, string valueA, string valueB, string result, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple Recordset Variable", exampleTags);
-#line 118
+#line 143
 this.ScenarioSetup(scenarioInfo);
-#line 119
+#line 144
  testRunner.Given(string.Format("I have a variable \"[[rec(1).a]]\" with value \"{0}\"", valueA), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 120
+#line 145
  testRunner.And(string.Format("I have a variable \"[[rec(1).b]]\" with value \"{0}\"", valueB), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 121
+#line 146
  testRunner.And("I select variable \"[[rec().a]]\" with name \"a\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 122
+#line 147
  testRunner.And("I select variable \"[[rec().b]]\" with name \"b\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 123
+#line 148
  testRunner.And("a result variable \"[[json]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 124
+#line 149
  testRunner.When("the create json tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 125
+#line 150
  testRunner.Then(string.Format("the value of \"[[json]]\" should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 126
+#line 151
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table11.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "1",
                         string.Format("[[rec(1).a]] = {0}", valueA)});
-            table11.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "2",
                         string.Format("[[rec(1).b]] = {0}", valueB)});
-#line 127
- testRunner.And("the debug inputs as", ((string)(null)), table11, "And ");
+#line 152
+ testRunner.And("the debug inputs as", ((string)(null)), table13, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table12.AddRow(new string[] {
+            table14.AddRow(new string[] {
                         string.Format("[[json]] = {0}", result)});
-#line 131
- testRunner.And("the debug output as", ((string)(null)), table12, "And ");
+#line 156
+ testRunner.And("the debug output as", ((string)(null)), table14, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -742,21 +865,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void MultipleScalarsVariableCommaSeperated(string type, string valueA, string valueB, string result, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple Scalars Variable comma seperated", exampleTags);
-#line 144
+#line 169
 this.ScenarioSetup(scenarioInfo);
-#line 145
+#line 170
  testRunner.Given(string.Format("I have a variable \"[[a]]\" with value \"{0}\"", valueA), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 146
+#line 171
  testRunner.And(string.Format("I have a variable \"[[b]]\" with value \"{0}\"", valueB), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 147
+#line 172
  testRunner.And("I select variable \"[[a]],[[b]]\" with name \"rec\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 148
+#line 173
  testRunner.And("a result variable \"[[json]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 149
+#line 174
  testRunner.When("the create json tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 150
+#line 175
  testRunner.Then(string.Format("the value of \"[[json]]\" should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 151
+#line 176
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -856,21 +979,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void MultipleRecordsetVariableCommaSeperated(string type, string valueA, string valueB, string result, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple Recordset Variable comma seperated", exampleTags);
-#line 169
+#line 194
 this.ScenarioSetup(scenarioInfo);
-#line 170
+#line 195
  testRunner.Given(string.Format("I have a variable \"[[rec(1).a]]\" with value \"{0}\"", valueA), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 171
+#line 196
  testRunner.And(string.Format("I have a variable \"[[rec(1).b]]\" with value \"{0}\"", valueB), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 172
+#line 197
  testRunner.And("I select variable \"[[rec().a]],[[rec().b]]\" with name \"rec\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 173
+#line 198
  testRunner.And("a result variable \"[[json]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 174
+#line 199
  testRunner.When("the create json tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 175
+#line 200
  testRunner.Then(string.Format("the value of \"[[json]]\" should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 176
+#line 201
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -970,19 +1093,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SimpleRecordsetWithSingleField(string type, string value, string result, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Simple Recordset with * single field", exampleTags);
-#line 194
+#line 219
 this.ScenarioSetup(scenarioInfo);
-#line 195
+#line 220
  testRunner.Given(string.Format("I have a variable \"[[rec(*).a]]\" with value \"{0}\"", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 196
+#line 221
  testRunner.And("I select variable \"[[rec(*).a]]\" with name \"rec\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 197
+#line 222
  testRunner.And("a result variable \"[[json]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 198
+#line 223
  testRunner.When("the create json tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 199
+#line 224
  testRunner.Then(string.Format("the value of \"[[json]]\" should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 200
+#line 225
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1075,37 +1198,37 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RecordsetWithMultipleFieldsAndValues(string type, string valueA1, string valueA2, string valueA3, string valueB1, string valueB2, string valueB3, string result, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Recordset with * multiple fields and values", exampleTags);
-#line 218
+#line 243
 this.ScenarioSetup(scenarioInfo);
-#line 219
+#line 244
  testRunner.Given(string.Format("I have a variable \"[[rec(1).a]]\" with value \"{0}\"", valueA1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 220
+#line 245
  testRunner.Given(string.Format("I have a variable \"[[rec(2).a]]\" with value \"{0}\"", valueA2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 221
+#line 246
  testRunner.Given(string.Format("I have a variable \"[[rec(3).a]]\" with value \"{0}\"", valueA3), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 222
+#line 247
  testRunner.Given(string.Format("I have a variable \"[[rec(1).b]]\" with value \"{0}\"", valueB1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 223
+#line 248
  testRunner.Given(string.Format("I have a variable \"[[rec(2).b]]\" with value \"{0}\"", valueB2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 224
+#line 249
  testRunner.Given(string.Format("I have a variable \"[[rec(3).b]]\" with value \"{0}\"", valueB3), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 225
+#line 250
  testRunner.And("I select variable \"[[rec(*)]]\" with name \"rec\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 226
+#line 251
  testRunner.And("a result variable \"[[json]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 227
+#line 252
  testRunner.When("the create json tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 228
+#line 253
  testRunner.Then(string.Format("the value of \"[[json]]\" should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 229
+#line 254
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table13.AddRow(new string[] {
+            table15.AddRow(new string[] {
                         string.Format("[[json]] = {0}", result)});
-#line 238
- testRunner.And("the debug output as", ((string)(null)), table13, "And ");
+#line 263
+ testRunner.And("the debug output as", ((string)(null)), table15, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1235,57 +1358,57 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RecordsetWithMultipleFieldsAndValuesDifferentLengthForColumns()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Recordset with * multiple fields and values different length for columns", ((string[])(null)));
-#line 251
+#line 276
 this.ScenarioSetup(scenarioInfo);
-#line 252
+#line 277
  testRunner.Given("I have a variable \"[[rec(1).a]]\" with value \"c\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 253
+#line 278
  testRunner.Given("I have a variable \"[[rec(2).a]]\" with value \"b\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 254
+#line 279
  testRunner.Given("I have a variable \"[[rec(3).a]]\" with value \"g\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 255
+#line 280
  testRunner.Given("I have a variable \"[[rec(1).b]]\" with value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 256
+#line 281
  testRunner.Given("I have a variable \"[[rec(2).b]]\" with value \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 257
+#line 282
  testRunner.And("I select variable \"[[rec(*)]]\" with name \"rec\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 258
+#line 283
  testRunner.And("a result variable \"[[json]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 259
+#line 284
  testRunner.When("the create json tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 260
+#line 285
  testRunner.Then("the value of \"[[json]]\" should be \'{\"rec\":[{\"a\":\"c\",\"b\":1},{\"a\":\"b\",\"b\":2},{\"a\":\"" +
                     "g\",\"b\":null}]}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 261
+#line 286
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table14.AddRow(new string[] {
+            table16.AddRow(new string[] {
                         "1",
                         "[[rec(1).a]] = c"});
-            table14.AddRow(new string[] {
+            table16.AddRow(new string[] {
                         "",
                         "[[rec(2).a]] = b"});
-            table14.AddRow(new string[] {
+            table16.AddRow(new string[] {
                         "",
                         "[[rec(3).a]] = g"});
-            table14.AddRow(new string[] {
+            table16.AddRow(new string[] {
                         "",
                         "[[rec(1).b]] = 1"});
-            table14.AddRow(new string[] {
+            table16.AddRow(new string[] {
                         "",
                         "[[rec(2).b]] = 2"});
-#line 262
- testRunner.And("the debug inputs as", ((string)(null)), table14, "And ");
+#line 287
+ testRunner.And("the debug inputs as", ((string)(null)), table16, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table15.AddRow(new string[] {
+            table17.AddRow(new string[] {
                         "[[json]] = {\"rec\":[{\"a\":\"c\",\"b\":1},{\"a\":\"b\",\"b\":2},{\"a\":\"g\",\"b\":null}]}"});
-#line 269
- testRunner.And("the debug output as", ((string)(null)), table15, "And ");
+#line 294
+ testRunner.And("the debug output as", ((string)(null)), table17, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

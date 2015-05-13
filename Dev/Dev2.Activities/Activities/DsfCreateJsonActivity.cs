@@ -1,5 +1,5 @@
 ﻿
- /*
+/*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -14,6 +14,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
@@ -30,7 +31,7 @@ using Warewolf.Storage;
 // ReSharper disable CheckNamespace
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-    // ReSharper restore CheckNamespace
+// ReSharper restore CheckNamespace
 {
     public class DsfCreateJsonActivity : DsfActivityAbstract<string>
     {
@@ -86,23 +87,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // Process if no errors
             try
             {
-                if(JsonMappings == null)
+                if (JsonMappings == null)
                 {
                     dataObject.Environment.AddError("Json Mappings supplied to activity is null.");
                 }
 
                 // ReSharper disable AssignNullToNotNullAttribute
-                if(!dataObject.Environment.Errors.Any() && !JsonMappings.Any())
-                    // ReSharper restore AssignNullToNotNullAttribute
+                if (!dataObject.Environment.Errors.Any() && !JsonMappings.Any())
+                // ReSharper restore AssignNullToNotNullAttribute
                 {
                     dataObject.Environment.AddError("No Json Mappings supplied to activity.");
                 }
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
                     int j = 0;
                     // ReSharper disable PossibleNullReferenceException
-                    foreach(JsonMappingTo a in JsonMappings)
-                        // ReSharper restore PossibleNullReferenceException
+                    foreach (JsonMappingTo a in JsonMappings)
+                    // ReSharper restore PossibleNullReferenceException
                     {
                         var debugItem = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams(string.Empty, (++j).ToString(CultureInfo.InvariantCulture)), debugItem);
@@ -111,7 +112,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }
                 // TODO: More validation through IRule, IRuleSet to throw out anything not in spec
-                if(!dataObject.Environment.Errors.Any())
+                if (!dataObject.Environment.Errors.Any())
                 {
                     // JsonMappings.Count() is larger than zero
                     var json = new JObject(); // outermost JSON would always be a single JObject, i.e. {'name': value}
@@ -124,16 +125,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         new JsonMappingCompoundTo(dataObject.Environment, jsonMapping
                             )).ToList();
 
+                    // do not allow IsCompound with more than one RecordSet specified 
+                    if (results.Where(x => x.IsCompound)
+                        .Any(y => y.HasMoreThanOneRecordSet))
+                        throw new ArgumentException("Cannot specify more than one RecordSet for a comma seperated input.");
+
                     // get the longest list
                     int maxCount = results.Select(r => r.MaxCount).Max();
 
                     // main loop for producing largest list of zipped values
-                    for(int i = 0; i < maxCount; i++)
+                    for (int i = 0; i < maxCount; i++)
                     {
                         results.ForEach(x =>
                         {
                             // if it is not a compound,
-                            if(!x.IsCompound)
+                            if (!x.IsCompound)
                             {
                                 // add JProperty, with name x.DestinationName, and value eval(x.SourceName)
                                 json.Add(new JProperty(
@@ -161,7 +167,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     dataObject.Environment.Assign(JsonString, json.ToString(Formatting.None));
 
-                    if(dataObject.IsDebugMode())
+                    if (dataObject.IsDebugMode())
                     {
                         AddDebugOutputItem(new DebugEvalResult(JsonString, string.Empty, dataObject.Environment));
                     }
@@ -186,11 +192,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                      * */
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 // ReSharper disable AssignNullToNotNullAttribute
                 JsonMappings.ToList().ForEach(x =>
-                    // ReSharper restore AssignNullToNotNullAttribute
+                // ReSharper restore AssignNullToNotNullAttribute
                 {
                     AddDebugInputItem(new DebugItemStaticDataParams("", x.SourceName, "SourceName", "="));
                     AddDebugInputItem(new DebugItemStaticDataParams("", x.DestinationName, "DestinationName", "="));
@@ -204,13 +210,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 // Handle Errors
                 bool hasErrors = allErrors.HasErrors();
-                if(hasErrors)
+                if (hasErrors)
                 {
                     DisplayAndWriteError("DsfCreateJsonActivity", allErrors);
                     string errorString = allErrors.MakeDataListReady();
                     dataObject.Environment.AddError(errorString);
                 }
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
                     DispatchDebugState(dataObject, StateType.Before);
                     DispatchDebugState(dataObject, StateType.After);
@@ -229,7 +235,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
-            foreach(IDebugItem debugOutput in _debugOutputs)
+            foreach (IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }
