@@ -4163,16 +4163,9 @@ Scenario: Workflow with AsyncLogging and ForEach
 	 Then the workflow execution has "NO" error
 	 And the delta between "first time" and "second time" is less than "1200" milliseconds
 
-@ignore
-Scenario: Check outputs json (.json)
-	Given I have a workflow "Json Outputs"
-	When "Json Outputs" is executed as JSON
-	Then the execution has "NO" error
-	And Output is "{"rc" : [{"test":"a"}], "rc" : [{"test":""}], "st" : [{"test":"b"}], "sam" : [{"test":"c"}], "test":"1","t1":"test"}"
-
-@ignore
-Scenario: Check outputs json (.xml)
-	Given I have a workflow "Json Outputs"
-	When "Json Outputs" is executed as xml.
-	Then the execution has "NO" error
-	And Output is "<DataList><rc Index="1"><test>a</test></rc><rc Index="2"><test/></rc><st Index="1"><test>b</test></st><sam Index="1"><test>c</test></sam><test>1</test><t1>test</t1></DataList>"
+Scenario: Executing WF In ForEach with Sequence using Data from and Outside WF using a ForEach
+	Given I have a workflow "TestForEachSeqActivity"
+	And "TestForEachSeqActivity" contains "TestUsingTestSubWFInSeqWorkaround" from server "localhost" with mapping as
+	| Input to Service | From Variable | Output from Service | To Variable |
+	When "TestForEachSeqActivity" is executed
+	Then the workflow execution has "NO" error
