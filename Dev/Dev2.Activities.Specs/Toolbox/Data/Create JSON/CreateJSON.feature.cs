@@ -1657,6 +1657,75 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Recordset with * multiple fields and  scalar values different length for columns")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
+        public virtual void RecordsetWithMultipleFieldsAndScalarValuesDifferentLengthForColumns()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Recordset with * multiple fields and  scalar values different length for columns", ((string[])(null)));
+#line 374
+this.ScenarioSetup(scenarioInfo);
+#line 375
+ testRunner.Given("I have a variable \"[[rec(1).a]]\" with value \"c\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 376
+ testRunner.Given("I have a variable \"[[rec(2).a]]\" with value \"b\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 377
+ testRunner.Given("I have a variable \"[[rec(3).a]]\" with value \"g\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 378
+ testRunner.Given("I have a variable \"[[rec(1).b]]\" with value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 379
+ testRunner.Given("I have a variable \"[[rec(2).b]]\" with value \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 380
+ testRunner.Given("I have a variable \"[[a]]\" with value \"the builder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 381
+ testRunner.And("I select variable \"[[rec(*)]]\" with name \"rec\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 382
+ testRunner.And("I select variable \"[[a]]\" with name \"bob\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 383
+ testRunner.And("a result variable \"[[json]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 384
+ testRunner.When("the create json tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 385
+ testRunner.Then("the value of \"[[json]]\" should be \'{\"rec\":[{\"a\":\"c\",\"b\":1},{\"a\":\"b\",\"b\":2},{\"a\":\"" +
+                    "g\",\"b\":null}],\"bob\":\"the builder\"}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 386
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table33.AddRow(new string[] {
+                        "1",
+                        "[[rec(1).a]] = c"});
+            table33.AddRow(new string[] {
+                        "",
+                        "[[rec(2).a]] = b"});
+            table33.AddRow(new string[] {
+                        "",
+                        "[[rec(3).a]] = g"});
+            table33.AddRow(new string[] {
+                        "",
+                        "[[rec(1).b]] = 1"});
+            table33.AddRow(new string[] {
+                        "",
+                        "[[rec(2).b]] = 2"});
+            table33.AddRow(new string[] {
+                        "2",
+                        "[[a]] = the builder"});
+#line 387
+ testRunner.And("the debug inputs as", ((string)(null)), table33, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table34.AddRow(new string[] {
+                        "[[json]] = {\"rec\":[{\"a\":\"c\",\"b\":1},{\"a\":\"b\",\"b\":2},{\"a\":\"g\",\"b\":null}],\"bob\":\"the" +
+                            " builder\"}"});
+#line 395
+ testRunner.And("the debug output as", ((string)(null)), table34, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

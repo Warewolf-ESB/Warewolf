@@ -368,3 +368,30 @@ Scenario: Recordset with * multiple fields and values different length for colum
 	And the debug output as
 	|                                                                           |
 	|   [[json]] = {"rec":[{"a":"c","b":1},{"a":"b","b":2},{"a":"g","b":null}]} |
+
+
+
+Scenario: Recordset with * multiple fields and  scalar values different length for columns
+	Given I have a variable "[[rec(1).a]]" with value "c"
+	Given I have a variable "[[rec(2).a]]" with value "b"
+	Given I have a variable "[[rec(3).a]]" with value "g"
+	Given I have a variable "[[rec(1).b]]" with value "1"
+	Given I have a variable "[[rec(2).b]]" with value "2"
+	Given I have a variable "[[a]]" with value "the builder"
+	And I select variable "[[rec(*)]]" with name "rec"
+	And I select variable "[[a]]" with name "bob"
+	And a result variable "[[json]]"
+	When the create json tool is executed
+	Then the value of "[[json]]" should be '{"rec":[{"a":"c","b":1},{"a":"b","b":2},{"a":"g","b":null}],"bob":"the builder"}'
+	And the execution has "NO" error
+	And the debug inputs as
+	| # |                  |
+	| 1 | [[rec(1).a]] = c |
+	|   | [[rec(2).a]] = b |
+	|   | [[rec(3).a]] = g |
+	|   | [[rec(1).b]] = 1 |
+	|   | [[rec(2).b]] = 2 |
+	| 2 | [[a]] = the builder |
+	And the debug output as
+	|                                                                                             |
+	| [[json]] = {"rec":[{"a":"c","b":1},{"a":"b","b":2},{"a":"g","b":null}],"bob":"the builder"} |
