@@ -21,7 +21,9 @@ namespace Dev2.TO
     public class JsonMappingEvaluated
     {
         readonly IExecutionEnvironment _env;
+        // ReSharper disable MemberCanBePrivate.Global
         public JsonMappingTo Simple { get; set; }
+        // ReSharper restore MemberCanBePrivate.Global
         object _evalResultAsObject;
         WarewolfDataEvaluationCommon.WarewolfEvalResult _evalResult;
 
@@ -96,26 +98,6 @@ namespace Dev2.TO
             }
         }
 
-        public object EvalResultIndexed(int index)
-        {
-            if (EvalResult.IsWarewolfAtomResult)
-            {
-                return index > 0 ? null :
-                    ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult)EvalResult).Item;
-            }
-            if (EvalResult.IsWarewolfAtomListresult)
-            {
-                return index >= Count ? null :
-                    ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult)EvalResult).Item.ElementAt(index);
-            }
-            if (EvalResult.IsWarewolfRecordSetResult)
-            {
-                return index >= Count ? null :
-                    ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult)EvalResult).Item.Data;
-            }
-            return null;
-        }
-
         public int Count
         {
             get
@@ -130,7 +112,7 @@ namespace Dev2.TO
                 }
                 if (EvalResult.IsWarewolfRecordSetResult)
                 {
-                    return ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult)EvalResult).Item.Data.Count;
+                    return 1;
                 }
                 return 0;
             }
@@ -198,7 +180,7 @@ namespace Dev2.TO
                         .IsComplexExpression || WarewolfDataEvaluationCommon.ParseLanguageExpression(
                             Compound.SourceName)
                             .IsRecordSetNameExpression;
-                    ;
+                    
                 }
                 return (bool)_isCompound;
             }
@@ -307,17 +289,17 @@ namespace Dev2.TO
                 for (int j = 0; j < recset.Count; j++)
                 {
                     var a = new JObject();
-                    for (int k = 0; k < data.Length; k++)
+                    foreach(KeyValuePair<string, WarewolfAtomList<DataASTMutable.WarewolfAtom>> pair in data)
                     {
-                        if (data[k].Key != WarewolfDataEvaluationCommon.PositionColumn)
+                        if (pair.Key != WarewolfDataEvaluationCommon.PositionColumn)
                         {
                             try
                             {
-                                a.Add(new JProperty(data[k].Key, WarewolfDataEvaluationCommon.AtomToJsonCompatibleObject(data[k].Value[j])));
+                                a.Add(new JProperty(pair.Key, WarewolfDataEvaluationCommon.AtomToJsonCompatibleObject(pair.Value[j])));
                             }
                             catch (Exception)
                             {
-                                a.Add(new JProperty(data[k].Key, null));
+                                a.Add(new JProperty(pair.Key, null));
                             }
                         }
                     }
@@ -333,8 +315,7 @@ namespace Dev2.TO
         {
             get
             {
-                return Evaluations.Where(x => x.EvalResult.IsWarewolfRecordSetResult)
-                    .Count() > 1;
+                return Evaluations.Count(x => x.EvalResult.IsWarewolfRecordSetResult) > 1;
             }
         }
     }

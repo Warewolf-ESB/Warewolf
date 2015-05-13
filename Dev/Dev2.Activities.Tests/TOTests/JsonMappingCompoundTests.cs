@@ -212,8 +212,8 @@ namespace Dev2.Tests.Activities.TOTests
                 }
             );
             Assert.IsFalse(jsonMappingCompound.IsCompound);
-            Assert.AreEqual(jsonMappingCompound.EvaluatedResultIndexed(0), 50);
-            Assert.AreEqual(jsonMappingCompound.EvaluatedResultIndexed(1), 60);
+            //Assert.AreEqual(jsonMappingCompound.ComplexEvaluatedResultIndexed(0), 50);
+            //Assert.AreEqual(jsonMappingCompound.ComplexEvaluatedResultIndexed(1), 60);
 
         }
     }
