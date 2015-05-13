@@ -33,7 +33,6 @@
                 Width="25"
                 Height="25"
                 Command="{Binding EditConnectionCommand}"
-                Padding="4"
                 VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left"
                 ToolTip="{Binding Path=EditConnectionToolTip}" >
             <TextBlock>

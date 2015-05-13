@@ -656,7 +656,7 @@
                                                 <Image x:Name="EditPermissionImageDisabled"
                                                    Width="14"
                                                    Height="15"
-                                                   Margin="0,-5,0,0"
+                                                   Margin="0,-1,0,0"
                                                    Stretch="Uniform"
                                                    HorizontalAlignment="Center"
                                                    VerticalAlignment="Center"
@@ -672,10 +672,10 @@
                                                         </Style>
                                                     </Image.Style>
                                                 </Image>
-                                        <Image x:Name="EditPermissionImageEnabled"
+                                                <Image x:Name="EditPermissionImageEnabled"
                                                    Width="14"
                                                    Height="15"
-                                                   Margin="0,-5,0,0"
+                                                   Margin="0,-1,0,0"
                                                    Stretch="Uniform"
                                                    HorizontalAlignment="Center"
                                                    VerticalAlignment="Center"
@@ -690,7 +690,7 @@
                                                             </Style.Triggers>
                                                         </Style>
                                                     </Image.Style>
-                                        </Image>
+                                                </Image>
                                                 
                                             </StackPanel>
                                         </Button.Content>
@@ -711,7 +711,7 @@
                                                 <!-- CHANGE TOP MARGIN TO ALIGN EDIT IMAGE WITH TEXTBLOCK -->
                                                 <Image x:Name="ExecutePermissionImageDisabled"
                                                    Height="11"
-                                                   Margin="0,-5,0,0"
+                                                   Margin="0,-2,0,0"
                                                    Stretch="Uniform"
                                                    HorizontalAlignment="Center"
                                                    VerticalAlignment="Center"
@@ -729,7 +729,7 @@
                                                 </Image>
                                                 <Image x:Name="ExecutePermissionImageEnabled"
                                                    Height="11"
-                                                   Margin="0,-5,0,0"
+                                                   Margin="0,-2,0,0"
                                                    Stretch="Uniform"
                                                    HorizontalAlignment="Center"
                                                    VerticalAlignment="Center"
@@ -776,7 +776,7 @@
                                 <Image x:Name="ResourceImage"
                                            Width="14"
                                            Height="15"
-                                           Margin="-37,-7,-5,0"
+                                           Margin="-37,0,-5,0"
                                            Source="{Binding Data.ResourceType,
                                                             Converter={StaticResource ResourceTypeToIconConverter}}"
                                            Visibility="{Binding Data.ResourceType,
