@@ -27,7 +27,7 @@ namespace Dev2.Tests.Activities.TOTests
     {
         [TestMethod]
         [Owner("Kerneels Roos")]
-        [TestCategory("FindJsonMappingCompoundToConstructor")]
+        [TestCategory("JsonMappingCompoundToConstructor")]
         public void JsonMappingCompoundTo_Constructor_SetsProperties_NotIsCompound()
         {
             //------------Setup for test--------------------------
@@ -48,7 +48,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
         [TestMethod]
         [Owner("Kerneels Roos")]
-        [TestCategory("FindJsonMappingCompoundToConstructor")]
+        [TestCategory("JsonMappingCompoundToConstructor")]
         public void JsonMappingCompoundTo_Constructor_SetsProperties_IsCompound()
         {
             //------------Setup for test--------------------------
@@ -70,6 +70,125 @@ namespace Dev2.Tests.Activities.TOTests
             //------------Assert Results-------------------------
             Assert.IsNotNull(jsonMappingCompound);
             Assert.IsTrue(jsonMappingCompound.IsCompound);
+        }
+        [TestMethod]
+        [Owner("Kerneels Roos")]
+        [TestCategory("JsonMappingCompoundToMaxCount")]
+        public void JsonMappingCompoundTo_MaxCount_NotIsCompound()
+        {
+            //------------Setup for test--------------------------
+            var dataObject = new DsfDataObject(xmldata: string.Empty, dataListId: Guid.NewGuid());
+            dataObject.Environment.Assign("[[a]]", "10");
+            dataObject.Environment.Assign("[[b]]", "20");
+            dataObject.Environment.Assign("[[rec(1).a]]", "50");
+            dataObject.Environment.Assign("[[rec(1).b]]", "500");
+            //------------Execute Test---------------------------
+
+            var jsonMappingCompound = new JsonMappingCompoundTo(
+                env: dataObject.Environment,
+                compound: new JsonMappingTo
+                {
+                    SourceName = "[[a]],[[b]]",
+                    DestinationName = "myName"
+                }
+            );
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(jsonMappingCompound);
+            Assert.IsTrue(jsonMappingCompound.IsCompound);
+        }
+        [TestMethod]
+        [Owner("Kerneels Roos")]
+        [TestCategory("JsonMappingCompoundToMaxCount")]
+        public void JsonMappingCompoundTo_MaxCount_IsCompound()
+        {
+            //------------Setup for test--------------------------
+            var dataObject = new DsfDataObject(xmldata: string.Empty, dataListId: Guid.NewGuid());
+            dataObject.Environment.Assign("[[a]]", "10");
+            dataObject.Environment.Assign("[[b]]", "20");
+            dataObject.Environment.Assign("[[rec(1).a]]", "50");
+            dataObject.Environment.Assign("[[rec(1).b]]", "500");
+            //------------Execute Test---------------------------
+
+            var jsonMappingCompound = new JsonMappingCompoundTo(
+                env: dataObject.Environment,
+                compound: new JsonMappingTo
+                {
+                    SourceName = "[[a]],[[b]]",
+                    DestinationName = "myName"
+                }
+            );
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(jsonMappingCompound);
+            Assert.IsTrue(jsonMappingCompound.IsCompound);
+        }
+        [TestMethod]
+        [Owner("Kerneels Roos")]
+        [TestCategory("JsonMappingCompoundToEvalResultIndexed")]
+        public void JsonMappingCompoundTo_EvalResultIndexed_IsCompound()
+        {
+            //------------Setup for test--------------------------
+            var dataObject = new DsfDataObject(xmldata: string.Empty, dataListId: Guid.NewGuid());
+            dataObject.Environment.Assign("[[a]]", "10");
+            dataObject.Environment.Assign("[[b]]", "20");
+            dataObject.Environment.Assign("[[rec(1).a]]", "50");
+            dataObject.Environment.Assign("[[rec(1).b]]", "500");
+            //------------Execute Test---------------------------
+
+            var jsonMappingCompound = new JsonMappingCompoundTo(
+                env: dataObject.Environment,
+                compound: new JsonMappingTo
+                {
+                    SourceName = "[[a]],[[b]]",
+                    DestinationName = "myName"
+                }
+            );
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(jsonMappingCompound);
+            Assert.IsTrue(jsonMappingCompound.IsCompound);
+        }
+        [TestMethod]
+        [Owner("Kerneels Roos")]
+        [TestCategory("JsonMappingCompoundToEvalResultIndexed")]
+        public void JsonMappingCompoundTo_EvalResultIndexed_NotIsCompound()
+        {
+            //------------Setup for test--------------------------
+            var dataObject = new DsfDataObject(xmldata: string.Empty, dataListId: Guid.NewGuid());
+            dataObject.Environment.Assign("[[a]]", "10");
+            dataObject.Environment.Assign("[[b]]", "20");
+            dataObject.Environment.Assign("[[rec(1).a]]", "50");
+            dataObject.Environment.Assign("[[rec(1).b]]", "500");
+            dataObject.Environment.Assign("[[rec(2).a]]", "60");
+            dataObject.Environment.Assign("[[rec(2).b]]", "600");
+            //------------Execute Test---------------------------
+
+            // for scalars
+            var jsonMappingCompound = new JsonMappingCompoundTo(
+                env: dataObject.Environment,
+                compound: new JsonMappingTo
+                {
+                    SourceName = "[[a]]",
+                    DestinationName = "myName"
+                }
+            );
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(jsonMappingCompound);
+            Assert.IsFalse(jsonMappingCompound.IsCompound);
+            Assert.AreEqual(jsonMappingCompound.EvaluatedResultIndexed(0), 10);
+            Assert.AreEqual(jsonMappingCompound.EvaluatedResultIndexed(1), null);
+
+            // for lists
+            jsonMappingCompound = new JsonMappingCompoundTo(
+                env: dataObject.Environment,
+                compound: new JsonMappingTo
+                {
+                    SourceName = "[[rec(*).a]]",
+                    DestinationName = "myName"
+                }
+            );
+            Assert.IsFalse(jsonMappingCompound.IsCompound);
+            Assert.AreEqual(jsonMappingCompound.EvaluatedResultIndexed(0), 50);
+            Assert.AreEqual(jsonMappingCompound.EvaluatedResultIndexed(1), 60);
+
         }
     }
 }
