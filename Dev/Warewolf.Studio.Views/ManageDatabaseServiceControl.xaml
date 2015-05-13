@@ -201,12 +201,10 @@
                           ItemsSource="{Binding TestResults}" 
                           Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}" 
                           GridLinesVisibility="Vertical" 
-                          CanUserSortColumns="True" 
                           ColumnWidth="*" 
                           AutoGenerateColumns="True" 
                           BorderBrush="Transparent" 
                           CanUserResizeColumns="True" 
-                          CanUserReorderColumns="True" 
                           VerticalGridLinesBrush="Transparent" >
                 </DataGrid>
             </Grid>
@@ -217,10 +215,10 @@
                   Visibility="{Binding Path=CanEditMappings,Converter={StaticResource BoolToVis}}">
                 <!-- Mappings-->
                 <Grid.RowDefinitions>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
                     <RowDefinition Height="7" ></RowDefinition>
@@ -246,38 +244,37 @@
                           ItemsSource="{Binding Inputs}" 
                           HorizontalScrollBarVisibility="Disabled" 
                           GridLinesVisibility="Vertical" 
-                          CanUserSortColumns="True" 
                           AutoGenerateColumns="False" 
+                          ColumnWidth="*" 
                           BorderBrush="Transparent" 
                           CanUserResizeColumns="True" 
-                          CanUserReorderColumns="True" 
                           VerticalGridLinesBrush="Transparent">
                     <DataGrid.Columns>
-                        <DataGridTemplateColumn Header="Input" CanUserResize="True" Width="150" SortMemberPath="Name">
+                        <DataGridTemplateColumn Header="Input" CanUserResize="True" Width="150">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Name}" ></TextBlock>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Default Value" CanUserResize="True" Width="*" SortMemberPath="Name">
+                        <DataGridTemplateColumn Header="Default Value" CanUserResize="True" Width="*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBox Text="{Binding DefaultValue}" Margin="1,1,1,1"></TextBox>
+                                    <TextBox Text="{Binding Path=DefaultValue, UpdateSourceTrigger=PropertyChanged}" Margin="1"></TextBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Header="Required Field" CanUserResize="True" Width="150" >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox IsChecked="{Binding Path=Required, Mode=TwoWay}" Margin="1,1,1,1" HorizontalAlignment="Center"></CheckBox>
+                                    <CheckBox IsChecked="{Binding Path=Required, Mode=TwoWay}" Margin="-1" HorizontalAlignment="Center"></CheckBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Header="Empty is Null" CanUserResize="True" Width="150" >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox IsChecked="{Binding Path=EmptyIsNull, Mode=TwoWay}" HorizontalAlignment="Center" Margin="1,1,1,1"></CheckBox>
+                                    <CheckBox IsChecked="{Binding Path=EmptyIsNull, Mode=TwoWay}" HorizontalAlignment="Center" Margin="-1"></CheckBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -293,32 +290,30 @@
                           ItemsSource="{Binding OutputMapping}" 
                           HorizontalScrollBarVisibility="Disabled" 
                           GridLinesVisibility="Vertical" 
-                          CanUserSortColumns="True" 
                           ColumnWidth="*" 
                           AutoGenerateColumns="False" 
                           BorderBrush="Transparent" 
                           CanUserResizeColumns="True" 
-                          CanUserReorderColumns="True" 
                           VerticalGridLinesBrush="Transparent">
                     <DataGrid.Columns>
-                        <DataGridTemplateColumn Header="Output" CanUserResize="True" Width="350" SortMemberPath="Name">
+                        <DataGridTemplateColumn Header="Output" CanUserResize="True" Width="50*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding CompleteName}"></TextBlock>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Alias" CanUserResize="True" Width="*" SortMemberPath="OutputName">
+                        <DataGridTemplateColumn Header="Alias" CanUserResize="True" Width="50*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBox Text="{Binding Path=OutputName, UpdateSourceTrigger=PropertyChanged}" Margin="1,1,1,1"></TextBox>
+                                    <TextBox Text="{Binding Path=OutputName, UpdateSourceTrigger=PropertyChanged}" Margin="1"></TextBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
                 <StackPanel Orientation="Horizontal" Grid.Row="5" Margin="0,2,0,0" >
-                    <TextBlock Text="Recordset Name:" ></TextBlock>
+                    <TextBlock Text="Recordset Name" ></TextBlock>
                     <TextBox MinWidth="100" Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                 </StackPanel>
             </Grid>

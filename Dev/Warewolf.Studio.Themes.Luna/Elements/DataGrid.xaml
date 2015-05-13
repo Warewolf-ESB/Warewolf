@@ -21,19 +21,16 @@
     <SolidColorBrush x:Key="DataGridPressedBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
     <SolidColorBrush x:Key="DataGridSelectedBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
     <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
-    <Thickness x:Key="BorderLessTop">
-        <Thickness.Left>1</Thickness.Left>
-        <Thickness.Top>0</Thickness.Top>
-        <Thickness.Right>1</Thickness.Right>
-        <Thickness.Bottom>1</Thickness.Bottom>
-    </Thickness>
-    <Thickness x:Key="BorderFull">
-        <Thickness.Left>1</Thickness.Left>
-        <Thickness.Top>0</Thickness.Top>
-        <Thickness.Right>1</Thickness.Right>
-        <Thickness.Bottom>1</Thickness.Bottom>
-    </Thickness>
 
+    <Style TargetType="{x:Type Thumb}" x:Key="ThumbStyle">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Rectangle Width="1" Stroke="Transparent" Cursor="SizeWE"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style x:Key="ColumnHeaderGripperStyle" TargetType="{x:Type Thumb}">
         <Setter Property="Width" Value="2"/>
         <Setter Property="Background" Value="Transparent"/>
@@ -65,6 +62,10 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
                     <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Normal" />
@@ -95,18 +96,19 @@
                                 Margin="0,0,0,0"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="0,0,1,1"
-                                Padding="0,0,0,0">
-                            <ContentControl x:Name="contentControl"
+                                BorderThickness="0,0,0,0"
+                                Padding="0,0,0,0" />
+                        <ContentControl x:Name="contentControl"
                                             KeyboardNavigation.IsTabStop="False"
                                             Margin="2,0,0,0"
                                             Foreground="{TemplateBinding Foreground}">
-                                        <ContentPresenter x:Name="contentPresenter" 
+                            <ContentPresenter x:Name="contentPresenter" 
                                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                            </ContentControl>
-                        </Border>
+                        </ContentControl>
+                        <Rectangle Width="1" Fill="#EEEEEE" HorizontalAlignment="Right" Grid.ColumnSpan="2"/>
+                        <Rectangle Width="1" Margin="0,0,0,0" Fill="{StaticResource DataGridBorderBrush}" HorizontalAlignment="Right" Grid.ColumnSpan="2"/>
                             <Thumb x:Name="PART_LeftHeaderGripper" 
                                    HorizontalAlignment="Left" 
                                    BorderBrush="Transparent" 
