@@ -256,3 +256,13 @@ Scenario: Date and Time output format with quoted strings
        And the debug output as 
        |                                    |  
        | [[result]] = 2014-03-29 wrong date |
+
+Scenario: Date and Time output format without inputs must return correct format
+       Given I have a date "" 
+       And the input format as ""
+       And the output format as ""
+	  And I selected Add time as "Years" with a value of 0
+       When the datetime tool is executed
+       Then the datetime result should contain milliseconds
+       And the execution has "NO" error
+

@@ -20,23 +20,38 @@ Scenario Outline: Read Folder file at location
 		|                        |
 		| <resultVar> = <result> |
     Examples: 
-	| No | Name        | source   | sourceLocation                                 | read            | username          | password | resultVar  | result | errorOccured |
-	| 1  | Local Files | [[path]] | c:\                                            | Files           | ""                | ""       | [[result]] | String | NO           |
-	| 2  | UNC         | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite | Files           | ""                | ""       | [[result]] | String | NO           |
-	| 3  | FTP         | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/         | Files           | ""                | ""       | [[result]] | String | NO           |
-	| 4  | FTPS        | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/         | Files           | integrationtester | I73573r0 | [[result]] | String | NO           |
-	| 5  | SFTP        | [[path]] | sftp://localhost                               | Files           | dev2              | Q/ulw&]  | [[result]] | String | NO           |
-	| 6  | Local       | [[path]] | c:\                                            | Folders         | ""                | ""       | [[result]] | String | NO           |
-	| 7  | UNC         | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite | Folders         | ""                | ""       | [[result]] | String | NO           |
-	| 8  | FTP         | [[path]] | ftp://rsaklfsvrsbspdc:1001/                    | Folders         | ""                | ""       | [[result]] | String | NO           |
-	| 9  | FTPS        | [[path]] | ftp://rsaklfsvrsbspdc:1002/                    | Folders         | integrationtester | I73573r0 | [[result]] | String | NO           |
-	| 10 | SFTP        | [[path]] | sftp://localhost                               | Folders         | dev2              | Q/ulw&]  | [[result]] | String | NO           |
-	| 11 | Local       | [[path]] | c:\                                            | Files & Folders | ""                | ""       | [[result]] | String | NO           |
-	| 12 | UNC         | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite | Files & Folders | ""                | ""       | [[result]] | String | NO           |
-	| 13 | FTP         | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/         | Files & Folders | ""                | ""       | [[result]] | String | NO           |
-	| 14 | FTPS        | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/         | Files & Folders | integrationtester | I73573r0 | [[result]] | String | NO           |
-	| 15 | SFTP        | [[path]] | sftp://localhost                               | Files & Folders | dev2              | Q/ulw&]  | [[result]] | String | NO           |
-#Bug 12180	
+	| No | Name                      | source   | sourceLocation                                          | read            | username          | password | resultVar  | result | errorOccured |
+	| 1  | Local Files               | [[path]] | c:\                                                     | Files           | ""                | ""       | [[result]] | String | NO           |
+	| 2  | UNC                       | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite          | Files           | ""                | ""       | [[result]] | String | NO           |
+	| 3  | FTP                       | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/                  | Files           | ""                | ""       | [[result]] | String | NO           |
+	| 4  | FTPS                      | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/                  | Files           | integrationtester | I73573r0 | [[result]] | String | NO           |
+	| 5  | SFTP                      | [[path]] | sftp://localhost                                        | Files           | dev2              | Q/ulw&]  | [[result]] | String | NO           |
+	| 6  | Local                     | [[path]] | c:\                                                     | Folders         | ""                | ""       | [[result]] | String | NO           |
+	| 7  | UNC                       | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite          | Folders         | ""                | ""       | [[result]] | String | NO           |
+	| 8  | FTP                       | [[path]] | ftp://rsaklfsvrsbspdc:1001/                             | Folders         | ""                | ""       | [[result]] | String | NO           |
+	| 9  | FTPS                      | [[path]] | ftp://rsaklfsvrsbspdc:1002/                             | Folders         | integrationtester | I73573r0 | [[result]] | String | NO           |
+	| 10 | SFTP                      | [[path]] | sftp://localhost                                        | Folders         | dev2              | Q/ulw&]  | [[result]] | String | NO           |
+	| 11 | Local                     | [[path]] | c:\                                                     | Files & Folders | ""                | ""       | [[result]] | String | NO           |
+	| 12 | UNC                       | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite          | Files & Folders | ""                | ""       | [[result]] | String | NO           |
+	| 13 | FTP                       | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/                  | Files & Folders | ""                | ""       | [[result]] | String | NO           |
+	| 14 | FTPS                      | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/                  | Files & Folders | integrationtester | I73573r0 | [[result]] | String | NO           |
+	| 15 | SFTP                      | [[path]] | sftp://localhost                                        | Files & Folders | dev2              | Q/ulw&]  | [[result]] | String | NO           |
+	| 16 | Empty_Local_Files         | [[path]] | c:\emptydir                                             | Files           | ""                | ""       | [[result]] | String | NO           |
+	| 17 | Empty_UNC_Files           | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\emptydir | Files           | ""                | ""       | [[result]] | String | NO           |
+	| 18 | Empty_FTP_Files           | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/emptydir          | Files           | ""                | ""       | [[result]] | String | NO           |
+	| 19 | Empty_FTPS_Files          | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/emptydir          | Files           | integrationtester | I73573r0 | [[result]] | String | NO           |
+	| 20 | Empty_SFTP_Files          | [[path]] | sftp://localhost/emptydir                               | Files           | dev2              | Q/ulw&]  | [[result]] | String | NO           |
+	| 21 | Empty_Local_Folders       | [[path]] | c:\emptydir                                             | Folders         | ""                | ""       | [[result]] | String | NO           |
+	| 22 | Empty_UNC_Folders         | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\emptydir | Folders         | ""                | ""       | [[result]] | String | NO           |
+	| 23 | Empty_FTP_Folders         | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/emptydir          | Folders         | ""                | ""       | [[result]] | String | NO           |
+	| 24 | Empty_FTPS_Folders        | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/emptydir          | Folders         | integrationtester | I73573r0 | [[result]] | String | NO           |
+	| 25 | Empty_SFTP_Folders        | [[path]] | sftp://localhost/emptydir                               | Folders         | dev2              | Q/ulw&]  | [[result]] | String | NO           |
+	| 26 | Empty_Local_Files_Folders | [[path]] | c:\emptydir                                             | Files & Folders | ""                | ""       | [[result]] | String | NO           |
+	| 27 | Empty_UNC_Files_Folders   | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\emptydir | Files & Folders | ""                | ""       | [[result]] | String | NO           |
+	| 28 | Empty_FTP_Files_Folders   | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/emptydir          | Files & Folders | ""                | ""       | [[result]] | String | NO           |
+	| 29 | Empty_FTPS_Files_Folders  | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/emptydir          | Files & Folders | integrationtester | I73573r0 | [[result]] | String | NO           |
+	| 30 | Empty_SFTP_Files_Folders  | [[path]] | sftp://localhost/emptydir                               | Files & Folders | dev2              | Q/ulw&]  | [[result]] | String | NO           |
+
 	
 	
 #Scenario Outline: Read Folder file at location1	

@@ -12,7 +12,6 @@
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 
@@ -21,7 +20,7 @@ namespace Dev2.Views.Dialogs
     /// <summary>
     /// Interaction logic for WebLatestVersionDialog.xaml
     /// </summary>
-    public partial class WebLatestVersionDialog : Window
+    public partial class WebLatestVersionDialog
     {
         public WebLatestVersionDialog()
         {
@@ -42,7 +41,7 @@ namespace Dev2.Views.Dialogs
         }
 
 
-        public static void SetSilent(WebBrowser browser, bool silent)
+        private static void SetSilent(WebBrowser browser, bool silent)
         {
             if (browser == null)
                 throw new ArgumentNullException("browser");
