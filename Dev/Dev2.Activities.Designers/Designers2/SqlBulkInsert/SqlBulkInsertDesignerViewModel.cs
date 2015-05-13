@@ -157,6 +157,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 return;
             }
             viewModel.OnSelectedDatabaseChanged();
+            viewModel.EditDatabaseCommand.RaiseCanExecuteChanged();
         }
 
 
@@ -184,6 +185,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 return;
             }
             viewModel.OnSelectedTableChanged();
+            viewModel.RefreshTablesCommand.RaiseCanExecuteChanged();
         }
 
 
@@ -354,6 +356,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             LoadDatabaseTables(() =>
             {
                 SetSelectedTable(TableName);
+
                 LoadTableColumns(() =>
                 {
                     IsRefreshing = false;
@@ -463,7 +466,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                             inputcolumn = inputcolumn.Replace("[", "");
                             inputcolumn = inputcolumn.Replace("]", "");
                             inputcolumn = inputcolumn.Replace(" ", "");
-                            mapping.InputColumn = inputcolumn;
+                            mapping.InputColumn = string.Format("[[{0}]]", inputcolumn);
                         }
                     }
                     if (string.IsNullOrEmpty(mapping.InputColumn))
