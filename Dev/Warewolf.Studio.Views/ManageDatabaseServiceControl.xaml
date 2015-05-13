@@ -7,6 +7,7 @@
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" 
+             Loaded="ManageDatabaseServiceControl_OnLoaded"
              d:DataContext="{d:DesignInstance Type=db:IManageDbServiceViewModel,
                                               IsDesignTimeCreatable=False}">
     <UserControl.Resources>
@@ -39,7 +40,7 @@
         </Style>
     </UserControl.Resources>
     <ScrollViewer>
-        <Grid Margin="{StaticResource ContainerBorder}" Focusable="True">
+        <Grid Margin="{StaticResource ContainerBorder}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto" ></RowDefinition>
@@ -64,7 +65,9 @@
                              Background="{StaticResource WareWolfMenuBrush}" 
                              HorizontalAlignment="Stretch" 
                              Orientation="Horizontal">
-                    <TextBlock Margin="10" 
+                    <TextBlock Text="1" 
+                               Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
+                    <TextBlock Margin="5" 
                                Text="{Binding DataSourceHeader, Mode=OneWay}" 
                                Style="{StaticResource SourceHeader}"></TextBlock>
                 </StackPanel>
@@ -75,7 +78,7 @@
                               Width="250" 
                               Padding="{StaticResource ComboBoxItemPadding}"
                               Focusable="True"
-                              Margin="{StaticResource ControlBorderTop}" 
+                              Margin="{StaticResource ElementBorderTop}" 
                               SelectedItem="{Binding SelectedSource}" />
                     <Button Command="{Binding EditSourceCommand}" 
                             IsEnabled="{Binding CanEditSource}" 
@@ -84,14 +87,15 @@
                             Margin="{StaticResource ElementBorderControlLeftTop}"></Button>
                     <TextBlock Text="or" Margin="{StaticResource ElementBorderControlLeftTop}"></TextBlock>
                     <Button Content="{Binding NewButtonLabel}" 
-                            Margin="{StaticResource ElementBorderControlLeftTop}" 
+                            Margin="{StaticResource ElementBorderControlLeftTop}"
+                            Style="{StaticResource ButtonOrangeStyle}" 
                             Command="{Binding CreateNewSourceCommand}" 
                             Width="100" ></Button>
                 </StackPanel>
             </Grid>
             <Grid x:Name="SelectAnActionGrid" 
                   Grid.Row="1" 
-                  Margin="0,-3,0,0"
+                  Margin="0,-2,0,0"
                   Grid.Column="0" 
                   Visibility="{Binding Path=CanSelectProcedure, Converter={StaticResource BoolToVis}}">
                 <Grid.RowDefinitions>
@@ -104,7 +108,9 @@
                             Background="{StaticResource WareWolfMenuBrush}" 
                             HorizontalAlignment="Stretch" 
                             Orientation="Horizontal">
-                    <TextBlock Margin="10" 
+                    <TextBlock Text="2" 
+                               Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
+                    <TextBlock Margin="5" 
                                Text="{Binding DataSourceActionHeader, Mode=OneWay}" 
                                Style="{StaticResource SourceHeader}" ></TextBlock>
                 </StackPanel>
@@ -117,12 +123,12 @@
                               DisplayMemberPath="Name" 
                               SelectedItem="{Binding SelectedAction}" 
                               Text="Choose" 
-                              Margin="{StaticResource ControlBorderTop}"></ComboBox>
+                              Margin="{StaticResource ElementBorderTop}"></ComboBox>
                 </StackPanel>
             </Grid>
             <Grid x:Name="TestActionGrid" 
                   Grid.Row="3" 
-                  Margin="0,-3,0,0"
+                  Margin="0,-2,0,0"
                   Grid.Column="0" 
                   Visibility="{Binding Path=CanTest, Converter={StaticResource BoolToVis}}">
                 <!-- Test-->
@@ -140,15 +146,17 @@
                             Background="{StaticResource WareWolfMenuBrush}" 
                             HorizontalAlignment="Stretch" 
                             Orientation="Horizontal">
-                    <TextBlock Margin="10" 
+                    <TextBlock Text="3" 
+                               Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
+                    <TextBlock Margin="5" 
                                Text="{Binding TestHeader, Mode=OneWay}" 
                                Style="{StaticResource SourceHeader}" ></TextBlock>
                 </StackPanel>
                 <TextBlock Grid.Row="1" 
-                           Margin="{StaticResource ControlBorderTop}" 
+                           Margin="0,-1,0,0" 
                            Text="Inputs" 
                            FontWeight="Bold"></TextBlock>
-                <Grid Grid.Row="2" >
+                <Grid Grid.Row="2" Margin="0,-5,0,0" >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
@@ -157,12 +165,12 @@
                         <RowDefinition Height="Auto"></RowDefinition>
                         <RowDefinition Height="Auto"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <ListBox x:Name="InputsList" Style="{x:Null}" ItemsSource="{Binding Inputs}" BorderBrush="Transparent" >
+                    <ListBox x:Name="InputsList" ItemsSource="{Binding Inputs}" BorderBrush="Transparent" Padding="0,0,0,1" >
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="db:IDbInput">
                                 <StackPanel Orientation="Horizontal" Style="{x:Null}" >
                                     <TextBlock  Margin="{StaticResource ControlBorderTop}" Text="{Binding Path=Name }" Width="85"></TextBlock>
-                                    <TextBox Margin="{StaticResource ControlBorderLeftTop}" Text="{Binding Path=Value}" Width="200"></TextBox>
+                                    <TextBox Margin="{StaticResource ControlBorderTop}" Text="{Binding Path=Value}" Width="200"></TextBox>
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -175,20 +183,20 @@
                     <Button x:Name="TestActionButton" 
                             Grid.Column="0" 
                             Grid.Row="1" 
-                            Margin="0,3,1,0" 
+                            Margin="0,0,2,0"
                             HorizontalAlignment="Right" 
                             Command="{Binding TestProcedureCommand}" 
                             VerticalAlignment="Bottom" 
                             Width="100">Test</Button>
                 </Grid>
                 <TextBlock Grid.Row="4" 
+                           Margin="0,-3,0,0"
                            Text="{Binding OutputsLabel}" 
-                           Margin="{StaticResource ControlBorderTop}" 
                            FontWeight="Bold" 
                            Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}"></TextBlock>
                 <DataGrid x:Name="OutputsDataGrid" 
+                          Margin="0,-2,0,0"
                           Grid.Row="5" 
-                          Margin="{StaticResource ControlBorderTop}" 
                           HorizontalScrollBarVisibility="Disabled" 
                           ItemsSource="{Binding TestResults}" 
                           Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}" 
@@ -203,6 +211,7 @@
                 </DataGrid>
             </Grid>
             <Grid x:Name="MappingsGrid" 
+                  Margin="0,-3,0,0"
                   Grid.Row="4" 
                   Grid.Column="0" 
                   Visibility="{Binding Path=CanEditMappings,Converter={StaticResource BoolToVis}}">
@@ -221,18 +230,20 @@
                             Background="{StaticResource WareWolfMenuBrush}" 
                             HorizontalAlignment="Stretch" 
                             Orientation="Horizontal">
-                    <TextBlock Margin="10" 
+                    <TextBlock Text="4" 
+                               Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
+                    <TextBlock Margin="5" 
                                Text="{Binding MappingsHeader, Mode=OneWay}" 
                                Style="{StaticResource SourceHeader}" ></TextBlock>
                 </StackPanel>
                 <TextBlock FontWeight="Bold" 
                            Grid.Row="1" 
-                           Margin="{StaticResource ControlBorderTop}" 
+                           Margin="0,-1,0,0"
                            Text="{Binding InputsLabel}"></TextBlock>
                 <DataGrid x:Name="InputsMappingDataGrid" 
                           Grid.Row="2" 
+                          Margin="0,-2,0,0"
                           ItemsSource="{Binding Inputs}" 
-                          Margin="{StaticResource ControlBorderTop}" 
                           HorizontalScrollBarVisibility="Disabled" 
                           GridLinesVisibility="Vertical" 
                           CanUserSortColumns="True" 
@@ -245,7 +256,7 @@
                         <DataGridTemplateColumn Header="Input" CanUserResize="True" Width="150" SortMemberPath="Name">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Name}" Margin="1,1,1,1"></TextBlock>
+                                    <TextBlock Text="{Binding Name}" ></TextBlock>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -275,14 +286,15 @@
                 <TextBlock Grid.Row="3" 
                            FontWeight="Bold" 
                            Text="{Binding OutputsLabel}" 
-                           Margin="{StaticResource ControlBorderTop}" ></TextBlock>
+                           Margin="0,-1,0,0" ></TextBlock>
                 <DataGrid x:Name="OutputsMappingDataGrid" 
                           Grid.Row="4" 
+                          Margin="0,-2,0,0"
                           ItemsSource="{Binding OutputMapping}" 
-                          Margin="{StaticResource ControlBorderTop}" 
                           HorizontalScrollBarVisibility="Disabled" 
                           GridLinesVisibility="Vertical" 
                           CanUserSortColumns="True" 
+                          ColumnWidth="*" 
                           AutoGenerateColumns="False" 
                           BorderBrush="Transparent" 
                           CanUserResizeColumns="True" 
@@ -292,7 +304,7 @@
                         <DataGridTemplateColumn Header="Output" CanUserResize="True" Width="350" SortMemberPath="Name">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding CompleteName}" Margin="1,1,1,1"></TextBlock>
+                                    <TextBlock Text="{Binding CompleteName}"></TextBlock>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -305,10 +317,9 @@
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
-                <StackPanel Orientation="Horizontal" Grid.Row="5" Margin="{StaticResource ControlBorderTop}">
-                    <TextBlock Text="Recordset Name:" Margin="{StaticResource ElementBorderControlRight}"></TextBlock>
-                    <TextBox MinWidth="100" Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}" 
-                             Margin="{StaticResource ElementBorderControlRight}"></TextBox>
+                <StackPanel Orientation="Horizontal" Grid.Row="5" Margin="0,2,0,0" >
+                    <TextBlock Text="Recordset Name:" ></TextBlock>
+                    <TextBox MinWidth="100" Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="5" Grid.Column="0">

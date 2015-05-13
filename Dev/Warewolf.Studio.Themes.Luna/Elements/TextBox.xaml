@@ -107,7 +107,7 @@
         <Setter Property="Background" Value="{StaticResource TextBoxBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorderBrush}" />
         <Setter Property="Height" Value="25" />
-        <Setter Property="Padding" Value="2,3" />
+        
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="TextWrapping" Value="NoWrap" />

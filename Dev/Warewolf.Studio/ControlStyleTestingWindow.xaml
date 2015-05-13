@@ -127,8 +127,10 @@
         <TextBox AutomationProperties.AutomationId="Testing_TextBox"></TextBox>
         <GroupBox Width="100" AutomationProperties.AutomationId="Testing_GroupBox" Header="My Group Box" Height="100"></GroupBox>
         <ListBox x:Name="TestingListBox" Style="{StaticResource ListBoxStyle}" ItemsSource="{Binding}" AutomationProperties.AutomationId="Testing_ListBox"></ListBox>
-       
-        
+
+
+        <TextBlock Style="{StaticResource TextBlockOrangeNumberStyle}" Text="1"></TextBlock>
+        <TextBlock Style="{StaticResource TextBlockOrangeHeaderStyle}" Text="Header"></TextBlock>
         <TextBlock Text="Standard Label/textbox styling"></TextBlock>
         <TextBlock Style="{StaticResource SourceHeader}"  VerticalAlignment="Center" Text="Sources header label yyyAAAxxxggg" Visibility="Visible"/>
 

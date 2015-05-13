@@ -182,5 +182,10 @@ namespace Warewolf.Studio.Views
             }
             return false;
         }
+
+        private void ManageDatabaseServiceControl_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            SourcesComboBox.Focus();
+        }
     }
 }
