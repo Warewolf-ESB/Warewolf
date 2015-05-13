@@ -90,7 +90,7 @@
                 </DataGridTemplateColumn>
 
                 <DataGridTemplateColumn Width="*"
-                                        Header="Variable"
+                                        Header="Name"
                                         d:DataContext="{d:DesignInstance Type=to:JsonMappingTo}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -133,7 +133,7 @@
                 </DataGridTemplateColumn>
 
                 <DataGridTemplateColumn Width="*"
-                                        Header="New Value"
+                                        Header="Data"
                                         d:DataContext="{d:DesignInstance Type=to:JsonMappingTo}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
