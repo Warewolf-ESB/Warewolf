@@ -708,9 +708,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 128
 this.ScenarioSetup(scenarioInfo);
 #line 129
- testRunner.Given(string.Format("I have a variable \"[[a]]\" with value {0}", valueA), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a variable \"[[a]]\" with value \"{0}\"", valueA), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 130
- testRunner.And(string.Format("I have a variable \"[[b]]\" with value {0}", valueB), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("I have a variable \"[[b]]\" with value \"{0}\"", valueB), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 131
  testRunner.And("I select variable \"[[a]],[[b]]\" with name \"rec\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 132
@@ -718,7 +718,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 133
  testRunner.When("the create json tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 134
- testRunner.Then(string.Format("the value of \"[[json]]\" should be {0}", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("the value of \"[[json]]\" should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 135
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -841,9 +841,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 153
 this.ScenarioSetup(scenarioInfo);
 #line 154
- testRunner.Given(string.Format("I have a variable \"[[rec().a]]\" with value {0}", valueA), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a variable \"[[rec().a]]\" with value \"{0}\"", valueA), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 155
- testRunner.And(string.Format("I have a variable \"[[rec().b]]\" with value {0}", valueB), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("I have a variable \"[[rec().b]]\" with value \"{0}\"", valueB), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 156
  testRunner.And("I select variable \"[[rec().a]],[[rec().b]]\" with name \"rec\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 157
@@ -851,7 +851,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 158
  testRunner.When("the create json tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 159
- testRunner.Then(string.Format("the value of \"[[json]]\" should be {0}", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("the value of \"[[json]]\" should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 160
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -974,7 +974,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 178
 this.ScenarioSetup(scenarioInfo);
 #line 179
- testRunner.Given(string.Format("I have a variable \"[[rec(*).a]]\" with value {0}", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a variable \"[[rec(*).a]]\" with value \"{0}\"", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 180
  testRunner.And("I select variable \"[[rec(*).a]]\" with name \"rec\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 181
@@ -982,7 +982,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 182
  testRunner.When("the create json tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 183
- testRunner.Then(string.Format("the value of \"[[json]]\" should be {0}", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[json]]\" should be \'result>\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 184
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1095,17 +1095,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 201
 this.ScenarioSetup(scenarioInfo);
 #line 202
- testRunner.Given(string.Format("I have a variable \"[[rec(1).a]]\" with value {0}", valueA1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a variable \"[[rec(1).a]]\" with value \"{0}\"", valueA1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 203
- testRunner.Given(string.Format("I have a variable \"[[rec(2).a]]\" with value {0}", valueA2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a variable \"[[rec(2).a]]\" with value \"{0}\"", valueA2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 204
- testRunner.Given(string.Format("I have a variable \"[[rec(3).a]]\" with value {0}", valueA3), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a variable \"[[rec(3).a]]\" with value \"{0}\"", valueA3), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 205
- testRunner.Given(string.Format("I have a variable \"[[rec(1).b]]\" with value {0}", valueB1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a variable \"[[rec(1).b]]\" with value \"{0}\"", valueB1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 206
- testRunner.Given(string.Format("I have a variable \"[[rec(2).b]]\" with value {0}", valueB2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a variable \"[[rec(2).b]]\" with value \"{0}\"", valueB2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 207
- testRunner.Given(string.Format("I have a variable \"[[rec(3).b]]\" with value {0}", valueB3), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a variable \"[[rec(3).b]]\" with value \"{0}\"", valueB3), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 208
  testRunner.And("I select variable \"[[rec(*)]]\" with name \"rec\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 209
@@ -1113,7 +1113,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 210
  testRunner.When("the create json tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 211
- testRunner.Then(string.Format("the value of \"[[json]]\" should be {0}", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("the value of \"[[json]]\" should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 212
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

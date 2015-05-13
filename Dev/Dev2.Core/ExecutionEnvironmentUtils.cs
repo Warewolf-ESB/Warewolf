@@ -14,7 +14,7 @@ namespace Dev2
 {
     public static class ExecutionEnvironmentUtils
     {
-        public static string GetXmlOutputFromEnvironment(IDSFDataObject dataObject, Guid workspaceGuid,string dataList)
+        public static string GetXmlOutputFromEnvironment(IDSFDataObject dataObject,string dataList)
         {
             var environment = dataObject.Environment;
             var dataListTO = new DataListTO(dataList);
@@ -93,7 +93,7 @@ namespace Dev2
             return result.ToString();
         }
 
-        public static string GetJsonOutputFromEnvironment(IDSFDataObject dataObject, Guid workspaceGuid,string dataList)
+        public static string GetJsonOutputFromEnvironment(IDSFDataObject dataObject,string dataList)
         {
             var environment = dataObject.Environment;
             var dataListTO = new DataListTO(dataList);

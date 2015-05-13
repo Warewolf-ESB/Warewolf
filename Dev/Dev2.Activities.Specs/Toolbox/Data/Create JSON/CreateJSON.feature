@@ -126,12 +126,12 @@ Examples:
 	| Null          |        | false  | {"a":[null],"b":[false]}   |
 	
 Scenario Outline: Multiple Scalars Variable comma seperated
-	Given I have a variable "[[a]]" with value <valueA>
-	And I have a variable "[[b]]" with value <valueB>
+	Given I have a variable "[[a]]" with value "<valueA>"
+	And I have a variable "[[b]]" with value "<valueB>"
 	And I select variable "[[a]],[[b]]" with name "rec"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be <result>
+	Then the value of "[[json]]" should be '<result>'
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                  |
@@ -151,12 +151,12 @@ Examples:
 	| Null          |        | false  | {"rec":{"a":null,"b":false}}   |
 
 Scenario Outline: Multiple Recordset Variable comma seperated
-	Given I have a variable "[[rec().a]]" with value <valueA>
-	And I have a variable "[[rec().b]]" with value <valueB>
+	Given I have a variable "[[rec().a]]" with value "<valueA>"
+	And I have a variable "[[rec().b]]" with value "<valueB>"
 	And I select variable "[[rec().a]],[[rec().b]]" with name "rec"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be <result>
+	Then the value of "[[json]]" should be '<result>'
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                  |
@@ -176,11 +176,11 @@ Examples:
 	| Null          |        | false  | {"rec":{"a":null,"b":false}}   |
 
 Scenario Outline: Simple Recordset with * single field
-	Given I have a variable "[[rec(*).a]]" with value <value>
+	Given I have a variable "[[rec(*).a]]" with value "<value>"
 	And I select variable "[[rec(*).a]]" with name "rec"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be <result>
+	Then the value of "[[json]]" should be 'result>'
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                        |
@@ -199,16 +199,16 @@ Examples:
 	| Null          |       | {"rec":["a":null]}    |
 
 Scenario Outline: Recordset with * multiple fields and values
-	Given I have a variable "[[rec(1).a]]" with value <valueA1>
-	Given I have a variable "[[rec(2).a]]" with value <valueA2>
-	Given I have a variable "[[rec(3).a]]" with value <valueA3>
-	Given I have a variable "[[rec(1).b]]" with value <valueB1>
-	Given I have a variable "[[rec(2).b]]" with value <valueB2>
-	Given I have a variable "[[rec(3).b]]" with value <valueB3>
+	Given I have a variable "[[rec(1).a]]" with value "<valueA1>"
+	Given I have a variable "[[rec(2).a]]" with value "<valueA2>"
+	Given I have a variable "[[rec(3).a]]" with value "<valueA3>"
+	Given I have a variable "[[rec(1).b]]" with value "<valueB1>"
+	Given I have a variable "[[rec(2).b]]" with value "<valueB2>"
+	Given I have a variable "[[rec(3).b]]" with value "<valueB3>"
 	And I select variable "[[rec(*)]]" with name "rec"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be <result>
+	Then the value of "[[json]]" should be '<result>'
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                          |
