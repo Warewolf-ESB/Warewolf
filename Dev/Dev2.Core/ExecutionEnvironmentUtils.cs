@@ -34,7 +34,7 @@ namespace Dev2
                     {
                         warewolfEvalResult = environment.Eval(name);
                     }
-                    catch(Exception)
+                    catch
                     {
                         //Possible that the output defs have variables that were never initialised (i.e. null)
                     }

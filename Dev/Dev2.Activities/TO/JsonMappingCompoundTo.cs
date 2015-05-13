@@ -56,7 +56,7 @@ namespace Dev2.TO
         {
             get
             {
-                return _evalResult ?? (_evalResult = _env.Eval(
+                return _evalResult ?? (_evalResult = _env.EvalForJson(
                     Simple.SourceName));
             }
         }

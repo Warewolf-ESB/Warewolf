@@ -167,13 +167,13 @@ Scenario Outline: Multiple Recordset Variable comma seperated
 	| [[json]] = <result> |
 Examples: 
 	|   type | valueA | valueB | result                         |
-	| Character     | c      | 3      | {"rec":{"a":"c","b":3}}        |
-	| Integer       | 2      | a      | {"rec":{"a":2,"b":"a"}}        |
-	| Decimal       | 5.6    | World  | {"rec":{"a":5.6,"b":"World"}}  |
-	| String        | Hello  | 10.1   | {"rec":{"a":"Hello","b":10.1}} |
-	| Boolean_True  | true   |        | {"rec":{"a":true,"b":null}}    |
-	| Boolean_False | false  | true   | {"rec":{"a":false,"b":true}}   |
-	| Null          |        | false  | {"rec":{"a":null,"b":false}}   |
+	| Character     | c      | 3      | {"rec":[{"a":"c","b":3}]}        |
+	| Integer       | 2      | a      | {"rec":[{"a":2,"b":"a"}]}        |
+	| Decimal       | 5.6    | World  | {"rec":[{"a":5.6,"b":"World"}]}  |
+	| String        | Hello  | 10.1   | {"rec":[{"a":"Hello","b":10.1}]} |
+	| Boolean_True  | true   |        | {"rec":[{"a":true,"b":null}]}    |
+	| Boolean_False | false  | true   | {"rec":[{"a":false,"b":true}]}   |
+	| Null          |        | false  | {"rec":[{"a":null,"b":false}]}   |
 
 Scenario Outline: Simple Recordset with * single field
 	Given I have a variable "[[rec(*).a]]" with value "<value>"
