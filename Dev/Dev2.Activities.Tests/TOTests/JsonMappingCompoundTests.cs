@@ -12,11 +12,8 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.DynamicServices;
-using Dev2.Providers.Validation.Rules;
 using Dev2.TO;
-using Dev2.Validation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities.TOTests
