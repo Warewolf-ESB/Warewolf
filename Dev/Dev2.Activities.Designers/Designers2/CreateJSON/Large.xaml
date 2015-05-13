@@ -121,17 +121,6 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn IsReadOnly="True"
-                                        Width="20"
-                                        Header="=">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Label Content="="
-                                   VerticalAlignment="Center" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
                 <DataGridTemplateColumn Width="*"
                                         Header="Data"
                                         d:DataContext="{d:DesignInstance Type=to:JsonMappingTo}">
