@@ -16,8 +16,8 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="25" />
-            <ColumnDefinition Width="25" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
         <ComboBox Margin="{StaticResource ElementBorderControlRight}"
@@ -27,7 +27,7 @@
                   ItemsSource="{Binding Servers}"
                   SelectedItem="{Binding SelectedConnection}">            
         </ComboBox>
-        <Button Margin="{StaticResource ElementBorderControlRight}"
+        <Button Margin="0"
                 Grid.Row="0"
                 Grid.Column="1"
                 Width="25"
@@ -42,7 +42,8 @@
             <fa:FontAwesome FontSize="4" Icon="Square" HorizontalAlignment="Left"/>
             </TextBlock>
         </Button>
-        <Button Grid.Row="0"
+        <Button Margin="{StaticResource ElementBorderControlLeft}" 
+                Grid.Row="0"
                 Grid.Column="2"
                 Width="25"
                 Height="25"
