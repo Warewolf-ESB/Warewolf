@@ -1,27 +1,25 @@
-﻿using Dev2.Data.Util;
-using Dev2.TO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Data.Util;
+using Dev2.TO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Specs.Toolbox.Data.Create_JSON
 {
-    public class CreateJsonSteps : Dev2.Activities.Specs.BaseTypes.RecordSetBases
+    public class CreateJsonSteps : RecordSetBases
     {
-
         [Given(@"I select variable ""(.*)"" with name ""(.*)""")]
         public void GivenISelectVariableWithName(string variable, string name)
         {
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("toList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("toList", variableList);
@@ -34,7 +32,6 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Create_JSON
         {
             //JsonString = JsonString.Replace('"', ' ').Trim();
             ScenarioContext.Current.Add("JsonString", JsonString);
-
         }
 
         [When(@"the create json tool is executed")]
@@ -45,8 +42,6 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Create_JSON
             ScenarioContext.Current.Add("result", result);
         }
 
-
-
         [Then(@"the value of ""(.*)"" should be '(.*)'")]
         public void ThenTheValueOfShouldBe(string resultVariable, string expectedResult)
         {
@@ -54,8 +49,8 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Create_JSON
             string actualValue;
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(resultVariable),
-                                       out actualValue, out error);
-            if (string.IsNullOrEmpty(expectedResult))
+                out actualValue, out error);
+            if(string.IsNullOrEmpty(expectedResult))
             {
                 Assert.IsTrue(string.IsNullOrEmpty(actualValue));
             }
@@ -65,15 +60,13 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Create_JSON
             }
         }
 
-
-
         [Given(@"I have a variable ""(.*)"" with value ""(.*)""")]
         public void GivenIHaveAVariableWithValue(string variable, string value)
         {
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -87,13 +80,12 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Create_JSON
             ScenarioContext.Current.Pending();
         }
 
-
         protected override void BuildDataList()
         {
             List<Tuple<string, string>> toList;
             ScenarioContext.Current.TryGetValue("toList", out toList);
 
-            if (toList == null)
+            if(toList == null)
             {
                 toList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("toList", toList);
@@ -108,7 +100,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Create_JSON
             var jsonTool = new DsfCreateJsonActivity
             {
                 JsonString = json,
-                JsonMappings = toList.Select(a => new JsonMappingTo() { SourceName = a.Item1, DestinationName = a.Item2 })
+                JsonMappings = toList.Select(a => new JsonMappingTo { SourceName = a.Item1, DestinationName = a.Item2 })
             };
 
             TestStartNode = new FlowStep
@@ -117,6 +109,5 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Create_JSON
             };
             ScenarioContext.Current.Add("activity", jsonTool);
         }
-
     }
 }
