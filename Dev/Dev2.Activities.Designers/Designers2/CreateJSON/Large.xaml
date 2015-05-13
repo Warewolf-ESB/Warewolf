@@ -14,6 +14,7 @@
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:local="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
+                               xmlns:to="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
                                MinWidth="350"
                                Width="350"
                                Height="250"
@@ -57,7 +58,7 @@
             <i:Interaction.Behaviors>
                 <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
                     <behaviors:DataGridWatermarkModifier.WatermarkText>
-                        <system:String>[[Variable1]]</system:String>
+                        <system:String>Name</system:String>
                     </behaviors:DataGridWatermarkModifier.WatermarkText>
                     <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
                         <system:Int32>0</system:Int32>
@@ -65,13 +66,14 @@
                 </behaviors:DataGridWatermarkModifier>
                 <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextValue">
                     <behaviors:DataGridWatermarkModifier.WatermarkText>
-                        <system:String>Value</system:String>
+                        <system:String>[[Variable1]]</system:String>
                     </behaviors:DataGridWatermarkModifier.WatermarkText>
                     <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
                         <system:Int32>0</system:Int32>
                     </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
                 </behaviors:DataGridWatermarkModifier>
             </i:Interaction.Behaviors>
+
 
             <DataGrid.Columns>
 
@@ -89,27 +91,26 @@
 
                 <DataGridTemplateColumn Width="*"
                                         Header="Variable"
-                                        d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}">
+                                        d:DataContext="{d:DesignInstance Type=to:JsonMappingTo}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox VerticalAlignment="Center"
                                                     DefaultText="{Binding WatermarkTextVariable}"
-                                                    WrapInBrackets="True"
-                                                    attachedProperties:FocusSetter.IsFocused="{Binding IsFieldNameFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                                    Text="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
-                                                    IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
+                                                    WrapInBrackets="False"
+                                                    attachedProperties:FocusSetter.IsFocused="{Binding IsDestinationNameFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                   Text="{Binding DestinationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
                                                     ToolTip="{x:Static help:HelpTextResources.AssignToolTipVariable}">
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.AssignHelpVariable}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
-                                                         SourcePropertyName="FieldName"
-                                                         SourcePropertyValue="{Binding FieldName, UpdateSourceTrigger=PropertyChanged}"
+                                                         SourcePropertyName="DestinationName"
+                                                         SourcePropertyValue="{Binding DestinationName, UpdateSourceTrigger=PropertyChanged}"
                                                          Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                 </i:Interaction.Behaviors>
                                 <AutomationProperties.AutomationId>
-                                    <MultiBinding StringFormat="UI_{0}_Row{1}_FieldName_AutoID">
+                                    <MultiBinding StringFormat="UI_{0}_Row{1}_DestinationName_AutoID">
                                         <Binding Path="DataContext.ModelItem.AutomationID"
                                                  RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
                                         <Binding Path="IndexNumber" />
@@ -133,35 +134,31 @@
 
                 <DataGridTemplateColumn Width="*"
                                         Header="New Value"
-                                        d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}">
+                                        d:DataContext="{d:DesignInstance Type=to:JsonMappingTo}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextValue}"
-                                                    AllowMultilinePaste="True"
-                                                    AllowUserCalculateMode="True"
-                                                    AllowUserInsertLine="True"
+                                                    AllowUserCalculateMode="False"
                                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                     VerticalScrollBarVisibility="Auto"
-                                                    TextWrapping="Wrap"
                                                     Margin="0,0,1,0"
                                                     AcceptsReturn="True"
                                                     MaxHeight="80"
-                                                    Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+                                                    Text="{Binding SourceName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
                                                     Converter={StaticResource ModelTextConverter}, ConverterParameter=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
-                                                    attachedProperties:FocusSetter.IsFocused="{Binding IsFieldValueFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                                    IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
+                                                    attachedProperties:FocusSetter.IsFocused="{Binding IsSourceNameFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
                                                     ToolTip="{x:Static help:HelpTextResources.AssignToolTipNewValue}">
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.AssignHelpNewValue}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
-                                                         SourcePropertyName="FieldValue"
-                                                         SourcePropertyValue="{Binding FieldValue, UpdateSourceTrigger=PropertyChanged}"
+                                                         SourcePropertyName="SourceName"
+                                                         SourcePropertyValue="{Binding SourceName, UpdateSourceTrigger=PropertyChanged}"
                                                          Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                 </i:Interaction.Behaviors>
                                 <AutomationProperties.AutomationId>
-                                    <MultiBinding StringFormat="UI_{0}_Row{1}_FieldValue_AutoID">
+                                    <MultiBinding StringFormat="UI_{0}_Row{1}_SourceName_AutoID">
                                         <Binding Path="DataContext.ModelItem.AutomationID"
                                                  RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
                                         <Binding Path="IndexNumber" />

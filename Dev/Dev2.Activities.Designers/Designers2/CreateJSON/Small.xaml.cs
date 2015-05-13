@@ -12,7 +12,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Dev2.Activities.Designers2.MultiAssign
+namespace Dev2.Activities.Designers2.CreateJSON
 {
     public partial class Small
     {
