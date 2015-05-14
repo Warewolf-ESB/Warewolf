@@ -737,11 +737,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch (Exception ex)
             {
-
+                data.Environment.AddError(ex.Message);
                 Dev2Logger.Log.Error("OnExecute", ex);
-                var errorString = ex.Message;
-                var errorResultTO = new ErrorResultTO();
-                errorResultTO.AddError(errorString);                
+            
             }
             finally
             {
