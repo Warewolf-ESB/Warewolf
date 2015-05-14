@@ -7,7 +7,6 @@
                                xmlns:system="clr-namespace:System;assembly=mscorlib"
                                xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-                               xmlns:activities="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
@@ -15,6 +14,7 @@
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:local="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                                xmlns:to="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
+                               xmlns:createJson="clr-namespace:Dev2.Activities.Designers2.CreateJSON"
                                MinWidth="350"
                                Width="350"
                                Height="250"
@@ -23,7 +23,7 @@
                                mc:Ignorable="d"
                                d:DesignHeight="300"
                                d:DesignWidth="300"
-                               d:DataContext="{d:DesignInstance core:ActivityCollectionDesignerViewModel}">
+                               d:DataContext="{d:DesignInstance createJson:CreateJsonDesignerViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary x:Name="TheResources"
@@ -43,12 +43,12 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <controls:Dev2DataGrid x:Name="LargeDataGrid"
                                Grid.Row="0"                                                                                            
-                               ItemsSource="{Binding ModelItem.FieldsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                              
+                               ItemsSource="{Binding ModelItem.JsonMappings, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                              
                                Style="{StaticResource ActivityMapppingDataGridStyle}"
                                CanUserResizeRows="True"
                                RowStyle="{StaticResource ActivityGridRowStyle}"
@@ -57,7 +57,7 @@
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
 
             <i:Interaction.Behaviors>
-                <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
+                <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextKeyName">
                     <behaviors:DataGridWatermarkModifier.WatermarkText>
                         <system:String>Key name</system:String>
                     </behaviors:DataGridWatermarkModifier.WatermarkText>
@@ -65,7 +65,7 @@
                         <system:Int32>0</system:Int32>
                     </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
                 </behaviors:DataGridWatermarkModifier>
-                <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextValue">
+                <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextInput">
                     <behaviors:DataGridWatermarkModifier.WatermarkText>
                         <system:String>[[Input]]</system:String>
                     </behaviors:DataGridWatermarkModifier.WatermarkText>
@@ -104,7 +104,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox VerticalAlignment="Center"
-                                                    DefaultText="{Binding WatermarkTextVariable}"
+                                                    DefaultText="{Binding WatermarkTextKeyName}"
                                                     WrapInBrackets="False"
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsDestinationNameFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                    Text="{Binding DestinationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -135,7 +135,7 @@
                                         d:DataContext="{d:DesignInstance Type=to:JsonMappingTo}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextValue}"
+                            <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextInput}"
                                                     AllowUserCalculateMode="False"
                                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                     VerticalScrollBarVisibility="Auto"
@@ -168,51 +168,39 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </controls:Dev2DataGrid>
+        
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
 
-        <StackPanel HorizontalAlignment="Center"
-                    Margin="0,10,0,0"
-                    Orientation="Vertical"
-                    Grid.Row="1">
-            <Label HorizontalAlignment="Center"
-                   Foreground="{StaticResource BrushDisabledForeground}"
-                   Content="Type in the empty rows to add new rows." />
-            <Label HorizontalAlignment="Center"
-                   Margin="0,-5,0,0"
-                   Foreground="{StaticResource BrushDisabledForeground}"
-                   Content="Right click to insert or delete rows." />
-        </StackPanel>
-        <StackPanel HorizontalAlignment="Center"
-                    Margin="0,10,0,0"
-                    Grid.Row="2">
-            <Label HorizontalAlignment="Center"
-                   Foreground="{StaticResource BrushDisabledForeground}"
-                   Content="Result"></Label>
-            <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextResult}"
-                                                AcceptsReturn="False"
-                                                AllowUserCalculateMode="False"
-                                                WrapInBrackets="True"
-                                                ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                VerticalScrollBarVisibility="Auto"
-                                                MaxHeight="52"
-                                                Padding="3"
-                                                Text="{Binding JsonString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"                                                
-                                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                                ToolTip="{x:Static help:HelpTextResources.CreateJSONToolTipResult}">
+            <Label  Content="Result"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Style="{StaticResource ActivityLabelStyle}" />
+
+            <ui:IntellisenseTextBox Grid.Column="1"
+                                    Grid.Row="0"
+                                    WrapInBrackets="True"
+                                    DefaultText="{Binding WatermarkTextResult}"
+                                    Text="{Binding Path=ModelItem.JsonString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    ToolTip="{x:Static help:HelpTextResources.CreateJSONToolTipResult}"
+                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
                 <i:Interaction.Behaviors>
                     <help:HelpSetter Text="{x:Static help:HelpTextResources.CreateJSONHelpResult}"
-                                                 DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                     DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
-                                                     SourcePropertyName="JsonString"
-                                                     SourcePropertyValue="{Binding JsonString, UpdateSourceTrigger=PropertyChanged}"
-                                                     Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                         SourcePropertyName="ModelItem.JsonString"
+                                         SourcePropertyValue="{Binding  ModelItem.JsonString, UpdateSourceTrigger=PropertyChanged}"
+                                         Target="{Binding}" />
                 </i:Interaction.Behaviors>
-                <AutomationProperties.AutomationId>
-                    <MultiBinding StringFormat="UI_{0}_JsonStringe_AutoID">
-                        <Binding Path="DataContext.ModelItem.AutomationID"
-                                             RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
-                    </MultiBinding>
-                </AutomationProperties.AutomationId>
             </ui:IntellisenseTextBox>
-        </StackPanel>
+        </Grid>
+
+        <errors:OnError Grid.Column="0"
+                        Grid.Row="2"
+                        Grid.ColumnSpan="3" />
     </Grid>
 </core:ActivityDesignerTemplate>

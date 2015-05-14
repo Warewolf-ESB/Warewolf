@@ -31,7 +31,7 @@ namespace Dev2.Activities.Designers2.CreateJSON
             AddTitleBarHelpToggle();
 
             dynamic mi = ModelItem;
-            InitializeItems(mi.FieldsCollection);
+            InitializeItems(mi.JsonMappings);
         }
 
         public override string CollectionName { get { return "JsonMappings"; } }

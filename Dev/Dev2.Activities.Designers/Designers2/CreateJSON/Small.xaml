@@ -11,7 +11,6 @@
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.CreateJSON"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               xmlns:activities="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                                xmlns:to="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
@@ -30,9 +29,11 @@
 <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <controls:Dev2DataGrid x:Name="SmallDataGrid"
+                               Grid.Row="0"
+                               Grid.Column="0"
                            ItemsSource="{Binding ModelItem.JsonMappings, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                           
                            Style="{StaticResource SpacedActivityDataGridStyle}"
                            MinHeight="56"
@@ -42,31 +43,31 @@
         <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
         
         <i:Interaction.Behaviors>
-            <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
-                <behaviors:DataGridWatermarkModifier.WatermarkText>
-                    <system:String>Key Name</system:String>
-                </behaviors:DataGridWatermarkModifier.WatermarkText>
-                <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-                    <system:Int32>0</system:Int32>
-                </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-            </behaviors:DataGridWatermarkModifier>
-            <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextValue">
-                <behaviors:DataGridWatermarkModifier.WatermarkText>
-                    <system:String>[[Input]]</system:String>
-                </behaviors:DataGridWatermarkModifier.WatermarkText>
-                <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-                    <system:Int32>0</system:Int32>
-                </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-            </behaviors:DataGridWatermarkModifier>
-            <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextResult">
-                <behaviors:DataGridWatermarkModifier.WatermarkText>
-                    <system:String>[[JSON]]</system:String>
-                </behaviors:DataGridWatermarkModifier.WatermarkText>
-                <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-                    <system:Int32>0</system:Int32>
-                </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-            </behaviors:DataGridWatermarkModifier>
-        </i:Interaction.Behaviors>       
+                <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextKeyName">
+                    <behaviors:DataGridWatermarkModifier.WatermarkText>
+                        <system:String>Key name</system:String>
+                    </behaviors:DataGridWatermarkModifier.WatermarkText>
+                    <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
+                        <system:Int32>0</system:Int32>
+                    </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
+                </behaviors:DataGridWatermarkModifier>
+                <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextInput">
+                    <behaviors:DataGridWatermarkModifier.WatermarkText>
+                        <system:String>[[Input]]</system:String>
+                    </behaviors:DataGridWatermarkModifier.WatermarkText>
+                    <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
+                        <system:Int32>0</system:Int32>
+                    </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
+                </behaviors:DataGridWatermarkModifier>
+                <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextResult">
+                    <behaviors:DataGridWatermarkModifier.WatermarkText>
+                        <system:String>[[JSON]]</system:String>
+                    </behaviors:DataGridWatermarkModifier.WatermarkText>
+                    <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
+                        <system:Int32>0</system:Int32>
+                    </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
+                </behaviors:DataGridWatermarkModifier>
+            </i:Interaction.Behaviors>       
 
         <DataGrid.Columns>
             <DataGridTemplateColumn Width="27"                                    
@@ -84,7 +85,7 @@
                                     d:DataContext="{d:DesignInstance Type=to:JsonMappingTo}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextVariable}"
+                        <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextKeyName}"
                                                 Padding="3"
                                                 Text="{Binding DestinationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
@@ -112,7 +113,7 @@
                                     d:DataContext="{d:DesignInstance Type=to:JsonMappingTo}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextValue}"
+                        <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextInput}"
                                                 AcceptsReturn="False"
                                                 AllowUserCalculateMode="False"
                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
@@ -143,38 +144,39 @@
             </DataGridTemplateColumn>
         </DataGrid.Columns>
     </controls:Dev2DataGrid>
-    <StackPanel HorizontalAlignment="Center"
-                    Margin="0,10,0,0"
-                    Grid.Row="1">
-        <Label HorizontalAlignment="Center"
-                   Foreground="{StaticResource BrushDisabledForeground}"
-                   Content="Result"></Label>
-        <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextResult}"
-                                                AcceptsReturn="False"
-                                                AllowUserCalculateMode="False"
-                                                WrapInBrackets="True"
-                                                ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                VerticalScrollBarVisibility="Auto"
-                                                MaxHeight="52"
-                                                Padding="3"
-                                                Text="{Binding JsonString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"                                                
-                                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                                ToolTip="{x:Static help:HelpTextResources.CreateJSONToolTipResult}">
-            <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.CreateJSONHelpResult}"
-                                                 DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                <errors:ErrorsSetter Source="{Binding}"
-                                                     SourcePropertyName="JsonString"
-                                                     SourcePropertyValue="{Binding JsonString, UpdateSourceTrigger=PropertyChanged}"
-                                                     Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-            </i:Interaction.Behaviors>
-            <AutomationProperties.AutomationId>
-                <MultiBinding StringFormat="UI_{0}_JsonStringe_AutoID">
-                    <Binding Path="DataContext.ModelItem.AutomationID"
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="125" />
+            </Grid.ColumnDefinitions>
+
+            <Label  Content="Result"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Style="{StaticResource ActivityLabelStyle}" />
+
+            <ui:IntellisenseTextBox Grid.Column="1"
+                                    Grid.Row="0"
+                                    WrapInBrackets="True"
+                                    DefaultText="{Binding ModelItem.WatermarkTextResult}"
+                                    Text="{Binding Path=ModelItem.JsonString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    ToolTip="{x:Static help:HelpTextResources.CreateJSONToolTipResult}"
+                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}">
+                <i:Interaction.Behaviors>
+                    <help:HelpSetter Text="{x:Static help:HelpTextResources.CreateJSONHelpResult}"
+                                     DataContext="{Binding}" />
+                    <errors:ErrorsSetter Source="{Binding}"
+                                         SourcePropertyName="ModelItem.JsonString"
+                                         SourcePropertyValue="{Binding  ModelItem.JsonString, UpdateSourceTrigger=PropertyChanged}"
+                                         Target="{Binding}" />
+                </i:Interaction.Behaviors>
+                <AutomationProperties.AutomationId>
+                    <MultiBinding StringFormat="UI_{0}_JsonString_AutoID">
+                        <Binding Path="DataContext.ModelItem.AutomationID"
                                              RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
-                </MultiBinding>
-            </AutomationProperties.AutomationId>
-        </ui:IntellisenseTextBox>
-    </StackPanel>
+                    </MultiBinding>
+                </AutomationProperties.AutomationId>
+            </ui:IntellisenseTextBox>
+        </Grid>        
     </Grid>
 </core:ActivityDesignerTemplate>

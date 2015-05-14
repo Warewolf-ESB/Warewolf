@@ -29,6 +29,21 @@ namespace Dev2.TO
         int _indexNumber;
         public int IndexNumber { get { return _indexNumber; } set { OnPropertyChanged(ref _indexNumber, value); } }
 
+        public JsonMappingTo()
+        {
+        }
+
+        public JsonMappingTo(string sourceName, string destinationName, int indexNumber, bool inserted)
+        {
+            _sourceName = sourceName;
+            _destinationName = destinationName;
+            _indexNumber = indexNumber;
+            Inserted = inserted;
+        }
+
+        public string WatermarkTextKeyName { get; set; }
+        public string WatermarkTextInput { get; set; }
+
         public bool CanRemove()
         {
             return false;
