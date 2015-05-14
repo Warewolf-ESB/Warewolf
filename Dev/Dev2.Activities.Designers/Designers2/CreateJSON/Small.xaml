@@ -95,7 +95,8 @@
                                     d:DataContext="{d:DesignInstance Type=to:JsonMappingTo}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <ui:IntellisenseTextBox DefaultText="[[Input]]"
+                            <ui:IntellisenseTextBox x:Name="InitialFocusElement"
+                                                DefaultText="[[Input]]"
                                                 AcceptsReturn="False"
                                                 AllowUserCalculateMode="False"
                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
