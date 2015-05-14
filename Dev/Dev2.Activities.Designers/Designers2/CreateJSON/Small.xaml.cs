@@ -25,7 +25,7 @@ namespace Dev2.Activities.Designers2.CreateJSON
 
         protected override IInputElement GetInitialFocusElement()
         {
-            return DataGrid.GetFocusElement(0);
+            return DataGrid.GetFocusElement(0,1);
         }
 
         // ReSharper disable once InconsistentNaming

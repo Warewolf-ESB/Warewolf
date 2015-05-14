@@ -70,10 +70,9 @@ namespace Dev2.TO
         {
         }
 
-        public JsonMappingTo(string sourceName, string destinationName, int indexNumber, bool inserted)
+        public JsonMappingTo(string sourceName, int indexNumber, bool inserted)
         {
             _sourceName = sourceName;
-            _destinationName = destinationName;
             _indexNumber = indexNumber;
             Inserted = inserted;
         }
