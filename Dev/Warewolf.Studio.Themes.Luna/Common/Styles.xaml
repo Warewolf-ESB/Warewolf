@@ -198,5 +198,13 @@
         <Thickness.Right>0</Thickness.Right>
         <Thickness.Top>-5</Thickness.Top>
     </Thickness>
+    
+    <!-- GRID BOTTOM -->
+    <Thickness x:Key="GridBorderBottom">
+        <Thickness.Bottom>8</Thickness.Bottom>
+        <Thickness.Left>0</Thickness.Left>
+        <Thickness.Right>0</Thickness.Right>
+        <Thickness.Top>0</Thickness.Top>
+    </Thickness>
 </ResourceDictionary>
 
