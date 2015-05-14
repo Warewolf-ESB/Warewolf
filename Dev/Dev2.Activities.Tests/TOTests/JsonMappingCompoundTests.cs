@@ -214,7 +214,45 @@ namespace Dev2.Tests.Activities.TOTests
             Assert.IsFalse(jsonMappingCompound.IsCompound);
             Assert.AreEqual(jsonMappingCompound.EvaluatedResultIndexed(0), 50);
             Assert.AreEqual(jsonMappingCompound.EvaluatedResultIndexed(1), 60);
+        }
+        [TestMethod]
+        [Owner("Kerneels Roos")]
+        [TestCategory("JsonMappingCompoundToHasRecordSetInCompound")]
+        public void JsonMappingCompoundTo_HasRecordSetInCompound()
+        {
+            //------------Setup for test--------------------------
+            var dataObject = new DsfDataObject(xmldata: string.Empty, dataListId: Guid.NewGuid());
+            dataObject.Environment.Assign("[[a]]", "10");
+            dataObject.Environment.Assign("[[b]]", "20");
+            dataObject.Environment.Assign("[[rec(1).a]]", "50");
+            dataObject.Environment.Assign("[[rec(1).b]]", "500");
+            dataObject.Environment.Assign("[[rec(2).a]]", "60");
+            dataObject.Environment.Assign("[[rec(2).b]]", "600");
+            //------------Execute Test---------------------------
 
+            var jsonMappingCompound = new JsonMappingCompoundTo(
+                env: dataObject.Environment,
+                compound: new JsonMappingTo
+                {
+                    SourceName = "[[a]],[[b]]",
+                    DestinationName = "myName"
+                }
+            );
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(jsonMappingCompound);
+            Assert.IsTrue(jsonMappingCompound.IsCompound);
+            Assert.IsFalse(jsonMappingCompound.HasRecordSetInCompound);
+
+            jsonMappingCompound = new JsonMappingCompoundTo(
+                env: dataObject.Environment,
+                compound: new JsonMappingTo
+                {
+                    SourceName = "[[rec()]],[[rec(*)]]",
+                    DestinationName = "myName"
+                }
+            );
+            Assert.IsTrue(jsonMappingCompound.IsCompound);
+            Assert.IsTrue(jsonMappingCompound.HasRecordSetInCompound);
         }
     }
 }

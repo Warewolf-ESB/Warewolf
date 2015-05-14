@@ -27,6 +27,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Storage;
+using Dev2.Validation;
 
 // ReSharper disable CheckNamespace
 
@@ -88,9 +89,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
                 if (JsonMappings == null)
-                {
                     dataObject.Environment.AddError("Json Mappings supplied to activity is null.");
-                }
 
                 // ReSharper disable AssignNullToNotNullAttribute
                 if (!dataObject.Environment.Errors.Any() && !JsonMappings.Any())
@@ -98,6 +97,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     dataObject.Environment.AddError("No Json Mappings supplied to activity.");
                 }
+
+                // ReSharper disable AssignNullToNotNullAttribute
+                if (!dataObject.Environment.Errors.Any())
+                // ReSharper restore AssignNullToNotNullAttribute
+                {
+                    JsonMappings.ToList().ForEach(m =>
+                        {
+                            var validationResult = new IsValidJsonCreateMappingSourceRule(() => m).Check();
+                            if (validationResult != null)
+                                dataObject.Environment.AddError(validationResult.Message);
+                        });
+                }
+
                 if (dataObject.IsDebugMode())
                 {
                     int j = 0;
@@ -125,10 +137,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         new JsonMappingCompoundTo(dataObject.Environment, jsonMapping
                             )).ToList();
 
-                    // do not allow IsCompound with more than one RecordSet specified 
+                    // do not allow IsCompound with a RecordSet specified 
                     if (results.Where(x => x.IsCompound)
-                        .Any(y => y.HasMoreThanOneRecordSet))
-                        throw new ArgumentException("Cannot specify more than one RecordSet for a comma seperated input.");
+                        .Any(y => y.HasRecordSetInCompound))
+                        throw new ArgumentException("Cannot specify a  RecordSet for a comma seperated input.");
 
                     // get the longest list
                     int maxCount = results.Select(r => r.MaxCount).Max();
@@ -149,12 +161,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
                             else
                             {
+                                // if it is a compound, 
                                 json.Add(new JProperty(
                                         x.DestinationName,
                                         x.ComplexEvaluatedResultIndexed(i))
                                         );
                             }
-                            // if it is a compound, 
                         }
                             );
                     }
@@ -166,7 +178,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         AddDebugOutputItem(new DebugEvalResult(JsonString, string.Empty, dataObject.Environment));
                     }
 
-                    /*var rule = new IsSingleValueRule(() => CountNumber);
+                    /*
+                    var rule = new IsSingleValueRule(() => CountNumber);
                     var single = rule.Check();
                     if (single != null)
                     {
