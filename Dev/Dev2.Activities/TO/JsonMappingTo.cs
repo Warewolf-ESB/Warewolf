@@ -79,16 +79,18 @@ namespace Dev2.TO
 
         public bool CanRemove()
         {
-            return false;
+            return string.IsNullOrEmpty(DestinationName);
         }
 
         public bool CanAdd()
         {
-            return false;
+            return !string.IsNullOrEmpty(DestinationName);
         }
 
         public void ClearRow()
         {
+            SourceName = string.Empty;
+            DestinationName = string.Empty;
         }
 
         public bool Inserted { get; set; }
