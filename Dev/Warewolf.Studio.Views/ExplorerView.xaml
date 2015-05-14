@@ -334,10 +334,10 @@
                     </ig:NodeLayout>
 
                     <ig:NodeLayout Key="Children"
-                               DisplayMemberPath="ResourceName"
-                               IsExpandedMemberPath="IsExpanded"
-                               TargetTypeName="IExplorerItemViewModel"                               
-                               Visibility="{Binding Path=Data.IsVisible,                               
+                                   DisplayMemberPath="ResourceName"
+                                   IsExpandedMemberPath="IsExpanded"
+                                   TargetTypeName="IExplorerItemViewModel" 
+                                   Visibility="{Binding Path=Data.IsVisible,                               
                                                     Converter={StaticResource BoolToVisibilityConverter}}">
 
                         <ig:NodeLayout.EditorTemplate>
@@ -348,7 +348,7 @@
                                 </Grid>
                             </DataTemplate>
                         </ig:NodeLayout.EditorTemplate>
-                    <ig:NodeLayout.ItemTemplate>
+                        <ig:NodeLayout.ItemTemplate>
                             <DataTemplate>
                                 <DataTemplate.Triggers>
                                     <EventTrigger RoutedEvent="ig:XamDataTreeNodeControl.MouseEnter">
@@ -405,7 +405,7 @@
                                     </EventTrigger>
                                 </DataTemplate.Triggers>
                                     <!-- ADD NEW GRID LAYOUT TO ALIGN DATA TREE ITEMS -->
-                                <Grid Margin="0,0,-20,0">
+                                <Grid>
                                     <Grid.Width>
                                         <MultiBinding Converter="{StaticResource WidthConverter}">
                                             <Binding RelativeSource="{RelativeSource AncestorType={x:Type ig:XamDataTreeNodeControl}}" />
