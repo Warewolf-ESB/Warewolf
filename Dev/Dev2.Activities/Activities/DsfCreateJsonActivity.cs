@@ -41,18 +41,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary>
         [Inputs("JsonMappings")]
         [FindMissing]
-        // ReSharper disable MemberCanBePrivate.Global
-        public IEnumerable<JsonMappingTo> JsonMappings { get; set; }
-        // ReSharper restore MemberCanBePrivate.Global
+        public List<JsonMappingTo> JsonMappings { get; set; }
 
         /// <summary>
         ///     Gets or sets the JSON string.
         /// </summary>
         [Outputs("JsonString")]
         [FindMissing]
-        // ReSharper disable MemberCanBePrivate.Global
         public string JsonString { get; set; }
-        // ReSharper restore MemberCanBePrivate.Global
 
 
         public DsfCreateJsonActivity()

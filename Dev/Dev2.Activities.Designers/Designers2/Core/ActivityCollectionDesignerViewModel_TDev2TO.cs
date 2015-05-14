@@ -283,9 +283,9 @@ namespace Dev2.Activities.Designers2.Core
 
         void OnDtoPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
+            DoCustomAction(args.PropertyName);
             if(args.PropertyName != "CanRemove")
             {
-                DoCustomAction(args.PropertyName);
                 return;
             }
 
@@ -309,8 +309,7 @@ namespace Dev2.Activities.Designers2.Core
         }
 
         protected virtual void DoCustomAction(string propertyName)
-        {
-            
+        {            
         }
 
         /// <summary>

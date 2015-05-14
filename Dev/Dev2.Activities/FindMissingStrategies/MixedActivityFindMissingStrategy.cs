@@ -53,6 +53,19 @@ namespace Dev2.FindMissingStrategies
                         results.Add(dsAct.SourceString);
                     }
                 }
+            }            
+            
+            if(activityType == typeof(DsfCreateJsonActivity))
+            {
+                var dsAct = activity as DsfCreateJsonActivity;
+                if(dsAct != null)
+                {
+                    results.AddRange(InternalFindMissing(dsAct.JsonMappings));
+                    if(!string.IsNullOrEmpty(dsAct.JsonString))
+                    {
+                        results.Add(dsAct.JsonString);
+                    }
+                }
             }
             else if(activityType == typeof(DsfDataMergeActivity))
             {
