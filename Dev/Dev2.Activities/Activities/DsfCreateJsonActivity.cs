@@ -104,7 +104,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     JsonMappings.ToList().ForEach(m =>
                         {
-                            var validationResult = new IsValidJsonCreateMappingSourceRule(() => m).Check();
+                            var validationResult = new IsValidJsonCreateMappingInputRule(() => m).Check();
                             if (validationResult != null)
                                 dataObject.Environment.AddError(validationResult.Message);
                         });

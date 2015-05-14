@@ -14,6 +14,9 @@ using System.Diagnostics.CodeAnalysis;
 using Dev2.DynamicServices;
 using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using FluentAssertions;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities.TOTests
@@ -212,8 +215,16 @@ namespace Dev2.Tests.Activities.TOTests
                 }
             );
             Assert.IsFalse(jsonMappingCompound.IsCompound);
-            Assert.AreEqual(jsonMappingCompound.EvaluatedResultIndexed(0), 50);
-            Assert.AreEqual(jsonMappingCompound.EvaluatedResultIndexed(1), 60);
+            Assert.AreEqual((new JObject(new JProperty("a", jsonMappingCompound.EvaluatedResultIndexed(0)))).ToString(Formatting.None), "{\"a\":[50,60]}");
+            jsonMappingCompound = new JsonMappingCompoundTo(
+                env: dataObject.Environment,
+            compound: new JsonMappingTo
+                {
+                    SourceName = "[[rec(*).b]]",
+                    DestinationName = "myName"
+                }
+            );
+            Assert.AreEqual((new JObject(new JProperty("b", jsonMappingCompound.EvaluatedResultIndexed(1)))).ToString(Formatting.None), "{\"b\":[500,600]}");
         }
         [TestMethod]
         [Owner("Kerneels Roos")]
@@ -253,6 +264,35 @@ namespace Dev2.Tests.Activities.TOTests
             );
             Assert.IsTrue(jsonMappingCompound.IsCompound);
             Assert.IsTrue(jsonMappingCompound.HasRecordSetInCompound);
+        }
+        [TestMethod]
+        [Owner("Kerneels Roos")]
+        [TestCategory("JsonMappingCompoundToIsValid")]
+        public void JsonMappingCompoundTo_IsValid()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            Assert.IsNotNull(JsonMappingCompoundTo.IsValidJsonMappingInput(null, null));
+            Assert.IsNotNull(JsonMappingCompoundTo.IsValidJsonMappingInput(null, "a"));
+            Assert.IsNotNull(JsonMappingCompoundTo.IsValidJsonMappingInput("a", null));
+            Assert.IsNotNull(JsonMappingCompoundTo.IsValidJsonMappingInput("a", "a"));
+
+            JsonMappingCompoundTo.IsValidJsonMappingInput("[[a]],[[b]]", "a")
+                .Should().BeNull();
+            JsonMappingCompoundTo.IsValidJsonMappingInput("[[a().a]]", "a")
+                .Should().BeNull();
+            JsonMappingCompoundTo.IsValidJsonMappingInput("[[a()]],[[b]]", "a")
+                .Should().NotBeNull();
+            JsonMappingCompoundTo.IsValidJsonMappingInput("[[a(*)]],[[b]],[[c().m]]", "a")
+                .Should().NotBeNull();
+            JsonMappingCompoundTo.IsValidJsonMappingInput("[[a().x]],[[b().y]]", "a")
+                .Should().BeNull();
+
+            JsonMappingCompoundTo.IsValidJsonMappingInput("a", "a")
+                .Should().NotBeNull();
+
+            JsonMappingCompoundTo.IsValidJsonMappingInput("a,b", "a")
+    .Should().NotBeNull();
         }
     }
 }

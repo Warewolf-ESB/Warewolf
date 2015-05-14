@@ -20,9 +20,9 @@ using System.Linq;
 
 namespace Dev2.Validation
 {
-    public class IsValidJsonCreateMappingSourceRule : Rule<JsonMappingTo>
+    public class IsValidJsonCreateMappingInputRule : Rule<JsonMappingTo>
     {
-        public IsValidJsonCreateMappingSourceRule(Func<JsonMappingTo> getValue)
+        public IsValidJsonCreateMappingInputRule(Func<JsonMappingTo> getValue)
             : base(getValue)
         {
         }

@@ -336,12 +336,12 @@ namespace Dev2.TO
                 if (parsed.IsComplexExpression)
                 {
                     var complex = (LanguageAST.LanguageExpression.ComplexExpression)parsed;
-                    if (!complex.Item
+                    if (complex.Item
                             .Any(x => x.IsRecordSetNameExpression))
                         return "Cannot specify a Recordset as part of a comma seperated list of expressions";
                     if ((complex.Item.Count() < 3 ||
                         complex.Item.Count() % 2 != 1) ||
-                        Enumerable.Range(1, complex.Item.Count() - 1)
+                        !Enumerable.Range(1, complex.Item.Count() - 1)
                         .Where(i => i % 2 == 1)
                         .Select(i => complex.Item.ElementAt(i).IsWarewolfAtomAtomExpression &&
                             WarewolfDataEvaluationCommon.LanguageExpressionToString(
