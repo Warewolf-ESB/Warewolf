@@ -284,6 +284,7 @@ namespace Dev2.TO
             if (EvalResult.IsWarewolfRecordSetResult)
             {
                 DataASTMutable.WarewolfRecordset recset = ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult)EvalResult).Item;
+               
                 KeyValuePair<string, WarewolfAtomList<DataASTMutable.WarewolfAtom>>[] data = recset.Data.ToArray();
                 var jObjects = new List<JObject>();
                 for (int j = 0; j < recset.Count; j++)

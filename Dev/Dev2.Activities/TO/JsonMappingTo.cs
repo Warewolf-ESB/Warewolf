@@ -74,7 +74,7 @@ namespace Dev2.TO
 
         public JsonMappingTo(string sourceName, int indexNumber, bool inserted)
         {
-            _sourceName = sourceName;
+            SourceName = sourceName;
             _indexNumber = indexNumber;
             Inserted = inserted;
         }
@@ -109,18 +109,13 @@ namespace Dev2.TO
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
             RuleSet ruleSet = new RuleSet();
-            if (IsEmpty())
+            if (String.IsNullOrEmpty( SourceName))
             {
                 return ruleSet;
             }
             if(propertyName == "SourceName")
                 ruleSet.Add(new IsValidJsonCreateMappingSourceExpression(() => SourceName));
             return ruleSet;
-        }
-
-        bool IsEmpty()
-        {
-            return string.IsNullOrEmpty(DestinationName);
         }
     }
 }
