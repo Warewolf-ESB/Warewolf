@@ -95,7 +95,7 @@
                                     d:DataContext="{d:DesignInstance Type=to:JsonMappingTo}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                            <ui:IntellisenseTextBox x:Name="InitialFocusElement"
+                            <ui:IntellisenseTextBox 
                                                 DefaultText="[[Input]]"
                                                 AcceptsReturn="False"
                                                 AllowUserCalculateMode="False"
