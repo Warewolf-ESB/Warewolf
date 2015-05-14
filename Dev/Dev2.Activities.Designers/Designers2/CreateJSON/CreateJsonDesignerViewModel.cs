@@ -17,7 +17,6 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.TO;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers2.CreateJSON
 {
@@ -44,7 +43,7 @@ namespace Dev2.Activities.Designers2.CreateJSON
 
         protected override IEnumerable<IActionableErrorInfo> ValidateCollectionItem(ModelItem mi)
         {
-            var dto = mi.GetCurrentValue() as ActivityDTO;
+            var dto = mi.GetCurrentValue() as JsonMappingTo;
             if(dto == null)
             {
                 yield break;

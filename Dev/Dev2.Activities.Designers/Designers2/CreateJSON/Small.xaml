@@ -44,7 +44,7 @@
         <i:Interaction.Behaviors>
             <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
                 <behaviors:DataGridWatermarkModifier.WatermarkText>
-                    <system:String>Name</system:String>
+                    <system:String>Key Name</system:String>
                 </behaviors:DataGridWatermarkModifier.WatermarkText>
                 <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
                     <system:Int32>0</system:Int32>
@@ -52,7 +52,7 @@
             </behaviors:DataGridWatermarkModifier>
             <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextValue">
                 <behaviors:DataGridWatermarkModifier.WatermarkText>
-                    <system:String>[[Variable1]]</system:String>
+                    <system:String>[[Input]]</system:String>
                 </behaviors:DataGridWatermarkModifier.WatermarkText>
                 <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
                     <system:Int32>0</system:Int32>
@@ -60,7 +60,7 @@
             </behaviors:DataGridWatermarkModifier>
             <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextResult">
                 <behaviors:DataGridWatermarkModifier.WatermarkText>
-                    <system:String>[[Result]]</system:String>
+                    <system:String>[[JSON]]</system:String>
                 </behaviors:DataGridWatermarkModifier.WatermarkText>
                 <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
                     <system:Int32>0</system:Int32>
@@ -88,9 +88,9 @@
                                                 Padding="3"
                                                 Text="{Binding DestinationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
-                                                ToolTip="{x:Static help:HelpTextResources.AssignToolTipVariable}">
+                                                ToolTip="{x:Static help:HelpTextResources.CreateJSONToolTipName}">
                             <i:Interaction.Behaviors>
-                                <help:HelpSetter Text="{x:Static help:HelpTextResources.AssignHelpVariable}"
+                                <help:HelpSetter Text="{x:Static help:HelpTextResources.CreateJSONHelpName}"
                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                 <errors:ErrorsSetter Source="{Binding}"
                                                      SourcePropertyName="DestinationName"
@@ -121,9 +121,9 @@
                                                 Padding="3"
                                                 Text="{Binding SourceName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"                                                
                                                 Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
-                                                ToolTip="{x:Static help:HelpTextResources.AssignToolTipNewValue}">
+                                                ToolTip="{x:Static help:HelpTextResources.CreateJSONToolTipInput}">
                             <i:Interaction.Behaviors>
-                                <help:HelpSetter Text="{x:Static help:HelpTextResources.AssignHelpNewValue}"
+                                <help:HelpSetter Text="{x:Static help:HelpTextResources.CreateJSONHelpInput}"
                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                 <errors:ErrorsSetter Source="{Binding}"
                                                      SourcePropertyName="SourceName"
@@ -159,9 +159,9 @@
                                                 Padding="3"
                                                 Text="{Binding JsonString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"                                                
                                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                                ToolTip="{x:Static help:HelpTextResources.AssignToolTipNewValue}">
+                                                ToolTip="{x:Static help:HelpTextResources.CreateJSONToolTipResult}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.AssignHelpNewValue}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.CreateJSONHelpResult}"
                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                                      SourcePropertyName="JsonString"

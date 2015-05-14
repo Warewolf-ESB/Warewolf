@@ -20,6 +20,7 @@ using Dev2.Activities.Designers2.Comment;
 using Dev2.Activities.Designers2.Copy;
 using Dev2.Activities.Designers2.CountRecords;
 using Dev2.Activities.Designers2.Create;
+using Dev2.Activities.Designers2.CreateJSON;
 using Dev2.Activities.Designers2.DataMerge;
 using Dev2.Activities.Designers2.DataSplit;
 using Dev2.Activities.Designers2.DateTime;
@@ -109,6 +110,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfFindRecordsActivity), typeof(DsfFindRecordsActivityDesigner) },
                 { typeof(DsfScriptingJavaScriptActivity), typeof(DsfScriptingJavaScriptDesigner) },
                 { typeof(DsfDropBoxFileActivity), typeof(DropboxUploadFileDesigner) },
+                { typeof(DsfCreateJsonActivity), typeof(CreateJsonDesigner) },
                 // Travis.Frisinger : 25.09.2012 - Removed Http Activity as it is out of sync with the current release 1 plans
             };
 
