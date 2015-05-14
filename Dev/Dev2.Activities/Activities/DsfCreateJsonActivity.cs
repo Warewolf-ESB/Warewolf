@@ -53,7 +53,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string JsonString { get; set; }
         // ReSharper restore MemberCanBePrivate.Global
 
-        public string WatermarkTextResult { get; set; }
 
         public DsfCreateJsonActivity()
             : base("Create JSON")
