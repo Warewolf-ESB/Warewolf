@@ -9,7 +9,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
+using Dev2.Data.Util;
 using Dev2.Interfaces;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
@@ -21,9 +23,44 @@ namespace Dev2.TO
         string _sourceName, _destinationName;
 
         [FindMissing]
-        public string SourceName { get { return _sourceName; } set { OnPropertyChanged(ref _sourceName, value); } }
+        public string SourceName
+        {
+            get { return _sourceName; }
+            set
+            {
+                OnPropertyChanged(ref _sourceName, value);
 
-        public string DestinationName { get { return _destinationName; } set { OnPropertyChanged(ref _destinationName, value); } }
+                if (String.IsNullOrEmpty(DestinationName))
+                {
+                    if (DataListUtil.IsFullyEvaluated(_sourceName))
+                    {
+                        string destName;
+                        if (DataListUtil.IsValueRecordset(value) || DataListUtil.IsValueRecordsetWithFields(value))
+                        {
+                            destName = DataListUtil.ExtractRecordsetNameFromValue(_sourceName);
+                        }
+                        else
+                        {
+                            destName = DataListUtil.StripBracketsFromValue(_sourceName);
+                        }
+                        DestinationName = destName;
+                    }
+                    
+                }                
+            }
+        }
+
+        public string DestinationName
+        {
+            get
+            {
+                return _destinationName;
+            }
+            set
+            {
+                OnPropertyChanged(ref _destinationName, value);
+            }
+        }
 
         #region Implementation of IDev2TOFn
         int _indexNumber;

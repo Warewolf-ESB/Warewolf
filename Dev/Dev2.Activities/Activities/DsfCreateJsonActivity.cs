@@ -102,7 +102,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     int j = 0;
                     // ReSharper disable PossibleNullReferenceException
-                    foreach (JsonMappingTo a in JsonMappings)
+                    foreach (JsonMappingTo a in JsonMappings.Where(to => !String.IsNullOrEmpty(to.SourceName)))
                     // ReSharper restore PossibleNullReferenceException
                     {
                         var debugItem = new DebugItem();
@@ -121,7 +121,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     // ReSharper restore AssignNullToNotNullAttribute
 
                     // build the list of JsonMappingCompoundTo - a compound is either a single expression or a comma seperated list of expressions
-                    List<JsonMappingCompoundTo> results = jsonMappingList.Select(jsonMapping =>
+                    List<JsonMappingCompoundTo> results = jsonMappingList.Where(to => !String.IsNullOrEmpty(to.SourceName)).Select(jsonMapping =>
                         new JsonMappingCompoundTo(dataObject.Environment, jsonMapping
                             )).ToList();
 
@@ -199,7 +199,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // ReSharper restore AssignNullToNotNullAttribute
                 {
                     AddDebugInputItem(new DebugItemStaticDataParams("", x.SourceName, "SourceName", "="));
-                    AddDebugInputItem(new DebugItemStaticDataParams("", x.DestinationName, "DestinationName", "="));
+                    AddDebugInputItem(new DebugItemStaticDataParams("", x.DestinationName, "DestinationName"));
                 });
 
                 allErrors.AddError(e.Message);

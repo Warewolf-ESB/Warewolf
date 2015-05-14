@@ -41,6 +41,26 @@ namespace Dev2.Activities.Designers2.CreateJSON
             yield break;
         }
 
+        #region Overrides of ActivityCollectionDesignerViewModel<JsonMappingTo>
+
+        protected override void DoCustomAction(string propertyName)
+        {
+            if (propertyName == "DestinationName")
+            {
+                if (CurrentModelItem != null)
+                {
+                    var dto = CurrentModelItem.GetCurrentValue() as JsonMappingTo;
+                    if (dto != null)
+                    {
+
+                        CurrentModelItem.SetProperty(propertyName, dto.DestinationName);
+                    }
+                }
+            }
+        }
+
+        #endregion
+
         protected override IEnumerable<IActionableErrorInfo> ValidateCollectionItem(ModelItem mi)
         {
             var dto = mi.GetCurrentValue() as JsonMappingTo;

@@ -14,6 +14,8 @@
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                                xmlns:to="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
+                               xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
+                               xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
                                Width="230"
                                MaxWidth="230"
                                Padding="7"
@@ -61,6 +63,7 @@
                     <DataTemplate>
                         <ui:IntellisenseTextBox DefaultText="Key Name"
                                                 Padding="3"
+                                                IsTabStop="False"
                                                 Text="{Binding DestinationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
                                                 ToolTip="{x:Static help:HelpTextResources.CreateJSONToolTipName}">
@@ -72,7 +75,12 @@
                                                      SourcePropertyValue="{Binding DestinationName, UpdateSourceTrigger=PropertyChanged}"
                                                      Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                             </i:Interaction.Behaviors>
-                            <AutomationProperties.AutomationId>
+                                <ui:IntellisenseTextBox.IntellisenseProvider>
+                                    <interfaceImplementors:CompositeIntellisenseProvider>
+                                        <provider:BlankIntellisenseProvider />
+                                    </interfaceImplementors:CompositeIntellisenseProvider>
+                                </ui:IntellisenseTextBox.IntellisenseProvider>
+                                <AutomationProperties.AutomationId>
                                 <MultiBinding StringFormat="UI_{0}_Row{1}_DestinationName_AutoID">
                                     <Binding Path="DataContext.ModelItem.AutomationID"
                                              RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />

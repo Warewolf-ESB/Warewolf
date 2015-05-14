@@ -4,8 +4,6 @@
                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
-                               xmlns:system="clr-namespace:System;assembly=mscorlib"
-                               xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
@@ -15,6 +13,8 @@
                                xmlns:local="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                                xmlns:to="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
                                xmlns:createJson="clr-namespace:Dev2.Activities.Designers2.CreateJSON"
+                               xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
+                               xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
                                MinWidth="350"
                                Width="350"
                                Height="250"
@@ -79,6 +79,7 @@
                             <ui:IntellisenseTextBox VerticalAlignment="Center"
                                                     DefaultText="Key Name"
                                                     WrapInBrackets="False"
+                                                    IsTabStop="False"                                                     
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsDestinationNameFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                    Text="{Binding DestinationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
@@ -91,6 +92,11 @@
                                                          SourcePropertyValue="{Binding DestinationName, UpdateSourceTrigger=PropertyChanged}"
                                                          Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                 </i:Interaction.Behaviors>
+                                <ui:IntellisenseTextBox.IntellisenseProvider>
+                                    <interfaceImplementors:CompositeIntellisenseProvider>
+                                        <provider:BlankIntellisenseProvider />
+                                    </interfaceImplementors:CompositeIntellisenseProvider>
+                                </ui:IntellisenseTextBox.IntellisenseProvider>
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_Row{1}_DestinationName_AutoID">
                                         <Binding Path="DataContext.ModelItem.AutomationID"

@@ -20,11 +20,13 @@ namespace Dev2.Activities.Designers2.CreateJSON
         {
             InitializeComponent();
             DataGrid = SmallDataGrid;
+            SetInitialFocus();
         }
 
         protected override IInputElement GetInitialFocusElement()
         {
-            return DataGrid.GetFocusElement(0);
+            var dataGridRow = DataGrid.GetRow(0);
+            return DataGrid.GetFocusElement(dataGridRow);
         }
 
         // ReSharper disable once InconsistentNaming
