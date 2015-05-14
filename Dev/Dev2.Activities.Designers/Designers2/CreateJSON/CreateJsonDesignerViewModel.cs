@@ -43,17 +43,14 @@ namespace Dev2.Activities.Designers2.CreateJSON
 
         #region Overrides of ActivityCollectionDesignerViewModel<JsonMappingTo>
 
-        protected override void DoCustomAction(string propertyName)
+        protected override void DoCustomAction(JsonMappingTo dto, string propertyName)
         {
             if (propertyName == "DestinationName")
             {
-                if (CurrentModelItem != null)
+                if (dto != null)
                 {
-                    var dto = CurrentModelItem.GetCurrentValue() as JsonMappingTo;
-                    if (dto != null)
-                    {
-                        CurrentModelItem.SetProperty(propertyName, dto.DestinationName);
-                    }
+                    var modelItem = ModelItemCollection[dto.IndexNumber - 1];
+                    modelItem.SetProperty(propertyName, dto.DestinationName);
                 }
             }
         }

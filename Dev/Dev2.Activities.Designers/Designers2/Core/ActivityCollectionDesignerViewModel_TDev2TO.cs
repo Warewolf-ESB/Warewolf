@@ -283,13 +283,15 @@ namespace Dev2.Activities.Designers2.Core
 
         void OnDtoPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
-            DoCustomAction(args.PropertyName);
+            var dto = (TDev2TOFn)sender;
+           
             if(args.PropertyName != "CanRemove")
             {
+                DoCustomAction(dto, args.PropertyName);
                 return;
             }
 
-            var dto = (TDev2TOFn)sender;
+            
             if(dto.CanAdd())
             {
                 if(ModelItemCollection.Count == 2)
@@ -308,7 +310,7 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        protected virtual void DoCustomAction(string propertyName)
+        protected virtual void DoCustomAction(TDev2TOFn dto, string propertyName)
         {            
         }
 

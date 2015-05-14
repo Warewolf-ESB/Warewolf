@@ -25,7 +25,7 @@ namespace Dev2.Activities.Designers2.CreateJSON
 
         protected override IInputElement GetInitialFocusElement()
         {
-            return DataGrid.GetFocusElement(0,1);
+            return DataGrid.GetFocusElement(0);
         }
 
         private void DataGrid_LoadingRow(System.Object sender, DataGridRowEventArgs e)
