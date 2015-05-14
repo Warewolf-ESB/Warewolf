@@ -165,12 +165,18 @@
                         <RowDefinition Height="Auto"></RowDefinition>
                         <RowDefinition Height="Auto"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <ListBox x:Name="InputsList" ItemsSource="{Binding Inputs}" BorderBrush="Transparent" Padding="0,0,0,1" >
+                    <ListBox x:Name="InputsList" Grid.IsSharedSizeScope="True" ItemsSource="{Binding Inputs}" BorderBrush="Transparent" Padding="0,0,0,1" >
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="db:IDbInput">
-                                <StackPanel Orientation="Horizontal" Style="{x:Null}" >
-                                    <TextBlock  Margin="{StaticResource ControlBorderTop}" Text="{Binding Path=Name }" Width="85"></TextBlock>
-                                    <TextBox Margin="{StaticResource ControlBorderTop}" Text="{Binding Path=Value}" Width="200"></TextBox>
+                                <StackPanel Orientation="Horizontal" >
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition SharedSizeGroup="{Binding Name}" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Margin="{StaticResource ControlBorderTop}" Text="{Binding Path=Name }" Width="85"></TextBlock>
+                                        <TextBox Grid.Column="1" Margin="{StaticResource ControlBorderTop}" Text="{Binding Path=Value}" Width="200"></TextBox>
+                                    </Grid>
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -203,6 +209,8 @@
                           GridLinesVisibility="Vertical" 
                           ColumnWidth="*" 
                           AutoGenerateColumns="True" 
+                          CanUserSortColumns="False"
+                          CanUserReorderColumns="False"
                           BorderBrush="Transparent" 
                           CanUserResizeColumns="True" 
                           VerticalGridLinesBrush="Transparent" >
@@ -245,6 +253,8 @@
                           HorizontalScrollBarVisibility="Disabled" 
                           GridLinesVisibility="Vertical" 
                           AutoGenerateColumns="False" 
+                          CanUserSortColumns="False"
+                          CanUserReorderColumns="False"
                           ColumnWidth="*" 
                           BorderBrush="Transparent" 
                           CanUserResizeColumns="True" 
@@ -292,6 +302,8 @@
                           GridLinesVisibility="Vertical" 
                           ColumnWidth="*" 
                           AutoGenerateColumns="False" 
+                          CanUserSortColumns="False"
+                          CanUserReorderColumns="False"
                           BorderBrush="Transparent" 
                           CanUserResizeColumns="True" 
                           VerticalGridLinesBrush="Transparent">
