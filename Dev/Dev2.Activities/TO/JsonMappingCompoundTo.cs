@@ -10,19 +10,20 @@
 */
 
 using System;
-using System.Activities.Expressions;
-using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using Warewolf.Storage;
+using WarewolfParserInterop;
 
 namespace Dev2.TO
 {
     public class JsonMappingEvaluated
     {
         readonly IExecutionEnvironment _env;
+        // ReSharper disable MemberCanBePrivate.Global
         public JsonMappingTo Simple { get; set; }
+        // ReSharper restore MemberCanBePrivate.Global
         object _evalResultAsObject;
         WarewolfDataEvaluationCommon.WarewolfEvalResult _evalResult;
 
@@ -97,26 +98,6 @@ namespace Dev2.TO
             }
         }
 
-        public object EvalResultIndexed(int index)
-        {
-            if (EvalResult.IsWarewolfAtomResult)
-            {
-                return index > 0 ? null :
-                    ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult)EvalResult).Item;
-            }
-            if (EvalResult.IsWarewolfAtomListresult)
-            {
-                return index >= Count ? null :
-                    ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult)EvalResult).Item.ElementAt(index);
-            }
-            if (EvalResult.IsWarewolfRecordSetResult)
-            {
-                return index >= Count ? null :
-                    ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult)EvalResult).Item.Data;
-            }
-            return null;
-        }
-
         public int Count
         {
             get
@@ -131,7 +112,7 @@ namespace Dev2.TO
                 }
                 if (EvalResult.IsWarewolfRecordSetResult)
                 {
-                    return ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult)EvalResult).Item.Data.Count;
+                    return 1;
                 }
                 return 0;
             }
@@ -159,6 +140,12 @@ namespace Dev2.TO
             }
             else
             {
+                if (WarewolfDataEvaluationCommon.ParseLanguageExpression(Compound.SourceName).IsRecordSetNameExpression)
+                {
+                    Evaluations = new List<JsonMappingEvaluated> { new JsonMappingEvaluated(_env, Compound.SourceName) };
+                }
+                else
+                {
                 // we know this is a comma seperated list of expressions
                 Evaluations =
                     ((LanguageAST.LanguageExpression.ComplexExpression)WarewolfDataEvaluationCommon.ParseLanguageExpression(Compound.SourceName))
@@ -170,6 +157,7 @@ namespace Dev2.TO
                             new JsonMappingEvaluated(_env, x))
                         .ToList();
             }
+        }
         }
 
         public WarewolfDataEvaluationCommon.WarewolfEvalResult EvalResult
@@ -189,7 +177,10 @@ namespace Dev2.TO
                 {
                     _isCompound = WarewolfDataEvaluationCommon.ParseLanguageExpression(
                         Compound.SourceName)
-                        .IsComplexExpression;
+                        .IsComplexExpression || WarewolfDataEvaluationCommon.ParseLanguageExpression(
+                            Compound.SourceName)
+                            .IsRecordSetNameExpression;
+                    
                 }
                 return (bool)_isCompound;
             }
@@ -217,9 +208,10 @@ namespace Dev2.TO
                 Evaluations.First().EvalResultAsObject :
                 Evaluations.First().EvalResult.IsWarewolfAtomListresult ? new object[] { null } : null;
         }
+
         public object ComplexEvaluatedResultIndexed(int i)
         {
-            JObject a = new JObject();
+            var a = new JObject();
             if (Evaluations.Any(x => x.EvalResult.IsWarewolfAtomListresult))
             {
                 return CreateArrayOfResults(i);
@@ -235,7 +227,7 @@ namespace Dev2.TO
 
         void CreateScalarObject(JObject a)
         {
-            foreach (var jsonMappingEvaluated in Evaluations)
+            foreach (JsonMappingEvaluated jsonMappingEvaluated in Evaluations)
             {
                 a.Add(new JProperty(
                     jsonMappingEvaluated.Simple.DestinationName,
@@ -246,28 +238,19 @@ namespace Dev2.TO
 
         object CreateArrayOfObjectsFromRecordSet(int i)
         {
-            List<JObject> objects = new List<JObject>(MaxCount);
-            for (int j = 0; j < MaxCount; j++)
-            {
-                var obj = new JObject();
-                foreach (var jsonMappingEvaluated in Evaluations)
-                {
-                    obj.Add(new JProperty(
+            JsonMappingEvaluated jsonMappingEvaluated = Evaluations.First();
+            return new JProperty(
                         jsonMappingEvaluated.Simple.DestinationName,
-                        GetEvalResult(jsonMappingEvaluated.EvalResult, i))
-                        );
-                }
-                objects.Add(obj);
-            }
-            return objects.ToArray();
+                GetEvalResult(jsonMappingEvaluated.EvalResult, i));
         }
+
         object CreateArrayOfResults(int i)
         {
-            List<JObject> objects = new List<JObject>(MaxCount);
+            var objects = new List<JObject>(MaxCount);
             for (int j = 0; j < MaxCount; j++)
             {
                 var obj = new JObject();
-                foreach (var jsonMappingEvaluated in Evaluations)
+                foreach (JsonMappingEvaluated jsonMappingEvaluated in Evaluations)
                 {
                     obj.Add(new JProperty(
                         jsonMappingEvaluated.Simple.DestinationName,
@@ -283,47 +266,49 @@ namespace Dev2.TO
         {
             if (EvalResult.IsWarewolfAtomListresult)
             {
-                var lst = ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult)evalResult).Item;
+                WarewolfAtomList<DataASTMutable.WarewolfAtom> lst = ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult)evalResult).Item;
                 if (i > lst.Count)
+                {
                     return null;
+                }
                 return WarewolfDataEvaluationCommon.AtomToJsonCompatibleObject(lst[i]);
             }
             if (EvalResult.IsWarewolfAtomResult)
             {
                 if (i == 0)
+                {
                     return WarewolfDataEvaluationCommon.EvalResultToJsonCompatibleObject(evalResult);
+                }
                 return null;
             }
             if (EvalResult.IsWarewolfRecordSetResult)
             {
-                var recset = ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult)EvalResult).Item;
-                var data = recset.Data.ToArray();
+                DataASTMutable.WarewolfRecordset recset = ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult)EvalResult).Item;
+                KeyValuePair<string, WarewolfAtomList<DataASTMutable.WarewolfAtom>>[] data = recset.Data.ToArray();
                 var jObjects = new List<JObject>();
                 for (int j = 0; j < recset.Count; j++)
                 {
-                    JObject a = new JObject();
-                    for (int k = 0; k < data.Length; k++)
+                    var a = new JObject();
+                    foreach(KeyValuePair<string, WarewolfAtomList<DataASTMutable.WarewolfAtom>> pair in data)
+                    {
+                        if (pair.Key != WarewolfDataEvaluationCommon.PositionColumn)
                     {
                         try
                         {
-                            a.Add(new JProperty(data[k].Key, WarewolfDataEvaluationCommon.AtomToJsonCompatibleObject(data[k].Value[j])));
+                                a.Add(new JProperty(pair.Key, WarewolfDataEvaluationCommon.AtomToJsonCompatibleObject(pair.Value[j])));
                         }
                         catch (Exception)
                         {
-
-                            a.Add(new JProperty(data[k].Key, null));
+                                a.Add(new JProperty(pair.Key, null));
+                            }
                         }
-
                     }
                     jObjects.Add(a);
                 }
                 return jObjects;
             }
-            else
-            {
                 throw new Exception("Invalid result type was encountered from warewolfstorage");
             }
-        }
 
         public static string IsValidJsonMappingInput(string sourceName, string destinationName)
         {

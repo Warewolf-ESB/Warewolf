@@ -116,6 +116,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
                 category.Add(new ToolboxItemWrapper(typeof(DsfDataSplitActivity), "/images/ToolDataSplit-32.png", "Data Split"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfIndexActivity), "/images/ToolFindIndex-32.png", "Find Index"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfReplaceActivity), "/images/ToolReplace-32.png", "Replace"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfCreateJsonActivity), "/images/ToolCreateJSON-32.png", "Create JSON"));
             }
 
 

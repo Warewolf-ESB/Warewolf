@@ -14,7 +14,6 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
@@ -54,6 +53,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         // ReSharper disable MemberCanBePrivate.Global
         public string JsonString { get; set; }
         // ReSharper restore MemberCanBePrivate.Global
+
 
         public DsfCreateJsonActivity()
             : base("Create JSON")
@@ -114,7 +114,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     int j = 0;
                     // ReSharper disable PossibleNullReferenceException
-                    foreach (JsonMappingTo a in JsonMappings)
+                    foreach (JsonMappingTo a in JsonMappings.Where(to => !String.IsNullOrEmpty(to.SourceName)))
                     // ReSharper restore PossibleNullReferenceException
                     {
                         var debugItem = new DebugItem();
@@ -133,7 +133,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     // ReSharper restore AssignNullToNotNullAttribute
 
                     // build the list of JsonMappingCompoundTo - a compound is either a single expression or a comma seperated list of expressions
-                    List<JsonMappingCompoundTo> results = jsonMappingList.Select(jsonMapping =>
+                    List<JsonMappingCompoundTo> results = jsonMappingList.Where(to => !String.IsNullOrEmpty(to.SourceName)).Select(jsonMapping =>
                         new JsonMappingCompoundTo(dataObject.Environment, jsonMapping
                             )).ToList();
 
@@ -162,10 +162,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             else
                             {
                                 // if it is a compound, 
-                                json.Add(new JProperty(
-                                        x.DestinationName,
-                                        x.ComplexEvaluatedResultIndexed(i))
-                                        );
+                                if (!x.EvalResult.IsWarewolfRecordSetResult)
+                                    json.Add(new JProperty(
+                                            x.DestinationName,
+                                            x.ComplexEvaluatedResultIndexed(i))
+                                            );
+                                else if (x.EvalResult.IsWarewolfRecordSetResult && i == 0)
+                                {
+                                    json.Add(
+                                   x.ComplexEvaluatedResultIndexed(i));
+                                }
                             }
                         }
                             );
@@ -206,7 +212,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // ReSharper restore AssignNullToNotNullAttribute
                 {
                     AddDebugInputItem(new DebugItemStaticDataParams("", x.SourceName, "SourceName", "="));
-                    AddDebugInputItem(new DebugItemStaticDataParams("", x.DestinationName, "DestinationName", "="));
+                    AddDebugInputItem(new DebugItemStaticDataParams("", x.DestinationName, "DestinationName"));
                 });
 
                 allErrors.AddError(e.Message);
@@ -253,41 +259,53 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Get Inputs/Outputs
 
+
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
-            /*
-                        if (updates != null && updates.Count >= 1)
-                        {
-                        }
-             * */
+            if (updates != null)
+            {
+                foreach (Tuple<string, string> t in updates)
+                {
+                    // locate all updates for this tuple
+                    Tuple<string, string> t1 = t;
+                    var items = JsonMappings.Where(c => !string.IsNullOrEmpty(c.SourceName) && c.SourceName.Equals(t1.Item1));
+
+                    // issues updates
+                    foreach (var a in items)
+                    {
+                        a.SourceName = t.Item2;
+                    }
+
+                }
+            }
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
-            /*
-                        if (updates != null)
-                        {
-                            var itemUpdate = updates.FirstOrDefault(tuple => tuple.Item1 == CountNumber);
-                            if (itemUpdate != null)
-                            {
-                                CountNumber = itemUpdate.Item2;
-                            }
-                        }
-            */
+            if (updates != null)
+            {
+                foreach (var t in updates)
+                {
+                    if (JsonString == t.Item1)
+                    {
+                        JsonString = t.Item2;
+                    }
+                }
+            }
         }
 
         #region GetForEachInputs/Outputs
 
         public override IList<DsfForEachItem> GetForEachInputs()
         {
-            return null;
-            //return GetForEachItems(RecordsetName);
+            var items = (JsonMappings.Where(c => !string.IsNullOrEmpty(c.SourceName)).Select(c => c.SourceName)).ToArray();
+            return GetForEachItems(items);
         }
 
         public override IList<DsfForEachItem> GetForEachOutputs()
         {
-            return null;
-            //return GetForEachItems(CountNumber);
+            var items = JsonString;
+            return GetForEachItems(items);
         }
 
         #endregion

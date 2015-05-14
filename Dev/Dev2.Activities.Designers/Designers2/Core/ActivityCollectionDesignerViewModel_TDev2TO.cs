@@ -77,7 +77,10 @@ namespace Dev2.Activities.Designers2.Core
                     RemoveDto(dto, index);
                 }
             }
+            CurrentModelItem = newItem;
         }
+
+        public ModelItem CurrentModelItem { get; set; }
 
         public override void UpdateDisplayName()
         {
@@ -282,6 +285,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             if(args.PropertyName != "CanRemove")
             {
+                DoCustomAction(args.PropertyName);
                 return;
             }
 
@@ -302,6 +306,11 @@ namespace Dev2.Activities.Designers2.Core
                     AddBlankRow();
                 }
             }
+        }
+
+        protected virtual void DoCustomAction(string propertyName)
+        {
+            
         }
 
         /// <summary>
