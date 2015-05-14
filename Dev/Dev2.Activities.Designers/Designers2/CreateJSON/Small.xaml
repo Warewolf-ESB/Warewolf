@@ -42,25 +42,7 @@
         
         <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
         
-        <i:Interaction.Behaviors>
-                <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextKeyName">
-                    <behaviors:DataGridWatermarkModifier.WatermarkText>
-                        <system:String>Key name</system:String>
-                    </behaviors:DataGridWatermarkModifier.WatermarkText>
-                    <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-                        <system:Int32>0</system:Int32>
-                    </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-                </behaviors:DataGridWatermarkModifier>
-                <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextInput">
-                    <behaviors:DataGridWatermarkModifier.WatermarkText>
-                        <system:String>[[Input]]</system:String>
-                    </behaviors:DataGridWatermarkModifier.WatermarkText>
-                    <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-                        <system:Int32>0</system:Int32>
-                    </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-                </behaviors:DataGridWatermarkModifier>             
-            </i:Interaction.Behaviors>       
-
+                
         <DataGrid.Columns>
             <DataGridTemplateColumn Width="27"                                    
                                     IsReadOnly="True">
@@ -77,7 +59,7 @@
                                     d:DataContext="{d:DesignInstance Type=to:JsonMappingTo}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextKeyName}"
+                        <ui:IntellisenseTextBox DefaultText="Key Name"
                                                 Padding="3"
                                                 Text="{Binding DestinationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
@@ -105,7 +87,7 @@
                                     d:DataContext="{d:DesignInstance Type=to:JsonMappingTo}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextInput}"
+                        <ui:IntellisenseTextBox DefaultText="[[Input]]"
                                                 AcceptsReturn="False"
                                                 AllowUserCalculateMode="False"
                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"

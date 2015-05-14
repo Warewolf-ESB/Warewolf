@@ -41,9 +41,6 @@ namespace Dev2.TO
             Inserted = inserted;
         }
 
-        public string WatermarkTextKeyName { get; set; }
-        public string WatermarkTextInput { get; set; }
-
         public bool CanRemove()
         {
             return false;
