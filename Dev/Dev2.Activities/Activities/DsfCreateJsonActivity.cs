@@ -309,5 +309,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
+
+        public override enFindMissingType GetFindMissingType()
+        {
+            return enFindMissingType.MixedActivity;
+        }
     }
 }

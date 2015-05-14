@@ -52,7 +52,6 @@ namespace Dev2.Activities.Designers2.CreateJSON
                     var dto = CurrentModelItem.GetCurrentValue() as JsonMappingTo;
                     if (dto != null)
                     {
-
                         CurrentModelItem.SetProperty(propertyName, dto.DestinationName);
                     }
                 }
