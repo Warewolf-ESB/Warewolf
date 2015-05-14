@@ -60,6 +60,7 @@ namespace Dev2.TO
             set
             {
                 OnPropertyChanged(ref _destinationName, value);
+                RaiseCanAddRemoveChanged();
             }
         }
 
@@ -94,6 +95,13 @@ namespace Dev2.TO
             DestinationName = string.Empty;
         }
 
+        void RaiseCanAddRemoveChanged()
+        {
+            // ReSharper disable ExplicitCallerInfoArgument
+            OnPropertyChanged("CanRemove");
+            OnPropertyChanged("CanAdd");
+            // ReSharper restore ExplicitCallerInfoArgument
+        }
         public bool Inserted { get; set; }
 
         #endregion
