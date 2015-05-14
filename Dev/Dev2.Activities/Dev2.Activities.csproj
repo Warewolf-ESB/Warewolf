@@ -310,6 +310,7 @@
     <Compile Include="Validation\IsValidExpressionRule.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Validation\IsValidJsonCreateMappingSourceExpression.cs" />
     <Compile Include="Validation\IsValidJsonCreateMappingSourceRule.cs" />
     <Compile Include="Validation\VariableUtils.cs" />
     <Compile Include="Value Objects\ForEachBootstrapTO.cs" />

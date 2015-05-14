@@ -315,33 +315,46 @@ namespace Dev2.TO
             if (string.IsNullOrEmpty(sourceName)) return "Must supply a Source Name";
             if (string.IsNullOrEmpty(destinationName)) return "Must supply a Destination Name";
 
+            return ValidateInput(sourceName);
+        
+        
+        }
+
+        public static string ValidateInput(string sourceName)
+        {
             try
             {
                 var parsed = WarewolfDataEvaluationCommon.ParseLanguageExpression(sourceName);
-                if (parsed.IsComplexExpression)
+                if(parsed.IsComplexExpression)
                 {
                     var complex = (LanguageAST.LanguageExpression.ComplexExpression)parsed;
-                    if (complex.Item
-                            .Any(x => x.IsRecordSetNameExpression))
+                    if(complex.Item
+                        .Any(x => x.IsRecordSetNameExpression))
+                    {
                         return "Cannot specify a Recordset as part of a comma seperated list of expressions";
-                    if ((complex.Item.Count() < 3 ||
+                    }
+                    if((complex.Item.Count() < 3 ||
                         complex.Item.Count() % 2 != 1) ||
-                        !Enumerable.Range(1, complex.Item.Count() - 1)
-                        .Where(i => i % 2 == 1)
-                        .Select(i => complex.Item.ElementAt(i).IsWarewolfAtomAtomExpression &&
-                            WarewolfDataEvaluationCommon.LanguageExpressionToString(
-                            complex.Item.ElementAt(i)
-                            ) == ",")
-                        .Aggregate((a, b) => a && b))
+                       !Enumerable.Range(1, complex.Item.Count() - 1)
+                           .Where(i => i % 2 == 1)
+                           .Select(i => 
+                                        WarewolfDataEvaluationCommon.LanguageExpressionToString(
+                                            complex.Item.ElementAt(i)
+                                            ) == ",")
+                           .Aggregate((a, b) => a && b))
+                    {
                         return "Problem with input: expressions must be comma seperated";
+                    }
                 }
-                else
-                    if (!parsed.IsRecordSetNameExpression &&
+                else if(!parsed.IsRecordSetNameExpression &&
                         !parsed.IsRecordSetExpression &&
-                        !parsed.IsScalarExpression)
-                        return "Can only have a scalar, a RecordSet or a RecordSet with column qualification as input";
+                        !parsed.IsScalarExpression &&
+                        !parsed.IsWarewolfAtomAtomExpression    )
+                {
+                    return "Can only have a scalar, a RecordSet or a RecordSet with column qualification as input";
+                }
             }
-            catch (Exception)
+            catch(Exception)
             {
                 return "Unable to parse the Source Name";
             }

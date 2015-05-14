@@ -274,9 +274,8 @@ namespace Dev2.Tests.Activities.TOTests
             //------------Execute Test---------------------------
             Assert.IsNotNull(JsonMappingCompoundTo.IsValidJsonMappingInput(null, null));
             Assert.IsNotNull(JsonMappingCompoundTo.IsValidJsonMappingInput(null, "a"));
-            Assert.IsNotNull(JsonMappingCompoundTo.IsValidJsonMappingInput("a", null));
-            Assert.IsNotNull(JsonMappingCompoundTo.IsValidJsonMappingInput("a", "a"));
-
+            JsonMappingCompoundTo.IsValidJsonMappingInput("a", "a")
+    .Should().BeNull();
             JsonMappingCompoundTo.IsValidJsonMappingInput("[[a]],[[b]]", "a")
                 .Should().BeNull();
             JsonMappingCompoundTo.IsValidJsonMappingInput("[[a().a]]", "a")
@@ -289,10 +288,10 @@ namespace Dev2.Tests.Activities.TOTests
                 .Should().BeNull();
 
             JsonMappingCompoundTo.IsValidJsonMappingInput("a", "a")
-                .Should().NotBeNull();
+                .Should().BeNull();
 
             JsonMappingCompoundTo.IsValidJsonMappingInput("a,b", "a")
-    .Should().NotBeNull();
+    .Should().BeNull();
         }
     }
 }
