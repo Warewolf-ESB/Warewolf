@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:db="clr-namespace:Dev2.Common.Interfaces.DB;assembly=Dev2.Common.Interfaces"
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" 
              Loaded="ManageDatabaseServiceControl_OnLoaded"
@@ -38,6 +39,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <views:NotConverter x:Key="NotConverter" />
     </UserControl.Resources>
     <ScrollViewer>
         <Grid Margin="{StaticResource ContainerBorder}">
@@ -52,7 +54,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Grid Grid.Row="0" HorizontalAlignment="Stretch"  >
+            <Grid Grid.Row="0" HorizontalAlignment="Stretch" Margin="{StaticResource GridBorderBottom}" >
                 <!-- Select an Source-->
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -95,7 +97,7 @@
             </Grid>
             <Grid x:Name="SelectAnActionGrid" 
                   Grid.Row="1" 
-                  Margin="0,-2,0,0"
+                  Margin="{StaticResource GridBorderBottom}"
                   Grid.Column="0" 
                   Visibility="{Binding Path=CanSelectProcedure, Converter={StaticResource BoolToVis}}">
                 <Grid.RowDefinitions>
@@ -103,6 +105,9 @@
                     <RowDefinition></RowDefinition>
                     <RowDefinition Height="7" ></RowDefinition>
                 </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
                 <StackPanel Grid.Row="0" 
                             Grid.Column="0" 
                             Background="{StaticResource WareWolfMenuBrush}" 
@@ -114,21 +119,39 @@
                                Text="{Binding DataSourceActionHeader, Mode=OneWay}" 
                                Style="{StaticResource SourceHeader}" ></TextBlock>
                 </StackPanel>
-                <StackPanel Grid.Row="1" HorizontalAlignment="Left" >
+                <StackPanel Grid.Row="1" Orientation="Horizontal" >
                     <!-- Choose data Source Action-->
                     <ComboBox x:Name="ActionsComboBox" 
-                              Width="280" 
+                              Width="250" 
                               Padding="{StaticResource ComboBoxItemPadding}"
                               ItemsSource="{Binding AvalaibleActions}" 
                               DisplayMemberPath="Name" 
                               SelectedItem="{Binding SelectedAction}" 
                               Text="Choose" 
                               Margin="{StaticResource ElementBorderTop}"></ComboBox>
+                    <!-- NEED TO ADD LOGIC TO REFRESH COMMAND AND VISIBILITY -->
+                    <Button Width="25" Height="25" 
+                            Margin="{StaticResource ElementBorderControlLeftTop}"
+                            Visibility="{Binding Path=IsRefreshing,
+                                         Converter={StaticResource NotConverter}}">
+                        <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
+                                    FontSize="16" 
+                                    Icon="Refresh" 
+                                    VerticalAlignment="Top" 
+                                    HorizontalAlignment="Center"/>
+                    </Button>
+                    <!-- NEED TO ADD LOGIC TO VISIBILITY -->
+                    <views:CircularProgressBar Margin="{StaticResource ElementBorderControlLeftTop}"
+                                               Width="25"
+                                               Height="25"
+                                               Padding="2.5"
+                                               Visibility="{Binding Path=IsRefreshing, Converter={StaticResource NotConverter}}"
+                                            />
                 </StackPanel>
             </Grid>
             <Grid x:Name="TestActionGrid" 
                   Grid.Row="3" 
-                  Margin="0,-2,0,0"
+                  Margin="{StaticResource GridBorderBottom}"
                   Grid.Column="0" 
                   Visibility="{Binding Path=CanTest, Converter={StaticResource BoolToVis}}">
                 <!-- Test-->
@@ -203,6 +226,7 @@
                 <DataGrid x:Name="OutputsDataGrid" 
                           Margin="0,-2,0,0"
                           Grid.Row="5" 
+                          Height="180"
                           HorizontalScrollBarVisibility="Disabled" 
                           ItemsSource="{Binding TestResults}" 
                           Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}" 
@@ -217,7 +241,6 @@
                 </DataGrid>
             </Grid>
             <Grid x:Name="MappingsGrid" 
-                  Margin="0,-3,0,0"
                   Grid.Row="4" 
                   Grid.Column="0" 
                   Visibility="{Binding Path=CanEditMappings,Converter={StaticResource BoolToVis}}">
@@ -277,14 +300,14 @@
                         <DataGridTemplateColumn Header="Required Field" CanUserResize="True" Width="150" >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox IsChecked="{Binding Path=Required, Mode=TwoWay}" Margin="-1" HorizontalAlignment="Center"></CheckBox>
+                                    <CheckBox IsChecked="{Binding Path=Required, Mode=TwoWay}" Margin="-1,-2,-1,-1" HorizontalAlignment="Center"></CheckBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Header="Empty is Null" CanUserResize="True" Width="150" >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox IsChecked="{Binding Path=EmptyIsNull, Mode=TwoWay}" HorizontalAlignment="Center" Margin="-1"></CheckBox>
+                                    <CheckBox IsChecked="{Binding Path=EmptyIsNull, Mode=TwoWay}" HorizontalAlignment="Center" Margin="-1,-2,-1,-1"></CheckBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
