@@ -14,7 +14,6 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
@@ -248,41 +247,53 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Get Inputs/Outputs
 
+
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
-            /*
-                        if (updates != null && updates.Count >= 1)
-                        {
-                        }
-             * */
+            if (updates != null)
+            {
+                foreach (Tuple<string, string> t in updates)
+                {
+                    // locate all updates for this tuple
+                    Tuple<string, string> t1 = t;
+                    var items = JsonMappings.Where(c => !string.IsNullOrEmpty(c.SourceName) && c.SourceName.Equals(t1.Item1));
+
+                    // issues updates
+                    foreach (var a in items)
+                    {
+                        a.SourceName = t.Item2;
+                    }
+
+    }
+            }
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
-            /*
-                        if (updates != null)
-                        {
-                            var itemUpdate = updates.FirstOrDefault(tuple => tuple.Item1 == CountNumber);
-                            if (itemUpdate != null)
-                            {
-                                CountNumber = itemUpdate.Item2;
-                            }
-                        }
-            */
+            if (updates != null)
+            {
+                foreach (var t in updates)
+                {
+                    if (JsonString == t.Item1)
+                    {
+                        JsonString = t.Item2;
+                    }
+                }
+            }
         }
 
         #region GetForEachInputs/Outputs
 
         public override IList<DsfForEachItem> GetForEachInputs()
         {
-            return null;
-            //return GetForEachItems(RecordsetName);
+            var items = (JsonMappings.Where(c => !string.IsNullOrEmpty(c.SourceName)).Select(c => c.SourceName)).ToArray();
+            return GetForEachItems(items);
         }
 
         public override IList<DsfForEachItem> GetForEachOutputs()
         {
-            return null;
-            //return GetForEachItems(CountNumber);
+            var items = JsonString;
+            return GetForEachItems(items);
         }
 
         #endregion
