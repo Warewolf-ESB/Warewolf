@@ -4092,7 +4092,6 @@ Examples:
 	  | Input to Service | From Variable | Output from Service | To Variable |
 	  | Volume           | 1000          |                     |             |
 	  When "Testing - Async Test Master Testc" is executed
-	  When "Testing - Async Test Master Testv" is executed
 	  Then the workflow execution has "NO" error	  
 	  And the 'Volume Async Test' in Workflow 'Volume Async Test' debug outputs as
 	  |                      |
@@ -4102,7 +4101,6 @@ Examples:
 	  Given I have a workflow "Testing - Async Test Master Testc"
 	  And "Testing - Async Test Master Testc" contains "Async Test Master" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
-	  When "Testing - Async Test Master Testc" is executed
 	  When "Testing - Async Test Master Testc" is executed
 	  Then the workflow execution has "NO" error
 	  And the 'Async Test Master' in Workflow 'Async Test Master' debug outputs as
@@ -4114,7 +4112,6 @@ Scenario: Executing Asynchrounous testing workflow error
 	  And "Testing - Async Test Master Teste" contains "Async Must Not Bubble Up Error" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
 	  When "Testing - Async Test Master Testc" is executed
-	  When "Testing - Async Test Master Teste" is executed
 	  Then the workflow execution has "NO" error	  
 	  And the 'Async Must Not Bubble Up Error' in Workflow 'Async Must Not Bubble Up Error' debug outputs as
 	  |                      |
