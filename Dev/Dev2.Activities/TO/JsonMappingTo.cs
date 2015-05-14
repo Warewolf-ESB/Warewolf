@@ -113,8 +113,8 @@ namespace Dev2.TO
             {
                 return ruleSet;
             }
-            if(propertyName == "DestinationName")
-            ruleSet.Add(new IsValidJsonCreateMappingInputRule(()=>this));
+            if(propertyName == "SourceName")
+                ruleSet.Add(new IsValidJsonCreateMappingSourceExpression(() => SourceName));
             return ruleSet;
         }
 
