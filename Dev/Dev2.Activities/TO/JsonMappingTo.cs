@@ -15,6 +15,7 @@ using Dev2.Data.Util;
 using Dev2.Interfaces;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
+using Dev2.Validation;
 
 namespace Dev2.TO
 {
@@ -97,7 +98,19 @@ namespace Dev2.TO
 
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
-            return new RuleSet();
+            RuleSet ruleSet = new RuleSet();
+            if (IsEmpty())
+            {
+                return ruleSet;
+            }
+            if(propertyName == "DestinationName")
+            ruleSet.Add(new IsValidJsonCreateMappingInputRule(()=>this));
+            return ruleSet;
+        }
+
+        bool IsEmpty()
+        {
+            return string.IsNullOrEmpty(DestinationName);
         }
     }
 }
