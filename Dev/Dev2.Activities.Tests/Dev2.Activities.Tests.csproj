@@ -205,6 +205,7 @@
     <Compile Include="TOTests\DataSplitDTOTests.cs" />
     <Compile Include="TOTests\FindRecordsTOTests.cs" />
     <Compile Include="TOTests\JsonMappingCompoundTests.cs" />
+    <Compile Include="TOTests\JsonMappingEvaluatedTests.cs" />
     <Compile Include="TOTests\JsonMappingToTest.cs" />
     <Compile Include="TOTests\ValidatedObjectTests.cs" />
     <Compile Include="Utils\DsfFakeActivity.cs" />
