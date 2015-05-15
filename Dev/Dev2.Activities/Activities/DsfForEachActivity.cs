@@ -775,44 +775,47 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out errors);
 
                 var itr = exePayload.IndexIterator;
-                string error;
-                ForEachInnerActivityTO innerA = GetInnerActivity(out error);
-                var exeAct =innerA.InnerActivity;
-                allErrors.AddError(error);
-                if (dataObject.IsDebugMode())
+                if (itr != null)
                 {
-                    DispatchDebugState(dataObject, StateType.Before);
 
-                }
-                dataObject.ParentInstanceID = UniqueID;
-                dataObject.IsDebugNested = true;
-                if (dataObject.IsDebugMode())
-                {
-                    DispatchDebugState(dataObject, StateType.After);
-                }
-                exePayload.InnerActivity = innerA;
-                var ind = itr.MaxIndex();
-                var count = 0;
-                while (itr.HasMore() && count<ind)
-                {
-                    
-                    operationalData = exePayload;
-                    int idx = exePayload.IndexIterator.FetchNextIndex();
-                    if (exePayload.ForEachType != enForEachType.NumOfExecution)
+                    string error;
+                    ForEachInnerActivityTO innerA = GetInnerActivity(out error);
+                    var exeAct = innerA.InnerActivity;
+                    allErrors.AddError(error);
+                    if (dataObject.IsDebugMode())
                     {
-                        IterateIOMapping(idx);
+                        DispatchDebugState(dataObject, StateType.Before);
+
                     }
-         
-                    exeAct.Execute(dataObject);
+                    dataObject.ParentInstanceID = UniqueID;
+                    dataObject.IsDebugNested = true;
+                    if (dataObject.IsDebugMode())
+                    {
+                        DispatchDebugState(dataObject, StateType.After);
+                    }
+                    exePayload.InnerActivity = innerA;
+                    var ind = itr.MaxIndex();
+                    var count = 0;
+                    while (itr.HasMore() && count < ind)
+                    {
 
-                    count++;
+                        operationalData = exePayload;
+                        int idx = exePayload.IndexIterator.FetchNextIndex();
+                        if (exePayload.ForEachType != enForEachType.NumOfExecution)
+                        {
+                            IterateIOMapping(idx);
+                        }
+
+                        exeAct.Execute(dataObject);
+
+                        count++;
+                    }
+                    if (errors.HasErrors())
+                    {
+                        allErrors.MergeErrors(errors);
+                    }
+
                 }
-                if (errors.HasErrors())
-                {
-                    allErrors.MergeErrors(errors);
-                }
-
-
             }
             catch (Exception e)
             {
