@@ -308,23 +308,26 @@ namespace Dev2.Tests.Activities.TOTests
             dataObject.Environment.Assign("[[rec(1).b]]", "500");
             dataObject.Environment.Assign("[[rec(2).a]]", "60");
             dataObject.Environment.Assign("[[rec(2).b]]", "600");
-            CheckComplexEvaluatedResultIndexed("[[a]],[[b]]", 0, new JObject(new JObject(new JProperty("a", 10), new JProperty("b", 20))), dataObject);
+            CheckComplexEvaluatedResultIndexed("[[a]],[[b]]", "myName", 0, new JObject(new JObject(new JProperty("a", 10), new JProperty("b", 20))), dataObject);
+            CheckComplexEvaluatedResultIndexed("[[a]],[[rec(*).b]]", "myName", 0, new JObject(new JObject(new JProperty("a", 10), new JProperty("b", 20))), dataObject);
+            CheckComplexEvaluatedResultIndexed("[[a]],[[b]]", "myName", 0, new JObject(new JObject(new JProperty("a", 10), new JProperty("b", 20))), dataObject);
         }
 
-        private void CheckComplexEvaluatedResultIndexed(string expression, int index, JObject jObject, DsfDataObject dataObject)
+
+        private void CheckComplexEvaluatedResultIndexed(string expression, string name, int index, JObject jObject, DsfDataObject dataObject)
         {
             var jsonMappingCompound = new JsonMappingCompoundTo(
                 env: dataObject.Environment,
             compound: new JsonMappingTo
                 {
-                    SourceName = "[[a]],[[b]]",
+                    SourceName = expression,
                     DestinationName = "myName"
                 }
             );
             //------------Execute Test---------------------------
-            ((JObject)jsonMappingCompound.ComplexEvaluatedResultIndexed(index))
+            ((JObject)new JObject(new JProperty(name, jsonMappingCompound.ComplexEvaluatedResultIndexed(index))))
                 .ToString(Formatting.None)
-                .Should().Be(jObject.ToString(Formatting.None));
+                .Should().Be(new JObject(new JProperty(name, jObject)).ToString(Formatting.None));
         }
 
 
