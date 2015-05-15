@@ -22,10 +22,14 @@
        
         <RadioButton AutomationProperties.AutomationId="Testing_RadioButton"></RadioButton>
         
-        <Label AutomationProperties.AutomationId="Testing_Lable"></Label>
+        <Label AutomationProperties.AutomationId="Testing_Lable" Content="Test Label"></Label>
         <!-- Normal Buttons-->
-        <Button AutomationProperties.AutomationId="Testing_NormalButton">
-            <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="18" Icon="Link" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Button AutomationProperties.AutomationId="Testing_NormalButton" Width="26" Height="25" Padding="3,4,3,3">
+            <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
+                            FontSize="16" 
+                            Icon="Link" FontWeight="DemiBold"
+                            VerticalAlignment="Top" 
+                            HorizontalAlignment="Center"/>
         </Button>
         <Button AutomationProperties.AutomationId="Testing_NormalRoundedButton" Style="{StaticResource RoundedButtonStyle}">
             <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="18" Icon="Link" VerticalAlignment="Center" HorizontalAlignment="Center"/>
