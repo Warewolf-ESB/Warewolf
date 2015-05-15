@@ -51,8 +51,7 @@ namespace Dev2.Activities.Designers2.CreateJSON
         protected override void DoCustomAction(string propertyName)
         {
             if (propertyName == "SourceName")
-            {
-                     
+            {                     
                 if (CurrentModelItem != null)
                 {
                     var dto = CurrentModelItem.GetCurrentValue() as JsonMappingTo;
@@ -92,11 +91,7 @@ namespace Dev2.Activities.Designers2.CreateJSON
             foreach (var error in dto.GetRuleSet("SourceName", GetDatalistString()).ValidateRules("'Data'", () => mi.SetProperty("IsSourceNameFocused", true)))
             {
                 yield return error;
-            }
-            foreach (var error in dto.GetRuleSet("DestinationName", GetDatalistString()).ValidateRules("'Name'", () => mi.SetProperty("IsDestinationNameFocused", true)))
-            {
-                yield return error;
-            }
+            }            
         }
     }
 }

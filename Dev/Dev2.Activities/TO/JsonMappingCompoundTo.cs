@@ -50,11 +50,10 @@ namespace Dev2.TO
             {
                 return ((LanguageAST.LanguageExpression.RecordSetExpression)parsed).Item.Column;
             }
-            if (parsed.IsRecordSetNameExpression)
+            else // (parsed.IsRecordSetNameExpression)
             {
                 return ((LanguageAST.LanguageExpression.RecordSetNameExpression)parsed).Item.Name;
             }
-            return string.Empty;
         }
 
         public WarewolfDataEvaluationCommon.WarewolfEvalResult EvalResult
@@ -110,11 +109,10 @@ namespace Dev2.TO
                 {
                     return ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult)EvalResult).Item.Count;
                 }
-                if (EvalResult.IsWarewolfRecordSetResult)
+                else //(EvalResult.IsWarewolfRecordSetResult)
                 {
                     return 1;
                 }
-                return 0;
             }
         }
     }
@@ -146,18 +144,18 @@ namespace Dev2.TO
                 }
                 else
                 {
-                // we know this is a comma seperated list of expressions
-                Evaluations =
-                    ((LanguageAST.LanguageExpression.ComplexExpression)WarewolfDataEvaluationCommon.ParseLanguageExpression(Compound.SourceName))
-                        .Item
-                        .Where(x => !x.IsWarewolfAtomAtomExpression)
-                        .Select(x =>
-                            WarewolfDataEvaluationCommon.LanguageExpressionToString(x))
-                        .Select(x =>
-                            new JsonMappingEvaluated(_env, x))
-                        .ToList();
+                    // we know this is a comma seperated list of expressions
+                    Evaluations =
+                        ((LanguageAST.LanguageExpression.ComplexExpression)WarewolfDataEvaluationCommon.ParseLanguageExpression(Compound.SourceName))
+                            .Item
+                            .Where(x => !x.IsWarewolfAtomAtomExpression)
+                            .Select(x =>
+                                WarewolfDataEvaluationCommon.LanguageExpressionToString(x))
+                            .Select(x =>
+                                new JsonMappingEvaluated(_env, x))
+                            .ToList();
+                }
             }
-        }
         }
 
         public WarewolfDataEvaluationCommon.WarewolfEvalResult EvalResult
@@ -180,7 +178,7 @@ namespace Dev2.TO
                         .IsComplexExpression || WarewolfDataEvaluationCommon.ParseLanguageExpression(
                             Compound.SourceName)
                             .IsRecordSetNameExpression;
-                    
+
                 }
                 return (bool)_isCompound;
             }
@@ -284,22 +282,22 @@ namespace Dev2.TO
             if (EvalResult.IsWarewolfRecordSetResult)
             {
                 DataASTMutable.WarewolfRecordset recset = ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult)EvalResult).Item;
-               
+
                 KeyValuePair<string, WarewolfAtomList<DataASTMutable.WarewolfAtom>>[] data = recset.Data.ToArray();
                 var jObjects = new List<JObject>();
                 for (int j = 0; j < recset.Count; j++)
                 {
                     var a = new JObject();
-                    foreach(KeyValuePair<string, WarewolfAtomList<DataASTMutable.WarewolfAtom>> pair in data)
+                    foreach (KeyValuePair<string, WarewolfAtomList<DataASTMutable.WarewolfAtom>> pair in data)
                     {
                         if (pair.Key != WarewolfDataEvaluationCommon.PositionColumn)
-                    {
-                        try
                         {
+                            try
+                            {
                                 a.Add(new JProperty(pair.Key, WarewolfDataEvaluationCommon.AtomToJsonCompatibleObject(pair.Value[j])));
-                        }
-                        catch (Exception)
-                        {
+                            }
+                            catch (Exception)
+                            {
                                 a.Add(new JProperty(pair.Key, null));
                             }
                         }
@@ -308,8 +306,8 @@ namespace Dev2.TO
                 }
                 return jObjects;
             }
-                throw new Exception("Invalid result type was encountered from warewolfstorage");
-            }
+            throw new Exception("Invalid result type was encountered from warewolfstorage");
+        }
 
         public static string IsValidJsonMappingInput(string sourceName, string destinationName)
         {
@@ -317,8 +315,8 @@ namespace Dev2.TO
             if (string.IsNullOrEmpty(destinationName)) return "Must supply a Destination Name";
 
             return ValidateInput(sourceName);
-        
-        
+
+
         }
 
         public static string ValidateInput(string sourceName)
@@ -326,19 +324,19 @@ namespace Dev2.TO
             try
             {
                 var parsed = WarewolfDataEvaluationCommon.ParseLanguageExpression(sourceName);
-                if(parsed.IsComplexExpression)
+                if (parsed.IsComplexExpression)
                 {
                     var complex = (LanguageAST.LanguageExpression.ComplexExpression)parsed;
-                    if(complex.Item
+                    if (complex.Item
                         .Any(x => x.IsRecordSetNameExpression))
                     {
                         return "Cannot specify a Recordset as part of a comma seperated list of expressions";
                     }
-                    if((complex.Item.Count() < 3 ||
+                    if ((complex.Item.Count() < 3 ||
                         complex.Item.Count() % 2 != 1) ||
                        !Enumerable.Range(1, complex.Item.Count() - 1)
                            .Where(i => i % 2 == 1)
-                           .Select(i => 
+                           .Select(i =>
                                         WarewolfDataEvaluationCommon.LanguageExpressionToString(
                                             complex.Item.ElementAt(i)
                                             ) == ",")
@@ -347,15 +345,15 @@ namespace Dev2.TO
                         return "Problem with input: expressions must be comma seperated";
                     }
                 }
-                else if(!parsed.IsRecordSetNameExpression &&
+                else if (!parsed.IsRecordSetNameExpression &&
                         !parsed.IsRecordSetExpression &&
                         !parsed.IsScalarExpression &&
-                        !parsed.IsWarewolfAtomAtomExpression    )
+                        !parsed.IsWarewolfAtomAtomExpression)
                 {
                     return "Can only have a scalar, a RecordSet or a RecordSet with column qualification as input";
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return "Unable to parse the Source Name";
             }
