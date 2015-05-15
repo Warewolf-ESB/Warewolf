@@ -304,7 +304,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             viewModel.SelectedEmailSource = createEmailSource;
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(2,hitCount);
+            Assert.AreEqual(3,hitCount);
         }
 
         [TestMethod]
@@ -525,6 +525,58 @@ namespace Dev2.Activities.Designers.Tests.Email
             Assert.IsFalse(viewModel.IsFromAccountFocused);
             viewModel.Errors[0].Do();
             Assert.IsTrue(viewModel.IsFromAccountFocused);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("EmailDesignerViewModel_TestEmailCommand")]
+        public void EmailDesignerViewModel_TestEmailCommand_WhenToAddressIsBlank_ShouldBeError()
+        {
+            //------------Setup for test--------------------------
+            const string ExpectedUri = AppLocalhost + "/wwwroot/sources/Service/EmailSources/Test";
+            const string TestToAddress = "";
+            const string TestFromAccount = "[[var1]]";
+            const string TestFromPassword = "FromPassword";
+
+            var emailSource = new EmailSource
+            {
+                ResourceID = Guid.NewGuid(),
+                ResourceName = "EmailTest",
+                UserName = "user@mydomain.com",
+                Password = "SourcePassword",
+            };
+
+            var modelItem = CreateModelItem();
+            modelItem.SetProperty("SelectedEmailSource", emailSource);
+            modelItem.SetProperty("To", TestToAddress);
+
+
+            var expectedSource = new EmailSource(emailSource.ToXml()) { TestToAddress = TestToAddress };
+            modelItem.SetProperty("FromAccount", TestFromAccount);
+            modelItem.SetProperty("Password", TestFromPassword);
+            expectedSource.UserName = TestFromAccount;
+            expectedSource.Password = TestFromPassword;
+            expectedSource.TestFromAddress = TestFromAccount;
+            
+
+            var webRequestInvoker = new Mock<IWebRequestInvoker>();
+            webRequestInvoker.Setup(w => w.ExecuteRequest("POST", ExpectedUri, It.IsAny<string>(), null, It.IsAny<Action<string>>()))
+                .Returns(string.Empty)
+                .Verifiable();
+
+            var viewModel = CreateViewModel(new List<EmailSource> { emailSource }, modelItem);
+            viewModel.WebRequestInvoker = webRequestInvoker.Object;
+
+            Assert.IsTrue(viewModel.CanTestEmailAccount);
+            
+            //------------Execute Test---------------------------
+            viewModel.TestEmailAccountCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(viewModel.Errors);
+            Assert.AreEqual("Please supply a To address in order to Test.", viewModel.Errors[0].Message);
+            Assert.IsFalse(viewModel.IsToFocused);
+            viewModel.Errors[0].Do();
+            Assert.IsTrue(viewModel.IsToFocused);
         }
 
         [TestMethod]
