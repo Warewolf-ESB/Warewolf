@@ -106,7 +106,13 @@ namespace Dev2.Activities.Designers2.Email
         public RelayCommand TestEmailAccountCommand { get; private set; }
         public ICommand ChooseAttachmentsCommand { get; private set; }
 
-        public bool IsEmailSourceSelected { get { return SelectedEmailSource != SelectEmailSource; } }
+        public bool IsEmailSourceSelected
+        {
+            get
+            {
+                return SelectedEmailSource != SelectEmailSource;
+            }
+        }
 
         public bool CanEditSource { get; set; }
 
@@ -209,6 +215,7 @@ namespace Dev2.Activities.Designers2.Email
             var testEmailAccount = GetTestEmailAccount();
             if(string.IsNullOrEmpty(testEmailAccount))
             {
+                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(() => IsToFocused = true) { Message = "Please supply a To address in order to Test." } };
                 return;
             }
             CanTestEmailAccount = false;
@@ -300,6 +307,7 @@ namespace Dev2.Activities.Designers2.Email
                 EmailSources.Remove(SelectEmailSource);
             }
             EmailSource = SelectedEmailSource;
+            EditEmailSourceCommand.RaiseCanExecuteChanged();
         }
 
         void RefreshSources(bool isInitializing = false)
