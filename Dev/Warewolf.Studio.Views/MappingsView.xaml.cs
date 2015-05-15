@@ -1,0 +1,48 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace Warewolf.Studio.Views
+{
+    /// <summary>
+    /// Interaction logic for MappingsView.xaml
+    /// </summary>
+    public partial class MappingsView : UserControl
+    {
+        public MappingsView()
+        {
+            InitializeComponent();
+        }
+
+        public ItemCollection GetInputMappings()
+        {
+            BindingExpression be = InputsMappingDataGrid.GetBindingExpression(ItemsControl.ItemsSourceProperty);
+            if (be != null)
+            {
+                be.UpdateTarget();
+            }
+            return InputsMappingDataGrid.Items;
+        }
+
+        public ItemCollection GetOutputMappings()
+        {
+            BindingExpression be = OutputsMappingDataGrid.GetBindingExpression(ItemsControl.ItemsSourceProperty);
+            if (be != null)
+            {
+                be.UpdateTarget();
+            }
+            return OutputsMappingDataGrid.Items;
+        }
+    }
+}

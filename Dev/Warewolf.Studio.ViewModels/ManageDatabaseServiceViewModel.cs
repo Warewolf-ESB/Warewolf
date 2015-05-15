@@ -25,6 +25,7 @@ namespace Warewolf.Studio.ViewModels
         IDbAction _selectedAction;
         ICollection<IDbInput> _inputs;
         DataTable _testResults;
+        private bool _isTesting;
         IList<IDbOutputMapping> _outputMapping;
         bool _canSelectProcedure;
         bool _canEditMappings;
@@ -34,6 +35,10 @@ namespace Warewolf.Studio.ViewModels
         bool _testResultsAvailable;
         string _errorText;
         string _recordsetName;
+        private bool _isRefreshing;
+        private bool _isTestResultsEmptyRows;
+        private bool _isInputsEmptyRows;
+        private bool _isOutputMappingEmptyRows;
 
         public ManageDatabaseServiceViewModel(IDbServiceModel model,IRequestServiceNameViewModel saveDialog):base(ResourceType.DbService)
         {
@@ -48,12 +53,28 @@ namespace Warewolf.Studio.ViewModels
             TestProcedureCommand = new DelegateCommand(TestAction,CanTestProcedure);
             Inputs = new ObservableCollection<IDbInput>();
             SaveCommand = new DelegateCommand(Save,CanSave);
+            RefreshCommand = new DelegateCommand(Refresh);
+            IsRefreshing = false;
+            IsTesting = false;
+            IsTestResultsEmptyRows = false;
+            IsInputsEmptyRows = false;
+            IsOutputMappingEmptyRows = false;
+        }
+
+        public ICommand RefreshCommand { get; set; }
+
+        private void Refresh()
+        {
+            IsRefreshing = true;
+            PerformRefresh();
+            IsRefreshing = false;
         }
 
         void TestAction()
         {
             try
             {
+                IsTesting = true;
                 TestResults = _model.TestService(ToModel());
                 if(TestResults != null)
                 {
@@ -64,6 +85,7 @@ namespace Warewolf.Studio.ViewModels
                     TestResultsAvailable = true;
                 }
                 ErrorText = "";
+                IsTesting = false;
             }
             catch(Exception e)
             {
@@ -73,6 +95,7 @@ namespace Warewolf.Studio.ViewModels
                 CanEditMappings = false;
                 Inputs = null;
                 TestSuccessful = false;
+                IsTesting = false;
             }
         }
 
@@ -102,6 +125,56 @@ namespace Warewolf.Studio.ViewModels
             OutputMapping = service.OutputMappings;
             Header = "Edit:" + Name;
             CanEditMappings = true;
+        }
+
+        public bool IsTesting
+        {
+            get { return _isTesting; }
+            set
+            {
+                _isTesting = value;
+                OnPropertyChanged(() => IsTesting);
+            }
+        }
+
+        public bool IsRefreshing
+        {
+            get { return _isRefreshing; }
+            set
+            {
+                _isRefreshing = value;
+                OnPropertyChanged(()=> IsRefreshing);
+            }
+        }
+
+        public bool IsTestResultsEmptyRows
+        {
+            get { return _isTestResultsEmptyRows; }
+            set
+            {
+                _isTestResultsEmptyRows = value;
+                OnPropertyChanged(() => IsTestResultsEmptyRows);
+            }
+        }
+
+        public bool IsInputsEmptyRows
+        {
+            get { return _isInputsEmptyRows; }
+            set
+            {
+                _isInputsEmptyRows = value;
+                OnPropertyChanged(() => IsInputsEmptyRows);
+            }
+        }
+
+        public bool IsOutputMappingEmptyRows
+        {
+            get { return _isOutputMappingEmptyRows; }
+            set
+            {
+                _isOutputMappingEmptyRows = value;
+                OnPropertyChanged(() => IsOutputMappingEmptyRows);
+            }
         }
 
         bool CanTestProcedure()
@@ -261,21 +334,26 @@ namespace Warewolf.Studio.ViewModels
                 {
                     _selectedSource = value;
                     CanSelectProcedure = value != null;
-                    try
-                    {
-                        AvalaibleActions = _model.GetActions(SelectedSource);
-                        ErrorText = "";
-                    }
-                    catch (Exception e)
-                    {
-                        ErrorText = e.Message;
-                        AvalaibleActions = null;
-                    }
+                    PerformRefresh();
                     SelectedAction = null;
                     OnPropertyChanged(() => SelectedSource); 
                     ViewModelUtils.RaiseCanExecuteChanged(SaveCommand);
                 }
 
+            }
+        }
+
+        private void PerformRefresh()
+        {
+            try
+            {
+                AvalaibleActions = _model.GetActions(SelectedSource);
+                ErrorText = "";
+            }
+            catch (Exception e)
+            {
+                ErrorText = e.Message;
+                AvalaibleActions = null;
             }
         }
 
@@ -289,6 +367,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if((!Equals(value, _selectedAction) && _selectedAction!= null) || _selectedAction == null)
                 {
+                    IsTestResultsEmptyRows = false;
                     TestResultsAvailable = false;
                     CanEditMappings = false;
                     TestSuccessful = false;
@@ -379,6 +458,11 @@ namespace Warewolf.Studio.ViewModels
             private set
             {
                 _inputs = value;
+                IsInputsEmptyRows = true;
+                if (_inputs.Count >= 1)
+                {
+                    IsInputsEmptyRows = false;
+                }
                 OnPropertyChanged(()=>Inputs);
             }
         }
@@ -391,6 +475,11 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _testResults = value;
+                IsTestResultsEmptyRows = true;
+                if (_testResults.Rows.Count >= 1)
+                {
+                    IsTestResultsEmptyRows = false;
+                }
                 OnPropertyChanged(()=>TestResults);
             }
         }
@@ -405,6 +494,15 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _outputMapping = value;
+                IsOutputMappingEmptyRows = true;
+                if (_outputMapping != null)
+                {
+                    if (_outputMapping.Count >= 1)
+                    {
+                        IsOutputMappingEmptyRows = false;
+                    }
+                }
+                
                 OnPropertyChanged(()=>OutputMapping);
                 ViewModelUtils.RaiseCanExecuteChanged(SaveCommand);
             }

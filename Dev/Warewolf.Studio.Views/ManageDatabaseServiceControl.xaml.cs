@@ -81,26 +81,6 @@ namespace Warewolf.Studio.Views
             return OutputsDataGrid.Items;
         }
 
-        public ItemCollection GetInputMappings()
-        {
-            BindingExpression be = InputsMappingDataGrid.GetBindingExpression(ItemsControl.ItemsSourceProperty);
-            if (be != null)
-            {
-                be.UpdateTarget();
-            }
-            return InputsMappingDataGrid.Items;
-        }
-
-        public ItemCollection GetOutputMappings()
-        {
-            BindingExpression be = OutputsMappingDataGrid.GetBindingExpression(ItemsControl.ItemsSourceProperty);
-            if (be != null)
-            {
-                be.UpdateTarget();
-            }
-            return OutputsMappingDataGrid.Items;
-        }
-
         public IDbSource GetSelectedDataSource()
         {
             IDbSource selectedDataSource = null;

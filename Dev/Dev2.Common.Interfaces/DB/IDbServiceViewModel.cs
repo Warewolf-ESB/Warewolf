@@ -21,13 +21,19 @@ namespace Dev2.Common.Interfaces.DB
         string TestHeader { get; }
         string InputsLabel { get; }
         string OutputsLabel { get; }
+        ICommand RefreshCommand { get; set; }
+        bool IsRefreshing { get; set; }
         // ReSharper disable ReturnTypeCanBeEnumerable.Global
         ICollection<IDbInput> Inputs { get; }
+        bool IsInputsEmptyRows { get; set; }
         // ReSharper restore ReturnTypeCanBeEnumerable.Global
         DataTable TestResults { get; set; }
+        bool IsTestResultsEmptyRows { get; set; }
         ICommand CreateNewSourceCommand { get; set; }
         ICommand TestProcedureCommand { get; set; }
+        bool IsTesting { get; set; }
         IList<IDbOutputMapping> OutputMapping { get; set; }
+        bool IsOutputMappingEmptyRows { get; set; }
         ICommand SaveCommand { get; set; }
         bool CanSelectProcedure { get; set; }
         bool CanEditMappings { get; set; }

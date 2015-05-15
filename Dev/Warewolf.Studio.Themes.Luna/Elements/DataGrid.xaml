@@ -21,6 +21,7 @@
     <SolidColorBrush x:Key="DataGridPressedBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
     <SolidColorBrush x:Key="DataGridSelectedBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
     <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="DataGridRowHeaderTransparentBrush" Color="{StaticResource WarewolfTransparent}" />
 
     <Style TargetType="{x:Type Thumb}" x:Key="ThumbStyle">
         <Setter Property="Template">
@@ -415,7 +416,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="{x:Type ItemsControl}" TargetType="{x:Type ItemsControl}">
+    <!--<Style x:Key="{x:Type ItemsControl}" TargetType="{x:Type ItemsControl}">
         <Style.Triggers>
             <DataTrigger Binding="{Binding Items.Count, RelativeSource={RelativeSource Self}}" Value="0">
                 <Setter Property="Background">
@@ -444,7 +445,7 @@
                 </Setter>
             </DataTrigger>
         </Style.Triggers>
-    </Style>
+    </Style>-->
     
 
     <Style x:Key="DefaultDataGridCellStyle" TargetType="{x:Type DataGridCell}">
@@ -500,19 +501,23 @@
 
     <Style TargetType="{x:Type DataGridRowHeader}">
         <Setter Property="Background" Value="{StaticResource DataGridBackgroundBrush}" />
-        <Setter Property="BorderBrush" Value="{StaticResource DataGridBorderBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource DataGridRowHeaderTransparentBrush}" />
         <Setter Property="VerticalAlignment" Value="Stretch" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type DataGridRowHeader}">
                     <Grid xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
-                        <microsoftWindowsThemes:DataGridHeaderBorder BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" IsPressed="{TemplateBinding IsPressed}"
-                                                                 IsHovered="{TemplateBinding IsMouseOver}" IsSelected="{TemplateBinding IsRowSelected}"
-                                                                 Orientation="Horizontal" Padding="{TemplateBinding Padding}"
-                                                                 SeparatorBrush="{TemplateBinding SeparatorBrush}"
-                                                                 SeparatorVisibility="{TemplateBinding SeparatorVisibility}"
-                                                                 HorizontalAlignment="Right">
+                        <microsoftWindowsThemes:DataGridHeaderBorder BorderBrush="{TemplateBinding BorderBrush}" 
+                                                                     BorderThickness="{TemplateBinding BorderThickness}" 
+                                                                     Background="{TemplateBinding Background}" 
+                                                                     IsPressed="{TemplateBinding IsPressed}"
+                                                                     IsHovered="{TemplateBinding IsMouseOver}" 
+                                                                     IsSelected="{TemplateBinding IsRowSelected}"
+                                                                     Orientation="Horizontal" Padding="{TemplateBinding Padding}"
+                                                                     SeparatorBrush="{TemplateBinding SeparatorBrush}"
+                                                                     SeparatorVisibility="{TemplateBinding SeparatorVisibility}"
+                                                                     HorizontalAlignment="Right">
                             <StackPanel Orientation="Horizontal">
                                 <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                                               VerticalAlignment="Center"/>

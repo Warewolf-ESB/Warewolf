@@ -1,0 +1,165 @@
+﻿<UserControl x:Class="Warewolf.Studio.Views.MappingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:db="clr-namespace:Dev2.Common.Interfaces.DB;assembly=Dev2.Common.Interfaces"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" 
+             d:DataContext="{d:DesignInstance Type=db:IManageDbServiceViewModel,
+                                              IsDesignTimeCreatable=False}">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility"></BooleanToVisibilityConverter>
+    </UserControl.Resources>
+    <Grid x:Name="MappingsGrid">
+        <!-- Mappings-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="7" ></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <TextBlock FontWeight="Bold" 
+                           Grid.Row="0" 
+                           Margin="0,-1,0,0"></TextBlock>
+        <DataGrid x:Name="InputsMappingDataGrid" 
+                          Grid.Row="1" 
+                          Margin="0,-2,0,0"
+                          ItemsSource="{Binding Inputs}" 
+                          HorizontalScrollBarVisibility="Disabled" 
+                          MaxHeight="180"
+                          MinColumnWidth="50"
+                          GridLinesVisibility="Vertical" 
+                          AutoGenerateColumns="False" 
+                          CanUserSortColumns="False"
+                          CanUserReorderColumns="False"
+                          RowHeaderWidth="0"
+                          HeadersVisibility="Column"
+                          ColumnWidth="*" 
+                          BorderBrush="Transparent" 
+                          CanUserResizeColumns="True" 
+                          VerticalGridLinesBrush="Transparent">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Input" CanUserResize="True" Width="15*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" ToolTip="{Binding Path=Name}"></TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Default Value" CanUserResize="True" Width="55*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Path=DefaultValue, UpdateSourceTrigger=PropertyChanged}" Margin="1"></TextBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Required Field" CanUserResize="True" Width="15*" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding Path=Required, Mode=TwoWay}" Margin="-1,-2,-1,-1" HorizontalAlignment="Center"></CheckBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Empty is Null" CanUserResize="True" Width="15*" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding Path=EmptyIsNull, Mode=TwoWay}" HorizontalAlignment="Center" Margin="-1,-2,-1,-1"></CheckBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="" />
+                    </StackPanel>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
+            <DataGrid.Style>
+                <Style TargetType="DataGrid">
+                    <Setter Property="RowDetailsVisibilityMode" Value="Collapsed"></Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsInputsEmptyRows, Converter={StaticResource BoolToVisibility}}" Value="0">
+                            <Setter Property="RowHeight" Value="0"></Setter>
+                            <Setter Property="RowDetailsVisibilityMode" Value="Visible"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Style>
+        </DataGrid>
+        <TextBlock Grid.Row="2" Text="No Records Found" 
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" 
+                   Visibility="{Binding IsInputsEmptyRows, Converter={StaticResource BoolToVisibility}}" />
+        <TextBlock Grid.Row="3" 
+                           FontWeight="Bold" 
+                           Margin="0,-1,0,0" ></TextBlock>
+        
+        <DataGrid x:Name="OutputsMappingDataGrid" 
+                          Grid.Row="4" 
+                          Margin="0,-2,0,0"
+                          ItemsSource="{Binding OutputMapping}" 
+                          HorizontalScrollBarVisibility="Auto" 
+                          MaxHeight="180"
+                          MinColumnWidth="50"
+                          GridLinesVisibility="Vertical" 
+                          ColumnWidth="*" 
+                          AutoGenerateColumns="False" 
+                          HeadersVisibility="Column"
+                          CanUserSortColumns="False"
+                          CanUserReorderColumns="False"
+                          BorderBrush="Transparent" 
+                          CanUserResizeColumns="True" 
+                          VerticalGridLinesBrush="Transparent">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Output" CanUserResize="True" Width="50*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding CompleteName}" ToolTip="{Binding Path=CompleteName}"></TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Alias" CanUserResize="True" Width="50*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Path=OutputName, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=OutputName}" Margin="1"></TextBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="" />
+                    </StackPanel>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
+            <DataGrid.Style>
+                <Style TargetType="DataGrid">
+                    <Setter Property="RowDetailsVisibilityMode" Value="Collapsed"></Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsOutputMappingEmptyRows, Converter={StaticResource BoolToVisibility}}" Value="0">
+                            <Setter Property="RowHeight" Value="10"></Setter>
+                            <Setter Property="RowDetailsVisibilityMode" Value="Visible"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Style>
+        </DataGrid>
+        <TextBlock Grid.Row="5" Text="No Records Found" 
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" 
+                   Background="Transparent"
+                   Visibility="{Binding IsOutputMappingEmptyRows, Converter={StaticResource BoolToVisibility}}" />
+        <StackPanel Orientation="Horizontal" Grid.Row="6" Margin="0,2,0,0" >
+            <TextBlock Text="Recordset Name" ></TextBlock>
+            <TextBox MinWidth="100" Margin="-1,0,0,0" Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+        </StackPanel>
+    </Grid>
+</UserControl>
