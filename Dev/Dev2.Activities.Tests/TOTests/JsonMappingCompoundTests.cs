@@ -308,13 +308,17 @@ namespace Dev2.Tests.Activities.TOTests
             dataObject.Environment.Assign("[[rec(1).b]]", "500");
             dataObject.Environment.Assign("[[rec(2).a]]", "60");
             dataObject.Environment.Assign("[[rec(2).b]]", "600");
-            CheckComplexEvaluatedResultIndexed("[[a]],[[b]]", "myName", 0, new JObject(new JObject(new JProperty("a", 10), new JProperty("b", 20))), dataObject);
-            CheckComplexEvaluatedResultIndexed("[[a]],[[rec(*).b]]", "myName", 0, new JObject(new JObject(new JProperty("a", 10), new JProperty("b", 20))), dataObject);
-            CheckComplexEvaluatedResultIndexed("[[a]],[[b]]", "myName", 0, new JObject(new JObject(new JProperty("a", 10), new JProperty("b", 20))), dataObject);
+            //CheckComplexEvaluatedResultIndexed("[[a]],[[b]]", "myName", 0, new JValue(new JObject(new JProperty("a", 10), new JProperty("b", 20))), dataObject);
+            /*
+            CheckComplexEvaluatedResultIndexed("[[rec(*).a]],[[rec(*).b]]", "myName", 0,
+                @"{{"myName":[{{\"a":50,"b":500}},{{"a":50,"b":500}}]}}",
+            dataObject);
+             * */
+            //CheckComplexEvaluatedResultIndexed("[[a]],[[b]]", "myName", 0, new JObject(new JObject(new JProperty("a", 10), new JProperty("b", 20))), dataObject);
         }
 
 
-        private void CheckComplexEvaluatedResultIndexed(string expression, string name, int index, JObject jObject, DsfDataObject dataObject)
+        private void CheckComplexEvaluatedResultIndexed(string expression, string name, int index, string expected, DsfDataObject dataObject)
         {
             var jsonMappingCompound = new JsonMappingCompoundTo(
                 env: dataObject.Environment,
@@ -327,7 +331,8 @@ namespace Dev2.Tests.Activities.TOTests
             //------------Execute Test---------------------------
             ((JObject)new JObject(new JProperty(name, jsonMappingCompound.ComplexEvaluatedResultIndexed(index))))
                 .ToString(Formatting.None)
-                .Should().Be(new JObject(new JProperty(name, jObject)).ToString(Formatting.None));
+                //.Should().Be(new JObject(new JProperty(name, (JValue)jObject)).ToString(Formatting.None));
+                .Should().Be(expected);
         }
 
 

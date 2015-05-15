@@ -14,7 +14,6 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
-using Dev2.Data.Util;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.TO;
@@ -44,10 +43,6 @@ namespace Dev2.Activities.Designers2.CreateJSON
 
         #region Overrides of ActivityCollectionDesignerViewModel<JsonMappingTo>
 
-        #region Overrides of ActivityDesignerViewModel
-
-        #endregion
-
         protected override void DoCustomAction(string propertyName)
         {
             if (propertyName == "SourceName")
@@ -57,27 +52,17 @@ namespace Dev2.Activities.Designers2.CreateJSON
                     var dto = CurrentModelItem.GetCurrentValue() as JsonMappingTo;
                     if (dto != null)
                     {
+                        var destinationWithName = dto.GetDestinationWithName(dto.SourceName);
                         if (String.IsNullOrEmpty(dto.DestinationName))
                         {
-                            if (DataListUtil.IsFullyEvaluated(dto.SourceName))
-                            {
-                                string destName;
-                                if (DataListUtil.IsValueRecordset(dto.SourceName) || DataListUtil.IsValueRecordsetWithFields(dto.SourceName))
-                                {
-                                    destName = DataListUtil.ExtractRecordsetNameFromValue(dto.SourceName);
-                                }
-                                else
-                                {
-                                    destName = DataListUtil.StripBracketsFromValue(dto.SourceName);
-                                }
-                                CurrentModelItem.SetProperty("DestinationName", destName);
-                            }
-                        }          
-                        
+                            CurrentModelItem.SetProperty("DestinationName", destinationWithName);
+                        }
                     }
                 }
             }
         }
+
+
         #endregion
 
         protected override IEnumerable<IActionableErrorInfo> ValidateCollectionItem(ModelItem mi)
@@ -89,6 +74,11 @@ namespace Dev2.Activities.Designers2.CreateJSON
             }
 
             foreach (var error in dto.GetRuleSet("SourceName", GetDatalistString()).ValidateRules("'Data'", () => mi.SetProperty("IsSourceNameFocused", true)))
+            {
+                yield return error;
+            } 
+            
+            foreach (var error in dto.GetRuleSet("DestinationName", GetDatalistString()).ValidateRules("'Name'", () => mi.SetProperty("IsDestinationNameFocused", true)))
             {
                 yield return error;
             }            

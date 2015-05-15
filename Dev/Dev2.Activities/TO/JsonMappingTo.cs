@@ -11,6 +11,7 @@
 
 using System;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
+using Dev2.Data.Util;
 using Dev2.Interfaces;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
@@ -33,6 +34,24 @@ namespace Dev2.TO
             }
         }
 
+        public string GetDestinationWithName(string sourceName)
+        {
+            string destName = null;
+            if (DataListUtil.IsFullyEvaluated(sourceName))
+            {
+
+                if (DataListUtil.IsValueRecordset(sourceName) || DataListUtil.IsValueRecordsetWithFields(sourceName))
+                {
+                    destName = DataListUtil.ExtractRecordsetNameFromValue(sourceName);
+                }
+                else
+                {
+                    destName = DataListUtil.StripBracketsFromValue(sourceName);
+                }
+            }
+            return destName;
+        }
+
         public string DestinationName
         {
             get
@@ -48,6 +67,8 @@ namespace Dev2.TO
 
         #region Implementation of IDev2TOFn
         int _indexNumber;
+        bool _isSourceNameFocused;
+        bool _isDestinationNameFocused;
         public int IndexNumber { get { return _indexNumber; } set { OnPropertyChanged(ref _indexNumber, value); } }
 
         public JsonMappingTo()
@@ -59,7 +80,12 @@ namespace Dev2.TO
             SourceName = sourceName;
             _indexNumber = indexNumber;
             Inserted = inserted;
+            DestinationName = GetDestinationWithName(SourceName);
         }
+
+        public bool IsSourceNameFocused { get { return _isSourceNameFocused; } set { OnPropertyChanged(ref _isSourceNameFocused, value); } }
+
+        public bool IsDestinationNameFocused { get { return _isDestinationNameFocused; } set { OnPropertyChanged(ref _isDestinationNameFocused, value); } }
 
         public bool CanRemove()
         {
@@ -96,7 +122,14 @@ namespace Dev2.TO
                 return ruleSet;
             }
             if(propertyName == "SourceName")
+            {
                 ruleSet.Add(new IsValidJsonCreateMappingSourceExpression(() => SourceName));
+            }
+            if(propertyName == "DestinationName")
+            {
+                ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(()=>DestinationName));
+                ruleSet.Add(new ShouldNotBeVariableRule(()=>DestinationName));
+            }
             return ruleSet;
         }
     }
