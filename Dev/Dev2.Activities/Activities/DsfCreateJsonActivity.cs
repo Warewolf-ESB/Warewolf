@@ -81,6 +81,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
             InitializeDebug(dataObject);
+            JsonMappings = JsonMappings.Where(validMapping).ToList();
             // Process if no errors
             try
             {
@@ -133,45 +134,40 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         new JsonMappingCompoundTo(dataObject.Environment, jsonMapping
                             )).ToList();
 
-                    // do not allow IsCompound with a RecordSet specified 
-                    if (results.Where(x => x.IsCompound)
-                        .Any(y => y.HasRecordSetInCompound))
-                        throw new ArgumentException("Cannot specify a  RecordSet for a comma seperated input.");
 
                     // get the longest list
                     int maxCount = results.Select(r => r.MaxCount).Max();
 
                     // main loop for producing largest list of zipped values
-                    for (int i = 0; i < maxCount; i++)
-                    {
+                   
                         results.ForEach(x =>
                         {
-                            // if it is not a compound,
-                            if (!x.IsCompound)
-                            {
-                                // add JProperty, with name x.DestinationName, and value eval(x.SourceName)
-                                json.Add(new JProperty(
-                                    x.DestinationName,
-                                    x.EvaluatedResultIndexed(i))
-                                    );
-                            }
-                            else
-                            {
-                                // if it is a compound, 
-                                if (!x.EvalResult.IsWarewolfRecordSetResult)
-                                    json.Add(new JProperty(
-                                            x.DestinationName,
-                                            x.ComplexEvaluatedResultIndexed(i))
-                                            );
-                                else if (x.EvalResult.IsWarewolfRecordSetResult && i == 0)
+                                // if it is not a compound,
+                                if (!x.IsCompound)
                                 {
-                                    json.Add(
-                                   x.ComplexEvaluatedResultIndexed(i));
+                                    // add JProperty, with name x.DestinationName, and value eval(x.SourceName)
+                                    json.Add(new JProperty(
+                                        x.DestinationName,
+                                        x.EvaluatedResultIndexed(0))
+                                        );
                                 }
-                            }
+                                else
+                                {
+                                    // if it is a compound, 
+                                    if (!x.EvalResult.IsWarewolfRecordSetResult)
+                                        json.Add(new JProperty(
+                                                x.DestinationName,
+                                                x.ComplexEvaluatedResultIndexed(0))
+                                                );
+                                    else if (x.EvalResult.IsWarewolfRecordSetResult)
+                                    {
+                                        json.Add(
+                                       x.ComplexEvaluatedResultIndexed(0));
+                                    }
+                                }
                         }
-                            );
-                    }
+                      );
+                    
 
                     dataObject.Environment.Assign(JsonString, json.ToString(Formatting.None));
 
@@ -231,6 +227,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DispatchDebugState(dataObject, StateType.After);
                 }
             }
+        }
+
+        bool validMapping(JsonMappingTo a)
+        {
+            return !((String.IsNullOrEmpty(a.DestinationName)) && (string.IsNullOrEmpty(a.SourceName)));
         }
 
         #region Get Debug Inputs/Outputs
