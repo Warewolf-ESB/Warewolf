@@ -100,7 +100,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Create_JSON
             var jsonTool = new DsfCreateJsonActivity
             {
                 JsonString = json,
-                JsonMappings = toList.Select(a => new JsonMappingTo { SourceName = a.Item1, DestinationName = a.Item2 })
+                JsonMappings = toList.Select(a => new JsonMappingTo { SourceName = a.Item1, DestinationName = a.Item2 }).ToList()
             };
 
             TestStartNode = new FlowStep
