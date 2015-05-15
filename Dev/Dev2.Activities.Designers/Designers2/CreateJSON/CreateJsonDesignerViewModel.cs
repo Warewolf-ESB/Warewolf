@@ -14,6 +14,7 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Data.Util;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.TO;
@@ -43,18 +44,41 @@ namespace Dev2.Activities.Designers2.CreateJSON
 
         #region Overrides of ActivityCollectionDesignerViewModel<JsonMappingTo>
 
-        protected override void DoCustomAction(JsonMappingTo dto, string propertyName)
+        #region Overrides of ActivityDesignerViewModel
+
+        #endregion
+
+        protected override void DoCustomAction(string propertyName)
         {
-            if (propertyName == "DestinationName")
+            if (propertyName == "SourceName")
             {
-                if (dto != null)
+                     
+                if (CurrentModelItem != null)
                 {
-                    var modelItem = ModelItemCollection[dto.IndexNumber - 1];
-                    modelItem.SetProperty(propertyName, dto.DestinationName);
+                    var dto = CurrentModelItem.GetCurrentValue() as JsonMappingTo;
+                    if (dto != null)
+                    {
+                        if (String.IsNullOrEmpty(dto.DestinationName))
+                        {
+                            if (DataListUtil.IsFullyEvaluated(dto.SourceName))
+                            {
+                                string destName;
+                                if (DataListUtil.IsValueRecordset(dto.SourceName) || DataListUtil.IsValueRecordsetWithFields(dto.SourceName))
+                                {
+                                    destName = DataListUtil.ExtractRecordsetNameFromValue(dto.SourceName);
+                                }
+                                else
+                                {
+                                    destName = DataListUtil.StripBracketsFromValue(dto.SourceName);
+                                }
+                                CurrentModelItem.SetProperty("DestinationName", destName);
+                            }
+                        }          
+                        
+                    }
                 }
             }
         }
-
         #endregion
 
         protected override IEnumerable<IActionableErrorInfo> ValidateCollectionItem(ModelItem mi)

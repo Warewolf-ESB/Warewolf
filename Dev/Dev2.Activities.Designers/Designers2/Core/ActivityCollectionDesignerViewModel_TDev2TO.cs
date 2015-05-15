@@ -12,6 +12,7 @@
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
@@ -63,6 +64,13 @@ namespace Dev2.Activities.Designers2.Core
 
             AddBlankRow();
             UpdateDisplayName();
+
+            ModelItemCollection.CollectionChanged+=ModelItemCollectionOnCollectionChanged;
+        }
+
+        void ModelItemCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        {
+            //
         }
 
         public override void OnSelectionChanged(ModelItem oldItem, ModelItem newItem)
@@ -283,15 +291,15 @@ namespace Dev2.Activities.Designers2.Core
 
         void OnDtoPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
-            var dto = (TDev2TOFn)sender;
+            
            
             if(args.PropertyName != "CanRemove")
             {
-                DoCustomAction(dto, args.PropertyName);
+                DoCustomAction(args.PropertyName);
                 return;
             }
 
-            
+            var dto = (TDev2TOFn)sender;
             if(dto.CanAdd())
             {
                 if(ModelItemCollection.Count == 2)
@@ -310,7 +318,7 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        protected virtual void DoCustomAction(TDev2TOFn dto, string propertyName)
+        protected virtual void DoCustomAction(string propertyName)
         {            
         }
 

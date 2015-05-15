@@ -73,11 +73,11 @@
                                                      SourcePropertyValue="{Binding DestinationName, UpdateSourceTrigger=PropertyChanged}"
                                                      Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                             </i:Interaction.Behaviors>
-<!--                                <ui:IntellisenseTextBox.IntellisenseProvider>-->
-<!--                                    <interfaceImplementors:CompositeIntellisenseProvider>-->
-<!--                                        <provider:BlankIntellisenseProvider />-->
-<!--                                    </interfaceImplementors:CompositeIntellisenseProvider>-->
-<!--                                </ui:IntellisenseTextBox.IntellisenseProvider>-->
+                                <ui:IntellisenseTextBox.IntellisenseProvider>
+                                    <interfaceImplementors:CompositeIntellisenseProvider>
+                                        <provider:BlankIntellisenseProvider />
+                                    </interfaceImplementors:CompositeIntellisenseProvider>
+                                </ui:IntellisenseTextBox.IntellisenseProvider>
                                 <AutomationProperties.AutomationId>
                                 <MultiBinding StringFormat="UI_{0}_Row{1}_DestinationName_AutoID">
                                     <Binding Path="DataContext.ModelItem.AutomationID"

@@ -11,7 +11,6 @@
 
 using System;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
-using Dev2.Data.Util;
 using Dev2.Interfaces;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
@@ -30,24 +29,7 @@ namespace Dev2.TO
             set
             {
                 OnPropertyChanged(ref _sourceName, value);
-
-                if (String.IsNullOrEmpty(DestinationName))
-                {
-                    if (DataListUtil.IsFullyEvaluated(_sourceName))
-                    {
-                        string destName;
-                        if (DataListUtil.IsValueRecordset(value) || DataListUtil.IsValueRecordsetWithFields(value))
-                        {
-                            destName = DataListUtil.ExtractRecordsetNameFromValue(_sourceName);
-                        }
-                        else
-                        {
-                            destName = DataListUtil.StripBracketsFromValue(_sourceName);
-                        }
-                        DestinationName = destName;
-                    }
-                    RaiseCanAddRemoveChanged();
-                }                
+                RaiseCanAddRemoveChanged();
             }
         }
 

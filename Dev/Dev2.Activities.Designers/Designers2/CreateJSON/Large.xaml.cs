@@ -20,7 +20,6 @@ namespace Dev2.Activities.Designers2.CreateJSON
         {
             InitializeComponent();
             DataGrid = LargeDataGrid;
-            SetInitialFocus();
         }
 
         protected override IInputElement GetInitialFocusElement()

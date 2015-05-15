@@ -1,6 +1,7 @@
 ﻿using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities.TOTests
 {
     [TestClass]
@@ -49,41 +50,59 @@ namespace Dev2.Tests.Activities.TOTests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("JsonMappingTo_AddRemove")]
-        public void JsonMappingTo_CanAddRemove()
+        public void JsonMappingTo_CanAddRemove_NoSourceAndDestinationName_CanRemoveTrue_CanAddFalse()
         {
             //------------Setup for test--------------------------
             var jsonMappingTo = new JsonMappingTo();
-            jsonMappingTo.SourceName = "bob";
+            jsonMappingTo.SourceName = "";
             jsonMappingTo.DestinationName = "";
+            //-------------Assert-----------------------------------
             Assert.IsTrue(jsonMappingTo.CanRemove());
             Assert.IsFalse(jsonMappingTo.CanAdd());
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("JsonMappingTo_SourceName")]
-        public void JsonMappingTo_SourceName_SetsDestination()
+        [TestCategory("JsonMappingTo_AddRemove")]
+        public void JsonMappingTo_CanAddRemove_HasSourceName_CanRemoveFalse_CanAddTrue()
         {
             //------------Setup for test--------------------------
             var jsonMappingTo = new JsonMappingTo();
+            jsonMappingTo.SourceName = "[[val]]";
             jsonMappingTo.DestinationName = "";
-            jsonMappingTo.SourceName = "[[bob]]";
-
-            Assert.AreEqual("bob",jsonMappingTo.DestinationName);
+            //-------------Assert-----------------------------------
+            Assert.IsFalse(jsonMappingTo.CanRemove());
+            Assert.IsTrue(jsonMappingTo.CanAdd());
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("JsonMappingTo_SourceName")]
-        public void JsonMappingTo_SourceName_SetsDestinationRecset()
+        [TestCategory("JsonMappingTo_AddRemove")]
+        public void JsonMappingTo_CanAddRemove_HasDestinationName_CanRemoveFalse_CanAddTrue()
         {
             //------------Setup for test--------------------------
             var jsonMappingTo = new JsonMappingTo();
-            jsonMappingTo.DestinationName = "";
-            jsonMappingTo.SourceName = "[[bobby().tables]]";
-     
-            Assert.AreEqual("bobby", jsonMappingTo.DestinationName);
+            jsonMappingTo.SourceName = "";
+            jsonMappingTo.DestinationName = "val";
+            //-------------Assert-----------------------------------
+            Assert.IsFalse(jsonMappingTo.CanRemove());
+            Assert.IsTrue(jsonMappingTo.CanAdd());
         }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("JsonMappingTo_AddRemove")]
+        public void JsonMappingTo_CanAddRemove_HasSourceAndDestinationName_CanRemoveFalse_CanAddTrue()
+        {
+            //------------Setup for test--------------------------
+            var jsonMappingTo = new JsonMappingTo();
+            jsonMappingTo.SourceName = "[[val]]";
+            jsonMappingTo.DestinationName = "val";
+            //-------------Assert-----------------------------------
+            Assert.IsFalse(jsonMappingTo.CanRemove());
+            Assert.IsTrue(jsonMappingTo.CanAdd());
+        }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("JsonMappingTo_SourceName")]
@@ -103,9 +122,7 @@ namespace Dev2.Tests.Activities.TOTests
         {
             //------------Setup for test--------------------------
             var jsonMappingTo = new JsonMappingTo("[[bob]]",1,false);
-
-
-            Assert.AreEqual("bob", jsonMappingTo.DestinationName);
+            Assert.IsTrue(string.IsNullOrEmpty(jsonMappingTo.DestinationName));
             Assert.AreEqual("[[bob]]", jsonMappingTo.SourceName);
             Assert.IsFalse(jsonMappingTo.CanRemove());
             Assert.AreEqual(1,jsonMappingTo.IndexNumber);
