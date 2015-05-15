@@ -4,12 +4,13 @@
     <Deployment>
       <!--Server and Studio under test-->
 		  <DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
+		  <DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
 
       <!--Missing test assembly dependencies-->
       <DeploymentItem filename="packages\FSharp.Core.3.0.0.2\lib\net40\FSharp.Core.dll" />
       <DeploymentItem filename="packages\FSharp.Core.3.0.0.2\lib\net40\policy.2.3.FSharp.Core.dll" />
     </Deployment>
-  <NamingScheme baseName="AcceptanceTesting" appendTimeStamp="false" useDefault="false" />
+  <NamingScheme baseName="IntegrationTests" appendTimeStamp="false" useDefault="false" />
     <Scripts setupScript="..\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\Dev\TestScripts\Acceptance\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld" />
   <Execution location="Remote" hostProcessPlatform="MSIL">
