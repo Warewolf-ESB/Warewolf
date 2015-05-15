@@ -391,6 +391,34 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
+        [TestCategory("ActivityCollectionDesignerViewModel_ChangeDtoProperty")]
+        public void ActivityCollectionDesignerViewModel_ChangeDtoProperty_CausesCustomActionsToFire()
+        {
+            //------------Setup for test--------------------------
+            const int ItemCount = 3;
+
+            var modelItem = CreateModelItem(ItemCount);
+            var viewModel = new TestActivityDesignerCollectionViewModelItemsInitialized(modelItem);
+
+            const int ExpectedItemCount = 5;
+            var source = new List<string>();
+            for(var i = 0; i < ExpectedItemCount; i++)
+            {
+                source.Add("NewField" + i);
+            }
+            viewModel.TestAddToCollection(source, true);
+            // ReSharper disable PossibleNullReferenceException
+            var mic = viewModel.ModelItem.Properties[viewModel.CollectionName].Collection;
+            var dto = (ActivityDTO)mic[0].GetCurrentValue();
+            // ReSharper restore PossibleNullReferenceException
+            //------------Execute Test---------------------------
+            dto.FieldName = "Test";
+            //------------Assert Results-------------------------
+            Assert.IsTrue(viewModel.CustomActionCalled);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
         [TestCategory("ActivityCollectionDesignerViewModel_AddToCollection")]
         public void ActivityCollectionDesignerViewModel_AddToCollection_OverwriteFalseAndNonBlankRows_ItemsInserted()
         {
