@@ -55,7 +55,9 @@
                 <DataGridTemplateColumn Header="Default Value" CanUserResize="True" Width="55*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBox Text="{Binding Path=DefaultValue, UpdateSourceTrigger=PropertyChanged}" Margin="1"></TextBox>
+                            <StackPanel HorizontalAlignment="Stretch" Margin="0,0,2,0">
+                                <TextBox Text="{Binding Path=DefaultValue, UpdateSourceTrigger=PropertyChanged}" Margin="1"></TextBox>
+                            </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
