@@ -85,7 +85,10 @@ namespace Dev2.Activities.Designers2.Core
                     RemoveDto(dto, index);
                 }
             }
-            CurrentModelItem = newItem;
+            if(newItem != null)
+            {
+                CurrentModelItem = newItem;
+            }
         }
 
         public ModelItem CurrentModelItem { get; set; }

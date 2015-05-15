@@ -312,6 +312,7 @@
     </Compile>
     <Compile Include="Validation\IsValidJsonCreateMappingSourceExpression.cs" />
     <Compile Include="Validation\IsValidJsonCreateMappingSourceRule.cs" />
+    <Compile Include="Validation\ShouldNotBeVariableRule.cs" />
     <Compile Include="Validation\VariableUtils.cs" />
     <Compile Include="Value Objects\ForEachBootstrapTO.cs" />
     <Compile Include="Value Objects\ForEachBootstrapTOEnvironment.cs" />
