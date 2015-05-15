@@ -38,14 +38,16 @@ namespace Dev2.Tests.Activities.TOTests
             dataObject.Environment.Assign("[[b]]", "20");
             dataObject.Environment.Assign("[[rec(1).a]]", "50");
             dataObject.Environment.Assign("[[rec(1).b]]", "500");
+            dataObject.Environment.Assign("[[rec(2).a]]", "60");
+            dataObject.Environment.Assign("[[rec(2).b]]", "600");
             //------------Execute Test---------------------------
 
             // scalar evaluating to atom
             string sn = "[[a]]", sns = "[[as]]", snf = "[[af]]",
                 dn = "a", dns = "as", dnf = "af";
-            var scalarsSn = new[] { sn, sns, snf };
-            var scalarsDn = new[] { dn, dns, dnf };
-            var scalarsV = new object[] { (int)10, (string)"hellow world", (double)9.9 };
+            var scalarsSn = new[] { "[[x().z]]", "[[x]]", sn, sns, snf };
+            var scalarsDn = new[] { "z", "x", dn, dns, dnf };
+            var scalarsV = new object[] { new object[] { null }, (object)null, (int)10, (string)"hellow world", (double)9.9 };
             for (int i = 0; i < scalarsSn.Length; i++)
             {
                 var jsonMappingEvaluatedLocal = new JsonMappingEvaluated(
@@ -56,8 +58,13 @@ namespace Dev2.Tests.Activities.TOTests
                 jsonMappingEvaluatedLocal.Simple.Should().NotBeNull();
                 jsonMappingEvaluatedLocal.Simple.SourceName.Should().Be(scalarsSn[i]);
                 jsonMappingEvaluatedLocal.Simple.DestinationName.Should().Be(scalarsDn[i]);
-                jsonMappingEvaluatedLocal.EvalResult.Should().Be(dataObject.Environment.Eval(scalarsSn[i]));
-                jsonMappingEvaluatedLocal.EvalResultAsObject.Should().Be(scalarsV[i]);
+                if (i != 0)
+                {
+                    //((object[])((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult)jsonMappingEvaluatedLocal.EvalResult).Item.GetValue(0))[0].Should().Be(((object[])((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult)dataObject.Environment.EvalForJson(scalarsSn[i])).Item.GetValue(0))[0]);
+                    jsonMappingEvaluatedLocal.EvalResult.Should().Be(dataObject.Environment.EvalForJson(scalarsSn[i]));
+                    jsonMappingEvaluatedLocal.EvalResultAsObject.Should().Be(scalarsV[i]);
+                }
+
                 jsonMappingEvaluatedLocal.Count.Should().Be(1);
             }
 
@@ -74,6 +81,7 @@ namespace Dev2.Tests.Activities.TOTests
             jsonMappingEvaluated.Simple.DestinationName.Should().Be(dn);
             ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult)jsonMappingEvaluated.EvalResult).Item.GetValue(0).Should().Be(
                 ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult)dataObject.Environment.Eval(sn)).Item.GetValue(0));
+            jsonMappingEvaluated.Count.Should().Be(1);
 
             // recordset name
             sn = "[[rec()]]"; dn = "rec";
@@ -88,6 +96,7 @@ namespace Dev2.Tests.Activities.TOTests
             //jsonMappingEvaluated.EvalResult.Should().Be(dataObject.Environment.Eval(sn));
             //((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult)jsonMappingEvaluated.EvalResult).Item.Data["a"][0].Should().Be(
             //  ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult)dataObject.Environment.Eval(sn)).Item.Data["a"][0]);
+            jsonMappingEvaluated.Count.Should().Be(1);
         }
     }
 
