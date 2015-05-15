@@ -84,7 +84,7 @@ namespace Dev2.Activities
         {
             string result;
             string err;
-            DateTimeConverterFactory.CreateFormatter().TryFormat(new DateTimeOperationTO(DateTime.Now.ToString("G"), "", "", "", 0, ""), out result, out err);
+            DateTimeConverterFactory.CreateFormatter().TryFormat(new DateTimeOperationTO(DateTime.Now.ToString(GlobalConstants.GlobalDefaultNowFormat), "", "", "", 0, ""), out result, out err);
             
             return result;
         }
