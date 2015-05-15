@@ -21,84 +21,6 @@ using FluentAssertions;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities.TOTests
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
-    public class JsonMappingEvaluatedTests
-    {
-        [TestMethod]
-        [Owner("Kerneels Roos")]
-        [TestCategory("JsonMappingEvaluated_Constructor")]
-        public void JsonMappingEvaluated_Constructor_SetsProperties()
-        {
-            //------------Setup for test--------------------------
-            var dataObject = new DsfDataObject(xmldata: string.Empty, dataListId: Guid.NewGuid());
-            dataObject.Environment.Assign("[[a]]", "10");
-            dataObject.Environment.Assign("[[as]]", "hellow world");
-            dataObject.Environment.Assign("[[af]]", "9.9");
-            dataObject.Environment.Assign("[[b]]", "20");
-            dataObject.Environment.Assign("[[rec(1).a]]", "50");
-            dataObject.Environment.Assign("[[rec(1).b]]", "500");
-            dataObject.Environment.Assign("[[rec(2).a]]", "60");
-            dataObject.Environment.Assign("[[rec(2).b]]", "600");
-            //------------Execute Test---------------------------
-
-            // scalar evaluating to atom
-            string sn = "[[a]]", sns = "[[as]]", snf = "[[af]]",
-                dn = "a", dns = "as", dnf = "af";
-            var scalarsSn = new[] { "[[x().z]]", "[[x]]", sn, sns, snf };
-            var scalarsDn = new[] { "z", "x", dn, dns, dnf };
-            var scalarsV = new object[] { new object[] { null }, (object)null, (int)10, (string)"hellow world", (double)9.9 };
-            for (int i = 0; i < scalarsSn.Length; i++)
-            {
-                var jsonMappingEvaluatedLocal = new JsonMappingEvaluated(
-                    env: dataObject.Environment,
-                    sourceName: scalarsSn[i]);
-                //------------Assert Results-------------------------
-                jsonMappingEvaluatedLocal.Should().NotBeNull();
-                jsonMappingEvaluatedLocal.Simple.Should().NotBeNull();
-                jsonMappingEvaluatedLocal.Simple.SourceName.Should().Be(scalarsSn[i]);
-                jsonMappingEvaluatedLocal.Simple.DestinationName.Should().Be(scalarsDn[i]);
-                if (i != 0)
-                {
-                    //((object[])((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult)jsonMappingEvaluatedLocal.EvalResult).Item.GetValue(0))[0].Should().Be(((object[])((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult)dataObject.Environment.EvalForJson(scalarsSn[i])).Item.GetValue(0))[0]);
-                    jsonMappingEvaluatedLocal.EvalResult.Should().Be(dataObject.Environment.EvalForJson(scalarsSn[i]));
-                    jsonMappingEvaluatedLocal.EvalResultAsObject.Should().Be(scalarsV[i]);
-                }
-
-                jsonMappingEvaluatedLocal.Count.Should().Be(1);
-            }
-
-
-            // recordset
-            sn = "[[rec().a]]"; dn = "a";
-            var jsonMappingEvaluated = new JsonMappingEvaluated(
-                env: dataObject.Environment,
-                sourceName: sn);
-            //------------Assert Results-------------------------
-            jsonMappingEvaluated.Should().NotBeNull();
-            jsonMappingEvaluated.Simple.Should().NotBeNull();
-            jsonMappingEvaluated.Simple.SourceName.Should().Be(sn);
-            jsonMappingEvaluated.Simple.DestinationName.Should().Be(dn);
-            ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult)jsonMappingEvaluated.EvalResult).Item.GetValue(0).Should().Be(
-                ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult)dataObject.Environment.Eval(sn)).Item.GetValue(0));
-            jsonMappingEvaluated.Count.Should().Be(1);
-
-            // recordset name
-            sn = "[[rec()]]"; dn = "rec";
-            jsonMappingEvaluated = new JsonMappingEvaluated(
-                env: dataObject.Environment,
-                sourceName: sn);
-            //------------Assert Results-------------------------
-            jsonMappingEvaluated.Should().NotBeNull();
-            jsonMappingEvaluated.Simple.Should().NotBeNull();
-            jsonMappingEvaluated.Simple.SourceName.Should().Be(sn);
-            jsonMappingEvaluated.Simple.DestinationName.Should().Be(dn);
-            //jsonMappingEvaluated.EvalResult.Should().Be(dataObject.Environment.Eval(sn));
-            //((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult)jsonMappingEvaluated.EvalResult).Item.Data["a"][0].Should().Be(
-            //  ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult)dataObject.Environment.Eval(sn)).Item.Data["a"][0]);
-            jsonMappingEvaluated.Count.Should().Be(1);
-        }
-    }
 
     [TestClass]
     [ExcludeFromCodeCoverage]
@@ -372,5 +294,47 @@ namespace Dev2.Tests.Activities.TOTests
             JsonMappingCompoundTo.IsValidJsonMappingInput("a,b", "a")
     .Should().BeNull();
         }
+
+        [TestMethod]
+        [Owner("Kerneels Roos")]
+        [TestCategory("JsonMappingCompoundTo_ComplexEvaluatedResultIndexed")]
+        public void JsonMappingCompoundTo_ComplexEvaluatedResultIndexed()
+        {
+            //------------Setup for test--------------------------
+            var dataObject = new DsfDataObject(xmldata: string.Empty, dataListId: Guid.NewGuid());
+            dataObject.Environment.Assign("[[a]]", "10");
+            dataObject.Environment.Assign("[[b]]", "20");
+            dataObject.Environment.Assign("[[rec(1).a]]", "50");
+            dataObject.Environment.Assign("[[rec(1).b]]", "500");
+            dataObject.Environment.Assign("[[rec(2).a]]", "60");
+            dataObject.Environment.Assign("[[rec(2).b]]", "600");
+            //CheckComplexEvaluatedResultIndexed("[[a]],[[b]]", "myName", 0, new JValue(new JObject(new JProperty("a", 10), new JProperty("b", 20))), dataObject);
+            /*
+            CheckComplexEvaluatedResultIndexed("[[rec(*).a]],[[rec(*).b]]", "myName", 0,
+                @"{{"myName":[{{\"a":50,"b":500}},{{"a":50,"b":500}}]}}",
+            dataObject);
+             * */
+            //CheckComplexEvaluatedResultIndexed("[[a]],[[b]]", "myName", 0, new JObject(new JObject(new JProperty("a", 10), new JProperty("b", 20))), dataObject);
+        }
+
+
+        private void CheckComplexEvaluatedResultIndexed(string expression, string name, int index, string expected, DsfDataObject dataObject)
+        {
+            var jsonMappingCompound = new JsonMappingCompoundTo(
+                env: dataObject.Environment,
+            compound: new JsonMappingTo
+                {
+                    SourceName = expression,
+                    DestinationName = "myName"
+                }
+            );
+            //------------Execute Test---------------------------
+            ((JObject)new JObject(new JProperty(name, jsonMappingCompound.ComplexEvaluatedResultIndexed(index))))
+                .ToString(Formatting.None)
+                //.Should().Be(new JObject(new JProperty(name, (JValue)jObject)).ToString(Formatting.None));
+                .Should().Be(expected);
+        }
+
+
     }
 }
