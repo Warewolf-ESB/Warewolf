@@ -46,7 +46,7 @@ namespace Dev2.TO
                         }
                         DestinationName = destName;
                     }
-                    
+                    RaiseCanAddRemoveChanged();
                 }                
             }
         }
@@ -81,12 +81,12 @@ namespace Dev2.TO
 
         public bool CanRemove()
         {
-            return string.IsNullOrEmpty(DestinationName);
+            return string.IsNullOrEmpty(DestinationName) && string.IsNullOrEmpty(SourceName);
         }
 
         public bool CanAdd()
         {
-            return !string.IsNullOrEmpty(DestinationName);
+            return !CanRemove();
         }
 
         public void ClearRow()
