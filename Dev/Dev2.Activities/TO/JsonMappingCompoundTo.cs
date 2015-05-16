@@ -252,7 +252,7 @@ namespace Dev2.TO
                 {
                     obj.Add(new JProperty(
                         jsonMappingEvaluated.Simple.DestinationName,
-                        GetEvalResult(jsonMappingEvaluated.EvalResult, i))
+                        GetEvalResult(jsonMappingEvaluated.EvalResult, j))
                         );
                 }
                 objects.Add(obj);
@@ -262,7 +262,7 @@ namespace Dev2.TO
 
         object GetEvalResult(WarewolfDataEvaluationCommon.WarewolfEvalResult evalResult, int i)
         {
-            if (EvalResult.IsWarewolfAtomListresult)
+            if (evalResult.IsWarewolfAtomListresult)
             {
                 WarewolfAtomList<DataASTMutable.WarewolfAtom> lst = ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult)evalResult).Item;
                 if (i > lst.Count)
@@ -271,7 +271,7 @@ namespace Dev2.TO
                 }
                 return WarewolfDataEvaluationCommon.AtomToJsonCompatibleObject(lst[i]);
             }
-            if (EvalResult.IsWarewolfAtomResult)
+            if (evalResult.IsWarewolfAtomResult)
             {
                 if (i == 0)
                 {
@@ -279,7 +279,7 @@ namespace Dev2.TO
                 }
                 return null;
             }
-            if (EvalResult.IsWarewolfRecordSetResult)
+            if (evalResult.IsWarewolfRecordSetResult)
             {
                 DataASTMutable.WarewolfRecordset recset = ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult)EvalResult).Item;
 
