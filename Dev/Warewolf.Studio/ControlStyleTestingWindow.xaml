@@ -146,5 +146,13 @@
         <TextBlock Text="Standard Label/textbox styling"></TextBlock>
         <TextBlock Style="{StaticResource SourceHeader}"  VerticalAlignment="Center" Text="Sources header label yyyAAAxxxggg" Visibility="Visible"/>
 
+        <Grid  Margin="0,20,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Content="Back" Height="50" Width="100"></Button>
+            <Button Grid.Column="1" Height="50" Content="Next" Width="100"></Button>
+        </Grid>
     </WrapPanel>
 </Window>
