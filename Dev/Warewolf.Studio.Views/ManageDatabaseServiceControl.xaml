@@ -146,8 +146,7 @@
                                                Width="25"
                                                Height="25"
                                                Padding="2.5"
-                                               Visibility="{Binding Path=IsRefreshing, Converter={StaticResource BoolToVis}}"
-                                            />
+                                               Visibility="{Binding Path=IsRefreshing, Converter={StaticResource BoolToVis}}"/>
                 </StackPanel>
             </Grid>
             <Grid x:Name="TestActionGrid" 
@@ -163,7 +162,7 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
+                    <!--<RowDefinition Height="Auto"></RowDefinition>-->
                     <RowDefinition Height="7" ></RowDefinition>
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" 
@@ -178,10 +177,11 @@
                                Style="{StaticResource SourceHeader}" ></TextBlock>
                 </StackPanel>
                 <TextBlock Grid.Row="1" 
-                           Margin="0,-1,0,0" 
+                           Margin="0,0,0,0" 
                            Text="Inputs" 
-                           FontWeight="Bold"></TextBlock>
-                <Grid Grid.Row="2" Margin="0,-5,0,0" >
+                           FontWeight="Bold"
+                           Visibility="{Binding InputsRequired,Converter={StaticResource BoolToVis}}"></TextBlock>
+                <Grid Grid.Row="2" Margin="0,0,0,0" >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -191,7 +191,11 @@
                         <RowDefinition Height="Auto"></RowDefinition>
                         <RowDefinition Height="Auto"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <ListBox x:Name="InputsList" Grid.IsSharedSizeScope="True" ItemsSource="{Binding Inputs}" BorderBrush="Transparent" Padding="0,0,0,1" >
+                    <ListBox x:Name="InputsList" 
+                                 Grid.IsSharedSizeScope="True" 
+                                 ItemsSource="{Binding Inputs}" 
+                                 BorderBrush="Transparent" 
+                                 Padding="0,0,0,1" >
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="db:IDbInput">
                                 <StackPanel Orientation="Horizontal" >
@@ -213,7 +217,6 @@
                             Margin="0,0,2,0"
                             HorizontalAlignment="Right" 
                             Command="{Binding TestProcedureCommand}" 
-                            
                             VerticalAlignment="Bottom" 
                             Width="100">Test</Button>
                     <views:CircularProgressBar Grid.Row="1"
@@ -237,7 +240,6 @@
                           HorizontalScrollBarVisibility="Auto" 
                           ItemsSource="{Binding TestResults}" 
                           Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}" 
-                          ToolTip="{Binding Path=TestResults}"
                           GridLinesVisibility="Vertical" 
                           ColumnWidth="*" 
                           HeadersVisibility="Column"
@@ -266,11 +268,11 @@
                         </Style>
                     </DataGrid.Style>
                 </DataGrid>
-                <TextBlock Grid.Row="6" Text="No Records Found" 
+                <!--<TextBlock Grid.Row="6" Text="None" 
                    HorizontalAlignment="Center" 
                    VerticalAlignment="Center" 
                    Background="Transparent"
-                   Visibility="{Binding IsTestResultsEmptyRows, Converter={StaticResource BoolToVis}}" />
+                   Visibility="Hidden" />-->
             </Grid>
             <Grid x:Name="MappingsGrid" 
                   Grid.Row="4" 
