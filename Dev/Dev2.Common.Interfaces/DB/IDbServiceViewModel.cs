@@ -25,6 +25,7 @@ namespace Dev2.Common.Interfaces.DB
         bool IsRefreshing { get; set; }
         // ReSharper disable ReturnTypeCanBeEnumerable.Global
         ICollection<IDbInput> Inputs { get; }
+        bool InputsRequired { get; set; }
         bool IsInputsEmptyRows { get; set; }
         // ReSharper restore ReturnTypeCanBeEnumerable.Global
         DataTable TestResults { get; set; }

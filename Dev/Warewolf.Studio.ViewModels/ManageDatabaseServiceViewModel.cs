@@ -24,6 +24,7 @@ namespace Warewolf.Studio.ViewModels
         IDbSource _selectedSource;
         IDbAction _selectedAction;
         ICollection<IDbInput> _inputs;
+        private bool _inputsRequired;
         DataTable _testResults;
         private bool _isTesting;
         IList<IDbOutputMapping> _outputMapping;
@@ -79,10 +80,10 @@ namespace Warewolf.Studio.ViewModels
                 if(TestResults != null)
                 {
                     CanEditMappings = true;
+                    TestResultsAvailable = true;
                     OutputMapping =
                         new ObservableCollection<IDbOutputMapping>(GetDbOutputMappingsFromTable(TestResults));
                     TestSuccessful = true;
-                    TestResultsAvailable = true;
                 }
                 ErrorText = "";
                 IsTesting = false;
@@ -213,6 +214,17 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(()=>TestResultsAvailable);
             }
         }
+
+        public bool InputsRequired
+        {
+            get { return _inputsRequired; }
+            set
+            {
+                _inputsRequired = value;
+                OnPropertyChanged(() => InputsRequired);
+            }
+        }
+
         public string ErrorText
         {
             get
@@ -459,8 +471,10 @@ namespace Warewolf.Studio.ViewModels
             {
                 _inputs = value;
                 IsInputsEmptyRows = true;
+                InputsRequired = false;
                 if (_inputs.Count >= 1)
                 {
+                    InputsRequired = true;
                     IsInputsEmptyRows = false;
                 }
                 OnPropertyChanged(()=>Inputs);
@@ -495,10 +509,12 @@ namespace Warewolf.Studio.ViewModels
             {
                 _outputMapping = value;
                 IsOutputMappingEmptyRows = true;
+                TestResultsAvailable = false;
                 if (_outputMapping != null)
                 {
                     if (_outputMapping.Count >= 1)
                     {
+                        TestResultsAvailable = true;
                         IsOutputMappingEmptyRows = false;
                     }
                 }
