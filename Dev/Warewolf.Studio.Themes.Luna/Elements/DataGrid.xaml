@@ -51,6 +51,7 @@
         <Setter Property="Background" Value="{StaticResource DataGridColumnHeaderBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource DataGridBorderBrush}" />
         <Setter Property="Foreground" Value="{StaticResource WareWolfBlackBrush}" />
+        <!--<Setter Property="BorderThickness" Value="1,0,1,0"/>-->
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Stretch" />
@@ -58,7 +59,7 @@
         <Setter Property="Height" Value="25" />
         <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
-        <Setter Property="Margin" Value="4,0,0,0" />
+        <!--<Setter Property="Margin" Value="-1,0,0,0" />-->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
@@ -97,8 +98,8 @@
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                            SnapsToDevicePixels="True"
-                            Visibility="Visible" />
+                                SnapsToDevicePixels="True"
+                                Visibility="Visible" />
                         <ContentControl x:Name="contentControl"
                                             KeyboardNavigation.IsTabStop="False"
                                             Foreground="{TemplateBinding Foreground}">
@@ -108,11 +109,11 @@
                                                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                         </ContentControl>
                         <Rectangle Width="1" 
-                                   Fill="#EEEEEE" 
+                                   Fill="{TemplateBinding BorderBrush}" 
                                    HorizontalAlignment="Right" 
                                    Grid.ColumnSpan="2"/>
                         <Rectangle Width="1" 
-                                   Fill="{StaticResource DataGridBorderBrush}" 
+                                   Fill="{TemplateBinding BorderBrush}" 
                                    HorizontalAlignment="Right" 
                                    Grid.ColumnSpan="2"/>
                             <Thumb x:Name="PART_LeftHeaderGripper" 
@@ -416,38 +417,6 @@
         </Setter>
     </Style>
 
-    <!--<Style x:Key="{x:Type ItemsControl}" TargetType="{x:Type ItemsControl}">
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding Items.Count, RelativeSource={RelativeSource Self}}" Value="0">
-                <Setter Property="Background">
-                    <Setter.Value>
-                        <VisualBrush Stretch="None">
-                            <VisualBrush.Visual>
-                                <TextBlock Text="no items" 
-                                       FontFamily="{StaticResource DefaultFontFamily}"
-                                       FontSize="{StaticResource FontSize-Normal}"/>
-                            </VisualBrush.Visual>
-                        </VisualBrush>
-                    </Setter.Value>
-                </Setter>
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Items, RelativeSource={RelativeSource Self}}" Value="{x:Null}">
-                <Setter Property="Background">
-                    <Setter.Value>
-                        <VisualBrush Stretch="None">
-                            <VisualBrush.Visual>
-                                <TextBlock Text="no items" 
-                                       FontFamily="{StaticResource DefaultFontFamily}"
-                                       FontSize="{StaticResource FontSize-Normal}"/>
-                            </VisualBrush.Visual>
-                        </VisualBrush>
-                    </Setter.Value>
-                </Setter>
-            </DataTrigger>
-        </Style.Triggers>
-    </Style>-->
-    
-
     <Style x:Key="DefaultDataGridCellStyle" TargetType="{x:Type DataGridCell}">
         <Setter Property="AutomationProperties.AutomationId" Value="UI_DataGridCell_AutoID" />
         <Setter Property="Background" Value="{StaticResource DataGridBackgroundBrush}" />
@@ -590,6 +559,19 @@
         </Setter>
     </Style>
     
-    <Style x:Key="{x:Type DataGrid}" TargetType="{x:Type DataGrid}" BasedOn="{StaticResource {x:Type ItemsControl}}">
+    <Style x:Key="{x:Type DataGrid}" TargetType="{x:Type DataGrid}" >
+        <Setter Property="BorderThickness" Value="0,1,1,1"/>
+        <Setter Property="BorderBrush" Value="{StaticResource DataGridBorderBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type DataGrid}">
+                    <Border x:Name="border"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            SnapsToDevicePixels="True">
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 </ResourceDictionary>
