@@ -23,13 +23,9 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="7" ></RowDefinition>
         </Grid.RowDefinitions>
-        
-        <TextBlock FontWeight="Bold" 
-                           Grid.Row="0" 
-                           Margin="0,-1,0,0"></TextBlock>
-        <DataGrid x:Name="InputsMappingDataGrid" 
-                          Grid.Row="1" 
-                          Margin="0,-2,0,0"
+
+        <TextBlock FontWeight="Bold" Grid.Row="0" ></TextBlock>
+        <DataGrid x:Name="InputsMappingDataGrid" Grid.Row="1" 
                           ItemsSource="{Binding Inputs}" 
                           HorizontalScrollBarVisibility="Disabled" 
                           MaxHeight="180"
@@ -95,17 +91,12 @@
                 </Style>
             </DataGrid.Style>
         </DataGrid>
-        <TextBlock Grid.Row="2" Text="No Records Found" 
+        <TextBlock Grid.Row="2" Text="None" 
                    HorizontalAlignment="Center" 
                    VerticalAlignment="Center" 
                    Visibility="{Binding IsInputsEmptyRows, Converter={StaticResource BoolToVisibility}}" />
-        <TextBlock Grid.Row="3" 
-                           FontWeight="Bold" 
-                           Margin="0,-1,0,0" ></TextBlock>
-        
-        <DataGrid x:Name="OutputsMappingDataGrid" 
-                          Grid.Row="4" 
-                          Margin="0,-2,0,0"
+        <TextBlock Grid.Row="3" FontWeight="Bold" ></TextBlock>
+        <DataGrid x:Name="OutputsMappingDataGrid" Grid.Row="4" 
                           ItemsSource="{Binding OutputMapping}" 
                           HorizontalScrollBarVisibility="Auto" 
                           MaxHeight="180"
@@ -123,7 +114,7 @@
                 <DataGridTemplateColumn Header="Output" CanUserResize="True" Width="50*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding CompleteName}" ToolTip="{Binding Path=CompleteName}"></TextBlock>
+                            <TextBlock Text="{Binding OutputName}" ToolTip="{Binding Path=OutputName}"></TextBlock>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -154,7 +145,7 @@
                 </Style>
             </DataGrid.Style>
         </DataGrid>
-        <TextBlock Grid.Row="5" Text="No Records Found" 
+        <TextBlock Grid.Row="5" Text="None" 
                    HorizontalAlignment="Center" 
                    VerticalAlignment="Center" 
                    Background="Transparent"
