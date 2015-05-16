@@ -19,6 +19,7 @@ using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Data.Binary_Objects;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
@@ -767,16 +768,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             dataObject.ForEachNestingLevel++;
             ErrorResultTO allErrors = new ErrorResultTO();
-
+            IIndexIterator itr=null;
             InitializeDebug(dataObject);
             try
             {
                 ErrorResultTO errors;
                 ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out errors);
-
-                var itr = exePayload.IndexIterator;
-                if (itr != null)
+                foreach(var err in errors.FetchErrors())
                 {
+                       dataObject.Environment.AddError(err);
+                }
+                 itr = exePayload.IndexIterator;
+            
 
                     string error;
                     ForEachInnerActivityTO innerA = GetInnerActivity(out error);
@@ -794,9 +797,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         DispatchDebugState(dataObject, StateType.After);
                     }
                     exePayload.InnerActivity = innerA;
+                    if (itr != null)
+                    {
                     var ind = itr.MaxIndex();
-                    var count = 0;
-                    while (itr.HasMore() && count < ind)
+            
+                    while (itr.HasMore())
                     {
 
                         operationalData = exePayload;
@@ -808,7 +813,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                         exeAct.Execute(dataObject);
 
-                        count++;
+                  
                     }
                     if (errors.HasErrors())
                     {
@@ -824,11 +829,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
-                if (ForEachType != enForEachType.NumOfExecution)
+                if (itr != null)
                 {
-                    RestoreHandlerFn();
-                }
+                    if (ForEachType != enForEachType.NumOfExecution)
+                    {
+                        RestoreHandlerFn();
+                    }
 
+                }
                 dataObject.ParentInstanceID = _previousParentId;
                 dataObject.ForEachNestingLevel--;
                 dataObject.IsDebugNested = false;
