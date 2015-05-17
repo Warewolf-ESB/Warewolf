@@ -331,6 +331,7 @@
                     </dockManager:XamDockManager.Panes>
                     <dockManager:DocumentContentHost Background="{StaticResource WarewolfPanelGreyBrush}">
                         <dockManager:SplitPane>
+                            <!-- ADD SCROLLVIEWER IN SHELL TO ALLOW HORIZONTAL SCROLL VIEWING  -->
                             <dockManager:TabGroupPane x:Name="Workspace"
                                                       SelectedItem="{Binding ActiveItem}"
                                                       regions:RegionManager.RegionName="{x:Static core:RegionNames.Workspace}" />
