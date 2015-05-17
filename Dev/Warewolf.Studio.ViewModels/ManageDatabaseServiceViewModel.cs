@@ -23,6 +23,7 @@ namespace Warewolf.Studio.ViewModels
         ICollection<IDbSource> _sources;
         IDbSource _selectedSource;
         IDbAction _selectedAction;
+        IDbAction _refreshSelectedAction;
         ICollection<IDbInput> _inputs;
         private bool _inputsRequired;
         DataTable _testResults;
@@ -360,12 +361,43 @@ namespace Warewolf.Studio.ViewModels
             try
             {
                 AvalaibleActions = _model.GetActions(SelectedSource);
+                RefreshSelectedAction = _refreshSelectedAction;
                 ErrorText = "";
             }
             catch (Exception e)
             {
                 ErrorText = e.Message;
                 AvalaibleActions = null;
+            }
+        }
+        public IDbAction RefreshSelectedAction
+        {
+            get
+            {
+                return _refreshSelectedAction;
+            }
+            set
+            {
+                value = _refreshSelectedAction;
+                if ((!Equals(value, _selectedAction) && _selectedAction != null) || _selectedAction == null)
+                {
+                    IsTestResultsEmptyRows = false;
+                    TestResultsAvailable = false;
+                    CanEditMappings = false;
+                    TestSuccessful = false;
+                    OutputMapping = null;
+                }
+
+                _selectedAction = value;
+                //SET REFRESH SELECTED VALUE TO A
+                if (_selectedAction != null)
+                {
+                    _refreshSelectedAction = _selectedAction;
+                }
+                CanTest = _selectedAction != null;
+                Inputs = _selectedAction != null ? _selectedAction.Inputs : new Collection<IDbInput>();
+                ViewModelUtils.RaiseCanExecuteChanged(TestProcedureCommand);
+                OnPropertyChanged(() => SelectedAction);
             }
         }
 
@@ -387,6 +419,11 @@ namespace Warewolf.Studio.ViewModels
                 }
                 
                 _selectedAction = value;
+                //SET REFRESH SELECTED VALUE TO SELECTED VALUE
+                if (_selectedAction != null)
+                {
+                    _refreshSelectedAction = _selectedAction;
+                }
                 CanTest = _selectedAction != null;
                 Inputs = _selectedAction != null ? _selectedAction.Inputs : new Collection<IDbInput>();
                 ViewModelUtils.RaiseCanExecuteChanged(TestProcedureCommand);

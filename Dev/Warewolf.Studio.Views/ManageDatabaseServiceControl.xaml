@@ -42,6 +42,7 @@
         <views:NotConverter x:Key="NotConverter"></views:NotConverter>
     </UserControl.Resources>
     <ScrollViewer>
+        <StackPanel>
         <Grid Margin="{StaticResource ContainerBorder}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
@@ -126,7 +127,7 @@
                               Padding="{StaticResource ComboBoxItemPadding}"
                               ItemsSource="{Binding AvalaibleActions}" 
                               DisplayMemberPath="Name" 
-                              SelectedItem="{Binding SelectedAction}" 
+                              SelectedItem="{Binding SelectedAction, Mode=TwoWay}" 
                               Text="Choose" 
                               Margin="{StaticResource ElementBorderTop}"></ComboBox>
                     <!-- NEED TO ADD LOGIC TO REFRESH COMMAND AND VISIBILITY -->
@@ -315,5 +316,6 @@
                         Width="100">Save</Button>
             </Grid>
         </Grid>
+        </StackPanel>
     </ScrollViewer>
 </UserControl>
