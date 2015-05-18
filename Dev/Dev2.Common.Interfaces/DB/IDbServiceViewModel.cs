@@ -11,7 +11,6 @@ namespace Dev2.Common.Interfaces.DB
         ICollection<IDbSource> Sources { get; set; }
         IDbSource SelectedSource { get; set; }
         IDbAction SelectedAction { get; set; }
-        IDbAction RefreshSelectedAction { get; set; }
         ICollection<IDbAction> AvalaibleActions { get; set; }
         string DataSourceHeader { get; }
         string DataSourceActionHeader { get; }

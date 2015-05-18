@@ -130,7 +130,7 @@
                               DisplayMemberPath="Name" 
                               SelectedItem="{Binding SelectedAction, Mode=TwoWay}" 
                               Text="Choose" 
-                                  IsSynchronizedWithCurrentItem="True"
+                                  SelectedValue="{Binding SelectedAction, Mode=TwoWay}"
                               Margin="{StaticResource ElementBorderTop}"></ComboBox>
                         <!-- NEED TO ADD LOGIC TO REFRESH COMMAND AND VISIBILITY -->
                         <Button Width="25" Height="25" 
