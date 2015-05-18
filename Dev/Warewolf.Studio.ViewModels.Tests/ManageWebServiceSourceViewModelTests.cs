@@ -132,7 +132,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             dialog.Setup(a => a.ResourceName).Returns(new ResourceName("path", "name"));
             var updateManager = new Mock<IManageWebServiceSourceModel>();
 
-            var manageWebServiceSourceViewModel = new ManageWebserviceSourceViewModel(updateManager.Object, dialog.Object, new Mock<IEventAggregator>().Object) { Password = "bob", ServerType = enSourceType.SqlDatabase, AuthenticationType = AuthenticationType.Public, UserName = "dave", DefaultQuery = "dbNAme" };
+            var manageWebServiceSourceViewModel = new ManageWebserviceSourceViewModel(updateManager.Object, dialog.Object, new Mock<IEventAggregator>().Object) { Password = "bob", AuthenticationType = AuthenticationType.Public, UserName = "dave", DefaultQuery = "dbNAme" };
             // ReSharper disable MaximumChainedReferences
             updateManager.Setup(a => a.TestConnection(It.IsAny<IWebServiceSource>())).Callback((IWebServiceSource a) =>
                 // ReSharper restore MaximumChainedReferences
@@ -170,7 +170,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             dialog.Setup(a => a.ResourceName).Returns(new ResourceName("path", "name"));
             var updateManager = new Mock<IManageWebServiceSourceModel>();
 
-            var manageWebServiceSourceViewModel = new ManageWebserviceSourceViewModel(updateManager.Object, dialog.Object, new Mock<IEventAggregator>().Object) { Password = "bob", ServerType = enSourceType.SqlDatabase, AuthenticationType = AuthenticationType.Public, UserName = "dave", DefaultQuery = "dbNAme" };
+            var manageWebServiceSourceViewModel = new ManageWebserviceSourceViewModel(updateManager.Object, dialog.Object, new Mock<IEventAggregator>().Object) { Password = "bob",  AuthenticationType = AuthenticationType.Public, UserName = "dave", DefaultQuery = "dbNAme" };
             // ReSharper disable MaximumChainedReferences
             updateManager.Setup(a => a.TestConnection(It.IsAny<IWebServiceSource>())).Callback((IWebServiceSource a) =>
                 // ReSharper restore MaximumChainedReferences
@@ -184,7 +184,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(manageWebServiceSourceViewModel.OkCommand.CanExecute(null));
             manageWebServiceSourceViewModel.TestCommand.Execute(null);
             Assert.IsTrue(manageWebServiceSourceViewModel.TestPassed);
-            Assert.AreEqual(manageWebServiceSourceViewModel.DatabaseNames.Count, 2);
 
         }
 
@@ -203,7 +202,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             var manageWebServiceSourceViewModel = new ManageWebserviceSourceViewModel(updateManager.Object, dialog.Object, new Mock<IEventAggregator>().Object);
             Assert.IsFalse(manageWebServiceSourceViewModel.CanTest());
             manageWebServiceSourceViewModel.Password = "bob";
-            manageWebServiceSourceViewModel.ServerType = enSourceType.SqlDatabase;
             manageWebServiceSourceViewModel.AuthenticationType = AuthenticationType.Public;
             manageWebServiceSourceViewModel.UserName = "dave";
             manageWebServiceSourceViewModel.DefaultQuery = "dbNAme";
@@ -226,7 +224,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             var manageWebServiceSourceViewModel = new ManageWebserviceSourceViewModel(updateManager.Object, dialog.Object, new Mock<IEventAggregator>().Object);
             Assert.IsFalse(manageWebServiceSourceViewModel.CanTest());
             manageWebServiceSourceViewModel.Password = "bob";
-            manageWebServiceSourceViewModel.ServerType = enSourceType.SqlDatabase;
             manageWebServiceSourceViewModel.AuthenticationType = AuthenticationType.User;
 
             manageWebServiceSourceViewModel.DefaultQuery = "dbNAme";
@@ -250,7 +247,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             var manageWebServiceSourceViewModel = new ManageWebserviceSourceViewModel(updateManager.Object, dialog.Object, new Mock<IEventAggregator>().Object);
             Assert.IsFalse(manageWebServiceSourceViewModel.CanTest());
             manageWebServiceSourceViewModel.Password = "bob";
-            manageWebServiceSourceViewModel.ServerType = enSourceType.SqlDatabase;
             manageWebServiceSourceViewModel.AuthenticationType = AuthenticationType.Public;
             manageWebServiceSourceViewModel.UserName = "dave";
             manageWebServiceSourceViewModel.DefaultQuery = "dbNAme";
