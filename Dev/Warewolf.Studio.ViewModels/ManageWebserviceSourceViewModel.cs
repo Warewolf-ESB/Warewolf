@@ -25,9 +25,9 @@ namespace Warewolf.Studio.ViewModels
     {
         private AuthenticationType _authenticationType;
         private string _hostName;
-        private string _defaultQuery;
         private string _userName;
         private string _password;
+        private string _defaultQuery;
         private string _testMessage;
         private string _header;
         readonly IManageWebServiceSourceModel _updateManager;
@@ -50,6 +50,7 @@ namespace Warewolf.Studio.ViewModels
             _updateManager = updateManager;
             _aggregator = aggregator;
             _warewolfserverName = updateManager.ServerName;
+            _authenticationType = AuthenticationType.Anonymous;
             HeaderText = "New Webservice Connector Source Server";
             Header = "New Webservice Connector Source Server";
             TestCommand = new DelegateCommand(TestConnection, CanTest);
@@ -324,6 +325,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+
         public string UserName
         {
             get { return _userName; }
@@ -384,6 +386,15 @@ namespace Warewolf.Studio.ViewModels
  
         }
         
+
+        [ExcludeFromCodeCoverage]
+        public string DefaultQueryLabel
+        {
+            get
+            {
+                return Resources.Languages.Core.DefaultQueryLabel;
+            }
+        }
 
         [ExcludeFromCodeCoverage]
         public string UserNameLabel
@@ -466,15 +477,6 @@ namespace Warewolf.Studio.ViewModels
             get
             {
                 return Resources.Languages.Core.DatabaseSourceServerLabel;
-            }
-        }
-
-        [ExcludeFromCodeCoverage]
-        public string DefaultQueryLabel
-        {
-            get
-            {
-                return Resources.Languages.Core.DatabaseSourceDatabaseLabel;
             }
         }
 

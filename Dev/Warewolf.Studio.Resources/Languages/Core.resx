@@ -535,6 +535,9 @@ You need Administrator permission.</value>
   <data name="UserNameLabel" xml:space="preserve">
     <value>User Name:</value>
   </data>
+  <data name="DefaultQueryLabel" xml:space="preserve">
+    <value>Default Query:</value>
+  </data>
   <data name="MenuDialogDatabaseLabel" xml:space="preserve">
     <value>Database</value>
   </data>

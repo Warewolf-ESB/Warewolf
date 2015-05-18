@@ -16,10 +16,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// </summary>
         string HostName { get; set; }
         
-        /// <summary>
-        /// The Default that the source is reading from
-        /// </summary>
-        string DefaultQuery { get; set; }
+        
         /// <summary>
         /// User Name
         /// </summary>
@@ -28,6 +25,11 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// Password
         /// </summary>
         string Password { get; set; }
+        /// <summary>
+        /// Default Query
+        /// </summary>
+        string DefaultQuery { get; set; }
+        
         /// <summary>
         /// Test if connection is successful
         /// </summary>
