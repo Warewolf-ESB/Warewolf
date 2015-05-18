@@ -92,6 +92,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connect using anonymous.
+        /// </summary>
+        public static string AnonymousAuthenticationToolTip {
+            get {
+                return ResourceManager.GetString("AnonymousAuthenticationToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Warewolf.
         /// </summary>
         public static string App_Data_Directory {

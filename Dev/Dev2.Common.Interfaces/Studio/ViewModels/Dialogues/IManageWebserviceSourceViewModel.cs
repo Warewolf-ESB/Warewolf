@@ -8,7 +8,7 @@ using Newtonsoft.Json.Converters;
 
 namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
 {
-    public interface IManageDatabaseSourceViewModel
+    public interface IManageWebserviceSourceViewModel
     {
         /// <summary>
         /// The Database Server Type
@@ -99,7 +99,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// <summary>
         /// Tooltip for the Windows Authentication option
         /// </summary>
-        string WindowsAuthenticationToolTip { get; }
+        string AnonymousAuthenticationToolTip { get; }
 
         /// <summary>
         /// Tooltip for the User Authentication option
@@ -154,15 +154,10 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         IList<string> ComputerNames { get; set; } 
     }
 
-    public interface IManageDatabaseSourceModel
+    public interface IManageWebServiceSourceModel
     {
 
-        IList<string> GetComputerNames();
-        IList<string> TestDbConnection(IDbSource resource);
-        void Save(IDbSource toDbSource);
-        string ServerName { get; }
+        void TestConnection(IWebServiceSource resource);
+        void Save(IWebServiceSource toDbSource);
     }
-    
-    
-
 }

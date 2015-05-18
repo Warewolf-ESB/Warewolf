@@ -181,6 +181,7 @@
     <Compile Include="Core\Graph\IPathSegment.cs" />
     <Compile Include="Core\Graph\OutputFormats.cs" />
     <Compile Include="Core\ServerSource.cs" />
+    <Compile Include="Core\WebServiceSourceDefinition.cs" />
     <Compile Include="DataList\Contract\enTranslationDepth.cs" />
     <Compile Include="DataList\Contract\IBinaryDataListItem.cs" />
     <Compile Include="DataList\DatalistView\IVariableListItemViewModel.cs" />
@@ -279,9 +280,11 @@
     <Compile Include="ServerProxyLayer\IDbSource.cs" />
     <Compile Include="ServerProxyLayer\IPluginProxy.cs" />
     <Compile Include="Help\IHelpDescriptor.cs" />
+    <Compile Include="ServerProxyLayer\IWebServiceSource.cs" />
     <Compile Include="Studio\IMenuViewModel.cs" />
     <Compile Include="Studio\IVariableListViewModel.cs" />
     <Compile Include="Studio\ViewModels\Dialogues\IManageDatabaseSourceViewModel.cs" />
+    <Compile Include="Studio\ViewModels\Dialogues\IManageWebserviceSourceViewModel.cs" />
     <Compile Include="Studio\ViewModels\Dialogues\INewServerDialogue.cs" />
     <Compile Include="Studio\ViewModels\IDeployItemMessage.cs" />
     <Compile Include="Studio\ViewModels\IExplorerHelpDescriptorBuilder.cs" />

@@ -748,4 +748,7 @@ You need Administrator permission.</value>
   <data name="New" xml:space="preserve">
     <value>New</value>
   </data>
+  <data name="AnonymousAuthenticationToolTip" xml:space="preserve">
+    <value>Connect using anonymous</value>
+  </data>
 </root>

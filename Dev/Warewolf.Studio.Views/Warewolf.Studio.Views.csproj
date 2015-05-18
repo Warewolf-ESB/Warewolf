@@ -260,6 +260,9 @@
     <Compile Include="ManageDatabaseSourceControl.xaml.cs">
       <DependentUpon>ManageDatabaseSourceControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ManageWebserviceSourceControl.xaml.cs">
+      <DependentUpon>ManageWebserviceSourceControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MappingsView.xaml.cs">
       <DependentUpon>MappingsView.xaml</DependentUpon>
     </Compile>
@@ -336,6 +339,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ManageDatabaseSourceControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ManageWebserviceSourceControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

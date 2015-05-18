@@ -74,6 +74,7 @@ namespace Warewolf.Studio.ViewModels
             CanDelete = true; //todo:remove
             CanShowDependencies = true;
             CanCreatePluginService = true;
+            CanCreateWebSource = true;
             _explorerRepository = server.ExplorerRepository;
             Server.PermissionsChanged += UpdatePermissions;
             ShowVersionHistory = new DelegateCommand((() => AreVersionsVisible = (!AreVersionsVisible)));
@@ -165,7 +166,7 @@ namespace Warewolf.Studio.ViewModels
                    CanCreatePluginSource = CanCreatePluginSource,
                    CanCreateServerSource = CanCreateServerSource,
                    CanCreateWebService = CanCreateWebService,
-                   CanCreateWebSource = CanCreateDbService,
+                   CanCreateWebSource = CanCreateWebSource,
                    CanCreateWorkflowService = CanCreateWorkflowService 
                   
                };
@@ -595,8 +596,7 @@ namespace Warewolf.Studio.ViewModels
                          CanCreateDbService = false,
                          CanCreateDbSource = false,
                          CanCreatePluginService = false,
-                         CanCreateWebSource = false
-						 ,
+                         CanCreateWebSource = true,
 						ResourceType = ResourceType.Version
                     }
                     ));
