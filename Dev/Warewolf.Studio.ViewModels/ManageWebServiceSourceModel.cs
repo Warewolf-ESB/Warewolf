@@ -13,8 +13,8 @@ namespace Warewolf.Studio.ViewModels
         {
             _updateRepository = updateRepository;
             _queryProxy = queryProxy;
-           
-            
+
+            ServerName = serverName;
         }
 
         #region Implementation of IManageWebServiceSourceModel
@@ -27,6 +27,7 @@ namespace Warewolf.Studio.ViewModels
         {
         }
 
+        public string ServerName { get; set; }
 
         #endregion
     }

@@ -1,34 +1,25 @@
-﻿using System.Collections.Generic;
-using System.Windows.Input;
-using Dev2.Common.Interfaces.Core.DynamicServices;
+﻿using System.Windows.Input;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Common.Interfaces.ServerProxyLayer;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
 {
     public interface IManageWebserviceSourceViewModel
     {
         /// <summary>
-        /// The Database Server Type
-        /// </summary>
-        [JsonConverter(typeof(StringEnumConverter))]
-        enSourceType ServerType { get; set; }
-        /// <summary>
-        ///  Windows or user or publlic
+        ///  User or Anonymous
         /// </summary>
         AuthenticationType AuthenticationType { get; set; }
 
         /// <summary>
-        /// The Database Server Name
+        /// The Host Name
         /// </summary>
-        string ServerName { get; set; }
+        string HostName { get; set; }
         
         /// <summary>
-        /// The Database that the source is reading from
+        /// The Default that the source is reading from
         /// </summary>
-        string DatabaseName { get; set; }
+        string DefaultQuery { get; set; }
         /// <summary>
         /// User Name
         /// </summary>
@@ -45,16 +36,12 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// <summary>
         /// Cancel a test that has started
         /// </summary>
-        ICommand CancelTestCommand { get; set; }
+        ICommand ViewInBrowserCommand { get; set; }
         /// <summary>
         /// The message that will be set if the test is either successful or not
         /// </summary>
         string TestMessage { get; }
 
-        /// <summary>
-        /// Localized text for the Server Type label
-        /// </summary>
-        string ServerTypeLabel { get; }
 
         /// <summary>
         /// Localized text for the UserName label
@@ -77,14 +64,14 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         string TestLabel { get; }
 
         /// <summary>
-        /// The localized text for the Database Server label
+        /// The localized text for the Host name label
         /// </summary>
-        string ServerLabel { get;  }
+        string HostNameLabel { get;  }
 
         /// <summary>
-        /// The localized text for the Database label
+        /// The localized text for the Default Query label
         /// </summary>
-        string DatabaseLabel { get;  }
+        string DefaultQueryLabel { get;  }
 
         /// <summary>
         /// Command for save/ok
@@ -107,20 +94,9 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         string UserAuthenticationToolTip { get; }
 
         /// <summary>
-        /// Tooltip for the Database Server Type
+        /// View In Browser label
         /// </summary>
-        // ReSharper disable UnusedMember.Global
-        string ServerTypeTool { get; }
-        // ReSharper restore UnusedMember.Global
-
-        /// <summary>
-        /// List of database names for the user to choose from based on the server entered
-        /// </summary>
-        IList<string> DatabaseNames { get; set; }
-        /// <summary>
-        /// Cancel test display text
-        /// </summary>
-        string CancelTestLabel { get; }
+        string ViewInBrowserLabel { get; }
         /// <summary>
         /// Has test passed
         /// </summary>
@@ -134,10 +110,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// IsTesting
         /// </summary>
         bool Testing { get; }
-        /// <summary>
-        /// Database Types avaialable 
-        /// </summary>
-        IList<enSourceType> Types { get; set; }
+        
         /// <summary>
         /// The name of the resource
         /// </summary>
@@ -149,9 +122,6 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// The authentications Type
         /// </summary>
         bool UserAuthenticationSelected { get; }
-
-
-        IList<string> ComputerNames { get; set; } 
     }
 
     public interface IManageWebServiceSourceModel
@@ -159,5 +129,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
 
         void TestConnection(IWebServiceSource resource);
         void Save(IWebServiceSource toDbSource);
+
+        string ServerName { get; set; }
     }
 }

@@ -40,8 +40,8 @@
         <StackPanel Background="{StaticResource WareWolfMenuBrush}" Grid.ColumnSpan="2" HorizontalAlignment="Stretch">
             <TextBlock Margin="10" Text="{Binding HeaderText}" Style="{StaticResource SourceHeader}" />
         </StackPanel>
-        <TextBlock Margin="{StaticResource ElementBorderLeftRightTop}" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" Text="{Binding ServerLabel}"/>
-        <TextBox x:Name="ServerTextBox"   Margin="{StaticResource ElementBorderLeftTopRight}" Grid.Row="2" Grid.Column="1" Text="{Binding ServerName,UpdateSourceTrigger=PropertyChanged}"
+        <TextBlock Margin="{StaticResource ElementBorderLeftRightTop}" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" Text="{Binding HostNameLabel}"/>
+        <TextBox x:Name="ServerTextBox"   Margin="{StaticResource ElementBorderLeftTopRight}" Grid.Row="2" Grid.Column="1" Text="{Binding HostName,UpdateSourceTrigger=PropertyChanged}"
             views:FocusExtension.IsFocused="True">
             <i:Interaction.Behaviors>
                 <core:HelpSetter Text="{x:Static languages:Core.DatabaseSourceServerHelp}"
@@ -97,7 +97,7 @@
                 <ColumnDefinition Width="1*"></ColumnDefinition>
                 <ColumnDefinition Width="6*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <TextBlock Margin="{StaticResource ElementBorderLeftRightTop}" Grid.Column="0" Text="{Binding DatabaseLabel}"/>
+            <TextBlock Margin="{StaticResource ElementBorderLeftRightTop}" Grid.Column="0" Text="{Binding DefaultQueryLabel}"/>
             <StackPanel Margin="{StaticResource ElementBorderLeftTopRight}" Grid.Column="1" >
                 <TextBox x:Name="DatabaseComboxBox"  Text="{Binding DefaultQuery}" >
                     <i:Interaction.Behaviors>
