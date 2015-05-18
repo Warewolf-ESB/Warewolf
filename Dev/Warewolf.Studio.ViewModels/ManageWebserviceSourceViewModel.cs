@@ -51,6 +51,7 @@ namespace Warewolf.Studio.ViewModels
             VerifyArgument.IsNotNull("aggregator", aggregator);
             _updateManager = updateManager;
             _aggregator = aggregator;
+            _authenticationType = AuthenticationType.Anonymous;
        
             HeaderText = "New Webservice Connector Source Server";
             Header = "New Webservice Connector Source Server";
