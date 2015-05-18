@@ -7,6 +7,7 @@
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              mc:Ignorable="d" 
+             x:Name="UserControl"
              d:DesignHeight="300" d:DesignWidth="300" 
              Loaded="ManageDatabaseServiceControl_OnLoaded"
              d:DataContext="{d:DesignInstance Type=db:IManageDbServiceViewModel,
@@ -41,41 +42,41 @@
         </Style>
         <views:NotConverter x:Key="NotConverter"></views:NotConverter>
     </UserControl.Resources>
-    <ScrollViewer>
-        <StackPanel>
-        <Grid Margin="{StaticResource ContainerBorder}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto" ></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto" ></RowDefinition>
-                <RowDefinition Height="Auto" ></RowDefinition>
-                <RowDefinition Height="Auto" ></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Row="0" HorizontalAlignment="Stretch" Margin="{StaticResource GridBorderBottom}" >
-                <!-- Select an Source-->
+    <ScrollViewer HorizontalScrollBarVisibility="Auto">
+        <StackPanel MinWidth="600" MaxWidth="{Binding ElementName=UserControl, Path=ActualWidth}">
+            <Grid Margin="{StaticResource ContainerBorder}">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto" ></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto" ></RowDefinition>
                     <RowDefinition Height="Auto" ></RowDefinition>
-                    <RowDefinition Height="7" ></RowDefinition>
+                    <RowDefinition Height="Auto" ></RowDefinition>
                 </Grid.RowDefinitions>
-                <StackPanel  Grid.Row="0" 
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Row="0" HorizontalAlignment="Stretch" Margin="{StaticResource GridBorderBottom}" >
+                    <!-- Select an Source-->
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" ></RowDefinition>
+                        <RowDefinition Height="Auto" ></RowDefinition>
+                        <RowDefinition Height="7" ></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel  Grid.Row="0" 
                              Grid.Column="0" 
                              Background="{StaticResource WareWolfMenuBrush}" 
                              HorizontalAlignment="Stretch" 
                              Orientation="Horizontal">
-                    <TextBlock Text="1" 
+                        <TextBlock Text="1" 
                                Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
-                    <TextBlock Margin="5" 
+                        <TextBlock Margin="5" 
                                Text="{Binding DataSourceHeader, Mode=OneWay}" 
                                Style="{StaticResource SourceHeader}"></TextBlock>
-                </StackPanel>
-                <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
-                    <ComboBox x:Name="SourcesComboBox" 
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+                        <ComboBox x:Name="SourcesComboBox" 
                               ItemsSource="{Binding Sources}" 
                               DisplayMemberPath="Name" 
                               Width="250" 
@@ -83,46 +84,46 @@
                               Focusable="True"
                               Margin="{StaticResource ElementBorderTop}" 
                               SelectedItem="{Binding SelectedSource}" />
-                    <Button Command="{Binding EditSourceCommand}" 
+                        <Button Command="{Binding EditSourceCommand}" 
                             IsEnabled="{Binding CanEditSource}" 
                             Width="25" 
                             Content=" ... " 
                             Margin="{StaticResource ElementBorderControlLeftTop}"></Button>
-                    <TextBlock Padding="0" Text="or" Margin="{StaticResource ElementBorderControlLeftTop}"></TextBlock>
-                    <Button Content="{Binding NewButtonLabel}" 
+                        <TextBlock Padding="0" Text="or" Margin="{StaticResource ElementBorderControlLeftTop}"></TextBlock>
+                        <Button Content="{Binding NewButtonLabel}" 
                             Margin="{StaticResource ElementBorderControlLeftTop}"
                             Style="{StaticResource ButtonOrangeStyle}" 
                             Command="{Binding CreateNewSourceCommand}" 
                             Width="100" ></Button>
-                </StackPanel>
-            </Grid>
-            <Grid x:Name="SelectAnActionGrid" 
+                    </StackPanel>
+                </Grid>
+                <Grid x:Name="SelectAnActionGrid" 
                   Grid.Row="1" 
                   Margin="{StaticResource GridBorderBottom}"
                   Grid.Column="0" 
                   Visibility="{Binding Path=CanSelectProcedure, Converter={StaticResource BoolToVis}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition ></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition Height="7" ></RowDefinition>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <StackPanel Grid.Row="0" 
+                    <Grid.RowDefinitions>
+                        <RowDefinition ></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="7" ></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Row="0" 
                             Grid.Column="0" 
                             Background="{StaticResource WareWolfMenuBrush}" 
                             HorizontalAlignment="Stretch" 
                             Orientation="Horizontal">
-                    <TextBlock Text="2" 
+                        <TextBlock Text="2" 
                                Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
-                    <TextBlock Margin="5" 
+                        <TextBlock Margin="5" 
                                Text="{Binding DataSourceActionHeader, Mode=OneWay}" 
                                Style="{StaticResource SourceHeader}" ></TextBlock>
-                </StackPanel>
-                <StackPanel Grid.Row="1" Orientation="Horizontal" >
-                    <!-- Choose data Source Action-->
-                    <ComboBox x:Name="ActionsComboBox" 
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" >
+                        <!-- Choose data Source Action-->
+                        <ComboBox x:Name="ActionsComboBox" 
                               Width="250" 
                               Padding="{StaticResource ComboBoxItemPadding}"
                               ItemsSource="{Binding AvalaibleActions}" 
@@ -130,89 +131,89 @@
                               SelectedItem="{Binding SelectedAction, Mode=TwoWay}" 
                               Text="Choose" 
                               Margin="{StaticResource ElementBorderTop}"></ComboBox>
-                    <!-- NEED TO ADD LOGIC TO REFRESH COMMAND AND VISIBILITY -->
-                    <Button Width="25" Height="25" 
+                        <!-- NEED TO ADD LOGIC TO REFRESH COMMAND AND VISIBILITY -->
+                        <Button Width="25" Height="25" 
                             Margin="{StaticResource ElementBorderControlLeftTop}"
                             Command="{Binding RefreshCommand}"
                             Visibility="{Binding Path=IsRefreshing,
                                          Converter={StaticResource NotConverter}}">
-                        <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
+                            <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
                                     FontSize="16" 
                                     Icon="Refresh" 
                                     VerticalAlignment="Top" 
                                     HorizontalAlignment="Center"/>
-                    </Button>
-                    <!-- NEED TO ADD LOGIC TO VISIBILITY -->
-                    <views:CircularProgressBar Margin="{StaticResource ElementBorderControlLeftTop}"
+                        </Button>
+                        <!-- NEED TO ADD LOGIC TO VISIBILITY -->
+                        <views:CircularProgressBar Margin="{StaticResource ElementBorderControlLeftTop}"
                                                Width="25"
                                                Height="25"
                                                Padding="2.5"
                                                Visibility="{Binding Path=IsRefreshing, Converter={StaticResource BoolToVis}}"/>
-                </StackPanel>
-            </Grid>
-            <Grid x:Name="TestActionGrid" 
+                    </StackPanel>
+                </Grid>
+                <Grid x:Name="TestActionGrid" 
                   Grid.Row="3" 
                   Margin="{StaticResource GridBorderBottom}"
                   Grid.Column="0" 
                   Visibility="{Binding Path=CanTest, Converter={StaticResource BoolToVis}}">
-                <!-- Test-->
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <!--<RowDefinition Height="Auto"></RowDefinition>-->
-                    <RowDefinition Height="7" ></RowDefinition>
-                </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0" 
+                    <!-- Test-->
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <!--<RowDefinition Height="Auto"></RowDefinition>-->
+                        <RowDefinition Height="7" ></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" 
                             Grid.Column="0" 
                             Background="{StaticResource WareWolfMenuBrush}" 
                             HorizontalAlignment="Stretch" 
                             Orientation="Horizontal">
-                    <TextBlock Text="3" 
+                        <TextBlock Text="3" 
                                Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
-                    <TextBlock Margin="5" 
+                        <TextBlock Margin="5" 
                                Text="{Binding TestHeader, Mode=OneWay}" 
                                Style="{StaticResource SourceHeader}" ></TextBlock>
-                </StackPanel>
-                <TextBlock Grid.Row="1" 
+                    </StackPanel>
+                    <TextBlock Grid.Row="1" 
                            Margin="0,0,0,0" 
                            Text="Inputs" 
                            FontWeight="Bold"
                            Visibility="{Binding InputsRequired,Converter={StaticResource BoolToVis}}"></TextBlock>
-                <Grid Grid.Row="2" Margin="0,0,0,0" >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <ListBox x:Name="InputsList" 
+                    <Grid Grid.Row="2" Margin="0,0,0,0" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <ListBox x:Name="InputsList" 
                                  Grid.IsSharedSizeScope="True" 
                                  ItemsSource="{Binding Inputs}" 
                                  BorderBrush="Transparent" 
                                  Padding="0,0,0,1" >
-                        <ListBox.ItemTemplate>
-                            <DataTemplate DataType="db:IDbInput">
-                                <StackPanel Orientation="Horizontal" >
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition SharedSizeGroup="{Binding Name}" />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Margin="{StaticResource ControlBorderTop}" Text="{Binding Path=Name }" Width="85"></TextBlock>
-                                        <TextBox Grid.Column="1" Margin="{StaticResource ControlBorderTop}" Text="{Binding Path=Value}" Width="200"></TextBox>
-                                    </Grid>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                    <Button x:Name="TestActionButton" 
+                            <ListBox.ItemTemplate>
+                                <DataTemplate DataType="db:IDbInput">
+                                    <StackPanel Orientation="Horizontal" >
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition SharedSizeGroup="{Binding Name}" />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Margin="{StaticResource ControlBorderTop}" Text="{Binding Path=Name }" Width="85"></TextBlock>
+                                            <TextBox Grid.Column="1" Margin="{StaticResource ControlBorderTop}" Text="{Binding Path=Value}" Width="200"></TextBox>
+                                        </Grid>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <Button x:Name="TestActionButton" 
                             Grid.Column="0" 
                             Grid.Row="1" 
                             Margin="0,0,2,0"
@@ -220,20 +221,20 @@
                             Command="{Binding TestProcedureCommand}" 
                             VerticalAlignment="Bottom" 
                             Width="100">Test</Button>
-                    <views:CircularProgressBar Grid.Row="1"
+                        <views:CircularProgressBar Grid.Row="1"
                                                Grid.Column="1"
                                                Width="25"
                                                HorizontalAlignment="Right" 
                                                Height="25"
                                                Padding="2.5"
                                                Visibility="{Binding Path=IsTesting,Converter={StaticResource BoolToVis}}" />
-                </Grid>
-                <TextBlock Grid.Row="4" 
+                    </Grid>
+                    <TextBlock Grid.Row="4" 
                            Margin="0,-3,0,0"
                            Text="{Binding OutputsLabel}" 
                            FontWeight="Bold" 
                            Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}"></TextBlock>
-                <DataGrid x:Name="OutputsDataGrid" 
+                    <DataGrid x:Name="OutputsDataGrid" 
                           Margin="0,-2,0,0"
                           Grid.Row="5" 
                           MaxHeight="180"
@@ -250,72 +251,72 @@
                           BorderBrush="Transparent" 
                           CanUserResizeColumns="True" 
                           VerticalGridLinesBrush="Transparent" >
-                    <DataGrid.RowDetailsTemplate>
-                        <DataTemplate>
-                            <StackPanel>
-                                <TextBlock Text="No Record Found" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGrid.RowDetailsTemplate>
-                    <DataGrid.Style>
-                        <Style TargetType="DataGrid">
-                            <Setter Property="RowDetailsVisibilityMode" Value="Collapsed"></Setter>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding TestResults.Rows}" Value="0">
-                                    <Setter Property="RowHeight" Value="10"></Setter>
-                                    <Setter Property="RowDetailsVisibilityMode" Value="Visible"></Setter>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGrid.Style>
-                </DataGrid>
-                <!--<TextBlock Grid.Row="6" Text="None" 
+                        <DataGrid.RowDetailsTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="No Record Found" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGrid.RowDetailsTemplate>
+                        <DataGrid.Style>
+                            <Style TargetType="DataGrid">
+                                <Setter Property="RowDetailsVisibilityMode" Value="Collapsed"></Setter>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding TestResults.Rows}" Value="0">
+                                        <Setter Property="RowHeight" Value="10"></Setter>
+                                        <Setter Property="RowDetailsVisibilityMode" Value="Visible"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.Style>
+                    </DataGrid>
+                    <!--<TextBlock Grid.Row="6" Text="None" 
                    HorizontalAlignment="Center" 
                    VerticalAlignment="Center" 
                    Background="Transparent"
                    Visibility="Hidden" />-->
-            </Grid>
-            <Grid x:Name="MappingsGrid" 
+                </Grid>
+                <Grid x:Name="MappingsGrid" 
                   Grid.Row="4" 
                   Grid.Column="0" 
                   Visibility="{Binding Path=CanEditMappings,Converter={StaticResource BoolToVis}}">
-                <!-- Mappings-->
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                </Grid.RowDefinitions>
+                    <!-- Mappings-->
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" 
                             Grid.Column="0" 
                             Background="{StaticResource WareWolfMenuBrush}" 
                             HorizontalAlignment="Stretch" 
                             Orientation="Horizontal">
-                    <TextBlock Text="4" 
+                        <TextBlock Text="4" 
                                Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
-                    <TextBlock Margin="5" 
+                        <TextBlock Margin="5" 
                                Text="{Binding MappingsHeader, Mode=OneWay}" 
                                Style="{StaticResource SourceHeader}" ></TextBlock>
-                </StackPanel>
-                <views:MappingsView Grid.Row="1"></views:MappingsView>
-            </Grid>
-            <Grid Grid.Row="5" Grid.Column="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
+                    </StackPanel>
+                    <views:MappingsView Grid.Row="1"></views:MappingsView>
+                </Grid>
+                <Grid Grid.Row="5" Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" 
                                Text="{Binding ErrorText}" 
                                HorizontalAlignment="Left" 
                                TextWrapping="WrapWithOverflow" 
                                x:Name="ErrorTextBlock" ></TextBlock>
-                <Button x:Name="SaveButton" 
+                    <Button x:Name="SaveButton" 
                         Grid.Column="1" 
                         Margin="{StaticResource ControlBorderTop}" 
                         HorizontalAlignment="Right" 
                         Command="{Binding SaveCommand}" 
                         VerticalAlignment="Bottom" 
                         Width="100">Save</Button>
+                </Grid>
             </Grid>
-        </Grid>
         </StackPanel>
     </ScrollViewer>
 </UserControl>
