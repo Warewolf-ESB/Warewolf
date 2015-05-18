@@ -122,7 +122,7 @@ namespace Dev2.Tests.Activities.TOTests
         {
             //------------Setup for test--------------------------
             var jsonMappingTo = new JsonMappingTo("[[bob]]",1,false);
-            Assert.IsTrue(string.IsNullOrEmpty(jsonMappingTo.DestinationName));
+            Assert.AreEqual("bob", jsonMappingTo.DestinationName);
             Assert.AreEqual("[[bob]]", jsonMappingTo.SourceName);
             Assert.IsFalse(jsonMappingTo.CanRemove());
             Assert.AreEqual(1,jsonMappingTo.IndexNumber);
