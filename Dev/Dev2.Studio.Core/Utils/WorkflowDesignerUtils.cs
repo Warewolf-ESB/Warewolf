@@ -282,6 +282,7 @@ namespace Dev2.Utils
             }
         }
 
+
         private static Guid GetExampleID(string activityName)
         {
             var exampleIDString = ResolveExampleResource

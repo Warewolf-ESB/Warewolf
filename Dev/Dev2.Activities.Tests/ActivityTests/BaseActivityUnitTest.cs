@@ -217,7 +217,7 @@ namespace ActivityUnitTests
                 dataObject.ResourceID = Guid.NewGuid();
             }
             dataObject.Environment = DataObject.Environment;
-            wfec.Eval(() => FlowchartProcess,dataObject.ResourceID,dataObject);
+            wfec.Eval(FlowchartProcess,dataObject.ResourceID,dataObject);
             DataObject = dataObject;
             return dataObject;
         }
@@ -270,7 +270,7 @@ namespace ActivityUnitTests
             WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, mockChannel.Object);
 
             errors.ClearErrors();
-            wfec.Eval(() => FlowchartProcess,Guid.NewGuid(),dataObject);
+            wfec.Eval(FlowchartProcess,Guid.NewGuid(),dataObject);
 
             return mockChannel;
         }

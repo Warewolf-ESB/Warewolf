@@ -102,9 +102,16 @@ namespace Dev2.Common.DateAndTime
                     if (string.IsNullOrWhiteSpace(outputFormat))
                     {
                         //07.03.2013: Ashley Lewis - Bug 9167 null to default
-                        outputFormat =
-                            dateTimeParser.TranslateDotNetToDev2Format(GlobalConstants.Dev2DotNetDefaultDateTimeFormat,
-                                out error);
+
+
+                        string shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
+                        string longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
+                        string finalPattern = shortPattern + " " + longPattern;
+                        if (finalPattern.Contains("ss"))
+                        {
+                            outputFormat = finalPattern.Insert(finalPattern.IndexOf("ss", StringComparison.Ordinal) + 2, ".fff");
+                            outputFormat =dateTimeParser.TranslateDotNetToDev2Format(outputFormat,out error);
+                        }
                     }
 
                     //

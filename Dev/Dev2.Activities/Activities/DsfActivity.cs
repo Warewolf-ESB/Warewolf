@@ -543,6 +543,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }
             }
+                catch(Exception err)
+                {
+                    dataObject.Environment.Errors.Add(err.Message);
+                }
             finally
             {
 

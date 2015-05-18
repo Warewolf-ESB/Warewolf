@@ -2,6 +2,7 @@ using System;
 using System.Activities;
 using System.Collections.Concurrent;
 using Dev2;
+using Dev2.Common;
 
 namespace Warewolf.ResourceManagement
 {
@@ -16,22 +17,44 @@ namespace Warewolf.ResourceManagement
             _cache = cache;
         }        
 
-        public IDev2Activity Parse(Func<DynamicActivity> actFunc,Guid resourceIdGuid)
+        public IDev2Activity Parse(DynamicActivity activity,Guid resourceIdGuid,bool failOnException=false)
         {
-            if(_cache.ContainsKey(resourceIdGuid))
+            if(HasActivityInCache(resourceIdGuid))
             {
-                return _cache[resourceIdGuid];
+                return GetActivity(resourceIdGuid);
             }
-            var dynamicActivity = actFunc();
+            var dynamicActivity = activity;
             if (dynamicActivity != null)
             {
-                IDev2Activity act = _activityParser.Parse(dynamicActivity);
-                if (_cache.TryAdd(resourceIdGuid, act))
+                try
                 {
-                    return act;
+                    IDev2Activity act = _activityParser.Parse(dynamicActivity);
+                    if (_cache.TryAdd(resourceIdGuid, act))
+                    {
+                        return act;
+                    }
                 }
+                    // ReSharper disable EmptyGeneralCatchClause
+                catch(Exception err) //errors caught inside
+                    // ReSharper restore EmptyGeneralCatchClause
+                {
+                    Dev2Logger.Log.Error(err);
+                    if(failOnException)
+                    throw;
+                }
+   
             }
             return null;
+        }
+
+        public IDev2Activity GetActivity(Guid resourceIdGuid)
+        {
+            return _cache[resourceIdGuid];
+        }
+
+        public bool HasActivityInCache(Guid resourceIdGuid)
+        {
+            return _cache.ContainsKey(resourceIdGuid);
         }
 
         public void RemoveFromCache(Guid resourceID)
@@ -45,9 +68,5 @@ namespace Warewolf.ResourceManagement
             _cache.Clear();
         }
 
-        public bool HasId(Guid resourceID)
-        {
-            return _cache.ContainsKey(resourceID);
-        }
     }
 }

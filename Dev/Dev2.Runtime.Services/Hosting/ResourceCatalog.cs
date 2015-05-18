@@ -11,6 +11,7 @@
 
 using System;
 using System.Activities;
+
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -18,7 +19,10 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Transactions;
 using System.Xml.Linq;
+using ChinhDo.Transactions;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
@@ -546,30 +550,14 @@ namespace Dev2.Runtime.Hosting
 
         void AddOrUpdateToResourceActivityCache(Guid workspaceID, IResource resource)
         {
-            var service = GetService(workspaceID, resource.ResourceID,resource.ResourceName);
-
-            if(service != null)
-            {
-                var sa = service.Actions.FirstOrDefault();
-                MapServiceActionDependencies(workspaceID, sa);
-                var activity = GetActivity(sa);
-                Parse(workspaceID, activity, resource.ResourceID);
-            }
+            Parse(workspaceID, resource.ResourceID);
         }
 
-        static Func<DynamicActivity> GetActivity(ServiceAction sa)
+        static DynamicActivity GetActivity(ServiceAction sa)
         {
-            var activity = new Func<DynamicActivity>(() =>
-            {
-                if(sa != null)
-                {
-                    var act = sa.PopActivity();
-                    var theActivity = act.Value as DynamicActivity;
-                    return theActivity;
-                }
-                return null;
-            });
-            return activity;
+            var act = sa.PopActivity();
+            var theActivity = act.Value as DynamicActivity;
+            return theActivity;
         }
 
         DynamicService GetService(Guid workspaceID, Guid resourceID, string resourceName)
@@ -890,10 +878,10 @@ namespace Dev2.Runtime.Hosting
         void RemoveFromResourceActivityCache(Guid workspaceID, IResource resource)
         {
             IResourceActivityCache parser;
-            if (_parsers.TryGetValue(workspaceID,out parser))
+            if (_parsers != null && _parsers.TryGetValue(workspaceID,out parser))
             {
                 parser.RemoveFromCache(resource.ResourceID);
-            }
+            }            
         }
 
         #endregion
@@ -1266,90 +1254,106 @@ namespace Dev2.Runtime.Hosting
 
         ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting = true)
         {
-            var resources = GetResources(workspaceID);
-            var conflicting = resources.FirstOrDefault(r => resource.ResourceID != r.ResourceID && r.ResourcePath != null && (r.ResourcePath.Equals(resource.ResourcePath, StringComparison.InvariantCultureIgnoreCase) && r.ResourceName.Equals(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase)));
-            if((conflicting != null && !conflicting.IsNewResource) || ((conflicting != null && !overwriteExisting)))
+            var fileManager = new TxFileManager();
+            using (TransactionScope tx = new TransactionScope())
             {
-                return new ResourceCatalogResult
+                try
                 {
-                    Status = ExecStatus.DuplicateMatch,
-                    Message = string.Format("Compilation Error: There is a {0} with the same name.", conflicting.ResourceType)
-                };
-            }
-
-            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-            var originalRes = resource.ResourcePath ?? "";
-            int indexOfName = originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal);
-            var resPath = resource.ResourcePath;
-            if(indexOfName >= 0)
-                resPath = originalRes.Substring(0, originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal));
-            var directoryName = Path.Combine(workspacePath, resPath ?? string.Empty);
-
-            resource.FilePath = String.Format("{0}\\{1}.xml", directoryName, resource.ResourceName);
-
-            #region Save to disk
-
-            if(!Directory.Exists(directoryName))
-            {
-                Directory.CreateDirectory(directoryName);
-            }
 
 
+                    var resources = GetResources(workspaceID);
+                    var conflicting = resources.FirstOrDefault(r => resource.ResourceID != r.ResourceID && r.ResourcePath != null && (r.ResourcePath.Equals(resource.ResourcePath, StringComparison.InvariantCultureIgnoreCase) && r.ResourceName.Equals(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase)));
+                    if ((conflicting != null && !conflicting.IsNewResource) || ((conflicting != null && !overwriteExisting)))
+                    {
+                        return new ResourceCatalogResult
+                        {
+                            Status = ExecStatus.DuplicateMatch,
+                            Message = string.Format("Compilation Error: There is a {0} with the same name.", conflicting.ResourceType)
+                        };
+                    }
 
-            if(File.Exists(resource.FilePath))
-            {
-                // Remove readonly attribute if it is set
-                var attributes = File.GetAttributes(resource.FilePath);
-                if((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                    var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+                    var originalRes = resource.ResourcePath ?? "";
+                    int indexOfName = originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal);
+                    var resPath = resource.ResourcePath;
+                    if (indexOfName >= 0)
+                        resPath = originalRes.Substring(0, originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal));
+                    var directoryName = Path.Combine(workspacePath, resPath ?? string.Empty);
+
+                    resource.FilePath = String.Format("{0}\\{1}.xml", directoryName, resource.ResourceName);
+
+                    #region Save to disk
+
+                    if (!Directory.Exists(directoryName))
+                    {
+                        Directory.CreateDirectory(directoryName);
+                    }
+
+
+
+                    if (File.Exists(resource.FilePath))
+                    {
+                        // Remove readonly attribute if it is set
+                        var attributes = File.GetAttributes(resource.FilePath);
+                        if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                        {
+                            File.SetAttributes(resource.FilePath, attributes ^ FileAttributes.ReadOnly);
+                        }
+                    }
+
+                    XElement xml = contents.ToXElement();
+                    xml = resource.UpgradeXml(xml, resource);
+                    if (resource.ResourcePath != null && !resource.ResourcePath.EndsWith(resource.ResourceName))
+                    {
+                        var resourcePath = (resPath == "" ? "" : resource.ResourcePath + "\\") + resource.ResourceName;
+                        resource.ResourcePath = resourcePath;
+                        xml.SetElementValue("Category", resourcePath);
+
+                    }
+                    StringBuilder result = xml.ToStringBuilder();
+
+                    var signedXml = HostSecurityProvider.Instance.SignXml(result);
+
+                    lock (GetFileLock(resource.FilePath))
+                    {
+
+                        signedXml.WriteToFile(resource.FilePath, Encoding.UTF8, fileManager);
+                    }
+
+                    #endregion
+
+                    #region Add to catalog
+
+                    var index = resources.IndexOf(resource);
+                    var updated = false;
+                    if (index != -1)
+                    {
+                        resources.RemoveAt(index);
+                        updated = true;
+                    }
+                    resource.GetInputsOutputs(xml);
+                    resource.ReadDataList(xml);
+                    resource.SetIsNew(xml);
+                    resource.UpdateErrorsBasedOnXML(xml);
+
+                    resources.Add(resource);
+
+                    #endregion
+                    RemoveFromResourceActivityCache(workspaceID, resource);
+                    AddOrUpdateToResourceActivityCache(workspaceID, resource);
+                    tx.Complete();
+                    return new ResourceCatalogResult
+                    {
+                        Status = ExecStatus.Success,
+                        Message = string.Format("{0} {1} '{2}'", (updated ? "Updated" : "Added"), resource.ResourceType, resource.ResourceName)
+                    };
+                }
+                catch (Exception)
                 {
-                    File.SetAttributes(resource.FilePath, attributes ^ FileAttributes.ReadOnly);
+                    Transaction.Current.Rollback();
+                    throw;
                 }
             }
-
-            XElement xml = contents.ToXElement();
-            xml = resource.UpgradeXml(xml, resource);
-            if(resource.ResourcePath != null && !resource.ResourcePath.EndsWith(resource.ResourceName))
-            {
-                var resourcePath = (resPath == "" ? "" : resource.ResourcePath + "\\") + resource.ResourceName;
-                resource.ResourcePath = resourcePath;
-                xml.SetElementValue("Category", resourcePath);
-
-            }
-            StringBuilder result = xml.ToStringBuilder();
-
-            var signedXml = HostSecurityProvider.Instance.SignXml(result);
-
-            lock(GetFileLock(resource.FilePath))
-            {
-                signedXml.WriteToFile(resource.FilePath, Encoding.UTF8);
-            }
-
-            #endregion
-
-            #region Add to catalog
-
-            var index = resources.IndexOf(resource);
-            var updated = false;
-            if(index != -1)
-            {
-                resources.RemoveAt(index);
-                updated = true;
-            }
-            resource.GetInputsOutputs(xml);
-            resource.ReadDataList(xml);
-            resource.SetIsNew(xml);
-            resource.UpdateErrorsBasedOnXML(xml);
-
-            resources.Add(resource);
-
-            #endregion
-            RemoveFromResourceActivityCache(workspaceID, resource);
-            AddOrUpdateToResourceActivityCache(workspaceID, resource);
-            return new ResourceCatalogResult
-            {
-                Status = ExecStatus.Success,
-                Message = string.Format("{0} {1} '{2}'", (updated ? "Updated" : "Added"), resource.ResourceType, resource.ResourceName)
-            };
         }
 
         void SavedResourceCompileMessage(Guid workspaceID, IResource resource, string saveMessage)
@@ -1481,7 +1485,20 @@ namespace Dev2.Runtime.Hosting
 
             lock (GetFileLock(resource.FilePath))
             {
-                signedXml.WriteToFile(resource.FilePath, Encoding.UTF8);
+                  var fileManager = new TxFileManager();
+                  using (TransactionScope tx = new TransactionScope())
+                  {
+                      try
+                      {
+                          signedXml.WriteToFile(resource.FilePath, Encoding.UTF8,fileManager);
+                          tx.Complete();
+                      }
+                      catch
+                      {
+                          Transaction.Current.Rollback();
+                      }
+                  }
+                
             }
         }
 
@@ -1955,7 +1972,8 @@ namespace Dev2.Runtime.Hosting
         {
             var resourceContents = GetResourceContents(workspaceID, resource.ResourceID);
             var oldPath = resource.ResourcePath;
-            var newPath = oldPath.Replace(oldCategory, newCategory);
+            var cat = oldCategory.Replace("\\", "\\\\");
+            var newPath = Regex.Replace(oldPath, cat, newCategory, RegexOptions.IgnoreCase);
             resource.ResourcePath = newPath;
             var resourceElement = resourceContents.ToXElement();
             var categoryElement = resourceElement.Element("Category");
@@ -2037,15 +2055,31 @@ namespace Dev2.Runtime.Hosting
         public static Dictionary<Guid,IResourceActivityCache> _parsers = new Dictionary<Guid,IResourceActivityCache>();
         bool _loading;
 
-        public IDev2Activity Parse(Guid workspaceID,Func<DynamicActivity> actFunc, Guid resourceID)
+        public IDev2Activity Parse(Guid workspaceID,  Guid resourceID)
         {
-            IResourceActivityCache parser;
-            if(!_parsers.TryGetValue(workspaceID,out parser))
+            IResourceActivityCache parser = null;
+            if(_parsers != null && !_parsers.TryGetValue(workspaceID,out parser))
             {
                 parser = new ResourceActivityCache(CustomContainer.Get<IActivityParser>(),new ConcurrentDictionary<Guid, IDev2Activity>());
                 _parsers.Add(workspaceID,parser);
             }
-               return parser.Parse(actFunc, resourceID);
+            if (parser != null && parser.HasActivityInCache(resourceID))
+            {
+                return parser.GetActivity(resourceID);
+            }
+            var resource = GetResource(workspaceID, resourceID);
+            var service = GetService(workspaceID, resourceID, resource.ResourceName);
+            if (service != null)
+            {
+                var sa = service.Actions.FirstOrDefault();
+                MapServiceActionDependencies(workspaceID, sa);
+                var activity = GetActivity(sa);
+                if(parser != null)
+                {
+                    return parser.Parse(activity, resourceID);
+                }
+            }
+            return null;
         }
     }
 

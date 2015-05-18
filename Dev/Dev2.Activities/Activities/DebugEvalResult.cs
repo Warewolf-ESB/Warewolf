@@ -57,6 +57,7 @@ namespace Dev2.Activities
                     _evalResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomListresult(new WarewolfAtomList<DataASTMutable.WarewolfAtom>(DataASTMutable.WarewolfAtom.Nothing, atomList));
                     if (DataListUtil.IsFullyEvaluated(finalString))
                     {
+                        _inputVariable = finalString;
                         _evalResult = environment.Eval(finalString);
                     }
                 }

@@ -57,7 +57,6 @@ namespace Dev2.Activities.Specs.BaseTypes
             bool expected = anError.Equals("NO");
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             
-            var comiler = DataListFactory.CreateDataListCompiler();
             string fetchErrors = string.Join(Environment.NewLine,result.Environment.Errors);
             bool actual = result.Environment.Errors.Count==0;
             string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
@@ -165,6 +164,10 @@ namespace Dev2.Activities.Specs.BaseTypes
                             Dev2Logger.Log.Debug("Create Source File for file op test error");
                         }
                     }
+                }
+                else if(sourceEndPoint.PathIs(sourceEndPoint.IOPath)==enPathType.Directory && source.Path.Contains("emptydir"))
+                {
+                    broker.Create(sourceEndPoint, new Dev2CRUDOperationTO(true,false), false);
                 }
             }
             catch(Exception e)
@@ -686,6 +689,17 @@ namespace Dev2.Activities.Specs.BaseTypes
                 {
                     Assert.IsFalse(string.IsNullOrEmpty(inputDebugItems[i].MoreLink));
                 }
+                else if (expectedDebugItems[i].Value != null && expectedDebugItems[i].Value.Equals("!!DateWithMS!!"))
+                {
+                    var dt = inputDebugItems[i].Value.Split(new []{'/',':','.',' '});
+                    Assert.IsTrue(dt.Length==8);
+                    Assert.IsTrue(inputDebugItems[i].Value.Contains("."));
+                    int val;
+                    Assert.IsTrue( int.TryParse(dt[6],out val));
+                    Assert.IsTrue(dt.Last().EndsWith("AM") || dt.Last().EndsWith("PM"));
+
+                }
+                    //2016/01/06 08:00:01.68
                 else
                 {
                     Verify(expectedDebugItems[i].Value ?? "", inputDebugItems[i].Value ?? "", "Values", i);

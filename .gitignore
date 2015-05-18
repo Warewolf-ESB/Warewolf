@@ -173,6 +173,8 @@
 /Dev/Dev2.TaskScheduler.Wrappers.Test/obj
 /Dev/Example Shipper/Example Shipper/bin
 /Dev/Example Shipper/Example Shipper/obj
+/Dev/ExecutionEngine/bin
+/Dev/ExecutionEngine/obj
 /Dev/ServerProxyLayer/bin
 /Dev/ServerProxyLayer/obj
 /Dev/ServerProxyLayerTests/bin
@@ -243,7 +245,32 @@
 ####################################################################################
 # These release workflows must be stored in "/Dev/BPM Resources - Release/Resources" ONLY!
 ####################################################################################
-/Dev/Dev2.Server/bin/Debug/Resources/DB Services/FetchPlayers.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Backup Example/Backup Stratgey Implimentation.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Backup Example/Delete Expired Files.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Backup Example/Get Backup Items List.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Backup Example/Get FileName From Folder or File.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Backup Example/RunBackup.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Dice Roll Example/DB Services/FetchPlayers.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Dice Roll Example/SqlServers/DemoDB.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Dice Roll Example/Tests/Dice Roll_test.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Dice Roll Example/Tests/Double Roll and Check_test.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Dice Roll Example/Dice Roll.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Dice Roll Example/Double Roll and Check.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Dice Roll Example/Roll Dice for Players.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Payment Gateway Example/Microservices/GetPaymentsFromPaypal.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Payment Gateway Example/Microservices/MakePaypalPayment.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Payment Gateway Example/Microservices/RetrievePaypalAuthToken.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Payment Gateway Example/Paypal Webservices/GetAuthToken.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Payment Gateway Example/Paypal Webservices/PaypalAuth.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Payment Gateway Example/Paypal Webservices/PaypalPayment.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Payment Gateway Example/Paypal Webservices/PostPayment.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Payment Gateway Example/Paypal Webservices/RetrievePayments.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Payment Gateway Example/ShoppingCart Database Services/GetProducts.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Payment Gateway Example/ShoppingCart Database Services/WarewolfShoppingCart.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Payment Gateway Example/GetProductsTable.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Testing/getTests.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Testing/Main.xml
+/Dev/Dev2.Server/bin/Debug/Resources/Examples/Testing/runTest.xml
 /Dev/Dev2.Server/bin/Debug/Resources/Examples/Control Flow - Decision.xml
 /Dev/Dev2.Server/bin/Debug/Resources/Examples/Control Flow - Sequence.xml
 /Dev/Dev2.Server/bin/Debug/Resources/Examples/Control Flow - Switch.xml
@@ -284,34 +311,4 @@
 /Dev/Dev2.Server/bin/Debug/Resources/Examples/Utility - System Information.xml
 /Dev/Dev2.Server/bin/Debug/Resources/Examples/Utility - Web Request.xml
 /Dev/Dev2.Server/bin/Debug/Resources/Examples/Utility - XPath.xml
-/Dev/Dev2.Server/bin/Debug/Resources/My Category/Dice Roll.xml
-/Dev/Dev2.Server/bin/Debug/Resources/My Category/Double Roll and Check.xml
-/Dev/Dev2.Server/bin/Debug/Resources/My Category/Roll Dice for Players.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/AddCategory.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/AddCategoryToWarewolfShoppingCartDb.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/AddProduct.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/AddProductToWarewolfShoppingCartDb.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/DeleteCategory.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/DeleteCategoryInWarewolfShoppingCartDb.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/DeleteProduct.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/DeleteProductFromWarewolfShoppingCartDb.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/EditCategory.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/EditCategoryOnWarewolfShoppingCartDb.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/EditProduct.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/EditProductInWarewolfShoppingCartDb.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/GetCategoryTable.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/GetCategoryTableFromWarewolfShoppingCartDb.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/GetProductsTable.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/GetProductsTableFromWarewolfShoppingCartDb.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/paypal.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/paypalpayment.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/PayPal_GetPaymentService.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/paypal_gettoken.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/PayPal_PerformPayment.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/paypal_postpayment.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/PayPal_RetrieveAuthToken.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/paypal_retrievepayments.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/SampleEmployeesWorkflow.xml
-/Dev/Dev2.Server/bin/Debug/Resources/Sample Project/WarewolfShoppingCartDB.xml
-/Dev/Dev2.Server/bin/Debug/Resources/SqlServers/DemoDB.xml
 /Dev/Dev2.Server/bin/Debug/Resources/Hello World.xml

@@ -19,11 +19,9 @@ using System.Threading;
 using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Data.Enums;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Warewolf.Storage;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -39,7 +37,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
+        // ReSharper disable UnusedMember.Global
         public TestContext TestContext { get; set; }
+        // ReSharper restore UnusedMember.Global
 
 
         [TestMethod]
@@ -406,7 +406,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             CurrentDl = "<ADL><a/></ADL>";
             TestData = "<root><a>Some Other Value</a></root>";
             //------------Execute Test---------------------------
-            var result = ExecuteProcess(isDebug: true);
+            ExecuteProcess(isDebug: true);
             ExecuteProcess(isDebug: true);
             ExecuteProcess(isDebug: true);
             //------------Assert Results-------------------------

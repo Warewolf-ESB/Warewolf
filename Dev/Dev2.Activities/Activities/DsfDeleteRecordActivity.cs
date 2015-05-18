@@ -77,9 +77,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 GetDebug(dataObject);
                 dataObject.Environment.EvalDelete(RecordsetName);
-
-                dataObject.Environment.Assign(Result, "Success");
-                AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
+                if (!string.IsNullOrEmpty(Result))
+                {
+                    dataObject.Environment.Assign(Result, "Success");
+                    AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
+                }
             }
             catch(Exception e)
             {
@@ -94,7 +96,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfDeleteRecordsActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
-                    dataObject.Environment.Assign(Result, "Failure");
+                    if (!string.IsNullOrEmpty(Result))
+                    {
+                        dataObject.Environment.Assign(Result, "Failure");
+                    }
                 }
 
                 if(dataObject.IsDebugMode())

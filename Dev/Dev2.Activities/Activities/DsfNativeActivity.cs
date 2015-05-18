@@ -251,7 +251,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var esbChannel = dataObject.EsbChannel;
                     ErrorResultTO tmpErrors;
                     esbChannel.ExecuteLogErrorRequest(dataObject, dataObject.WorkspaceID, OnErrorWorkflow, out tmpErrors);
-                    dataObject.Environment.AddError(tmpErrors.MakeDisplayReady());
+                    if(tmpErrors != null)
+                    {
+                        dataObject.Environment.AddError(tmpErrors.MakeDisplayReady());
+                    }
                 }
             }
             catch(Exception e)
@@ -734,11 +737,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch (Exception ex)
             {
-
+                data.Environment.AddError(ex.Message);
                 Dev2Logger.Log.Error("OnExecute", ex);
-                var errorString = ex.Message;
-                var errorResultTO = new ErrorResultTO();
-                errorResultTO.AddError(errorString);                
+            
             }
             finally
             {

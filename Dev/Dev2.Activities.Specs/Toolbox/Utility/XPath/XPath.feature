@@ -107,7 +107,6 @@ Scenario: Use XPath with append notation should add
 	|   | [[rec(3).set]] = 2                                                                                                |
 	|   | [[rec(4).set]] = 3                                                                                                |  
 
-@ignore
 #Need to work out how to get invalid xml into the DataList we currently using the XML Translator which errors when there is
 # invalid xml in the data.
 Scenario: Use XPath with invalid XML as input inside a 
@@ -118,8 +117,8 @@ Scenario: Use XPath with invalid XML as input inside a
 	Then the variable "[[ids]]" should have a value ""
 	And the execution has "AN" error
 	And the debug inputs as  
-	| XML                      |                  |
-	| [[myxml]] = <root></end> | [[ids]] = //root |
+	| XML                      | # |                  |
+	| [[myxml]] = <start></end> | 1 | [[ids]] = //root |
 	And the debug output as 
 	| # |           |
 	| 1 | [[ids]] = |

@@ -146,5 +146,21 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
                 Assert.AreEqual(expectedResult, actualValue);
             }
         }
+
+        [Then(@"the datetime result should contain milliseconds")]
+        public void ThenTheDatetimeResultShouldContainMilliseconds()
+        {
+
+            string error;
+            string actualValue;
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+
+            GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+                                       out actualValue, out error);
+            Assert.IsTrue(actualValue.Contains("."));
+            
+
+        }
+
     }
 }

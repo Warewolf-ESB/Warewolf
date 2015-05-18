@@ -77,10 +77,13 @@ namespace Dev2.Activities
                     }
                     else
                     {
-                        var activity = Default.FirstOrDefault();
-                        if (activity != null)
+                        if(Default != null)
                         {
-                            activity.Execute(dataObject);
+                            var activity = Default.FirstOrDefault();
+                            if (activity != null)
+                            {
+                                activity.Execute(dataObject);
+                            }
                         }
                     }
                 }
