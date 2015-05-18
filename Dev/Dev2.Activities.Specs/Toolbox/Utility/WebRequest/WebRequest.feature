@@ -15,6 +15,21 @@ Scenario: Enter a URL to download html
 	And the debug output as 
 	|                                                   |
 	| [[result]] = String |
+	
+Scenario Outline: Enter a URL to download html with timeout specified 
+	Given I have the url '<url>' with timeoutSeconds "<timeoutSeconds>"
+	When the web request tool is executed 
+	Then the result should contain the string '<result>'
+	And the execution has "NO" error
+	And the debug inputs as  
+	| URL                                                        | Header |
+	| http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?html |        |
+	And the debug output as 
+	|                                                   |
+	| [[result]] = String |
+	Examples:
+	| url                                                                   | timeoutSeconds | result |
+	| "http://tst-ci-remote:3142/services/Wait?WaitSeconds=150" | "160"            |"Wait Successful"        | 
 
 Scenario: Enter a badly formed URL
 	Given I have the url "www.google.comx"	

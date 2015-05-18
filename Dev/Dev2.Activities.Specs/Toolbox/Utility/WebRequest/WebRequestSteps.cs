@@ -28,7 +28,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -76,7 +76,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -99,14 +99,24 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-            if(string.IsNullOrEmpty(expectedResult))
+            if (string.IsNullOrEmpty(result))
             {
                 Assert.IsTrue(string.IsNullOrEmpty(actualValue));
             }
             else
             {
-                Assert.IsTrue(actualValue.Contains(expectedResult));
+                Assert.IsTrue(actualValue.Contains(result));
             }
         }
+
+        [Given(@"I have the url '(.*)' with timeoutSeconds ""(.*)""")]
+        public void GivenIHaveTheUrlWithTimeoutSeconds(string url, string timeoutSeconds)
+        {
+            ScenarioContext.Current.Add("url", url);
+            ScenarioContext.Current.Add("timeoutSeconds", timeoutSeconds);
+        }
+
+
+
     }
 }
