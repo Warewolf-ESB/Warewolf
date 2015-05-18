@@ -21,8 +21,8 @@ type WarewolfEvalResult =
 let GetDecimalPlaces (decimalNumber:float) =
     let mutable decimalPlaces = 1;
     let mutable powers = 10.0;
-    if (decimalNumber > 0.0) then
-        while not(((decimalNumber * powers) % 1.0) = 0.0) do
+    if (decimalNumber > 0.0) || (decimalNumber < 0.0) then
+        while not ( abs((decimalNumber * powers) % 1.0) = 0.0) do
             powers <- powers*10.0
             decimalPlaces <-decimalPlaces+1
     decimalPlaces;

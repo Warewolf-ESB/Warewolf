@@ -155,8 +155,8 @@ Scenario Outline: Calculate Assign by evaluating variables with functions
 	| 3                   | acosh([[rc(1).set]])                                       | 2.29243166956118         |
 	| 4                   | AND([[s]]<[[z]]<5)                                         | False                    |
 	| 5                   | AND([[y]]<5)                                               | True                     |
-	| 7                   | ASIN([[s]])                                                | -1.5707963267949             |
-	| 8                   | ASINH([[rc(1).set]])                                       | 2.31243834127275              |
+	| 7                   | ASIN([[s]])                                                | -1.57079632679490             |
+	| 8                   | ASINH([[rc(1).set]])                                       | 2.312438341272750              |
 	| 9                   | ATAN([[s]])                                                | -0.785398163397448       |
 	| 10                  | ATAN2([[x]],[[s]])                                         | -0.785398163397448       |
 	| 11                  | ATANH([[t]])                                               | 0                        |
@@ -174,7 +174,7 @@ Scenario Outline: Calculate Assign by evaluating variables with functions
 	| 23                  | CONCATENATE([[z]],[[x]])                                   | 101                      |
 	| 24                  | CONVERT([[z]],"m","in")                                    | 393.700787401575              |
 	| 25                  | COS([[[[a]]]])                                             | -0.989992496600445             |
-	| 26                  | COSH([[z]])                                                | 11013.2329201033              |
+	| 26                  | COSH([[z]])                                                | 11013.232920103300              |
 	| 27                  | COUNT([[x]],[[y]],[[[[a]]]])                               | 3                        |
 	| 29                  | DATE(2000,[[y]],12)                                        | 2/12/2000 12:00:00.000 AM                |
 	| 30                  | DAY([[x]])                                                 | 1               |
@@ -260,7 +260,7 @@ Scenario Outline: Calculate Assign by evaluating variables with functions
 	| 111                 | NETWORKDAYS(2014,2015)                                     | 2                        |
 	| 112                 | NOT([[[[a]]]])                                             | False                    |
 	| 113                 | NOW()                                                      | [Now]                    |
-	| 114                 | NPER(0.1, 100, 1000, 999,0)                                | -79.7491146816321        |
+	| 114                 | NPER(0.1, 100, 1000, 999,0)                                | -79.74911468163210        |
 	| 115                 | NPV([[z]],[[z]],[[rc(1).set]],[[y]])                       | 0.951915852742299        |
  #                   | 116                                                        | NULL()                   |      |
 	| 117                 | OCT2BIN([[z]],[[z]])                                       | 0000001000               |

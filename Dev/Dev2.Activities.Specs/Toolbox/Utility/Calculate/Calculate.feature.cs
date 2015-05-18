@@ -530,10 +530,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "ASIN([[s]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-1.5707963267949")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-1.57079632679490")]
         public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_7()
         {
-            this.CalculateAssignByEvaluatingVariablesWithFunctions("7", "ASIN([[s]])", "-1.5707963267949", ((string[])(null)));
+            this.CalculateAssignByEvaluatingVariablesWithFunctions("7", "ASIN([[s]])", "-1.57079632679490", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -542,10 +542,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "ASINH([[rc(1).set]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "2.31243834127275")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "2.312438341272750")]
         public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_8()
         {
-            this.CalculateAssignByEvaluatingVariablesWithFunctions("8", "ASINH([[rc(1).set]])", "2.31243834127275", ((string[])(null)));
+            this.CalculateAssignByEvaluatingVariablesWithFunctions("8", "ASINH([[rc(1).set]])", "2.312438341272750", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -758,10 +758,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "COSH([[z]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "11013.2329201033")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "11013.232920103300")]
         public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_26()
         {
-            this.CalculateAssignByEvaluatingVariablesWithFunctions("26", "COSH([[z]])", "11013.2329201033", ((string[])(null)));
+            this.CalculateAssignByEvaluatingVariablesWithFunctions("26", "COSH([[z]])", "11013.232920103300", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -1766,10 +1766,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "114")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "114")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "NPER(0.1, 100, 1000, 999,0)")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-79.7491146816321")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-79.74911468163210")]
         public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_114()
         {
-            this.CalculateAssignByEvaluatingVariablesWithFunctions("114", "NPER(0.1, 100, 1000, 999,0)", "-79.7491146816321", ((string[])(null)));
+            this.CalculateAssignByEvaluatingVariablesWithFunctions("114", "NPER(0.1, 100, 1000, 999,0)", "-79.74911468163210", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
