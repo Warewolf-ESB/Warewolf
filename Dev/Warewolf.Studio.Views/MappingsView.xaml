@@ -150,9 +150,12 @@
                    VerticalAlignment="Center" 
                    Background="Transparent"
                    Visibility="{Binding IsOutputMappingEmptyRows, Converter={StaticResource BoolToVisibility}}" />
-        <StackPanel Orientation="Horizontal" Grid.Row="6" Margin="0,2,0,0" >
+        <StackPanel Orientation="Horizontal" 
+                    Grid.Row="6" Visibility="{Binding ShowRecordSet, Converter={StaticResource BoolToVisibility}}"
+                    Margin="0,2,0,0" >
             <TextBlock Text="Recordset Name" ></TextBlock>
-            <TextBox MinWidth="100" Margin="-1,0,0,0" Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <TextBox MinWidth="100" Margin="-1,0,0,0" 
+                     Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
         </StackPanel>
     </Grid>
 </UserControl>

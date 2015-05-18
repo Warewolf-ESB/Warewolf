@@ -41,6 +41,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _isTestResultsEmptyRows;
         private bool _isInputsEmptyRows;
         private bool _isOutputMappingEmptyRows;
+        private bool _showRecordSet;
 
         public ManageDatabaseServiceViewModel(IDbServiceModel model,IRequestServiceNameViewModel saveDialog):base(ResourceType.DbService)
         {
@@ -61,6 +62,7 @@ namespace Warewolf.Studio.ViewModels
             IsTestResultsEmptyRows = false;
             IsInputsEmptyRows = false;
             IsOutputMappingEmptyRows = false;
+            ShowRecordSet = true;
         }
 
         public ICommand RefreshCommand { get; set; }
@@ -146,6 +148,16 @@ namespace Warewolf.Studio.ViewModels
             {
                 _isRefreshing = value;
                 OnPropertyChanged(()=> IsRefreshing);
+            }
+        }
+
+        public bool ShowRecordSet
+        {
+            get { return _showRecordSet; }
+            set
+            {
+                _showRecordSet = value;
+                OnPropertyChanged(() => ShowRecordSet);
             }
         }
 
@@ -379,21 +391,8 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 value = _refreshSelectedAction;
-                if ((!Equals(value, _selectedAction) && _selectedAction != null) || _selectedAction == null)
-                {
-                    IsTestResultsEmptyRows = false;
-                    TestResultsAvailable = false;
-                    CanEditMappings = false;
-                    TestSuccessful = false;
-                    OutputMapping = null;
-                }
-
                 _selectedAction = value;
-                //SET REFRESH SELECTED VALUE TO A
-                if (_selectedAction != null)
-                {
-                    _refreshSelectedAction = _selectedAction;
-                }
+                
                 CanTest = _selectedAction != null;
                 Inputs = _selectedAction != null ? _selectedAction.Inputs : new Collection<IDbInput>();
                 ViewModelUtils.RaiseCanExecuteChanged(TestProcedureCommand);
@@ -546,6 +545,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _outputMapping = value;
                 IsOutputMappingEmptyRows = true;
+                ShowRecordSet = false;
                 TestResultsAvailable = false;
                 if (_outputMapping != null)
                 {
@@ -553,6 +553,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         TestResultsAvailable = true;
                         IsOutputMappingEmptyRows = false;
+                        ShowRecordSet = true;
                     }
                 }
                 
