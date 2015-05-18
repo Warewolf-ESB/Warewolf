@@ -50,10 +50,7 @@ namespace Dev2.TO
             {
                 return ((LanguageAST.LanguageExpression.RecordSetExpression)parsed).Item.Column;
             }
-            else // (parsed.IsRecordSetNameExpression)
-            {
-                return ((LanguageAST.LanguageExpression.RecordSetNameExpression)parsed).Item.Name;
-            }
+            return ((LanguageAST.LanguageExpression.RecordSetNameExpression)parsed).Item.Name;
         }
 
         public WarewolfDataEvaluationCommon.WarewolfEvalResult EvalResult
@@ -109,10 +106,7 @@ namespace Dev2.TO
                 {
                     return ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult)EvalResult).Item.Count;
                 }
-                else //(EvalResult.IsWarewolfRecordSetResult)
-                {
-                    return 1;
-                }
+                return 1;
             }
         }
     }
@@ -146,15 +140,17 @@ namespace Dev2.TO
                 {
                     // we know this is a comma seperated list of expressions
                     Evaluations =
+                        // ReSharper disable MaximumChainedReferences
                         ((LanguageAST.LanguageExpression.ComplexExpression)WarewolfDataEvaluationCommon.ParseLanguageExpression(Compound.SourceName))
                             .Item
                             .Where(x => !x.IsWarewolfAtomAtomExpression)
                             .Select(x =>
+                
                                 WarewolfDataEvaluationCommon.LanguageExpressionToString(x))
                             .Select(x =>
                                 new JsonMappingEvaluated(_env, x))
                             .ToList();
-                }
+                }         // ReSharper restore MaximumChainedReferences
             }
         }
 
@@ -212,7 +208,7 @@ namespace Dev2.TO
             var a = new JObject();
             if (Evaluations.Any(x => x.EvalResult.IsWarewolfAtomListresult))
             {
-                return CreateArrayOfResults(i);
+                return CreateArrayOfResults();
             }
             if (Evaluations.Any(x => x.EvalResult.IsWarewolfRecordSetResult))
             {
@@ -242,7 +238,7 @@ namespace Dev2.TO
                 GetEvalResult(jsonMappingEvaluated.EvalResult, i));
         }
 
-        object CreateArrayOfResults(int i)
+        object CreateArrayOfResults()
         {
             var objects = new List<JObject>(MaxCount);
             for (int j = 0; j < MaxCount; j++)
@@ -334,13 +330,16 @@ namespace Dev2.TO
                     }
                     if ((complex.Item.Count() < 3 ||
                         complex.Item.Count() % 2 != 1) ||
+                        // ReSharper disable MaximumChainedReferences
                        !Enumerable.Range(1, complex.Item.Count() - 1)
                            .Where(i => i % 2 == 1)
                            .Select(i =>
+             
                                         WarewolfDataEvaluationCommon.LanguageExpressionToString(
                                             complex.Item.ElementAt(i)
                                             ) == ",")
                            .Aggregate((a, b) => a && b))
+                    // ReSharper restore MaximumChainedReferences
                     {
                         return "Problem with input: expressions must be comma seperated";
                     }

@@ -32,7 +32,9 @@ namespace Dev2.Tests.Activities.TOTests
         public void JsonMappingCompoundTo_Constructor_SetsProperties_NotIsCompound()
         {
             //------------Setup for test--------------------------
+            // ReSharper disable RedundantArgumentName
             var dataObject = new DsfDataObject(xmldata: string.Empty, dataListId: Guid.NewGuid());
+
             dataObject.Environment.Assign("[[a]]", "10");
             dataObject.Environment.Assign("[[b]]", "20");
             dataObject.Environment.Assign("[[rec(1).a]]", "50");
@@ -340,7 +342,7 @@ namespace Dev2.Tests.Activities.TOTests
             dataObject.Environment.Assign("[[rec(2).b]]", "600");
             CheckComplexEvaluatedResultIndexed("[[rec(*).a]],[[rec(*).b]]", "myName", 0, @"{""myName"":[{""a"":50,""b"":500},{""a"":60,""b"":600}]}", dataObject);
         }
-        private void CheckComplexEvaluatedResultIndexed(string expression, string name, int index, string expected, DsfDataObject dataObject, bool isJProperty=false)
+        private void CheckComplexEvaluatedResultIndexed(string expression, string name, int index, string expected, DsfDataObject dataObject)
         {
             var jsonMappingCompound = new JsonMappingCompoundTo(
                 env: dataObject.Environment,
@@ -353,8 +355,7 @@ namespace Dev2.Tests.Activities.TOTests
             var a = jsonMappingCompound.ComplexEvaluatedResultIndexed(index);
             if(a is JProperty)
             {
-                var jp = new JObject();
-                jp.Add(a);
+                var jp = new JObject { a };
                 Assert.AreEqual(expected, jp
                 .ToString(Formatting.None));  
             }
@@ -364,6 +365,6 @@ namespace Dev2.Tests.Activities.TOTests
 
         }
 
-
+        // ReSharper restore RedundantArgumentName
     }
 }

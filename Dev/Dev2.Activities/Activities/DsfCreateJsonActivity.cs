@@ -130,13 +130,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     // ReSharper restore AssignNullToNotNullAttribute
 
                     // build the list of JsonMappingCompoundTo - a compound is either a single expression or a comma seperated list of expressions
+                    // ReSharper disable MaximumChainedReferences
                     List<JsonMappingCompoundTo> results = jsonMappingList.Where(to => !String.IsNullOrEmpty(to.SourceName)).Select(jsonMapping =>
                         new JsonMappingCompoundTo(dataObject.Environment, jsonMapping
                             )).ToList();
+                    // ReSharper restore MaximumChainedReferences
 
 
-                    // get the longest list
-                    int maxCount = results.Select(r => r.MaxCount).Max();
+
 
                     // main loop for producing largest list of zipped values
                    
@@ -295,7 +296,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IList<DsfForEachItem> GetForEachInputs()
         {
+            // ReSharper disable MaximumChainedReferences
             var items = (JsonMappings.Where(c => !string.IsNullOrEmpty(c.SourceName)).Select(c => c.SourceName)).ToArray();
+            // ReSharper restore MaximumChainedReferences
             return GetForEachItems(items);
         }
 

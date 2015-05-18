@@ -34,7 +34,9 @@ namespace Dev2.TO
             }
         }
 
+        // ReSharper disable MemberCanBePrivate.Global
         public string GetDestinationWithName(string sourceName)
+            // ReSharper restore MemberCanBePrivate.Global
         {
             string destName = null;
             if (DataListUtil.IsFullyEvaluated(sourceName))
@@ -83,10 +85,12 @@ namespace Dev2.TO
             DestinationName = GetDestinationWithName(SourceName);
         }
 
+        // ReSharper disable UnusedMember.Global
         public bool IsSourceNameFocused { get { return _isSourceNameFocused; } set { OnPropertyChanged(ref _isSourceNameFocused, value); } }
 
-        public bool IsDestinationNameFocused { get { return _isDestinationNameFocused; } set { OnPropertyChanged(ref _isDestinationNameFocused, value); } }
 
+        public bool IsDestinationNameFocused { get { return _isDestinationNameFocused; } set { OnPropertyChanged(ref _isDestinationNameFocused, value); } }
+        // ReSharper restore UnusedMember.Global
         public bool CanRemove()
         {
             return string.IsNullOrEmpty(DestinationName) && string.IsNullOrEmpty(SourceName);
