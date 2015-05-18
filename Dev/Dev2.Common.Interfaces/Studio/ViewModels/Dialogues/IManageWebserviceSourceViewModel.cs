@@ -38,6 +38,14 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// </summary>
         string Password { get; set; }
         /// <summary>
+        /// Default Query
+        /// </summary>
+        string DefaultQuery { get; set; }
+        /// <summary>
+        /// Localized text for the UserName label
+        /// </summary>
+        string DefaultQueryLabel { get; }
+        /// <summary>
         /// Test if connection is successful
         /// </summary>
         ICommand TestCommand { get; set; }

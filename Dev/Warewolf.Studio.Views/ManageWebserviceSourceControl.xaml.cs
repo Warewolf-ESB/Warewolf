@@ -21,16 +21,6 @@ namespace Warewolf.Studio.Views
             ServerTextBox.Text = serverName;
         }
 
-        public Visibility GetDatabaseDropDownVisibility()
-        {
-            BindingExpression be = DatabaseComboxContainer.GetBindingExpression(VisibilityProperty);
-            if (be != null)
-            {
-                be.UpdateTarget();
-            }
-            return DatabaseComboxContainer.Visibility;
-        }
-
         public bool GetControlEnabled(string controlName)
         {
             switch (controlName)
@@ -53,11 +43,6 @@ namespace Warewolf.Studio.Views
             {
                 UserRadioButton.IsChecked = true;
             }
-        }
-
-        public void SelectDatabase(string databaseName)
-        {
-            DatabaseComboxBox.Text = databaseName;
         }
 
         public Visibility GetUsernameVisibility()

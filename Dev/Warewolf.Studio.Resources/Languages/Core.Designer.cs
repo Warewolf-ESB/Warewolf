@@ -362,6 +362,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Default Query:.
+        /// </summary>
+        public static string DefaultQueryLabel {
+            get {
+                return ResourceManager.GetString("DefaultQueryLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete {0}?.
         /// </summary>
         public static string DeleteConfirmation {

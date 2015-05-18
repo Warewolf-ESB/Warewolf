@@ -29,6 +29,7 @@ namespace Warewolf.Studio.ViewModels
         private string _databaseName;
         private string _userName;
         private string _password;
+        private string _defaultQuery;
         private string _testMessage;
         private IList<string> _databaseNames;
         private string _header;
@@ -363,6 +364,20 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public string DefaultQuery
+        {
+            get { return _defaultQuery; }
+            set
+            {
+                _defaultQuery = value;
+                OnPropertyChanged(() => DefaultQuery);
+                OnPropertyChanged(() => Header);
+                TestPassed = false;
+                ViewModelUtils.RaiseCanExecuteChanged(TestCommand);
+                ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
+            }
+        }
+
         public string UserName
         {
             get { return _userName; }
@@ -432,6 +447,15 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+
+        [ExcludeFromCodeCoverage]
+        public string DefaultQueryLabel
+        {
+            get
+            {
+                return Resources.Languages.Core.DefaultQueryLabel;
+            }
+        }
 
         [ExcludeFromCodeCoverage]
         public string UserNameLabel
