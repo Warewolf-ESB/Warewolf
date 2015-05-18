@@ -313,13 +313,14 @@ namespace Dev2.Activities.Designers2.Email
         void RefreshSources(bool isInitializing = false)
         {
             IsRefreshing = true;
+            var selectedEmailSource = EmailSource;
             if(isInitializing)
             {
                 _isInitializing = true;
             }
             LoadSources(() =>
             {
-                SetSelectedEmailSource(EmailSource);
+                SetSelectedEmailSource(selectedEmailSource);
                 IsRefreshing = false;
                 if(isInitializing)
                 {
