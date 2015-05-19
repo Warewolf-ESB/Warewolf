@@ -29,16 +29,8 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// Default Query
         /// </summary>
         string DefaultQuery { get; set; }
-<<<<<<< HEAD
-        /// <summary>
-        /// Localized text for the DefaultQuery label
-        /// </summary>
-        string DefaultQueryLabel { get; }
 
         string TestDefaultLabel { get; }
-=======
-        
->>>>>>> f6dcc56eeaf7569f77fe05d368b8185dcafb8a4f
         /// <summary>
         /// Test if connection is successful
         /// </summary>
@@ -52,8 +44,6 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// The message that will be set if the test is either successful or not
         /// </summary>
         string TestMessage { get; }
-
-<<<<<<< HEAD
         /// <summary>
         /// The message that will be set if the test is either successful or not
         /// </summary>
@@ -63,8 +53,6 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// Localized text for the Server Type label
         /// </summary>
         string ServerTypeLabel { get; }
-=======
->>>>>>> f6dcc56eeaf7569f77fe05d368b8185dcafb8a4f
 
         /// <summary>
         /// Localized text for the UserName label
