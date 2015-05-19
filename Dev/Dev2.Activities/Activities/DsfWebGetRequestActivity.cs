@@ -25,6 +25,7 @@ using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Storage;
+using System.Threading;
 
 namespace Dev2.Activities
 {
@@ -132,21 +133,25 @@ namespace Dev2.Activities
                             _debugInputs.Add(debugItem);
                         }
                     }
-                    if(!string.IsNullOrEmpty(TimeOutText))
+                    if (!string.IsNullOrEmpty(TimeOutText))
                     {
                         int timeoutval;
-                        if (int.TryParse(dataObject.Environment.Eval(TimeOutText).ToString(),out timeoutval))
+                        if (int.TryParse(dataObject.Environment.Eval(TimeOutText).ToString(), out timeoutval))
                         {
                             TimeoutSeconds = timeoutval;
                         }
                         if (dataObject.IsDebugMode())
                         {
                             DebugItem debugItem = new DebugItem();
-                            AddDebugItem(new DebugEvalResult(String.IsNullOrEmpty(TimeOutText)?"100": TimeOutText, "Time Out Seconds", dataObject.Environment), debugItem);
+                            AddDebugItem(new DebugEvalResult(String.IsNullOrEmpty(TimeOutText) ? "100" : TimeOutText, "Time Out Seconds", dataObject.Environment), debugItem);
                             _debugInputs.Add(debugItem);
                         }
                     }
-                    var result = WebRequestInvoker.ExecuteRequest(Method, c, headersEntries, timeoutMilliseconds: TimeoutSeconds * 1000);
+                    var result = WebRequestInvoker.ExecuteRequest(Method,
+                        c,
+                        headersEntries,
+                        timeoutMilliseconds: (TimeoutSeconds < 0 ? Timeout.Infinite : TimeoutSeconds * 1000)
+                        );
                     allErrors.MergeErrors(errorsTo);
                     var expression = GetExpression(IndexToUpsertTo);
                     PushResultsToDataList(expression, result, dataObject);

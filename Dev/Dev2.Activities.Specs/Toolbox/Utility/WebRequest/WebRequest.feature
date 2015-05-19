@@ -31,7 +31,7 @@ Scenario Outline: Enter a URL to download html with timeout specified
 	| url                                                          | timeoutSeconds | result            |
 	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15      | 20          | Wait Successful |
 	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=110      | 120          | Wait Successful |
-	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=110      | 0          | Wait Successful |
+	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=110      | -1          | Wait Successful |
 	
 Scenario Outline: Enter a URL to download html with timeout specified too short 
 	Given I have the url '<url>' with timeoutSeconds '<timeoutSeconds>'
