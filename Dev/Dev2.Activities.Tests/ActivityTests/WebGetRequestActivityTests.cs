@@ -171,7 +171,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            //mock.Verify(sender => sender.ExecuteRequest(activity.Method, Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>()), Times.Once());
+            mock.Verify(sender => sender.ExecuteRequest(activity.Method, Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>()), Times.Never());
             string actual;
             string error;
             GetScalarValueFromEnvironment(result.Environment, "Res", out actual, out error);
