@@ -68,7 +68,7 @@ namespace Warewolf.Studio.ViewModels
         public ManageWebserviceSourceViewModel(IManageWebServiceSourceModel updateManager, IEventAggregator aggregator, IWebServiceSource webServiceSource)
             : this(updateManager,  aggregator)
         {
-            VerifyArgument.IsNotNull("dbSource", webServiceSource);
+            VerifyArgument.IsNotNull("webServiceSource", webServiceSource);
             _webServiceSource = webServiceSource;
             SetupHeaderTextFromExisting();
             FromSource(webServiceSource);
@@ -128,10 +128,6 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _resourceName = value;
-                if(!String.IsNullOrEmpty(value))
-                {
-                    SetupHeaderTextFromExisting();
-                }
                 OnPropertyChanged(_resourceName);
             }
         }
@@ -175,9 +171,9 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        void Save(IWebServiceSource toDbSource)
+        void Save(IWebServiceSource source)
         {
-            _updateManager.Save(toDbSource);
+            _updateManager.Save(source);
            
         }
 
@@ -205,7 +201,6 @@ namespace Warewolf.Studio.ViewModels
                         }
                         case TaskStatus.RanToCompletion:
                         {
-                            //DatabaseNames = t.Result;
                             TestMessage = "Passed";
                             TestFailed = false;
                             TestPassed = true;

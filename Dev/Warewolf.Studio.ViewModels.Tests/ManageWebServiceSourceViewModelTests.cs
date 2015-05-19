@@ -27,18 +27,22 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             // ReSharper disable NotAccessedVariable
             var manageWebServiceSourceViewModel = new ManageWebserviceSourceViewModel(new Mock<IManageWebServiceSourceModel>().Object, new Mock<IEventAggregator>().Object);
-           
-            NullArgumentConstructorHelper.AssertNullConstructor(new object[] { new Mock<IManageDatabaseSourceModel>().Object, new Mock<IEventAggregator>().Object }, typeof(ManageWebserviceSourceViewModel));
+
+            NullArgumentConstructorHelper.AssertNullConstructor(new object[] { new Mock<IManageWebServiceSourceModel>().Object, new Mock<IEventAggregator>().Object }, typeof(ManageWebserviceSourceViewModel));
             //------------Execute Test---------------------------
             
             // ReSharper disable RedundantAssignment
-            manageWebServiceSourceViewModel = new ManageWebserviceSourceViewModel(new Mock<IManageWebServiceSourceModel>().Object, new Mock<IEventAggregator>().Object, new Mock<IWebServiceSource>().Object);
+            var mockManager = new Mock<IManageWebServiceSourceModel>();
+            mockManager.Setup(model => model.ServerName).Returns("localhost");
+            var mockWebServiceSource = new Mock<IWebServiceSource>();
+            mockWebServiceSource.Setup(source => source.Name).Returns("new source");
+            manageWebServiceSourceViewModel = new ManageWebserviceSourceViewModel(mockManager.Object, new Mock<IEventAggregator>().Object, mockWebServiceSource.Object);
 
-            NullArgumentConstructorHelper.AssertNullConstructor(new object[] { new Mock<IManageDatabaseSourceModel>().Object, new Mock<IEventAggregator>().Object, new Mock<IDbSource>().Object }, typeof(ManageWebserviceSourceViewModel));
+            NullArgumentConstructorHelper.AssertNullConstructor(new object[] { new Mock<IManageWebServiceSourceModel>().Object, new Mock<IEventAggregator>().Object, new Mock<IWebServiceSource>().Object }, typeof(ManageWebserviceSourceViewModel));
 
             manageWebServiceSourceViewModel = new ManageWebserviceSourceViewModel(new Mock<IManageWebServiceSourceModel>().Object, new Mock<IRequestServiceNameViewModel>().Object, new Mock<IEventAggregator>().Object);
             //------------Assert Results-------------------------
-            NullArgumentConstructorHelper.AssertNullConstructor(new object[] { new Mock<IManageDatabaseSourceModel>().Object, new Mock<IRequestServiceNameViewModel>().Object, new Mock<IEventAggregator>().Object }, typeof(ManageWebserviceSourceViewModel));
+            NullArgumentConstructorHelper.AssertNullConstructor(new object[] { new Mock<IManageWebServiceSourceModel>().Object, new Mock<IRequestServiceNameViewModel>().Object, new Mock<IEventAggregator>().Object }, typeof(ManageWebserviceSourceViewModel));
             // ReSharper restore NotAccessedVariable
             // ReSharper restore RedundantAssignment
         }
@@ -48,7 +52,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestCategory("ManageWebServiceSourceViewModel_Ctor")]
         public void ManageWebServiceSourceViewModel_Ctor_FromExistingSetsItems()
         {
-            var dbSource = new WebServiceSourceDefinition
+            var source = new WebServiceSourceDefinition
             {
                 AuthenticationType = AuthenticationType.User,
                 UserName = "Bob",
@@ -59,13 +63,15 @@ namespace Warewolf.Studio.ViewModels.Tests
                 Name = "BobsSuppliesSource",
                 HostName = "ServerName"
             };
-            var manageWebServiceSourceViewModel = new ManageWebserviceSourceViewModel(new Mock<IManageWebServiceSourceModel>().Object, new Mock<IEventAggregator>().Object, dbSource);
-            Assert.AreEqual(manageWebServiceSourceViewModel.ResourceName, dbSource.Name);
-            Assert.AreEqual(dbSource.DefaultQuery, manageWebServiceSourceViewModel.DefaultQuery);
-            Assert.AreEqual(dbSource.Password, manageWebServiceSourceViewModel.Password);
-            Assert.AreEqual(dbSource.UserName, manageWebServiceSourceViewModel.UserName);
-            Assert.AreEqual(manageWebServiceSourceViewModel.AuthenticationType, dbSource.AuthenticationType);
-            Assert.AreEqual(manageWebServiceSourceViewModel.Image, ResourceType.DbSource);
+            var mockUpdateManager = new Mock<IManageWebServiceSourceModel>();
+            mockUpdateManager.Setup(model => model.ServerName).Returns("localhost");
+            var manageWebServiceSourceViewModel = new ManageWebserviceSourceViewModel(mockUpdateManager.Object, new Mock<IEventAggregator>().Object, source);
+            Assert.AreEqual(manageWebServiceSourceViewModel.ResourceName, source.Name);
+            Assert.AreEqual(source.DefaultQuery, manageWebServiceSourceViewModel.DefaultQuery);
+            Assert.AreEqual(source.Password, manageWebServiceSourceViewModel.Password);
+            Assert.AreEqual(source.UserName, manageWebServiceSourceViewModel.UserName);
+            Assert.AreEqual(manageWebServiceSourceViewModel.AuthenticationType, source.AuthenticationType);
+            Assert.AreEqual(ResourceType.WebSource, manageWebServiceSourceViewModel.Image);
            
         }
 
@@ -73,9 +79,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ManageWebServiceSourceViewModel_Save")]
-        public void ManageWebServiceSourceViewModel__Save_DoesNotBringUpDialogForExisting()
+        public void ManageWebServiceSourceViewModel_Save_DoesNotBringUpDialogForExisting()
         {
-            var dbSource = new WebServiceSourceDefinition
+            var source = new WebServiceSourceDefinition
             {
                 AuthenticationType = AuthenticationType.User,
                 UserName = "Bob",
@@ -87,9 +93,9 @@ namespace Warewolf.Studio.ViewModels.Tests
                 HostName = "ServerName"
             };
             var updateManager = new Mock<IManageWebServiceSourceModel>();
-
-            var manageWebServiceSourceViewModel = new ManageWebserviceSourceViewModel(updateManager.Object, new Mock<IEventAggregator>().Object, dbSource);
-            Assert.AreEqual(manageWebServiceSourceViewModel.Header, "Edit Database Service-" + dbSource.Name);
+            updateManager.Setup(model => model.ServerName).Returns("localhost");
+            var manageWebServiceSourceViewModel = new ManageWebserviceSourceViewModel(updateManager.Object, new Mock<IEventAggregator>().Object, source);
+            Assert.AreEqual("Edit Webservice Connector Source - " + source.Name, manageWebServiceSourceViewModel.Header);
             PrivateObject p = new PrivateObject(manageWebServiceSourceViewModel);
             var dialog = new Mock<IRequestServiceNameViewModel>();
             p.SetProperty("RequestServiceNameViewModel",dialog.Object);
@@ -104,7 +110,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ManageWebServiceSourceViewModel_Save")]
-        public void ManageWebServiceSourceViewModel__Save_BringsUpDialogForNonExisting()
+        public void ManageWebServiceSourceViewModel_Save_BringsUpDialogForNonExisting()
         {
             var dialog = new Mock<IRequestServiceNameViewModel>();
             dialog.Setup(a => a.ShowSaveDialog()).Returns(MessageBoxResult.OK);
@@ -124,38 +130,38 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ManageWebServiceSourceViewModel_Save")]
-        public void ManageWebServiceSourceViewModel__Save_SetsUpCorrectValues()
+        public void ManageWebServiceSourceViewModel_Save_SetsUpCorrectValues()
         {
             var dialog = new Mock<IRequestServiceNameViewModel>();
             dialog.Setup(a => a.ShowSaveDialog()).Returns(MessageBoxResult.OK);
             dialog.Setup(a => a.ResourceName).Returns(new ResourceName("path", "name"));
             var updateManager = new Mock<IManageWebServiceSourceModel>();
-
-            var manageWebServiceSourceViewModel = new ManageWebserviceSourceViewModel(updateManager.Object, dialog.Object, new Mock<IEventAggregator>().Object) { Password = "bob", AuthenticationType = AuthenticationType.Public, UserName = "dave", DefaultQuery = "dbNAme" };
+            updateManager.Setup(model => model.ServerName).Returns("localhost");
+            var manageWebServiceSourceViewModel = new ManageWebserviceSourceViewModel(updateManager.Object, dialog.Object, new Mock<IEventAggregator>().Object) { Password = "bob", AuthenticationType = AuthenticationType.User, UserName = "dave", HostName = "dbNAme" };
             // ReSharper disable MaximumChainedReferences
             updateManager.Setup(a => a.TestConnection(It.IsAny<IWebServiceSource>())).Callback((IWebServiceSource a) =>
                 // ReSharper restore MaximumChainedReferences
             {
-                Assert.AreEqual(a.AuthenticationType,AuthenticationType.Anonymous);
-                Assert.AreEqual(a.HostName,"dbNAme");
-                Assert.AreEqual(a.Password, "bob");
-                Assert.AreEqual(a.UserName,"dave");
+                Assert.AreEqual(AuthenticationType.User,a.AuthenticationType);
+                Assert.AreEqual("dbNAme",a.HostName);
+                Assert.AreEqual("bob", a.Password);
+                Assert.AreEqual("dave",a.UserName);
 
             });
 
             updateManager.Setup(a => a.Save(It.IsAny<IWebServiceSource>())).Callback((IWebServiceSource a) =>
             {
-                Assert.AreEqual(a.AuthenticationType, AuthenticationType.User);
-                Assert.AreEqual(a.HostName, "dbNAme");
-                Assert.AreEqual(a.Password, "bob");
-                Assert.AreEqual(a.UserName, "dave");
+                Assert.AreEqual(AuthenticationType.User, a.AuthenticationType);
+                Assert.AreEqual("dbNAme", a.HostName);
+                Assert.AreEqual("bob", a.Password);
+                Assert.AreEqual("dave", a.UserName);
 
             });
             Assert.IsFalse(manageWebServiceSourceViewModel.OkCommand.CanExecute(null));
             manageWebServiceSourceViewModel.OkCommand.Execute(null);
             dialog.Verify(a => a.ShowSaveDialog(), Times.Once());
             updateManager.Verify(a => a.Save(It.IsAny<WebServiceSourceDefinition>()));
-            Assert.AreEqual(manageWebServiceSourceViewModel.Header, "Edit Database Service-" + "name");
+            Assert.AreEqual("Edit Webservice Connector Source - name", manageWebServiceSourceViewModel.Header);
 
         }
 
@@ -168,22 +174,19 @@ namespace Warewolf.Studio.ViewModels.Tests
             dialog.Setup(a => a.ShowSaveDialog()).Returns(MessageBoxResult.OK);
             dialog.Setup(a => a.ResourceName).Returns(new ResourceName("path", "name"));
             var updateManager = new Mock<IManageWebServiceSourceModel>();
-
-            var manageWebServiceSourceViewModel = new ManageWebserviceSourceViewModel(updateManager.Object, dialog.Object, new Mock<IEventAggregator>().Object) { Password = "bob",  AuthenticationType = AuthenticationType.Public, UserName = "dave", DefaultQuery = "dbNAme" };
+            updateManager.Setup(model => model.ServerName).Returns("localhost");
+            var manageWebServiceSourceViewModel = new ManageWebserviceSourceViewModel(updateManager.Object, dialog.Object, new Mock<IEventAggregator>().Object) { Password = "bob",  AuthenticationType = AuthenticationType.Anonymous, UserName = "dave", HostName = "dbNAme" };
             // ReSharper disable MaximumChainedReferences
             updateManager.Setup(a => a.TestConnection(It.IsAny<IWebServiceSource>())).Callback((IWebServiceSource a) =>
                 // ReSharper restore MaximumChainedReferences
             {
-                Assert.AreEqual(a.AuthenticationType, AuthenticationType.Anonymous);
-                Assert.AreEqual(a.HostName, "dbNAme");
-                Assert.AreEqual(a.Password, "bob");
-                Assert.AreEqual(a.UserName, "dave");
-
+                Assert.AreEqual(AuthenticationType.Anonymous, a.AuthenticationType);
+                Assert.AreEqual("dbNAme", a.HostName);
+                Assert.AreEqual("bob", a.Password);
+                Assert.AreEqual("dave", a.UserName);
             });
             Assert.IsFalse(manageWebServiceSourceViewModel.OkCommand.CanExecute(null));
             manageWebServiceSourceViewModel.TestCommand.Execute(null);
-            Assert.IsTrue(manageWebServiceSourceViewModel.TestPassed);
-
         }
 
 
@@ -249,7 +252,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             manageWebServiceSourceViewModel.AuthenticationType = AuthenticationType.Public;
             manageWebServiceSourceViewModel.UserName = "dave";
             manageWebServiceSourceViewModel.DefaultQuery = "dbNAme";
-            Assert.AreEqual("New Webservice Connector Source Server", manageWebServiceSourceViewModel.Header);
+            Assert.AreEqual("New Webservice Connector Source Server*", manageWebServiceSourceViewModel.Header);
 
 
         }
