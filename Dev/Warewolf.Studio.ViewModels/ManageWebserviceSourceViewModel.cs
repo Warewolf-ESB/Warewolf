@@ -56,7 +56,7 @@ namespace Warewolf.Studio.ViewModels
             Header = Resources.Languages.Core.DatabaseWebserviceNewHeaderLabel;
             TestCommand = new DelegateCommand(TestConnection, CanTest);
             OkCommand = new DelegateCommand(SaveConnection, CanSave);
-            
+            CancelTestCommand = new DelegateCommand(CancelTest, CanCancelTest);
         }
 
         public ManageWebserviceSourceViewModel(IManageWebServiceSourceModel updateManager, IRequestServiceNameViewModel requestServiceNameViewModel, IEventAggregator aggregator)
@@ -84,6 +84,29 @@ namespace Warewolf.Studio.ViewModels
         bool CanSave()
         {
             return TestPassed && !String.IsNullOrEmpty(DefaultQuery);
+        }
+
+        bool CanCancelTest()
+        {
+            return Testing;
+        }
+
+        void CancelTest()
+        {
+            if (_token != null)
+            {
+                if (!_token.IsCancellationRequested && _token.Token.CanBeCanceled)
+                {
+                    _token.Cancel();
+                    Dispatcher.CurrentDispatcher.Invoke(() =>
+                    {
+                        Testing = false;
+                        TestFailed = true;
+                        TestPassed = false;
+                        TestMessage = "Test Cancelled";
+                    });
+                }
+            }
         }
 
         public bool CanTest()
@@ -359,6 +382,8 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public ICommand CancelTestCommand { get; set; }
+
         public ICommand TestCommand { get; set; }
 
         public ICommand ViewInBrowserCommand { get; set; }
@@ -451,6 +476,15 @@ namespace Warewolf.Studio.ViewModels
             get
             {
                 return Resources.Languages.Core.TestConnectionLabel;
+            }
+        }
+
+        [ExcludeFromCodeCoverage]
+        public string CancelTestLabel
+        {
+            get
+            {
+                return Resources.Languages.Core.CancelTest;
             }
         }
 

@@ -23,7 +23,7 @@
     </UserControl.Resources>
     <Grid Background="White" 
           x:Name="SourceGrid"
-          Margin="{StaticResource ContainerBorder}"
+          Margin="{StaticResource ElementBorder}"
           FocusManager.FocusedElement="{Binding ElementName=ServerTextBox}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -39,7 +39,6 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <StackPanel Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" Orientation="Horizontal">
-            <TextBlock Text="1" Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
             <TextBlock Margin="5" Text="{Binding HeaderText}" Style="{StaticResource SourceHeader}" />
         </StackPanel>
         <Grid Grid.Row="1">
@@ -69,9 +68,10 @@
             <TextBlock VerticalAlignment="Center" 
                        Grid.Column="0"
                        Grid.Row="1" 
+                        Margin="0,-3,0,-3"
                        x:Name="Authentication"
                        Text="{Binding AuthenticationLabel}"/>
-            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="0,-3,0,0">
                 <RadioButton Margin="{StaticResource ElementBorderControlRight}" 
                              x:Name="AnonymousRadioButton" 
                              ToolTip="{Binding Path=AnonymousAuthenticationToolTip}" 
@@ -99,6 +99,7 @@
         </Grid>
         <Grid x:Name="UserNamePasswordContainer" 
               Grid.Row="2" 
+              Margin="0,-3,0,6"
               Visibility="{Binding Path=UserAuthenticationSelected,Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
@@ -135,8 +136,7 @@
                 </i:Interaction.Behaviors>
             </PasswordBox>
         </Grid>
-        <Grid Grid.Row="3" 
-                    Margin="{StaticResource ControlBorderTop}" >
+        <Grid Grid.Row="3" Margin="0,-3,0,0" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition  Width="{Binding ElementName=Authentication, Path=ActualWidth}"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -193,8 +193,13 @@
             </Button>
             <Button Width="120" 
                     Height="30" 
+                    Margin="{StaticResource ElementBorderControlRight}" 
                     Command="{Binding ViewInBrowserCommand}" 
                     Content="{Binding ViewInBrowserLabel}"></Button>
+            <Button Width="120" 
+                    Height="30" 
+                    Command="{Binding CancelTestCommand}" 
+                    Content="{Binding CancelTestLabel}"></Button>
         </StackPanel>
         <StackPanel Grid.Row="5"
                     Margin="{StaticResource ControlBorderTop}" 

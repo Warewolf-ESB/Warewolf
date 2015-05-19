@@ -35,7 +35,10 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// Test if connection is successful
         /// </summary>
         ICommand TestCommand { get; set; }
-        
+
+        ICommand CancelTestCommand { get; set; }
+
+        string CancelTestLabel { get; }
         /// <summary>
         /// Cancel a test that has started
         /// </summary>
