@@ -175,6 +175,8 @@
 /Dev/Example Shipper/Example Shipper/obj
 /Dev/ExecutionEngine/bin
 /Dev/ExecutionEngine/obj
+/Dev/RunDatalistEval/bin
+/Dev/RunDatalistEval/obj
 /Dev/ServerProxyLayer/bin
 /Dev/ServerProxyLayer/obj
 /Dev/ServerProxyLayerTests/bin
@@ -187,12 +189,28 @@
 /Dev/Test.Localisation/obj
 /Dev/Warewolf.AcceptanceTesting.Core/bin
 /Dev/Warewolf.AcceptanceTesting.Core/obj
+/Dev/Warewolf.AcceptanceTesting.Deploy/bin
+/Dev/Warewolf.AcceptanceTesting.Deploy/obj
+/Dev/Warewolf.AcceptanceTesting.DatabaseService/bin
+/Dev/Warewolf.AcceptanceTesting.DatabaseService/obj
 /Dev/Warewolf.AcceptanceTesting.Help/bin
 /Dev/Warewolf.AcceptanceTesting.Help/obj
 /Dev/Warewolf.AcceptanceTesting.Explorer/bin
 /Dev/Warewolf.AcceptanceTesting.Explorer/obj
 /Dev/Warewolf.AcceptanceTesting.SaveDialog/bin
 /Dev/Warewolf.AcceptanceTesting.SaveDialog/obj
+/Dev/Warewolf.AcceptanceTesting.Scheduler/bin
+/Dev/Warewolf.AcceptanceTesting.Scheduler/obj
+/Dev/Warewolf.AcceptanceTesting.Interactions/bin
+/Dev/Warewolf.AcceptanceTesting.Interactions/obj
+/Dev/Warewolf.AcceptanceTesting.ServerSource/bin
+/Dev/Warewolf.AcceptanceTesting.ServerSource/obj
+/Dev/Warewolf.AcceptanceTesting.Toolbox/bin
+/Dev/Warewolf.AcceptanceTesting.Toolbox/obj
+/Dev/Warewolf.AcceptanceTesting.Variables/bin
+/Dev/Warewolf.AcceptanceTesting.Variables/obj
+/Dev/Warewolf.AcceptanceTesting.WebService/bin
+/Dev/Warewolf.AcceptanceTesting.WebService/obj
 /Dev/Warewolf.Studio/bin
 /Dev/Warewolf.Studio/obj
 /Dev/Warewolf.Studio.Core/bin
@@ -229,18 +247,17 @@
 /Dev/Warewolf.Studio.CustomControls/obj
 /Dev/Warewolf.Studio.CustomControls.Tests/bin
 /Dev/Warewolf.Studio.CustomControls.Tests/obj
-/Dev/RunDatalistEval/bin
-/Dev/RunDatalistEval/obj
 /Dev/Warewolf.Storage/bin
 /Dev/Warewolf.Storage/obj
+/Dev/Warewolf.ResourceManagement/bin
+/Dev/Warewolf.ResourceManagement/obj
 /Dev/WarewolfParserInterop/bin
 /Dev/WarewolfParserInterop/obj
 /Dev/WarewolfParsing.Tests/bin
 /Dev/WarewolfParsing.Tests/obj
 /Dev/WarewolfLanguageParser/bin
 /Dev/WarewolfLanguageParser/obj
-/Dev/Warewolf.ResourceManagement/bin
-/Dev/Warewolf.ResourceManagement/obj
+
 
 ####################################################################################
 # These release workflows must be stored in "/Dev/BPM Resources - Release/Resources" ONLY!
