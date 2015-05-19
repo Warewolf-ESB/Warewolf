@@ -29,7 +29,8 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// Default Query
         /// </summary>
         string DefaultQuery { get; set; }
-        
+
+        string TestDefaultLabel { get; }
         /// <summary>
         /// Test if connection is successful
         /// </summary>
@@ -43,7 +44,10 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// The message that will be set if the test is either successful or not
         /// </summary>
         string TestMessage { get; }
-
+        /// <summary>
+        /// The message that will be set if the test is either successful or not
+        /// </summary>
+        string TestDefault { get; }
 
         /// <summary>
         /// Localized text for the UserName label

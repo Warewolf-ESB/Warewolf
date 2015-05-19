@@ -29,6 +29,7 @@ namespace Warewolf.Studio.ViewModels
         private string _password;
         private string _defaultQuery;
         private string _testMessage;
+        private string _testDefault;
         private string _header;
         readonly IManageWebServiceSourceModel _updateManager;
         readonly IEventAggregator _aggregator;
@@ -298,6 +299,9 @@ namespace Warewolf.Studio.ViewModels
                 if (value != _hostName)
                 {
                     _hostName = value;
+                    TestDefault = _hostName + "" + DefaultQuery;
+                    OnPropertyChanged(() => HostName);
+                    _hostName = value;
                     OnPropertyChanged(() => HostName);
                     OnPropertyChanged(() => Header);
                     TestPassed = false;
@@ -314,6 +318,7 @@ namespace Warewolf.Studio.ViewModels
             {
              
                 _defaultQuery = value;
+                TestDefault = _hostName + "" + DefaultQuery;
                 OnPropertyChanged(() => DefaultQuery);
                 OnPropertyChanged(() => Header);
                 ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
@@ -353,6 +358,16 @@ namespace Warewolf.Studio.ViewModels
 
         public ICommand ViewInBrowserCommand { get; set; }
 
+        public string TestDefault
+        {
+            get { return _testDefault; }
+            set
+            {
+                _testDefault = value;
+                OnPropertyChanged(() => TestDefault);
+            }
+        }
+
         public string TestMessage
         {
             get { return _testMessage; }
@@ -389,6 +404,12 @@ namespace Warewolf.Studio.ViewModels
             {
                 return Resources.Languages.Core.DefaultQueryLabel;
             }
+        }
+
+        [ExcludeFromCodeCoverage]
+        public string TestDefaultLabel
+        {
+            get { return Resources.Languages.Core.TestDefaultLabel; }
         }
 
         [ExcludeFromCodeCoverage]

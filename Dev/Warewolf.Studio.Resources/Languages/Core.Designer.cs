@@ -1455,6 +1455,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Test/Default:.
+        /// </summary>
+        public static string TestDefaultLabel {
+            get {
+                return ResourceManager.GetString("TestDefaultLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tool guids are not allowed to be the empty guid.
         /// </summary>
         public static string ToolDescriptor_ToolDescriptor_Tool_guids_are_not_allowed_to_be_the_empty_guid {

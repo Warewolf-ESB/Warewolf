@@ -538,6 +538,9 @@ You need Administrator permission.</value>
   <data name="DefaultQueryLabel" xml:space="preserve">
     <value>Default Query:</value>
   </data>
+  <data name="TestDefaultLabel" xml:space="preserve">
+    <value>Test/Default:</value>
+  </data>
   <data name="MenuDialogDatabaseLabel" xml:space="preserve">
     <value>Database</value>
   </data>
