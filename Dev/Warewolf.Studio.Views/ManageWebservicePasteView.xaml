@@ -18,7 +18,7 @@
                     Width="600"
                     Height="450"
                     d:DesignHeight="450" d:DesignWidth="600">
-    <Grid Margin="{Binding ContainerBorder}">
+    <Grid Margin="{Binding ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
@@ -26,12 +26,13 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBox TextWrapping="Wrap" HorizontalAlignment="Stretch"
-                 MinHeight="367" AcceptsReturn="True" 
+        <TextBox TextWrapping="Wrap" 
+                 MinHeight="369" 
+                 AcceptsReturn="True" 
                  Margin="{StaticResource ElementBorderLeftRight}"
                  VerticalContentAlignment="Top"
                  SnapsToDevicePixels="True" 
-                 VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto"
+                 VerticalScrollBarVisibility="Auto"
                  HorizontalScrollBarVisibility="Disabled"></TextBox>
         <StackPanel Grid.Row="1" 
                     Margin="0,-2,5,5"
