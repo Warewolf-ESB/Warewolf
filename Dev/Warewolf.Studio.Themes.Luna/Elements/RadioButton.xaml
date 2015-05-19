@@ -115,7 +115,7 @@
                             <ColumnDefinition Width="18" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Rectangle Margin="-6,0" Fill="{StaticResource SolidWhite}" />
+                        <Rectangle Margin="0" Fill="{StaticResource SolidWhite}" />
                         <Ellipse x:Name="normal"
                                  Width="18"
                                  Height="18"
