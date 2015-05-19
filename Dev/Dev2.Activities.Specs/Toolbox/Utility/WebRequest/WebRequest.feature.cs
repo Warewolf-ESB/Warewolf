@@ -115,7 +115,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 21
  testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 22
- testRunner.Then(string.Format("the result should contain the string \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("the result should contain the string \"{0}\"", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 23
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -141,13 +141,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Enter a URL to download html with timeout specified")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WebRequest")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "\"http://tst-ci-remote:3142/services/Wait?WaitSeconds=150\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:url", "\"http://tst-ci-remote:3142/services/Wait?WaitSeconds=150\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "\"http://tst-ci-remote:3142/Public/Wait?WaitSeconds=150\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:url", "\"http://tst-ci-remote:3142/Public/Wait?WaitSeconds=150\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:timeoutSeconds", "\"160\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Wait Successful\"")]
-        public virtual void EnterAURLToDownloadHtmlWithTimeoutSpecified_HttpTst_Ci_Remote3142ServicesWaitWaitSeconds150()
+        public virtual void EnterAURLToDownloadHtmlWithTimeoutSpecified_HttpTst_Ci_Remote3142PublicWaitWaitSeconds150()
         {
-            this.EnterAURLToDownloadHtmlWithTimeoutSpecified("\"http://tst-ci-remote:3142/services/Wait?WaitSeconds=150\"", "\"160\"", "\"Wait Successful\"", ((string[])(null)));
+            this.EnterAURLToDownloadHtmlWithTimeoutSpecified("\"http://tst-ci-remote:3142/Public/Wait?WaitSeconds=150\"", "\"160\"", "\"Wait Successful\"", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]

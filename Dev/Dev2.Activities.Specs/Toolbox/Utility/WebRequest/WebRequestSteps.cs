@@ -99,15 +99,16 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-            if (string.IsNullOrEmpty(result))
+            if (string.IsNullOrEmpty(expectedResult))
             {
                 Assert.IsTrue(string.IsNullOrEmpty(actualValue));
             }
             else
             {
-                Assert.IsTrue(actualValue.Contains(result));
+                Assert.IsTrue(actualValue.Contains(expectedResult));
             }
         }
+
 
         [Given(@"I have the url '(.*)' with timeoutSeconds ""(.*)""")]
         public void GivenIHaveTheUrlWithTimeoutSeconds(string url, string timeoutSeconds)
