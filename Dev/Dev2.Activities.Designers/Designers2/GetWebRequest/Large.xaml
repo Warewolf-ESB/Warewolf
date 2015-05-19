@@ -39,6 +39,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto"
                            MinHeight="50" />
+            <RowDefinition />
+
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
@@ -103,11 +105,25 @@
         <Label Grid.Column="0"
                Grid.Row="2"
                Style="{StaticResource ActivityLabelStyle}"
+               Content="Time Out Seconds"
+               VerticalAlignment="Top" />
+        <ui:IntellisenseTextBox
+                                Grid.Column="1"
+                                Grid.Row="2"
+                                DefaultText="100"
+                                Focusable="True"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                Text="{Binding Path=ModelItem.TimeOutText, Mode=TwoWay,  NotifyOnTargetUpdated=True, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
+                                ToolTip="{x:Static help:HelpTextResources.WebRequestToolTipTimeOut}">
+        </ui:IntellisenseTextBox>
+        <Label Grid.Column="0"
+               Grid.Row="3"
+            Style="{StaticResource ActivityLabelStyle}"
                Content="Result"
                VerticalAlignment="Bottom" />
         <ui:IntellisenseTextBox Grid.Column="1"
-                                Grid.Row="2"
-                                DefaultText="[[HTML]]"
+                                Grid.Row="3"
+            DefaultText="[[HTML]]"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True}"
@@ -124,14 +140,14 @@
         </ui:IntellisenseTextBox>
 
         <preview:PreviewView Grid.Column="0"
-                             Grid.Row="3"
-                             Grid.ColumnSpan="2"
+                             Grid.Row="4"
+            Grid.ColumnSpan="2"
                              Margin="0"
                              DataContext="{Binding PreviewViewModel}" />
 
         <errors:OnError Grid.Column="0"
-                        Grid.Row="4"
-                        Grid.ColumnSpan="2"
+                        Grid.Row="5"
+            Grid.ColumnSpan="2"
                         Margin="2" />
 
     </Grid>

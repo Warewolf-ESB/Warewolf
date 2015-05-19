@@ -49,6 +49,9 @@ namespace Dev2.Activities
 
         [FindMissing]
         public string Method { get; set; }
+        [FindMissing]
+        public string TimeOutText { get; set; }
+
         [Inputs("Url")]
         [FindMissing]
         public string Url { get; set; }
@@ -129,7 +132,20 @@ namespace Dev2.Activities
                             _debugInputs.Add(debugItem);
                         }
                     }
-
+                    if(!string.IsNullOrEmpty(TimeOutText))
+                    {
+                        int timeoutval;
+                        if (int.TryParse(dataObject.Environment.Eval(TimeOutText).ToString(),out timeoutval))
+                        {
+                            TimeoutSeconds = timeoutval;
+                        }
+                        if (dataObject.IsDebugMode())
+                        {
+                            DebugItem debugItem = new DebugItem();
+                            AddDebugItem(new DebugEvalResult(String.IsNullOrEmpty(TimeOutText)?"100": TimeOutText, "Time Out Seconds", dataObject.Environment), debugItem);
+                            _debugInputs.Add(debugItem);
+                        }
+                    }
                     var result = WebRequestInvoker.ExecuteRequest(Method, c, headersEntries, timeoutMilliseconds: TimeoutSeconds * 1000);
                     allErrors.MergeErrors(errorsTo);
                     var expression = GetExpression(IndexToUpsertTo);

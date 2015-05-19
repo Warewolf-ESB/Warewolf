@@ -3219,4 +3219,7 @@ Data
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
+  <data name="WebRequestToolTipTimeOut" xml:space="preserve">
+    <value>The length of time to wait for a web request to complete before failing</value>
+  </data>
 </root>
