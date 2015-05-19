@@ -153,7 +153,7 @@ namespace Dev2.Activities
                     var result = WebRequestInvoker.ExecuteRequest(Method,
                         c,
                         headersEntries,
-                        timeoutMilliseconds: (TimeoutSeconds < 0 ? Timeout.Infinite : TimeoutSeconds * 1000)
+                        timeoutMilliseconds: (TimeoutSeconds == 0 ? Timeout.Infinite : TimeoutSeconds * 1000)
                         );
                     allErrors.MergeErrors(errorsTo);
                     var expression = GetExpression(IndexToUpsertTo);
