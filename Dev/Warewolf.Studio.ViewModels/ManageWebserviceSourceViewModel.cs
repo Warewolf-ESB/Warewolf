@@ -8,12 +8,12 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Dev2;
 using Dev2.Common.Interfaces.Core;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
+using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Warewolf.Core;
@@ -23,10 +23,8 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ManageWebserviceSourceViewModel : BindableBase, IManageWebserviceSourceViewModel, IDockViewModel, IDisposable
     {
-        private enSourceType _serverType;
         private AuthenticationType _authenticationType;
-        private string _serverName;
-        private string _databaseName;
+        private string _hostName;
         private string _userName;
         private string _password;
         private string _defaultQuery;
@@ -53,34 +51,13 @@ namespace Warewolf.Studio.ViewModels
             VerifyArgument.IsNotNull("aggregator", aggregator);
             _updateManager = updateManager;
             _aggregator = aggregator;
+            _warewolfserverName = updateManager.ServerName;
             _authenticationType = AuthenticationType.Anonymous;
-       
             HeaderText = "New Webservice Connector Source Server";
             Header = "New Webservice Connector Source Server";
+            TestCommand = new DelegateCommand(TestConnection, CanTest);
+            OkCommand = new DelegateCommand(SaveConnection, CanSave);
             
-        }
-
-        bool CanCancelTest()
-        {
-            return Testing;
-        }
-
-        void CancelTest()
-        {
-            if(_token != null)
-            {
-                if(!_token.IsCancellationRequested && _token.Token.CanBeCanceled)
-                {
-                    _token.Cancel();
-                    Dispatcher.CurrentDispatcher.Invoke(() =>
-                    {
-                        Testing = false;
-                        TestFailed = true;
-                        TestPassed = false;
-                        TestMessage = "Test Cancelled";
-                    });
-                }
-            }
         }
 
         public ManageWebserviceSourceViewModel(IManageWebServiceSourceModel updateManager, IRequestServiceNameViewModel requestServiceNameViewModel, IEventAggregator aggregator)
@@ -96,25 +73,25 @@ namespace Warewolf.Studio.ViewModels
             VerifyArgument.IsNotNull("dbSource", webServiceSource);
             _webServiceSource = webServiceSource;
             SetupHeaderTextFromExisting();
-            //FromDbSource(webServiceSource);
+            FromSource(webServiceSource);
         }
 
         void SetupHeaderTextFromExisting()
         {
-            HeaderText = "Edit Database Service - " + _warewolfserverName.Trim()+"\\"+(_webServiceSource==null?ResourceName:_webServiceSource.Name).Trim();
-            Header = "Edit Database Service - " +((_webServiceSource==null?ResourceName:_webServiceSource.Name));
+            HeaderText = "Edit Webservice Connector Source - " + _warewolfserverName.Trim()+"\\"+(_webServiceSource==null?ResourceName:_webServiceSource.Name).Trim();
+            Header = "Edit Webservice Connector Source - " + ((_webServiceSource == null ? ResourceName : _webServiceSource.Name));
         }
 
         bool CanSave()
         {
-            return TestPassed && !String.IsNullOrEmpty(DatabaseName);
+            return TestPassed && !String.IsNullOrEmpty(DefaultQuery);
         }
 
         public bool CanTest()
         {
             if (Testing)
                 return false;
-            if (String.IsNullOrEmpty(ServerName))
+            if (String.IsNullOrEmpty(HostName))
             {
                 return false;
             }
@@ -133,14 +110,14 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
-        void FromDbSource(IDbSource dbSource)
+        void FromSource(IWebServiceSource webServiceSource)
         {
-            ResourceName = dbSource.Name;
-            AuthenticationType = dbSource.AuthenticationType;
-            UserName = dbSource.UserName;
-            DatabaseName = dbSource.DbName;
-            ServerName = dbSource.ServerName;
-            Password = dbSource.Password;
+            ResourceName = webServiceSource.Name;
+            AuthenticationType = webServiceSource.AuthenticationType;
+            UserName = webServiceSource.UserName;
+            DefaultQuery = webServiceSource.DefaultQuery;
+            HostName = webServiceSource.HostName;
+            Password = webServiceSource.Password;
             
         }
 
@@ -226,7 +203,6 @@ namespace Warewolf.Studio.ViewModels
                             TestPassed = false;
                             Testing = false;
                             TestMessage = t.Exception != null ? t.Exception.Message : "Failed";
-                            DatabaseNames.Clear();
                             break;
                         }
                         case TaskStatus.RanToCompletion:
@@ -243,7 +219,6 @@ namespace Warewolf.Studio.ViewModels
             t.Start();
                 
 
-            OnPropertyChanged(() => DatabaseNames);
         }
 
         void SetupProgressSpinner()
@@ -263,11 +238,11 @@ namespace Warewolf.Studio.ViewModels
             return new WebServiceSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
-                HostName = ServerName,
+                HostName = HostName,
                 Password = Password,
                 UserName = UserName,
                 Name = ResourceName,
-                DefaultQuery = DatabaseName,
+                DefaultQuery = DefaultQuery,
                 Id = _webServiceSource == null ? Guid.NewGuid() : _webServiceSource.Id
             };
         }
@@ -278,10 +253,10 @@ namespace Warewolf.Studio.ViewModels
                 return new WebServiceSourceDefinition
                 {
                     AuthenticationType = AuthenticationType,
-                    HostName = ServerName ,
+                    HostName = HostName ,
                     Password = Password,
                     UserName =  UserName ,
-                    DefaultQuery = DatabaseName,
+                    DefaultQuery = DefaultQuery,
                     Name = ResourceName,
                     Id =  _webServiceSource==null?Guid.NewGuid():_webServiceSource.Id
                 }
@@ -290,9 +265,9 @@ namespace Warewolf.Studio.ViewModels
             else
             {
                 _webServiceSource.AuthenticationType = AuthenticationType;
-                _webServiceSource.DefaultQuery = DatabaseName;
+                _webServiceSource.DefaultQuery = DefaultQuery;
                 _webServiceSource.Password = Password;
-                _webServiceSource.HostName = ServerName;
+                _webServiceSource.HostName = HostName;
                 _webServiceSource.UserName = UserName;
                 return _webServiceSource;
 
@@ -302,19 +277,6 @@ namespace Warewolf.Studio.ViewModels
         bool Haschanged
         {
             get { return !ToSource().Equals(_webServiceSource) ; }
-        }
-
-        public IList<enSourceType> Types { get; set; }
-
-        public enSourceType ServerType
-        {
-            get { return _serverType; }
-            set
-            {
-                _serverType = value;
-                OnPropertyChanged(() => ServerType);
-                OnPropertyChanged(()=>Header);
-            }
         }
 
         public AuthenticationType AuthenticationType
@@ -335,16 +297,18 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public string ServerName
+        public string HostName
         {
-            get { return _serverName; }
+            get { return _hostName; }
             set
             {
-                if (value != _serverName)
+                if (value != _hostName)
                 {
-                    _serverName = value;
-                    TestDefault = _serverName + "" + DefaultQuery;
-                    OnPropertyChanged(() => ServerName);
+                    _hostName = value;
+                    TestDefault = _hostName + "" + DefaultQuery;
+                    OnPropertyChanged(() => HostName);
+                    _hostName = value;
+                    OnPropertyChanged(() => HostName);
                     OnPropertyChanged(() => Header);
                     TestPassed = false;
                     ViewModelUtils.RaiseCanExecuteChanged(TestCommand);
@@ -353,33 +317,20 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public string DatabaseName
-        {
-            get { return _databaseName; }
-            set
-            {
-             
-                _databaseName = value;
-                OnPropertyChanged(() => DatabaseName);
-                OnPropertyChanged(() => Header);
-                ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
-            }
-        }
-
         public string DefaultQuery
         {
             get { return _defaultQuery; }
             set
             {
+             
                 _defaultQuery = value;
-                TestDefault = _serverName + "" + DefaultQuery;
+                TestDefault = _hostName + "" + DefaultQuery;
                 OnPropertyChanged(() => DefaultQuery);
                 OnPropertyChanged(() => Header);
-                TestPassed = false;
-                ViewModelUtils.RaiseCanExecuteChanged(TestCommand);
                 ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
             }
         }
+
 
         public string UserName
         {
@@ -411,7 +362,7 @@ namespace Warewolf.Studio.ViewModels
 
         public ICommand TestCommand { get; set; }
 
-        public ICommand CancelTestCommand { get; set; }
+        public ICommand ViewInBrowserCommand { get; set; }
 
         public string TestDefault
         {
@@ -450,16 +401,7 @@ namespace Warewolf.Studio.ViewModels
         
  
         }
-
-        [ExcludeFromCodeCoverage]
-        public string ServerTypeLabel
-        {
-            get
-            {
-                return Resources.Languages.Core.DatabaseSourceTypeLabel;
-            }
-        }
-
+        
 
         [ExcludeFromCodeCoverage]
         public string DefaultQueryLabel
@@ -514,7 +456,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         [ExcludeFromCodeCoverage]
-        public string CancelTestLabel
+        public string ViewInBrowserLabel
         {
             get
             {
@@ -546,26 +488,17 @@ namespace Warewolf.Studio.ViewModels
                 _testing = value;
                
                 OnPropertyChanged(()=>Testing);
-                ViewModelUtils.RaiseCanExecuteChanged(CancelTestCommand);
+                ViewModelUtils.RaiseCanExecuteChanged(ViewInBrowserCommand);
                 ViewModelUtils.RaiseCanExecuteChanged(TestCommand);
             }
         }
 
         [ExcludeFromCodeCoverage]
-        public string ServerLabel
+        public string HostNameLabel
         {
             get
             {
                 return Resources.Languages.Core.DatabaseSourceServerLabel;
-            }
-        }
-
-        [ExcludeFromCodeCoverage]
-        public string DatabaseLabel
-        {
-            get
-            {
-                return Resources.Languages.Core.DatabaseSourceDatabaseLabel;
             }
         }
 
@@ -582,14 +515,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        [ExcludeFromCodeCoverage]
-        public string WindowsAuthenticationToolTip
-        {
-            get
-            {
-                return Resources.Languages.Core.WindowsAuthenticationToolTip;
-            }
-        }
 
         /// <summary>
         /// Tooltip for the Windows Authentication option
@@ -612,24 +537,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        [ExcludeFromCodeCoverage]
-        public string ServerTypeTool
-        {
-            get
-            {
-                return Resources.Languages.Core.DatabaseSourceTypeToolTip;
-            }
-        }
-
-        public IList<string> DatabaseNames
-        {
-            get { return _databaseNames; }
-            set
-            {
-                _databaseNames = value;
-                OnPropertyChanged(() => DatabaseNames);
-            }
-        }
 
         public bool IsActive { get; set; }
 
@@ -647,11 +554,11 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Header);
             }
         }
-        public bool IsEmpty { get { return String.IsNullOrEmpty(ServerName) && AuthenticationType == AuthenticationType.Windows && String.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Password); } }
+        public bool IsEmpty { get { return String.IsNullOrEmpty(HostName) && AuthenticationType == AuthenticationType.Windows && String.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Password); } }
 
         public ResourceType? Image
         {
-            get { return ResourceType.DbSource; }
+            get { return ResourceType.WebSource; }
         }
 
         public void Dispose()
