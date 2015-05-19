@@ -141,8 +141,14 @@ namespace Dev2.Activities
                         int timeoutval;
                         if (int.TryParse(dataObject.Environment.Eval(TimeOutText).ToString(), out timeoutval))
                         {
-                            TimeoutSeconds = timeoutval;
+                            if (timeoutval < 0)
+                                allErrors.AddError(string.Format("Value of TimeoutSecondsText out of range: please specify a value between 0 and {0}.", int.MaxValue));
+                            else
+                                TimeoutSeconds = timeoutval;
                         }
+                        else
+                            allErrors.AddError(string.Format("Value {0} for TimeoutSecondsText could not be interpreted as a numeric value.", TimeOutText));
+
                         if (dataObject.IsDebugMode())
                         {
                             DebugItem debugItem = new DebugItem();
@@ -150,14 +156,22 @@ namespace Dev2.Activities
                             _debugInputs.Add(debugItem);
                         }
                     }
-                    var result = WebRequestInvoker.ExecuteRequest(Method,
-                        c,
-                        headersEntries,
-                        timeoutMilliseconds: (TimeoutSeconds == 0 ? Timeout.Infinite : TimeoutSeconds * 1000)
-                        );
-                    allErrors.MergeErrors(errorsTo);
-                    var expression = GetExpression(IndexToUpsertTo);
-                    PushResultsToDataList(expression, result, dataObject);
+
+                    if (!allErrors.HasErrors())
+                    {
+                        var result = WebRequestInvoker.ExecuteRequest(Method,
+                            c,
+                            headersEntries,
+                            timeoutMilliseconds: (TimeoutSeconds == 0 ? Timeout.Infinite : TimeoutSeconds * 1000)  // important to list the parameter name here to see the conversion from seconds to milliseconds
+                            );
+
+                        allErrors.MergeErrors(errorsTo);
+                        var expression = GetExpression(IndexToUpsertTo);
+                        PushResultsToDataList(expression, result, dataObject);
+                    }
+                    else
+                        throw new ApplicationException("Execution aborted - see error messages.");
+
                 }
             }
             catch (Exception e)

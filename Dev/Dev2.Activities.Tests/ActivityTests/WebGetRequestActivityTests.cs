@@ -73,6 +73,7 @@ namespace ActivityUnitTests.ActivityTest
             var activity = GetWebGetRequestActivity();
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(activity, typeof(DsfActivityAbstract<string>));
+            Assert.AreEqual(100, activity.TimeoutSeconds);
         }
 
         [TestMethod]
@@ -129,7 +130,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Setup for test--------------------------
             var mock = new Mock<IWebRequestInvoker>();
             const string Message = "This is a forced exception";
-            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Tuple<string, string>>>(),It.IsAny<int>())).Throws(new InvalidDataException(Message));
+            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>())).Throws(new InvalidDataException(Message));
             var activity = GetWebGetRequestActivity(mock);
             activity.Method = "GET";
             activity.Url = "BodyValue";
@@ -141,9 +142,41 @@ namespace ActivityUnitTests.ActivityTest
             //------------Execute Test---------------------------
             var executeProcess = ExecuteProcess();
             //------------Assert Results-------------------------
-            mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url, It.IsAny<List<Tuple<string, string>>>(),It.IsAny<int>()), Times.Once());
+            mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>()), Times.Once());
             string errorString = DataObject.Environment.FetchErrors();
             StringAssert.Contains(errorString, Message);
+        }
+
+        [TestMethod]
+        [Owner("Kerneels Roos")]
+        [TestCategory("WebGetRequestActivity_Errors")]
+        public void WebGetRequestExecuteWhereErrorExpectErrorAdded_TimeoutSecondsOutOfRange()
+        {
+            //------------Setup for test--------------------------
+            var mock = new Mock<IWebRequestInvoker>();
+            const string Url = "http://localhost";
+            const string ExpectedResult = "Request Made";
+            mock.Setup(invoker => invoker.ExecuteRequest("GET", Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>())).Returns(ExpectedResult);
+            var activity = GetWebGetRequestActivity(mock);
+            activity.Method = "GET";
+            activity.Url = "[[Url]]";
+            activity.Result = "[[Res]]";
+            activity.TimeOutText = "-1";
+            TestStartNode = new FlowStep
+            {
+                Action = activity
+            };
+            TestData = string.Format("<root><Url>{0}</Url></root>", Url);
+            CurrentDl = "<ADL><Res></Res><Url></Url></ADL>";
+            //------------Execute Test---------------------------
+            var result = ExecuteProcess();
+            //------------Assert Results-------------------------
+            //mock.Verify(sender => sender.ExecuteRequest(activity.Method, Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>()), Times.Once());
+            string actual;
+            string error;
+            GetScalarValueFromEnvironment(result.Environment, "Res", out actual, out error);
+            Assert.AreNotEqual(ExpectedResult, actual);
+            Assert.IsNotNull(error);
         }
 
 
@@ -168,7 +201,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            mock.Verify(sender => sender.ExecuteRequest(activity.Method, Url, It.IsAny<List<Tuple<string, string>>>(),It.IsAny<int>()), Times.Once());
+            mock.Verify(sender => sender.ExecuteRequest(activity.Method, Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>()), Times.Once());
             string actual;
             string error;
             GetScalarValueFromEnvironment(result.Environment, "Res", out actual, out error);
