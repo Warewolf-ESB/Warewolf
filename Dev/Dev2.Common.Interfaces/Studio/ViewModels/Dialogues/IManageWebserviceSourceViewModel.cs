@@ -50,11 +50,6 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         string TestDefault { get; }
 
         /// <summary>
-        /// Localized text for the Server Type label
-        /// </summary>
-        string ServerTypeLabel { get; }
-
-        /// <summary>
         /// Localized text for the UserName label
         /// </summary>
         string UserNameLabel { get; }
