@@ -94,7 +94,8 @@ namespace Dev2.Activities.Designers2.GetWebRequest
                 {
                     if (!DataListUtil.IsValueRecordset(TimeOutText) && !DataListUtil.IsValueScalar(TimeOutText))
                     {
-                        Errors = new List<IActionableErrorInfo>(){
+                        Errors = new List<IActionableErrorInfo>
+                        {
                          new ActionableErrorInfo { ErrorType = ErrorType.Critical, Message = "Invalid time out. The timeout must be a valid variable or positive integer number. " }};
 
                     }
@@ -103,7 +104,8 @@ namespace Dev2.Activities.Designers2.GetWebRequest
                 {
                     if(res<0)
                     {
-                        Errors = new List<IActionableErrorInfo>(){
+                        Errors = new List<IActionableErrorInfo>
+                        {
                          new ActionableErrorInfo { ErrorType = ErrorType.Critical, Message = "Invalid time out. The timeout must be a valid variable or positive integer number. " }};
                     }
                 }
@@ -113,7 +115,9 @@ namespace Dev2.Activities.Designers2.GetWebRequest
         private string TimeOutText
         {
             get { return GetProperty<string>(); }
+            // ReSharper disable UnusedMember.Local
             set { SetProperty(value); }
+            // ReSharper restore UnusedMember.Local
         }
 
         #region Overrides of ActivityDesignerViewModel
