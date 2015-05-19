@@ -117,6 +117,19 @@ namespace Dev2.Runtime.ServiceModel
                 RaiseError(ex);
                 return new ValidationResult { IsValid = false, ErrorMessage = ex.Message };
             }
+        } 
+        
+        public ValidationResult Test(WebSource source)
+        {
+            try
+            {
+                return CanConnectServer(source);
+            }
+            catch(Exception ex)
+            {
+                RaiseError(ex);
+                return new ValidationResult { IsValid = false, ErrorMessage = ex.Message };
+            }
         }
 
         #endregion

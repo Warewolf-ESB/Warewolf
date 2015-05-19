@@ -22,7 +22,9 @@ namespace Warewolf.Studio.ViewModels
         readonly Guid _selectedGuid;
         public MessageBoxResult ViewResult { get; private set; }
 
-		public RequestServiceNameViewModel(IEnvironmentViewModel environmentViewModel, IRequestServiceNameView view, Guid selectedGuid)
+        /// <exception cref="ArgumentNullException"><paramref name="environmentViewModel"/> is <see langword="null" />.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="view"/> is <see langword="null" />.</exception>
+        public RequestServiceNameViewModel(IEnvironmentViewModel environmentViewModel, IRequestServiceNameView view, Guid selectedGuid)
         {
             if (environmentViewModel == null)
             {
@@ -70,7 +72,10 @@ namespace Warewolf.Studio.ViewModels
                 var parentNames = new List<string>();
                 while (parent != null)
                 {
-                    parentNames.Add(parent.ResourceName);
+                    if(parent.ResourceType != ResourceType.ServerSource)
+                    {
+                        parentNames.Add(parent.ResourceName);
+                    }
                     parent = parent.Parent;
                 }
                 var path = "";
