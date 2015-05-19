@@ -1,0 +1,56 @@
+﻿<ig:XamDialogWindow x:Class="Warewolf.Studio.Views.ManageWebservicePasteView"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:views="clr-namespace:Warewolf.Studio.Views"
+                    xmlns:ig="http://schemas.infragistics.com/xaml"
+                    CloseButtonVisibility="Collapsed"
+                    HeaderIconVisibility="Collapsed"
+                    MaximizeButtonVisibility="Collapsed"
+                    MinimizeButtonVisibility="Collapsed"
+                    IsResizable="False"
+                    Style="{StaticResource XamDialogWindowStyle}"
+                    Header="Paste your response here"
+                    mc:Ignorable="d" 
+                    SnapsToDevicePixels="True" 
+                    UseLayoutRounding="True"
+                    Width="600"
+                    Height="450"
+                    d:DesignHeight="450" d:DesignWidth="600">
+    <Grid Margin="{Binding ElementBorder}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBox TextWrapping="Wrap" 
+                 MinHeight="369" 
+                 AcceptsReturn="True" 
+                 Margin="{StaticResource ElementBorderLeftRight}"
+                 VerticalContentAlignment="Top"
+                 SnapsToDevicePixels="True" 
+                 VerticalScrollBarVisibility="Auto"
+                 HorizontalScrollBarVisibility="Disabled"></TextBox>
+        <StackPanel Grid.Row="1" 
+                    Margin="0,-2,5,5"
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Center">
+            <Button x:Name="SaveButton" 
+                    Margin="{StaticResource ElementBorderControlRight}"
+                    Width="60" 
+                    Height="30" 
+                    Command="{Binding}" 
+                    Content="Save"></Button>
+            <Button x:Name="CancelButton" 
+                    Width="60" 
+                    Height="30" 
+                    Command="{Binding}" 
+                    Click="CancelButton_OnClick"
+                    Content="Cancel"></Button>
+        </StackPanel>
+    </Grid>
+</ig:XamDialogWindow>

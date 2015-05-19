@@ -16,6 +16,12 @@ namespace Warewolf.Studio.Views
             ServerTextBox.Focus();
         }
 
+        private void Btn_OnClick(object sender, RoutedEventArgs e)
+        {
+            var manageWebservicePasteView = new ManageWebservicePasteView();
+            manageWebservicePasteView.ShowView();
+        }
+
         public void EnterServerName(string serverName)
         {
             ServerTextBox.Text = serverName;

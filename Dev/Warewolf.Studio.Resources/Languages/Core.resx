@@ -688,6 +688,21 @@ You need Administrator permission.</value>
   <data name="DatabaseSourceServerLabel" xml:space="preserve">
     <value>Server:</value>
   </data>
+  <data name="DatabaseSourceServerNewHeaderLabel" xml:space="preserve">
+    <value>New Database Connector Source</value>
+  </data>
+  <data name="DatabaseSourceServerEditHeaderLabel" xml:space="preserve">
+    <value>Edit Database Service - </value>
+  </data>
+  <data name="DatabaseWebserviceLabel" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="DatabaseWebserviceNewHeaderLabel" xml:space="preserve">
+    <value>New Webservice Connector Source</value>
+  </data>
+  <data name="DatabaseWebserviceEditHeaderLabel" xml:space="preserve">
+    <value>Edit Webservice Connector Source - </value>
+  </data>
   <data name="DatabaseSourceServerToolTip" xml:space="preserve">
     <value>Select the database source you want to use</value>
   </data>

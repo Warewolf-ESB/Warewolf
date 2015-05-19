@@ -19,6 +19,7 @@
     <SolidColorBrush x:Key="RadioButtonInvalidUnfocusedBorderBrush" Color="{StaticResource Color_029}" />
     <SolidColorBrush x:Key="RadioButtonInvalidFocusedBorderBrush" Color="{StaticResource Color_028}" />
     <SolidColorBrush x:Key="RadioButtonCheckBackgroundBrush" Color="{StaticResource WarewolfHeaderGrey}" />
+    <SolidColorBrush x:Key="RadioButtonTransparentBrush" Color="{StaticResource WarewolfTransparent}" />
 
 
     <!--  ********************************** RadioButton Style **********************************  -->
@@ -115,7 +116,7 @@
                             <ColumnDefinition Width="18" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Rectangle Margin="-6,0" Fill="{StaticResource SolidWhite}" />
+                        <Rectangle Margin="0" Fill="{StaticResource RadioButtonTransparentBrush}" />
                         <Ellipse x:Name="normal"
                                  Width="18"
                                  Height="18"
