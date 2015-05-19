@@ -52,8 +52,8 @@ namespace Warewolf.Studio.ViewModels
             _aggregator = aggregator;
             _warewolfserverName = updateManager.ServerName;
             _authenticationType = AuthenticationType.Anonymous;
-            HeaderText = "New Webservice Connector Source Server";
-            Header = "New Webservice Connector Source Server";
+            HeaderText = Resources.Languages.Core.DatabaseWebserviceNewHeaderLabel;
+            Header = Resources.Languages.Core.DatabaseWebserviceNewHeaderLabel;
             TestCommand = new DelegateCommand(TestConnection, CanTest);
             OkCommand = new DelegateCommand(SaveConnection, CanSave);
             
@@ -77,8 +77,8 @@ namespace Warewolf.Studio.ViewModels
 
         void SetupHeaderTextFromExisting()
         {
-            HeaderText = "Edit Webservice Connector Source - " + _warewolfserverName.Trim()+"\\"+(_webServiceSource==null?ResourceName:_webServiceSource.Name).Trim();
-            Header = "Edit Webservice Connector Source - " + ((_webServiceSource == null ? ResourceName : _webServiceSource.Name));
+            HeaderText = Resources.Languages.Core.DatabaseWebserviceEditHeaderLabel + _warewolfserverName.Trim() + "\\" + (_webServiceSource == null ? ResourceName : _webServiceSource.Name).Trim();
+            Header = Resources.Languages.Core.DatabaseWebserviceEditHeaderLabel + ((_webServiceSource == null ? ResourceName : _webServiceSource.Name));
         }
 
         bool CanSave()
@@ -497,7 +497,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return Resources.Languages.Core.DatabaseSourceServerLabel;
+                return Resources.Languages.Core.DatabaseWebserviceLabel;
             }
         }
 

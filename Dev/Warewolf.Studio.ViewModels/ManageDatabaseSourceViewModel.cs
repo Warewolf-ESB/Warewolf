@@ -52,9 +52,9 @@ namespace Warewolf.Studio.ViewModels
             VerifyArgument.IsNotNull("aggregator", aggregator);
             _updateManager = updateManager;
             _aggregator = aggregator;
-       
-            HeaderText = "New Database Connector Source Server";
-            Header = "New Database Connector Source Server";
+
+            HeaderText = Resources.Languages.Core.DatabaseSourceServerNewHeaderLabel;// "New Database Connector Source Server DatabaseSourceServerHeaderLabel";
+            Header = Resources.Languages.Core.DatabaseSourceServerNewHeaderLabel;
             TestCommand = new DelegateCommand(TestConnection,CanTest);
             OkCommand = new DelegateCommand(SaveConnection,CanSave);
             CancelTestCommand = new DelegateCommand(CancelTest,CanCancelTest);
@@ -117,8 +117,8 @@ namespace Warewolf.Studio.ViewModels
 
         void SetupHeaderTextFromExisting()
         {
-            HeaderText = "Edit Database Service - " + _warewolfserverName.Trim()+"\\"+(_dbSource==null?ResourceName:_dbSource.Name).Trim();
-            Header = "Edit Database Service - " +((_dbSource==null?ResourceName:_dbSource.Name));
+            HeaderText = Resources.Languages.Core.DatabaseSourceServerEditHeaderLabel + _warewolfserverName.Trim() + "\\" + (_dbSource == null ? ResourceName : _dbSource.Name).Trim();
+            Header = Resources.Languages.Core.DatabaseSourceServerEditHeaderLabel + ((_dbSource == null ? ResourceName : _dbSource.Name));
         }
 
         bool CanSave()

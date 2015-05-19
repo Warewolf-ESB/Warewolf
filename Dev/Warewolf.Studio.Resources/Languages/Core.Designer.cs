@@ -281,6 +281,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Database Service - .
+        /// </summary>
+        public static string DatabaseSourceServerEditHeaderLabel {
+            get {
+                return ResourceManager.GetString("DatabaseSourceServerEditHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;body&gt;&lt;p&gt;DatabaseSourceServerHelp&lt;/p&gt;&lt;/body&gt;.
         /// </summary>
         public static string DatabaseSourceServerHelp {
@@ -295,6 +304,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DatabaseSourceServerLabel {
             get {
                 return ResourceManager.GetString("DatabaseSourceServerLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Database Connector Source.
+        /// </summary>
+        public static string DatabaseSourceServerNewHeaderLabel {
+            get {
+                return ResourceManager.GetString("DatabaseSourceServerNewHeaderLabel", resourceCulture);
             }
         }
         
@@ -340,6 +358,33 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DatabaseSourceTypeToolTip {
             get {
                 return ResourceManager.GetString("DatabaseSourceTypeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Webservice Connector Source - .
+        /// </summary>
+        public static string DatabaseWebserviceEditHeaderLabel {
+            get {
+                return ResourceManager.GetString("DatabaseWebserviceEditHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Address:.
+        /// </summary>
+        public static string DatabaseWebserviceLabel {
+            get {
+                return ResourceManager.GetString("DatabaseWebserviceLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Webservice Connector Source.
+        /// </summary>
+        public static string DatabaseWebserviceNewHeaderLabel {
+            get {
+                return ResourceManager.GetString("DatabaseWebserviceNewHeaderLabel", resourceCulture);
             }
         }
         
