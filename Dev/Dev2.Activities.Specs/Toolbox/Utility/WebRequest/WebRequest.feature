@@ -29,10 +29,12 @@ Scenario Outline: Enter a URL to download html with timeout specified
 	| [[result]] = String |
 	Examples:
 	| url                                                          | timeoutSeconds | result            |
-	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15      | "16"          | Wait Successful |
+	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15      | 20          | Wait Successful |
+	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=110      | 120          | Wait Successful |
+	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=110      | 0          | Wait Successful |
 	
 Scenario Outline: Enter a URL to download html with timeout specified too short 
-	Given I have the url '<url>' with timeoutSeconds "<timeoutSeconds>"
+	Given I have the url '<url>' with timeoutSeconds '<timeoutSeconds>'
 	When the web request tool is executed 
 	Then the execution has "AN" error
 	And the debug inputs as  
