@@ -30,7 +30,6 @@ namespace Warewolf.Studio.ViewModels
         private string _defaultQuery;
         private string _testMessage;
         private string _testDefault;
-        private IList<string> _databaseNames;
         private string _header;
         readonly IManageWebServiceSourceModel _updateManager;
         readonly IEventAggregator _aggregator;
