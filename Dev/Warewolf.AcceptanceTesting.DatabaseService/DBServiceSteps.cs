@@ -214,7 +214,7 @@ namespace Warewolf.AcceptanceTesting.DatabaseService
         public void ThenInputMappingsAre(Table table)
         {
             var view = Utils.GetView<ManageDatabaseServiceControl>();
-            var inputMappings = view.GetInputMappings();
+            var inputMappings = view.GetInputs();
             var i = 0;
             if (inputMappings.SourceCollection == null)
             {
@@ -240,7 +240,7 @@ namespace Warewolf.AcceptanceTesting.DatabaseService
         public void ThenOutputMappingsAre(Table table)
         {
             var view = Utils.GetView<ManageDatabaseServiceControl>();
-            var outputMappings = view.GetOutputMappings();
+            var outputMappings = view.GetOutputs();
             if (outputMappings.SourceCollection == null)
             {
                 Assert.AreEqual(0, table.RowCount);
