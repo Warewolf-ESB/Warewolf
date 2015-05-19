@@ -19,6 +19,7 @@ using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Preview;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Errors;
 
@@ -86,6 +87,33 @@ namespace Dev2.Activities.Designers2.GetWebRequest
             {
                 ValidateUrl(url);
             }
+            if( TimeOutSeconds.Length>0)
+            {
+                int res;
+                if( ! int.TryParse( TimeOutSeconds,out res))
+                {
+                    if(!DataListUtil.IsValueRecordset(TimeOutSeconds) && !DataListUtil.IsValueScalar(TimeOutSeconds))
+                    {
+                        if(Errors==null) Errors = new List<IActionableErrorInfo>();
+                        Errors.Add(new ActionableErrorInfo(){ErrorType = ErrorType.Warning,Message = "Invalid time out. The timeout must be a valid variable or positive integer number. "});
+                   
+                    }
+                }
+                else
+                {
+                    if(res<=0)
+                    {
+                        if(Errors==null) Errors = new List<IActionableErrorInfo>();
+                        Errors.Add(new ActionableErrorInfo() { ErrorType = ErrorType.Warning, Message = "Invalid time out. The timeout must be a valid variable or positive integer number. " });
+                    }
+                }
+            }
+        }
+
+        private string TimeOutSeconds
+        {
+            get { return GetProperty<string>(); }
+            set { SetProperty(value); }
         }
 
         #region Overrides of ActivityDesignerViewModel
