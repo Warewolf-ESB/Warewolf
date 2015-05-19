@@ -22,14 +22,14 @@ Scenario Outline: Enter a URL to download html with timeout specified
 	Then the result should contain the string "<result>"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| URL                                                        | Header |
+	| URL   | Header |
 	| <url> |        |
 	And the debug output as 
-	|                                                   |
+	|                     |
 	| [[result]] = String |
 	Examples:
-	| url                                                          | timeoutSeconds | result            |
-	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15      | "16"          | Wait Successful |
+	| url                                                  | timeoutSeconds | result          |
+	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15 | 16           | Wait Successful |
 	
 Scenario Outline: Enter a URL to download html with timeout specified too short 
 	Given I have the url '<url>' with timeoutSeconds "<timeoutSeconds>"

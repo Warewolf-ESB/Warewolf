@@ -143,11 +143,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WebRequest")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:url", "http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:timeoutSeconds", "\"16\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:timeoutSeconds", "16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Wait Successful")]
         public virtual void EnterAURLToDownloadHtmlWithTimeoutSpecified_HttpTst_Ci_Remote3142PublicWaitWaitSeconds15()
         {
-            this.EnterAURLToDownloadHtmlWithTimeoutSpecified("http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15", "\"16\"", "Wait Successful", ((string[])(null)));
+            this.EnterAURLToDownloadHtmlWithTimeoutSpecified("http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15", "16", "Wait Successful", ((string[])(null)));
         }
         
         public virtual void EnterAURLToDownloadHtmlWithTimeoutSpecifiedTooShort(string url, string timeoutSeconds, string[] exampleTags)
