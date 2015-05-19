@@ -101,7 +101,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest
                 }
                 else
                 {
-                    if(res<=0)
+                    if(res<0)
                     {
                         Errors = new List<IActionableErrorInfo>(){
                          new ActionableErrorInfo { ErrorType = ErrorType.Critical, Message = "Invalid time out. The timeout must be a valid variable or positive integer number. " }};
