@@ -47,9 +47,9 @@ namespace Dev2.Infrastructure.Tests.Logs
 // ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
-            var pulseLogger = new PulseLogger(2500);
+            var pulseLogger = new PulseLogger(2000);
             
-            Assert.AreEqual(pulseLogger.Interval, 2500);
+            Assert.AreEqual(pulseLogger.Interval, 2000);
             PrivateObject pvt = new PrivateObject(pulseLogger);
             System.Timers.Timer timer = (System.Timers.Timer)pvt.GetField("_timer");
             timer.Elapsed += TimerElapsed;
