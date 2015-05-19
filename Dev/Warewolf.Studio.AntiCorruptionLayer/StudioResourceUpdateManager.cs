@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.ServerDialogue;
@@ -18,6 +17,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="controllerFactory"/> is <see langword="null" />.</exception>
         public StudioResourceUpdateManager(ICommunicationControllerFactory controllerFactory, IEnvironmentConnection environmentConnection)
         {
             if (controllerFactory == null)
@@ -51,6 +51,11 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         }
 
+        public void TestConnection(IWebServiceSource resource)
+        {
+            UpdateManagerProxy.TestConnection(resource);
+        }
+
         public IList<string> TestDbConnection(IDbSource serverSource)
         {
             return UpdateManagerProxy.TestDbConnection(serverSource);
@@ -60,6 +65,11 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         {
             UpdateManagerProxy.SaveDbSource( toDbSource, GlobalConstants.ServerWorkspaceID);
 
+        }
+
+        public void Save(IWebServiceSource resource)
+        {
+            UpdateManagerProxy.SaveWebserviceSource(resource, GlobalConstants.ServerWorkspaceID);
         }
 
         public void Save(IDatabaseService toDbSource)

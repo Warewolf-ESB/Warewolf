@@ -30,10 +30,12 @@ namespace Dev2.Common.Interfaces.Explorer
         void Save(IServerSource serverSource);
 
         string TestConnection(IServerSource serverSource);
+        void TestConnection(IWebServiceSource serverSource);
         
         IList<string> TestDbConnection(IDbSource serverSource);
 
         void Save(IDbSource toDbSource);
+        void Save(IWebServiceSource toDbSource);
 
         void Save(IDatabaseService toDbSource);
 

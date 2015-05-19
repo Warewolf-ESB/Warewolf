@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
@@ -56,7 +57,18 @@ namespace Warewolf.Studio.ViewModels
             Header = "New Webservice Connector Source Server";
             TestCommand = new DelegateCommand(TestConnection, CanTest);
             OkCommand = new DelegateCommand(SaveConnection, CanSave);
-            
+            ViewInBrowserCommand = new DelegateCommand(ViewInBrowser, CanViewInBrowser);
+
+        }
+
+        bool CanViewInBrowser()
+        {
+            return TestPassed;            
+        }
+
+        void ViewInBrowser()
+        {
+            Process.Start(TestDefault);
         }
 
         public ManageWebserviceSourceViewModel(IManageWebServiceSourceModel updateManager, IRequestServiceNameViewModel requestServiceNameViewModel, IEventAggregator aggregator)
@@ -390,6 +402,7 @@ namespace Warewolf.Studio.ViewModels
                 _testPassed = value;
                 OnPropertyChanged(()=>TestPassed);
                 ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
+                ViewModelUtils.RaiseCanExecuteChanged(ViewInBrowserCommand);
            
             }
         
@@ -454,7 +467,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return Resources.Languages.Core.CancelTest;
+                return Resources.Languages.Core.ViewInBrowserLabel;
             }
         }
 
