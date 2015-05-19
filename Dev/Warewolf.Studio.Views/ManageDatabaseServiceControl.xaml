@@ -297,7 +297,7 @@
                                Text="{Binding MappingsHeader, Mode=OneWay}" 
                                Style="{StaticResource SourceHeader}" ></TextBlock>
                     </StackPanel>
-                    <views:MappingsView Grid.Row="1"></views:MappingsView>
+                    <views:MappingsView x:Name="MappingsView" Grid.Row="1"></views:MappingsView>
                 </Grid>
                 <Grid Grid.Row="5" Grid.Column="0">
                     <Grid.ColumnDefinitions>

@@ -167,5 +167,15 @@ namespace Warewolf.Studio.Views
         {
             SourcesComboBox.Focus();
         }
+
+        public ItemCollection GetInputMappings()
+        {
+            return MappingsView.GetInputMappings();
+        }
+
+        public ItemCollection GetOutputMappings()
+        {
+            return MappingsView.GetOutputMappings();
+        }
     }
 }
