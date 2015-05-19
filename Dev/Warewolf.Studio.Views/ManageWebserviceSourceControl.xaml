@@ -191,10 +191,11 @@
                     <core:HelpSetter Text="{x:Static languages:Core.DatabaseSourceTestConnectionHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
-            <Button Width="120" 
+            <Button Width="Auto" 
                     Height="30" 
                     Margin="{StaticResource ElementBorderControlRight}" 
                     Command="{Binding ViewInBrowserCommand}" 
+                    Visibility="{Binding Path=TestPassed,Converter={StaticResource BoolToVisibilityConverter}}"
                     Content="{Binding ViewInBrowserLabel}"></Button>
             <Button Width="120" 
                     Height="30" 
@@ -214,13 +215,13 @@
                 </i:Interaction.Behaviors>
             </TextBlock>
         </StackPanel>
-        <Button Grid.Row="6" 
+        <!--<Button Grid.Row="6" 
                 x:Name="Btn" 
                 Width="60" 
                 Height="30" 
                 Click="Btn_OnClick">
             <TextBlock Text="Popup"/>
-        </Button>
+        </Button>-->
         <Button x:Name="SaveButton" 
                 Grid.Row="6" 
                 Margin="{StaticResource ControlBorderTop}" 

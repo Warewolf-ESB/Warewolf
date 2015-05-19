@@ -96,7 +96,7 @@ namespace Warewolf.Studio.ViewModels
 
         bool CanSave()
         {
-            return TestPassed && !String.IsNullOrEmpty(DefaultQuery);
+            return TestPassed;
         }
 
         bool CanCancelTest()
@@ -532,6 +532,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(()=>Testing);
                 ViewModelUtils.RaiseCanExecuteChanged(ViewInBrowserCommand);
                 ViewModelUtils.RaiseCanExecuteChanged(TestCommand);
+                ViewModelUtils.RaiseCanExecuteChanged(CancelTestCommand);
             }
         }
 
