@@ -54,12 +54,12 @@
                        VerticalAlignment="Center" 
                        Grid.Column="0"
                        Grid.Row="0"
-                       Text="{Binding ServerLabel}"/>
+                       Text="{Binding HostNameLabel}"/>
             <TextBox x:Name="ServerTextBox" 
                      Margin="{StaticResource ElementBorderTop}" 
                      Grid.Column="1" 
                      Grid.Row="0"
-                     Text="{Binding ServerName,UpdateSourceTrigger=PropertyChanged}"
+                     Text="{Binding HostName,UpdateSourceTrigger=PropertyChanged}"
                      views:FocusExtension.IsFocused="True">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:Core.DatabaseSourceServerHelp}" DataContext="{Binding}" />
