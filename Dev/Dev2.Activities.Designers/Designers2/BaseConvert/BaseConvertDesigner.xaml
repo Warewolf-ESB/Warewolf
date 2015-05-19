@@ -19,7 +19,7 @@
                 <ImageDrawing ImageSource="{StaticResource ToolBaseConversion-32}">
                     <ImageDrawing.Rect>
                         <Rect Location="0,0"
-                              Size="16,16"></Rect>
+                              Size="16,16" />
                     </ImageDrawing.Rect>
                 </ImageDrawing>
             </DrawingBrush.Drawing>

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Collections.ObjectModel;
 using Caliburn.Micro;
 using Dev2.Studio.Core.Interfaces.DataList;
@@ -76,7 +75,7 @@ namespace Dev2.Studio.Core.Models.DataList
             set
             {
                 _children = value;
-                NotifyOfPropertyChange(() => Children);
+                NotifyOfPropertyChange(() => Children);                
             }
         }
 

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -8,7 +7,6 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-
 
 using System;
 using System.Collections.Generic;
@@ -23,12 +21,13 @@ using Dev2.Common;
 using Microsoft.Win32.SafeHandles;
 
 // ReSharper disable CheckNamespace
+
 namespace Dev2
 {
     // ReSharper restore CheckNamespace
 
     /// <summary>
-    /// Used for internal security reasons 
+    ///     Used for internal security reasons
     /// </summary>
     public sealed class SafeTokenHandle : SafeHandleZeroOrMinusOneIsInvalid
     {
@@ -52,15 +51,12 @@ namespace Dev2
 
     public class FileIO
     {
-
 // ReSharper disable InconsistentNaming
-        const int LOGON32_PROVIDER_DEFAULT = 0;
+        private const int LOGON32_PROVIDER_DEFAULT = 0;
 // ReSharper restore InconsistentNaming
         //This parameter causes LogonUser to create a primary token. 
 // ReSharper disable InconsistentNaming
-        const int LOGON32_LOGON_INTERACTIVE = 2;
-// ReSharper restore InconsistentNaming
-
+        private const int LOGON32_LOGON_INTERACTIVE = 2;
 
         #region Permissions
 
@@ -69,11 +65,11 @@ namespace Dev2
             int dwLogonType, int dwLogonProvider, out SafeTokenHandle phToken);
 
         [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
-        public extern static bool CloseHandle(IntPtr handle);
+        public static extern bool CloseHandle(IntPtr handle);
 
 
         /// <summary>
-        /// Extracts the name of the user.
+        ///     Extracts the name of the user.
         /// </summary>
         /// <param name="path">The path.</param>
         /// <returns></returns>
@@ -92,7 +88,7 @@ namespace Dev2
         }
 
         /// <summary>
-        /// Extracts the domain.
+        ///     Extracts the domain.
         /// </summary>
         /// <param name="path">The path.</param>
         /// <returns></returns>
@@ -111,7 +107,7 @@ namespace Dev2
         }
 
         /// <summary>
-        /// Checks the permissions.
+        ///     Checks the permissions.
         /// </summary>
         /// <param name="userAndDomain">The user and domain.</param>
         /// <param name="pass">The pass.</param>
@@ -129,15 +125,15 @@ namespace Dev2
                 string user = ExtractUserName(userAndDomain);
                 string domain = ExtractDomain(userAndDomain);
                 SafeTokenHandle safeTokenHandle;
-                bool loginOk = LogonUser(user, domain, pass, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+                bool loginOk = LogonUser(user, domain, pass, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT,
+                    out safeTokenHandle);
 
 
                 if (loginOk)
                 {
                     using (safeTokenHandle)
                     {
-
-                        WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
+                        var newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
                         using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                         {
                             // Do the operation here
@@ -150,7 +146,8 @@ namespace Dev2
                 else
                 {
                     // login failed
-                    throw new Exception("Failed to authenticate with user [ " + userAndDomain + " ] for resource [ " + path + " ] ");
+                    throw new Exception("Failed to authenticate with user [ " + userAndDomain + " ] for resource [ " +
+                                        path + " ] ");
                 }
             }
             catch (Exception ex)
@@ -163,7 +160,7 @@ namespace Dev2
 
 
         /// <summary>
-        /// Checks the permissions.
+        ///     Checks the permissions.
         /// </summary>
         /// <param name="user">The user.</param>
         /// <param name="path">The path.</param>
@@ -171,17 +168,17 @@ namespace Dev2
         /// <returns></returns>
         public static bool CheckPermissions(WindowsIdentity user, string path, FileSystemRights expectedRights)
         {
-            FileInfo fi = new FileInfo(path);
-            DirectoryInfo di = new DirectoryInfo(path);
+            var fi = new FileInfo(path);
+            var di = new DirectoryInfo(path);
             AuthorizationRuleCollection acl;
 
             if (fi.Exists)
             {
-                acl = fi.GetAccessControl().GetAccessRules(true, true, typeof(SecurityIdentifier));
+                acl = fi.GetAccessControl().GetAccessRules(true, true, typeof (SecurityIdentifier));
             }
             else if (di.Exists)
             {
-                acl = di.GetAccessControl().GetAccessRules(true, true, typeof(SecurityIdentifier));
+                acl = di.GetAccessControl().GetAccessRules(true, true, typeof (SecurityIdentifier));
             }
             else
             {
@@ -190,9 +187,9 @@ namespace Dev2
 
             // gets rules that concern the user and his groups
             IEnumerable<AuthorizationRule> userRules = from AuthorizationRule rule in acl
-                                                       where user.Groups != null && (user.User != null && (user.User.Equals(rule.IdentityReference)
-                                                                                                           || user.Groups.Contains(rule.IdentityReference)))
-                                                       select rule;
+                where user.Groups != null && (user.User != null && (user.User.Equals(rule.IdentityReference)
+                                                                    || user.Groups.Contains(rule.IdentityReference)))
+                select rule;
 
             FileSystemRights denyRights = 0;
             FileSystemRights allowRights = 0;
@@ -217,5 +214,7 @@ namespace Dev2
         }
 
         #endregion Permissions
+
+// ReSharper restore InconsistentNaming
     }
 }

@@ -9,18 +9,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
 using Dev2.Activities;
-using Dev2.Common;
-using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Common.Interfaces.Enums;
-using Dev2.Common.Interfaces.Enums.Enums;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Activities.ActivityTests.Scripting
@@ -54,11 +48,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
             string error;
             string actual;
-            GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
 
             if(string.IsNullOrEmpty(error))
             {
@@ -66,9 +58,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             }
             else
             {
-                Assert.Fail(
-                    string.Format("The following errors occurred while retrieving datalist items\r\nerrors:{0}",
-                                    error));
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
             
         }
@@ -82,11 +72,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
             string error;
             string actual;
-            GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
 
             if(string.IsNullOrEmpty(error))
             {
@@ -107,11 +95,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
             string error;
             string actual;
-            GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
 
             if(string.IsNullOrEmpty(error))
             {
@@ -132,10 +118,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
             string error;
             string actual;
-            GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             if(string.IsNullOrEmpty(error))
             {
@@ -155,18 +140,17 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            IList<IBinaryDataListItem> dataListItems;
-            GetRecordSetFieldValueFromDataList(result.DataListID, "Result", "res", out dataListItems, out error);
+            IList<string> dataListItems;
+            GetRecordSetFieldValueFromDataList(result.Environment, "Result", "res", out dataListItems, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             if(string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual("2", dataListItems[0].TheValue, "Valid Javascript with datalist region executed incorrectly");
-                Assert.AreEqual("3", dataListItems[1].TheValue, "Valid Javascript with datalist region executed incorrectly");
-                Assert.AreEqual("4", dataListItems[2].TheValue, "Valid Javascript with datalist region executed incorrectly");
-                Assert.AreEqual("5", dataListItems[3].TheValue, "Valid Javascript with datalist region executed incorrectly");
+                Assert.AreEqual("2", dataListItems[0], "Valid Javascript with datalist region executed incorrectly");
+                Assert.AreEqual("3", dataListItems[1], "Valid Javascript with datalist region executed incorrectly");
+                Assert.AreEqual("4", dataListItems[2], "Valid Javascript with datalist region executed incorrectly");
+                Assert.AreEqual("5", dataListItems[3], "Valid Javascript with datalist region executed incorrectly");
             }
             else
             {
@@ -182,15 +166,14 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            IList<IBinaryDataListItem> dataListItems;
-            GetRecordSetFieldValueFromDataList(result.DataListID, "Result", "res", out dataListItems, out error);
+            IList<string> dataListItems;
+            GetRecordSetFieldValueFromDataList(result.Environment, "Result", "res", out dataListItems, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             if(string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(string.Empty, dataListItems[0].TheValue, "Valid Javascript with empty Recordset did not evaluate with blank");
+                Assert.AreEqual(string.Empty, dataListItems[0], "Valid Javascript with empty Recordset did not evaluate with blank");
             }
             else
             {
@@ -201,58 +184,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         #endregion
 
         #region Should not execute invalid javascript
-
-        [TestMethod]
-        public void ExecuteWithNoReturnExpectedCorrectErrorReturned()
-        {
-            SetupArguments("<DataList><Result>0</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]", @"Add(1,1); function Add(x,y) { return x + y; }", enScriptType.JavaScript);
-
-            IDSFDataObject result = ExecuteProcess();
-
-            string error;
-            const string expected = @"<InnerError>There was an error when returning a value from your script, remember to use the 'Return' keyword when returning the result</InnerError>";
-            string actual;
-
-            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            if(string.IsNullOrEmpty(error))
-            {
-                Assert.AreEqual(expected, actual, "Javascript with unexpected datalist variable did not throw error");
-            }
-            else
-            {
-                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
-            }
-        }
-
-        [TestMethod]
-        public void ExecuteWithUnexpectedReferenceExpectedCorrectErrorReturned()
-        {
-            SetupArguments("<DataList><Result>0</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]", @"return dasd;", enScriptType.JavaScript);
-
-            IDSFDataObject result = ExecuteProcess();
-
-            string error;
-            const string expected = @"<InnerError>ReferenceError: dasd is not defined</InnerError>";
-            string actual;
-
-            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            if(string.IsNullOrEmpty(error))
-            {
-                Assert.AreEqual(expected, actual, "Javascript with unexpected datalist variable did not throw error");
-            }
-            else
-            {
-                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
-            }
-        }
 
         #endregion
 
@@ -271,10 +202,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
             string error;
             string actual;
-            GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             if(string.IsNullOrEmpty(error))
             {
@@ -295,10 +225,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
             string error;
             string actual;
-            GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             if(string.IsNullOrEmpty(error))
             {
@@ -319,10 +248,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
             string error;
             string actual;
-            GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             if(string.IsNullOrEmpty(error))
             {
@@ -343,10 +271,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
             string error;
             string actual;
-            GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             if(string.IsNullOrEmpty(error))
             {
@@ -366,18 +293,17 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            IList<IBinaryDataListItem> dataListItems;
-            GetRecordSetFieldValueFromDataList(result.DataListID, "Result", "res", out dataListItems, out error);
+            IList<string> dataListItems;
+            GetRecordSetFieldValueFromDataList(result.Environment, "Result", "res", out dataListItems, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             if(string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual("2", dataListItems[0].TheValue, "Valid Ruby with datalist region executed incorrectly");
-                Assert.AreEqual("3", dataListItems[1].TheValue, "Valid Ruby with datalist region executed incorrectly");
-                Assert.AreEqual("4", dataListItems[2].TheValue, "Valid Ruby with datalist region executed incorrectly");
-                Assert.AreEqual("5", dataListItems[3].TheValue, "Valid Ruby with datalist region executed incorrectly");
+                Assert.AreEqual("2", dataListItems[0], "Valid Ruby with datalist region executed incorrectly");
+                Assert.AreEqual("3", dataListItems[1], "Valid Ruby with datalist region executed incorrectly");
+                Assert.AreEqual("4", dataListItems[2], "Valid Ruby with datalist region executed incorrectly");
+                Assert.AreEqual("5", dataListItems[3], "Valid Ruby with datalist region executed incorrectly");
             }
             else
             {
@@ -393,15 +319,14 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            IList<IBinaryDataListItem> dataListItems;
-            GetRecordSetFieldValueFromDataList(result.DataListID, "Result", "res", out dataListItems, out error);
+            IList<string> dataListItems;
+            GetRecordSetFieldValueFromDataList(result.Environment, "Result", "res", out dataListItems, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             if(string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(string.Empty, dataListItems[0].TheValue, "Valid Ruby with empty Recordset did not evaluate with blank");
+                Assert.AreEqual(string.Empty, dataListItems[0], "Valid Ruby with empty Recordset did not evaluate with blank");
             }
             else
             {
@@ -419,10 +344,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             string error;
             string actual;
 
-            GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             if(string.IsNullOrEmpty(error))
             {
@@ -437,33 +361,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         #endregion
 
         #region Should not execute invalid ruby script
-
-        [TestMethod]
-        public void ExecuteRubyWithUnexpectedReferenceExpectedCorrectErrorReturned()
-        {
-            SetupArguments("<DataList><Result>0</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]", @"return dasd;", enScriptType.Ruby);
-
-            IDSFDataObject result = ExecuteProcess();
-
-            string error;
-            const string expected = @"<InnerError>undefined method `dasd'</InnerError>";
-            string actual;
-
-            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-
-            if(string.IsNullOrEmpty(error))
-            {
-                Assert.AreEqual(expected, actual, "Ruby with unexpected datalist variable did not throw error");
-            }
-            else
-            {
-                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
-            }
-        }
 
         #endregion
 

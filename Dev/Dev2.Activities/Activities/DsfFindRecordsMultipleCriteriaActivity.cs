@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Activities.Presentation.Model;
@@ -21,18 +20,14 @@ using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Data.Factories;
 using Dev2.Data.Util;
 using Dev2.DataList;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.Interfaces;
 using Dev2.Util;
-using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -101,196 +96,81 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="context"></param>
         protected override void OnExecute(NativeActivityContext context)
         {
+            var dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            var compiler = DataListFactory.CreateDataListCompiler();
-            var dataObject = context.GetExtension<IDSFDataObject>();
-            var errorResultTo = new ErrorResultTO();
-            var allErrors = new ErrorResultTO();
-            var executionId = dataObject.DataListID;
 
+            var env = dataObject.Environment;
             InitializeDebug(dataObject);
-
-
-            int iterationIndex;
+            var allErrors = new ErrorResultTO();
             try
             {
-
                 IList<string> toSearch = FieldsToSearch.Split(',');
+                List<int> results = new List<int>();
                 if(dataObject.IsDebugMode())
                 {
-                    AddDebugInputValues(dataObject, toSearch, compiler, executionId, ref errorResultTo);
+                    AddDebugInputValues(dataObject, toSearch, ref allErrors);
                 }
 
-                allErrors.MergeErrors(errorResultTo);
-                IEnumerable<string> results = new List<string>();
-                var toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-                toUpsert.IsDebug = dataObject.IsDebugMode();
-                bool isFirstIteration = true;
-                // ReSharper disable ForCanBeConvertedToForeach
-                for(var i = 0; i < ResultsCollection.Count; i++)
-                // ReSharper restore ForCanBeConvertedToForeach
+                bool hasEvaled = false;
+                foreach(var searchvar in toSearch)
                 {
-                    IEnumerable<string> resultsDuringSearch = new List<string>();
-                    var currenSearchResults = new List<string>();
-                    IDev2IteratorCollection itrCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
-
-                    IBinaryDataListEntry binaryDataListEntrySearchCrit = compiler.Evaluate(executionId, enActionType.User, ResultsCollection[i].SearchCriteria, false, out errorResultTo);
-                    IDev2DataListEvaluateIterator searchCritItr = Dev2ValueObjectFactory.CreateEvaluateIterator(binaryDataListEntrySearchCrit);
-                    itrCollection.AddIterator(searchCritItr);
-                    allErrors.MergeErrors(errorResultTo);
-
-                    IBinaryDataListEntry binaryDataListEntryFrom = compiler.Evaluate(executionId, enActionType.User, ResultsCollection[i].From, false, out errorResultTo);
-                    IDev2DataListEvaluateIterator fromItr = Dev2ValueObjectFactory.CreateEvaluateIterator(binaryDataListEntryFrom);
-                    itrCollection.AddIterator(fromItr);
-                    allErrors.MergeErrors(errorResultTo);
-
-                    IBinaryDataListEntry binaryDataListEntryTo = compiler.Evaluate(executionId, enActionType.User, ResultsCollection[i].To, false, out errorResultTo);
-                    IDev2DataListEvaluateIterator toItr = Dev2ValueObjectFactory.CreateEvaluateIterator(binaryDataListEntryTo);
-                    itrCollection.AddIterator(toItr);
-                    allErrors.MergeErrors(errorResultTo);
-
-                    int idx;
-                    if(!Int32.TryParse(StartIndex, out idx))
+                    Func<DataASTMutable.WarewolfAtom, bool> func = null;
+                    foreach(FindRecordsTO to in ResultsCollection.Where(a => !String.IsNullOrEmpty(a.SearchType)))
                     {
-                        idx = 1;
-                    }
-                    var toSearchList = compiler.FetchBinaryDataList(executionId, out errorResultTo);
-                    allErrors.MergeErrors(errorResultTo);
-
-
-
-                    var searchType = ResultsCollection[i].SearchType;
-                    if(string.IsNullOrEmpty(searchType))
-                    {
-                        continue;
-                    }
-                    // ReSharper disable PossibleMultipleEnumeration
-                    while(itrCollection.HasMoreData())
-                    {
-                        var currentResults = results as IList<string> ?? results.ToList();
-
-                        var splitOn = new[] { "," };
-                        var fieldsToSearch = FieldsToSearch.Split(splitOn, StringSplitOptions.RemoveEmptyEntries);
-
-                        SearchTO searchTo;
-
-                        if(fieldsToSearch.Length > 0)
+                        if((to.From.Length > 0 && String.IsNullOrEmpty(to.To))
+                           || (to.To.Length > 0 && String.IsNullOrEmpty(to.From)))
                         {
-                            bool isFirstFieldIteration = true;
-                            foreach(var field in fieldsToSearch)
-                            {
+                            throw new Exception("From and to Must be populated");
+                        }
+                        ValidateRequiredFields(to, out errorsTo);
+                        var right = env.EvalAsList(to.SearchCriteria);
+                        IEnumerable<DataASTMutable.WarewolfAtom> from = new List<DataASTMutable.WarewolfAtom>();
+                        IEnumerable<DataASTMutable.WarewolfAtom> tovalue = new List<DataASTMutable.WarewolfAtom>();
 
-                                IList<string> iterationResults = new List<string>();
-                                searchTo = DataListFactory.CreateSearchTO(field, searchType,
-                                                                          itrCollection.FetchNextRow(searchCritItr)
-                                                                                       .TheValue,
-                                                                          idx.ToString(CultureInfo.InvariantCulture),
-                                                                          Result, MatchCase,
-                                                                          false,
-                                                                          itrCollection.FetchNextRow(fromItr).TheValue,
-                                                                          itrCollection.FetchNextRow(toItr).TheValue);
-                                ValidateRequiredFields(searchTo, out errorResultTo);
-                                allErrors.MergeErrors(errorResultTo);
-                                // ReSharper disable ConvertClosureToMethodGroup
-                                (RecordsetInterrogator.FindRecords(toSearchList, searchTo, out errorResultTo)).ToList().ForEach(it => iterationResults.Add(it));
-                                // ReSharper restore ConvertClosureToMethodGroup
-
-                                if(RequireAllFieldsToMatch)
-                                {
-                                    resultsDuringSearch = isFirstFieldIteration ? iterationResults : currenSearchResults.Intersect(iterationResults);
-                                    currenSearchResults = resultsDuringSearch.ToList();
-                                }
-                                else
-                                {
-                                    resultsDuringSearch = currenSearchResults.Union(iterationResults);
-                                    currenSearchResults = RequireAllTrue ? new List<string>() : resultsDuringSearch.ToList();
-                                }
-                                isFirstFieldIteration = false;
-
-                            }
+                        if(!String.IsNullOrEmpty(to.From))
+                        {
+                            @from = env.EvalAsList(to.From);
+                        }
+                        if(!String.IsNullOrEmpty(to.To))
+                        {
+                            tovalue = env.EvalAsList(to.To);
+                        }
+                        if(func == null)
+                        {
+                            func = CreateFuncFromOperator(to.SearchType, right, @from, tovalue);
                         }
                         else
                         {
-                            searchTo = (SearchTO)ConvertToSearchTO(itrCollection.FetchNextRow(searchCritItr).TheValue,
-                                                             searchType, idx.ToString(CultureInfo.InvariantCulture),
-                                                             itrCollection.FetchNextRow(fromItr).TheValue,
-                                                             itrCollection.FetchNextRow(toItr).TheValue);
-
-                            ValidateRequiredFields(searchTo, out errorResultTo);
-                            allErrors.MergeErrors(errorResultTo);
-                            resultsDuringSearch = RecordsetInterrogator.FindRecords(toSearchList, searchTo, out errorResultTo);
-
+                            func = RequireAllTrue ? CombineFuncAnd(func, to.SearchType, right, @from, tovalue) : CombineFuncOr(func, to.SearchType, right, @from, tovalue);
                         }
-
-                        allErrors.MergeErrors(errorResultTo);
-
-                        if(RequireAllTrue)
-                        {
-                            results = isFirstIteration ? resultsDuringSearch : currentResults.Intersect(resultsDuringSearch);
-                        }
-                        else
-                        {
-                            results = currentResults.Union(resultsDuringSearch);
-                        }
-                        isFirstIteration = false;
                     }
-                }
+                    var output = env.EnvalWhere(dataObject.Environment.ToStar(searchvar), func);
 
-                DataListCleaningUtils.SplitIntoRegions(Result);
-                var rule = new IsSingleValueRule(() => Result);
-                var singleresError = rule.Check();
-                if(singleresError != null)
-                    allErrors.AddError(singleresError.Message);
-                else
-                {
-
-                    string concatRes = String.Empty;
-                    var allResults = results as IList<string> ?? results.ToList();
-                    // ReSharper restore PossibleMultipleEnumeration
-                    if(allResults.Count == 0)
+                    if(RequireAllFieldsToMatch && hasEvaled)
                     {
-                        allResults.Add("-1");
-                    }
-
-                    if(!DataListUtil.IsValueRecordset(Result))
-                    {
-                        // ReSharper disable LoopCanBeConvertedToQuery
-                        foreach(var r in allResults)
-                        // ReSharper restore LoopCanBeConvertedToQuery
-                        {
-                            concatRes = string.Concat(concatRes, r, ",");
-                        }
-
-                        if(concatRes.EndsWith(","))
-                        {
-                            concatRes = concatRes.Remove(concatRes.Length - 1);
-                        }
-                        toUpsert.Add(Result, concatRes);
-                        toUpsert.FlushIterationFrame();
+                        results = results.Intersect(output).ToList();
                     }
                     else
                     {
-                        iterationIndex = 0;
-
-                        foreach(var r in allResults)
-                        {
-                            toUpsert.Add(Result, r);
-                            toUpsert.FlushIterationFrame();
-                            iterationIndex++;
-                        }
+                        results = results.Union(output).ToList();
                     }
-                    compiler.Upsert(executionId, toUpsert, out errorResultTo);
-                    allErrors.MergeErrors(errorResultTo);
-
-                    if(dataObject.IsDebugMode() && !allErrors.HasErrors())
-                    {
-                        foreach(var debugTo in toUpsert.DebugOutputs)
-                        {
-                            AddDebugOutputItem(new DebugItemVariableParams(debugTo));
-                        }
-                    }
-
+                    hasEvaled = true;
+                }
+                if(!results.Any())
+                {
+                    results.Add(-1);
+                }
+                var res = String.Join(",", results.Distinct());
+                env.Assign(Result, res);
+                if(dataObject.IsDebugMode())
+                {
+                    AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
                 }
             }
             catch(Exception exception)
@@ -304,37 +184,46 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(hasErrors)
                 {
                     DisplayAndWriteError("DsfFindRecordsMultipleCriteriaActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorResultTo);
-                    compiler.Upsert(executionId, Result, (string)null, out errorResultTo);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
+                    dataObject.Environment.Assign(Result, "-1");
+                    if(dataObject.IsDebugMode())
+                    {
+                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
+                    }
                 }
 
                 if(dataObject.IsDebugMode())
                 {
-                    if(hasErrors)
-                    {
-                        iterationIndex = 0;
-                        var regions = DataListCleaningUtils.SplitIntoRegions(Result);
-                        foreach(var region in regions)
-                        {
-                            AddDebugOutputItem(new DebugOutputParams(region, "", executionId, iterationIndex));
-                            iterationIndex++;
-                        }
-                    }
-
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
 
-        private void ValidateRequiredFields(SearchTO searchTo, out ErrorResultTO errors)
+        Func<DataASTMutable.WarewolfAtom, bool> CombineFuncAnd(Func<DataASTMutable.WarewolfAtom, bool> func,string searchType,IEnumerable<DataASTMutable.WarewolfAtom> values,IEnumerable<DataASTMutable.WarewolfAtom> from,IEnumerable<DataASTMutable.WarewolfAtom> to)
+        {
+            var func2 = CreateFuncFromOperator(searchType, values,from,to);
+            return a=> func.Invoke(a) && func2.Invoke(a);
+        }
+
+        Func<DataASTMutable.WarewolfAtom, bool> CombineFuncOr(Func<DataASTMutable.WarewolfAtom, bool> func,string searchType,IEnumerable<DataASTMutable.WarewolfAtom> values,IEnumerable<DataASTMutable.WarewolfAtom> from,IEnumerable<DataASTMutable.WarewolfAtom> to)
+        {
+            var func2 = CreateFuncFromOperator(searchType, values,from,to);
+            return a => func.Invoke(a) || func2.Invoke(a);
+        }
+
+
+        Func<DataASTMutable.WarewolfAtom,bool> CreateFuncFromOperator(string searchType,IEnumerable<DataASTMutable.WarewolfAtom> values,IEnumerable<DataASTMutable.WarewolfAtom> from,IEnumerable<DataASTMutable.WarewolfAtom> to )
+        {
+
+            IFindRecsetOptions opt = FindRecsetOptions.FindMatch(searchType);
+            return opt.GenerateFunc(values, from,to,RequireAllFieldsToMatch);
+        }
+
+        private void ValidateRequiredFields(FindRecordsTO searchTo, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            if(string.IsNullOrEmpty(searchTo.FieldsToSearch))
-            {
-                errors.AddError("Fields to search is required");
-            }
-
             if(string.IsNullOrEmpty(searchTo.SearchType))
             {
                 errors.AddError("Search type is required");
@@ -359,32 +248,47 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return enFindMissingType.MixedActivity;
         }
 
-        void AddDebugInputValues(IDSFDataObject dataObject, IEnumerable<string> toSearch, IDataListCompiler compiler, Guid executionId, ref ErrorResultTO errorTos)
+        void AddDebugInputValues(IDSFDataObject dataObject, IEnumerable<string> toSearch, ref ErrorResultTO errorTos)
         {
             if(dataObject.IsDebugMode())
             {
-                var debugItem = new DebugItem();
-                AddDebugItem(new DebugItemStaticDataParams("", "In Field(s)"), debugItem);
-                foreach(var s in toSearch)
+                try
                 {
-                    var searchFields = s;
-                    if(DataListUtil.IsValueRecordset(s))
+                    var debugItem = new DebugItem();
+                    AddDebugItem(new DebugItemStaticDataParams("", "In Field(s)"), debugItem);
+                    foreach(var s in toSearch)
                     {
-                        searchFields = searchFields.Replace("()", "(*)");
+                        var searchFields = s;
+                        if(DataListUtil.IsValueRecordset(s))
+                        {
+                            searchFields = searchFields.Replace("()", "(*)");
+                        }
+                        AddDebugItem(new DebugEvalResult(searchFields, "",  dataObject.Environment), debugItem);
                     }
-                    IBinaryDataListEntry tmpEntry = compiler.Evaluate(executionId, enActionType.User, searchFields, false, out errorTos);
-                    AddDebugItem(new DebugItemVariableParams(searchFields, "", tmpEntry, executionId), debugItem);
+                    _debugInputs.Add(debugItem);
+                    AddResultDebugInputs(ResultsCollection, dataObject.Environment);
+                    AddDebugInputItem(new DebugItemStaticDataParams(RequireAllFieldsToMatch ? "YES" : "NO", "Require All Fields To Match"));
+                    AddDebugInputItem(new DebugItemStaticDataParams(RequireAllTrue ? "YES" : "NO", "Require All Matches To Be True"));
                 }
-                _debugInputs.Add(debugItem);
-                AddResultDebugInputs(ResultsCollection, executionId, compiler);
-                AddDebugInputItem(new DebugItemStaticDataParams(RequireAllFieldsToMatch ? "YES" : "NO", "Require All Fields To Match"));
-                AddDebugInputItem(new DebugItemStaticDataParams(RequireAllTrue ? "YES" : "NO", "Require All Matches To Be True"));
+                catch(Exception e)
+                {
+                    errorTos.AddError(e.Message);
+                }
             }
         }
 
+        #region Overrides of DsfNativeActivity<string>
+
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env)
+        {
+            return _debugOutputs;
+        }
+
+        #endregion
+
         #region Private Methods
 
-        void AddResultDebugInputs(IEnumerable<FindRecordsTO> resultsCollection, Guid executionId, IDataListCompiler compiler)
+        void AddResultDebugInputs(IEnumerable<FindRecordsTO> resultsCollection,IExecutionEnvironment environment)
         {
             var indexCount = 1;
             foreach(var findRecordsTo in resultsCollection)
@@ -397,34 +301,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     if(!string.IsNullOrEmpty(findRecordsTo.SearchCriteria))
                     {
-                        var expressionsEntry = compiler.Evaluate(executionId, enActionType.User, findRecordsTo.SearchCriteria, false, out errorsTo);
-                        AddDebugItem(new DebugItemVariableParams(findRecordsTo.SearchCriteria, "", expressionsEntry, executionId), debugItem);
+                        AddDebugItem(new DebugEvalResult(findRecordsTo.SearchCriteria, "", environment), debugItem);
                     }
 
                     if(findRecordsTo.SearchType == "Is Between" || findRecordsTo.SearchType == "Not Between")
                     {
-                        var expressionsEntryFrom = compiler.Evaluate(executionId, enActionType.User, findRecordsTo.From, false, out errorsTo);
-                        AddDebugItem(new DebugItemVariableParams(findRecordsTo.From, "", expressionsEntryFrom, executionId), debugItem);
+                        AddDebugItem(new DebugEvalResult(findRecordsTo.From, "", environment), debugItem);
 
-                        var expressionsEntryTo = compiler.Evaluate(executionId, enActionType.User, findRecordsTo.To, false, out errorsTo);
-                        AddDebugItem(new DebugItemVariableParams(findRecordsTo.To, " And", expressionsEntryTo, executionId), debugItem);
+                        AddDebugItem(new DebugEvalResult(findRecordsTo.To, " And", environment), debugItem);
                     }
 
                     _debugInputs.Add(debugItem);
                     indexCount++;
                 }
             }
-        }
-
-        /// <summary>
-        /// Creates a new instance of the SearchTO object
-        /// </summary>
-        /// <returns></returns>
-        // ReSharper disable InconsistentNaming
-        private IRecsetSearch ConvertToSearchTO(string searchCriteria, string searchType, string startIndex, string from, string to)
-        // ReSharper restore InconsistentNaming
-        {
-            return DataListFactory.CreateSearchTO(FieldsToSearch, searchType, searchCriteria, startIndex, Result, MatchCase, RequireAllFieldsToMatch, from, to);
         }
 
         void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
@@ -516,7 +406,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -525,20 +415,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
-        {
-            foreach(IDebugItem debugOutput in _debugOutputs)
-            {
-                debugOutput.FlushStringBuilder();
-            }
-            return _debugOutputs;
-        }
-
+        
         #endregion Get Inputs/Outputs
 
         #region Get ForEach Inputs/Ouputs
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {
@@ -562,7 +444,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

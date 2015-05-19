@@ -207,7 +207,7 @@ Scenario: Send email with a negative index recordset for Body
 	And the execution has "AN" error
 	And the debug inputs as  
 	| From Account    | To                 | Subject | Body              |
-	| me@freemail.com | test1@freemail.com |         | [[my(-1).body]] = |
+	| me@freemail.com | test1@freemail.com |  ""       | [[my(-1).body]] = |
 	And the debug output as 
 	|                       |
 	| [[result]] =  |

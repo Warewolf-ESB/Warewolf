@@ -9,23 +9,23 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2;
 using Dev2.Activities;
-using Dev2.Activities.Debug;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Data;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using Dev2.MathOperations;
 using Dev2.Util;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -69,45 +69,54 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary> 
         protected override void OnExecute(NativeActivityContext context)
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
-            Guid executionId = DataListExecutionID.Get(context);
             allErrors.MergeErrors(errors);
             InitializeDebug(dataObject);
-            // Process if no errors
             try
             {
                 IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
 
                 if(dataObject.IsDebugMode())
                 {
-                    AddDebugInputItem(executionId);
+                    AddDebugInputItem(dataObject.Environment);
                 }
-                IFunctionEvaluator functionEvaluator = MathOpsFactory.CreateFunctionEvaluator();
 
                 string input = string.IsNullOrEmpty(Expression) ? Expression : Expression.Replace("\\r", string.Empty).Replace("\\n", string.Empty).Replace(Environment.NewLine, "");
-
-                IEvaluationFunction evaluationFunctionTo = MathOpsFactory.CreateEvaluationExpressionTO(input);
-
-                string result = functionEvaluator.EvaluateFunction(evaluationFunctionTo, executionId, out errors);
-                allErrors.MergeErrors(errors);
-
-                compiler.Upsert(executionId, Result, result, out errors);
+                var warewolfListIterator = new WarewolfListIterator();
+                var calc = String.Format(GlobalConstants.CalculateTextConvertFormat, input);
+                var warewolfEvalResult = dataObject.Environment.Eval(calc);
+                var scalarResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                if(scalarResult != null && scalarResult.Item.IsNothing)
+                {
+                    throw new NullValueInVariableException("Error with variables in input.", input);
+                }
+                var inputIterator = new WarewolfIterator(warewolfEvalResult);
+                warewolfListIterator.AddVariableToIterateOn(inputIterator);
+                while(warewolfListIterator.HasMoreData())
+                {
+                    var result = warewolfListIterator.FetchNextValue(inputIterator);
+                    dataObject.Environment.Assign(Result, result);
+                }
 
                 if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
-                    AddDebugOutputItem(Result, executionId);
+                    AddDebugOutputItem(Result, dataObject.Environment);
                 }
                 allErrors.MergeErrors(errors);
             }
             catch(Exception ex)
             {
-
                 Dev2Logger.Log.Error("Calculate Exception", ex);
                 allErrors.AddError(ex.Message);
             }
@@ -118,47 +127,40 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(hasErrors)
                 {
                     DisplayAndWriteError("DsfCalculateActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
-                    compiler.Upsert(executionId, Result, (string)null, out errors);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
                 }
                 if(dataObject.IsDebugMode())
                 {
                     if(hasErrors)
                     {
-                        AddDebugOutputItem(Result, executionId);
+                        AddDebugOutputItem(Result, dataObject.Environment);
                     }
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
-
         }
 
         #endregion Override Abstract Methods
 
         #region Private Methods
 
-        private void AddDebugInputItem(Guid executionId)
+        private void AddDebugInputItem(IExecutionEnvironment environment)
         {
-            ErrorResultTO errors;
-            var compiler = DataListFactory.CreateDataListCompiler();
-            var entry = compiler.Evaluate(executionId, enActionType.CalculateSubstitution, Expression, false, out errors);
-            AddDebugInputItem(new DebugItemVariableParams(Expression, "fx =", entry, executionId));
+            AddDebugInputItem(new DebugEvalResult(Expression, "fx =", environment));
         }
 
-        private void AddDebugOutputItem(string expression, Guid executionId)
+        private void AddDebugOutputItem(string expression, IExecutionEnvironment environment)
         {
-            ErrorResultTO errors;
-            var compiler = DataListFactory.CreateDataListCompiler();
-            var entry = compiler.Evaluate(executionId, enActionType.User, expression, false, out errors);
-            AddDebugOutputItem(new DebugItemVariableParams(expression, "", entry, executionId));
+            AddDebugOutputItem(new DebugEvalResult(expression, "", environment));
         }
 
         #endregion Private Methods
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -167,7 +169,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {
@@ -178,7 +180,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Get Inputs/Outputs
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
 
             if(updates != null && updates.Count == 1)
@@ -187,7 +189,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

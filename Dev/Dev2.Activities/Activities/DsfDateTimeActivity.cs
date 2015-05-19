@@ -9,28 +9,27 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
+using System.Threading;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
+using Dev2.Common.DateAndTime;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Converters.DateAndTime;
-using Dev2.Data.Factories;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Builders;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -113,33 +112,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary>       
         protected override void OnExecute(NativeActivityContext context)
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors;
-            Guid executionId = DataListExecutionID.Get(context);
             InitializeDebug(dataObject);
             // Process if no errors
             try
             {
                 IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
-                IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-                toUpsert.IsDebug = (dataObject.IsDebugMode());
-                toUpsert.ResourceID = dataObject.ResourceID;
-                IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
-
-                IDev2DataListEvaluateIterator dtItr = CreateDataListEvaluateIterator(string.IsNullOrEmpty(DateTime) ? GlobalConstants.CalcExpressionNow : DateTime, executionId, compiler, colItr, allErrors);
-                colItr.AddIterator(dtItr);
-                IDev2DataListEvaluateIterator ifItr = CreateDataListEvaluateIterator(InputFormat, executionId, compiler, colItr, allErrors);
-                colItr.AddIterator(ifItr);
-                IDev2DataListEvaluateIterator ofItr = CreateDataListEvaluateIterator(OutputFormat, executionId, compiler, colItr, allErrors);
-                colItr.AddIterator(ofItr);
-                IDev2DataListEvaluateIterator tmaItr = CreateDataListEvaluateIterator(TimeModifierAmountDisplay, executionId, compiler, colItr, allErrors);
-                colItr.AddIterator(tmaItr);
 
                 if(dataObject.IsDebugMode())
                 {
@@ -152,10 +139,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        AddDebugInputItem(new DebugItemVariableParams(DateTime, "Input", dtItr.FetchEntry(), executionId));
+                        AddDebugInputItem(new DebugEvalResult(DateTime, "Input", dataObject.Environment));
                     }
-
-                    var dateTimePattern = string.Format("{0} {1}", CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern, CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern);
+                    var cultureType = typeof(CultureInfo);
+                    var fieldInfo = cultureType.GetField("s_userDefaultCulture",BindingFlags.NonPublic | BindingFlags.Static);
+                    if (fieldInfo != null)
+                    {
+                        var val = fieldInfo.GetValue(CultureInfo.CurrentCulture);
+                        var newCul = val as CultureInfo;
+                        if (newCul != null)
+                        {
+                            Thread.CurrentThread.CurrentCulture = newCul;      
+                        }
+                    }
+                    var dateTimePattern = string.Format("{0} {1}", Thread.CurrentThread.CurrentCulture.DateTimeFormat.ShortDatePattern, Thread.CurrentThread.CurrentCulture.DateTimeFormat.LongTimePattern);
 
                     if(string.IsNullOrEmpty(InputFormat))
                     {
@@ -166,12 +163,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        AddDebugInputItem(new DebugItemVariableParams(InputFormat, "Input Format", ifItr.FetchEntry(), executionId));
+                        AddDebugInputItem(new DebugEvalResult(InputFormat, "Input Format", dataObject.Environment));
                     }
 
                     var debugItem = new DebugItem();
                     AddDebugItem(new DebugItemStaticDataParams(TimeModifierType, "Add Time"), debugItem);
-                    AddDebugItem(new DebugItemVariableParams(TimeModifierAmountDisplay, "", tmaItr.FetchEntry(), executionId, true), debugItem);
+                    AddDebugItem(new DebugEvalResult(TimeModifierAmountDisplay, "", dataObject.Environment), debugItem);
                     _debugInputs.Add(debugItem);
 
                     if(string.IsNullOrEmpty(OutputFormat))
@@ -183,49 +180,65 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        AddDebugInputItem(new DebugItemVariableParams(OutputFormat, "Output Format", ofItr.FetchEntry(), executionId));
+                        AddDebugInputItem(new DebugEvalResult(OutputFormat, "Output Format", dataObject.Environment));
                     }
                 }
 
+                if(DataListUtil.HasNegativeIndex(InputFormat))
+                {
+                    allErrors.AddError(string.Format("Negative Recordset Index for Input Format: {0}", InputFormat));
+                }
+                if(DataListUtil.HasNegativeIndex(OutputFormat))
+                {
+                    allErrors.AddError(string.Format("Negative Recordset Index for Output Format: {0}", OutputFormat));
+                }
+
+                if(DataListUtil.HasNegativeIndex(TimeModifierAmountDisplay))
+                {
+                    allErrors.AddError(string.Format("Negative Recordset Index for Add Time: {0}", TimeModifierAmountDisplay));
+                }
                 if(!allErrors.HasErrors())
                 {
-                    while(colItr.HasMoreData())
+                    var colItr = new WarewolfListIterator();
+
+                    var dtItr = CreateDataListEvaluateIterator(string.IsNullOrEmpty(DateTime) ? GlobalConstants.CalcExpressionNow : DateTime, dataObject.Environment);
+                    colItr.AddVariableToIterateOn(dtItr);
+                    var ifItr = CreateDataListEvaluateIterator(InputFormat, dataObject.Environment);
+                    colItr.AddVariableToIterateOn(ifItr);
+                    var ofItr = CreateDataListEvaluateIterator(OutputFormat, dataObject.Environment);
+                    colItr.AddVariableToIterateOn(ofItr);
+                    var tmaItr = CreateDataListEvaluateIterator(TimeModifierAmountDisplay, dataObject.Environment);
+                    colItr.AddVariableToIterateOn(tmaItr);
+
+                    if(!allErrors.HasErrors())
                     {
-                        IDateTimeOperationTO transObj = ConvertToDateTimeTo(colItr.FetchNextRow(dtItr).TheValue,
-                                                                                colItr.FetchNextRow(ifItr).TheValue,
-                                                                                colItr.FetchNextRow(ofItr).TheValue,
-                                                                                TimeModifierType,
-                                                                                colItr.FetchNextRow(tmaItr).TheValue
-                                                                                );
-
-                        //Create a DateTimeFomatter using the DateTimeConverterFactory.DONE
-                        IDateTimeFormatter format = DateTimeConverterFactory.CreateFormatter();
-                        string result;
-                        string error;
-                        if(format.TryFormat(transObj, out result, out error))
+                        while(colItr.HasMoreData())
                         {
-                            string expression = Result;
-                            //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+                            IDateTimeOperationTO transObj = ConvertToDateTimeTo(colItr.FetchNextValue(dtItr),
+                                colItr.FetchNextValue(ifItr),
+                                colItr.FetchNextValue(ofItr),
+                                TimeModifierType,
+                                colItr.FetchNextValue(tmaItr)
+                                );
 
-                            toUpsert.Add(expression, result);
-
-                            toUpsert.FlushIterationFrame();
+                            IDateTimeFormatter format = DateTimeConverterFactory.CreateFormatter();
+                            string result;
+                            string error;
+                            if(format.TryFormat(transObj, out result, out error))
+                            {
+                                string expression = Result;
+                                dataObject.Environment.Assign(expression, result);
+                            }
+                            else
+                            {
+                                allErrors.AddError(error);
+                            }
                         }
-                        else
+                        if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                         {
-                            allErrors.AddError(error);
+                            AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
                         }
                     }
-                    compiler.Upsert(executionId, toUpsert, out errors);
-                    allErrors.MergeErrors(errors);
-                    if(dataObject.IsDebugMode() && !allErrors.HasErrors())
-                    {
-                        foreach(var debugOutputTo in toUpsert.DebugOutputs)
-                        {
-                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
-                        }
-                    }
-                    allErrors.MergeErrors(errors);
                 }
             }
             catch(Exception e)
@@ -235,14 +248,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
-
                 // Handle Errors
                 var hasErrors = allErrors.HasErrors();
                 if(hasErrors)
                 {
                     DisplayAndWriteError("DsfDateTimeActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
-                    compiler.Upsert(executionId, Result, (string)null, out errors);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
                 }
                 if(dataObject.IsDebugMode())
                 {
@@ -250,8 +262,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
@@ -280,7 +292,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -289,7 +301,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {
@@ -302,7 +314,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get ForEach Inputs/Outputs
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             foreach(Tuple<string, string> t in updates)
             {
@@ -329,7 +341,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

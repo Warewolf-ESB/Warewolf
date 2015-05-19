@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Collections.Generic;
@@ -20,18 +19,16 @@ using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Data.Factories;
+using Dev2.Data;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Operations;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Builders;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -122,48 +119,39 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary>       
         protected override void OnExecute(NativeActivityContext context)
         {
-            _debugInputs = new List<DebugItem>();
-            _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
+            _debugInputs = new List<DebugItem>();
+            _debugOutputs = new List<DebugItem>();
+
             IDev2IndexFinder indexFinder = new Dev2IndexFinder();
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
-            Guid executionId = DataListExecutionID.Get(context);
             InitializeDebug(dataObject);
-            IDev2DataListUpsertPayloadBuilder<List<string>> toUpsert = Dev2DataListBuilderFactory.CreateStringListDataListUpsertBuilder();
-            IDev2DataListUpsertPayloadBuilder<string> toUpsertScalar = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder();
-            toUpsert.IsDebug = dataObject.IsDebugMode();
-            toUpsertScalar.IsDebug = dataObject.IsDebugMode();
             try
             {
-
-
-
-                IDev2IteratorCollection outerIteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
-                IDev2IteratorCollection innerIteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
+                var outerIteratorCollection = new WarewolfListIterator();
+                var innerIteratorCollection = new WarewolfListIterator();
 
                 allErrors.MergeErrors(errors);
-
-
-                IBinaryDataListEntry expressionsEntry = compiler.Evaluate(executionId, enActionType.User, Characters, false, out errors);
-                allErrors.MergeErrors(errors);
-                IDev2DataListEvaluateIterator itrChar = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
-
-                outerIteratorCollection.AddIterator(itrChar);
 
                 #region Iterate and Find Index
 
-                expressionsEntry = compiler.Evaluate(executionId, enActionType.User, InField, false, out errors);
-
                 if(dataObject.IsDebugMode())
                 {
-                    AddDebugInputItem(new DebugItemVariableParams(InField, "In Field", expressionsEntry, executionId));
+                    AddDebugInputItem(new DebugEvalResult(InField, "In Field", dataObject.Environment));
                     AddDebugInputItem(new DebugItemStaticDataParams(Index, "Index"));
-                    AddDebugInputItem(new DebugItemVariableParams(Characters, "Characters", itrChar.FetchEntry(), executionId));
+                    AddDebugInputItem(new DebugEvalResult(Characters, "Characters", dataObject.Environment));
                     AddDebugInputItem(new DebugItemStaticDataParams(Direction, "Direction"));
                 }
+
+                var itrChar = new WarewolfIterator(dataObject.Environment.Eval(Characters));
+                outerIteratorCollection.AddVariableToIterateOn(itrChar);
 
                 var completeResultList = new List<string>();
 
@@ -171,25 +159,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     allErrors.MergeErrors(errors);
                     errors.ClearErrors();
-                    IDev2DataListEvaluateIterator itrInField = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
-                    innerIteratorCollection.AddIterator(itrInField);
+                    var itrInField = new WarewolfIterator(dataObject.Environment.Eval(InField));
+                    innerIteratorCollection.AddVariableToIterateOn(itrInField);
 
-                    string chars = outerIteratorCollection.FetchNextRow(itrChar).TheValue;
+                    string chars = outerIteratorCollection.FetchNextValue(itrChar);
                     while(innerIteratorCollection.HasMoreData())
                     {
                         if(!string.IsNullOrEmpty(InField) && !string.IsNullOrEmpty(Characters))
                         {
-                            var val = innerIteratorCollection.FetchNextRow(itrInField);
+                            var val = innerIteratorCollection.FetchNextValue(itrInField);
                             if(val != null)
                             {
-                                IEnumerable<int> returedData = indexFinder.FindIndex(val.TheValue, Index, chars, Direction, MatchCase, StartIndex);
+                                IEnumerable<int> returedData = indexFinder.FindIndex(val, Index, chars, Direction, MatchCase, StartIndex);
                                 completeResultList.AddRange(returedData.Select(value => value.ToString(CultureInfo.InvariantCulture)).ToList());
                                 //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-
                             }
                         }
                     }
-
                 }
                 var rule = new IsSingleValueRule(() => Result);
                 var single = rule.Check();
@@ -199,42 +185,44 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
-
-
-                    var rsType = DataListUtil.GetRecordsetIndexType(Result);
-                    if(rsType == enRecordsetIndexType.Numeric)
+                    if(DataListUtil.IsValueRecordset(Result))
                     {
-
-                        toUpsertScalar.Add(Result, string.Join(",", completeResultList));
-                        compiler.Upsert(executionId, toUpsertScalar, out errors);
-                        allErrors.MergeErrors(errors);
-                        if(!allErrors.HasErrors() && dataObject.IsDebugMode())
+                        var rsType = DataListUtil.GetRecordsetIndexType(Result);
+                        if(rsType == enRecordsetIndexType.Numeric)
                         {
-                            foreach(var debugOutputTo in toUpsertScalar.DebugOutputs)
+                            dataObject.Environment.Assign(Result, string.Join(",", completeResultList));
+                            allErrors.MergeErrors(errors);
+                        }
+                        else
+                        {
+                            var idx = 1;
+                            foreach(var res in completeResultList)
                             {
-                                AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
+                                if(rsType == enRecordsetIndexType.Blank)
+                                {
+                                    dataObject.Environment.Assign(Result, res);
+                                }
+                                if(rsType == enRecordsetIndexType.Star)
+                                {
+                                    var expression = DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(Result), DataListUtil.ExtractFieldNameFromValue(Result), idx.ToString());
+                                    dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(expression), res);
+                                    idx++;
+                                }
                             }
-                            toUpsert.DebugOutputs.Clear();
                         }
                     }
                     else
                     {
-                        toUpsert.Add(Result, completeResultList);
-                        compiler.Upsert(executionId, toUpsert, out errors);
-                        allErrors.MergeErrors(errors);
-                        if(!allErrors.HasErrors() && dataObject.IsDebugMode())
-                        {
-                            foreach(var debugOutputTo in toUpsert.DebugOutputs)
-                            {
-                                AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
-                            }
-                            toUpsert.DebugOutputs.Clear();
-                        }
+                        dataObject.Environment.Assign(Result, string.Join(",", completeResultList));
+                    }
+                    allErrors.MergeErrors(errors);
+                    if(!allErrors.HasErrors() && dataObject.IsDebugMode())
+                    {
+                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
                     }
                 }
+
                 #endregion
-
-
             }
             catch(Exception e)
             {
@@ -244,12 +232,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             finally
             {
                 #region Handle Errors
+
                 var hasErrors = allErrors.HasErrors();
                 if(hasErrors)
                 {
                     DisplayAndWriteError("DsfIndexActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
-                    compiler.Upsert(executionId, Result, (string)null, out errors);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
                 }
 
                 #endregion
@@ -258,13 +247,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if(hasErrors)
                     {
-                        foreach(var debugOutputTo in toUpsert.DebugOutputs)
-                        {
-                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
-                        }
+                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
                     }
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
@@ -277,7 +263,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(DebugItem debugInput in _debugInputs)
             {
@@ -286,7 +272,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {
@@ -299,7 +285,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Update ForEach Inputs/Outputs
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {
@@ -319,7 +305,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

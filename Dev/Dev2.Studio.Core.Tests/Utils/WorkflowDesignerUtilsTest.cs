@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -24,6 +23,7 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Utils
@@ -234,6 +234,60 @@ namespace Dev2.Core.Tests.Utils
 
             // Assert MultiAssign example shown
             Assert.AreEqual(expectedResourceName, actualResourceInvoked.DisplayName, "Example for DateTime tool not shown");
+        }
+
+        [TestMethod]
+        [Owner("Leon rajindrapersadh")]
+        [TestCategory("WorkflowDesignerUtils_OnClick")]
+        public void WorkflowDesignerUtils_CheckIfRemoteWorkflowAndSetProperties_ServerName_SetAsSource()
+        {
+
+            var x = new Mock<IContextualResourceModel>();
+            var mockEnv = new Mock<IEnvironmentModel>();
+            var mockCon = new Mock<IEnvironmentConnection>();
+            mockEnv.Setup(a => a.Connection).Returns(mockCon.Object);
+            mockCon.Setup(a => a.WebServerUri).Returns(new Uri("http://rsaklf/bob"));
+            var envGuid = Guid.NewGuid();
+
+            x.Setup(a=>a.Environment).Returns(mockEnv.Object);
+            mockEnv.Setup(a => a.ID).Returns(envGuid);
+            x.Setup(a => a.Environment).Returns(mockEnv.Object);
+            var act = new DsfActivity("a", "b", "c", "d", "e", "f");
+            //------------Execute Test---------------------------
+            WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(act,x.Object, mockEnv.Object );
+            Assert.AreEqual("rsaklf",act.FriendlySourceName.Expression.ToString());
+     
+        }
+
+
+
+
+
+        [TestMethod]
+        [Owner("Leon rajindrapersadh")]
+        [TestCategory("WorkflowDesignerUtils_OnClick")]
+        public void WorkflowDesignerUtils_CheckIfRemoteWorkflowAndSetProperties_DsfDateTime_DateTimeExampleShown()
+        {
+
+            var x = new Mock<IContextualResourceModel>();
+            var mockEnv = new Mock<IEnvironmentModel>();
+            var mockEnvRes = new Mock<IEnvironmentModel>();
+            var mockCon = new Mock<IEnvironmentConnection>();
+            var mockConRes = new Mock<IEnvironmentConnection>();
+            mockEnv.Setup(a => a.Connection).Returns(mockCon.Object);
+            mockEnvRes.Setup(a => a.Connection).Returns(mockConRes.Object);
+            mockCon.Setup(a => a.WebServerUri).Returns(new Uri("http://rsaklf/bob"));
+            var envGuid = Guid.NewGuid();
+            var envGuidRes = Guid.NewGuid();
+            x.Setup(a => a.Environment).Returns(mockEnvRes.Object);
+            mockEnv.Setup(a => a.ID).Returns(envGuid);
+            mockEnv.Setup(a => a.ID).Returns(envGuidRes);
+            x.Setup(a => a.Environment).Returns(mockEnv.Object);
+            var act = new DsfActivity("a", "b", "c", "d", "e", "f");
+            //------------Execute Test---------------------------
+            WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(act, x.Object, mockEnvRes.Object);
+            Assert.AreEqual("http://rsaklf/bob", act.ServiceUri);
+
         }
     }
 

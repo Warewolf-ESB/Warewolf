@@ -9,9 +9,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Dev2.Data.Binary_Objects
 {
@@ -175,5 +175,74 @@ namespace Dev2.Data.Binary_Objects
             return new IndexIterator(gaps, IndexList.MaxValue);
         }
 
+    }
+
+    public class IndexListIndexIterator:IIndexIterator
+    {
+
+        private IList<int> _values;
+        IEnumerator<int> _enumerator;
+        int _max;
+        int _current;
+
+        public IndexListIndexIterator(IList<int> values)
+        {
+            _values = values;
+            _enumerator = _values.GetEnumerator();
+            _max = _values.Count;
+            _current = 0;
+        }
+
+        public int Count
+        {
+            get { return _values.Count; }
+        }
+
+        public bool IsEmpty
+        {
+            get { return _values.Count == 0; }
+        }
+
+        public bool HasMore()
+        {
+            return _current < Count;
+        }
+
+        public int FetchNextIndex()
+        {
+            
+            return _values[_current++];
+            
+        }
+
+        public int MaxIndex()
+        {
+            return _values.Max();
+        }
+
+        public int MinIndex()
+        {
+            return _values.Min();
+        }
+
+        public void AddGap(int idx)
+        {
+            
+        }
+
+        public void RemoveGap(int idx)
+        {
+          
+        }
+
+        public HashSet<int> FetchGaps()
+        {
+            return  new HashSet<int>();
+        }
+
+        public IIndexIterator Clone()
+        {
+            return new IndexListIndexIterator(_values);
+        }
     }
 }

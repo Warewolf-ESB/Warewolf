@@ -50,8 +50,7 @@
                                         IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Label Content="{Binding Path=RowNumber}">
-                            </Label>
+                            <Label Content="{Binding Path=RowNumber}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -62,7 +61,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Label>
-                                <TextBlock Text="{Binding Path=SourceName}"></TextBlock>
+                                <TextBlock Text="{Binding Path=SourceName}" />
                             </Label>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -73,8 +72,7 @@
                                         IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Label Content="->">
-                            </Label>
+                            <Label Content="->" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -85,7 +83,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Label>
-                                <TextBlock Text="{Binding Path=DestinationName}"></TextBlock>
+                                <TextBlock Text="{Binding Path=DestinationName}" />
                             </Label>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -101,7 +99,7 @@
                     Margin="5"
                     Width="110"
                     MaxHeight="30"
-                    AutomationProperties.AutomationId="UI_ResourceExistsDialog_CancelButton_AutoID"></Button>
+                    AutomationProperties.AutomationId="UI_ResourceExistsDialog_CancelButton_AutoID" />
         </StackPanel>
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right"
@@ -112,7 +110,7 @@
                     Width="110"
                     Margin="5"
                     MaxHeight="30"
-                    AutomationProperties.AutomationId="UI_ResourceExistsDialog_OKButton_AutoID"></Button>
+                    AutomationProperties.AutomationId="UI_ResourceExistsDialog_OKButton_AutoID" />
         </StackPanel>
     </Grid>
 </Window>

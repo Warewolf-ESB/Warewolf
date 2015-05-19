@@ -41,7 +41,7 @@ namespace Dev2.Tests.Runtime.WebServer
             webServerStartup.Configuration(app);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(AuthenticationSchemes.Ntlm, listener.AuthenticationSchemes);
+            Assert.AreEqual(AuthenticationSchemes.Anonymous, listener.AuthenticationSchemes);
             Assert.IsTrue(listener.IgnoreWriteExceptions);
         }
     }

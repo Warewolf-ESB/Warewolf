@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Data;
 
 namespace Dev2.Activities.SqlBulkInsert
@@ -23,5 +22,14 @@ namespace Dev2.Activities.SqlBulkInsert
                 return sqlBulkCopy.WriteToServer(dataTableToInsert);
             }
         }
+
+        public bool Insert(ISqlBulkCopy sqlBulkCopy, IDataReader dataTableToInsert)
+        {
+            using (sqlBulkCopy)
+            {
+                return sqlBulkCopy.WriteToServer(dataTableToInsert);
+            }
+        }
+
     }
 }

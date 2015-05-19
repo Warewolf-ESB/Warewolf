@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
@@ -20,6 +19,7 @@ using Dev2.TaskScheduler.Wrappers.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
 using Moq;
+
 namespace Dev2.Scheduler.Test
 {
     [TestClass]

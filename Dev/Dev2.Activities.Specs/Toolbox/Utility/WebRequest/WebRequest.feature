@@ -120,3 +120,4 @@ Scenario: Enter a URL that is a negative index recordset
 	And the debug output as 
 	|              |
 	| [[result]] = |
+

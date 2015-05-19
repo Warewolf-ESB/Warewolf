@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,15 +19,16 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
-using Dev2.Data.Enums;
+using Dev2.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using ServiceStack.Common.Extensions;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -54,7 +54,7 @@ namespace Dev2.Runtime.ESB.Execution
         public RemoteWorkflowExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace workspace, IEsbChannel esbChannel, IResourceCatalog resourceCatalog)
             : base(sa, dataObj, workspace, esbChannel)
         {
-            if(resourceCatalog == null)
+            if (resourceCatalog == null)
             {
                 throw new ArgumentNullException("resourceCatalog");
             }
@@ -63,21 +63,19 @@ namespace Dev2.Runtime.ESB.Execution
 
         public void PerformLogExecution(string logUri)
         {
-            var connection = GetConnection(DataObject.EnvironmentID);
-            var dataListCompiler = DataListFactory.CreateDataListCompiler();
-            ErrorResultTO errors;
-            var expressionsEntry = dataListCompiler.Evaluate(DataObject.DataListID, enActionType.User, logUri, false, out errors);
-            var itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
-            while(itr.HasMoreRecords())
+            
+            var expressionsEntry = DataObject.Environment.Eval(logUri);
+            var itr = new WarewolfIterator(expressionsEntry);
+            while (itr.HasMoreData())
             {
-                var cols = itr.FetchNextRowData();
-                foreach(var c in cols)
+                var val = itr.GetNextValue();
                 {
-                    var buildGetWebRequest = BuildGetWebRequest(c.TheValue, connection.AuthenticationType, connection.UserName, connection.Password);
-                    if(buildGetWebRequest == null)
+                    var buildGetWebRequest = BuildSimpleGetWebRequest(val);
+                    if (buildGetWebRequest == null)
                     {
                         throw new Exception("Invalid Url to execute for logging");
                     }
+                    buildGetWebRequest.UseDefaultCredentials = true;
                     ExecuteWebRequestAsync(buildGetWebRequest);
                 }
             }
@@ -85,7 +83,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         protected virtual void ExecuteWebRequestAsync(WebRequest buildGetWebRequest)
         {
-            if(buildGetWebRequest == null)
+            if (buildGetWebRequest == null)
             {
                 return;
             }
@@ -96,19 +94,16 @@ namespace Dev2.Runtime.ESB.Execution
         {
             Dev2Logger.Log.Info(String.Format("Started Remote Execution. Service Name:{0} Resource Id:{1} Mode:{2}", DataObject.ServiceName, DataObject.ResourceID, DataObject.IsDebug ? "Debug" : "Execute"));
 
-            var dataListCompiler = DataListFactory.CreateDataListCompiler();
             var serviceName = DataObject.ServiceName;
 
             errors = new ErrorResultTO();
-            ErrorResultTO invokeErrors;
 
             // get data in a format we can send ;)
-            var dataListFragment = dataListCompiler.ConvertFrom(DataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
+            var dataListFragment = ExecutionEnvironmentUtils.GetXmlInputFromEnvironment(DataObject, DataObject.WorkspaceID, DataObject.RemoteInvokeResultShape.ToString());
             string result = string.Empty;
 
             var connection = GetConnection(DataObject.EnvironmentID);
-            if(connection == null)
+            if (connection == null)
             {
                 errors.AddError("Server source not found.");
                 return DataObject.DataListID;
@@ -117,38 +112,34 @@ namespace Dev2.Runtime.ESB.Execution
             try
             {
                 // Invoke Remote WF Here ;)
-                result = ExecuteGetRequest(connection, serviceName, dataListFragment.ToString());
+                result = ExecuteGetRequest(connection, serviceName, dataListFragment);
                 IList<IDebugState> msg = FetchRemoteDebugItems(connection);
                 DataObject.RemoteDebugItems = msg; // set them so they can be acted upon
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                errors.AddError(e.Message.Contains("Forbidden") ? "Executing a service requires Execute permissions" : e.Message);
+                var errorMessage = e.Message.Contains("Forbidden") ? "Executing a service requires Execute permissions" : e.Message;
+                DataObject.Environment.Errors.Add(errorMessage);
                 Dev2Logger.Log.Error(e);
             }
 
             // Create tmpDL
-            var tmpId = dataListCompiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), result.ToStringBuilder(), DataObject.RemoteInvokeResultShape, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-
-            // Merge Result into Local DL ;)
-            Guid mergeOp = dataListCompiler.Merge(DataObject.DataListID, tmpId, enDataListMergeTypes.Union, enTranslationDepth.Data, false, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-
-            if(mergeOp == DataObject.DataListID)
-            {
-                return mergeOp;
-            }
+            ExecutionEnvironmentUtils.UpdateEnvironmentFromOutputPayload(DataObject,result.ToStringBuilder(),DataObject.RemoteInvokeResultShape.ToString());
             Dev2Logger.Log.Info(String.Format("Completed Remote Execution. Service Name:{0} Resource Id:{1} Mode:{2}", DataObject.ServiceName, DataObject.ResourceID, DataObject.IsDebug ? "Debug" : "Execute"));
 
             return Guid.Empty;
+        }
+
+        public override IExecutionEnvironment Execute(IDSFDataObject inputs, IDev2Activity activity)
+        {
+            return null;
         }
 
         protected virtual IList<IDebugState> FetchRemoteDebugItems(Connection connection)
         {
             var data = ExecuteGetRequest(connection, "FetchRemoteDebugMessagesService", "InvokerID=" + DataObject.RemoteInvokerID);
 
-            if(data != null)
+            if (data != null)
             {
                 IList<IDebugState> fetchRemoteDebugItems = RemoteDebugItemParser.ParseItems(data);
                 fetchRemoteDebugItems.ForEach(state => state.SessionID = DataObject.DebugSessionID);
@@ -161,22 +152,22 @@ namespace Dev2.Runtime.ESB.Execution
         public virtual bool ServerIsUp()
         {
             var connection = GetConnection(DataObject.EnvironmentID);
-            if(connection == null)
+            if (connection == null)
             {
                 return false;
             }
             try
             {
                 var returnData = ExecuteGetRequest(connection, "ping", "<DataList></DataList>");
-                if(!string.IsNullOrEmpty(returnData))
+                if (!string.IsNullOrEmpty(returnData))
                 {
-                    if(returnData.Contains("Pong"))
+                    if (returnData.Contains("Pong"))
                     {
                         return true;
                     }
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return false;
             }
@@ -190,12 +181,12 @@ namespace Dev2.Runtime.ESB.Execution
             var requestUri = connection.WebAddress + "Services/" + serviceName + "?" + payload;
             var req = BuildGetWebRequest(requestUri, connection.AuthenticationType, connection.UserName, connection.Password);
 
-            using(var response = req.GetResponse() as HttpWebResponse)
+            using (var response = req.GetResponse() as HttpWebResponse)
             {
-                if(response != null)
+                if (response != null)
                 {
                     // ReSharper disable AssignNullToNotNullAttribute
-                    using(StreamReader reader = new StreamReader(response.GetResponseStream()))
+                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                     // ReSharper restore AssignNullToNotNullAttribute
                     {
                         result = reader.ReadToEnd();
@@ -210,8 +201,8 @@ namespace Dev2.Runtime.ESB.Execution
         {
             try
             {
-                var req = WebRequest.Create(requestUri);
-                if(authenticationType == AuthenticationType.Windows)
+                var req = BuildSimpleGetWebRequest(requestUri);
+                if (authenticationType == AuthenticationType.Windows)
                 {
                     req.UseDefaultCredentials = true;
                 }
@@ -220,7 +211,7 @@ namespace Dev2.Runtime.ESB.Execution
                     req.UseDefaultCredentials = false;
 
                     // we to default to the hidden public user name of \, silly know but that is how to get around ntlm auth ;)
-                    if(authenticationType == AuthenticationType.Public)
+                    if (authenticationType == AuthenticationType.Public)
                     {
                         userName = GlobalConstants.PublicUsername;
                         password = string.Empty;
@@ -232,7 +223,7 @@ namespace Dev2.Runtime.ESB.Execution
 
                 // set header for server to know this is a remote invoke ;)
                 var remoteInvokerId = DataObject.RemoteInvokerID;
-                if(remoteInvokerId == Guid.Empty.ToString())
+                if (remoteInvokerId == Guid.Empty.ToString())
                 {
                     throw new Exception("Remote Server ID Empty");
                 }
@@ -240,7 +231,22 @@ namespace Dev2.Runtime.ESB.Execution
                 req.Headers.Add(HttpRequestHeader.Cookie, GlobalConstants.RemoteServerInvoke);
                 return req;
             }
-            catch(Exception)
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        WebRequest BuildSimpleGetWebRequest(string requestUri)
+        {
+            try
+            {
+                var escapeUriString = Uri.EscapeUriString(requestUri);
+                var req = WebRequest.Create(escapeUriString);
+                req.Method = "GET";
+                return req;
+            }
+            catch (Exception)
             {
                 return null;
             }
@@ -248,18 +254,18 @@ namespace Dev2.Runtime.ESB.Execution
 
         Connection GetConnection(Guid environmentId)
         {
-            if(environmentId == Guid.Empty)
+            if (environmentId == Guid.Empty)
             {
                 var localhostConnection = new Connection
-                    {
-                        Address = EnvironmentVariables.WebServerUri,
-                        AuthenticationType = AuthenticationType.Windows
-                    };
+                {
+                    Address = EnvironmentVariables.WebServerUri,
+                    AuthenticationType = AuthenticationType.Windows
+                };
                 return localhostConnection;
             }
             var xml = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, environmentId);
 
-            if(xml == null || xml.Length == 0)
+            if (xml == null || xml.Length == 0)
             {
                 return null;
             }
@@ -268,24 +274,24 @@ namespace Dev2.Runtime.ESB.Execution
             return new Connection(xe);
         }
 
-        public SerializableResource FetchRemoteResource(string serviceName)
+        public SerializableResource FetchRemoteResource(Guid serviceId, string serviceName)
         {
             var connection = GetConnection(DataObject.EnvironmentID);
-            if(connection == null)
+            if (connection == null)
             {
                 return null;
             }
             try
             {
-                var returnData = ExecuteGetRequest(connection, "FindResourceService", string.Format("ResourceType={0}&ResourceName={1}", "TypeWorkflowService", serviceName));
-                if(!string.IsNullOrEmpty(returnData))
+                var returnData = ExecuteGetRequest(connection, "FindResourceService", string.Format("ResourceType={0}&ResourceName={1}&ResourceId={2}", "TypeWorkflowService", serviceName, serviceId));
+                if (!string.IsNullOrEmpty(returnData))
                 {
                     Dev2JsonSerializer serializer = new Dev2JsonSerializer();
                     var serializableResources = serializer.Deserialize<IList<SerializableResource>>(returnData);
                     return serializableResources.FirstOrDefault(resource => resource.ResourceType == ResourceType.WorkflowService);
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return null;
             }

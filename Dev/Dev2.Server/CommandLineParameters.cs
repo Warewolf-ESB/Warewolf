@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -15,8 +14,8 @@ using CommandLine.Text;
 
 namespace Dev2
 {
-    class CommandLineParameters : CommandLineOptionsBase
-    { 
+    internal class CommandLineParameters : CommandLineOptionsBase
+    {
         [Option("s", "startservice", HelpText = "Starts the windows service.", DefaultValue = false)]
         public bool StartService { get; set; }
 
@@ -37,6 +36,5 @@ namespace Dev2
         {
             return HelpText.AutoBuild(this, current => HelpText.DefaultParsingErrorsHandler(this, current));
         }
-
     }
 }

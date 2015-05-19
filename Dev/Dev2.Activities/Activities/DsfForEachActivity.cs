@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Collections.Generic;
@@ -22,12 +21,11 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -60,7 +58,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Properties
 
+        // ReSharper disable MemberCanBePrivate.Global
         public enForEachType ForEachType { get; set; }
+      
 
         [FindMissing]
         public string From { get; set; }
@@ -120,6 +120,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return 0;
             }
         }
+        // ReSharper restore MemberCanBePrivate.Global
 // ReSharper disable InconsistentNaming
         public Variable test { get; set; }
 // ReSharper restore InconsistentNaming
@@ -197,22 +198,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
             
 
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+           
             dataObject.ForEachNestingLevel++;
             ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors;
-            Guid executionId = DataListExecutionID.Get(context);
 
             InitializeDebug(dataObject);
             try
             {
-                ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, executionId, compiler, out errors);
+                ErrorResultTO errors;
+                ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out errors);
 
                 if(errors.HasErrors())
                 {
@@ -222,7 +222,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if(dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(context, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.Before);
                 }
 
                 dataObject.ParentInstanceID = UniqueID;
@@ -244,7 +244,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     int idx = exePayload.IndexIterator.FetchNextIndex();
                     if(exePayload.ForEachType != enForEachType.NumOfExecution)
                     {
-                        IterateIOMapping(idx, context);
+                        IterateIOMapping(idx);
                     }
                     else
                     {
@@ -269,12 +269,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfForEachActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    foreach (var fetchError in allErrors.FetchErrors())
+                    {
+                        dataObject.Environment.AddError(fetchError);
+                    }
+                    
                     dataObject.ParentInstanceID = _previousParentId;
                 }
                 if(dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
@@ -283,7 +287,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <summary>
         /// Iterates the IO mapping.
         /// </summary>
-        private void IterateIOMapping(int idx, NativeActivityContext context)
+        private void IterateIOMapping(int idx)
         {
             string newInputs = string.Empty;
 
@@ -293,7 +297,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             // Now mutate the mappings ;)
             //Bug 8725 do not mutate mappings
-            if(operationalData.InnerActivity.OrigInnerInputMapping != null)
+            if(!string.IsNullOrEmpty(operationalData.InnerActivity.OrigInnerInputMapping))
             {
                 // (*) == ({idx}) ;)
                 newInputs = operationalData.InnerActivity.OrigInnerInputMapping;
@@ -335,7 +339,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
 
                     // push updates for Inputs
-                    tmp.UpdateForEachInputs(updates, context);
+                    tmp.UpdateForEachInputs(updates);
                     if(idx == 1)
                     {
                         operationalData.InnerActivity.OrigCodedInputs = updates;
@@ -353,7 +357,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
 
                     // push updates 
-                    tmp.UpdateForEachOutputs(updates, context);
+                    tmp.UpdateForEachOutputs(updates);
                     if(idx == 1)
                     {
                         operationalData.InnerActivity.OrigCodedOutputs = updates;
@@ -376,7 +380,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
 
                         // push updates 
-                        tmp2.UpdateForEachInputs(updates, context);
+                        tmp2.UpdateForEachInputs(updates);
                         if(idx == 1)
                         {
                             operationalData.InnerActivity.OrigCodedInputs = updates;
@@ -393,7 +397,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
 
                         // push updates 
-                        tmp2.UpdateForEachOutputs(updates, context);
+                        tmp2.UpdateForEachOutputs(updates);
                         if(idx == 1)
                         {
                             operationalData.InnerActivity.OrigCodedOutputs = updates;
@@ -484,11 +488,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Fetches the type of the execution.
         /// </summary>        
         /// <param name="dataObject">The data object.</param>
-        /// <param name="dlId">The dl ID.</param>
-        /// <param name="compiler">The compiler.</param>
+        /// <param name="environment"></param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>                
-        private ForEachBootstrapTO FetchExecutionType(IDSFDataObject dataObject, Guid dlId, IDataListCompiler compiler, out ErrorResultTO errors)
+        private ForEachBootstrapTO FetchExecutionType(IDSFDataObject dataObject, IExecutionEnvironment environment, out ErrorResultTO errors)
         {
             if(dataObject.IsDebugMode())
             {
@@ -496,34 +499,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddDebugItem(new DebugItemStaticDataParams(ForEachType.GetDescription(), ""), debugItem);
                 if(ForEachType == enForEachType.NumOfExecution && !string.IsNullOrEmpty(NumOfExections))
                 {
-                    IBinaryDataListEntry numOfExectionsEntry = compiler.Evaluate(dlId, enActionType.User, NumOfExections, false, out errors);
-                    AddDebugItem(new DebugItemVariableParams(NumOfExections, "Number", numOfExectionsEntry, dlId), debugItem);
+
+
+                    AddDebugItem(new DebugEvalResult(NumOfExections, "Number", environment), debugItem);
                 }
                 if(ForEachType == enForEachType.InCSV && !string.IsNullOrEmpty(CsvIndexes))
                 {
-                    IBinaryDataListEntry csvIndexesEntry = compiler.Evaluate(dlId, enActionType.User, CsvIndexes, false, out errors);
-                    AddDebugItem(new DebugItemVariableParams(CsvIndexes, "Csv Indexes", csvIndexesEntry, dlId), debugItem);
+                    AddDebugItem(new DebugEvalResult(CsvIndexes, "Csv Indexes", environment), debugItem);
+     
                 }
                 if(ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(From))
                 {
-                    IBinaryDataListEntry fromEntry = compiler.Evaluate(dlId, enActionType.User, From, false, out errors);
-                    AddDebugItem(new DebugItemVariableParams(From, "From", fromEntry, dlId), debugItem);
+                    AddDebugItem(new DebugEvalResult(From, "From", environment), debugItem);
+ 
                 }
                 if(ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(To))
                 {
-                    IBinaryDataListEntry toEntry = compiler.Evaluate(dlId, enActionType.User, To, false, out errors);
-                    AddDebugItem(new DebugItemVariableParams(To, "To", toEntry, dlId), debugItem);
+
+                    AddDebugItem(new DebugEvalResult(To, "To", environment), debugItem);
+
                 }
                 if(ForEachType == enForEachType.InRecordset && !string.IsNullOrEmpty(Recordset))
                 {
-                    var toEmit = Recordset.Replace("()", "(*)");
-                    IBinaryDataListEntry toEntry = compiler.Evaluate(dlId, enActionType.User, toEmit, false, out errors);
-                    AddDebugItem(new DebugItemVariableParams(toEmit, "Recordset", toEntry, dlId), debugItem);
+    
+
+                    AddDebugItem(new DebugEvalResult(ExecutionEnvironment.GetPositionColumnExpression(Recordset), "Recordset ", environment), debugItem);
                 }
                 _debugInputs.Add(debugItem);
             }
 
-            var result = new ForEachBootstrapTO(ForEachType, From, To, CsvIndexes, NumOfExections, Recordset, dlId, compiler, out errors);
+            var result = new ForEachBootstrapTO(ForEachType, From, To, CsvIndexes, NumOfExections, Recordset, environment, out errors);
 
             return result;
 
@@ -532,7 +537,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <summary>
         /// Restores the handler fn.
         /// </summary>
-        private void RestoreHandlerFn(NativeActivityContext context)
+        private void RestoreHandlerFn()
         {
 
             var activity = (DataFunc.Handler as IDev2ActivityIOMapping);
@@ -574,7 +579,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
 
                         // push updates for Inputs
-                        tmp.UpdateForEachInputs(updates, context);
+                        tmp.UpdateForEachInputs(updates);
 
 
                         // Restore Outputs ;)
@@ -591,7 +596,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
 
                         // push updates for Inputs
-                        tmp.UpdateForEachOutputs(updates, context);
+                        tmp.UpdateForEachOutputs(updates);
 
                     }
                     else
@@ -614,7 +619,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
 
                             // push updates for Inputs
-                            tmp2.UpdateForEachInputs(updates, context);
+                            tmp2.UpdateForEachInputs(updates);
 
 
                             // Restore Outputs ;)
@@ -631,7 +636,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
 
                             // push updates for Inputs
-                            tmp2.UpdateForEachOutputs(updates, context);
+                            tmp2.UpdateForEachOutputs(updates);
                         }
                     }
                     #endregion
@@ -690,7 +695,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     // Re-jigger the mapping ;)
                     if(operationalData.ForEachType != enForEachType.NumOfExecution)
                     {
-                        IterateIOMapping(idx, context);
+                        IterateIOMapping(idx);
                     }
                     dataObject.ParentInstanceID = UniqueID;
                     // ReSharper disable RedundantTypeArgumentsOfMethod
@@ -704,7 +709,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // return it all to normal
                 if(ForEachType != enForEachType.NumOfExecution)
                 {
-                    RestoreHandlerFn(context);
+                    RestoreHandlerFn();
                 }
 
                 dataObject.ParentInstanceID = _previousParentId;
@@ -721,7 +726,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -730,19 +735,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             return DebugItem.EmptyList;
         }
 
         #endregion Get Inputs/Outputs
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             throw new NotImplementedException();
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             throw new NotImplementedException();
         }
@@ -750,6 +755,95 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override enFindMissingType GetFindMissingType()
         {
             return enFindMissingType.ForEach;
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
+            _previousParentId = dataObject.ParentInstanceID;
+            _debugInputs = new List<DebugItem>();
+            _debugOutputs = new List<DebugItem>();
+
+
+
+            dataObject.ForEachNestingLevel++;
+            ErrorResultTO allErrors = new ErrorResultTO();
+
+            InitializeDebug(dataObject);
+            try
+            {
+                ErrorResultTO errors;
+                ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out errors);
+
+                var itr = exePayload.IndexIterator;
+                string error;
+                ForEachInnerActivityTO innerA = GetInnerActivity(out error);
+                var exeAct =innerA.InnerActivity;
+                allErrors.AddError(error);
+                if (dataObject.IsDebugMode())
+                {
+                    DispatchDebugState(dataObject, StateType.Before);
+
+                }
+                dataObject.ParentInstanceID = UniqueID;
+                dataObject.IsDebugNested = true;
+                if (dataObject.IsDebugMode())
+                {
+                    DispatchDebugState(dataObject, StateType.After);
+                }
+                exePayload.InnerActivity = innerA;
+                var ind = itr.MaxIndex();
+                var count = 0;
+                while (itr.HasMore() && count<ind)
+                {
+                    
+                    operationalData = exePayload;
+                    int idx = exePayload.IndexIterator.FetchNextIndex();
+                    if (exePayload.ForEachType != enForEachType.NumOfExecution)
+                    {
+                        IterateIOMapping(idx);
+                    }
+         
+                    exeAct.Execute(dataObject);
+
+                    count++;
+                }
+                if (errors.HasErrors())
+                {
+                    allErrors.MergeErrors(errors);
+                }
+
+
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Log.Error("DSFForEach", e);
+                allErrors.AddError(e.Message);
+            }
+            finally
+            {
+                if (ForEachType != enForEachType.NumOfExecution)
+                {
+                    RestoreHandlerFn();
+                }
+
+                dataObject.ParentInstanceID = _previousParentId;
+                dataObject.ForEachNestingLevel--;
+                dataObject.IsDebugNested = false;
+                // Handle Errors
+                if (allErrors.HasErrors())
+                {
+                    DisplayAndWriteError("DsfForEachActivity", allErrors);
+                    foreach (var fetchError in allErrors.FetchErrors())
+                    {
+                        dataObject.Environment.AddError(fetchError);
+                    }
+
+                    dataObject.ParentInstanceID = _previousParentId;
+                }
+        
+
+
+            }
         }
 
         #region GetForEachInputs/Outputs

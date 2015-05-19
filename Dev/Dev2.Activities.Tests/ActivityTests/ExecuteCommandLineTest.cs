@@ -9,10 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using ActivityUnitTests;
-using Dev2.Activities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
@@ -21,6 +17,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using ActivityUnitTests;
+using Dev2.Activities;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities.ActivityTests
@@ -88,9 +87,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
 
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
             Assert.IsNull(actual);
         }
 
@@ -123,7 +121,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var res = Compiler.HasErrors(result.DataListID);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
             //------------Assert Results-------------------------
             Assert.IsTrue(res);
         }
@@ -151,15 +148,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            var fetchErrors = Compiler.FetchErrors(result.DataListID);
+            var fetchErrors = DataObject.Environment.FetchErrors();
             if(fetchErrors != string.Empty)
             {
                 Assert.Fail(fetchErrors);
             }
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             StringAssert.Contains(actual, "");
         }
@@ -177,7 +173,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            var fetchErrors = Compiler.FetchErrors(result.DataListID);
+            var fetchErrors = DataObject.Environment.FetchErrors();
             if(fetchErrors == string.Empty)
             {
                 Assert.Fail("no error");
@@ -199,7 +195,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            var fetchErrors = Compiler.FetchErrors(result.DataListID);
+            var fetchErrors = DataObject.Environment.FetchErrors();
             if(fetchErrors == string.Empty)
             {
                 Assert.Fail("no error");
@@ -232,15 +228,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            var fetchErrors = Compiler.FetchErrors(result.DataListID);
+            var fetchErrors = DataObject.Environment.FetchErrors();
             if(fetchErrors != string.Empty)
             {
                 Assert.Fail(fetchErrors);
             }
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             StringAssert.Contains(actual, "This is output from the user");
 
@@ -269,15 +264,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            var fetchErrors = Compiler.FetchErrors(result.DataListID);
+            var fetchErrors = DataObject.Environment.FetchErrors();
             if(fetchErrors != string.Empty)
             {
                 Assert.Fail(fetchErrors);
             }
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             StringAssert.Contains(actual, "This is output from the user");
 
@@ -300,9 +294,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
             Assert.IsTrue(Compiler.HasErrors(result.DataListID));
-            var fetchErrors = Compiler.FetchErrors(result.DataListID);
+            var fetchErrors = DataObject.Environment.FetchErrors();
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             StringAssert.Contains(fetchErrors, "Cannot execute CMD from tool.");
 
@@ -326,9 +319,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
             Assert.IsTrue(Compiler.HasErrors(result.DataListID));
-            var fetchErrors = Compiler.FetchErrors(result.DataListID);
+            var fetchErrors = DataObject.Environment.FetchErrors();
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
             StringAssert.Contains(fetchErrors, "Cannot execute explorer from tool.");
         }
 
@@ -357,11 +349,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
             Assert.IsTrue(Compiler.HasErrors(result.DataListID));
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
             Assert.IsNull(actual);
-            var fetchErrors = Compiler.FetchErrors(result.DataListID);
+            var fetchErrors = DataObject.Environment.FetchErrors();
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
             StringAssert.Contains(fetchErrors, "The console errored");
 
         }
@@ -390,9 +381,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             var actualArray = actual.ToArray();
             actual.Clear();
@@ -429,10 +419,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             var actualArray = actual.ToArray();
             actual.Clear();
@@ -462,10 +451,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             var actualArray = actual.ToArray();
             actual.Clear();
@@ -498,7 +486,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset2", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset2", "field1", out error);
 
             var actualArray = actual.ToArray();
             actual.Clear();
@@ -528,7 +516,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
 
             StringAssert.Contains(actual, Expected);
         }
@@ -599,7 +587,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = "[[OutVar1]]", CommandPriority = ProcessPriorityClass.RealTime };
 
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(null, null);
+            act.UpdateForEachInputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual(command1, act.CommandFileName);
             Assert.AreEqual(ProcessPriorityClass.RealTime, act.CommandPriority);
@@ -619,7 +607,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple3 = new Tuple<string, string>(ProcessPriorityClass.RealTime.ToString(), ProcessPriorityClass.High.ToString());
 
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2, tuple3 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2, tuple3 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test2", act.CommandFileName);
             Assert.AreEqual(ProcessPriorityClass.High, act.CommandPriority);
@@ -636,7 +624,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var tuple1 = new Tuple<string, string>("Test", "Test");
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 });
             //------------Assert Results-------------------------
             Assert.AreEqual(command1, act.CommandFileName);
             Assert.AreEqual(ProcessPriorityClass.RealTime, act.CommandPriority);
@@ -652,7 +640,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string result = "[[OutVar1]]";
             var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = result };
 
-            act.UpdateForEachOutputs(null, null);
+            act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual(result, act.CommandResult);
         }
@@ -670,7 +658,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual(result, act.CommandResult);
         }
@@ -687,7 +675,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var tuple1 = new Tuple<string, string>("[[OutVar1]]", "Test");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.CommandResult);
         }

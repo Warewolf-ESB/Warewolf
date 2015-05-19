@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using Dev2.DataList.Contract;
 using Dev2.Services.Execution;
@@ -36,6 +35,8 @@ namespace Dev2.Activities
 
             _errorsTo.MergeErrors(invokeErrors);
             var pluginServiceExecution = GetNewPluginServiceExecution(dataObject);
+            pluginServiceExecution.InstanceInputDefinitions = inputs;
+            pluginServiceExecution.InstanceOutputDefintions = outputs;
             tmpErrors = new ErrorResultTO();
             tmpErrors.MergeErrors(_errorsTo);
             var result = ExecutePluginService(pluginServiceExecution);

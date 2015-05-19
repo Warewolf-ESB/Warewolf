@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,17 +8,16 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.ComponentModel;
 
 namespace Dev2.Interfaces
 {
-    public interface IDev2TOFn:INotifyPropertyChanged
+    public interface IDev2TOFn : INotifyPropertyChanged
     {
+        int IndexNumber { get; set; }
+        bool Inserted { get; set; }
         bool CanRemove();
         bool CanAdd();
-        int IndexNumber { get; set; }
         void ClearRow();
-        bool Inserted { get; set; }
     }
 }

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -155,8 +154,6 @@ namespace Dev2.MathOperations
                                 maxRecords = Math.Max(totalRecords, maxRecords);
 
                             }
-
-
                         }
                         else if(allNodes[i] is DatalistReferenceNode)
                         {

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Activities.Presentation;
@@ -22,6 +21,7 @@ using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Core.Tests.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Utilities;
@@ -40,7 +40,8 @@ namespace Dev2.Core.Tests.Workflows
                 new Mock<IEventAggregator>().Object,
                 resource, workflowHelper,
                 new Mock<IPopupController>().Object,
-                createDesigner)
+                AsyncWorkerTests.CreateSynchronousAsyncWorker().Object,
+                createDesigner,false,false)
         {
             _moq.SetupAllProperties();
             _wd = _moq.Object;
@@ -50,7 +51,7 @@ namespace Dev2.Core.Tests.Workflows
             : base(
                 eventAggregator,
                 resource, workflowHelper,
-                new Mock<IPopupController>().Object, createDesigner)
+                new Mock<IPopupController>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, createDesigner, false, false)
         {
             _moq.SetupAllProperties();
             _wd = _moq.Object;
@@ -60,7 +61,7 @@ namespace Dev2.Core.Tests.Workflows
             : base(
                 new Mock<IEventAggregator>().Object,
                 resource, workflowHelper,
-                popupController, createDesigner)
+                popupController, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, createDesigner, false, false)
         {
             _moq.SetupAllProperties();
             _wd = _moq.Object;

@@ -37,6 +37,7 @@ using Dev2.Models;
 using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services;
+using Dev2.Services.Security;
 using Dev2.Session;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Repositories;
@@ -51,6 +52,9 @@ using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Dev2.Controller;
+using Dev2.Communication;
+using FluentAssertions;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -459,6 +463,20 @@ namespace Dev2.Activities.Specs.Composition
         {
             var webActivity = new WebActivity { ResourceModel = remoteResourceModel as ResourceModel };
             DataMappingViewModel dataMappingViewModel = new DataMappingViewModel(webActivity);
+            foreach(var inputOutputViewModel in dataMappingViewModel.Inputs)
+            {
+                inputOutputViewModel.Value = "";
+                inputOutputViewModel.RecordSetName = "";
+                inputOutputViewModel.Name = "";
+                inputOutputViewModel.MapsTo = "";
+            }
+            
+            foreach(var inputOutputViewModel in dataMappingViewModel.Outputs)
+            {
+                inputOutputViewModel.Value = "";
+                inputOutputViewModel.RecordSetName = "";
+                inputOutputViewModel.Name = "";
+            }
             foreach(var tableRow in mappings.Rows)
             {
                 var output = tableRow["Output from Service"];
@@ -469,6 +487,16 @@ namespace Dev2.Activities.Specs.Composition
                     if(inputOutputViewModel != null)
                     {
                         inputOutputViewModel.Value = toVariable;
+                        if (DataListUtil.IsValueRecordset(output))
+                        {
+                            inputOutputViewModel.RecordSetName = DataListUtil.ExtractRecordsetNameFromValue(output);
+                            inputOutputViewModel.Name = DataListUtil.ExtractFieldNameFromValue(output);
+                        }
+                        else
+                        {
+                            inputOutputViewModel.Name = output;
+                        }
+                        inputOutputViewModel.RecordSetName = DataListUtil.ExtractRecordsetNameFromValue(output);
                         CommonSteps.AddVariableToVariableList(toVariable);
                     }
                 }
@@ -482,6 +510,17 @@ namespace Dev2.Activities.Specs.Composition
                     if(inputOutputViewModel != null)
                     {
                         inputOutputViewModel.MapsTo = fromVariable;
+                        
+                        if (DataListUtil.IsValueRecordset(input))
+                        {
+                            inputOutputViewModel.RecordSetName = DataListUtil.ExtractRecordsetNameFromValue(input);
+                            inputOutputViewModel.Name = DataListUtil.ExtractFieldNameFromValue(input);
+                        }
+                        else
+                        {
+                            inputOutputViewModel.Name = input;
+                        }
+                        inputOutputViewModel.Value = input;
                         CommonSteps.AddVariableToVariableList(fromVariable);
                     }
                 }
@@ -542,8 +581,8 @@ namespace Dev2.Activities.Specs.Composition
                     }
 
                     var element = (from elements in outputs.Descendants("Output")
-                                   where (string)elements.Attribute("Recordset") == recordsetName &&
-                                         (string)elements.Attribute("OriginalName") == fieldName
+                                   where String.Equals(((string)elements.Attribute("RecordsetAlias")), recordsetName, StringComparison.InvariantCultureIgnoreCase) &&
+                                         String.Equals(((string)elements.Attribute("OriginalName")), fieldName, StringComparison.InvariantCultureIgnoreCase)      
                                    select elements).SingleOrDefault();
 
                     if(element != null)
@@ -640,8 +679,8 @@ namespace Dev2.Activities.Specs.Composition
                         string fieldName = DataListUtil.ExtractFieldNameFromValue(input);
 
                         element = (from elements in inputs.Descendants("Input")
-                                   where (string)elements.Attribute("Recordset") == recordsetName &&
-                                         (string)elements.Attribute("OriginalName") == fieldName
+                                   where String.Equals(((string)elements.Attribute("Recordset")), recordsetName, StringComparison.InvariantCultureIgnoreCase) &&
+                                         String.Equals(((string)elements.Attribute("OriginalName")), fieldName, StringComparison.InvariantCultureIgnoreCase)      
                                    select elements).SingleOrDefault();
 
                         if(element != null)
@@ -656,7 +695,7 @@ namespace Dev2.Activities.Specs.Composition
                         recordsetName = input;
 
                         element = (from elements in inputs.Descendants("Input")
-                                   where (string)elements.Attribute("Name") == recordsetName
+                                   where( String.Equals(((string)elements.Attribute("Name")), recordsetName, StringComparison.InvariantCultureIgnoreCase))
                                    select elements).SingleOrDefault();
 
                         if(element != null)
@@ -801,7 +840,7 @@ namespace Dev2.Activities.Specs.Composition
             var id =
                 debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList().Select(a => a.ID).First();
             var children = debugStates.Count(a => a.ParentID == id);
-            Assert.AreEqual(children, count);
+            Assert.AreEqual(count, children);
         }
 
 
@@ -1036,7 +1075,7 @@ namespace Dev2.Activities.Specs.Composition
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
             environmentModel.LoadResources();
-            var resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Acceptance Testing Resources\11714Nested").FirstOrDefault();
+            var resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Acceptance Testing Resources\"+nestedWF).FirstOrDefault();
             if(resource == null)
             {
                 // ReSharper disable NotResolvedInText
@@ -1051,6 +1090,8 @@ namespace Dev2.Activities.Specs.Composition
             {
 
                 ServiceName = resource.Category,
+                ResourceID = resource.ID,
+                EnvironmentID = environmentModel.ID,
                 UniqueID = resource.ID.ToString(),
                 InputMapping = inputMapping,
                 OutputMapping = outputMapping
@@ -1195,7 +1236,7 @@ namespace Dev2.Activities.Specs.Composition
             {
                 for(int i = 0; i < versions.Count; i++)
                 {
-                    var v1 = table.Rows[i + 1][0].Split(new[] { ' ' });
+                    var v1 = table.Rows[i + 1][0].Split(' ');
                     Assert.IsTrue(versions[i].DisplayName.Contains(v1[0]));
 
                 }
@@ -1307,5 +1348,43 @@ namespace Dev2.Activities.Specs.Composition
                 _resetEvt.Close();
             }
         }
+
+        [Then(@"I set logging to ""(.*)""")]
+        public void ThenISetLoggingTo(string logLevel)
+        {
+            var allowedLogLevels = new []{"DEBUG","NONE"};
+            // TODO: refactor null empty checking into extension method
+            if (logLevel == null || 
+                !allowedLogLevels.Contains(logLevel = logLevel.ToUpper()))
+                return;
+
+            var loggingSettingsTo = new LoggingSettingsTo() { LogLevel = logLevel, LogSize = 200};
+            var controller = (new CommunicationControllerFactory()).CreateController("LoggingSettingsWriteService");
+            var serializer = new Dev2JsonSerializer();
+            controller.AddPayloadArgument("LoggingSettings", serializer.SerializeToBuilder(loggingSettingsTo).ToString());
+            IEnvironmentModel environmentModel;
+            TryGetValue("environment", out environmentModel);
+            controller.ExecuteCommand<StringBuilder>(environmentModel.Connection, Guid.Empty);
+        }
+
+        [When(@"""(.*)"" is executed ""(.*)""")]
+        public void WhenIsExecuted(string workflowName, string executionLabel)
+        {
+            Stopwatch st = new Stopwatch();
+            st.Start();
+            WhenIsExecuted(workflowName);
+            ScenarioContext.Current.Add(executionLabel, st.ElapsedMilliseconds);
+        }
+
+        [Then(@"the delta between ""(.*)"" and ""(.*)"" is less than ""(.*)"" milliseconds")]
+        public void ThenTheDeltaBetweenAndIsLessThanMilliseconds(string executionLabelFirst, string executionLabelSecond, int maxDeltaMilliseconds)
+        {
+            int e1 = Convert.ToInt32(ScenarioContext.Current[executionLabelFirst]),
+                e2 = Convert.ToInt32(ScenarioContext.Current[executionLabelSecond]),
+                d = maxDeltaMilliseconds;
+            d.Should().BeGreaterThan(Math.Abs(e1 - e2), string.Format("async logging should not add more than {0} milliseconds to the execution", d));
+        }
+
+
     }
 }

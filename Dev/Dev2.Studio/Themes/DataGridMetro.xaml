@@ -406,7 +406,7 @@
         <Setter Property="BorderThickness"
                 Value="0" />
         <Setter Property="Focusable"
-                Value="False"></Setter>
+                Value="False" />
         <Setter Property="Padding"
                 Value="0" />
         <Setter Property="Template">
@@ -453,8 +453,7 @@
     </Style>
 
     <Style TargetType="{x:Type DataGridCell}"
-           BasedOn="{StaticResource DefaultDataGridCellStyle}">
-    </Style>
+           BasedOn="{StaticResource DefaultDataGridCellStyle}" />
 
     <Style TargetType="{x:Type DataGridRowHeader}">
         <Setter Property="Background"

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -650,11 +649,11 @@ namespace Dev2.Core.Tests
             var envRepo = GetEnvironmentRepository();
             var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo, new Mock<IDebugOutputFilterStrategy>().Object);
 
-            viewModel.RootItems.Add(CreateItemViewModel<DebugStringTreeViewItemViewModel>(envRepo, 0, isSelected: false, parent: null));
+            viewModel.RootItems.Add(CreateItemViewModel<DebugStringTreeViewItemViewModel>(envRepo, 0, false, null));
 
             for(var i = 1; i < 6; i++)
             {
-                var item = CreateItemViewModel<DebugStateTreeViewItemViewModel>(envRepo, i, isSelected: false, parent: null);
+                var item = CreateItemViewModel<DebugStateTreeViewItemViewModel>(envRepo, i, false, null);
                 for(var j = 0; j < 2; j++)
                 {
                     CreateItemViewModel<DebugStateTreeViewItemViewModel>(envRepo, j, false, item);

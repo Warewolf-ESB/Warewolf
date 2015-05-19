@@ -136,7 +136,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
 
             string error;
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column,
+            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
                                                                            out error);
             recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
 
@@ -155,7 +155,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
             string actualValue;
             value = value.Replace('"', ' ').Trim();
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            GetScalarValueFromDataList(result.DataListID, "var", out actualValue, out error);
+            GetScalarValueFromEnvironment( result.Environment,"[[var]]", out actualValue, out error);
             Assert.AreEqual(value, actualValue);
         }
     }

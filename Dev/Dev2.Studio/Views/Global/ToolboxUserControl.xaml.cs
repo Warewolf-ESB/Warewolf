@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities.Presentation.Toolbox;
 using System.Activities.Statements;
@@ -75,7 +74,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
             }
         }
 
-        public void BuildToolbox()
+        void BuildToolbox()
         {
 
             var category = GetToolboxCategoryByName("Control Flow");
@@ -158,38 +157,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
                 category.Add(new ToolboxItemWrapper(typeof(DsfScriptingActivity), "/Images/ToolJavaScript-32.png", "Script"));
             }
 
-            //Massimo.Guerrera:17-04-17 - Added for PBI 9000
             category = GetToolboxCategoryByName("Resources");
             if(category != null)
             {
-                category.Add(new ToolboxItemWrapper(typeof(DsfWorkflowActivity), "/Images/Workflow-32.png", "Workflow"));
-                category.Add(new ToolboxItemWrapper(typeof(DsfServiceActivity), "/Images/ToolService-32.png", "Service"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfWorkflowActivity), "/Images/Workflow-32.png", "Service"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfServiceActivity), "/Images/ToolService-32.png", "Data Connector"));
             }
-        }
 
-        public void AddActivity(DsfActivity activity)
-        {
-            AddCategoryIfNotExists("Action Activities");
-            var category = GetToolboxCategoryByName("Action Activities");
-            if(category != null)
+            category = GetToolboxCategoryByName("Connectors");
+            if (category != null)
             {
-                category.Tools.Add(new ToolboxItemWrapper(typeof(DsfActivity), activity.IconPath.Expression.ToString(), activity.ToolboxFriendlyName));
+                category.Add(new ToolboxItemWrapper(typeof(DsfDropBoxFileActivity), "/Images/dropbox-windows.png", "Dropbox-File"));
+               
             }
-            tools.UpdateLayout();
         }
 
-        public ToolboxCategory GetToolboxCategoryByName(string categoryName)
+        ToolboxCategory GetToolboxCategoryByName(string categoryName)
         {
             return tools.Categories.FirstOrDefault(c => c.CategoryName.Equals(categoryName, StringComparison.InvariantCultureIgnoreCase));
-        }
-
-        private void AddCategoryIfNotExists(string categoryName)
-        {
-            var category = GetToolboxCategoryByName(categoryName);
-            if(category == null)
-            {
-                tools.Categories.Add(new ToolboxCategory(categoryName));
-            }
         }
     }
 }

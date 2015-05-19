@@ -13,7 +13,6 @@
 using System;
 using System.Collections.Specialized;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Responses;

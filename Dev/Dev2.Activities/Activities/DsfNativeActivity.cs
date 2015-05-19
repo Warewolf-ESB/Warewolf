@@ -9,10 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -21,19 +21,20 @@ using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
-using Dev2.Enums;
 using Dev2.Instrumentation;
 using Dev2.Runtime.Execution;
 using Dev2.Simulation;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Hosting;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
@@ -46,8 +47,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [GeneralSettings("IsSimulationEnabled")]
         public bool IsSimulationEnabled { get; set; }
         // ReSharper disable RedundantAssignment
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] 
         public IDSFDataObject DataObject { get { return null; } set { value = null; } }
         // ReSharper restore RedundantAssignment
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] 
         public IDataListCompiler Compiler { get; set; }
         // END TODO: Remove legacy properties 
 
@@ -164,11 +167,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if(compiler != null)
             {
-                string errorString = compiler.FetchErrors(dataObject.DataListID, true);
+                string errorString = dataObject.Environment.FetchErrors();
                 _tmpErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
                 if(!(this is DsfFlowDecisionActivity))
                 {
-                    compiler.ClearErrors(dataObject.DataListID);
                 }
 
                 DataListExecutionID.Set(context, dataObject.DataListID);
@@ -202,7 +204,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 errorResultTO.AddError(errorString);
                 if(compiler != null)
                 {
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, errorResultTO.MakeDataListReady(), out errorsTo);
+                    dataObject.Environment.AddError(errorResultTO.MakeDataListReady());
                 }
             }
             finally
@@ -213,65 +215,63 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     OnExecutedCompleted(context, false, resumable);
                     if(compiler != null)
                     {
-                        DoErrorHandling(context, compiler, dataObject);
+                        DoErrorHandling(dataObject);
                     }
                 }
 
             }
         }
 
-        protected void DoErrorHandling(NativeActivityContext context, IDataListCompiler compiler, IDSFDataObject dataObject)
+        protected void DoErrorHandling(IDSFDataObject dataObject)
         {
-            string errorString = compiler.FetchErrors(dataObject.DataListID, true);
-            string currentError = compiler.FetchErrors(dataObject.DataListID);
-            ErrorResultTO _tmpErrorsAfter = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
-            _tmpErrors.MergeErrors(_tmpErrorsAfter);
+            string errorString = dataObject.Environment.FetchErrors();
+            _tmpErrors.AddError(errorString);
             if(_tmpErrors.HasErrors())
             {
                 if(!(this is DsfFlowDecisionActivity))
                 {
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, _tmpErrors.MakeDataListReady(), out errorsTo);
-                    if(!String.IsNullOrEmpty(currentError))
+                    if (!String.IsNullOrEmpty(errorString))
                     {
-                        PerformCustomErrorHandling(context, compiler, dataObject, currentError, _tmpErrors);
+                        PerformCustomErrorHandling(dataObject, errorString);
                     }
                 }
             }
         }
 
-        void PerformCustomErrorHandling(NativeActivityContext context, IDataListCompiler compiler, IDSFDataObject dataObject, string currentError, ErrorResultTO tmpErrors)
+        void PerformCustomErrorHandling(IDSFDataObject dataObject, string currentError)
         {
             try
             {
                 if(!String.IsNullOrEmpty(OnErrorVariable))
                 {
-                    compiler.Upsert(dataObject.DataListID, OnErrorVariable, currentError, out tmpErrors);
+                    dataObject.Environment.Assign(OnErrorVariable,currentError);                    
                 }
                 if(!String.IsNullOrEmpty(OnErrorWorkflow))
                 {
-                    var esbChannel = context.GetExtension<IEsbChannel>();
+                    var esbChannel = dataObject.EsbChannel;
+                    ErrorResultTO tmpErrors;
                     esbChannel.ExecuteLogErrorRequest(dataObject, dataObject.WorkspaceID, OnErrorWorkflow, out tmpErrors);
+                    if(tmpErrors != null)
+                    {
+                        dataObject.Environment.AddError(tmpErrors.MakeDisplayReady());
+                    }
                 }
             }
             catch(Exception e)
             {
-                if(tmpErrors == null)
-                {
-                    tmpErrors = new ErrorResultTO();
-                }
-                tmpErrors.AddError(e.Message);
-                compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, tmpErrors.MakeDataListReady(), out errorsTo);
+                dataObject.Environment.AddError(e.Message);
             }
             finally
             {
+                
                 if(IsEndedOnError)
                 {
-                    PerformStopWorkflow(context, dataObject);
+                    PerformStopWorkflow(dataObject);
                 }
             }
         }
 
-        void PerformStopWorkflow(NativeActivityContext context, IDSFDataObject dataObject)
+        void PerformStopWorkflow(IDSFDataObject dataObject)
         {
             var service = ExecutableServiceRepository.Instance.Get(dataObject.WorkspaceID, dataObject.ResourceID);
             if(service != null)
@@ -302,7 +302,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     HasError = true
                 };
                 DebugDispatcher.Instance.Write(debugState);
-                context.MarkCanceled();
             }
         }
 
@@ -365,7 +364,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if(allErrors.HasErrors())
                     {
                         DisplayAndWriteError(rootInfo.ProxyName, allErrors);
-                        compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorsTo);
+                        dataObject.Environment.AddError(allErrors.MakeDataListReady());
                     }
                 }
             }
@@ -421,9 +420,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region ForEach Mapping
 
-        public abstract void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context);
+        public abstract void UpdateForEachInputs(IList<Tuple<string, string>> updates);
 
-        public abstract void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context);
+        public abstract void UpdateForEachOutputs(IList<Tuple<string, string>> updates);
 
         #endregion
 
@@ -442,27 +441,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDebugInputs/Outputs
 
-        public virtual List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public virtual List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
         {
             return DebugItem.EmptyList;
         }
 
-        public virtual List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public virtual List<DebugItem> GetDebugOutputs(IExecutionEnvironment env)
         {
             return DebugItem.EmptyList;
         }
-
         #endregion
 
         #region DispatchDebugState
 
-        public void DispatchDebugState(NativeActivityContext context, StateType stateType)
+        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType)
         {
-            var dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            var dataList = compiler.FetchBinaryDataList(dataObject.DataListID, out errorsTo);
-
+            
+            
             Guid remoteID;
             Guid.TryParse(dataObject.RemoteInvokerID, out remoteID);
 
@@ -488,13 +483,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     //End Bug 8595
                     try
                     {
-                        Copy(GetDebugInputs(dataList), _debugState.Inputs);
+                        Copy(GetDebugInputs(dataObject.Environment), _debugState.Inputs);
                     }
                     catch (Exception err)
                     {
                         Dev2Logger.Log.Error("DispatchDebugState", err);
-                        AddErrorToDataList(err, compiler, dataObject);
-                        var errorMessage = compiler.FetchErrors(dataObject.DataListID);
+                        AddErrorToDataList(err, dataObject);
+                        var errorMessage = dataObject.Environment.FetchErrors();
                         _debugState.ErrorMessage = errorMessage;
                         _debugState.HasError = true;
                         var debugError = err as DebugCopyException;
@@ -515,12 +510,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             else
             {
-                bool hasError = compiler.HasErrors(dataObject.DataListID);
+                bool hasError = dataObject.Environment.HasErrors();
 
                 var errorMessage = String.Empty;
                 if(hasError)
                 {
-                    errorMessage = compiler.FetchErrors(dataObject.DataListID);
+                    errorMessage = string.Join(Environment.NewLine,dataObject.Environment.Errors);
                 }
 
                 if(_debugState == null)
@@ -547,14 +542,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            Copy(GetDebugOutputs(dataList), _debugState.Outputs);
+                            Copy(GetDebugOutputs(dataObject.Environment), _debugState.Outputs);
                         }
                     }
                     catch(Exception e)
                     {
                         Dev2Logger.Log.Error("Debug Dispatch Error", e);
-                        AddErrorToDataList(e,compiler,dataObject);
-                        errorMessage = compiler.FetchErrors(dataObject.DataListID);
+                        AddErrorToDataList(e,dataObject);
+                        errorMessage = dataObject.Environment.FetchErrors();
                         _debugState.ErrorMessage = errorMessage;
                         _debugState.HasError = true;
                     }
@@ -609,12 +604,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        void AddErrorToDataList(Exception err, IDataListCompiler compiler, IDSFDataObject dataObject)
+        void AddErrorToDataList(Exception err, IDSFDataObject dataObject)
         {
             var errorString = err.Message;
-            var errorResultTO = new ErrorResultTO();
-            errorResultTO.AddError(errorString);
-            compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, errorResultTO.MakeUserReady(), out errorsTo);
+            dataObject.Environment.Errors.Add(errorString);
         }
 
         protected void InitializeDebug(IDSFDataObject dataObject)
@@ -733,19 +726,53 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return enFindMissingType.StaticActivity;
         }
 
+        public virtual IDev2Activity Execute(IDSFDataObject data)
+        {
+            try
+            {
+                var className = GetType().Name;
+                Tracker.TrackEvent(TrackerEventGroup.ActivityExecution, className);
+
+                ExecuteTool(data);
+            }
+            catch (Exception ex)
+            {
+
+                Dev2Logger.Log.Error("OnExecute", ex);
+                var errorString = ex.Message;
+                var errorResultTO = new ErrorResultTO();
+                errorResultTO.AddError(errorString);                
+            }
+            finally
+            {
+                if (!_isExecuteAsync || _isOnDemandSimulation)
+                {
+                    DoErrorHandling(data);
+                }
+
+            }
+
+            
+            if(NextNodes != null && NextNodes.Count()>0)
+            {
+                    NextNodes.First().Execute(data);
+                    return NextNodes.First();
+             }
+            return null;
+        }
+
         #endregion
 
-        #region Create Debug Item
+        protected abstract void ExecuteTool(IDSFDataObject dataObject);
 
-        //The Plan muahahaha
-        // DebugController
-        //    AddInput
-        //    AddOutput
-        //    AddItem
-        //    GetOutputs
-        //    GetInputs
-        //    AddError
-        //    DispatchDebug
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public IEnumerable<IDev2Activity> NextNodes { get; set; }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] 
+        public Guid ActivityId { get; set; }
+
+
+
+        #region Create Debug Item
 
         protected void AddDebugInputItem(DebugOutputBase parameters)
         {
@@ -792,5 +819,45 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
         #endregion
 
+        public virtual IList<IActionableErrorInfo> PerformValidation()
+        {
+            return new List<IActionableErrorInfo>();
+        }
+
+        #region Overrides of Object
+
+        /// <summary>
+        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// true if the specified object  is equal to the current object; otherwise, false.
+        /// </returns>
+        /// <param name="obj">The object to compare with the current object. </param>
+        public override bool Equals(object obj)
+        {
+            var act = obj as IDev2Activity;
+            if (act == null)
+            {
+                return false;
+            }
+            return act.UniqueID == UniqueID;
+        }
+
+        #region Overrides of Object
+
+        /// <summary>
+        /// Serves as a hash function for a particular type. 
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object"/>.
+        /// </returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        #endregion
+
+        #endregion
     }
 }

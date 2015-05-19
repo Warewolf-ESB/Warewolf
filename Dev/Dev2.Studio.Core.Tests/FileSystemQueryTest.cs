@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -769,7 +768,7 @@ namespace Dev2.Core.Tests
             gChildren.Setup(a => a.GetEnumerator()).Returns(actualGChildren.Select(a => a.Object).GetEnumerator());
             IList<Share> shares = hasShares? new List<Share>{new Share("a","b",ShareType.Disk)}  : new List<Share>();
             var sFact = new Mock<IShareCollectionFactory>();
-            sFact.Setup(a => a.CreateShareCollection(It.IsAny<string>())).Returns(value: new ShareCollection(shares));
+            sFact.Setup(a => a.CreateShareCollection(It.IsAny<string>())).Returns(new ShareCollection(shares));
 
             //------------Execute Test---------------------------
             var query = new FileSystemQuery(dirLocal.Object, dirFact.Object, sFact.Object);

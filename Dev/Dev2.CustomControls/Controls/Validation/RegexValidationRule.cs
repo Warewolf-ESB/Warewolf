@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -18,14 +17,15 @@ using System.Text.RegularExpressions;
 using System.Windows.Controls;
 
 // ReSharper disable CheckNamespace
+
 namespace WPF.JoshSmith.Controls.Validation
 {
     /// <summary>
-    /// A <see cref="System.Windows.Controls.ValidationRule"/>-derived class which 
-    /// supports the use of regular expressions for validation.
+    ///     A <see cref="System.Windows.Controls.ValidationRule" />-derived class which
+    ///     supports the use of regular expressions for validation.
     /// </summary>
     /// <remarks>
-    /// Documentation: http://www.codeproject.com/KB/WPF/RegexValidationInWPF.aspx
+    ///     Documentation: http://www.codeproject.com/KB/WPF/RegexValidationInWPF.aspx
     /// </remarks>
     public class RegexValidationRule : ValidationRule
     {
@@ -38,14 +38,14 @@ namespace WPF.JoshSmith.Controls.Validation
         #region Constructors
 
         /// <summary>
-        /// Parameterless constructor.
+        ///     Parameterless constructor.
         /// </summary>
         public RegexValidationRule()
         {
         }
 
         /// <summary>
-        /// Creates a RegexValidationRule with the specified regular expression.
+        ///     Creates a RegexValidationRule with the specified regular expression.
         /// </summary>
         /// <param name="regexText">The regular expression used by the new instance.</param>
         public RegexValidationRule(string regexText)
@@ -54,8 +54,8 @@ namespace WPF.JoshSmith.Controls.Validation
         }
 
         /// <summary>
-        /// Creates a RegexValidationRule with the specified regular expression
-        /// and error message.
+        ///     Creates a RegexValidationRule with the specified regular expression
+        ///     and error message.
         /// </summary>
         /// <param name="regexText">The regular expression used by the new instance.</param>
         /// <param name="errorMessage">The error message used when validation fails.</param>
@@ -68,8 +68,8 @@ namespace WPF.JoshSmith.Controls.Validation
         }
 
         /// <summary>
-        /// Creates a RegexValidationRule with the specified regular expression,
-        /// error message, and RegexOptions.
+        ///     Creates a RegexValidationRule with the specified regular expression,
+        ///     error message, and RegexOptions.
         /// </summary>
         /// <param name="regexText">The regular expression used by the new instance.</param>
         /// <param name="errorMessage">The error message used when validation fails.</param>
@@ -87,13 +87,13 @@ namespace WPF.JoshSmith.Controls.Validation
         #region Properties
 
         /// <summary>
-        /// Gets/sets the error message to be used when validation fails.
+        ///     Gets/sets the error message to be used when validation fails.
         /// </summary>
         public string ErrorMessage { get; set; }
 
         /// <summary>
-        /// Gets/sets the RegexOptions to be used during validation.
-        /// This property's default value is 'None'.
+        ///     Gets/sets the RegexOptions to be used during validation.
+        ///     This property's default value is 'None'.
         /// </summary>
         public RegexOptions RegexOptions
         {
@@ -102,7 +102,7 @@ namespace WPF.JoshSmith.Controls.Validation
         }
 
         /// <summary>
-        /// Gets/sets the regular expression used during validation.
+        ///     Gets/sets the regular expression used during validation.
         /// </summary>
         public string RegexText { get; set; }
 
@@ -111,8 +111,8 @@ namespace WPF.JoshSmith.Controls.Validation
         #region Validate
 
         /// <summary>
-        /// Validates the 'value' argument using the regular expression and 
-        /// RegexOptions associated with this object.
+        ///     Validates the 'value' argument using the regular expression and
+        ///     RegexOptions associated with this object.
         /// </summary>
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
@@ -120,14 +120,14 @@ namespace WPF.JoshSmith.Controls.Validation
 
             // If there is no regular expression to evaluate,
             // then the data is considered to be valid.
-            if(!String.IsNullOrEmpty(RegexText))
+            if (!String.IsNullOrEmpty(RegexText))
             {
                 // Cast the input value to a string (null becomes empty string).
                 string text = value as string ?? String.Empty;
 
                 // If the string does not match the regex, return a value
                 // which indicates failure and provide an error message.
-                if(!Regex.IsMatch(text, RegexText, RegexOptions))
+                if (!Regex.IsMatch(text, RegexText, RegexOptions))
                     result = new ValidationResult(false, ErrorMessage);
             }
 

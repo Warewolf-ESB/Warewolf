@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -8,7 +7,6 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-
 
 using System.IO;
 
@@ -23,5 +21,9 @@ namespace Dev2.Common.Interfaces.Wrappers
         void Delete(string tmpFileName);
         void WriteAllText(string p1, string p2);
         void Copy(string source, string destination);
+
+        byte[] ReadAllBytes(string path);
+
+        void WriteAllBytes(string path, byte[] contents);
     }
 }

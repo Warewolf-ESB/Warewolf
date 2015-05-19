@@ -9,12 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
-using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -49,7 +47,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var res = inputs.FetchAllEntries().Count;
 
             // remove test datalist ;)
-            DataListRemoval(inputs.UID);
 
             Assert.AreEqual(4, res);
         }
@@ -64,7 +61,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var res = outputs.FetchAllEntries().Count;
 
             // remove test datalist ;)
-            DataListRemoval(outputs.UID);
 
             Assert.AreEqual(1, res);
         }
@@ -87,13 +83,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = CheckPathOperationActivityDebugInputOutput(dsfPathDelete, "<ADL><FileNames><Name></Name></FileNames><res></res></ADL>",
                                                                 "<ADL><FileNames><Name></Name></FileNames><res></res></ADL>", out inRes, out outRes);
-            GetScalarValueFromDataList(result.DataListID, "Dev2System.Dev2Error", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Dev2System.Dev2Error", out actual, out error);
 
             // Assert Debug Output Error Message Relevant
             Assert.IsTrue(string.IsNullOrEmpty(actual) || !actual.Contains("null reference"), "Irrelevent error displayed for file not found.");
 
             //clean
-            DataListRemoval(result.DataListID);
         }
 
         #endregion
@@ -109,7 +104,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var act = new DsfPathDelete { InputPath = inputPath, Result = "[[CompanyName]]" };
 
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(null, null);
+            act.UpdateForEachInputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual(inputPath, act.InputPath);
         }
@@ -128,7 +123,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple1 = new Tuple<string, string>(inputPath, "Test");
             var tuple2 = new Tuple<string, string>(path, "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual(inputPath, act.InputPath);
         }
@@ -145,7 +140,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var tuple1 = new Tuple<string, string>(inputPath, "Test");
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.InputPath);
         }
@@ -161,7 +156,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string result = "[[CompanyName]]";
             var act = new DsfPathDelete { InputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt"), Result = result };
 
-            act.UpdateForEachOutputs(null, null);
+            act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual(result, act.Result);
         }
@@ -179,7 +174,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual(result, act.Result);
         }
@@ -196,7 +191,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var tuple1 = new Tuple<string, string>("[[CompanyName]]", "Test");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.Result);
         }

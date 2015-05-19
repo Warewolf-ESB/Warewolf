@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -33,7 +32,7 @@ namespace Dev2.Core.Tests.ConverterTests
             var converter = new IntInRangeToVisibilityConverter();
 
             //------------Execute Test---------------------------
-            var result = converter.ConvertBack(null, new Type[] { typeof(int) }, null, CultureInfo.CurrentCulture);
+            var result = converter.ConvertBack(null, new[] { typeof(int) }, null, CultureInfo.CurrentCulture);
 
             //------------Assert Results-------------------------
         }

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -14,7 +13,6 @@ namespace Dev2.Common.DB
 {
     public class AbstractSanitizer
     {
-
         internal string RemoveDelimiting(string payload)
         {
             return (payload.Replace("&lt;", "<").Replace("&gt;", ">"));

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -23,10 +22,10 @@ using System.Windows.Media.Media3D;
 namespace Dev2.CustomControls.Panels
 {
     /// <summary>
-    /// A Canvas which manages dragging of the UIElements it contains.  
+    ///     A Canvas which manages dragging of the UIElements it contains.
     /// </summary>
     /// <remarks>
-    /// Documentation: http://www.codeproject.com/KB/WPF/DraggingElementsInCanvas.aspx
+    ///     Documentation: http://www.codeproject.com/KB/WPF/DraggingElementsInCanvas.aspx
     /// </remarks>
     public class DragCanvas : Canvas
     {
@@ -34,6 +33,8 @@ namespace Dev2.CustomControls.Panels
 
         // Stores a reference to the UIElement currently being dragged by the user.
         private UIElement _elementBeingDragged;
+        private bool _isDragInProgress;
+        private bool _modifyLeftOffset, _modifyTopOffset;
 
         // Keeps track of where the mouse cursor was when a drag operation began.		
         private Point _origCursorLocation;
@@ -42,10 +43,6 @@ namespace Dev2.CustomControls.Panels
         private double _origHorizOffset, _origVertOffset;
 
         // Keeps track of which horizontal and vertical offset should be modified for the drag element.
-        private bool _modifyLeftOffset, _modifyTopOffset;
-
-        // True if a drag operation is underway, else false.
-        private bool _isDragInProgress;
 
         #endregion // Data
 
@@ -55,20 +52,20 @@ namespace Dev2.CustomControls.Panels
         {
             AllowDraggingProperty = DependencyProperty.Register(
                 "AllowDragging",
-                typeof(bool),
-                typeof(DragCanvas),
+                typeof (bool),
+                typeof (DragCanvas),
                 new PropertyMetadata(true));
 
             AllowDragOutOfViewProperty = DependencyProperty.Register(
                 "AllowDragOutOfView",
-                typeof(bool),
-                typeof(DragCanvas),
+                typeof (bool),
+                typeof (DragCanvas),
                 new UIPropertyMetadata(false));
 
             CanBeDraggedProperty = DependencyProperty.RegisterAttached(
                 "CanBeDragged",
-                typeof(bool),
-                typeof(DragCanvas),
+                typeof (bool),
+                typeof (DragCanvas),
                 new UIPropertyMetadata(true));
         }
 
@@ -83,13 +80,13 @@ namespace Dev2.CustomControls.Panels
         #region CanBeDragged
 
         /// <summary>
-        /// Identifies the RegexValidator's ErrorMessage attached property.  
-        /// This field is read-only.
+        ///     Identifies the RegexValidator's ErrorMessage attached property.
+        ///     This field is read-only.
         /// </summary>
         public static readonly DependencyProperty CanBeDraggedProperty;
 
         /// <summary>
-        /// Returns true if the specified UIElement is allowed to be dragged, else false.
+        ///     Returns true if the specified UIElement is allowed to be dragged, else false.
         /// </summary>
         /// <param name="uiElement">The UIElement to check for dragging permission.</param>
         public static bool GetCanBeDragged(UIElement uiElement)
@@ -97,11 +94,11 @@ namespace Dev2.CustomControls.Panels
             if (uiElement == null)
                 return false;
 
-            return (bool)uiElement.GetValue(CanBeDraggedProperty);
+            return (bool) uiElement.GetValue(CanBeDraggedProperty);
         }
 
         /// <summary>
-        /// Sets the CanBeDragged attached property for the specified UIElement.
+        ///     Sets the CanBeDragged attached property for the specified UIElement.
         /// </summary>
         /// <param name="uiElement">The UIElement to set the property for.</param>
         /// <param name="value">Pass true if the element can be dragged, else false.</param>
@@ -120,18 +117,18 @@ namespace Dev2.CustomControls.Panels
         #region AllowDragging
 
         /// <summary>
-        /// Identifies the DragCanvas's AllowDragging dependency property.
-        /// This field is read-only.
+        ///     Identifies the DragCanvas's AllowDragging dependency property.
+        ///     This field is read-only.
         /// </summary>
         public static readonly DependencyProperty AllowDraggingProperty;
 
         /// <summary>
-        /// Gets/sets whether elements in the DragCanvas should be draggable by the user.
-        /// The default value is true.  This is a dependency property.
+        ///     Gets/sets whether elements in the DragCanvas should be draggable by the user.
+        ///     The default value is true.  This is a dependency property.
         /// </summary>
         public bool AllowDragging
         {
-            get { return (bool)GetValue(AllowDraggingProperty); }
+            get { return (bool) GetValue(AllowDraggingProperty); }
             set { SetValue(AllowDraggingProperty, value); }
         }
 
@@ -140,18 +137,18 @@ namespace Dev2.CustomControls.Panels
         #region AllowDragOutOfView
 
         /// <summary>
-        /// Identifies the DragCanvas's AllowDragOutOfView dependency property.
-        /// This field is read-only.
+        ///     Identifies the DragCanvas's AllowDragOutOfView dependency property.
+        ///     This field is read-only.
         /// </summary>
         public static readonly DependencyProperty AllowDragOutOfViewProperty;
 
         /// <summary>
-        /// Gets/sets whether the user should be able to drag elements in the DragCanvas out of
-        /// the viewable area.  The default value is false.  This is a dependency property.
+        ///     Gets/sets whether the user should be able to drag elements in the DragCanvas out of
+        ///     the viewable area.  The default value is false.  This is a dependency property.
         /// </summary>
         public bool AllowDragOutOfView
         {
-            get { return (bool)GetValue(AllowDragOutOfViewProperty); }
+            get { return (bool) GetValue(AllowDragOutOfViewProperty); }
             set { SetValue(AllowDragOutOfViewProperty, value); }
         }
 
@@ -160,14 +157,14 @@ namespace Dev2.CustomControls.Panels
         #region BringToFront / SendToBack
 
         /// <summary>
-        /// Assigns the element a z-index which will ensure that 
-        /// it is in front of every other element in the Canvas.
-        /// The z-index of every element whose z-index is between 
-        /// the element's old and new z-index will have its z-index 
-        /// decremented by one.
+        ///     Assigns the element a z-index which will ensure that
+        ///     it is in front of every other element in the Canvas.
+        ///     The z-index of every element whose z-index is between
+        ///     the element's old and new z-index will have its z-index
+        ///     decremented by one.
         /// </summary>
         /// <param name="element">
-        /// The element to be sent to the front of the z-order.
+        ///     The element to be sent to the front of the z-order.
         /// </param>
         public void BringToFront(UIElement element)
         {
@@ -175,14 +172,14 @@ namespace Dev2.CustomControls.Panels
         }
 
         /// <summary>
-        /// Assigns the element a z-index which will ensure that 
-        /// it is behind every other element in the Canvas.
-        /// The z-index of every element whose z-index is between 
-        /// the element's old and new z-index will have its z-index 
-        /// incremented by one.
+        ///     Assigns the element a z-index which will ensure that
+        ///     it is behind every other element in the Canvas.
+        ///     The z-index of every element whose z-index is between
+        ///     the element's old and new z-index will have its z-index
+        ///     incremented by one.
         /// </summary>
         /// <param name="element">
-        /// The element to be sent to the back of the z-order.
+        ///     The element to be sent to the back of the z-order.
         /// </param>
         public void SendToBack(UIElement element)
         {
@@ -194,11 +191,11 @@ namespace Dev2.CustomControls.Panels
         #region ElementBeingDragged
 
         /// <summary>
-        /// Returns the UIElement currently being dragged, or null.
+        ///     Returns the UIElement currently being dragged, or null.
         /// </summary>
         /// <remarks>
-        /// Note to inheritors: This property exposes a protected 
-        /// setter which should be used to modify the drag element.
+        ///     Note to inheritors: This property exposes a protected
+        ///     setter which should be used to modify the drag element.
         /// </remarks>
         public UIElement ElementBeingDragged
         {
@@ -234,13 +231,13 @@ namespace Dev2.CustomControls.Panels
         #region FindCanvasChild
 
         /// <summary>
-        /// Walks up the visual tree starting with the specified DependencyObject, 
-        /// looking for a UIElement which is a child of the Canvas.  If a suitable 
-        /// element is not found, null is returned.  If the 'depObj' object is a 
-        /// UIElement in the Canvas's Children collection, it will be returned.
+        ///     Walks up the visual tree starting with the specified DependencyObject,
+        ///     looking for a UIElement which is a child of the Canvas.  If a suitable
+        ///     element is not found, null is returned.  If the 'depObj' object is a
+        ///     UIElement in the Canvas's Children collection, it will be returned.
         /// </summary>
         /// <param name="depObj">
-        /// A DependencyObject from which the search begins.
+        ///     A DependencyObject from which the search begins.
         /// </param>
         public UIElement FindCanvasChild(DependencyObject depObj)
         {
@@ -248,7 +245,7 @@ namespace Dev2.CustomControls.Panels
             {
                 // If the current object is a UIElement which is a child of the
                 // Canvas, exit the loop and return it.
-                UIElement elem = depObj as UIElement;
+                var elem = depObj as UIElement;
                 if (elem != null && Children.Contains(elem))
                     break;
 
@@ -272,7 +269,7 @@ namespace Dev2.CustomControls.Panels
         #region OnPreviewMouseLeftButtonDown
 
         /// <summary>
-        /// Overrides base implementation to support element dragging.
+        ///     Overrides base implementation to support element dragging.
         /// </summary>
         /// <param name="e"></param>
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
@@ -282,7 +279,7 @@ namespace Dev2.CustomControls.Panels
             _isDragInProgress = false;
 
             // Don't continue if there was a double or tripple click
-            if(e.ClickCount > 1)
+            if (e.ClickCount > 1)
             {
                 return;
             }
@@ -317,8 +314,9 @@ namespace Dev2.CustomControls.Panels
         #endregion // OnPreviewMouseLeftButtonDown
 
         #region OnPreviewMouseLeftButtonUp
+
         /// <summary>
-        ///  Release item being dragged once the mouse is up
+        ///     Release item being dragged once the mouse is up
         /// </summary>
         /// <param name="e"></param>
         protected override void OnPreviewMouseLeftButtonUp(MouseButtonEventArgs e)
@@ -326,19 +324,19 @@ namespace Dev2.CustomControls.Panels
             base.OnPreviewMouseLeftButtonUp(e);
             ElementBeingDragged = null;
         }
-        #endregion
 
+        #endregion
 
         #region OnPreviewMouseMove
 
         /// <summary>
-        /// Overrides base implementation to support element dragging.
+        ///     Overrides base implementation to support element dragging.
         /// </summary>
         /// <param name="e"></param>
         protected override void OnPreviewMouseMove(MouseEventArgs e)
         {
             base.OnPreviewMouseMove(e);
-            
+
             // If no element is being dragged, there is nothing to do.
             if (ElementBeingDragged == null || !_isDragInProgress)
                 return;
@@ -416,7 +414,7 @@ namespace Dev2.CustomControls.Panels
         #region OnHostPreviewMouseUp
 
         /// <summary>
-        /// Overrides base implementation to support element dragging.
+        ///     Overrides base implementation to support element dragging.
         /// </summary>
         /// <param name="e"></param>
         protected override void OnPreviewMouseUp(MouseButtonEventArgs e)
@@ -427,6 +425,7 @@ namespace Dev2.CustomControls.Panels
             // released, in case a context menu was opened on the drag element.
             ElementBeingDragged = null;
         }
+
         #endregion // OnHostPreviewMouseUp
 
         #endregion // Host Event Handlers
@@ -436,7 +435,7 @@ namespace Dev2.CustomControls.Panels
         #region CalculateDragElementRect
 
         /// <summary>
-        /// Returns a Rect which describes the bounds of the element being dragged.
+        ///     Returns a Rect which describes the bounds of the element being dragged.
         /// </summary>
         private Rect CalculateDragElementRect(double newHorizOffset, double newVertOffset)
         {
@@ -457,7 +456,7 @@ namespace Dev2.CustomControls.Panels
             else
                 y = ActualHeight - newVertOffset - elemSize.Height;
 
-            Point elemLoc = new Point(x, y);
+            var elemLoc = new Point(x, y);
 
             return new Rect(elemLoc, elemSize);
         }
@@ -467,21 +466,21 @@ namespace Dev2.CustomControls.Panels
         #region ResolveOffset
 
         /// <summary>
-        /// Determines one component of a UIElement's location 
-        /// within a Canvas (either the horizontal or vertical offset).
+        ///     Determines one component of a UIElement's location
+        ///     within a Canvas (either the horizontal or vertical offset).
         /// </summary>
         /// <param name="side1">
-        /// The value of an offset relative to a default side of the 
-        /// Canvas (i.e. top or left).
+        ///     The value of an offset relative to a default side of the
+        ///     Canvas (i.e. top or left).
         /// </param>
         /// <param name="side2">
-        /// The value of the offset relative to the other side of the 
-        /// Canvas (i.e. bottom or right).
+        ///     The value of the offset relative to the other side of the
+        ///     Canvas (i.e. bottom or right).
         /// </param>
         /// <param name="useSide1">
-        /// Will be set to true if the returned value should be used 
-        /// for the offset from the side represented by the 'side1' 
-        /// parameter.  Otherwise, it will be set to false.
+        ///     Will be set to true if the returned value should be used
+        ///     for the offset from the side represented by the 'side1'
+        ///     parameter.  Otherwise, it will be set to false.
         /// </param>
         private static double ResolveOffset(double side1, double side2, out bool useSide1)
         {
@@ -519,13 +518,13 @@ namespace Dev2.CustomControls.Panels
         #region UpdateZOrder
 
         /// <summary>
-        /// Helper method used by the BringToFront and SendToBack methods.
+        ///     Helper method used by the BringToFront and SendToBack methods.
         /// </summary>
         /// <param name="element">
-        /// The element to bring to the front or send to the back.
+        ///     The element to bring to the front or send to the back.
         /// </param>
         /// <param name="bringToFront">
-        /// Pass true if calling from BringToFront, else false.
+        ///     Pass true if calling from BringToFront, else false.
         /// </param>
         private void UpdateZOrder(UIElement element, bool bringToFront)
         {

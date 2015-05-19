@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,15 +8,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
+using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
+
 namespace Dev2.Session
 {
-
     [Serializable]
     public class DebugTO
     {
@@ -47,14 +46,8 @@ namespace Dev2.Session
 
         public string XmlData
         {
-            get
-            {
-                return _xmlData ?? (_xmlData = DataList);
-            }
-            set
-            {
-                _xmlData = value;
-            }
+            get { return _xmlData ?? (_xmlData = DataList); }
+            set { _xmlData = value; }
         }
 
         public IBinaryDataList BinaryDataList { get; set; }
@@ -72,7 +65,15 @@ namespace Dev2.Session
 
         public SaveDebugTO CopyToSaveDebugTO()
         {
-            SaveDebugTO that = new SaveDebugTO { DataList = DataList, ServiceName = ServiceName, IsDebugMode = IsDebugMode, RememberInputs = RememberInputs, XmlData = XmlData, WorkflowID = WorkflowID };
+            var that = new SaveDebugTO
+            {
+                DataList = DataList,
+                ServiceName = ServiceName,
+                IsDebugMode = IsDebugMode,
+                RememberInputs = RememberInputs,
+                XmlData = XmlData,
+                WorkflowID = WorkflowID
+            };
 
             that.RememberInputs = RememberInputs;
             that.DataListHash = DataListHash;
@@ -82,7 +83,6 @@ namespace Dev2.Session
 
         public void CopyFromSaveDebugTO(SaveDebugTO that)
         {
-
             DataList = that.DataList;
             ServiceName = that.ServiceName;
             IsDebugMode = that.IsDebugMode;
@@ -94,7 +94,19 @@ namespace Dev2.Session
         }
 
 
-        #endregion Methods
+        public virtual void CleanUp()
+        {
+            CleanUpCalled = true;
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            if (BinaryDataList != null)
+            {
+                compiler.ForceDeleteDataListByID(BinaryDataList.UID);
+                BinaryDataList.Dispose();
+            }
+        }
 
+        public bool CleanUpCalled    { get; set; }
+
+        #endregion Methods
     }
 }

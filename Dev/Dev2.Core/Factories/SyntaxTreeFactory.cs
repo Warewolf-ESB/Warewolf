@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,21 +8,24 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Parsing.Intellisense;
 
-namespace Dev2 {
-    public static class SyntaxTreeFactory {
-        public static SyntaxTreeBuilder CreateDatalistTreeBuilder() {
-            SyntaxTreeBuilder builder = new SyntaxTreeBuilder();
+namespace Dev2
+{
+    public static class SyntaxTreeFactory
+    {
+        public static SyntaxTreeBuilder CreateDatalistTreeBuilder()
+        {
+            var builder = new SyntaxTreeBuilder();
 
             builder.RegisterGrammer(new DatalistGrammer());
 
             return builder;
         }
 
-        public static SyntaxTreeBuilder CreateInfrigistsTreeBuilder() {
-            SyntaxTreeBuilder builder = new SyntaxTreeBuilder();
+        public static SyntaxTreeBuilder CreateInfrigistsTreeBuilder()
+        {
+            var builder = new SyntaxTreeBuilder();
 
             builder.RegisterGrammer(new StringLiteralGrammer());
             builder.RegisterGrammer(new InfrigisticNumericLiteralGrammer());
@@ -33,7 +35,8 @@ namespace Dev2 {
             return builder;
         }
 
-        public static SyntaxTreeBuilder CreateInfrigistsAndDatalistTreeBuilder() {
+        public static SyntaxTreeBuilder CreateInfrigistsAndDatalistTreeBuilder()
+        {
             SyntaxTreeBuilder builder = CreateInfrigistsTreeBuilder();
 
             builder.RegisterGrammer(new DatalistGrammer());
@@ -42,7 +45,8 @@ namespace Dev2 {
         }
 
 
-        public static SyntaxTreeBuilder CreateActivityDataItemTreeBuilder() {
+        public static SyntaxTreeBuilder CreateActivityDataItemTreeBuilder()
+        {
             return CreateInfrigistsAndDatalistTreeBuilder();
         }
     }

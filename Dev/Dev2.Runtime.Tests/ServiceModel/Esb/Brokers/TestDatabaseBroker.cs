@@ -9,7 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
 
 namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
@@ -27,9 +27,9 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
 
         public TestDbServer DbServer { get; private set; }
 
-        protected override TestDbServer CreateDbServer()
+        protected override TestDbServer CreateDbServer(DbSource dbSource)
         {
-            return DbServer ?? (DbServer = base.CreateDbServer());
+            return DbServer ?? (DbServer = base.CreateDbServer(dbSource));
         }
     }
 }

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -51,7 +50,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var res = inputs.FetchAllEntries().Count;
 
             // remove test datalist ;)
-            DataListRemoval(inputs.UID);
 
             Assert.AreEqual(9, res);
         }
@@ -66,7 +64,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var res = outputs.FetchAllEntries().Count;
 
             // remove test datalist ;)
-            DataListRemoval(outputs.UID);
 
             Assert.AreEqual(1, res);
         }
@@ -125,104 +122,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(activityOperationBrokerMock.Destination.IOPath.Username, "destUName");
             Assert.AreEqual(activityOperationBrokerMock.Source.IOPath.Password, "pWord");
             Assert.AreEqual(activityOperationBrokerMock.Source.IOPath.Username, "uName");
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("DsfUnZip_Execute")]
-        public void Unzip_Execute_WhenInputPathNotIsRooted_MovesArchivePasswordItr()
-        {
-            //---------------Setup----------------------------------------------
-            var fileNames = new List<string>();
-            var guid = Guid.NewGuid();
-            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, guid + "Dev2.txt"));
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            foreach(string fileName in fileNames)
-            {
-                File.Delete(fileName);
-            }
-
-            var activityOperationBrokerMock = new ActivityOperationBrokerMock();
-
-            var act = new DsfUnZip
-            {
-                InputPath = @"OldFile.txt",
-                OutputPath = Path.Combine(TestContext.TestRunDirectory, "NewName.txt"),
-                Result = "[[res(*).a]]",
-                DestinationUsername = "destUName",
-                DestinationPassword = "destPWord",
-                Username = "uName",
-                Password = "pWord",
-                ArchivePassword = "[[pass(*).word]]",
-                GetOperationBroker = () => activityOperationBrokerMock
-            };
-            const string shape = "<ADL><res><a></a></res><pass><word></word></pass></ADL>";
-            const string data = "<ADL><pass><word>test</word></pass><pass><word>test2</word></pass><pass><word>test3</word></pass></ADL>";
-            //-------------------------Execute-----------------------------------------------
-            CheckPathOperationActivityDebugInputOutput(act, shape,
-                                                       data, out inRes, out outRes);
-            //-------------------------Assertions---------------------------------------------
-            Assert.AreEqual(1, outRes.Count);
-            var outputResultList = outRes[0].FetchResultsList();
-            Assert.AreEqual(3, outputResultList.Count);
-            Assert.AreEqual("", outputResultList[0].Value);
-            Assert.AreEqual("[[res(1).a]]", outputResultList[0].Variable);
-            Assert.AreEqual("", outputResultList[1].Value);
-            Assert.AreEqual("[[res(1).a]]", outputResultList[1].Variable);
-            Assert.AreEqual("", outputResultList[2].Value);
-            Assert.AreEqual("[[res(1).a]]", outputResultList[2].Variable);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("DsfUnZip_Execute")]
-        public void Unzip_Execute_WhenOutputPathNotIsRooted_MovesArchivePasswordItr()
-        {
-            //---------------Setup----------------------------------------------
-            var fileNames = new List<string>();
-            var guid = Guid.NewGuid();
-            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, guid + "Dev2.txt"));
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            foreach(string fileName in fileNames)
-            {
-                File.Delete(fileName);
-            }
-
-            var activityOperationBrokerMock = new ActivityOperationBrokerMock();
-
-            var act = new DsfUnZip
-            {
-                InputPath = @"c:\OldFile.txt",
-                OutputPath = "NewName.txt",
-                Result = "[[res(*).a]]",
-                DestinationUsername = "destUName",
-                DestinationPassword = "destPWord",
-                Username = "uName",
-                Password = "pWord",
-                ArchivePassword = "[[pass(*).word]]",
-                GetOperationBroker = () => activityOperationBrokerMock
-            };
-            const string shape = "<ADL><res><a></a></res><pass><word></word></pass></ADL>";
-            const string data = "<ADL><pass><word>test</word></pass><pass><word>test2</word></pass><pass><word>test3</word></pass></ADL>";
-            //-------------------------Execute-----------------------------------------------
-            CheckPathOperationActivityDebugInputOutput(act, shape,
-                                                       data, out inRes, out outRes);
-            //-------------------------Assertions---------------------------------------------
-            Assert.AreEqual(1, outRes.Count);
-            var outputResultList = outRes[0].FetchResultsList();
-            Assert.AreEqual(3, outputResultList.Count);
-            Assert.AreEqual("", outputResultList[0].Value);
-            Assert.AreEqual("[[res(1).a]]", outputResultList[0].Variable);
-            Assert.AreEqual("", outputResultList[1].Value);
-            Assert.AreEqual("[[res(1).a]]", outputResultList[1].Variable);
-            Assert.AreEqual("", outputResultList[2].Value);
-            Assert.AreEqual("[[res(1).a]]", outputResultList[2].Variable);
         }
 
         [TestMethod]

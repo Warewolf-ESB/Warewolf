@@ -28,6 +28,8 @@
     <OldToolsVersion>4.0</OldToolsVersion>
     <UpgradeBackupLocation />
     <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,7 +39,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
@@ -125,6 +127,10 @@
     </Reference>
     <Reference Include="Ionic.Zip.Reduced">
       <HintPath>..\Binaries\Ionic.Zip.Reduced.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Client, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -223,48 +229,14 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Dev2.Activities.Tests\ActivityTests\BaseActivityUnitTest.cs">
-      <Link>Dev2.Activities.Tests\BaseActivityUnitTest.cs</Link>
-    </Compile>
     <Compile Include="Activities\FileSystemTests.cs" />
     <Compile Include="Activities\FtpTests.cs" />
     <Compile Include="Activities\PathIOTestingUtils.cs">
       <SubType>
       </SubType>
     </Compile>
-    <Compile Include="Dev2.Activities.Tests\RecursiveEvaluationTest.cs" />
-    <Compile Include="Dev2.Activities.Tests\WorkflowInputMapping.cs" />
     <Compile Include="Internal Services\GetComputerNamesTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DecisionWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfBaseConvertActivityWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfCalculateActivityTest.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfCaseConvertActivityWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfDataMergeActivityWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfDataSplitActivityWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfDateTimeDifferenceWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfDeleteActivityWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfFindRecordsActivityWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfForEachActivityWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfFormatNumberActivityWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfIndexActivityWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfMultiAssignActivityWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfReplaceActiviryWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfSortActivityTest.cs" />
-    <Compile Include="Dev2.Activities.Tests\PathOperationsWFTests.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfDateTimeActivityWFTest.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfActivityAbstractTest.cs" />
-    <Compile Include="Dev2.Activities.Tests\ToolingWorkflowTest.cs" />
-    <Compile Include="Internal Services\RenameResourceServiceTests.cs" />
-    <Compile Include="Server Test\Bpm unit tests\DatabaseTest.cs" />
-    <Compile Include="Server Test\Bpm unit tests\NestedWorkflow.cs" />
-    <Compile Include="Server Test\Bpm unit tests\OnErrorTest.cs" />
-    <Compile Include="Server Test\Bpm unit tests\PluginTest.cs" />
-    <Compile Include="Server Test\Bpm unit tests\RemoteInvokeTest.cs" />
-    <Compile Include="Server Test\Bpm unit tests\WebServiceTest.cs" />
-    <Compile Include="Server Test\Bpm unit tests\WorkflowInvokeTest.cs" />
     <Compile Include="Server Test\Build.Test\ApplicationServerBuildTests.cs" />
-    <Compile Include="Server Test\DeleteResourceTest.cs" />
-    <Compile Include="Server Test\DynamicServicesHostTest.cs" />
     <Compile Include="Server Test\InternalServices\FindDependenciesServiceTest.cs" />
     <Compile Include="Server Test\InternalServices\FindDirectoryServiceTest.cs" />
     <Compile Include="Server Test\InternalServices\FindDriveServiceTest.cs" />
@@ -273,8 +245,7 @@
     <Compile Include="Server Test\InternalServices\SaveResourceServiceTest.cs" />
     <Compile Include="Server Test\RelativeUriResourceTest.cs" />
     <Compile Include="Server Test\ServerLifecycleManagerTest.cs" />
-    <Compile Include="Runtime.ServiceModel\ConnectionTests.cs" />
-    <Compile Include="Server Test\WebServerTests\WebServerTests.cs" />
+    <Compile Include="Server Test\TimeZoneChanges.cs" />
     <Compile Include="Server Test\Workspace\XML\XmlResource.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\Models\EnviromentModelTests.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\MoqConfigurationReader.cs" />
@@ -297,10 +268,6 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server Test\ComplexWebpageTest.cs" />
-    <Compile Include="Runtime.ServiceModel\DbServiceTests.cs" />
-    <Compile Include="Runtime.ServiceModel\PluginSourceTests.cs" />
-    <Compile Include="Runtime.ServiceModel\TestDbServices.cs" />
-    <Compile Include="Runtime.ServiceModel\TestDbSources.cs" />
     <Compile Include="ServerSettings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -308,8 +275,6 @@
     </Compile>
     <Compile Include="Services.Sql\SqlServerTests.cs" />
     <Compile Include="Services.Sql\SqlDatabaseBrokerTests.cs" />
-    <Compile Include="Runtime.ServiceModel\EmailSourceTest.cs" />
-    <Compile Include="Runtime.ServiceModel\DbSourceTests.cs" />
     <Compile Include="Sql\WorkflowsTests.cs" />
     <Compile Include="Helpers\TestHelper.cs" />
     <Compile Include="Test utils\ServerCommonDirectory.cs" />
@@ -359,6 +324,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CommonTest\" />
+    <Folder Include="Server Test\WebServerTests\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Server Test\Workspace\XML\Calculate_RecordSet_Subtract.xml" />
@@ -455,6 +421,18 @@
       <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>
       <Name>Dev2.Studio.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
+      <Project>{b3d070e0-11c1-4c1c-81a5-e680c1494945}</Project>
+      <Name>Warewolf.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
+      <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
+      <Name>WarewolfLanguageParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WarewolfParserInterop\WarewolfParserInterop.csproj">
+      <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
+      <Name>WarewolfParserInterop</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Server Test\Workspace\XML\Google_Address_Lookup.xml" />
@@ -484,6 +462,13 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

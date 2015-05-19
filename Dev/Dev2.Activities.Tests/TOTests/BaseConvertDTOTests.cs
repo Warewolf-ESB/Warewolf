@@ -9,10 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using System;
-using System.Text;
-using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Activities.TOTests
@@ -48,7 +44,7 @@ namespace Dev2.Tests.Activities.TOTests
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var baseConvertTO = new BaseConvertTO() { FromExpression = string.Empty };
+            var baseConvertTO = new BaseConvertTO { FromExpression = string.Empty };
             //------------Assert Results-------------------------
             Assert.IsFalse(baseConvertTO.CanAdd());
         }
@@ -60,7 +56,7 @@ namespace Dev2.Tests.Activities.TOTests
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var baseConvertTO = new BaseConvertTO() { FromExpression = "Value" };
+            var baseConvertTO = new BaseConvertTO { FromExpression = "Value" };
             //------------Assert Results-------------------------
             Assert.IsTrue(baseConvertTO.CanAdd());
         }
@@ -76,7 +72,7 @@ namespace Dev2.Tests.Activities.TOTests
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var baseConvertTO = new BaseConvertTO(){FromExpression = string.Empty};
+            var baseConvertTO = new BaseConvertTO {FromExpression = string.Empty};
             //------------Assert Results-------------------------
             Assert.IsTrue(baseConvertTO.CanRemove());
         }
@@ -88,7 +84,7 @@ namespace Dev2.Tests.Activities.TOTests
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var baseConvertTO = new BaseConvertTO(){FromExpression = "Value"};
+            var baseConvertTO = new BaseConvertTO {FromExpression = "Value"};
             //------------Assert Results-------------------------
             Assert.IsFalse(baseConvertTO.CanRemove());
         }

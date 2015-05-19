@@ -45,8 +45,7 @@
                                     <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}" />
                                 </MultiBinding>
                             </Border.OpacityMask>
-                            <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                            </Border>
+                            <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" />
                         </Border>
                     </Grid>
                 </ControlTemplate>

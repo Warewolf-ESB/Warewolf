@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Collections.Generic;
@@ -20,6 +19,7 @@ using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Data.Decision;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -29,6 +29,7 @@ using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Microsoft.CSharp.Activities;
 using Newtonsoft.Json;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -104,8 +105,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if(_dataObject.IsDebugMode())
             {
-                DispatchDebugState(context, StateType.Before);
+                DispatchDebugState(_dataObject, StateType.Before);
             }
+
+       
+            Dev2DataListDecisionHandler.Instance.AddEnvironment(_dataListId, _dataObject.Environment);
             context.ScheduleActivity(_expression, OnCompleted, OnFaulted);
         }
 
@@ -115,16 +119,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void OnCompleted(NativeActivityContext context, ActivityInstance completedInstance, TResult result)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            Result.Set(context, result);
-            _theResult = result;
-
-            if(dataObject != null && dataObject.IsDebugMode())
+            try
             {
-                DispatchDebugState(context, StateType.After);
-            }
 
-            OnExecutedCompleted(context, false, false);
+
+
+                IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+                Result.Set(context, result);
+                _theResult = result;
+
+                if (dataObject != null && dataObject.IsDebugMode())
+                {
+                    DispatchDebugState(dataObject, StateType.After);
+                }
+
+                OnExecutedCompleted(context, false, false);
+            }
+            finally
+            {
+
+                Dev2DataListDecisionHandler.Instance.RemoveEnvironment(_dataListId);
+            }
         }
 
         #endregion
@@ -134,9 +149,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void OnFaulted(NativeActivityFaultContext faultContext, Exception propagatedException, ActivityInstance propagatedFrom)
         {
             IDSFDataObject dataObject = faultContext.GetExtension<IDSFDataObject>();
+            dataObject.Environment.AddError(propagatedException.Message);
             if(dataObject != null && dataObject.IsDebugMode())
             {
-                DispatchDebugState(faultContext, StateType.After);
+                DispatchDebugState(dataObject, StateType.After);
             }
             OnExecutedCompleted(faultContext, true, false);
         }
@@ -146,8 +162,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Get Debug Inputs/Outputs
 
         // Travis.Frisinger - 28.01.2013 : Amended for Debug
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
         {
+            if (_debugInputs != null && _debugInputs.Count > 0)
+            {
+                return _debugInputs;
+            }
             List<IDebugItem> result = new List<IDebugItem>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             var allErrors = new ErrorResultTO();
@@ -158,26 +178,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 Dev2DecisionStack dds = compiler.ConvertFromJsonToModel<Dev2DecisionStack>(val);
                 ErrorResultTO error;
-                string userModel = dds.GenerateUserFriendlyModel(dataList.UID, dds.Mode, out error);
+                string userModel = dds.GenerateUserFriendlyModel(env, dds.Mode, out error);
                 allErrors.MergeErrors(error);
 
-                foreach(Dev2Decision dev2Decision in dds.TheStack)
+                foreach (Dev2Decision dev2Decision in dds.TheStack)
                 {
-                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, dataList, dds.Mode, dev2Decision.Col1, out  error);
+                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, dds.Mode, dev2Decision.Col1, out  error);
                     allErrors.MergeErrors(error);
-                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, dataList, dds.Mode, dev2Decision.Col2, out error);
+                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, dds.Mode, dev2Decision.Col2, out error);
                     allErrors.MergeErrors(error);
-                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, dataList, dds.Mode, dev2Decision.Col3, out error);
+                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, env, dds.Mode, dev2Decision.Col3, out error);
                     allErrors.MergeErrors(error);
                 }
 
                 var itemToAdd = new DebugItem();
 
                 userModel = userModel.Replace("OR", " OR\r\n")
-                                     .Replace("AND", " AND\r\n")
-                                     .Replace("\r\n ", "\r\n")
-                                     .Replace("\r\n\r\n", "\r\n")
-                                     .Replace("  ", " ");
+                    .Replace("AND", " AND\r\n")
+                    .Replace("\r\n ", "\r\n")
+                    .Replace("\r\n\r\n", "\r\n")
+                    .Replace("  ", " ");
 
                 AddDebugItem(new DebugItemStaticDataParams(userModel, "Statement"), itemToAdd);
                 result.Add(itemToAdd);
@@ -185,36 +205,35 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 itemToAdd = new DebugItem();
                 AddDebugItem(new DebugItemStaticDataParams(dds.Mode == Dev2DecisionMode.AND ? "YES" : "NO", "Require All decisions to be True"), itemToAdd);
                 result.Add(itemToAdd);
+
             }
-            catch(JsonSerializationException)
+            catch (JsonSerializationException)
             {
                 Dev2Switch ds = new Dev2Switch { SwitchVariable = val.ToString() };
                 DebugItem itemToAdd = new DebugItem();
-                ErrorResultTO errors;
-                IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dataList.UID, enActionType.User, ds.SwitchVariable, false, out errors);
-                var debugResult = new DebugItemVariableParams(ds.SwitchVariable, "Switch on", expressionsEntry, dataList.UID);
+
+                var a = env.Eval(ds.SwitchVariable);
+                var debugResult = new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfEvalResultToString(a), "", ds.SwitchVariable, "", "Switch on", "", "=");
                 itemToAdd.AddRange(debugResult.GetDebugItemResult());
                 result.Add(itemToAdd);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 allErrors.AddError(e.Message);
             }
             finally
             {
-                if(allErrors.HasErrors())
+                if (allErrors.HasErrors())
                 {
                     var serviceName = GetType().Name;
                     DisplayAndWriteError(serviceName, allErrors);
-                    ErrorResultTO error;
-                    compiler.UpsertSystemTag(_dataListId, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out error);
                 }
             }
 
             return result.Select(a => a as DebugItem).ToList();
         }
 
-        void AddInputDebugItemResultsAfterEvaluate(List<IDebugItem> result, ref string userModel, IBinaryDataList dataList, Dev2DecisionMode decisionMode, string expression, out ErrorResultTO error, DebugItem parent = null)
+        void AddInputDebugItemResultsAfterEvaluate(List<IDebugItem> result, ref string userModel, IExecutionEnvironment env, Dev2DecisionMode decisionMode, string expression, out ErrorResultTO error, DebugItem parent = null)
         {
             error = new ErrorResultTO();
             if(expression != null && DataListUtil.IsEvaluated(expression))
@@ -226,12 +245,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
-                    var expressiomToStringValue = EvaluateExpressiomToStringValue(expression, decisionMode, dataList);
+                    var expressiomToStringValue = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(expression));// EvaluateExpressiomToStringValue(expression, decisionMode, dataList);
                     userModel = userModel.Replace(expression, expressiomToStringValue);
-                    ErrorResultTO errors;
-                    IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-                    IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dataList.UID, enActionType.User, expression, false, out errors);
-                    debugResult = new DebugItemVariableParams(expression, "", expressionsEntry, dataList.UID);
+                    debugResult = new DebugItemWarewolfAtomResult(expressiomToStringValue, expression, "");
                 }
 
                 var itemResults = debugResult.GetDebugItemResult();
@@ -262,8 +278,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         // Travis.Frisinger - 28.01.2013 : Amended for Debug
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
+            if (_debugOutputs != null && _debugOutputs.Count > 0)
+            {
+                return _debugOutputs;
+            }
             var result = new List<DebugItem>();
             string resultString = _theResult.ToString();
             DebugItem itemToAdd = new DebugItem();
@@ -286,13 +306,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
                 result.Add(itemToAdd);
             }
+                // ReSharper disable EmptyGeneralCatchClause
             catch(Exception)
+                // ReSharper restore EmptyGeneralCatchClause
             {
-                if(!dataList.HasErrors())
-                {
+
                     itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
                     result.Add(itemToAdd);
-                }
+                
             }
 
             return result;
@@ -397,5 +418,45 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _theResult.ToString();
         }
 
+        #region Overrides of DsfNativeActivity<TResult>
+
+        /// <summary>
+        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// true if the specified object  is equal to the current object; otherwise, false.
+        /// </returns>
+        /// <param name="obj">The object to compare with the current object. </param>
+        public override bool Equals(object obj)
+        {
+            var act = obj as IDev2Activity;
+            if (obj is IFlowNodeActivity)
+            {
+                var flowNodeAct = this as IFlowNodeActivity;
+                var other = act as IFlowNodeActivity;
+                if (other != null)
+                {
+                    return UniqueID == act.UniqueID && flowNodeAct.ExpressionText.Equals(other.ExpressionText);
+                }
+            }
+            return base.Equals(obj);
+        }
+
+        #region Overrides of Object
+
+        /// <summary>
+        /// Serves as a hash function for a particular type. 
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object"/>.
+        /// </returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        #endregion
+
+        #endregion
     }
 }

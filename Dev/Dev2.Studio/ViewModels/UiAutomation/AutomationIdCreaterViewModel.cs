@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Windows.Input;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Base;

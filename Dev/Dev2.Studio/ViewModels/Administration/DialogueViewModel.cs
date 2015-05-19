@@ -9,16 +9,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Dev2.Common.Interfaces.Studio;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.AppResources;
-using Dev2.Studio.Core.Interfaces;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Administration

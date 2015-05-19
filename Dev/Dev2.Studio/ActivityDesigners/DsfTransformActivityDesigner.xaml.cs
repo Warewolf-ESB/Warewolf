@@ -9,12 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities.Presentation.Model;
 using Caliburn.Micro;
 using Dev2.Common;
-using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Messages;
 

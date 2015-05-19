@@ -7,7 +7,8 @@
 Scenario: DragOnBaseCovert
     Given I have Warewolf running
 	Given all tabs are closed
-	And I click "EXPLORER,UI_localhost_AutoID"
+	Given I click "EXPLORERCONNECTCONTROL"
+	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	And I click new "Workflow"
 	And I double click "TOOLBOX,PART_SearchBox"
     And I send "{DELETE}" to ""

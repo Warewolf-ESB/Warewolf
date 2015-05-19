@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +20,7 @@ using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -39,7 +39,7 @@ namespace Dev2.Runtime.ESB.Management.Services
    
             string resourceName = null;
             string type = null;
-
+            string resourceId=null;
             StringBuilder tmp;
             values.TryGetValue("ResourceName", out tmp);
             if(tmp != null)
@@ -51,10 +51,23 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 type = tmp.ToString();
             }
-            Dev2Logger.Log.Info("Find Resource. ResourceName: "+resourceName);
-            var resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, resourceName, type, string.Empty);
+            values.TryGetValue("ResourceId", out tmp);
+            if (tmp != null)
+            {
+                resourceId = tmp.ToString();
+            }
 
-            IList<SerializableResource> resourceList = resources.Select(new FindResourceHelper().SerializeResourceForStudio).ToList();
+            IList<Resource> resources;
+            if(resourceId ==null || resourceId == "*" )
+                resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, resourceName, type, string.Empty);
+            else
+            {
+                resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, resourceId, type);
+            }
+            Dev2Logger.Log.Info("Find Resource. ResourceName: "+resourceName);
+          
+               
+                IList<SerializableResource> resourceList = resources.Select(new FindResourceHelper().SerializeResourceForStudio).ToList();
 
             var serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(resourceList);
@@ -68,7 +81,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         
         public DynamicService CreateServiceEntry()
         {
-            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
+            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><ResourceId ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
 
             var findServiceAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
 

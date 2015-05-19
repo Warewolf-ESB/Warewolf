@@ -9,8 +9,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
+using System.Data;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.DataList.Contract;
@@ -29,8 +29,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         #endregion
 
         #region Properties
-
-
+        
         public string TheValue
         {
             get
@@ -40,7 +39,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 {
                     var displayValue = String.IsNullOrEmpty(DisplayValue) ? FieldName : DisplayValue;
                     var variableName = DataListUtil.AddBracketsToValueIfNotExist(displayValue);
-                    throw new NullValueInVariableException(string.Format("No Value assigned for: {0}", variableName), variableName);
+                    throw new DataException(string.Format("No Value assigned for: {0}", variableName)+variableName);
                 }
                 return theValue;
             }

@@ -42,12 +42,12 @@
                                 Grid.Row="0"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                ToolTip="{x:Static help:HelpTextResources.ReplaceToolTipInField}"
+                                ToolTip="{x:Static help:HelpTextResources.ReplaceToolTipInFields}"
                                 DefaultText="[[Recordset().Field]]"
                                 Text="{Binding ModelItem.FieldsToSearch,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_InFiledstxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.ReplaceHelpInField}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.ReplaceHelpInFields}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.FieldsToSearch"

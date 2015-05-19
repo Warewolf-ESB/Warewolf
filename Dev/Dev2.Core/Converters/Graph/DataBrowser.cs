@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -8,7 +7,6 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-
 
 using System;
 using System.Collections.Generic;
@@ -26,7 +24,7 @@ namespace Unlimited.Framework.Converters.Graph
             IInterrogator interrogator = InterrogatorFactory.CreateInteregator(data.GetType());
             IMapper mapper = interrogator.CreateMapper(data);
 
-            if(mapper == null)
+            if (mapper == null)
             {
                 throw new Exception(string.Concat("Couldn't create a mapper for '", data.ToString(), "'."));
             }
@@ -39,7 +37,7 @@ namespace Unlimited.Framework.Converters.Graph
             IInterrogator interrogator = InterrogatorFactory.CreateInteregator(data.GetType());
             INavigator navigator = interrogator.CreateNavigator(data, path.GetType());
 
-            if(navigator == null)
+            if (navigator == null)
             {
                 throw new Exception(string.Concat("Couldn't create a navigator for the path '", path.ToString(), "'."));
             }
@@ -56,7 +54,7 @@ namespace Unlimited.Framework.Converters.Graph
             IInterrogator interrogator = InterrogatorFactory.CreateInteregator(data.GetType());
             INavigator navigator = interrogator.CreateNavigator(data, path.GetType());
 
-            if(navigator == null)
+            if (navigator == null)
             {
                 throw new Exception(string.Concat("Couldn't create a navigator for the path '", path.ToString(), "'."));
             }
@@ -72,14 +70,15 @@ namespace Unlimited.Framework.Converters.Graph
         {
             Dictionary<IPath, IList<object>> values;
 
-            if(paths.Count > 0)
+            if (paths.Count > 0)
             {
                 IInterrogator interrogator = InterrogatorFactory.CreateInteregator(data.GetType());
                 INavigator navigator = interrogator.CreateNavigator(data, paths[0].GetType());
 
-                if(navigator == null)
+                if (navigator == null)
                 {
-                    throw new Exception(string.Concat("Couldn't create a navigator for the path '", paths[0].ToString(), "'."));
+                    throw new Exception(string.Concat("Couldn't create a navigator for the path '", paths[0].ToString(),
+                        "'."));
                 }
 
                 values = navigator.SelectEnumerablesAsRelated(paths);

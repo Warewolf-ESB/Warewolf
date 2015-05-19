@@ -51,17 +51,6 @@ namespace Dev2.Integration.Tests.Internal_Services
         //
         #endregion
 
-        [TestMethod]
-        public void FetchCurrentServerLogReturnsLogDataDeletesLogFile()
-        {
-            string postData = string.Format("{0}{1}?{2}", _webServerURI, "FetchCurrentServerLogService", "");
-            var first = TestHelper.PostDataToWebserver(postData);
-            Assert.IsFalse(string.IsNullOrEmpty(first));
-            var second = TestHelper.PostDataToWebserver(postData);
-
-            Assert.IsTrue(first.Length >= second.Length);
-
-        }
 
     }
 }

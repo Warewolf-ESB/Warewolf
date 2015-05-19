@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -792,39 +791,6 @@ namespace Dev2.DataList.Contract
             return true;
         }
 
-        public string FetchErrors(Guid curDlid, bool returnAsXml = false)
-        {
-            ErrorResultTO errors;
-            var binaryDatalist = _svrCompiler.FetchBinaryDataList(null, curDlid, out errors);
-            if(binaryDatalist != null)
-            {
-                return (binaryDatalist.FetchErrors(returnAsXml));
-            }
-
-            var sb = new StringBuilder();
-            var count = 1;
-            var errorList = errors.FetchErrors();
-            foreach(var error in errorList)
-            {
-                sb.AppendFormat("{0} {1}", count, error);
-                count++;
-            }
-            return sb.ToString();
-        }
-
-        /// <summary>
-        /// Clears the errors.
-        /// </summary>
-        /// <param name="curDlid">The cur DLID.</param>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/02/06</date>
-        public void ClearErrors(Guid curDlid)
-        {
-            ErrorResultTO errors;
-            var list = _svrCompiler.FetchBinaryDataList(null, curDlid, out errors);
-            if(list != null)
-                list.ClearErrors();
-        }
 
         public bool SetParentID(Guid curDlid, Guid newParent)
         {

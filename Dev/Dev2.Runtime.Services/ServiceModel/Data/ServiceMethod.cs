@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -41,6 +40,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             SourceCode = sourceCode;
             OutputDescription = outputDescription;
             Parameters = new List<MethodParameter>();
+            OutParameters = new List<MethodParameter>();
             Outputs = new List<MethodOutput>();
             ExecuteAction = executeAction;
             if(parameters != null)
@@ -53,6 +53,8 @@ namespace Dev2.Runtime.ServiceModel.Data
                 Outputs.AddRange(outputs);
             }
         }
+        [DataMember]
+        public List<MethodParameter> OutParameters { get; set; }
 
         #endregion
 

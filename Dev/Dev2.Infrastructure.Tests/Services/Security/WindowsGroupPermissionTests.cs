@@ -9,11 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Infrastructure.Tests.Services.Security
@@ -457,6 +456,42 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             //------------Assert Results-------------------------
             Assert.IsTrue(p.IsDeleted);
             Assert.IsFalse(p.EnableCellEditing);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WindowsGroupPermissions_CanRemoveRow")]
+        public void WindowsGroupPermissions_CanRemoveRow_IsServerChanges_CanExecuteChangedFires()
+        {
+            //------------Setup for test--------------------------
+            var p = new WindowsGroupPermission { IsDeleted = false };
+            var hitCount=0;
+            p.RemoveRow.CanExecuteChanged += (sender, args) =>
+            {
+                hitCount++;
+            };
+            //------------Execute Test---------------------------
+            p.IsServer = true;
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1,hitCount);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WindowsGroupPermissions_CanRemoveRow")]
+        public void WindowsGroupPermissions_CanRemoveRow_WindowsGroupChanges_CanExecuteChangedFires()
+        {
+            //------------Setup for test--------------------------
+            var p = new WindowsGroupPermission { IsDeleted = false };
+            var hitCount=0;
+            p.RemoveRow.CanExecuteChanged += (sender, args) =>
+            {
+                hitCount++;
+            };
+            //------------Execute Test---------------------------
+            p.WindowsGroup = "TestGroup";
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1,hitCount);
         }
 
         [TestMethod]

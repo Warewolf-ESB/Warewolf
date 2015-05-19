@@ -263,7 +263,7 @@ Scenario: Merge a negative recordset index Input
 	Then the execution has "AN" error
 	And the debug inputs as  
 	| # |      | With  | Using | Pad | Align |
-	| 1 | "" = | Index | 10    | " " | Left  |  
+	| 1 | [[my(-1).a]] = | Index | 10    | " " | Left  |  
 	And the debug output as 
 	|              |
 	| [[result]] = |
@@ -276,18 +276,7 @@ Scenario: Merge a negative recordset index for String At
 	| # |       | With  | Using          | Pad | Align |
 	| 1 | 12    | Index | [[my(-1).a]] = | " " | Left  |
 	And the debug output as 
-	|               |
-	| [[result]] = |
-
-Scenario: Merge a negative recordset index for Padding
-	Given an Input "12" and merge type "Index" and string at as "10" and Padding "[[my(-1).a]]" and Alignment "Left"	
-	When the data merge tool is executed
-	Then the execution has "AN" error
-	And the debug inputs as  
-	| # |       | With  | Using | Pad            | Align |
-	| 1 | 12    | Index | 10    | [[my(-1).a]] = | Left  |
-	And the debug output as 
-	|               |
+	|              |
 	| [[result]] = |
 
 Scenario: Merge a variable using index that is a variable and is not blank
@@ -336,7 +325,7 @@ Scenario: Merge a variable inside a variable
 	And the execution has "NO" error
 	And the debug inputs as  
 	| # |                              | With  | Using | Pad | Align |
-	| 1 | [[[[[[[[a]]]]]]]] = Warewolf | Index | "8"   | ""  | Left  |
+	| 1 | [[[[[[b]]]]]] = Warewolf | Index | "8"   | ""  | Left  |
 	| 2 | [[c]]             = test     | Index | "4"   | ""  | Left  |
 	And the debug output as 
 	|                           |
@@ -345,133 +334,17 @@ Scenario: Merge a variable inside a variable
 Scenario: Merge a variable inside the invalid varaible
 	Given a merge variable "[[a]]" equal to "test%$ "
 	And a merge variable "[[b]]" equal to "warewolf "
-	And an Input "[[[[a]]]]" and merge type "Index" and string at as "" and Padding "" and Alignment "Left"
+	And an Input "[[test%$]]" and merge type "Index" and string at as "" and Padding "" and Alignment "Left"
 	When the data merge tool is executed
 	Then the merged result is ""
 	And the execution has "AN" error
 	And the debug inputs as  
 	| # |             | With  | Using | Pad | Align |
-	| 1 | [[[[a]]]] = | Index | ""    | ""  | Left  |
+	| 1 | [[test%$]] = | Index | ""    | ""  | Left  |
 	And the debug output as 
 	|              |
 	| [[result]] = |
-#
-Scenario Outline: Validation errors for all Invalid variables in datamerge 
-	Given a merge variable '<Variable>' equal to "aA "
-	And a merge variable "[[b]]" equal to "bB "	
-	And an Input "<Variable>" and merge type "Index" and string at as "2" and Padding "" and Alignment "Left"
-	And an Input "[[b]]" and merge type "Index" and string at as "2" and Padding "" and Alignment "Left"
-	When the data merge tool is executed
-	Then the merged result is ""
-	And the execution has "AN" error
-	And the debug inputs as  
-	| # |            | With  | Using | Pad | Align |
-	| 1 | "" = ""    | Index | 2    | ""  | Left  |
-	| 2 | [[b]] = bB | Index | 2     | ""  | Left  |
-	And the debug output as 
-	| # |              |
-	|   | [[result]] = | 
-Examples: 	
-	 | no | Variable                                  |	
-	 | 2  | [[rec'()'.a]]                             |
-	 | 3  | [[rec"()".a]]                             |
-	 | 4  | [[rec".a]]                                |
-	 | 5  | [[rec.a]]                                 |
-	 | 6  | [[rec()*.a]]                              |	
-	 | 8  | [[1]]                                     |
-	 | 9  | [[@]]                                     |
-	 | 10 | [[var#]]                                  |	
-	 | 13 | [[var.()]]                                |
-	 | 14 | [[]]                                      |
-	 | 15 | [[()]]                                    |
-	 | 16 | [[var[[]]                                 |
-	 | 17 | [[var1.a]]                                |
-	 | 18 | [[rec()!a]]                               |
-	 | 19 | [[rec()         a]]                       |
-	 | 20 | [[{{rec(_).a}}]]]                         |
-	 | 21 | [[rec(23).[[var*]]]]                      |	
-	 | 24 | [[var  ]]                                 |
-	 | 25 | [[var@]]                                  |
-	 | 26 | [[var#]]                                  |	
-	 | 28 | [[(1var)]]                                |
-	 | 29 | [[1var)]]                                 |
-	 | 30 | [[var.()]]                                |
-	 | 31 | [[var  ]]                                 |
-	 | 32 | [[var~]]                                  |
-	 | 33 | [[var+]]                                  |
-	 | 34 | [[var]a]]                                 |
-	 | 35 | [[var[a]]                                 |
-	 | 36 | [[var 1]]                                 |
-	 | 37 | [[var[[]]                                 |
-	 | 38 | [[var[[1]]]]                              |
-	 | 39 | [[var.a]]                                 |
-	 | 40 | [[var1.a]]                                |	
-	 | 42 | [[var*]]                                  |
-	 | 43 | [[1var]]                                  |
-	 | 44 | [[@var]]                                  |	 
-	 | 46 | [[var,]]                                  |
-	 | 47 | [[:var 1]]                                |
-	 | 48 | [[,var]]                                  |
-	 | 49 | [[test,var]]                              |
-	 | 50 | [[test. var]]                             |
-	 | 51 | [[test.var]]                              |
-	 | 52 | [[test. 1]]                               |
-	 | 53 | [[rec(*).&]]                              |
-	 | 54 | [[rec(),a]]                               |
-	 | 55 | [[rec()         a]]                       |
-	 | 56 | [[rec(1).[[rec().1]]]]                    |
-	 | 57 | [[rec(a).[[rec().a]]]]                    |
-	 | 58 | [[{{rec(_).a}}]]]                         |
-	 | 60 | [[*[{{rec(_).a}}]]]                       |
-	 | 61 | [[rec(23).[[var}]]]]                      |
-	 | 62 | [[rec(23).[[var*]]]]                      |
-	 | 63 | [[rec(23).[[var%^&%]]]]                   |	 	 
-	 | 66 | [[rec()..]]                               |
-	 | 67 | [[rec().a.b]]                             |	
-	 | 69 | [[rec"()".a]]                             |
-	 | 70 | [[rec'()'.a]]                             |
-	 | 71 | [[rec").a]]                               |
-	 | 72 | [[rec{a]]                                 |
-	 | 73 | [[rec{a}]]                                |
-	 | 74 | [[rec()*.a]]                              |
-	 | 75 | [[r(q).a]][[r()..]][[r"]][[r()]][[]][[1]] |	
-	  #| 1  | [[rec().a]]=]]                            |
-	   #| 68 | [[rec().a]].a]]                           |
-	   #| 64 | [[rec().a]]234234]]                       |
-	   #| 45 | [[var]](var)]]                            |
-	    #| 41 | [[[[a]].[[b]]]]cd]]                       |
-		 #| 22 | [[rec().a]]&[[a]]                         |
-	 #| 23 | a[[rec([[[[b]]]]).a]]@                    |
-	  #| 11 | [[var]]00]]                               |
-	 #| 12 | [[var]]@]]                                |
-	  #| 7  | [[rec().a]]*                              |
-	   #| 27 | [[var]]]]                                 |
 
-Scenario Outline: Validation errors for all Invalid recordset indexes in datamerge 
-	Given a merge variable '<Variable>' equal to "aA "
-	And a merge variable "[[b]]" equal to "bB "	
-	And an Input "<Variable>" and merge type "Index" and string at as "2" and Padding "" and Alignment "Left"
-	And an Input "[[b]]" and merge type "Index" and string at as "2" and Padding "" and Alignment "Left"
-	When the data merge tool is executed
-	Then the merged result is ""
-	And the execution has "AN" error
-	And the debug inputs as  
-	| # |                 | With  | Using | Pad | Align |
-	| 1 | <Variable> = "" | Index | 2     | ""  | Left  |
-	| 2 | [[b]] = bB      | Index | 2     | ""  | Left  |
-	And the debug output as 
-	| # |              |
-	|   | [[result]] = | 
-Examples: 	
-	 | no | Variable     |
-	 | 1  | [[rec(@).a]] |
-	 | 2  | [[rec(+).a]] |
-	 | 3  | [[rec(-).a]] |
-	 | 4  | [[rec(!).a]] |
-	 | 5  | [[rec(q).a]] |
-	 | 6  | [[rec(w).a]] |
-	 | 7  | [[rec(:).a]] |
-	 | 8  | [[rec(,).a]] |
-	 | 9  | [[rec(().a]] |
-	 | 10 | [[rec()).a]] |
-	 | 11 | [[rec(.).a]] |
+
+
+

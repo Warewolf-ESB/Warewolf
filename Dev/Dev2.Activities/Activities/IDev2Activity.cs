@@ -9,19 +9,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
+using Dev2;
 
-using Dev2.Enums;
-
+// ReSharper disable InconsistentNaming
+// ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     // Place holder interface used to locate model items in WorkflowDesignerViewModel using a string which must be a guid
-    public interface IDev2Activity
-    {
-        /// <summary>
-        /// UniqueID is the InstanceID and MUST be a guid.
-        /// </summary>
-        string UniqueID { get; set; }
 
-        enFindMissingType GetFindMissingType();
+    public  interface IExecutionEngine:IDisposable
+    {
+        IExecutionEngine Eval(IDev2Activity start, IDSFDataObject env);
     }
 }

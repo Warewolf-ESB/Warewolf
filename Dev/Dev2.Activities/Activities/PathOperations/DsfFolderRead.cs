@@ -9,9 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
-using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -19,13 +17,13 @@ using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common.ExtMethods;
+using Dev2.Data;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.PathOperations;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -46,41 +44,30 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             InputPath = string.Empty;
         }
 
-        protected override IList<OutputTO> ExecuteConcreteAction(NativeActivityContext context, out ErrorResultTO allErrors)
+        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject dataObject, out ErrorResultTO allErrors)
         {
             IsNotCertVerifiable = true;
 
             allErrors = new ErrorResultTO();
             IList<OutputTO> outputs = new List<OutputTO>();
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            ErrorResultTO errors;
-            Guid executionId = dataObject.DataListID;
-            IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
+            var colItr = new WarewolfListIterator();
 
             //get all the possible paths for all the string variables
-            IBinaryDataListEntry inputPathEntry = compiler.Evaluate(executionId, enActionType.User, InputPath, false, out errors);
-            allErrors.MergeErrors(errors);
-            IDev2DataListEvaluateIterator inputItr = Dev2ValueObjectFactory.CreateEvaluateIterator(inputPathEntry);
-            colItr.AddIterator(inputItr);
+            var inputItr = new WarewolfIterator(dataObject.Environment.Eval(InputPath));
+            colItr.AddVariableToIterateOn(inputItr);
 
-            IBinaryDataListEntry usernameEntry = compiler.Evaluate(executionId, enActionType.User, Username, false, out errors);
-            allErrors.MergeErrors(errors);
-            IDev2DataListEvaluateIterator unameItr = Dev2ValueObjectFactory.CreateEvaluateIterator(usernameEntry);
-            colItr.AddIterator(unameItr);
+            var unameItr = new WarewolfIterator(dataObject.Environment.Eval(Username));
+            colItr.AddVariableToIterateOn(unameItr);
 
-            IBinaryDataListEntry passwordEntry = compiler.Evaluate(executionId, enActionType.User, Password, false, out errors);
-            allErrors.MergeErrors(errors);
-            IDev2DataListEvaluateIterator passItr = Dev2ValueObjectFactory.CreateEvaluateIterator(passwordEntry);
-            colItr.AddIterator(passItr);
+            var passItr = new WarewolfIterator(dataObject.Environment.Eval(Password));
+            colItr.AddVariableToIterateOn(passItr);
 
             if(dataObject.IsDebugMode())
             {
-                AddDebugInputItem(InputPath, "Input Path", inputPathEntry, executionId);
+                AddDebugInputItem(InputPath, "Input Path", dataObject.Environment);
                 AddDebugInputItem(new DebugItemStaticDataParams(GetReadType().GetDescription(), "Read"));
-                AddDebugInputItemUserNamePassword(executionId, usernameEntry);
+                AddDebugInputItemUserNamePassword(dataObject.Environment);
             }
 
             while(colItr.HasMoreData())
@@ -88,9 +75,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
                 IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
-                IActivityIOPath ioPath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextRow(inputItr).TheValue,
-                                                                                colItr.FetchNextRow(unameItr).TheValue,
-                                                                                colItr.FetchNextRow(passItr).TheValue,
+                IActivityIOPath ioPath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(inputItr),
+                                                                                colItr.FetchNextValue(unameItr),
+                                                                                colItr.FetchNextValue(passItr),
                                                                                 true);
                 IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ioPath);
 
@@ -218,7 +205,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null && updates.Count == 1)
             {
@@ -226,7 +213,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

@@ -9,11 +9,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.Core.Convertors.Case;
-using Dev2.Enums;
 using Dev2.Factories;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -28,13 +26,6 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
     [ExcludeFromCodeCoverage]
     public class DataGridActivityFindMissingStrategyTests
     {
-        public DataGridActivityFindMissingStrategyTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
         private TestContext testContextInstance;
 
         /// <summary>

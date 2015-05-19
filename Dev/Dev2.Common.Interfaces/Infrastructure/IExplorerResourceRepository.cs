@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -8,7 +7,6 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-
 
 using System;
 using Dev2.Common.Interfaces.Data;
@@ -27,13 +25,15 @@ namespace Dev2.Common.Interfaces.Infrastructure
         IExplorerRepositoryResult AddItem(IExplorerItem itemToRename, Guid workSpaceId);
         IExplorerRepositoryResult MoveItem(IExplorerItem itemToMove, string newPath, Guid empty);
     }
+    public interface IClientExplorerResourceRepository:IExplorerResourceRepository
+    {
+        string GetServerVersion();
+    }
 
     public interface IExplorerRepositoryResult
     {
         ExecStatus Status { get; }
 
         string Message { get; }
-
-
     }
 }

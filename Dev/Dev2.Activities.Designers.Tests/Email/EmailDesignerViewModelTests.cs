@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
@@ -277,6 +276,39 @@ namespace Dev2.Activities.Designers.Tests.Email
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_CreateEmailSource")]
+        public void EmailDesignerViewModel_SetEmailSource_FiresEditEmailSourceCommand_CanExecuteChanged()
+        {
+            //------------Setup for test--------------------------
+            var emailSources = CreateEmailSources(2);
+
+            var selectedEmailSource = emailSources.First();
+
+            var modelItem = CreateModelItem();
+            modelItem.SetProperty("SelectedEmailSource", selectedEmailSource);
+
+            var eventPublisher = new Mock<IEventAggregator>();
+
+            var resourceModel = new Mock<IResourceModel>();
+
+            var viewModel = CreateViewModel(emailSources, modelItem, eventPublisher.Object, resourceModel.Object);
+            var hitCount= 0;
+            viewModel.EditEmailSourceCommand.CanExecuteChanged += (sender, args) =>
+            {
+                hitCount++;
+            };
+            var createEmailSource = viewModel.EmailSources[0];
+            Assert.AreEqual("New Email Source...", createEmailSource.ResourceName);
+
+            //------------Execute Test---------------------------
+            viewModel.SelectedEmailSource = createEmailSource;
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2,hitCount);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
         [TestCategory("EmailDesignerViewModel_ChooseAttachments")]
         public void EmailDesignerViewModel_ChooseAttachments_PublishesFileChooserMessage()
         {
@@ -350,8 +382,8 @@ namespace Dev2.Activities.Designers.Tests.Email
         [TestCategory("EmailDesignerViewModel_TestEmailAccount")]
         public void EmailDesignerViewModel_TestEmailAccount_TestIsValid_InvokesEmailSourcesTestAndNoErrors()
         {
-            Verify_TestEmailAccount(isTestResultValid: true, hasFromAccount: true);
-            Verify_TestEmailAccount(isTestResultValid: true, hasFromAccount: false);
+            Verify_TestEmailAccount(true, true);
+            Verify_TestEmailAccount(true, false);
         }
 
         [TestMethod]
@@ -359,8 +391,8 @@ namespace Dev2.Activities.Designers.Tests.Email
         [TestCategory("EmailDesignerViewModel_TestEmailAccount")]
         public void EmailDesignerViewModel_TestEmailAccount_TestIsNotValid_InvokesEmailSourcesTestAndSetsErrors()
         {
-            Verify_TestEmailAccount(isTestResultValid: false, hasFromAccount: true);
-            Verify_TestEmailAccount(isTestResultValid: false, hasFromAccount: false);
+            Verify_TestEmailAccount(false, true);
+            Verify_TestEmailAccount(false, false);
         }
 
         void Verify_TestEmailAccount(bool isTestResultValid, bool hasFromAccount)

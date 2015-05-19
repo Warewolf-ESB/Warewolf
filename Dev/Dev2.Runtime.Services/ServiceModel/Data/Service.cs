@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -261,7 +260,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         #region CreateOutputsXml
 
         // BUG 9626 - 2013.06.11 - TWR : refactored
-        static IEnumerable<XElement> CreateOutputsXml(IEnumerable<Recordset> recordsets)
+        public IEnumerable<XElement> CreateOutputsXml(IEnumerable<Recordset> recordsets)
         {
             var outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();

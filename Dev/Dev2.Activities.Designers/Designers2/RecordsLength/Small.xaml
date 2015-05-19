@@ -41,14 +41,14 @@
                                 Grid.Row="0"
                                 DefaultText="[[Recordset()]]"
                                 FilterType="RecordsetsOnly"
-                                ToolTip="{x:Static help:HelpTextResources.RecordsLengthToolTipRecordset}"
+                                ToolTip="{x:Static help:HelpTextResources.LengthToolTipRecordset}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=RecordsetNameValue, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
                                 Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Recorsettxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.RecordsLengthHelpRecordset}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.LengthHelpRecordset}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="RecordsetNameValue"
@@ -66,7 +66,7 @@
                                 Grid.Column="1"
                                 Margin="0,2,1,2"
                                 DefaultText="[[Length]]"
-                                ToolTip="{x:Static help:HelpTextResources.RecordsLengthToolTipResult}"
+                                ToolTip="{x:Static help:HelpTextResources.LengthToolTipResult}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.RecordsLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -74,7 +74,7 @@
                                 AllowMultilinePaste="False"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.RecordsLengthHelpResult}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.LengthHelpResult}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.RecordsLength"

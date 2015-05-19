@@ -9,12 +9,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices.Objects;
 using Dev2.Services.Execution;
 using Dev2.Workspaces;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -49,12 +50,18 @@ namespace Dev2.Runtime.ESB.Execution
             var databaseServiceExecution = _databaseServiceExecution as DatabaseServiceExecution;
             if(databaseServiceExecution != null)
             {
+                databaseServiceExecution.InstanceInputDefinitions = InstanceInputDefinition;
                 databaseServiceExecution.InstanceOutputDefintions = InstanceOutputDefinition;
             }
 
             var result = _databaseServiceExecution.Execute(out errors);
             _databaseServiceExecution.AfterExecution(errors);
             return result;
+        }
+
+        public override IExecutionEnvironment Execute(IDSFDataObject inputs, IDev2Activity activity)
+        {
+            return null;
         }
 
         #endregion

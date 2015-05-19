@@ -57,18 +57,19 @@
                   explorer:DragDropExtension.ScrollOnDragDrop="True"
                   ItemsSource="{Binding Path=ExplorerItemModels}"
                   AllowDrop="True"
-                  VirtualizingStackPanel.IsVirtualizing ="True"
+                  VirtualizingStackPanel.IsVirtualizing ="False"
                   Grid.Row="1"
                   Grid.ColumnSpan="2"
                   BorderThickness="0"
                   ItemTemplate="{Binding ItemTemplate, ElementName=NavigationViewUserControl}"
                   ItemContainerStyle="{Binding ItemContainerStyle, ElementName=NavigationViewUserControl}"
-                  AutomationProperties.AutomationId="UI_ExplorerTree_AutoID">
+                  AutomationProperties.AutomationId="UI_ExplorerTree_AutoID"
+                  VirtualizingStackPanel.VirtualizationMode = "Recycling">            
             <i:Interaction.Behaviors>
                 <behaviors:TreeViewFocusOnAddBehavior />
                 <behavior:BindableSelectedItemBehavior
                     SelectedItem="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            </i:Interaction.Behaviors>
+            </i:Interaction.Behaviors>            
         </TreeView>
     </Grid>
 </UserControl>

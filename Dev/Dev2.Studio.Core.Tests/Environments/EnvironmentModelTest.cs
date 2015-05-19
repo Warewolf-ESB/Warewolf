@@ -9,12 +9,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
+using Dev2.Core.Tests.Utils;
 using Dev2.Network;
 using Dev2.Providers.Events;
 using Dev2.Services.Events;
@@ -743,7 +743,7 @@ namespace Dev2.Core.Tests.Environments
     public class TestEqualityConnection : ServerProxy
     {
         public TestEqualityConnection(Guid serverID, string serverUri)
-            : base(serverUri, CredentialCache.DefaultCredentials, new AsyncWorker())
+            : base(serverUri, CredentialCache.DefaultCredentials, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object)
         {
             ServerID = serverID;
         }

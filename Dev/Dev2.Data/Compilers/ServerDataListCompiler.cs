@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -798,12 +797,6 @@ namespace Dev2.Server.Datalist
             {
                 ErrorResultTO errors;
                 mergeId = Merge(ctx, destinationDatalistID, sourceDatalistID, datalistMergeType, datalistMergeDepth, false, out errors);
-
-                if(errors != null && errors.HasErrors())
-                {
-                    ErrorResultTO tmpErrors;
-                    mergeId = UpsertSystemTag(destinationDatalistID, enSystemTag.Dev2Error, errors.MakeDataListReady(), out tmpErrors);
-                }
             }
 
             return mergeId;
@@ -1397,7 +1390,10 @@ namespace Dev2.Server.Datalist
                     {
                         // swap extract from and pushTo around for output shaping
                         extractFromId = childDl.UID;
-                        pushToId = childDl.ParentUID;
+                        if (childDl.ParentUID != Guid.Empty)
+                        {
+                            pushToId = childDl.ParentUID;
+                        }
                     }
 
                     var inputExpressionExtractor = BuildInputExpressionExtractor(typeOf);
@@ -1699,12 +1695,7 @@ namespace Dev2.Server.Datalist
 
             IBinaryDataList result = _dlServer.ReadDatalist(id, out errors);
 
-            if(result == null)
-            {
-                error = "Cache miss for [ " + id + " ]";
-            }
-
-            return result;
+           return result;
         }
 
         /// <summary>
@@ -1942,7 +1933,10 @@ namespace Dev2.Server.Datalist
             }
             else
             {
-
+                if (rules.Errors.HasErrors())
+                {
+                    return null;
+                }
                 string error;
                 var fieldName = GlobalConstants.NullEntryNamespace + Guid.NewGuid();
                 IBinaryDataListEntry result = new BinaryDataListEntry(fieldName, string.Empty, rules.BinaryDataList.UID);

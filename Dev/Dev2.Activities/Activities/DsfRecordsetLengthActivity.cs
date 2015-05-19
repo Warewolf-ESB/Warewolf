@@ -9,22 +9,20 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Collections.Generic;
-using System.Globalization;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -66,122 +64,94 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            Guid dlId = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
-            Guid executionId = dlId;
             allErrors.MergeErrors(errors);
             InitializeDebug(dataObject);
             // Process if no errors
             try
             {
-
-                if(!string.IsNullOrWhiteSpace(RecordsetName))
+                ValidateRecordsetName(RecordsetName, errors);
+                allErrors.MergeErrors(errors);
+                if(!allErrors.HasErrors())
                 {
-
-
-                    IBinaryDataList bdl = compiler.FetchBinaryDataList(executionId, out errors);
-                    allErrors.MergeErrors(errors);
-
-                    string err;
-                    IBinaryDataListEntry recset;
-
-                    string rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);
-
-                    bdl.TryGetEntry(rs, out recset, out err);
-                    allErrors.AddError(err);
-
-                    if(dataObject.IsDebugMode())
+                    try
                     {
-                        AddDebugInputItem(new DebugItemVariableParams(RecordsetName, "Recordset", recset, executionId));
-                    }
-                    var rule = new IsSingleValueRule(() => RecordsLength);
-                    var single = rule.Check();
-                    if(single != null)
-                    {
-                        allErrors.AddError(single.Message);
-                    }
-                    else
-                    {
-                        if(recset != null)
+                        string rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);
+                        if(RecordsLength == string.Empty)
                         {
-                            if(recset.Columns != null && RecordsLength != string.Empty)
+                            allErrors.AddError("Blank result variable");
+                        }
+                        if(dataObject.IsDebugMode())
+                        {
+                            var warewolfEvalResult = dataObject.Environment.Eval(RecordsetName.Replace("()", "(*)"));
+                            if(warewolfEvalResult.IsWarewolfRecordSetResult)
                             {
-                                if(recset.IsEmpty())
+                                var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult;
+                                if(recsetResult != null)
                                 {
-
-                                    compiler.Upsert(executionId, RecordsLength, "0", out errors);
-                                    if(dataObject.IsDebugMode())
-                                    {
-                                        AddDebugOutputItem(new DebugOutputParams(RecordsLength, "0", executionId, 0));
-                                    }
-                                    allErrors.MergeErrors(errors);
-
+                                    AddDebugInputItem(new DebugItemWarewolfRecordset(recsetResult.Item, RecordsetName, "Recordset", "="));
                                 }
-                                else
+                            }
+                            if(warewolfEvalResult.IsWarewolfAtomListresult)
+                            {
+                                var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                                if(recsetResult != null)
                                 {
-
-
-
-
-                                    foreach(var region in DataListCleaningUtils.SplitIntoRegions(RecordsLength))
-                                    {
-                                        int cnt = recset.FetchAppendRecordsetIndex() - 1;
-                                        compiler.Upsert(executionId, region, cnt.ToString(CultureInfo.InvariantCulture), out errors);
-                                        if(dataObject.IsDebugMode())
-                                        {
-                                            AddDebugOutputItem(new DebugOutputParams(region, cnt.ToString(CultureInfo.InvariantCulture), executionId, 0));
-                                        }
-                                        allErrors.MergeErrors(errors);
-                                    }
+                                    AddDebugInputItem(new DebugEvalResult(RecordsetName, "Recordset", dataObject.Environment));
                                 }
-
-
-                                allErrors.MergeErrors(errors);
-                            }
-                            else if(recset.Columns == null)
-                            {
-                                allErrors.AddError(RecordsetName + " is not a recordset");
-                            }
-                            else if(RecordsLength == string.Empty)
-                            {
-                                allErrors.AddError("Blank result variable");
                             }
                         }
-                        allErrors.MergeErrors(errors);
+                        var rule = new IsSingleValueRule(() => RecordsLength);
+                        var single = rule.Check();
+                        if(single != null)
+                        {
+                            allErrors.AddError(single.Message);
+                        }
+                        else
+                        {
+                            var count = 0;
+                            if(dataObject.Environment.HasRecordSet(RecordsetName))
+                            {
+                                count = dataObject.Environment.GetLength(rs);
+                            }
+                            var value = count.ToString();
+                            dataObject.Environment.Assign(RecordsLength, value);
+                            AddDebugOutputItem(new DebugItemWarewolfAtomResult(value, RecordsLength, ""));
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        //AddDebugInputItem(new DebugItemStaticDataParams("", RecordsetName, "Recordset", "="));
+                        allErrors.AddError(e.Message);
+                        dataObject.Environment.Assign(RecordsLength, "0");
+                        AddDebugOutputItem(new DebugItemStaticDataParams("0", RecordsLength, "", "="));
                     }
                 }
-                else
-                {
-                    allErrors.AddError("No recordset given");
-                }
-            }
-            catch(Exception e)
-            {
-                allErrors.AddError(e.Message);
             }
             finally
             {
-
                 // Handle Errors
                 var hasErrors = allErrors.HasErrors();
                 if(hasErrors)
                 {
                     DisplayAndWriteError("DsfRecordsetLengthActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
-                    compiler.Upsert(executionId, RecordsLength, (string)null, out errors);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
                 }
                 if(dataObject.IsDebugMode())
                 {
-
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
@@ -190,7 +160,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDebugInputs
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -203,7 +173,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDebugOutputs
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {
@@ -217,7 +187,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Get Inputs/Outputs
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null && updates.Count == 1)
             {
@@ -225,7 +195,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null && updates.Count == 1)
             {

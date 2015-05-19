@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
@@ -18,7 +17,7 @@ namespace Dev2.Activities.Designers2.Core.Errors
 {
     public partial class ErrorsAdorner
     {
-        int ErrorsCounter = 0;
+        int ErrorsCounter;
 
         public ErrorsAdorner(FrameworkElement adornedElement)
             : base(adornedElement)

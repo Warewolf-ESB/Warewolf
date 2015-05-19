@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using Dev2.Activities.PathOperations;
 using Dev2.PathOperations;
 
@@ -17,6 +16,10 @@ namespace Dev2.Tests.Activities.Mocks
 {
     public class MockAbstractMultipleFilesActivity : DsfAbstractMultipleFilesActivity
     {
+        public MockAbstractMultipleFilesActivity():base("")
+        {
+            
+        }
         public MockAbstractMultipleFilesActivity(string displayName)
             : base(displayName)
         {

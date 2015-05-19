@@ -9,10 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
@@ -22,9 +22,12 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.WF;
+using Dev2.Runtime.Execution;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Utilities;
 using Dev2.Workspaces;
+using Warewolf.Storage;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -35,7 +38,7 @@ namespace Dev2.Runtime.ESB.Execution
         public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : this(sa, dataObj, theWorkspace, esbChannel, new WorkflowHelper())
         {
-
+          
         }
 
         // BUG 9304 - 2013.05.08 - TWR - Added IWorkflowHelper parameter to facilitate testing
@@ -53,12 +56,11 @@ namespace Dev2.Runtime.ESB.Execution
         public override Guid Execute(out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            WorkflowApplicationFactory wfFactor = new WorkflowApplicationFactory();
+           // WorkflowApplicationFactory wfFactor = new WorkflowApplicationFactory();
             Guid result = GlobalConstants.NullDataListID;
 
-            // set current bookmark as per DataObject ;)
-            string bookmark = DataObject.CurrentBookmarkName;
-            Guid instanceId = DataObject.WorkflowInstanceId;
+
+
 
             // Set Service Name
             DataObject.ServiceName = ServiceAction.ServiceName;
@@ -92,20 +94,28 @@ namespace Dev2.Runtime.ESB.Execution
                 DataObject.ExecutionOrigin = ExecutionOrigin.External;
             }
 
-            PooledServiceActivity activity = ServiceAction.PopActivity();
-
             try
             {
-                var theActivity = activity.Value as DynamicActivity;
-
                 // BUG 9304 - 2013.05.08 - TWR - Added CompileExpressions
-                _workflowHelper.CompileExpressions(theActivity);
+                //_workflowHelper.CompileExpressions(theActivity,DataObject.ResourceID);
 
-                IDSFDataObject exeResult = wfFactor.InvokeWorkflow(activity.Value, DataObject,
-                                                                   new List<object> { EsbChannel, }, instanceId,
-                                                                   TheWorkspace, bookmark, out errors);
-
-                result = exeResult.DataListID;
+                //IDSFDataObject exeResult = wfFactor.InvokeWorkflow(activity.Value, DataObject,
+                //                                                   new List<object> { EsbChannel, }, instanceId,
+                //                                                   TheWorkspace, bookmark, out errors);
+                var wfappUtils = new WfApplicationUtils();
+                IExecutionToken exeToken = new ExecutionToken { IsUserCanceled = false };
+                DataObject.ExecutionToken = exeToken;
+                ErrorResultTO invokeErrors;
+                if (DataObject.IsDebugMode())
+                {
+                    wfappUtils.DispatchDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, null, true);
+                }
+                Eval(DataObject.ResourceID, DataObject);
+                if (DataObject.IsDebugMode())
+                {
+                    wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DateTime.Now, false, true);
+                }
+                result = DataObject.DataListID;
             }
             catch(InvalidWorkflowException iwe)
             {
@@ -124,11 +134,23 @@ namespace Dev2.Runtime.ESB.Execution
             }
             finally
             {
-                ServiceAction.PushActivity(activity);
+                //ServiceAction.PushActivity(activity);
             }
             Dev2Logger.Log.Info(String.Format("Completed Execution for Service Name:{0} Resource Id: {1} Mode:{2}",DataObject.ServiceName,DataObject.ResourceID,DataObject.IsDebug?"Debug":"Execute"));
-      
             return result;
+        }
+
+        public void Eval(Guid resourceID, IDSFDataObject dataObject)
+        {
+            IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID,resourceID);
+
+            resource.Execute(dataObject);
+        }
+        
+
+        public override IExecutionEnvironment Execute(IDSFDataObject inputs, IDev2Activity activity)
+        {
+            return null;
         }
 
         public List<DebugItem> GetDebugInputs(IList<IDev2Definition> inputs, IBinaryDataList dataList, ErrorResultTO errors)
@@ -138,19 +160,12 @@ namespace Dev2.Runtime.ESB.Execution
                 throw new ArgumentNullException("errors");
             }
 
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             var results = new List<DebugItem>();
             foreach(IDev2Definition dev2Definition in inputs)
             {
-
-                IBinaryDataListEntry tmpEntry = compiler.Evaluate(dataList.UID, enActionType.User, GetVariableName(dev2Definition), false, out errors);
-
-                var val = tmpEntry.FetchScalar();
-
-                val.TheValue += "";
-
+                var variableName = GetVariableName(dev2Definition);
                 DebugItem itemToAdd = new DebugItem();
-                AddDebugItem(new DebugItemVariableParams(GetVariableName(dev2Definition), "", tmpEntry, dataList.UID), itemToAdd);
+                AddDebugItem(new DebugEvalResult(variableName, "", DataObject.Environment), itemToAdd);
                 results.Add(itemToAdd);
             }
 
@@ -173,5 +188,11 @@ namespace Dev2.Runtime.ESB.Execution
             debugItem.AddRange(debugItemResults);
         }
 
+        public void Eval(DynamicActivity flowchartProcess, Guid resourceID, IDSFDataObject dsfDataObject)
+        {
+            IDev2Activity resource = new ActivityParser().Parse(flowchartProcess);
+
+            resource.Execute(dsfDataObject);
+        }
     }
 }

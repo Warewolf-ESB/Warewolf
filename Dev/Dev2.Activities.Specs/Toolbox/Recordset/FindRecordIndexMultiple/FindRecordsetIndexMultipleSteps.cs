@@ -224,20 +224,21 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
             {
                 string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, ResultVariable);
                 string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, ResultVariable);
-                List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column,
+                List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
                                                                                out error);
                 recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
+                
                 Assert.AreEqual(recordSetValues[1], expectedResult);
             }
             else
             {
                 string actualValue;
                 expectedResult = expectedResult.Replace('"', ' ').Trim();
-                GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
-                                           out actualValue, out error);
+                GetScalarValueFromEnvironment(result.Environment, ResultVariable,out actualValue,out error);
+
                 if(string.IsNullOrEmpty(expectedResult))
                 {
-                    Assert.IsNull(actualValue);
+                    Assert.AreEqual("-1",actualValue);
                 }
                 else
                 {

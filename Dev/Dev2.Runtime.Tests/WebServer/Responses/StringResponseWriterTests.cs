@@ -18,7 +18,6 @@ using System.Text;
 using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Responses;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Dev2.Tests.Runtime.WebServer.Responses
 {

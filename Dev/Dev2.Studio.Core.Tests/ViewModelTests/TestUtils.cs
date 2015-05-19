@@ -9,16 +9,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Linq.Expressions;
 using System.Text;
 using Dev2.Collections;
-using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
-using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
 using Dev2.Studio.Core.Interfaces;
 using Moq;

@@ -9,7 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
 using System.Xml;
 using Dev2.Common.Common;
 using Dev2.Studio.Core.Interfaces;
@@ -20,7 +20,7 @@ namespace Dev2.Studio.Core.Activities.Interegators
 {
     public static class WorkerServicePropertyInterigator
     {
-        public static void SetActivityProperties(IContextualResourceModel resource, ref DsfActivity activity)
+        public static void SetActivityProperties(IContextualResourceModel resource, ref DsfActivity activity, IResourceRepository resourceRepository)
         {
             activity.IsWorkflow = false;
 
@@ -53,6 +53,13 @@ namespace Dev2.Studio.Core.Activities.Interegators
                                     var attr = node.Attributes["SourceName"];
                                     if(attr != null)
                                     {
+                                        if (resourceRepository != null && node.Attributes["SourceID"] != null)
+                                        {
+                                            Guid sourceId;
+                                            Guid.TryParse( node.Attributes["SourceID"].Value, out sourceId);
+                                            activity.FriendlySourceName = resourceRepository.FindSingle(a => !(a.ID.ToString() != sourceId.ToString()),false).DisplayName;
+                                        }
+                                        else
                                         activity.FriendlySourceName = attr.Value;
                                     }
 

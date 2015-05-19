@@ -9,12 +9,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using Dev2.Communication;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
+using Warewolf.Storage;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -30,6 +30,7 @@ namespace Dev2.Runtime.ESB.Execution
         protected EsbExecuteRequest Request { get; private set; }
 
         public String InstanceOutputDefinition { get; set; }
+        public String InstanceInputDefinition { get; set; }
 
         protected EsbExecutionContainer(ServiceAction sa, IDSFDataObject dataObject, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : this(sa, dataObject, theWorkspace, esbChannel, null)
@@ -43,6 +44,7 @@ namespace Dev2.Runtime.ESB.Execution
             TheWorkspace = theWorkspace;
             EsbChannel = esbChannel;
             Request = request;
+            DataObject.EsbChannel = EsbChannel;
         }
 
         protected EsbExecutionContainer()
@@ -50,5 +52,7 @@ namespace Dev2.Runtime.ESB.Execution
         }
 
         public abstract Guid Execute(out ErrorResultTO errors);
+
+        public abstract IExecutionEnvironment Execute(IDSFDataObject inputs,IDev2Activity activity);
     }
 }

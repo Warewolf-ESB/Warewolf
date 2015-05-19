@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using Microsoft.Win32.TaskScheduler;
@@ -18,8 +16,6 @@ namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
 {
     public interface IActionCollection : IEnumerable<IAction>, IDisposable, IWrappedObject<ActionCollection>
     {
-
-
         /// <summary>
         ///     Gets the number of actions in the collection.
         /// </summary>

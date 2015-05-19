@@ -9,7 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.ConnectionHelpers;
@@ -26,10 +29,6 @@ using Dev2.Studio.TO;
 using Dev2.Studio.ViewModels.Deploy;
 using Dev2.ViewModels.Deploy;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Windows.Threading;
 
 namespace Dev2.Core.Tests.Deploy
 {

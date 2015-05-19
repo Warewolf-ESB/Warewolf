@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Core.Graph;
@@ -19,14 +17,14 @@ namespace Dev2.Converters.Graph.DataTable
 {
     public class DataTablePath : BasePath
     {
-        public DataTablePath() : this("","")
+        public DataTablePath() : this("", "")
         {
         }
 
         public DataTablePath(string tblName, string colName)
         {
-            var tmp = colName;
-            
+            string tmp = colName;
+
             if (!string.IsNullOrEmpty(tblName))
             {
                 tmp = string.Concat(tblName, "().", colName);

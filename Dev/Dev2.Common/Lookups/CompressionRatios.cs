@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,20 +8,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.ComponentModel;
 
 namespace Dev2.Common.Lookups
-{  
+{
     public enum CompressionRatios
     {
-        [Description("None (No Compression)")]
-        NoCompression,
-        [Description("Partial (Best Speed)")]
-        BestSpeed,
-        [Description("Normal (Default)")]
-        Default,
-        [Description("Max (Best Compression)")]
-        BestCompression
+        [Description("None (No Compression)")] NoCompression,
+        [Description("Partial (Best Speed)")] BestSpeed,
+        [Description("Normal (Default)")] Default,
+        [Description("Max (Best Compression)")] BestCompression
     }
 }

@@ -17,6 +17,7 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Services.Sql;
 using Dev2.Services.Sql;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -203,29 +204,6 @@ namespace Dev2.Sql.Tests
             {
                 //------------Execute Test---------------------------
                 sqlServer.FetchDatabases();
-
-                //------------Assert Results-------------------------
-            }
-            finally
-            {
-                sqlServer.Dispose();
-            }
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("SqlServer_FetchStoredProcedures")]
-        [ExpectedException(typeof(ArgumentNullException))]
-// ReSharper disable InconsistentNaming
-        public void SqlServer_FetchStoredProcedures_ProcedureProcessorIsNull_ThrowsArgumentNullException()
-// ReSharper restore InconsistentNaming
-        {
-            //------------Setup for test--------------------------
-            var sqlServer = new SqlServer();
-            try
-            {
-                //------------Execute Test---------------------------
-                sqlServer.FetchStoredProcedures(null, null);
 
                 //------------Assert Results-------------------------
             }
@@ -717,7 +695,7 @@ namespace Dev2.Sql.Tests
                 var output =sqlServer.FetchDatabases();
                 Assert.AreEqual("Bob",output[0]);
                 Assert.AreEqual("Dave",output[1] );
-                factory.Verify(a => a.GetSchema(It.IsAny<IDbConnection>(), "Databases"),Times.Once());
+                factory.Verify(a => a.GetSchema(It.IsAny<IDbConnection>(), "Databases"), Times.Once());
 
 
                 //------------Assert Results-------------------------

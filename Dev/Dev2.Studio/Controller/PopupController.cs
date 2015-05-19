@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Windows;
 using Dev2.Common;
@@ -21,19 +20,6 @@ namespace Dev2.Studio.Controller
 {
     public class PopupController : IPopupController
     {
-        public PopupController(string headerText, string discriptionText, MessageBoxImage imageType, MessageBoxButton buttons)
-        {
-            Header = headerText;
-            Description = discriptionText;
-            ImageType = imageType;
-            Buttons = buttons;
-        }
-
-        public PopupController()
-        {
-
-        }
-
         public string Header { get; set; }
 
         public string Description { get; set; }
@@ -77,7 +63,7 @@ namespace Dev2.Studio.Controller
             Buttons = MessageBoxButton.YesNo;
             Header = "Are you sure?";
             Description = "Are you sure you want to delete " + nameOfItemBeingDeleted + "?";
-            ImageType = MessageBoxImage.Information;
+            ImageType = MessageBoxImage.Warning;
             return Show();
         }
 
@@ -98,13 +84,13 @@ namespace Dev2.Studio.Controller
         public MessageBoxResult ShowSettingsCloseConfirmation()
         {
 
-            Header = "Security Settings have changed";
-            var description = "Security settings have not been saved." + Environment.NewLine
+            Header = "Settings have changed";
+            var description = "Settings have not been saved." + Environment.NewLine
                               + "Would you like to save the settings? " + Environment.NewLine +
                               "-------------------------------------------------------------------" +
-                              "Yes - Save the security settings." + Environment.NewLine +
+                              "Yes - Save the settings." + Environment.NewLine +
                               "No - Discard your changes." + Environment.NewLine +
-                              "Cancel - Returns you to security settings.";
+                              "Cancel - Returns you to settings.";
             Description = description;
             Buttons = MessageBoxButton.YesNoCancel;
             ImageType = MessageBoxImage.Information;
@@ -159,7 +145,7 @@ namespace Dev2.Studio.Controller
                               + " Would you like to re-try? " + Environment.NewLine;
             Description = description;
             Buttons = MessageBoxButton.YesNo;
-            ImageType = MessageBoxImage.Information;
+            ImageType = MessageBoxImage.Error;
             return Show();
         }
 
@@ -175,10 +161,10 @@ namespace Dev2.Studio.Controller
         public MessageBoxResult ShowDeleteVersionMessage(string displayName)
         {
             Header = "Delete version";
-            var description = string.Format("Are you sure to delete {0}?", displayName);
+            var description = string.Format("Are you sure you want to delete {0}?", displayName);
             Description = description;
             Buttons = MessageBoxButton.YesNo;
-            ImageType = MessageBoxImage.Information;
+            ImageType = MessageBoxImage.Warning;
             return Show();
         }
 
@@ -188,7 +174,7 @@ namespace Dev2.Studio.Controller
             var description = string.Format("{0} will become the current version.{1}Do you want to proceed ?", displayName, Environment.NewLine);
             Description = description;
             Buttons = MessageBoxButton.YesNo;
-            ImageType = MessageBoxImage.Information;
+            ImageType = MessageBoxImage.Warning;
             return Show();
         }
     }

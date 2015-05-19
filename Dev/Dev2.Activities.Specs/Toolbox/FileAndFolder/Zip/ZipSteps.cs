@@ -9,9 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
 using System.Activities.Statements;
 using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Common;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -42,28 +43,35 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Zip
 
         protected override void BuildDataList()
         {
-            BuildShapeAndTestData();
-
-            var zip = new DsfZip
+            try
             {
-               InputPath = ScenarioContext.Current.Get<string>(CommonSteps.SourceHolder),
-               Username = ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder),
-               Password = ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder),
-               OutputPath = ScenarioContext.Current.Get<string>(CommonSteps.DestinationHolder),
-               DestinationUsername = ScenarioContext.Current.Get<string>(CommonSteps.DestinationUsernameHolder),
-               DestinationPassword = ScenarioContext.Current.Get<string>(CommonSteps.DestinationPasswordHolder),
-               Overwrite = ScenarioContext.Current.Get<bool>(CommonSteps.OverwriteHolder),
-               Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder),
-               ArchivePassword = ScenarioContext.Current.Get<string>("archivePassword"),
-               CompressionRatio = ScenarioContext.Current.Get<string>("compressio"),
-            };
+                BuildShapeAndTestData();
 
-            TestStartNode = new FlowStep
+                var zip = new DsfZip
+                {
+                    InputPath = ScenarioContext.Current.Get<string>(CommonSteps.SourceHolder),
+                    Username = ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder),
+                    Password = ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder),
+                    OutputPath = ScenarioContext.Current.Get<string>(CommonSteps.DestinationHolder),
+                    DestinationUsername = ScenarioContext.Current.Get<string>(CommonSteps.DestinationUsernameHolder),
+                    DestinationPassword = ScenarioContext.Current.Get<string>(CommonSteps.DestinationPasswordHolder),
+                    Overwrite = ScenarioContext.Current.Get<bool>(CommonSteps.OverwriteHolder),
+                    Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder),
+                    ArchivePassword = ScenarioContext.Current.Get<string>("archivePassword"),
+                    CompressionRatio = ScenarioContext.Current.Get<string>("compressio"),
+                };
+
+                TestStartNode = new FlowStep
+                {
+                    Action = zip
+                };
+                // CI
+                ScenarioContext.Current.Add("activity", zip);
+            }
+            catch(Exception e)
             {
-                Action = zip
-            };
-            // CI
-            ScenarioContext.Current.Add("activity", zip);
+                Dev2Logger.Log.Debug("Error Setting Up Zip",e);
+            }
         }
     }
 }

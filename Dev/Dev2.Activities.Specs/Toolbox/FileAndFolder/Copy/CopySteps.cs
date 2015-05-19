@@ -48,15 +48,17 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Copy
             BuildShapeAndTestData();
 
 
-            var create = new DsfPathCopy();
-            create.InputPath = ScenarioContext.Current.Get<string>(CommonSteps.SourceHolder);
-            create.Username = ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder);
-            create.Password = ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder);
-            create.OutputPath = ScenarioContext.Current.Get<string>(CommonSteps.DestinationHolder);
-            create.DestinationUsername = ScenarioContext.Current.Get<string>(CommonSteps.DestinationUsernameHolder);
-            create.DestinationPassword = ScenarioContext.Current.Get<string>(CommonSteps.DestinationPasswordHolder);
-            create.Overwrite = ScenarioContext.Current.Get<bool>(CommonSteps.OverwriteHolder);
-            create.Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder);
+            var create = new DsfPathCopy
+            {
+                InputPath = ScenarioContext.Current.Get<string>(CommonSteps.SourceHolder), 
+                Username = ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder),
+                Password = ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder), 
+                OutputPath = ScenarioContext.Current.Get<string>(CommonSteps.DestinationHolder), 
+                DestinationUsername = ScenarioContext.Current.Get<string>(CommonSteps.DestinationUsernameHolder), 
+                DestinationPassword = ScenarioContext.Current.Get<string>(CommonSteps.DestinationPasswordHolder), 
+                Overwrite = ScenarioContext.Current.Get<bool>(CommonSteps.OverwriteHolder), 
+                Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder)
+            };
 
             TestStartNode = new FlowStep
             {

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -14,24 +13,27 @@
 
 using System;
 using System.Globalization;
+using System.IO;
+using System.Text;
 using System.Windows.Data;
+using System.Windows.Markup;
 using System.Xml;
 
 namespace WPF.JoshSmith.Data.ValueConverters
 {
     /// <summary>
-    /// This value converter creates a .NET object from the XAML contained in an XmlElement.  The object
-    /// created can be used as the content of a WPF control or ui element, such as the ContentPresenter.
-    /// The inner xml of the XmlElement passed to the converter must contain valid XAML.
+    ///     This value converter creates a .NET object from the XAML contained in an XmlElement.  The object
+    ///     created can be used as the content of a WPF control or ui element, such as the ContentPresenter.
+    ///     The inner xml of the XmlElement passed to the converter must contain valid XAML.
     /// </summary>
-    [ValueConversion(typeof(XmlElement), typeof(object))]
+    [ValueConversion(typeof (XmlElement), typeof (object))]
     public class XamlToObjectConverter : IValueConverter
     {
         #region Data
 
         // Every call to the XamlReader requires a ParserContext, so a static instance is kept
         // to reduce the overhead of creating one every time a value is converted.
-        private static readonly System.Windows.Markup.ParserContext parserContext;
+        private static readonly ParserContext parserContext;
 
         #endregion // Data
 
@@ -41,7 +43,7 @@ namespace WPF.JoshSmith.Data.ValueConverters
         {
             // Initialize the parser context, which provides xml namespace mappings used when
             // the loose XAML is loaded and converted into a .NET object.
-            parserContext = new System.Windows.Markup.ParserContext();
+            parserContext = new ParserContext();
             parserContext.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
             parserContext.XmlnsDictionary.Add("x", "http://schemas.microsoft.com/winfx/2006/xaml");
         }
@@ -53,17 +55,17 @@ namespace WPF.JoshSmith.Data.ValueConverters
         object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             // The 'value' parameter must be an XmlElement.
-            XmlElement elem = value as XmlElement;
+            var elem = value as XmlElement;
 
             // We need to create a MemoryStream because the XamlReader requires a stream
             // from which the XAML is read.  
-            using(System.IO.MemoryStream stream = new System.IO.MemoryStream())
+            using (var stream = new MemoryStream())
             {
                 // Convert the inner xml of the element into a byte array so
                 // that it can be loaded into the memory stream.
-                if(elem != null)
+                if (elem != null)
                 {
-                    byte[] bytes = System.Text.Encoding.UTF8.GetBytes(elem.InnerXml);
+                    byte[] bytes = Encoding.UTF8.GetBytes(elem.InnerXml);
 
                     // Write the XAML element into the memory stream.
                     stream.Write(bytes, 0, bytes.Length);
@@ -74,7 +76,7 @@ namespace WPF.JoshSmith.Data.ValueConverters
                 stream.Position = 0;
 
                 // This is the magic method call which converts XAML into a .NET object.
-                return System.Windows.Markup.XamlReader.Load(stream, parserContext);
+                return XamlReader.Load(stream, parserContext);
             }
         }
 

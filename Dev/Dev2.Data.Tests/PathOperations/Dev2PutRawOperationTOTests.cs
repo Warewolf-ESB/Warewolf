@@ -9,8 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using System;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -28,7 +26,7 @@ namespace Dev2.Data.Tests.PathOperations
         public void Dev2PutRawOperation_Constructor_TakesContentsAndWriteTypeEnum()
         {
             //------------Setup for test--------------------------
-            const WriteType WriteType = WriteType.AppendBottom;
+            const WriteType WriteType = Dev2.PathOperations.WriteType.AppendBottom;
             const string Contents = "Some test";
             //------------Execute Test---------------------------
             var dev2PutRawOperation = new Dev2PutRawOperationTO(WriteType,Contents);
@@ -42,7 +40,7 @@ namespace Dev2.Data.Tests.PathOperations
         public void Dev2PutRawOperationTO_Constructor_GivenParameter_ShouldSetProperties()
         {
             //------------Setup for test--------------------------
-            const WriteType WriteType = WriteType.AppendBottom;
+            const WriteType WriteType = Dev2.PathOperations.WriteType.AppendBottom;
             const string Contents = "Some test";
             //------------Execute Test---------------------------
             var dev2PutRawOperation = new Dev2PutRawOperationTO(WriteType, Contents);

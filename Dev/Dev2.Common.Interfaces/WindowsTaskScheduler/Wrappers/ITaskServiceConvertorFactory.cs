@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -8,7 +7,6 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-
 
 using System;
 using Microsoft.Win32.TaskScheduler;
@@ -43,7 +41,7 @@ namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
         IAction CreateAction(Microsoft.Win32.TaskScheduler.Action action);
 
         IDev2TaskService CreateTaskService(string targetServer, string userName, string accountDomain, string password,
-                                           bool forceV1);
+            bool forceV1);
 
         TaskService CreateTaskService();
 

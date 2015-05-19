@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.IO;
 using System.Reflection;
@@ -18,7 +17,6 @@ using System.Windows.Interactivity;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
@@ -175,7 +173,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
             if(_userInterfaceLayoutModel == null)
             {
-                _userInterfaceLayoutModel = new UserInterfaceLayoutModel()
+                _userInterfaceLayoutModel = new UserInterfaceLayoutModel
                 {
                     LayoutName = LayoutName
                 };

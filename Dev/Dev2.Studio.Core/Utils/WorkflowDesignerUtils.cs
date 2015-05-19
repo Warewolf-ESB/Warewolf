@@ -9,8 +9,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
+using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Parsing.Intellisense;
@@ -122,7 +122,9 @@ namespace Dev2.Utils
                 {
                     dsfActivity.ServiceUri = resource.Environment.Connection.WebServerUri.AbsoluteUri;
                     dsfActivity.ServiceServer = resource.Environment.ID;
+                  
                 }
+                dsfActivity.FriendlySourceName = new InArgument<string>(resource.Environment.Connection.WebServerUri.Host);
             }
 
         }
@@ -279,6 +281,7 @@ namespace Dev2.Utils
                 EditResource(resource, EventPublishers.Aggregator);
             }
         }
+
 
         private static Guid GetExampleID(string activityName)
         {

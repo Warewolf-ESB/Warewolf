@@ -9,12 +9,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.DataList
@@ -24,55 +21,12 @@ namespace Dev2.DataList
     /// </summary>
     public class RsOpNotEqual : AbstractRecsetSearchValidation
     {
-
-        public override Func<IList<string>> BuildSearchExpression(IBinaryDataList scopingObj, IRecsetSearch to)
+        public override Func<DataASTMutable.WarewolfAtom, bool> CreateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> warewolfAtoms, IEnumerable<DataASTMutable.WarewolfAtom> to, bool all)
         {
-            // Default to a null function result
-
-            Func<IList<string>> result = () =>
-                {
-                    ErrorResultTO err;
-                    IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
-                    IList<string> fnResult = new List<string>();
-
-                    foreach(RecordSetSearchPayload p in operationRange)
-                    {
-                        if(to.MatchCase)
-                        {
-                            if(!p.Payload.Equals(to.SearchCriteria, StringComparison.CurrentCulture))
-                            {
-                                fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
-                            }
-                            else
-                            {
-                                if(to.RequireAllFieldsToMatch)
-                                {
-                                    return new List<string>();
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if(!p.Payload.ToLower().Equals(to.SearchCriteria.ToLower(), StringComparison.CurrentCulture))
-                            {
-                                fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
-                            }
-                            else
-                            {
-                                if(to.RequireAllFieldsToMatch)
-                                {
-                                    return new List<string>();
-                                }
-                            }
-                        }
-                    }
-
-                    return fnResult.Distinct().ToList();
-                };
-
-            return result;
+            if (all)
+                return (a) => values.All(x => DataASTMutable.CompareAtoms(a, x) != 0);
+            return (a) => values.Any(x => DataASTMutable.CompareAtoms(a, x) != 0);
         }
-
         public override string HandlesType()
         {
             return "<> (Not Equal)";

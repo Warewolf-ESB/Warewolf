@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Windows;
 using System.Windows.Controls;
 
@@ -26,7 +25,7 @@ namespace Unlimited.Applications.BusinessDesignStudio {
 
         // Using a DependencyProperty as the backing store for IsInView.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsInViewProperty =
-            DependencyProperty.RegisterAttached("IsInView", typeof(bool), typeof(BringIntoViewProperty), new UIPropertyMetadata(false, new PropertyChangedCallback(OnPropertyChangedCallback)));
+            DependencyProperty.RegisterAttached("IsInView", typeof(bool), typeof(BringIntoViewProperty), new UIPropertyMetadata(false, OnPropertyChangedCallback));
 
         private static void OnPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             var treeViewItem = d as TreeViewItem;

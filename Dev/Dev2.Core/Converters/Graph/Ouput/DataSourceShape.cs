@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -18,7 +16,7 @@ using Dev2.Common.Interfaces.Core.Graph;
 namespace Unlimited.Framework.Converters.Graph.Ouput
 {
     /// <summary>
-    /// Stores the information necessary to describe the shape of a data source
+    ///     Stores the information necessary to describe the shape of a data source
     /// </summary>
     [Serializable]
     public class DataSourceShape : IDataSourceShape

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
@@ -55,16 +54,7 @@ namespace Dev2.Data.Tests.Persistence
         //
         #endregion
 
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("StorageSettingManager_GetSegmentSize")]
-        public void StorageSettingManager_GetSegmentSize_WhenConfigurationFilePresentAndIs64Bit_ExpectConfigurationValue()
-        {
-            StorageSettingManager.Is64BitOs = () => true;
-            var segmentCount = StorageSettingManager.GetSegmentSize();
-            //------------Assert Results-------------------------
-            Assert.AreEqual(2097152, segmentCount);
-        }
+       
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]

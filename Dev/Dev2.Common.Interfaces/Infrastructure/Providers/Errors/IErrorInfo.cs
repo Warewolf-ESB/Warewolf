@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -8,7 +7,6 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-
 
 using System;
 
@@ -21,6 +19,6 @@ namespace Dev2.Common.Interfaces.Infrastructure.Providers.Errors
         string StackTrace { get; set; }
         ErrorType ErrorType { get; set; }
         FixType FixType { get; set; }
-        string FixData { get; set; } 
+        string FixData { get; set; }
     }
 }

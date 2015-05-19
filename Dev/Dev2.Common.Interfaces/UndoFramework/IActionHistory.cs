@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 
@@ -17,14 +15,6 @@ namespace Dev2.Common.Interfaces.UndoFramework
 {
     public interface IActionHistory : IEnumerable<IAction>
     {
-        event EventHandler CollectionChanged;
-
-        bool AppendAction(IAction newAction);
-        void Clear();
-        IEnumerable<IAction> EnumUndoableActions();
-        void MoveBack();
-        void MoveForward();
-
         bool CanMoveBack { get; }
 
         bool CanMoveForward { get; }
@@ -32,6 +22,12 @@ namespace Dev2.Common.Interfaces.UndoFramework
         SimpleHistoryNode CurrentState { get; }
 
         int Length { get; }
+        event EventHandler CollectionChanged;
+
+        bool AppendAction(IAction newAction);
+        void Clear();
+        IEnumerable<IAction> EnumUndoableActions();
+        void MoveBack();
+        void MoveForward();
     }
 }
-

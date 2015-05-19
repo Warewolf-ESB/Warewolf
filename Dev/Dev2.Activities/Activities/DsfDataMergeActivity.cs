@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Activities.Presentation.Model;
@@ -20,18 +19,16 @@ using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Data.Factories;
+using Dev2.Data;
 using Dev2.Data.Operations;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Builders;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.Interfaces;
-using Dev2.Validation;
+using Warewolf.Storage;
+using WarewolfParserInterop;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -104,17 +101,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+
             IDev2MergeOperations mergeOperations = new Dev2MergeOperations();
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errorResultTo = new ErrorResultTO();
-            Guid executionId = DataListExecutionID.Get(context);
-            IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-            toUpsert.IsDebug = dataObject.IsDebugMode();
-            toUpsert.ResourceID = dataObject.ResourceID;
 
             InitializeDebug(dataObject);
             try
@@ -125,60 +123,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     return;
                 }
-
-                IDev2IteratorCollection iteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
-
-
+                IWarewolfListIterator warewolfListIterator = new WarewolfListIterator();
                 allErrors.MergeErrors(errorResultTo);
-                Dictionary<int, List<IDev2DataListEvaluateIterator>> listOfIterators = new Dictionary<int, List<IDev2DataListEvaluateIterator>>();
+                Dictionary<int, List<IWarewolfIterator>> listOfIterators = new Dictionary<int, List<IWarewolfIterator>>();
 
                 #region Create a iterator for each row in the data grid in the designer so that the right iteration happen on the data
 
                 int dictionaryKey = 0;
                 foreach(DataMergeDTO row in MergeCollection)
                 {
-                    IBinaryDataListEntry inputVariableExpressionEntry = compiler.Evaluate(executionId, enActionType.User, row.InputVariable, false, out errorResultTo);
-                    allErrors.MergeErrors(errorResultTo);
-
-                    IBinaryDataListEntry atExpressionEntry = compiler.Evaluate(executionId, enActionType.User, row.At, false, out errorResultTo);
-                    allErrors.MergeErrors(errorResultTo);
-
-                    IBinaryDataListEntry paddingExpressionEntry = compiler.Evaluate(executionId, enActionType.User, row.Padding, false, out errorResultTo);
-                    allErrors.MergeErrors(errorResultTo);
-
-                    var fieldName = row.InputVariable;
-                    var splitIntoRegions = DataListCleaningUtils.FindAllLanguagePieces(fieldName);
-                    var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errorResultTo).ToString();
-                    if(!string.IsNullOrEmpty(datalist))
-                    {
-                        foreach(var region in splitIntoRegions)
-                        {
-                            var r = DataListUtil.IsValueRecordset(region) ? DataListUtil.ReplaceRecordsetIndexWithBlank(region) : region;
-                            var isValidExpr = new IsValidExpressionRule(() => r, datalist)
-                            {
-                                LabelText = fieldName
-                            };
-
-                            var errorInfo = isValidExpr.Check();
-                            if(errorInfo != null)
-                            {
-                                row.InputVariable = "";
-                                errorResultTo.AddError(errorInfo.Message);
-                            }
-                            allErrors.MergeErrors(errorResultTo);
-                        }
-                    }
-
                     allErrors.MergeErrors(errorResultTo);
 
                     if(dataObject.IsDebugMode())
                     {
                         DebugItem debugItem = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", (MergeCollection.IndexOf(row) + 1).ToString(CultureInfo.InvariantCulture)), debugItem);
-                        AddDebugItem(new DebugItemVariableParams(row.InputVariable, "", inputVariableExpressionEntry, executionId), debugItem);
+                        AddDebugItem(new DebugEvalResult(row.InputVariable, "", dataObject.Environment, true), debugItem);
                         AddDebugItem(new DebugItemStaticDataParams(row.MergeType, "With"), debugItem);
-                        AddDebugItem(new DebugItemVariableParams(row.At, "Using", atExpressionEntry, executionId), debugItem);
-                        AddDebugItem(new DebugItemVariableParams(row.Padding, "Pad", paddingExpressionEntry, executionId), debugItem);
+                        AddDebugItem(new DebugEvalResult(row.At, "Using", dataObject.Environment), debugItem);
+                        AddDebugItem(new DebugEvalResult(row.Padding, "Pad", dataObject.Environment), debugItem);
 
                         //Old workflows don't have this set. 
                         if(row.Alignment == null)
@@ -190,32 +153,58 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                         _debugInputs.Add(debugItem);
                     }
+                    var listOfEvalResultsForInput = dataObject.Environment.EvalForDataMerge(row.InputVariable);
+                    var innerIterator = new WarewolfListIterator();
+                    var innerListOfIters = new List<WarewolfIterator>();
 
-                    IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(inputVariableExpressionEntry);
-                    IDev2DataListEvaluateIterator atItr = Dev2ValueObjectFactory.CreateEvaluateIterator(atExpressionEntry);
-                    IDev2DataListEvaluateIterator padItr = Dev2ValueObjectFactory.CreateEvaluateIterator(paddingExpressionEntry);
+                    foreach(var listOfIterator in listOfEvalResultsForInput)
+                    {
+                        var inIterator = new WarewolfIterator(listOfIterator);
+                        innerIterator.AddVariableToIterateOn(inIterator);
+                        innerListOfIters.Add(inIterator);
+                    }
+                    var atomList = new List<DataASTMutable.WarewolfAtom>();
+                    while(innerIterator.HasMoreData())
+                    {
+                        var stringToUse = "";
+                        foreach(var warewolfIterator in innerListOfIters)
+                        {
+                            stringToUse += warewolfIterator.GetNextValue();
+                        }
+                        atomList.Add(DataASTMutable.WarewolfAtom.NewDataString(stringToUse));
+                    }
+                    var finalString = string.Join("", atomList);
+                    var inputListResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomListresult(new WarewolfAtomList<DataASTMutable.WarewolfAtom>(DataASTMutable.WarewolfAtom.Nothing, atomList));
+                    if(DataListUtil.IsFullyEvaluated(finalString))
+                    {
+                        inputListResult = dataObject.Environment.Eval(finalString);
+                    }
 
-                    iteratorCollection.AddIterator(itr);
-                    iteratorCollection.AddIterator(atItr);
-                    iteratorCollection.AddIterator(padItr);
+                    var inputIterator = new WarewolfIterator(inputListResult);
+                    var atIterator = new WarewolfIterator(dataObject.Environment.Eval(row.At));
+                    var paddingIterator = new WarewolfIterator(dataObject.Environment.Eval(row.Padding));
+                    warewolfListIterator.AddVariableToIterateOn(inputIterator);
+                    warewolfListIterator.AddVariableToIterateOn(atIterator);
+                    warewolfListIterator.AddVariableToIterateOn(paddingIterator);
 
-                    listOfIterators.Add(dictionaryKey, new List<IDev2DataListEvaluateIterator> { itr, atItr, padItr });
+                    listOfIterators.Add(dictionaryKey, new List<IWarewolfIterator> { inputIterator, atIterator, paddingIterator });
                     dictionaryKey++;
                 }
 
                 #endregion
 
                 #region Iterate and Merge Data
+
                 if(!allErrors.HasErrors())
                 {
-                    while(iteratorCollection.HasMoreData())
+                    while(warewolfListIterator.HasMoreData())
                     {
                         int pos = 0;
                         foreach(var iterator in listOfIterators)
                         {
-                            var val = iteratorCollection.FetchNextRow(iterator.Value[0]);
-                            var at = iteratorCollection.FetchNextRow(iterator.Value[1]);
-                            var pad = iteratorCollection.FetchNextRow(iterator.Value[2]);
+                            var val = warewolfListIterator.FetchNextValue(iterator.Value[0]);
+                            var at = warewolfListIterator.FetchNextValue(iterator.Value[1]);
+                            var pad = warewolfListIterator.FetchNextValue(iterator.Value[2]);
 
                             if(val != null)
                             {
@@ -225,29 +214,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     {
                                         if(MergeCollection[pos].MergeType == "Index")
                                         {
-                                            if(string.IsNullOrEmpty(at.TheValue))
+                                            if(string.IsNullOrEmpty(at))
                                             {
                                                 allErrors.AddError("The 'Using' value cannot be blank.");
                                             }
 
                                             int atValue;
-                                            if(!Int32.TryParse(at.TheValue, out atValue) || atValue < 0)
+                                            if(!Int32.TryParse(at, out atValue) || atValue < 0)
                                             {
                                                 allErrors.AddError("The 'Using' value must be a real number.");
                                             }
-                                            if(pad.TheValue.Length > 1)
+                                            if(pad.Length > 1)
                                             {
                                                 allErrors.AddError("'Padding' must be a single character");
                                             }
                                         }
                                         else
                                         {
-                                            if(MergeCollection[pos].MergeType == "Chars" && string.IsNullOrEmpty(at.TheValue))
+                                            if(MergeCollection[pos].MergeType == "Chars" && string.IsNullOrEmpty(at))
                                             {
                                                 allErrors.AddError("The 'Using' value cannot be blank.");
                                             }
                                         }
-                                        mergeOperations.Merge(val.TheValue, MergeCollection[pos].MergeType, at.TheValue, pad.TheValue, MergeCollection[pos].Alignment);
+                                        mergeOperations.Merge(val, MergeCollection[pos].MergeType, at, pad, MergeCollection[pos].Alignment);
                                         pos++;
                                     }
                                 }
@@ -262,37 +251,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            var rule = new IsSingleValueRule(() => Result);
-                            var single = rule.Check();
-                            if(single != null)
-                            {
-                                allErrors.AddError(single.Message);
-                            }
-                            else
-                            {
+                            dataObject.Environment.Assign(Result, mergeOperations.MergeData.ToString());
+                            allErrors.MergeErrors(errorResultTo);
 
-                                toUpsert.Add(Result, mergeOperations.MergeData.ToString());
-                                toUpsert.FlushIterationFrame();
-                                compiler.Upsert(executionId, toUpsert, out errorResultTo);
-                                allErrors.MergeErrors(errorResultTo);
-
-                                if(dataObject.IsDebugMode() && !allErrors.HasErrors())
-                                {
-                                    foreach(var debugOutputTo in toUpsert.DebugOutputs)
-                                    {
-                                        if(debugOutputTo.LeftEntry != null && debugOutputTo.TargetEntry != null)
-                                        {
-                                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
-                                        }
-                                    }
-                                }
+                            if(dataObject.IsDebugMode() && !allErrors.HasErrors())
+                            {
+                                AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
                             }
                         }
                     }
                 }
 
                 #endregion Iterate and Merge Data
-
             }
             catch(Exception e)
             {
@@ -310,14 +280,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
                     DisplayAndWriteError("DsfDataMergeActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorResultTo);
-                    compiler.Upsert(executionId, Result, (string)null, out errorResultTo);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
                 }
 
                 if(dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
 
                 #endregion
@@ -436,16 +406,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+
+
+
+
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
         {
-            foreach(IDebugItem debugInput in _debugInputs)
-            {
-                debugInput.FlushStringBuilder();
-            }
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+
+
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {
@@ -459,7 +431,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get ForEach Inputs/Outputs
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {
@@ -478,7 +450,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

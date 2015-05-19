@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Providers.Errors;
@@ -47,7 +46,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Credentials
         [TestCategory("CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword")]
         public void CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword_UserNameAndPasswordBlank_NoErrors()
         {
-            Verify_ValidateUserNameAndPassword(userName: "", password: "", isPasswordError: true, expectedMessageFormat: null);
+            Verify_ValidateUserNameAndPassword("", "", true, null);
         }
 
         [TestMethod]
@@ -55,7 +54,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Credentials
         [TestCategory("CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword")]
         public void CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword_UserNameIsNotBlankAndPasswordIsBlank_HasErrors()
         {
-            Verify_ValidateUserNameAndPassword(userName: "aaaa", password: "", isPasswordError: true, expectedMessageFormat: "Password cannot be empty or only white space");
+            Verify_ValidateUserNameAndPassword("aaaa", "", true, "Password cannot be empty or only white space");
         }
 
         [TestMethod]
@@ -63,7 +62,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Credentials
         [TestCategory("CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword")]
         public void CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword_UserNameIsBlankAndPasswordIsNotBlank_HasErrors()
         {
-            Verify_ValidateUserNameAndPassword(userName: "", password: "xxx", isPasswordError: false, expectedMessageFormat: "Username cannot be empty or only white space");
+            Verify_ValidateUserNameAndPassword("", "xxx", false, "Username cannot be empty or only white space");
         }
 
         [TestMethod]
@@ -71,7 +70,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Credentials
         [TestCategory("CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword")]
         public void CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword_UserNameAndPasswordAreNotBlank_NoErrors()
         {
-            Verify_ValidateUserNameAndPassword(userName: "aaa", password: "xxx", isPasswordError: false, expectedMessageFormat: null);
+            Verify_ValidateUserNameAndPassword("aaa", "xxx", false, null);
         }
 
         [TestMethod]
@@ -79,7 +78,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Credentials
         [TestCategory("CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword")]
         public void CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword_UserNameIsInvalidExpression_HasErrors()
         {
-            Verify_ValidateUserNameAndPassword(userName: "a]]", password: "", isPasswordError: false, expectedMessageFormat: "Username - Invalid expression: opening and closing brackets don't match.");
+            Verify_ValidateUserNameAndPassword("a]]", "", false, "Username - Invalid expression: opening and closing brackets don't match.");
         }
 
         [TestMethod]
@@ -87,7 +86,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Credentials
         [TestCategory("CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword")]
         public void CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword_PasswordIsInvalidExpression_HasErrors()
         {
-            Verify_ValidateUserNameAndPassword(userName: "afaf", password: "a]]", isPasswordError: true, expectedMessageFormat: "Password - Invalid expression: opening and closing brackets don't match.");
+            Verify_ValidateUserNameAndPassword("afaf", "a]]", true, "Password - Invalid expression: opening and closing brackets don't match.");
         }
 
         // ReSharper disable UnusedParameter.Local

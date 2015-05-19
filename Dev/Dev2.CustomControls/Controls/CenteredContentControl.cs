@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -18,16 +17,16 @@ using System.Windows.Controls;
 namespace WPF.JoshSmith.Controls
 {
     /// <summary>
-    /// A ContentControl which exposes two dependency properties, CenterX and CenterY.
-    /// Those properties can be bound to if this element is in a Canvas, and it is positioned
-    /// via the Left and Top attached properties of the Canvas class.
+    ///     A ContentControl which exposes two dependency properties, CenterX and CenterY.
+    ///     Those properties can be bound to if this element is in a Canvas, and it is positioned
+    ///     via the Left and Top attached properties of the Canvas class.
     /// </summary>
     public class CenteredContentControl : ContentControl
     {
         #region Constructor
 
         /// <summary>
-        /// Instance constructor.
+        ///     Instance constructor.
         /// </summary>
         public CenteredContentControl()
         {
@@ -44,48 +43,48 @@ namespace WPF.JoshSmith.Controls
 
         #region CenterX / CenterY
 
-        static readonly DependencyPropertyKey CenterXPropertyKey =
+        private static readonly DependencyPropertyKey CenterXPropertyKey =
             DependencyProperty.RegisterReadOnly(
-            "CenterX",
-            typeof(double),
-            typeof(CenteredContentControl),
-            new UIPropertyMetadata());
+                "CenterX",
+                typeof (double),
+                typeof (CenteredContentControl),
+                new UIPropertyMetadata());
 
-        static readonly DependencyPropertyKey CenterYPropertyKey =
+        private static readonly DependencyPropertyKey CenterYPropertyKey =
             DependencyProperty.RegisterReadOnly(
-            "CenterY",
-            typeof(double),
-            typeof(CenteredContentControl),
-            new UIPropertyMetadata());
+                "CenterY",
+                typeof (double),
+                typeof (CenteredContentControl),
+                new UIPropertyMetadata());
 
         /// <summary>
-        /// Identifier for the read-only CenterX dependency property.
+        ///     Identifier for the read-only CenterX dependency property.
         /// </summary>
         public static readonly DependencyProperty CenterXProperty = CenterXPropertyKey.DependencyProperty;
 
         /// <summary>
-        /// Identifier for the read-only CenterX dependency property.
+        ///     Identifier for the read-only CenterX dependency property.
         /// </summary>
         public static readonly DependencyProperty CenterYProperty = CenterYPropertyKey.DependencyProperty;
 
         /// <summary>
-        /// Returns the horizontal offset of this element within its containing Canvas.
-        /// Note, this property only returns a meaningful value if the Canvas.Left attached
-        /// property is set on this element.
+        ///     Returns the horizontal offset of this element within its containing Canvas.
+        ///     Note, this property only returns a meaningful value if the Canvas.Left attached
+        ///     property is set on this element.
         /// </summary>
         public double CenterX
         {
-            get { return (double)GetValue(CenterXProperty); }
+            get { return (double) GetValue(CenterXProperty); }
         }
 
         /// <summary>
-        /// Returns the vertical offset of this element within its containing Canvas.
-        /// Note, this property only returns a meaningful value if the Canvas.Top attached
-        /// property is set on this element.
+        ///     Returns the vertical offset of this element within its containing Canvas.
+        ///     Note, this property only returns a meaningful value if the Canvas.Top attached
+        ///     property is set on this element.
         /// </summary>
         public double CenterY
         {
-            get { return (double)GetValue(CenterYProperty); }
+            get { return (double) GetValue(CenterYProperty); }
         }
 
         #endregion // CenterX / CenterY
@@ -93,7 +92,7 @@ namespace WPF.JoshSmith.Controls
         #region OnPropertyChanged
 
         /// <summary>
-        /// Updates the CenterX and CenterY properties.
+        ///     Updates the CenterX and CenterY properties.
         /// </summary>
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
@@ -106,15 +105,15 @@ namespace WPF.JoshSmith.Controls
             // If the property that changed does not affect the element's size
             // and it is not an attached property of Canvas, then there is 
             // nothing to do.
-            if(!sizeChanged &&
-                !typeof(Canvas).IsAssignableFrom(e.Property.OwnerType))
+            if (!sizeChanged &&
+                !typeof (Canvas).IsAssignableFrom(e.Property.OwnerType))
                 return;
 
-            if(e.Property.Name == "Left" || e.Property.Name == "ActualWidth")
+            if (e.Property.Name == "Left" || e.Property.Name == "ActualWidth")
             {
                 UpdateCenterX();
             }
-            else if(e.Property.Name == "Top" || e.Property.Name == "ActualHeight")
+            else if (e.Property.Name == "Top" || e.Property.Name == "ActualHeight")
             {
                 UpdateCenterY();
             }
@@ -124,17 +123,17 @@ namespace WPF.JoshSmith.Controls
 
         #region Private Helpers
 
-        void UpdateCenterX()
+        private void UpdateCenterX()
         {
             double left = Canvas.GetLeft(this);
-            double offset = left + ActualWidth / 2;
+            double offset = left + ActualWidth/2;
             SetValue(CenterXPropertyKey, offset);
         }
 
-        void UpdateCenterY()
+        private void UpdateCenterY()
         {
             double top = Canvas.GetTop(this);
-            double offset = top + ActualHeight / 2;
+            double offset = top + ActualHeight/2;
             SetValue(CenterYPropertyKey, offset);
         }
 

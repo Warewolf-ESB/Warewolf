@@ -96,7 +96,7 @@
                TargetType="TextBox"
                BasedOn="{StaticResource TextBoxStyle}">
             <Setter Property="Background"
-                    Value="Transparent"></Setter>
+                    Value="Transparent" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
@@ -191,7 +191,7 @@
                         Width="100"
                         AutomationProperties.AutomationId="UI_DeleteTaskButton_AutoID"
                         IsEnabled="{Binding SelectedTask,Converter={StaticResource NullToBoolConvert}}"
-                        Command="{Binding DeleteCommand}"></Button>
+                        Command="{Binding DeleteCommand}" />
             </StackPanel>
             <TextBlock Grid.Row="2"
                        Grid.Column="0"
@@ -201,8 +201,7 @@
                        Text="{Binding ConnectionError}"
                        VerticalAlignment="Top"
                        HorizontalAlignment="Left"
-                       Visibility="{Binding HasConnectionError, Converter={StaticResource BoolToVisibilityConverterPositive}}">
-            </TextBlock>            
+                       Visibility="{Binding HasConnectionError, Converter={StaticResource BoolToVisibilityConverterPositive}}" />
             <DataGrid Grid.Row="2"
                       Grid.Column="0"
                       Style="{StaticResource SchedulerDataGridStyle}"
@@ -295,8 +294,7 @@
                                            IsChecked="{Binding HelpToggle.IsChecked, Mode=TwoWay}"
                                            Content="{Binding HelpToggle.Image, Mode=TwoWay}"
                                            Style="{StaticResource ActivityToggleButtonStyle}"
-                                           AutomationProperties.AutomationId="UI_SchedulerHelpButton_AutoID">
-        </core:ActivityDesignerToggleButton>
+                                           AutomationProperties.AutomationId="UI_SchedulerHelpButton_AutoID" />
 
         <TabControl Grid.Column="1"
                     Grid.Row="1"
@@ -427,8 +425,7 @@
                         <StackPanel Orientation="Horizontal"
                                     Grid.Row="4">
                             <TextBlock Text="Workflow: "
-                                       Style="{StaticResource PermissionsGridTextBlockStyle}">
-                            </TextBlock>
+                                       Style="{StaticResource PermissionsGridTextBlockStyle}" />
                             <TextBox Text="{Binding WorkflowName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                      Style="{StaticResource ReadOnlyTextBoxStyle}"
                                      ToolTip="{x:Static help:HelpTextResources.SchedulerSettingsToolTipWorkFlow}"
@@ -566,8 +563,7 @@
                                        VerticalAlignment="Bottom"
                                        TextWrapping="WrapWithOverflow"
                                        HorizontalAlignment="Right"
-                                       Visibility="{Binding HasErrors, Converter={StaticResource BoolToVisibilityConverterPositive}}">
-                            </TextBlock>
+                                       Visibility="{Binding HasErrors, Converter={StaticResource BoolToVisibilityConverterPositive}}" />
                         </StackPanel>
 
                     </Grid>
@@ -617,7 +613,7 @@
                                         <TextBox IsReadOnly="True"
                                                  BorderThickness="0"
                                                  Style="{StaticResource ReadOnlyTextBoxStyle}"
-                                                 Text="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Converter={StaticResource GridRowNumberConverter}, Mode=OneWay}"></TextBox>
+                                                 Text="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Converter={StaticResource GridRowNumberConverter}, Mode=OneWay}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

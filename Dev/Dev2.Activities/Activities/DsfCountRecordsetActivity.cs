@@ -9,11 +9,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using Dev2;
 using Dev2.Activities;
@@ -21,11 +19,11 @@ using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -67,16 +65,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            Guid dlId = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
-            Guid executionId = dlId;
             allErrors.MergeErrors(errors);
             InitializeDebug(dataObject);
             // Process if no errors
@@ -84,24 +83,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 ValidateRecordsetName(RecordsetName, errors);
                 allErrors.MergeErrors(errors);
-
-                IBinaryDataList bdl = compiler.FetchBinaryDataList(executionId, out errors);
-                allErrors.MergeErrors(errors);
                 if(!allErrors.HasErrors())
                 {
                     try
                     {
-                        string err;
-                        IBinaryDataListEntry recset;
-
                         string rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);
-
-                        bdl.TryGetEntry(rs, out recset, out err);
-                        allErrors.AddError(err);
-
+                        if(CountNumber == string.Empty)
+                        {
+                            allErrors.AddError("Blank result variable");
+                        }
                         if(dataObject.IsDebugMode())
                         {
-                            AddDebugInputItem(new DebugItemVariableParams(RecordsetName, "Recordset", recset, executionId));
+                            AddDebugInputItem(new DebugEvalResult(dataObject.Environment.ToStar(RecordsetName), "Recordset", dataObject.Environment));
                         }
                         var rule = new IsSingleValueRule(() => CountNumber);
                         var single = rule.Check();
@@ -111,68 +104,39 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            if(recset != null)
+                            var count = 0;
+                            if(dataObject.Environment.HasRecordSet(RecordsetName))
                             {
-                                if(recset.Columns != null && CountNumber != string.Empty)
-                                {
-                                    if(recset.IsEmpty())
-                                    {
-                                        compiler.Upsert(executionId, CountNumber, "0", out errors);
-                                        if(dataObject.IsDebugMode())
-                                        {
-                                            AddDebugOutputItem(new DebugOutputParams(CountNumber, "0", executionId, 0));
-                                        }
-                                        allErrors.MergeErrors(errors);
-                                    }
-                                    else
-                                    {
-                                        int cnt = recset.ItemCollectionSize();
-                                        compiler.Upsert(executionId, CountNumber, cnt.ToString(CultureInfo.InvariantCulture), out errors);
-                                        if(dataObject.IsDebugMode())
-                                        {
-                                            AddDebugOutputItem(new DebugOutputParams(CountNumber, cnt.ToString(CultureInfo.InvariantCulture), executionId, 0));
-                                        }
-                                        allErrors.MergeErrors(errors);
-
-
-                                    }
-
-                                    allErrors.MergeErrors(errors);
-                                }
-                                else if(recset.Columns == null)
-                                {
-                                    allErrors.AddError(RecordsetName + " is not a recordset");
-                                }
-                                else if(CountNumber == string.Empty)
-                                {
-                                    allErrors.AddError("Blank result variable");
-                                }
+                                count = dataObject.Environment.GetCount(rs);
                             }
-                            allErrors.MergeErrors(errors);
+                            var value = count.ToString();
+                            dataObject.Environment.Assign(CountNumber, value);
+                            AddDebugOutputItem(new DebugEvalResult(CountNumber, "", dataObject.Environment));
                         }
                     }
                     catch(Exception e)
                     {
+                        AddDebugInputItem(new DebugItemStaticDataParams("", RecordsetName, "Recordset", "="));
                         allErrors.AddError(e.Message);
-                        compiler.Upsert(executionId, CountNumber, (string)null, out errors);
+                        dataObject.Environment.Assign(CountNumber, "0");
+                        AddDebugOutputItem(new DebugItemStaticDataParams("0", CountNumber, "", "="));
                     }
                 }
             }
             finally
             {
-
                 // Handle Errors
                 var hasErrors = allErrors.HasErrors();
                 if(hasErrors)
                 {
                     DisplayAndWriteError("DsfCountRecordsActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    var errorString = allErrors.MakeDataListReady();
+                    dataObject.Environment.AddError(errorString);
                 }
                 if(dataObject.IsDebugMode())
                 {
-
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
         }
@@ -181,34 +145,30 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDebugInputs
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
-            foreach(IDebugItem debugInput in _debugInputs)
-            {
-                debugInput.FlushStringBuilder();
-            }
             return _debugInputs;
         }
 
-        #endregion
-
-        #region GetDebugOutputs
-
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
-            foreach(IDebugItem debugOutput in _debugOutputs)
+            foreach (IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }
             return _debugOutputs;
         }
 
+       
+
         #endregion
+
+        
 
 
         #endregion Get Inputs/Outputs
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null && updates.Count == 1)
             {
@@ -216,7 +176,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

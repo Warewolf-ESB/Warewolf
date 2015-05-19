@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,26 +8,21 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.ComponentModel;
 
 namespace Dev2.Converters
 {
     /// <summary>
-    /// The base convert types available in the system
+    ///     The base convert types available in the system
     /// </summary>
     public enum enDev2BaseConvertType
     {
-        [Description("Text")]
-        Text,
+        [Description("Text")] Text,
 
-        [Description("Binary")]
-        Binary,
+        [Description("Binary")] Binary,
 
-        [Description("Hex")]
-        Hex,
+        [Description("Hex")] Hex,
 
-        [Description("Base 64")]
-        Base64
+        [Description("Base 64")] Base64
     }
 }

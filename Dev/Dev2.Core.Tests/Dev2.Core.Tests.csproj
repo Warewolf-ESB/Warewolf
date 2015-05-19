@@ -136,6 +136,9 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Compile Include="ConverterTests\Base\BaseConvertTest.cs" />
     <Compile Include="ConverterTests\Case\CaseConverterTests.cs" />
     <Compile Include="ConverterTests\DateTimeTests\DateTimeComparerTests.cs" />
@@ -165,6 +168,7 @@
     <Compile Include="DataList\BinaryDataListItemTest.cs" />
     <Compile Include="DataList\BinaryDataListTest.cs" />
     <Compile Include="DataList\BrokerTest.cs" />
+    <Compile Include="DataList\DebugToTests.cs" />
     <Compile Include="DataList\Dev2DataListBuilderTest.cs" />
     <Compile Include="Dev2.Network\MockNetworkServer.cs" />
     <Compile Include="Dev2.Network\MockNetworkContext.cs" />
@@ -198,7 +202,6 @@
     <Compile Include="Parsing\TokenizerTest.cs" />
     <Compile Include="Parsing\LanguageParserTest.cs" />
     <Compile Include="PathOperationTests\ActivityIOFactoryTests.cs" />
-    <Compile Include="PathOperationTests\PathIOTestingUtils.cs" />
     <Compile Include="DataListCompilerTest.cs" />
     <Compile Include="DataListFactoryTest.cs" />
     <Compile Include="DataListCleaningUtilTest.cs" />
@@ -215,7 +218,6 @@
       <DependentUpon>TestStrings.resx</DependentUpon>
     </Compile>
     <Compile Include="RecordsetSearch\AbstractRecsetSearchValidation_GenerateInputRange.cs" />
-    <Compile Include="RecordsetSearch\RsOpTests.cs" />
     <Compile Include="Repository\SimulationRespositoryTest.cs" />
     <Compile Include="TokenizerTest.cs" />
   </ItemGroup>
@@ -271,6 +273,10 @@
     <ProjectReference Include="..\Dev2.Runtime\Dev2.Runtime.csproj">
       <Project>{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}</Project>
       <Name>Dev2.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
+      <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
+      <Name>Warewolf.Storage</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -95,7 +95,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("I double click \"WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Copy(CopyDesigner)\"" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 18
- testRunner.Given("I type \"[[rec@(1).a]]\" in \"WORKSURFACE,Copy(CopyDesigner),LargeViewContent,UI__Fi" +
+ testRunner.Given("I type \"[[src@(1).a]]\" in \"WORKSURFACE,Copy(CopyDesigner),LargeViewContent,UI__Fi" +
                     "leOrFoldertxt_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 19
  testRunner.And("I click \"WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Copy(CopyDesigner),DoneBut" +
@@ -104,21 +104,17 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("\"WORKSURFACE,UI_Error0_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 21
  testRunner.Given("\"WORKSURFACE,UI_Error1_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 22
- testRunner.Given("\"WORKSURFACE,UI_Error2_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 24
- testRunner.Given("I type \"[[rec(1).a]]\" in \"WORKSURFACE,Copy(CopyDesigner),LargeViewContent,UI__Fil" +
+ testRunner.Given("I type \"[[src(1).a]]\" in \"WORKSURFACE,Copy(CopyDesigner),LargeViewContent,UI__Fil" +
                     "eOrFoldertxt_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 25
  testRunner.And("I click \"WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Copy(CopyDesigner),DoneBut" +
                     "ton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 26
  testRunner.Given("\"WORKSURFACE,UI_Error0_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 27
- testRunner.Given("\"WORKSURFACE,UI_Error1_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 29
- testRunner.Given("I type \"[[rec(1).a]]\" in \"WORKSURFACE,Copy(CopyDesigner),LargeViewContent,UI__Des" +
-                    "tinationtxt_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I type \"[[dest(1).a]]\" in \"WORKSURFACE,Copy(CopyDesigner),LargeViewContent,UI__De" +
+                    "stinationtxt_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 30
  testRunner.And("I click \"WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Copy(CopyDesigner),DoneBut" +
                     "ton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -128,8 +124,8 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("I double click \"WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Copy(CopyDesigner)\"" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 33
- testRunner.Given("I type \"TestWarewolf\" in \"WORKSURFACE,Copy(CopyDesigner),LargeViewContent,UI__Use" +
-                    "rNametxt_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I type \"SourceUsername\" in \"WORKSURFACE,Copy(CopyDesigner),LargeViewContent,UI__U" +
+                    "serNametxt_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 34
  testRunner.And("I click \"WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Copy(CopyDesigner),DoneBut" +
                     "ton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -139,7 +135,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("I send \"{TAB}\" to \"WORKSURFACE,Copy(CopyDesigner),LargeViewContent,UI__UserNametx" +
                     "t_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 38
- testRunner.And("I send \"Password\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I send \"SourcePassword\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 39
  testRunner.And("I click \"WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Copy(CopyDesigner),DoneBut" +
                     "ton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -154,7 +150,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("I send \"{TAB}\" to \"WORKSURFACE,Copy(CopyDesigner),LargeViewContent,UI__Destinatio" +
                     "ntxt_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 45
- testRunner.And("I send \"Warewolf\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I send \"DestinationWarewolf\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 46
  testRunner.And("I click \"WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Copy(CopyDesigner),DoneBut" +
                     "ton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -164,7 +160,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("I send \"{TAB}{TAB}\" to \"WORKSURFACE,Copy(CopyDesigner),LargeViewContent,UI__Desti" +
                     "nationtxt_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 50
- testRunner.And("I send \"Password\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I send \"DestPassword\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 51
  testRunner.And("I click \"WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Copy(CopyDesigner),DoneBut" +
                     "ton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -172,6 +168,53 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("\"WORKSURFACE,UI_Error0_AutoID\" is invisible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 53
  testRunner.Given("\"WORKSURFACE,Copy(CopyDesigner),SmallViewContent\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("CopyTool Testing Tab Order and UiRepondingFine as expected")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
+        public virtual void CopyToolTestingTabOrderAndUiRepondingFineAsExpected()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CopyTool Testing Tab Order and UiRepondingFine as expected", ((string[])(null)));
+#line 56
+this.ScenarioSetup(scenarioInfo);
+#line 57
+ testRunner.Given("I have Warewolf running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 58
+ testRunner.And("all tabs are closed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 59
+ testRunner.Given("I click \"EXPLORERCONNECTCONTROL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 60
+ testRunner.Given("I click \"U_UI_ExplorerServerCbx_AutoID_localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 61
+ testRunner.And("I click \"RIBBONNEWENDPOINT\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 63
+ testRunner.Given("I send \"Copy\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 64
+    testRunner.Given("I drag \"TOOLCOPY\" onto \"WORKSURFACE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 66
+ testRunner.Given("I double click \"WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Copy(CopyDesigner)\"" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 68
+    testRunner.And("I send \"[[rec(1).a]]{TAB}\" to \"WORKSURFACE,Copy(CopyDesigner),LargeViewContent,UI" +
+                    "__FileOrFoldertxt_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 69
+ testRunner.And("I send \"Source@Username{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 70
+    testRunner.And("I send \"Password{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 71
+ testRunner.And("I send \"[[rec(2).a]]{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 72
+ testRunner.And("I send \"Destination{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 73
+    testRunner.And("I send \"Password{TAB}{SPACE}{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 74
+ testRunner.And("I send \"[[Result]]\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 75
+ testRunner.Given("\"WORKSURFACE,Copy(CopyDesigner),LargeViewContent,UI__Resulttxt_AutoID\" contains t" +
+                    "ext \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             this.ScenarioCleanup();
         }

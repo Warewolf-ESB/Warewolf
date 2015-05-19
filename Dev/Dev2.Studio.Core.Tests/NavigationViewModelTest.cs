@@ -9,7 +9,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Threading;
+using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Infrastructure;
@@ -28,13 +34,6 @@ using Dev2.Util;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading;
-using System.Windows.Threading;
 
 // ReSharper disable  InconsistentNaming
 namespace Dev2.Core.Tests
@@ -246,15 +245,6 @@ namespace Dev2.Core.Tests
         }
 
 
-        [TestMethod]
-        public void AddEnvironmentWithShouldLoadResourcesTrueExpectedRootAndChildrenCreated()
-        {
-            var viewModel = Init(false, true);
-            var explorerItemModels = viewModel.ExplorerItemModels;
-            Assert.IsNotNull(explorerItemModels);
-            Assert.AreEqual(1, explorerItemModels.Count);
-            Assert.AreEqual(2, explorerItemModels[0].Children.Count);
-        }
 
 
         #endregion Updating Resources
@@ -343,23 +333,6 @@ namespace Dev2.Core.Tests
             }
 
             return false;
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("NavigationViewModel_Filter")]
-        public void NavigationViewModel_Filter_GivenNull_ShouldOriginalCollection()
-        {
-            //------------Setup for test--------------------------
-            var viewModel = Init(false, true,false);
-            //------------Preconditions---------------------------
-            Assert.AreEqual(4, viewModel.ExplorerItemModels[0].ChildrenCount);
-            viewModel.Filter(model => model.ResourceType == Common.Interfaces.Data.ResourceType.WorkflowService);
-            Assert.AreEqual(2, viewModel.ExplorerItemModels[0].ChildrenCount);
-            //------------Execute Test---------------------------
-            viewModel.Filter(null);
-            //------------Assert Results-------------------------
-            Assert.AreEqual(4, viewModel.ExplorerItemModels[0].ChildrenCount);
         }
 
         [TestMethod]
@@ -745,7 +718,7 @@ namespace Dev2.Core.Tests
             ExplorerItemModel anotherEnvironment = new ExplorerItemModel { DisplayName = "Other Server", EnvironmentId = toBeRemoved.Object.ID };
             var studioResourceRepository = new StudioResourceRepository(localhostExplorerItemModel, _Invoke);
             studioResourceRepository.ExplorerItemModels.Add(anotherEnvironment);
-            studioResourceRepository.GetExplorerProxy = guid => new Mock<IExplorerResourceRepository>().Object;
+            studioResourceRepository.GetExplorerProxy = guid => new Mock<IClientExplorerResourceRepository>().Object;
             var viewModel = new NavigationViewModel(publisher.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, envRepo.Object, studioResourceRepository, new Mock<IConnectControlSingleton>().Object, () => { });
 
 
@@ -914,7 +887,7 @@ namespace Dev2.Core.Tests
             studioResourceRepository.ExplorerItemModelClone = a => a;
             else
             studioResourceRepository.ExplorerItemModelClone = a => a.Clone( new Mock<IConnectControlSingleton>().Object,studioResourceRepository);
-            var explorerResourceRepository = new Mock<IExplorerResourceRepository>().Object;
+            var explorerResourceRepository = new Mock<IClientExplorerResourceRepository>().Object;
             studioResourceRepository.GetExplorerProxy = guid => explorerResourceRepository;
             return studioResourceRepository;
         }

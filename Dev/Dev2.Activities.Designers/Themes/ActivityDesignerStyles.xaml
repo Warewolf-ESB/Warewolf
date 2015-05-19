@@ -141,8 +141,7 @@
                               Text="{Binding ModelItem.DisplayName}"
                               MaxWidth="{Binding Path=ActualWidth,ElementName=DisplayNameWidthSetter}"
                               Background="{x:Null}"
-                              BorderBrush="{x:Null}">
-                    </TextBox>
+                              BorderBrush="{x:Null}" />
 
                     <UserControl x:Name="DisplayNameReadOnlyControl_6E8E4954_F6B2_4c6c_9E28_33A7A78F1E81"                                
                                  Grid.Column="0"
@@ -179,9 +178,7 @@
                                                               ToolTip="{Binding ToolTip}"
                                                               IsChecked="{Binding IsChecked, Mode=TwoWay}"                                                                                                                               
                                                               Content="{Binding Image, Mode=TwoWay}"
-                                                               Style="{StaticResource ActivityToggleButtonStyle}">
-                                    
-                                </core:ActivityDesignerToggleButton>
+                                                               Style="{StaticResource ActivityToggleButtonStyle}" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                         <ItemsControl.ItemsPanel>
@@ -195,8 +192,7 @@
 
                 <ContentPresenter x:Name="PART_ContentPresenter"
                                   Grid.Row="1"
-                                  Content="{Binding Path=Content, RelativeSource={RelativeSource AncestorType={x:Type sap:WorkflowViewElement}}}">
-                </ContentPresenter>
+                                  Content="{Binding Path=Content, RelativeSource={RelativeSource AncestorType={x:Type sap:WorkflowViewElement}}}" />
 
                 <!-- Button Bar -->
                 <Grid Grid.Row="2">

@@ -9,13 +9,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Parsing.Intellisense;
 using System.Parsing.Tokenization;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming

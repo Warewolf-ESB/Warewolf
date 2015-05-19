@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -8,7 +7,6 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-
 
 using System;
 using System.Collections.Generic;
@@ -25,7 +23,8 @@ namespace Dev2
     {
         #region Class Members
 
-        private readonly static Dictionary<string, Func<string, string>> _convertFunctions = new Dictionary<string, Func<string, string>>();
+        private static readonly Dictionary<string, Func<string, string>> _convertFunctions =
+            new Dictionary<string, Func<string, string>>();
 
         #endregion Class Members
 
@@ -36,27 +35,30 @@ namespace Dev2
         #endregion Properties
 
         #region Ctor
+
         static CaseConverter()
         {
             CreateConvertFormatTypes();
         }
+
         #endregion Ctor
 
         #region Methods
 
         public IBinaryDataListItem TryConvert(string conversionType, IBinaryDataListItem item)
         {
-
             Func<string, string> returnedFunc;
-            IBinaryDataListItem result = Dev2BinaryDataListFactory.CreateBinaryItem("Error Invalid Conversion Type", GlobalConstants.EvalautionScalar);
-            if(_convertFunctions.TryGetValue(conversionType, out returnedFunc))
+            IBinaryDataListItem result = Dev2BinaryDataListFactory.CreateBinaryItem("Error Invalid Conversion Type",
+                GlobalConstants.EvalautionScalar);
+            if (_convertFunctions.TryGetValue(conversionType, out returnedFunc))
             {
-                if(returnedFunc != null)
+                if (returnedFunc != null)
                 {
                     string tmp = returnedFunc.Invoke(item.TheValue);
-                    if(item.Namespace != string.Empty)
+                    if (item.Namespace != string.Empty)
                     {
-                        result = Dev2BinaryDataListFactory.CreateBinaryItem(tmp, item.Namespace, item.FieldName, item.ItemCollectionIndex);
+                        result = Dev2BinaryDataListFactory.CreateBinaryItem(tmp, item.Namespace, item.FieldName,
+                            item.ItemCollectionIndex);
                     }
                     else
                     {
@@ -67,12 +69,13 @@ namespace Dev2
 
             return result;
         }
+
         #endregion Methods
 
         #region Private Methods
 
         /// <summary>
-        /// Creates a list of all valid Convert Types
+        ///     Creates a list of all valid Convert Types
         /// </summary>
         private static void CreateConvertFormatTypes()
         {
@@ -82,9 +85,17 @@ namespace Dev2
             _convertFunctions.Add("Title Case", ConvertToAllFirstUpper);
             ConvertTypes = new List<string>(_convertFunctions.Keys);
         }
-
+        public static Dictionary<string, Func<string, string>> GetFuncs()
+        {
+            var convertFunctions = new Dictionary<string, Func<string, string>>();
+            convertFunctions.Add("UPPER", ConvertToAllUpper);
+            convertFunctions.Add("lower", ConvertToAllLower);
+            convertFunctions.Add("Sentence", ConvertToFirstUpper);
+            convertFunctions.Add("Title Case", ConvertToAllFirstUpper);
+            return convertFunctions;
+        }
         /// <summary>
-        /// Make the first letter of the word to upper case
+        ///     Make the first letter of the word to upper case
         /// </summary>
         private static string MakeFirstLetterUpper(string word)
         {
@@ -92,7 +103,7 @@ namespace Dev2
             string lowerCase = word.ToLower();
             // matches the first sentence of a string, as well as subsequent sentences
             //Juries Bug 8725
-            Regex reg = new Regex(@"(?<=(^|[.;:])\s*)[a-z]", RegexOptions.Compiled | RegexOptions.Multiline);
+            var reg = new Regex(@"(?<=(^|[.;:])\s*)[a-z]", RegexOptions.Compiled | RegexOptions.Multiline);
             // MatchEvaluator delegate defines replacement of setence starts to uppercase        
             return reg.Replace(lowerCase, s => s.Value.ToUpper());
         }
@@ -120,10 +131,10 @@ namespace Dev2
         {
             TextInfo txInfo = CultureInfo.CurrentCulture.TextInfo;
 
-            var str = txInfo.ToTitleCase(stringToConvert);
+            string str = txInfo.ToTitleCase(stringToConvert);
 
             //Juries Bug 8725
-            Regex reg = new Regex(@"[0-9]+\w{1}", RegexOptions.Compiled | RegexOptions.Multiline);
+            var reg = new Regex(@"[0-9]+\w{1}", RegexOptions.Compiled | RegexOptions.Multiline);
 
             return reg.Replace(str, s => s.Value.ToLower());
         }

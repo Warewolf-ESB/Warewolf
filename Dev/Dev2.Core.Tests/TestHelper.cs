@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Text;
 
@@ -38,7 +37,7 @@ namespace Dev2.DynamicServices.Test
 
         public static string ConvertByteArrayToString(byte[] payload)
         {
-            string result = ASCIIEncoding.ASCII.GetString(payload);
+            string result = Encoding.ASCII.GetString(payload);
 
             return result;
         }

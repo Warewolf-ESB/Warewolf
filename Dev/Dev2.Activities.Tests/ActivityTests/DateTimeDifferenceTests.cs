@@ -9,17 +9,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using Dev2;
-using Dev2.Common.Interfaces.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Tests.Activities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using Dev2;
+using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Tests.Activities;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable CheckNamespace
@@ -59,9 +57,8 @@ namespace ActivityUnitTests.ActivityTests
             const string expected = "209";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -81,14 +78,13 @@ namespace ActivityUnitTests.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             string error;
-            IList<IBinaryDataListItem> results;
-            GetRecordSetFieldValueFromDataList(result.DataListID, "resCol", "res", out results, out error);
+            IList<string> results;
+            GetRecordSetFieldValueFromDataList(result.Environment, "resCol", "res", out results, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
-            Assert.AreEqual("8847", results[0].TheValue);
-            Assert.AreEqual("9477", results[1].TheValue);
-            Assert.AreEqual("9090", results[2].TheValue);
+            Assert.AreEqual("8847", results[0]);
+            Assert.AreEqual("9477", results[1]);
+            Assert.AreEqual("9090", results[2]);
         }
 
         //2013.03.11: Ashley Lewis - PBI 9167 Moved to positive tests
@@ -108,10 +104,9 @@ namespace ActivityUnitTests.ActivityTests
             const string expected = "209";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -136,7 +131,7 @@ namespace ActivityUnitTests.ActivityTests
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
 
             Assert.AreEqual("0", actual);
         }
@@ -144,95 +139,6 @@ namespace ActivityUnitTests.ActivityTests
         #endregion Positive Test Cases
 
         #region Error Test Cases
-
-        [TestMethod]
-        public void Input1_Not_Matching_InputFormat_Expected_Error()
-        {
-            SetupArguments(
-                           "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
-                         , ActivityStrings.DateTimeDiff_DataListShape
-                         , "2012 09:20:30 AM"
-                         , "2012/10/01 07:15:50 AM"
-                         , "yyyy/mm/dd 12h:min:ss am/pm"
-                         , "Days"
-                         , "[[Result]]"
-                         );
-            IDSFDataObject result = ExecuteProcess();
-
-            var res = Compiler.HasErrors(result.DataListID);
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(res);
-        }
-
-        [TestMethod]
-        public void Input2_Not_Matching_InputFormat_Expected_Error()
-        {
-
-            SetupArguments(
-                            "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
-                          , ActivityStrings.DateTimeDiff_DataListShape
-                          , "2012/03/05 09:20:30 AM"
-                          , "2012 07:15:50 AM"
-                          , "yyyy/mm/dd 12h:min:ss am/pm"
-                          , "Days"
-                          , "[[Result]]"
-                          );
-
-            IDSFDataObject result = ExecuteProcess();
-
-            var res = Compiler.HasErrors(result.DataListID);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-
-            Assert.IsTrue(res);
-        }
-
-        [TestMethod]
-        public void Invalid_InputFormat_Expected_Error()
-        {
-            SetupArguments(
-                           "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
-                         , ActivityStrings.DateTimeDiff_DataListShape
-                         , "2012/03/05 09:20:30 AM"
-                         , "2012/10/01 07:15:50 AM"
-                         , "yyyy/wrongFromat/dd 12h:min:ss am/pm"
-                         , "Days"
-                         , "[[Result]]"
-                         );
-            IDSFDataObject result = ExecuteProcess();
-
-            var res = Compiler.HasErrors(result.DataListID);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(res);
-        }
-
-        [TestMethod]
-        public void ErrorHandeling_Expected_ErrorTags()
-        {
-            SetupArguments(
-                            "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
-                          , ActivityStrings.DateTimeDiff_DataListShape
-                          , "2012/10/01 07:15:50 AM"
-                          , "2012/10/01 07:15:50 AM"
-                          , "yyyy/mm/dd 12h:min:ss am/pm"
-                          , "Days"
-                          , "[[//().rec]]"
-                          );
-
-            IDSFDataObject result = ExecuteProcess();
-
-            var res = Compiler.HasErrors(result.DataListID);
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(res);
-        }
 
         #endregion Error Test Cases
 
@@ -246,141 +152,8 @@ namespace ActivityUnitTests.ActivityTests
             IBinaryDataList inputs = testAct.GetInputs();
 
             // remove test datalist ;)
-            DataListRemoval(inputs.UID);
 
             Assert.AreEqual(4, inputs.FetchAllEntries().Count);
-        }
-
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfDateTimeDifference_Execute")]
-        public void DsfDateTimeDifference_Execute_LanguageInputs_ExpectError()
-        {
-            //------------Setup for test--------------------------
-            const string input1 = "2012/[[03]]/05 09:20:30 AM";
-            const string input2 = "2012/10/01 07:15:50 AM";
-            AssertError(input1, input2);
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfDateTimeDifference_Execute")]
-        public void DsfDateTimeDifference_Execute_LanguageInputs_InvalidScalar_ExpectError()
-        {
-            //------------Setup for test--------------------------
-            const string input1 = "[[2012/[[03]]/05 09:20:30 AM]]";
-            const string input2 = "2012/10/01 07:15:50 AM";
-            AssertError(input1, input2);
-        }
-
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfDateTimeDifference_Execute")]
-        public void DsfDateTimeDifference_Execute_LanguageInputs_Input2_InvalidScalar_ExpectError()
-        {
-            //------------Setup for test--------------------------
-            const string input1 = "2012/10/01 07:15:50 AM";
-            const string input2 = "2012/[[10]]/01 07:15:50 AM";
-            AssertError(input1, input2);
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfDateTimeDifference_Execute")]
-        public void DsfDateTimeDifference_Execute_LanguageInputs_Input2_InvalidEncompassingScalar_ExpectError()
-        {
-            //------------Setup for test--------------------------
-            const string input1 = "2012/10/01 07:15:50 AM";
-            const string input2 = "[[2012/10/01 07:15:50 AM]]";
-            AssertError(input1, input2);
-        }
-
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfDateTimeDifference_Execute")]
-        public void DsfDateTimeDifference_Execute_LanguageInputs_Input2_InvalidEncompassingRecSet_ExpectError()
-        {
-            //------------Setup for test--------------------------
-            const string input1 = "2012/10/01 07:15:50 AM";
-            const string input2 = "[[1().a]]";
-            AssertError(input1, input2);
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfDateTimeDifference_Execute")]
-        public void DsfDateTimeDifference_Execute_LanguageInputs_Input2_InvalidEncompassingScalar_Success()
-        {
-            //------------Setup for test--------------------------
-            const string input1 = "2012/10/01 07:15:50 AM";
-            const string input2 = "[[a]]";
-            AssertError(input1, input2,false);
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfDateTimeDifference_Execute")]
-        public void DsfDateTimeDifference_Execute_LanguageInputs_Input2_InvalidEncompassingRecSet_Success()
-        {
-            //------------Setup for test--------------------------
-            const string input1 = "2012/10/01 07:15:50 AM";
-            const string input2 = "[[rec().a]]";
-            AssertError(input1, input2,false);
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfDateTimeDifference_Execute")]
-        public void DsfDateTimeDifference_Execute_LanguageInputs_Input2_PartialRecSet_Success()
-        {
-            //------------Setup for test--------------------------
-            const string input1 = "2012/10/01 07:15:50 AM";
-            const string input2 = "2012/[[rec().a]]/01";
-            AssertError(input1, input2, false);
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfDateTimeDifference_Execute")]
-        public void DsfDateTimeDifference_Execute_LanguageInputs_Input2_PartialScalar_Success()
-        {
-            //------------Setup for test--------------------------
-            const string input1 = "2012/10/01 07:15:50 AM";
-            const string input2 = "2012/[[a]]/01";
-            AssertError(input1, input2, false);
-        }
-// ReSharper disable UnusedParameter.Local
-        void AssertError(string input1, string input2, bool expectError = true)
-// ReSharper restore UnusedParameter.Local
-        {
-            SetupArguments(
-                "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
-                , ActivityStrings.DateTimeDiff_DataListShape
-                , input1
-                , input2
-                , "yyyy/mm/dd 12h:min:ss am/pm"
-                , "Days"
-                , "[[Result]]"
-                );
-
-            //------------Execute Test---------------------------
-            IDSFDataObject result = ExecuteProcess();
-
-            var res = Compiler.FetchErrors(result.DataListID);
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-            //------------Assert Results-------------------------
-            DataListRemoval(result.DataListID);
-
-            if(expectError)
-                Assert.IsTrue(res.Contains("begins with a number"));
-            else
-            {
-                Assert.IsTrue(!res.Contains("begins with a number"));
-            }
         }
 
         [TestMethod]
@@ -391,33 +164,8 @@ namespace ActivityUnitTests.ActivityTests
             IBinaryDataList outputs = testAct.GetOutputs();
 
             // remove test datalist ;)
-            DataListRemoval(outputs.UID);
 
             Assert.AreEqual(1, outputs.FetchAllEntries().Count);
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfDateTimeDifference_Execute")]
-        public void DsfDateTimeDifference_Execute_MultipleResults_ExpectErrors()
-        {
-            SetupArguments(
-                           ActivityStrings.DateTimeDifferenceDataListWithData
-                         , ActivityStrings.DateTimeDifferenceDataListShape
-                         , "[[recset1(*).f1]]"
-                         , "[[recset2(*).f2]]"
-                         , "dd/mm/yyyy"
-                         , "Days"
-                         , "[[resCol(*).res]][[g]]"
-                         );
-
-            IDSFDataObject result = ExecuteProcess();
-            string error;
-            IList<IBinaryDataListItem> results;
-            GetRecordSetFieldValueFromDataList(result.DataListID, "resCol", "res", out results, out error);
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
         }
 
         #endregion Get Input/Output Tests

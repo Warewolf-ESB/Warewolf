@@ -15,7 +15,6 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities.Specs.BaseTypes;
-using Dev2.Data.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -36,13 +35,26 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
                     ExpressionText =
                         string.Format(
                             "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.FetchSwitchData(\"{0}\",AmbientDataList)",
-                            (variableList).First().Item1)
+                            (variableList).First().Item1),
+                      
+                            
                 };
+            var sw = new FlowSwitch<string>();
+            sw.Expression = flowSwitch;
+            var multiAssign = new DsfMultiAssignActivity();
+            int row = 1;
+            foreach(var variable in variableList)
+            {
+                multiAssign.FieldsCollection.Add(new ActivityDTO(variable.Item1, variable.Item2, row, true));
+                row++;
+            }
 
             TestStartNode = new FlowStep
                 {
-                    Action = flowSwitch
+                    Action = multiAssign,
+                    Next = sw
                 };
+
             ScenarioContext.Current.Add("activity", flowSwitch);
         }
 
@@ -76,7 +88,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
             string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
+            GetScalarValueFromEnvironment(result.Environment, variable,
                                        out actualValue, out error);
             Assert.AreEqual(expectedResult, actualValue);
         }

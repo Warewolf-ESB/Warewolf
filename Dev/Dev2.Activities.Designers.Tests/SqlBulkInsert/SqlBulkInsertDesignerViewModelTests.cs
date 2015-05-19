@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
@@ -28,8 +27,8 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.TO;
 using Dev2.Threading;
+using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -583,6 +582,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             //------------Setup for test--------------------------
             var databases = CreateDatabases(2);
             var viewModel = CreateViewModel(databases);
+            viewModel.GetDatalistString = () => "<DataList><Db0_Table_1><Db0_Column_1_0/></Db0_Table_1></DataList>";
 
             var selectedDatabase = databases.Keys.First();
             var selectedTables = databases[selectedDatabase];
@@ -595,10 +595,11 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             viewModel.InputMappings[0].InputColumn = string.Empty;
             viewModel.Validate();
 
+
             //------------Assert Results-------------------------
             var errors = viewModel.Errors;
             Assert.IsNotNull(errors);
-            Assert.AreEqual(1, errors.Count);
+            Assert.AreEqual(2, errors.Count);
             StringAssert.Contains(errors[0].Message, "Db0_Column_1_0 does not allow NULL");
 
         }
@@ -611,6 +612,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             //------------Setup for test--------------------------
             var databases = CreateDatabases(2, true);
             var viewModel = CreateViewModel(databases);
+            viewModel.GetDatalistString = () => "<DataList><Db0_Table_1><Db0_Column_1_0/></Db0_Table_1></DataList>";
 
             var selectedDatabase = databases.Keys.First();
             var selectedTables = databases[selectedDatabase];
@@ -625,7 +627,8 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             //------------Assert Results-------------------------
             var errors = viewModel.Errors;
-            Assert.IsNull(errors);
+            Assert.AreEqual(1,errors.Count);
+            StringAssert.Contains(errors[0].Message, "'Input Data or [[Variable]]' - Recordset Field [ db0_column_1_1 ] does not exist for [ Db0_Table_1(*) ]");
         }
 
         [TestMethod]
@@ -636,6 +639,8 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             //------------Setup for test--------------------------
             var databases = CreateDatabases(2, false, true);
             var viewModel = CreateViewModel(databases);
+            viewModel.GetDatalistString = () => "<DataList><Db0_Table_1><Db0_Column_1_0/></Db0_Table_1></DataList>";
+
 
             var selectedDatabase = databases.Keys.First();
             var selectedTables = databases[selectedDatabase];
@@ -664,7 +669,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             //------------Setup for test--------------------------
             var databases = CreateDatabases(2, false, true);
             var viewModel = CreateViewModel(databases);
-
+            viewModel.GetDatalistString = () => "<DataList><Db0_Table_1><Db0_Column_1_0/></Db0_Table_1></DataList>";
             var selectedDatabase = databases.Keys.First();
             var selectedTables = databases[selectedDatabase];
             var selectedTable = selectedTables.Items[1];
@@ -690,6 +695,9 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             //------------Setup for test--------------------------
             var databases = CreateDatabases(2, false, true);
             var viewModel = CreateViewModel(databases);
+
+            viewModel.GetDatalistString = () => "<DataList><Db0_Table_1><Db0_Column_1_0/></Db0_Table_1></DataList>";
+
 
             var selectedDatabase = databases.Keys.First();
             var selectedTables = databases[selectedDatabase];
@@ -722,19 +730,19 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             //------------Execute Test---------------------------
             viewModel.ModelItem.SetProperty("BatchSize", "");
             viewModel.ModelItem.SetProperty("Timeout", "");
-            Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: false, isTimeoutValid: false);
+            Verify_Validate_Values_SetsErrors(viewModel, false, false);
 
             viewModel.ModelItem.SetProperty("BatchSize", (string)null);
             viewModel.ModelItem.SetProperty("Timeout", (string)null);
-            Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: false, isTimeoutValid: false);
+            Verify_Validate_Values_SetsErrors(viewModel, false, false);
 
             viewModel.ModelItem.SetProperty("BatchSize", "a");
             viewModel.ModelItem.SetProperty("Timeout", "a");
-            Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: false, isTimeoutValid: false);
+            Verify_Validate_Values_SetsErrors(viewModel, false, false);
 
             viewModel.ModelItem.SetProperty("BatchSize", "-1");
             viewModel.ModelItem.SetProperty("Timeout", "-1");
-            Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: false, isTimeoutValid: false);
+            Verify_Validate_Values_SetsErrors(viewModel, false, false);
         }
 
         [TestMethod]
@@ -745,16 +753,16 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             //------------Setup for test--------------------------
             var databases = CreateDatabases(2);
             var viewModel = CreateViewModel(databases);
-
+            viewModel.GetDatalistString = () => "<DataList><Db0_Table_1><Db0_Column_1_0/></Db0_Table_1></DataList>";
 
             //------------Execute Test---------------------------
             viewModel.ModelItem.SetProperty("BatchSize", "0");
             viewModel.ModelItem.SetProperty("Timeout", "0");
-            Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: true, isTimeoutValid: true);
+            Verify_Validate_Values_SetsErrors(viewModel, true, true);
 
             viewModel.ModelItem.SetProperty("BatchSize", "20");
             viewModel.ModelItem.SetProperty("Timeout", "20");
-            Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: true, isTimeoutValid: true);
+            Verify_Validate_Values_SetsErrors(viewModel, true, true);
 
             var selectedDatabase = databases.Keys.First();
             var selectedTables = databases[selectedDatabase];
@@ -762,7 +770,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             viewModel.SelectedDatabase = selectedDatabase;
             viewModel.SelectedTable = selectedTable;
-            Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: true, isTimeoutValid: true);
+            Verify_Validate_Values_SetsErrors(viewModel, true, true);
         }
 
         void Verify_Validate_Values_SetsErrors(TestSqlBulkInsertDesignerViewModel viewModel, bool isBatchSizeValid, bool isTimeoutValid)
@@ -792,11 +800,13 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             var selectedTable = selectedTables.Items[3];
 
             var modelItem = CreateModelItem();
+
             modelItem.SetProperty("Database", selectedDatabase);
             modelItem.SetProperty("TableName", selectedTable.TableName);
             modelItem.SetProperty("InputMappings", selectedTable.Columns.Select(c => new DataColumnMapping { OutputColumn = c }).ToList());
 
             var viewModel = CreateViewModel(modelItem, databases);
+            viewModel.GetDatalistString = () => "<DataList><Db0_Table_1><Db0_Column_1_0/></Db0_Table_1></DataList>";
 
             var inputMapping = viewModel.InputMappings.FirstOrDefault(m => !string.IsNullOrEmpty(m.InputColumn));
             Assert.IsNull(inputMapping);
@@ -831,7 +841,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
                 .Select(c => new DataColumnMapping { OutputColumn = c, InputColumn = n++ == 0 ? "[[rs(*).f1]]" : null }).ToList());
 
             var viewModel = CreateViewModel(modelItem, databases);
-
+            viewModel.GetDatalistString = () => "<DataList></DataList>";
             var inputMapping = viewModel.InputMappings.FirstOrDefault(m => !string.IsNullOrEmpty(m.InputColumn));
             Assert.IsNotNull(inputMapping);
 
@@ -839,7 +849,9 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             viewModel.Validate();
 
             //------------Assert Results-------------------------
-            Assert.IsNull(viewModel.Errors);
+            Assert.AreEqual(1, viewModel.Errors.Count);
+            StringAssert.Contains(viewModel.Errors[0].Message, "'Input Data or [[Variable]]' - [[rs()]] does not exist in your variable list");
+
         }
 
 
@@ -864,6 +876,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             modelItem.SetProperty("InputMappings", inputMappings);
 
             var viewModel = CreateViewModel(modelItem, databases);
+            viewModel.GetDatalistString = () => "<DataList><Db0_Table_1><Db0_Column_1_0/></Db0_Table_1></DataList>";
 
             //------------Execute Test---------------------------
             Verify_Validate_Variables_SetsErrors(viewModel, false, true, true, true, inputMapping.OutputColumn.ColumnName);
@@ -873,17 +886,17 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             modelItem.SetProperty("BatchSize", "a]]");
             modelItem.SetProperty("Timeout", "");
             modelItem.SetProperty("Result", "");
-            Verify_Validate_Variables_SetsErrors(viewModel, isInputMappingsValid: true, isBatchSizeValid: false, isTimeoutValid: true, isResultValid: true);
+            Verify_Validate_Variables_SetsErrors(viewModel, true, false, true, true);
 
             modelItem.SetProperty("BatchSize", "");
             modelItem.SetProperty("Timeout", "a]]");
             modelItem.SetProperty("Result", "");
-            Verify_Validate_Variables_SetsErrors(viewModel, isInputMappingsValid: true, isBatchSizeValid: true, isTimeoutValid: false, isResultValid: true);
+            Verify_Validate_Variables_SetsErrors(viewModel, true, true, false, true);
 
             modelItem.SetProperty("BatchSize", "");
             modelItem.SetProperty("Timeout", "");
             modelItem.SetProperty("Result", "a]]");
-            Verify_Validate_Variables_SetsErrors(viewModel, isInputMappingsValid: true, isBatchSizeValid: true, isTimeoutValid: true, isResultValid: false);
+            Verify_Validate_Variables_SetsErrors(viewModel, true, true, true, false);
         }
 
         [TestMethod]
@@ -907,7 +920,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             modelItem.SetProperty("InputMappings", inputMappings);
 
             var viewModel = CreateViewModel(modelItem, databases);
-
+            viewModel.GetDatalistString = () => "<DataList><Db0_Table_1><Db0_Column_1_0/></Db0_Table_1></DataList>";
             //------------Execute Test---------------------------
             Verify_Validate_Variables_SetsErrors(viewModel, true, true, true, true, inputMapping.OutputColumn.ColumnName);
 
@@ -916,17 +929,17 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             modelItem.SetProperty("BatchSize", "[[a]]");
             modelItem.SetProperty("Timeout", "");
             modelItem.SetProperty("Result", "");
-            Verify_Validate_Variables_SetsErrors(viewModel, isInputMappingsValid: true, isBatchSizeValid: true, isTimeoutValid: true, isResultValid: true);
+            Verify_Validate_Variables_SetsErrors(viewModel, true, true, true, true);
 
             modelItem.SetProperty("BatchSize", "");
             modelItem.SetProperty("Timeout", "[[a]]");
             modelItem.SetProperty("Result", "");
-            Verify_Validate_Variables_SetsErrors(viewModel, isInputMappingsValid: true, isBatchSizeValid: true, isTimeoutValid: true, isResultValid: true);
+            Verify_Validate_Variables_SetsErrors(viewModel, true, true, true, true);
 
             modelItem.SetProperty("BatchSize", "");
             modelItem.SetProperty("Timeout", "");
             modelItem.SetProperty("Result", "[[a]]");
-            Verify_Validate_Variables_SetsErrors(viewModel, isInputMappingsValid: true, isBatchSizeValid: true, isTimeoutValid: true, isResultValid: true);
+            Verify_Validate_Variables_SetsErrors(viewModel, true, true, true, true);
         }
 
         void Verify_Validate_Variables_SetsErrors(TestSqlBulkInsertDesignerViewModel viewModel, bool isInputMappingsValid, bool isBatchSizeValid, bool isTimeoutValid, bool isResultValid, string toField = "")
@@ -948,8 +961,8 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
         [TestCategory("SqlBulkInsertDesignerViewModel_AddToCollection")]
         public void SqlBulkInsertDesignerViewModel_AddToCollection_AlwaysUpdatesInputMappings()
         {
-            Verify_AddToCollection_AlwaysUpdatesInputMappings(overwrite: true);
-            Verify_AddToCollection_AlwaysUpdatesInputMappings(overwrite: false);
+            Verify_AddToCollection_AlwaysUpdatesInputMappings(true);
+            Verify_AddToCollection_AlwaysUpdatesInputMappings(false);
         }
 
         void Verify_AddToCollection_AlwaysUpdatesInputMappings(bool overwrite)
@@ -1143,7 +1156,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
                 // ReSharper disable ImplicitlyCapturedClosure
             }).Returns(() => columnsJson);
             // ReSharper restore ImplicitlyCapturedClosure
-
+            
             if(configureFindSingle)
             {
                 envModel.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(resourceModel);

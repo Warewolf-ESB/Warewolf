@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities.Presentation;
 using System.Windows;
@@ -19,38 +17,38 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Models;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Interfaces;
 
 // ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.AppResources.Behaviors
 {
     public class NavigationItemViewModelDragDropBehavior : Behavior<FrameworkElement>
     {
-
-
         #region Dependency Properties
 
         #region DontAllowDraging
 
-        public bool DontAllowDraging
-        {
-            get { return (bool)GetValue(DontAllowDragingProperty); }
-            set { SetValue(DontAllowDragingProperty, value); }
-        }
-
         // Using a DependencyProperty as the backing store for SetActiveEnvironment.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DontAllowDragingProperty =
             DependencyProperty.Register("DontAllowDraging", typeof(bool), typeof(NavigationItemViewModelDragDropBehavior), new PropertyMetadata(true));
+        public bool DontAllowDraging
+        {
+            get
+            {
+                return (bool)GetValue(DontAllowDragingProperty);
+            }
+            set
+            {
+                SetValue(DontAllowDragingProperty, value);
+            }
+        }
 
         #endregion DontAllowDraging
 
         #endregion
 
-        #region Class Members
-
-        private FrameworkElement _dragSource;
-        private Point _lastMouseDown;
-
-        #endregion Class Members
+        Point _lastMouseDown;
 
         #region Override Methods
 
@@ -71,9 +69,9 @@ namespace Dev2.Studio.AppResources.Behaviors
         #region Private Methods
 
         /// <summary>
-        /// Subscribes to the associated objects events for this behavior
+        ///     Subscribes to the associated objects events for this behavior
         /// </summary>
-        private void SubscribeToEvents()
+        void SubscribeToEvents()
         {
             if(AssociatedObject == null)
             {
@@ -87,13 +85,6 @@ namespace Dev2.Studio.AppResources.Behaviors
                 return;
             }
 
-            //var resource = navigationItemViewModel.DataContext;
-
-            //if(resource == null)
-            //{
-            //    return;
-            //}
-
             AssociatedObject.MouseMove -= AssociatedObject_MouseMove;
             AssociatedObject.DragOver -= AssociatedObject_DragOver;
             AssociatedObject.MouseDown -= AssociatedObject_MouseDown;
@@ -106,9 +97,9 @@ namespace Dev2.Studio.AppResources.Behaviors
         }
 
         /// <summary>
-        /// Unsubscribes from the associated objects events for this behavior
+        ///     Unsubscribes from the associated objects events for this behavior
         /// </summary>
-        private void UnsubscribeToEvents()
+        void UnsubscribeToEvents()
         {
             if(AssociatedObject != null)
             {
@@ -123,12 +114,11 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         #region Event Handler Methods
 
-        private void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
+        void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
         {
-            //UnsubscribeToEvents();
         }
 
-        private void AssociatedObject_MouseMove(object sender, MouseEventArgs e)
+        void AssociatedObject_MouseMove(object sender, MouseEventArgs e)
         {
             if(!DontAllowDraging)
             {
@@ -150,13 +140,12 @@ namespace Dev2.Studio.AppResources.Behaviors
                                 return;
                             }
 
-                            //dragSourceDataContext.IsNew = true;
-                            var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.ID == dragSourceDataContext.EnvironmentId);
-                            var hasPermissionToDrag = true;
+                            IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.ID == dragSourceDataContext.EnvironmentId);
+                            bool hasPermissionToDrag = true;
                             if(environmentModel != null && environmentModel.AuthorizationService != null)
                             {
-                                var canExecute = environmentModel.AuthorizationService.IsAuthorized(AuthorizationContext.Execute, dragSourceDataContext.ResourceId.ToString());
-                                var canView = environmentModel.AuthorizationService.IsAuthorized(AuthorizationContext.View, dragSourceDataContext.ResourceId.ToString());
+                                bool canExecute = environmentModel.AuthorizationService.IsAuthorized(AuthorizationContext.Execute, dragSourceDataContext.ResourceId.ToString());
+                                bool canView = environmentModel.AuthorizationService.IsAuthorized(AuthorizationContext.View, dragSourceDataContext.ResourceId.ToString());
                                 hasPermissionToDrag = canExecute && canView;
                             }
                             if(hasPermissionToDrag)
@@ -175,18 +164,17 @@ namespace Dev2.Studio.AppResources.Behaviors
             }
         }
 
-        private void AssociatedObject_DragOver(object sender, DragEventArgs e)
+        void AssociatedObject_DragOver(object sender, DragEventArgs e)
         {
         }
 
-        private void AssociatedObject_MouseDown(object sender, MouseButtonEventArgs e)
+        void AssociatedObject_MouseDown(object sender, MouseButtonEventArgs e)
         {
             var inputElement = sender as IInputElement;
 
             if(e.ChangedButton == MouseButton.Left && inputElement != null)
             {
                 _lastMouseDown = e.GetPosition(inputElement);
-                _dragSource = sender as FrameworkElement;
             }
         }
 

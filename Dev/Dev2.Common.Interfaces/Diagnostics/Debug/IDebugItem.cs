@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
@@ -19,13 +17,13 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
     // change DebugState.Serialize/Deserialize
     public interface IDebugItem : IXmlSerializable
     {
+        List<IDebugItemResult> ResultsList { get; set; }
         bool Contains(string filterText);
         void Add(IDebugItemResult itemToAdd, bool isDeserialize = false);
         void AddRange(List<IDebugItemResult> itemsToAdd);
-        IList<IDebugItemResult> FetchResultsList();        
+        IList<IDebugItemResult> FetchResultsList();
         void FlushStringBuilder();
         void TryCache(IDebugItemResult item);
         string SaveFile(string contents, string fileName);
-        List<IDebugItemResult> ResultsList { get; set; }
     }
 }

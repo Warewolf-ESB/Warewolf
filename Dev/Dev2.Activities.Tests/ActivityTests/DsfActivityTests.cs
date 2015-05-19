@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Activities.Statements;
@@ -19,9 +18,7 @@ using System.Security.Principal;
 using ActivityUnitTests;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Data;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
 using Dev2.Services.Security;
@@ -56,12 +53,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<DebugItem> inRes;
             List<DebugItem> outRes;
             //------------Execute Test---------------------------
-            var result = CheckPathOperationActivityDebugInputOutput(act, @"<ADL><scalar></scalar><Numeric><num></num></Numeric><CompanyName></CompanyName><Customer><FirstName></FirstName></Customer></ADL>",
+            CheckPathOperationActivityDebugInputOutput(act, @"<ADL><scalar></scalar><Numeric><num></num></Numeric><CompanyName></CompanyName><Customer><FirstName></FirstName></Customer></ADL>",
                                                                "<ADL><scalar>scalarData</scalar><Numeric><num>1</num></Numeric><Numeric><num>2</num></Numeric><Numeric><num>3</num></Numeric><Numeric><num>4</num></Numeric><CompanyName>Dev2</CompanyName><Customer><FirstName>Wallis</FirstName></Customer></ADL>", out inRes, out outRes);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
 
             //------------Assert Results-------------------------
             Assert.AreEqual(5, inRes.Count);
@@ -77,48 +72,16 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<DebugItem> inRes;
             List<DebugItem> outRes;
             //------------Execute Test---------------------------
-            var result = CheckPathOperationActivityDebugInputOutput(act, @"<ADL><scalar></scalar><Numeric><num></num></Numeric><CompanyName></CompanyName><Customer><FirstName></FirstName></Customer></ADL>",
+            CheckPathOperationActivityDebugInputOutput(act, @"<ADL><scalar></scalar><Numeric><num></num></Numeric><CompanyName></CompanyName><Customer><FirstName></FirstName></Customer></ADL>",
                                                                "<ADL><scalar>scalarData</scalar><Numeric><num>1</num></Numeric><Numeric><num>2</num></Numeric><Numeric><num>3</num></Numeric><Numeric><num>4</num></Numeric><CompanyName>Dev2</CompanyName><Customer><FirstName>Wallis</FirstName></Customer></ADL>", out inRes, out outRes);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
 
             //------------Assert Results-------------------------
             Assert.AreEqual(5, inRes.Count);
         }
 
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("DsfActivity_BeforeExecutionStart")]
-        public void DsfActivity_BeforeExecutionStart_ResourceIDNotAutorised_ThrowsException()
-        {
-            //------------Setup for test--------------------------
-            var resourceID = Guid.NewGuid();
-
-            DsfActivity act = new DsfActivity { InputMapping = ActivityStrings.DsfActivityInputMapping, OutputMapping = ActivityStrings.DsfActivityOutputMapping, ResourceID = new InArgument<Guid>(resourceID), ServiceName = resourceID.ToString() };
-            var mockAutorizationService = new Mock<IAuthorizationService>();
-            mockAutorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), AuthorizationContext.Execute, resourceID.ToString())).Returns(false);
-            act.AuthorizationService = mockAutorizationService.Object;
-            var mockPrincipal = new Mock<IPrincipal>();
-            var mockIdentity = new Mock<IIdentity>();
-            mockIdentity.Setup(identity => identity.Name).Returns("SomeUser");
-            mockPrincipal.Setup(principal => principal.Identity).Returns(mockIdentity.Object);
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-            //------------Execute Test---------------------------
-            var result = CheckPathOperationActivityDebugInputOutput(act, @"<ADL><scalar></scalar><Numeric><num></num></Numeric><CompanyName></CompanyName><Customer><FirstName></FirstName></Customer></ADL>",
-                                                               "<ADL><scalar>scalarData</scalar><Numeric><num>1</num></Numeric><Numeric><num>2</num></Numeric><Numeric><num>3</num></Numeric><Numeric><num>4</num></Numeric><CompanyName>Dev2</CompanyName><Customer><FirstName>Wallis</FirstName></Customer></ADL>", out inRes, out outRes, mockPrincipal.Object);
-
-            // remove test datalist ;)
-            var compiler = DataListFactory.CreateDataListCompiler();
-            var errors = compiler.FetchErrors(result.DataListID);
-            DataListRemoval(result.DataListID);
-            //--------------Assert result----------------------------
-            StringAssert.Contains(errors, string.Format("User: SomeUser does not have Execute Permission to resource {0}.", resourceID));
-
-        }
-
+     
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfActivity_BeforeExecutionStart")]
@@ -133,77 +96,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<DebugItem> inRes;
             List<DebugItem> outRes;
             //------------Execute Test---------------------------
-            var result = CheckPathOperationActivityDebugInputOutput(act, @"<ADL><scalar></scalar><Numeric><num></num></Numeric><CompanyName></CompanyName><Customer><FirstName></FirstName></Customer></ADL>",
+            CheckPathOperationActivityDebugInputOutput(act, @"<ADL><scalar></scalar><Numeric><num></num></Numeric><CompanyName></CompanyName><Customer><FirstName></FirstName></Customer></ADL>",
                                                                "<ADL><scalar>scalarData</scalar><Numeric><num>1</num></Numeric><Numeric><num>2</num></Numeric><Numeric><num>3</num></Numeric><Numeric><num>4</num></Numeric><CompanyName>Dev2</CompanyName><Customer><FirstName>Wallis</FirstName></Customer></ADL>", out inRes, out outRes, new Mock<IPrincipal>().Object);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
             //------------Assert Results-------------------------
             Assert.AreEqual(5, inRes.Count);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("DsfActivity")]
-        public void DsfActivity_ExecutionError_ShouldBeInErrors()
-        {
-            //------------Setup for test--------------------------
-            var resourceID = Guid.NewGuid();
-            DsfActivity act = new DsfErrorActivity { InputMapping = ActivityStrings.DsfActivityInputMapping, OutputMapping = ActivityStrings.DsfActivityOutputMapping, ResourceID = new InArgument<Guid>(resourceID) };
-            var mockAutorizationService = new Mock<IAuthorizationService>();
-            mockAutorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), AuthorizationContext.Execute, resourceID.ToString())).Returns(true);
-            act.AuthorizationService = mockAutorizationService.Object;
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-            //------------Execute Test---------------------------
-            var result = CheckPathOperationActivityDebugInputOutput(act, @"<ADL><scalar></scalar><Numeric><num></num></Numeric><CompanyName></CompanyName><Customer><FirstName></FirstName></Customer></ADL>",
-                                                               "<ADL><scalar>scalarData</scalar><Numeric><num>1</num></Numeric><Numeric><num>2</num></Numeric><Numeric><num>3</num></Numeric><Numeric><num>4</num></Numeric><CompanyName>Dev2</CompanyName><Customer><FirstName>Wallis</FirstName></Customer></ADL>", out inRes, out outRes, new Mock<IPrincipal>().Object);
-
-
-            var compiler = DataListFactory.CreateDataListCompiler();
-            var errors = compiler.FetchErrors(result.DataListID);
-            DataListRemoval(result.DataListID);
-            //------------Assert Results-------------------------
-            StringAssert.Contains(errors, "This is an error");
-        }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("DsfActivity_OnExecute")]
-        public void DsfActivity_OnExecute_WhenRemoteExecutionInLocalContext_ExpectEnviromentIDRemainsRemoteAndOverrideSetToTrue()
-        {
-            //------------Setup for test--------------------------
-            var resourceID = Guid.NewGuid();
-            var environmentID = Guid.NewGuid();
-            DsfActivity act = new DsfActivity
-            {
-                ResourceID = new InArgument<Guid>(resourceID),
-                EnvironmentID = Guid.Empty
-            };
-            var mockAutorizationService = new Mock<IAuthorizationService>();
-            mockAutorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), AuthorizationContext.Execute, resourceID.ToString())).Returns(true);
-            act.AuthorizationService = mockAutorizationService.Object;
-
-            //------------Execute Test---------------------------
-            ErrorResultTO errors;
-            TestStartNode = new FlowStep
-            {
-                Action = act
-            };
-
-            TestData = "<DataList></DataList>";
-            CurrentDl = "<DataList></DataList>";
-            User = new Mock<IPrincipal>().Object;
-            Compiler = DataListFactory.CreateDataListCompiler();
-            ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl.ToStringBuilder(), out errors);
-            var result = ExecuteProcess(null, true, null, false, true, false, environmentID) as IDSFDataObject;
-
-            // ReSharper disable PossibleNullReferenceException
-            var isRemoteOverridden = result.IsRemoteInvokeOverridden;
-            // ReSharper restore PossibleNullReferenceException
-
-            //------------Assert Results-------------------------
-            Assert.IsTrue(isRemoteOverridden);
         }
 
         [TestMethod]
@@ -235,7 +133,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             User = new Mock<IPrincipal>().Object;
             Compiler = DataListFactory.CreateDataListCompiler();
             ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl.ToStringBuilder(), out errors);
-            var result = ExecuteProcess(null, true, null, false, true, false, environmentID) as IDSFDataObject;
+            var result = ExecuteProcess(null, true, null, false, true, false, environmentID);
 
             // ReSharper disable PossibleNullReferenceException
             var resultEnvironmentID = result.EnvironmentID;
@@ -246,46 +144,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(environmentID, resultEnvironmentID);
             Assert.IsFalse(isRemoteOverridden);
         }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfActivity_BeforeExecutionStart")]
-        [ExpectedException(typeof(DebugCopyException))]
-        public void DsfActivity_GetDebugInputs_ThrowsErrorIfUnableToParse()
-        {
-            //------------Setup for test--------------------------
-            var resourceID = Guid.NewGuid();
-            DsfActivity act = new DsfActivity { InputMapping = ActivityStrings.DsfActivityInputMapping, OutputMapping = ActivityStrings.DsfActivityOutputMapping, ResourceID = new InArgument<Guid>(resourceID) };
-            var mockAutorizationService = new Mock<IAuthorizationService>();
-            mockAutorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), AuthorizationContext.Execute, resourceID.ToString())).Returns(true);
-            act.AuthorizationService = mockAutorizationService.Object;
-            var compiler = new Mock<IDataListCompiler>();
-            var parser = new Mock<IDev2LanguageParser>();
-            var inp1 = new Mock<IDev2Definition>();
-            var inp2 = new Mock<IDev2Definition>();
-            parser.Setup(a => a.Parse(It.IsAny<string>())).Returns(new List<IDev2Definition> { inp1.Object, inp2.Object });
-
-            var errors = new ErrorResultTO();
-            errors.AddError("bob");
-            compiler.Setup(a => a.Evaluate(It.IsAny<Guid>(), Dev2.DataList.Contract.enActionType.User, It.IsAny<string>(), false, out errors));
-            //------------Execute Test---------------------------
-            var dl = new Mock<IBinaryDataList>();
-            var guid = Guid.NewGuid();
-            dl.Setup(a => a.UID).Returns(guid);
-            try
-            {
-                act.GetDebugInputs(dl.Object, compiler.Object, parser.Object);
-            }
-            catch(Exception err)
-            {
-                Assert.IsTrue(err.Message.Contains("bob"));
-                throw;
-            }
-
-        }
-
-
-
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfActivity_UpdateDebugParentID")]

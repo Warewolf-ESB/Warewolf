@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Collections.Generic;
 
 namespace Dev2.Common.Interfaces.UndoFramework
@@ -19,4 +17,3 @@ namespace Dev2.Common.Interfaces.UndoFramework
         bool IsDelayed { get; set; }
     }
 }
-

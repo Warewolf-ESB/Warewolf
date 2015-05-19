@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +25,7 @@ namespace Dev2.Core.Tests.Network
         //Given a ServerProxy
         //When I Execute the ExecuteCommand
         //Then the EsbProxy is invoked with ExecuteCommand
-        [TestMethod]
+        [TestMethod, Timeout(3000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServerProxy_ExecuteCommand")]
         public void ServerProxy_ExecuteCommand_WithArgs_ShouldInvokeCorrectly()

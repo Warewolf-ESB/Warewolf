@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Data;
 
@@ -18,5 +17,7 @@ namespace Dev2.Activities.SqlBulkInsert
     public interface ISqlBulkCopy : IDisposable
     {
         bool WriteToServer(DataTable dt);
+
+        bool WriteToServer(IDataReader dataTableToInsert);
     }
 }

@@ -74,14 +74,12 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
                 multiAssign.FieldsCollection.Add(new ActivityDTO(variable.Item1, variable.Item2, row, true));
                 row++;
             }
-
+            FlowDecision x = new FlowDecision();
+            x.Condition=decisionActivity;
             TestStartNode = new FlowStep
                 {
                     Action = multiAssign,
-                    Next = new FlowStep
-                        {
-                            Action = decisionActivity
-                        }
+                    Next = x
                 };
             ScenarioContext.Current.Add("activity", decisionActivity);
         }
@@ -192,6 +190,14 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
         {
             var modelData = ScenarioContext.Current.Get<string>("modelData");
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            try
+            {
+                Dev2DataListDecisionHandler.Instance.RemoveEnvironment(result.DataListID);
+                Dev2DataListDecisionHandler.Instance.AddEnvironment(result.DataListID, result.Environment);
+            }
+            catch{
+            }
+            
             bool actual = new Dev2DataListDecisionHandler().ExecuteDecisionStack(modelData,
                                                                                  new List<string>
                                                                                      {
@@ -199,6 +205,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
                                                                                      });
             bool expected = Boolean.Parse(expectedRes);
             Assert.AreEqual(expected, actual);
+   
         }
     }
 }

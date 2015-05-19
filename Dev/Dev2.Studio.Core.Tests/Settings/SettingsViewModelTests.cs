@@ -9,7 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Linq;
+using System.Windows;
+using System.Windows.Forms;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
@@ -26,10 +29,6 @@ using Dev2.Studio.Core.Models;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Linq;
-using System.Windows;
-using System.Windows.Forms;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Settings
@@ -111,7 +110,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
-            Assert.IsFalse(settingsViewModel.ShowSecurity);
+            Assert.IsTrue(settingsViewModel.ShowSecurity);
         }
 
         [TestMethod]
@@ -129,7 +128,7 @@ namespace Dev2.Core.Tests.Settings
             settingsViewModel.ShowLogging = true;
 
             //------------Assert Results-------------------------
-            Assert.IsFalse(propertyChanged);
+            Assert.IsTrue(propertyChanged);
         }
 
         [TestMethod]
@@ -147,7 +146,7 @@ namespace Dev2.Core.Tests.Settings
             settingsViewModel.ShowLogging = false;
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(propertyChanged);
+            Assert.IsFalse(propertyChanged);
         }
 
         [TestMethod]
@@ -208,7 +207,7 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             var securityViewModel = new TestSecurityViewModel { IsDirty = true };
-            var viewModel = CreateViewModel(CreateSettings().ToString(), "success", securityViewModel);
+            var viewModel = CreateSettingsViewModel(CreateSettings().ToString(), "success", securityViewModel);
             viewModel.IsDirty = true;
             //------------Execute Test---------------------------
             viewModel.SaveCommand.Execute(null);
@@ -228,17 +227,9 @@ namespace Dev2.Core.Tests.Settings
             var mockPopupController = new Mock<IPopupController>();
             mockPopupController.SetupAllProperties();
             mockPopupController.Setup(controller => controller.ShowSettingsCloseConfirmation()).Returns(MessageBoxResult.Yes);
-            var viewModel = CreateViewModel(mockPopupController.Object, CreateSettings().ToString(), "Success");
+            var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "Success");
             viewModel.IsDirty = true;
             viewModel.SecurityViewModel.IsDirty = true;
-#pragma warning disable 168
-            var description = "Security settings have not been saved." + Environment.NewLine
-#pragma warning restore 168
- + "Would you like to save the settings? " + Environment.NewLine +
-                                 "-------------------------------------------------------------------" +
-                                 "Yes - Save the security settings." + Environment.NewLine +
-                                 "No - Discard your changes." + Environment.NewLine +
-                                 "Cancel - Returns you to security settings.";
             //------------Execute Test---------------------------
             viewModel.SaveCommand.Execute(null);
             //------------Assert Results-------------------------
@@ -257,7 +248,7 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             var securityViewModel = new TestSecurityViewModel { IsDirty = true };
-            var viewModel = CreateViewModel(CreateSettings().ToString(), null, securityViewModel);
+            var viewModel = CreateSettingsViewModel(CreateSettings().ToString(), null, securityViewModel);
             viewModel.IsDirty = true;
 
 
@@ -279,7 +270,7 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             var securityViewModel = new TestSecurityViewModel { IsDirty = true };
-            var viewModel = CreateViewModel(CreateSettings().ToString(), null, securityViewModel);
+            var viewModel = CreateSettingsViewModel(CreateSettings().ToString(), null, securityViewModel);
 
             var environment = new Mock<IEnvironmentModel>();
             environment.Setup(e => e.IsConnected).Returns(true);
@@ -321,7 +312,7 @@ You need Administrator permission.", viewModel.Errors);
                 ResourceID = Guid.Empty,
                 IsServer = true
             });
-            var viewModel = CreateViewModel(CreateSettings().ToString(), null, securityViewModel);
+            var viewModel = CreateSettingsViewModel(CreateSettings().ToString(), null, securityViewModel);
 
             var environment = new Mock<IEnvironmentModel>();
             environment.Setup(e => e.IsConnected).Returns(true);
@@ -366,7 +357,7 @@ You need Administrator permission.", viewModel.Errors);
                 ResourceID = resourceId,
                 IsServer = false,
             });
-            var viewModel = CreateViewModel(CreateSettings().ToString(), null, securityViewModel);
+            var viewModel = CreateSettingsViewModel(CreateSettings().ToString(), null, securityViewModel);
 
             var environment = new Mock<IEnvironmentModel>();
             environment.Setup(e => e.IsConnected).Returns(true);
@@ -396,7 +387,7 @@ You need Administrator permission.", viewModel.Errors);
         {
             //------------Setup for test--------------------------
             var securityViewModel = new TestSecurityViewModel { IsDirty = true };
-            var viewModel = CreateViewModel(CreateSettings().ToString(), null, securityViewModel);
+            var viewModel = CreateSettingsViewModel(CreateSettings().ToString(), null, securityViewModel);
 
             var environment = new Mock<IEnvironmentModel>();
             environment.Setup(e => e.IsConnected).Returns(false);
@@ -425,7 +416,7 @@ You need Administrator permission.", viewModel.Errors);
             const string ErrorMessage = "A message that is not just the word Success.";
 
             var securityViewModel = new TestSecurityViewModel { IsDirty = true };
-            var viewModel = CreateViewModel(CreateSettings().ToString(), ErrorMessage, securityViewModel);
+            var viewModel = CreateSettingsViewModel(CreateSettings().ToString(), ErrorMessage, securityViewModel);
             viewModel.IsDirty = true;
 
 
@@ -539,7 +530,7 @@ You need Administrator permission.", viewModel.Errors);
             };
 
             //------------Execute Test---------------------------
-            var viewModel = CreateViewModel(popupController.Object, settings.ToString());
+            var viewModel = CreateSettingsViewModel(popupController.Object, settings.ToString());
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, viewModel.ShowErrorHitCount);
@@ -562,7 +553,7 @@ You need Administrator permission.", viewModel.Errors);
             popupController.SetupAllProperties();
 
             //------------Execute Test---------------------------
-            var viewModel = CreateViewModel(popupController.Object, null);
+            var viewModel = CreateSettingsViewModel(popupController.Object, null);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, viewModel.ShowErrorHitCount);
@@ -583,12 +574,12 @@ You need Administrator permission.", viewModel.Errors);
             //------------Setup for test--------------------------
             var settings = CreateSettings();
             //------------Execute Test---------------------------
-            var viewModel = CreateViewModel(settings.ToString());
+            var viewModel = CreateSettingsViewModel(settings.ToString());
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.CurrentEnvironment);
             Assert.IsNotNull(viewModel.SecurityViewModel);
-            Assert.IsNotNull(viewModel.LoggingViewModel);
+            Assert.IsNotNull(viewModel.LogSettingsViewModel);
             Assert.IsFalse(viewModel.IsLoading);
             Assert.IsFalse(viewModel.IsDirty);
 
@@ -606,7 +597,7 @@ You need Administrator permission.", viewModel.Errors);
         public void SettingsViewModel_IsDirty_SecurityViewModelIsDirtyPropertyChanged_IsDirtyIsTrue()
         {
             //------------Setup for test--------------------------
-            var viewModel = CreateViewModel(CreateSettings().ToString());
+            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
             Assert.IsFalse(viewModel.IsDirty);
 
             //------------Execute Test---------------------------
@@ -622,7 +613,7 @@ You need Administrator permission.", viewModel.Errors);
         public void SettingsViewModel_IsDirty_TrueSecurityNameHasStar()
         {
             //------------Setup for test--------------------------
-            var viewModel = CreateViewModel(CreateSettings().ToString());
+            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
 
             //------------Execute Test---------------------------
             viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
@@ -638,7 +629,7 @@ You need Administrator permission.", viewModel.Errors);
         public void SettingsViewModel_WhenIsDirtySecurityModelFiresPropertyChange_SetsSettingsViewModelIsDirty()
         {
             //------------Setup for test--------------------------
-            var viewModel = CreateViewModel(CreateSettings().ToString());
+            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
             bool _wasCalled = false;
             viewModel.SecurityViewModel.PropertyChanged += (sender, args) =>
             {
@@ -658,17 +649,48 @@ You need Administrator permission.", viewModel.Errors);
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_IsDirty")]
-        public void SettingsViewModel_IsDirty_FalseSecurityNameHasNoStar()
+        public void SettingsViewModel_IsSecurityDirty_FalseSecurityNameHasNoStar()
         {
             //------------Setup for test--------------------------
-            var viewModel = CreateViewModel(CreateSettings().ToString());
+            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
 
             //------------Execute Test---------------------------
             viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
             Assert.IsTrue(viewModel.IsDirty);
-            viewModel.IsDirty = false;
+            viewModel.SecurityViewModel.IsDirty = false;
             //------------Assert Results-------------------------
             Assert.AreEqual("Security", viewModel.SecurityHeader);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SettingsViewModel_IsDirty")]
+        public void SettingsViewModel_IsLoggingDirty_FalseLoggingNameHasNoStar()
+        {
+            //------------Setup for test--------------------------
+            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
+
+            //------------Execute Test---------------------------
+            viewModel.LogSettingsViewModel.ServerLogMaxSize = "10";
+            Assert.IsTrue(viewModel.IsDirty);
+            viewModel.LogSettingsViewModel.IsDirty = false;
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Logging", viewModel.LogHeader);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SettingsViewModel_IsDirty")]
+        public void SettingsViewModel_IsLoggingDirty_TrueLoggingNameHasStar()
+        {
+            //------------Setup for test--------------------------
+            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
+
+            //------------Execute Test---------------------------
+            viewModel.LogSettingsViewModel.ServerLogMaxSize = "10";
+            Assert.IsTrue(viewModel.IsDirty);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Logging *", viewModel.LogHeader);
         }
 
         [TestMethod]
@@ -679,7 +701,7 @@ You need Administrator permission.", viewModel.Errors);
             //------------Setup for test--------------------------
             var mockPopupController = new Mock<IPopupController>();
             mockPopupController.SetupAllProperties();
-            var viewModel = CreateViewModel(mockPopupController.Object, CreateSettings().ToString());
+            var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString());
             //------------Execute Test---------------------------
             viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
             Assert.IsTrue(viewModel.IsDirty);
@@ -697,7 +719,7 @@ You need Administrator permission.", viewModel.Errors);
             var mockPopupController = new Mock<IPopupController>();
             mockPopupController.SetupAllProperties();
             mockPopupController.Setup(controller => controller.ShowSettingsCloseConfirmation()).Returns(MessageBoxResult.Yes);
-            var viewModel = CreateViewModel(mockPopupController.Object, CreateSettings().ToString(), "Success");
+            var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "Success");
             //------------Execute Test---------------------------
             viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
             Assert.IsTrue(viewModel.IsDirty);
@@ -717,7 +739,7 @@ You need Administrator permission.", viewModel.Errors);
             var mockPopupController = new Mock<IPopupController>();
             mockPopupController.SetupAllProperties();
             mockPopupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.No);
-            var viewModel = CreateViewModel(mockPopupController.Object, CreateSettings().ToString(), "success", securityViewModel);
+            var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "success", securityViewModel);
             //------------Execute Test---------------------------
             viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
             Assert.IsTrue(viewModel.IsDirty);
@@ -737,7 +759,7 @@ You need Administrator permission.", viewModel.Errors);
             var mockPopupController = new Mock<IPopupController>();
             mockPopupController.SetupAllProperties();
             mockPopupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.No);
-            var viewModel = CreateViewModel(mockPopupController.Object, CreateSettings().ToString(), "success", securityViewModel);
+            var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "success", securityViewModel);
             //------------Execute Test---------------------------
             viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
             Assert.IsTrue(viewModel.IsDirty);
@@ -755,14 +777,14 @@ You need Administrator permission.", viewModel.Errors);
 
         }
 
-        static TestSettingsViewModel CreateViewModel(string executeCommandReadResult = "", string executeCommandWriteResult = "", SecurityViewModel securityViewModel = null)
+        static TestSettingsViewModel CreateSettingsViewModel(string executeCommandReadResult = "", string executeCommandWriteResult = "", SecurityViewModel securityViewModel = null)
         {
             var mock = new Mock<IPopupController>();
             mock.Setup(controller => controller.Show()).Returns(MessageBoxResult.Yes);
-            return CreateViewModel(mock.Object, executeCommandReadResult, executeCommandWriteResult, securityViewModel);
+            return CreateSettingsViewModel(mock.Object, executeCommandReadResult, executeCommandWriteResult, securityViewModel);
         }
 
-        static TestSettingsViewModel CreateViewModel(IPopupController popupController, string executeCommandReadResult = "", string executeCommandWriteResult = "", SecurityViewModel securityViewModel = null)
+        static TestSettingsViewModel CreateSettingsViewModel(IPopupController popupController, string executeCommandReadResult = "", string executeCommandWriteResult = "", SecurityViewModel securityViewModel = null)
         {
             var viewModel = new TestSettingsViewModel(new Mock<IEventAggregator>().Object, popupController, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IWin32Window>().Object) { TheSecurityViewModel = securityViewModel };
 
@@ -795,6 +817,11 @@ You need Administrator permission.", viewModel.Errors);
         {
             var settings = new Data.Settings.Settings
             {
+                Logging = new LoggingSettingsTo
+                {
+                  LogLevel  = "DEBUG",
+                  LogSize = 20
+                },
                 Security = new SecuritySettingsTO(new[]
                 {
                     new WindowsGroupPermission
@@ -850,7 +877,7 @@ You need Administrator permission.", viewModel.Errors);
                 })
                 {
                     CacheTimeout = GlobalConstants.DefaultTimeoutValue
-                }
+                }                
             };
             return settings;
         }
@@ -863,7 +890,7 @@ You need Administrator permission.", viewModel.Errors);
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var settingsViewModel = CreateViewModel();
+            var settingsViewModel = CreateSettingsViewModel();
             settingsViewModel.HasErrors = false;
             settingsViewModel.IsDirty = false;
             settingsViewModel.IsSaved = true;
@@ -880,7 +907,7 @@ You need Administrator permission.", viewModel.Errors);
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var settingsViewModel = CreateViewModel();
+            var settingsViewModel = CreateSettingsViewModel();
             settingsViewModel.HasErrors = true;
             settingsViewModel.IsDirty = true;
             settingsViewModel.IsSaved = false;
@@ -900,7 +927,7 @@ You need Administrator permission.", viewModel.Errors);
             mockPopupController.SetupAllProperties();
             mockPopupController.Setup(controller => controller.ShowSettingsCloseConfirmation()).Returns(MessageBoxResult.Yes);
             var securityViewModel = new TestSecurityViewModel { IsDirty = true };
-            var viewModel = CreateViewModel(mockPopupController.Object, CreateSettings().ToString(), "Success", securityViewModel);
+            var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "Success", securityViewModel);
             viewModel.IsDirty = true;
             //------------Execute Test---------------------------
             var result = viewModel.DoDeactivate();
@@ -921,7 +948,7 @@ You need Administrator permission.", viewModel.Errors);
             mockPopupController.SetupAllProperties();
             mockPopupController.Setup(controller => controller.ShowSettingsCloseConfirmation()).Returns(MessageBoxResult.No);
             var securityViewModel = new TestSecurityViewModel { IsDirty = true };
-            var viewModel = CreateViewModel(mockPopupController.Object, CreateSettings().ToString(), "Success", securityViewModel);
+            var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "Success", securityViewModel);
             viewModel.IsDirty = true;
             bool propertyChanged = false;
             const string propertyName = "SecurityHeader";
@@ -953,7 +980,7 @@ You need Administrator permission.", viewModel.Errors);
             mockPopupController.SetupAllProperties();
             mockPopupController.Setup(controller => controller.ShowSettingsCloseConfirmation()).Returns(MessageBoxResult.Cancel);
             var securityViewModel = new TestSecurityViewModel { IsDirty = true };
-            var viewModel = CreateViewModel(mockPopupController.Object, CreateSettings().ToString(), "success", securityViewModel);
+            var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "success", securityViewModel);
 
             viewModel.IsDirty = true;
             //------------Execute Test---------------------------
@@ -971,7 +998,7 @@ You need Administrator permission.", viewModel.Errors);
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var settingsViewModel = CreateViewModel();
+            var settingsViewModel = CreateSettingsViewModel();
             settingsViewModel.HasErrors = true;
             settingsViewModel.IsDirty = false;
             settingsViewModel.IsSaved = false;
@@ -988,7 +1015,7 @@ You need Administrator permission.", viewModel.Errors);
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var settingsViewModel = CreateViewModel();
+            var settingsViewModel = CreateSettingsViewModel();
             settingsViewModel.HasErrors = false;
             settingsViewModel.IsDirty = true;
             settingsViewModel.IsSaved = false;
@@ -1005,7 +1032,7 @@ You need Administrator permission.", viewModel.Errors);
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var settingsViewModel = CreateViewModel();
+            var settingsViewModel = CreateSettingsViewModel();
             settingsViewModel.HasErrors = false;
             settingsViewModel.IsDirty = false;
             settingsViewModel.IsSaved = true;

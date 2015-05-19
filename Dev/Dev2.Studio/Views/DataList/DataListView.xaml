@@ -28,7 +28,7 @@
                                            SearchText="{Binding Path=SearchText,Mode=TwoWay}"
                                            Margin="0,-2,-2,-2"
                                            HorizontalContentAlignment="Stretch"
-                                           VerticalAlignment="Stretch"></customControls2:FilterTextBox>
+                                           VerticalAlignment="Stretch" />
             <Button Grid.Column="1"
                     AutomationProperties.AutomationId="UI_AddRemovebtn_AutoID"
                     Margin="0,0,2,0"

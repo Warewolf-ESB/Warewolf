@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Versioning;
 
@@ -17,7 +15,7 @@ namespace Dev2.Common.Interfaces
 {
     public interface IVersionStrategy
     {
-        IVersionInfo GetNextVersion(IResource newResource, IResource oldresource, string userName , string reason );
+        IVersionInfo GetNextVersion(IResource newResource, IResource oldresource, string userName, string reason);
         IVersionInfo GetCurrentVersion(IResource newResource, IResource oldresource, string userName, string reason);
         IVersionInfo GetCurrentVersion(IResource newResource, IVersionInfo oldresource, string userName, string reason);
     }

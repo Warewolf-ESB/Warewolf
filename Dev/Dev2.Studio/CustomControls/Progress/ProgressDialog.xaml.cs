@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Windows;
 
 namespace Dev2.CustomControls.Progress
@@ -22,6 +21,11 @@ namespace Dev2.CustomControls.Progress
         public ProgressDialog(Window owner)
         {
             Owner = owner;
+            InitializeComponent();
+        }
+        
+        public ProgressDialog()
+        {
             InitializeComponent();
         }
     }

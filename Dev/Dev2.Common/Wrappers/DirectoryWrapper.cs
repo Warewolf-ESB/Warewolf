@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -8,7 +7,6 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-
 
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -26,7 +24,7 @@ namespace Dev2.Common.Wrappers
 
         public string CreateIfNotExists(string debugOutputPath)
         {
-            if(!Directory.Exists(debugOutputPath))
+            if (!Directory.Exists(debugOutputPath))
             {
                 return Directory.CreateDirectory(debugOutputPath).Name;
             }
@@ -61,7 +59,7 @@ namespace Dev2.Common.Wrappers
 
         public void Move(string directoryStructureFromPath, string directoryStructureToPath)
         {
-             Directory.Move(directoryStructureFromPath, directoryStructureToPath);
+            Directory.Move(directoryStructureFromPath, directoryStructureToPath);
         }
 
         public void Delete(string directoryStructureFromPath, bool recursive)

@@ -9,13 +9,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Data.Operations;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace Dev2.Data.Tests.Operations
 {

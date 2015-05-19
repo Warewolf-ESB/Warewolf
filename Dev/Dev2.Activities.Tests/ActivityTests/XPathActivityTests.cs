@@ -9,16 +9,14 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using ActivityUnitTests;
-using Dev2.Activities;
-using Dev2.Common.Interfaces.DataList.Contract;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using ActivityUnitTests;
+using Dev2.Activities;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -85,9 +83,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(null, actual);
 
@@ -103,33 +100,10 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(null, actual);
-        }
-
-        [TestMethod]
-        public void RecordsetWithAnIndexWithNoRecordsInRecSetExpectedPathsAndAppendRecords()
-        {
-            _resultsCollection.Add(new XPathDTO("[[recset1(3).field1]]", "//type/method", 1));
-            SetUpActivityArguments();
-            List<string> expected = new List<string> { "<method name=\"CreateForm\" signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\" />" };
-
-            IDSFDataObject result = ExecuteProcess();
-
-            IList<IBinaryDataListItem> actual;
-            string error;
-
-            GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out actual, out error);
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            List<string> actualRet = new List<string>();
-            actual.Where(c => c.ItemCollectionIndex >= 3).ToList().ForEach(d => actualRet.Add(d.TheValue));
-            var comparer = new ActivityUnitTests.Utils.StringComparer();
-            CollectionAssert.AreEqual(expected, actualRet, comparer);
         }
 
         [TestMethod]
@@ -141,10 +115,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string Expected = "<method name=\"ExtractInMergeDataFromRequest\" signature=\"void(object)\" />,<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />,<method name=\"SetID\" signature=\"void(Dev2.DynamicServices.IDynamicServiceObject, object)\" />,<method name=\"&lt;GetUsage&gt;b__0\" signature=\"void(CommandLine.Text.HelpText)\" />,<method name=\"GetUsage\" signature=\"string()\" />,<method name=\"CreateForm\" signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\" />";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             if(string.IsNullOrEmpty(error))
             {
@@ -167,9 +140,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = "<method name=\"ExtractInMergeDataFromRequest\" signature=\"void(object)\" />,<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />,<method name=\"SetID\" signature=\"void(Dev2.DynamicServices.IDynamicServiceObject, object)\" />,<method name=\"&lt;GetUsage&gt;b__0\" signature=\"void(CommandLine.Text.HelpText)\" />,<method name=\"GetUsage\" signature=\"string()\" />,<method name=\"CreateForm\" signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\" />";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             if(string.IsNullOrEmpty(error))
             {
@@ -200,12 +172,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 string returnVal;
                 string error;
-                GetScalarValueFromDataList(result.DataListID, "OutVar" + i, out returnVal, out error);
+                GetScalarValueFromEnvironment(result.Environment, "OutVar" + i, out returnVal, out error);
 
                 actual.Add(returnVal.Trim());
             }
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             ActivityUnitTests.Utils.StringComparer comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expected, actual, comparer);
@@ -230,12 +201,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 string returnVal;
                 string error;
-                GetScalarValueFromDataList(result.DataListID, "OutVar" + i, out returnVal, out error);
+                GetScalarValueFromEnvironment(result.Environment, "OutVar" + i, out returnVal, out error);
                 actual.Add(returnVal.Trim());
             }
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             ActivityUnitTests.Utils.StringComparer comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expected, actual, comparer);
@@ -253,9 +223,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             List<string> expected = new List<string> { "void(object)", "void(object)", "void(Dev2.DynamicServices.IDynamicServiceObject, object)", "void(CommandLine.Text.HelpText)", "string()", "Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)" };
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             ActivityUnitTests.Utils.StringComparer comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expected, actual, comparer);
@@ -277,18 +246,17 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             string actualScalar;
             string error;
-            IList<IBinaryDataListItem> actualRecordSet;
+            IList<string> actualRecordSet;
 
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actualScalar, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actualScalar, out error);
 
             Assert.AreEqual("ExtractInMergeDataFromRequest,ExtractOutMergeDataFromRequest,SetID,<GetUsage>b__0,GetUsage,CreateForm", actualScalar);
 
-            GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out actualRecordSet, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out actualRecordSet, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
-            List<string> actual = actualRecordSet.Select(entry => entry.TheValue).ToList();
+            List<string> actual = actualRecordSet.Select(entry => entry).ToList();
             var comparer = new ActivityUnitTests.Utils.StringComparer();
 
             CollectionAssert.AreEqual(expected, actual, comparer);
@@ -314,15 +282,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<string> actual = new List<string>();
             string actualScalar;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actualScalar, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actualScalar, out error);
 
 
             Assert.AreEqual("ExtractInMergeDataFromRequest,ExtractOutMergeDataFromRequest,SetID,<GetUsage>b__0,GetUsage,CreateForm", actualScalar);
 
-            actual.AddRange(RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error));
+            actual.AddRange(RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error));
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             string[] foo = actual.ToArray();
             actual.Clear();
@@ -348,11 +315,10 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                         
             };
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "rec1", out error);
-            actual.AddRange(RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error));
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "rec1", out error);
+            actual.AddRange(RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error));
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             string[] foo = actual.ToArray();
             actual.Clear();
@@ -377,10 +343,9 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                         "string()","Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)"
                                 };
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             string[] foo = actual.ToArray();
             actual.Clear();
@@ -402,10 +367,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             //exe
             IDSFDataObject result = ExecuteProcess();
             string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             //assert
             Assert.AreEqual(string.Empty, error, "XPath execution threw error: " + error);
@@ -424,7 +388,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var act = new DsfXPathActivity { ResultsCollection = _resultsCollection, SourceString = "xml" };
 
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(null, null);
+            act.UpdateForEachInputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual("[[recset1(*).field1]]", act.ResultsCollection[0].OutputVariable);
             Assert.AreEqual("//x/a/text()", act.ResultsCollection[0].XPath);
@@ -443,7 +407,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple1 = new Tuple<string, string>("//x/a/text()", "Test");
             var tuple2 = new Tuple<string, string>("xml", "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual("[[recset1(*).field1]]", act.ResultsCollection[0].OutputVariable);
             Assert.AreEqual("Test", act.ResultsCollection[0].XPath);
@@ -460,7 +424,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "//x/a/text()", 1));
             var act = new DsfXPathActivity { ResultsCollection = _resultsCollection, SourceString = "xml" };
 
-            act.UpdateForEachOutputs(null, null);
+            act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual("[[recset1(*).field1]]", act.ResultsCollection[0].OutputVariable);
             Assert.AreEqual("//x/a/text()", act.ResultsCollection[0].XPath);
@@ -479,7 +443,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("[[recset1(*).field1]]", "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test2", act.ResultsCollection[0].OutputVariable);
             Assert.AreEqual("//x/a/text()", act.ResultsCollection[0].XPath);
@@ -497,7 +461,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var tuple1 = new Tuple<string, string>("[[recset1(*).field1]]", "Test");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.ResultsCollection[0].OutputVariable);
             Assert.AreEqual("//x/a/text()", act.ResultsCollection[0].XPath);

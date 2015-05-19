@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -8,7 +7,6 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-
 
 using System;
 using System.Collections.Generic;
@@ -24,8 +22,8 @@ namespace Unlimited.Framework.Converters.Graph.Poco
     {
         #region Class Members
 
-        const string _seperatorSymbol = ".";
-        const string _enumerableSymbol = "()";
+        private const string _seperatorSymbol = ".";
+        private const string _enumerableSymbol = "()";
 
         #endregion Class Members
 
@@ -66,7 +64,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
         public override IPathSegment CreatePathSegment(string pathSegmentString)
         {
             PocoPathSegment pathSegment;
-            if(pathSegmentString.EndsWith(EnumerableSymbol))
+            if (pathSegmentString.EndsWith(EnumerableSymbol))
             {
                 pathSegment = new PocoPathSegment(pathSegmentString.TrimEnd(EnumerableSymbol.ToArray()), true);
             }
@@ -88,18 +86,12 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
         public static string EnumerableSymbol
         {
-            get
-            {
-                return _enumerableSymbol;
-            }
+            get { return _enumerableSymbol; }
         }
 
         public static string SeperatorSymbol
         {
-            get
-            {
-                return _seperatorSymbol;
-            }
+            get { return _seperatorSymbol; }
         }
 
         #endregion Static Properties

@@ -98,13 +98,13 @@ namespace Dev2.Runtime.Execution
 
         private IExecutableService GetParent(Guid workspaceID, Guid parentID)
         {
-            var service = _activeExecutions.ToList().FirstOrDefault(e => e!=null &&e.ID == parentID && e.WorkspaceID == workspaceID);
+            var service = _activeExecutions.FirstOrDefault(e => e!=null &&e.ID == parentID && e.WorkspaceID == workspaceID);
             return service;
         }
 
         public IExecutableService Get(Guid workspaceID, Guid id)
         {
-            var service = _activeExecutions.ToList().FirstOrDefault(e => e.ID == id && e.WorkspaceID == workspaceID);
+            var service = _activeExecutions.FirstOrDefault(e => e.ID == id && e.WorkspaceID == workspaceID);
             return service;
         }
 

@@ -21,6 +21,7 @@ using Dev2.Runtime.ESB.Control;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage;
 
 namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
 {
@@ -117,7 +118,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
             }
-            variableList.Add(new Tuple<string, string>(variable, ""));
+           // variableList.Add(new Tuple<string, string>(variable, ""));
 
             List<DataSplitDTO> splitCollection;
             ScenarioContext.Current.TryGetValue("splitCollection", out splitCollection);
@@ -161,7 +162,29 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             variableList.Add(new Tuple<string, string>(variable, value.ToString(CultureInfo.InvariantCulture)));
 
         }
-        
+
+         [Then(@"the split recordset ""(.*)"" will be")]
+         public void ThenTheSplitRecordsetWillBe(string variable, Table table)
+         {
+             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+             List<TableRow> tableRows = table.Rows.ToList();
+             var recordSets = result.Environment.Eval(variable);
+             if (recordSets.IsWarewolfAtomListresult)
+             {
+                 // ReSharper disable PossibleNullReferenceException
+                 var recordSetValues = (recordSets as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult).Item.ToList();
+                 // ReSharper restore PossibleNullReferenceException
+                 Assert.AreEqual(tableRows.Count, recordSetValues.Count);
+
+                 for (int i = 0; i < tableRows.Count; i++)
+                 {
+                     Assert.AreEqual(tableRows[i][1], ExecutionEnvironment.WarewolfAtomToString(recordSetValues[i]).Trim());
+                 }
+             }
+
+         }
+
+
         [When(@"the data split tool is executed")]
         public void WhenTheDataSplitToolIsExecuted()
         {
@@ -181,7 +204,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             var field = ScenarioContext.Current.Get<string>("recordField");
 
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, field, out error).ToList();
+            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, field, out error).ToList();
 
             Assert.AreEqual(tableRows.Count, recordSetValues.Count);
 
@@ -199,10 +222,17 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             string error;
             value = value.Replace('"', ' ').Trim();
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
+            GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(variable),
                                        out actualValue, out error);
-            actualValue = actualValue.Replace('"', ' ').Trim();
-            Assert.AreEqual(value, actualValue);
+            if (!string.IsNullOrEmpty(actualValue))
+            {
+                actualValue = actualValue.Replace('"', ' ').Trim();
+                Assert.AreEqual(value, actualValue);
+            }
+            if (string.IsNullOrEmpty(value))
+            {
+                Assert.IsTrue(string.IsNullOrEmpty(actualValue));
+            }
         }
     }
 }

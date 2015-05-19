@@ -7,7 +7,9 @@
 Scenario: Correcting errors on sql bulk insert clicking Done shows small view (using ids)
 	Given I have Warewolf running
 	And all tabs are closed	
-	And I click "EXPLORER,UI_localhost_AutoID"
+	Given I click "EXPLORERFILTERCLEARBUTTON"  
+	Given I click "EXPLORERCONNECTCONTROL"
+	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	And I click "RIBBONNEWENDPOINT"
 	Given I double click "TOOLBOX,PART_SearchBox"
     Given I send "{Delete}" to ""
@@ -22,14 +24,12 @@ Scenario: Correcting errors on sql bulk insert clicking Done shows small view (u
 	Given "WORKSURFACE,UI_Error1_AutoID" is visible
 	Given "WORKSURFACE,UI_Error2_AutoID" is visible
 	#Correcting The Error
-	Given I click point "151,42" on "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner),SQL Bulk Insert(SqlBulkInsertDesigner)"
+	Given I click point "151,42" on "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),SQL Bulk Insert(SqlBulkInsertDesigner)"
 	And I send "testingDBSrc{ENTER}" to ""
-	Given I click point "148,75" on "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner),SQL Bulk Insert(SqlBulkInsertDesigner)"
+	Given I click point "148,75" on "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),SQL Bulk Insert(SqlBulkInsertDesigner)"
 	And I send "dbo.City{ENTER}" to ""
+	#This database happens to have alot of mappings to load
+	And I wait for "10" seconds
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),SQL Bulk Insert(SqlBulkInsertDesigner),DoneButton"
-	Given "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner),SQL Bulk Insert(SqlBulkInsertDesigner),SmallViewContent,UI__Database_AutoID" is visible
-	#Clearing The ToolBox Search
-	Given I double click "TOOLBOX,PART_SearchBox"
-    Given I send "{Delete}" to ""
-	
+	Given "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),SQL Bulk Insert(SqlBulkInsertDesigner),SmallViewContent,UI__Database_AutoID" is visible within "5" seconds
 	

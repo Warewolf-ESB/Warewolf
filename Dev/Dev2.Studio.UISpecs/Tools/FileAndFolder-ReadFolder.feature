@@ -7,7 +7,9 @@
 Scenario:ReadFolder Tool Large View And Invalid Variables Expected Error On Done Button
 	Given I have Warewolf running
 	And all tabs are closed	
-	And I click "EXPLORER,UI_localhost_AutoID"
+	Given I click "EXPLORERFILTERCLEARBUTTON"  
+	Given I click "EXPLORERCONNECTCONTROL"
+	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	And I click "RIBBONNEWENDPOINT"
 	#Dragging ReadFolder Tool From Tool Box
 	Given I send "Read" to "TOOLBOX,PART_SearchBox"

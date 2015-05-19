@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Xml.Linq;
 using Dev2.Common.Interfaces.Data;
@@ -64,6 +63,27 @@ namespace Dev2.Runtime.ServiceModel
             {
                 TypeNameHandling = TypeNameHandling.Objects
             });
+                var pluginSourceFromCatalog = _resourceCatalog.GetResource<PluginSource>(workspaceId, service.Source.ResourceID);
+                if (pluginSourceFromCatalog == null)
+                {
+                    try
+                    {
+                        var xmlStr = Resources.ReadXml(workspaceId, ResourceType.PluginSource, service.Source.ResourceID.ToString());
+                        if (!string.IsNullOrEmpty(xmlStr))
+                        {
+                            var xml = XElement.Parse(xmlStr);
+                            pluginSourceFromCatalog = new PluginSource(xml);
+                        }
+                    }
+                    catch(Exception)
+                    {
+                        //ignore the exception
+                    }
+                }
+                if (pluginSourceFromCatalog != null)
+                {
+                    service.Source = pluginSourceFromCatalog;
+                }
                 return FetchRecordset(service, true);
             }
             catch(Exception ex)
@@ -109,8 +129,33 @@ namespace Dev2.Runtime.ServiceModel
             {
                 // BUG 9500 - 2013.05.31 - TWR : changed to use PluginService as args 
                 var service = JsonConvert.DeserializeObject<PluginService>(args);
+                var pluginSourceFromCatalog = _resourceCatalog.GetResource<PluginSource>(workspaceId, service.Source.ResourceID);
+                if (pluginSourceFromCatalog == null)
+                {
+                    try
+                    {
+                        var xmlStr = Resources.ReadXml(workspaceId, ResourceType.PluginSource, service.Source.ResourceID.ToString());
+                        if (!string.IsNullOrEmpty(xmlStr))
+                        {
+                            var xml = XElement.Parse(xmlStr);
+                            pluginSourceFromCatalog = new PluginSource(xml);
+                        }
+                    }
+                    catch(Exception)
+                    {
+                        //ignore this
+                    }
+                }
+                if (pluginSourceFromCatalog != null)
+                {
+                    service.Source = pluginSourceFromCatalog;
+                }
                 var broker = new PluginBroker();
-                result = broker.GetMethods(((PluginSource)service.Source).AssemblyLocation, ((PluginSource)service.Source).AssemblyName, service.Namespace);
+                var pluginSource = (PluginSource)service.Source;
+                if(pluginSource != null)
+                {
+                    result = broker.GetMethods(pluginSource.AssemblyLocation, pluginSource.AssemblyName, service.Namespace);
+                }
                 return result;
             }
             catch(Exception ex)

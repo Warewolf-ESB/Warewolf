@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Collections.Generic;
@@ -23,14 +22,15 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Data.Decision;
 using Dev2.Data.Storage;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -238,17 +238,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // ???? Why is this here....
             context.Properties.ToObservableCollection();
 
-            IEsbChannel esbChannel = context.GetExtension<IEsbChannel>();
+            IEsbChannel esbChannel = DataObject.EsbChannel;
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            ErrorResultTO errors;
+            dataObject.EnvironmentID = context.GetValue(EnvironmentID);
+            Guid datalistId = DataListExecutionID.Get(context);
+            ParentWorkflowInstanceId = context.WorkflowInstanceId.ToString();
+            dataObject.RemoteServiceType = context.GetValue(Type);
+            var resourceId = context.GetValue(ResourceID);
             ErrorResultTO allErrors = new ErrorResultTO();
 
-            Guid datalistId = DataListExecutionID.Get(context);
+           
             ParentServiceName = dataObject.ServiceName;
-            ParentWorkflowInstanceId = context.WorkflowInstanceId.ToString();
+           
 
             string parentServiceName = string.Empty;
             string serviceName = string.Empty;
@@ -259,7 +260,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // The first time through this value is set correctly when executing those designed resource from our localhost
             // If we change it as per what was here, we always get a localhost tag instead of the remote host we are design against
             var isRemote = dataObject.IsRemoteWorkflow();
-            dataObject.EnvironmentID = context.GetValue(EnvironmentID);
+            
             if((isRemote || dataObject.IsRemoteInvokeOverridden) && dataObject.EnvironmentID == Guid.Empty)
             {
                 dataObject.IsRemoteInvokeOverridden = true;
@@ -271,7 +272,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             try
             {
-                compiler.ClearErrors(dataObject.DataListID);
+                //compiler.ClearErrors(dataObject.DataListID);
 
                 if(ServiceServer != Guid.Empty)
                 {
@@ -279,22 +280,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     dataObject.RemoteInvokerID = ServiceServer.ToString();
                 }
 
-                dataObject.RemoteServiceType = context.GetValue(Type);
+                
                 dataObject.RunWorkflowAsync = RunWorkflowAsync;
                 if(dataObject.IsDebugMode() || (dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer))
                 {
-                    DispatchDebugState(context, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.Before);
                 }
 
-                var resourceId = context.GetValue(ResourceID);
+                
                 if(resourceId != Guid.Empty)
                 {
                     dataObject.ResourceID = resourceId;
                 }
 
                 // scrub it clean ;)
-                ScrubDataList(compiler, datalistId, context.WorkflowInstanceId.ToString(), out errors);
-                allErrors.MergeErrors(errors);
 
                 // set the parent service
                 parentServiceName = dataObject.ParentServiceName;
@@ -327,9 +326,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                             dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
                             dataObject.ResourceID = ResourceID.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
-
+                            
                             // Execute Request
                             ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors);
+                            
                             allErrors.MergeErrors(tmpErrors);
 
                             AfterExecutionCompleted(tmpErrors);
@@ -338,50 +338,34 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             dataObject.ServiceName = ServiceName;
                         }
 
-                        // ** THIS IS A HACK OF NOTE, WE NEED TO ADDRESS THIS!
-                        if(dataObject.IsDebugMode())
-                        {
-                            //Dont remove this it is here to fix the data not being returned correctly
-                            string testData = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), enTranslationDepth.Data, out errors).ToString();
-                            if(string.IsNullOrEmpty(testData))
-                            {
-
-                            }
-                        }
 
                     }
 
-                    bool whereErrors = compiler.HasErrors(datalistId);
+                    bool whereErrors = dataObject.Environment.HasErrors();
 
-                    Result.Set(context, whereErrors);
-                    HasError.Set(context, whereErrors);
-                    IsValid.Set(context, whereErrors);
-
+                    SetValues(context, whereErrors);
                 }
             }
             finally
             {
 
 
-                if(!dataObject.WorkflowResumeable || !dataObject.IsDataListScoped)
-                {
                     // Handle Errors
                     if(allErrors.HasErrors())
                     {
                         DisplayAndWriteError("DsfActivity", allErrors);
-                        compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                        dataObject.Environment.AddError(allErrors.MakeDataListReady());
                         // add to datalist in variable specified
                         if(!String.IsNullOrEmpty(OnErrorVariable))
                         {
                             var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
-                            compiler.Upsert(dataObject.DataListID, upsertVariable, allErrors.MakeDataListReady(), out errors);
+                            dataObject.Environment.Assign(upsertVariable, allErrors.MakeDataListReady());
                         }
                     }
-                }
 
                 if(dataObject.IsDebugMode() || (dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer))
                 {
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
 
                 dataObject.ParentInstanceID = _previousInstanceId;
@@ -393,6 +377,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.EnvironmentID = Guid.Empty;
                 dataObject.ResourceID = oldResourceId;
             }
+        }
+
+        void SetValues(NativeActivityContext context, bool whereErrors)
+        {
+            Result.Set(context, whereErrors);
+            HasError.Set(context, whereErrors);
+            IsValid.Set(context, whereErrors);
         }
 
         internal IAuthorizationService AuthorizationService
@@ -419,22 +410,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 var message = string.Format("User: {0} does not have Execute Permission to resource {1}.", dataObject.ExecutingUser.Identity.Name, ServiceName);
                 tmpErrors.AddError(message);
+                dataObject.Environment.AddError(message);
                 throw new InvalidCredentialException(message);
             }
         }
 
         protected virtual void AfterExecutionCompleted(ErrorResultTO tmpErrors)
         {
+            if(DataObject != null)
+            {
+                Dev2DataListDecisionHandler.Instance.RemoveEnvironment(DataObject.DataListID);
+            }
         }
 
         protected virtual Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors)
         {
             Dev2Logger.Log.Info("PRE-SUB_EXECUTE SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb().ToString("####.####") + " MBs ]");
 
-            var resultId = esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors);
+            esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors);
             Dev2Logger.Log.Info("POST-SUB_EXECUTE SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb().ToString("####.####") + " MBs ]");
-
-            return resultId;
+            return Guid.NewGuid();
         }
 
         public override IList<DsfForEachItem> GetForEachInputs()
@@ -452,31 +447,146 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return enFindMissingType.DsfActivity;
         }
 
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
+
+            ErrorResultTO allErrors = new ErrorResultTO();
+
+            dataObject.EnvironmentID = (EnvironmentID==null || EnvironmentID.Expression == null) ? Guid.Empty : Guid.Parse(EnvironmentID.Expression.ToString());
+            dataObject.RemoteServiceType = Type.Expression == null ? "" : Type.Expression.ToString();
+            ParentServiceName = dataObject.ServiceName;
+
+
+            string parentServiceName = string.Empty;
+            string serviceName = string.Empty;
+
+            // BUG 9634 - 2013.07.17 - TWR - changed isRemoteExecution to check EnvironmentID instead
+            // This is now the wrong behavior - We need to keep the original EnvironmentID when not a remote workflow
+            // This is because we put and empty GUID in when designing against a remote server that uses it's resources
+            // The first time through this value is set correctly when executing those designed resource from our localhost
+            // If we change it as per what was here, we always get a localhost tag instead of the remote host we are design against
+            var isRemote = dataObject.IsRemoteWorkflow();
+
+            if ((isRemote || dataObject.IsRemoteInvokeOverridden) && dataObject.EnvironmentID == Guid.Empty)
+            {
+                dataObject.IsRemoteInvokeOverridden = true;
+            }
+
+            var oldResourceId = dataObject.ResourceID;
+
+            InitializeDebug(dataObject);
+
+            try
+            {
+                //compiler.ClearErrors(dataObject.DataListID);
+
+                if (ServiceServer != Guid.Empty)
+                {
+                    // we need to adjust the originating server id so debug reflect remote server instead of localhost ;)
+                    dataObject.RemoteInvokerID = ServiceServer.ToString();
+                }
+
+
+                dataObject.RunWorkflowAsync = RunWorkflowAsync;
+                if (dataObject.IsDebugMode() || (dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer))
+                {
+                    DispatchDebugState(dataObject, StateType.Before);
+                }
+
+                Guid resourceId = dataObject.ResourceID;
+                if (resourceId != Guid.Empty)
+                {
+                    dataObject.ResourceID = resourceId;
+                }
+
+                // scrub it clean ;)
+
+                // set the parent service
+                parentServiceName = dataObject.ParentServiceName;
+                serviceName = dataObject.ServiceName;
+                dataObject.ParentServiceName = serviceName;
+
+                _previousInstanceId = dataObject.ParentInstanceID;
+                dataObject.ParentID = oldResourceId;
+
+                dataObject.ParentInstanceID = UniqueID;
+                dataObject.ParentWorkflowInstanceId = ParentWorkflowInstanceId;
+
+                if (!DeferExecution)
+                {
+                    // In all cases the ShapeOutput will have merged the execution data up into the current
+                    ErrorResultTO tmpErrors = new ErrorResultTO();
+
+                    IEsbChannel esbChannel = dataObject.EsbChannel;
+                    if (esbChannel == null)
+                    {
+                        throw new Exception("FATAL ERROR : Null ESB channel!!");
+                    }
+                    else
+                    {
+                        // NEW EXECUTION MODEL ;)
+                        // PBI 7913
+         
+
+                            dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
+                            dataObject.ResourceID = ResourceID.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
+                            BeforeExecutionStart(dataObject, allErrors);
+                            allErrors.MergeErrors(tmpErrors);
+                            // Execute Request
+                            ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors);
+
+                            allErrors.MergeErrors(tmpErrors);
+
+                            AfterExecutionCompleted(tmpErrors);
+                            allErrors.MergeErrors(tmpErrors);
+                            dataObject.ServiceName = ServiceName;
+                    }
+                }
+            }
+                catch(Exception err)
+                {
+                    dataObject.Environment.Errors.Add(err.Message);
+                }
+            finally
+            {
+
+
+                if (!dataObject.WorkflowResumeable || !dataObject.IsDataListScoped)
+                {
+                    // Handle Errors
+                    if (allErrors.HasErrors())
+                    {
+                        DisplayAndWriteError("DsfActivity", allErrors);
+                        dataObject.Environment.AddError(allErrors.MakeDataListReady());
+                        // add to datalist in variable specified
+                        if (!String.IsNullOrEmpty(OnErrorVariable))
+                        {
+                            var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
+                            dataObject.Environment.Assign(upsertVariable, allErrors.MakeDataListReady());
+                        }
+                    }
+                }
+
+                if (dataObject.IsDebugMode() || (dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer))
+                {
+                    DispatchDebugState(dataObject, StateType.After);
+                }
+
+                dataObject.ParentInstanceID = _previousInstanceId;
+                dataObject.ParentServiceName = parentServiceName;
+                dataObject.ServiceName = serviceName;
+                dataObject.RemoteInvokeResultShape = new StringBuilder(); // reset targnet shape ;)
+                dataObject.RunWorkflowAsync = false;
+                dataObject.RemoteInvokerID = Guid.Empty.ToString();
+                dataObject.EnvironmentID = Guid.Empty;
+                dataObject.ResourceID = oldResourceId;
+            }
+
+        }
+
         #endregion
 
         #region Private Methods
-
-        private void ScrubDataList(IDataListCompiler compiler, Guid executionId, string workflowId, out ErrorResultTO invokeErrors)
-        {
-            ErrorResultTO errors;
-            invokeErrors = new ErrorResultTO();
-            // Strip System Tags
-
-            compiler.UpsertSystemTag(executionId, enSystemTag.InstanceId, string.Empty, out errors);
-            invokeErrors.MergeErrors(errors);
-
-            compiler.UpsertSystemTag(executionId, enSystemTag.Bookmark, string.Empty, out errors);
-            invokeErrors.MergeErrors(errors);
-
-            compiler.UpsertSystemTag(executionId, enSystemTag.ParentWorkflowInstanceId, string.Empty, out errors);
-            invokeErrors.MergeErrors(errors);
-
-            compiler.UpsertSystemTag(executionId, enSystemTag.ParentServiceName, string.Empty, out errors);
-            invokeErrors.MergeErrors(errors);
-
-            compiler.UpsertSystemTag(executionId, enSystemTag.ParentWorkflowInstanceId, workflowId, out errors);
-            invokeErrors.MergeErrors(errors);
-        }
 
         #endregion
 
@@ -545,32 +655,61 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion Overridden ActivityAbstact Methods
 
         #region Debug IO
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
         {
             IDev2LanguageParser parser = DataListFactory.CreateInputParser();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            return GetDebugInputs(dataList, compiler, parser).Select(a => (DebugItem)a).ToList();
+            return GetDebugInputs(env, parser).Select(a => (DebugItem)a).ToList();
 
         }
-        public List<IDebugItem> GetDebugInputs(IBinaryDataList dataList, IDataListCompiler compiler, IDev2LanguageParser parser)
+        public List<IDebugItem> GetDebugInputs( IExecutionEnvironment env, IDev2LanguageParser parser)
         {
             IList<IDev2Definition> inputs = parser.Parse(InputMapping);
 
             var results = new List<IDebugItem>();
             foreach(IDev2Definition dev2Definition in inputs)
             {
-                ErrorResultTO errors;
-                IBinaryDataListEntry tmpEntry = compiler.Evaluate(dataList.UID, enActionType.User, dev2Definition.RawValue, false, out errors);
+                if (string.IsNullOrEmpty(dev2Definition.RawValue))
+                {
+                    continue;
+                }
+                var tmpEntry = env.Eval( dev2Definition.RawValue);
 
                 DebugItem itemToAdd = new DebugItem();
-                AddDebugItem(new DebugItemVariableParams(dev2Definition.RawValue, "", tmpEntry, dataList.UID), itemToAdd);
-
-                if(errors.HasErrors())
+                if (tmpEntry.IsWarewolfAtomResult)
                 {
-                    itemToAdd.FlushStringBuilder();
-                    throw new DebugCopyException(errors.MakeDisplayReady(), itemToAdd);
+        
+                    var warewolfAtomResult = tmpEntry as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                    if (warewolfAtomResult != null)
+                    {
+                        var variableName = dev2Definition.Name;
+                        if (!string.IsNullOrEmpty(dev2Definition.RecordSetName))
+                        {
+                            variableName = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "1");
+                        }
+                        AddDebugItem(new DebugItemWarewolfAtomResult(warewolfAtomResult.Item.ToString(), DataListUtil.AddBracketsToValueIfNotExist(variableName),""), itemToAdd);
+                    }
+                    results.Add(itemToAdd);
                 }
-                results.Add(itemToAdd);
+                else
+                {
+                   
+                    var warewolfAtomListResult = tmpEntry as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                    if (warewolfAtomListResult != null)
+                    {
+                        var variableName = dev2Definition.Name;
+                        if (!string.IsNullOrEmpty(dev2Definition.RecordSetName))
+                        {
+                            variableName = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "*");
+                            AddDebugItem(new DebugItemWarewolfAtomListResult(warewolfAtomListResult, "", "", DataListUtil.AddBracketsToValueIfNotExist(variableName), "", "", "="), itemToAdd);
+                        }
+                        else
+                        {
+                            var warewolfAtom = warewolfAtomListResult.Item.Last();
+                            AddDebugItem(new DebugItemWarewolfAtomResult(warewolfAtom.ToString(), DataListUtil.AddBracketsToValueIfNotExist(variableName), ""), itemToAdd);
+                        }
+                    }
+                    results.Add(itemToAdd);
+                }
 
             }
 
@@ -582,30 +721,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return results;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        #region Overrides of DsfNativeActivity<bool>
+
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env)
+        {
+            GetDebugOutputsFromEnv(env);
+            return _debugOutputs;
+        }
+
+        #endregion
+
+        public void  GetDebugOutputsFromEnv(IExecutionEnvironment environment)
         {
             IDev2LanguageParser parser = DataListFactory.CreateOutputParser();
-            IList<IDev2Definition> inputs = parser.Parse(OutputMapping);
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
+            IList<IDev2Definition> outputs = parser.Parse(OutputMapping);
             var results = new List<DebugItem>();
-            foreach(IDev2Definition dev2Definition in inputs)
+            foreach(IDev2Definition dev2Definition in outputs)
             {
-                ErrorResultTO errors;
-                IBinaryDataListEntry tmpEntry = compiler.Evaluate(dataList.UID, enActionType.User, dev2Definition.RawValue, false, out errors);
-
-                if(tmpEntry != null)
+                try
                 {
                     DebugItem itemToAdd = new DebugItem();
-                    AddDebugItem(new DebugItemVariableParams(dev2Definition.RawValue, "", tmpEntry, dataList.UID), itemToAdd);
+                    AddDebugItem(new DebugEvalResult(dev2Definition.RawValue, "", environment), itemToAdd);
                     results.Add(itemToAdd);
                 }
-                else
+                catch (Exception e)
                 {
-                    if(errors.HasErrors())
-                    {
-                        throw new Exception(errors.MakeDisplayReady());
-                    }
+                    Dev2Logger.Log.Error(e.Message,e);
                 }
             }
 
@@ -614,19 +755,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 debugOutput.FlushStringBuilder();
             }
 
-            return results;
+            _debugOutputs = results;
         }
 
         #endregion
 
         #region Get ForEach Input/Output Updates
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             throw new NotImplementedException();
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             throw new NotImplementedException();
         }

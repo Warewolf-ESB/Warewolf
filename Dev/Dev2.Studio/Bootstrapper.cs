@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,6 +16,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using Caliburn.Micro;
+using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
@@ -27,7 +27,7 @@ using Dev2.Studio.Core.AppResources.WindowManagers;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Services;
 using Dev2.Studio.Core.Services.System;
-using Dev2.Studio.Feedback;
+using Dev2.Studio.Factory;
 using Dev2.Studio.StartupResources;
 using Dev2.Studio.ViewModels;
 
@@ -68,11 +68,10 @@ namespace Dev2
             CustomContainer.Register<IWindowManager>(new WindowManager());
             CustomContainer.Register<IDockAwareWindowManager>(new XamDockManagerDockAwareWindowManager());
             CustomContainer.Register<ISystemInfoService>(new SystemInfoService());
-            CustomContainer.Register<IFeedBackRecorder>(new FeedbackRecorder());
             CustomContainer.Register<IPopupController>(new PopupController());
-            CustomContainer.Register<IFeedbackInvoker>(new FeedbackInvoker());
             CustomContainer.Register<IMainViewModel>(new MainViewModel());
             CustomContainer.Register<IWindowsServiceManager>(new WindowsServiceManager());
+            CustomContainer.Register<IDialogViewModelFactory>(new DialogViewModelFactory());
             ClassRoutedEventHandlers.RegisterEvents();
         }
 
@@ -100,7 +99,9 @@ namespace Dev2
 
             // ReSharper disable JoinDeclarationAndInitializer
             // ReSharper disable RedundantAssignment
+            // ReSharper disable ConvertToConstant.Local
             bool start = true;
+            // ReSharper restore ConvertToConstant.Local
             // ReSharper restore RedundantAssignment
             // ReSharper restore JoinDeclarationAndInitializer
 #if !DEBUG
@@ -145,6 +146,7 @@ namespace Dev2
          * IT IS REQUIRED FOR UPDATES IN RELEASE MODE ;)
          * REMOVING IT MEANS IT IS NOT POSSIBLE TO BUILD AN INSTALLER ;)
          */
+        // ReSharper disable once UnusedMember.Local
         private bool CheckWindowsService()
         {
             IWindowsServiceManager windowsServiceManager = CustomContainer.Get<IWindowsServiceManager>();

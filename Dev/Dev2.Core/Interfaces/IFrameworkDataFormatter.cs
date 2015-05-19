@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -10,9 +9,10 @@
 */
 
 
-
-namespace Dev2 {
-    public interface IFrameworkDataFormatter {
+namespace Dev2
+{
+    public interface IFrameworkDataFormatter
+    {
         string FormatData(string formatDefinition, string dataToFormat, bool toDataFile = false);
     }
 }

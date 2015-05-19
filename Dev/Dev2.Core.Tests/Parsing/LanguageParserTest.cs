@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.Data;
@@ -47,7 +46,7 @@ namespace Unlimited.UnitTest.Framework.Parsing
         {
             IList<IDev2Definition> inputs = DataListFactory.CreateInputParser().Parse(TestStrings.inputsWithEmptyToNullTrue);
 
-            Assert.IsTrue(inputs.Count == 2 && inputs[0].EmptyToNull == true);
+            Assert.IsTrue(inputs.Count == 2 && inputs[0].EmptyToNull);
         }
 
         // Travis Added : PBI 5779

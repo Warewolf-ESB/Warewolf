@@ -9,9 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
-using System.Activities;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Moq;
@@ -33,11 +31,15 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Overrides of DsfNativeActivity<TResult>
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
+        {
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
         {
         }
 

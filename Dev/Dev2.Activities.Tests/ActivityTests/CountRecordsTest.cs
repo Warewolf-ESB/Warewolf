@@ -9,17 +9,16 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using ActivityUnitTests;
-using Dev2.Common.Interfaces.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using ActivityUnitTests;
+using Dev2.DataList.Contract.Binary_Objects;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -48,10 +47,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = @"5";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "TestCountvar", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "TestCountvar", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
 
@@ -68,33 +66,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = @"0";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "TestCountvar", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "TestCountvar", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
 
-        }
-
-        //2013.06.03: Ashley Lewis for bug 9498 - multiple regions in result
-        [TestMethod]
-        public void CountOutputToMultipleScalars_Expected_Error()
-        {
-
-            SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShapeWithExtraScalar + "</root>", "<root><recset1><field1/></recset1><TestCountvar/><AnotherTestCountvar/></root>", "[[recset1()]]", "[[TestCountvar]], [[AnotherTestCountvar]]");
-
-            IDSFDataObject result = ExecuteProcess();
-
-
-            var res = Compiler.HasErrors(result.DataListID);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(res);
-
-        }
+        } 
+        
 
         #endregion Store To Scalar Tests
 
@@ -107,109 +86,19 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             const string expected = "5";
-            IList<IBinaryDataListItem> actual;
+            IList<string> actual;
             string error;
-            GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out actual, out error);
-            string actualSet = actual.First(c => c.FieldName == "field1" && !string.IsNullOrEmpty(c.TheValue)).TheValue;
+            GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out actual, out error);
+            string actualSet = actual.First(c =>  !string.IsNullOrEmpty(c));
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actualSet);
-
-        }
-
-        //2013.02.12: Ashley Lewis - Bug 8725, Task 8831 DONE
-        [TestMethod]
-        public void CountTwiceWithEmptyRecsetExpectedOutputToRecsetsSelf()
-        {
-            SetupArguments("<root></root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[recset1().field1]]");
-            IDSFDataObject result = ExecuteProcess();
-
-            const string expected = "0";
-            IList<IBinaryDataListItem> actual;
-            string error;
-            GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out actual, out error);
-            string actualSet = actual.First(c => c.FieldName == "field1" && c.ItemCollectionIndex == 1).TheValue;
-
-            SetupArguments("<root></root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[recset1().field1]]");
-            result = ExecuteProcess();
-
-
-            const string expected2 = "1";
-            GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out actual, out error);
-            string actualSet2 = actual.First(c => c.FieldName == "field1" && c.ItemCollectionIndex == 2).TheValue;
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(expected, actualSet);
-            Assert.AreEqual(expected2, actualSet2);
 
         }
 
         #endregion Store To RecordSet Tests
 
-        #region Error Test Cases
-
-        [TestMethod]
-        public void CountWithNoRecsetName_Expected_ErrorPopulatedFromDataList()
-        {
-            SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShape + "</root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", string.Empty, "[[TestCountvar]]");
-            IDSFDataObject result = ExecuteProcess();
-
-            var res = Compiler.HasErrors(result.DataListID);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(res);
-        }
-
-        [TestMethod]
-        public void CountWithNoOutputVariable()
-        {
-            SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShape + "</root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", string.Empty);
-            IDSFDataObject result = ExecuteProcess();
-
-            var res = Compiler.HasErrors(result.DataListID);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(res);
-        }
-
-        [TestMethod]
-        public void CountOnScalar()
-        {
-            SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShape + "</root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[TestCountVar]]", "[[TestCountVar]]");
-            IDSFDataObject result = ExecuteProcess();
-
-            var res = Compiler.HasErrors(result.DataListID);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(res);
-        }
-        
-        [TestMethod]
-        public void CountRecords_ErrorHandeling_Expected_ErrorTag()
-        {
-            SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShape + "</root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[//().rec]]");
-
-            IDSFDataObject result = ExecuteProcess();
-
-            var res = Compiler.HasErrors(result.DataListID);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(res);
-        }
-
-        #endregion Error Test Cases
 
         #region Get Input/Output Tests
 
@@ -223,7 +112,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = inputs.FetchAllEntries().Count;
 
             // remove test datalist ;)
-            DataListRemoval(inputs.UID);
 
             Assert.AreEqual(1, result);
         }
@@ -238,7 +126,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = outputs.FetchAllEntries().Count;
 
             // remove test datalist ;)
-            DataListRemoval(outputs.UID);
 
             Assert.AreEqual(1, result);
         }
@@ -254,7 +141,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string recordsetName = "[[Customers()]]";
             var act = new DsfCountRecordsetActivity { RecordsetName = recordsetName, CountNumber = "[[res]]" };
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(null, null);
+            act.UpdateForEachInputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual(recordsetName, act.RecordsetName);
         }
@@ -270,7 +157,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual(recordsetName, act.RecordsetName);
         }
@@ -285,7 +172,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var act = new DsfCountRecordsetActivity { RecordsetName = recordsetName, CountNumber = "[[res]]" };
             var tuple1 = new Tuple<string, string>("Test", "Test");
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.RecordsetName);
         }
@@ -299,7 +186,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string recordsetName = "[[Customers()]]";
             var act = new DsfCountRecordsetActivity { RecordsetName = recordsetName, CountNumber = "[[res]]" };
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(null, null);
+            act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual(recordsetName, act.RecordsetName);
         }
@@ -315,7 +202,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual(recordsetName, act.RecordsetName);
         }
@@ -330,7 +217,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var act = new DsfCountRecordsetActivity { RecordsetName = recordsetName, CountNumber = "[[res]]" };
             var tuple1 = new Tuple<string, string>("[[res]]", "Test");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.CountNumber);
         }
@@ -382,9 +269,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string Expected = @"";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
             Assert.AreEqual(Expected, actual);
         }
 
@@ -401,9 +287,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string Expected = @"";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
             Assert.AreEqual(Expected, actual);
         }
         
@@ -420,9 +305,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string Expected = @"";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
             Assert.AreEqual(Expected, actual);
         }
 
@@ -439,9 +323,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string Expected = @"";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
             Assert.AreEqual(Expected, actual);
         }
         #endregion

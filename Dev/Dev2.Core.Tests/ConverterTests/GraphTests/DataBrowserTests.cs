@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -29,33 +28,33 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests
     {
         internal PocoTestData GivenPoco()
         {
-            PocoTestData testData = new PocoTestData()
+            PocoTestData testData = new PocoTestData
             {
                 Name = "Brendon",
                 Age = 30,
-                NestedData = new PocoTestData()
+                NestedData = new PocoTestData
                 {
                     Name = "AnotherBrendon",
                     Age = 31,
                 },
             };
 
-            PocoTestData nestedTestData1 = new PocoTestData()
+            PocoTestData nestedTestData1 = new PocoTestData
             {
                 Name = "Mo",
                 Age = 30,
-                NestedData = new PocoTestData()
+                NestedData = new PocoTestData
                 {
                     Name = "AnotherMo",
                     Age = 31,
                 },
             };
 
-            PocoTestData nestedTestData2 = new PocoTestData()
+            PocoTestData nestedTestData2 = new PocoTestData
             {
                 Name = "Trav",
                 Age = 30,
-                NestedData = new PocoTestData()
+                NestedData = new PocoTestData
                 {
                     Name = "AnotherTrav",
                     Age = 31,
@@ -69,88 +68,88 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests
 
         internal PocoTestData GivenPocoWithParallelAndNestedEnumerables()
         {
-            PocoTestData testData = new PocoTestData()
+            PocoTestData testData = new PocoTestData
             {
                 Name = "Brendon",
                 Age = 30,
-                NestedData = new PocoTestData()
+                NestedData = new PocoTestData
                 {
                     Name = "AnotherBrendon",
                     Age = 31,
                 },
             };
 
-            PocoTestData nestedTestData1 = new PocoTestData()
+            PocoTestData nestedTestData1 = new PocoTestData
             {
                 Name = "Mo",
                 Age = 30,
-                NestedData = new PocoTestData()
+                NestedData = new PocoTestData
                 {
                     Name = "AnotherMo",
                     Age = 31,
                 },
             };
 
-            PocoTestData nestedTestData2 = new PocoTestData()
+            PocoTestData nestedTestData2 = new PocoTestData
             {
                 Name = "Trav",
                 Age = 30,
-                NestedData = new PocoTestData()
+                NestedData = new PocoTestData
                 {
                     Name = "AnotherTrav",
                     Age = 31,
                 },
             };
 
-            PocoTestData nestedTestData3 = new PocoTestData()
+            PocoTestData nestedTestData3 = new PocoTestData
             {
                 Name = "Jayd",
                 Age = 30,
-                NestedData = new PocoTestData()
+                NestedData = new PocoTestData
                 {
                     Name = "AnotherJayd",
                     Age = 31,
                 },
             };
 
-            PocoTestData nestedTestData4 = new PocoTestData()
+            PocoTestData nestedTestData4 = new PocoTestData
             {
                 Name = "Dan",
                 Age = 30,
-                NestedData = new PocoTestData()
+                NestedData = new PocoTestData
                 {
                     Name = "AnotherDan",
                     Age = 31,
                 },
             };
 
-            PocoTestData nestedTestData5 = new PocoTestData()
+            PocoTestData nestedTestData5 = new PocoTestData
             {
                 Name = "Mark",
                 Age = 30,
-                NestedData = new PocoTestData()
+                NestedData = new PocoTestData
                 {
                     Name = "AnotherMark",
                     Age = 31,
                 },
             };
 
-            PocoTestData nestedTestData6 = new PocoTestData()
+            PocoTestData nestedTestData6 = new PocoTestData
             {
                 Name = "Warren",
                 Age = 30,
-                NestedData = new PocoTestData()
+                NestedData = new PocoTestData
                 {
                     Name = "AnotherWarren",
                     Age = 31,
                 },
             };
 
-            PocoTestData nestedTestData7 = new PocoTestData()
+            PocoTestData nestedTestData7 = new PocoTestData
             {
                 Name = "Wallis",
                 Age = 30,
-                NestedData = new PocoTestData()
+                NestedData = new PocoTestData
                 {
                     Name = "AnotherWallis",
                     Age = 31,

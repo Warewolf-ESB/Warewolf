@@ -23,18 +23,18 @@
         <Border Width="300" Grid.Row="0" BorderBrush="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBorderBrush), Mode=OneWay, RelativeSource={RelativeSource Self}}" BorderThickness="1,1,1,1" >
             <Grid Margin="5">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="80"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="34"></RowDefinition>
-                    <RowDefinition Height="25"></RowDefinition>
-                    <RowDefinition Height="25"></RowDefinition>
-                    <RowDefinition Height="25"></RowDefinition>
-                    <RowDefinition Height="45"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>                  
+                    <RowDefinition Height="34" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="45" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
                     <Grid.RowDefinitions>
@@ -46,39 +46,39 @@
                 </Grid>
                 
                 
-                <Label Grid.Column="0" Grid.Row="1" Content="Split On :"></Label>
+                <Label Grid.Column="0" Grid.Row="1" Content="Split On :" />
                 <Grid Grid.Column="1" Grid.Row="1" >
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <ComboBox Style="{StaticResource ActivityComboBoxStyle}" ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}" Margin="1,1,3,1" x:Name="SplitTypeCbx" SelectionChanged="Selector_OnSelectionChanged" Grid.Column="0" Grid.Row="0" ItemsSource="{Binding SplitTypeList}" SelectedValue="{Binding SplitType}" ToolTip="What separates the items in your variable list?"></ComboBox>
-                    <TextBox Style="{StaticResource Dev2TextboxStyle}" TextChanged="TextBoxBase_OnTextChanged" x:Name="SplitTokenTxt" Grid.Column="1" Grid.Row="1" Text="{Binding SplitToken}" ToolTip="What separates the items in your variable list?"></TextBox>
+                    <ComboBox Style="{StaticResource ActivityComboBoxStyle}" ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}" Margin="1,1,3,1" x:Name="SplitTypeCbx" SelectionChanged="Selector_OnSelectionChanged" Grid.Column="0" Grid.Row="0" ItemsSource="{Binding SplitTypeList}" SelectedValue="{Binding SplitType}" ToolTip="What separates the items in your variable list?" />
+                    <TextBox Style="{StaticResource Dev2TextboxStyle}" TextChanged="TextBoxBase_OnTextChanged" x:Name="SplitTokenTxt" Grid.Column="1" Grid.Row="1" Text="{Binding SplitToken}" ToolTip="What separates the items in your variable list?" />
                 </Grid>
 
-                <Label Grid.Column="0" Grid.Row="2" Content="Prefix :"></Label>
-                <TextBox Grid.Column="1" Grid.Row="2" Style="{StaticResource Dev2TextboxStyle}" TextChanged="TextBoxBase_OnTextChanged" Text="{Binding Prefix}" ToolTip="If you want to add these variable to a record-set you&#x0a;can prefix the variable name with the record-set like&#x0a;this &quot;Recordsetname().&quot; - don't forget the dot &quot;.&quot; &#x0a;after the brackets &quot;()&quot;&#x0a;&#x0a;Or you could simply add an identifier to the beginning&#x0a;of the variable names like &quot;From_File_&quot;."></TextBox>
+                <Label Grid.Column="0" Grid.Row="2" Content="Prefix :" />
+                <TextBox Grid.Column="1" Grid.Row="2" Style="{StaticResource Dev2TextboxStyle}" TextChanged="TextBoxBase_OnTextChanged" Text="{Binding Prefix}" ToolTip="If you want to add these variable to a record-set you&#x0a;can prefix the variable name with the record-set like&#x0a;this &quot;Recordsetname().&quot; - don't forget the dot &quot;.&quot; &#x0a;after the brackets &quot;()&quot;&#x0a;&#x0a;Or you could simply add an identifier to the beginning&#x0a;of the variable names like &quot;From_File_&quot;." />
 
-                <Label Grid.Column="0" Grid.Row="3" Content="Suffix :"></Label>
-                <TextBox Grid.Column="1" Grid.Row="3" Style="{StaticResource Dev2TextboxStyle}" TextChanged="TextBoxBase_OnTextChanged" Text="{Binding Suffix}" ToolTip="Just like Prefix, but appended after the variable name.&#x0a;Use it or lose it."></TextBox>
+                <Label Grid.Column="0" Grid.Row="3" Content="Suffix :" />
+                <TextBox Grid.Column="1" Grid.Row="3" Style="{StaticResource Dev2TextboxStyle}" TextChanged="TextBoxBase_OnTextChanged" Text="{Binding Suffix}" ToolTip="Just like Prefix, but appended after the variable name.&#x0a;Use it or lose it." />
 
-                <Label Grid.Column="0" Grid.Row="4" Content="Variable List :"></Label>
-                <TextBox x:Name="TxtVariableList" Grid.Column="1" Grid.Row="4" Style="{StaticResource Dev2TextboxStyle}" Height="42" TextChanged="TextBoxBase_OnTextChanged" AcceptsReturn="True" Text="{Binding VariableListString}" VerticalAlignment="Top" ToolTip="Copy and paste or type in a list of Variable names&#x0a;that you would like to use. They will be added to &#x0a;the grid in the order that they appear. Any spaces &#x0a;in the variable name will be removed automatically. &#x0a;You do not need to worry about putting the Variable &#x0a;identifiers, &quot;[[&quot; and &quot;]]&quot; in."></TextBox>
+                <Label Grid.Column="0" Grid.Row="4" Content="Variable List :" />
+                <TextBox x:Name="TxtVariableList" Grid.Column="1" Grid.Row="4" Style="{StaticResource Dev2TextboxStyle}" Height="42" TextChanged="TextBoxBase_OnTextChanged" AcceptsReturn="True" Text="{Binding VariableListString}" VerticalAlignment="Top" ToolTip="Copy and paste or type in a list of Variable names&#x0a;that you would like to use. They will be added to &#x0a;the grid in the order that they appear. Any spaces &#x0a;in the variable name will be removed automatically. &#x0a;You do not need to worry about putting the Variable &#x0a;identifiers, &quot;[[&quot; and &quot;]]&quot; in." />
 
                 <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Horizontal">
-                    <RadioButton Content="Append" IsChecked="True" VerticalAlignment="Center" GroupName="AppendGroup" Margin="5" ToolTip="Check this to have these variables added to your list. &#x0a;Un-check this if you want to replace the current &#x0a;variable list with this new variable list.&#x0a;&#x0a;Clicking Add will insert the items into the grid in &#x0a;the order they were typed. It will also add the items &#x0a;to the Variable List (dont just update the data list &#x0a;for items on the design surface).&#x0a;&#x0a;Preview at the bottom of the popup to show the items &#x0a;being added."></RadioButton>
+                    <RadioButton Content="Append" IsChecked="True" VerticalAlignment="Center" GroupName="AppendGroup" Margin="5" ToolTip="Check this to have these variables added to your list. &#x0a;Un-check this if you want to replace the current &#x0a;variable list with this new variable list.&#x0a;&#x0a;Clicking Add will insert the items into the grid in &#x0a;the order they were typed. It will also add the items &#x0a;to the Variable List (dont just update the data list &#x0a;for items on the design surface).&#x0a;&#x0a;Preview at the bottom of the popup to show the items &#x0a;being added." />
 
-                    <RadioButton Content="Replace" IsChecked="{Binding Overwrite}" VerticalAlignment="Center" GroupName="AppendGroup" Margin="5" ToolTip="Check this to have these variables added to your list. &#x0a;Un-check this if you want to replace the current &#x0a;variable list with this new variable list.&#x0a;&#x0a;Clicking Add will insert the items into the grid in &#x0a;the order they were typed. It will also add the items &#x0a;to the Variable List (dont just update the data list &#x0a;for items on the design surface).&#x0a;&#x0a;Preview at the bottom of the popup to show the items &#x0a;being added."></RadioButton>
+                    <RadioButton Content="Replace" IsChecked="{Binding Overwrite}" VerticalAlignment="Center" GroupName="AppendGroup" Margin="5" ToolTip="Check this to have these variables added to your list. &#x0a;Un-check this if you want to replace the current &#x0a;variable list with this new variable list.&#x0a;&#x0a;Clicking Add will insert the items into the grid in &#x0a;the order they were typed. It will also add the items &#x0a;to the Variable List (dont just update the data list &#x0a;for items on the design surface).&#x0a;&#x0a;Preview at the bottom of the popup to show the items &#x0a;being added." />
                 </StackPanel>
 
                 <StackPanel Grid.Column="0" Grid.Row="6" Orientation="Horizontal" VerticalAlignment="Center">
-                    <Button HorizontalAlignment="Left" x:Name="QuickVariableInputPreviewBtn" Content="Preview" IsEnabled="False" Command="{Binding PreviewCommand}" Margin="2,0,2,0"></Button>                    
+                    <Button HorizontalAlignment="Left" x:Name="QuickVariableInputPreviewBtn" Content="Preview" IsEnabled="False" Command="{Binding PreviewCommand}" Margin="2,0,2,0" />
                 </StackPanel>
                 
                 <StackPanel Grid.Column="1" Grid.Row="6" HorizontalAlignment="Right" Orientation="Horizontal" VerticalAlignment="Center">                                      
                     <!--<Image Source="{Binding Status,Converter={StaticResource ErrorTypeToImageConverter}}" Height="15" Width="15" VerticalAlignment="Center"/>-->
-                    <Button x:Name="QuickVariableInputAddBtn"  Content="Add" IsEnabled="{Binding CanAdd, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Command="{Binding AddCommand}" Margin="2,0,2,0"></Button>
-                    <Button x:Name="QuickVariableInputCancelBtn" Content="Cancel" Command="{Binding CancelCommand}" Margin="2,0,2,0"></Button>                    
+                    <Button x:Name="QuickVariableInputAddBtn"  Content="Add" IsEnabled="{Binding CanAdd, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Command="{Binding AddCommand}" Margin="2,0,2,0" />
+                    <Button x:Name="QuickVariableInputCancelBtn" Content="Cancel" Command="{Binding CancelCommand}" Margin="2,0,2,0" />
                 </StackPanel>                
             </Grid>
 
@@ -89,12 +89,12 @@
                     BorderThickness="1,1,1,1">
                 <Grid Margin="5">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="2"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>                        
+                        <RowDefinition Height="2" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>                                    
                     <TextBlock TextWrapping="Wrap" IsEnabled="False" Grid.Row="1" 
                                Foreground="{StaticResource ValidationErrorElement}"
-                               Width="288" Text="{Binding PreviewText}"></TextBlock>
+                               Width="288" Text="{Binding PreviewText}" />
                 </Grid>
             </Border>
         </Canvas>    

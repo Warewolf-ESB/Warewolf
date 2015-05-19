@@ -32,9 +32,10 @@ namespace Dev2.Studio.UI.Tests
         [TestCleanup]
         public void MyTestCleanup()
         {
-            ExplorerUIMap.ClickServerInServerDDL(LocalServerName);
+            RestartStudioOnFailure();
             TabManagerUIMap.CloseAllTabs();
-            Halt();
+            ExplorerUIMap.ClickServerInServerDDL(LocalServerName);
+            
         }
         #endregion
 
@@ -73,7 +74,8 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.RightClickDeployProject("INTEGRATION TEST SERVICES", "PluginsReturningXMLFromComplexType");
             var theTab = TabManagerUIMap.GetActiveTab();
 
-            ExplorerUIMap.WaitForResourcesToLoad();
+            //wait for resource tree to load
+            Playback.Wait(5000);
 
             // Assert All Service Types Visible
             var sourceResources = DeployUIMap.GetSourceNavigationTree();

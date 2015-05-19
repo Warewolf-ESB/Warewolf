@@ -89,13 +89,10 @@ namespace Dev2.Studio.UI.Tests.Extensions
             }
 
             var levelsDeep = 0;
-            while(parentCollection != null && (parentCollection.Count > 0 && levelsDeep < 4))
+            while(parentCollection.Count > 0 && levelsDeep < 4)
             {
                 levelsDeep++;
-                List<UITestControl> collectionToSearch = null;
-                try
-                {
-                    var uiTestControls = parentCollection.SelectMany(c =>
+                var uiTestControls = parentCollection.SelectMany(c =>
                     {
                         try
                         {
@@ -106,18 +103,13 @@ namespace Dev2.Studio.UI.Tests.Extensions
                             return new UITestControlCollection();
                         }
                     });
-                    var testControls = uiTestControls.Where(c => c is WpfControl);
-                    collectionToSearch = testControls.ToList();
+                var testControls = uiTestControls.Where(c => c is WpfControl);
+                var collectionToSearch = testControls.ToList();
 
-                    control = collectionToSearch
-                        .FirstOrDefault(b => ((WpfControl)b).AutomationId.Equals(automationId));
-                    if(throwIfMultiple && collectionToSearch.Count(b => ((WpfControl)b).AutomationId.Equals(automationId)) > 1)
-                        throw new Exception("Multiple AutoIds Found");
-                }
-                catch (NullReferenceException)
-                {
-                    //Ashley: Swallowing exception 
-                }
+                control = collectionToSearch
+                    .FirstOrDefault(b => ((WpfControl)b).AutomationId.Equals(automationId));
+                if(throwIfMultiple && collectionToSearch.Count(b => ((WpfControl)b).AutomationId.Equals(automationId)) > 1)
+                    throw new Exception("Multiple AutoIds Found");
                 if(control == null)
                 {
                     parentCollection = collectionToSearch;

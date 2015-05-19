@@ -202,10 +202,9 @@
                     
                     <TextBox Grid.Column="1"  Margin="3" Grid.Row="1"
                              Text="{Binding Object.LogFileDirectory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-						AutomationProperties.AutomationId="UI_SettingsLogging_PostWorkflow_Text">
-                        </TextBox>
+						AutomationProperties.AutomationId="UI_SettingsLogging_PostWorkflow_Text" />
 
-                </Grid>
+				</Grid>
 			</GroupBox>
 
         <GroupBox Header="After logging" Padding="3" Grid.Row="3" BorderBrush="#FFB9C9DA"  IsEnabled="{Binding Object.IsLoggingEnabled}">

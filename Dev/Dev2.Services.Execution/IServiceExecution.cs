@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using Dev2.DataList.Contract;
 
@@ -19,6 +17,8 @@ namespace Dev2.Services.Execution
     {
         IDSFDataObject DataObj { get; set; }
         string InstanceOutputDefintions { get; set; }
+        string InstanceInputDefinitions { get; set; }
+
         void BeforeExecution(ErrorResultTO errors);
         Guid Execute(out ErrorResultTO errors);
         void AfterExecution(ErrorResultTO errors);

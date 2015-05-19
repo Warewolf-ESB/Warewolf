@@ -9,12 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.IO;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Common.Interfaces.Studio;
 using Dev2.Studio.ViewModels.Administration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -28,21 +27,22 @@ namespace Dev2.Core.Tests
     public class Dev2DialogueTest
     {
 
-        private TestContext testContextInstance;
-        private string _filePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\test.png";
+        private TestContext _testContextInstance;
+        private readonly string _filePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\test.png";
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
+        // ReSharper disable once ConvertToAutoProperty
         public TestContext TestContext
         {
             get
             {
-                return testContextInstance;
+                return _testContextInstance;
             }
             set
             {
-                testContextInstance = value;
+                _testContextInstance = value;
             }
         }
 
@@ -73,6 +73,7 @@ namespace Dev2.Core.Tests
         #region Positive Test Cases
 
         [TestMethod]
+        // ReSharper disable once InconsistentNaming
         public void Dev2DialogueSetup_CorrectParameterSet_Test()
         {
             IDialogueViewModel dev2Dialogue = new DialogueViewModel();
@@ -91,6 +92,7 @@ namespace Dev2.Core.Tests
         #region Negative Test Cases
 
         [TestMethod]
+        // ReSharper disable once InconsistentNaming
         public void Dev2Dialogue_NullTitle_ValidDescriptionImgSourceDecsriptionTitle_Expected_DialogueSetup_TitleSetToEmptyStringNotNull()
         {
             IDialogueViewModel dev2Dialogue = new DialogueViewModel();
@@ -106,7 +108,9 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        // ReSharper disable InconsistentNaming
         public void Dev2Dialogue_NullDescription_ValidDescriptionImgSourceDecsriptionTitle_Expected_DialogueSetup_DescriptionSetToEmpty()
+
         {
             IDialogueViewModel dev2Dialogue = new DialogueViewModel();
             string newFileName = _filePath.Replace(".png", "Dev2Dialogue_NullDescription_ValidDescriptionImgSourceDecsriptionTitle_Expected_DialogueSetup_DescriptionSetToEmpty.png");
@@ -208,5 +212,6 @@ namespace Dev2.Core.Tests
         }
 
         #endregion Negative Test Cases
+        // ReSharper restore InconsistentNaming
     }
 }

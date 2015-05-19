@@ -39,8 +39,8 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         [TestCleanup]
         public void MyTestCleanup()
         {
+            RestartStudioOnFailure();
             TabManagerUIMap.CloseAllTabs();
-            Halt();
         }
 
         #endregion
@@ -61,42 +61,6 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
 
                 var activityList = dsfActivityUiMap.GetActivityList();
                 Assert.AreEqual(0, activityList.Count);
-            }
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ToolDesigners_SequenceSmallView")]
-        public void ToolDesigners_SequenceSmallView_DraggingSwitch_NotAllowed()
-        {
-            Mouse.MouseDragSpeed = 500;
-
-            using(var dsfActivityUiMap = new DsfSequenceUiMap(false, false) { TheTab = RibbonUIMap.CreateNewWorkflow(2000) })
-            {
-                Point pointToDragTo = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(dsfActivityUiMap.TheTab);
-                dsfActivityUiMap.Activity = ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Sequence, dsfActivityUiMap.TheTab, pointToDragTo);
-                dsfActivityUiMap.DragActivityOnDropPoint(ToolType.Switch);
-
-                var activityList = dsfActivityUiMap.GetActivityList();
-                Assert.AreEqual(0, activityList.Count);
-            }
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ToolDesigners_SequenceSmallView")]
-        public void ToolDesigners_SequenceSmallView_DraggingNonDecision_Allowed()
-        {
-            Mouse.MouseDragSpeed = 500;
-
-            using(var dsfActivityUiMap = new DsfSequenceUiMap(false, false) { TheTab = RibbonUIMap.CreateNewWorkflow(2000) })
-            {
-                Point pointToDragTo = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(dsfActivityUiMap.TheTab);
-                dsfActivityUiMap.Activity = ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Sequence, dsfActivityUiMap.TheTab, pointToDragTo);
-                dsfActivityUiMap.DragActivityOnDropPoint(ToolType.Assign);
-
-                var activityList = dsfActivityUiMap.GetActivityList();
-                Assert.AreEqual(1, activityList.Count);
             }
         }
 

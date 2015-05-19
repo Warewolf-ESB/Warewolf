@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -46,6 +45,22 @@ namespace Dev2.Activities.SqlBulkInsert
 
             using(_sbc)
             {
+                _sbc.WriteToServer(dt);
+            }
+
+            return true;
+        }
+
+        public bool WriteToServer(IDataReader dt)
+        {
+            if (_sbc == null)
+            {
+                throw new ArgumentException("_sbc");
+            }
+
+            using (_sbc)
+            {
+              
                 _sbc.WriteToServer(dt);
             }
 

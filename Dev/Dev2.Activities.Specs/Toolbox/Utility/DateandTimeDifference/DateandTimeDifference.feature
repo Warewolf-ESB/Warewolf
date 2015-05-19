@@ -307,9 +307,8 @@ Scenario: Calculate the number of years with incorrect variable in input1
 	And the execution has "AN" error
 	And the debug inputs as  
 	| Input 1          | Input 2    | Input Format | Output In |
-	| [[2014/01/01]] = | 2030/01/01 | yyyy/mm/dd   | Years     |
-	And the debug output as 
-	|              |
+	| [[2014/01/01]] = | 2030/01/01 | yyyy/mm/dd   |           |
+	
 
 Scenario: Calculate the number of split seconds
 	Given I have a first date "06/01/2014 08:00:01.00" 
@@ -386,7 +385,6 @@ Scenario: Calculate the number of hours by using default format
 	And the debug output as 
 	|                |
 	| [[result]] = 576 |
-
 
 Scenario: Calculate the number of Minutes by using default format
 	Given I have a first date "2014/01/06 08:00:01.00" 

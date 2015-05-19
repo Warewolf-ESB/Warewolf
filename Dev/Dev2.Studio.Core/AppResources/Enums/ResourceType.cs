@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Dev2.Studio.Core.AppResources.Attributes;
@@ -40,11 +39,6 @@ namespace Dev2.Studio.Core.AppResources.Enums
         [Description("Unknown")]
         Unknown,
 
-        [Description("Website")]
-        Website,
-
-        [Description("Human Interface Process")]
-        HumanInterfaceProcess,
         Server
     }
 
@@ -62,10 +56,6 @@ namespace Dev2.Studio.Core.AppResources.Enums
                     return WorkSurfaceContext.SourceManager;
                 case ResourceType.Unknown:
                     return WorkSurfaceContext.Unknown;
-                case ResourceType.Website:
-                    return WorkSurfaceContext.Website;
-                case ResourceType.HumanInterfaceProcess:
-                    return WorkSurfaceContext.Webpage;
                 default: return WorkSurfaceContext.Unknown;
             }
         }

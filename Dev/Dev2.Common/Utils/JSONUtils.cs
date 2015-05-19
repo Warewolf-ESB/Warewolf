@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -15,7 +14,7 @@ namespace Dev2.Common.Utils
     public static class JSONUtils
     {
         /// <summary>
-        /// Scrubs the JSON.
+        ///     Scrubs the JSON.
         /// </summary>
         /// <param name="stringToScrub">The string to scrub.</param>
         /// <returns></returns>
@@ -33,19 +32,18 @@ namespace Dev2.Common.Utils
                     int indexTORemoveFrom = stringToScrub.Length - 1;
                     stringToScrub = stringToScrub.Remove(indexTORemoveFrom, 1);
                 }
-
             }
             return stringToScrub;
         }
 
         /// <summary>
-        /// Replaces the slashes.
+        ///     Replaces the slashes.
         /// </summary>
         /// <param name="stringToReplaceIn">The string to replace in.</param>
         /// <returns></returns>
         public static string ReplaceSlashes(string stringToReplaceIn)
         {
-            var replaceSlashes = stringToReplaceIn.Replace(@"\", @"\\");
+            string replaceSlashes = stringToReplaceIn.Replace(@"\", @"\\");
             return replaceSlashes;
         }
     }

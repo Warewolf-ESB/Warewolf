@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Data.Enums;
 using Dev2.Interfaces;
@@ -58,7 +57,7 @@ namespace Dev2.Tests
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var gatherSystemInformationTO = new GatherSystemInformationTO() { Result = string.Empty };
+            var gatherSystemInformationTO = new GatherSystemInformationTO { Result = string.Empty };
             //------------Assert Results-------------------------
             Assert.IsFalse(gatherSystemInformationTO.CanAdd());
         }
@@ -70,7 +69,7 @@ namespace Dev2.Tests
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var gatherSystemInformationTO = new GatherSystemInformationTO() { Result = "Value" };
+            var gatherSystemInformationTO = new GatherSystemInformationTO { Result = "Value" };
             //------------Assert Results-------------------------
             Assert.IsTrue(gatherSystemInformationTO.CanAdd());
         }
@@ -86,7 +85,7 @@ namespace Dev2.Tests
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var gatherSystemInformationTO = new GatherSystemInformationTO() { Result = string.Empty };
+            var gatherSystemInformationTO = new GatherSystemInformationTO { Result = string.Empty };
             //------------Assert Results-------------------------
             Assert.IsTrue(gatherSystemInformationTO.CanRemove());
         }
@@ -98,7 +97,7 @@ namespace Dev2.Tests
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var gatherSystemInformationTO = new GatherSystemInformationTO() { Result = "Value" };
+            var gatherSystemInformationTO = new GatherSystemInformationTO { Result = "Value" };
             //------------Assert Results-------------------------
             Assert.IsFalse(gatherSystemInformationTO.CanRemove());
         }

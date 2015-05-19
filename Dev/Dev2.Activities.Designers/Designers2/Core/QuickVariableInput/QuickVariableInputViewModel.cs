@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +40,9 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
         readonly Action<IEnumerable<string>, bool> _addToCollection;
 
         readonly PreviewViewModel _previewViewModel;
+        // ReSharper disable CollectionNeverQueried.Local
         readonly List<IErrorInfo> _tokenizerValidationErrors = new List<IErrorInfo>();
+        // ReSharper restore CollectionNeverQueried.Local
 
         #region CTOR
 
@@ -235,7 +236,14 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
         public bool CanAdd
         {
             get { return (bool)GetValue(CanAddProperty); }
-            set { SetValue(CanAddProperty, value); }
+            set
+            {
+                SetValue(CanAddProperty, value);
+                if(AddCommand != null)
+                {
+                    AddCommand.RaiseCanExecuteChanged();
+                }
+            }
         }
 
         public static readonly DependencyProperty CanAddProperty =
@@ -268,7 +276,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
 
         #region Commands
 
-        public ICommand AddCommand { get; private set; }
+        public RelayCommand AddCommand { get; private set; }
 
         public ICommand ClearCommand { get; private set; }
 

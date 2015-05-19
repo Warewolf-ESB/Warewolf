@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Windows;
 using System.Windows.Interactivity;
 
@@ -17,7 +15,6 @@ namespace Dev2.CustomControls.Behavior
 {
     public class VisibilityChangedToFocusBehavior : Behavior<UIElement>
     {
-
         protected override void OnAttached()
         {
             base.OnAttached();
@@ -31,9 +28,9 @@ namespace Dev2.CustomControls.Behavior
         }
 
 
-        void AssociatedObjectOnIsVisibleChanged(object o, DependencyPropertyChangedEventArgs args)
-        {            
-            if ((bool)args.NewValue && !(bool)args.OldValue)
+        private void AssociatedObjectOnIsVisibleChanged(object o, DependencyPropertyChangedEventArgs args)
+        {
+            if ((bool) args.NewValue && !(bool) args.OldValue)
             {
                 AssociatedObject.Focus();
             }

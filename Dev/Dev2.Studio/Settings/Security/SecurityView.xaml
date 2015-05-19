@@ -388,8 +388,7 @@
                                                ToolTip="{Binding ServerHelpToggle.ToolTip}"
                                                IsChecked="{Binding ServerHelpToggle.IsChecked, Mode=TwoWay}"
                                                Content="{Binding ServerHelpToggle.Image, Mode=TwoWay}"
-                                               Style="{StaticResource ActivityToggleButtonStyle}">
-            </core:ActivityDesignerToggleButton>
+                                               Style="{StaticResource ActivityToggleButtonStyle}" />
 
             <DataGrid Grid.Row="1"
                       x:Name="ServerPermissionsDataGrid"
@@ -695,7 +694,7 @@
                       Background="#C1C3C5"
                       HorizontalAlignment=" Stretch"
                       VerticalAlignment="Center"
-                      Height="8"></GridSplitter>
+                      Height="8" />
 
         <Grid Grid.Row="2"
               Grid.Column="0"
@@ -719,8 +718,7 @@
                                                ToolTip="{Binding ResourceHelpToggle.ToolTip}"
                                                IsChecked="{Binding ResourceHelpToggle.IsChecked, Mode=TwoWay}"
                                                Content="{Binding ResourceHelpToggle.Image, Mode=TwoWay}"
-                                               Style="{StaticResource ActivityToggleButtonStyle}">
-            </core:ActivityDesignerToggleButton>
+                                               Style="{StaticResource ActivityToggleButtonStyle}" />
 
             <DataGrid Grid.Row="1"
                       x:Name="ResourcePermissionsDataGrid"

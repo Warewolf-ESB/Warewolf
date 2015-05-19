@@ -9,11 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Linq;
 using System.Windows;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Models;
 using Dev2.Studio.Core.ViewModels;
 
@@ -78,6 +78,11 @@ namespace Dev2.Studio.Views.Workflow
                 {
                     if(workflowDesignerViewModel.EnvironmentModel.ID != explorerItemModel.EnvironmentId && explorerItemModel.ResourceType >= Common.Interfaces.Data.ResourceType.DbService)
                     {
+                        return true;
+                    }
+                    if (workflowDesignerViewModel.EnvironmentModel.ID != explorerItemModel.EnvironmentId && !workflowDesignerViewModel.EnvironmentModel.IsLocalHostCheck() && explorerItemModel.ResourceType == Common.Interfaces.Data.ResourceType.WorkflowService)
+                    {
+                        CustomContainer.Get<IPopupController>().Show(StringResources.DragRemoteNotSupported, StringResources.DragRemoteNotSupportedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null);
                         return true;
                     }
                     if(explorerItemModel.Permissions >= Permissions.Execute && explorerItemModel.ResourceType <= Common.Interfaces.Data.ResourceType.WebService)

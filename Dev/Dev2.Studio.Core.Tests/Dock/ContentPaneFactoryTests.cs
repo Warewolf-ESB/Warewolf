@@ -9,7 +9,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Collections.Generic;
+using System.Windows;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -29,9 +31,6 @@ using Infragistics.Windows.DockManager;
 using Infragistics.Windows.DockManager.Events;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Windows;
 
 namespace Dev2.Core.Tests.Dock
 {

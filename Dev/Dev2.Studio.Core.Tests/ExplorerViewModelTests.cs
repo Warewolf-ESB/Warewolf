@@ -9,7 +9,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.AppResources.Repositories;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
@@ -21,8 +22,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.Explorer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Core.Tests
 {

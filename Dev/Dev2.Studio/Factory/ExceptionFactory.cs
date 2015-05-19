@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -115,8 +114,6 @@ namespace Dev2.Studio.Factory
         }
 
         public static Func<string, string> GetUniqueOutputPath = extension => FileHelper.GetUniqueOutputPath(extension);
-        public static Func<IEnvironmentModel, string> GetServerLogTempPath = environmentModel => environmentModel.ResourceRepository.GetServerLogTempPath(environmentModel);
-        public static Func<string> GetStudioLogTempPath = () => FileHelper.GetStudioLogTempPath();
 
         /// <summary>
         /// Creates the exception view model.
@@ -137,26 +134,13 @@ namespace Dev2.Studio.Factory
                     OutputText = CreateStringValue(e, null, true).ToString(),
                     StackTrace = e.StackTrace,
                     OutputPath = GetUniqueOutputPath(".txt"),
-                    ServerLogTempPath = GetServerLogTempPath(environmentModel),
-                    StudioLogTempPath = GetStudioLogTempPath(),
                     DisplayName = isCritical == ErrorSeverity.Critical ? StringResources.CritErrorTitle : StringResources.ErrorTitle,
-                    Critical = isCritical == ErrorSeverity.Critical
+                    
                 };
 
             var attachedFiles = new Dictionary<string, string>();
 
-            if(!string.IsNullOrWhiteSpace(vm.ServerLogTempPath))
-            {
-                attachedFiles.Add("ServerLog", vm.ServerLogTempPath);
-            }
-
-            if(!string.IsNullOrWhiteSpace(vm.StudioLogTempPath))
-            {
-                attachedFiles.Add("StudioLog", vm.StudioLogTempPath);
-            }
-
-            vm.FeedbackAction = FeedbackFactory.CreateEmailFeedbackAction(attachedFiles, environmentModel);
-            vm.Exception.Clear();
+           vm.Exception.Clear();
             vm.Exception.Add(Create(e, isCritical == ErrorSeverity.Critical));
             return vm;
         }

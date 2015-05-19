@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Collections.Generic;
 using Dev2.Data.Storage.Binary_Objects;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -36,10 +35,10 @@ namespace Dev2.Data.Binary_Objects.Structs
         {
             if (ParentKey != null)
             {
-                return new List<FederatedStorageKey>() {ParentKey, ChildKey};
+                return new List<FederatedStorageKey> {ParentKey, ChildKey};
             }
 
-            return new List<FederatedStorageKey>() { ChildKey };
+            return new List<FederatedStorageKey> { ChildKey };
         }
 
         /// <summary>

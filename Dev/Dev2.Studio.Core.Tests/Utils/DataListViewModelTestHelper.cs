@@ -9,17 +9,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.ViewModels;
 using Dev2.Core.Tests.ProperMoqs;
-using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Factories;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.ViewModels.DataList;
 
 namespace Dev2.Core.Tests.Utils {
@@ -38,7 +33,7 @@ namespace Dev2.Core.Tests.Utils {
             }
             else {
                 for(int i = 0; i < numberOfChildren; i++) {
-                    IDataListItemModel dLVM = CreateDataListItemViewModel((string.Format("{0}{1}", name, (i + 1).ToString())), dataListVM);
+                    IDataListItemModel dLVM = CreateDataListItemViewModel((string.Format("{0}{1}", name, (i + 1))), dataListVM);
                     dataListItemViewModels.Add(dLVM);
                 }
             }
@@ -56,7 +51,7 @@ namespace Dev2.Core.Tests.Utils {
         internal IDataListItemModel CreateRecordSetDataListItem(string name, int numberOfRecords, string recordSetPrefix, IDataListViewModel dLVM) {
             string[] records = new string[numberOfRecords];
             for(int i = 0; i < numberOfRecords; i++) {
-                records[i] = string.Format("{0}{1}", recordSetPrefix, (i + 1).ToString());
+                records[i] = string.Format("{0}{1}", recordSetPrefix, (i + 1));
             }
             IDataListItemModel dLIVM = CreateRecordSetDataListItem(name, records, dLVM);
 

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -8,7 +7,6 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-
 
 using System;
 using System.ComponentModel;
@@ -25,24 +23,17 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
 
     public enum ActivityType
     {
-        [Description("Workflow")]
-        Workflow,
-        [Description("Step")]
-        Step,
-        [Description("Service")]
-        Service
+        [Description("Workflow")] Workflow,
+        [Description("Step")] Step,
+        [Description("Service")] Service
     }
 
     public enum ExecutionOrigin
     {
-        [Description("Unknown")]
-        Unknown,
-        [Description("Workflow")]
-        Workflow,
-        [Description("Debug")]
-        Debug,
-        [Description("External")]
-        External
+        [Description("Unknown")] Unknown,
+        [Description("Workflow")] Workflow,
+        [Description("Debug")] Debug,
+        [Description("External")] External
     }
 
     [Flags]
@@ -59,4 +50,3 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         All = 128
     }
 }
-

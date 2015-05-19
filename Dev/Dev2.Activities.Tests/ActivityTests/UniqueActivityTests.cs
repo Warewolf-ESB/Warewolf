@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
@@ -17,9 +16,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ActivityUnitTests;
 using Dev2.Activities;
-using Dev2.Common.Interfaces.DataList.Contract;
-using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 // ReSharper disable AccessToModifiedClosure
@@ -48,12 +44,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(null, actual);
+            Assert.AreEqual("", actual);
         }
 
         [TestMethod]
@@ -85,16 +80,15 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            IList<IBinaryDataListItem> actual;
+            IList<string> actual;
             string error;
 
-            GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "id", out actual, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "recset2", "id", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             List<string> actualRet = new List<string>();
-            actual.ToList().ForEach(d => actualRet.Add(d.TheValue));
+            actual.ToList().ForEach(d => actualRet.Add(d));
             var comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expected, actualRet, comparer);
         }
@@ -131,10 +125,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
 
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(Expected, actual, "Got " + actual + " expected " + Expected);
         }
@@ -172,16 +165,15 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            IList<IBinaryDataListItem> actual;
+            IList<string> actual;
             string error;
 
-            GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "id", out actual, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "recset2", "id", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             List<string> actualRet = new List<string>();
-            actual.ToList().ForEach(d => actualRet.Add(d.TheValue));
+            actual.ToList().ForEach(d => actualRet.Add(d));
             var comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expected, actualRet, comparer);
         }
@@ -216,22 +208,21 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            IList<IBinaryDataListItem> actual;
+            IList<string> actual;
             string error;
 
-            GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "id", out actual, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "recset2", "id", out actual, out error);
             List<string> actualRet = new List<string>();
 
-            actual.ToList().ForEach(d => actualRet.Add(d.TheValue));
+            actual.ToList().ForEach(d => actualRet.Add(d));
             var comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expectedId, actualRet, comparer);
-            GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "value", out actual, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "recset2", "value", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             actualRet = new List<string>();
-            actual.ToList().ForEach(d => actualRet.Add(d.TheValue));
+            actual.ToList().ForEach(d => actualRet.Add(d));
             comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expectedValue, actualRet, comparer);
         }
@@ -270,21 +261,20 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            IList<IBinaryDataListItem> actual;
+            IList<string> actual;
             string error;
 
-            GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "id", out actual, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "recset2", "id", out actual, out error);
             List<string> actualRet = new List<string>();
-            actual.ToList().ForEach(d => actualRet.Add(d.TheValue));
+            actual.ToList().ForEach(d => actualRet.Add(d));
             var comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expectedId, actualRet, comparer);
-            GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "value", out actual, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "recset2", "value", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             actualRet = new List<string>();
-            actual.ToList().ForEach(d => actualRet.Add(d.TheValue));
+            actual.ToList().ForEach(d => actualRet.Add(d));
             comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expectedValue, actualRet, comparer);
         }
@@ -324,25 +314,24 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            IList<IBinaryDataListItem> actual;
+            IList<string> actual;
             string error;
 
-            GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "id", out actual, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "recset2", "id", out actual, out error);
             List<string> actualRet = new List<string>();
-            actual.ToList().ForEach(d => actualRet.Add(d.TheValue));
+            actual.ToList().ForEach(d => actualRet.Add(d));
             var comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expectedId, actualRet, comparer);
-            GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "value", out actual, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "recset2", "value", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             actualRet = new List<string>();
             actual.ToList().ForEach(d =>
             {
                 try
                 {
-                    actualRet.Add(d.TheValue);
+                    actualRet.Add(d);
                 }
                 catch(Exception)
                 {
@@ -367,7 +356,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var act = new DsfUniqueActivity { InFields = InFields, ResultFields = ResultFields, Result = Result };
 
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(null, null);
+            act.UpdateForEachInputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual(InFields, act.InFields);
             Assert.AreEqual(ResultFields, act.ResultFields);
@@ -387,7 +376,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple1 = new Tuple<string, string>(ResultFields, "Test");
             var tuple2 = new Tuple<string, string>(InFields, "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test2", act.InFields);
             Assert.AreEqual("Test", act.ResultFields);
@@ -405,7 +394,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string Result = "[[res]]";
             var act = new DsfUniqueActivity { InFields = InFields, ResultFields = ResultFields, Result = Result };
 
-            act.UpdateForEachOutputs(null, null);
+            act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual(Result, act.Result);
         }
@@ -424,7 +413,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual(Result, act.Result);
         }
@@ -442,7 +431,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var tuple1 = new Tuple<string, string>("[[res]]", "Test");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.Result);
         }
@@ -487,136 +476,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(Result, dsfForEachItems[0].Value);
         }
 
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [Description("Ensure we can use the star notation in the unique tool!")]
-        [TestCategory("DsfUniqueActivity_Execute")]
-        public void DsfUniqueActivity_Execute_DebugIsInGroupedFormWhenUsingStarNotation()
-        {
-            const string DataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
-            const string DataListWithData = "<ADL>" +
-                                            "<recset1>" +
-                                            "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
-                                            "</recset1>" +
-                                            "<recset1>" +
-                                            "<field1>2</field1><field2>b</field2><field3>Test2</field3>" +
-                                            "</recset1>" +
-                                            "<recset1>" +
-                                            "<field1>3</field1><field2>a</field2><field3>Test3</field3>" +
-                                            "</recset1>" +
-                                            "<recset1>" +
-                                            "<field1>4</field1><field2>a</field2><field3>Test4</field3>" +
-                                            "</recset1>" +
-                                            "<recset1>" +
-                                            "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
-                                            "</recset1>" +
-                                            "<OutVar1/></ADL>";
-            var unique = SetupArguments("<root>" + DataListWithData + "</root>"
-                , DataList
-                , "[[recset1().field2]]"
-                , "[[recset1().field1]],[[recset1().field3]]", "[[recset2(*).id]],[[recset2(*).value]]");
-
-
-            IDSFDataObject result = ExecuteProcess(null, true);
-            ErrorResultTO errorResult;
-            IBinaryDataList bdl = Compiler.FetchBinaryDataList(result.DataListID, out errorResult);
-            var outputs = unique.GetDebugOutputs(bdl);
-            Assert.IsTrue(outputs.Count > 0);
-            Assert.IsTrue(outputs[0].ResultsList.Count == 7);
-            var groups = outputs.SelectMany(a => a.ResultsList).Select(a => a.GroupName).Distinct().ToList();
-            Assert.AreEqual(groups.Count(), 3);
-            Assert.AreEqual("[[recset2().id]]", groups[1]);
-            Assert.AreEqual("[[recset2().value]]", groups[2]);
-
-
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [Description("Ensure we can use the star notation in the unique tool!")]
-        [TestCategory("DsfUniqueActivity_Execute")]
-        public void DsfUniqueActivity_Execute_DebugIsInGroupedFormWhenUsingEmptyNotation()
-        {
-            const string DataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
-            const string DataListWithData = "<ADL>" +
-                                            "<recset1>" +
-                                            "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
-                                            "</recset1>" +
-                                            "<recset1>" +
-                                            "<field1>2</field1><field2>b</field2><field3>Test2</field3>" +
-                                            "</recset1>" +
-                                            "<recset1>" +
-                                            "<field1>3</field1><field2>a</field2><field3>Test3</field3>" +
-                                            "</recset1>" +
-                                            "<recset1>" +
-                                            "<field1>4</field1><field2>a</field2><field3>Test4</field3>" +
-                                            "</recset1>" +
-                                            "<recset1>" +
-                                            "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
-                                            "</recset1>" +
-                                            "<OutVar1/></ADL>";
-            var unique = SetupArguments("<root>" + DataListWithData + "</root>"
-                , DataList
-                , "[[recset1().field2]]"
-                , "[[recset1().field1]],[[recset1().field3]]", "[[recset2().id]],[[recset2().value]]");
-
-
-            IDSFDataObject result = ExecuteProcess(null, true);
-            ErrorResultTO errorResult;
-            IBinaryDataList bdl = Compiler.FetchBinaryDataList(result.DataListID, out errorResult);
-            var outputs = unique.GetDebugOutputs(bdl);
-            Assert.IsTrue(outputs[0].ResultsList.Count == 7);
-            var groups = outputs.SelectMany(a => a.ResultsList).Select(a => a.GroupName).Distinct().ToList();
-            Assert.AreEqual(groups.Count(), 3);
-            Assert.AreEqual("[[recset2().id]]", groups[1]);
-            Assert.AreEqual("[[recset2().value]]", groups[2]);
-            //[[recset2().value]]
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [Description("Ensure we can use the star notation in the unique tool!")]
-        [TestCategory("DsfUniqueActivity_Execute")]
-        public void DsfUniqueActivity_Execute_DebugIsInGroupedFormWhenUsingScalarOut()
-        {
-            const string DataList = "<ADL><bob/><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
-            const string DataListWithData = "<ADL>" +
-                                            "<bob></bob><recset1>" +
-                                            "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
-                                            "</recset1>" +
-                                            "<recset1>" +
-                                            "<field1>2</field1><field2>b</field2><field3>Test2</field3>" +
-                                            "</recset1>" +
-                                            "<recset1>" +
-                                            "<field1>3</field1><field2>a</field2><field3>Test3</field3>" +
-                                            "</recset1>" +
-                                            "<recset1>" +
-                                            "<field1>4</field1><field2>a</field2><field3>Test4</field3>" +
-                                            "</recset1>" +
-                                            "<recset1>" +
-                                            "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
-                                            "</recset1>" +
-                                            "<OutVar1/></ADL>";
-            var unique = SetupArguments("<root>" + DataListWithData + "</root>"
-                , DataList
-                , "[[recset1().field2]]"
-                , "[[recset1().field1]],[[recset1().field3]]", "[[bob]]");
-
-
-            IDSFDataObject result = ExecuteProcess(null, true);
-            ErrorResultTO errorResult;
-            IBinaryDataList bdl = Compiler.FetchBinaryDataList(result.DataListID, out errorResult);
-            var outputs = unique.GetDebugOutputs(bdl);
-            Assert.IsTrue(outputs[0].ResultsList.Count == 2);
-            var groups = outputs.SelectMany(a => a.ResultsList).Select(a => a.GroupName).Distinct().ToList();
-            Assert.AreEqual(groups.Count(a => !String.IsNullOrEmpty(a)), 0);
-            Assert.AreEqual("[[bob]]", outputs[0].ResultsList[1].Variable);
-            Assert.AreEqual("1,2,5", outputs[0].ResultsList[1].Value);
-        }
-
+       
+        
         #region Private Test Methods
 
-        private DsfUniqueActivity SetupArguments(string currentDL, string testData, string inFields, string resultFields, string result)
+        private void SetupArguments(string currentDL, string testData, string inFields, string resultFields, string result)
         {
             var unique = new DsfUniqueActivity { InFields = inFields, ResultFields = resultFields, Result = result };
             TestStartNode = new FlowStep
@@ -626,7 +490,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             CurrentDl = testData;
             TestData = currentDL;
-            return unique;
         }
 
         #endregion Private Test Methods

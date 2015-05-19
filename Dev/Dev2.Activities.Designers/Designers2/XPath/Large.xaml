@@ -38,8 +38,7 @@
                                      Margin="0,0,7,12"
                                      IsValidatedBefore="True"
                                      IsClosedAfter="True"
-                                     Style="{StaticResource ActivityDesignerButtonStyle}">
-        </core:ActivityDesignerButton>
+                                     Style="{StaticResource ActivityDesignerButtonStyle}" />
     </core:ActivityDesignerTemplate.RightButtons>
 
     <Grid>
@@ -116,8 +115,8 @@
                         <DataTemplate>
                             <Label Content="{Binding ModelItem, 
                                               NotifyOnTargetUpdated=True, 
-                                              Converter={local:RowToIndexConverter}}"></Label>
-                            </DataTemplate>
+                                              Converter={local:RowToIndexConverter}}" />
+                        </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
@@ -132,11 +131,11 @@
                                                     DefaultText="{Binding WatermarkTextVariable}"
                                                     WrapInBrackets="True"
                                                     Text="{Binding OutputVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    ToolTip="{x:Static help:HelpTextResources.XPathToolTipResult}"
+                                                    ToolTip="{x:Static help:HelpTextResources.XpathToolTipResults}"
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsOutputVariableFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.XPathHelpResult}"
+                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.XpathHelpResults}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="OutputVariable"

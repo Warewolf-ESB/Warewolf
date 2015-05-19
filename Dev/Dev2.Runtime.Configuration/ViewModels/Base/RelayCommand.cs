@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Windows.Input;
 
@@ -42,17 +41,20 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
             return _canHandlingMethodExecute == null || _canHandlingMethodExecute(parameter);
         }
 
-        public event EventHandler CanExecuteChanged
-        {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
-        }
+        public event EventHandler CanExecuteChanged;
 
         public void Execute(object parameter)
         {
             _handlingMethod(parameter);
         }
 
+        public void RaiseCanExecuteChanged()
+        {
+            if (CanExecuteChanged != null)
+            {
+                CanExecuteChanged(this, EventArgs.Empty);
+            }
+        }
         #endregion
     }
 
@@ -97,17 +99,20 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
             // ReSharper restore SimplifyConditionalTernaryExpression
         }
 
-        public event EventHandler CanExecuteChanged
-        {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
-        }
+        public event EventHandler CanExecuteChanged;
 
         public void Execute(object parameter)
         {
             _execute((T)parameter);
         }
 
+        public void RaiseCanExecuteChanged()
+        {
+            if (CanExecuteChanged != null)
+            {
+                CanExecuteChanged(this, EventArgs.Empty);
+            }
+        }
         #endregion // ICommand Members
     }
 }

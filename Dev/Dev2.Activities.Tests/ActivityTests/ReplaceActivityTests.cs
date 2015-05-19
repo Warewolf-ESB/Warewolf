@@ -9,16 +9,14 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using ActivityUnitTests;
-using Dev2.Common;
-using Dev2.Common.Interfaces.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using ActivityUnitTests;
+using Dev2.Common;
+using Dev2.DataList.Contract.Binary_Objects;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -39,23 +37,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Replace Positive Tests
 
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfReplaceActivity_Execute")]
-        public void DsfReplaceActivity_Execute_MultipleResults_ExpectError()
-        {
-            SetupArguments(ActivityStrings.ReplaceSpecialCharsDataListWithData, ActivityStrings.ReplaceSpecialCharsDataListShape, "[[SpecialChar]]", @"\*+?|{[()^$# ", "It Worked", "[[res]],[[noot]]", false);
-
-            IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
-            Assert.IsNull(actual);
-        }
-
 
         //Added for - Bug 9937
         [TestMethod]
@@ -70,22 +51,20 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = @"1";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
 
             if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
                 string replacedRes;
-                GetScalarValueFromDataList(result.DataListID, "SpecialChar", out replacedRes, out error);
+                GetScalarValueFromEnvironment(result.Environment, "SpecialChar", out replacedRes, out error);
                 // remove test datalist ;)
-                DataListRemoval(result.DataListID);
 
                 Assert.AreEqual("It Worked", replacedRes);
             }
             else
             {
                 // remove test datalist ;)
-                DataListRemoval(result.DataListID);
                 Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
@@ -96,27 +75,25 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.ReplaceDataListWithData, ActivityStrings.ReplaceDataListShape, "[[recset1(*).field1]],[[Customers(*).FirstName]]", "Barney", "Wallis", "[[res]]", false);
 
             IDSFDataObject result = ExecuteProcess();
-            const string expected = @"2";
+            const string expected = @"3";
             string actual;
 
             string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
 
             if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
-                IList<IBinaryDataListItem> dataListItems;
-                GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out dataListItems, out error);
-                Assert.AreEqual("Wallis", dataListItems[0].TheValue);
-                GetRecordSetFieldValueFromDataList(result.DataListID, "Customers", "FirstName", out dataListItems, out error);
+                IList<string> dataListItems;
+                GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out dataListItems, out error);
+                Assert.AreEqual("Wallis", dataListItems[0]);
+                GetRecordSetFieldValueFromDataList(result.Environment, "Customers", "FirstName", out dataListItems, out error);
                 // remove test datalist ;)
-                DataListRemoval(result.DataListID);
-                Assert.AreEqual("Wallis", dataListItems[0].TheValue);
+                Assert.AreEqual("Wallis", dataListItems[0]);
             }
             else
             {
                 // remove test datalist ;)
-                DataListRemoval(result.DataListID);
                 Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
@@ -127,53 +104,25 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.ReplaceDataListWithData, ActivityStrings.ReplaceDataListShape, "[[recset1(*).field1]], [[Customers(*).FirstName]]", "Barney", "Wallis", "[[res]]", false);
 
             IDSFDataObject result = ExecuteProcess();
-            const string expected = @"2";
+            const string expected = @"3";
             string actual;
             string error;
 
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
             if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
-                IList<IBinaryDataListItem> dataListItems;
-                GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out dataListItems, out error);
-                Assert.AreEqual("Wallis", dataListItems[0].TheValue);
-                GetRecordSetFieldValueFromDataList(result.DataListID, "Customers", "FirstName", out dataListItems, out error);
-                Assert.AreEqual("Wallis", dataListItems[0].TheValue);
+                IList<string> dataListItems;
+                GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out dataListItems, out error);
+                Assert.AreEqual("Wallis", dataListItems[0]);
+                GetRecordSetFieldValueFromDataList(result.Environment, "Customers", "FirstName", out dataListItems, out error);
+                Assert.AreEqual("Wallis", dataListItems[0]);
 
                 // remove test datalist ;)
-                DataListRemoval(result.DataListID);
             }
             else
             {
                 // remove test datalist ;)
-                DataListRemoval(result.DataListID);
-                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
-            }
-        }
-
-        [TestMethod]
-        public void Replace_With_Recset_ToFind_To_Replace_Expected_six_Replaced()
-        {
-            SetupArguments(ActivityStrings.ReplaceDataListWithData, ActivityStrings.ReplaceDataListShape, "[[recset1(*).field1]],[[Customers(*).FirstName]]", "[[ReplaceRecset(*).replace]]", "TEST", "[[res]]", false);
-
-            IDSFDataObject result = ExecuteProcess();
-            const string expected = @"6";
-            string actual;
-            string error;
-
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            if(string.IsNullOrEmpty(error))
-            {
-                Assert.AreEqual(expected, actual);
-            }
-            else
-            {
-                // remove test datalist ;)
-                DataListRemoval(result.DataListID);
                 Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
@@ -189,20 +138,18 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             string error;
 
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
             if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
-                GetScalarValueFromDataList(result.DataListID, "CompanyName", out actual, out error);
+                GetScalarValueFromEnvironment(result.Environment, "CompanyName", out actual, out error);
                 // remove test datalist ;)
-                DataListRemoval(result.DataListID);
 
                 Assert.AreEqual("TheUnlimted", actual);
             }
             else
             {
                 // remove test datalist ;)
-                DataListRemoval(result.DataListID);
                 Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
@@ -216,19 +163,17 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = @"0";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
             if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
-                GetScalarValueFromDataList(result.DataListID, "CompanyName", out actual, out error);
+                GetScalarValueFromEnvironment(result.Environment, "CompanyName", out actual, out error);
                 // remove test datalist ;)
-                DataListRemoval(result.DataListID);
                 Assert.AreEqual("Dev2", actual);
             }
             else
             {
                 // remove test datalist ;)
-                DataListRemoval(result.DataListID);
                 Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
@@ -242,24 +187,22 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = @"1";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
             if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
-                IList<IBinaryDataListItem> dataListItems;
-                GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out dataListItems, out error);
-                Assert.AreEqual("barney", dataListItems[0].TheValue);
-                GetRecordSetFieldValueFromDataList(result.DataListID, "Customers", "FirstName", out dataListItems, out error);
+                IList<string> dataListItems;
+                GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out dataListItems, out error);
+                Assert.AreEqual("barney", dataListItems[0]);
+                GetRecordSetFieldValueFromDataList(result.Environment, "Customers", "FirstName", out dataListItems, out error);
 
                 // remove test datalist ;)
-                DataListRemoval(result.DataListID);
 
-                Assert.AreEqual("Wallis", dataListItems[0].TheValue);
+                Assert.AreEqual("Wallis", dataListItems[0]);
             }
             else
             {
                 // remove test datalist ;)
-                DataListRemoval(result.DataListID);
                 Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
@@ -270,27 +213,25 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.ReplaceDataListWithData, ActivityStrings.ReplaceDataListShape, "[[recset1(1).field1]],[[Customers(2).FirstName]]", "Barney", "Wallis", "[[res]]", false);
 
             IDSFDataObject result = ExecuteProcess();
-            const string expected = @"1";
+            const string expected = @"2";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
             if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
-                IList<IBinaryDataListItem> dataListItems;
-                GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out dataListItems, out error);
-                Assert.AreEqual("Wallis", dataListItems[0].TheValue);
-                GetRecordSetFieldValueFromDataList(result.DataListID, "Customers", "FirstName", out dataListItems, out error);
+                IList<string> dataListItems;
+                GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out dataListItems, out error);
+                Assert.AreEqual("Wallis", dataListItems[0]);
+                GetRecordSetFieldValueFromDataList(result.Environment, "Customers", "FirstName", out dataListItems, out error);
 
                 // remove test datalist ;)
-                DataListRemoval(result.DataListID);
 
-                Assert.AreEqual("Barney", dataListItems[0].TheValue);
+                Assert.AreEqual("Barney", dataListItems[0]);
             }
             else
             {
                 // remove test datalist ;)
-                DataListRemoval(result.DataListID);
                 Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
@@ -304,49 +245,20 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = @"1";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "Res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Res", out actual, out error);
 
             if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
-                GetScalarValueFromDataList(result.DataListID, "Thing", out actual, out error);
+                GetScalarValueFromEnvironment(result.Environment, "Thing", out actual, out error);
 
                 // remove test datalist ;)
-                DataListRemoval(result.DataListID);
 
                 Assert.AreEqual("testWallis", actual);
             }
             else
             {
                 // remove test datalist ;)
-                DataListRemoval(result.DataListID);
-                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
-            }
-        }
-
-        [TestMethod]
-        public void ReplaceScalarWithBracketExpectedOneReplace()
-        {
-            SetupArguments(@"<DataList><Thing>(0)</Thing><Res></Res></DataList>", @"<DataList><Thing></Thing><Res></Res></DataList>", @"[[Thing]]", @"(0)", @"+1", "[[Res]]", false);
-
-            IDSFDataObject result = ExecuteProcess();
-            const string expected = @"1";
-            string actual;
-            string error;
-
-            GetScalarValueFromDataList(result.DataListID, "Res", out actual, out error);
-            if(string.IsNullOrEmpty(error))
-            {
-                Assert.AreEqual(expected, actual);
-                GetScalarValueFromDataList(result.DataListID, "Thing", out actual, out error);
-                // remove test datalist ;)
-                DataListRemoval(result.DataListID);
-                Assert.AreEqual("+1", actual);
-            }
-            else
-            {
-                // remove test datalist ;)
-                DataListRemoval(result.DataListID);
                 Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
@@ -362,59 +274,25 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
 
             string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
             if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
-                IList<IBinaryDataListItem> dataListItems;
-                GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out dataListItems, out error);
-                Assert.AreEqual("Wallis", dataListItems[0].TheValue);
-                GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field2", out dataListItems, out error);
+                IList<string> dataListItems;
+                GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out dataListItems, out error);
+                Assert.AreEqual("Wallis", dataListItems[0]);
+                GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field2", out dataListItems, out error);
                 // remove test datalist ;)
-                DataListRemoval(result.DataListID);
-                Assert.AreEqual("Wallis", dataListItems[1].TheValue);
+                Assert.AreEqual("Wallis", dataListItems[1]);
             }
             else
             {
                 // remove test datalist ;)
-                DataListRemoval(result.DataListID);
                 Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
-        //2013.06.12: Ashley Lewis for bug 9587 - replace handles spaces
-        [TestMethod]
-        public void ReplaceInTwoRecordsetsSeperatedBySpacesAndCommasExpectedTwoReplacesSuccess()
-        {
-            SetupArguments(ActivityStrings.ReplaceDataListWithSpacesInData, ActivityStrings.ReplaceDataListShapeForSpaces, "[[recset1(*).field]] [[Customers(*).Names]], [[ReplaceScalar]]", "Barney", "Wallis", "[[res]]", false);
-
-            IDSFDataObject result = ExecuteProcess();
-            const string expected = @"3";
-            string actual;
-            string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            if(string.IsNullOrEmpty(error))
-            {
-                Assert.AreEqual(expected, actual);
-                IList<IBinaryDataListItem> dataListItems;
-                GetRecordSetFieldValueFromDataList(result.DataListID, "Customers", "Names", out dataListItems, out error);
-                Assert.AreEqual("Wallis Buchan", dataListItems[0].TheValue);
-                GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field", out dataListItems, out error);
-                Assert.AreEqual("Wallis f2r1", dataListItems[0].TheValue);
-                string scalarResult;
-                GetScalarValueFromDataList(result.DataListID, "ReplaceScalar", out scalarResult, out error);
-                // remove test datalist ;)
-                DataListRemoval(result.DataListID);
-                Assert.AreEqual("Wallis abc123", scalarResult);
-            }
-            else
-            {
-                // remove test datalist ;)
-                DataListRemoval(result.DataListID);
-                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
-            }
-        }
-
+     
         #endregion Replace Positive Tests
 
         #region Replace Negative Tests
@@ -425,12 +303,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.ReplaceDataListWithData, ActivityStrings.ReplaceDataListShape, "rawstringdata", "Barney", "Wallis", "[[res]]", false);
 
             IDSFDataObject result = ExecuteProcess();
-            const string expected = @"<InnerError>Please insert only variables into Fields To Search</InnerError>";
+            const string expected = @"Please insert only variables into Fields To Search";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
             if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
@@ -447,13 +324,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.ReplaceDataListWithData, ActivityStrings.ReplaceDataListShape, "[[recset1(-1).field1]]", "Barney", "Wallis", "[[res]]", false);
 
             IDSFDataObject result = ExecuteProcess();
-            const string expected = @"<InnerError>Recordset index [ -1 ] is not greater than zero</InnerError>";
+            const string expected = @"Recordset index [ -1 ] is not greater than zero";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             if(string.IsNullOrEmpty(error))
             {
@@ -471,12 +347,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.ReplaceDataListShape, ActivityStrings.ReplaceDataListWithData, "[[recset1(0).field1]]", "Barney", "Wallis", "[[res]]", false);
 
             IDSFDataObject result = ExecuteProcess();
-            const string expected = @"<InnerError>Recordset index [ 0 ] is not greater than zero</InnerError>";
+            const string expected = @"Recordset index [ 0 ] is not greater than zero";
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             if(string.IsNullOrEmpty(error))
             {
@@ -502,7 +377,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var res = inputs.FetchAllEntries().Count;
 
             // remove test datalist ;)
-            DataListRemoval(inputs.UID);
 
             Assert.AreEqual(4, res);
         }
@@ -517,7 +391,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var res = outputs.FetchAllEntries().Count;
 
             // remove test datalist ;)
-            DataListRemoval(outputs.UID);
 
             Assert.AreEqual(1, res);
 
@@ -538,7 +411,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var act = new DsfReplaceActivity { FieldsToSearch = FieldsToSearch, Find = Find, ReplaceWith = ReplaceWith, Result = Result };
 
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(null, null);
+            act.UpdateForEachInputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual(FieldsToSearch, act.FieldsToSearch);
             Assert.AreEqual(Find, act.Find);
@@ -561,7 +434,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple2 = new Tuple<string, string>(Find, "Test2");
             var tuple3 = new Tuple<string, string>(ReplaceWith, "Test3");
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2, tuple3 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2, tuple3 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test2", act.Find);
             Assert.AreEqual("Test", act.FieldsToSearch);
@@ -581,7 +454,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string ReplaceWith = "2";
             var act = new DsfReplaceActivity { FieldsToSearch = FieldsToSearch, Find = Find, ReplaceWith = ReplaceWith, Result = Result };
 
-            act.UpdateForEachOutputs(null, null);
+            act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual(Result, act.Result);
         }
@@ -601,7 +474,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual(Result, act.Result);
         }
@@ -620,7 +493,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var tuple1 = new Tuple<string, string>("[[res]]", "Test");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.Result);
         }

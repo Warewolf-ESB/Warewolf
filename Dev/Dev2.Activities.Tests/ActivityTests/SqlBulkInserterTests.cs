@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Data;
 using Dev2.Activities.SqlBulkInsert;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -83,7 +82,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             bulkCopy.Setup(b => b.WriteToServer(It.IsAny<DataTable>())).Returns(false);
 
             //------------Execute Test---------------------------
-            var result = bulkInserter.Insert(bulkCopy.Object, null);
+            var result = bulkInserter.Insert(bulkCopy.Object, (DataTable)null);
 
             //------------Assert Results-------------------------
             Assert.IsFalse(result);

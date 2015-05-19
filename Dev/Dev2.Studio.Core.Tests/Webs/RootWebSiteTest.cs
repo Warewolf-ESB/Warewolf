@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Text;
 using Caliburn.Micro;
@@ -947,6 +946,62 @@ namespace Dev2.Core.Tests.Webs
             Assert.IsFalse(saveCallBackHandler.AddToTabManager);
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("RootWebsite_ShowOauthSaveDialog")]
+        public void RootWebsite_ShowOauthSaveDialog_AddToTabManagerIsFalse_IsFalseOnTheCallbackHandler()
+        {
+            //------------Setup for test--------------------------
+            var resourceModel = SetupResourceModel();
+            var env = new Mock<IEnvironmentModel>();
+            var con = new Mock<IEnvironmentConnection>();
+            con.Setup(a => a.AppServerUri).Returns(new Uri("http://www.bobxzy.com"));
+            env.Setup(a => a.Connection).Returns(con.Object);
+            //------------Execute Test---------------------------
+            RootWebSite.ShowNewOAuthsourceSaveDialog(resourceModel.Object,env.Object,"bob","manny");
+            //------------Assert Results-------------------------
+            var saveCallBackHandler = RootWebSite.CallBackHandler as DropBoxSourceSourceCallbackHandler;
+            Assert.IsNotNull(saveCallBackHandler);
+         
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("RootWebsite_ShowOauthSaveDialog"),ExpectedException(typeof(ArgumentNullException))]
+        public void RootWebsite_ShowOauthSaveDialog_NullResource_ExpectException()
+        {
+            //------------Setup for test--------------------------
+            var resourceModel = SetupResourceModel();
+            var env = new Mock<IEnvironmentModel>();
+            var con = new Mock<IEnvironmentConnection>();
+            con.Setup(a => a.AppServerUri).Returns(new Uri("http://www.bobxzy.com"));
+            env.Setup(a => a.Connection).Returns(con.Object);
+            //------------Execute Test---------------------------
+            RootWebSite.ShowNewOAuthsourceSaveDialog(null, env.Object, "bob", "manny");
+            //------------Assert Results-------------------------
+            var saveCallBackHandler = RootWebSite.CallBackHandler as DropBoxSourceSourceCallbackHandler;
+            Assert.IsNotNull(saveCallBackHandler);
+
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("RootWebsite_ShowOauthSaveDialog"), ExpectedException(typeof(ArgumentNullException))]
+        public void RootWebsite_ShowOauthSaveDialog_NullEnv_ExpectException()
+        {
+            //------------Setup for test--------------------------
+            var resourceModel = SetupResourceModel();
+            var env = new Mock<IEnvironmentModel>();
+            var con = new Mock<IEnvironmentConnection>();
+            con.Setup(a => a.AppServerUri).Returns(new Uri("http://www.bobxzy.com"));
+            env.Setup(a => a.Connection).Returns(con.Object);
+            resourceModel.Setup(model => model.Environment).Returns((IEnvironmentModel)null);
+            //------------Execute Test---------------------------
+            RootWebSite.ShowNewOAuthsourceSaveDialog(resourceModel.Object, null, "bob", "manny");
+            //------------Assert Results-------------------------
+            var saveCallBackHandler = RootWebSite.CallBackHandler as DropBoxSourceSourceCallbackHandler;
+            Assert.IsNotNull(saveCallBackHandler);
+
+        }
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RootWebsite_ShowSaveDialog")]

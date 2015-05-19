@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -8,7 +7,6 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-
 
 using System;
 using System.Activities;
@@ -23,30 +21,30 @@ using Dev2.Util;
 namespace Dev2.DynamicServices.Objects
 {
     /// <summary>
-    /// Created to break memory leak in ServiceAction ;)
+    ///     Created to break memory leak in ServiceAction ;)
     /// </summary>
     public class Dev2XamlLoader
     {
         /// <summary>
-        /// Loads the specified xaml definition.
+        ///     Loads the specified xaml definition.
         /// </summary>
         /// <param name="xamlDefinition">The xaml definition.</param>
         /// <param name="xamlStream">The xaml stream.</param>
         /// <param name="workflowPool">The workflow pool.</param>
         /// <param name="workflowActivity">The workflow activity.</param>
         /// <exception cref="System.ArgumentNullException">xamlDefinition</exception>
-        public void Load(StringBuilder xamlDefinition, ref Stream xamlStream, ref Queue<PooledServiceActivity> workflowPool, ref Activity workflowActivity)
+        public void Load(StringBuilder xamlDefinition, ref Stream xamlStream,
+            ref Queue<PooledServiceActivity> workflowPool, ref Activity workflowActivity)
         {
-
-            if(xamlDefinition == null || xamlDefinition.Length == 0)
+            if (xamlDefinition == null || xamlDefinition.Length == 0)
             {
                 throw new ArgumentNullException("xamlDefinition");
             }
 
             // Travis.Frisinger : 13.11.2012 - Remove bad namespaces
             // ReSharper disable ConditionIsAlwaysTrueOrFalse
-            if(GlobalConstants.runtimeNamespaceClean)
-            // ReSharper restore ConditionIsAlwaysTrueOrFalse
+            if (GlobalConstants.runtimeNamespaceClean)
+                // ReSharper restore ConditionIsAlwaysTrueOrFalse
             {
                 xamlDefinition = new Dev2XamlCleaner().CleanServiceDef(xamlDefinition);
             }
@@ -55,7 +53,7 @@ namespace Dev2.DynamicServices.Objects
 
             int generation = 0;
 
-            using(xamlStream =  xamlDefinition.EncodeForXmlDocument())
+            using (xamlStream = xamlDefinition.EncodeForXmlDocument())
             {
                 workflowActivity = ActivityXamlServices.Load(xamlStream);
                 xamlStream.Seek(0, SeekOrigin.Begin);
@@ -63,7 +61,7 @@ namespace Dev2.DynamicServices.Objects
 
                 generation++;
 
-                for(int i = 0; i < GlobalConstants._xamlPoolSize; i++)
+                for (int i = 0; i < GlobalConstants._xamlPoolSize; i++)
                 {
                     Activity activity = ActivityXamlServices.Load(xamlStream);
                     xamlStream.Seek(0, SeekOrigin.Begin);

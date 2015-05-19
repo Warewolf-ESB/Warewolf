@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Microsoft.Win32.TaskScheduler;
 
@@ -17,7 +15,6 @@ namespace Dev2.Common.Interfaces.Scheduler.Interfaces
 {
     public interface IClientSchedulerFactory
     {
-
         IScheduleTrigger CreateTrigger(TaskState state, ITrigger trigger);
     }
 }

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Events;
@@ -48,7 +47,7 @@ namespace Dev2.Core.Tests
         [TestCategory("DebugOutputViewModel_Append")]
         public void DebugOutputViewModel_Append_SearchTextDoesNotMatchContent_NotAdded()
         {
-            DebugOutputViewModel_Append_SearchText(searchText: "Moo", contentText: "Baa", isAdded: false);
+            DebugOutputViewModel_Append_SearchText("Moo", "Baa", false);
         }
 
         [TestMethod]
@@ -56,7 +55,7 @@ namespace Dev2.Core.Tests
         [TestCategory("DebugOutputViewModel_Append")]
         public void DebugOutputViewModel_Append_SearchTextDoesMatchContent_Added()
         {
-            DebugOutputViewModel_Append_SearchText(searchText: "Moo", contentText: "Moo", isAdded: true);
+            DebugOutputViewModel_Append_SearchText("Moo", "Moo", true);
         }
 
         [TestMethod]
@@ -64,7 +63,7 @@ namespace Dev2.Core.Tests
         [TestCategory("DebugOutputViewModel_Append")]
         public void DebugOutputViewModel_Append_SearchTextIsEmpty_Added()
         {
-            DebugOutputViewModel_Append_SearchText(searchText: "", contentText: "Moo", isAdded: true);
+            DebugOutputViewModel_Append_SearchText("", "Moo", true);
         }
 
         [TestMethod]
@@ -72,7 +71,7 @@ namespace Dev2.Core.Tests
         [TestCategory("DebugOutputViewModel_Append")]
         public void DebugOutputViewModel_Append_SearchTextIsNull_Added()
         {
-            DebugOutputViewModel_Append_SearchText(searchText: null, contentText: "Moo", isAdded: true);
+            DebugOutputViewModel_Append_SearchText(null, "Moo", true);
         }
 
         [TestMethod]
@@ -80,7 +79,7 @@ namespace Dev2.Core.Tests
         [TestCategory("DebugOutputViewModel_Append")]
         public void DebugOutputViewModel_Append_SearchTextIsWhiteSpace_Added()
         {
-            DebugOutputViewModel_Append_SearchText(searchText: "  ", contentText: "Moo", isAdded: true);
+            DebugOutputViewModel_Append_SearchText("  ", "Moo", true);
         }
 
         static void DebugOutputViewModel_Append_SearchText(string searchText, string contentText, bool isAdded)
@@ -106,7 +105,7 @@ namespace Dev2.Core.Tests
         [TestCategory("DebugOutputViewModel_Append")]
         public void DebugOutputViewModel_Append_ContentStateTypeIsMessage_StringTreeViewItemAdded()
         {
-            DebugOutputViewModel_Append_ContentStateType(StateType.Message, typeof(DebugStringTreeViewItemViewModel), isExpanded: false);
+            DebugOutputViewModel_Append_ContentStateType(StateType.Message, typeof(DebugStringTreeViewItemViewModel), false);
         }
 
         [TestMethod]
@@ -114,7 +113,7 @@ namespace Dev2.Core.Tests
         [TestCategory("DebugOutputViewModel_Append")]
         public void DebugOutputViewModel_Append_ContentStateTypeIsNotMessage_StateTreeViewItemAdded()
         {
-            DebugOutputViewModel_Append_ContentStateType(StateType.All, typeof(DebugStateTreeViewItemViewModel), isExpanded: false);
+            DebugOutputViewModel_Append_ContentStateType(StateType.All, typeof(DebugStateTreeViewItemViewModel), false);
         }
 
         static void DebugOutputViewModel_Append_ContentStateType(StateType stateType, Type expectedType, bool isExpanded)
@@ -153,7 +152,7 @@ namespace Dev2.Core.Tests
         [TestCategory("DebugOutputViewModel_Append")]
         public void DebugOutputViewModel_Append_ContentIsDebugStateAndParentIDIsEmpty_ItemAddedAtRootAndIsNotExpanded()
         {
-            DebugOutputViewModel_Append_ContentIsDebugState(Guid.NewGuid(), Guid.Empty, displayName: "Content");
+            DebugOutputViewModel_Append_ContentIsDebugState(Guid.NewGuid(), Guid.Empty, "Content");
         }
 
         [TestMethod]
@@ -162,7 +161,7 @@ namespace Dev2.Core.Tests
         public void DebugOutputViewModel_Append_ContentIsDebugStateAndIDDoesEqualParentID_ItemAddedAtRootAndIsNotExpanded()
         {
             var id = Guid.NewGuid();
-            DebugOutputViewModel_Append_ContentIsDebugState(id, id, displayName: "Content");
+            DebugOutputViewModel_Append_ContentIsDebugState(id, id, "Content");
         }
 
         [TestMethod]
@@ -250,7 +249,7 @@ namespace Dev2.Core.Tests
         [TestCategory("DebugOutputViewModel_Append")]
         public void DebugOutputViewModel_Append_ContentIsDebugStateWithoutErrors_ItemAddedWithoutErrors()
         {
-            DebugOutputViewModel_Append_ContentIsDebugStateErrors(parentContentHasErrors: false, childContentHasErrors: false);
+            DebugOutputViewModel_Append_ContentIsDebugStateErrors(false, false);
         }
 
         [TestMethod]
@@ -258,7 +257,7 @@ namespace Dev2.Core.Tests
         [TestCategory("DebugOutputViewModel_Append")]
         public void DebugOutputViewModel_Append_ContentIsDebugStateWithErrors_ItemAddedWithErrors()
         {
-            DebugOutputViewModel_Append_ContentIsDebugStateErrors(parentContentHasErrors: true, childContentHasErrors: true);
+            DebugOutputViewModel_Append_ContentIsDebugStateErrors(true, true);
         }
 
         void DebugOutputViewModel_Append_ContentIsDebugStateErrors(bool parentContentHasErrors, bool childContentHasErrors)

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -54,5 +53,6 @@ namespace Dev2.AppResources.Repositories
         void RollbackTo(IVersionInfo versionInfo, Guid environmentId);
         void DeleteVersion(IVersionInfo versionInfo, Guid environmentId);
         void RefreshVersionHistory(Guid environmentId, Guid resourceId);
+        string GetServerVersion(Guid environmentId);
     }
 }

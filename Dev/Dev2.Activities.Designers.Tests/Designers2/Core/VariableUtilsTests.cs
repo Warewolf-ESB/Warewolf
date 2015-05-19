@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Collections.ObjectModel;
 using Dev2.Validation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -44,7 +43,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             string outputValue;
 
             //------------Execute Test---------------------------
-            var error = VariableUtils.TryParseVariables("a]]", out outputValue, () => { });
+            var error = "a]]".TryParseVariables(out outputValue, () => { });
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(error);
@@ -61,7 +60,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             string variableValue = "xxx";
 
             //------------Execute Test---------------------------
-            var error = VariableUtils.TryParseVariables("[[a]]", out outputValue, () => { }, variableValue: variableValue);
+            var error = "[[a]]".TryParseVariables(out outputValue, () => { }, variableValue: variableValue);
 
             //------------Assert Results-------------------------
             Assert.IsNull(error);
@@ -81,7 +80,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             inputs.Add(new ObservablePair<string, string>("[[a]]", variableValue));
 
             //------------Execute Test---------------------------
-            var error = VariableUtils.TryParseVariables("[[a]]", out outputValue, () => { }, variableValue: "a", inputs: inputs);
+            var error = "[[a]]".TryParseVariables(out outputValue, () => { }, variableValue: "a", inputs: inputs);
 
             //------------Assert Results-------------------------
             Assert.IsNull(error);

@@ -9,21 +9,20 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Data.Interfaces;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Interfaces.DataList
 {
     public interface IDataListViewModel : IScreen, IChild, IDisposable
     {
         IResourceModel Resource { get; }
-        ICommand FindUnusedAndMissingCommand { get; }
+        RelayCommand FindUnusedAndMissingCommand { get; }
 
         ObservableCollection<IDataListItemModel> ScalarCollection { get; }
 
@@ -45,9 +44,10 @@ namespace Dev2.Studio.Core.Interfaces.DataList
         /// Sets the unused data list items.
         /// </summary>
         /// <param name="parts">The parts.</param>
+        /// <param name="isUsed"></param>
         /// <author>Massimo.Guerrera</author>
         /// <date>2/20/2013</date>
-        void SetUnusedDataListItems(IList<IDataListVerifyPart> parts);
+        void SetIsUsedDataListItems(IList<IDataListVerifyPart> parts, bool isUsed);
 
         /// <summary>
         /// Initializes the data list view model.

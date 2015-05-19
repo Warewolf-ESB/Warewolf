@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,14 +8,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
+using System.Activities.XamlIntegration;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
+using Microsoft.Win32;
 
 namespace Dev2.Common
 {
-
     /*
      * Moved the CustomIcons to Dev2.Studio / AppResources / Converters
      * Since that is where they where being used ;)
@@ -24,9 +24,87 @@ namespace Dev2.Common
 
     public static class GlobalConstants
     {
+
+         static GlobalConstants()
+         {
+             SystemEvents.TimeChanged += (sender, args) =>
+             {
+                 // ReSharper disable once ConvertToLambdaExpression
+                 CultureInfo.CurrentCulture.ClearCachedData();
+             };
+
+             /**********************************************************
+              * Hear ye Hear ye
+              * The event below allows warewolf to react to changes in regional settings by clearing the Culture cache.
+              * The method below is not tested using integration tests because it is difficult to change regional settings without restarting explorer.exe
+              * If a good way is found to do this, then please add integration tests. 
+              * Dont delete this method
+              */
+             SystemEvents.UserPreferenceChanged += (sender, args) =>
+             {
+                 // ReSharper disable once ConvertToLambdaExpression
+                 CultureInfo.CurrentCulture.ClearCachedData();
+             };
+            
+         }
         // ReSharper disable InconsistentNaming
         //Default TimeoutValue
+        // ReSharper disable UnusedMember.Global
         public static readonly TimeSpan DefaultTimeoutValue = new TimeSpan(0, 0, 20, 0);
+        // ReSharper restore UnusedMember.Global
+
+        public static string DefaultServerLogFileConfig = "<log4net>" +
+                                             "<appender name=\"LogFileAppender\" type=\"Log4Net.Async.AsyncRollingFileAppender,Log4Net.Async\">" +
+                                            "<file type=\"log4net.Util.PatternString\" value=\"wareWolf-Server.log\" />" +
+    "<!-- Example using environment variables in params -->" +
+    "<!-- <file value=\"${TMP}\\log-file.txt\" /> -->" +
+    "<appendToFile value=\"true\" />" +
+    "<rollingStyle value=\"Size\" />" +
+    "<maxSizeRollBackups value=\"1\" />" +
+    "<maximumFileSize value=\"200MB\" />" +
+    "<!-- An alternate output encoding can be specified -->" +
+    "<!-- <encoding value=\"unicodeFFFE\" /> -->" +
+    "<layout type=\"log4net.Layout.PatternLayout\">" +
+    "<header value=\"[Header]&#xD;&#xA;\" />" +
+                                             "<footer value=\"[Footer]&#xD;&#xA;\" />" +
+                                             "<conversionPattern value=\"%date [%thread] %-5level - %message%newline\" />" +
+                                             "</layout>" +
+                                             "<!-- Alternate layout using XML			" +
+                                             "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
+                                             "</appender>" +
+                                             "<!-- Setup the root category, add the appenders and set the default level -->" +
+                                             "<root>" +
+                                             "<level value=\"DEBUG\" />" +
+                                             "<appender-ref ref=\"LogFileAppender\" />" +
+                                             "</root>" +
+                                             "</log4net>";
+
+        public static string DefaultStudioLogFileConfig = "<log4net>" +
+                                             "<appender name=\"LogFileAppender\" type=\"Log4Net.Async.AsyncRollingFileAppender,Log4Net.Async\">" +
+                                            "<file type=\"log4net.Util.PatternString\" value=\"${LOCALAPPDATA}\\Warewolf\\Studio Logs\\Warewolf Studio.log\" />"+
+    "<!-- Example using environment variables in params -->"+
+    "<!-- <file value=\"${TMP}\\log-file.txt\" /> -->"+
+    "<appendToFile value=\"true\" />"+
+    "<rollingStyle value=\"Size\" />"+
+    "<maxSizeRollBackups value=\"1\" />"+
+    "<maximumFileSize value=\"200MB\" />"+
+    "<!-- An alternate output encoding can be specified -->"+
+    "<!-- <encoding value=\"unicodeFFFE\" /> -->"+
+    "<layout type=\"log4net.Layout.PatternLayout\">"+
+    "<header value=\"[Header]&#xD;&#xA;\" />" +
+                                             "<footer value=\"[Footer]&#xD;&#xA;\" />" +
+                                             "<conversionPattern value=\"%date [%thread] %-5level - %message%newline\" />" +
+                                             "</layout>" +
+                                             "<!-- Alternate layout using XML			" +
+                                             "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
+                                             "</appender>" +
+                                             "<!-- Setup the root category, add the appenders and set the default level -->" +
+                                             "<root>" +
+                                             "<level value=\"DEBUG\" />" +
+                                             "<appender-ref ref=\"LogFileAppender\" />" +
+                                           
+                                             "</root>" +
+                                             "</log4net>";
 
         // Max String Size
         // ReSharper disable InconsistentNaming
@@ -39,7 +117,9 @@ namespace Dev2.Common
         // ReSharper restore InconsistentNaming
 
         // Force Webserver Constants
+        // ReSharper disable UnusedMember.Global
         public const int ViewInBrowserForceDownloadSize = 51200; // 500 KB and a file must be downloaded
+     
 
         //Runtime Configuration
         public const string Dev2RuntimeConfigurationAssemblyName = "Dev2.Runtime.Configuration.dll";
@@ -74,9 +154,6 @@ namespace Dev2.Common
         public const string CalculateTextConvertFormat = CalculateTextConvertPrefix + "{0}" + CalculateTextConvertSuffix;
 
         // Website constants
-        public const string MetaTagsHolder = @"<Dev2HTML Type=""Meta""/>";
-        public const string WebpageCellContainer = "Webpart";
-        public const string WebpartRenderError = "<Fragement>Error executing webpart's service</Fragment>";
         public const string WebserverReplaceTag = "[[Dev2WebServer]]";
 
         // JSON constants
@@ -108,7 +185,6 @@ namespace Dev2.Common
         public const string StarExpression = "*";
         public const string EqualsExpression = "=";
         public const int AllIndexes = -1;
-        public static readonly Guid NullDataListID = Guid.Empty;
         public const string OkExeResult = "<Dev2Status>Ok</Dev2Status>";
         public const string PostDataStart = "<Dev2PostData>";
         public const string PostDataEnd = "</Dev2PostData>";
@@ -132,14 +208,16 @@ namespace Dev2.Common
         // Storage Cache Constants
         public const int DefaultColumnSizeLvl1 = 10;
         public const int DefaultStorageSegments = 1;
-        public const int DefaultStorageSegmentSize = 8 * 1024 * 1024; // 8 MB default buffer size ;)
-        public const int DefaultAliasCacheSize = 32 * 1024; // 32KB of alias cache ;)
+        public const int DefaultStorageSegmentSize = 8*1024*1024; // 8 MB default buffer size ;)
+        public const int DefaultAliasCacheSize = 32*1024; // 32KB of alias cache ;)
         public const string DefaultStorageZipEntry = "Dev2Storage";
 
         public const string DataListIoColDirection = "ColumnIODirection";
 
         // Decision Wizard Constants
-        public const string InjectedDecisionHandler = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack";
+        public const string InjectedDecisionHandler =
+            "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack";
+
         public const string InjectedDecisionHandlerOld = "Dev2DecisionHandler.Instance.ExecuteDecisionStack";
         public const string InjectedDecisionDataListVariable = "AmbientDataList";
         public const string ExpressionPropertyText = "ExpressionText";
@@ -162,7 +240,9 @@ namespace Dev2.Common
         public const string SwitchExpressionPropertyText = "Expression";
         public const string SwitchExpressionTextPropertyText = "ExpressionText";
         public const string InjectedSwitchDataFetchOld = "Dev2DecisionHandler.Instance.FetchSwitchData";
-        public const string InjectedSwitchDataFetch = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.FetchSwitchData";
+
+        public const string InjectedSwitchDataFetch =
+            "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.FetchSwitchData";
 
         public const string SwitchWizardErrorString = "Couldn't find the resource needed to configure the Switch.";
         public const string SwitchWizardErrorHeading = "Missing System Model Dev2Switch";
@@ -200,7 +280,8 @@ namespace Dev2.Common
         public const string SourcesDirectory = "Sources";
 
         // No start node error message
-        public const string NoStartNodeError = "The workflow must have at least one service or activity connected to the Start Node.";
+        public const string NoStartNodeError =
+            "The workflow must have at least one service or activity connected to the Start Node.";
 
         // Output TO for Activity Upsert
         public const string OutputTONonRSField = "Field";
@@ -208,6 +289,21 @@ namespace Dev2.Common
         public const string NoLongerSupportedMsg = "This activity is no longer supported";
         // Namespace cleanup - Set to false to avoid namespace clean-up ;)
         public const bool runtimeNamespaceClean = true;
+        public const string WarewolfGroup = "Warewolf Administrators";
+        public const string SchedulerFolderId = "Warewolf";
+        public const string SchedulerAgentPath = @"WarewolfAgent.exe";
+        public const string SchedulerDebugPath = @"Warewolf\DebugOutPut\";
+        public const string SchemaQuery = @"SELECT name AS ROUTINE_NAME
+,SCHEMA_NAME(schema_id) AS SPECIFIC_SCHEMA
+,type_desc as ROUTINE_TYPE
+FROM sys.objects
+WHERE type_desc LIKE '%FUNCTION%'
+or type_desc LIKE '%Procedure%'";
+        public const string SchemaQueryMySql = @"SHOW PROCEDURE STATUS;";
+        public const string ExplorerItemModelFormat = "Dev2.Models.ExplorerItemModel";
+        public const string VersionDownloadPath = "Installers\\";
+        public const string VersionFolder = "VersionControl";
+        public static readonly Guid NullDataListID = Guid.Empty;
 
         // Server WorkspaceID
         public static readonly Guid ServerWorkspaceID = Guid.Empty;
@@ -220,8 +316,11 @@ namespace Dev2.Common
 
         // Security
         //public const string BuiltInAdministrator = "BuiltIn\\Administrators";
-        public const string WarewolfGroup = "Warewolf Administrators";
+        // ReSharper disable ConvertToConstant.Global
+        // ReSharper disable FieldCanBeMadeReadOnly.Global
         public static String PublicUsername = @"\";
+      
+ 
 
         // GAC
         public static readonly string GACPrefix = "GAC:";
@@ -233,7 +332,9 @@ namespace Dev2.Common
         public static readonly string RemoteServerInvoke = "RemoteWarewolfServer";
 
         // Date Time
+        // ReSharper disable MemberCanBePrivate.Global
         public static readonly string LongTimePattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
+
         public static readonly string ShortTimePattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
         public static readonly string Dev2DotNetDefaultDateTimeFormat = ShortTimePattern + " " + LongTimePattern;
         public static readonly string Dev2CustomDefaultDateTimeFormat = "d MM yyyy 24h:min.ss sp";
@@ -264,68 +365,76 @@ namespace Dev2.Common
 
         public static List<string> FindRecordsOperations = new List<string>
         {
-                "=",
-                ">",
-                "<",
-                "<> (Not Equal)",
-                ">=",
-                "<=",
-                "Starts With",
-                "Ends With",
-                "Contains",
-                "Doesn't Start With",                  
-                "Doesn't End With",                
-                "Doesn't Contain",
-                "Is Alphanumeric",
-                "Is Base64",
-                "Is Between",
-                "Is Binary",                 
-                "Is Date",
-                "Is Email",                
-                "Is Hex",
-                "Is Numeric",
-                "Is Regex",                
-                "Is Text",
-                "Is XML",
-                "Not Alphanumeric",
-                "Not Base64",
-                "Not Between",
-                "Not Binary",
-                "Not Date",
-                "Not Email",
-                "Not Hex",
-                "Not Numeric",
-                "Not Regex",
-                "Not Text",
-                "Not XML"                
+            "=",
+            ">",
+            "<",
+            "<> (Not Equal)",
+            ">=",
+            "<=",
+            "Starts With",
+            "Ends With",
+            "Contains",
+            "Doesn't Start With",
+            "Doesn't End With",
+            "Doesn't Contain",
+            "Is Alphanumeric",
+            "Is Base64",
+            "Is Between",
+            "Is Binary",
+            "Is Date",
+            "Is Email",
+            "Is Hex",
+            "Is Numeric",
+            "Is Regex",
+            "Is Text",
+            "Is XML",
+            "Not Alphanumeric",
+            "Not Base64",
+            "Not Between",
+            "Not Binary",
+            "Not Date",
+            "Not Email",
+            "Not Hex",
+            "Not Numeric",
+            "Not Regex",
+            "Not Text",
+            "Not XML"
         };
 
-        public const string SchedulerFolderId = "Warewolf";
-        public const string SchedulerAgentPath = @"WarewolfAgent.exe";
-        public const string SchedulerDebugPath = @"Warewolf\DebugOutPut\";
 
-        public static string WebServerPort { get; set; }
-        public static string WebServerSslPort { get; set; }
+        // ReSharper disable UnusedAutoPropertyAccessor.Global
         public static int VersionCount = 20;
-
-        public const string SchemaQuery = @"SELECT name AS ROUTINE_NAME
-,SCHEMA_NAME(schema_id) AS SPECIFIC_SCHEMA
-,type_desc as ROUTINE_TYPE
-FROM sys.objects
-WHERE type_desc LIKE '%FUNCTION%'
-or type_desc LIKE '%Procedure%'";
-
-        public static string WebServiceTimeoutMessage = "Output mapping took too long. More then 10 seconds. Please use the JSONPath feature ( green icon above ) to reduce your dataset complexity. You can find out more on JSONPath at http://goessner.net/articles/JsonPath/";
+        // ReSharper restore UnusedAutoPropertyAccessor.Global
+        public static string WebServiceTimeoutMessage =
+            "Output mapping took too long. More then 10 seconds. Please use the JSONPath feature ( green icon above ) to reduce your dataset complexity. You can find out more on JSONPath at http://goessner.net/articles/JsonPath/";
 
 
         // Limit WF execution
-        public static int MaxWorkflowsToExecute = 50;
+        public static int MaxWorkflowsToExecute = 1010;
         public static int MaxNumberOfWorkflowWaits = 10000;
         public static int WorkflowWaitTime = 60;
-        public const string ExplorerItemModelFormat = "Dev2.Models.ExplorerItemModel";
-        public const string VersionDownloadPath = "Installers\\";
-        public const string VersionFolder = "VersionControl";
-
+        public static string DropBoxApiKey = "l6vuufdy2psuyif";
+        public static string DropBoxAppSecret = "tqtil4c1ibja8dn";
+        public static string WebServerPort { get; set; }
+        public static string WebServerSslPort { get; set; }
+        public static ConcurrentDictionary<Guid, TextExpressionCompilerResults> Resultscache = new ConcurrentDictionary<Guid, TextExpressionCompilerResults>();
+        public static void InvalidateCache(Guid resourceId)
+        {
+            if (Resultscache.ContainsKey(resourceId))
+            {
+                TextExpressionCompilerResults val;
+                bool removed = Resultscache.TryRemove(resourceId, out val);
+                if (!removed)
+                {
+                    Resultscache.TryRemove(resourceId, out val);
+                }
+            }
+        }
+        public static int AddPopupTimeDelay = 2000;
         // ReSharper restore InconsistentNaming
     }
+    // ReSharper restore UnusedMember.Global
+    // ReSharper restore ConvertToConstant.Global
+    // ReSharper restore FieldCanBeMadeReadOnly.Global
+    // ReSharper restore MemberCanBePrivate.Global
 }

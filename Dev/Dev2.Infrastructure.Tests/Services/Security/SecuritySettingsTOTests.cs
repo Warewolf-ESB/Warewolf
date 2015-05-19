@@ -9,11 +9,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System.Collections.Generic;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.Windows.Documents;
 
 namespace Dev2.Infrastructure.Tests.Services.Security
 {

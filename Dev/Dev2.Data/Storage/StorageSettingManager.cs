@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Configuration;
 using System.Runtime.InteropServices;
@@ -117,7 +116,7 @@ namespace Dev2.Data.Storage
         private static int AdjustMemoryForPressure(int requestedSize)
         {
             // Ensure we have the memory available ;)
-            double totalSegments = GetSegmentCount() + 1; // account for background worker ;)
+            double totalSegments =  1; // account for background worker ;)
 
             var totalRequiredMemory = totalSegments * requestedSize;
 

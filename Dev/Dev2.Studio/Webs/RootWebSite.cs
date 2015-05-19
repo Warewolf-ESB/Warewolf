@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Web;
 using Dev2.Common;
@@ -342,10 +341,15 @@ namespace Dev2.Webs
 
         public static void ShowNewWorkflowSaveDialog(IContextualResourceModel resourceModel, string resourceId = null, bool addToTabManager = true)
         {
-            ShowSaveDialog(resourceModel, new SaveNewWorkflowCallbackHandler(EventPublishers.Aggregator, EnvironmentRepository.Instance, resourceModel, addToTabManager), "WorkflowService");
+            ShowSaveDialog(resourceModel, new SaveNewWorkflowCallbackHandler(EventPublishers.Aggregator, EnvironmentRepository.Instance, resourceModel, addToTabManager), "WorkflowService", HttpUtility.UrlEncode("New Workflow"));
         }
 
-        static void ShowSaveDialog(IContextualResourceModel resourceModel, WebsiteCallbackHandler callbackHandler, string type, string resourceId = null)
+        public static void ShowNewOAuthsourceSaveDialog(IContextualResourceModel resourceModel, IEnvironmentModel model, string token, string key)
+        {
+            ShowSaveDialog(resourceModel, new DropBoxSourceSourceCallbackHandler(EnvironmentRepository.Instance,token??"",key??""), "OauthSource", HttpUtility.UrlEncode("New Dropbox source"));
+        }
+
+        static void ShowSaveDialog(IContextualResourceModel resourceModel, WebsiteCallbackHandler callbackHandler, string type, string title, string resourceId = null)
         {
             if(resourceModel == null)
             {
@@ -356,7 +360,7 @@ namespace Dev2.Webs
             if(environment == null)
             {
                 // ReSharper disable NotResolvedInText
-                throw new ArgumentNullException("resourceModel");
+                throw new ArgumentNullException("environment");
             }
 
             EnvironmentRepository.Instance.ActiveEnvironment = environment;
@@ -368,6 +372,10 @@ namespace Dev2.Webs
             const string LeftTitle = "Save";
             string rightTitle = environment.Name + " (" + environment.Connection.AppServerUri + ")";
             var envirDisplayName = FullyEncodeServerDetails(environment.Connection);
+            if (resourceModel.Category == null)
+            {
+                resourceModel.Category = "";
+            }
             var selectedPath = resourceModel.Category.Contains("Unassigned") || string.IsNullOrEmpty(resourceModel.Category) ? "" : resourceModel.Category;
             var lastIndexOf = selectedPath.LastIndexOf("\\", StringComparison.Ordinal);
             if(lastIndexOf != -1)
@@ -375,7 +383,7 @@ namespace Dev2.Webs
                 selectedPath = selectedPath.Substring(0, lastIndexOf);
             }
             selectedPath = selectedPath.Replace("\\", "\\\\");
-            var relativeUriString = string.Format("{0}?wid={1}&rid={2}&type={3}&title={4}&envir={5}&category={6}", PageName, workspaceId, resourceId, type, HttpUtility.UrlEncode("New Workflow"), envirDisplayName, selectedPath);
+            var relativeUriString = string.Format("{0}?wid={1}&rid={2}&type={3}&title={4}&envir={5}&category={6}", PageName, workspaceId, resourceId, type, title, envirDisplayName, selectedPath);
             if(!IsTestMode)
             {
                 // this must be a property ;)

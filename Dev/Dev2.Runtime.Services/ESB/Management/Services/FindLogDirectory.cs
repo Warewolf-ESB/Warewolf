@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,6 +16,7 @@ using System.Text.RegularExpressions;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
+using Dev2.Diagnostics.Logging;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Configuration;
@@ -36,7 +36,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2Logger.Log.Info("Find Log Directory");
             try
             {
-                var logdir = Dev2Logger.GetDirectoryPath(SettingsProvider.Instance.Configuration.Logging);
+                var logdir = WorkflowLoggger.GetDirectoryPath(SettingsProvider.Instance.Configuration.Logging);
                 var cleanedDir = CleanUp(logdir);
                 result.Message.Append("<JSON>");
                 result.Message.Append(@"{""PathToSerialize"":""");

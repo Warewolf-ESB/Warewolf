@@ -872,7 +872,7 @@ namespace Dev2.Tests.Runtime.Hosting
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource> { res.Object });
             catalogue.Setup(a => a.DeleteResource(It.IsAny<Guid>(), "mona", ResourceType.EmailSource.ToString(), null,true)).Returns(new ResourceCatalogResult { Status = ExecStatus.Success, Message = "" }).Verifiable();
             //------------Execute Test---------------------------
-            res.Setup(a => a.ResourcePath).Returns("bob");
+            res.Setup(a => a.ResourcePath).Returns("bob\\");
             var result = serverExplorerRepository.DeleteFolder("bob", true, Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.AreEqual(result.Message, "");
@@ -904,7 +904,7 @@ namespace Dev2.Tests.Runtime.Hosting
             catalogue.Setup(a => a.DeleteResource(It.IsAny<Guid>(), "mona", ResourceType.EmailSource.ToString(), null, true)).Returns(new ResourceCatalogResult { Status = ExecStatus.Success, Message = "" }).Verifiable();
             dir.Setup(a => a.Delete(It.IsAny<string>(), true)).Throws(new FieldAccessException("moon"));
             //------------Execute Test---------------------------
-            res.Setup(a => a.ResourcePath).Returns("bob");
+            res.Setup(a => a.ResourcePath).Returns("bob\\");
             var result = serverExplorerRepository.DeleteFolder("bob", true, Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.AreEqual(result.Message, "moon");
@@ -935,7 +935,7 @@ namespace Dev2.Tests.Runtime.Hosting
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource> { res.Object });
             catalogue.Setup(a => a.DeleteResource(It.IsAny<Guid>(), "mona", ResourceType.EmailSource.ToString(), null, true)).Returns(new ResourceCatalogResult { Status = ExecStatus.Fail, Message = "fanta" }).Verifiable();
             //------------Execute Test---------------------------
-            res.Setup(a => a.ResourcePath).Returns("bob");
+            res.Setup(a => a.ResourcePath).Returns("bob\\");
             var result = serverExplorerRepository.DeleteFolder("bob", true, Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.AreEqual(result.Message, "Failed to delete child items");

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,16 +8,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Collections.Generic;
 using System.Text;
 
-namespace Dev2.Common.Interfaces.Core.DynamicServices {
-
-    public interface IDynamicServiceObject {
+namespace Dev2.Common.Interfaces.Core.DynamicServices
+{
+    public interface IDynamicServiceObject
+    {
         string Comment { get; set; }
         string Category { get; set; }
-        bool Compile();
         ICollection<string> CompilerErrors { get; set; }
         string HelpLink { get; set; }
         bool IsCompiled { get; }
@@ -26,6 +24,7 @@ namespace Dev2.Common.Interfaces.Core.DynamicServices {
         enDynamicServiceObjectType ObjectType { get; set; }
         StringBuilder ResourceDefinition { get; set; }
         int VersionNo { get; set; }
+        bool Compile();
         void WriteCompileError(string traceMsg);
         void WriteCompileWarning(string traceMsg);
     }

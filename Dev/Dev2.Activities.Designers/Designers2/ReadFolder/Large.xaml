@@ -33,8 +33,7 @@
                                      Margin="0,0,9,12"
                                      IsValidatedBefore="True"
                                      IsClosedAfter="True"
-                                     Style="{StaticResource ActivityDesignerButtonStyle}">
-        </core:ActivityDesignerButton>
+                                     Style="{StaticResource ActivityDesignerButtonStyle}" />
     </core:ActivityDesignerTemplate.RightButtons>
 
     <Grid>
@@ -88,7 +87,8 @@
                Content="Read" />
         <StackPanel Grid.Column="1"
                     Orientation="Horizontal"
-                    Grid.Row="1">
+                    Grid.Row="1"
+                    ToolTip="{x:Static help:HelpTextResources.ReadFolderToolTipRead}">
             <RadioButton Margin="2,0"
                          IsChecked="{Binding Path=ModelItem.IsFilesSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Files</RadioButton>
             <RadioButton Margin="2,0"

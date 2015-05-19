@@ -9,13 +9,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Operations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
 
 namespace Dev2.Data.Tests.Operations
 {
@@ -24,13 +23,6 @@ namespace Dev2.Data.Tests.Operations
     public class Dev2IndexFinderTests
     {
         private IDev2IndexFinder _indexFinder;
-
-        public Dev2IndexFinderTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
 
         private TestContext testContextInstance;
 
@@ -58,7 +50,7 @@ namespace Dev2.Data.Tests.Operations
         // public static void MyClassCleanup() { }
         //
         // Use TestInitialize to run code before running each test 
-        [TestInitialize()]
+        [TestInitialize]
         public void MyTestInitialize()
         {
             _indexFinder = new Dev2IndexFinder();

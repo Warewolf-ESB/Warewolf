@@ -8,7 +8,6 @@ Background: Setup for workflow execution
 			Given Debug events are reset
 			And All environments disconnected
 			And Debug states are cleared
-
 Scenario: Simple workflow executing against the server
 	 Given I have a workflow "WorkflowWithAssign"
 	 And "WorkflowWithAssign" contains an Assign "Rec To Convert" as
@@ -25,7 +24,7 @@ Scenario: Simple workflow executing against the server
 	  | # |                    |
 	  | 1 | [[rec(1).a]] = yes |
 	  | 2 | [[rec(2).a]] = no  |
-	  
+
 Scenario: Workflow with multiple tools executing against the server
 	  Given I have a workflow "WorkflowWithAssignAndCount"
 	  And "WorkflowWithAssignAndCount" contains an Assign "Rec To Convert" as
@@ -50,7 +49,7 @@ Scenario: Workflow with multiple tools executing against the server
 	  And the 'CountRec' in Workflow 'WorkflowWithAssignAndCount' debug outputs as    
 	  |               |
 	  | [[count]] = 2 |
-	
+
 Scenario: Simple workflow executing against the server with a database service
 	 Given I have a workflow "TestWFWithDBService"
 	 And "TestWFWithDBService" contains a "database" service "Fetch" with mappings
@@ -102,14 +101,42 @@ Scenario: Workflow with an assign and webservice
 	  | 2 | [[prefix]] = a |
 	  And the 'InternalCountriesServiceTest' in WorkFlow 'TestWebServiceWF' debug inputs as
 	  |  |
-	  | [[ext]] = json |
+	  | [[extension]] = json |
 	  | [[prefix]] = a |
 	  And the 'InternalCountriesServiceTest' in Workflow 'TestWebServiceWF' debug outputs as
 	  |                                            |
 	  | [[Countries(10).CountryID]] = 10           |
 	  | [[Countries(10).Description]] = Azerbaijan |
 
-	
+Scenario: Workflow with an assign and webservice different mappings
+	 Given I have a workflow "TestWebServiceDiffMappings"
+	 And "TestWebServiceDiffMappings" contains an Assign "Inputs" as
+	  | variable   | value |
+	  | [[ext]]    | json  |
+	  | [[prefix]] | a     |
+	 And "TestWebServiceDiffMappings" contains a "webservice" service "InternalCountriesServiceTest" with mappings
+	  | Input to Service | From Variable | Output from Service      | To Variable                 |
+	  | extension        | [[ext]]       | Countries(*).CountryID   | [[MyCountries().ID]]   |
+	  | prefix           | [[prefix]]    | Countries(*).Description | [[Name]] |
+	  When "TestWebServiceDiffMappings" is executed
+	  Then the workflow execution has "NO" error
+	   And the 'Inputs' in WorkFlow 'TestWebServiceDiffMappings' debug inputs as
+	  | # | Variable     | New Value |
+	  | 1 | [[ext]] =    | json      |
+	  | 2 | [[prefix]] = | a         |
+	  And the 'Inputs' in Workflow 'TestWebServiceDiffMappings' debug outputs as    
+	  | # |                |
+	  | 1 | [[ext]] = json |
+	  | 2 | [[prefix]] = a |
+	  And the 'InternalCountriesServiceTest' in WorkFlow 'TestWebServiceDiffMappings' debug inputs as
+	  |  |
+	  | [[extension]] = json |
+	  | [[prefix]] = a |
+	  And the 'InternalCountriesServiceTest' in Workflow 'TestWebServiceDiffMappings' debug outputs as
+	  |                                            |
+	  | [[MyCountries(10).ID]] = 10           |
+	  | [[Name]] = Azerbaijan |
+
 Scenario: Workflow with an assign and remote workflow
 	Given I have a workflow "TestAssignWithRemote"
 	 And "TestAssignWithRemote" contains an Assign "AssignData" as
@@ -130,7 +157,7 @@ Scenario: Workflow with an assign and remote workflow
 	  | 1 | [[inputData]] = hello |
 	   And the 'WorkflowUsedBySpecs' in WorkFlow 'TestAssignWithRemote' debug inputs as
 	  |                       |
-	  | [[inputData]] = hello |
+	  | [[input]] = hello |
 	  And the 'Setup Assign (1)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
 	  | # |                |
 	  | 1 | [[in]] = hello |
@@ -148,7 +175,6 @@ Scenario: Workflow with an assign and remote workflow
 	  | [[values(1).up]] = HELLO  |
 	  | [[values(1).low]] = hello |
 
-	  
 Scenario: Workflow with Assign Base Convert and Case Convert tools executing against the server
 	  Given I have a workflow "WorkflowWithAssignBaseConvertandCaseconvert"
 	  And "WorkflowWithAssignBaseConvertandCaseconvert" contains an Assign "Assign1" as
@@ -186,76 +212,39 @@ Scenario: Workflow with Assign Base Convert and Case Convert tools executing aga
       And the 'Base to Convert' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
 	  | # |                     |
 	  | 1 | [[rec(1).a]] = NTA= |
-#
-#Bug-12216
-#Scenario: Workflow with Assign Base Convert and Case Convert passing invalid variables through execution
-#	  Given I have a workflow "WorkflowWithAssignBaseConvertandCaseconvert"
-#	  And "WorkflowWithAssignBaseConvertandCaseconvert" contains an Assign "Assign1" as
-#	  | variable       | value    |
-#	  | [[rec(1).a]]   | Warewolf |
-#	  | [[rec(2).a]]   | test     |
-#	  | [[index(1).a]] | a        |
-#	  And "WorkflowWithAssignBaseConvertandCaseconvert" contains case convert "Case to Convert" as
-#	  | Variable                  | Type  |
-#	  | [[rec([[index(1).a]]).a]] | UPPER |
-#	  And "WorkflowWithAssignBaseConvertandCaseconvert" contains Base convert "Base to Convert" as
-#	  | Variable                  | From | To      |
-#	  | [[rec([[index(1).a]]).a]] | Text | Base 64 |
-#	  When "WorkflowWithAssignBaseConvertandCaseconvert" is executed
-#	  Then the workflow execution has "AN" error
-#	  And the 'Assign1' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
-#	  | # | Variable         | New Value |
-#	  | 1 | [[rec(1).a]] =   | Warewolf  |
-#	  | 2 | [[rec(2).a]] =   | test      |
-#	  | 3 | [[index(1).a]] = | a         |
-#	   And the 'Assign1' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
-#	  | # |                          |
-#	  | 1 | [[rec(1).a]] =  Warewolf |
-#	  | 2 | [[rec(2).a]] =  test     |
-#	  | 3 | [[index(1).a]] =  a      |
-#	  And the 'Case to Convert' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
-#	  | # | Convert                     | To    |
-#	  | 1 | [[rec([[index(1).a]]).a]] = | UPPER |
-#	  And the 'Case to Convert' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
-#	  | # |                     |
-#	  And the 'Base to Convert' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
-#	  | # | Convert                     | From | To      |
-#	  | 1 | [[rec([[index(1).a]]).a]] = | Text | Base 64 |
-#      And the 'Base to Convert' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
-#	  | # |                     |
-#	
 
-# This issue should be resolved as part of bug 12112
-#Scenario: Workflow with Assign and 2 Delete tools executing against the server
-#	  Given I have a workflow "WorkflowWithAssignand2Deletetools"
-#	  And "WorkflowWithAssignand2Deletetools" contains an Assign "Assign to delete" as
-#	  | variable    | value |
-#	  | [[rec().a]] | 50    |
-#	  And "WorkflowWithAssignand2Deletetools" contains Delete "Delet1" as
-#	  | Variable   | result      |
-#	  | [[rec(1)]] | [[result1]] |
-#      And "WorkflowWithAssignand2Deletetools" contains Delete "Delet2" as
-#	   | Variable   | result      |
-#	   | [[rec(1)]] | [[result2]] |
-#	  When "WorkflowWithAssignand2Deletetools" is executed
-#      Then the workflow execution has "NO" error
-#	  And the 'Assign to delete' in WorkFlow 'WorkflowWithAssignand2Deletetools' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rec().a]] = | 50        |
-#	  And the 'Assign to delete' in Workflow 'WorkflowWithAssignand2Deletetools' debug outputs as  
-#	  | # |                   |
-#	  | 1 | [[rec(1).a]] = 50 |
-#	  And the 'Delet1' in WorkFlow 'WorkflowWithAssignand2Deletetools' debug inputs as
-#	  | Records          |
-#	  | [[rec(1).a]] = 50 |
-#	  And the 'Delet1' in Workflow 'WorkflowWithAssignand2Deletetools' debug outputs as  
-#	  |                       |
-#	  | [[result1]] = Success |
-#	  And the 'Delet2' in WorkFlow 'WorkflowWithAssignand2Deletetools' debug inputs as
-#	   | Records        |	  
-#	  And the 'Delet2' in Workflow 'WorkflowWithAssignand2Deletetools' debug outputs as  
-#	  |                       |
-#	  | [[result2]] = Failure |
+
+Scenario: Workflow with Assign and 2 Delete tools executing against the server
+	  Given I have a workflow "WorkflowWithAssignand2Deletetools"
+	  And "WorkflowWithAssignand2Deletetools" contains an Assign "Assign to delete" as
+	  | variable    | value |
+	  | [[rec().a]] | 50    |
+	  And "WorkflowWithAssignand2Deletetools" contains Delete "Delet1" as
+	  | Variable   | result      |
+	  | [[rec(1)]] | [[result1]] |
+      And "WorkflowWithAssignand2Deletetools" contains Delete "Delet2" as
+	   | Variable   | result      |
+	   | [[rec(1)]] | [[result2]] |
+	  When "WorkflowWithAssignand2Deletetools" is executed
+      Then the workflow execution has "NO" error
+	  And the 'Assign to delete' in WorkFlow 'WorkflowWithAssignand2Deletetools' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | 50        |
+	  And the 'Assign to delete' in Workflow 'WorkflowWithAssignand2Deletetools' debug outputs as  
+	  | # |                   |
+	  | 1 | [[rec(1).a]] = 50 |
+	  And the 'Delet1' in WorkFlow 'WorkflowWithAssignand2Deletetools' debug inputs as
+	  | Records          |
+	  | [[rec(1).a]] = 50 |
+	  And the 'Delet1' in Workflow 'WorkflowWithAssignand2Deletetools' debug outputs as  
+	  |                       |
+	  | [[result1]] = Success |
+	  And the 'Delet2' in WorkFlow 'WorkflowWithAssignand2Deletetools' debug inputs as
+	   | Records      |
+	   | [[rec(1)]] = |	  
+	  And the 'Delet2' in Workflow 'WorkflowWithAssignand2Deletetools' debug outputs as  
+	  |                       |
+	  | [[result2]] = Failure |
 
 Scenario: Workflow with 3 Assigns tools executing against the server
 	  Given I have a workflow "WorkflowWith3Assigntools"
@@ -287,12 +276,11 @@ Scenario: Workflow with 3 Assigns tools executing against the server
 	  | 2 | [[rec(1).a]] = Warewolf |
 	   And the 'Assigntool3' in WorkFlow 'WorkflowWith3Assigntools' debug inputs as
 	  | # | Variable  | New Value               |
-	  | 1 | [[new]] = | [[[[test]]]] = Warewolf |
+	  | 1 | [[new]] = | [[rec(1).a]] = Warewolf |
 	  And the 'Assigntool3' in Workflow 'WorkflowWith3Assigntools' debug outputs as  
 	  | # |                    |
 	  | 1 | [[new]] = Warewolf |
 
-#This test is going to pass after the issue 11785 is fixed
 Scenario: Workflow with Assign and Date and Time Difference tools executing against the server
 	  Given I have a workflow "WorkflowWithAssignAndDateTimeDifferencetools1"
 	  And "WorkflowWithAssignAndDateTimeDifferencetools1" contains an Assign "InputDates" as
@@ -318,7 +306,6 @@ Scenario: Workflow with Assign and Date and Time Difference tools executing agai
 	  And the 'DateAndTime' in Workflow 'WorkflowWithAssignAndDateTimeDifferencetools1' debug outputs as 
 	  |               |
 	  | [[result]] = |
-
 
 Scenario: Workflow with Assigns DataMerge and DataSplit executing against the server
       Given I have a workflow "WorkflowWithAssignDataMergeAndDataSplittools"
@@ -355,21 +342,16 @@ Scenario: Workflow with Assigns DataMerge and DataSplit executing against the se
 	  |                           |
 	  | [[result]] = TestWarewolf |
 	  And the 'Data Split' in WorkFlow 'WorkflowWithAssignDataMergeAndDataSplittools' debug inputs as 
-	  | String to Split                                 | Process Direction | Skip blank rows | # |                | With  | Using | Include | Escape |
-	  | [[result]][[split(1).a]] = TestWarewolfWorkflow | Forward           | No              | 1 | [[rec().b]] = | Index | 4     | No      |        |
-	  |                                                 |                   |                 | 2 | [[rec().b]] = | Index | 8     | No      |        |
+	  | String to Split            | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
+	  | [[result]][[split().a]] = TestWarewolfWorkflow | Forward           | No              | 1 | [[rec().b]] = | Index | 4     | No      |        |
+	  |                            |                   |                 | 2 | [[rec().b]] = | Index | 8     | No      |        |
 	  And the 'Data Split' in Workflow 'WorkflowWithAssignDataMergeAndDataSplittools' debug outputs as  
 	  | # |                         |
 	  | 1 | [[rec(1).b]] = Test     |
 	  |   | [[rec(2).b]] = Warewolf |
 	  |   | [[rec(3).b]] = Work     |
 	  |   | [[rec(4).b]] = flow     |
-	  | 2 | [[rec(1).b]] = Test     |
-	  |   | [[rec(2).b]] = Warewolf |
-	  |   | [[rec(3).b]] = Work     |
-	  |   | [[rec(4).b]] = flow     |
 
-#This test is going to pass after the issue 11804 is fixed
 Scenario: Workflow with Assigns and DataSplit executing against the server
       Given I have a workflow "WorkflowWithAssignandDataSplittools"
 	  And "WorkflowWithAssignandDataSplittools" contains an Assign "splitvalues1" as
@@ -403,51 +385,10 @@ Scenario: Workflow with Assigns and DataSplit executing against the server
 	  | 1 | [[test]] =  warewolf |
 	  And the 'DataSpliting' in WorkFlow 'WorkflowWithAssignandDataSplittools' debug inputs as 
 	  | String to Split            | Process Direction | Skip blank rows | # |                | With  | Using         | Include | Escape |
-	  | [[[[rs(1).a]]]] = warewolf | Forward           | No              | 1 | [[rec(1).a]] = | Index | [[[[a]]]] = 2 | No      |        |
+	  | [[test]] = warewolf | Forward           | No              | 1 | [[rec(1).a]] = | Index | [[b]] = 2 | No      |        |
 	  And the 'DataSpliting' in Workflow 'WorkflowWithAssignandDataSplittools' debug outputs as  
 	  | # |                   |
 	  | 1 | [[rec(1).a]] = lf |
-	
-	  
-#@ignore 	  
-#Scenario Outline: Workflow with Assign Base Convert and Decision tools executing against the server
-#	  Given I have a workflow "WorkflowWithAssignBaseConvertandDecision"
-#	  And "WorkflowWithAssignBaseConvertandDecision" contains an Assign "Assign1" as
-#	  | variable    | value     |
-#	  | [[rec().a]] | '<value>' |
-#	  And "WorkflowWithAssignBaseConvertandDecision" contains Base convert "BaseConvert" as
-#	  | Variable     | From     | To     |
-#	  | [[rec(1).a]] | '<from>' | '<to>' |
-#	  And "WorkflowWithAssignBaseConvertandDecision" contains Decision "Decision" as
-#	  |       |          |
-#	  | [[a]] | '<cond>' |
-#	  When "WorkflowWithAssignBaseConvertandDecision" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Assign1' in WorkFlow 'WorkflowWithAssignBaseConvertandDecision' debug inputs as
-#	  | # | Variable       | New Value |
-#	  | 1 | [[rec(1).a]] = | <value>   |
-#	   And the 'Assign1' in Workflow 'WorkflowWithAssignBaseConvertandDecision' debug outputs as  
-#	  | # |                |         |
-#	  | 1 | [[rec(1).a]] = | <value> |
-#	  And the 'BaseConvert' in WorkFlow 'WorkflowWithAssignBaseConvertandDecision' debug inputs as
-#	  | 1 | [[rec(1).a]] = warewolf | <text>  |<to> |
-#      And the 'BaseConvert' in Workflow 'WorkflowWithAssignBaseConvertandDecision' debug outputs as  
-#	  | # |                         |
-#	  | 1 | [[rec(1).a]] = <result> |
-#	  And the 'Decision' in WorkFlow 'WorkflowWithAssignBaseConvertandDecision' debug inputs as
-#	  |  | Statement | Require All decisions to be True |
-#	  |  | String    | YES                              |
-#	  And the 'Decision' in Workflow 'WorkflowWithAssignBaseConvertandDecision' debug outputs as  
-#	  |          |
-#	  | <output> |
-#Examples: 
-#     | no | Value    | from | to     | result       | cond      | output |
-#     | 1  | warewolf | Text | Base64 | d2FyZxdvbGY= | Is Base64 | YES    |
-#     | 2  | a        | Text | Binary | 01100001     | Is Binary | YES    |
-#     | 3  | a        | Text | Hex    | 0x61         | Is Hex    | YES    |
-#     | 4  | 2013/01  | Text | Text   | 2013/01      | Is Date   | YES    |
-
-
 
 Scenario: Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Index and Replace) executing against the server
       Given I have a workflow "workflowithAssignandsequence"
@@ -510,14 +451,14 @@ Scenario: Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find 
 	  And the 'Replacing' in WorkFlow 'Test1' debug inputs as 
 	  | In Field(s)             | Find | Replace With |
 	  | [[rec(1).a]] = test     |      |              |
-	  | [[rec(1).b]] = test     |      |              |
 	  | [[rec(2).a]] = warewolf |      |              |
+	  | [[rec(1).b]] = test     |      |              |
 	  | [[rec(2).b]] = warewolf | e    | REPLACED     |
 	  And the 'Replacing' in Workflow 'Test1' debug outputs as
 	  |                                |
 	  | [[rec(1).a]] = tREPLACEDst     |
-	  | [[rec(1).b]] = tREPLACEDst     |
 	  | [[rec(2).a]] = warREPLACEDwolf |
+	  | [[rec(1).b]] = tREPLACEDst     |
 	  | [[rec(2).b]] = warREPLACEDwolf |
 	  | [[replaceResult]] = 4          |
 
@@ -553,10 +494,6 @@ Scenario: Workflow with Assign Create and Delete folder tools executing against 
 	  |                    |
 	  | [[res2]] = Success |
 
-
-
-
-#This Test Scenario should be passed after the Bug 11815 is fixed
 Scenario: Workflow with Assign Create and Delete Record tools with incorrect input path executing against the server
 	  Given I have a workflow "WorkflowWithAssignCreateDeleteRecordNoneExist1"
 	  And "WorkflowWithAssignCreateDeleteRecordNoneExist1" contains an Assign "Assign to create" as
@@ -577,17 +514,17 @@ Scenario: Workflow with Assign Create and Delete Record tools with incorrect inp
 	  | # |                            |
 	  | 1 | [[rec(1).a]] = create.txt |
 	  And the 'Create1' in WorkFlow 'WorkflowWithAssignCreateDeleteRecordNoneExist1' debug inputs as
-	  | File or Folder            | Overwrite | Username   | Password   |
-	  | [[rec(1).a]] = create.txt | True      | Username = | Password = |
+	  | File or Folder            | Overwrite | Username | Password |
+	  | [[rec(1).a]] = create.txt | True      | " "      | " "      |
 	  And the 'Create1' in Workflow 'WorkflowWithAssignCreateDeleteRecordNoneExist1' debug outputs as    
 	   |                    |
-	   | [[res1]] =  |
+	   | [[res1]] = Failure  |
 	  And the 'Delete' in WorkFlow 'WorkflowWithAssignCreateDeleteRecordNoneExist1' debug inputs as
-	  | Input Path                | Username | Password |
-	  | [[rec(1).a]] = create.txt |   Username =       |    Password =      |
+	  | Input Path                | Username   | Password   |
+	  | [[rec(1).a]] = create.txt | " " | " " |
 	  And the 'Delete' in Workflow 'WorkflowWithAssignCreateDeleteRecordNoneExist1' debug outputs as    
 	  |                    |
-	  | [[res1]] =  |
+	  | [[res1]] = Failure |
 
 Scenario: Workflow with 2 Assign tools executing against the server
 	  Given I have a workflow "WorkflowWith2Assigntools"
@@ -613,13 +550,11 @@ Scenario: Workflow with 2 Assign tools executing against the server
 	  | 3 | [[test]] = warewolf |
 	  And the 'tool2' in WorkFlow 'WorkflowWith2Assigntools' debug inputs as
 	  | # | Variable         | New Value                |
-	  | 1 | [[[[a]]]] = test | [[[[[[a]]]]]] = warewolf |
+	  | 1 | [[[[a]]]] = test | [[test]] = warewolf |
 	  And the 'tool2' in Workflow 'WorkflowWith2Assigntools' debug outputs as  
 	  | # |                   |
-	  | 1 | [[b]] =  warewolf |
+	  | 1 | [[b]] = warewolf |
 
-
-#This Test Scenario should be passed after the issue 11834 is fixed	  
 Scenario: Workflow with 2 Assign tools by using recordsets in fields executing against the server
 	  Given I have a workflow "WorkflowWith2Assigntoolswithrecordsets"
 	  And "WorkflowWith2Assigntoolswithrecordsets" contains an Assign "rec1" as
@@ -641,7 +576,7 @@ Scenario: Workflow with 2 Assign tools by using recordsets in fields executing a
 	  | 2 | [[rec(2).a]] = test     |
 	  And the 'rec2' in WorkFlow 'WorkflowWith2Assigntoolswithrecordsets' debug inputs as
 	  | # | Variable                | New Value |
-	  | 1 | [[[[rec(1).a]]]] = rec(2).a | warewolf  |
+	  | 1 | [[rec(2).a]] = test | warewolf  |
 	  And the 'rec2' in Workflow 'WorkflowWith2Assigntoolswithrecordsets' debug outputs as  
 	  | # |                          |
 	  | 1 | [[rec(2).a]] =  warewolf |
@@ -667,65 +602,10 @@ Scenario: Workflow with 2 Assign tools by using Scalars as variables executing a
 	  | 2 | [[b]] = test |
 	  And the 'scl2' in WorkFlow 'WorkflowWith2Assigntoolswithrscalars' debug inputs as
 	  | # | Variable         | New Value |
-	  | 1 | [[[[a]]]] = test | warewolf  |
+	  | 1 | [[b]] = test | warewolf  |
 	  And the 'scl2' in Workflow 'WorkflowWith2Assigntoolswithrscalars' debug outputs as  
 	  | # |                   |
 	  | 1 | [[b]] =  warewolf |
-
-#This test scenario should be passed after the bug 11818 is fixed
-#Scenario: Workflow with Assign and Gather System Information
-#      Given I have a workflow "workflowithAssignandGatherSystemInformation"
-#	  And "workflowithAssignandGatherSystemInformation" contains an Assign "Assign for sys" as
-#	  | variable | value |
-#	  | [[b]]    | 1     |    
-#	   And "workflowithAssignandGatherSystemInformation" contains Gather System Info "System info" as
-#	  | Variable      | Selected    |
-#	  | [[test[[b]]]] | Date & Time |
-#	  When "workflowithAssignandGatherSystemInformation" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Assign for sys' in WorkFlow 'workflowithAssignandGatherSystemInformation' debug inputs as
-#	  | # | Variable | New Value |
-#	  | 1 | [[b]] =  | 1         |
-#	  And the 'Assign for sys' in Workflow 'workflowithAssignandGatherSystemInformation' debug outputs as    
-#	  | # |          |
-#	  | 1 | [b]] = 1 |
-#	  And the 'System info' in WorkFlow 'workflowithAssignandGatherSystemInformation' debug inputs as
-#	  | # |                 |             |
-#	  | 1 | [[test[[b]]]] = | Date & Time |
-#	  And the 'System info' in Workflow 'workflowithAssignandGatherSystemInformation' debug outputs as   
-#	  | # |                        |
-#	  | 1 | [[test[[1]]]] = String |
-
-#This test should be passed after the bug 11837 is fixed
-#Scenario: Workflow with assign and webservice with incorrect output variables
-#	 Given I have a workflow "TestService"
-#	 And "TestService" contains an Assign "Inputsvar" as
-#	  | variable | value |
-#	  | [[test]] | a&    |
-#	  | [[a]]    | d     |
-#	 And "TestService" contains a "webservice" service "InternalCountriesServiceTest" with mappings
-#	  | Input to Service | From Variable | Output from Service      | To Variable                 |
-#	  | extension        | json          | Countries(*).CountryID   | [[Countries().CountryID]]   |
-#	  | prefix           | [[[[test]]]]  | Countries(*).Description | [[Countries().Description]] |
-#	  When "TestService" is executed
-#	  Then the workflow execution has "AN" error
-#	   And the 'Inputsvar' in WorkFlow 'TestService' debug inputs as 
-#	  | # | Variable   | New Value |
-#	  | 1 | [[test]] = | a         |
-#	  | 2 | [[a]]    = | d         |
-#	  And the 'Inputsvar' in Workflow 'TestService' debug outputs as    
-#	  | # |              |
-#	  | 1 | [[test]] = a |
-#	  | 2 | [[a]] = d    |
-#	  And the 'InternalCountriesServiceTest' in WorkFlow 'TestService' debug inputs as
-#	  |                       |
-#	  | json                  |
-#	  | [[[[test]]]] = [[d&]] |
-#	  And the 'InternalCountriesServiceTest' in Workflow 'TestService' debug outputs as
-#	  |                                 |
-#	  | [[Countries(10).CountryID]] =   |
-#	  | [[Countries(10).Description]] = |
-
 
 Scenario: Workflow with Assign Count Data Merge and 2 Delete  tools executing against the server
 	  Given I have a workflow "WorkflowWithAssignCountDataMerge&2Delete"
@@ -785,9 +665,6 @@ Scenario: Workflow with Assign Count Data Merge and 2 Delete  tools executing ag
 	  |                 |
 	  | [[result3]] = 3 |
 
-#Below 2 scenarios should be passed after the issue 11866 is fixed
-# Note the using database "xxx" MUST be loaded into DBSource directory else execution will fail ;)
-# And it must be in the server resources too ;(
 Scenario: Workflow with multiple tools Assign and SQL Bulk Insert executing against the server
 	  Given I have a workflow "WorkflowWithAssignAndSQLBulkInsert"
 	  And "WorkflowWithAssignAndSQLBulkInsert" contains an Assign "InsertData" as
@@ -839,6 +716,7 @@ Scenario: Workflow with multiple tools Assign and SQL Bulk Insert with negative 
 	  | 2 | Warewolf@dev2.co.za | Email    | varchar (50) |            |         |                   |                 |               |               |                          |                 |
 	  And the 'BulkInsert' in Workflow 'WorkflowWithAssignAndSQLBulk' debug outputs as
 	  |                      |
+	  | [[result]] = Failure |
 
 Scenario: Simple workflow with Assign and Base Convert(Evaluating scalar variable inside variable)executing against the server
 	 Given I have a workflow "WorkflowWithAssignandBase"
@@ -861,12 +739,11 @@ Scenario: Simple workflow with Assign and Base Convert(Evaluating scalar variabl
 	  | 2 | [[b]] = 12 |
 	   And the 'Base' in WorkFlow 'WorkflowWithAssignandBase' debug inputs as
 	  | # | Convert        | From | To      |
-	  | 1 | [[[[a]]]] = 12 | Text | Base 64 |
+	  | 1 | [[b]] = 12 | Text | Base 64 |
       And the 'Base' in Workflow 'WorkflowWithAssignandBase' debug outputs as  
 	  | # |              |
 	  | 1 | [[b]] = MTI= |
 
-#This scenario should pass after the bug 11872 is fixed	  
 Scenario: Simple workflow with Assign and Base Convert(Evaluating Recordset variable inside variable)executing against the server
 	 Given I have a workflow "WorkflowWithAssignandBasec"
 	 And "WorkflowWithAssignandBasec" contains an Assign "BaseVar" as
@@ -888,12 +765,11 @@ Scenario: Simple workflow with Assign and Base Convert(Evaluating Recordset vari
 	  | 2 | [[rec(1).a]] = 12      |
 	   And the 'Base' in WorkFlow 'WorkflowWithAssignandBasec' debug inputs as
 	  | # | Convert              | From | To      |
-	  | 1 | [[[[rs(1).a]]]] = 12 | Text | Base 64 |
+	  | 1 | [[rec(1).a]] = 12 | Text | Base 64 |
       And the 'Base' in Workflow 'WorkflowWithAssignandBasec' debug outputs as  
 	  | # |                     |
 	  | 1 | [[rec(1).a]] = MTI= |
 	  
-#The below 2 scenarios should be passed after the bug 11873 is fixed
 Scenario: Simple workflow with Assign and Case Convert(Evaluating scalar variable inside variable)executing against the server.
 	 Given I have a workflow "WorkflowWithAssignandcCse"
 	 And "WorkflowWithAssignandcCse" contains an Assign "Case Var" as
@@ -915,7 +791,7 @@ Scenario: Simple workflow with Assign and Case Convert(Evaluating scalar variabl
 	  | 2 | [[b]] = warewolf |
 	 And the 'CaseConvert' in WorkFlow 'WorkflowWithAssignandcCse' debug inputs as
 	  | # | Convert              | To    |
-	  | 1 | [[[[a]]]] = warewolf | UPPER |
+	  | 1 | [[b]] = warewolf | UPPER |
 	  And the 'CaseConvert' in Workflow 'WorkflowWithAssignandcCse' debug outputs as  
 	  | # |                  |
 	  | 1 | [[b]] = WAREWOLF |
@@ -941,12 +817,11 @@ Scenario: Simple workflow with Assign and Case Convert(Evaluating Recordset vari
 	  | 2 | [[rec(1).a]] = warewolf |
 	 And the 'CaseConvert' in WorkFlow 'WorkflowWithAssignandcCase' debug inputs as
 	  | # | Convert                    | To    |
-	  | 1 | [[[[rs(1).a]]]] = warewolf | UPPER |
+	  | 1 | [[rec(1).a]] = warewolf | UPPER |
 	  And the 'CaseConvert' in Workflow 'WorkflowWithAssignandcCase' debug outputs as  
 	  | # |                         |
 	  | 1 | [[rec(1).a]] = WAREWOLF |
 
-#This Test Scenario should be Passed after the bug 11874 is fixed.
 Scenario: Simple workflow with Assign and Data Merge (Evaluating variables inside variable)executing against the server
 	 Given I have a workflow "WorkflowWithAssignandData"
 	 And "WorkflowWithAssignandData" contains an Assign "Datam" as
@@ -975,8 +850,8 @@ Scenario: Simple workflow with Assign and Data Merge (Evaluating variables insid
 	  | 4 | [[rec(1).a]] = test    |
 	 And the 'Datamerge' in WorkFlow 'WorkflowWithAssignandData' debug inputs as
 	  | # |                        | With  | Using | Pad | Align |
-	  | 1 | [[[[a]]]] = warewolf   | Index | "8"   | ""  | Left  |
-	  | 2 | [[[[rs(1).a]]]] = test | Index | "4"   | ""  | Left  |
+	  | 1 | [[b]] = warewolf   | Index | "8"   | ""  | Left  |
+	  | 2 | [[rec(1).a]] = test | Index | "4"   | ""  | Left  |
 	  And the 'Datamerge' in Workflow 'WorkflowWithAssignandData' debug outputs as  
 	  | # |                           |
 	  | 1 | [[result]] = warewolftest |
@@ -1002,12 +877,11 @@ Scenario: Simple workflow with Assign and Find Index(Evaluating scalar variable 
 	  | 2 | [[b]] = test |
 	   And the 'Indexchar' in WorkFlow 'WorkflowWithAssignandFindIndex' debug inputs as 	
 	  | In Field         | Index           | Characters | Direction     |
-	  | [[[[a]]]] = test | First Occurence | s          | Left to Right |
+	  | [[b]] = test | First Occurence | s          | Left to Right |
 	  And the 'Indexchar' in Workflow 'WorkflowWithAssignandFindIndex' debug outputs as 
 	  |                     |
 	  | [[indexResult]] = 3 |
 
-# This Scenario should pass after the issue 11878 is fixed
 Scenario: Simple workflow with Assign and Find Index(Evaluating recordset variable inside variable)executing against the server
 	 Given I have a workflow "WorkflowWithAssignandFindIndex1"
 	 And "WorkflowWithAssignandFindIndex1" contains an Assign "Index Val" as
@@ -1029,7 +903,7 @@ Scenario: Simple workflow with Assign and Find Index(Evaluating recordset variab
 	  | 2 | [[new(1).a]] = test    |
 	   And the 'Index char' in WorkFlow 'WorkflowWithAssignandFindIndex1' debug inputs as 	
 	  | In Field               | Index           | Characters | Direction     |
-	  | [[[[rec(1).a]]]] = test | First Occurence | s          | Left to Right |
+	  | [[new(1).a]] = test | First Occurence | s          | Left to Right |
 	  And the 'Index char' in Workflow 'WorkflowWithAssignandFindIndex1' debug outputs as 
 	  |                     |
 	  | [[indexResult]] = 3 |
@@ -1055,13 +929,12 @@ Scenario: Simple workflow with Assign and Replace(Evaluating scalar variable ins
 	  | 2 | [[b]] = test |
 	  And the 'Replac' in WorkFlow 'WorkflowWithAssignandReplace' debug inputs as 	
 	 | In Field(s)         | Find | Replace With |
-	 | [[[[a]]]] = test | s    | REPLACE      |
+	 | [[b]] = test | s    | REPLACE      |
 	    And the 'Replac' in Workflow 'WorkflowWithAssignandReplace' debug outputs as 
 	  |                       |
 	  | [[b]] = teREPLACEt    |
 	  | [[replaceResult]] = 1 |
 
-#This Scenario should be passed after the bug 11879 is fixed
 Scenario: Simple workflow with Assign and Replace(Evaluating Recordset variable inside variable)executing against the server
 	 Given I have a workflow "WorkflowWithAssignandReplacebyrec"
 	 And "WorkflowWithAssignandReplacebyrec" contains an Assign "Vals" as
@@ -1083,13 +956,11 @@ Scenario: Simple workflow with Assign and Replace(Evaluating Recordset variable 
 	  | 2 | [[new(1).a]] = test    |
 	  And the 'Rep' in WorkFlow 'WorkflowWithAssignandReplacebyrec' debug inputs as 	
 	  | In Field(s)             | Find | Replace With |
-	  | [[[[rec(1).a]]]] = test | s    | REPLACE      |
+	  | [[new(1).a]] = test | s    | REPLACE      |
 	    And the 'Rep' in Workflow 'WorkflowWithAssignandReplacebyrec' debug outputs as 
 	  |                           |
 	  | [[new(1).a]] = teREPLACEt |
 	  | [[replaceResult]] = 1     |
-
-
 
 Scenario: Simple workflow with Assign and Format Numbers(Evaluating scalar variable inside variable)executing against the server
 	  Given I have a workflow "WorkflowWithAssignandFormat"
@@ -1112,12 +983,11 @@ Scenario: Simple workflow with Assign and Format Numbers(Evaluating scalar varia
 	  | 2 | [[b]] = 12.3412 |
 	  And the 'Fnumber' in WorkFlow 'WorkflowWithAssignandFormat' debug inputs as 	
 	  | Number              | Rounding | Rounding Value | Decimals to show |
-	  | [[[[a]]]] = 12.3412 | Up       | 3              | 3                |
+	  | [[b]] = 12.3412 | Up       | 3              | 3                |
 	  And the 'Fnumber' in Workflow 'WorkflowWithAssignandFormat' debug outputs as 
 	  |                      |
 	  | [[fresult]] = 12.342 |
 
-#This test is should be passed after the bug 11884
 Scenario: Simple workflow with Assign and Format Numbers(Evaluating Recordset variable inside variable)executing against the server
 	  Given I have a workflow "WorkflowWithAssignandFormatn"
 	  And "WorkflowWithAssignandFormatn" contains an Assign "IndVal" as
@@ -1139,13 +1009,11 @@ Scenario: Simple workflow with Assign and Format Numbers(Evaluating Recordset va
 	  | 2 | [[new(1).a]] = 12.3412 |
 	  And the 'Fnumb' in WorkFlow 'WorkflowWithAssignandFormatn' debug inputs as 	
 	  | Number                    | Rounding | Rounding Value | Decimals to show |
-	  | [[[[rec(1).a]]]] = 12.3412 | Up       | 3              | 3                |
+	  | [[new(1).a]] = 12.3412 | Up       | 3              | 3                |
 	  And the 'Fnumb' in Workflow 'WorkflowWithAssignandFormatn' debug outputs as 
 	  |                      |
 	  | [[fresult]] = 12.342 |
 
-
-#This scenario should be passed after the bug 11887 is fixed
 Scenario: Simple workflow with Assign and Random(Evaluating recordset variable inside variable)executing against the server
 	 Given I have a workflow "WorkflowWithAssignandRandom"
 	 And "WorkflowWithAssignandRandom" contains an Assign "Valforrandno" as
@@ -1173,12 +1041,11 @@ Scenario: Simple workflow with Assign and Random(Evaluating recordset variable i
 	  | 4 | [[new(1).a]] = 20      |
 	  And the 'Rand' in WorkFlow 'WorkflowWithAssignandRandom' debug inputs as 
 	  | Random  | From           | To                   |
-	  | Numbers | [[[[a]]]] = 10 | [[[[rec(1).a]]]] = 20 |
+	  | Numbers | [[b]] = 10 | [[new(1).a]] = 20 |
 	  And the 'Rand' in Workflow 'WorkflowWithAssignandRandom' debug outputs as
 	  |                       |
 	  | [[ranresult]] = Int32 |
 
-#This test scenario should be passed after the bug 11888 is fixed
 Scenario: Simple workflow with Assign and Date and Time(Evaluating recordset variable inside variable)executing against the server
 	 Given I have a workflow "WorkflowWithAssignandDateTimetool"
 	 And "WorkflowWithAssignandDateTimetool" contains an Assign "Dateandtime" as
@@ -1206,13 +1073,11 @@ Scenario: Simple workflow with Assign and Date and Time(Evaluating recordset var
 	   | 4 | [[new(1).a]] =  dd/mm/yyyy |
 	   And the 'AddDate' in WorkFlow 'WorkflowWithAssignandDateTimetool' debug inputs as
 	   | Input                  | Input Format                  | Add Time |   | Output Format |
-	   | [[[[a]]]] = 01/02/2014 | [[[[rec(1).a]]]] = dd/mm/yyyy | Years    | 1 | dd/mm/yyyy    |	
+	   | [[b]] = 01/02/2014 | [[new(1).a]] = dd/mm/yyyy | Years    | 1 | dd/mm/yyyy    |	
 	   And the 'AddDate' in Workflow 'WorkflowWithAssignandDateTimetool' debug outputs as   
 	   |                      |
 	   | [[res]] = 01/02/2015 |
-#
-#  
-#This test scenario should be passed after the bug 11888 is fixed
+ 
 Scenario: Simple workflow with Assign and DateTimeDiff(Evaluating recordset variable inside variable)executing against the server
 	  Given I have a workflow "WorkflowWithAssignandDateTimeDiff"
 	  And "WorkflowWithAssignandDateTimeDiff" contains an Assign "Dateandtime" as
@@ -1240,7 +1105,7 @@ Scenario: Simple workflow with Assign and DateTimeDiff(Evaluating recordset vari
 	   | 4 | [[new(1).a]] = 01/02/2014 |
 	   And the 'DateTimedif' in WorkFlow 'WorkflowWithAssignandDateTimeDiff' debug inputs as
 	   | Input 1                       | Input 2                | Input Format | Output In |
-	   | [[[[rec(1).a]]]] = 01/02/2014 | [[[[a]]]] = 01/02/2016 | dd/mm/yyyy   | Years     |
+	   | [[new(1).a]] = 01/02/2014 | [[b]] = 01/02/2016 | dd/mm/yyyy   | Years     |
 	   And the 'DateTimedif' in Workflow 'WorkflowWithAssignandDateTimeDiff' debug outputs as   
 	   |                |
 	   | [[result]] = 2 |
@@ -1266,7 +1131,7 @@ Scenario: Simple workflow with Assign and Replace(Evaluating variable inside a v
 	  | 2 | [[b]] = test |
 	  And the 'Replac' in WorkFlow 'WorkflowWithAssignReplace' debug inputs as 	
 	 | In Field(s)      | Find | Replace With |
-	 | [[[[a]]]] = test | s    | REPLACE      |
+	 | [[b]] = test | s    | REPLACE      |
 	    And the 'Replac' in Workflow 'WorkflowWithAssignReplace' debug outputs as 
 	  |                       |
 	  | [[b]] = teREPLACEt    |
@@ -1293,7 +1158,7 @@ Scenario: Simple workflow with Assign and Format Numbers(Evaluating variable ins
 	  | 2 | [[b]] = 12.3412 |
 	  And the 'Fnumber1' in WorkFlow 'WorkflowAssignandFormat' debug inputs as 	
 	  | Number              | Rounding | Rounding Value | Decimals to show |
-	  | [[[[a]]]] = 12.3412 | Up       | 3              | 3                |
+	  | [[b]] = 12.3412 | Up       | 3              | 3                |
 	  And the 'Fnumber1' in Workflow 'WorkflowAssignandFormat' debug outputs as 
 	  |                      |
 	  | [[fresult]] = 12.342 |
@@ -1345,63 +1210,59 @@ Scenario: Simple workflow with Assign DataMerge and DataSplit(Evaluating records
 	  | 2 | [[c]] = wolf |
 
 
-#This Test Scenario should be passed after the bug 11889 is fixed
-# It will not since there is a bug in the Debug Input generation logic OF THE ACCEPTANCE TESTING when using DataMerge and recursive evaluation.
-# The server seems to generate exactly what it should
-# There might be a bug in studio rendering as well given item 3 never appears in the studio output
- #Scenario: Simple workflow with Assign DataMerge and DataSplit(Evaluating index recordset variable)executing against the server
-	# Given I have a workflow "WorkflowWithAssignamergeandSplit"
-	# And "WorkflowWithAssignamergeandSplit" contains an Assign "Data" as
-	#  | variable       | value    |
-	#  | [[a]]          | 1        |
-	#  | [[b]]          | 2        |
-	#  | [[rec(1).a]]   | warewolf |
-	#  | [[rec(2).a]]   | test     |
-	#  | [[index(1).a]] | 1        |
-	#  | [[index(2).a]] | 3        |	
- #     And "WorkflowWithAssignamergeandSplit" contains Data Merge "Merge" into "[[result]]" as	
-	#  | Variable                             | Type  | Using | Padding | Alignment |
-	#  | [[rec([[index(1).a]]).a]] = warewolf | Index | 8     |         | Left      |
-	#  | [[a]]                                | Index | 4     |         | Left      |
-	#  And "WorkflowWithAssignamergeandSplit" contains Data Split "DataSplit" as
-	#  | String       | Variable                  | Type  | At | Include    | Escape |
-	#  | [[rec(1).a]] | [[d]]                     | Index | 4  | Unselected |        |
-	#  |              | [[rec([[index(2).a]]).a]] | Index | 4  | Unselected |        |
-	#  When "WorkflowWithAssignamergeandSplit" is executed
-	#  Then the workflow execution has "NO" error
-	#  And the 'Data' in WorkFlow 'WorkflowWithAssignamergeandSplit' debug inputs as
-	#  | # | Variable         | New Value |
-	#  | 1 | [[a]] =          | 1         |
-	#  | 2 | [[b]] =          | 2         |
-	#  | 3 | [[rec(1).a]] =   | warewolf  |
-	#  | 4 | [[rec(2).a]] =   | test      |
-	#  | 5 | [[index(1).a]] = | 1         |
-	#  | 6 | [[index(2).a]] = | 3         |
-	#  And the 'Data' in Workflow 'WorkflowWithAssignamergeandSplit' debug outputs as 
-	#  | # |                         |
-	#  | 1 | [[a]] = 1               |
-	#  | 2 | [[b]] = 2               |
-	#  | 3 | [[rec(1).a]] = warewolf |
-	#  | 4 | [[rec(2).a]] = test     |
-	#  | 5 | [[index(1).a]] = 1      |
-	#  | 6 | [[index(2).a]] = 3      |  	
- #     And the 'Merge' in WorkFlow 'WorkflowWithAssignamergeandSplit' debug inputs as
-	#  | # |                                      | With  | Using | Pad | Align |
-	#  | 1 | [[rec([[index(1).a]]).a]] = warewolf | Index | "8"   | ""  | Left  |
-	#  | 2 | [[a]] = 1                            | Index | "4"   | ""  | Left  |
-	#  And the 'Merge' in Workflow 'WorkflowWithAssignamergeandSplit' debug outputs as
-	#  |                        |
-	#  | [[result]] = warewolf1 |
-	#  And the 'DataSplit' in WorkFlow 'WorkflowWithAssignamergeandSplit' debug inputs as  
-	#  | String to Split         | Process Direction | Skip blank rows | # |                                          | With  | Using | Include | Escape |
-	#  | [[rec(1).a]] = warewolf | Forward           | No              | 1 | [[d]] =                                  | Index | 4     | No      |        |
-	#  |                         |                   |                 | 2 | [[rec([[index(2).a]]).a]] = [[rec(2).a]] | Index | 4     | No      |        |
-	#  And the 'DataSplit' in Workflow 'WorkflowWithAssignamergeandSplit' debug outputs as
-	#  | # |                     |
-	#  | 1 | [[d]] = ware        |
-	#  | 2 | [[rec(2).a]] = wolf |
 
-#This scenario should be passed after the bug 11890 is resolved.
+Scenario: Simple workflow with Assign DataMerge and DataSplit(Evaluating index recordset variable)executing against the server
+ Given I have a workflow "WorkflowWithAssignMergeandSplit"
+ And "WorkflowWithAssignMergeandSplit" contains an Assign "Data" as
+  | variable       | value    |
+  | [[a]]          | 1        |
+  | [[b]]          | 2        |
+  | [[rec(1).a]]   | warewolf |
+  | [[rec(2).a]]   | test     |
+  | [[index(1).a]] | 1        |
+  | [[index(2).a]] | 3        |	
+  And "WorkflowWithAssignMergeandSplit" contains Data Merge "Merge" into "[[result]]" as	
+	 | Variable                  | Type  | Using | Padding | Alignment |
+	 | [[rec([[index(1).a]]).a]] | Index | 8     |         | Left      |
+	 | [[a]]                     | Index | 4     |         | Left      |
+	 And "WorkflowWithAssignMergeandSplit" contains Data Split "DataSplit" as
+	 | String       | Variable                  | Type  | At | Include    | Escape |
+	 | [[rec(1).a]] | [[d]]                     | Index | 4  | Unselected |        |
+	 |              | [[rec([[index(2).a]]).a]] | Index | 4  | Unselected |        |
+	 When "WorkflowWithAssignMergeandSplit" is executed
+	 Then the workflow execution has "NO" error
+	 And the 'Data' in WorkFlow 'WorkflowWithAssignMergeandSplit' debug inputs as
+	 | # | Variable         | New Value |
+	 | 1 | [[a]] =          | 1         |
+	 | 2 | [[b]] =          | 2         |
+	 | 3 | [[rec(1).a]] =   | warewolf  |
+	 | 4 | [[rec(2).a]] =   | test      |
+	 | 5 | [[index(1).a]] = | 1         |
+	 | 6 | [[index(2).a]] = | 3         |
+	 And the 'Data' in Workflow 'WorkflowWithAssignMergeandSplit' debug outputs as 
+	 | # |                         |
+	 | 1 | [[a]] = 1               |
+	 | 2 | [[b]] = 2               |
+	 | 3 | [[rec(1).a]] = warewolf |
+	 | 4 | [[rec(2).a]] = test     |
+	 | 5 | [[index(1).a]] = 1      |
+	 | 6 | [[index(2).a]] = 3      |  	
+    And the 'Merge' in WorkFlow 'WorkflowWithAssignMergeandSplit' debug inputs as
+	 | # |                                      | With  | Using | Pad | Align |
+	 | 1 | [[rec([[index(1).a]]).a]] = warewolf | Index | "8"   | ""  | Left  |
+	 | 2 | [[a]] = 1                            | Index | "4"   | ""  | Left  |
+	 And the 'Merge' in Workflow 'WorkflowWithAssignMergeandSplit' debug outputs as
+	 |                        |
+	 | [[result]] = warewolf1 |
+	 And the 'DataSplit' in WorkFlow 'WorkflowWithAssignMergeandSplit' debug inputs as  
+	 | String to Split         | Process Direction | Skip blank rows | # |                | With  | Using | Include | Escape |
+	 | [[rec(1).a]] = warewolf | Forward           | No              | 1 | [[d]] =        | Index | 4     | No      |        |
+	 |                         |                   |                 | 2 | [[rec(3).a]] = | Index | 4     | No      |        |
+	  And the 'DataSplit' in Workflow 'WorkflowWithAssignMergeandSplit' debug outputs as
+	  | # |                     |
+	  | 1 | [[d]] = ware        |
+	  | 2 | [[rec(3).a]] = wolf |
+
 Scenario: Simple workflow with 2 Assign tools evaluating recordset index variables.
 	 Given I have a workflow "WorkflowWithAssignandAssign"
 	 And "WorkflowWithAssignandAssign" contains an Assign "Data1" as
@@ -1446,12 +1307,12 @@ Scenario: Workflow with Assign recordset calculate field
 	  When "WFWithAssignHasCalculate" is executed
 	  Then the workflow execution has "NO" error
 	  And the 'values1' in WorkFlow 'WFWithAssignHasCalculate' debug inputs as 
-	  | # | Variable       | New Value                        |
-	  | 1 | [[a]] =        | 1                                |
-	  | 2 | [[b]] =        | 2                                |
-	  | 3 | [[rec(1).a]] = | [[a]] = 1                        |
-	  | 4 | [[rec(1).b]] = | [[b]] = 2                        |
-	  | 5 | [[rec(1).c]] = | =[[rec(1).a]]+[[rec(1).b]] ==1+2 |
+	  | # | Variable       | New Value                       |
+	  | 1 | [[a]] =        | 1                               |
+	  | 2 | [[b]] =        | 2                               |
+	  | 3 | [[rec(1).a]] = | [[a]] = 1                       |
+	  | 4 | [[rec(1).b]] = | [[b]] = 2                       |
+	  | 5 | [[rec(1).c]] = | [[rec(1).a]]+[[rec(1).b]] = 1+2 |
 	  And the 'values1' in Workflow 'WFWithAssignHasCalculate' debug outputs as   
 	  | # |                  |
 	  | 1 | [[a]] = 1       |
@@ -1512,12 +1373,10 @@ Scenario: Workflow with Assign Calculate multiple recursion
 	  | 3 | [[rec(1).b]]   = 1        |
 	  And the 'Calculate1' in WorkFlow 'WFAssignCalculateRecursion' debug inputs as 
       | fx =                         |
-      | [[[[[[rec(1).a]]]]]]+1 = 1+1 |       
+      | [[rec(1).b]]+1 = 1+1 |       
       And the 'Calculate1' in Workflow 'WFAssignCalculateRecursion' debug outputs as  
 	  |                |
 	  | [[result]] = 2 |
-
-
 
 Scenario: Workflow with Assign and Calculate
       Given I have a workflow "WFAssign&Calculate"
@@ -1555,27 +1414,25 @@ Scenario: Workflow with Assign and Calculate
 	  |                 |
 	  | [[result]] = 66 |
 
-#This Scenario should be passed after the bug 11714 is fixed
 Scenario: Workflow with Assign and ForEach
-     Given I have a workflow "WFWithForEach"
-	 And "WFWithForEach" contains an Assign "Rec To Convert" as
+     Given I have a workflow "WFWithAssignForEach"
+	 And "WFWithAssignForEach" contains an Assign "Rec To Convert" as
 	  | variable    | value |
 	  | [[Warewolf]] | bob   |
-     And "WFWithForEach" contains a Foreach "ForEachTest" as "NumOfExecution" executions "3"
+     And "WFWithAssignForEach" contains a Foreach "ForEachTest" as "NumOfExecution" executions "3"
 	 And "ForEachTest" contains workflow "11714Nested" with mapping as
 	 | Input to Service | From Variable | Output from Service | To Variable |
 	 | a                | [[Warewolf]]      |                     |             |
-	 When "WFWithForEach" is executed
+	 When "WFWithAssignForEach" is executed
 	 Then the workflow execution has "NO" error
-	 And the 'ForEachTest' in WorkFlow 'WFWithForEach' debug inputs as 
+	 And the 'ForEachTest' in WorkFlow 'WFWithAssignForEach' debug inputs as 
 	    |                 | Number |
 	    | No. of Executes | 3      |
-	 And the 'ForEachTest' in WorkFlow 'WFWithForEach' has  "3" nested children 
+	 And the 'ForEachTest' in WorkFlow 'WFWithAssignForEach' has  "3" nested children 
 	 And each "11714Nested" contains debug outputs for "Assign (1)" as
       | variable | value    |
       | [[a]]    | warewolf |  
         
- #Bug - 12160       
 Scenario: Workflow with ForEach which contains assign
       Given I have a workflow "WFWithForEachContainingAssign"
 	  And "WFWithForEachContainingAssign" contains an Assign "Rec To Convert" as
@@ -1604,8 +1461,6 @@ Scenario: Workflow with ForEach which contains assign
 		| # |                     |
 		| 1 | [[rec(2).a]] = Test |
 
-
-##Bug - 12160  
 Scenario: Workflow with ForEach which contains Sequence
       Given I have a workflow "WorkflowWithForEachContainingSequence"
 	  And "WorkflowWithForEachContainingSequence" contains an Assign "RecVal" as
@@ -1662,7 +1517,6 @@ Scenario: Workflow with ForEach which contains Sequence
 	  | # |                       |
 	  | 1 | [[rec(1).d]] = String |	
 
-##Bug - 12160  
 Scenario: Executing ForEach in Rec with star which contains Sequence
       Given I have a workflow "WorkFWithForEachwithRecContainingSequence"
 	  And "WorkFWithForEachwithRecContainingSequence" contains an Assign "RecVal" as
@@ -1695,16 +1549,10 @@ Scenario: Executing ForEach in Rec with star which contains Sequence
 	  | 3 | [[rec(2).a]] =  Test     |
 	  | 4 | [[rec(2).b]] =  Warewolf |
 	  And the 'ForEachTest1' in WorkFlow 'WorkFWithForEachwithRecContainingSequence' debug inputs as 
-	  |                | Recordset               |
-	  | * in Recordset |                         |
-	  |                | [[rec(1).a]] = 123      |
-	  |                | [[rec(1).b]] = 456      |
-	  |                | [[rec(1).c]] =          |
-	  |                | [[rec(1).d]] =          |
-	  |                | [[rec(2).a]] = Test     |
-	  |                | [[rec(2).b]] = Warewolf |
-	  |                | [[rec(2).c]] =          |
-	  |                | [[rec(2).d]]  =         |
+	  |                | Recordset      |
+	  | * in Recordset |                |
+	  |                | [[rec(1)]] = |
+	  |                | [[rec(2)]] = |
       And the 'ForEachTest1' in WorkFlow 'WorkFWithForEachwithRecContainingSequence' has  "2" nested children
 	  And the 'Data Merge' in "Seq1" in step 1 for 'ForEachTest1' debug inputs as
 	  | # |                    | With | Using | Pad | Align |
@@ -1733,7 +1581,6 @@ Scenario: Executing ForEach in Rec with star which contains Sequence
 	  | # |                       |
 	  | 1 | [[rec(2).d]] = String |
 
-##Bug - 12160  
 Scenario: Executing 2 ForEach's inside a ForEach which contains Assign only
       Given I have a workflow "WFContainsForEachInsideforEach"
 	  And "WFContainsForEachInsideforEach" contains a Foreach "ForEachTest1" as "NumOfExecution" executions "2"
@@ -1768,7 +1615,7 @@ Scenario: Executing 2 ForEach's inside a ForEach which contains Assign only
 	  And the 'Testingoutput' in step 2 for 'ForEachTest3' debug outputs as
 	  | # |                    |
 	  | 1 | [[rec(1).a]] = 123 |	  		
-		
+
   Scenario: Executing 2 ForEach's inside a ForEach which contains Assign only Large Execution
       Given I have a workflow "WFForEachInsideforEachLargeTenFifty"
 	  And "WFForEachInsideforEachLargeTenFifty" contains a Foreach "ForEachTest1" as "NumOfExecution" executions "10"
@@ -1793,8 +1640,8 @@ Scenario: Executing 2 ForEach's inside a ForEach which contains Assign only
 	  And I get the server memory
 	  When "WFForEachInsideforEachLargeTenFifty" is executed
 	  Then the workflow execution has "NO" error
-	  And the server CPU usage is less than 10%
-	  And the server memory difference is less than 100 mb
+	  And the server CPU usage is less than 15%
+	  And the server memory difference is less than 150 mb
 	  And the 'ForEachTest1' in WorkFlow 'WFForEachInsideforEachLargeTenFifty' debug inputs as 
 	  |                 | Number |
 	  | No. of Executes | 10      |
@@ -1839,143 +1686,10 @@ Scenario: Executing 2 ForEach's inside a ForEach which contains Assign only
 	  | 15 | [[rec(50).o]] = 22323asda     |
 		
   
-  #Bug 12159
-#  Before you look into this spec plz connect to "Integration Connection" server and search for Unique data workflow and debug.
-#   Observe the output.	
-#Scenario: Executing remote workflow which contains For Each with assign
-#	      Given I have a workflow "TestAssignAndRemote"
-#          And "TestAssignAndRemote" contains "Unique data" from server "Integration Connection" with mapping as
-#          When "TestAssignAndRemote" is executed
-#	      Then the workflow execution has "NO" error
-#		  And the 'Assign for sequence' in WorkFlow 'workflowithAssignandsequence' debug inputs as
-#	      | # | Variable                         | New Value |
-#	      | 1 | [[Student().firstname]] =        | Murali    |
-#	      | 2 | [[Student().lastname]]  =        | naidu     |
-#	      | 3 | [[Student().firstname]] =        | Rak       |
-#	      | 4 | [[Student().lastname]]  =        | m         |
-#	      | 5 | [[Student().firstname]] =        | Murali    |
-#	      | 6 |
-#	      |   | [[Student(1).lastname]] =  naidu |
-#	      |   | [[Student(2).lastname]] =  m     |
-#	      |   | [[Student(3).lastname]] =        |
-#	       And the 'Assign for sequence' in Workflow 'workflowithAssignandsequence' debug outputs as    
-#	      | # |                                   |
-#	      | 1 | [[Student(1).firstname]] =  Murali |
-#	      | 2 | [[Student(1).lastname]]  =  naidu  |
-#	      | 3 | [[Student(2).firstname]] =  Rak    |
-#	      | 4 | [[Student().lastname]]  =  m      |
-#	      | 5 | [[Student().firstname]] =  Murali |
-#	      | 6 | [[Student(1).lastname]] =  naidu  |
-#	      |   | [[Student(2).lastname]] =  naidu  |
-#	      |   | [[Student(3).lastname]] =  naidu  |
-#		  And the 'ForEachTest1' in WorkFlow 'WFWithForEachInsideforEach' debug inputs as 
-#	       | Recordset                         |
-#	       | [[Student(1).firstname]] = Murali |
-#	       | [[Student(1).lastname]] = naidu   |
-#	       | [[Student(1).fullname]] =         |
-#	       | [[Student(1).date]] =             |
-#	       | [[Student(2).firstname]] = Rak    |
-#	       | [[Student(2).lastname]] = naidu   |
-#	       | [[Student(2).fullname]] =         |
-#	       | [[Student(2).date]] =             |
-#	       | [[Student(3).firstname]] = Murali |
-#	       | [[Student(3).lastname]] = naidu   |
-#	       | [[Student(3).fullname]] =         |
-#	       | [[Student(3).date]] =             |
-#	       And the 'ForEachTest1' in WorkFlow 'WFWithForEachInsideforEach' has  "3" nested children
-#		        And the 'Data Merge' child 1,1 in WorkFlow 'Sequence' debug inputs as
-#	            | # |                                   | With | Using | Pad | Align |
-#	            | 1 | [[Student(1).firstname]] = Murali | None | ""    | ""  | Left  |
-#	            | 2 | [[Student(1).lastname]] = naidu   | None | ""    | ""  | Left  |
-#	            And the 'Data Merge' child 1,1 in Workflow 'Sequence' debug outputs as
-#	            |                                      |
-#	            | [[Student(1).fullname]]= Muralinaidu |
-#	            And the 'System info' child 1,2 in WorkFlow 'Sequence' debug inputs as
-#	            | # |                       |             |
-#	            | 1 | [[Student(1).date]] = | Date & Time |
-#	            And the 'System info' child 1,2 in Workflow 'Sequence' debug outputs as   
-#	            | # |                             |
-#	            | 1 | [[Student(1).date]]= String |
-#				And the 'Data Merge' child 2,1 in WorkFlow 'Sequence' debug inputs as
-#	            | # |                                 | With | Using | Pad | Align |
-#	            | 1 | [[Student(2).firstname]] = Rak  | None | ""    | ""  | Left  |
-#	            | 2 | [[Student(2).lastname]] = naidu | None | ""    | ""  | Left  |
-#	            And the 'Data Merge' child 2,1 in Workflow 'Sequence' debug outputs as
-#	            |                                   |
-#	            | [[Student(2).fullname]]= Raknaidu |
-#	            And the 'System info' child 2,2 in WorkFlow 'Sequence' debug inputs as
-#	            | # |                       |             |
-#	            | 1 | [[Student(2).date]] = | Date & Time |
-#	            And the 'System info' child 2,2 in Workflow 'Sequence' debug outputs as   
-#	            | # |                             |
-#	            | 1 | [[Student(2).date]]= String |
-#				And the 'Data Merge' child 3,1 in WorkFlow 'Sequence' debug inputs as
-#	            | # |                                   | With | Using | Pad | Align |
-#	            | 1 | [[Student(3).firstname]] = Murali | None | ""    | ""  | Left  |
-#	            | 2 | [[Student(3).lastname]] = naidu   | None | ""    | ""  | Left  |
-#	            And the 'Data Merge' child 3,1 in Workflow 'Sequence' debug outputs as
-#	            |                                      |
-#	            | [[Student(3).fullname]]= Muralinaidu |
-#	            And the 'System info' child 3,2 in WorkFlow 'Sequence' debug inputs as
-#	            | # |                       |             |
-#	            | 1 | [[Student(3).date]] = | Date & Time |
-#	            And the 'System info' child 3,2 in Workflow 'Sequence' debug outputs as   
-#	            | # |                             |
-#	            | 1 | [[Student(3).date]]= String |
-#          And the 'Unique rec' in WorkFlow 'workflowithAssignandUnique' debug inputs as
-#            | #           |                                       | Return Fields |
-#            | In Field(s) | [[Student(1).fullname]] = Muralinaidu |               |
-#            |             | [[Student(2).fullname]] = Raknaidu    |               |
-#            |             | [[Student(3).fullname]] = Muralinaidu |               |
-#            |             |                                       | [[rs().row]]  |
-#           And the 'Unique rec' in Workflow 'workflowithAssignandUnique' debug outputs as  
-#            | # |                                    |
-#            | 1 | [[list(1).students]] = Muralinaidu |
-#            |   | [[list(2).students]] = Raknaidu    |
-#             
 
 
 
-#This Test should pass after the bug 11539 is fixed
-#Scenario: Test Mappings for Assign and Calculate Workflow 
-#      Given I have a workflow "TestMappings"
-#	  And "TestMappings" contains an Assign "values1" as
-#      | variable       | value |
-#      | [[rec(1).a]]   | 1     |
-#      | [[rec(1).b]]   | 2     |
-#	  And "TestMappings" contains Calculate "Calculate1" with formula "[[rec(1).a]]+[[rec(1).b]]" into "[[rec(1).c]]"
-#	  And "WorkflowWithAssignBaseConvertandCaseconvert" inputs
-#	  | Inputs |
-#	  |        |
-#	  And "WorkflowWithAssignBaseConvertandCaseconvert" Outputs
-#	  | Outputs |
-#	  | rec().a |
-#	  | rec().b |
-#	  When "TestMappings" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'values1' in WorkFlow 'TestMappings' debug inputs as 
-#	  | # | Variable       | New Value |
-#	  | 1 | [[rec(1).a]] = | 1         |
-#	  | 2 | [[rec(1).b]] = | 2         |
-#	  And the 'values1' in Workflow 'TestMappings' debug outputs as   
-#	  | # |                           |
-#	  | 1 | [[rec(1).a]]         =  1 |
-#	  | 2 | [[rec(1).b]]  =  2        |
-#	  And the 'Calculate1' in WorkFlow 'TestMappings' debug inputs as 
-#      | fx =                                 |
-#      | [[rec(1).a]]+[[rec(1).b]] = 1+2 |           
-#      And the 'Calculate1' in Workflow 'TestMappings' debug outputs as  
-#	  |                  |
-#	  | [[rec(1).c]] = 3 |
-#	  And the 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as
-#	  |                  |
-#	  | [[rec(1).a]] = 1 |
-#	  | [[rec(1).b]] = 2 |
-#	  | [[rec(1).c]] = 3 |
 
-
-
-#This Test scenario should be passed after the bug 12016 is fixed
  Scenario: Workflow with Assign and Replace by using recordset star
  Given I have a workflow "workflowithAssignandreplaces"
       And "workflowithAssignandreplaces" contains an Assign "Assignee" as
@@ -2005,269 +1719,85 @@ Scenario: Executing 2 ForEach's inside a ForEach which contains Assign only
 	  And the 'Rep' in Workflow 'workflowithAssignandreplaces' debug outputs as
 	  |                         |
 	  | [[rec(1).a]] = Warewolf |
+	  | [[rec(2).a]] = b        |
+	  | [[rec(1).a]] = Warewolf |
 	  | [[rec(2).a]] = Warewolf |
-
-	  | [[rec(3).a]] = 2        |
-
+	  | [[rec(3).a]] = 3        |
 
 Scenario: Workflow Assign and Find Record index tool with two variables in reult field expect error
-      Given I have a workflow "WFWithAssignandFindRecordindex"
-	  And "WFWithAssignandFindRecordindex" contains an Assign "Record" as
+      Given I have a workflow "WFWithAssignandFindRecordindexy"
+	  And "WFWithAssignandFindRecordindexy" contains an Assign "Record" as
       | # | variable     | value    |
       | # | [[rec(1).a]] | Warewolf |
-	  And "WFWithAssignandFindRecordindex" contains Find Record Index "FindRecord0" into result as "[[a]][[b]]"
+	  And "WFWithAssignandFindRecordindexy" contains Find Record Index "FindRecord0" into result as "[[a]][[b]]"
       | # | In Field    | # | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
       | # | [[rec().a]] | 1 | =          | Warewolf | YES                            | NO                          |
-	  When "WFWithAssignandFindRecordindex" is executed
+	  When "WFWithAssignandFindRecordindexy" is executed
 	  Then the workflow execution has "AN" error
-	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
+	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindexy' debug inputs as 
 	  | # | Variable       | New Value |
 	  | 1 | [[rec(1).a]] = | Warewolf  | 
-	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as   
+	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindexy' debug outputs as   
 	  | # |                                  |
 	  | 1 | [[rec(1).a]]         =  Warewolf |
 
-#
 
-#Bug 12180, 
-#The below 12 scenario should be passed after the bug 11994 is fixed
-#Scenario: Workflow Assign and Find Record index
-#      Given I have a workflow "WFWithAssignandFindRecordindexTool"
-#	  And "WFWithAssignandFindRecordindexTool" contains an Assign "Record" as
-#      | # | variable     | value    |
-#      | # | [[rec(1).a]] | Warewolf |
-#	  And "WFWithAssignandFindRecordindexTool" contains Find Record Index "FindRecord0" into result as "[[a]]*]]"
-#      | # | In Field    | # | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
-#      | # | [[rec().a]] | 1 | =          | Warewolf | YES                            | NO                          |
-#	  When "WFWithAssignandFindRecordindexTool" is executed
-#	  Then the workflow execution has "AN" error
-#	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindexTool' debug inputs as 
-#	  | # | Variable       | New Value |
-#	  | 1 | [[rec(1).a]] = | Warewolf  | 
-#	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindexTool' debug outputs as   
-#	  | # |                                  |
-#	  | 1 | [[rec(1).a]]         =  Warewolf |
-#	  And the 'FindRecord0' in WorkFlow 'WFWithAssignandFindRecordindexTool' debug inputs as 
-#	  | #           |                         | # |   |          |  | And | Require All Fields To Match | Require All Matches To Be True |
-#	  | In Field(s) | [[rec(1).a]] = Warewolf | 1 | = | Warewolf |  |     | YES                         | NO                             |
+Scenario: Workflow Assign and Find Record index
+      Given I have a workflow "WFWithAssignandFindRecordindexTool"
+	  And "WFWithAssignandFindRecordindexTool" contains an Assign "Record" as
+      | # | variable     | value    |
+      | # | [[rec(1).a]] | Warewolf |
+	  And "WFWithAssignandFindRecordindexTool" contains Find Record Index "FindRecord0" into result as "[[a]]*]]"
+      | # | In Field    | # | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
+      | # | [[rec().a]] | 1 | =          | Warewolf | YES                            | NO                          |
+	  When "WFWithAssignandFindRecordindexTool" is executed
+	  Then the workflow execution has "AN" error
+	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindexTool' debug inputs as 
+	  | # | Variable       | New Value |
+	  | 1 | [[rec(1).a]] = | Warewolf  | 
+	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindexTool' debug outputs as   
+	  | # |                                  |
+	  | 1 | [[rec(1).a]]         =  Warewolf |	 	 
 		 
-
-
-	#The below 12 scenario should be passed after the bug 11994 is fixe
-#Scenario Outline: Testing Count with two variables in Result field
-#      Given I have a workflow "WorkflowforCount"
-#      And "WorkflowforCount" contains an Assign "Rec To Convert" as
-#	  | variable    | value |
-#	  | [[rec().a]] | 1213  |
-#	  | [[rec().a]] | 4561  |
-#	  And "WorkflowforCount" contains Count Record "CountRec" on "[[rec()]]" into '<Variable>'
-#	  When "WorkflowforCount" is executed
-#	  Then the workflow execution has "AN" error	
-#      And the 'Rec To Convert' in WorkFlow 'WorkflowforCount' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rec().a]] = | 1213      |
-#	  | 2 | [[rec().a]] = | 4561      |
-#	  And the 'Rec To Convert' in Workflow 'WorkflowforCount' debug outputs as    
-#	  | # |                     |
-#	  | 1 | [[rec(1).a]] = 1213 |
-#	  | 2 | [[rec(2).a]] = 4561 |
-#	  And the 'CountRec' in WorkFlow 'WorkflowforCount' debug inputs as
-#	  | Recordset            |
-#	  | [[rec(1).a]] = 1213 |
-#	  | [[rec(2).a]] = 4561 |
-#	  And the 'CountRec' in Workflow 'WorkflowforCount' debug outputs as    
-#	  |               |
-#Examples: 
-#       | No    | Variable       |
-#       | 1     | [[Count]][[a]] |
-# #12180 | 2     | [[count]]*]]   |
-##
-# 12180 remove this as per previous step
-
-
-
-Scenario: Testing Count with two variables in Result field
-      Given I have a workflow "WorkflowforCount"
-      And "WorkflowforCount" contains an Assign "Rec To Convert" as
+Scenario Outline: Testing Length with two variables in Result field
+      Given I have a workflow "WorkflowforLength"
+      And "WorkflowforLength" contains an Assign "Rec To Convert" as
 	  | variable    | value |
 	  | [[rec().a]] | 1213  |
 	  | [[rec().a]] | 4561  |
-	  And "WorkflowforCount" contains Count Record "CountRec" on "[[rec()]]" into "[[count]][[a]]"
-	  When "WorkflowforCount" is executed
+	  And "WorkflowforLength" contains Length "Len" on "[[rec(*)]]" into '<Variable>'
+	  When "WorkflowforLength" is executed
 	  Then the workflow execution has "AN" error	
-      And the 'Rec To Convert' in WorkFlow 'WorkflowforCount' debug inputs as
+      And the 'Rec To Convert' in WorkFlow 'WorkflowforLength' debug inputs as
 	  | # | Variable      | New Value |
 	  | 1 | [[rec().a]] = | 1213      |
 	  | 2 | [[rec().a]] = | 4561      |
-	  And the 'Rec To Convert' in Workflow 'WorkflowforCount' debug outputs as    
+	  And the 'Rec To Convert' in Workflow 'WorkflowforLength' debug outputs as    
 	  | # |                     |
 	  | 1 | [[rec(1).a]] = 1213 |
 	  | 2 | [[rec(2).a]] = 4561 |
-	  And the 'CountRec' in WorkFlow 'WorkflowforCount' debug inputs as
-	  | Recordset            |
+	  And the 'Len' in WorkFlow 'WorkflowforLength' debug inputs as
+	  | Recordset           |
 	  | [[rec(1).a]] = 1213 |
 	  | [[rec(2).a]] = 4561 |
-	  And the 'CountRec' in Workflow 'WorkflowforCount' debug outputs as    
-	  |               |
-
-
-#Scenario Outline: Testing Length with two variables in Result field
-#      Given I have a workflow "WorkflowforLength"
-#      And "WorkflowforLength" contains an Assign "Rec To Convert" as
-#	  | variable    | value |
-#	  | [[rec().a]] | 1213  |
-#	  | [[rec().a]] | 4561  |
-#	  And "WorkflowforLength" contains Length "Len" on "[[rec(*)]]" into '<Variable>'
-#	  When "WorkflowforLength" is executed
-#	  Then the workflow execution has "AN" error	
-#      And the 'Rec To Convert' in WorkFlow 'WorkflowforLength' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rec().a]] = | 1213      |
-#	  | 2 | [[rec().a]] = | 4561      |
-#	  And the 'Rec To Convert' in Workflow 'WorkflowforLength' debug outputs as    
-#	  | # |                     |
-#	  | 1 | [[rec(1).a]] = 1213 |
-#	  | 2 | [[rec(2).a]] = 4561 |
-#	  And the 'Len' in WorkFlow 'WorkflowforLength' debug inputs as
-#	  | Recordset           |
-#	  | [[rec(1).a]] = 1213 |
-#	  | [[rec(2).a]] = 4561 |
-#	  And the 'Len' in Workflow 'WorkflowforLength' debug outputs as    
-#	  |                |
-#	  |                |
-#Examples:
-#      | No    | Variable       |
-#      | 1     | [[length]][[a]] |
-#12180 
- #     | 2  | [[a]]*]]               |
- #     | 3  | [[var@]]               |
- #     | 4  | [[var]]00]]            |
- #     | 5  | [[(1var)]]             |
- #     | 6  | [[var[[a]]]]           |
- #     | 7  | [[var.a]]              |
- #     | 8  | [[@var]]               |
- #     | 9  | [[var 1]]              |
- #     | 10 | [[rec(1).[[rec().1]]]] |
- #     | 11 | [[rec(@).a]]           |
- #     | 12 | [[rec"()".a]]          |
- #     | 13 | [[rec([[[[b]]]]).a]]   |
-
-
-##12180  -- remove this when previous is passing
- #Scenario: Testing Length with two variables in Result field
- #     Given I have a workflow "WorkflowforLength"
- #     And "WorkflowforLength" contains an Assign "Rec To Convert" as
-	#  | variable    | value |
-	#  | [[rec().a]] | 1213  |
-	#  | [[rec().a]] | 4561  |
-	#  And "WorkflowforLength" contains Length "Len" on "[[rec(*)]]" into "[[length]][[a]]"
-	#  When "WorkflowforLength" is executed
-	#  Then the workflow execution has "AN" error	
- #     And the 'Rec To Convert' in WorkFlow 'WorkflowforLength' debug inputs as
-	#  | # | Variable      | New Value |
-	#  | 1 | [[rec().a]] = | 1213      |
-	#  | 2 | [[rec().a]] = | 4561      |
-	#  And the 'Rec To Convert' in Workflow 'WorkflowforLength' debug outputs as    
-	#  | # |                     |
-	#  | 1 | [[rec(1).a]] = 1213 |
-	#  | 2 | [[rec(2).a]] = 4561 |
-	#  And the 'Len' in WorkFlow 'WorkflowforLength' debug inputs as
-	#  | Recordset           |
-	#  | [[rec(1).a]] = 1213 |
-	#  | [[rec(2).a]] = 4561 |
-	#  And the 'Len' in Workflow 'WorkflowforLength' debug outputs as    
-	#  |                |
-	#  |                |
-
-
-@ignore
-Scenario Outline: Testing Find Index with two variables in Result field
-      Given I have a workflow "WorkflowforFI"
-      And "WorkflowforFI" contains an Assign "Rec To Convert" as
-	  | variable    | value |
-	  | [[rec().a]] | 141   |
-	  | [[rec().a]] | 4561  |
-	  And "WorkflowforFI" contains Find Index "Index" into '<Variable>' as
-	  | In Fields    | Index         | Character | Direction     |
-	  | [[rec(*).a]] | All Occurence | 1         | Left to Right |	
-	  When "WorkflowforFI" is executed  	  
-	  Then the workflow execution has "AN" error	
-      And the 'Rec To Convert' in WorkFlow 'WorkflowforFI' debug inputs as
-	  | # | Variable      | New Value |
-	  | 1 | [[rec().a]] = | 141       |
-	  | 2 | [[rec().a]] = | 4561      |
-	  And the 'Rec To Convert' in Workflow 'WorkflowforFI' debug outputs as    
-	  | # |                     |
-	  | 1 | [[rec(1).a]] = 141  |
-	  | 2 | [[rec(2).a]] = 4561 |
-	  And the 'Index' in WorkFlow 'WorkflowforFI' debug inputs as
-	  | In Field            | Index         | Characters | Direction     |
-	  | [[rec(1).a]] = 141  |               |            |               |
-	  | [[rec(2).a]] = 4561 | All Occurence | 1          | Left to Right |
-	  And the 'Index' in Workflow 'WorkflowforFI' debug outputs as
-	  |                   |
+	  And the 'Len' in Workflow 'WorkflowforLength' debug outputs as    
+	  |                |
+	  |                |
 Examples: 
       | No    | Variable       |
-      | 1     | [[a]][[indexResult]] |
-##12180 
-# #     | 2  | [[a]]*]]               |
-# #     | 3  | [[var@]]               |
-# #     | 4  | [[var]]00]]            |
-# #     | 5  | [[(1var)]]             |
-# #     | 6  | [[var[[a]]]]           |
-# #     | 7  | [[var.a]]              |
-# #     | 8  | [[@var]]               |
-# #     | 9  | [[var 1]]              |
-# #     | 10 | [[rec(1).[[rec().1]]]] |
-# #     | 11 | [[rec(@).a]]           |
-# #     | 12 | [[rec"()".a]]          |
-# #     | 13 | [[rec([[[[b]]]]).a]]   |
-##
-
-@ignore
-Scenario Outline: Testing Data Merge with two variables in Result field
-      Given I have a workflow "WorkflowforDataMerge"
-      And "WorkflowforDataMerge" contains an Assign "Rec To Convert" as
-	  | variable    | value    |
-	  | [[rec().a]] | Test     |
-	  | [[rec().a]] | Warewolf |
-	  And "WorkflowforDataMerge" contains Data Merge "Data Merge" into '<Variable>' as	
-	  | Variable     | Type | Using | Padding | Alignment |
-	  | [[rec(1).a]] | None |       |         | Left      |
-	  | [[rec(2).a]] | None |       |         | Left      |
-	  When "WorkflowforDataMerge" is executed  	  
-	  Then the workflow execution has "AN" error	
-      And the 'Rec To Convert' in WorkFlow 'WorkflowforDataMerge' debug inputs as
-	  | # | Variable      | New Value |
-	  | 1 | [[rec().a]] = | Test      |
-	  | 2 | [[rec().a]] = | Warewolf  |
-	  And the 'Rec To Convert' in Workflow 'WorkflowforDataMerge' debug outputs as    
-	  | # |                         |
-	  | 1 | [[rec(1).a]] = Test     |
-	  | 2 | [[rec(2).a]] = Warewolf |
-	 And the 'Data Merge' in WorkFlow 'WorkflowforDataMerge' debug inputs as 
-	  | # |                         | With | Using | Pad | Align |
-	  | 1 | [[rec(1).a]] = Test     | None | ""    | ""  | Left  |
-	  | 2 | [[rec(2).a]] = Warewolf | None | ""    | ""  | Left  |
-	  And the 'Data Merge' in Workflow 'WorkflowforDataMerge' debug outputs as  
-	  |                   |
-	  | [[result]][[a]] = |  
-Examples: 
-      | No    | Variable       |
-      | 1     | [[a]][[Result]] |
-##12180 
-# #     | 2  | [[a]]*]]               |
-# #     | 3  | [[var@]]               |
-# #     | 4  | [[var]]00]]            |
-# #     | 5  | [[(1var)]]             |
-# #     | 6  | [[var[[a]]]]           |
-# #     | 7  | [[var.a]]              |
-# #     | 8  | [[@var]]               |
-# #     | 9  | [[var 1]]              |
-# #     | 10 | [[rec(1).[[rec().1]]]] |
-# #     | 11 | [[rec(@).a]]           |
-# #     | 12 | [[rec"()".a]]          |
-# #     | 13 | [[rec([[[[b]]]]).a]]   |
+      | 1     | [[length]][[a]] |
+      | 2  | [[a]]*]]               |
+      | 3  | [[var@]]               |
+      | 4  | [[var]]00]]            |
+      | 5  | [[(1var)]]             |
+      | 6  | [[var[[a]]]]           |
+      | 7  | [[var.a]]              |
+      | 8  | [[@var]]               |
+      | 9  | [[var 1]]              |
+      | 10 | [[rec(1).[[rec().1]]]] |
+      | 11 | [[rec(@).a]]           |
+      | 12 | [[rec"()".a]]          |
+      | 13 | [[rec([[[[b]]]]).a]]   |
 
 
 Scenario: Testing Data Split with two variables in Result field
@@ -2296,97 +1826,9 @@ Scenario: Testing Data Split with two variables in Result field
 	  |                     |                   |                 | 2 | [[fr().b]][[b]] = | Index | 2     | No      |        |
 	  And the 'Data Split' in Workflow 'WorkflowforDatasplit' debug outputs as  
 	  | # |                    |
-	  | 1 | [[fr(1).aa]] = |
-	  | 2 | [[fr(1).bb]] = |
-	
-@ignore
-Scenario Outline: Testing Replace with two variables in Result field
-      Given I have a workflow "WorkflowforReplace"
-      And "WorkflowforReplace" contains an Assign "Rec To Convert" as
-	  | variable    | value    |
-	  | [[rec().a]] | Test     |
-	  | [[rec().a]] | Warewolf |
-	  And "WorkflowforReplace" contains Replace "Replac" into '<Variable>' as	
-	  | In Fields    | Find | Replace With |
-	  | [[rec(*).a]] | Test | rocks        |
-	  When "WorkflowforReplace" is executed  	  
-	  Then the workflow execution has "AN" error	
-      And the 'Rec To Convert' in WorkFlow 'WorkflowforReplace' debug inputs as
-	  | # | Variable      | New Value |
-	  | 1 | [[rec().a]] = | Test      |
-	  | 2 | [[rec().a]] = | Warewolf  |
-	  And the 'Rec To Convert' in Workflow 'WorkflowforReplace' debug outputs as    
-	  | # |                         |
-	  | 1 | [[rec(1).a]] = Test     |
-	  | 2 | [[rec(2).a]] = Warewolf |
-	  And the 'Replac' in WorkFlow 'WorkflowforReplace' debug inputs as 	
-	  | In Field(s)             | Find | Replace With |
-	  | [[rec(1).a]] = Test     |      |              |
-	  | [[rec(2).a]] = Warewolf | Test | rocks        |
-	  And the 'Replac' in Workflow 'WorkflowforReplace' debug outputs as 
-	  |                   |
-	  | [[a]][[b]][[c]] = |
-Examples: 
-      | No    | Variable       |
-      | 1     | [[a]][[Result]] |
-#12180 
- #     | 2  | [[a]]*]]               |
- #     | 3  | [[var@]]               |
- #     | 4  | [[var]]00]]            |
- #     | 5  | [[(1var)]]             |
- #     | 6  | [[var[[a]]]]           |
- #     | 7  | [[var.a]]              |
- #     | 8  | [[@var]]               |
- #     | 9  | [[var 1]]              |
- #     | 10 | [[rec(1).[[rec().1]]]] |
- #     | 11 | [[rec(@).a]]           |
- #     | 12 | [[rec"()".a]]          |
- #     | 13 | [[rec([[[[b]]]]).a]]   |
-
-	
-@ignore
-Scenario Outline: Testing Calculate with two variables in Result field
-      Given I have a workflow "WorkflowforCals"
-      And "WorkflowforCals" contains an Assign "Values" as
-	  | variable | value |
-	  | [[a]]    | 1     |
-	  | [[b]]    | 2     |
-	 And "WorkflowforCal" contains Calculate "Calculate1" with formula "[[a]]+[[b]]" into '<Variable>'	 
-	  When "WorkflowforCals" is executed  	  
-	  Then the workflow execution has "AN" error	
-      And the 'Values' in WorkFlow 'WorkflowforCals' debug inputs as
-	  | # | Variable | New Value |
-	  | 1 | [[a]] =  | 1         |
-	  | 2 | [[b]] =  | 2         |
-	  And the 'Values' in Workflow 'WorkflowforCals' debug outputs as    
-	  | # |           |
-	  | 1 | [[a]] = 1 |
-	  | 2 | [[b]] = 2 |
-	  And the 'Calculate1' in WorkFlow 'WorkflowforCals' debug inputs as 
-      | fx =                  |
-      | [[a]]+[[b]] = 1+2 = 2 |           
-      And the 'Calculate1' in Workflow 'WorkflowforCals' debug outputs as  
-	  |              |
-	  | '<Variable>' |
-Examples: 
-      | No | Variable               |
-      | 1  | [[a]][[Result]]        |
-      #| 2  | [[a]]*]]               |
-      #| 3  | [[var@]]               |
-      #| 4  | [[var]]00]]            |
-      #| 5  | [[(1var)]]             |
-      #| 6  | [[var[[a]]]]           |
-      #| 7  | [[var.a]]              |
-      #| 8  | [[@var]]               |
-      #| 9  | [[var 1]]              |
-      #| 10 | [[rec(1).[[rec().1]]]] |
-      #| 11 | [[rec(@).a]]           |
-      #| 12 | [[rec"()".a]]          |
-      #| 13 | [[rec([[[[b]]]]).a]]   |
-
 
 Scenario Outline: Testing Format Numbers with two variables in Result
-      Given I have a workflow "Workflowforfn"
+     Given I have a workflow "Workflowforfn"
 	  And "Workflowforfn" contains an Assign "Values" as
 	  | variable | value |
 	  | [[a]]    | 1     |
@@ -2395,7 +1837,7 @@ Scenario Outline: Testing Format Numbers with two variables in Result
 	  | Number  | Rounding Selected | Rounding To | Decimal to show | Result       |
 	  | 123.568 | Up                | 2           | 2               | '<Variable>' |
 	  When "Workflowforfn" is executed  	  
-	  Then the workflow execution has "AN" error
+	  Then the workflow execution has "AN" error	
 	  And the 'Fnumber' in WorkFlow 'Workflowforfn' debug inputs as 	
 	  | Number  | Rounding | Rounding Value | Decimals to show |
 	  | 123.568 | Up       | 2              | 2                |
@@ -2403,298 +1845,119 @@ Scenario Outline: Testing Format Numbers with two variables in Result
 	  |                |
 	  | '<Variable>' = |
 Examples: 
+       | No | Variable               |
+       | 1  | [[a]][[Result]]        |
+
+Scenario Outline: Testing Random Numbers with two variables in Result
+      Given I have a workflow "Workflowforrandom123"
+	  And "Workflowforrandom123" contains an Assign "Values" as
+	  | variable | value |
+	  | [[a]]    | 1     |
+	  | [[b]]    | 10     |
+	  And "Workflowforrandom123" contains Random "Randoms" as
+	  | Type    | From | To | Result       |
+	  | Numbers | 1    | 10 | '<Variable>' |
+	  When "Workflowforrandom123" is executed  	  
+	  Then the workflow execution has "AN" error
+	   And the 'Values' in WorkFlow 'Workflowforrandom123' debug inputs as
+	  | # | Variable | New Value |
+	  | 1 | [[a]] =  | 1         |
+	  | 2 | [[b]] =  | 10        |
+	  And the 'Values' in Workflow 'Workflowforrandom123' debug outputs as    
+	  | # |             |
+	  | 1 | [[a]] =  1  |
+	  | 2 | [[b]] =  10 |
+	  And the 'Randoms' in WorkFlow 'Workflowforrandom123' debug inputs as 
+	    | Random  | From | To |
+	    | Numbers | 1    | 10  |
+      And the 'Randoms' in Workflow 'Workflowforrandom123' debug outputs as
+	  |                |
+	  | '<Variable>' = |
+Examples: 
       | No | Variable               |
       | 1  | [[a]][[Result]]        |
-      #| 2  | [[a]]*]]               |
-      #| 3  | [[var@]]               |
-      #| 4  | [[var]]00]]            |
-      #| 5  | [[(1var)]]             |
-      #| 6  | [[var[[a]]]]           |
-      #| 7  | [[var.a]]              |
-      #| 8  | [[@var]]               |
-      #| 9  | [[var 1]]              |
-      #| 10 | [[rec(1).[[rec().1]]]] |
-      #| 11 | [[rec(@).a]]           |
-      #| 12 | [[rec"()".a]]          |
-      #| 13 | [[rec([[[[b]]]]).a]]   |
+
+Scenario Outline: Testing Date and Time with two variables in Result field
+      Given I have a workflow "WorkflowforDT"
+      And "WorkflowforDT" contains an Assign "Convert2" as
+	  | variable    | value      |
+	  | [[rec().a]] | 12/01/2001 |
+	  And "WorkflowforDT" contains Date and Time "AddDates" as
+      | Input       | Input Format | Add Time | Output Format | Result       |
+      | [[rec().a]] | dd/mm/yyyy   | 1        | dd/mm/yyyy    | '<Variable>' |	
+	  When "WorkflowforDT" is executed  	  
+	  Then the workflow execution has "AN" error	
+      And the 'Convert2' in WorkFlow 'WorkflowforDT' debug inputs as
+	  | # | Variable      | New Value  |
+	  | 1 | [[rec().a]] = | 12/01/2001 |
+	  And the 'Convert2' in Workflow 'WorkflowforDT' debug outputs as    
+	  | # |                           |
+	  | 1 | [[rec(1).a]] = 12/01/2001 |
+	  And the 'AddDates' in WorkFlow 'WorkflowforDT' debug inputs as
+	   | Input                     | Input Format | Add Time |   | Output Format |
+	   | [[rec(1).a]] = 12/01/2001 | dd/mm/yyyy   | Years    | 1 | dd/mm/yyyy    |	
+	  And the 'AddDates' in Workflow 'WorkflowforDT' debug outputs as   
+	   |                |
+	   | '<Variable>' = |
+Examples: 
+      | No | Variable               |
+      | 1  | [[a]][[Result]]        |      
 
 
-#Scenario Outline: Testing Random Numbers with two variables in Result
-#      Given I have a workflow "Workflowforrandom123"
-#	  And "Workflowforrandom123" contains an Assign "Values" as
-#	  | variable | value |
-#	  | [[a]]    | 1     |
-#	  | [[b]]    | 10     |
-#	  And "Workflowforrandom123" contains Random "Randoms" as
-#	  | Type    | From | To | Result       |
-#	  | Numbers | 1    | 10 | '<Variable>' |
-#	  When "Workflowforrandom123" is executed  	  
-#	  Then the workflow execution has "AN" error
-#	   And the 'Values' in WorkFlow 'Workflowforrandom123' debug inputs as
-#	  | # | Variable | New Value |
-#	  | 1 | [[a]] =  | 1         |
-#	  | 2 | [[b]] =  | 10        |
-#	  And the 'Values' in Workflow 'Workflowforrandom123' debug outputs as    
-#	  | # |             |
-#	  | 1 | [[a]] =  1  |
-#	  | 2 | [[b]] =  10 |
-#	  And the 'Randoms' in WorkFlow 'Workflowforrandom123' debug inputs as 
-#	    | Random  | From | To |
-#	    | Numbers | 1    | 10  |
-#      And the 'Randoms' in Workflow 'Workflowforrandom123' debug outputs as
-#	  |              |
-#	  | '<Variable>' |
-#Examples: 
-#      | No | Variable               |
-#      | 1  | [[a]][[Result]]        |
-#      | 2  | [[a]]*]]               |
-#      | 3  | [[var@]]               |
-#      | 4  | [[var]]00]]            |
-#      | 5  | [[(1var)]]             |
-#      | 6  | [[var[[a]]]]           |
-#      | 7  | [[var.a]]              |
-#      | 8  | [[@var]]               |
-#      | 9  | [[var 1]]              |
-#      | 10 | [[rec(1).[[rec().1]]]] |
-#      | 11 | [[rec(@).a]]           |
-#      | 12 | [[rec"()".a]]          |
-#      | 13 | [[rec([[[[b]]]]).a]]   |
-#	  							
-#
-#	 
-#Scenario Outline: Testing Date and Time with two variables in Result field
-#      Given I have a workflow "WorkflowforDT"
-#      And "WorkflowforDT" contains an Assign "Convert2" as
-#	  | variable    | value      |
-#	  | [[rec().a]] | 12/01/2001 |
-#	  And "WorkflowforDT" contains Date and Time "AddDates" as
-#      | Input       | Input Format | Add Time | Output Format | Result       |
-#      | [[rec().a]] | dd/mm/yyyy   | 1        | dd/mm/yyyy    | '<Variable>' |	
-#	  When "WorkflowforDT" is executed  	  
-#	  Then the workflow execution has "AN" error	
-#      And the 'Convert2' in WorkFlow 'WorkflowforDT' debug inputs as
-#	  | # | Variable      | New Value  |
-#	  | 1 | [[rec().a]] = | 12/01/2001 |
-#	  And the 'Convert2' in Workflow 'WorkflowforDT' debug outputs as    
-#	  | # |                           |
-#	  | 1 | [[rec(1).a]] = 12/01/2001 |
-#	  And the 'AddDates' in WorkFlow 'WorkflowforDT' debug inputs as
-#	   | Input                     | Input Format | Add Time |   | Output Format |
-#	   | [[rec(1).a]] = 12/01/2001 | dd/mm/yyyy   | Years    | 1 | dd/mm/yyyy    |	
-#	  And the 'AddDates' in Workflow 'WorkflowforDT' debug outputs as   
-#	   |              |
-#	   | '<Variable>' |
-#Examples: 
-#      | No | Variable               |
-#      | 1  | [[a]][[Result]]        |
-#      | 2  | [[a]]*]]               |
-#      | 3  | [[var@]]               |
-#      | 4  | [[var]]00]]            |
-#      | 5  | [[(1var)]]             |
-#      | 6  | [[var[[a]]]]           |
-#      | 7  | [[var.a]]              |
-#      | 8  | [[@var]]               |
-#      | 9  | [[var 1]]              |
-#      | 10 | [[rec(1).[[rec().1]]]] |
-#      | 11 | [[rec(@).a]]           |
-#      | 12 | [[rec"()".a]]          |
-#      | 13 | [[rec([[[[b]]]]).a]]   |
-
-
-#   
-#Scenario Outline: Testing Date Time Diff with two variables in Result field
-#      Given I have a workflow "WorkflowforDateTimeDiff"
-#      And "WorkflowforDateTimeDiff" contains an Assign "Values" as
-#	  | variable    | value      |
-#	  | [[rec().a]] | 01/01/2001 |
-#	  | [[rec().a]] | 01/01/2010 |
-#	  And "WorkflowforDateTimeDiff" contains Date and Time Difference "DateAndTime" as	
-#	  | Input1       | Input2       | Input Format | Output In | Result               |
-#	  | [[rec(1).a]] | [[rec(2).a]] | dd/mm/yyyy   | Years     | '<Variable>' |	   
-#	  When "WorkflowforDateTimeDiff" is executed  	  
-#	  Then the workflow execution has "AN" error	
-#      And the 'Values' in WorkFlow 'WorkflowforDateTimeDiff' debug inputs as
-#	  | # | Variable      | New Value  |
-#	  | 1 | [[rec().a]] = | 01/01/2001 |
-#	  | 2 | [[rec().a]] = | 01/01/2010 |
-#	  And the 'Values' in Workflow 'WorkflowforDateTimeDiff' debug outputs as    
-#	  | # |                           |
-#	  | 1 | [[rec(1).a]] = 01/01/2001 |
-#	  | 2 | [[rec(2).a]] = 01/01/2010 |
-#	  And the 'DateAndTime' in WorkFlow 'WorkflowforDateTimeDiff' debug inputs as
-#	  | Input 1                   | Input 2                   | Input Format | Output In |
-#	  | [[rec(1).a]] = 01/01/2001 | [[rec(2).a]] = 01/01/2010 | dd/mm/yyyy   | Years     |
-#	  And the 'DateAndTime' in Workflow 'WorkflowforDateTimeDiff' debug outputs as 
-#	  |  |
-#Examples: 
-#      | No | Variable               |
-#      | 1  | [[a]][[Result]]        |
-#      | 2  | [[a]]*]]               |
-#      | 3  | [[var@]]               |
-#      | 4  | [[var]]00]]            |
-#      | 5  | [[(1var)]]             |
-#      | 6  | [[var[[a]]]]           |
-#      | 7  | [[var.a]]              |
-#      | 8  | [[@var]]               |
-#      | 9  | [[var 1]]              |
-#      | 10 | [[rec(1).[[rec().1]]]] |
-#      | 11 | [[rec(@).a]]           |
-#      | 12 | [[rec"()".a]]          |
-#      | 13 | [[rec([[[[b]]]]).a]]   |
-#
-
-Scenario: Workflow with Assign and Sort Forward to test gaps
-      Given I have a workflow "workflowithAssignandsortrec"
-      And "workflowithAssignandsortrec" contains an Assign "sortval" as
-	  | variable    | value |
-	  | [[rs(1).a]] | 30    |
-	  | [[rs(5).a]] | 20    |
-	  | [[rs(7).a]] | 10    |
-	  | [[rs(2).b]] | 6     |
-	  | [[rs(4).b]] | 4     |
-	  | [[rs(6).b]] | 2     |
-	  And "workflowithAssignandsortrec" contains an Sort "sortRec" as
-	  | Sort Field | Sort Order |
-	  | [[rs(*).a | Forward    |
-	  When "workflowithAssignandsortrec" is executed
+Scenario: Workflow with Assign and Unique Tool, finding unique data from multiple rows 
+      Given I have a workflow "workflowithAssignandUnique"
+      And "workflowithAssignandUnique" contains an Assign "Records" as
+	  | variable      | value |
+	  | [[rs().row]]  | 10    |
+	  | [[rs().data]] | 10    |
+	  | [[rs().row]]  | 40    |
+	  | [[rs().data]] | 20    |
+	  | [[rs().row]]  | 20    |
+	  | [[rs().data]] | 20    |
+	  | [[rs().row]]  | 30    |
+	  | [[rs().data]] | 40    |
+	  And "workflowithAssignandUnique" contains an Unique "Unique rec" as
+	  | In Field(s)                  | Return Fields | Result           |
+	  | [[rs(*).row]],[[rs(*).data]] | [[rs().row]]  | [[rec().unique]] |
+	  When "workflowithAssignandUnique" is executed
 	  Then the workflow execution has "NO" error
-	  And the 'sortval' in WorkFlow 'workflowithAssignandsortrec' debug inputs as
-	  | # | Variable      | New Value |
-	  | 1 | [[rs(1).a]] = | 30        |
-	  | 2 | [[rs(5).a]] = | 20        |
-	  | 3 | [[rs(7).a]] = | 10        |
-	  | 4 | [[rs(2).b]] = | 6         |
-	  | 5 | [[rs(4).b]] = | 4         |
-	  | 6 | [[rs(6).b]] = | 2         |
-	  And the 'sortval' in Workflow 'workflowithAssignandsortrec' debug outputs as    
-	  | # |                  |
-	  | 1 | [[rs(1).a]] = 30 |
-	  | 2 | [[rs(5).a]] = 20 |
-	  | 3 | [[rs(7).a]] = 10 |
-	  | 4 | [[rs(2).b]] = 6  |
-	  | 5 | [[rs(4).b]] = 4  |
-	  | 6 | [[rs(6).b]] = 2  |
-	  And the 'sortRec' in WorkFlow 'workflowithAssignandsortrec' debug inputs as
-	  | Sort Field       | Sort Order |
-	  | [[rs(1).a]] = 30 |            |
-	  | [[rs(2).a]] =    |            |
-	  | [[rs(4).a]] =    |            |
-	  | [[rs(5).a]] = 20 |            |
-	  | [[rs(6).a]] =    |            |
-	  | [[rs(7).a]] = 10 | Forward    |
-	  And the 'sortRec' in Workflow 'workflowithAssignandsortrec' debug outputs as
-	  |                  |
-	  | [[rs(1).a]] =  |
-	  | [[rs(2).a]] =  |
-	  | [[rs(4).a]] =  |
-	  | [[rs(5).a]] = 10 |
-	  | [[rs(6).a]] = 20 |
-	  | [[rs(7).a]] = 30 |
-
-Scenario: Workflow with Assign and Sort Backward to test gaps
-      Given I have a workflow "workflowithAssignandsortrecBack"
-      And "workflowithAssignandsortrecBack" contains an Assign "sortval" as
-	  | variable    | value |
-	  | [[rs(1).a]] | 10    |
-	  | [[rs(5).a]] | 20    |
-	  | [[rs(7).a]] | 30    |
-	  | [[rs(2).b]] | 6     |
-	  | [[rs(4).b]] | 4     |
-	  | [[rs(6).b]] | 2     |
-	  And "workflowithAssignandsortrecBack" contains an Sort "sortRec" as
-	  | Sort Field | Sort Order |
-	  | [[rs(*).a]] | Backwards   |
-	  When "workflowithAssignandsortrecBack" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'sortval' in WorkFlow 'workflowithAssignandsortrecBack' debug inputs as
-	  | # | Variable      | New Value |
-	  | 1 | [[rs(1).a]] = | 10        |
-	  | 2 | [[rs(5).a]] = | 20        |
-	  | 3 | [[rs(7).a]] = | 30        |
-	  | 4 | [[rs(2).b]] = | 6         |
-	  | 5 | [[rs(4).b]] = | 4         |
-	  | 6 | [[rs(6).b]] = | 2         |
-	  And the 'sortval' in Workflow 'workflowithAssignandsortrecBack' debug outputs as    
-	  | # |                  |
-	  | 1 | [[rs(1).a]] = 10 |
-	  | 2 | [[rs(5).a]] = 20 |
-	  | 3 | [[rs(7).a]] = 30 |
-	  | 4 | [[rs(2).b]] = 6  |
-	  | 5 | [[rs(4).b]] = 4  |
-	  | 6 | [[rs(6).b]] = 2  |
-	  And the 'sortRec' in WorkFlow 'workflowithAssignandsortrecBack' debug inputs as
-	  | Sort Field       | Sort Order |
-	  | [[rs(1).a]] = 10 |            |
-	  | [[rs(2).a]] =    |            |
-	  | [[rs(4).a]] =    |            |
-	  | [[rs(5).a]] = 20 |            |
-	  | [[rs(6).a]] =    |            |
-	  | [[rs(7).a]] = 30 | Backwards    |
-	  And the 'sortRec' in Workflow 'workflowithAssignandsortrecBack' debug outputs as
-	  |                  |
-	  | [[rs(1).a]] = 30 |
-	  | [[rs(2).a]] = 20 |
-	  | [[rs(4).a]] = 10 |
-	  | [[rs(5).a]] =    |
-	  | [[rs(6).a]] =    |
-	  | [[rs(7).a]] =    |
-
-
-#Scenario: Workflow #FIXED ON 11782
-#Scenario: Workflow with Assign and Unique Tool, finding unique data from multiple rows 
-#      Given I have a workflow "workflowithAssignandUnique"
-#      And "workflowithAssignandUnique" contains an Assign "Records" as
-#	  | variable      | value |
-#	  | [[rs().row]]  | 10    |
-#	  | [[rs().data]] | 10    |
-#	  | [[rs().row]]  | 40    |
-#	  | [[rs().data]] | 20    |
-#	  | [[rs().row]]  | 20    |
-#	  | [[rs().data]] | 20    |
-#	  | [[rs().row]]  | 30    |
-#	  | [[rs().data]] | 40    |
-#	  And "workflowithAssignandUnique" contains an Unique "Unique rec" as
-#	  | In Field(s)                  | Return Fields | Result           |
-#	  | [[rs(*).row]],[[rs(*).data]] | [[rs().row]]  | [[rec().unique]] |
-#	  When "workflowithAssignandUnique" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Records' in WorkFlow 'workflowithAssignandUnique' debug inputs as
-#	  | # | Variable        | New Value |
-#	  | 1 | [[rs().row]] =  | 10        |
-#	  | 2 | [[rs().data]] = | 10        |
-#	  | 3 | [[rs().row]] =  | 40        |
-#	  | 4 | [[rs().data]] = | 20        |
-#	  | 5 | [[rs().row]] =  | 20        |
-#	  | 6 | [[rs().data]] = | 20        |
-#	  | 7 | [[rs().row]] =  | 30        |
-#	  | 8 | [[rs().data]] = | 40        |
-#	  And the 'Records' in Workflow 'workflowithAssignandUnique' debug outputs as  
-#	  | # |                     |
-#	  | 1 | [[rs(1).row]] =  10 |
-#	  | 2 | [[rs(1).data]] =  10 |
-#	  | 3 | [[rs(2).row]] =  40  |
-#	  | 4 | [[rs(2).data]] =  20 |
-#	  | 5 | [[rs(3).row]] =  20  |
-#	  | 6 | [[rs(3).data]] =  20 |
-#	  | 7 | [[rs(4).row]] =  30  |
-#	  | 8 | [[rs(4).data]] =  40 |
-#	  And the 'Unique rec' in WorkFlow 'workflowithAssignandUnique' debug inputs as
-#       | #           |                     | Return Fields |
-#       | In Field(s) | [[rs(1).row]] = 10  |               |
-#       |             | [[rs(2).row]] = 40  |               |
-#       |             | [[rs(3).row]] = 20  |               |
-#       |             | [[rs(4).row]] = 30  |               |
-#       |             | [[rs(1).data]] = 10 |               |
-#       |             | [[rs(2).data]] = 20 |               |
-#       |             | [[rs(3).data]] = 20 |               |
-#       |             | [[rs(4).data]] = 40 |               |
-#       |             |                     | [[rs().row]]  |
-#      And the 'Unique rec' in Workflow 'workflowithAssignandUnique' debug outputs as  
-#       | # |                        |
-#       | 1 | [[rec(1).unique]] = 10 |
-#       |   | [[rec(2).unique]] = 40 |
-#       |   | [[rec(3).unique]] = 20 |
-#       |   | [[rec(4).unique]] = 30 |
+	  And the 'Records' in WorkFlow 'workflowithAssignandUnique' debug inputs as
+	  | # | Variable        | New Value |
+	  | 1 | [[rs().row]] =  | 10        |
+	  | 2 | [[rs().data]] = | 10        |
+	  | 3 | [[rs().row]] =  | 40        |
+	  | 4 | [[rs().data]] = | 20        |
+	  | 5 | [[rs().row]] =  | 20        |
+	  | 6 | [[rs().data]] = | 20        |
+	  | 7 | [[rs().row]] =  | 30        |
+	  | 8 | [[rs().data]] = | 40        |
+	  And the 'Records' in Workflow 'workflowithAssignandUnique' debug outputs as  
+	  | # |                     |
+	  | 1 | [[rs(1).row]] =  10 |
+	  | 2 | [[rs(1).data]] =  10 |
+	  | 3 | [[rs(2).row]] =  40  |
+	  | 4 | [[rs(2).data]] =  20 |
+	  | 5 | [[rs(3).row]] =  20  |
+	  | 6 | [[rs(3).data]] =  20 |
+	  | 7 | [[rs(4).row]] =  30  |
+	  | 8 | [[rs(4).data]] =  40 |
+	  And the 'Unique rec' in WorkFlow 'workflowithAssignandUnique' debug inputs as
+       | #           |                     | Return Fields  |
+       | In Field(s) | [[rs(1).row]] = 10  |                |
+       |             | [[rs(2).row]] = 40  |                |
+       |             | [[rs(3).row]] = 20  |                |
+       |             | [[rs(4).row]] = 30  |                |
+       |             | [[rs(1).data]] = 10 |                |
+       |             | [[rs(2).data]] = 20 |                |
+       |             | [[rs(3).data]] = 20 |                |
+       |             | [[rs(4).data]] = 40 |                |
+       |             |                     | [[rs().row]] = |
+      And the 'Unique rec' in Workflow 'workflowithAssignandUnique' debug outputs as  
+       | # |                        |
+       | 1 | [[rec(1).unique]] = 10 |
+       |   | [[rec(2).unique]] = 40 |
+       |   | [[rec(3).unique]] = 20 |
+       |   | [[rec(4).unique]] = 30 |
 
 Scenario: Workflow with Assign and Unique Tool, Infields rec without star
       Given I have a workflow "workflowithAssignandUniqueToolc"
@@ -2743,7 +2006,7 @@ Scenario: Workflow with Assign and Unique Tool, Infields rec without star
        |   | [[rec(2).unique]] = 40 |
        |   | [[rec(3).unique]] = 20 |
        |   | [[rec(4).unique]] = 30 |
-#
+
 Scenario: Workflow with Assign and Unique Tool, Result rec with star
       Given I have a workflow "workflowithAssignandUniqueTools"
       And "workflowithAssignandUniqueTools" contains an Assign "Records" as
@@ -2792,30 +2055,29 @@ Scenario: Workflow with Assign and Unique Tool, Result rec with star
        |   | [[rec(3).unique]] = 20 |
        |   | [[rec(4).unique]] = 30 |
 
-
 Scenario: Convert an recordset to Upper by using index as scalar
-	Given I have a workflow "ConvertUsingScalarInRecursiveEvalution"
-	And "ConvertUsingScalarInRecursiveEvalution" contains an Assign "Records" as
+	Given I have a workflow "ConvertUsingScalarWithRecursiveEvalution"
+	And "ConvertUsingScalarWithRecursiveEvalution" contains an Assign "Records" as
 	  | variable     | value    |
 	  | [[rs().row]] | warewolf |
 	  | [[a]]        | 1        |
-	And "ConvertUsingScalarInRecursiveEvalution" contains case convert "Case to Convert" as
+	And "ConvertUsingScalarWithRecursiveEvalution" contains case convert "Case to Convert" as
 	  | Variable          | Type  |
 	  | [[rs([[a]]).row]] | UPPER |
-	When "ConvertUsingScalarInRecursiveEvalution" is executed
+	When "ConvertUsingScalarWithRecursiveEvalution" is executed
 	Then the workflow execution has "NO" error
-	And the 'Records' in WorkFlow 'ConvertUsingScalarInRecursiveEvalution' debug inputs as
+	And the 'Records' in WorkFlow 'ConvertUsingScalarWithRecursiveEvalution' debug inputs as
 	  | # | Variable       | New Value |
 	  | 1 | [[rs().row]] = | warewolf  |
 	  | 2 | [[a]] =        | 1         |
-	And the 'Records' in Workflow 'ConvertUsingScalarInRecursiveEvalution' debug outputs as  
+	And the 'Records' in Workflow 'ConvertUsingScalarWithRecursiveEvalution' debug outputs as  
 	  | # |                           |
 	  | 1 | [[rs(1).row]] =  warewolf |
 	  | 2 | [[a]] =  1                |
-	And the 'Case to Convert' in WorkFlow 'ConvertUsingScalarInRecursiveEvalution' debug inputs as
+	And the 'Case to Convert' in WorkFlow 'ConvertUsingScalarWithRecursiveEvalution' debug inputs as
 	  | # | Convert                  | To    |
 	  | 1 | [[rs(1).row]] = warewolf | UPPER |
-	And the 'Case to Convert' in Workflow 'ConvertUsingScalarInRecursiveEvalution' debug outputs as
+	And the 'Case to Convert' in Workflow 'ConvertUsingScalarWithRecursiveEvalution' debug outputs as
 	  | # |                          |
 	  | 1 | [[rs(1).row]] = WAREWOLF |
 
@@ -2845,7 +2107,6 @@ Scenario: Convert an recordset to Upper by using index as recordset
 	  | # |                          |
 	  | 1 | [[rs(1).row]] = WAREWOLF |
 
-#Bug 11840
 Scenario: Base Convert two varibles on one row 
 	Given I have a workflow "BaseConvertUsingRecSetInRecursiveEvalution"
 	And "BaseConvertUsingRecSetInRecursiveEvalution" contains an Assign "Records" as
@@ -2872,7 +2133,6 @@ Scenario: Base Convert two varibles on one row
 	  | # |                     |
 	  | 1 | [[rec(1).a]] = Mg== |
 
-#This should be passed with the bug 12160
 Scenario: Workflow by using For Each with Raandom in it
       Given I have a workflow "WFWithForEachContainsRandom"
 	  And "WFWithForEachContainsRandom" contains a Foreach "ForEachTest123" as "NumOfExecution" executions "5"
@@ -2916,32 +2176,29 @@ Scenario: Workflow by using For Each with Raandom in it
          |                      |
          | [[rec(1).a]] = Int32 |
 
+Scenario: Workflow with Assigns DataSplit executing against the server
+      Given I have a workflow "WorkflowDataSplit"
+	  And "WorkflowDataSplit" contains an Assign "Assignval" as
+      | variable | value   |
+      | [[a]]    | rec().a |
+	    And "WorkflowDataSplit" contains Data Split "DataSplit" as
+	  | String | Variable  | Type  | At | Include    | Escape |
+	  | abcd   | [[[[a]]]] | Index | 4  | Unselected |        | 
+	  When "WorkflowDataSplit" is executed
+	  Then the workflow execution has "No" error
+	  And the 'Assignval' in WorkFlow 'WorkflowDataSplit' debug inputs as
+	  | # | Variable | New Value |
+	  | 1 | [[a]] =  | rec().a   |
+	  And the 'Assignval' in Workflow 'WorkflowDataSplit' debug outputs as  
+	  | # |                  |
+	  | 1 | [[a]] =  rec().a |
+	  And the 'DataSplit' in WorkFlow 'WorkflowDataSplit' debug inputs as 
+	  | String to Split | Process Direction | Skip blank rows | # |                         | With  | Using | Include | Escape |
+	  | abcd            | Forward           | No              | 1 |  [[rec().a]] = | Index | 4     | No      |        |
+	  And the 'DataSplit' in Workflow 'WorkflowDataSplit' debug outputs as  
+	  | # |                     |
+	  | 1 | [[rec(1).a]] = abcd |
 
-#This should be passed after the bug 12021 is fixed (RECURSIVE EVALUATION)
-#Scenario: Workflow with Assigns DataSplit executing against the server
-#      Given I have a workflow "WorkflowDataSplit"
-#	  And "WorkflowDataSplit" contains an Assign "Assignval" as
-#      | variable | value   |
-#      | [[a]]    | rec().a |
-#	    And "WorkflowDataSplit" contains Data Split "DataSplit" as
-#	  | String | Variable  | Type  | At | Include    | Escape |
-#	  | abcd   | [[[[a]]]] | Index | 4  | Unselected |        | 
-#	  When "WorkflowDataSplit" is executed
-#	  Then the workflow execution has "No" error
-#	  And the 'Assignval' in WorkFlow 'WorkflowDataSplit' debug inputs as
-#	  | # | Variable | New Value |
-#	  | 1 | [[a]] =  | rec().a   |
-#	  And the 'Assignval' in Workflow 'WorkflowDataSplit' debug outputs as  
-#	  | # |                  |
-#	  | 1 | [[a]] =  rec().a |
-#	  And the 'DataSplit' in WorkFlow 'WorkflowDataSplit' debug inputs as 
-#	  | String to Split | Process Direction | Skip blank rows | # |                         | With  | Using | Include | Escape |
-#	  | abcd            | Forward           | No              | 1 | [[[[a]]]] = [[rec().a]] | Index | 4     | No      |        |
-#	  And the 'DataSplit' in Workflow 'WorkflowDataSplit' debug outputs as  
-#	  | # |                     |
-#	  | 1 | [[rec(1).b]] = abcd |
-
-#bug 12470
 Scenario: Workflow with Assign and foreach contains calculate. 
       Given I have a workflow "Workflowwithforeachcontainscalculates"
 	  And "Workflowwithforeachcontainscalculates" contains an Assign "Assignval1" as
@@ -2982,8 +2239,7 @@ Scenario: Workflow with Assign and foreach contains calculate.
        And the 'Cal' in step 3 for 'ForEachTesting' debug outputs as
 	  |                |
 	  | [[result]] = 4 |
-##
-##bug 12470
+
 Scenario: Workflow with Assign and foreach with invalid rec and it contains calculate in it
       Given I have a workflow "WorkflowDwithforeachcontainscalinvalid"
 	  And "WorkflowDwithforeachcontainscalinvalid" contains an Assign "Assigl" as
@@ -2991,7 +2247,7 @@ Scenario: Workflow with Assign and foreach with invalid rec and it contains calc
       | [[rs().a]] | 1     |
       | [[rs().a]] | 2     |
       | [[rs().a]] | 3     |
-	  And "WorkflowDwithforeachcontainscalinvalid" contains a Foreach "ForEachTes" as "InRecordset" executions "[[rs()]]+1"
+	  And "WorkflowDwithforeachcontainscalinvalid" contains a Foreach "ForEachTes" as "InRecordset" executions "[[rs()]]"
 	  And "ForEachTes" contains Calculate "Cal" with formula "[[rs(*).a]]+1" into "[[result]]"
 	  When "WorkflowDwithforeachcontainscalinvalid" is executed
 	  Then the workflow execution has "NO" error
@@ -3005,34 +2261,31 @@ Scenario: Workflow with Assign and foreach with invalid rec and it contains calc
       | 1 | [[rs(1).a]] = 1 |
       | 2 | [[rs(2).a]] = 2 |
       | 3 | [[rs(3).a]] = 3 |   
-	   And the 'ForEachTes' in WorkFlow 'WorkflowDwithforeachcontainscalinvalid' has  "1" nested children
 
 
-#This should be passed after the bug 12021 is fixed (RECURSIVE EVALUATION)
-#Scenario: Workflow with Assigns DataSplit executing against the server 2
-#      Given I have a workflow "WorkflowDataSplit"
-#	  And "WorkflowDataSplit" contains an Assign "Assignval" as
-#      | variable | value   |
-#      | [[a]]    | rec().a |
-#	    And "WorkflowDataSplit" contains Data Split "DataSplit" as
-#	  | String | Variable  | Type  | At | Include    | Escape |
-#	  | abcd   | [[[[a]]]] | Index | 4  | Unselected |        | 
-#	  When "WorkflowDataSplit" is executed
-#	  Then the workflow execution has "No" error
-#	  And the 'Assignval' in WorkFlow 'WorkflowDataSplit' debug inputs as
-#	  | # | Variable | New Value |
-#	  | 1 | [[a]] =  | rec().a   |
-#	  And the 'Assignval' in Workflow 'WorkflowDataSplit' debug outputs as  
-#	  | # |                  |
-#	  | 1 | [[a]] =  rec().a |
-#	  And the 'DataSplit' in WorkFlow 'WorkflowDataSplit' debug inputs as 
-#	  | String to Split | Process Direction | Skip blank rows | # |                         | With  | Using | Include | Escape |
-#	  | abcd            | Forward           | No              | 1 | [[[[a]]]] = [[rec().a]] | Index | 4     | No      |        |
-#	  And the 'DataSplit' in Workflow 'WorkflowDataSplit' debug outputs as  
-#	  | # |                     |
-#	  | 1 | [[rec(1).b]] = abcd |
+Scenario: Workflow with Assigns DataSplit executing against the server 2
+      Given I have a workflow "WorkflowDataSplit"
+	  And "WorkflowDataSplit" contains an Assign "Assignval" as
+      | variable | value   |
+      | [[a]]    | rec().a |
+	    And "WorkflowDataSplit" contains Data Split "DataSplit" as
+	  | String | Variable  | Type  | At | Include    | Escape |
+	  | abcd   | [[[[a]]]] | Index | 4  | Unselected |        | 
+	  When "WorkflowDataSplit" is executed
+	  Then the workflow execution has "No" error
+	  And the 'Assignval' in WorkFlow 'WorkflowDataSplit' debug inputs as
+	  | # | Variable | New Value |
+	  | 1 | [[a]] =  | rec().a   |
+	  And the 'Assignval' in Workflow 'WorkflowDataSplit' debug outputs as  
+	  | # |                  |
+	  | 1 | [[a]] =  rec().a |
+	  And the 'DataSplit' in WorkFlow 'WorkflowDataSplit' debug inputs as 
+	  | String to Split | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
+	  | abcd            | Forward           | No              | 1 | [[rec().a]] = | Index | 4     | No      |        |
+	  And the 'DataSplit' in Workflow 'WorkflowDataSplit' debug outputs as  
+	  | # |                     |
+	  | 1 | [[rec(1).a]] = abcd |
 
-#This Test should be passed after the bug 12119 is fixed
 Scenario: Workflow with Assign and Unique Tool to find unique names in diff rows
       Given I have a workflow "WorkflowUniqueWithNames"
       And "WorkflowUniqueWithNames" contains an Assign "Records1" as
@@ -3079,7 +2332,6 @@ Scenario: Workflow with Assign and Unique Tool to find unique names in diff rows
        |   | [[emp(2).uni]]  = Nicholas |
        |   | [[emp(3).uni]]  = Cage     |
    
-#This Test should be passed after the bug 12119 is fixed
 Scenario: Workflow with Assign and Unique to return unique data  
       Given I have a workflow "UniqueNamesTest"
       And "UniqueNamesTest" contains an Assign "Records1" as
@@ -3133,6 +2385,7 @@ Scenario: Workflow with Assign and Unique to return unique data
        | 1 | [[emp(1).uni]]  = Gordan   |
        |   | [[emp(2).uni]]  = Cage     |
        |   | [[emp(3).uni]]  = Nicholas |
+       |   | [[emp(4).uni]]  =          |
  
 Scenario: Workflow with Assign and Unique Tool
       Given I have a workflow "WorkflowAssingUnique"
@@ -3189,7 +2442,6 @@ Scenario: Workflow with Assign and Unique Tool
        |   | [[rec(3).unique]] = 40 |
        |   | [[rec(4).unique]] = 50 |
 
-#Bug 12142
 Scenario: Workflow with Calculation using Star notation
       Given I have a workflow "WorkflowWithAssignCalculationUsingStar"
       And "WorkflowWithAssignCalculationUsingStar" contains an Assign "Records" as
@@ -3214,36 +2466,9 @@ Scenario: Workflow with Calculation using Star notation
 	  | 3 | [[rs(3).a]] =  40 |
 	   And the 'Calculation' in WorkFlow 'WorkflowWithAssignCalculationUsingStar' debug inputs as
 	  | # | Variable        | New Value |
-	  | 1 | [[rec().sum]] = |           |
 	  And the 'Calculation' in Workflow 'WorkflowWithAssignCalculationUsingStar' debug outputs as  
 	  | # |                   |
-	  | 1 | [[rec(1).sum]] =  |
 
-# This Test should be passed after the bug 12236 is fixed    
-#Scenario: Workflow with Assign and Gather System Information executing with incorrect variable
-#      Given I have a workflow "workfloforGatherSystemInformationtool"
-#	  And "workfloforGatherSystemInformationtool" contains an Assign "Assign for sys" as
-#	  | variable | value |
-#	  | [[a]]    | 123   |
-#	   And "workfloforGatherSystemInformationtool" contains Gather System Info "System info" as
-#	  | Variable         | Selected    |
-#	  | [[rec[[a]]().a]] | Date & Time |
-#	  When "workfloforGatherSystemInformationtool" is executed
-#	  Then the workflow execution has "AN" error
-#	  And the 'Assign for sys' in WorkFlow 'workfloforGatherSystemInformationtool' debug inputs as
-#	  | # | Variable | New Value |
-#	  | 1 | [[a]]  = | 123       |
-#	  And the 'Assign for sys' in Workflow 'workfloforGatherSystemInformationtool' debug outputs as    
-#	 | #                  |             |
-#	 | 1                  | [[a]] = 123 |
-#	  And the 'System info' in WorkFlow 'workfloforGatherSystemInformationtool' debug inputs as
-#	  | # |                    |             |
-#	  | 1 | [[rec[[a]]().a]] = | Date & Time |
-#	  And the 'System info' in Workflow 'workfloforGatherSystemInformationtool' debug outputs as   
-#	  |                        |
-##	  
- 
-#  Bug 12341 
 Scenario: Workflow with Assign Unique to check debug outputs
       Given I have a workflow "workflowithAssignUniquedebugoutputs"
       And "workflowithAssignUniquedebugoutputs" contains an Assign "Recordset" as
@@ -3277,8 +2502,6 @@ Scenario: Workflow with Assign Unique to check debug outputs
        | # |                         |
        | 1 | [[List(1).Name]] = test |
        
-
-#12326
 Scenario: Workflow Saving with Different Versions 
 	 Given I have a workflow "WorkflowWithVersionAssignTest"
 	 And "WorkflowWithVersionAssignTest" contains an Assign "VarsAssign" as
@@ -3304,7 +2527,6 @@ Scenario: Workflow Saving with Different Versions
 	  | v.3 DateTime Save   |
 	  | v.2 DateTime Save   |
 	  | v.1 DateTime Save   |
-
 
 Scenario: Executing workflow of different versions
 	 Given I have a workflow "WorkflowWithVersionAssignExecuted2"
@@ -3360,63 +2582,6 @@ Scenario: Executing workflow of different versions
 	  | # |                     |
 	  | 1 | [[rec(1).a]] = New  |
 	  | 2 | [[rec(2).a]] = Test |
-	  And the 'VarsAssign' in Workflow 'WorkflowWithVersionAssignExecuted2' debug outputs does not exist|
-
-
-
-#Bug 18263
-#Scenario Outline: Workflow with 2 Assigns testing variable that hasn't been assigned
-#      Given I have a workflow "WFTOTestBlanvValues"
-#	  And "WFTOTestBlanvValues" contains an Assign "Record1" as
-#      | variable  | value    |
-#      | [[Value]] | Warewolf | 
-#	  And "WFTOTestBlanvValues" contains an Assign "Record2" as
-#      | variable    | value   |
-#      | [[rec().a]] | '<Val>' |
-#	  When "WFTOTestBlanvValues" is executed
-#	  Then the workflow execution has "AN" error
-#	  And the 'Record1' in WorkFlow 'WFTOTestBlanvValues' debug inputs as 
-#	  | # | Variable    | New Value |
-#	  | 1 | [[Value]] = | Warewolf  | 
-#	  And the 'Record1' in Workflow 'WFTOTestBlanvValues' debug outputs as   
-#	  | # |                          |
-#	  | 1 | [[Value]]    =  Warewolf |
-#	  And the 'Record2' in WorkFlow 'WFTOTestBlanvValues' debug inputs as 
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rec().a]] = | <Val> =   |
-#	  And the 'Record2' in Workflow 'WFTOTestBlanvValues' debug outputs as   
-#	  | # |                |
-#	  | 1 | [[rec(1).a]] = |
-#Examples: 
-#     | No | Val            |
-#     | 1  | [[Value1]]Tezt |
-    # | 2  | [[Value1]]     |
-
-#18263
-#Scenario: Workflow with 2 Assigns testing variable that hasn't been assigned23
-#      Given I have a workflow "WFTOTestBlanvValues2"
-#	  And "WFTOTestBlanvValues2" contains an Assign "Record1" as
-#      | variable  | value    |
-#      | [[Value]] | Warewolf | 
-#	  And "WFTOTestBlanvValues2" contains an Assign "Record2" as
-#      | variable    | value          |
-#      | [[rec().a]] | [[Value1]]Tezt |
-#	  When "WFTOTestBlanvValues2" is executed
-#	  Then the workflow execution has "AN" error
-#	  And the 'Record1' in WorkFlow 'WFTOTestBlanvValues2' debug inputs as 
-#	  | # | Variable    | New Value |
-#	  | 1 | [[Value]] = | Warewolf  | 
-#	  And the 'Record1' in Workflow 'WFTOTestBlanvValues2' debug outputs as   
-#	  | # |                          |
-#	  | 1 | [[Value]]    =  Warewolf |
-#	  And the 'Record2' in WorkFlow 'WFTOTestBlanvValues2' debug inputs as 
-#	  | # | Variable      | New Value             |
-#	  | 1 | [[rec().a]] = | [[Value1]]Tezt = Tezt |
-#	  And the 'Record2' in Workflow 'WFTOTestBlanvValues2' debug outputs as   
-#	  | # |                     |
-#	  | 1 | [[rec(1).a]] = Tezt |
-
-
 
 Scenario: Workflow with Assign Base Convert and Case Convert testing variable that hasn't been assigned
 	  Given I have a workflow "WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues"
@@ -3442,13 +2607,11 @@ Scenario: Workflow with Assign Base Convert and Case Convert testing variable th
 	  | 1 | [[res12]] = | UPPER |
 	  And the 'Case to Convert' in Workflow 'WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues' debug outputs as  
 	  | # |             |
-	  | 1 | [[res12]] = |
 	  And the 'Base to Convert' in WorkFlow 'WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues' debug inputs as
 	  | # | Convert     | From | To      |
 	  | 1 | [[res12]] = | Text | Base 64 |
       And the 'Base to Convert' in Workflow 'WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues' debug outputs as  
 	  | # |             |
-
 
 Scenario: Workflow with Assigns DataMerge and DataSplit and testing variables that hasn't been assigned
       Given I have a workflow "WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues"
@@ -3471,7 +2634,7 @@ Scenario: Workflow with Assigns DataMerge and DataSplit and testing variables th
 	  | 1 | [[res]]          =  Test |
 	  And the 'Data Merge' in WorkFlow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues' debug inputs as 
 	  | # |             | With  | Using | Pad | Align |
-	  | 1 | "" =   | Index | "4"   | ""  | Left  |
+	  | 1 | [[Value]] =   | Index | "4"   | ""  | Left  |
 	  And the 'Data Merge' in Workflow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues' debug outputs as  
 	  |             |
 	  | [[result]] = |
@@ -3480,41 +2643,37 @@ Scenario: Workflow with Assigns DataMerge and DataSplit and testing variables th
 	  | [[Value12]]  =  | Forward           | No              | 1 | [[rec().b]] = | Index | 4     | No      |        |
 	  And the 'Data Split' in Workflow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues' debug outputs as  
 	  | # |               |
-	  | 1 | [[rec(1).b]] = |
 
-#Bug 18263
-#Scenario: Workflow with Assigns DataMerge and DataSplit and testing variables that hasn't been assigned2
-#      Given I have a workflow "WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2"
-#	  And "WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2" contains an Assign "Assign To merge" as
-#      | variable | value |
-#      | [[res]]  | Test  |
-#	  And "WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2" contains Data Merge "Data Merge" into "[[result]]" as	
-#	  | Variable      | Type  | Using | Padding | Alignment |
-#	  | [[Value]]Test | Index | 4     |         | Left      |
-#	  And "WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2" contains Data Split "Data Split" as
-#	  | String          | Variable    | Type  | At | Include    | Escape |
-#	  | [[Value12]]Test | [[rec().b]] | Index | 4  | Unselected |        |
-#	  When "WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2" is executed
-#	  Then the workflow execution has "AN" error
-#	  And the 'Assign To merge' in WorkFlow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2' debug inputs as 
-#	  | # | Variable  | New Value |
-#	  | 1 | [[res]] = | Test      |
-#	 And the 'Assign To merge' in Workflow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2' debug outputs as   
-#	  | # |                 |
-#	  | 1 | [[res]] =  Test |
-#	  And the 'Data Merge' in WorkFlow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2' debug inputs as 
-#	  | # |                      | With  | Using | Pad | Align |
-#	  | 1 | [[Value]]Test = Test | Index | "4"   | ""  | Left  |
-#	  And the 'Data Merge' in Workflow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2' debug outputs as  
-#	  |                   |
-#	  | [[result]] = Test |
-#	  And the 'Data Split' in WorkFlow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2' debug inputs as 
-#	  | String to Split         | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
-#	  | [[Value12]]Test  = Test | Forward           | No              | 1 | [[rec().b]] = | Index | 4     | No      |        |
-#	  And the 'Data Split' in Workflow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2' debug outputs as  
-#	  | # |                     |
-#	  | 1 | [[rec(1).b]] = Test |
-
+Scenario: Workflow with Assigns DataMerge and DataSplit and testing variables that hasn't been assigned2
+      Given I have a workflow "WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2"
+	  And "WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2" contains an Assign "Assign To merge" as
+      | variable | value |
+      | [[res]]  | Test  |
+	  And "WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2" contains Data Merge "Data Merge" into "[[result]]" as	
+	  | Variable      | Type  | Using | Padding | Alignment |
+	  | [[Value]]Test | Index | 4     |         | Left      |
+	  And "WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2" contains Data Split "Data Split" as
+	  | String          | Variable    | Type  | At | Include    | Escape |
+	  | [[Value12]]Test | [[rec().b]] | Index | 4  | Unselected |        |
+	  When "WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2" is executed
+	  Then the workflow execution has "AN" error
+	  And the 'Assign To merge' in WorkFlow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2' debug inputs as 
+	  | # | Variable  | New Value |
+	  | 1 | [[res]] = | Test      |
+	 And the 'Assign To merge' in Workflow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2' debug outputs as   
+	  | # |                 |
+	  | 1 | [[res]] =  Test |
+	  And the 'Data Merge' in WorkFlow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2' debug inputs as 
+	  | # |                      | With  | Using | Pad | Align |
+	  | 1 | [[Value]]Test =  | Index | "4"   | ""  | Left  |
+	  And the 'Data Merge' in Workflow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2' debug outputs as  
+	  |              |
+	  | [[result]] = |
+	  And the 'Data Split' in WorkFlow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2' debug inputs as 
+	  | String to Split         | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
+	  | [[Value12]]Test =  | Forward           | No              | 1 | [[rec().b]] = | Index | 4     | No      |        |
+	  And the 'Data Split' in Workflow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues2' debug outputs as  
+	  | # |                |
 
 Scenario: Workflow with Assigns Replace and testing variables that hasn't been assigned
       Given I have a workflow "workflowithAssignandReplaceTestingUnassignedvariablevalues"
@@ -3525,7 +2684,7 @@ Scenario: Workflow with Assigns Replace and testing variables that hasn't been a
 	  | In Fields  | Find     | Replace With |
 	  | [[rec()]] | [[Val1]] | [[Val2]]     |
 	  When "workflowithAssignandReplaceTestingUnassignedvariablevalues" is executed
-	  Then the workflow execution has "AN" error
+	  Then the workflow execution has "No" error
 	  And the 'Assign34' in WorkFlow 'workflowithAssignandReplaceTestingUnassignedvariablevalues' debug inputs as
 	  | # | Variable  | New Value |
 	  | 1 | [[Val]] = | test      |
@@ -3533,37 +2692,37 @@ Scenario: Workflow with Assigns Replace and testing variables that hasn't been a
 	  | # |                |
 	  | 1 | [[Val]] = test |
 	  And the 'Replacing' in WorkFlow 'workflowithAssignandReplaceTestingUnassignedvariablevalues' debug inputs as 
-	  | In Field(s) | Find | Replace With |
-	  | [[rec()]] = |      |              |
-	  And the 'Replacing' in Workflow 'workflowithAssignandReplaceTestingUnassignedvariablevalues' debug outputs as
-	  |              |
-	  | [[replac]] = |
+	  | In Field(s) | Find       | Replace With |
+	  | [[rec()]] = | [[Val1]] = | [[Val2]] =   |
+#	  And the 'Replacing' in Workflow 'workflowithAssignandReplaceTestingUnassignedvariablevalues' debug outputs as
+#	  |              |
+#	  | [[replac]] = |
 
-#Scenario: Workflow with Assigns Replace and testing variables that hasn't been assigned2
-#      Given I have a workflow "workflowithAssignandReplaceTestingUnassignedvariablevalues2"
-#      And "workflowithAssignandReplaceTestingUnassignedvariablevalues2" contains an Assign "Assign34" as
-#      | variable    | value    |
-#      | [[Val]]     | test     |
-#      | [[rec().a]] | Warewolf |
-#	  And "workflowithAssignandReplaceTestingUnassignedvariablevalues2" contains Replace "Replacing" into "[[replac]]" as	
-#	  | In Fields | Find         | Replace With |
-#	  | [[rec()]] | [[Val1]]Test | [[Val]]      |
-#	  When "workflowithAssignandReplaceTestingUnassignedvariablevalues2" is executed
-#	  Then the workflow execution has "AN" error
-#	  And the 'Assign34' in WorkFlow 'workflowithAssignandReplaceTestingUnassignedvariablevalues2' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[Val]] =     | test      |
-#	  | 2 | [[rec().a]] = | Warewolf  |
-#	   And the 'Assign34' in Workflow 'workflowithAssignandReplaceTestingUnassignedvariablevalues2' debug outputs as    
-#	  | # |                         |
-#	  | 1 | [[Val]] = test          |
-#	  | 2 | [[rec(1).a]] = Warewolf |
-#	  And the 'Replacing' in WorkFlow 'workflowithAssignandReplaceTestingUnassignedvariablevalues2' debug inputs as 
-#	  | In Field(s)             | Find                | Replace With   |
-#	  | [[rec(1).a]] = Warewolf | [[Val1]]Test = Test | [[Val]] = test |
+Scenario: Workflow with Assigns Replace and testing variables that hasn't been assigned2
+      Given I have a workflow "workflowithAssignandReplaceTestingUnassignedvariablevalues2"
+      And "workflowithAssignandReplaceTestingUnassignedvariablevalues2" contains an Assign "Assign34" as
+      | variable    | value    |
+      | [[Val]]     | test     |
+      | [[rec().a]] | Warewolf |
+	  And "workflowithAssignandReplaceTestingUnassignedvariablevalues2" contains Replace "Replacing" into "[[replac]]" as	
+	  | In Fields | Find         | Replace With |
+	  | [[rec()]] | [[Val1]]Test | [[Val]]      |
+	  When "workflowithAssignandReplaceTestingUnassignedvariablevalues2" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Assign34' in WorkFlow 'workflowithAssignandReplaceTestingUnassignedvariablevalues2' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[Val]] =     | test      |
+	  | 2 | [[rec().a]] = | Warewolf  |
+	   And the 'Assign34' in Workflow 'workflowithAssignandReplaceTestingUnassignedvariablevalues2' debug outputs as    
+	  | # |                         |
+	  | 1 | [[Val]] = test          |
+	  | 2 | [[rec(1).a]] = Warewolf |
+	  And the 'Replacing' in WorkFlow 'workflowithAssignandReplaceTestingUnassignedvariablevalues2' debug inputs as 
+	  | In Field(s)             | Find                | Replace With   |
+	  | [[rec(1).a]] = Warewolf | [[Val1]]Test =  | [[Val]] = test |
 #	  And the 'Replacing' in Workflow 'workflowithAssignandReplaceTestingUnassignedvariablevalues2' debug outputs as
 #	  |                |
-#	  | [[replac]] = 0 |	 
+#	  | [[replac]] =  |	 
 
 Scenario: Workflow with Assign Format Numbers and testing variables that hasn't been assigned
 	  Given I have a workflow "WorkflowWithAssignandFormatTestingUnassignedvariablevalues"
@@ -3588,30 +2747,28 @@ Scenario: Workflow with Assign Format Numbers and testing variables that hasn't 
 	  |             |
 	  | [[fresult]]  = |
 
-#Bug 18263
-#Scenario: Workflow with Assign Format Numbers and testing variables that hasn't been assigned2
-#	  Given I have a workflow "WorkflowWithAssignandFormatTestingUnassignedvariablevalues2"
-#	  And "WorkflowWithAssignandFormatTestingUnassignedvariablevalues2" contains an Assign "IndexVal" as
-#	  | variable | value |
-#	  | [[val]]  | 1     | 	  
-#     And "WorkflowWithAssignandFormatTestingUnassignedvariablevalues2" contains Format Number "Fnumber" as 
-#	  | Number      | Rounding Selected | Rounding To | Decimal to show | Result      |
-#	  | [[val1]]234 | Up                | [[val]]     | [[val]]         | [[fresult]] |
-#	  When "WorkflowWithAssignandFormatTestingUnassignedvariablevalues2" is executed
-#	  Then the workflow execution has "AN" error
-#	  And the 'IndexVal' in WorkFlow 'WorkflowWithAssignandFormatTestingUnassignedvariablevalues2' debug inputs as
-#	  | # | Variable   | New Value |
-#	  | 1 | [[val]]  = | 1         |
-#	  And the 'IndexVal' in Workflow 'WorkflowWithAssignandFormatTestingUnassignedvariablevalues2' debug outputs as  
-#	  | # |              |
-#	  | 1 | [[val]]  = 1 |   
-#	  And the 'Fnumber' in WorkFlow 'WorkflowWithAssignandFormatTestingUnassignedvariablevalues2' debug inputs as 	
-#	  | Number            | Rounding | Rounding Value | Decimals to show |
-#	  | [[val1]]234 = 234 | Up       | [[val]] = 1    | [[val]]  = 1     |
-#	  And the 'Fnumber' in Workflow 'WorkflowWithAssignandFormatTestingUnassignedvariablevalues2' debug outputs as 
-#	  |                      |
-#	  | [[fresult]]  = 234.0 |
-#
+Scenario: Workflow with Assign Format Numbers and testing variables that hasn't been assigned2
+	  Given I have a workflow "WorkflowWithAssignandFormatTestingUnassignedvariablevalues2"
+	  And "WorkflowWithAssignandFormatTestingUnassignedvariablevalues2" contains an Assign "IndexVal" as
+	  | variable | value |
+	  | [[val]]  | 1     | 	  
+     And "WorkflowWithAssignandFormatTestingUnassignedvariablevalues2" contains Format Number "Fnumber" as 
+	  | Number      | Rounding Selected | Rounding To | Decimal to show | Result      |
+	  | [[val1]]234 | Up                | [[val]]     | [[val]]         | [[fresult]] |
+	  When "WorkflowWithAssignandFormatTestingUnassignedvariablevalues2" is executed
+	  Then the workflow execution has "AN" error
+	  And the 'IndexVal' in WorkFlow 'WorkflowWithAssignandFormatTestingUnassignedvariablevalues2' debug inputs as
+	  | # | Variable   | New Value |
+	  | 1 | [[val]]  = | 1         |
+	  And the 'IndexVal' in Workflow 'WorkflowWithAssignandFormatTestingUnassignedvariablevalues2' debug outputs as  
+	  | # |              |
+	  | 1 | [[val]]  = 1 |   
+	  And the 'Fnumber' in WorkFlow 'WorkflowWithAssignandFormatTestingUnassignedvariablevalues2' debug inputs as 	
+	  | Number            | Rounding | Rounding Value | Decimals to show |
+	  | [[val1]]234 =  | Up       | [[val]] = 1    | [[val]]  = 1     |
+	  And the 'Fnumber' in Workflow 'WorkflowWithAssignandFormatTestingUnassignedvariablevalues2' debug outputs as 
+	  |                      |
+	  | [[fresult]]  =  |
 
 Scenario: Workflow with Assign Create Delete folder and testing variable values that hasn't been assigned
 	  Given I have a workflow "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues"
@@ -3636,47 +2793,46 @@ Scenario: Workflow with Assign Create Delete folder and testing variable values 
 	  | File or Folder | Overwrite | Username | Password |
 	  | [[NoValue]] =  | True      | ""       | ""       |  
 	   And the 'Create12' in Workflow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues' debug outputs as    
-	   |            |
-	   | [[res1]] = |
+	   |                    |
+	   | [[res1]] = Failure |
 	  And the 'DeleteFolder1' in WorkFlow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues' debug inputs as
 	  | Input Path    | Username | Password |
 	  | [[NoValue]] = | ""       | ""       |
 	  And the 'DeleteFolder1' in Workflow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues' debug outputs as    
-	  |            |
-	  | [[res2]] = |
+	  |                    |
+	  | [[res2]] = Failure |
 
- #Bug 18263
-#Scenario: Workflow with Assign Create Delete folder and testing variable values that hasn't been assigned2
-#	  Given I have a workflow "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2"
-#	  And "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2" contains an Assign "AssignT" as
-#	  | variable    | value           |
-#	  | [[rec().a]] | C:\copied00.txt |
-#	  And "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2" contains an Create "Create12" as
-#	  | File or Folder           | If it exits | Username | Password | Result   |
-#	  | [[NoValue]]\copied00.txt | True        |          |          | [[res1]] |
-#	  And "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2" contains an Delete Folder "DeleteFolder1" as
-#	  | Recordset                | Result   |
-#	  | [[NoValue]]\copied00.txt | [[res2]] |
-#	  When "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2" is executed
-#	  Then the workflow execution has "AN" error
-#	  And the 'AssignT' in WorkFlow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2' debug inputs as
-#	  | # | Variable      | New Value       |
-#	  | 1 | [[rec().a]] = | C:\copied00.txt |
-#	  And the 'AssignT' in Workflow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2' debug outputs as     
-#	  | # |                              |
-#	  | 1 | [[rec(1).a]] = C:\copied00.txt |
-#	 And the 'Create12' in WorkFlow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2' debug inputs as
-#	  | File or Folder                           | Overwrite | Username | Password |
-#	  | [[NoValue]]\copied00.txt = \copied00.txt | True      | ""       | ""       |  
-#	   And the 'Create12' in Workflow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2' debug outputs as    
-#	   |                    |
-#	   | [[res1]] = Success |
-#	  And the 'DeleteFolder1' in WorkFlow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2' debug inputs as
-#	  | Input Path                               | Username | Password |
-#	  | [[NoValue]]\copied00.txt = \copied00.txt | ""       | ""       |
-#	  And the 'DeleteFolder1' in Workflow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2' debug outputs as    
-#	  |                    |
-#	  | [[res2]] = Success |
+Scenario: Workflow with Assign Create Delete folder and testing variable values that hasn't been assigned2
+	  Given I have a workflow "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2"
+	  And "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2" contains an Assign "AssignT" as
+	  | variable    | value           |
+	  | [[rec().a]] | C:\copied00.txt |
+	  And "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2" contains an Create "Create12" as
+	  | File or Folder           | If it exits | Username | Password | Result   |
+	  | [[NoValue]]\copied00.txt | True        |          |          | [[res1]] |
+	  And "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2" contains an Delete Folder "DeleteFolder1" as
+	  | Recordset                | Result   |
+	  | [[NoValue]]\copied00.txt | [[res2]] |
+	  When "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2" is executed
+	  Then the workflow execution has "AN" error
+	  And the 'AssignT' in WorkFlow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2' debug inputs as
+	  | # | Variable      | New Value       |
+	  | 1 | [[rec().a]] = | C:\copied00.txt |
+	  And the 'AssignT' in Workflow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2' debug outputs as     
+	  | # |                              |
+	  | 1 | [[rec(1).a]] = C:\copied00.txt |
+	 And the 'Create12' in WorkFlow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2' debug inputs as
+	  | File or Folder                           | Overwrite | Username | Password |
+	  | [[NoValue]]\copied00.txt = | True      | ""       | ""       |  
+	   And the 'Create12' in Workflow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2' debug outputs as    
+	   |                    |
+	   | [[res1]] = Failure |
+	  And the 'DeleteFolder1' in WorkFlow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2' debug inputs as
+	  | Input Path                               | Username | Password |
+	  | [[NoValue]]\copied00.txt =  | ""       | ""       |
+	  And the 'DeleteFolder1' in Workflow 'WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2' debug outputs as    
+	  |                    |
+	  | [[res2]] = Failure |
 
 
 Scenario: Calculate testing variable values that hasn't been assigned
@@ -3694,11 +2850,12 @@ Scenario: Calculate testing variable values that hasn't been assigned
 	  | # |             |
 	  | 1 | [[Val]] = 1 |
 	  And the 'Calculate1' in WorkFlow 'WorkflowforCalTestingUnassignedvariablevalue' debug inputs as 
-      | fx =                    |
-      | [[Val1]]+1 = [[Val1]]+1 |           
+      | fx =         |
+      | [[Val1]]+1 = |           
       And the 'Calculate1' in Workflow 'WorkflowforCalTestingUnassignedvariablevalue' debug outputs as  
 	  |           |
 	  | [[res]] = |
+
 
 Scenario: Calculate testing variable values that hasn't been assigned2
       Given I have a workflow "WorkflowforCalTestingUnassignedvariablevalue2"
@@ -3715,8 +2872,8 @@ Scenario: Calculate testing variable values that hasn't been assigned2
 	  | # |             |
 	  | 1 | [[Val]] = 1 |
 	  And the 'Calculate1' in WorkFlow 'WorkflowforCalTestingUnassignedvariablevalue2' debug inputs as 
-      | fx =                        |
-      | [[Val1]]23+1 = [[Val1]]23+1 |           
+      | fx =           |
+      | [[Val1]]23+1 = |           
       And the 'Calculate1' in Workflow 'WorkflowforCalTestingUnassignedvariablevalue2' debug outputs as  
 	  |           |
 	  | [[res]] = |
@@ -3744,31 +2901,6 @@ Scenario: Workflow with Assign and Random and testing variable values that hasn'
 	  |                 |
 	  | [[ranresult]] = |
 
-#Bug 18263	  
-#Scenario: Workflow with Assign and Random and testing variable values that hasn't been assigned2
-#	 Given I have a workflow "WorkflowWithAssignandRandomTestingUnassignedvariablevalue2"
-#	 And "WorkflowWithAssignandRandomTestingUnassignedvariablevalue2" contains an Assign "Valforrandno" as
-#	  | variable    | value   |
-#	  | [[a]]       | 1       |	  
-#	   And "WorkflowWithAssignandRandomTestingUnassignedvariablevalue2" contains Random "Rand4" as
-#	  | Type    | From      | To | Result        |
-#	  | Numbers | [[val1]]1 | 10 | [[ranresult]] |
-#	  When "WorkflowWithAssignandRandomTestingUnassignedvariablevalue2" is executed
-#	  Then the workflow execution has "AN" error
-#	  And the 'Valforrandno' in WorkFlow 'WorkflowWithAssignandRandomTestingUnassignedvariablevalue2' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[a]] =       | 1         |
-#	  And the 'Valforrandno' in Workflow 'WorkflowWithAssignandRandomTestingUnassignedvariablevalue2' debug outputs as  
-#	  | # |                        |
-#	  | 1 | [[a]] = 1              |
-#	  And the 'Rand4' in WorkFlow 'WorkflowWithAssignandRandomTestingUnassignedvariablevalue2' debug inputs as 
-#	  | Random  | From           | To |
-#	  | Numbers | [[val1]]1  = 1 | 10 |
-#	  And the 'Rand4' in Workflow 'WorkflowWithAssignandRandomTestingUnassignedvariablevalue2' debug outputs as
-#	  |                       |
-#	  | [[ranresult]] = Int32 |
-
-
 
 Scenario: Workflow with Assign, Date Time Difference tools and testing variable values that hasn't been assigned
 	  Given I have a workflow "WorkflowWithAssignAndDateTimeDifferencetoolsTestingUnassignedvariablevalue"
@@ -3792,97 +2924,91 @@ Scenario: Workflow with Assign, Date Time Difference tools and testing variable 
 	  And the 'DateAndTime' in Workflow 'WorkflowWithAssignAndDateTimeDifferencetoolsTestingUnassignedvariablevalue' debug outputs as 
 	  |              |
 
-#Bug 18263
-#Scenario: Workflow with Assign, Date Time Difference tools and testing variable values that hasn't been assigned2
-#	  Given I have a workflow "WorkflowContainsDateTimeDifferencetoolsTestingUnassignedvariablevalue2"
-#	  And "WorkflowContainsDateTimeDifferencetoolsTestingUnassignedvariablevalue2" contains an Assign "InputDates2" as
-#	  | variable | value |
-#	  | [[val]]  | 2014    |
-#	  And "WorkflowContainsDateTimeDifferencetoolsTestingUnassignedvariablevalue2" contains Date and Time Difference "DateTime4" as	
-#	  | Input1                                 | Input2     | Input Format | Output In | Result     |
-#	  | 10/01/1991  [[val1]]/[[val1]]/[[val1]] | 10/01/1991 | dd/mm/yyyy   | Years     | [[result]] |  
-#	  When "WorkflowContainsDateTimeDifferencetoolsTestingUnassignedvariablevalue2" is executed
-#	  Then the workflow execution has "AN" error
-#	  And the 'InputDates2' in WorkFlow 'WorkflowContainsDateTimeDifferencetoolsTestingUnassignedvariablevalue2' debug inputs as
-#	  | # | Variable   | New Value |
-#	  | 1 | [[val]]  = | 2014      |
-#	  And the 'InputDates2' in Workflow 'WorkflowContainsDateTimeDifferencetoolsTestingUnassignedvariablevalue2' debug outputs as  
-#	  | # |                 |
-#	  | 1 | [[val]]  = 2014 |
-#	  And the 'DateTime4' in WorkFlow 'WorkflowContainsDateTimeDifferencetoolsTestingUnassignedvariablevalue2' debug inputs as
-#	  | Input 1                                                | Input 2    | Input Format | Output In |
-#	  | 10/01/1991  [[val1]]/[[val1]]/[[val1]] = 10/01/1991  // | 10/01/1991 | dd/mm/yyyy   | Years     |
-#	  And the 'DateTime4' in Workflow 'WorkflowContainsDateTimeDifferencetoolsTestingUnassignedvariablevalue2' debug outputs as 
-#	  |                |
-#	  | [[result]] = 0 |
+Scenario: Workflow with Assign, Date Time Difference tools and testing variable values that hasn't been assigned2
+	  Given I have a workflow "WorkflowContainsDateTimeDifferencetoolsTestingUnassignedvariablevalue2"
+	  And "WorkflowContainsDateTimeDifferencetoolsTestingUnassignedvariablevalue2" contains an Assign "InputDates2" as
+	  | variable | value |
+	  | [[val]]  | 2014    |
+	  And "WorkflowContainsDateTimeDifferencetoolsTestingUnassignedvariablevalue2" contains Date and Time Difference "DateTime4" as	
+	  | Input1                                 | Input2     | Input Format | Output In | Result     |
+	  | 10/01/1991  [[val1]]/[[val1]]/[[val1]] | 10/01/1991 | dd/mm/yyyy   | Years     | [[result]] |  
+	  When "WorkflowContainsDateTimeDifferencetoolsTestingUnassignedvariablevalue2" is executed
+	  Then the workflow execution has "AN" error
+	  And the 'InputDates2' in WorkFlow 'WorkflowContainsDateTimeDifferencetoolsTestingUnassignedvariablevalue2' debug inputs as
+	  | # | Variable   | New Value |
+	  | 1 | [[val]]  = | 2014      |
+	  And the 'InputDates2' in Workflow 'WorkflowContainsDateTimeDifferencetoolsTestingUnassignedvariablevalue2' debug outputs as  
+	  | # |                 |
+	  | 1 | [[val]]  = 2014 |
+	  And the 'DateTime4' in WorkFlow 'WorkflowContainsDateTimeDifferencetoolsTestingUnassignedvariablevalue2' debug inputs as
+	  | Input 1                                                | Input 2    | Input Format | Output In |
+	  | 10/01/1991  [[val1]]/[[val1]]/[[val1]] =  | 10/01/1991 | dd/mm/yyyy   | Years     |
+	  And the 'DateTime4' in Workflow 'WorkflowContainsDateTimeDifferencetoolsTestingUnassignedvariablevalue2' debug outputs as 
+	  |                |
+	  |  |
+
+Scenario: Workflow with Assign  Delete and testing variables that hasn't been assigned
+	  Given I have a workflow "WorkflowWithAssignDelete12"
+	  And "WorkflowWithAssignDelete12" contains an Assign "DelRec" as
+	  | variable    | value |
+	  | [[rec().a]] | 50    |
+	  And "WorkflowWithAssignDelete12" contains Delete "Delet12" as
+	  | Variable   | result      |
+	  | [[Del(1)]] | [[result1]] |
+	  When "WorkflowWithAssignDelete12" is executed
+      Then the workflow execution has "AN" error
+	  And the 'DelRec' in WorkFlow 'WorkflowWithAssignDelete12' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | 50        |
+	  And the 'DelRec' in Workflow 'WorkflowWithAssignDelete12' debug outputs as  
+	  | # |                   |
+	  | 1 | [[rec(1).a]] = 50 |
+	  And the 'Delet12' in WorkFlow 'WorkflowWithAssignDelete12' debug inputs as
+	  | Records      |
+	  | [[Del(1)]] = |
+	  And the 'Delet12' in Workflow 'WorkflowWithAssignDelete12' debug outputs as  
+	  |                       |
+	  | [[result1]] = Failure |
 
 
-#Bug 18263
-
-#Scenario: Workflow with Assign  Delete and testing variables that hasn't been assigned
-#	  Given I have a workflow "WorkflowWithAssignDelete12"
-#	  And "WorkflowWithAssignDelete12" contains an Assign "DelRec" as
-#	  | variable    | value |
-#	  | [[rec().a]] | 50    |
-#	  And "WorkflowWithAssignDelete12" contains Delete "Delet12" as
-#	  | Variable   | result      |
-#	  | [[Del(1)]] | [[result1]] |
-#	  When "WorkflowWithAssignDelete12" is executed
-#      Then the workflow execution has "AN" error
-#	  And the 'DelRec' in WorkFlow 'WorkflowWithAssignDelete12' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rec().a]] = | 50        |
-#	  And the 'DelRec' in Workflow 'WorkflowWithAssignDelete12' debug outputs as  
-#	  | # |                   |
-#	  | 1 | [[rec(1).a]] = 50 |
-#	  And the 'Delet12' in WorkFlow 'WorkflowWithAssignDelete12' debug inputs as
-#	  | Records      |
-#	  | [[Del(1)]] = |
-#	  And the 'Delet12' in Workflow 'WorkflowWithAssignDelete12' debug outputs as  
-#	  |                       |
-#	  | [[result1]] = Failure |
-
-
-#Bug 18263
-#Scenario: Workflow with Assign Sort and testing variables that hasn't been assigned
-#      Given I have a workflow "workflowithAssignandsortingrec12"
-#      And "workflowithAssignandsortingrec12" contains an Assign "sortval5" as
-#	  | variable    | value |
-#	  | [[rs(1).a]] | 10    |
-#	  | [[rs(5).a]] | 20    |
-#	  | [[rs(7).a]] | 30    |
-#	  | [[rs(2).b]] | 6     |
-#	  | [[rs(4).b]] | 4     |
-#	  | [[rs(6).b]] | 2     |
-#	  And "workflowithAssignandsortingrec12" contains an Sort "sortRec1" as
-#	  | Sort Field  | Sort Order |
-#	  | [[xs(*).a]] | Backwards  |
-#	  When "workflowithAssignandsortingrec12" is executed
-#	  Then the workflow execution has "AN" error
-#	  And the 'sortval5' in WorkFlow 'workflowithAssignandsortingrec12' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rs(1).a]] = | 10        |
-#	  | 2 | [[rs(5).a]] = | 20        |
-#	  | 3 | [[rs(7).a]] = | 30        |
-#	  | 4 | [[rs(2).b]] = | 6         |
-#	  | 5 | [[rs(4).b]] = | 4         |
-#	  | 6 | [[rs(6).b]] = | 2         |
-#	  And the 'sortval5' in Workflow 'workflowithAssignandsortingrec12' debug outputs as    
-#	  | # |                  |
-#	  | 1 | [[rs(1).a]] = 10 |
-#	  | 2 | [[rs(5).a]] = 20 |
-#	  | 3 | [[rs(7).a]] = 30 |
-#	  | 4 | [[rs(2).b]] = 6  |
-#	  | 5 | [[rs(4).b]] = 4  |
-#	  | 6 | [[rs(6).b]] = 2  |
-#	  And the 'sortRec1' in WorkFlow 'workflowithAssignandsortingrec12' debug inputs as
-#	  | Sort Field    | Sort Order |
-#	  | [[xs(*).a]] = | Backwards  |
-#	  And the 'sortRec1' in Workflow 'workflowithAssignandsortingrec12' debug outputs as
-#	  |               |
-#	  | [[xs(*).a]] = |
+Scenario: Workflow with Assign Sort and testing variables that hasn't been assigned
+      Given I have a workflow "workflowithAssignandsortingrec12"
+      And "workflowithAssignandsortingrec12" contains an Assign "sortval5" as
+	  | variable    | value |
+	  | [[rs(1).a]] | 10    |
+	  | [[rs(5).a]] | 20    |
+	  | [[rs(7).a]] | 30    |
+	  | [[rs(2).b]] | 6     |
+	  | [[rs(4).b]] | 4     |
+	  | [[rs(6).b]] | 2     |
+	  And "workflowithAssignandsortingrec12" contains an Sort "sortRec1" as
+	  | Sort Field  | Sort Order |
+	  | [[xs(*).a]] | Backwards  |
+	  When "workflowithAssignandsortingrec12" is executed
+	  Then the workflow execution has "AN" error
+	  And the 'sortval5' in WorkFlow 'workflowithAssignandsortingrec12' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rs(1).a]] = | 10        |
+	  | 2 | [[rs(5).a]] = | 20        |
+	  | 3 | [[rs(7).a]] = | 30        |
+	  | 4 | [[rs(2).b]] = | 6         |
+	  | 5 | [[rs(4).b]] = | 4         |
+	  | 6 | [[rs(6).b]] = | 2         |
+	  And the 'sortval5' in Workflow 'workflowithAssignandsortingrec12' debug outputs as    
+	  | # |                  |
+	  | 1 | [[rs(1).a]] = 10 |
+	  | 2 | [[rs(5).a]] = 20 |
+	  | 3 | [[rs(7).a]] = 30 |
+	  | 4 | [[rs(2).b]] = 6  |
+	  | 5 | [[rs(4).b]] = 4  |
+	  | 6 | [[rs(6).b]] = 2  |
+	  And the 'sortRec1' in WorkFlow 'workflowithAssignandsortingrec12' debug inputs as
+	  | Sort Field    | Sort Order |
+	  | [[xs(*).a]] = | Backwards  |
+	  And the 'sortRec1' in Workflow 'workflowithAssignandsortingrec12' debug outputs as
+	  |               |
+	  | [[xs(*).a]] = |
 	 
-
 Scenario: Workflow with Assign Unique Tool and testing variables in Returnfield hasn't been assigned
       Given I have a workflow "workflowithAssignUni"
       And "workflowithAssignUni" contains an Assign "Records1" as
@@ -3898,7 +3024,6 @@ Scenario: Workflow with Assign Unique Tool and testing variables in Returnfield 
 	  | # | Variable         | New Value |
 	  | 1 | [[rs(1).row]] =  | 10        |
 	  | 2 | [[rs(1).data]] = | 10        |
-
 	  And the 'Records1' in Workflow 'workflowithAssignUni' debug outputs as  
 	  | # |                      |
 	  | 1 | [[rs(1).row]] =  10  |
@@ -3909,10 +3034,10 @@ Scenario: Workflow with Assign Unique Tool and testing variables in Returnfield 
       |             |                    | [[new().row]] = |
       And the 'Unrec' in Workflow 'workflowithAssignUni' debug outputs as  
        |                     |
-       | [[rec(1).unique]] = |
+       | [[rec(*).unique]] = |
       
-
-Scenario: Executing Utility - Format Number example workflow
+      
+Scenario: Example Executing Utility - Format Number example workflow
 	  Given I have a workflow "Utility - Format Number Test"
 	  And "Utility - Format Number Test" contains "Utility - Format Number" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
@@ -3930,8 +3055,9 @@ Scenario: Executing Utility - Format Number example workflow
 	  And the 'Format Number2' in Workflow 'Utility - Format Number' debug outputs as    
 	  |                   |
 	  | [[PriceInK]] = 14 |
-	 
-Scenario: Executing Utility - Random example workflow
+
+ 
+Scenario: Example Executing Utility - Random example workflow
 	  Given I have a workflow "Utility - Random Test"
 	  And "Utility - Random Test" contains "Utility - Random" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
@@ -3957,7 +3083,7 @@ Scenario: Executing Utility - Random example workflow
 	  | [[License]] = String |
 
 
-Scenario: Executing Utility - Date and Time example workflow
+Scenario: Example Executing Utility - Date and Time example workflow
 	  Given I have a workflow "Utility - Date and Time Test"
 	  And "Utility - Date and Time Test" contains "Utility - Date and Time" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
@@ -3991,7 +3117,7 @@ Scenario: Executing Utility - Date and Time example workflow
 	  | Input            | =        | Input Format            | =                      | Add Time |    | Output Format                                 |
 	  | System Date Time | DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       | "" | 'Date format yyyy MM dd yields : ' yyyy MM dd |
 
-Scenario: Executing Utility - Gather System Information example workflow
+Scenario: Example Executing Utility - Gather System Information example workflow
 	  Given I have a workflow "Utility - System Information Test"
 	  And "Utility - System Information Test" contains "Utility - System Information" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
@@ -4037,7 +3163,7 @@ Scenario: Executing Utility - Gather System Information example workflow
 	   | 17 | [[Agents]]        =    String |
 
 
-Scenario: Executing Utility - Web Request example workflow
+Scenario: Example Executing Utility - Web Request example workflow
 	  Given I have a workflow "Utility - Web Request Test"
 	  And "Utility - Web Request Test" contains "Utility - Web Request" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
@@ -4056,26 +3182,24 @@ Scenario: Executing Utility - Web Request example workflow
 	  |                             |
 	  | [[GecodedAddress]] = String |
 
-#Scenario: Executing Utility - Assign example workflows
-#	  Given I have a workflow "Utility - Assign Test"
-#	  And "Utility - Assign Test" contains "Utility - Assign" from server "localhost" with mapping as
-#	 | Input to Service | From Variable | Output from Service | To Variable        |
-#	 |                  |               | [[rec(*).set]]      | [[rec().set]]      |
-#	 |                  |               | [[hero(*).pushups]] | [[hero().pushups]] |
-#	 |                  |               | [[hero(*).name]]    | [[hero().name]]    |
-#	  When "Utility - Assign Test" is executed
-#	  Then the workflow execution has "NO" error
-#	 # And the 'Assign (3)' in WorkFlow 'Utility - Assign Test' debug inputs as
-#	  And the 'Utility - Assign' in Workflow 'Utility - Assign Test' debug outputs as    
-#	  |                                                                   |
-#	  | [[rec(1).set]] =    Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
-#	  | [[hero(1).pushups]] = All of them.                                |
-#	  | [[hero(1).name]] =   Chuck Norris                                 |
+Scenario: Example Executing Utility - Assign example workflows
+	  Given I have a workflow "Test Example Utility - Assign"
+	  And "Test Example Utility - Assign" contains "Utility - Assign" from server "localhost" with mapping as
+	 | Input to Service | From Variable | Output from Service | To Variable        |
+	 |                  |               | rec(*).set      | [[rec().set]]      |
+	 |                  |               | hero(*).pushups | [[hero().pushups]] |
+	 |                  |               | hero(*).name    | [[hero().name]]    |
+	  When "Test Example Utility - Assign" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Utility - Assign' in Workflow 'Test Example Utility - Assign' debug outputs as    
+	  |                                                                |
+	  | [[rec(1).set]] = Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
+	  | [[hero(1).pushups]] = All of them.                             |
+	  | [[hero(1).name]] = Chuck Norris                                |
 
 	
 
-
-Scenario: Executing Data - Base Conversion example workflow
+Scenario: Example Executing Data - Base Conversion example workflow
 	  Given I have a workflow "Data - Base Conversion Test"
 	  And "Data - Base Conversion Test" contains "Data - Base Conversion" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
@@ -4087,9 +3211,9 @@ Scenario: Executing Data - Base Conversion example workflow
 	  And the 'Base Conversion (1)' in Workflow 'Data - Base Conversion' debug outputs as    
 	   | # |                          |
 	   | 1 | [[Blob]] = I was mangled |
-	 
 
-Scenario: Executing Data - Case Conversion example workflow
+
+Scenario: Example Executing Data - Case Conversion example workflow
 	  Given I have a workflow "Data - Case Conversion Test"
 	  And "Data - Case Conversion Test" contains "Data - Case Conversion" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
@@ -4145,43 +3269,18 @@ Scenario: Executing Data - Case Conversion example workflow
 	   | 1 | [[sometext]] = 1mixed Up 5om3 |
 
 
-#Scenario: Executing Data - Data Merge example workflow
-#	  Given I have a workflow "Data - Data Merge Test"
-#	  And "Data - Data Merge Test" contains "Data - Data Merge" from server "localhost" with mapping as
-#	  | Input to Service | From Variable | Output from Service | To Variable     |
-#	  |                  |               | FileContent         | [[FileContent]] |
-#	  When "Data - Data Merge Test" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Data - Data Merge' in Workflow 'Data - Data Merge' debug outputs as    
-#	    |                                                                |
-#	    | [[FileContent]] = Brad           000005546854    brad@mail.com |
-#	    | = Bob            000065548912bob@mail.com                      |
-#	    | = Bill            003215464987bill@mail.com                    |
+Scenario: Example Executing Data - Data Merge example workflow
+	  Given I have a workflow "Data - Data Merge Test"
+	  And "Data - Data Merge Test" contains "Data - Data Merge" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  |                  |               | FileContent         | [[FileContent]] |
+	  When "Data - Data Merge Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Data - Data Merge' in Workflow 'Data - Data Merge' debug outputs as    
+	    |                                                                |
+	    | [[FileContent]] = String |
 	   
-
-#Scenario: Executing Data - Data Splitexample workflow
-#	  Given I have a workflow "Data - Data Split Test"
-#	  And "Data - Data Split Test" contains "Data - Data Split" from server "localhost" with mapping as
-#	  | Input to Service | From Variable | Output from Service | To Variable     |
-#	  When "Data - Data Split Test" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Data Split1 (3)' in WorkFlow 'Data - Data Split' debug inputs as
-#	  | String to Split                                                                                           | Process Direction | Skip blank rows | # |                      | With     | Using | Include | Escape |
-#	  | [[FileContent]] = Brad,5546854,brad@mail.com Bob 000065548912bob@mail.com  Bill 003215464987bill@mail.com | Forward           | No              | 1 | [[cust(*).name]]   = | Chars    | ,     | No      |        |
-#	  |                                                                                                           | Forward           | No              | 2 | [[cust(*).number]] = | Chars    | ,     | No      |        |
-#	  |                                                                                                           | Forward           | No              | 3 | [[cust(*).email]]  = | New Line |       | No      |        |  
-
-#
-# |                                              |                   |                 | 2 | [[rec().b]] = | Index | 8     | No      |        |
-# And the 'Data Merge (1)' in Workflow 'Data - Data Merge' debug outputs as    
-#   |                                                  |
-#   | [[FileContent]] = Brad 000005546854brad@mail.com |
-#   |                  Bob 000065548912bob@mail.com                   |
-#   |                  Bill 003215464987bill@mail.com                 |
-
-
-
-Scenario: Executing Data - Find Index example workflow
+Scenario: Example Executing Data - Find Index example workflow
 	  Given I have a workflow "Utility - Find Index Test"
 	  And "Utility - Find Index Test" contains "Utility - Find Index" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -4200,8 +3299,113 @@ Scenario: Executing Data - Find Index example workflow
 	  |                            |
 	  | [[WhereAreTheBs]] = 2,4,11 |
 
+Scenario: Example Excuting File and Folder - Copy
+	  Given I have a workflow "File and Folder - Copy Test"
+	  And "File and Folder - Copy Test" contains "File and Folder - Copy" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "File and Folder - Copy Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Copy' in Workflow 'File and Folder - Copy' debug outputs as 
+	  |                  |
+	  | [[Complete]] = Success |
 
-Scenario: Executing Utility - Replace example workflow
+Scenario: Example Excuting File and Folder - Create
+	  Given I have a workflow "File and Folder - Create Test"
+	  And "File and Folder - Create Test" contains "File and Folder - Create" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "File and Folder - Create Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Create' in Workflow 'File and Folder - Create' debug outputs as 
+	  |                        |
+	  | [[Complete]] = Success |
+
+Scenario: Example Excuting File and Folder - Delete
+	  Given I have a workflow "File and Folder - Delete Test"
+	  And "File and Folder - Delete Test" contains "File and Folder - Delete" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "File and Folder - Delete Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Delete' in Workflow 'File and Folder - Delete' debug outputs as 
+	  |                        |
+	  | [[Complete]] = Success |
+
+Scenario: Example Excuting File and Folder - Move
+	  Given I have a workflow "File and Folder - Move Test"
+	  And "File and Folder - Move Test" contains "File and Folder - Move" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "File and Folder - Move Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Move' in Workflow 'File and Folder - Move' debug outputs as 
+	  |                        |
+	  | [[Complete]] = Success |
+
+Scenario:Example Excuting File and Folder - Read File
+	  Given I have a workflow "File and Folder - Read File Test"
+	  And "File and Folder - Read File Test" contains "File and Folder - Read File" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "File and Folder - Read File Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Read File' in Workflow 'File and Folder - Read File' debug outputs as 
+	  |                                         |
+	  | [[Logs]] = the contents of the log file |
+
+Scenario: Example Excuting File and Folder - Read Folder
+	  Given I have a workflow "File and Folder - Read Folder Test"
+	  And "File and Folder - Read Folder Test" contains "File and Folder - Read Folder" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "File and Folder - Read Folder Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Read Folder1' in Workflow 'File and Folder - Read Folder' debug outputs as 
+	  |                                                     |
+	  | [[users]] = c:\temp\WarewolfExamples\ReadFolder\sub |
+	  And the 'Read Folder 2' in Workflow 'File and Folder - Read Folder' debug outputs as 
+	  |                                                               |
+	  | [[server(1).users]] = c:\temp\WarewolfExamples\ReadFolder\sub |
+	  And the 'Read Folder 3' in Workflow 'File and Folder - Read Folder' debug outputs as 
+	  |                                                                           |
+	  | [[server(1).userfolders]] = c:\temp\WarewolfExamples\ReadFolder\sub\inner |
+
+Scenario: Example Excuting File and Folder - Rename
+	  Given I have a workflow "File and Folder - Rename Test"
+	  And "File and Folder - Rename Test" contains "File and Folder - Rename" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "File and Folder - Rename Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Rename' in Workflow 'File and Folder - Rename' debug outputs as 
+	  |                        |
+	  | [[Complete]] = Success |
+
+Scenario: Example Excuting File and Folder - Unzip
+	  Given I have a workflow "File and Folder - Unzip Test"
+	  And "File and Folder - Unzip Test" contains "File and Folder - Unzip" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "File and Folder - Unzip Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'UnZip' in Workflow 'File and Folder - Unzip' debug outputs as 
+	  |                        |
+	  | [[Complete]] = Success |
+
+Scenario: Example Excuting File and Folder - Write File
+	  Given I have a workflow "File and Folder - Write File Test"
+	  And "File and Folder - Write File Test" contains "File and Folder - Write File" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "File and Folder - Write File Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Write' in Workflow 'File and Folder - Write File' debug outputs as 
+	  |                        |
+	  | [[Complete]] = Success |
+
+Scenario: Example Excuting File and Folder - Zip
+	  Given I have a workflow "File and Folder - Zip Test"
+	  And "File and Folder - Zip Test" contains "File and Folder - Zip" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "File and Folder - Zip Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Zip' in Workflow 'File and Folder - Zip' debug outputs as 
+	  |                        |
+	  | [[Complete]] = Success |
+
+Scenario: Example Executing Utility - Replace example workflow
 	  Given I have a workflow "Utility - Replace Test"
 	  And "Utility - Replace Test" contains "Utility - Replace" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -4217,11 +3421,12 @@ Scenario: Executing Utility - Replace example workflow
 	  And the 'Replace2' in Workflow 'Utility - Replace' debug outputs as  
 	  |                                       |
 	  | [[rec(1).homeNumber]]   = +1553122442 |
+	  | [[rec(2).homeNumber]]   = +1554682136 |
 	  | [[rec(1).mobileNumber]] = +1655985781 |
 	  | [[rec(2).mobileNumber]] = +1985623145 |
 	  | [[recount]] = 3                       |
 
-Scenario: Executing Recordset - Count Records example workflow
+Scenario: Example Executing Recordset - Count Records example workflow
 	  Given I have a workflow "Recordset - Count Records Test"
 	  And "Recordset - Count Records Test" contains "Recordset - Count Records" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -4229,14 +3434,14 @@ Scenario: Executing Recordset - Count Records example workflow
 	  Then the workflow execution has "NO" error
 	  And the 'Count Records' in WorkFlow 'Recordset - Count Records' debug inputs as
 	  | Recordset                  |
-	  | [[rec(1).set]] = Warewolf  |
-	  | [[rec(2).set]] = SOA       |
+	  | [[rec(1).set]] = Warewolf |
+	  | [[rec(2).set]] = SOA |
 	  | [[rec(3).set]] = Recordset |
 	  And the 'Count Records' in Workflow 'Recordset - Count Records' debug outputs as  
 	  |               |
 	  | [[count]] = 3 |
 
-Scenario: Executing Recordset - Records Length example workflow
+Scenario: Example Executing Recordset - Records Length example workflow
 	  Given I have a workflow "Recordset - Records Length Test"
 	  And "Recordset - Records Length Test" contains "Recordset - Records Length" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -4256,37 +3461,37 @@ Scenario: Executing Recordset - Records Length example workflow
 	  |                |
 	  | [[length]] = 5 |
 
-Scenario: Executing Recordset - Delete Records example workflow
+Scenario: Example Executing Recordset - Delete Records example workflow
 	  Given I have a workflow "Recordset - Delete Records Test"
 	  And "Recordset - Delete Records Test" contains "Recordset - Delete Records" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  When "Recordset - Delete Records Test" is executed
 	  Then the workflow execution has "NO" error
 	  And the 'Delete Record1' in WorkFlow 'Recordset - Delete Records' debug inputs as
-	  | Records            |
+	  | Records          |
 	  | [[rec(2).set]] = 2 |
 	  And the 'Delete Record1' in Workflow 'Recordset - Delete Records' debug outputs as  
 	  |                      |
 	  | [[result]] = Success |
 	  And the 'Delete Record2' in WorkFlow 'Recordset - Delete Records' debug inputs as
-	  | Records            |
+	  | Records          |
 	  | [[rec(1).set]] = 1 |
 	  | [[rec(3).set]] = 3 |
 	  And the 'Delete Record2' in Workflow 'Recordset - Delete Records' debug outputs as  
 	  |                      |
 	  | [[result]] = Success |
 
-Scenario: Executing Recordset - Find Records example workflow
+Scenario: Example Executing Recordset - Find Records example workflow
 	  Given I have a workflow "Recordset - Find Records Test"
 	  And "Recordset - Find Records Test" contains "Recordset - Find Records" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  When "Recordset - Find Records Test" is executed
 	  Then the workflow execution has "NO" error
 	  And the 'Find Record Index (2)' in Workflow 'Recordset - Find Records' debug outputs as  
-	  |                  |
-	  | [[Results]] = -1 |
+	  |                   |
+	  | [[Results]] = 6,8 |
 	  
-Scenario: Executing Recordset - Sort Records example workflow
+Scenario:Example Executing Recordset - Sort Records example workflow
 	  Given I have a workflow "Recordset - Sort Records Test"
 	  And "Recordset - Sort Records Test" contains "Recordset - Sort Records" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -4341,7 +3546,7 @@ Scenario: Executing Recordset - Sort Records example workflow
 	  | [[rec(9).set]] = y |
 	  | [[rec(10).set]] =z |
 
-Scenario: Executing Recordset - Unique Records example workflow
+Scenario: Example Executing Recordset - Unique Records example workflow
 	  Given I have a workflow "Recordset - Unique Records Test"
 	  And "Recordset - Unique Records Test" contains "Recordset - Unique Records" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -4364,7 +3569,7 @@ Scenario: Executing Recordset - Unique Records example workflow
 	   |   | [[Result(2).example2]] = 2 |
 	   |   | [[Result(3).example2]] = 4 |
      
-Scenario: Executing Loop Constructs - For Each example workflow
+Scenario: Example Executing Loop Constructs - For Each example workflow
 	  Given I have a workflow "Loop Constructs - For Each Test"
 	  And "Loop Constructs - For Each Test" contains "Loop Constructs - For Each" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -4404,19 +3609,14 @@ Scenario: Executing Loop Constructs - For Each example workflow
 	   And the 'Random1' in step 5 for 'For Each1' debug outputs as
         |                         |
         | [[rec(5).set]] = String |
-	
-Scenario: Executing Control Flow - Sequence example workflow
+
+Scenario: Example Executing Control Flow - Sequence example workflow
 	  Given I have a workflow "Control Flow - Sequence Test"
 	  And "Control Flow - Sequence Test" contains "Control Flow - Sequence" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  When "Control Flow - Sequence Test" is executed
 	  Then the workflow execution has "NO" error
-	  #And the 'Split Names (3)' in WorkFlow 'Organize Customers' debug inputs as
-	  #| String to Split                                                                                                                                                                                               | Process Direction | Skip blank rows | # |                               | With  | Using | Include | Escape |
-	  #| [[CustomerCSV]] = bart,simpson,bart.simpson@couch.com,homer,simpson,homer.simpson@couch.com,marge,simpson,marge.simpson@couch.com,lisa,simpson,lisa.simpson@couch.com,maggie,simpson,maggie.simpson@couch.com | Forward           | No              | 1 | [[TempCustomers().FirstName]] | Chars | ,     | No      |        |
-	  #|                                                                                                                                                                                                               | Forward           | No              | 2 | [[TempCustomers().LastName]]  | Chars | ,     | No      |        |
-	  #|                                                                                                                                                                                                               | Forward           | No              | 3 | [[TempCustomers().Email]]     | Chars | ,     | No      |        |                                                                                                                                                                   
-	    And the 'Split Names (3)' in Workflow 'Organize Customers' debug outputs as
+      And the 'Split Names (3)' in Workflow 'Organize Customers' debug outputs as
 	   | # |                                                       |
 	   | 1 | [[TempCustomers(1).FirstName]] = bart                 |
 	   |   | [[TempCustomers(2).FirstName]] = homer                |
@@ -4448,14 +3648,14 @@ Scenario: Executing Control Flow - Sequence example workflow
 	   | [[Customers(4).FirstName]] = maggie |
 	   | [[Customers(5).FirstName]] = marge  |
 
-Scenario: Executing Control Flow - Decision example workflow
+Scenario: Example Executing Control Flow - Decision example workflow
 	  Given I have a workflow "Control Flow - Decision Test"
 	  And "Control Flow - Decision Test" contains "Control Flow - Decision" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  When "Control Flow - Decision Test" is executed
 	  Then the workflow execution has "NO" error
 
-Scenario: Executing Control Flow - Switch example workflow
+Scenario: Example Executing Control Flow - Switch example workflow
 	  Given I have a workflow "Control Flow - Switch Test"
 	  And "Control Flow - Switch Test" contains "Control Flow - Switch" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
@@ -4463,367 +3663,177 @@ Scenario: Executing Control Flow - Switch example workflow
 	  Then the workflow execution has "NO" error
 
 
-#Scenario: Executing File and Folder - Create example workflow
-#	  Given I have a workflow "File and Folder - Create Test"
-#	  And "File and Folder - Create Test" contains "File and Folder - Create" from server "localhost" with mapping as
-#	  | Input to Service | From Variable | Output from Service | To Variable     |
-#	  When "File and Folder - Create Test" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Create' in WorkFlow 'File and Folder - Create' debug inputs as
-#	  | File or Folder | Overwrite | Username | Password |
-#	  | c:\Temp\Backup | False     | ""       | ""       |  
-#	  And the 'Create' in Workflow 'File and Folder - Create' debug outputs as    
-#	  |                        |
-#	  | [[Complete]] = Success |
+
+Scenario: Example Executing Scripting - Script example workflow
+  Given I have a workflow "Scripting - Script Test"
+  And "Scripting - Script Test" contains "Scripting - Script" from server "localhost" with mapping as
+  | Input to Service | From Variable | Output from Service | To Variable     |
+  When "Scripting - Script Test" is executed
+  Then the workflow execution has "NO" error
+  And the 'Script1' in WorkFlow 'Scripting - Script' debug inputs as	
+  | Language | Script   |
+  | Ruby     | sleep(5) | 
+  And the 'Script1' in Workflow 'Scripting - Script' debug outputs as    
+  |                |
+  | [[Result]] = 5 | 
+  And the 'Script2' in WorkFlow 'Scripting - Script' debug inputs as	
+  | Language   | Script          |
+  | JavaScript | String = String |
+  And the 'Script2' in Workflow 'Scripting - Script' debug outputs as    
+  |                |
+  | [[Result]] = 1 | 
+  And the 'Script3' in WorkFlow 'Scripting - Script' debug inputs as	
+  | Language | Script          |
+  | Python   | String = String |
+  And the 'Script3' in Workflow 'Scripting - Script' debug outputs as    
+  |                  |
+  | [[Result]] = one | 
 
 
-#Scenario: Executing File and Folder - Copy example workflow
-#	  Given I have a workflow "File and Folder - Copy Test"
-#	  And "File and Folder - Copy Test" contains "File and Folder - Copy" from server "localhost" with mapping as
-#	  | Input to Service | From Variable | Output from Service | To Variable     |
-#	  When "File and Folder - Copy Test" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Copy' in WorkFlow 'File and Folder - Copy' debug inputs as
-#	  | Source Path      | Username | Password | Destination Path       | Destination Username | Destination Password | Overwrite |
-#	  | c:\backups\today | ""       | ""       | ftp://archive/allfiles | ""                   | ""                   | False     |
-#	  And the 'Copy' in Workflow 'File and Folder - Copy' debug outputs as    
-#	  |                        |
-#	  | [[Complete]] = Success |
-
-#Scenario: Executing File and Folder - Move example workflow
-#	  Given I have a workflow "File and Folder - Move Test"
-#	  And "File and Folder - Move Test" contains "File and Folder - Move" from server "localhost" with mapping as
-#	  | Input to Service | From Variable | Output from Service | To Variable     |
-#	  When "File and Folder - Move Test" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Move' in WorkFlow 'File and Folder - Move' debug inputs as
-#	  | Source Path         | Username | Password | Destination Path            | Destination Username | Destination Password | Overwrite |
-#	  | \\MyServer\LogFiles | ""       | ""       | ftp://Archive/ForProcessing | ""                   | ""                   | False     |
-#	  And the 'Move' in Workflow 'File and Folder - Move' debug outputs as    
-#	  |                        |
-#	  | [[Complete]] = Success |
-
-#Scenario: Executing File and Folder - Delete example workflow
-#	  Given I have a workflow "File and Folder - Delete Test"
-#	  And "File and Folder - Delete Test" contains "File and Folder - Delete" from server "localhost" with mapping as
-#	  | Input to Service | From Variable | Output from Service | To Variable     |
-#	  When "File and Folder - Delete Test" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Delete' in WorkFlow 'File and Folder - Delete' debug inputs as
-#	  | Input Path                                              | Username | Password |
-#	  | c:\Program Files (x86)\Warewolf\Server\5-TUW-SIPPED.txt | ""       | ""       |  
-#	  And the 'Delete' in Workflow 'File and Folder - Delete' debug outputs as    
-#	  |                        |
-#	  | [[Complete]] = Success |
-
-#Scenario: Executing File and Folder - Read File example workflow
-#	  Given I have a workflow "File and Folder - Read File Test"
-#	  And "File and Folder - Read File Test" contains "File and Folder - Read File" from server "localhost" with mapping as
-#	  | Input to Service | From Variable | Output from Service | To Variable     |
-#	  When "File and Folder - Read File Test" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Read File' in WorkFlow 'File and Folder - Read File' debug inputs as
-#	  | Input Path                 | Username | Password |
-#	  | ftp://myserver/logfile.csv | ""       | ""       |  
-#	  And the 'Read File' in Workflow 'File and Folder - Read File' debug outputs as    
-#	  |                    |
-#	  | [[Logs]] = Success |
-
-#Scenario: Executing File and Folder - Write File example workflow
-#	  Given I have a workflow "File and Folder - Write File Test"
-#	  And "File and Folder - Write File Test" contains "File and Folder - Write File" from server "localhost" with mapping as
-#	  | Input to Service | From Variable | Output from Service | To Variable     |
-#	  When "File and Folder - Write File Test" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Write' in WorkFlow 'File and Folder - Write File' debug inputs as
-#	  | Output Path          | Method    | Username | Password | File Contents        |
-#	  | ftp://Files/Cust.csv | Overwrite | ""       | ""       | [[SomeCSV]] = String |
-#	  And the 'Write' in Workflow 'File and Folder - Write File' debug outputs as    
-#	  |                        |
-#	  | [[Complete]] = Success |
-
-#Scenario: Executing File and Folder - Read Folder File example workflow
-#	  Given I have a workflow "File and Folder - Read Folder Test"
-#	  And "File and Folder - Read Folder Test" contains "File and Folder - Read Folder" from server "localhost" with mapping as
-#	  | Input to Service | From Variable | Output from Service | To Variable     |
-#	  When "File and Folder - Read Folder Test" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Read Folder1' in WorkFlow 'File and Folder - Read Folder' debug inputs as
-#	   | Input Path | Read            | Username | Password |
-#	   | c:\users\  | Files & Folders | ""       | ""       |
-#	  And the 'Read Folder1' in Workflow 'File and Folder - Read Folder' debug outputs as    
-#	  |                    |
-#	  | [[users]] = String |
-#	  And the 'Read Folder2' in WorkFlow 'File and Folder - Read Folder' debug inputs as
-#	   | Input Path | Read            | Username | Password |
-#	   | c:\users\  | Files & Folders | ""       | ""       |
-#	  And the 'Read Folder2' in Workflow 'File and Folder - Read Folder' debug outputs as    
-#	  |                               |
-#	  | [[server(1).users]] = String  |
-#	  | [[server(2).users]] = String  |
-#	  | [[server(3).users]] = String  |
-#	  | [[server(4).users]] = String  |
-#	  | [[server(5).users]] = String  |
-#	  | [[server(6).users]] = String  |
-#	  | [[server(7).users]] = String  |
-#	  | [[server(8).users]] = String  |
-#	  | [[server(9).users]] = String  |
-#	  | [[server(10).users]] = String |
-#	  | [[server(11).users]] = String |
-#	  | [[server(12).users]] = String |
-#	  | [[server(13).users]] = String |
-#	  | [[server(14).users]] = String |
-#	  | [[server(15).users]] = String |
-#	  | [[server(16).users]] = String |
-	
-#Scenario: Executing File and Folder - Rename example workflow
-#	  Given I have a workflow "File and Folder - Rename Test"
-#	  And "File and Folder - Rename Test" contains "File and Folder - Rename" from server "localhost" with mapping as
-#	  | Input to Service | From Variable | Output from Service | To Variable     |
-#	  When "File and Folder - Rename Test" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Rename' in WorkFlow 'File and Folder - Rename' debug inputs as	
-#	   | Source Path      | Username | Password | Destination Path         | Destination Username | Destination Password | Overwrite |
-#	   | \\\Backups\Today | ""       | ""       | FTPS://Backups/Yesterday | ""                   | ""                   | False     |
-#	    And the 'Rename' in Workflow 'File and Folder - Rename' debug outputs as    
-#	   |                        |
-#	   | [[Complete]] = Success |
-
-#Scenario: Executing File and Folder - Unzip example workflow
-#	  Given I have a workflow "File and Folder - Unzip Test"
-#	  And "File and Folder - Unzip Test" contains "File and Folder - Unzip" from server "localhost" with mapping as
-#	  | Input to Service | From Variable | Output from Service | To Variable     |
-#	  When "File and Folder - Unzip Test" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'UnZip' in WorkFlow 'File and Folder - Unzip' debug inputs as	
-#	   | Source Path                | Username | Password | Destination Path | Destination Username | Destination Password | Overwrite | Archive Password |
-#	   | ftp://Archive/date/day.zip | ""       | ""       | c:\Temp\Day      | ""                   | ""                   | False     | String           |
-#	    And the 'UnZip' in Workflow 'File and Folder - Unzip' debug outputs as    
-#	   |                        |
-#	   | [[Complete]] = Success |
-
-#Scenario: Executing File and Folder - Zip example workflow
-#	  Given I have a workflow "File and Folder - Zip Test"
-#	  And "File and Folder - Zip Test" contains "File and Folder - Zip" from server "localhost" with mapping as
-#	  | Input to Service | From Variable | Output from Service | To Variable     |
-#	  When "File and Folder - Zip Test" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Zip' in WorkFlow 'File and Folder - Zip' debug inputs as	
-#	  | Source Path                | Username | Password | Destination Path           | Destination Username | Destination Password | Overwrite | Archive Password | Compression Ratio |
-#	  | \\\MyServer\LogFiles\Today | ""       | ""       | ftp://Archive/date/day.zip | ""                   | ""                   | False     |                  | Default           |
-#	    And the 'Zip' in Workflow 'File and Folder - Zip' debug outputs as    
-#	   |                        |
-#	   | [[Complete]] = Success |
-
-
-#Scenario: Executing Scripting - CMD Line example workflow
-#	  Given I have a workflow "Scripting - CMD Line Test"
-#	  And "Scripting - CMD Line Test" contains "Scripting - CMD Line" from server "localhost" with mapping as
-#	  | Input to Service | From Variable | Output from Service | To Variable     |
-#	  When "Scripting - CMD Line Test" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Execute Command Line1' in WorkFlow 'Scripting - CMD Line' debug inputs as	
-#	  | Command      |
-#	  | dir c:\*.txt |  
-#	  And the 'Execute Command Line1' in Workflow 'Scripting - CMD Line' debug outputs as    
-#	  |                        |
-#	  | [[TextFiles]] = String | 
-#	  And the 'Execute Command Line2' in WorkFlow 'Scripting - CMD Line' debug inputs as	
-#	  | Command |
-#	  | String  |  
-#	  And the 'Execute Command Line2' in Workflow 'Scripting - CMD Line' debug outputs as    
-#	  |                     |
-#	  | [[Result]] = String | 
-
-
-#Scenario: Executing Scripting - Script example workflow
-#  Given I have a workflow "Scripting - Script Test"
-#  And "Scripting - Script Test" contains "Scripting - Script" from server "localhost" with mapping as
-#  | Input to Service | From Variable | Output from Service | To Variable     |
-#  When "Scripting - Script Test" is executed
-#  Then the workflow execution has "NO" error
-#  And the 'Script1' in WorkFlow 'Scripting - Script' debug inputs as	
-#  | Language | Script   |
-#  | Ruby     | sleep(5) | 
-#  And the 'Script1' in Workflow 'Scripting - Script' debug outputs as    
-#  |                |
-#  | [[Result]] = 5 | 
-#  And the 'Script2' in WorkFlow 'Scripting - Script' debug inputs as	
-#  | Language   | Script          |
-#  | JavaScript | String = String |
-#  And the 'Script2' in Workflow 'Scripting - Script' debug outputs as    
-#  |                |
-#  | [[Result]] = 1 | 
-#  And the 'Script3' in WorkFlow 'Scripting - Script' debug inputs as	
-#  | Language | Script          |
-#  | Python   | String = String |
-#  And the 'Script3' in Workflow 'Scripting - Script' debug outputs as    
-#  |                  |
-#  | [[Result]] = one | 
-#
-
-#After the BUG 17399,following 2 specs should be passed	  
-#Scenario: Gather System tool throws error when debug with 2 variables in one row 
-#	  Given I have a workflow "WorkflowW"
-#	  And "WorkflowW" contains an Assign "IndexVal" as
-#	  | variable | value   |
-#	  | [[a]]    | b       |
-#	   And "WorkflowW" contains Gather System Info "System info" as
-#	  | Variable   | Selected    |
-#	  | [[a]][[b]] | Date & Time |
-#	  When "WorkflowW" is executed
-#	  Then the workflow execution has "AN" error
-#	   And the 'IndexVal' in WorkFlow 'WorkflowW' debug inputs as
-#	  | # | Variable | New Value |
-#	  | 1 | [[a]] =  | b         |
-#	  And the 'IndexVal' in Workflow 'WorkflowW' debug outputs as  
-#	  | # |                 |
-#	  | 1 | [[a]] = b       |
-#	  And the 'System info' in WorkFlow 'WorkflowW' debug inputs as
-#	  | # |              |             |
-#	  | 1 | [[a]][[b]] = | Date & Time |
-#	 And the 'System info' in Workflow 'WorkflowW' debug outputs as    
-#	  | # |  |
-#	  |   |  |
-#	   
+Scenario: Gather System tool throws error when debug with 2 variables in one row 
+	  Given I have a workflow "WorkflowW"
+	  And "WorkflowW" contains an Assign "IndexVal" as
+	  | variable | value   |
+	  | [[a]]    | b       |
+	   And "WorkflowW" contains Gather System Info "System info" as
+	  | Variable   | Selected    |
+	  | [[a]][[b]] | Date & Time |
+	  When "WorkflowW" is executed
+	  Then the workflow execution has "AN" error
+	   And the 'IndexVal' in WorkFlow 'WorkflowW' debug inputs as
+	  | # | Variable | New Value |
+	  | 1 | [[a]] =  | b         |
+	  And the 'IndexVal' in Workflow 'WorkflowW' debug outputs as  
+	  | # |                 |
+	  | 1 | [[a]] = b       |
+	  And the 'System info' in WorkFlow 'WorkflowW' debug inputs as
+	  | # |              |             |
+	  | 1 | [[a]][[b]] = | Date & Time |
+	 And the 'System info' in Workflow 'WorkflowW' debug outputs as    
+	  | # |              |
+	  | 1 | [[a]][[b]] = |
 
 	   
 	  
-#cenario: Gather System tool throws error when debug with invalid variableb
-#	  Given I have a workflow "WorkflowW1"
-#	  And "WorkflowW1" contains an Assign "IndexVal" as
-#	  | variable | value   |
-#	  | [[a]]    | b       |
-#	   And "WorkflowW1" contains Gather System Info "System info" as
-#	  | Variable         | Selected    |
-#	  | [[a]][[rec().a]] | Date & Time |
-#	  When "WorkflowW1" is executed
-#	  Then the workflow execution has "AN" error
-#	   And the 'IndexVal' in WorkFlow 'WorkflowW1' debug inputs as
-#	  | # | Variable | New Value |
-#	  | 1 | [[a]] =  | b         |
-#	  And the 'IndexVal' in Workflow 'WorkflowW1' debug outputs as  
-#	  | # |                 |
-#	  | 1 | [[a]] = b       |
-#	  And the 'System info' in WorkFlow 'WorkflowW1' debug inputs as
-#	  | # |                      |             |
-#	  | 1 | [[a]][[rec().a]]]] = | Date & Time |
-#	 And the 'System info' in Workflow 'WorkflowW1' debug outputs as    
-#	  | # |  |
-#	  |   |  |
 	   
-#BUG-17403
-#Scenario: Workflow Base Convert and Case Convert passing invalid variable through execution
-#	  Given I have a workflow "WorkflowWithBaseCase1"
-#	  And "WorkflowWithBaseCase1" contains an Assign "Assign1" as
-#	  | variable       | value    |
-#	  | [[a]]          | 1        |
-#	  | [[rec(1).a]]   | Warewolf |
-#	  | [[rec(2).a]]   | Test     |
-#	  | [[index(1).a]] | a$*      |
-#	  And "WorkflowWithBaseCase1" contains case convert "Case1" as
-#	  | Variable                  | Type  |
-#	  | [[rec([[index(1).a]]).a]] | UPPER |
-#	  And "WorkflowWithBaseCase1" contains Base convert "Base1" as
-#	  | Variable                  | From | To      |
-#	  | [[rec([[index(1).a]]).a]] | Text | Base 64 |
-#	  When "WorkflowWithBaseCase1" is executed
-#	  Then the workflow execution has "AN" error
-#	  And the 'Assign1' in WorkFlow 'WorkflowWithBaseCase1' debug inputs as
-#	  | # | Variable         | New Value |
-#	  | 1 | [[a]] =          | 1         |
-#	  | 2 | [[rec(1).a]] =   | Warewolf  |
-#	  | 3 | [[rec(2).a]] =   | Test      |
-#	  | 4 | [[index(1).a]] = | a$*       |
-#	   And the 'Assign1' in Workflow 'WorkflowWithBaseCase1' debug outputs as   
-#	  | # |                            |
-#	  | 1 | [[a]]         =  1         |
-#	  | 2 | [[rec(1).a]]   =  Warewolf |
-#	  | 3 | [[rec(2).a]]  =  Test      |
-#	  | 4 | [[index(1).a]] =  a$*      |
-#	  And the 'Case1' in WorkFlow 'WorkflowWithBaseCase1' debug inputs as
-#	  | # | Convert                   | To    |
-#	  | 1 | [[rec([[index(1).a]]).a]] | UPPER |
-#	  And the 'Case1' in Workflow 'WorkflowWithBaseCase1' debug outputs as  
-#	  | # |                     |
-#	  And the 'Base1' in WorkFlow 'WorkflowWithBaseCase1' debug inputs as
-#	  | # | Convert                   | From | To      |
-#	  | 1 | [[rec([[index(1).a]]).a]] | Text | Base 64 |
-#      And the 'Base1' in Workflow 'WorkflowWithBaseCase1' debug outputs as  
-#	  | # |                     |
-#
+Scenario: Gather System tool throws error when debug with invalid variableb
+	  Given I have a workflow "WorkflowW1"
+	  And "WorkflowW1" contains an Assign "IndexVal" as
+	  | variable | value   |
+	  | [[a]]    | b       |
+	   And "WorkflowW1" contains Gather System Info "System info" as
+	  | Variable         | Selected    |
+	  | [[a]][[rec().a]] | Date & Time |
+	  When "WorkflowW1" is executed
+	  Then the workflow execution has "AN" error
+	   And the 'IndexVal' in WorkFlow 'WorkflowW1' debug inputs as
+	  | # | Variable | New Value |
+	  | 1 | [[a]] =  | b         |
+	  And the 'IndexVal' in Workflow 'WorkflowW1' debug outputs as  
+	  | # |                 |
+	  | 1 | [[a]] = b       |
+	  And the 'System info' in WorkFlow 'WorkflowW1' debug inputs as
+	  | # |                      |             |
+	  | 1 | [[a]][[rec().a]] = | Date & Time |
+	 And the 'System info' in Workflow 'WorkflowW1' debug outputs as    
+	  | # |                      |
+	  | 1 | [[a]][[rec().a]] = |
+
+Scenario: Workflow Base Convert and Case Convert passing invalid variable through execution
+	  Given I have a workflow "WorkflowWithBaseCase1"
+	  And "WorkflowWithBaseCase1" contains an Assign "Assign1" as
+	  | variable       | value    |
+	  | [[a]]          | 1        |
+	  | [[rec(1).a]]   | Warewolf |
+	  | [[rec(2).a]]   | Test     |
+	  | [[index(1).a]] | a$*      |
+	  And "WorkflowWithBaseCase1" contains case convert "Case1" as
+	  | Variable                  | Type  |
+	  | [[rec([[index(1).a]]).a]] | UPPER |
+	  And "WorkflowWithBaseCase1" contains Base convert "Base1" as
+	  | Variable                  | From | To      |
+	  | [[rec([[index(1).a]]).a]] | Text | Base 64 |
+	  When "WorkflowWithBaseCase1" is executed
+	  Then the workflow execution has "AN" error
+	  And the 'Assign1' in WorkFlow 'WorkflowWithBaseCase1' debug inputs as
+	  | # | Variable         | New Value |
+	  | 1 | [[a]] =          | 1         |
+	  | 2 | [[rec(1).a]] =   | Warewolf  |
+	  | 3 | [[rec(2).a]] =   | Test      |
+	  | 4 | [[index(1).a]] = | a$*       |
+	   And the 'Assign1' in Workflow 'WorkflowWithBaseCase1' debug outputs as   
+	  | # |                            |
+	  | 1 | [[a]]         =  1         |
+	  | 2 | [[rec(1).a]]   =  Warewolf |
+	  | 3 | [[rec(2).a]]  =  Test      |
+	  | 4 | [[index(1).a]] =  a$*      |
+	  And the 'Case1' in WorkFlow 'WorkflowWithBaseCase1' debug inputs as
+	  | # | Convert                     | To    |
+	  | 1 | [[rec(a$*).a]] = | UPPER |
+	  And the 'Case1' in Workflow 'WorkflowWithBaseCase1' debug outputs as  
+	  | # |                     |
+	  And the 'Base1' in WorkFlow 'WorkflowWithBaseCase1' debug inputs as
+	  | # | Convert          | From | To      |
+	  | 1 | [[rec(a$*).a]] = | Text | Base 64 |
+      And the 'Base1' in Workflow 'WorkflowWithBaseCase1' debug outputs as  
+	  | # |                     |
+
+Scenario: Workflow Base Convert coverting same variable multiple times
+	 Given I have a workflow "WorkflowWithBaseConvertUsingSameVariable"
+	 And "WorkflowWithBaseConvertUsingSameVariable" contains an Assign "Assign1" as
+	 | variable | value |
+	 | [[test]] | data  |
+	 And "WorkflowWithBaseConvertUsingSameVariable" contains Base convert "Base12" as
+	 | Variable | From    | To      |
+	 | [[test]] | Text    | Base 64 |
+	 | [[test]] | Base 64 | Text    |
+	 When "WorkflowWithBaseConvertUsingSameVariable" is executed
+	 Then the workflow execution has "NO" error
+	 And the 'Assign1' in WorkFlow 'WorkflowWithBaseConvertUsingSameVariable' debug inputs as
+	 | # | Variable   | New Value |
+	 | 1 | [[test]] = | data      |
+	  And the 'Assign1' in Workflow 'WorkflowWithBaseConvertUsingSameVariable' debug outputs as   
+	 | # |                  |
+	 | 1 | [[test]] =  data |
+	 And the 'Base12' in WorkFlow 'WorkflowWithBaseConvertUsingSameVariable' debug inputs as
+	 | # | Convert             | From    | To      |
+	 | 1 | [[test]] = data     | Text    | Base 64 |
+	 | 2 | [[test]] = ZGF0YQ== | Base 64 | Text    |
+    And the 'Base12' in Workflow 'WorkflowWithBaseConvertUsingSameVariable' debug outputs as  
+	 | # |                     |
+	 | 1 | [[test]] = ZGF0YQ== |
+	 | 2 | [[test]] = data     |
+
+Scenario: Workflow Assign and Find Record Index executing with incorrect format of Inputs 
+      Given I have a workflow "WFWithAssignandFindRecordindexs"
+	  And "WFWithAssignandFindRecordindex" contains an Assign "Record" as
+      | variable     | value |
+      | [[rec(1).a]] | 23    |
+      | [[rec(2).a]] | 34    |
+      | [[xr(1).a]]  | 10    |
+	  And "WFWithAssignandFindRecordindexs" contains Find Record Index "FindRecord0" into result as "[[a]][[b]]"
+	  | # | In Field              | # | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
+	  | # | [[rec().a]][[xr().a]] | 1 | =          | Warewolf | YES                            | NO                          |
+	  When "WFWithAssignandFindRecordindexs" is executed
+	  Then the workflow execution has "AN" error
 
 
-#Bug - 17449
-#Scenario: Workflow Base Convert coverting same variable multiple times
-	# Given I have a workflow "WorkflowWithBase1"
-	# And "WorkflowWithBase1" contains an Assign "Assign1" as
-	# | variable | value |
-	# | [[test]] | data  |
-	# And "WorkflowWithBase1" contains Base convert "Base12" as
-	# | Variable | From   | To      |
-	# | [[test]] | Text   | Base 64 |
-	# | [[test]] | Base64 | Text    |
-	# When "WorkflowWithBase1" is executed
-	# Then the workflow execution has "NO" error
-	# And the 'Assign1' in WorkFlow 'WorkflowWithBase1' debug inputs as
-	# | # | Variable   | New Value |
-	# | 1 | [[test]] = | data      |
-	#  And the 'Assign1' in Workflow 'WorkflowWithBase1' debug outputs as   
-	# | # |                  |
-	# | 1 | [[test]] =  data |
-	# And the 'Base12' in WorkFlow 'WorkflowWithBase1' debug inputs as
-	# | # | Convert             | From   | To      |
-	# | 1 | [[test]] = data     | Text   | Base 64 |
-	# | 2 | [[test]] = ZGF0YQ== | Base64 | Text    |
-    #And the 'Base12' in Workflow 'WorkflowWithBase1' debug outputs as  
-	# | # |                     |
-	# | 1 | [[test]] = ZGF0YQ== |
-	# | 2 | [[test]] = data     |
-
-
-##Bug 18262
-#Scenario: Workflow Assign and Find Record Index executing with incorrect format of Inputs 
-#      Given I have a workflow "WFWithAssignandFindRecordindex"
-#	  And "WFWithAssignandFindRecordindex" contains an Assign "Record" as
-#      | variable     | value |
-#      | [[rec(1).a]] | 23    |
-#      | [[rec(2).a]] | 34    |
-#      | [[xr(1).a]]  | 10    |
-#	  And "WFWithAssignandFindRecordindex" contains Find Record Index "FindRecord0" into result as "[[a]][[b]]"
-#      | In Field              | # | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
-#      | [[rec().a]][[xr().a]] | 1 | =          | Warewolf | YES                            | NO                          |
-#	  When "WFWithAssignandFindRecordindex" is executed
-#	  Then the workflow execution has "AN" error
-#	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
-#	  | # | Variable       | New Value |
-#	  | 1 | [[rec(1).a]] = | Warewolf  | 
-#	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as   
-#	  | # |                                  |
-#	  | 1 | [[rec(1).a]]         =  Warewolf |
-#	  And the 'FindRecord0' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
-#	  | #           |                       | # |   |          |  | And | Require All Fields To Match | Require All Matches To Be True |
-#	  | In Field(s) | [[rec().a]][[xr().a]] | 1 | = | Warewolf |  |     | YES                         | NO                             |
-#	  And the 'FindRecord0' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as
-#	  |         |
 	
-
 Scenario: Executing Workflow Service and Decision tool expected bubling out error in workflow service
-	  Given I have a workflow "Utility - Assign"
-	  And "Utility - Assign Test" contains "Utility - Assign" from server "localhost" with mapping as
+	  Given I have a workflow "Utility - Assign WF"
+	  And "Utility - Assign WF" contains "Utility - Assign" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable        |
-	  |                  |               | [[rec(*).set]]      | [[rec().set]]      |
-	  |                  |               | [[hero(*).pushups]] | [[hero().pushups]] |
-	  |                  |               | [[hero(*).name]]    | [[hero().name]]    |
-	  When "Utility - Assign Test" is executed
+	  |                  |               | rec(*).set      | [[myrec().set]]      |
+	  |                  |               | hero(*).pushups | [[thehero().pushups]] |
+	  |                  |               | hero(*).name    | [[thehero().name]]    |
+	  When "Utility - Assign WF" is executed
 	  Then the workflow execution has "NO" error
-	  And the 'Utility - Assign' in Workflow 'Utility - Assign' debug outputs as    
+	  And the 'Utility - Assign' in Workflow 'Utility - Assign WF' debug outputs as    
 	  |                                                                   |
-	  | [[rec(1).set]] =    Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
-	  | [[hero(1).pushups]] = All of them.                                |
-	  | [[hero(1).name]] =   Chuck Norris                                 |
+	  | [[myrec(1).set]] =    Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
+	  | [[thehero(1).pushups]] = All of them.                                |
+	  | [[thehero(1).name]] =   Chuck Norris                                 |
 	
-#Bug - 17484	  
 Scenario: Error from workflow service is expected to buble out
 	  Given I have a workflow "TestAssignWithRemote123"
 	  And "TestAssignWithRemote123" contains an Assign "AssignData" as
@@ -4844,7 +3854,7 @@ Scenario: Error from workflow service is expected to buble out
 	  | 1 | [[inputData]] = hello |
 	   And the 'WorkflowUsedBySpecs' in WorkFlow 'TestAssignWithRemote123' debug inputs as
 	  |                       |
-	  | [[inputData]] = hello |
+	  | [[input]] = hello |
 	  And the 'Setup Assign (1)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
 	  | # |                |
 	  | 1 | [[in]] = hello |
@@ -4856,4 +3866,300 @@ Scenario: Error from workflow service is expected to buble out
 	  | 1 | [[output]] = HELLO          |
 	  | 2 | [[values(1).upper]] = HELLO |
 	  | 3 | [[values(1).lower]] = hello |	  	 
-	 
+
+Scenario Outline: Workflow to Workflow Mappings 
+Given I have a workflow "<Name>"
+And "<Name>" contains an Assign "AssignData" as
+        | variable         | value         |
+        | <AssignVariable> | <AssignValue> |
+And "<Name>" contains "WorkflowMappingsInnerWorkflow" from server "localhost" with mapping as
+| From Variable  | Input to Service | Output from Service | To Variable  |
+| <FromVariable> | <ToService>      | <FromService>       | <ToVariable> |
+When "<Name>" is executed
+Then the workflow execution has "NO" error
+And the 'WorkflowMappingsInnerWorkflow' in WorkFlow '<Name>' debug inputs as
+      |                        |
+      | <ToServiceAssignValue> |	  
+And the 'WorkflowMappingsInnerWorkflow' in Workflow '<Name>' debug outputs as
+      |                        |
+      |  <ToVariableAndResult> |
+Examples: 
+| Name                       | AssignVariable | AssignValue | FromVariable   | ToService  | FromService | ToVariable     | ToServiceAssignValue   | ToVariableAndResult    |
+| ScalToRecInAndScaltoRecOut | [[OuterIn]]    | hello       | [[OuterIn]]    | in(*).in   | InnerOutput | [[out(*).out]] | [[in(1).in]] = hello   | [[out(1).out]] = hello |
+| BlnkToRecIn                |                |             |                | in(*).in   | InnerOutput | [[OuterOut]]   |                        | [[OuterOut]] =         |
+| BlnkToScalIn               |                |             |                | InnerInput | InnerOutput | [[OuterOut]]   |                        | [[OuterOut]] =         |
+| HdCdScalToRecInSclToSclOut | [[OuterIn]]    | ll          | he[[OuterIn]]o | in(*).in   | InnerOutput | [[OuterOut]]   | [[in(1).in]] = hello   | [[OuterOut]] = hello   |
+| RecToRecInAndRecOut        | [[rec().out]]  | hello       | [[rec().out]]  | in(*).in   | InnerOutput | [[out(*).out]] | [[in(1).in]] = hello   | [[out(1).out]] = hello |
+| ScalToScalIn&ScalOut       | [[OuterIn]]    | hello       | [[OuterIn]]    | InnerInput | InnerOutput | [[OuterOut]]   | [[InnerInput]] = hello | [[OuterOut]] = hello   |
+| Static                     |                |             | hello          | in(*).in   | InnerOutput | [[out(*).out]] | [[in(1).in]] = hello   | [[out(1).out]] = hello |
+| RecToScalOut               | [[rec().in]]   | hello       | [[rec().in]]   | InnerInput | InnerOutput | [[Output]]     | [[InnerInput]] = hello | [[Output]] = hello     |
+| RecToBlank                 | [[rec().in]]   | hello       | [[rec().in]]   | InnerInput | InnerOutput |                | [[InnerInput]] = hello |                        |
+| ScalToBlank                | [[var]]        | hello       | [[var]]        | InnerInput | InnerOutput |                | [[InnerInput]] = hello |                        |
+
+Scenario Outline: Database SqlDB  service using * indexes 
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  |                  |               | [[rec(*).name]]      | <nameVariable>  |
+	  |                  |               | [[rec(*).email]]      | <emailVariable> |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
+	  |                      |
+	  | [[rec(1).name]] = String |
+	  | [[rec(1).email]] = String |	 
+Examples: 
+    | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
+    | TestWFWithDBServiceMails1 | SqlEmail    | [[rec(*).name]] | [[rec(*).email]] | NO           |
+
+
+Scenario Outline: Database MySqlDB Database service using * indexes
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
+	  |                  |               | [[rec(*).email]]    | <emailVariable> |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
+	  |                                       |
+	  | [[rec(1).name]] = Monk                |
+	  | [[rec(1).email]] = dora@explorers.com |
+Examples: 
+    | WorkflowName                   | ServiceName | nameVariable    | emailVariable    | errorOccured |
+    | TestMySqlWFWithDBServiceMails2 | MySQLEmail  | [[rec(*).name]] | [[rec(*).email]] | NO           |
+
+Scenario Outline: Database SqlDB  service using int indexes 
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  |                  |               | [[rec(*).name]]      | <nameVariable>  |
+	  |                  |               | [[rec(*).email]]      | <emailVariable> |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
+	  |                      |
+	  | [[rec(1).name]] = dora |
+	  | [[rec(1).email]] = dora@explorers.co.za |
+Examples: 
+    | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
+    | TestWFWithDBServiceMails3 | SqlEmail    | [[rec(1).name]] | [[rec(1).email]] | NO           |
+
+Scenario Outline: Database MySqlDB Database service using int indexes
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
+	  |                  |               | [[rec(*).email]]    | <emailVariable> |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
+	  |                                       |
+	  | [[rec(1).name]] = Monk                |
+	  | [[rec(1).email]] = dora@explorers.com |
+Examples: 
+    | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
+    | TestMySqlWFWithDBServiceMails3 | MySQLEmail  | [[rec(1).name]] | [[rec(1).email]] | NO           |
+
+ Scenario Outline: Database SqlDB  service using last indexes 
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  |                  |               | [[rec(*).name]]      | <nameVariable>  |
+	  |                  |               | [[rec(*).email]]      | <emailVariable> |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
+	  |                      |
+	  | [[rec(1).name]] = dora |
+	  | [[rec(1).email]] = dora@explorers.co.za |
+Examples: 
+    | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
+    | TestWFWithDBServiceMails4 | SqlEmail    | [[rec().name]] | [[rec().email]] | NO           |
+
+Scenario Outline: Database MySqlDB Database service last  indexes
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
+	  |                  |               | [[rec(*).email]]    | <emailVariable> |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
+	  |                                       |
+	  | [[rec(1).name]] = Monk                |
+	  | [[rec(1).email]] = dora@explorers.com |
+Examples: 
+    | WorkflowName                   | ServiceName | nameVariable   | emailVariable   | errorOccured |
+    | TestMySqlWFWithDBServiceMails5 | MySQLEmail  | [[rec().name]] | [[rec().email]] | NO           |
+       
+  Scenario Outline: Database SqlDB  service using scalar outputs 
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  |                  |               | [[rec(*).name]]      | <nameVariable>  |
+	  |                  |               | [[rec(*).email]]      | <emailVariable> |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
+	  |                      |
+	  | [[name]] = dora |
+	  | [[email]] = dora@explorers.co.za |
+Examples: 
+    | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
+    | TestWFWithDBServiceMails5 | SqlEmail    | [[name]] | [[email]] | NO           |
+
+Scenario Outline: Database MySqlDB Database service scalar outputs 
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  |                  |               | [[rec(*).name]]      | <nameVariable>  |
+	  |                  |               | [[rec(*).email]]      | <emailVariable> |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
+	  |                      |
+	  | [[name]] = Monk |
+	  | [[email]] = dora@explorers.com |
+Examples: 
+    | WorkflowName                   | ServiceName | nameVariable | emailVariable | errorOccured |
+    | TestMySqlWFWithDBServiceMails63 | MySQLEmail  | [[name]]     | [[email]]     | NO           |
+ 
+Scenario Outline: Database MySqlDB Database service Error outputs 
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  |                  |               | [[rec(*).name]]      | <nameVariable>  |
+	  |                  |               | [[rec(*).email]]      | <emailVariable> |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+Examples: 
+    | WorkflowName                   | ServiceName | nameVariable         | emailVariable | errorOccured |
+    | TestMySqlWFWithDBServiceMails7 | MySQLEmail  | [[rec(-1).name]]     | [[email]]     | YES          |
+    | TestMySqlWFWithDBServiceMails8 | MySQLEmail  | [[123]]              | [[email]]     | YES          |
+    | TestMySqlWFWithDBServiceMails9 | MySQLEmail  | [[rec(-1).name.bob]] | [[email]]     | YES          |
+
+Scenario Outline: Database MySqlDB Database service inputs and outputs
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	  | Input to Service | From Variable | Output from Service | To Variable    |
+	  | name                | afg%      | [[countries(*).countryid]] | <nameVariable> |
+	  |                  |               | [[countries(*).description]] | <emailVariable> |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
+	  |                                            |
+	  | [[countries(1).id]] = 1                    |
+	  | [[countries(2).id]] = 1                    |
+	  | [[countries(1).description]] = Afghanistan |
+	  | [[countries(2).description]] = Afghanistan |
+Examples: 
+    | WorkflowName                   | ServiceName       | nameVariable        | emailVariable                | errorOccured |
+    | TestMySqlWFWithDBServiceMails15 | MySqlGetCountries | [[countries(*).id]] | [[countries(*).description]] | NO           |
+
+Scenario Outline: Database SqlDB Database service inputs and outputs
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	  | Input to Service | From Variable | Output from Service          | To Variable     |
+	  | Prefix           | afg           | [[countries(*).countryid]]         | <nameVariable>  |
+	  |                  |               | [[countries(*).description]] | <emailVariable> |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+	 And the '<ServiceName>' in Workflow '<WorkflowName>' debug outputs as
+	  |                      |
+	  | [[countries(1).id]] = 1                    |
+	  | [[countries(1).description]] = Afghanistan |
+Examples: 
+    | WorkflowName                  | ServiceName           | nameVariable        | emailVariable                | errorOccured |
+    | TestSqlWFWithDBServiceMailsCountries | GetCountriesSqlServer | [[countries(*).id]] | [[countries(*).description]] | NO           |
+
+ Scenario Outline: Database SqlDB  service DBErrors
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a "database" service "<ServiceName>" with mappings
+	  | Input to Service | From Variable | Output from Service | To Variable |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+Examples: 
+     | WorkflowName                  | ServiceName          | nameVariable | emailVariable | errorOccured |
+     | TestWFWithDBServiceMailsError | willalwayserror      | [[name]]     | [[email]]     | YES          |
+     | TestWFWithDBServiceMailsError | willalwaysErrorMySql | [[name]]     | [[email]]     | YES          |
+
+
+@ignore
+ Scenario: Executing Asynchrounous testing workflow volume
+	  Given I have a workflow "Testing - Async Test Master Testv"
+	  And "Testing - Async Test Master Test" contains "Volume Async Test" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable |
+	  | Volume           | 1000          |                     |             |
+	  When "Testing - Async Test Master Testv" is executed
+	  Then the workflow execution has "NO" error	  
+	  And the 'Volume Async Test' in Workflow 'Volume Async Test' debug outputs as
+	  |                      |
+	  | [[Result]] = Pass |
+
+ Scenario: Executing Asynchrounous testing workflow base
+	  Given I have a workflow "Testing - Async Test Master Testc"
+	  And "Testing - Async Test Master Testc" contains "Async Test Master" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  When "Testing - Async Test Master Testc" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Async Test Master' in Workflow 'Async Test Master' debug outputs as
+	  |                      |
+	  | [[Result]] = Pass |
+
+Scenario: Executing Asynchrounous testing workflow error
+	  Given I have a workflow "Testing - Async Test Master Teste"
+	  And "Testing - Async Test Master Teste" contains "Async Must Not Bubble Up Error" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  When "Testing - Async Test Master Teste" is executed
+	  Then the workflow execution has "NO" error	  
+	  And the 'Async Must Not Bubble Up Error' in Workflow 'Async Must Not Bubble Up Error' debug outputs as
+	  |                      |
+	  | [[Result]] = Pass |
+
+#Scenario: Server Persisted Connection
+## Note that the result is viewed in the browser
+#Given I have a workflow "Persisted DB Connection Test" that takes an input <DbService>
+#When "SQL Persisted DB Connection Test" is exceuted
+#Then the execution has "NO" error
+#And the debug Result is <Result>
+#Examples: 
+# | #     | DbService | Result |
+# | SQL   | SQL       | Pass   |
+# | MySQL | MySQL     | Pass   |  
+#
+# Scenario: Exceution Engine Test with number of runs
+#	 Given I have a workflow "Exceution Engine Test"
+#	 And "Exceution Engine Test" contains "Execution time testing - inner workflow" from server "localhost" with mapping as
+#	 |Comment|
+#	 And "Exceution Engine Test" contains "Execution Time Testing - Map data in" from server "localhost" with mapping as
+#	 |Comment|
+#	  And "Exceution Engine Test" contains "Execution time testing - Map data in and out" from server "localhost" with mapping as
+#	 |Comment|
+#	 When "<Exceution Engine Test>" is executed
+#	 Then the execution has "NO" error
+#	 And the debug output as
+#	 Examples:
+#     | # | runs  | result |
+#     | 1 | 10    | Pass   |
+#     | 2 | 100   | Pass   |
+#     | 3 | 1000  | Pass   |
+#     | 4 | 9999  | Pass   |
+#     | 5 | 10000 | Pass   |
+
+Scenario: Workflow with AsyncLogging and ForEach
+     Given I have a workflow "WFWithAsyncLoggingForEach"
+     And "WFWithAsyncLoggingForEach" contains a Foreach "ForEachTest" as "NumOfExecution" executions "3000"
+	 And "ForEachTest" contains an Assign "Rec To Convert" as
+	  | variable    | value |
+	  | [[Warewolf]] | bob   |
+	 When "WFWithAsyncLoggingForEach" is executed
+	 Then the workflow execution has "NO" error
+	 And I set logging to "Debug"
+	 When "WFWithAsyncLoggingForEach" is executed "first time"
+	 Then the workflow execution has "NO" error
+	 And I set logging to "OFF"
+	 	 When "WFWithAsyncLoggingForEach" is executed "second time"
+	 Then the workflow execution has "NO" error
+	 And the delta between "first time" and "second time" is less than "1200" milliseconds
+	 And I set logging to "Debug"

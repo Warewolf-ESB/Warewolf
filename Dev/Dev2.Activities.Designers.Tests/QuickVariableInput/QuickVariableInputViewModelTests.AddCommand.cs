@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +33,11 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
             var qviViewModel = new QuickVariableInputViewModelMock();
 
             qviViewModel.AddCommand.Execute(null);
-
+            var hitCount = 0;
+            qviViewModel.AddCommand.CanExecuteChanged += (sender, args) =>
+            {
+                hitCount++;
+            };
             Assert.AreEqual(1, qviViewModel.DoAddHitCount);
 
             qviViewModel.CanAdd = true;
@@ -42,6 +45,8 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
 
             qviViewModel.CanAdd = false;
             Assert.IsFalse(qviViewModel.AddCommand.CanExecute(null));
+
+            Assert.AreEqual(2,hitCount);
         }
 
         [TestMethod]
@@ -103,8 +108,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_AddCommand")]
         public void QuickVariableInputViewModel_AddCommand_DoesNotValidate()
         {
-            var qviViewModel = new QuickVariableInputViewModelMock();
-            qviViewModel.Errors = new List<IActionableErrorInfo>() { new ActionableErrorInfo() };
+            var qviViewModel = new QuickVariableInputViewModelMock { Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() } };
 
             qviViewModel.AddCommand.Execute(null);
             Assert.AreEqual(0, qviViewModel.ValidateHitCount);
@@ -207,13 +211,13 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_AddCommand")]
         public void QuickVariableInputViewModel_AddCommand_SplitTypeWithNewLine_CorrectResultsReturned()
         {
-            VerifySplitTypeWithNewLine("\r\n", doesVariableListContainNewLine: true);
-            VerifySplitTypeWithNewLine("\n", doesVariableListContainNewLine: true);
-            VerifySplitTypeWithNewLine("\r", doesVariableListContainNewLine: true, doPreview: false);
+            VerifySplitTypeWithNewLine("\r\n", true);
+            VerifySplitTypeWithNewLine("\n", true);
+            VerifySplitTypeWithNewLine("\r", true);
 
-            VerifySplitTypeWithNewLine("\r\n", doesVariableListContainNewLine: false);
-            VerifySplitTypeWithNewLine("\n", doesVariableListContainNewLine: false);
-            VerifySplitTypeWithNewLine("\r", doesVariableListContainNewLine: false);
+            VerifySplitTypeWithNewLine("\r\n", false);
+            VerifySplitTypeWithNewLine("\n", false);
+            VerifySplitTypeWithNewLine("\r", false);
         }
 
         [TestMethod]

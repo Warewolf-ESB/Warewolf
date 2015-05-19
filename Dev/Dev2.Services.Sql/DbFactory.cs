@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,18 +8,20 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Services.Sql;
+using MySql.Data.MySqlClient;
 
 namespace Dev2.Services.Sql
 {
     [ExcludeFromCodeCoverage]
-    class DbFactory : IDbFactory
+    internal class DbFactory : IDbFactory
     {
         #region Implementation of IDbFactory
 
@@ -34,16 +35,31 @@ namespace Dev2.Services.Sql
         public IDbCommand CreateCommand(IDbConnection connection, CommandType commandType, string commandText)
         {
             return new SqlCommand(commandText, connection as SqlConnection)
-                {
-                    CommandType = commandType,
-                    CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds,
-
-                };
+            {
+                CommandType = commandType,
+                CommandTimeout = (int) GlobalConstants.TransactionTimeout.TotalSeconds,
+            };
         }
 
         public DataTable GetSchema(IDbConnection connection, string collectionName)
         {
-            SqlConnection sqlConnection  = connection as SqlConnection;
+
+                    return GetSqlServerSchema(connection, collectionName);
+
+        }
+
+        //DataTable GetMySqlServerSchema(IDbConnection connection)
+        //{
+        //    if(! (connection is MySqlConnection))
+        //        throw new Exception("Invalid Mqsql Connection");
+
+        //    return ((MySqlConnection)connection).GetSchema();
+            
+        //}
+
+        static DataTable GetSqlServerSchema(IDbConnection connection, string collectionName)
+        {
+            var sqlConnection = connection as SqlConnection;
             if(sqlConnection != null)
             {
                 return sqlConnection.GetSchema(collectionName);
@@ -65,8 +81,8 @@ namespace Dev2.Services.Sql
 
         public DataSet FetchDataSet(IDbCommand command)
         {
-            if( !(command is SqlCommand))
-                throw  new  Exception("Invalid DBCommand expected.");
+            if (!(command is SqlCommand))
+                throw new Exception("Invalid DBCommand expected.");
             using (var dataSet = new DataSet())
             {
                 using (var adapter = new SqlDataAdapter(command as SqlCommand))

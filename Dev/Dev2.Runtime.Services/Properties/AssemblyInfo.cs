@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -20,11 +19,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Dev2.Runtime.Services")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Warewolf")]
-[assembly: AssemblyProduct("Business Design Studio")]
-[assembly: AssemblyCopyright("Copyright © Warewolf 2013")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
 [assembly: InternalsVisibleTo("Dev2.Runtime.Tests")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -35,15 +29,3 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("cad859cb-6eb6-49b6-a2a5-2fdf2323f1a8")]
 
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Build and Revision Numbers 
-// by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.4.2.2")]
-[assembly: AssemblyFileVersion("0.4.2.2")]

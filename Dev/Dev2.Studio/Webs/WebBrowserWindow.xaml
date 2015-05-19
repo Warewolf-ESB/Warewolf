@@ -39,11 +39,11 @@
                BasedOn="{StaticResource LabelStyle}"
                x:Key="WizardTitleLableStyle">
             <Setter Property="Foreground"
-                    Value="White"></Setter>
+                    Value="White" />
             <Setter Property="FontSize"
-                    Value="{StaticResource HeaderFontSize}"></Setter>
+                    Value="{StaticResource HeaderFontSize}" />
             <Setter Property="FontWeight"
-                    Value="Bold"></Setter>
+                    Value="Bold" />
         </Style>
     </Window.Resources>
 

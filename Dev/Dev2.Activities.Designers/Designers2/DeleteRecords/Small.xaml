@@ -41,14 +41,14 @@
                                 Grid.Row="0"
                                 DefaultText="[[Recordset(*)]]"
                                 FilterType="RecordsetsOnly"
-                                ToolTip="{x:Static help:HelpTextResources.DeleteRecordsToolTipRecords}"
+                                ToolTip="{x:Static help:HelpTextResources.DeleteToolTipRecords}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.RecordsetName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
                                 Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Recorstxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.DeleteRecordsHelpRecords}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.DeleteHelpRecords}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.RecordsetName"
@@ -64,7 +64,7 @@
         <ui:IntellisenseTextBox Grid.Row="1"
                                 Grid.Column="1"
                                 DefaultText="[[Success]]"
-                                ToolTip="{x:Static help:HelpTextResources.DeleteRecordsToolTipResult}"
+                                ToolTip="{x:Static help:HelpTextResources.DeleteToolTipResult}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -72,7 +72,7 @@
                                 AllowMultilinePaste="False" 
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.DeleteRecordsHelpResult}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.DeleteHelpResult}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Result"

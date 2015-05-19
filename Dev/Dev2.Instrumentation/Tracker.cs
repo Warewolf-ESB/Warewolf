@@ -9,17 +9,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+// ReSharper disable RedundantUsingDirective
 
+// ReSharper restore RedundantUsingDirective
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using Trackerbird.Tracker;
-    // ReSharper disable RedundantUsingDirective
-
-// ReSharper restore RedundantUsingDirective
-
 #if ! DEBUG
 using Dev2.Studio.Utils;
 #endif

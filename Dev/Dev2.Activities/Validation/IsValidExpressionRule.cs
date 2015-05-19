@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -67,7 +66,7 @@ namespace Dev2.Validation
 
             if (DataListUtil.IsEvaluated(value) && !DataListUtil.IsValueRecordset(value))
             {
-                var validRegions = Dev2.DataList.Contract.DataListCleaningUtils.SplitIntoRegions(value);
+                var validRegions = DataList.Contract.DataListCleaningUtils.SplitIntoRegions(value);
                 foreach (var region in validRegions)
                 {
                     var intellisenseResult = parser.ValidateName(DataListUtil.RemoveLanguageBrackets(region), "");

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,8 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
+using System.Collections.Generic;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -21,7 +20,6 @@ namespace Dev2.Services.Execution
 {
     public class WebserviceExecution : ServiceExecutionAbstract<WebService, WebSource>
     {
-
         #region Constuctors
 
         public WebserviceExecution(IDSFDataObject dataObj, bool handlesFormatting)
@@ -46,15 +44,17 @@ namespace Dev2.Services.Execution
             WebServices.ExecuteRequest(service, true, out errors);
         }
 
-        protected override object ExecuteService(out ErrorResultTO errors, IOutputFormatter formater = null)
+        protected override object ExecuteService(List<MethodParameter> methodParameters, out ErrorResultTO errors, IOutputFormatter formater = null)
         {
             Service.Source = Source;
             ExecuteWebRequest(Service, out errors);
-            string result = String.IsNullOrEmpty(Service.JsonPath) || String.IsNullOrEmpty(Service.JsonPathResult) ? Scrubber.Scrub(Service.RequestResponse) : Scrubber.Scrub(Service.JsonPathResult);
+            string result = String.IsNullOrEmpty(Service.JsonPath) || String.IsNullOrEmpty(Service.JsonPathResult)
+                ? Scrubber.Scrub(Service.RequestResponse)
+                : Scrubber.Scrub(Service.JsonPathResult);
             Service.RequestResponse = null;
             return result;
         }
-        #endregion
 
+        #endregion
     }
 }

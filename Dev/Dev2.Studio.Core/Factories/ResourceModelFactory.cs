@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -161,6 +160,13 @@ namespace Dev2.Studio.Core.Factories
                         resource.DisplayName = displayName;
                         resource.ServerResourceType = "WorkflowService";
                         resource.ResourceName = resourceName;
+                        break;
+                    case "DropboxSource":
+                        resource.ResourceType = ResourceType.Source;
+                        resource.DisplayName = displayName;
+                        resource.ServerResourceType = "DropboxSource";
+                        resource.ResourceName = resourceName;
+                        resource.ID = Guid.Empty;
                         break;
                 }
                 return resource;

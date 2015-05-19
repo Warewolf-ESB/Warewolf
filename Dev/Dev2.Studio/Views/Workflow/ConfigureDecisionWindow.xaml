@@ -22,8 +22,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <ListView ItemsSource="{Binding Path=SelectedDecisionType.OperatorTypes}" Grid.Column="1">
-        </ListView>        
+        <ListView ItemsSource="{Binding Path=SelectedDecisionType.OperatorTypes}" Grid.Column="1" />
         <Button Content="OK" Command="{Binding Path=OkCommand}" Grid.Row="1" Grid.Column="1" MaxHeight="25" MinWidth="100" HorizontalAlignment="Right" VerticalAlignment="Top" IsDefault="True" AutomationProperties.AutomationId="UI_ConfigureDecisionOKBtn_AutoID"  />        
     </Grid>
 </Window>

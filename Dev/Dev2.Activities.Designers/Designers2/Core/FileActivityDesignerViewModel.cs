@@ -9,14 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.IO;
 using System.Windows;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
-using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Studio.Core;
 using Dev2.Validation;
@@ -55,9 +52,9 @@ namespace Dev2.Activities.Designers2.Core
             get { return (bool)GetValue(IsInputPathFocusedProperty); }
             set
             {
-                if(IsInputPathFocusedProperty != null)
+                if (IsInputPathFocusedProperty != null)
                 {
-                    SetValue(dp: IsInputPathFocusedProperty, value: value);
+                    SetValue(IsInputPathFocusedProperty, value);
                 }
             }
         }
@@ -70,9 +67,9 @@ namespace Dev2.Activities.Designers2.Core
             get { return (bool)GetValue(IsOutputPathFocusedProperty); }
             set
             {
-                if(IsOutputPathFocusedProperty != null)
+                if (IsOutputPathFocusedProperty != null)
                 {
-                    SetValue(dp: IsOutputPathFocusedProperty, value: value);
+                    SetValue(IsOutputPathFocusedProperty, value);
                 }
             }
         }
@@ -115,7 +112,7 @@ namespace Dev2.Activities.Designers2.Core
             IsValidExpressionRule isValidExpressionRule = new IsValidExpressionRule(() => path, DataListSingleton.ActiveDataList.Resource.DataList);
             fileActivityRuleSet.Add(isValidExpressionRule);
             errors.AddRange(fileActivityRuleSet.ValidateRules(label, onError));
-             
+
 
             string pathValue;
             path.TryParseVariables(out pathValue, onError, variableValue: ValidUriSchemes[0] + "://temp");
@@ -128,26 +125,17 @@ namespace Dev2.Activities.Designers2.Core
                     DoError = onError
                 };
 
+                IsValidFileNameRule isValidFileNameRule = new IsValidFileNameRule(() => path)
+                {
+                    LabelText = label,
+                    DoError = onError
+                };
+
                 fileActivityRuleSet.Add(isStringEmptyOrWhiteSpaceRuleUserName);
+                fileActivityRuleSet.Add(isValidExpressionRule);
+                
                 errors.AddRange(fileActivityRuleSet.ValidateRules(label, onError));
 
-                var pathBlankError = isStringEmptyOrWhiteSpaceRuleUserName.Check();
-                if (pathBlankError != null)
-                {
-                    errors.Add(new ActionableErrorInfo(onError) { ErrorType = ErrorType.Critical, Message = label + " must have a value" });
-                }
-                else
-                {
-                        Uri uriResult;
-                        var isValid = Uri.TryCreate(pathValue, UriKind.Absolute, out uriResult)
-                            ? ValidUriSchemes.Contains(uriResult.Scheme)
-                            : File.Exists(pathValue);
-
-                        if (!isValid)
-                        {
-                            errors.Add(new ActionableErrorInfo(onError) { ErrorType = ErrorType.Critical, Message = "Please supply a valid " + label });
-                        }
-                }
             }
 
             UpdateErrors(errors);

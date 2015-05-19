@@ -9,18 +9,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 
 namespace Dev2.Data.Tests.BinaryDataList
 {
@@ -131,85 +130,10 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.IsTrue(result);
         }
 
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("DataListUtil_IsXML")]
-        public void DataListUtil_IsXML_CheckIsXML_ExpectTrue()
-        {
-            //------------Setup for test--------------------------
-            const string defs = @"<Outputs><Output Name=""TableCountry"" MapsTo=""TableCountry"" Value=""[[string_NewDataSet().TableCountry]]"" Recordset=""string_NewDataSet"" /><Output Name=""TableCity"" MapsTo=""[[City]]"" Value=""[[City]]"" Recordset=""string_NewDataSet"" /></Outputs>";
 
-            //------------Execute Test---------------------------
-            bool isFragment;
-            bool isHTML;
-            var result = DataListUtil.IsXml(defs, out isFragment, out isHTML);
 
-            //------------Assert Results-------------------------
 
-            Assert.IsTrue(result);
-            Assert.IsFalse(isFragment);
-            Assert.IsFalse(isHTML);
-        }
 
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("DataListUtil_IsXML")]
-        public void DataListUtil_IsXML_CheckIsFragment_ExpectTrue()
-        {
-            //------------Setup for test--------------------------
-            const string defs = @"<x><a></a></x><x></x><x></x>";
-
-            //------------Execute Test---------------------------
-            bool isFragment;
-            bool isHTML;
-            var result = DataListUtil.IsXml(defs, out isFragment, out isHTML);
-
-            //------------Assert Results-------------------------
-
-            Assert.IsTrue(result);
-            Assert.IsTrue(isFragment);
-            Assert.IsFalse(isHTML);
-        }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("DataListUtil_IsXML")]
-        public void DataListUtil_IsXML_CheckIsHTML_ExpectTrue()
-        {
-            //------------Setup for test--------------------------
-            const string defs = @"<html></html>";
-
-            //------------Execute Test---------------------------
-            bool isFragment;
-            bool isHTML;
-            var result = DataListUtil.IsXml(defs, out isFragment, out isHTML);
-
-            //------------Assert Results-------------------------
-
-            Assert.IsFalse(result);
-            Assert.IsFalse(isFragment);
-            Assert.IsTrue(isHTML);
-        }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("DataListUtil_IsXML")]
-        public void DataListUtil_IsXML_CheckIsHTMLWhenDocTypePresent_ExpectTrue()
-        {
-            //------------Setup for test--------------------------
-            const string defs = @"<!DOCTYPE html><html></html>";
-
-            //------------Execute Test---------------------------
-            bool isFragment;
-            bool isHTML;
-            var result = DataListUtil.IsXml(defs, out isFragment, out isHTML);
-
-            //------------Assert Results-------------------------
-
-            Assert.IsFalse(result);
-            Assert.IsFalse(isFragment);
-            Assert.IsTrue(isHTML);
-        }
         
         [TestMethod]
         [Owner("Travis Frisinger")]
@@ -691,7 +615,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             var target = new Collection<ObservablePair<string, string>>();
 
             //------------Execute Test---------------------------
-            DataListUtil.UpsertTokens(target, tokenizer.Object, tokenPrefix: "rs(*).", tokenSuffix: "a", removeEmptyEntries: false);
+            DataListUtil.UpsertTokens(target, tokenizer.Object, "rs(*).", "a", false);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(TokenCount, target.Count);
@@ -729,7 +653,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             var target = new Collection<ObservablePair<string, string>>();
 
             //------------Execute Test---------------------------
-            DataListUtil.UpsertTokens(target, tokenizer.Object, tokenPrefix: "rs(*).", tokenSuffix: "a");
+            DataListUtil.UpsertTokens(target, tokenizer.Object, "rs(*).", "a");
 
             //------------Assert Results-------------------------
             const int ExpectedCount = TokenCount - 2;
@@ -775,38 +699,9 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.IsTrue(isClosed);
         }
 
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataListUtil_StartsWithOpeningTags")]
-        public void DataListUtil_StartsWithOpeningTags_VariableHasNoOpeningTags_False()
-        {
-            //------------Execute Test---------------------------
-            var isClosed = DataListUtil.StartsWithOpeningTags("var]]");
-            //------------Assert Results-------------------------
-            Assert.IsFalse(isClosed);
-        }
 
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataListUtil_StartsWithOpeningTags")]
-        public void DataListUtil_StartsWithOpeningTags_VariableIsEmpty_False()
-        {
-            //------------Execute Test---------------------------
-            var isClosed = DataListUtil.StartsWithOpeningTags("");
-            //------------Assert Results-------------------------
-            Assert.IsFalse(isClosed);
-        }
 
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataListUtil_StartsWithOpeningTags")]
-        public void DataListUtil_StartsWithOpeningTags_VariableHasOpeningTags_True()
-        {
-            //------------Execute Test---------------------------
-            var isClosed = DataListUtil.StartsWithOpeningTags("[[var]]");
-            //------------Assert Results-------------------------
-            Assert.IsTrue(isClosed);
-        }
+
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
@@ -881,7 +776,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             //------------Execute Test---------------------------
             ErrorResultTO invokeErrors;
-            DataListUtil.ShapeDefinitionsToDataList(null, enDev2ArgumentType.DB_ForEach, out invokeErrors, flipGeneration: false, isDbService: true);
+            DataListUtil.ShapeDefinitionsToDataList(null, enDev2ArgumentType.DB_ForEach, out invokeErrors, false, true);
             //------------Assert Results-------------------------
             Assert.IsNotNull(invokeErrors);
             var errors = invokeErrors.FetchErrors();

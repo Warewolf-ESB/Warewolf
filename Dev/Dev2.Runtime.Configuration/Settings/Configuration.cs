@@ -9,8 +9,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
+using System.Activities.XamlIntegration;
+using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Windows.Controls;
 using System.Xml.Linq;
@@ -28,6 +29,9 @@ namespace Dev2.Runtime.Configuration.Settings
     // ------------------------------------------------------------------------------
     public sealed class Configuration : PropertyChangedBase
     {
+        public static ConcurrentDictionary<Guid, TextExpressionCompilerResults> Resultscache = new ConcurrentDictionary<Guid, TextExpressionCompilerResults>(); 
+
+
         #region Fields
 
         private LoggingSettings _logging;

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,6 +17,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Threading;
+using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
@@ -41,7 +41,7 @@ namespace Dev2.AppResources.Repositories
     public class StudioResourceRepository : IStudioResourceRepository
     {
         private readonly Dispatcher _currentDispatcher;
-        private readonly Action<Action, DispatcherPriority> _invoke;
+        private readonly Action<System.Action, DispatcherPriority> _invoke;
 
         static StudioResourceRepository()
         {
@@ -64,7 +64,7 @@ namespace Dev2.AppResources.Repositories
             }
         }
 
-        internal StudioResourceRepository(IExplorerItem explorerItem, Guid environmentId, Action<Action, DispatcherPriority> invoke)
+        internal StudioResourceRepository(IExplorerItem explorerItem, Guid environmentId, Action<System.Action, DispatcherPriority> invoke)
         {
             ExplorerItemModelClone = a => a.Clone();
             ExplorerItemModels = new ObservableCollection<IExplorerItemModel>();
@@ -80,7 +80,7 @@ namespace Dev2.AppResources.Repositories
         }
 
         //This is for testing only need better way of putting this together
-        internal StudioResourceRepository(ExplorerItemModel explorerItem, Action<Action, DispatcherPriority> invoke)
+        internal StudioResourceRepository(ExplorerItemModel explorerItem, Action<System.Action, DispatcherPriority> invoke)
         {
             ExplorerItemModelClone = a => a.Clone();
             ExplorerItemModels = new ObservableCollection<IExplorerItemModel>();
@@ -100,7 +100,7 @@ namespace Dev2.AppResources.Repositories
 
         public Func<Guid> GetCurrentEnvironment = () => EnvironmentRepository.Instance.ActiveEnvironment.ID;
 
-        public Func<Guid, IExplorerResourceRepository> GetExplorerProxy = environmentId =>
+        public Func<Guid, IClientExplorerResourceRepository> GetExplorerProxy = environmentId =>
         {
             var environmentModel = EnvironmentRepository.Instance.Get(environmentId);
             var connection = environmentModel.Connection;
@@ -153,7 +153,7 @@ namespace Dev2.AppResources.Repositories
                 }
                 else
                 {
-                    LoadEnvironmentTree(environmentId, onCompletion, environmentModel);
+                    asyncWorker.Start(()=>{}, () => LoadEnvironmentTree(environmentId, onCompletion, environmentModel), e => onCompletion(environmentId));
                 }
             }
         }
@@ -193,7 +193,7 @@ namespace Dev2.AppResources.Repositories
 
             if(environment == null)
             {
-                throw new Exception(string.Format("Environment Id : [{0}] was not found", environmentId.ToString()));
+                throw new Exception(string.Format("Environment Id : [{0}] was not found", environmentId));
             }
 
             var explorerItemModel = LoadEnvironment(environmentId);
@@ -237,23 +237,32 @@ namespace Dev2.AppResources.Repositories
             Dev2Logger.Log.Info(String.Format("Delete Folder Resource: {0} Id:{1}", item.DisplayName, item.EnvironmentId));
             VerifyArgument.IsNotNull("item", item);
             IExplorerItemModel parentItem = item.Parent;
-            if(parentItem != null && parentItem.Children.Remove(item))
+            if(parentItem != null)
             {
-                try
+                var found = parentItem.Children.FirstOrDefault(a => a.ResourcePath == item.ResourcePath && a.ResourceType == ResourceType.Folder);
+                if (found != null) item = found;
+                if( parentItem.Children.Remove(item))
                 {
-                    var result = GetExplorerProxy(item.EnvironmentId).DeleteItem(MapData(item), Guid.Empty);
-                    if(result.Status != ExecStatus.Success)
+                    try
                     {
-                        throw new Exception(result.Message);
+                        var result = GetExplorerProxy(item.EnvironmentId).DeleteItem(MapData(item), Guid.Empty);
+                        if(result.Status != ExecStatus.Success)
+                        {
+                            throw new Exception(result.Message);
+                        }
                     }
+                    catch(Exception)
+                    {
+                        
+                            parentItem.Children.Add(item);
+                        
+                        throw;
+                    }
+                  
+                        parentItem.OnChildrenChanged();
+                    
                 }
-                catch(Exception)
-                {
-                    parentItem.Children.Add(item);
-                    throw;
-                }
-                parentItem.OnChildrenChanged();
-            }
+        }
         }
 
         public void UpdateRootAndFoldersPermissions(Permissions modifiedPermissions, Guid environmentGuid, bool updateRoot = true)
@@ -261,7 +270,9 @@ namespace Dev2.AppResources.Repositories
             var server = FindItem(a => a.EnvironmentId == environmentGuid && a.ResourceType == ResourceType.Server);
             if(server != null)
             {
+                // ReSharper disable MaximumChainedReferences
                 server.Descendants().Where(a => a.ResourceType == ResourceType.Folder).ToList().ForEach(a =>
+                    // ReSharper restore MaximumChainedReferences
                     {
 
                         a.Permissions = modifiedPermissions;
@@ -433,7 +444,7 @@ namespace Dev2.AppResources.Repositories
             }
             model.Parent.RemoveChild(model);
             model.ResourcePath = newPath;
-            ItemAddedMessageHandler(new ServerExplorerItem(model.DisplayName,model.ResourceId,model.ResourceType,null,model.Permissions,newPath+"\\"+model.DisplayName));
+            ItemAddedMessageHandler(new ServerExplorerItem(model.DisplayName,model.ResourceId,model.ResourceType,null,model.Permissions,newPath+"\\"+model.DisplayName){ServerId = model.EnvironmentId});
 
             RefreshVersionHistory(model.EnvironmentId, model.ResourceId);
         }
@@ -548,7 +559,7 @@ namespace Dev2.AppResources.Repositories
             }
         }
 
-        public void PerformUpdateOnDispatcher(Action action)
+        public void PerformUpdateOnDispatcher(System.Action action)
         {
             _invoke(action, DispatcherPriority.Send);
         }
@@ -660,7 +671,9 @@ namespace Dev2.AppResources.Repositories
             {
                 return null;
             }
+            // ReSharper disable MaximumChainedReferences
             root.Children = root.Children.Where(a => FilterRec(filter, a) != null || filter(a)).ToObservableCollection();
+            // ReSharper restore MaximumChainedReferences
             return root;
         }
 
@@ -691,11 +704,10 @@ namespace Dev2.AppResources.Repositories
                 if(ExplorerItemModels.Any(a => a.EnvironmentId == environmentId))
                 {
                     var index = ExplorerItemModels.IndexOf(ExplorerItemModels.FirstOrDefault(a => a.EnvironmentId == environmentId));
-                    if(index >= 0)
+                    if (index >= 0)
                     {
                         explorerItemModel.IsRefreshing = ExplorerItemModels[index].IsRefreshing;
-                        ExplorerItemModels.RemoveAt(index);
-                        ExplorerItemModels.Insert(index, explorerItemModel);
+                        UpdateExplorerItemModelOnUiThread(explorerItemModel, index);
                     }
                 }
                 else
@@ -704,15 +716,26 @@ namespace Dev2.AppResources.Repositories
                     if(index >= 0)
                     {
                         explorerItemModel.IsRefreshing = ExplorerItemModels[index].IsRefreshing;
-                        ExplorerItemModels.RemoveAt(index);
-                        ExplorerItemModels.Insert(index, explorerItemModel);
+                        UpdateExplorerItemModelOnUiThread(explorerItemModel, index);
                     }
                     else
                     {
-                        ExplorerItemModels.Add(explorerItemModel);
+                        Execute.OnUIThread(() =>
+           {
+               ExplorerItemModels.Add(explorerItemModel);
+           });
                     }
                 }
             }
+        }
+
+        void UpdateExplorerItemModelOnUiThread(IExplorerItemModel explorerItemModel, int index)
+        {
+            Execute.OnUIThread(() =>
+            {
+                ExplorerItemModels.RemoveAt(index);
+                ExplorerItemModels.Insert(index, explorerItemModel);
+            });
         }
 
         private void LoadItemsToTree(Guid environmentId, IExplorerItemModel explorerItemModel, int indexToReplace)
@@ -735,7 +758,7 @@ namespace Dev2.AppResources.Repositories
         {
             if(explorerItemModel.Children != null)
             {
-                foreach(ExplorerItemModel child in explorerItemModel.Children)
+                foreach(var child in explorerItemModel.Children)
                 {
                     child.Parent = explorerItemModel;
                     child.EnvironmentId = enviromentId;
@@ -935,6 +958,19 @@ namespace Dev2.AppResources.Repositories
             if(parent != null && parent.Children.Count > 0)
             {
                 ShowVersionHistory(environmentId, resourceId);
+            }
+        }
+
+        public string GetServerVersion(Guid environmentId)
+        {
+            try
+            {
+                return GetExplorerProxy(environmentId).GetServerVersion();
+            }
+            catch (Exception)
+            {
+
+                return "Less than 0.4.19.1";
             }
         }
     }

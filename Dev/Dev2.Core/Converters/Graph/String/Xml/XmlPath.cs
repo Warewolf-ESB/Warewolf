@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -8,7 +7,6 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-
 
 using System;
 using System.Collections.Generic;
@@ -23,9 +21,9 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
     {
         #region Class Members
 
-        const string _nodeSeperatorSymbol = ".";
-        const string _attributeSeperatorSymbol = ":";
-        const string _enumerableSymbol = "()";
+        private const string _nodeSeperatorSymbol = ".";
+        private const string _attributeSeperatorSymbol = ":";
+        private const string _enumerableSymbol = "()";
 
         #endregion Class Members
 
@@ -61,18 +59,18 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
 
         public override IEnumerable<IPathSegment> GetSegements()
         {
-            List<IPathSegment> segments = new List<IPathSegment>();
+            var segments = new List<IPathSegment>();
 
-            foreach(string segment in ActualPath.Split(NodeSeperatorSymbol.ToCharArray()))
+            foreach (string segment in ActualPath.Split(NodeSeperatorSymbol.ToCharArray()))
             {
                 string[] nestedSegments = segment.Split(AttributeSeperatorSymbol.ToCharArray());
 
-                if(nestedSegments.Length >= 1)
+                if (nestedSegments.Length >= 1)
                 {
                     segments.Add(CreatePathSegment(nestedSegments[0]));
                 }
 
-                if(nestedSegments.Length >= 2)
+                if (nestedSegments.Length >= 2)
                 {
                     segments.Add(CreateAttributePathSegment(nestedSegments[1]));
                 }
@@ -84,7 +82,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
         public override IPathSegment CreatePathSegment(string pathSegmentString)
         {
             XmlPathSegment xmlPathSegment;
-            if(pathSegmentString.EndsWith(EnumerableSymbol))
+            if (pathSegmentString.EndsWith(EnumerableSymbol))
             {
                 xmlPathSegment = new XmlPathSegment(pathSegmentString.TrimEnd(EnumerableSymbol.ToArray()), true);
             }
@@ -116,26 +114,17 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
 
         public static string EnumerableSymbol
         {
-            get
-            {
-                return _enumerableSymbol;
-            }
+            get { return _enumerableSymbol; }
         }
 
         public static string NodeSeperatorSymbol
         {
-            get
-            {
-                return _nodeSeperatorSymbol;
-            }
+            get { return _nodeSeperatorSymbol; }
         }
 
         public static string AttributeSeperatorSymbol
         {
-            get
-            {
-                return _attributeSeperatorSymbol;
-            }
+            get { return _attributeSeperatorSymbol; }
         }
 
         #endregion Static Properties

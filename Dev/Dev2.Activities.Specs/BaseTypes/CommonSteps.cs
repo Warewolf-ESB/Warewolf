@@ -28,6 +28,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Specs.Toolbox.FileAndFolder;
+using Dev2.Common;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Warewolf.Storage;
 
 namespace Dev2.Activities.Specs.BaseTypes
 {
@@ -44,6 +47,8 @@ namespace Dev2.Activities.Specs.BaseTypes
         public const string ActualSourceHolder = "actualSource";
         public const string SourceUsernameHolder = "sourceUsername";
         public const string SourcePasswordHolder = "sourcePassword";
+        public const string ValidationErrors = "validationErrors";
+        public const string ValidationMessage = "validationMessage";
 
         [Then(@"the execution has ""(.*)"" error")]
         [Then(@"the execution has '(.*)' error")]
@@ -51,11 +56,9 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             bool expected = anError.Equals("NO");
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            var comiler = DataListFactory.CreateDataListCompiler();
-            // 06.01.2014 Line Below is Causing Compile Errors ;)
-            string fetchErrors = comiler.FetchErrors(result.DataListID);
-            //string fetchErrors = RecordSetBases.FetchErrors(result.DataListID);
-            bool actual = string.IsNullOrEmpty(fetchErrors);
+            
+            string fetchErrors = string.Join(Environment.NewLine,result.Environment.Errors);
+            bool actual = result.Environment.Errors.Count==0;
             string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actual ? "did not occur" : "did occur" + fetchErrors);
 
@@ -65,7 +68,8 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Then(@"the debug inputs as")]
         public void ThenTheDebugInputsAs(Table table)
         {
-            var inputDebugItems = GetInputDebugItems();
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var inputDebugItems = GetInputDebugItems(null, result.Environment);
             ThenTheDebugInputsAs(table, inputDebugItems);
         }
 
@@ -78,7 +82,8 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Then(@"the debug output as")]
         public void ThenTheDebugOutputAs(Table table)
         {
-            var outputDebugItems = GetOutputDebugItems();
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var outputDebugItems = GetOutputDebugItems(null, result.Environment);
             ThenTheDebugOutputAs(table, outputDebugItems);
         }
 
@@ -138,16 +143,32 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         void CreateSourceFileWithSomeDummyData()
         {
-            var broker = ActivityIOFactory.CreateOperationsBroker();
-            IActivityIOPath source = ActivityIOFactory.CreatePathFromString(ScenarioContext.Current.Get<string>(ActualSourceHolder),
-                            ScenarioContext.Current.Get<string>(SourceUsernameHolder),
-                            ScenarioContext.Current.Get<string>(SourcePasswordHolder),
-                            true);
-            var ops = ActivityIOFactory.CreatePutRawOperationTO(WriteType.Overwrite, Guid.NewGuid().ToString());
-            IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
-            if(sourceEndPoint.PathIs(sourceEndPoint.IOPath) == enPathType.File)
+            try
             {
-                broker.PutRaw(sourceEndPoint, ops);
+                Dev2Logger.Log.Debug(string.Format("Source File: {0}", ScenarioContext.Current.Get<string>(ActualSourceHolder)));
+                var broker = ActivityIOFactory.CreateOperationsBroker();
+                IActivityIOPath source = ActivityIOFactory.CreatePathFromString(ScenarioContext.Current.Get<string>(ActualSourceHolder),
+                    ScenarioContext.Current.Get<string>(SourceUsernameHolder),
+                    ScenarioContext.Current.Get<string>(SourcePasswordHolder),
+                    true);
+                var ops = ActivityIOFactory.CreatePutRawOperationTO(WriteType.Overwrite, Guid.NewGuid().ToString());
+                IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
+                if(sourceEndPoint.PathIs(sourceEndPoint.IOPath) == enPathType.File)
+                {
+                    var result =  broker.PutRaw(sourceEndPoint, ops);
+                    if (result != "Success")
+                    {
+                        result = broker.PutRaw(sourceEndPoint, ops);
+                        if (result != "Success")
+                        {
+                            Dev2Logger.Log.Debug("Create Source File for file op test error");
+                        }
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                Dev2Logger.Log.Debug("Create Source File for file op test error",e);               
             }
 
         }
@@ -194,6 +215,56 @@ namespace Dev2.Activities.Specs.BaseTypes
             ScenarioContext.Current.Add(DestinationPasswordHolder, password.Replace('"', ' ').Trim());
         }
 
+        [When(@"validating the tool")]
+        public void WhenValidatingTheTool()
+        {
+            var dev2Activity = TestStartNode.Action as IDev2Activity;
+            if(dev2Activity != null)
+            {
+                var validationErrors = dev2Activity.PerformValidation();
+                ScenarioContext.Current.Add(ValidationErrors, validationErrors);
+            }
+        }
+
+        [Then(@"validation is '(.*)'")]
+        public void ThenValidationIs(string expectedValidationResult)
+        {
+            IList<IActionableErrorInfo> validationErrors;
+            ScenarioContext.Current.TryGetValue(ValidationErrors, out validationErrors);
+            if (expectedValidationResult.Equals("True", StringComparison.OrdinalIgnoreCase))
+            {
+                if (validationErrors != null)
+                {
+                    Assert.AreEqual(0,validationErrors.Count);
+                }
+            }
+            else
+            {
+                Assert.IsNotNull(validationErrors);
+                Assert.AreNotEqual(0, validationErrors.Count);
+            }
+        }
+
+        [Then(@"validation message is '(.*)'")]
+        public void ThenValidationMessageIs(string validationMessage)
+        {
+            IList<IActionableErrorInfo> validationErrors;
+            ScenarioContext.Current.TryGetValue(ValidationErrors, out validationErrors);
+            if (string.IsNullOrEmpty(validationMessage))
+            {
+                if (validationErrors != null)
+                {
+                    Assert.AreEqual(0,validationErrors.Count);
+                }
+            }
+            else
+            {
+                Assert.IsNotNull(validationErrors);
+                var completeMessage = string.Join(";", validationErrors.Select(info => info.Message));
+                Assert.AreEqual(validationMessage, completeMessage);
+            }
+        }
+
         [Given(@"result as '(.*)'")]
         public void GivenResultAs(string resultVar)
         {
@@ -219,7 +290,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             //Get the error value
             string errorValue;
-            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(errorVariable),
+            GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(errorVariable),
                                        out errorValue, out error);
             errorValue = errorValue.Replace('"', ' ').Trim();
 
@@ -240,7 +311,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
                 string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
-                List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column,
+                List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
                                                                                out error);
                 recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
                 value = value.Replace('"', ' ').Trim();
@@ -258,7 +329,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 string actualValue;
                 value = value.Replace('"', ' ').Trim();
-                GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
+                GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(variable),
                                            out actualValue, out error);
                 if(string.IsNullOrEmpty(value))
                 {
@@ -400,7 +471,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             return objRef;
         }
 
-        public static List<IDebugItemResult> GetInputDebugItems(Activity act = null)
+        public static List<IDebugItemResult> GetInputDebugItems(Activity act,IExecutionEnvironment env)
         {
             ErrorResultTO errors;
             var comiler = DataListFactory.CreateDataListCompiler();
@@ -412,38 +483,37 @@ namespace Dev2.Activities.Specs.BaseTypes
                 DsfActivityAbstract<string> dsfActivityAbstractString = act as DsfActivityAbstract<string>;
                 if(dsfActivityAbstractString != null)
                 {
-                    return DebugItemResults(dsfActivityAbstractString, dl);
+                    return DebugItemResults(dsfActivityAbstractString, result.Environment);
                 }
                 DsfActivityAbstract<bool> dsfActivityAbstractBool = act as DsfActivityAbstract<bool>;
                 if(dsfActivityAbstractBool != null)
                 {
-                    return DebugItemResults(dsfActivityAbstractBool, dl);
+                    return DebugItemResults(dsfActivityAbstractBool, result.Environment);
                 }
                 var activity = ScenarioContext.Current.Get<DsfActivityAbstract<string>>("activity");
-                return DebugItemResults(activity, dl);
+                return DebugItemResults(activity, env);
             }
             catch
             {
                 var activity = ScenarioContext.Current.Get<DsfActivityAbstract<bool>>("activity");
-                return activity.GetDebugInputs(dl)
+                return activity.GetDebugInputs(result.Environment)
                     .SelectMany(r => r.ResultsList)
                     .ToList();
             }
         }
 
-        static List<IDebugItemResult> DebugItemResults<T>(DsfActivityAbstract<T> dsfActivityAbstractString, IBinaryDataList dl)
+
+        static List<IDebugItemResult> DebugItemResults<T>(DsfActivityAbstract<T> dsfActivityAbstractString, IExecutionEnvironment dl)
         {
             return dsfActivityAbstractString.GetDebugInputs(dl)
                 .SelectMany(r => r.ResultsList)
                 .ToList();
         }
-
-        public static List<IDebugItemResult> GetOutputDebugItems(Activity act = null)
+        public static List<IDebugItemResult> GetOutputDebugItems(Activity act , IExecutionEnvironment dl)
         {
-            ErrorResultTO errors;
-            var comiler = DataListFactory.CreateDataListCompiler();
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            IBinaryDataList dl = comiler.FetchBinaryDataList(result.DataListID, out errors);
+      
+
+
 
             try
             {
@@ -522,10 +592,18 @@ namespace Dev2.Activities.Specs.BaseTypes
                         }
                     }
                 }
+                else if (rowValue.StartsWith("="))
+                {
+                    debugItemResult.Value = rowValue;
+                    debugItemResult.Type = DebugItemResultType.Value;
+                    debugItemResult.Variable = rowValue.Replace("=", "");
+                    list.Add(debugItemResult);
+                }
                 else
                 {
                     if(!string.IsNullOrEmpty(columnHeader) && columnHeader.Equals("#"))
                     {
+
                         debugItemResult.Label = rowValue;
                         debugItemResult.Value = "";
                         debugItemResult.Type = DebugItemResultType.Value;
@@ -549,6 +627,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                         }
                     }
 
+                    
                     list.Add(debugItemResult);
                 }
             }
@@ -600,14 +679,22 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             for(int i = 0; i < expectedDebugItems.Count; i++)
             {
-                Verify(expectedDebugItems[i].Label, inputDebugItems[i].Label, "Labels", i);
-                Verify(expectedDebugItems[i].Value, inputDebugItems[i].Value, "Values", i);
-                Verify(expectedDebugItems[i].Variable, inputDebugItems[i].Variable, "Variables", i);
+                Verify(expectedDebugItems[i].Label ?? "", inputDebugItems[i].Label ?? "", "Labels", i);
+                Verify(expectedDebugItems[i].Variable ?? "", inputDebugItems[i].Variable ?? "", "Variables", i);
+                if (expectedDebugItems[i].Value != null && expectedDebugItems[i].Value.Equals("!!MoreLink!!"))
+                {
+                    Assert.IsFalse(string.IsNullOrEmpty(inputDebugItems[i].MoreLink));
+                }
+                else
+                {
+                    Verify(expectedDebugItems[i].Value ?? "", inputDebugItems[i].Value ?? "", "Values", i);
+                }
             }
         }
 
         static void Verify(string expectedValue, string actualValue, string name, int index)
         {
+            expectedValue = expectedValue.Replace("‡", "=");
             string type = "";
 
             if(!string.IsNullOrEmpty(expectedValue) && !expectedValue.Equals(actualValue, StringComparison.InvariantCultureIgnoreCase))

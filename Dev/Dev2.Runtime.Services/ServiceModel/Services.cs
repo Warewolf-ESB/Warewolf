@@ -9,11 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.Runtime.Diagnostics;
@@ -35,7 +35,7 @@ namespace Dev2.Runtime.ServiceModel
 
     public class Services : ExceptionManager
     {
-        readonly IResourceCatalog _resourceCatalog;
+        protected readonly IResourceCatalog _resourceCatalog;
         readonly IAuthorizationService _authorizationService;
 
         #region CTOR
@@ -107,6 +107,16 @@ namespace Dev2.Runtime.ServiceModel
             try
             {
                 var service = DeserializeService(args);
+                var dbService = service as DbService;
+                if (dbService != null)
+                {
+                    var source = _resourceCatalog.GetResource<DbSource>(workspaceId, dbService.Source.ResourceID);
+                    if (source.ServerType == enSourceType.MySqlDatabase)
+                    {
+                        var broker = new MySqlDatabaseBroker();
+                        broker.UpdateServiceOutParameters(dbService, source);
+                    }
+                }
                 _resourceCatalog.SaveResource(workspaceId, service);
 
                 if(workspaceId != GlobalConstants.ServerWorkspaceID)
@@ -194,14 +204,58 @@ namespace Dev2.Runtime.ServiceModel
             {
                 throw new ArgumentNullException("dbService");
             }
-
-            var broker = CreateDatabaseBroker();
-            var outputDescription = broker.TestService(dbService);
-
-            if(outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
+                        var  source = dbService.Source as DbSource;
+            if(source != null)
             {
-                throw new Exception("Error retrieving shape from service output.");
+                switch(source.ServerType)
+                {
+                    case enSourceType.SqlDatabase:
+                        {
+                            var broker = CreateDatabaseBroker();
+                            var outputDescription = broker.TestService(dbService);
+
+                            if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
+                            {
+                                throw new Exception("Error retrieving shape from service output.");
+                            }
+
+                            dbService.Recordset.Name = dbService.Recordset.Name.Replace(".", "_");
+                            dbService.Recordset.Fields.Clear();
+
+                            ServiceMappingHelper smh = new ServiceMappingHelper();
+
+                            smh.MapDbOutputs(outputDescription, ref dbService, addFields);
+
+                            return dbService.Recordset;
+                        }
+
+                    case enSourceType.MySqlDatabase:
+                    {
+                        
+                            var broker = new MySqlDatabaseBroker();
+                            var outputDescription = broker.TestService(dbService);
+
+                            if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
+                            {
+                                throw new Exception("Error retrieving shape from service output.");
+                            }
+
+                            dbService.Recordset.Name = dbService.Recordset.Name.Replace(".", "_");
+                            dbService.Recordset.Fields.Clear();
+
+                            ServiceMappingHelper smh = new ServiceMappingHelper();
+
+                            smh.MySqlMapDbOutputs(outputDescription, ref dbService, addFields);
+
+                            return dbService.Recordset;
+                        
+                    }
+                    default: return null;
+
+                }
             }
+            return null;
+           
 
             // Clear out the Recordset.Fields list because the sequence and
             // number of fields may have changed since the last invocation.
@@ -210,14 +264,6 @@ namespace Dev2.Runtime.ServiceModel
             // so that we don't lose the user-defined aliases.
             //
 
-            dbService.Recordset.Name = dbService.Recordset.Name.Replace(".", "_");
-            dbService.Recordset.Fields.Clear();
-
-            ServiceMappingHelper smh = new ServiceMappingHelper();
-
-            smh.MapDbOutputs(outputDescription, ref dbService, addFields);
-
-            return dbService.Recordset;
         }
 
         public virtual RecordsetList FetchRecordset(PluginService pluginService, bool addFields)
@@ -248,8 +294,20 @@ namespace Dev2.Runtime.ServiceModel
 
         public virtual ServiceMethodList FetchMethods(DbSource dbSource)
         {
-            var broker = CreateDatabaseBroker();
-            return broker.GetServiceMethods(dbSource);
+            switch(dbSource.ServerType)
+            {
+                    case enSourceType.MySqlDatabase:
+                {
+                    var broker = new  MySqlDatabaseBroker();
+                    return broker.GetServiceMethods(dbSource);
+                }
+                default:
+                {
+                            var broker = CreateDatabaseBroker();
+                        return broker.GetServiceMethods(dbSource);
+                }
+            }
+    
         }
 
         #endregion
@@ -265,6 +323,7 @@ namespace Dev2.Runtime.ServiceModel
 
         protected virtual SqlDatabaseBroker CreateDatabaseBroker()
         {
+
             return new SqlDatabaseBroker();
         }
 

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -199,15 +198,8 @@ namespace Dev2.Data.Compilers
                             {
                                 if(_result == null)
                                 {
-                                    try
-                                    {
-                                        var toReplace = scalar.TheValue;
-                                        CompiledExpression = CompiledExpression.Replace(token, toReplace);
-                                    }
-                                    catch(NullValueInVariableException)
-                                    {
-                                        CompiledExpression = CompiledExpression.Replace(token, null);
-                                    }
+                                    var toReplace = scalar.TheValue;
+                                    CompiledExpression = CompiledExpression.Replace(token, toReplace);                                    
                                 }
                                 else
                                 {

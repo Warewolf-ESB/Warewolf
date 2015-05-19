@@ -9,12 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using Caliburn.Micro;
+using Dev2.Studio.Core.Factories;
+using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.Studio.Core.Interfaces.DataList;
-using Dev2.Studio.Core.Factories;
 
 namespace Dev2.Core.Tests
 {

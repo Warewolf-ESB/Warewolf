@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Windows;
 
 // ReSharper disable once CheckNamespace
@@ -22,19 +21,6 @@ namespace Dev2.Studio.Views.Navigation
         public NavigationView()
         {
             InitializeComponent();
-            Loaded += OnLoaded;
-            DataContextChanged += OnDataContextChanged;
-        }
-
-        void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
-        {
-            object newValue = dependencyPropertyChangedEventArgs.NewValue;
-
-        }
-
-        void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
-        {
-            var currentDataContext = DataContext;
         }
 
         #endregion Constructor
@@ -46,7 +32,10 @@ namespace Dev2.Studio.Views.Navigation
         public Style ItemContainerStyle
         {
             get { return (Style)GetValue(ItemContainerStyleProperty); }
-            set { SetValue(ItemContainerStyleProperty, value); }
+            set
+            {
+               SetValue(ItemContainerStyleProperty, value);
+            }
         }
 
         // Using a DependencyProperty as the backing store for ItemStyle.  This enables animation, styling, binding, etc...

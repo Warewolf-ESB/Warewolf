@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Collections.Generic;
@@ -18,13 +17,11 @@ using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -61,11 +58,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            Guid executionId = dataObject.DataListID;
 
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
@@ -74,37 +74,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
                 ValidateRecordsetName(RecordsetName, errors);
-                allErrors.MergeErrors(errors);
 
-                if(!allErrors.HasErrors())
+                GetDebug(dataObject);
+                dataObject.Environment.EvalDelete(RecordsetName);
+                if (!string.IsNullOrEmpty(Result))
                 {
-                    var tmpRecsetIndex = DataListUtil.ExtractIndexRegionFromRecordset(RecordsetName);
-                    IBinaryDataListEntry indexEntry = compiler.Evaluate(executionId, enActionType.User, tmpRecsetIndex, false, out errors);
-
-                    IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(indexEntry);
-                    IDev2IteratorCollection collection = Dev2ValueObjectFactory.CreateIteratorCollection();
-                    collection.AddIterator(itr);
-
-                    while(collection.HasMoreData())
-                    {
-                        var evaluatedRecordset = RecordsetName.Remove(RecordsetName.IndexOf("(", StringComparison.Ordinal) + 1) + collection.FetchNextRow(itr).TheValue + ")]]";
-                        if(dataObject.IsDebugMode())
-                        {
-                            IBinaryDataListEntry tmpentry = compiler.Evaluate(executionId, enActionType.User, evaluatedRecordset, false, out errors);
-                            AddDebugInputItem(new DebugItemVariableParams(RecordsetName, "Records", tmpentry, executionId));
-                        }
-
-                        IBinaryDataListEntry entry = compiler.Evaluate(executionId, enActionType.Internal, evaluatedRecordset, false, out errors);
-
-                        allErrors.MergeErrors(errors);
-                        compiler.Upsert(executionId, Result, entry.FetchScalar().TheValue, out errors);
-
-                        if(dataObject.IsDebugMode() && !allErrors.HasErrors())
-                        {
-                            AddDebugOutputItem(new DebugItemVariableParams(Result, "", entry, executionId));
-                        }
-                        allErrors.MergeErrors(errors);
-                    }
+                    dataObject.Environment.Assign(Result, "Success");
+                    AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
                 }
             }
             catch(Exception e)
@@ -118,19 +94,43 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(hasErrors)
                 {
                     DisplayAndWriteError("DsfDeleteRecordsActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
-                    compiler.Upsert(executionId, Result, (string)null, out errors);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
+                    if (!string.IsNullOrEmpty(Result))
+                    {
+                        dataObject.Environment.Assign(Result, "Failure");
+                    }
                 }
 
                 if(dataObject.IsDebugMode())
                 {
                     if(hasErrors)
                     {
-                        AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
+                        AddDebugOutputItem(new DebugItemStaticDataParams("Failure", Result, ""));
                     }
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
+            }
+        }
+
+        void GetDebug(IDSFDataObject dataObject)
+        {
+            try
+            {
+
+
+                if (dataObject.IsDebugMode() && ExecutionEnvironment.IsRecordSetName(RecordsetName))
+                {
+                    AddDebugInputItem(new DebugEvalResult(RecordsetName, "Records", dataObject.Environment));
+                }
+
+            }
+             
+            catch(Exception)
+            {
+
+                AddDebugInputItem(new DebugItemWarewolfAtomResult("", RecordsetName, "Recordset", "", "", "", "="));
             }
         }
 
@@ -138,33 +138,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDebugInputs
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
-        {
-            foreach(IDebugItem debugInput in _debugInputs)
-            {
-                debugInput.FlushStringBuilder();
-            }
-            return _debugInputs;
-        }
-
-        #endregion
-
-        #region GetDebugOutputs
-
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
-        {
-            foreach(IDebugItem debugOutput in _debugOutputs)
-            {
-                debugOutput.FlushStringBuilder();
-            }
-            return _debugOutputs;
-        }
 
         #endregion
 
         #endregion Get Inputs/Outputs
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+
+
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env)
+        {
+            return _debugInputs;
+        }
+
+   
+
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env)
+        {
+            return _debugOutputs;
+        }
+
+
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {
@@ -179,7 +173,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {

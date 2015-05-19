@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -8,7 +7,6 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-
 
 using System.Collections.Generic;
 using Dev2.Interfaces;
@@ -21,8 +19,7 @@ namespace Dev2.Common.Interfaces.Core.Convertors.Case
         string ConvertType { get; set; }
         IList<string> Expressions { get; set; }
         string ExpressionToConvert { get; set; }
-        string Result { get; set; }        
+        string Result { get; set; }
         string WatermarkTextVariable { get; set; }
-        
     }
 }

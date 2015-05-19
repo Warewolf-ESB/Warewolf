@@ -42,7 +42,8 @@
                   IsEditable="False"
                   SelectedValue="{Binding SelectedForeachType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                   ItemsSource="{Binding ForeachTypes}"
-                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachType_AutoID}">
+                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachType_AutoID}"
+                  ToolTip="{x:Static help:HelpTextResources.ForEachToolTipForEachType}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.ForEachHelpForEachType}"
                                  DataContext="{Binding}" />
@@ -59,9 +60,10 @@
                                 DefaultText="From" 
                                 WrapInBrackets="False" 
                                 Text="{Binding Path=ModelItem.From, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachFromTextbox_AutoID}">
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachFromTextbox_AutoID}"
+                                ToolTip="{x:Static help:HelpTextResources.ForEachToolTipForEachType}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.ForEachHelpValue}"
+                    <help:HelpSetter Text="{x:Static help:HelpTextResources.ForEachHelpForEachType}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.From"
@@ -78,9 +80,10 @@
                                     Text="{Binding Path=ModelItem.To, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                     Visibility="{Binding ToVisibility}"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachToTextbox_AutoID}">
+                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachToTextbox_AutoID}"
+                                    ToolTip="{x:Static help:HelpTextResources.ForEachToolTipForEachType}">
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.ForEachHelpValue}"
+                    <help:HelpSetter Text="{x:Static help:HelpTextResources.ForEachHelpForEachType}"
                                      DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.To"
@@ -97,9 +100,10 @@
                                   Text="{Binding Path=ModelItem.CsvIndexes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                   MinWidth="100"
                                   Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachCSVIndexesTextbox_AutoID}">
+                                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachCSVIndexesTextbox_AutoID}"
+                                  ToolTip="{x:Static help:HelpTextResources.ForEachToolTipForEachType}">
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.ForEachHelpValue}"
+                    <help:HelpSetter Text="{x:Static help:HelpTextResources.ForEachHelpForEachType}"
                                      DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.CsvIndexes"
@@ -116,9 +120,10 @@
                                  Text="{Binding Path=ModelItem.NumOfExections, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                  MinWidth="106"
                                  Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachNumberTextbox_AutoID}">
+                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachNumberTextbox_AutoID}"
+                                 ToolTip="{x:Static help:HelpTextResources.ForEachToolTipForEachType}">
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.ForEachHelpValue}"
+                    <help:HelpSetter Text="{x:Static help:HelpTextResources.ForEachHelpForEachType}"
                                      DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.NumOfExections"
@@ -138,9 +143,10 @@
                                 MinWidth="106"
                                 FilterType="RecordsetsOnly"
                                 attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachNumberTextbox_AutoID}">
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachNumberTextbox_AutoID}"
+                                ToolTip="{x:Static help:HelpTextResources.ForEachToolTipForEachType}">
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.ForEachHelpValue}"
+                    <help:HelpSetter Text="{x:Static help:HelpTextResources.ForEachHelpForEachType}"
                                      DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.Recordset"

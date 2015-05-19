@@ -95,8 +95,15 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
             string actualValue;
             value = value.Replace('"', ' ').Trim();
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            GetScalarValueFromDataList(result.DataListID, "var", out actualValue, out error);
-            Assert.AreEqual(value, actualValue);
+            GetScalarValueFromEnvironment(result.Environment, "[[var]]", out actualValue, out error);
+            if (string.IsNullOrEmpty(value))
+            {
+                Assert.IsTrue(string.IsNullOrEmpty(actualValue));
+            }
+            else
+            {
+                Assert.AreEqual(value, actualValue);
+            }
         }
     }
 }

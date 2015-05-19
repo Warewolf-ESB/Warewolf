@@ -1,3 +1,4 @@
+// ReSharper disable RedundantUsingDirective
 
 /*
 *  Warewolf - The Easy Service Bus
@@ -14,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
+using System.DirectoryServices.ActiveDirectory;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -26,6 +28,7 @@ using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
 using CommandLine;
+using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
@@ -34,12 +37,14 @@ using Dev2.Data;
 using Dev2.Data.Storage;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics.Debug;
+using Dev2.Diagnostics.Logging;
 using Dev2.Instrumentation;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer;
 using Dev2.Services.Security.MoqInstallerActions;
 using Dev2.Workspaces;
+using log4net.Config;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2
@@ -51,6 +56,7 @@ namespace Dev2
     /// </summary>
     sealed class ServerLifecycleManager : IDisposable
     {
+   
         #region Constants
 
         const string DefaultConfigFileName = "LifecycleConfig.xml";
@@ -74,11 +80,26 @@ namespace Dev2
         /// <param name="arguments">Command line arguments passed to executable.</param>
         static int Main(string[] arguments)
         {
-            var result = 0;
-
             try
             {
+                using (new System.Runtime.MemoryFailPoint(1000)) // 20 megabytes
+                {
+                   return RunMain(arguments);
+                }
+            }
+            catch (InsufficientMemoryException)
+            {
+                return RunMain(arguments);
+            }
+            
+        }
 
+        static int RunMain(string[] arguments)
+        {
+            var result = 0;
+           
+            try
+            {
                 CommandLineParameters options = new CommandLineParameters();
                 CommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
                 if(!parser.ParseArguments(arguments, options))
@@ -87,7 +108,6 @@ namespace Dev2
                 }
 
                 bool commandLineParameterProcessed = false;
-                Dev2Logger.EnableInfoOutput = true;
                 if(options.Install)
                 {
                     Dev2Logger.Log.Info("Starting Install");
@@ -165,7 +185,7 @@ namespace Dev2
                     Dev2Logger.Log.Info("Command line processed. Returning");
                     return result;
                 }
-
+                AppDomain.CurrentDomain.UnhandledException += (sender, args) => { Dev2Logger.Log.Fatal("Server has crashed!!!", args.ExceptionObject as Exception); };
                 if(Environment.UserInteractive || options.IntegrationTestMode)
                 {
                     Dev2Logger.Log.Info("** Starting In Interactive Mode ( " + options.IntegrationTestMode + " ) **");
@@ -189,9 +209,9 @@ namespace Dev2
             catch(Exception err)
             {
                 Dev2Logger.Log.Error("Error Starting Server", err);
-// ReSharper disable InvokeAsExtensionMethod
+                // ReSharper disable InvokeAsExtensionMethod
                 Dev2Logger.Log.Error("Error Starting Server. Stack trace", err);
-// ReSharper restore InvokeAsExtensionMethod
+                // ReSharper restore InvokeAsExtensionMethod
                 throw;
             }
             return result;
@@ -286,7 +306,20 @@ namespace Dev2
             _configFile = DefaultConfigFileName;
             _externalDependencies = AssemblyReference.EmptyReferences;
             _workflowGroups = new Dictionary<string, WorkflowEntry[]>(StringComparer.OrdinalIgnoreCase);
-
+            SetWorkingDirectory();
+            const string settingsConfigFile = "Settings.config";
+            if (!File.Exists(settingsConfigFile))
+            {
+                File.WriteAllText(settingsConfigFile, GlobalConstants.DefaultServerLogFileConfig);
+            }
+            try
+            {
+                XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+            }
             InitializeCommandLineArguments();
         }
 
@@ -307,7 +340,6 @@ namespace Dev2
 
             // ** Perform Moq Installer Actions For Development ( DEBUG config ) **
 #if DEBUG
-
             try
             {
                 var miq = MoqInstallerActionFactory.CreateInstallerActions();
@@ -316,7 +348,7 @@ namespace Dev2
             catch(Exception e)
             {
                 // Throw new exception to make it easy for developer to understand issue
-                throw new Exception("Ensure no Warewolf service is running on this machine. Mocking installer actions for DEBUG config failed to create Warewolf Administrators group and/or to add current user to it [ " + e.Message + " ]");
+                throw new Exception("Ensure you are running as an Administrator. Mocking installer actions for DEBUG config failed to create Warewolf Administrators group and/or to add current user to it [ " + e.Message + " ]");
             }
 #endif
 
@@ -473,12 +505,7 @@ namespace Dev2
 
             try
             {
-                // Brendon.Page - The following line is has had it warning suppressed because if the working directory can't be set
-                //                then it can't be guaranteed that the server will operate correctly, and in this case the desired
-                //                behavior is a fail with an exception.
-                // ReSharper disable AssignNullToNotNullAttribute
                 Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-                // ReSharper restore AssignNullToNotNullAttribute
             }
             catch(Exception e)
             {
@@ -567,38 +594,7 @@ namespace Dev2
 
                 StringBuilder builder = new StringBuilder();
                 builder.AppendLine("<configuration>");
-
-                // logging info
-                builder.AppendLine("\t<Logging>");
-                builder.AppendLine("\t\t<Debug Enabled=\"true\" />");
-                builder.AppendLine("\t\t<Error Enabled=\"true\" />");
-                builder.AppendLine("\t\t<Info Enabled=\"true\" />");
-                // ReSharper disable ConditionIsAlwaysTrueOrFalse
-                // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
-                if(!LogTraceInfo)
-                // ReSharper restore ConvertIfStatementToConditionalTernaryExpression
-                // ReSharper restore ConditionIsAlwaysTrueOrFalse
-                // ReSharper disable HeuristicUnreachableCode
-#pragma warning disable 162
-                {
-                    builder.AppendLine("\t\t<Trace Enabled=\"false\" />");
-                }
-#pragma warning restore 162
-                // ReSharper restore HeuristicUnreachableCode
-                // ReSharper disable RedundantIfElseBlock
-                else
-                // ReSharper restore RedundantIfElseBlock
-                // ReSharper disable HeuristicUnreachableCode
-#pragma warning disable 162
-                {
-                    builder.AppendLine("\t\t<Trace Enabled=\"true\" />");
-                }
-#pragma warning restore 162
-                // ReSharper restore HeuristicUnreachableCode
-
-                builder.AppendLine("\t</Logging>");
-                // end logging info
-
+                
                 builder.AppendLine("\t<GCManager Enabled=\"false\">");
                 builder.AppendLine("\t\t<MinWorkingSet>60</MinWorkingSet>");
                 builder.AppendLine("\t\t<MaxWorkingSet>6144</MaxWorkingSet>");
@@ -643,14 +639,6 @@ namespace Dev2
                     if(result)
                     {
                         ReadBooleanSection(section, "PreloadAssemblies", ref result, ref _preloadAssemblies);
-
-                        if(String.Equals(section.Name, "Logging", StringComparison.OrdinalIgnoreCase))
-                        {
-                            if(!ProcessLoggingConfiguration(section))
-                            {
-                                result = false;
-                            }
-                        }
 
                         if(String.Equals(section.Name, "GCManager", StringComparison.OrdinalIgnoreCase))
                         {
@@ -775,104 +763,6 @@ namespace Dev2
                         else
                         {
                             Fail("Configuration error, MaxWorkingSet must be given a value.");
-                        }
-                    }
-                }
-            }
-
-            return true;
-        }
-
-        bool ProcessLoggingConfiguration(XmlNode section)
-        {
-
-            XmlNodeList allReferences = section.HasChildNodes ? section.ChildNodes : null;
-
-            if(allReferences != null)
-            {
-                foreach(XmlNode current in allReferences)
-                {
-                    var attr = current.Attributes;
-
-                    if(String.Equals(current.Name, "Debug", StringComparison.OrdinalIgnoreCase))
-                    {
-
-                        if(attr != null && !String.IsNullOrEmpty(attr["Enabled"].Value))
-                        {
-                            bool result;
-
-                            if(Boolean.TryParse(attr["Enabled"].Value, out result))
-                            {
-                                Dev2Logger.EnableDebugOutput = result;
-                            }
-                            else
-                            {
-                                Fail("Configuration error, Debug must be an boolean value.");
-                            }
-                        }
-                        else
-                        {
-                            Fail("Configuration error, Debug must be given a value.");
-                        }
-                    }
-                    else if(String.Equals(current.Name, "Trace", StringComparison.OrdinalIgnoreCase))
-                    {
-                        if(attr != null && !String.IsNullOrEmpty(attr["Enabled"].Value))
-                        {
-                            bool result;
-
-                            if(Boolean.TryParse(attr["Enabled"].Value, out result))
-                            {
-                                Dev2Logger.EnableTraceOutput = result;
-                            }
-                            else
-                            {
-                                Fail("Configuration error, Trace must be an boolean value.");
-                            }
-                        }
-                        else
-                        {
-                            Fail("Configuration error, Trace must be given a value.");
-                        }
-                    }
-                    else if(String.Equals(current.Name, "Error", StringComparison.OrdinalIgnoreCase))
-                    {
-                        if(attr != null && !String.IsNullOrEmpty(attr["Enabled"].Value))
-                        {
-                            bool result;
-
-                            if(Boolean.TryParse(attr["Enabled"].Value, out result))
-                            {
-                                Dev2Logger.EnableErrorOutput = result;
-                            }
-                            else
-                            {
-                                Fail("Configuration error, Error must be an boolean value.");
-                            }
-                        }
-                        else
-                        {
-                            Fail("Configuration error, Error must be given a value.");
-                        }
-                    }
-                    else if(String.Equals(current.Name, "Info", StringComparison.OrdinalIgnoreCase))
-                    {
-                        if(attr != null && !String.IsNullOrEmpty(attr["Enabled"].Value))
-                        {
-                            bool result;
-
-                            if(Boolean.TryParse(attr["Enabled"].Value, out result))
-                            {
-                                Dev2Logger.EnableInfoOutput = result;
-                            }
-                            else
-                            {
-                                Fail("Configuration error, Info must be an boolean value.");
-                            }
-                        }
-                        else
-                        {
-                            Fail("Configuration error, Info must be given a value.");
                         }
                     }
                 }
@@ -1438,7 +1328,7 @@ namespace Dev2
                         {
                             var httpsEndpoint = new IPEndPoint(IPAddress.Any, realWebServerSslPort);
                             var httpsUrl = string.Format("https://*:{0}/", webServerSslPort);
-                            var canEnableSsl = HostSecurityProvider.Instance.EnsureSSL(sslCertPath, httpsEndpoint);
+                            var canEnableSsl = HostSecurityProvider.Instance.EnsureSsl(sslCertPath, httpsEndpoint);
 
                             if(canEnableSsl)
                             {
@@ -1724,12 +1614,16 @@ namespace Dev2
         /// <date>2013/03/13</date>
         bool LoadResourceCatalog()
         {
+            CustomContainer.Register<IActivityParser>(new ActivityParser());
             MigrateOldResources();
             Write("Loading resource catalog...  ");
             // First call initializes instance
 #pragma warning disable 168
             // ReSharper disable UnusedVariable
             var catalog = ResourceCatalog.Instance;
+            WriteLine("done.");
+            Write("Loading resource activity cache...  ");
+            catalog.LoadResourceActivityCache(GlobalConstants.ServerWorkspaceID);
             // ReSharper restore UnusedVariable
 #pragma warning restore 168
             WriteLine("done.");
@@ -1810,7 +1704,7 @@ namespace Dev2
                 // First call to instance loads the provider.
                 var instance = Runtime.Configuration.SettingsProvider.Instance;
                 var settings = instance.Configuration;
-                Dev2Logger.LoggingSettings = settings.Logging;
+                WorkflowLoggger.LoggingSettings = settings.Logging;
                
                 WriteLine("done.");
                 return true;
@@ -1850,17 +1744,8 @@ namespace Dev2
         bool StartDataListServer()
         {
             // PBI : 5376 - Create instance of the Server compiler
-            Write("Starting DataList Server...  ");
-
             DataListFactory.CreateServerDataListCompiler();
             BinaryDataListStorageLayer.Setup();
-
-            var mbReserved = BinaryDataListStorageLayer.GetCapacityMemoryInMb();
-
-            Write(" [ Reserving " + mbReserved.ToString("#") + " MBs of cache ] ");
-
-            Write("done.");
-            WriteLine("");
             return true;
         }
 
@@ -1938,9 +1823,6 @@ namespace Dev2
         {
             try
             {
-
-
-
                 if (File.Exists(".\\ServerStarted"))
                 {
                     File.Delete(".\\ServerStarted");

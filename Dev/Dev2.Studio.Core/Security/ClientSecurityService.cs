@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Network;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Dev2.Controller;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.Interfaces;
 

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,8 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
+using System.Collections.Generic;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ServiceModel.Data;
@@ -39,11 +38,19 @@ namespace Dev2.Services.Execution
         {
         }
 
-        protected override object ExecuteService(out ErrorResultTO errors, IOutputFormatter formater = null)
+        protected override object ExecuteService(List<MethodParameter> methodParameters, out ErrorResultTO errors, IOutputFormatter formater = null)
         {
             errors = new ErrorResultTO();
 
-            var args = new PluginInvokeArgs { AssemblyLocation = Source.AssemblyLocation, AssemblyName = Source.AssemblyName, Fullname = Service.Namespace, Method = Service.Method.Name, Parameters = Service.Method.Parameters, OutputFormatter = formater};
+            var args = new PluginInvokeArgs
+            {
+                AssemblyLocation = Source.AssemblyLocation,
+                AssemblyName = Source.AssemblyName,
+                Fullname = Service.Namespace,
+                Method = Service.Method.Name,
+                Parameters = Service.Method.Parameters,
+                OutputFormatter = formater
+            };
 
             object result = null;
 
@@ -51,14 +58,14 @@ namespace Dev2.Services.Execution
             {
                 result = PluginServiceExecutionFactory.InvokePlugin(args);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 errors.AddError(e.Message);
             }
 
             return result;
         }
-        #endregion
 
+        #endregion
     }
 }

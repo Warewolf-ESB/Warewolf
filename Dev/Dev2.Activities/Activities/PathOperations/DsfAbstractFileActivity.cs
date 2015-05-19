@@ -9,28 +9,27 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Collections.Generic;
 using Dev2;
+using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.PathOperations;
-using Dev2.Data.Factories;
 using Dev2.Data.PathOperations.Interfaces;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 using Dev2.PathOperations;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 // ReSharper restore CheckNamespace
+// ReSharper disable ConvertToAutoProperty
 {
     /// <summary>
     /// PBI : 1172
@@ -39,7 +38,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// </summary>
     public abstract class DsfAbstractFileActivity : DsfActivityAbstract<string>, IPathAuth, IResult, IPathCertVerify
     {
-        // Travis.Frisinger - 01.02.2013 : Bug 8579
 
         internal string DefferedReadFileContents = string.Empty;
         private string _username;
@@ -56,19 +54,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
+         
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-            Guid dlId = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
 
-            IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> toUpsertDeferred = Dev2DataListBuilderFactory.CreateBinaryDataListUpsertBuilder(true);
-            toUpsertDeferred.IsDebug = true;
-            IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-            toUpsert.IsDebug = true;
             // Process if no errors
 
             if(dataObject.IsDebugMode())
@@ -81,7 +79,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 try
                 {
                     //Execute the concrete action for the specified activity
-                    IList<OutputTO> outputs = ExecuteConcreteAction(context, out errors);
+                    IList<OutputTO> outputs = ExecuteConcreteAction(dataObject, out errors);
+
                     allErrors.MergeErrors(errors);
 
                     if(outputs.Count > 0)
@@ -98,35 +97,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     }
                                     else
                                     {
-                                        //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                                         foreach(var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
                                         {
-
-                                            toUpsert.Add(region, value);
+                                            dataObject.Environment.Assign(region, value);
                                         }
                                     }
-
                                 }
-
-                                toUpsert.FlushIterationFrame();
                             }
                         }
-
-                        compiler.Upsert(dlId, toUpsert, out errors);
                         if(dataObject.IsDebugMode())
                         {
                             if(!String.IsNullOrEmpty(Result))
                             {
-                                foreach(var debugOutputTo in toUpsert.DebugOutputs)
-                                {
-                                    AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
-                                }
+                                AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
                             }
                         }
-
                         allErrors.MergeErrors(errors);
                     }
-
                 }
                 catch(Exception ex)
                 {
@@ -137,19 +124,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     // Handle Errors
                     if(allErrors.HasErrors())
                     {
-                        DisplayAndWriteError("DsfFileActivity", allErrors);
-                        compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                        foreach(var err in allErrors.FetchErrors())
+                        {
+                            dataObject.Environment.Errors.Add(err);
+                        }
                     }
 
                     if(dataObject.IsDebugMode())
                     {
-                        DispatchDebugState(context, StateType.Before);
-                        DispatchDebugState(context, StateType.After);
+                        DispatchDebugState(dataObject, StateType.Before);
+                        DispatchDebugState(dataObject, StateType.After);
                     }
                 }
             }
         }
-
 
         /// <summary>
         /// Makes the deferred action.
@@ -166,7 +154,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="context">The context.</param>
         /// <param name="error">The error.</param>
         /// <returns></returns>
-        protected abstract IList<OutputTO> ExecuteConcreteAction(NativeActivityContext context, out ErrorResultTO error);
+        protected abstract IList<OutputTO> ExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error);
 
         #region Properties
 
@@ -218,7 +206,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -227,7 +215,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
 
             foreach(IDebugItem debugOutput in _debugOutputs)
@@ -241,27 +229,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Internal Methods
 
-        internal void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
+        internal void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment environment)
         {
-            AddDebugInputItem(new DebugItemVariableParams(expression, labelText, valueEntry, executionId));
+            AddDebugInputItem(new DebugEvalResult(expression, labelText, environment));
         }
 
-        internal void AddDebugOutputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
+        internal void AddDebugOutputItem(string expression, string labelText, IExecutionEnvironment environment)
         {
-            AddDebugOutputItem(new DebugItemVariableParams(expression, labelText, valueEntry, executionId));
+            AddDebugOutputItem(new DebugEvalResult(expression, labelText, environment));
         }
 
         #endregion
 
-        protected void AddDebugInputItemUserNamePassword(Guid executionId, IBinaryDataListEntry usernameEntry)
+        protected void AddDebugInputItemUserNamePassword(IExecutionEnvironment environment)
         {
-            AddDebugInputItem(new DebugItemVariableParams(Username, "Username", usernameEntry, executionId));
+            AddDebugInputItem(new DebugEvalResult(Username, "Username", environment));
             AddDebugInputItemPassword("Password", Password);
         }
 
-        protected void AddDebugInputItemDestinationUsernamePassword(Guid executionId, IBinaryDataListEntry destUsernameEntry, string destinationPassword, string userName)
+        protected void AddDebugInputItemDestinationUsernamePassword(IExecutionEnvironment environment, string destinationPassword, string userName)
         {
-            AddDebugInputItem(new DebugItemVariableParams(userName, "Destination Username", destUsernameEntry, executionId));
+            AddDebugInputItem(new DebugEvalResult(userName, "Destination Username", environment));
             AddDebugInputItemPassword("Destination Password", destinationPassword);
         }
 

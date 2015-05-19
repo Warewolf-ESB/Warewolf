@@ -9,7 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
@@ -32,11 +36,6 @@ using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 
 namespace Dev2.Core.Tests.Dialogs
 {
@@ -284,7 +283,7 @@ namespace Dev2.Core.Tests.Dialogs
             var envRepo = new TestLoadEnvironmentRespository(mockEnvironmentModel.Object, mockEnvironmentModel2.Object);
             var selectedResource = mockResourceRepository.Object.All().ToList()[1];
 
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
 
             var repository = new StudioResourceRepository(GetTestData(), Guid.Empty, _Invoke)
             {

@@ -39,6 +39,7 @@ namespace Dev2.Studio.UI.Specs
 #pragma warning disable 414
         static readonly string Explorer = "UI_DocManager_AutoID,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID";
         static readonly string ExplorerConnectControl = "UI_DocManager_AutoID,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,ConnectUserControl,UI_ExplorerServerCbx_AutoID";
+        static readonly string ExplorerConnectButton = "UI_DocManager_AutoID,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,ConnectUserControl,UI_ExplorerConnectBtn_AutoID";
         static readonly string ExplorerConnectProgress = "UI_DocManager_AutoID,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,ConnectUserControl,UI_IndicatorConnecting_AutoID";
         static readonly string Toolbox = "UI_DocManager_AutoID,UI_ToolboxPane_AutoID,UI_ToolboxControl_AutoID";
         static readonly string WorkflowDesigner = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,UI_WorkflowDesigner_AutoID,UserControl_1,ActivityTypeDesigner,WorkflowItemPresenter";
@@ -62,8 +63,8 @@ namespace Dev2.Studio.UI.Specs
         
         //Tools
         //Control Flow
-        static readonly string ToolDecision = Toolbox + ",PART_Tools,Control Flow,System.Activities.Statements.FlowDecision";
-        static readonly string ToolSwitch = Toolbox + ",PART_Tools,Control Flow,System.Activities.Statements.FlowSwitch`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]";
+        static readonly string ToolDecision = Toolbox + ",PART_Tools,Control Flow,System.Activities.Statements.FlowDecision*";
+        static readonly string ToolSwitch = Toolbox + ",PART_Tools,Control Flow,System.Activities.Statements.FlowSwitch*";
         static readonly string ToolSequence = Toolbox + ",PART_Tools,Control Flow,Dev2.Activities.DsfSequenceActivity";
         //Loop Constructs
         static readonly string ToolForEach = Toolbox + ",PART_Tools,Loop Constructs,Unlimited.Applications.BusinessDesignStudio.Activities.DsfForEachActivity";
@@ -131,10 +132,20 @@ namespace Dev2.Studio.UI.Specs
         static readonly string SecurityPublicDeployTo = "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerDeployToPermissions_Row_1_Cell_AutoID,UI_Public_DeployToPermissionCheckBox_AutoID";
         static readonly string SecurityPublicDeployFrom = "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerDeployFromPermissions_Row_1_Cell_AutoID,UI_Public_DeployFromPermissionCheckBox_AutoID";
         static readonly string SecurityPublic = "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerDeployFromPermissions_Row_1_Cell_AutoID,UI_Public_DeployFromPermissionCheckBox_AutoID";
+        static readonly string SecurityResourcePickerSearch = "ACTIVETAB,UI_SelectServiceWindow_AutoID,UI_NavigationViewUserControl_AutoID,UI_DatalistFilterTextBox_AutoID,UI_TextBox_AutoID";
+        static readonly string SecurityResourcePickerFilterClear = "ACTIVETAB,UI_SelectServiceWindow_AutoID,UI_NavigationViewUserControl_AutoID,UI_DatalistFilterTextBox_AutoID,UI_FilterButton_AutoID";
+        
+
 
         //Deploy Tab
         static readonly string DeploySource = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,DeployUserControl,SourceNavigationView,UI_ExplorerTree_AutoID";
+        static readonly string DeploySourceFilter = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,DeployUserControl,SourceNavigationView,UI_DatalistFilterTextBox_AutoID,UI_TextBox_AutoID";
+        static readonly string DeploySourceFilterClear = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,DeployUserControl,SourceNavigationView,UI_DatalistFilterTextBox_AutoID,UI_FilterButton_AutoID";
+        static readonly string DeploySourceConnect = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,DeployUserControl,ConnectUserControl,UI_DestinationServerConnectbtn_AutoID";
         static readonly string DeployDestination = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,DeployUserControl,TargetNavigationView,UI_ExplorerTree_AutoID";
+        static readonly string DeployDestinationFilter = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,DeployUserControl,TargetNavigationView,UI_DatalistFilterTextBox_AutoID,UI_TextBox_AutoID";
+        static readonly string DeployDestinationFilterClear = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,DeployUserControl,TargetNavigationView,UI_DatalistFilterTextBox_AutoID,UI_FilterButton_AutoID";
+        static readonly string DeployDestinationConnect = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,DeployUserControl,ConnectUserControl,UI_DestinationServerConnectbtn_AutoID";
         static readonly string DeployButton = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,DeployUserControl,UI_Deploybtn_AutoID";
         static readonly string DeployError = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,DeployUserControl,UI_DeploySelectTB_AutoID";
 
@@ -219,9 +230,6 @@ namespace Dev2.Studio.UI.Specs
         {
             try
             {
-                //Playback.Initialize();
-                //Playback.PlaybackError += PlaybackPlaybackError;
-
                 Playback.PlaybackSettings.ContinueOnError = false;
                 Playback.PlaybackSettings.ShouldSearchFailFast = true;
                 Playback.PlaybackSettings.SearchTimeout = 1000;
@@ -234,7 +242,6 @@ namespace Dev2.Studio.UI.Specs
                 // make the mouse quick ;)
                 Mouse.MouseMoveSpeed = 20000;
                 Mouse.MouseDragSpeed = 20000;
-               
             }
             // ReSharper disable EmptyGeneralCatchClause
             catch
@@ -246,6 +253,18 @@ namespace Dev2.Studio.UI.Specs
             Bootstrap.Init();
         }
 
+        [After]
+        public static void CleanupAfterTest()
+        {
+            if(ScenarioContext.Current.TestError != null)
+            {
+                Bootstrap.Teardown(true);
+                Playback.Cleanup();
+                RunSpecifiedFileWithUserNameAndPassword(string.Empty, string.Empty, Bootstrap.StudioLocation, 0);
+                WaitForUIControlExistance(typeof(UIStudioWindow), Bootstrap.StudioTimeOut);
+                Playback.Initialize();
+            }
+        }
 
         [When(@"I debug ""(.*)"" in ""(.*)""")]
         public void WhenIDebugIn(string workflowName, string folderName)
@@ -361,6 +380,18 @@ namespace Dev2.Studio.UI.Specs
             Assert.IsTrue(ExplorerUIMap.ValidateHasResource(resourceName));
             ExplorerUIMap.RightClickDeleteResource(resourceName, "UNASSIGNED", "localhost");
             Bootstrap.DeleteService(resourceName);
+        }
+
+        [Given(@"""(.*)"" is not in the explorer")]
+        [Then(@"""(.*)"" is not in the explorer")]
+        [When(@"""(.*)"" is not in the explorer")]
+        public void ThenIsNotInTheExplorer(string resourceName)
+        {
+            if(ExplorerUIMap.ValidateHasResource(resourceName))
+            {
+                ExplorerUIMap.RightClickDeleteResource(resourceName, "UNASSIGNED", "localhost");
+                Bootstrap.DeleteService(resourceName);
+            }
         }
 
         [Given(@"a new tab is created")]
@@ -554,12 +585,74 @@ namespace Dev2.Studio.UI.Specs
             return controlToClick;
         }
 
+        [Given(@"I create a new remote connection as ""(.*)"" in Deploy Destination")]
+        public void GivenICreateANewRemoteConnectionAsInDeployDestination(string serverName, Table table)
+        {
+            var newServerAutoId = "ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_DestinationServercbx_AutoID_New Remote Server...";
+            GivenIClick(newServerAutoId);
+            ThenIsVisibleWithinSeconds("WebBrowserWindow", 10);
+            var window = GetAControlStrict("WebBrowserWindow");
+            //ENTER ADDRESS
+            var serverDetailsRow = table.Rows[0];
+            window.Click(new Point(170, 50));
+            Keyboard.SendKeys(serverDetailsRow["Address"]);
+            //SELECT AUTH TYPE
+            var authType = serverDetailsRow["AuthType"];
+            switch (authType)
+            {
+                case "User":
+                    {
+                        window.Click(new Point(262, 85));
+                        //ENTER CREDENTIALS
+                        window.Click(new Point(170, 120));
+                        Keyboard.SendKeys(serverDetailsRow["UserName"]);
+                        window.Click(new Point(170, 150));
+                        Keyboard.SendKeys(serverDetailsRow["Password"]);
+                        //CLICK TEST
+                        window.Click(new Point(350, 200));
+                        Playback.Wait(10000);
+                        break;
+                    }
+                case "Windows":
+                    window.Click(new Point(178, 85));
+                    //CLICK TEST
+                    window.Click(new Point(350, 120));
+                    Playback.Wait(2000);
+                    break;
+                case "Public":
+                    window.Click(new Point(328, 85));
+                    //CLICK TEST
+                    window.Click(new Point(350, 120));
+                    Playback.Wait(2000);
+                    break;
+            }
+            //SAVE CONNECTION
+            window.Click(new Point(500, 490));
+            Playback.Wait(200);
+            //SAVE NAME (SAVE DIALOG)
+            window.Click(new Point(180, 420));
+            Keyboard.SendKeys(serverName);
+            window.Click(new Point(490, 470));
+            //WAIT FOR LOADING OF RESOURCES
+            var spinnerControl = GetAControlStrict(ExplorerConnectProgress);
+            Assert.IsNotNull(spinnerControl, "Server is not connecting after creating a source ...");
+            var canExit = false;
+            while (!canExit)
+            {
+                Playback.Wait(500);
+                spinnerControl = GetAControlStrict(ExplorerConnectProgress);
+                canExit = spinnerControl.State == ControlStates.Offscreen;
+            }
+        }
+
+
         [Given(@"I create a new remote connection ""(.*)"" as")]
         [When(@"I create a new remote connection ""(.*)"" as")]
         [Then(@"I create a new remote connection ""(.*)"" as")]
         public void GivenICreateANewRemoteConnectionAs(string serverName, Table table)
         {
             var newServerAutoId = "UI_DocManager_AutoID,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,ConnectUserControl,UI_ExplorerServerCbx_AutoID,U_UI_ExplorerServerCbx_AutoID_New Remote Server...";
+            GivenIClick("EXPLORERCONNECTCONTROL");
             GivenIClick(newServerAutoId);
             ThenIsVisibleWithinSeconds("WebBrowserWindow", 10);
             var window = GetAControlStrict("WebBrowserWindow");
@@ -658,10 +751,46 @@ namespace Dev2.Studio.UI.Specs
         [Given(@"I start Server as ""(.*)"" with password ""(.*)""")]
         public void GivenIStartServerAsWithPassword(string userName, string password)
         {
-            RunSpecifiedFileWithUserNameAndPassword(userName, password, Bootstrap.ServerLocation);
+            TabManagerUIMap.CloseAllTabs();
+            Bootstrap.Teardown();
+            Playback.Cleanup();
+            RunSpecifiedFileWithUserNameAndPassword(userName, password, Bootstrap.ServerLocation, Bootstrap.ServerTimeOut);
+            Playback.Initialize();
         }
 
-        static void RunSpecifiedFileWithUserNameAndPassword(string userName, string password, string fileLocation)
+        [Given(@"I start Studio as ""(.*)"" with password ""(.*)""")]
+        [Then(@"I start Studio as ""(.*)"" with password ""(.*)""")]
+        [When(@"I start Studio as ""(.*)"" with password ""(.*)""")]
+        public void GivenIStartStudioAsWithPassword(string userName, string password)
+        {
+            TabManagerUIMap.CloseAllTabs();
+            Bootstrap.Teardown(true);
+            Playback.Cleanup();
+            RunSpecifiedFileWithUserNameAndPassword(userName, password, Bootstrap.StudioLocation, 0);
+            WaitForUIControlExistance(typeof(UIStudioWindow), Bootstrap.StudioTimeOut);
+            Playback.Initialize();
+        }
+
+        static void WaitForUIControlExistance(Type T, int timeout)
+        {
+            var count = 0;
+            const int resolution = 1000;
+            while(count < timeout)
+            {
+                var newControl = Activator.CreateInstance(T);
+                if(newControl == null)
+                {
+                    count = count + resolution;
+                    Playback.Wait(resolution);
+                }
+                else
+                {
+                    count = timeout;
+                }
+            }
+        }
+
+        static void RunSpecifiedFileWithUserNameAndPassword(string userName, string password, string fileLocation, int timeOut)
         {
             var sspw = new SecureString();
 
@@ -697,16 +826,8 @@ namespace Dev2.Studio.UI.Specs
             //proc.StartInfo.Arguments = "";
 
             proc.Start();
+            Playback.Wait(timeOut);
         }
-
-        [Given(@"I start Studio as ""(.*)"" with password ""(.*)""")]
-        [Then(@"I start Studio as ""(.*)"" with password ""(.*)""")]
-        [When(@"I start Studio as ""(.*)"" with password ""(.*)""")]
-        public void GivenIStartStudioAsWithPassword(string userName, string password)
-        {
-            RunSpecifiedFileWithUserNameAndPassword(userName, password, Bootstrap.StudioLocation);
-        }
-
 
         [When(@"I drag ""(.*)"" onto ""(.*)""")]
         [Given(@"I drag ""(.*)"" onto ""(.*)""")]
@@ -809,6 +930,11 @@ namespace Dev2.Studio.UI.Specs
                 string message = string.Format("{0} - Was not visible within {1} seconds", itemToFindAutoIds, seconds);
                 Assert.Fail(message);
             }
+            if(itemToFindAutoIds == "WebBrowserWindow")
+            {
+                //Give the web browser window a second to fully render
+                Playback.Wait(1000);
+            }
         }
 
         [Given(@"""(.*)"" is visible ""(.*)"" time")]
@@ -827,23 +953,14 @@ namespace Dev2.Studio.UI.Specs
                     }
 
                     var isInvisible = control.State.HasFlag(ControlStates.Invisible);
-
-
                 }
             }
             catch(Exception)
             {
                 once = false;
-                
             }
-
-               Assert.IsTrue(once);
-      
-            }
-
-
-    
-        
+            Assert.IsTrue(once);
+        }
 
         [Given(@"""(.*)"" is invisible within ""(.*)"" seconds")]
         [Then(@"""(.*)"" is invisible within ""(.*)"" seconds")]
@@ -1065,18 +1182,6 @@ namespace Dev2.Studio.UI.Specs
                 }
             }
             return replace;
-        }
-
-        [Given(@"restarted the Studio and Server")]
-        [When(@"restart the Studio and Server")]
-        [Then(@"restart the Studio and Server")]
-        public void WhenRestartTheStudioAndServer()
-        {
-            TabManagerUIMap.CloseAllTabs();
-            Bootstrap.Teardown();
-            Playback.Cleanup();
-            Bootstrap.Init();
-            Playback.Initialize();
         }
 
         [Given(@"""(.*)"" is Highlighted")]

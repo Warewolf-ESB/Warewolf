@@ -9,14 +9,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.DataList
 {
     /// <summary>
@@ -24,52 +22,17 @@ namespace Dev2.DataList
     /// </summary>
     public class RsOpContains : AbstractRecsetSearchValidation
     {
-        public override Func<IList<string>> BuildSearchExpression(IBinaryDataList binaryDataList, IRecsetSearch to)
+        #region Overrides of AbstractRecsetSearchValidation
+
+
+        public override Func<DataASTMutable.WarewolfAtom, bool> CreateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> warewolfAtoms, IEnumerable<DataASTMutable.WarewolfAtom> to, bool all)
         {
-            Func<IList<string>> result = () =>
-                {
-                    ErrorResultTO err;
-                    IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, binaryDataList, out err).Invoke();
-
-                    IList<string> fnResult = new List<string>();
-
-                    foreach(RecordSetSearchPayload p in operationRange)
-                    {
-                        if(to.MatchCase)
-                        {
-                            if(p.Payload.Contains(to.SearchCriteria))
-                            {
-                                fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
-                            }
-                            else
-                            {
-                                if(to.RequireAllFieldsToMatch)
-                                {
-                                    return new List<string>();
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if(p.Payload.ToLower().Contains(to.SearchCriteria.ToLower()))
-                            {
-                                fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
-                            }
-                            else
-                            {
-                                if(to.RequireAllFieldsToMatch)
-                                {
-                                    return new List<string>();
-                                }
-                            }
-                        }
-                    }
-
-                    return fnResult.Distinct().ToList();
-                };
-
-            return result;
+            if (all)
+                return a => values.All(x => a.ToString().ToLower(CultureInfo.InvariantCulture) .Contains(x.ToString().ToLower(CultureInfo.InvariantCulture)));
+            return a => values.Any(x => a.ToString().ToLower(CultureInfo.InvariantCulture).Contains(x.ToString().ToLower(CultureInfo.InvariantCulture)));
         }
+
+        #endregion
 
         public override string HandlesType()
         {

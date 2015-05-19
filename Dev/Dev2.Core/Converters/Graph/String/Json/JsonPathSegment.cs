@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -8,7 +7,6 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-
 
 using System;
 using Dev2.Common.Interfaces.Core.Graph;
@@ -22,7 +20,6 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
 
         internal JsonPathSegment()
         {
-
         }
 
         internal JsonPathSegment(string name, bool isEnumarable)
@@ -43,9 +40,9 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
 
         #region Methods
 
-        public override string ToString()
+        public string ToString(bool considerEnumerable)
         {
-            if(IsEnumarable)
+            if (considerEnumerable && IsEnumarable)
             {
                 return ActualSegment + JsonPath.EnumerableSymbol;
             }
@@ -53,9 +50,9 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
             return ActualSegment;
         }
 
-        public string ToString(bool considerEnumerable)
+        public override string ToString()
         {
-            if(considerEnumerable && IsEnumarable)
+            if (IsEnumarable)
             {
                 return ActualSegment + JsonPath.EnumerableSymbol;
             }

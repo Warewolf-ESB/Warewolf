@@ -27,21 +27,20 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        Text="Help"
-                       FontWeight="Bold"></TextBlock>
+                       FontWeight="Bold" />
             <Button Grid.Row="0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
                     Command="{Binding ShowHelpToggleCommand}"
                     ToolTip="Close Help"
                     Style="{StaticResource CloseButtonStyle}"
-                    AutomationProperties.AutomationId="UI_CloseHelp_AutoID">
-            </Button>
+                    AutomationProperties.AutomationId="UI_CloseHelp_AutoID" />
             <TextBlock Grid.Row="1"
                        Margin="0,5,0,0"
                        Text="{Binding HelpText}"
                        VerticalAlignment="Top"
                        TextWrapping="WrapWithOverflow"
-                       AutomationProperties.AutomationId="UI_HelpTextBlock_AutoID"></TextBlock>
+                       AutomationProperties.AutomationId="UI_HelpTextBlock_AutoID" />
             <TextBlock Grid.Row="2"
                        Visibility="{Binding ShowExampleWorkflowLink}">
                 <Hyperlink Command="{Binding ShowItemHelpCommand}"

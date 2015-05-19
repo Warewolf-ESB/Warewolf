@@ -9,11 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
-using Dev2.DataList.Contract.Binary_Objects;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.DataList.Contract
 {
     /// <summary>
@@ -21,10 +20,7 @@ namespace Dev2.DataList.Contract
     /// </summary>
     public interface IFindRecsetOptions
     {
-        Func<IList<string>> BuildSearchExpression(IBinaryDataList scopingObj, IRecsetSearch to);
-
         string HandlesType();
-
-        Func<IList<RecordSetSearchPayload>> GenerateInputRange(IRecsetSearch to, IBinaryDataList bdl, out ErrorResultTO errors);
+        Func<DataASTMutable.WarewolfAtom, bool> GenerateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> from, IEnumerable<DataASTMutable.WarewolfAtom> to, bool all);
     }
 }

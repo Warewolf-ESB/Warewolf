@@ -9,18 +9,16 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Linq.Expressions;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Data.ServiceModel;
 using Dev2.Models;
+using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Workflow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Core.Tests.ActivityDropView
 {

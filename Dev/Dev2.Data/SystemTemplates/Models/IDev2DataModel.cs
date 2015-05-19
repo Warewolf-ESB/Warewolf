@@ -9,9 +9,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using Dev2.DataList.Contract;
+using Warewolf.Storage;
 
 namespace Dev2.Data.SystemTemplates.Models
 {
@@ -43,7 +43,7 @@ namespace Dev2.Data.SystemTemplates.Models
         /// Generates the user friendly model.
         /// </summary>
         /// <returns></returns>
-        string GenerateUserFriendlyModel(Guid dlid, Dev2DecisionMode mode, out ErrorResultTO errors);
+        string GenerateUserFriendlyModel(IExecutionEnvironment env, Dev2DecisionMode mode, out ErrorResultTO errors);
 
     }
 }

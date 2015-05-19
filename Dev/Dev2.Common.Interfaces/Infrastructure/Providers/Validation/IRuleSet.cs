@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
@@ -18,12 +16,11 @@ namespace Dev2.Common.Interfaces.Infrastructure.Providers.Validation
 {
     public interface IRuleSet
     {
+        List<IRuleBase> Rules { get; set; }
         void Add(IRuleBase rule);
 
         List<IActionableErrorInfo> ValidateRules();
 
         List<IActionableErrorInfo> ValidateRules(string labelText, Action doError);
-
-        List<IRuleBase> Rules { get; set; }
     }
 }

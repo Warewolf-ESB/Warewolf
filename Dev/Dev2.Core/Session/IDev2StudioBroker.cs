@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,16 +8,18 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
 using Dev2.Data.Translators;
 using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.Session
 {
-    public interface IDev2StudioSessionBroker : IDebugSession, ITranslate
+    public interface IDev2StudioSessionBroker : IDebugSession, ITranslate,IDisposable
     {
         // ReSharper disable InconsistentNaming
         string GetXMLForInputs(IBinaryDataList binaryDataList);
         // ReSharper restore InconsistentNaming
+
+   
     }
 }

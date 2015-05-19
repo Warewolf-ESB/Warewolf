@@ -9,10 +9,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Action = Microsoft.Win32.TaskScheduler.Action;
 
 namespace Dev2.TaskScheduler.Wrappers.Test
 {
@@ -30,7 +28,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         [TestCategory("TaskShedulerWrapper_Dev2Action_Construct")]
         public void TaskShedulerWrapper_Dev2Action_Construct()
         {
-            using ( Action act = new Microsoft.Win32.TaskScheduler.ExecAction("bob","dave","jane"))
+            using ( Microsoft.Win32.TaskScheduler.Action act = new Microsoft.Win32.TaskScheduler.ExecAction("bob","dave","jane"))
             {
                 Dev2Action wrapped = new Dev2Action(act);
                 wrapped.Id = Guid.NewGuid().ToString();

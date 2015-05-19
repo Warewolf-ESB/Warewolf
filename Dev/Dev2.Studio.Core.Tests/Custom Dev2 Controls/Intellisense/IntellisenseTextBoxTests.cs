@@ -9,10 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Threading;
+using System.Windows;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Core.Tests.Utils;
@@ -25,9 +26,6 @@ using Dev2.Studio.ViewModels.DataList;
 using Dev2.UI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Windows;
-using Clipboard = System.Windows.Clipboard;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable CheckNamespace
@@ -487,7 +485,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             CustomContainer.DeRegister<IPopupController>();
             var mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(controller => controller.ShowInvalidCharacterMessage(It.IsAny<string>()));
-            CustomContainer.Register<IPopupController>(mockPopupController.Object);
+            CustomContainer.Register(mockPopupController.Object);
             Mock<IIntellisenseProvider> intellisenseProvider = new Mock<IIntellisenseProvider>();
             intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(false);
             //------------Execute Test---------------------------

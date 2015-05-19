@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -240,11 +239,7 @@ namespace Dev2.Runtime.ServiceModel
 
         static string FixResponse(string result)
         {
-            if(string.IsNullOrEmpty(result))
-            {
-                return result;
-            }
-            return WebUtility.HtmlDecode(result);
+            return result;
         }
 
         #endregion
@@ -253,23 +248,26 @@ namespace Dev2.Runtime.ServiceModel
 
         static void EnsureWebClient(WebSource source, IEnumerable<string> headers)
         {
-            if(source.Client != null)
+            if(source != null && source.Client != null)
             {
                 return;
             }
 
-            source.Client = new WebClient();
-
-            if(source.AuthenticationType == AuthenticationType.User)
+            if(source != null)
             {
-                source.Client.Credentials = new NetworkCredential(source.UserName, source.Password);
-            }
+                source.Client = new WebClient();
 
-            if(headers != null)
-            {
-                foreach(var header in headers)
+                if(source.AuthenticationType == AuthenticationType.User)
                 {
-                    source.Client.Headers.Add(header.Trim());
+                    source.Client.Credentials = new NetworkCredential(source.UserName, source.Password);
+                }
+
+                if(headers != null)
+                {
+                    foreach(var header in headers)
+                    {
+                        source.Client.Headers.Add(header.Trim());
+                    }
                 }
             }
         }

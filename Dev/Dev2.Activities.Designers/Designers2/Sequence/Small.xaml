@@ -15,7 +15,8 @@
                                Padding="7"
                                mc:Ignorable="d"
                                d:DesignWidth="250"
-                               d:DataContext="{d:DesignInstance local:SequenceDesignerViewModel}">
+                               d:DataContext="{d:DesignInstance local:SequenceDesignerViewModel}"
+                               ToolTip="{x:Static help:HelpTextResources.SequenceTooltipSequence}">
 
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary x:Name="TheResources"
@@ -57,7 +58,7 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.SequenceHelpSeqence}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.SequenceHelpSequence}"
                                  DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </DataGrid>

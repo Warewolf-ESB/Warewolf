@@ -9,7 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System.Collections.Generic;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.Hosting;
@@ -23,7 +23,7 @@ namespace Dev2.Services.Execution
     {
 
         public bool DidExecuteServiceInvoke { get; private set; }
-
+        public string ReturnFromExecute { get; set; }
         public MockServiceExecutionAbstract(IDSFDataObject dataObj, bool handlesOutputFormatting = false)
             : base(dataObj, handlesOutputFormatting, false)
         {
@@ -39,11 +39,11 @@ namespace Dev2.Services.Execution
         {
         }
 
-        protected override object ExecuteService(out ErrorResultTO errors, IOutputFormatter formater = null)
+        protected override object ExecuteService(List<MethodParameter> methodParameters, out ErrorResultTO errors, IOutputFormatter formater = null)
         {
             errors = new ErrorResultTO();
             DidExecuteServiceInvoke = true;
-            return null;
+            return ReturnFromExecute;
         }
 
         #endregion
@@ -55,7 +55,11 @@ namespace Dev2.Services.Execution
             CreateService(catalog);
         }
 
-        public void MockExecuteImpl(IDataListCompiler compiler, out DataList.Contract.ErrorResultTO errors)
+        #region Overrides of ServiceExecutionAbstract<TService,TSource>
+
+        #endregion
+
+        public void MockExecuteImpl(IDataListCompiler compiler, out ErrorResultTO errors)
         {
             ExecuteImpl(compiler, out errors);
         }

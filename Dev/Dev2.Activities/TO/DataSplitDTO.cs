@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.DataList.Contract;
@@ -206,7 +205,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         ruleSet.Add(outputExprRule);
                         ruleSet.Add(new IsValidExpressionRule(() => outputExprRule.ExpressionValue, datalist));
                     }
-                    ruleSet.Add(new IsStringEmptyRule(() => OutputVariable));
                     break;
 
                 case "At":

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,25 +8,27 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.ServiceModel;
+using Warewolf.Storage;
 
-namespace Dev2 {
-    [ServiceContract(CallbackContract=typeof(IFrameworkDuplexCallbackChannel))]
-    public interface IFrameworkDuplexDataChannel {
-        [OperationContract(IsOneWay=true)]
+namespace Dev2
+{
+    [ServiceContract(CallbackContract = typeof (IFrameworkDuplexCallbackChannel))]
+    public interface IFrameworkDuplexDataChannel
+    {
+        [OperationContract(IsOneWay = true)]
         void Register(string userName);
 
-        [OperationContract(IsOneWay=true)]
+        [OperationContract(IsOneWay = true)]
         void Unregister(string userName);
 
         [OperationContract]
         void ShowUsers(string userName);
 
-        [OperationContract(IsOneWay=true)]
+        [OperationContract(IsOneWay = true)]
         void SendMessage(string userName, string message);
 
-        [OperationContract(IsOneWay=true)]
+        [OperationContract(IsOneWay = true)]
         void SendPrivateMessage(string userName, string targetUserName, string message);
 
         [OperationContract(IsOneWay = true)]

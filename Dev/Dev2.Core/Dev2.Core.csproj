@@ -137,24 +137,15 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Compile Include="Calculate\SyntaxTreeBuilderHelper.cs" />
     <Compile Include="Common\Dev2Random.cs" />
     <Compile Include="Common\Field.cs" />
     <Compile Include="Common\JTokenExtensionmethods.cs" />
     <Compile Include="Common\JPropertyExtensionMethods.cs" />
     <Compile Include="Converters\Base\TO\GatherSystemInformationTO.cs" />
-    <Compile Include="Converters\DateAndTime\DateTimeComparer.cs" />
-    <Compile Include="Converters\DateAndTime\DateTimeConverterFactory.cs" />
-    <Compile Include="Converters\DateAndTime\DateTimeFormatter.cs" />
-    <Compile Include="Converters\DateAndTime\DateTimeParser.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Converters\DateAndTime\TO\DateTimeDiffTO.cs" />
-    <Compile Include="Converters\DateAndTime\TO\DateTimeFormatPartOptionTO.cs" />
-    <Compile Include="Converters\DateAndTime\TO\DateTimeFormatPartTO.cs" />
-    <Compile Include="Converters\DateAndTime\TO\DateTimeOperationTO.cs" />
-    <Compile Include="Converters\DateAndTime\TO\DateTimeResultTO.cs" />
-    <Compile Include="Converters\DateAndTime\TO\TimeZoneTO.cs" />
     <Compile Include="Converters\Base\BaseTypeException.cs" />
     <Compile Include="Converters\Base\Dev2Base64Converter.cs" />
     <Compile Include="Converters\Base\Dev2BaseConversionFactory.cs" />
@@ -202,7 +193,10 @@
     <Compile Include="Converters\Graph\String\Xml\XmlPathSegment.cs" />
     <Compile Include="Common\TypeExtensionMethods.cs" />
     <Compile Include="Converters\TypeToIconConverter.cs" />
+    <Compile Include="CustomContainer.cs" />
     <Compile Include="DynamicServices\Objects\Dev2XamlLoader.cs" />
+    <Compile Include="enFindMissingType.cs" />
+    <Compile Include="ExecutionEnvironmentUtils.cs" />
     <Compile Include="ExtMethods\StringExtension.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -210,6 +204,8 @@
     <Compile Include="Factories\SyntaxTreeFactory.cs" />
     <Compile Include="DynamicServices\Objects\UnitTest.cs" />
     <Compile Include="Common\FileIO.cs" />
+    <Compile Include="IActivityParser.cs" />
+    <Compile Include="IDev2Activity.cs" />
     <Compile Include="InterfaceImplementors\DsfDataObject.cs" />
     <Compile Include="InterfaceImplementors\FileSystem.cs" />
     <Compile Include="Interfaces\DataListMergeFrequency.cs" />
@@ -274,6 +270,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Dynamic Services.cd" />
     <None Include="Simulation\Simulation.cd" />
   </ItemGroup>
@@ -290,7 +287,7 @@
       <Name>Dev2.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
-      <Project>{a7d9da27-f023-4588-aa64-ac2de44c0b82}</Project>
+      <Project>{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}</Project>
       <Name>Dev2.Diagnostics</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
@@ -308,6 +305,18 @@
     <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
       <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>
       <Name>Dev2.Runtime.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
+      <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
+      <Name>Warewolf.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
+      <Project>{E0F7C709-A61B-4829-A659-D7780052326A}</Project>
+      <Name>WarewolfLanguageParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WarewolfParserInterop\WarewolfParserInterop.csproj">
+      <Project>{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}</Project>
+      <Name>WarewolfParserInterop</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

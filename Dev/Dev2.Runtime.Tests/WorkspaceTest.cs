@@ -16,6 +16,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
+using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
@@ -23,7 +24,6 @@ using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.Hosting;
 using Dev2.Tests.Runtime.XML;
 using Dev2.Workspaces;
@@ -78,7 +78,7 @@ namespace Dev2.DynamicServices.Test
         [TestMethod]
         public void UpdateWorkItemWithEditAction()
         {
-
+            CustomContainer.Register<IActivityParser>(new ActivityParser());
             //Lock because of access to resourcatalog
             lock(SyncRoot)
             {

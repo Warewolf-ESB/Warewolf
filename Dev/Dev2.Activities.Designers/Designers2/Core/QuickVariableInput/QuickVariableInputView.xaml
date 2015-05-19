@@ -24,8 +24,7 @@
                                      CustomCommand="{Binding AddCommand}"
                                      IsValidatedBefore="True"
                                      AutomationProperties.AutomationId="AddButton"
-                                     IsClosedAfter="True">
-        </core:ActivityDesignerButton>
+                                     IsClosedAfter="True" />
     </core:ActivityDesignerTemplate.RightButtons>
 
     <core:ActivityDesignerTemplate.InputBindings>
@@ -69,7 +68,7 @@
 
             <Label Grid.Row="1"
                    Grid.Column="0"
-                   Content="Variable List :"></Label>
+                   Content="Variable List :" />
             <TextBox Grid.Row="1"
                      Grid.Column="1"
                      x:Name="InitialFocusElement"
@@ -129,7 +128,7 @@
 
             <Label Grid.Row="3"
                    Grid.Column="0"
-                   Content="Prefix  With:"></Label>
+                   Content="Prefix  With:" />
             <TextBox Grid.Row="3"
                      Grid.Column="1"
                      Style="{StaticResource ActivityTextBoxStyle}"
@@ -144,7 +143,7 @@
 
             <Label Grid.Row="4"
                    Grid.Column="0"
-                   Content="Suffix With :"></Label>
+                   Content="Suffix With :" />
             <TextBox Grid.Row="4"
                      Grid.Column="1"
                      Style="{StaticResource ActivityTextBoxStyle}"
@@ -190,7 +189,7 @@
             <preview:PreviewView Grid.Row="6"
                                  Grid.ColumnSpan="2"
                                  Margin="5,0,0,0"
-                                 DataContext="{Binding PreviewViewModel}"></preview:PreviewView>
+                                 DataContext="{Binding PreviewViewModel}" />
         </Grid>
     </Grid>
 </core:ActivityDesignerTemplate>

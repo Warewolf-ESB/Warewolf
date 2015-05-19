@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Security.Principal;
@@ -17,8 +15,10 @@ using System.Text;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
-using Dev2.Web;
 
+using Dev2.Web;
+using Warewolf.Storage;
+using Dev2.Runtime.Execution;
 namespace Dev2
 {
     public interface IDSFDataObject
@@ -68,16 +68,9 @@ namespace Dev2
         IList<IDebugState> RemoteDebugItems { get; set; }
         string RemoteServiceType { get; set; }
 
-        // Massimo.Guerrera :15-04-2013 - Added for the detection of webpages in the webserver so that the system tags dont get striped
-        bool IsWebpage { get; set; }
-
-        IDSFDataObject Clone();
-
         ExecutionOrigin ExecutionOrigin { get; set; }
         string ExecutionOriginDescription { get; set; }
         bool IsFromWebServer { get; set; }
-
-        bool IsDebugMode();
 
         Guid EnvironmentID { get; set; }
 
@@ -91,8 +84,17 @@ namespace Dev2
 
         bool IsRemoteInvoke { get; }
         bool IsRemoteInvokeOverridden { get; set; }
-        bool IsRemoteWorkflow();
 
         int ForEachNestingLevel { get; set; }
+        IDSFDataObject Clone();
+        bool IsDebugMode();
+        bool IsRemoteWorkflow();
+        IExecutionEnvironment Environment { get; set; }
+        IExecutionToken ExecutionToken   { get; set; }
+
+        void PopEnvironment();
+        void PushEnvironment(IExecutionEnvironment env);
+
+        IEsbChannel EsbChannel { get; set; }
     }
 }

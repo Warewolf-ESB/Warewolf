@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,7 +28,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
     /// </summary>
     public class PluginRuntimeHandler : MarshalByRefObject, IRuntime
     {
-
+        List<string> _loadedAssemblies = new List<string>();
+        string _assemblyLocation = "";
         /// <summary>
         /// Runs the specified setup information.
         /// </summary>
@@ -38,12 +38,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         public object Run(PluginInvokeArgs setupInfo)
         {
             Assembly loadedAssembly;
-
+            _assemblyLocation = setupInfo.AssemblyLocation;
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
             if(!TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly))
             {
                 return null;
             }
-
             var parameters = BuildParameterList(setupInfo.Parameters);
             var typeList = BuildTypeList(setupInfo.Parameters);
 
@@ -51,7 +51,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             var methodToRun = type.GetMethod(setupInfo.Method, typeList);
             var instance = Activator.CreateInstance(type);
             var pluginResult = methodToRun.Invoke(instance, parameters);
-
+            AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
             // do formating here to avoid object serialization issues ;)
             var formater = setupInfo.OutputFormatter;
             if(formater != null)
@@ -68,11 +68,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         {
             Assembly loadedAssembly;
 
+            _assemblyLocation = setupInfo.AssemblyLocation;
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
             if(!TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly))
             {
                 return null;
             }
-
             var parameters = BuildParameterList(setupInfo.Parameters);
             var typeList = BuildTypeList(setupInfo.Parameters);
 
@@ -80,7 +81,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             var methodToRun = type.GetMethod(setupInfo.Method, typeList);
             var instance = Activator.CreateInstance(type);
             var pluginResult = methodToRun.Invoke(instance, parameters);
-
+            AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
             // do formating here to avoid object serialization issues ;)
             var dataBrowser = DataBrowserFactory.CreateDataBrowser();
             var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
@@ -95,10 +96,16 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
             var result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             result.DataSourceShapes.Add(dataSourceShape);
-
             return result;
         }
 
+        Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            string[] tokens = args.Name.Split(",".ToCharArray());
+            System.Diagnostics.Debug.WriteLine("Resolving : " + args.Name);
+            var directoryName = Path.GetDirectoryName(_assemblyLocation);
+            return Assembly.LoadFile(Path.Combine(new[] { directoryName, tokens[0] + ".dll" }));
+        }
         /// <summary>
         /// Lists the namespaces.
         /// </summary>
@@ -147,7 +154,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                         serviceMethod.Parameters.Add(
                             new MethodParameter
                             {
-                                DefaultValue = parameterInfo.DefaultValue.ToString(),
+                                DefaultValue = parameterInfo.DefaultValue==null ? string.Empty : parameterInfo.DefaultValue.ToString(),
                                 EmptyToNull = false,
                                 IsRequired = true,
                                 Name = parameterInfo.Name,
@@ -316,11 +323,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         {
             loadedAssembly = null;
 
-            if(assemblyLocation.StartsWith(GlobalConstants.GACPrefix))
+            if(assemblyLocation != null && assemblyLocation.StartsWith(GlobalConstants.GACPrefix))
             {
-
-                // Culture=neutral, PublicKeyToken=b77a5c561934e089
-                // , Version=2.0.0.0
                 try
                 {
                     loadedAssembly = Assembly.Load(assemblyName);
@@ -336,16 +340,22 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 try
                 {
-                    loadedAssembly = Assembly.LoadFile(assemblyLocation);
-                    LoadDepencencies(loadedAssembly, assemblyLocation);
+                    if(assemblyLocation != null)
+                    {
+                        loadedAssembly = Assembly.LoadFrom(assemblyLocation);
+                        LoadDepencencies(loadedAssembly, assemblyLocation);
+                    }
                     return true;
                 }
                 catch
                 {
                     try
                     {
-                        loadedAssembly = Assembly.UnsafeLoadFrom(assemblyLocation);
-                        LoadDepencencies(loadedAssembly, assemblyLocation);
+                        if(assemblyLocation != null)
+                        {
+                            loadedAssembly = Assembly.UnsafeLoadFrom(assemblyLocation);
+                            LoadDepencencies(loadedAssembly, assemblyLocation);
+                        }
                         return true;
                     }
                     catch(Exception e)
@@ -355,9 +365,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 }
                 try
                 {
-                    var objHAndle = Activator.CreateInstanceFrom(assemblyLocation, assemblyName);
-                    var loadedObject = objHAndle.Unwrap();
-                    loadedAssembly = Assembly.GetAssembly(loadedObject.GetType());
+                    if(assemblyLocation != null)
+                    {
+                        var objHAndle = Activator.CreateInstanceFrom(assemblyLocation, assemblyName);
+                        var loadedObject = objHAndle.Unwrap();
+                        loadedAssembly = Assembly.GetAssembly(loadedObject.GetType());
+                    }
                     LoadDepencencies(loadedAssembly, assemblyLocation);
                     return true;
                 }
@@ -385,10 +398,15 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
                 foreach(var toLoad in toLoadAsm)
                 {
-                    // TODO : Detect GAC or File System Load ;)
+                    var fullName = toLoad.FullName;
+                    if (_loadedAssemblies.Contains(fullName))
+                    {
+                        continue;
+                    }
+                    Assembly depAsm = null;
                     try
                     {
-                        Assembly.Load(toLoad);
+                        depAsm = Assembly.Load(toLoad);
                     }
                     catch
                     {
@@ -396,8 +414,16 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                         if(path != null)
                         {
                             var myLoad = Path.Combine(path, toLoad.Name + ".dll");
-                            Assembly.UnsafeLoadFrom(myLoad);
+                            depAsm = Assembly.LoadFrom(myLoad);
                         }
+                    }
+                    if (depAsm != null)
+                    {
+                        if (!_loadedAssemblies.Contains(fullName))
+                        {
+                            _loadedAssemblies.Add(fullName);
+                        }
+                        LoadDepencencies(depAsm, assemblyLocation);
                     }
                 }
             }

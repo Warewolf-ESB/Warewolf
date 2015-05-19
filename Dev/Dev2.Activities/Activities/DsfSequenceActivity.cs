@@ -9,18 +9,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage;
 
 namespace Dev2.Activities
 {
@@ -55,7 +52,7 @@ namespace Dev2.Activities
             return DebugItem.EmptyList;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             return DebugItem.EmptyList;
         }
@@ -64,26 +61,26 @@ namespace Dev2.Activities
 
         #region GetForEachInputs/Outputs
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             foreach(var activity in Activities)
             {
                 var innerActivity = activity as DsfActivityAbstract<string>;
                 if(innerActivity != null)
                 {
-                    innerActivity.UpdateForEachInputs(updates, context);
+                    innerActivity.UpdateForEachInputs(updates);
                 }
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             foreach(var activity in Activities)
             {
                 var innerActivity = activity as DsfActivityAbstract<string>;
                 if(innerActivity != null)
                 {
-                    innerActivity.UpdateForEachOutputs(updates, context);
+                    innerActivity.UpdateForEachOutputs(updates);
                 }
             }
         }
@@ -142,35 +139,63 @@ namespace Dev2.Activities
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             dataObject.ForEachNestingLevel++;
-            InitializeDebug(context.GetExtension<IDSFDataObject>());
-            if(dataObject.IsDebugMode())
+            InitializeDebug(dataObject);
+            if (dataObject.IsDebugMode())
             {
-                DispatchDebugState(context, StateType.Before);
+                DispatchDebugState(dataObject, StateType.Before);
             }
             dataObject.ParentInstanceID = UniqueID;
             dataObject.IsDebugNested = true;
             _innerSequence.Activities.Clear();
-            foreach(var dsfActivity in Activities)
+            foreach (var dsfActivity in Activities)
             {
                 _innerSequence.Activities.Add(dsfActivity);
             }
+
+            if (dataObject.IsDebugMode())
+            {
+                DispatchDebugState(dataObject, StateType.After);
+            }
             context.ScheduleActivity(_innerSequence, OnCompleted);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
+            _previousParentID = dataObject.ParentInstanceID;
+            dataObject.ForEachNestingLevel++;
+            InitializeDebug(dataObject);
             if(dataObject.IsDebugMode())
             {
-                DispatchDebugState(context, StateType.After);
+                DispatchDebugState(dataObject, StateType.Before);
             }
+            dataObject.ParentInstanceID = UniqueID;
+            dataObject.IsDebugNested = true;
+            if (dataObject.IsDebugMode())
+            {
+                DispatchDebugState(dataObject, StateType.After);
+            }
+           foreach(var dsfActivity in Activities)
+            {
+                var act = dsfActivity as IDev2Activity;
+                if (act != null)
+                {
+                    act.Execute(dataObject);
+                }
+            }
+            
+            OnCompleted(dataObject);
         }
 
         void OnCompleted(NativeActivityContext context, ActivityInstance completedInstance)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            OnCompleted(dataObject);
+        }
+
+        void OnCompleted(IDSFDataObject dataObject)
+        {
             dataObject.IsDebugNested = false;
             dataObject.ParentInstanceID = _previousParentID;
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            if(compiler != null)
-            {
-                DoErrorHandling(context, compiler, dataObject);
-            }
             dataObject.ForEachNestingLevel--;
         }
 

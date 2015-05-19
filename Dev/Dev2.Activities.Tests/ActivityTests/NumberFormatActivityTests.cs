@@ -9,17 +9,16 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using ActivityUnitTests;
-using Dev2.Common;
-using Dev2.Common.Interfaces.DataList.Contract;
-using Dev2.Common.Interfaces.Enums.Enums;
-using Dev2.DataList.Contract;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using ActivityUnitTests;
+using Dev2.Common;
+using Dev2.Common.Interfaces.Enums.Enums;
+using Dev2.DataList.Contract;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -79,10 +78,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
 
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -91,21 +89,20 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void Format_Where_NumberInputIsRecordset_Expected_EveryValueIntheRecordSetIsAndFormatted()
         {
             SetupArguments(ActivityStrings.NumberFormatActivity_DataList_WithData, ActivityStrings.NumberFormatActivity_DataList_Shape,
-                           "[[resRecordSet(*).number]]", "[[recordSet(*).number]]", enRoundingType.Normal, "", "");
+                           "[[resRecordSet().number]]", "[[recordSet(*).number]]", enRoundingType.Normal, "", "");
             IDSFDataObject result = ExecuteProcess();
 
             //string expected = "790";
-            IList<IBinaryDataListItem> actual;
+            IList<string> actual;
             string error;
 
-            GetRecordSetFieldValueFromDataList(result.DataListID, "resRecordSet", "number", out actual, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "resRecordSet", "number", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(actual.Count, 2);
-            Assert.AreEqual(actual[0].TheValue, "123");
-            Assert.AreEqual(actual[1].TheValue, "456");
+            var actualVals = actual.Where(s => !string.IsNullOrEmpty(s)).ToList();
+            Assert.AreEqual(2, actualVals.Count);
+            Assert.AreEqual(actualVals[0], "123");
+            Assert.AreEqual(actualVals[1], "456");
         }
 
         [TestMethod]
@@ -119,27 +116,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
 
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
 
             Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void Format_Where_NumberInputIsntNumeric_Expected_Error()
-        {
-            SetupArguments(ActivityStrings.NumberFormatActivity_DataList_WithData, ActivityStrings.NumberFormatActivity_DataList_Shape,
-                           "[[res]]", "", enRoundingType.Normal, "2", "1");
-            IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-
-            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsFalse(string.IsNullOrWhiteSpace(actual));
         }
 
         [TestMethod]
@@ -153,10 +132,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
 
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -173,12 +151,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             string error;
             string systemError;
 
-            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out systemError, out error);
+            GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out systemError, out error);
 
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
 
             // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -199,7 +176,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var act = new DsfNumberFormatActivity { Expression = expression, RoundingType = roundingType, RoundingDecimalPlaces = roundingDecimalPlaces, DecimalPlacesToShow = decimalPlacesToShow, Result = result };
 
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(null, null);
+            act.UpdateForEachInputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual(expression, act.Expression);
             Assert.AreEqual(roundingType, act.RoundingType);
@@ -225,7 +202,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple3 = new Tuple<string, string>(roundingDecimalPlaces, "Test3");
             var tuple4 = new Tuple<string, string>(decimalPlacesToShow, "Test4");
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2, tuple3, tuple4 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2, tuple3, tuple4 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test2", act.RoundingType);
             Assert.AreEqual("Test", act.Expression);
@@ -247,7 +224,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string decimalPlacesToShow = "2";
             var act = new DsfNumberFormatActivity { Expression = expression, RoundingType = roundingType, RoundingDecimalPlaces = roundingDecimalPlaces, DecimalPlacesToShow = decimalPlacesToShow, Result = result };
 
-            act.UpdateForEachOutputs(null, null);
+            act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
             Assert.AreEqual(result, act.Result);
         }
@@ -268,7 +245,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test2");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 });
             //------------Assert Results-------------------------
             Assert.AreEqual(result, act.Result);
         }
@@ -288,7 +265,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var tuple1 = new Tuple<string, string>("[[res]]", "Test");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.Result);
         }
@@ -339,33 +316,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, dsfForEachItems.Count);
             Assert.AreEqual(result, dsfForEachItems[0].Name);
             Assert.AreEqual(result, dsfForEachItems[0].Value);
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfNumberFormatActivity_Execute")]
-        public void DsfNumberFormatActivity_Execute_MultipleResults_ExpectError()
-        {
-            SetupArguments(ActivityStrings.NumberFormatActivity_DataList_WithData, ActivityStrings.NumberFormatActivity_DataList_Shape,
-                             "[[res]],[[bes]]", "123.123", enRoundingType.None, "", "");
-            IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-            string systemError;
-
-            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out systemError, out error);
-
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
-            Assert.IsNull(actual);
         }
 
     }

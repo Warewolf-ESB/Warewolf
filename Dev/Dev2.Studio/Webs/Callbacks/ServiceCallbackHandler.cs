@@ -9,13 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -137,7 +135,7 @@ namespace Dev2.Webs.Callbacks
             }
             else
             {
-                uri += (uri.IndexOf('?') > 0 ? "&" : "?") + SourceParam + sourceID.ToString();
+                uri += (uri.IndexOf('?') > 0 ? "&" : "?") + SourceParam + sourceID;
             }
 
             Navigate(uri);

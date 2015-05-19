@@ -9,19 +9,16 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using ActivityUnitTests;
-using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.ESB.Management.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -78,8 +75,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Guid.TryParse(dObj.RemoteInvokerID, out id);
             var msgs = RemoteDebugMessageRepo.Instance.FetchDebugItems(id);
             // remove test datalist ;)
-            DataListRemoval(dObj.DataListID);
-            Assert.AreEqual(2, msgs.Count);
+            Assert.AreEqual(1, msgs.Count);
         }
 
         [TestMethod]
@@ -104,9 +100,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tmp2 = serialiser.Deserialize<IList<DebugState>>(tmp);
 
             // remove test datalist ;)
-            DataListRemoval(dObj.DataListID);
 
-            Assert.AreEqual(2, tmp2.Count);
+            Assert.AreEqual(1, tmp2.Count);
         }
 
         [TestMethod]
@@ -135,9 +130,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tmp2 = jsonSer.Deserialize<IList<DebugState>>(str.ToString());
 
             // remove test datalist ;)
-            DataListRemoval(dObj.DataListID);
 
-            Assert.AreEqual(2, tmp2.Count);
+            Assert.AreEqual(1, tmp2.Count);
         }
 
     }

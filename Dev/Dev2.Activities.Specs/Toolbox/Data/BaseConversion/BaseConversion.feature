@@ -212,7 +212,7 @@ Scenario: Convert from base64 to base64
 	| 1 | [[var]] = QUE= |
 
 Scenario: Convert blank from text to binary 
-	Given I have a convert variable "[[var]]" with a value of ""
+	Given I have a convert variable "[[var]]" with a value of "blank"
 	And I convert a variable "[[var]]" from type "Text" to type "Binary" 
 	When the base conversion tool is executed
 	Then the result is ""	
@@ -225,7 +225,7 @@ Scenario: Convert blank from text to binary
 	| 1 | [[var]] = |
 
 Scenario: Convert blank from text to hexadecimal 
-	Given I have a convert variable "[[var]]" with a value of ""
+	Given I have a convert variable "[[var]]" with a value of "blank"
 	And I convert a variable "[[var]]" from type "Text" to type "Hex" 
 	When the base conversion tool is executed
 	Then the result is ""
@@ -238,7 +238,7 @@ Scenario: Convert blank from text to hexadecimal
 	| 1 | [[var]] = |
 
 Scenario: Convert blank from text to base64 
-	Given I have a convert variable "[[var]]" with a value of ""
+	Given I have a convert variable "[[var]]" with a value of "blank"
 	And I convert a variable "[[var]]" from type "Text" to type "Base 64" 
 	When the base conversion tool is executed
 	Then the result is ""
@@ -251,7 +251,7 @@ Scenario: Convert blank from text to base64
 	| 1 | [[var]] = |
 
 Scenario: Convert blank from binary to text 
-	Given I have a convert variable "[[var]]" with a value of ""
+	Given I have a convert variable "[[var]]" with a value of "blank"
 	And I convert a variable "[[var]]" from type "Binary" to type "Text" 
 	When the base conversion tool is executed
 	Then the result is ""
@@ -264,7 +264,7 @@ Scenario: Convert blank from binary to text
 	| 1 | [[var]] = |
 
 Scenario: Convert blank from binary to hexadecimal 
-	Given I have a convert variable "[[var]]" with a value of ""
+	Given I have a convert variable "[[var]]" with a value of "blank"
 	And I convert a variable "[[var]]" from type "Binary" to type "Hex" 
 	When the base conversion tool is executed
 	Then the result is ""
@@ -277,7 +277,7 @@ Scenario: Convert blank from binary to hexadecimal
 	| 1 | [[var]] = |
 
 Scenario: Convert blank from binary to base64 
-	Given I have a convert variable "[[var]]" with a value of ""
+	Given I have a convert variable "[[var]]" with a value of "blank"
 	And I convert a variable "[[var]]" from type "Binary" to type "Base 64" 
 	When the base conversion tool is executed
 	Then the result is ""
@@ -290,7 +290,7 @@ Scenario: Convert blank from binary to base64
 	| 1 | [[var]] = |
 
 Scenario: Convert blank from hexadecimal to text 
-	Given I have a convert variable "[[var]]" with a value of ""
+	Given I have a convert variable "[[var]]" with a value of "blank"
 	And I convert a variable "[[var]]" from type "Hex" to type "Text" 
 	When the base conversion tool is executed
 	Then the result is ""
@@ -303,7 +303,7 @@ Scenario: Convert blank from hexadecimal to text
 	| 1 | [[var]] = |
 
 Scenario: Convert blank from hexadecimal to binary 
-	Given I have a convert variable "[[var]]" with a value of ""
+	Given I have a convert variable "[[var]]" with a value of "blank"
 	And I convert a variable "[[var]]" from type "Hex" to type "Binary" 
 	When the base conversion tool is executed
 	Then the result is ""
@@ -316,7 +316,7 @@ Scenario: Convert blank from hexadecimal to binary
 	| 1 | [[var]] = |
 
 Scenario: Convert blank from hexadecimal to base64 
-	Given I have a convert variable "[[var]]" with a value of ""
+	Given I have a convert variable "[[var]]" with a value of "blank"
 	And I convert a variable "[[var]]" from type "Hex" to type "Base 64" 
 	When the base conversion tool is executed
 	Then the result is ""
@@ -329,7 +329,7 @@ Scenario: Convert blank from hexadecimal to base64
 	| 1 | [[var]] = |
 
 Scenario: Convert blank from base64 to hexadecimal 
-	Given I have a convert variable "[[var]]" with a value of ""
+	Given I have a convert variable "[[var]]" with a value of "blank"
 	And I convert a variable "[[var]]" from type "Base 64" to type "Hex" 
 	When the base conversion tool is executed
 	Then the result is ""	
@@ -342,7 +342,7 @@ Scenario: Convert blank from base64 to hexadecimal
 	| 1 | [[var]] = |
 
 Scenario: Convert blank from base64 to text 
-	Given I have a convert variable "[[var]]" with a value of ""
+	Given I have a convert variable "[[var]]" with a value of "blank"
 	And I convert a variable "[[var]]" from type "Base 64" to type "Text" 
 	When the base conversion tool is executed
 	Then the result is ""
@@ -355,7 +355,7 @@ Scenario: Convert blank from base64 to text
 	| 1 | [[var]] = |
 
 Scenario: Convert blank from base64 to binary 
-	Given I have a convert variable "[[var]]" with a value of ""
+	Given I have a convert variable "[[var]]" with a value of "blank"
 	And I convert a variable "[[var]]" from type "Base 64" to type "Binary" 
 	When the base conversion tool is executed
 	Then the result is ""
@@ -497,7 +497,7 @@ Scenario: Convert negative recordset index from base64 to text
 	| # | Convert          | From    | To   |
 	| 1 | [[my(-1).var]] = | Base 64 | Text |
 	And the debug output as  
-	| # |                  |	
+	|  |                  |	
 
 Scenario: Convert negative recordset index from base64 to binary 
 	Given I have a convert variable "[[my(-1).var]]" with a value of "QUE="
@@ -509,10 +509,9 @@ Scenario: Convert negative recordset index from base64 to binary
 	| # | Convert          | From    | To     |
 	| 1 | [[my(-1).var]] = | Base 64 | Binary |
 	And the debug output as  
-	| #  |              |
+	|   |              |
 
 
-#This Test scenarios should be passed after the bug 11994 is fixed
 Scenario Outline: Converting two varibles on one row 
 	Given I have a convert variable "[[a]]" with a value of "QUE="
 	And I have a convert variable "[[b]]" with a value of "QUE="
@@ -522,8 +521,6 @@ Scenario Outline: Converting two varibles on one row
 	And the debug inputs as  
 	| # | Convert               | From   | To   |
 	| 1 | [[a]][[b]] = QUE=QUE= | <From> | <To> |
-	And the debug output as  
-	| #  |              |
 Examples: 
 	| No | From         | To      |
 	| 1  | Base 64      | Binary  |
@@ -576,11 +573,11 @@ Scenario Outline: Validation messages when Convert Invalid Variables
 	And I convert a variable '<Variable>' from type '<From>' to type '<To>' 	
 	When the base conversion tool is executed
 	Then the execution has "AN" error
-	And the debug inputs as  
-	| #  | Convert      | From    | To   |
-	| 1  | <Variable> = | <From>  | <To> |
-	And the debug output as  
-	| #   |   |
+#	And the debug inputs as  
+#	| #  | Convert      | From    | To   |
+#	| 1  | <Variable> = | <From>  | <To> |
+#	And the debug output as  
+#	| #   |   |
 Examples: 
 	| No  | Variable                                  | Value            | From    | To      | Error                                                                                                                                                                                                                                                   |
 	| 1   | [[my(-1).var]]                            | QUE=             | Base 64 | Binary  | Recordset index -1 is not greater than zero                                                                                                                                                                                                             |

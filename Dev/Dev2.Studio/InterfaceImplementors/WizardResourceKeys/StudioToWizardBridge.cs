@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Text;
 using Dev2.Data.Util;
@@ -74,14 +73,6 @@ namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys
             else if(resourceType == "Source" && serviceDef.IndexOf("AssemblyLocation=", StringComparison.Ordinal) < 0)
             {
                 result = "Database";
-            }
-            else if(resourceType == "HumanInterfaceProcess" || category == "Webpage")
-            {
-                result = "Webpage";
-            }
-            else if(category == "Website")
-            {
-                result = "Website";
             }
             else if(resourceType == "WorkflowService")
             {

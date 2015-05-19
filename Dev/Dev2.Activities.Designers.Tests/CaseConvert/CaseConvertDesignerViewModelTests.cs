@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -88,12 +87,19 @@ namespace Dev2.Activities.Designers.Tests.CaseConvert
             var modelItem = ModelItemUtils.CreateModelItem(new DsfCaseConvertActivity());
             modelItem.SetProperty("DisplayName", displayName);
 
-            var modelItemCollection = modelItem.Properties["ConvertCollection"].Collection;
-            if(items != null)
+            var modelProperty = modelItem.Properties["ConvertCollection"];
+            if(modelProperty != null)
             {
-                foreach(var dto in items)
+                var modelItemCollection = modelProperty.Collection;
+                if(items != null)
                 {
-                    modelItemCollection.Add(dto);
+                    foreach(var dto in items)
+                    {
+                        if(modelItemCollection != null)
+                        {
+                            modelItemCollection.Add(dto);
+                        }
+                    }
                 }
             }
             return modelItem;

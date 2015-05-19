@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Data.Binary_Objects;
@@ -20,9 +19,9 @@ using Dev2.Data.Parsers;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Interfaces;
+using Dev2.Server.Datalist;
 using Dev2.Server.DataList;
 using Dev2.Server.DataList.Translators;
-using Dev2.Server.Datalist;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
@@ -103,18 +102,16 @@ namespace Dev2.DataList.Contract
             {
                 if(isOutput)
                 {
-                    var rsName = DataListUtil.ExtractRecordsetNameFromValue(def.Value);
 
-                    if(!def.IsRecordSet && string.IsNullOrEmpty(rsName))
+                    if(!def.IsRecordSet)
                     {
                         result.Add(def);
                     }
                 }
                 else
                 {
-                    var rsName = DataListUtil.ExtractRecordsetNameFromValue(def.Name);
 
-                    if(!def.IsRecordSet && string.IsNullOrEmpty(rsName))
+                    if(!def.IsRecordSet)
                     {
                         result.Add(def);
                     }

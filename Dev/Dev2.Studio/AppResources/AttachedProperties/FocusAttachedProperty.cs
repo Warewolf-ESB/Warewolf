@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Windows;
 using System.Windows.Input;
@@ -33,7 +32,7 @@ namespace Dev2.Studio.AppResources.AttachedProperties {
             var uie = (UIElement)d;
             if ((bool)e.NewValue) {
                 //uie.Focus(); // Don't care about false values.
-                App.Current.Dispatcher.BeginInvoke(new Action(() =>
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     Keyboard.Focus(uie);
                 }), null);

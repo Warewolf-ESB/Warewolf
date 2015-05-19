@@ -9,9 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using Caliburn.Micro;
-using Dev2.Infrastructure.Tests.Logs;
 using Dev2.Interfaces;
 using Dev2.Studio;
 using Dev2.Studio.Core.Messages;
@@ -19,11 +20,6 @@ using Dev2.Studio.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
-using System;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using System.Threading;
 
 namespace Dev2.Core.Tests.Diagnostics
 {

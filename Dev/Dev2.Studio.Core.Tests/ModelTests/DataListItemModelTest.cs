@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Data.Binary_Objects;
 using Dev2.Studio.Core;
@@ -117,7 +116,7 @@ namespace Dev2.Core.Tests.ModelTests
             OptomizedObservableCollection<IDataListItemModel> children = new OptomizedObservableCollection<IDataListItemModel>();
             for(int i = 1; i <= numberOfChildrenToCreate; i++)
             {
-                children.Add(new DataListItemModel("child" + i.ToString(), enDev2ColumnArgumentDirection.None, "", parent));
+                children.Add(new DataListItemModel("child" + i, enDev2ColumnArgumentDirection.None, "", parent));
             }
 
             return children;

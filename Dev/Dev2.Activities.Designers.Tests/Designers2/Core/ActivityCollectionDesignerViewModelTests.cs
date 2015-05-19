@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -373,6 +372,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             Assert.AreEqual(ExpectedItemCount + 1, viewModel.ItemCount);
             Assert.AreEqual(string.Format("Activity ({0})", ExpectedItemCount), viewModel.ModelItem.GetProperty("DisplayName"));
 
+            System.Diagnostics.Debug.Assert(mic != null, "mic != null");
             for(var i = 0; i < mic.Count; i++)
             {
                 var dto = (ActivityDTO)mic[i].GetCurrentValue();
@@ -639,8 +639,8 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         [TestCategory("ActivityCollectionDesignerViewModel_UpdateItem")]
         public void ActivityCollectionDesignerViewModel_UpdateItem_MakesRowNotBlankAndLastRowIsBlank_RowNotAdded()
         {
-            Verify_UpdateItem_MakesRowNotBlank(3, 1, isNewBlankRowAdded: false);
-            Verify_UpdateItem_MakesRowNotBlank(3, 2, isNewBlankRowAdded: false);
+            Verify_UpdateItem_MakesRowNotBlank(3, 1, false);
+            Verify_UpdateItem_MakesRowNotBlank(3, 2, false);
         }
 
         [TestMethod]
@@ -648,7 +648,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         [TestCategory("ActivityCollectionDesignerViewModel_UpdateItem")]
         public void ActivityCollectionDesignerViewModel_UpdateItem_MakesLastBlankRowNotBlank_RowAdded()
         {
-            Verify_UpdateItem_MakesRowNotBlank(3, 3, isNewBlankRowAdded: true);
+            Verify_UpdateItem_MakesRowNotBlank(3, 3, true);
         }
 
         void Verify_UpdateItem_MakesRowNotBlank(int startItemCount, int updatedIndexNumber, bool isNewBlankRowAdded)
@@ -702,8 +702,8 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         public void ActivityCollectionDesignerViewModel_CanRemoveAt_AnyIndexWhenTwoRows_False()
         {
             var items = CreateItemsList(2);
-            Verify_CanRemoveAt(items, indexNumber: 1, expected: false);
-            Verify_CanRemoveAt(items, indexNumber: 2, expected: false);
+            Verify_CanRemoveAt(items, 1, false);
+            Verify_CanRemoveAt(items, 2, false);
         }
 
         [TestMethod]
@@ -712,13 +712,13 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         public void ActivityCollectionDesignerViewModel_CanRemoveAt_IndexIsNotLastRow_True()
         {
             var items = CreateItemsList(3);
-            Verify_CanRemoveAt(items, indexNumber: 1, expected: true);
-            Verify_CanRemoveAt(items, indexNumber: 2, expected: true);
+            Verify_CanRemoveAt(items, 1, true);
+            Verify_CanRemoveAt(items, 2, true);
 
             items = CreateItemsList(4);
-            Verify_CanRemoveAt(items, indexNumber: 1, expected: true);
-            Verify_CanRemoveAt(items, indexNumber: 2, expected: true);
-            Verify_CanRemoveAt(items, indexNumber: 3, expected: true);
+            Verify_CanRemoveAt(items, 1, true);
+            Verify_CanRemoveAt(items, 2, true);
+            Verify_CanRemoveAt(items, 3, true);
         }
 
         [TestMethod]
@@ -727,13 +727,13 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         public void ActivityCollectionDesignerViewModel_CanRemoveAt_IndexIsLastRow_False()
         {
             var items = CreateItemsList(2);
-            Verify_CanRemoveAt(items, indexNumber: 2, expected: false);
+            Verify_CanRemoveAt(items, 2, false);
 
             items = CreateItemsList(3);
-            Verify_CanRemoveAt(items, indexNumber: 3, expected: false);
+            Verify_CanRemoveAt(items, 3, false);
 
             items = CreateItemsList(4);
-            Verify_CanRemoveAt(items, indexNumber: 4, expected: false);
+            Verify_CanRemoveAt(items, 4, false);
         }
 
         void Verify_CanRemoveAt(List<ActivityDTO> items, int indexNumber, bool expected)
@@ -755,13 +755,13 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         public void ActivityCollectionDesignerViewModel_CanInsertAt_IndexIsLastRow_False()
         {
             var items = CreateItemsList(2);
-            Verify_CanInsertAt(items, indexNumber: 2, expected: false);
+            Verify_CanInsertAt(items, 2, false);
 
             items = CreateItemsList(3);
-            Verify_CanInsertAt(items, indexNumber: 3, expected: false);
+            Verify_CanInsertAt(items, 3, false);
 
             items = CreateItemsList(4);
-            Verify_CanInsertAt(items, indexNumber: 4, expected: false);
+            Verify_CanInsertAt(items, 4, false);
         }
 
         [TestMethod]
@@ -770,11 +770,11 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         public void ActivityCollectionDesignerViewModel_CanInsertAt_AnyIndexWhenTwoRowsOrLess_False()
         {
             var items = CreateItemsList(1);
-            Verify_CanInsertAt(items, indexNumber: 1, expected: false);
+            Verify_CanInsertAt(items, 1, false);
 
             items = CreateItemsList(2);
-            Verify_CanInsertAt(items, indexNumber: 1, expected: false);
-            Verify_CanInsertAt(items, indexNumber: 2, expected: false);
+            Verify_CanInsertAt(items, 1, false);
+            Verify_CanInsertAt(items, 2, false);
         }
 
         void Verify_CanInsertAt(List<ActivityDTO> items, int indexNumber, bool expected)
@@ -811,17 +811,17 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         [TestCategory("ActivityCollectionDesignerViewModel_RemoveAt")]
         public void ActivityCollectionDesignerViewModel_RemoveAt_AnyIndexExceptLastWhenThreeOrMoreRows_RemovesRow()
         {
-            Verify_RemoveAt_RemovesRow(startItemCount: 3, indexNumber: 1);
-            Verify_RemoveAt_RemovesRow(startItemCount: 3, indexNumber: 2);
+            Verify_RemoveAt_RemovesRow(3, 1);
+            Verify_RemoveAt_RemovesRow(3, 2);
 
-            Verify_RemoveAt_RemovesRow(startItemCount: 4, indexNumber: 1);
-            Verify_RemoveAt_RemovesRow(startItemCount: 4, indexNumber: 2);
-            Verify_RemoveAt_RemovesRow(startItemCount: 4, indexNumber: 3);
+            Verify_RemoveAt_RemovesRow(4, 1);
+            Verify_RemoveAt_RemovesRow(4, 2);
+            Verify_RemoveAt_RemovesRow(4, 3);
 
-            Verify_RemoveAt_RemovesRow(startItemCount: 5, indexNumber: 1);
-            Verify_RemoveAt_RemovesRow(startItemCount: 5, indexNumber: 2);
-            Verify_RemoveAt_RemovesRow(startItemCount: 5, indexNumber: 3);
-            Verify_RemoveAt_RemovesRow(startItemCount: 5, indexNumber: 4);
+            Verify_RemoveAt_RemovesRow(5, 1);
+            Verify_RemoveAt_RemovesRow(5, 2);
+            Verify_RemoveAt_RemovesRow(5, 3);
+            Verify_RemoveAt_RemovesRow(5, 4);
         }
 
         void Verify_RemoveAt_RemovesRow(int startItemCount, int indexNumber)
@@ -863,17 +863,17 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         [TestCategory("ActivityCollectionDesignerViewModel_InsertAt")]
         public void ActivityCollectionDesignerViewModel_InsertAt_AnyIndexExceptLastWhenThreeOrMoreRows_InsertsRow()
         {
-            Verify_InsertsAt_InsertsRow(startItemCount: 3, indexNumber: 1);
-            Verify_InsertsAt_InsertsRow(startItemCount: 3, indexNumber: 2);
+            Verify_InsertsAt_InsertsRow(3, 1);
+            Verify_InsertsAt_InsertsRow(3, 2);
 
-            Verify_InsertsAt_InsertsRow(startItemCount: 4, indexNumber: 1);
-            Verify_InsertsAt_InsertsRow(startItemCount: 4, indexNumber: 2);
-            Verify_InsertsAt_InsertsRow(startItemCount: 4, indexNumber: 3);
+            Verify_InsertsAt_InsertsRow(4, 1);
+            Verify_InsertsAt_InsertsRow(4, 2);
+            Verify_InsertsAt_InsertsRow(4, 3);
 
-            Verify_InsertsAt_InsertsRow(startItemCount: 5, indexNumber: 1);
-            Verify_InsertsAt_InsertsRow(startItemCount: 5, indexNumber: 2);
-            Verify_InsertsAt_InsertsRow(startItemCount: 5, indexNumber: 3);
-            Verify_InsertsAt_InsertsRow(startItemCount: 5, indexNumber: 4);
+            Verify_InsertsAt_InsertsRow(5, 1);
+            Verify_InsertsAt_InsertsRow(5, 2);
+            Verify_InsertsAt_InsertsRow(5, 3);
+            Verify_InsertsAt_InsertsRow(5, 4);
         }
 
         [TestMethod]

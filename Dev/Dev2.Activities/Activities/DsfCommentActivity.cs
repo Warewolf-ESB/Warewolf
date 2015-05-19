@@ -9,15 +9,14 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Collections.Generic;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -40,7 +39,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return DebugItem.EmptyList;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             List<DebugItem> result = new List<DebugItem>();
             DebugItem itemToAdd = new DebugItem();
@@ -59,17 +58,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
+            var dataObject = context.GetExtension<IDSFDataObject>();
             InitializeDebug(context.GetExtension<IDSFDataObject>());
-            DispatchDebugState(context, StateType.Before);
+            DispatchDebugState(dataObject, StateType.Before);
 
-            DispatchDebugState(context, StateType.After);
+            DispatchDebugState(dataObject, StateType.After);
         }
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null && updates.Count == 1)
             {
@@ -92,6 +92,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     Name = Text
                 }
             };
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
         }
 
         #endregion

@@ -9,18 +9,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.DataList.Contract;
-using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.ESB.WF;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Storage;
 
 namespace Dev2.Tests.Diagnostics
 {
@@ -255,6 +254,7 @@ namespace Dev2.Tests.Diagnostics
             dataObject.Setup(d => d.RemoteDebugItems).Returns(new List<IDebugState> { state1.Object, state2.Object });
             dataObject.Setup(d => d.IsDebugMode()).Returns(true);
             dataObject.Setup(d => d.WorkspaceID).Returns(workspaceID);
+            dataObject.Setup(d => d.Environment).Returns(new ExecutionEnvironment());
 
             //------------Execute Test---------------------------
 

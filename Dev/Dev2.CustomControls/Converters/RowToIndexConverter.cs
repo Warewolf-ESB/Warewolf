@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,9 +8,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities.Presentation.Model;
+using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Markup;
 
@@ -19,17 +18,17 @@ namespace Dev2.CustomControls.Converters
 {
     public class RowToIndexConverter : MarkupExtension, IValueConverter
     {
-        static RowToIndexConverter _converter;
+        private static RowToIndexConverter _converter;
 
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            ModelItem row = value as ModelItem;
-            if(row != null)
+            var row = value as ModelItem;
+            if (row != null)
             {
-                ModelItemCollection collection = row.Parent as ModelItemCollection;
-                if(row != null)
+                var collection = row.Parent as ModelItemCollection;
+                if (row != null)
                 {
-                    if(collection != null)
+                    if (collection != null)
                     {
                         return collection.IndexOf(row) + 1;
                     }
@@ -38,14 +37,14 @@ namespace Dev2.CustomControls.Converters
             return -1;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            if(_converter == null) _converter = new RowToIndexConverter();
+            if (_converter == null) _converter = new RowToIndexConverter();
             return _converter;
         }
     }

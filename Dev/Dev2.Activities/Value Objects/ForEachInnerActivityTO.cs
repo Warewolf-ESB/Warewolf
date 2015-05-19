@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 
@@ -36,8 +35,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
 
             if (InnerActivity != null)
             {
-                OrigInnerInputMapping = act.InputMapping;
-                OrigInnerOutputMapping = act.OutputMapping;
+                OrigInnerInputMapping = string.IsNullOrEmpty(act.InputMapping) ? null : act.InputMapping;
+                OrigInnerOutputMapping = string.IsNullOrEmpty(act.OutputMapping) ? null : act.OutputMapping;
             }
         }
 

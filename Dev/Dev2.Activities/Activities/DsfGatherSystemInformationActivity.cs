@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Activities.Presentation.Model;
@@ -23,14 +22,13 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Enums;
 using Dev2.Data.Factories;
-using Dev2.Data.TO;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage;
+using WarewolfParserInterop;
 
 namespace Dev2.Activities
 {
@@ -94,16 +92,21 @@ namespace Dev2.Activities
         /// When overridden runs the activity's execution logic
         /// </summary>
         /// <param name="context">The context to be used.</param>
+        // ReSharper disable MethodTooLong
         protected override void OnExecute(NativeActivityContext context)
+            // ReSharper restore MethodTooLong
+        {
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject);
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
         {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
 
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            Guid executionId = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors;
+
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
             toUpsert.IsDebug = (dataObject.IsDebugMode());
             toUpsert.ResourceID = dataObject.ResourceID;
@@ -138,29 +141,35 @@ namespace Dev2.Activities
                             string val = GetCorrectSystemInformation(item.EnTypeOfSystemInformation);
                             string expression = item.Result;
 
-                            foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
+                            var regions = DataListCleaningUtils.SplitIntoRegions(expression);
+                            if(regions.Count > 1)
                             {
-                                toUpsert.Add(region, val);
+                                allErrors.AddError("Multiple variables in result field.");
+                            }
+                            else
+                            {
+                                foreach(var region in regions)
+                                {
+                                    dataObject.Environment.AssignWithFrame(new AssignValue(region, val));
+                                }
                             }
                         }
                     }
-                    catch(Exception)
+                    catch(Exception err)
                     {
-                        toUpsert.Add(item.Result, null);
+                        dataObject.Environment.Assign(item.Result, null);
+                        allErrors.AddError(err.Message);
                     }
                 }
-
-                compiler.Upsert(executionId, toUpsert, out errors);
-                allErrors.MergeErrors(errors);
-
+                dataObject.Environment.CommitAssign();
                 if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
                     int innerCount = 1;
-                    foreach(DebugTO debugOutputTo in toUpsert.DebugOutputs)
+                    foreach(GatherSystemInformationTO item in SystemInformationCollection)
                     {
                         var itemToAdd = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                        AddDebugItem(new DebugItemVariableParams(debugOutputTo), itemToAdd);
+                        AddDebugItem(new DebugItemStaticDataParams("", "", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
+                        AddDebugItem(new DebugEvalResult(item.Result, "", dataObject.Environment), itemToAdd);
                         _debugOutputs.Add(itemToAdd);
                         innerCount++;
                     }
@@ -178,28 +187,30 @@ namespace Dev2.Activities
                 if(hasErrors)
                 {
                     DisplayAndWriteError("DsfExecuteCommandLineActivity", allErrors);
-                    compiler.UpsertSystemTag(executionId, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    foreach(var error in allErrors.FetchErrors())
+                    {
+                        dataObject.Environment.AddError(error);
+                    }
                 }
                 if(dataObject.IsDebugMode())
                 {
                     if(hasErrors)
                     {
                         int innerCount = 1;
-                        foreach(DebugTO debugOutputTo in toUpsert.DebugOutputs)
+                        foreach(GatherSystemInformationTO item in SystemInformationCollection)
                         {
                             var itemToAdd = new DebugItem();
                             AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                            AddDebugItem(new DebugItemVariableParams(debugOutputTo), itemToAdd);
+                            AddDebugItem(new DebugEvalResult(item.Result, "", dataObject.Environment), itemToAdd);
                             _debugOutputs.Add(itemToAdd);
                             innerCount++;
                         }
                     }
 
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
                 }
             }
-
         }
 
         public string GetCorrectSystemInformation(enTypeOfSystemInformationToGather enTypeOfSystemInformation)
@@ -262,7 +273,7 @@ namespace Dev2.Activities
             return enFindMissingType.DataGridActivity;
         }
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {
@@ -281,7 +292,7 @@ namespace Dev2.Activities
             }
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {
@@ -302,12 +313,12 @@ namespace Dev2.Activities
 
         #region Overrides of DsfNativeActivity<string>
 
-        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Net;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.ServiceModel;
-using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;

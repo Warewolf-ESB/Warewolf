@@ -16,7 +16,6 @@ using System.Threading;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
 using Dev2.Runtime.Security;
-using Dev2.Runtime.WebServer.Hubs;
 using Dev2.Services.Security;
 using Microsoft.AspNet.SignalR.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

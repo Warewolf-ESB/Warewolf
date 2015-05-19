@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using Dev2.Activities;
@@ -27,12 +26,12 @@ namespace Dev2.Tests.Activities.Utils
             throw new NotImplementedException();
         }
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, System.Activities.NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             throw new NotImplementedException();
         }
 
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, System.Activities.NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             throw new NotImplementedException();
         }
@@ -45,6 +44,10 @@ namespace Dev2.Tests.Activities.Utils
         public override IList<DsfForEachItem> GetForEachOutputs()
         {
             throw new NotImplementedException();
+        }
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
         }
     }
 }

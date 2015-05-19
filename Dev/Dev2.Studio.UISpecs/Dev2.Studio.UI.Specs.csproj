@@ -75,11 +75,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DeployUISpec.feature</DependentUpon>
     </Compile>
-    <Compile Include="Sanity Test Suite\Example Workflows.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Example Workflows.feature</DependentUpon>
-    </Compile>
     <Compile Include="Scheduler\SchedulerUISpecFlow.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -232,11 +227,6 @@
     </Compile>
     <Compile Include="WorkflowSteps.cs" />
     <Compile Include="ContextForTests.cs" />
-    <Compile Include="SecurityUISpecs\SecurityUISpec.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SecurityUISpec.feature</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -251,10 +241,6 @@
     <None Include="DeployUISpecs\DeployUISpec.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DeployUISpec.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Sanity Test Suite\Example Workflows.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Example Workflows.feature.cs</LastGenOutput>
     </None>
     <None Include="Scheduler\SchedulerUISpecFlow.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -277,10 +263,6 @@
       <LastGenOutput>ExplorerUISpecs.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
-    <None Include="SecurityUISpecs\SecurityUISpec.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>SecurityUISpec.feature.cs</LastGenOutput>
-    </None>
     <None Include="DevToolKit.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DevToolKit.feature.cs</LastGenOutput>

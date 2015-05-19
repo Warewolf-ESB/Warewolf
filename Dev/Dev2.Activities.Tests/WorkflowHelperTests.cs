@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Activities.Expressions;
@@ -25,7 +24,6 @@ using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Utilities;
 using Microsoft.CSharp.Activities;
-using Microsoft.VisualBasic.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -36,6 +34,13 @@ namespace Dev2.Tests.Activities
     [ExcludeFromCodeCoverage]
     public class WorkflowHelperTests
     {
+
+        [TestInitialize]
+        public void Init()
+        {
+            GlobalConstants.Resultscache.Clear();
+        }
+
         #region Expected Namespaces/Assemblies
 
         static readonly List<string> ExpectedNamespaces = new List<string>
@@ -145,7 +150,7 @@ namespace Dev2.Tests.Activities
         public void WorkflowHelperCompileExpressionsWithActivityExpectedSetsNamespaces()
         {
             var activity = new DynamicActivity();
-            new WorkflowHelper().CompileExpressions(activity);
+            new WorkflowHelper().CompileExpressions(activity,Guid.NewGuid());
 
             var impl = new AttachableMemberIdentifier(typeof(TextExpression), "NamespacesForImplementation");
 
@@ -163,41 +168,41 @@ namespace Dev2.Tests.Activities
             }
         }
 
-        [TestMethod]
-        public void WorkflowHelperCompileExpressionsWithActivityExpectedFixesExpressions()
-        {
-            const string ExpressionParams = "(\"\",AmbientDataList)";
+        //[TestMethod]
+        //public void WorkflowHelperCompileExpressionsWithActivityExpectedFixesExpressions()
+        //{
+        //    const string ExpressionParams = "(\"\",AmbientDataList)";
 
-            var fsa = new DsfFlowSwitchActivity
-            {
-                ExpressionText = GlobalConstants.InjectedSwitchDataFetchOld + ExpressionParams
-            };
-            var fda = new DsfFlowDecisionActivity
-            {
-                ExpressionText = GlobalConstants.InjectedDecisionHandlerOld + ExpressionParams
-            };
-            var fdv = new VisualBasicValue<Boolean>(GlobalConstants.InjectedDecisionHandlerOld + ExpressionParams);
-            var fsv = new VisualBasicValue<string>(GlobalConstants.InjectedSwitchDataFetchOld + ExpressionParams);
+        //    var fsa = new DsfFlowSwitchActivity
+        //    {
+        //        ExpressionText = GlobalConstants.InjectedSwitchDataFetchOld + ExpressionParams
+        //    };
+        //    var fda = new DsfFlowDecisionActivity
+        //    {
+        //        ExpressionText = GlobalConstants.InjectedDecisionHandlerOld + ExpressionParams
+        //    };
+        //    var fdv = new VisualBasicValue<Boolean>(GlobalConstants.InjectedDecisionHandlerOld + ExpressionParams);
+        //    var fsv = new VisualBasicValue<string>(GlobalConstants.InjectedSwitchDataFetchOld + ExpressionParams);
 
 
-            var startNode = new FlowStep { Action = new CommentActivityForTest() };
-            var chart = new Flowchart { StartNode = startNode };
-            chart.Nodes.Add(startNode);
-            chart.Nodes.Add(new FlowDecision(fda));
-            chart.Nodes.Add(new FlowSwitch<string> { Expression = fsa });
-            chart.Nodes.Add(new FlowDecision(fdv));
-            chart.Nodes.Add(new FlowSwitch<string> { Expression = fsv });
+        //    var startNode = new FlowStep { Action = new CommentActivityForTest() };
+        //    var chart = new Flowchart { StartNode = startNode };
+        //    chart.Nodes.Add(startNode);
+        //    chart.Nodes.Add(new FlowDecision(fda));
+        //    chart.Nodes.Add(new FlowSwitch<string> { Expression = fsa });
+        //    chart.Nodes.Add(new FlowDecision(fdv));
+        //    chart.Nodes.Add(new FlowSwitch<string> { Expression = fsv });
 
-            var workflow = new DynamicActivity
-            {
-                Implementation = () => chart
-            };
+        //    var workflow = new DynamicActivity
+        //    {
+        //        Implementation = () => chart
+        //    };
 
-            new WorkflowHelper().CompileExpressions(workflow);
+        //    new WorkflowHelper().CompileExpressions(workflow);
 
-            Assert.AreEqual(GlobalConstants.InjectedSwitchDataFetch + ExpressionParams, fsa.ExpressionText);
-            Assert.AreEqual(GlobalConstants.InjectedDecisionHandler + ExpressionParams, fda.ExpressionText);
-        }
+        //    Assert.AreEqual(GlobalConstants.InjectedSwitchDataFetch + ExpressionParams, fsa.ExpressionText);
+        //    Assert.AreEqual(GlobalConstants.InjectedDecisionHandler + ExpressionParams, fda.ExpressionText);
+        //}
 
         [TestMethod]
         public void WorkflowHelperCompileExpressionsWithActivityExpectedCompilesExpressions()
@@ -225,13 +230,157 @@ namespace Dev2.Tests.Activities
                 Implementation = () => chart
             };
 
-            new WorkflowHelper().CompileExpressions(workflow);
+            new WorkflowHelper().CompileExpressions(workflow,Guid.NewGuid());
 
             // No exception thrown means compilation worked
 
             var compiledExpressionRoot = CompiledExpressionInvoker.GetCompiledExpressionRootForImplementation(workflow) as ICompiledExpressionRoot;
             Assert.IsNotNull(compiledExpressionRoot);
         }
+
+
+        [TestMethod]
+        public void WorkflowHelperCompileExpressionsWithActivityExpectedCompilesExpressionsAddsToCache()
+        {
+            const string ExpressionParams = "(\"\",AmbientDataList)";
+
+            var fsa = new DsfFlowSwitchActivity
+            {
+                ExpressionText = GlobalConstants.InjectedSwitchDataFetchOld + ExpressionParams
+            };
+            var fda = new DsfFlowDecisionActivity
+            {
+                ExpressionText = GlobalConstants.InjectedDecisionHandlerOld + ExpressionParams
+            };
+
+            var startNode = new FlowStep { Action = new CommentActivityForTest() };
+            var chart = new Flowchart { StartNode = startNode };
+            chart.Nodes.Add(startNode);
+            chart.Nodes.Add(new FlowDecision(fda));
+            chart.Nodes.Add(new FlowSwitch<string> { Expression = fsa });
+
+
+            var workflow = new DynamicActivity
+            {
+                Implementation = () => chart
+            };
+
+            new WorkflowHelper().CompileExpressions(workflow, Guid.NewGuid());
+
+            // No exception thrown means compilation worked
+
+            var compiledExpressionRoot = CompiledExpressionInvoker.GetCompiledExpressionRootForImplementation(workflow) as ICompiledExpressionRoot;
+            Assert.AreEqual(GlobalConstants.Resultscache.Count,1);
+            Assert.IsNotNull(compiledExpressionRoot);
+        }
+
+        [TestMethod]
+        public void WorkflowHelperCompileExpressionsWithActivityExpectedCompilesExpressionsAddsToCacheForNew()
+        {
+            const string ExpressionParams = "(\"\",AmbientDataList)";
+
+            var fsa = new DsfFlowSwitchActivity
+            {
+                ExpressionText = GlobalConstants.InjectedSwitchDataFetchOld + ExpressionParams
+            };
+            var fda = new DsfFlowDecisionActivity
+            {
+                ExpressionText = GlobalConstants.InjectedDecisionHandlerOld + ExpressionParams
+            };
+
+            var startNode = new FlowStep { Action = new CommentActivityForTest() };
+            var chart = new Flowchart { StartNode = startNode };
+            chart.Nodes.Add(startNode);
+            chart.Nodes.Add(new FlowDecision(fda));
+            chart.Nodes.Add(new FlowSwitch<string> { Expression = fsa });
+
+
+            var workflow = new DynamicActivity
+            {
+                Implementation = () => chart
+            };
+
+            new WorkflowHelper().CompileExpressions(workflow, Guid.NewGuid());
+            new WorkflowHelper().CompileExpressions(workflow, Guid.NewGuid());
+            // No exception thrown means compilation worked
+
+            var compiledExpressionRoot = CompiledExpressionInvoker.GetCompiledExpressionRootForImplementation(workflow) as ICompiledExpressionRoot;
+            Assert.AreEqual(GlobalConstants.Resultscache.Count, 2);
+            Assert.IsNotNull(compiledExpressionRoot);
+        }
+
+
+        [TestMethod]
+        public void WorkflowHelperCompileExpressionsWithActivityExpectedCompilesExpressionsAddsToCacheNoDuplicate()
+        {
+            const string ExpressionParams = "(\"\",AmbientDataList)";
+
+            var fsa = new DsfFlowSwitchActivity
+            {
+                ExpressionText = GlobalConstants.InjectedSwitchDataFetchOld + ExpressionParams
+            };
+            var fda = new DsfFlowDecisionActivity
+            {
+                ExpressionText = GlobalConstants.InjectedDecisionHandlerOld + ExpressionParams
+            };
+
+            var startNode = new FlowStep { Action = new CommentActivityForTest() };
+            var chart = new Flowchart { StartNode = startNode };
+            chart.Nodes.Add(startNode);
+            chart.Nodes.Add(new FlowDecision(fda));
+            chart.Nodes.Add(new FlowSwitch<string> { Expression = fsa });
+
+
+            var workflow = new DynamicActivity
+            {
+                Implementation = () => chart
+            };
+            var guid = Guid.NewGuid();
+            new WorkflowHelper().CompileExpressions(workflow, guid);
+            new WorkflowHelper().CompileExpressions(workflow, guid);
+            // No exception thrown means compilation worked
+
+            var compiledExpressionRoot = CompiledExpressionInvoker.GetCompiledExpressionRootForImplementation(workflow) as ICompiledExpressionRoot;
+            Assert.AreEqual(GlobalConstants.Resultscache.Count, 1);
+            Assert.IsNotNull(compiledExpressionRoot);
+        }
+        [TestMethod]
+        public void WorkflowHelperCompileExpressionsWithActivityExpectedCompilesExpressionsAddsToCacheThenInvalidate()
+        {
+            const string ExpressionParams = "(\"\",AmbientDataList)";
+
+            var fsa = new DsfFlowSwitchActivity
+            {
+                ExpressionText = GlobalConstants.InjectedSwitchDataFetchOld + ExpressionParams
+            };
+            var fda = new DsfFlowDecisionActivity
+            {
+                ExpressionText = GlobalConstants.InjectedDecisionHandlerOld + ExpressionParams
+            };
+
+            var startNode = new FlowStep { Action = new CommentActivityForTest() };
+            var chart = new Flowchart { StartNode = startNode };
+            chart.Nodes.Add(startNode);
+            chart.Nodes.Add(new FlowDecision(fda));
+            chart.Nodes.Add(new FlowSwitch<string> { Expression = fsa });
+
+
+            var workflow = new DynamicActivity
+            {
+                Implementation = () => chart
+            };
+            var guid = Guid.NewGuid();
+            new WorkflowHelper().CompileExpressions(workflow, guid);
+
+            // No exception thrown means compilation worked
+
+            var compiledExpressionRoot = CompiledExpressionInvoker.GetCompiledExpressionRootForImplementation(workflow) as ICompiledExpressionRoot;
+            Assert.AreEqual(GlobalConstants.Resultscache.Count, 1);
+            GlobalConstants.InvalidateCache(guid);
+            Assert.AreEqual(GlobalConstants.Resultscache.Count, 0);
+            Assert.IsNotNull(compiledExpressionRoot);
+        }
+
 
         [TestMethod]
         [ExpectedException(typeof(Exception))]
@@ -246,7 +395,7 @@ namespace Dev2.Tests.Activities
                 }
             };
 
-            new WorkflowHelper().CompileExpressions(workflow);
+            new WorkflowHelper().CompileExpressions(workflow,Guid.NewGuid());
         }
 
         #endregion

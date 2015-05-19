@@ -13,7 +13,7 @@
         <Setter Property="Validation.ErrorTemplate">
             <Setter.Value>
                 <ControlTemplate>
-                    <AdornedElementPlaceholder></AdornedElementPlaceholder>
+                    <AdornedElementPlaceholder />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -21,7 +21,7 @@
             <Trigger Property="Validation.HasError"
                      Value="True">
                 <Setter Property="TextElement.Foreground"
-                        Value="{StaticResource ValidationErrorElement}"></Setter>
+                        Value="{StaticResource ValidationErrorElement}" />
             </Trigger>
         </Style.Triggers>
     </Style>
