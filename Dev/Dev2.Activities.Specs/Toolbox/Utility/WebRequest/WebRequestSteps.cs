@@ -48,7 +48,8 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
                     Result = ResultVariable,
                     Url = url ?? "",
                     Headers = header ?? "",
-                    TimeoutSeconds = String.IsNullOrEmpty(timeout) ? 100 : int.Parse(timeout)
+                    TimeoutSeconds = String.IsNullOrEmpty(timeout) ? 100 : int.Parse(timeout),
+                    TimeOutText = String.IsNullOrEmpty(timeout) ? "":timeout
                 };
 
             TestStartNode = new FlowStep

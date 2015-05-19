@@ -118,7 +118,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Execute Test---------------------------
             var executeProcess = ExecuteProcess();
             //------------Assert Results-------------------------
-            mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url, It.IsAny<List<Tuple<string, string>>>()), Times.Once());
+            mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>()), Times.Once());
         }
 
         [TestMethod]
@@ -129,7 +129,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Setup for test--------------------------
             var mock = new Mock<IWebRequestInvoker>();
             const string Message = "This is a forced exception";
-            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Tuple<string, string>>>())).Throws(new InvalidDataException(Message));
+            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Tuple<string, string>>>(),It.IsAny<int>())).Throws(new InvalidDataException(Message));
             var activity = GetWebGetRequestActivity(mock);
             activity.Method = "GET";
             activity.Url = "BodyValue";
@@ -141,8 +141,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Execute Test---------------------------
             var executeProcess = ExecuteProcess();
             //------------Assert Results-------------------------
-            mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url, It.IsAny<List<Tuple<string, string>>>()), Times.Once());
-            Assert.IsTrue(Compiler.HasErrors(executeProcess.DataListID));
+            mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url, It.IsAny<List<Tuple<string, string>>>(),It.IsAny<int>()), Times.Once());
             string errorString = DataObject.Environment.FetchErrors();
             StringAssert.Contains(errorString, Message);
         }
@@ -155,7 +154,7 @@ namespace ActivityUnitTests.ActivityTest
             var mock = new Mock<IWebRequestInvoker>();
             const string Url = "http://localhost";
             const string ExpectedResult = "Request Made";
-            mock.Setup(invoker => invoker.ExecuteRequest("GET", Url, It.IsAny<List<Tuple<string, string>>>())).Returns(ExpectedResult);
+            mock.Setup(invoker => invoker.ExecuteRequest("GET", Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>())).Returns(ExpectedResult);
             var activity = GetWebGetRequestActivity(mock);
             activity.Method = "GET";
             activity.Url = "[[Url]]";
@@ -169,7 +168,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            mock.Verify(sender => sender.ExecuteRequest(activity.Method, Url, It.IsAny<List<Tuple<string, string>>>()), Times.Once());
+            mock.Verify(sender => sender.ExecuteRequest(activity.Method, Url, It.IsAny<List<Tuple<string, string>>>(),It.IsAny<int>()), Times.Once());
             string actual;
             string error;
             GetScalarValueFromEnvironment(result.Environment, "Res", out actual, out error);

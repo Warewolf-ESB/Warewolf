@@ -22,8 +22,8 @@ Scenario Outline: Enter a URL to download html with timeout specified
 	Then the result should contain the string "<result>"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| URL   | Header |
-	| <url> |        |
+	| URL   | Header | Time Out Seconds |
+	| <url> |        |           <timeoutSeconds>       |
 	And the debug output as 
 	|                     |
 	| [[result]] = String |
