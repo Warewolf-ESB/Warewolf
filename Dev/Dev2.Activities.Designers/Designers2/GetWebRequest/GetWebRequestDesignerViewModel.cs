@@ -19,6 +19,7 @@ using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Preview;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Errors;
 
@@ -77,7 +78,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest
         public override void Validate()
         {
             Errors = null;
-            if (string.IsNullOrWhiteSpace(Url))
+            if (string.IsNullOrWhiteSpace(Url) && string.IsNullOrWhiteSpace(TimeOutText))
             {
                 return;
             }
@@ -86,6 +87,37 @@ namespace Dev2.Activities.Designers2.GetWebRequest
             {
                 ValidateUrl(url);
             }
+            if (TimeOutText.Length > 0)
+            {
+                int res;
+                if (!int.TryParse(TimeOutText, out res))
+                {
+                    if (!DataListUtil.IsValueRecordset(TimeOutText) && !DataListUtil.IsValueScalar(TimeOutText))
+                    {
+                        Errors = new List<IActionableErrorInfo>
+                        {
+                         new ActionableErrorInfo { ErrorType = ErrorType.Critical, Message = "Invalid time out. The timeout must be a valid variable or positive integer number. " }};
+
+                    }
+                }
+                else
+                {
+                    if(res<0)
+                    {
+                        Errors = new List<IActionableErrorInfo>
+                        {
+                         new ActionableErrorInfo { ErrorType = ErrorType.Critical, Message = "Invalid time out. The timeout must be a valid variable or positive integer number. " }};
+                    }
+                }
+            }
+        }
+
+        private string TimeOutText
+        {
+            get { return GetProperty<string>(); }
+            // ReSharper disable UnusedMember.Local
+            set { SetProperty(value); }
+            // ReSharper restore UnusedMember.Local
         }
 
         #region Overrides of ActivityDesignerViewModel
@@ -120,13 +152,17 @@ namespace Dev2.Activities.Designers2.GetWebRequest
             {
                 PreviewViewModel.InputsVisibility = Visibility.Visible;
 
+                // ReSharper disable MaximumChainedReferences
                 var mustRemainKeys = PreviewViewModel.Inputs
                                                      .Where(i => variableList.Contains(i.Key))
                                                      .ToList();
+                // ReSharper restore MaximumChainedReferences
 
+                // ReSharper disable MaximumChainedReferences
                 var mustRemove = PreviewViewModel.Inputs
                                                  .Where(i => !variableList.Contains(i.Key))
                                                  .ToList();
+                // ReSharper restore MaximumChainedReferences
 
                 mustRemove.ForEach(r => PreviewViewModel.Inputs.Remove(r));
 
@@ -260,7 +296,9 @@ namespace Dev2.Activities.Designers2.GetWebRequest
                                   ? new string[0]
                                   : Headers.Split(new[] {'\n', '\r', ';'}, StringSplitOptions.RemoveEmptyEntries);
 
+                // ReSharper disable MaximumChainedReferences
                 var headersEntries = headers.Select(header => header.Split(':')).Select(headerSegments => new Tuple<string, string>(headerSegments[0], headerSegments[1])).ToList();
+                // ReSharper restore MaximumChainedReferences
 
                 url = PreviewViewModel.Inputs.Aggregate(url,
                                                         (current, previewInput) =>

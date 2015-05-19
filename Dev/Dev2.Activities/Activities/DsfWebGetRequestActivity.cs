@@ -25,6 +25,7 @@ using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Storage;
+using System.Threading;
 
 namespace Dev2.Activities
 {
@@ -45,9 +46,15 @@ namespace Dev2.Activities
             }
         }
 
+        public int TimeoutSeconds { get; set; }
 
         [FindMissing]
         public string Method { get; set; }
+
+        [Inputs("Time Out Seconds")]
+        [FindMissing]
+        public string TimeOutText { get; set; }
+
         [Inputs("Url")]
         [FindMissing]
         public string Url { get; set; }
@@ -65,6 +72,8 @@ namespace Dev2.Activities
         {
             Method = "GET";
             Headers = string.Empty;
+            TimeoutSeconds = 100;  // default of 100 seconds
+            TimeOutText = "100";
         }
 
         #region Overrides of DsfNativeActivity<string>
@@ -83,7 +92,7 @@ namespace Dev2.Activities
         {
             _debugOutputs.Clear();
             _debugInputs.Clear();
-            if(WebRequestInvoker == null)
+            if (WebRequestInvoker == null)
             {
                 return;
             }
@@ -93,7 +102,7 @@ namespace Dev2.Activities
             try
             {
                 allErrors.MergeErrors(errorsTo);
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
                     DebugItem debugItem = new DebugItem();
                     AddDebugItem(new DebugEvalResult(Url, "URL", dataObject.Environment), debugItem);
@@ -105,7 +114,7 @@ namespace Dev2.Activities
                 colItr.AddVariableToIterateOn(urlitr);
                 colItr.AddVariableToIterateOn(headerItr);
                 const int IndexToUpsertTo = 1;
-                while(colItr.HasMoreData())
+                while (colItr.HasMoreData())
                 {
                     var c = colItr.FetchNextValue(urlitr);
                     var headerValue = colItr.FetchNextValue(headerItr);
@@ -115,33 +124,64 @@ namespace Dev2.Activities
 
                     var headersEntries = new List<Tuple<string, string>>();
 
-                    foreach(var header in headers)
+                    foreach (var header in headers)
                     {
                         var headerSegments = header.Split(':');
                         headersEntries.Add(new Tuple<string, string>(headerSegments[0], headerSegments[1]));
 
-                        if(dataObject.IsDebugMode())
+                        if (dataObject.IsDebugMode())
                         {
                             DebugItem debugItem = new DebugItem();
                             AddDebugItem(new DebugEvalResult(Headers, "Header", dataObject.Environment), debugItem);
                             _debugInputs.Add(debugItem);
                         }
                     }
+                    if (!string.IsNullOrEmpty(TimeOutText))
+                    {
+                        int timeoutval;
+                        if (int.TryParse(dataObject.Environment.Eval(TimeOutText).ToString(), out timeoutval))
+                        {
+                            if (timeoutval < 0)
+                                allErrors.AddError(string.Format("Value of TimeoutSecondsText out of range: please specify a value between 0 and {0}.", int.MaxValue));
+                            else
+                                TimeoutSeconds = timeoutval;
+                        }
+                        else
+                            allErrors.AddError(string.Format("Value {0} for TimeoutSecondsText could not be interpreted as a numeric value.", TimeOutText));
 
-                    var result = WebRequestInvoker.ExecuteRequest(Method, c, headersEntries);
-                    allErrors.MergeErrors(errorsTo);
-                    var expression = GetExpression(IndexToUpsertTo);
-                    PushResultsToDataList(expression, result, dataObject);
+                        if (dataObject.IsDebugMode())
+                        {
+                            DebugItem debugItem = new DebugItem();
+                            AddDebugItem(new DebugEvalResult(String.IsNullOrEmpty(TimeOutText) ? "100" : TimeOutText, "Time Out Seconds", dataObject.Environment), debugItem);
+                            _debugInputs.Add(debugItem);
+                        }
+                    }
+
+                    if (!allErrors.HasErrors())
+                    {
+                        var result = WebRequestInvoker.ExecuteRequest(Method,
+                            c,
+                            headersEntries,
+                            timeoutMilliseconds: (TimeoutSeconds == 0 ? Timeout.Infinite : TimeoutSeconds * 1000)  // important to list the parameter name here to see the conversion from seconds to milliseconds
+                            );
+
+                        allErrors.MergeErrors(errorsTo);
+                        var expression = GetExpression(IndexToUpsertTo);
+                        PushResultsToDataList(expression, result, dataObject);
+                    }
+                    else
+                        throw new ApplicationException("Execution aborted - see error messages.");
+
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Log.Error("DSFWebGetRequest", e);
                 allErrors.AddError(e.Message);
             }
             finally
             {
-                if(allErrors.HasErrors())
+                if (allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfWebGetRequestActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
@@ -149,7 +189,7 @@ namespace Dev2.Activities
                     var expression = GetExpression(1);
                     PushResultsToDataList(expression, null, dataObject);
                 }
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
                     DispatchDebugState(dataObject, StateType.Before);
                     DispatchDebugState(dataObject, StateType.After);
@@ -160,7 +200,7 @@ namespace Dev2.Activities
         string GetExpression(int indexToUpsertTo)
         {
             string expression;
-            if(DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
+            if (DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
             {
                 expression = Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
             }
@@ -171,19 +211,19 @@ namespace Dev2.Activities
             return expression;
         }
 
-        void PushResultsToDataList(string expression,  string result, IDSFDataObject dataObject)
+        void PushResultsToDataList(string expression, string result, IDSFDataObject dataObject)
         {
             UpdateResultRegions(expression, dataObject.Environment, result);
-            if(dataObject.IsDebugMode())
+            if (dataObject.IsDebugMode())
             {
-                
-                    AddDebugOutputItem(new DebugEvalResult(expression,"",dataObject.Environment));
+
+                AddDebugOutputItem(new DebugEvalResult(expression, "", dataObject.Environment));
             }
         }
 
         void UpdateResultRegions(string expression, IExecutionEnvironment environment, string result)
         {
-            foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
+            foreach (var region in DataListCleaningUtils.SplitIntoRegions(expression))
             {
                 environment.Assign(region, result);
             }
@@ -195,7 +235,7 @@ namespace Dev2.Activities
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
-            foreach(IDebugItem debugInput in _debugInputs)
+            foreach (IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FlushStringBuilder();
             }
@@ -208,7 +248,7 @@ namespace Dev2.Activities
 
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
-            foreach(IDebugItem debugOutput in _debugOutputs)
+            foreach (IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }
@@ -221,12 +261,12 @@ namespace Dev2.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
-            if(updates != null)
+            if (updates != null)
             {
-                foreach(Tuple<string, string> t in updates)
+                foreach (Tuple<string, string> t in updates)
                 {
 
-                    if(t.Item1 == Url)
+                    if (t.Item1 == Url)
                     {
                         Url = t.Item2;
                     }
@@ -236,10 +276,10 @@ namespace Dev2.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
-            if(updates != null)
+            if (updates != null)
             {
                 var itemUpdate = updates.FirstOrDefault(tuple => tuple.Item1 == Result);
-                if(itemUpdate != null)
+                if (itemUpdate != null)
                 {
                     Result = itemUpdate.Item2;
                 }

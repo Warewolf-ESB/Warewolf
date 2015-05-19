@@ -5353,6 +5353,15 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The length of time to wait for a web request to complete before failing.
+        /// </summary>
+        public static string WebRequestToolTipTimeOut {
+            get {
+                return ResourceManager.GetString("WebRequestToolTipTimeOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any data or variable can go in here.
         ///To traverse and retrieve the raw response from a webpage, enter it in here..
         /// </summary>

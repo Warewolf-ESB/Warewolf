@@ -145,7 +145,7 @@ namespace Dev2.TO
                             .Item
                             .Where(x => !x.IsWarewolfAtomAtomExpression)
                             .Select(x =>
-                
+
                                 WarewolfDataEvaluationCommon.LanguageExpressionToString(x))
                             .Select(x =>
                                 new JsonMappingEvaluated(_env, x))
@@ -334,7 +334,7 @@ namespace Dev2.TO
                        !Enumerable.Range(1, complex.Item.Count() - 1)
                            .Where(i => i % 2 == 1)
                            .Select(i =>
-             
+
                                         WarewolfDataEvaluationCommon.LanguageExpressionToString(
                                             complex.Item.ElementAt(i)
                                             ) == ",")
