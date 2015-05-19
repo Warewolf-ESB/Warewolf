@@ -190,10 +190,12 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
-                        "Header"});
+                        "Header",
+                        "Time Out Seconds"});
             table5.AddRow(new string[] {
                         string.Format("{0}", url),
-                        ""});
+                        "",
+                        string.Format("{0}", timeoutSeconds)});
 #line 40
  testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
 #line hidden

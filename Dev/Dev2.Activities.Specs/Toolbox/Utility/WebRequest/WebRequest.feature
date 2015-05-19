@@ -38,15 +38,15 @@ Scenario Outline: Enter a URL to download html with timeout specified too short
 	When the web request tool is executed 
 	Then the execution has "AN" error
 	And the debug inputs as  
-	| URL                                                        | Header |
-	| <url> |        |
+	| URL   | Header | Time Out Seconds |
+	| <url> |        | <timeoutSeconds> |
 	And the debug output as 
-	|                                                   |
+	|                     |
 	| [[result]] = String |
 	Examples:
-	| url                                                          | timeoutSeconds |
-	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=150      | 10          |
-	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15      | 10          |
+	| url                                                   | timeoutSeconds |
+	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=150 | 10             |
+	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15  | 10             |
 
 Scenario: Enter a badly formed URL
 	Given I have the url "www.google.comx"	

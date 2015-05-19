@@ -78,7 +78,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest
         public override void Validate()
         {
             Errors = null;
-            if (string.IsNullOrWhiteSpace(Url))
+            if (string.IsNullOrWhiteSpace(Url) && string.IsNullOrWhiteSpace(TimeOutText))
             {
                 return;
             }
@@ -87,30 +87,30 @@ namespace Dev2.Activities.Designers2.GetWebRequest
             {
                 ValidateUrl(url);
             }
-            if( TimeOutSeconds.Length>0)
+            if (TimeOutText.Length > 0)
             {
                 int res;
-                if( ! int.TryParse( TimeOutSeconds,out res))
+                if (!int.TryParse(TimeOutText, out res))
                 {
-                    if(!DataListUtil.IsValueRecordset(TimeOutSeconds) && !DataListUtil.IsValueScalar(TimeOutSeconds))
+                    if (!DataListUtil.IsValueRecordset(TimeOutText) && !DataListUtil.IsValueScalar(TimeOutText))
                     {
-                        if(Errors==null) Errors = new List<IActionableErrorInfo>();
-                        Errors.Add(new ActionableErrorInfo(){ErrorType = ErrorType.Warning,Message = "Invalid time out. The timeout must be a valid variable or positive integer number. "});
-                   
+                        Errors = new List<IActionableErrorInfo>(){
+                         new ActionableErrorInfo { ErrorType = ErrorType.Critical, Message = "Invalid time out. The timeout must be a valid variable or positive integer number. " }};
+
                     }
                 }
                 else
                 {
                     if(res<=0)
                     {
-                        if(Errors==null) Errors = new List<IActionableErrorInfo>();
-                        Errors.Add(new ActionableErrorInfo() { ErrorType = ErrorType.Warning, Message = "Invalid time out. The timeout must be a valid variable or positive integer number. " });
+                        Errors = new List<IActionableErrorInfo>(){
+                         new ActionableErrorInfo { ErrorType = ErrorType.Critical, Message = "Invalid time out. The timeout must be a valid variable or positive integer number. " }};
                     }
                 }
             }
         }
 
-        private string TimeOutSeconds
+        private string TimeOutText
         {
             get { return GetProperty<string>(); }
             set { SetProperty(value); }
@@ -148,13 +148,17 @@ namespace Dev2.Activities.Designers2.GetWebRequest
             {
                 PreviewViewModel.InputsVisibility = Visibility.Visible;
 
+                // ReSharper disable MaximumChainedReferences
                 var mustRemainKeys = PreviewViewModel.Inputs
                                                      .Where(i => variableList.Contains(i.Key))
                                                      .ToList();
+                // ReSharper restore MaximumChainedReferences
 
+                // ReSharper disable MaximumChainedReferences
                 var mustRemove = PreviewViewModel.Inputs
                                                  .Where(i => !variableList.Contains(i.Key))
                                                  .ToList();
+                // ReSharper restore MaximumChainedReferences
 
                 mustRemove.ForEach(r => PreviewViewModel.Inputs.Remove(r));
 
@@ -288,7 +292,9 @@ namespace Dev2.Activities.Designers2.GetWebRequest
                                   ? new string[0]
                                   : Headers.Split(new[] {'\n', '\r', ';'}, StringSplitOptions.RemoveEmptyEntries);
 
+                // ReSharper disable MaximumChainedReferences
                 var headersEntries = headers.Select(header => header.Split(':')).Select(headerSegments => new Tuple<string, string>(headerSegments[0], headerSegments[1])).ToList();
+                // ReSharper restore MaximumChainedReferences
 
                 url = PreviewViewModel.Inputs.Aggregate(url,
                                                         (current, previewInput) =>

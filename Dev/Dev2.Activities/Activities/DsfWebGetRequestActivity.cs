@@ -50,6 +50,8 @@ namespace Dev2.Activities
 
         [FindMissing]
         public string Method { get; set; }
+
+        [Inputs("Time Out Seconds")]
         [FindMissing]
         public string TimeOutText { get; set; }
 
@@ -71,6 +73,7 @@ namespace Dev2.Activities
             Method = "GET";
             Headers = string.Empty;
             TimeoutSeconds = 100;  // default of 100 seconds
+            TimeOutText = "100";
         }
 
         #region Overrides of DsfNativeActivity<string>
