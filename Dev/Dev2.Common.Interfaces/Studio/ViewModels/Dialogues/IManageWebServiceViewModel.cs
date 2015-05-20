@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.ServerProxyLayer;
-using Dev2.Data.ServiceModel;
 
 namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
 {
