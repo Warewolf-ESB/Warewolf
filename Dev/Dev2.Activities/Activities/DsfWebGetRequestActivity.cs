@@ -136,18 +136,25 @@ namespace Dev2.Activities
                             _debugInputs.Add(debugItem);
                         }
                     }
+                    bool timeoutSecondsError = false;
                     if (!string.IsNullOrEmpty(TimeOutText))
                     {
                         int timeoutval;
-                        if (int.TryParse(dataObject.Environment.Eval(TimeOutText).ToString(), out timeoutval))
+                        if (int.TryParse(WarewolfDataEvaluationCommon.EvalResultToString(dataObject.Environment.Eval(TimeOutText)), out timeoutval))
                         {
                             if (timeoutval < 0)
+                            {
                                 allErrors.AddError(string.Format("Value of TimeoutSecondsText out of range: please specify a value between 0 and {0}.", int.MaxValue));
+                                timeoutSecondsError = true;
+                            }
                             else
                                 TimeoutSeconds = timeoutval;
                         }
                         else
+                        {
                             allErrors.AddError(string.Format("Value {0} for TimeoutSecondsText could not be interpreted as a numeric value.", TimeOutText));
+                            timeoutSecondsError = true;
+                        }
 
                         if (dataObject.IsDebugMode())
                         {
@@ -157,7 +164,7 @@ namespace Dev2.Activities
                         }
                     }
 
-                    if (!allErrors.HasErrors())
+                    if (!timeoutSecondsError)
                     {
                         var result = WebRequestInvoker.ExecuteRequest(Method,
                             c,
