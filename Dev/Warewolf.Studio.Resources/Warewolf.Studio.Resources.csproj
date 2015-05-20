@@ -113,9 +113,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Languages\Core.Designer.cs">
-      <DependentUpon>Core.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>Core.resx</DependentUpon>
     </Compile>
     <Compile Include="Languages\Core.en-gb.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -152,8 +152,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Languages\Core.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Core.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Core.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Languages\ExampleResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

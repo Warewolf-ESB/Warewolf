@@ -407,6 +407,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Defaults and Mapping.
+        /// </summary>
+        public static string DefaultMappings {
+            get {
+                return ResourceManager.GetString("DefaultMappings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Default Query:.
         /// </summary>
         public static string DefaultQueryLabel {
@@ -1631,6 +1640,69 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string Warewolf_Logo {
             get {
                 return ResourceManager.GetString("Warewolf_Logo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Request Method and Source.
+        /// </summary>
+        public static string WebserviceHeader {
+            get {
+                return ResourceManager.GetString("WebserviceHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Header.
+        /// </summary>
+        public static string WebserviceHeadersHeader {
+            get {
+                return ResourceManager.GetString("WebserviceHeadersHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Body.
+        /// </summary>
+        public static string WebserviceRequestBodyHeader {
+            get {
+                return ResourceManager.GetString("WebserviceRequestBodyHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request.
+        /// </summary>
+        public static string WebserviceRequestHeader {
+            get {
+                return ResourceManager.GetString("WebserviceRequestHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to URL.
+        /// </summary>
+        public static string WebserviceRequestURLHeader {
+            get {
+                return ResourceManager.GetString("WebserviceRequestURLHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Response.
+        /// </summary>
+        public static string WebserviceResponseHeader {
+            get {
+                return ResourceManager.GetString("WebserviceResponseHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variables.
+        /// </summary>
+        public static string WebserviceVariablesHeader {
+            get {
+                return ResourceManager.GetString("WebserviceVariablesHeader", resourceCulture);
             }
         }
         

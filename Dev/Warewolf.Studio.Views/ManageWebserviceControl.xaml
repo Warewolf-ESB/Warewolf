@@ -6,8 +6,11 @@
              xmlns:db="clr-namespace:Dev2.Common.Interfaces.DB;assembly=Dev2.Common.Interfaces"
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:dialogues="clr-namespace:Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;assembly=Dev2.Common.Interfaces"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance Type=dialogues:IManageWebServiceViewModel,
+                                              IsDesignTimeCreatable=False}">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
         <Style TargetType="{x:Type ListBox}">
@@ -70,7 +73,7 @@
                         <TextBlock Text="1" 
                                Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
                         <TextBlock Margin="5" 
-                               Text="Select Request Method and Source" 
+                               Text="{Binding Header}" 
                                Style="{StaticResource SourceHeader}"></TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
@@ -119,7 +122,7 @@
                         <TextBlock Text="2" 
                                Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
                         <TextBlock Margin="5" 
-                               Text="Request" 
+                               Text="{Binding SelectSourceHeader}" 
                                Style="{StaticResource SourceHeader}" ></TextBlock>
                     </StackPanel>
                     <Grid Grid.Column="0" 
@@ -134,7 +137,7 @@
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" 
                                    Grid.Column="0"
-                                   Text="Headers" 
+                                   Text="{Binding SelectHeadersHeader}" 
                                    FontWeight="Bold"></TextBlock>
                         <DataGrid x:Name="RequestHeaderDataGrid" 
                                   Grid.Row="1" 
@@ -186,8 +189,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="7" ></RowDefinition>
                         </Grid.RowDefinitions>
-                        <TextBlock 
-                                   Text="Body" 
+                        <TextBlock Text="{Binding RequestBodyHeader}" 
                                    FontWeight="Bold"></TextBlock>
                         <TextBox Grid.Row="1" 
                                  x:Name="RequestBody"
@@ -196,7 +198,7 @@
                     <TextBlock Margin="{StaticResource ControlBorderTopLeft}"
                                Grid.Column="0" 
                                Grid.Row="2" 
-                               Text="URL" 
+                               Text="{Binding RequestUrlHeader}" 
                                FontWeight="Bold"></TextBlock>
                     <TextBox x:Name="RequestUrl"
                              HorizontalAlignment="Stretch"
@@ -227,7 +229,7 @@
                         <TextBlock Text="3" 
                                    Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
                         <TextBlock Margin="5" 
-                                   Text="Request Variables" 
+                                   Text="{Binding VariablesHeader}" 
                                    Style="{StaticResource SourceHeader}" ></TextBlock>
                     </StackPanel>
                     <TextBlock Grid.Column="0"
@@ -265,7 +267,7 @@
                         <TextBlock Text="4" 
                                    Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
                         <TextBlock Margin="5" 
-                                   Text="Response" 
+                                   Text="{Binding ResponseHeader}" 
                                    Style="{StaticResource SourceHeader}" ></TextBlock>
                     </StackPanel>
                     <Button Width="25" 
@@ -303,7 +305,7 @@
                         <TextBlock Text="5" 
                                Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
                         <TextBlock Margin="5" 
-                               Text="Mappings" 
+                               Text="{Binding MappingsHeader}" 
                                Style="{StaticResource SourceHeader}" ></TextBlock>
                     </StackPanel>
                     <views:MappingsView Grid.Row="1"></views:MappingsView>

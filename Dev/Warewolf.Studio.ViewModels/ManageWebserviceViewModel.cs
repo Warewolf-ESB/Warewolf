@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
@@ -22,6 +23,8 @@ namespace Warewolf.Studio.ViewModels
         string _sourceUrl;
         string _requestUrlHeader;
         string _requestBody;
+        string _variablesHeader;
+        string _responseHeader;
         ICollection<INameValue> _variables;
         string _response;
         ICommand _pastResponseCommand;
@@ -43,10 +46,11 @@ namespace Warewolf.Studio.ViewModels
             : base(image)
         {
             WebService = new WebService();
-            Header = "Bob";
-            
-
-
+            Header = Resources.Languages.Core.WebserviceHeader;
+            SelectSourceHeader = Resources.Languages.Core.WebserviceRequestHeader;
+            SelectHeadersHeader = Resources.Languages.Core.WebserviceHeadersHeader;
+            RequestUrlHeader = Resources.Languages.Core.WebserviceRequestURLHeader;
+            RequestBodyHeader = Resources.Languages.Core.WebserviceRequestBodyHeader;
         }
 
         public string ResourceName
@@ -246,6 +250,23 @@ namespace Warewolf.Studio.ViewModels
         /// </summary>
         public string RequestBodyHeader { get; set; }
         /// <summary>
+        /// Variables Header
+        /// </summary>
+        [ExcludeFromCodeCoverage]
+        public string VariablesHeader
+        {
+            get { return Resources.Languages.Core.WebserviceVariablesHeader; }
+            
+        }
+        /// <summary>
+        /// Variables Header
+        /// </summary>
+        [ExcludeFromCodeCoverage]
+        public string MappingsHeader
+        {
+            get { return Resources.Languages.Core.DefaultMappings; }
+        }
+        /// <summary>
         /// the warewolf variables defined in the body,headers and query string
         /// </summary>
         public ICollection<INameValue> Variables
@@ -259,6 +280,14 @@ namespace Warewolf.Studio.ViewModels
                 _variables = value;
                 OnPropertyChanged(() => Variables);
             }
+        }
+        /// <summary>
+        /// Response Header
+        /// </summary>
+        [ExcludeFromCodeCoverage]
+        public string ResponseHeader
+        {
+            get { return Resources.Languages.Core.WebserviceResponseHeader; }
         }
         /// <summary>
         /// the response from the web service
