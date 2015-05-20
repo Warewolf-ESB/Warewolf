@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 
@@ -137,8 +138,17 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
     {
 
         void TestConnection(IWebServiceSource resource);
+
         void Save(IWebServiceSource toDbSource);
 
+
         string ServerName { get; set; }
+    }
+
+    public interface INameValue
+    {
+        string Name { get; set; }
+        string Value { get; set; }
+
     }
 }
