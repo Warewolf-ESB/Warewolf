@@ -68,9 +68,14 @@ namespace Warewolf.Studio.ViewModels
             EditWebSourceCommand = new DelegateCommand(() => _model.EditSource(SelectedSource), () => SelectedSource != null);
             Header = "Bob";
             var headerCollection  = new ObservableCollection<INameValue>();
-            headerCollection.CollectionChanged+= HeaderCollectionOnCollectionChanged;   
+            headerCollection.CollectionChanged+= HeaderCollectionOnCollectionChanged;
+           // TestCommand = new DelegateCommand(() => model.TestService(ToModel),CanTest());
 
+        }
 
+        bool CanTest()
+        {
+            return false;
         }
 
         void HeaderCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)

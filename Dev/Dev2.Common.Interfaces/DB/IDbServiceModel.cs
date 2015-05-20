@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 
 namespace Dev2.Common.Interfaces.DB
 {
@@ -21,9 +22,9 @@ namespace Dev2.Common.Interfaces.DB
        
         void CreateNewSource();
         void EditSource(IWebServiceSource selectedSource);
-        string TestService(IDatabaseService inputValues);
+        string TestService(IWebServiceSource inputValues);
         IEnumerable<IDbOutputMapping> GetDbOutputMappings(IDbAction action);
-        void SaveService(IDatabaseService toModel);
+        void SaveService(IWebService toModel);
     }
     public interface IWebserviceInputs
     {
