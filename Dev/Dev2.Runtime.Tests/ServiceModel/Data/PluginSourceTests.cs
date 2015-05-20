@@ -15,6 +15,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
@@ -35,7 +36,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void SavePluginSourceWithExistingSourceExpectedServerWorkspaceUpdated()
         {
             //Initialize test resource, save then change path
-            string uniquePathText = Guid.NewGuid().ToString()+"\\test plugin source";
+            ResourceCatalog.Instance.ResourceSaved = resource => { };
+            string uniquePathText = Guid.NewGuid()+"\\test plugin source";
             var testResource = new Resource { ResourceName = "test plugin source", ResourcePath = "initialpath", ResourceType = ResourceType.PluginSource, ResourceID = Guid.NewGuid() };
             new PluginSources().Save(testResource.ToString(), GlobalConstants.ServerWorkspaceID, Guid.Empty);
             testResource.ResourcePath = uniquePathText;
