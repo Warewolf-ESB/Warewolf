@@ -9,6 +9,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Warewolf.Core;
 
 namespace Warewolf.Studio.ViewModels
@@ -68,6 +69,39 @@ namespace Warewolf.Studio.ViewModels
         {
       
             _updateRepository.Save(toModel);
+        }
+
+        #endregion
+    }
+
+    public class WebServiceModel : IWebServiceModel {
+        #region Implementation of IWebServiceModel
+
+        public ICollection<IWebServiceSource> RetrieveSources()
+        {
+            return null;
+        }
+
+        public void CreateNewSource()
+        {
+        }
+
+        public void EditSource(IWebServiceSource selectedSource)
+        {
+        }
+
+        public string TestService(IWebServiceSource inputValues)
+        {
+            return null;
+        }
+
+        public IEnumerable<IDbOutputMapping> GetDbOutputMappings(IDbAction action)
+        {
+            yield break;
+        }
+
+        public void SaveService(IWebService toModel)
+        {
         }
 
         #endregion

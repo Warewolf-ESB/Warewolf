@@ -75,6 +75,12 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
+
+        public ManageWebServiceViewModel(ResourceType webService)
+            : base(webService)
+        {
+        }
+
         bool CanTest()
         {
             return false;

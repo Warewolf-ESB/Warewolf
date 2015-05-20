@@ -132,7 +132,7 @@ namespace Warewolf.Studio
                 {
                     Content = new ManageWebserviceControl()
                     {
-                        //DataContext = new ManageWebServiceViewModel(ResourceType.WebService)
+                        DataContext = new ManageWebServiceViewModel(ResourceType.WebService)
                     }
                 };
                 testWindow.ShowDialog();
