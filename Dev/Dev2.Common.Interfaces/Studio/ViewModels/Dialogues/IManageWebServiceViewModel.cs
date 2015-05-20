@@ -50,7 +50,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// <summary>
         /// Label for selecteing a header
         /// </summary>
-        string SelectSourceHeader { get; set; }
+        string SelectSourceHeader { get; }
         /// <summary>
         /// Request headers
         /// </summary>

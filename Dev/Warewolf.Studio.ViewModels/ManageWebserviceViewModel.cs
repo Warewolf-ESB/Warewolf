@@ -60,7 +60,6 @@ namespace Warewolf.Studio.ViewModels
             _saveDialog = saveDialog;
             WebService = new WebService();
             Header = Resources.Languages.Core.WebserviceTabHeader;
-            SelectSourceHeader = Resources.Languages.Core.WebserviceHeader;
             SelectHeadersHeader = Resources.Languages.Core.WebserviceHeadersHeader;
             RequestUrlHeader = Resources.Languages.Core.WebserviceRequestURLHeader;
             RequestBodyHeader = Resources.Languages.Core.WebserviceRequestBodyHeader;
@@ -232,10 +231,14 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => WebService);
             }
         }
+
         /// <summary>
         /// Label for selecteing a header
         /// </summary>
-        public string SelectSourceHeader { get; set; }
+        public string SelectSourceHeader
+        {
+            get { return Resources.Languages.Core.WebserviceHeader; }
+        }
         /// <summary>
         /// Request headers
         /// </summary>
