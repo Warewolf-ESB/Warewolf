@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 
@@ -175,13 +176,16 @@ namespace Warewolf.Core
         {
             unchecked
             {
+                // ReSharper disable NonReadonlyFieldInGetHashCode
                 var hashCode = (_source != null ? _source.GetHashCode() : 0);
+          
                 hashCode = (hashCode * 397) ^ (_path != null ? _path.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (_name != null ? _name.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (_inputs != null ? _inputs.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (_outputMappings != null ? _outputMappings.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (_queryString != null ? _queryString.GetHashCode() : 0);
                 return hashCode;
+                // ReSharper restore NonReadonlyFieldInGetHashCode
             }
         }
 
