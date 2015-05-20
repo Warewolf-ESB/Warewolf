@@ -5,11 +5,11 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Dev2.Data.ServiceModel;
-using Microsoft.Practices.Prism.Mvvm;
+using Warewolf.Core;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ManageWebserviceViewModel :BindableBase, IManageWebServiceViewModel,   IDockViewModel, IDisposable
+    public class ManageWebserviceViewModel : SourceBaseImpl<IWebService>, IManageWebServiceViewModel
     {
         WebRequestMethod _selectedWebRequestMethod;
         ICollection<WebRequestMethod> _webRequestMethods;
@@ -38,6 +38,11 @@ namespace Warewolf.Studio.ViewModels
         ResourceType? _image;
 
         #region Implementation of IManageWebServiceViewModel
+
+        public ManageWebserviceViewModel(ResourceType? image)
+            : base(image)
+        {
+        }
 
         /// <summary>
         /// currently selected web resquest method post get
@@ -430,41 +435,26 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Inputs);
             }
         }
-        public event EventHandler IsActiveChanged;
+
+
+        public override void UpdateHelpDescriptor(string helpText)
+        {
+        }
 
         #endregion
 
         #region Implementation of IDockAware
 
-        public string Header
+        public override IWebService ToModel()
         {
-            get
-            {
-                return _header;
-            }
-            set
-            {
-                _header = value;
-                OnPropertyChanged(() => Header);
-            }
+            return null;
         }
-        public ResourceType? Image
-        {
-            get
-            {
-                return _image;
-            }
-        }
+
+
 
         #endregion
 
-        #region Implementation of IUpdatesHelp
-
-        public void UpdateHelpDescriptor(string helpText)
-        {
-        }
-
-        #endregion
+  
 
         #region Implementation of IDisposable
 

@@ -92,6 +92,7 @@
     <Compile Include="ToolDescriptorInfo.cs" />
     <Compile Include="WarewolfExceptionHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WebService.cs" />
     <Compile Include="XamlResource.cs" />
   </ItemGroup>
   <ItemGroup>
