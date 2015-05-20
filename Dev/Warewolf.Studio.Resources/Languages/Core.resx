@@ -697,10 +697,10 @@ You need Administrator permission.</value>
   <data name="DatabaseWebserviceLabel" xml:space="preserve">
     <value>Address:</value>
   </data>
-  <data name="DatabaseWebserviceNewHeaderLabel" xml:space="preserve">
+  <data name="WebserviceNewHeaderLabel" xml:space="preserve">
     <value>New Webservice Connector Source</value>
   </data>
-  <data name="DatabaseWebserviceEditHeaderLabel" xml:space="preserve">
+  <data name="WebserviceEditHeaderLabel" xml:space="preserve">
     <value>Edit Webservice Connector Source - </value>
   </data>
   <data name="DatabaseSourceServerToolTip" xml:space="preserve">

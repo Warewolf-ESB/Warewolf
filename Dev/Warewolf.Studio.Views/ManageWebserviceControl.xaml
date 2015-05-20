@@ -292,12 +292,12 @@
                                         VerticalAlignment="Top" 
                                         HorizontalAlignment="Center"/>
                     </Button>
-                    <TextBox x:Name="Response"
+                    <TextBlock x:Name="Response"
                              Grid.Column="1"
                              Margin="{StaticResource ControlBorderLeftTop}"
                              Text="{Binding Response}"
                              HorizontalAlignment="Stretch"
-                             Grid.Row="1"></TextBox>
+                             Grid.Row="1"></TextBlock>
                 </Grid>
                 <Grid x:Name="MappingsGrid" 
                   Grid.Row="4" 
