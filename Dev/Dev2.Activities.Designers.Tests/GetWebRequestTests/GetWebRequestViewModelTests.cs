@@ -349,6 +349,13 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             properties.Add("DisplayName", displayName);
             propertyCollection.Protected().Setup<ModelProperty>("Find", "DisplayName", true).Returns(displayName.Object);
 
+
+            var timeOutText = new Mock<ModelProperty>();
+            timeOutText.Setup(p => p.ComputedValue).Returns("100");
+            properties.Add("TimeOutText", timeOutText);
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "TimeOutText", true).Returns(timeOutText.Object);
+
+            
             var mockModelItem = new Mock<ModelItem>();
             mockModelItem.Setup(mi => mi.ItemType).Returns(typeof(DsfWebGetRequestActivity));
             mockModelItem.Setup(s => s.Properties).Returns(propertyCollection.Object);
