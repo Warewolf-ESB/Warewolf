@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Input;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 
 namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
@@ -23,6 +24,12 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// Command to create a new web source 
         /// </summary>
         ICommand NewWebSourceCommand { get; set; }
+
+
+        /// <summary>
+        /// Command to create a new web source 
+        /// </summary>
+        ICommand EditWebSourceCommand { get; set; }
         /// <summary>
         /// Available Sources
         /// </summary>
@@ -77,6 +84,11 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// Request Body Header
         /// </summary>
         string RequestBodyHeader { get; set; }
+
+        /// <summary>
+        /// is the rquest body enabled. only diabled for get;
+        /// </summary>
+        bool RequestBodyEnabled { get; set; }
 
         /// <summary>
         /// the warewolf variables defined in the body,headers and query string
@@ -189,11 +201,5 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         Guid Id { get; set; }
     }
 
-    public interface IWebserviceInputs
-    {
-    }
 
-    public interface IWebserviceOutputs
-    {
-    }
 }

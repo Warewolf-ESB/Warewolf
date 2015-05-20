@@ -13,4 +13,23 @@ namespace Dev2.Common.Interfaces.DB
         IEnumerable<IDbOutputMapping> GetDbOutputMappings(IDbAction action);
         void SaveService(IDatabaseService toModel);
     }
+
+    public interface IWebServiceModel
+    {
+
+        ICollection<IWebServiceSource> RetrieveSources();
+       
+        void CreateNewSource();
+        void EditSource(IWebServiceSource selectedSource);
+        string TestService(IDatabaseService inputValues);
+        IEnumerable<IDbOutputMapping> GetDbOutputMappings(IDbAction action);
+        void SaveService(IDatabaseService toModel);
+    }
+    public interface IWebserviceInputs
+    {
+    }
+
+    public interface IWebserviceOutputs
+    {
+    }
 }

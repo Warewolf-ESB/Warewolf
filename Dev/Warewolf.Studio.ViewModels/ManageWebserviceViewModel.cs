@@ -1,19 +1,30 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Linq;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Enums.Enums;
+using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
+using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
 
 namespace Warewolf.Studio.ViewModels
 {
     public class ManageWebServiceViewModel : SourceBaseImpl<IWebService>, IManageWebServiceViewModel
     {
+        readonly IWebServiceModel _model;
+        readonly IRequestServiceNameViewModel _saveDialog;
         WebRequestMethod _selectedWebRequestMethod;
         ICollection<WebRequestMethod> _webRequestMethods;
         ICommand _newWebSourceCommand;
+    
         ICollection<IWebServiceSource> _sources;
         IWebServiceSource _selectedSource;
         IWebService _webService;
@@ -37,18 +48,45 @@ namespace Warewolf.Studio.ViewModels
         string _header;
         ResourceType? _image;
         string _resourceName;
+        bool _requestBodyEnabled;
+        ICommand _editWebSourceCommand;
 
         #region Implementation of IManageWebServiceViewModel
 
-        public ManageWebServiceViewModel(ResourceType? image)
+        public ManageWebServiceViewModel(ResourceType? image, IWebServiceModel model, IRequestServiceNameViewModel saveDialog)
             : base(image)
         {
+            _model = model;
+            _saveDialog = saveDialog;
             WebService = new WebService();
             Header = Resources.Languages.Core.WebserviceTabHeader;
             SelectSourceHeader = Resources.Languages.Core.WebserviceHeader;
             SelectHeadersHeader = Resources.Languages.Core.WebserviceHeadersHeader;
             RequestUrlHeader = Resources.Languages.Core.WebserviceRequestURLHeader;
             RequestBodyHeader = Resources.Languages.Core.WebserviceRequestBodyHeader;
+            WebRequestMethods = new ObservableCollection<WebRequestMethod>(Dev2EnumConverter.GetEnumsToList<WebRequestMethod>());
+            SelectedWebRequestMethod = WebRequestMethods.First();
+            Sources = new ObservableCollection<IWebServiceSource>( _model.RetrieveSources());
+            NewWebSourceCommand = new DelegateCommand(model.CreateNewSource);
+            EditWebSourceCommand = new DelegateCommand(() => _model.EditSource(SelectedSource), () => SelectedSource != null);
+            var headerCollection  = new ObservableCollection<INameValue>();
+            headerCollection.CollectionChanged+= HeaderCollectionOnCollectionChanged;   
+
+
+        }
+
+        void HeaderCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        {
+            foreach(var nameValue in Headers)
+            {
+                UpdateRequestVariables(nameValue.Value);
+                UpdateRequestVariables(nameValue.Name);
+            }
+        }
+
+        public void UpdateRequestVariables(string name)
+        {
+            
         }
 
         public string ResourceName
@@ -76,8 +114,24 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _selectedWebRequestMethod = value;
+                if (value == WebRequestMethod.Get)
+                {
+                    RequestBodyEnabled = false;
+                }
                 OnPropertyChanged(() => SelectedWebRequestMethod);
             }
+        }
+        public bool RequestBodyEnabled
+        {
+            get
+            {
+                return _requestBodyEnabled;
+            }
+            set
+            {
+                _requestBodyEnabled = value;
+                OnPropertyChanged(() => RequestBodyEnabled);
+        }
         }
         /// <summary>
         /// the collections of supported web request methods
@@ -110,6 +164,21 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         /// <summary>
+        /// Command to create a new web source 
+        /// </summary>
+        public ICommand EditWebSourceCommand
+        {
+            get
+            {
+                return _editWebSourceCommand;
+            }
+            set
+            {
+                _editWebSourceCommand = value;
+                OnPropertyChanged(() => EditWebSourceCommand);
+            }
+        }
+        /// <summary>
         /// Available Sources
         /// </summary>
         public ICollection<IWebServiceSource> Sources
@@ -117,6 +186,9 @@ namespace Warewolf.Studio.ViewModels
             get
             {
                 return _sources;
+            }
+            set
+            {
             }
         }
         /// <summary>
