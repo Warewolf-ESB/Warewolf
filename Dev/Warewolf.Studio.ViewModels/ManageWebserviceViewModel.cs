@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
@@ -14,7 +16,7 @@ using Warewolf.Core;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ManageWebserviceViewModel : SourceBaseImpl<IWebService>, IManageWebServiceViewModel
+    public class ManageWebServiceViewModel : SourceBaseImpl<IWebService>, IManageWebServiceViewModel
     {
         readonly IWebServiceModel _model;
         readonly IRequestServiceNameViewModel _saveDialog;
@@ -50,7 +52,7 @@ namespace Warewolf.Studio.ViewModels
 
         #region Implementation of IManageWebServiceViewModel
 
-        public ManageWebserviceViewModel(ResourceType? image, IWebServiceModel model, IRequestServiceNameViewModel saveDialog)
+        public ManageWebServiceViewModel(ResourceType? image, IWebServiceModel model, IRequestServiceNameViewModel saveDialog)
             : base(image)
         {
             _model = model;
@@ -61,8 +63,25 @@ namespace Warewolf.Studio.ViewModels
             Sources = new ObservableCollection<IWebServiceSource>( _model.RetrieveSources());
             NewWebSourceCommand = new DelegateCommand(model.CreateNewSource);
             EditWebSourceCommand = new DelegateCommand(() => _model.EditSource(SelectedSource), () => SelectedSource != null);
-            
+            Header = "Bob";
+            var headerCollection  = new ObservableCollection<INameValue>();
+            headerCollection.CollectionChanged+= HeaderCollectionOnCollectionChanged;   
 
+
+        }
+
+        void HeaderCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        {
+            foreach(var nameValue in Headers)
+            {
+                UpdateRequestVariables(nameValue.Value);
+                UpdateRequestVariables(nameValue.Name);
+            }
+        }
+
+        public void UpdateRequestVariables(string name)
+        {
+            
         }
 
         public string ResourceName
@@ -515,7 +534,7 @@ namespace Warewolf.Studio.ViewModels
 
         public override IWebService ToModel()
         {
-            return null;
+            return WebService;
         }
 
 

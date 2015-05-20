@@ -75,6 +75,7 @@ namespace Warewolf.Studio.ViewModels
             CanShowDependencies = true;
             CanCreatePluginService = true;
             CanCreateWebSource = true;
+            CanCreateWebService = true;
             _explorerRepository = server.ExplorerRepository;
             Server.PermissionsChanged += UpdatePermissions;
             ShowVersionHistory = new DelegateCommand((() => AreVersionsVisible = (!AreVersionsVisible)));
