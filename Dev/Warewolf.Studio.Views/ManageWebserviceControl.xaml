@@ -292,12 +292,16 @@
                                         VerticalAlignment="Top" 
                                         HorizontalAlignment="Center"/>
                     </Button>
-                    <TextBlock x:Name="Response"
-                             Grid.Column="1"
-                             Margin="{StaticResource ControlBorderLeftTop}"
-                             Text="{Binding Response}"
-                             HorizontalAlignment="Stretch"
-                             Grid.Row="1"></TextBlock>
+                    <Grid Grid.Column="1" Grid.Row="1">
+                        <ScrollViewer >
+                            <TextBlock x:Name="Response"
+                                       Margin="{StaticResource ControlBorderLeftTop}"
+                                       Text="{Binding Response}"
+                                       TextWrapping="Wrap"
+                                       MaxHeight="180"
+                                       HorizontalAlignment="Stretch"></TextBlock>
+                        </ScrollViewer>
+                    </Grid>
                 </Grid>
                 <Grid x:Name="MappingsGrid" 
                   Grid.Row="4" 
