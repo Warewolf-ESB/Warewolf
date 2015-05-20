@@ -265,6 +265,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _requestUrlQuery = value;
+                UpdateRequestVariables(RequestUrlQuery);
                 OnPropertyChanged(() => RequestUrlQuery);
             }
         }
@@ -310,6 +311,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _requestBody = value;
+                UpdateRequestVariables(value);
                 OnPropertyChanged(() => RequestBody);
             }
         }
