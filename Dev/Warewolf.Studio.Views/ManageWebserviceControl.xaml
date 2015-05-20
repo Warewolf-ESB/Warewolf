@@ -273,19 +273,12 @@
                             Grid.Column="0"
                             Margin="{StaticResource ControlBorderTop}"
                             Grid.Row="1" >
-                        <Button.Content>
-                            <StackPanel>
-                                <Image Width="14"
-                                       Height="15"
-                                       Margin="0,-1,0,0"
-                                       Stretch="Uniform"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Source="{StaticResource Explorer-Open-Inactive}">
-
-                                </Image>
-                            </StackPanel>
-                        </Button.Content>
+                        <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
+                                        FontSize="16" 
+                                        FontWeight="DemiBold" 
+                                        Icon="Pencil" 
+                                        VerticalAlignment="Top" 
+                                        HorizontalAlignment="Center"/>
                     </Button>
                     <TextBox x:Name="Response"
                              Grid.Column="1"
