@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
@@ -33,6 +34,8 @@ namespace Warewolf.Studio.ViewModels
         string _sourceUrl;
         string _requestUrlHeader;
         string _requestBody;
+        string _variablesHeader;
+        string _responseHeader;
         ICollection<INameValue> _variables;
         string _response;
         ICommand _pastResponseCommand;
@@ -126,7 +129,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _requestBodyEnabled = value;
                 OnPropertyChanged(() => RequestBodyEnabled);
-            }
+        }
         }
         /// <summary>
         /// the collections of supported web request methods
@@ -315,6 +318,23 @@ namespace Warewolf.Studio.ViewModels
         /// </summary>
         public string RequestBodyHeader { get; set; }
         /// <summary>
+        /// Variables Header
+        /// </summary>
+        [ExcludeFromCodeCoverage]
+        public string VariablesHeader
+        {
+            get { return Resources.Languages.Core.WebserviceVariablesHeader; }
+            
+        }
+        /// <summary>
+        /// Variables Header
+        /// </summary>
+        [ExcludeFromCodeCoverage]
+        public string MappingsHeader
+        {
+            get { return Resources.Languages.Core.DefaultMappings; }
+        }
+        /// <summary>
         /// the warewolf variables defined in the body,headers and query string
         /// </summary>
         public ICollection<INameValue> Variables
@@ -328,6 +348,14 @@ namespace Warewolf.Studio.ViewModels
                 _variables = value;
                 OnPropertyChanged(() => Variables);
             }
+        }
+        /// <summary>
+        /// Response Header
+        /// </summary>
+        [ExcludeFromCodeCoverage]
+        public string ResponseHeader
+        {
+            get { return Resources.Languages.Core.WebserviceResponseHeader; }
         }
         /// <summary>
         /// the response from the web service

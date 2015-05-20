@@ -712,6 +712,30 @@ You need Administrator permission.</value>
   <data name="DatabaseSourceTypeToolTip" xml:space="preserve">
     <value>Select the type of database you want to connect to</value>
   </data>
+  <data name="WebserviceHeader" xml:space="preserve">
+    <value>Select Request Method and Source</value>
+  </data>
+  <data name="WebserviceHeadersHeader" xml:space="preserve">
+    <value>Header</value>
+  </data>
+  <data name="WebserviceRequestHeader" xml:space="preserve">
+    <value>Request</value>
+  </data>
+  <data name="WebserviceVariablesHeader" xml:space="preserve">
+    <value>Variables</value>
+  </data>
+  <data name="WebserviceResponseHeader" xml:space="preserve">
+    <value>Response</value>
+  </data>
+  <data name="WebserviceRequestURLHeader" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="WebserviceRequestBodyHeader" xml:space="preserve">
+    <value>Body</value>
+  </data>
+  <data name="DefaultMappings" xml:space="preserve">
+    <value>Defaults and Mapping</value>
+  </data>
   <data name="CancelTest" xml:space="preserve">
     <value>Cancel Test</value>
   </data>
