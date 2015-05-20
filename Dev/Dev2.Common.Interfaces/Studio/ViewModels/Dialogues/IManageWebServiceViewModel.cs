@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Data.ServiceModel;

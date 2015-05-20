@@ -394,6 +394,7 @@
     <Compile Include="UndoFramework\IMultiAction.cs" />
     <Compile Include="UndoFramework\ITransaction.cs" />
     <Compile Include="UndoFramework\SimpleHistoryNode.cs" />
+    <Compile Include="WebRequestMethod.cs" />
     <Compile Include="WindowsTaskScheduler\Wrappers\IAction.cs" />
     <Compile Include="WindowsTaskScheduler\Wrappers\IActionCollection.cs" />
     <Compile Include="WindowsTaskScheduler\Wrappers\IDev2Task.cs" />
