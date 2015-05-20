@@ -182,11 +182,29 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit:.
+        /// </summary>
+        public static string DatabaseServiceDBSourceEditTabHeader {
+            get {
+                return ResourceManager.GetString("DatabaseServiceDBSourceEditTabHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Data Source.
         /// </summary>
         public static string DatabaseServiceDBSourceHeader {
             get {
                 return ResourceManager.GetString("DatabaseServiceDBSourceHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New DB Service.
+        /// </summary>
+        public static string DatabaseServiceDBSourceTabHeader {
+            get {
+                return ResourceManager.GetString("DatabaseServiceDBSourceTabHeader", resourceCulture);
             }
         }
         
@@ -1694,6 +1712,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string WebserviceResponseHeader {
             get {
                 return ResourceManager.GetString("WebserviceResponseHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Webservice Connector.
+        /// </summary>
+        public static string WebserviceTabHeader {
+            get {
+                return ResourceManager.GetString("WebserviceTabHeader", resourceCulture);
             }
         }
         

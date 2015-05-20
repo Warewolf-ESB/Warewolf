@@ -712,6 +712,9 @@ You need Administrator permission.</value>
   <data name="DatabaseSourceTypeToolTip" xml:space="preserve">
     <value>Select the type of database you want to connect to</value>
   </data>
+  <data name="WebserviceTabHeader" xml:space="preserve">
+    <value>New Webservice Connector</value>
+  </data>
   <data name="WebserviceHeader" xml:space="preserve">
     <value>Select Request Method and Source</value>
   </data>
@@ -771,6 +774,12 @@ You need Administrator permission.</value>
   </data>
   <data name="DatabaseServiceDBSourceHeader" xml:space="preserve">
     <value>Data Source</value>
+  </data>
+  <data name="DatabaseServiceDBSourceTabHeader" xml:space="preserve">
+    <value>New DB Service</value>
+  </data>
+  <data name="DatabaseServiceDBSourceEditTabHeader" xml:space="preserve">
+    <value>Edit:</value>
   </data>
   <data name="DatabaseServiceInputsHeader" xml:space="preserve">
     <value>Inputs</value>

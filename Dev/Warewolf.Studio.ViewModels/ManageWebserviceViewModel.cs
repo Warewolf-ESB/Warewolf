@@ -23,8 +23,6 @@ namespace Warewolf.Studio.ViewModels
         string _sourceUrl;
         string _requestUrlHeader;
         string _requestBody;
-        string _variablesHeader;
-        string _responseHeader;
         ICollection<INameValue> _variables;
         string _response;
         ICommand _pastResponseCommand;
@@ -46,8 +44,8 @@ namespace Warewolf.Studio.ViewModels
             : base(image)
         {
             WebService = new WebService();
-            Header = Resources.Languages.Core.WebserviceHeader;
-            SelectSourceHeader = Resources.Languages.Core.WebserviceRequestHeader;
+            Header = Resources.Languages.Core.WebserviceTabHeader;
+            SelectSourceHeader = Resources.Languages.Core.WebserviceHeader;
             SelectHeadersHeader = Resources.Languages.Core.WebserviceHeadersHeader;
             RequestUrlHeader = Resources.Languages.Core.WebserviceRequestURLHeader;
             RequestBodyHeader = Resources.Languages.Core.WebserviceRequestBodyHeader;
@@ -249,6 +247,15 @@ namespace Warewolf.Studio.ViewModels
         /// Request Body Header
         /// </summary>
         public string RequestBodyHeader { get; set; }
+        /// <summary>
+        /// Request Header
+        /// </summary>
+        [ExcludeFromCodeCoverage]
+        public string RequestHeader
+        {
+            get { return Resources.Languages.Core.WebserviceRequestHeader; }
+
+        }
         /// <summary>
         /// Variables Header
         /// </summary>

@@ -215,13 +215,6 @@
                 </i:Interaction.Behaviors>
             </TextBlock>
         </StackPanel>
-        <!--<Button Grid.Row="6" 
-                x:Name="Btn" 
-                Width="60" 
-                Height="30" 
-                Click="Btn_OnClick">
-            <TextBlock Text="Popup"/>
-        </Button>-->
         <Button x:Name="SaveButton" 
                 Grid.Row="6" 
                 Margin="{StaticResource ControlBorderTop}" 

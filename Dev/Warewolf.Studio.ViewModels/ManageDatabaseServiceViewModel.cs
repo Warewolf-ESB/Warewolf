@@ -51,8 +51,8 @@ namespace Warewolf.Studio.ViewModels
             CreateNewSourceCommand = new DelegateCommand(model.CreateNewSource);
             EditSourceCommand = new DelegateCommand(()=>model.EditSource(SelectedSource));
             Sources = model.RetrieveSources();
-           
-            Header = "New DB Service";
+
+            Header = Resources.Languages.Core.DatabaseServiceDBSourceTabHeader;
             TestProcedureCommand = new DelegateCommand(TestAction,CanTestProcedure);
             Inputs = new ObservableCollection<IDbInput>();
             SaveCommand = new DelegateCommand(Save,CanSave);
@@ -127,7 +127,7 @@ namespace Warewolf.Studio.ViewModels
             SelectedAction = service.Action;
             Inputs = service.Inputs;
             OutputMapping = service.OutputMappings;
-            Header = "Edit:" + Name;
+            Header = Resources.Languages.Core.DatabaseServiceDBSourceEditTabHeader + Name;
             CanEditMappings = true;
         }
 
@@ -308,7 +308,7 @@ namespace Warewolf.Studio.ViewModels
                     Id = Guid.NewGuid();
                     _model.SaveService(ToModel());
                     Item = ToModel();
-                    Header = "Edit:" + Path + Name;
+                    Header = Resources.Languages.Core.DatabaseServiceDBSourceEditTabHeader + Path + Name;
 
                 }
             }
