@@ -5,7 +5,7 @@ using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 
 namespace Warewolf.Core
 {
-   public class WebService:Dev2.Common.Interfaces.DB.IWebService, IEquatable<WebService>
+   public class WebService:IWebService, IEquatable<WebService>
    {
        /// <summary>
        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
