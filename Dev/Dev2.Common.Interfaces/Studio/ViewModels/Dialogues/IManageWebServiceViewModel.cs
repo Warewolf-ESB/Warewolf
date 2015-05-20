@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Data.ServiceModel;
@@ -175,10 +176,18 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// Output Column alias Header
         /// </summary>
         string OutputAliasHeader { get; set; }
+        string ResourceName { get; set; }
     }
 
     public interface IWebService
     {
+        string Name { get; set; }
+        string Path { get; set; }
+        IWebServiceSource Source { get; set; }
+        IList<IWebserviceInputs> Inputs { get; set; }
+        IList<IWebserviceOutputs> OutputMappings { get; set; }
+        string QueryString { get; set; }
+        Guid Id { get; set; }
     }
 
     public interface IWebserviceInputs

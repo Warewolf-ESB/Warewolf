@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
-using Dev2.Data.ServiceModel;
 using Warewolf.Core;
 
 namespace Warewolf.Studio.ViewModels
@@ -37,12 +35,29 @@ namespace Warewolf.Studio.ViewModels
         bool _isActive;
         string _header;
         ResourceType? _image;
+        string _resourceName;
 
         #region Implementation of IManageWebServiceViewModel
 
         public ManageWebserviceViewModel(ResourceType? image)
             : base(image)
         {
+            WebService = new WebService();
+
+
+        }
+
+        public string ResourceName
+        {
+            get
+            {
+                return _resourceName;
+            }
+            set
+            {
+                _resourceName = value;
+                OnPropertyChanged(_resourceName);
+            }
         }
 
         /// <summary>
