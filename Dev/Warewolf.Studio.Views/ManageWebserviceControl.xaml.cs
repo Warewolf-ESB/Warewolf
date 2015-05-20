@@ -18,7 +18,7 @@ namespace Warewolf.Studio.Views
     /// <summary>
     /// Interaction logic for ManageWebserviceControl.xaml
     /// </summary>
-    public partial class ManageWebserviceControl : UserControl
+    public partial class ManageWebserviceControl
     {
         public ManageWebserviceControl()
         {
