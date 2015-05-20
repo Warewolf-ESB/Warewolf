@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
 using FontAwesome.WPF;
 using Infragistics.Windows.DockManager.Events;
 using Warewolf.Studio.ViewModels;
@@ -124,8 +125,17 @@ namespace Warewolf.Studio
         {
             if (e.Key == Key.Home && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
-                var testingWindow = new ControlStyleTestingWindow();
-                testingWindow.Show();
+                //var testingWindow = new ControlStyleTestingWindow();
+                //testingWindow.Show();
+
+                var testWindow = new Window
+                {
+                    Content = new ManageWebserviceControl()
+                    {
+                        //DataContext = new ManageWebServiceViewModel(ResourceType.WebService)
+                    }
+                };
+                testWindow.ShowDialog();
             }
             if (e.Key == Key.G && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
