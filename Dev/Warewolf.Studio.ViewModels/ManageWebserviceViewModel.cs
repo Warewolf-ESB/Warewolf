@@ -10,7 +10,7 @@ using Warewolf.Core;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ManageWebserviceViewModel : SourceBaseImpl<IWebService>, IManageWebServiceViewModel
+    public class ManageWebServiceViewModel : SourceBaseImpl<IWebService>, IManageWebServiceViewModel
     {
         WebRequestMethod _selectedWebRequestMethod;
         ICollection<WebRequestMethod> _webRequestMethods;
@@ -40,9 +40,10 @@ namespace Warewolf.Studio.ViewModels
 
         #region Implementation of IManageWebServiceViewModel
 
-        public ManageWebserviceViewModel(ResourceType? image)
+        public ManageWebServiceViewModel(ResourceType? image)
             : base(image)
         {
+            Header = "Bob";
         }
 
         /// <summary>
