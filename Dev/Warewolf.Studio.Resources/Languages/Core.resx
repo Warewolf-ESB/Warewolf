@@ -772,4 +772,7 @@ You need Administrator permission.</value>
   <data name="AnonymousAuthenticationToolTip" xml:space="preserve">
     <value>Connect using anonymous</value>
   </data>
+  <data name="ViewInBrowserLabel" xml:space="preserve">
+    <value>View Results In Browser</value>
+  </data>
 </root>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
@@ -56,7 +57,19 @@ namespace Warewolf.Studio.ViewModels
             Header = Resources.Languages.Core.DatabaseWebserviceNewHeaderLabel;
             TestCommand = new DelegateCommand(TestConnection, CanTest);
             OkCommand = new DelegateCommand(SaveConnection, CanSave);
-            
+            CancelTestCommand = new DelegateCommand(CancelTest, CanCancelTest);
+            ViewInBrowserCommand = new DelegateCommand(ViewInBrowser, CanViewInBrowser);
+
+        }
+
+        bool CanViewInBrowser()
+        {
+            return TestPassed;            
+        }
+
+        void ViewInBrowser()
+        {
+            Process.Start(TestDefault);
         }
 
         public ManageWebserviceSourceViewModel(IManageWebServiceSourceModel updateManager, IRequestServiceNameViewModel requestServiceNameViewModel, IEventAggregator aggregator)
@@ -69,7 +82,7 @@ namespace Warewolf.Studio.ViewModels
         public ManageWebserviceSourceViewModel(IManageWebServiceSourceModel updateManager, IEventAggregator aggregator, IWebServiceSource webServiceSource)
             : this(updateManager,  aggregator)
         {
-            VerifyArgument.IsNotNull("dbSource", webServiceSource);
+            VerifyArgument.IsNotNull("webServiceSource", webServiceSource);
             _webServiceSource = webServiceSource;
             SetupHeaderTextFromExisting();
             FromSource(webServiceSource);
@@ -83,7 +96,30 @@ namespace Warewolf.Studio.ViewModels
 
         bool CanSave()
         {
-            return TestPassed && !String.IsNullOrEmpty(DefaultQuery);
+            return TestPassed;
+        }
+
+        bool CanCancelTest()
+        {
+            return Testing;
+        }
+
+        void CancelTest()
+        {
+            if (_token != null)
+            {
+                if (!_token.IsCancellationRequested && _token.Token.CanBeCanceled)
+                {
+                    _token.Cancel();
+                    Dispatcher.CurrentDispatcher.Invoke(() =>
+                    {
+                        Testing = false;
+                        TestFailed = true;
+                        TestPassed = false;
+                        TestMessage = "Test Cancelled";
+                    });
+                }
+            }
         }
 
         public bool CanTest()
@@ -129,10 +165,6 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _resourceName = value;
-                if(!String.IsNullOrEmpty(value))
-                {
-                    SetupHeaderTextFromExisting();
-                }
                 OnPropertyChanged(_resourceName);
             }
         }
@@ -176,9 +208,9 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        void Save(IWebServiceSource toDbSource)
+        void Save(IWebServiceSource source)
         {
-            _updateManager.Save(toDbSource);
+            _updateManager.Save(source);
            
         }
 
@@ -206,7 +238,6 @@ namespace Warewolf.Studio.ViewModels
                         }
                         case TaskStatus.RanToCompletion:
                         {
-                            //DatabaseNames = t.Result;
                             TestMessage = "Passed";
                             TestFailed = false;
                             TestPassed = true;
@@ -359,6 +390,8 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public ICommand CancelTestCommand { get; set; }
+
         public ICommand TestCommand { get; set; }
 
         public ICommand ViewInBrowserCommand { get; set; }
@@ -395,6 +428,7 @@ namespace Warewolf.Studio.ViewModels
                 _testPassed = value;
                 OnPropertyChanged(()=>TestPassed);
                 ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
+                ViewModelUtils.RaiseCanExecuteChanged(ViewInBrowserCommand);
            
             }
         
@@ -455,11 +489,20 @@ namespace Warewolf.Studio.ViewModels
         }
 
         [ExcludeFromCodeCoverage]
-        public string ViewInBrowserLabel
+        public string CancelTestLabel
         {
             get
             {
                 return Resources.Languages.Core.CancelTest;
+            }
+        }
+
+        [ExcludeFromCodeCoverage]
+        public string ViewInBrowserLabel
+        {
+            get
+            {
+                return Resources.Languages.Core.ViewInBrowserLabel;
             }
         }
 
@@ -489,6 +532,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(()=>Testing);
                 ViewModelUtils.RaiseCanExecuteChanged(ViewInBrowserCommand);
                 ViewModelUtils.RaiseCanExecuteChanged(TestCommand);
+                ViewModelUtils.RaiseCanExecuteChanged(CancelTestCommand);
             }
         }
 

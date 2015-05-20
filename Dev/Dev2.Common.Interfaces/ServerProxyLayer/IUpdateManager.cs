@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
-using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.ServerDialogue;
 
 namespace Dev2.Common.Interfaces.ServerProxyLayer
@@ -63,5 +61,9 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         void SaveDbService(IDatabaseService dbService);
 
         DataTable TestDbService(IDatabaseService inputValues);
+
+        void SaveWebserviceSource(IWebServiceSource resource, Guid serverWorkspaceID);
+
+        void TestConnection(IWebServiceSource resource);
     }
 }

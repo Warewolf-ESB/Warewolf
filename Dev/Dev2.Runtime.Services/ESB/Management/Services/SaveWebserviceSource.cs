@@ -5,7 +5,6 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure;
-using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
@@ -16,7 +15,7 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class SaveDbSourceSource : IEsbManagementEndpoint
+    public class SaveWebserviceSource : IEsbManagementEndpoint
     {
         IExplorerServerResourceRepository _serverExplorerRepository;
 
@@ -27,32 +26,32 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
 
-                Dev2Logger.Log.Info("Save Resource Service");
+                Dev2Logger.Log.Info("Save Webservice Source");
                 StringBuilder resourceDefinition;
 
-                values.TryGetValue("DbSource", out resourceDefinition);
+                values.TryGetValue("WebserviceSource", out resourceDefinition);
 
-                IDbSource src = serializer.Deserialize<DbSourceDefinition>(resourceDefinition);
+                var src = serializer.Deserialize<WebServiceSourceDefinition>(resourceDefinition);
                 if (src.Path.EndsWith("\\"))
-                    src.Path = src.Path.Substring(0, src.Path.LastIndexOf("\\", System.StringComparison.Ordinal));
-                var res = new DbSource
+                    src.Path = src.Path.Substring(0, src.Path.LastIndexOf("\\", StringComparison.Ordinal));
+                var res = new WebSource
                 {
                     AuthenticationType = src.AuthenticationType,
-                    Server = src.ServerName,
+                    Address = src.HostName,
                     Password = src.Password,
-                    UserID = src.UserName,
+                    UserName = src.UserName,
                     ResourceID = src.Id,
-                    DatabaseName = src.DbName,
+                    DefaultQuery = src.DefaultQuery,
                     ResourceName = src.Name,
                     ResourcePath = src.Path
                 };
-                var con = new DbSources();
-                var result = con.DoDatabaseValidation(res);
+                var con = new WebSources();
+                var result = con.Test(res);
 
                 if (result.IsValid)
                 {
                     ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res);
-                    var explorerItem = ServerExplorerRepo.UpdateItem(res);
+                    ServerExplorerRepo.UpdateItem(res);
                  
                     msg.HasError = false;
                 }
@@ -78,7 +77,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Roles ColumnIODirection=\"Input\"/><ServerSource ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
+            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Roles ColumnIODirection=\"Input\"/><WebserviceSource ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
             ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
             newDs.Actions.Add(sa);
 
@@ -91,7 +90,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
         public string HandlesType()
         {
-            return "SaveDbSourceService";
+            return "SaveWebserviceSource";
         }
     }
 }

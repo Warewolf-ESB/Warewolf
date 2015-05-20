@@ -30,6 +30,7 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// Deploy a resource. order of execution is gauranteed
         /// </summary>
         /// <param name="resource"></param>
+        /// <exception cref="ArgumentNullException"><paramref name="resource"/> is <see langword="null" />.</exception>
         public void DeployItem(IResource resource)
         {
             if (resource == null)
@@ -37,8 +38,6 @@ namespace Warewolf.Studio.ServerProxyLayer
                 throw new ArgumentNullException("resource");
             }
             var comsController = CommunicationControllerFactory.CreateController("DeployResourceService");
-            //todo: this is different and need to use new method
-            // comsController.AddPayloadArgument("ResourceDefinition", resource.ToServiceDefinition());
             comsController.AddPayloadArgument("Roles", "*");
 
             var con = Connection;
@@ -63,6 +62,7 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// </summary>
         /// <param name="resource">resource to save</param>
         /// <param name="workspaceId">the workspace to save to</param>
+        /// <exception cref="WarewolfSaveException">Thrown when error occurs.</exception>
         public void SaveResource(IResource resource, Guid workspaceId)
         {
             var con = Connection;
@@ -80,6 +80,7 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// </summary>
         /// <param name="resource">resource to save</param>
         /// <param name="workspaceId">the workspace to save to</param>
+        /// <exception cref="WarewolfSaveException">Unable to contact server</exception>
         public void SaveServerSource(IServerSource resource, Guid workspaceId)
         {
             var con = Connection;
@@ -122,6 +123,7 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// </summary>
         /// <param name="resource"></param>
         /// <returns></returns>
+        /// <exception cref="WarewolfTestException">Unable to contact Server</exception>
         public IList<string> TestDbConnection(IDbSource resource)
         {
             var con = Connection;
@@ -136,6 +138,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             return serialiser.Deserialize<List<string>>(output.Message);
         }
 
+        /// <exception cref="WarewolfSaveException">When saving the Database Source errors.</exception>
         public void SaveDbSource(IDbSource toDbSource, Guid serverWorkspaceID)
         {
             var con = Connection;
@@ -148,6 +151,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             
         }
 
+        /// <exception cref="WarewolfSaveException">Thrown when saving the Database service fails.</exception>
         public void SaveDbService(IDatabaseService dbService)
         {
             var con = Connection;
@@ -159,6 +163,7 @@ namespace Warewolf.Studio.ServerProxyLayer
                 throw new WarewolfSaveException(output.Message.ToString(), null);
         }
 
+        /// <exception cref="WarewolfTestException">Unable to contact Server</exception>
         public DataTable TestDbService(IDatabaseService service)
         {
             var con = Connection;
@@ -171,6 +176,32 @@ namespace Warewolf.Studio.ServerProxyLayer
             if (output.HasError)
                 throw new WarewolfTestException(output.Message.ToString(), null);
             return serialiser.Deserialize<DataTable>(output.Message);
+        }
+
+        /// <exception cref="WarewolfSaveException">Thrown when an error occurs saving the Webservice Source.</exception>
+        public void SaveWebserviceSource(IWebServiceSource resource, Guid serverWorkspaceID)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("SaveWebserviceSource");
+            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("WebserviceSource", serialiser.SerializeToBuilder(resource));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output.HasError)
+                throw new WarewolfSaveException(output.Message.ToString(), null);
+        }
+
+        /// <exception cref="WarewolfTestException">Unable to contact Server</exception>
+        public void TestConnection(IWebServiceSource resource)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("TestWebserviceSource");
+            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("WebserviceSource", serialiser.SerializeToBuilder(resource));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output == null)
+                throw new WarewolfTestException("Unable to contact Server", null);
+            if (output.HasError)
+                throw new WarewolfTestException(output.Message.ToString(), null);
         }
 
         #endregion

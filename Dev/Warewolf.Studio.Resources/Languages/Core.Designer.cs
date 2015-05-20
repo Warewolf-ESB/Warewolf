@@ -1608,6 +1608,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to View Results In Browser.
+        /// </summary>
+        public static string ViewInBrowserLabel {
+            get {
+                return ResourceManager.GetString("ViewInBrowserLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to http://warewolf.io/start.html.
         /// </summary>
         public static string Warewolf_Homepage_Start {

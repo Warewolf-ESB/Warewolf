@@ -1,6 +1,6 @@
 ﻿using TechTalk.SpecFlow;
 
-namespace Warewolf.AcceptanceTesting.WebService
+namespace Warewolf.AcceptanceTesting.WebSource
 {
     [Binding]
     public class WebSourceSteps
