@@ -112,6 +112,7 @@
     <Compile Include="ManageDatabaseSourceViewModel.cs" />
     <Compile Include="ManageWebServiceSourceModel.cs" />
     <Compile Include="ManageWebserviceSourceViewModel.cs" />
+    <Compile Include="ManageWebserviceViewModel.cs" />
     <Compile Include="MenuViewModel.cs" />
     <Compile Include="NewServerViewModel.cs" />
     <Compile Include="RequestServiceNameViewModel.cs" />
