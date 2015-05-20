@@ -73,28 +73,32 @@
                         <TextBlock Text="1" 
                                Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
                         <TextBlock Margin="5" 
-                               Text="{Binding Header}" 
+                               Text="{Binding SelectSourceHeader}" 
                                Style="{StaticResource SourceHeader}"></TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
                         <ComboBox x:Name="RequestTypes"
                                   Width="Auto"
                                   Focusable="True"
+                                  ItemsSource="{Binding WebRequestMethods}"
                                   Padding="{StaticResource ComboBoxItemPadding}"
                                   Margin="{StaticResource ElementBorderTop}"></ComboBox>
                         <ComboBox x:Name="SourcesComboBox" 
                                   DisplayMemberPath="Name" 
                                   Width="250" 
+                                  ItemsSource="{Binding Sources}"
                                   Padding="{StaticResource ComboBoxItemPadding}"
                                   Focusable="True"
                                   Margin="{StaticResource ElementBorderControlLeftTop}" />
                         <Button Width="25" 
+                                Command="{Binding SelectedSource}" 
+                                IsEnabled="{Binding HasChanged}" 
                                 Content=" ... " 
                                 Margin="{StaticResource ElementBorderControlLeftTop}"></Button>
                         <Button Content="New" 
                             Margin="{StaticResource ElementBorderControlLeftTop}"
                             Style="{StaticResource ButtonOrangeStyle}" 
-                            Command="{Binding CreateNewSourceCommand}" 
+                            Command="{Binding NewWebSourceCommand}" 
                             Width="100" ></Button>
                     </StackPanel>
                 </Grid>
@@ -113,6 +117,7 @@
                         <ColumnDefinition Width="50*"></ColumnDefinition>
                         <ColumnDefinition Width="50*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
+                    <!-- REQUEST HEADER -->
                     <StackPanel Grid.Row="0" 
                                 Grid.Column="0" 
                                 Grid.ColumnSpan="2"
@@ -122,7 +127,7 @@
                         <TextBlock Text="2" 
                                Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
                         <TextBlock Margin="5" 
-                               Text="{Binding SelectSourceHeader}" 
+                               Text="{Binding RequestHeader}" 
                                Style="{StaticResource SourceHeader}" ></TextBlock>
                     </StackPanel>
                     <Grid Grid.Column="0" 
@@ -142,6 +147,7 @@
                         <DataGrid x:Name="RequestHeaderDataGrid" 
                                   Grid.Row="1" 
                                   Grid.Column="0"
+                                  ItemsSource="{Binding Headers}" 
                                   MaxHeight="180"
                                   HorizontalAlignment="Stretch"
                                   MinColumnWidth="50"
@@ -160,7 +166,7 @@
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel HorizontalAlignment="Stretch">
-                                                <TextBox Text="" ToolTip="" Margin="1"></TextBox>
+                                                <TextBox Text="{Binding Path=Name}" ToolTip="" Margin="1"></TextBox>
                                             </StackPanel>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
@@ -169,7 +175,7 @@
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel HorizontalAlignment="Stretch">
-                                                <TextBox Text="" ToolTip="" Margin="1"></TextBox>
+                                                <TextBox Text="{Binding Path=Value}" ToolTip="" Margin="1"></TextBox>
                                             </StackPanel>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
@@ -193,6 +199,7 @@
                                    FontWeight="Bold"></TextBlock>
                         <TextBox Grid.Row="1" 
                                  x:Name="RequestBody"
+                                 Text="{Binding RequestBody}"
                                  HorizontalAlignment="Stretch" ></TextBox>
                     </Grid>
                     <TextBlock Margin="{StaticResource ControlBorderTopLeft}"
@@ -202,6 +209,7 @@
                                FontWeight="Bold"></TextBlock>
                     <TextBox x:Name="RequestUrl"
                              HorizontalAlignment="Stretch"
+                             Text="{Binding RequestUrlQuery}"
                              Grid.ColumnSpan="2" 
                              Grid.Column="0"
                              Grid.Row="3"></TextBox>
@@ -220,6 +228,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="7" ></RowDefinition>
                     </Grid.RowDefinitions>
+                    <!-- VARIABLES HEADER -->
                     <StackPanel Grid.Row="0" 
                                 Grid.Column="0" 
                                 Grid.ColumnSpan="2"
@@ -273,6 +282,7 @@
                     <Button Width="25" 
                             Height="25"
                             Grid.Column="0"
+                            Click="Btn_OnClick"
                             Margin="{StaticResource ControlBorderTop}"
                             Grid.Row="1" >
                         <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
@@ -282,11 +292,12 @@
                                         VerticalAlignment="Top" 
                                         HorizontalAlignment="Center"/>
                     </Button>
-                    <TextBox x:Name="Response"
+                    <TextBlock x:Name="Response"
                              Grid.Column="1"
                              Margin="{StaticResource ControlBorderLeftTop}"
+                             Text="{Binding Response}"
                              HorizontalAlignment="Stretch"
-                             Grid.Row="1"></TextBox>
+                             Grid.Row="1"></TextBlock>
                 </Grid>
                 <Grid x:Name="MappingsGrid" 
                   Grid.Row="4" 

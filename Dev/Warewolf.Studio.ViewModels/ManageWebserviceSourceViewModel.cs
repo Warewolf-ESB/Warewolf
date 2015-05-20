@@ -53,8 +53,8 @@ namespace Warewolf.Studio.ViewModels
             _aggregator = aggregator;
             _warewolfserverName = updateManager.ServerName;
             _authenticationType = AuthenticationType.Anonymous;
-            HeaderText = Resources.Languages.Core.DatabaseWebserviceNewHeaderLabel;
-            Header = Resources.Languages.Core.DatabaseWebserviceNewHeaderLabel;
+            HeaderText = Resources.Languages.Core.WebserviceNewHeaderLabel;
+            Header = Resources.Languages.Core.WebserviceNewHeaderLabel;
             TestCommand = new DelegateCommand(TestConnection, CanTest);
             OkCommand = new DelegateCommand(SaveConnection, CanSave);
             CancelTestCommand = new DelegateCommand(CancelTest, CanCancelTest);
@@ -90,8 +90,8 @@ namespace Warewolf.Studio.ViewModels
 
         void SetupHeaderTextFromExisting()
         {
-            HeaderText = Resources.Languages.Core.DatabaseWebserviceEditHeaderLabel + _warewolfserverName.Trim() + "\\" + (_webServiceSource == null ? ResourceName : _webServiceSource.Name).Trim();
-            Header = Resources.Languages.Core.DatabaseWebserviceEditHeaderLabel + ((_webServiceSource == null ? ResourceName : _webServiceSource.Name));
+            HeaderText = Resources.Languages.Core.WebserviceEditHeaderLabel + _warewolfserverName.Trim() + "\\" + (_webServiceSource == null ? ResourceName : _webServiceSource.Name).Trim();
+            Header = Resources.Languages.Core.WebserviceEditHeaderLabel + ((_webServiceSource == null ? ResourceName : _webServiceSource.Name));
         }
 
         bool CanSave()
