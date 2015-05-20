@@ -82,11 +82,7 @@ namespace Dev2.Activities
 
         public string GetFullDateTimeInformation()
         {
-            string result;
-            string err;
-            DateTimeConverterFactory.CreateFormatter().TryFormat(new DateTimeOperationTO(DateTime.Now.ToString(GlobalConstants.GlobalDefaultNowFormat), "", "", "", 0, ""), out result, out err);
-            
-            return result;
+            return DateTime.Now.ToString(GlobalConstants.GlobalDefaultNowFormat);
         }
 
         public string GetDateTimeFormatInformation()

@@ -299,10 +299,10 @@ Scenario: Workflow with Assign and Date and Time Difference tools executing agai
 	  And the 'InputDates' in Workflow 'WorkflowWithAssignAndDateTimeDifferencetools1' debug outputs as  
 	  | # |              |
 	  | 1 | [[a]] = 2014 |
-	  | 2 | [[b]] = 10.  |
+	  | 2 | [[b]] = 10.0  |
 	  And the 'DateAndTime' in WorkFlow 'WorkflowWithAssignAndDateTimeDifferencetools1' debug inputs as
 	  | Input 1       | Input 2    | Input Format | Output In |
-	  | 2020/[[b]]/01 = 2020/10./01 | 2030/01/01 | yyyy/mm/dd   | Years     |
+	  | 2020/[[b]]/01 = 2020/10.0/01 | 2030/01/01 | yyyy/mm/dd   | Years     |
 	  And the 'DateAndTime' in Workflow 'WorkflowWithAssignAndDateTimeDifferencetools1' debug outputs as 
 	  |               |
 	  | [[result]] = |

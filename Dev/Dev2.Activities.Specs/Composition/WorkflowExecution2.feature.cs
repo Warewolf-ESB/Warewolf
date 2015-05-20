@@ -1056,7 +1056,7 @@ this.FeatureBackground();
                         "[[a]] = 2014"});
             table65.AddRow(new string[] {
                         "2",
-                        "[[b]] = 10."});
+                        "[[b]] = 10.0"});
 #line 299
    testRunner.And("the \'InputDates\' in Workflow \'WorkflowWithAssignAndDateTimeDifferencetools1\' debu" +
                     "g outputs as", ((string)(null)), table65, "And ");
@@ -1067,7 +1067,7 @@ this.FeatureBackground();
                         "Input Format",
                         "Output In"});
             table66.AddRow(new string[] {
-                        "2020/[[b]]/01 = 2020/10./01",
+                        "2020/[[b]]/01 = 2020/10.0/01",
                         "2030/01/01",
                         "yyyy/mm/dd",
                         "Years"});
