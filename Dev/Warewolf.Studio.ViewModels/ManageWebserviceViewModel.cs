@@ -9,11 +9,16 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Enums.Enums;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
+using Dev2.Controller;
+using Dev2.Network;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
+using Warewolf.Studio.AntiCorruptionLayer;
+using Warewolf.Studio.ServerProxyLayer;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -56,23 +61,44 @@ namespace Warewolf.Studio.ViewModels
         {
             _model = model;
             _saveDialog = saveDialog;
-            WebService = new WebService();
-            Header = Resources.Languages.Core.WebserviceTabHeader;
-            WebRequestMethods = new ObservableCollection<WebRequestMethod>(Dev2EnumConverter.GetEnumsToList<WebRequestMethod>());
-            SelectedWebRequestMethod = WebRequestMethods.First();
-            Sources = new ObservableCollection<IWebServiceSource>( _model.RetrieveSources());
+            TestCommand = new DelegateCommand(() => model.TestService(ToModel()), CanTest);
+            SaveCommand = new DelegateCommand(() => model.SaveService(ToModel()), CanSave);
             NewWebSourceCommand = new DelegateCommand(model.CreateNewSource);
-            EditWebSourceCommand = new DelegateCommand(() => _model.EditSource(SelectedSource), () => SelectedSource != null);
-            var headerCollection  = new ObservableCollection<INameValue>();
-            headerCollection.CollectionChanged+= HeaderCollectionOnCollectionChanged;
-           // TestCommand = new DelegateCommand(() => model.TestService(ToModel),CanTest());
-
+            
+            Init();
         }
 
+        bool CanSave()
+        {
+            return false;
+        }
 
         public ManageWebServiceViewModel(ResourceType webService)
             : base(webService)
         {
+            var commController = new  CommunicationControllerFactory();
+            var connection = new ServerProxy( new Uri( "http://localhost:3142"));
+            connection.Connect(Guid.NewGuid());
+            IStudioUpdateManager updateRepository = new StudioResourceUpdateManager(commController,connection); 
+            IQueryManager queryProxy = new QueryManagerProxy(commController,connection);
+            
+            _model = new WebServiceModel(updateRepository,queryProxy,"bob");
+            Init();
+           
+        }
+
+        void Init()
+        {
+            WebService = new WebServiceDefinition();
+            Header = Resources.Languages.Core.WebserviceTabHeader;
+            WebRequestMethods = new ObservableCollection<WebRequestMethod>(Dev2EnumConverter.GetEnumsToList<WebRequestMethod>());
+            SelectedWebRequestMethod = WebRequestMethods.First();
+            Sources = new ObservableCollection<IWebServiceSource>(_model.RetrieveSources());
+
+            EditWebSourceCommand = new DelegateCommand(() => _model.EditSource(SelectedSource), () => SelectedSource != null);
+            var headerCollection = new ObservableCollection<INameValue>();
+            headerCollection.CollectionChanged += HeaderCollectionOnCollectionChanged;
+            Headers = new ObservableCollection<INameValue>(new List<INameValue>{new NameValue()});
         }
 
         bool CanTest()
@@ -194,6 +220,8 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
+                _sources = value;
+                OnPropertyChanged(()=> Sources);
             }
         }
         /// <summary>
@@ -208,6 +236,11 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _selectedSource = value;
+                if(_selectedSource != null)
+                {
+                    RequestUrlQuery = _selectedSource.DefaultQuery??"";
+                    SourceUrl = _selectedSource.HostName;
+                }
                 OnPropertyChanged(() => SelectedSource);
             }
         }
@@ -449,21 +482,11 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => CancelCommand);
             }
         }
+      
         /// <summary>
         /// Has the Source changed
         /// </summary>
-        public bool HasChanged
-        {
-            get
-            {
-                return _hasChanged;
-            }
-            set
-            {
-                _hasChanged = value;
-                OnPropertyChanged(() => HasChanged);
-            }
-        }
+
         /// <summary>
         /// List OfInputs
         /// </summary>
@@ -536,29 +559,19 @@ namespace Warewolf.Studio.ViewModels
         /// Output Column alias Header
         /// </summary>
         public string OutputAliasHeader { get; set; }
+        public IRequestServiceNameViewModel SaveDialog
+        {
+            get
+            {
+                return _saveDialog;
+            }
+        }
 
         #endregion
 
         #region Implementation of IActiveAware
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the object is active.
-        /// </summary>
-        /// <value>
-        /// <see langword="true"/> if the object is active; otherwise <see langword="false"/>.
-        /// </value>
-        public bool IsActive
-        {
-            get
-            {
-                return _isActive;
-            }
-            set
-            {
-                _isActive = value;
-                OnPropertyChanged(() => Inputs);
-            }
-        }
+
 
 
         public override void UpdateHelpDescriptor(string helpText)
@@ -587,6 +600,45 @@ namespace Warewolf.Studio.ViewModels
         /// </summary>
         public void Dispose()
         {
+        }
+
+        #endregion
+    }
+
+    public class NameValue : INameValue
+    {
+        string _name;
+        string _value;
+
+        #region Implementation of INameValue
+
+        public  NameValue()
+        {
+            Name = "";
+            Value = "";
+        }
+
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                _name = value;
+            }
+        }
+        public string Value
+        {
+            get
+            {
+                return _value;
+            }
+            set
+            {
+                _value = value;
+            }
         }
 
         #endregion

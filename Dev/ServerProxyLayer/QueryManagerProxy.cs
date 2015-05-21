@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Explorer;
@@ -175,6 +176,23 @@ namespace Warewolf.Studio.ServerProxyLayer
             if(payload.HasError)
                 throw new WarewolfTestException(payload.Message.ToString(),null);
             return serializer.Deserialize<IList<IDbAction>>( payload.Message);
+        }
+
+        public IEnumerable<IWebServiceSource> FetchWebServiceSources()
+        {
+
+            var comsController = CommunicationControllerFactory.CreateController("FetchWebServiceSources");
+
+            var workspaceId = Connection.WorkspaceID;
+            var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
+            if (result.HasError)
+            {
+                throw new WarewolfSupportServiceException(result.Message.ToString(), null);
+            }
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            List<IWebServiceSource> fetchWebServiceSources = serializer.Deserialize<List<IWebServiceSource>>(result.Message.ToString());
+            return fetchWebServiceSources;
+        
         }
     }
          

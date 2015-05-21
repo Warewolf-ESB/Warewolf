@@ -69,5 +69,7 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         IList<IDbSource> FetchDbSources();
 
         IList<IDbAction> FetchDbActions(IDbSource source);
+
+        IEnumerable<IWebServiceSource> FetchWebServiceSources();
     }
 }

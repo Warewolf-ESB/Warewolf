@@ -66,15 +66,15 @@
                         <RowDefinition Height="7" ></RowDefinition>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" 
-                                Grid.Column="0" 
-                                Background="{StaticResource WareWolfMenuBrush}" 
-                                HorizontalAlignment="Stretch" 
-                                Orientation="Horizontal">
+                             Grid.Column="0" 
+                             Background="{StaticResource WareWolfMenuBrush}" 
+                             HorizontalAlignment="Stretch" 
+                             Orientation="Horizontal">
                         <TextBlock Text="1" 
-                                   Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
+                               Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
                         <TextBlock Margin="5" 
-                                   Text="{Binding SelectSourceHeader}" 
-                                   Style="{StaticResource SourceHeader}"></TextBlock>
+                               Text="{Binding SelectSourceHeader}" 
+                               Style="{StaticResource SourceHeader}"></TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
                         <ComboBox x:Name="RequestTypes"
@@ -89,6 +89,7 @@
                                   ItemsSource="{Binding Sources}"
                                   Padding="{StaticResource ComboBoxItemPadding}"
                                   Focusable="True"
+                                  SelectedItem="{Binding SelectedSource}"
                                   Margin="{StaticResource ElementBorderControlLeftTop}" />
                         <Button Width="25" 
                                 Command="{Binding SelectedSource}" 
@@ -126,10 +127,10 @@
                                 HorizontalAlignment="Stretch" 
                                 Orientation="Horizontal">
                         <TextBlock Text="2" 
-                                   Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
+                               Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
                         <TextBlock Margin="5" 
-                                   Text="{Binding RequestHeader}" 
-                                   Style="{StaticResource SourceHeader}" ></TextBlock>
+                               Text="{Binding RequestHeader}" 
+                               Style="{StaticResource SourceHeader}" ></TextBlock>
                     </StackPanel>
                     <!-- HEADER -->
                     <Grid Grid.Column="0" 
@@ -237,6 +238,7 @@
                         <TextBox Grid.Row="1" 
                                  x:Name="RequestBody"
                                  Text="{Binding RequestBody}"
+                                 IsEnabled="{Binding RequestBodyEnabled}"
                                  HorizontalAlignment="Stretch" ></TextBox>
                     </Grid>
                     <!-- URL -->
@@ -252,9 +254,9 @@
                             <ColumnDefinition Width="50*" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0"
-                               Text="http://www.webservicex.net/country.asmx/GetCountries">
+                               Text="{Binding SourceUrl}">
                         </TextBlock>
-                        <TextBox x:Name="RequestUrl"
+                    <TextBox x:Name="RequestUrl"
                              HorizontalAlignment="Stretch"
                              Text="{Binding RequestUrlQuery}"
                              Grid.Column="1"></TextBox>
@@ -289,12 +291,12 @@
                                    Style="{StaticResource SourceHeader}" ></TextBlock>
                     </StackPanel>
                     <DataGrid x:Name="VariableDataGrid" 
-                                  Grid.Row="1" 
+                               Grid.Row="1"
                                   Grid.Column="1"
                                   ItemsSource="{Binding Variables}" 
-                              Margin="{StaticResource ControlBorderTop}"
+                             Margin="{StaticResource ControlBorderTop}"
                                   MaxHeight="180"
-                                  HorizontalAlignment="Stretch"
+                             HorizontalAlignment="Stretch"
                                   MinColumnWidth="50"
                                   GridLinesVisibility="Vertical" 
                                   ColumnWidth="*" 
@@ -424,18 +426,18 @@
                             Width="100">Test</Button>
                     <Button x:Name="SaveButton" 
                             Grid.Column="2" 
-                            Margin="{StaticResource ControlBorderTopRight}" 
-                            HorizontalAlignment="Right" 
-                            VerticalAlignment="Bottom" 
+                        Margin="{StaticResource ControlBorderTopRight}" 
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Bottom" 
                             Command="{Binding SaveCommand}" 
-                            Width="100">Save</Button>
+                        Width="100">Save</Button>
                     <Button x:Name="CancelButton" 
                             Grid.Column="3" 
-                            Margin="{StaticResource ControlBorderTop}" 
-                            HorizontalAlignment="Right" 
-                            VerticalAlignment="Bottom" 
+                        Margin="{StaticResource ControlBorderTop}" 
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Bottom" 
                             Command="{Binding CancelCommand}"
-                            Width="100">Cancel</Button>
+                        Width="100">Cancel</Button>
                 </Grid>
             </Grid>
         </StackPanel>

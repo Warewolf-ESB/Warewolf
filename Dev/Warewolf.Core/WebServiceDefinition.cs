@@ -6,12 +6,12 @@ using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 
 namespace Warewolf.Core
 {
-   public class WebService:IWebService, IEquatable<WebService>
+   public class WebServiceDefinition:IWebService, IEquatable<WebServiceDefinition>
    {
        /// <summary>
        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
        /// </summary>
-       public WebService()
+       public WebServiceDefinition()
        {
        }
 
@@ -29,7 +29,7 @@ namespace Warewolf.Core
        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
        /// </summary>
        // ReSharper disable TooManyDependencies
-       public WebService(string name, string path, IWebServiceSource source, IList<IWebserviceInputs> inputs, IList<IWebserviceOutputs> outputMappings, string queryString, Guid id)
+       public WebServiceDefinition(string name, string path, IWebServiceSource source, IList<IWebserviceInputs> inputs, IList<IWebserviceOutputs> outputMappings, string queryString, Guid id)
            // ReSharper restore TooManyDependencies
        {
            _name = name;
@@ -129,7 +129,7 @@ namespace Warewolf.Core
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
         /// <param name="other">An object to compare with this object.</param>
-        public bool Equals(WebService other)
+        public bool Equals(WebServiceDefinition other)
         {
             if (ReferenceEquals(null, other))
             {
@@ -163,7 +163,7 @@ namespace Warewolf.Core
             {
                 return false;
             }
-            return Equals((WebService)obj);
+            return Equals((WebServiceDefinition)obj);
         }
 
         /// <summary>
@@ -189,12 +189,12 @@ namespace Warewolf.Core
             }
         }
 
-        public static bool operator ==(WebService left, WebService right)
+        public static bool operator ==(WebServiceDefinition left, WebServiceDefinition right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(WebService left, WebService right)
+        public static bool operator !=(WebServiceDefinition left, WebServiceDefinition right)
         {
             return !Equals(left, right);
         }
