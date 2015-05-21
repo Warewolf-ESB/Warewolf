@@ -128,14 +128,23 @@ namespace Warewolf.Studio
                 //var testingWindow = new ControlStyleTestingWindow();
                 //testingWindow.Show();
 
-                var testWindow = new Window
+                //var testWindow = new Window
+                //{
+                //    Content = new ManageWebserviceControl()
+                //    {
+                //        DataContext = new ManageWebServiceViewModel(ResourceType.WebService)
+                //    }
+                //};
+                //testWindow.ShowDialog();
+
+                var testPlugWindow = new Window
                 {
-                    Content = new ManageWebserviceControl()
+                    Content = new ManagePluginSourceControl()
                     {
-                        DataContext = new ManageWebServiceViewModel(ResourceType.WebService)
+                        
                     }
                 };
-                testWindow.Show();
+                testPlugWindow.ShowDialog();
             }
             if (e.Key == Key.G && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
