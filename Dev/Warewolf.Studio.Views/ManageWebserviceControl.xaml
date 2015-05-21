@@ -78,7 +78,7 @@
                     </StackPanel>
                     <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
                         <ComboBox x:Name="RequestTypes"
-                                  Width="50"
+                                  Width="80"
                                   Focusable="True"
                                   ItemsSource="{Binding WebRequestMethods}"
                                   SelectedItem="{Binding SelectedWebRequestMethod}"
@@ -135,93 +135,62 @@
                     </StackPanel>
                     <!-- HEADER -->
                     <Grid Grid.Column="0" 
-                          Grid.Row="1" >
+                          Grid.Row="1"
+                          Grid.ColumnSpan="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="180" />
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" 
                                    Grid.Column="0"
                                    Text="{Binding SelectHeadersHeader}" 
                                    FontWeight="Bold"></TextBlock>
-                        <DataGrid x:Name="HeaderDataGrid" 
+                        
+                        <!--<ListBox Grid.Row="1" 
+                                  Grid.Column="0"
+                                  ItemsSource="{Binding Headers}"></ListBox>-->
+                        <ListBox Grid.Row="1" 
+                                  Grid.Column="0"
+                                  ItemsSource="{Binding Headers}">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                    </Grid>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+
+                            <ListBoxItem Content="{Binding Path=Name}" Grid.Row="0" Grid.Column="0"/>
+                            <ListBoxItem Content="{Binding Path=Value}"  Grid.Row="0" Grid.Column="1"/>
+                        </ListBox>
+                        <!--<DataGrid x:Name="HeaderDataGrid" 
                                   Grid.Row="1" 
                                   Grid.Column="0"
-                                  ItemsSource="{Binding Headers}" 
-                                  MaxHeight="180"
-                                  HorizontalAlignment="Stretch"
-                                  MinColumnWidth="50"
-                                  GridLinesVisibility="Vertical" 
-                                  ColumnWidth="*" 
-                                  AutoGenerateColumns="False" 
-                                  HeadersVisibility="Column"
-                                  CanUserSortColumns="False"
-                                  CanUserReorderColumns="False"
-                                  BorderBrush="Transparent" 
-                                  CanUserResizeColumns="False" 
-                                  CanUserAddRows="True"
-                                  VerticalGridLinesBrush="Transparent">
+                                  Grid.ColumnSpan="2"
+                                  AutoGenerateColumns="True"
+                                  ItemsSource="{Binding Headers, UpdateSourceTrigger=PropertyChanged}" 
+                                 >
                             <DataGrid.Columns>
-                                <DataGridTemplateColumn Header="Header" CanUserResize="True" Width="50*">
+                                <DataGridTextColumn Header="Value" Binding="{Binding Path=Value}"/>
+                                <DataGridTemplateColumn Header="Name" CanUserResize="True" Width="*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <StackPanel HorizontalAlignment="Stretch">
-                                                <TextBox x:Name="HeaderTextBox" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" ToolTip="" Margin="1"></TextBox>
-                                                <TextBlock IsHitTestVisible="False" 
-                                                           Text="Header"
-                                                           FontStyle="Italic"
-                                                           VerticalAlignment="Center" 
-                                                           HorizontalAlignment="Left" 
-                                                           Margin="10,0,0,0" 
-                                                           Foreground="DarkGray">
-                                                    <TextBlock.Style>
-                                                        <Style TargetType="{x:Type TextBlock}">
-                                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding Text, ElementName=HeaderTextBox}" Value="">
-                                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </TextBlock.Style>
-                                                </TextBlock>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="Value" CanUserResize="True" Width="50*">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <StackPanel HorizontalAlignment="Stretch">
-                                                <TextBox Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" ToolTip="" Margin="1"></TextBox>
-                                                <TextBlock IsHitTestVisible="False" 
-                                                           Text="Value"
-                                                           FontStyle="Italic"
-                                                           VerticalAlignment="Center" 
-                                                           HorizontalAlignment="Left" 
-                                                           Margin="10,0,0,0" 
-                                                           Foreground="DarkGray">
-                                                    <TextBlock.Style>
-                                                        <Style TargetType="{x:Type TextBlock}">
-                                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding Text, ElementName=HeaderTextBox}" Value="">
-                                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </TextBlock.Style>
-                                                </TextBlock>
-                                            </StackPanel>
+                                            <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Name}"></TextBlock>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                             </DataGrid.Columns>
-                        </DataGrid>
+                        </DataGrid>-->
                     </Grid>
                     <!-- BODY -->
                     <Grid Grid.Column="1" 
@@ -239,7 +208,7 @@
                         <TextBox Grid.Row="1" 
                                  x:Name="RequestBody"
                                  Text="{Binding RequestBody}"
-                                 IsEnabled="{Binding RequestBodyEnabled}"
+                                 Visibility="{Binding RequestBodyEnabled, Converter={StaticResource BoolToVis}}"
                                  HorizontalAlignment="Stretch" ></TextBox>
                     </Grid>
                     <!-- URL -->
@@ -310,24 +279,8 @@
                                   CanUserAddRows="True"
                                   VerticalGridLinesBrush="Transparent">
                         <DataGrid.Columns>
-                            <DataGridTemplateColumn Header="Alias" CanUserResize="True" Width="50*">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel HorizontalAlignment="Stretch">
-                                            <TextBlock Text="{Binding Path=Name}" ToolTip="" Margin="1"></TextBlock>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="Value" CanUserResize="True" Width="50*">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel HorizontalAlignment="Stretch">
-                                            <TextBox Text="{Binding Path=Value}" ToolTip="" Margin="1"></TextBox>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}"/>
+                            <DataGridTextColumn Header="Value" Binding="{Binding Path=Value}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>

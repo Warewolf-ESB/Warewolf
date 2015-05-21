@@ -692,7 +692,7 @@ You need Administrator permission.</value>
     <value>New Database Connector Source</value>
   </data>
   <data name="DatabaseSourceServerEditHeaderLabel" xml:space="preserve">
-    <value>Edit Database Service - </value>
+    <value>Edit Database Connector Source - </value>
   </data>
   <data name="DatabaseWebserviceLabel" xml:space="preserve">
     <value>Address:</value>
