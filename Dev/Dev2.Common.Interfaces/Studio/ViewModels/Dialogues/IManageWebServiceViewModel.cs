@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.WebServices;
 
 namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
 {
@@ -159,17 +159,4 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         string OutputAliasHeader { get; set; }
         string ResourceName { get; set; }
     }
-
-    public interface IWebService
-    {
-        string Name { get; set; }
-        string Path { get; set; }
-        IWebServiceSource Source { get; set; }
-        IList<IServiceInput> Inputs { get; set; }
-        IList<IServiceOutputMapping> OutputMappings { get; set; }
-        string QueryString { get; set; }
-        Guid Id { get; set; }
-    }
-
-
 }
