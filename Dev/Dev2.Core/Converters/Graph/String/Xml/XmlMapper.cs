@@ -77,6 +77,10 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                 paths.Add(BuildPath(elementStack, element, root));
             }
 
+            if(!element.HasElements)
+            {
+                paths.Add(BuildPath(elementStack, element, root)); 
+            }
             //
             // Build paths for attributes of current element
             //
