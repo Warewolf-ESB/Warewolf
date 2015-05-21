@@ -154,6 +154,12 @@
         <Thickness.Right>0</Thickness.Right>
         <Thickness.Top>3</Thickness.Top>
     </Thickness>
+    <Thickness x:Key="ControlBorderTopLeftRight">
+        <Thickness.Bottom>0</Thickness.Bottom>
+        <Thickness.Left>3</Thickness.Left>
+        <Thickness.Right>0</Thickness.Right>
+        <Thickness.Top>3</Thickness.Top>
+    </Thickness>
     <Thickness x:Key="ControlBorderBottomRight">
         <Thickness.Bottom>3</Thickness.Bottom>
         <Thickness.Left>0</Thickness.Left>
