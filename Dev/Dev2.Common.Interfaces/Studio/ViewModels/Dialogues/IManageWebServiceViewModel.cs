@@ -6,7 +6,7 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 
 namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
 {
-    public interface IManageWebServiceViewModel
+    public interface IManageWebServiceViewModel : IServiceMappings
     {
 
         // ReSharper disable UnusedParameter.Global
@@ -116,15 +116,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
 
 
 
-        /// <summary>
-        /// List OfInputs
-        /// </summary>
-        ICollection<IWebserviceOutputs> Outputs {get;set;}
 
-        /// <summary>
-        /// List Of Outputs
-        /// </summary>
-        ICollection<IWebserviceInputs> Inputs { get; set; }
 
         /// <summary>
         /// Input region ColumnHeader
@@ -173,8 +165,8 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         string Name { get; set; }
         string Path { get; set; }
         IWebServiceSource Source { get; set; }
-        IList<IWebserviceInputs> Inputs { get; set; }
-        IList<IWebserviceOutputs> OutputMappings { get; set; }
+        IList<IServiceInput> Inputs { get; set; }
+        IList<IServiceOutputMapping> OutputMappings { get; set; }
         string QueryString { get; set; }
         Guid Id { get; set; }
     }

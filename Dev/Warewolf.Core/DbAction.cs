@@ -8,7 +8,7 @@ namespace Warewolf.Core
     {
         #region Implementation of IDbAction
 
-        public IList<IDbInput> Inputs { get; set; }
+        public IList<IServiceInput> Inputs { get; set; }
         public string Name { get; set; }
 
         #endregion

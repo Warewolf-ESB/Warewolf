@@ -6,7 +6,7 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 
 namespace Dev2.Common.Interfaces.DB
 {
-    public interface IManageDbServiceViewModel
+    public interface IManageDbServiceViewModel : IServiceMappings
     {
         ICollection<IDbSource> Sources { get; set; }
         IDbSource SelectedSource { get; set; }
@@ -17,14 +17,12 @@ namespace Dev2.Common.Interfaces.DB
         ICommand EditSourceCommand { get; }
         bool CanEditSource { get; }
         string NewButtonLabel { get; }
-        string MappingsHeader { get; }
         string TestHeader { get; }
         string InputsLabel { get; }
         string OutputsLabel { get; }
         ICommand RefreshCommand { get; set; }
         bool IsRefreshing { get; set; }
         // ReSharper disable ReturnTypeCanBeEnumerable.Global
-        ICollection<IDbInput> Inputs { get; }
         bool InputsRequired { get; set; }
         bool IsInputsEmptyRows { get; set; }
         // ReSharper restore ReturnTypeCanBeEnumerable.Global
@@ -33,7 +31,6 @@ namespace Dev2.Common.Interfaces.DB
         ICommand CreateNewSourceCommand { get; set; }
         ICommand TestProcedureCommand { get; set; }
         bool IsTesting { get; set; }
-        IList<IDbOutputMapping> OutputMapping { get; set; }
         bool IsOutputMappingEmptyRows { get; set; }
         ICommand SaveCommand { get; set; }
         bool CanSelectProcedure { get; set; }

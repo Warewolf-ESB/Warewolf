@@ -1,6 +1,6 @@
 ﻿namespace Dev2.Common.Interfaces.DB
 {
-    public interface IDbInput
+    public interface IServiceInput
     {
         string Name{ get; set; }
         string Value { get; set; }

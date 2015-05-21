@@ -44,8 +44,8 @@ namespace Warewolf.Studio.ViewModels
         ICommand _saveCommand;
         ICommand _cancelCommand;
         bool _hasChanged;
-        ICollection<IWebserviceOutputs> _outputs;
-        ICollection<IWebserviceInputs> _inputs;
+        ICollection<IServiceOutputMapping> _outputs;
+        ICollection<IServiceInput> _inputs;
         string _outputName;
         bool _isActive;
         string _header;
@@ -53,6 +53,7 @@ namespace Warewolf.Studio.ViewModels
         string _resourceName;
         bool _requestBodyEnabled;
         ICommand _editWebSourceCommand;
+        IList<IServiceOutputMapping> _outputMapping;
 
         #region Implementation of IManageWebServiceViewModel
 
@@ -101,7 +102,8 @@ namespace Warewolf.Studio.ViewModels
             WebRequestMethods = new ObservableCollection<WebRequestMethod>(Dev2EnumConverter.GetEnumsToList<WebRequestMethod>());
             SelectedWebRequestMethod = WebRequestMethods.First();
             Sources = new ObservableCollection<IWebServiceSource>(_model.RetrieveSources());
-
+            Inputs = new ObservableCollection<IServiceInput>{new ServiceInput("a","a"),new ServiceInput("b","b")};
+            Outputs = new ObservableCollection<IServiceOutputMapping> { new DbOutputMapping("bob", "builder"), new DbOutputMapping("dora", "explorer") };
             EditWebSourceCommand = new DelegateCommand(() => _model.EditSource(SelectedSource), () => SelectedSource != null);
             var headerCollection = new ObservableCollection<INameValue>();
             headerCollection.CollectionChanged += HeaderCollectionOnCollectionChanged;
@@ -505,7 +507,7 @@ namespace Warewolf.Studio.ViewModels
         /// <summary>
         /// List OfInputs
         /// </summary>
-        public ICollection<IWebserviceOutputs> Outputs
+        public ICollection<IServiceOutputMapping> Outputs
         {
             get
             {
@@ -520,7 +522,7 @@ namespace Warewolf.Studio.ViewModels
         /// <summary>
         /// List Of Outputs
         /// </summary>
-        public ICollection<IWebserviceInputs> Inputs
+        public ICollection<IServiceInput> Inputs
         {
             get
             {
@@ -530,6 +532,18 @@ namespace Warewolf.Studio.ViewModels
             {
                 _inputs = value;
                 OnPropertyChanged(() => Inputs);
+            }
+        }
+        public IList<IServiceOutputMapping> OutputMapping
+        {
+            get
+            {
+                return _outputMapping;
+            }
+            set
+            {
+                _outputMapping = value;
+                OnPropertyChanged(() => OutputMapping);
             }
         }
         /// <summary>

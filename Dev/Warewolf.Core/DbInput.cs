@@ -3,7 +3,7 @@ using Dev2.Common.Interfaces.DB;
 
 namespace Warewolf.Core
 {
-    public class DbInput:IDbInput, IEquatable<DbInput>
+    public class ServiceInput:IServiceInput, IEquatable<ServiceInput>
     {
         #region Equality members
 
@@ -14,7 +14,7 @@ namespace Warewolf.Core
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
         /// <param name="other">An object to compare with this object.</param>
-        public bool Equals(DbInput other)
+        public bool Equals(ServiceInput other)
         {
             if(ReferenceEquals(null, other))
             {
@@ -48,7 +48,7 @@ namespace Warewolf.Core
             {
                 return false;
             }
-            return Equals((DbInput)obj);
+            return Equals((ServiceInput)obj);
         }
 
         /// <summary>
@@ -70,19 +70,19 @@ namespace Warewolf.Core
             }
         }
 
-        public static bool operator ==(DbInput left, DbInput right)
+        public static bool operator ==(ServiceInput left, ServiceInput right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(DbInput left, DbInput right)
+        public static bool operator !=(ServiceInput left, ServiceInput right)
         {
             return !Equals(left, right);
         }
 
         #endregion
 
-        public DbInput(string name, string value)
+        public ServiceInput(string name, string value)
         {
             Name = name;
             Value = value;

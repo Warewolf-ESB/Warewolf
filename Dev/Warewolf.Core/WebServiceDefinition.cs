@@ -18,8 +18,8 @@ namespace Warewolf.Core
        string _name;
         string _path;
         IWebServiceSource _source;
-        IList<IWebserviceInputs> _inputs;
-        IList<IWebserviceOutputs> _outputMappings;
+        IList<IServiceInput> _inputs;
+        IList<IServiceOutputMapping> _outputMappings;
         string _queryString;
         Guid _id;
 
@@ -29,7 +29,7 @@ namespace Warewolf.Core
        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
        /// </summary>
        // ReSharper disable TooManyDependencies
-       public WebServiceDefinition(string name, string path, IWebServiceSource source, IList<IWebserviceInputs> inputs, IList<IWebserviceOutputs> outputMappings, string queryString, Guid id)
+        public WebServiceDefinition(string name, string path, IWebServiceSource source, IList<IServiceInput> inputs, IList<IServiceOutputMapping> outputMappings, string queryString, Guid id)
            // ReSharper restore TooManyDependencies
        {
            _name = name;
@@ -74,7 +74,7 @@ namespace Warewolf.Core
                 _source = value;
             }
         }
-        public IList<IWebserviceInputs> Inputs
+        public IList<IServiceInput> Inputs
         {
             get
             {
@@ -85,7 +85,7 @@ namespace Warewolf.Core
                 _inputs = value;
             }
         }
-        public IList<IWebserviceOutputs> OutputMappings
+        public IList<IServiceOutputMapping> OutputMappings
         {
             get
             {
