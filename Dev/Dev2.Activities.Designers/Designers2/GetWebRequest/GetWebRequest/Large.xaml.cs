@@ -11,11 +11,11 @@
 
 using System.Windows;
 
-namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
+namespace Dev2.Activities.Designers2.GetWebRequest
 {
-    public partial class Small
+    public partial class Large
     {
-        public Small()
+        public Large()
         {
             InitializeComponent();
         }

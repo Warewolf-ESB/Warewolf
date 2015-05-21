@@ -1,4 +1,4 @@
-﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout.Small"
+﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.GetWebRequest.Small"
                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -9,13 +9,12 @@
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.GetWebRequest"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               xmlns:getWebRequestWithTimeout="clr-namespace:Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout"
                                Width="250"
                                MaxWidth="250"
                                Padding="7"
                                mc:Ignorable="d"
                                d:DesignWidth="250"
-                               d:DataContext="{d:DesignInstance getWebRequestWithTimeout:GetWebRequestWithTimeoutDesignerViewModel}">
+                               d:DataContext="{d:DesignInstance local:GetWebRequestDesignerViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary x:Name="TheResources"

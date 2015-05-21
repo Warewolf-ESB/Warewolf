@@ -35,6 +35,7 @@ using Dev2.Activities.Designers2.Foreach;
 using Dev2.Activities.Designers2.FormatNumber;
 using Dev2.Activities.Designers2.GatherSystemInformation;
 using Dev2.Activities.Designers2.GetWebRequest;
+using Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout;
 using Dev2.Activities.Designers2.Move;
 using Dev2.Activities.Designers2.MultiAssign;
 using Dev2.Activities.Designers2.Random;

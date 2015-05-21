@@ -15,6 +15,7 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using Dev2.Activities.Designers2.GetWebRequest;
+using Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
@@ -355,7 +356,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             properties.Add("TimeOutText", timeOutText);
             propertyCollection.Protected().Setup<ModelProperty>("Find", "TimeOutText", true).Returns(timeOutText.Object);
 
-            
+
             var mockModelItem = new Mock<ModelItem>();
             mockModelItem.Setup(mi => mi.ItemType).Returns(typeof(DsfWebGetRequestWithTimeoutActivity));
             mockModelItem.Setup(s => s.Properties).Returns(propertyCollection.Object);

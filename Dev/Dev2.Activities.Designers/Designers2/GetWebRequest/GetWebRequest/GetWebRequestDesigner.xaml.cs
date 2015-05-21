@@ -9,20 +9,16 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Windows;
 
-namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
+
+
+namespace Dev2.Activities.Designers2.GetWebRequest
 {
-    public partial class Small
+    public partial class GetWebRequestDesigner
     {
-        public Small()
+        public GetWebRequestDesigner()
         {
             InitializeComponent();
-        }
-
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return InitialFocusElement;
         }
     }
 }

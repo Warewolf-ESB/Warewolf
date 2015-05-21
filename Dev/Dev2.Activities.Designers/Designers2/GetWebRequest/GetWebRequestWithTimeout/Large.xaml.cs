@@ -11,7 +11,7 @@
 
 using System.Windows;
 
-namespace Dev2.Activities.Designers2.GetWebRequest
+namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
 {
     public partial class Large
     {

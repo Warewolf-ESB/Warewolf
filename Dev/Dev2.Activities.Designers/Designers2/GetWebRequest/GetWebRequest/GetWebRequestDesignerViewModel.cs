@@ -19,15 +19,14 @@ using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Preview;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
-using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Errors;
 
-namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
+namespace Dev2.Activities.Designers2.GetWebRequest
 {
-    public class GetWebRequestWithTimeoutDesignerViewModel : ActivityDesignerViewModel
+    public class GetWebRequestDesignerViewModel : ActivityDesignerViewModel
     {
-        public GetWebRequestWithTimeoutDesignerViewModel(ModelItem modelItem)
+        public GetWebRequestDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
             AddTitleBarLargeToggle();
@@ -54,12 +53,12 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
 
         public bool IsUrlFocused
         {
-            get { return (bool)GetValue(IsUrlFocusedProperty); }
+            get { return (bool) GetValue(IsUrlFocusedProperty); }
             set { SetValue(IsUrlFocusedProperty, value); }
         }
 
         public static readonly DependencyProperty IsUrlFocusedProperty =
-            DependencyProperty.Register("IsUrlFocused", typeof(bool), typeof(GetWebRequestWithTimeoutDesignerViewModel),
+            DependencyProperty.Register("IsUrlFocused", typeof (bool), typeof (GetWebRequestDesignerViewModel),
                                         new PropertyMetadata(false));
 
         // DO NOT bind to these properties - these are here for convenience only!!!
@@ -78,7 +77,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
         public override void Validate()
         {
             Errors = null;
-            if (string.IsNullOrWhiteSpace(Url) && string.IsNullOrWhiteSpace(TimeOutText))
+            if (string.IsNullOrWhiteSpace(Url))
             {
                 return;
             }
@@ -87,37 +86,6 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
             {
                 ValidateUrl(url);
             }
-            if (TimeOutText.Length > 0)
-            {
-                int res;
-                if (!int.TryParse(TimeOutText, out res))
-                {
-                    if (!DataListUtil.IsValueRecordset(TimeOutText) && !DataListUtil.IsValueScalar(TimeOutText))
-                    {
-                        Errors = new List<IActionableErrorInfo>
-                        {
-                         new ActionableErrorInfo { ErrorType = ErrorType.Critical, Message = "Invalid time out. The timeout must be a valid variable or positive integer number. " }};
-
-                    }
-                }
-                else
-                {
-                    if (res < 0)
-                    {
-                        Errors = new List<IActionableErrorInfo>
-                        {
-                         new ActionableErrorInfo { ErrorType = ErrorType.Critical, Message = "Invalid time out. The timeout must be a valid variable or positive integer number. " }};
-                    }
-                }
-            }
-        }
-
-        private string TimeOutText
-        {
-            get { return GetProperty<string>(); }
-            // ReSharper disable UnusedMember.Local
-            set { SetProperty(value); }
-            // ReSharper restore UnusedMember.Local
         }
 
         #region Overrides of ActivityDesignerViewModel
@@ -152,23 +120,19 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
             {
                 PreviewViewModel.InputsVisibility = Visibility.Visible;
 
-                // ReSharper disable MaximumChainedReferences
                 var mustRemainKeys = PreviewViewModel.Inputs
                                                      .Where(i => variableList.Contains(i.Key))
                                                      .ToList();
-                // ReSharper restore MaximumChainedReferences
 
-                // ReSharper disable MaximumChainedReferences
                 var mustRemove = PreviewViewModel.Inputs
                                                  .Where(i => !variableList.Contains(i.Key))
                                                  .ToList();
-                // ReSharper restore MaximumChainedReferences
 
                 mustRemove.ForEach(r => PreviewViewModel.Inputs.Remove(r));
 
                 mustRemainKeys.ForEach(k => variableList.Remove(k.Key));
 
-                variableList.ForEach(v => PreviewViewModel.Inputs.Add(new ObservablePair<string, string> { Key = v }));
+                variableList.ForEach(v => PreviewViewModel.Inputs.Add(new ObservablePair<string, string> {Key = v}));
             }
             else
             {
@@ -294,11 +258,9 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
             {
                 var headers = string.IsNullOrEmpty(Headers)
                                   ? new string[0]
-                                  : Headers.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries);
+                                  : Headers.Split(new[] {'\n', '\r', ';'}, StringSplitOptions.RemoveEmptyEntries);
 
-                // ReSharper disable MaximumChainedReferences
                 var headersEntries = headers.Select(header => header.Split(':')).Select(headerSegments => new Tuple<string, string>(headerSegments[0], headerSegments[1])).ToList();
-                // ReSharper restore MaximumChainedReferences
 
                 url = PreviewViewModel.Inputs.Aggregate(url,
                                                         (current, previewInput) =>

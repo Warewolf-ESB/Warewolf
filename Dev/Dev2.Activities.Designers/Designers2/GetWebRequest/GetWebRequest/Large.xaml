@@ -1,4 +1,4 @@
-﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout.Large"
+﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.GetWebRequest.Large"
                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -10,8 +10,7 @@
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:preview="clr-namespace:Dev2.Activities.Preview"
-                               xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
-                               xmlns:getWebRequestWithTimeout="clr-namespace:Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout"
+                               xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"                               
                                MinHeight="300"
                                MinWidth="255"
                                Width="255"
@@ -19,7 +18,7 @@
                                MaxHeight="500"
                                Padding="7"
                                mc:Ignorable="d"
-                               d:DataContext="{d:DesignInstance getWebRequestWithTimeout:GetWebRequestWithTimeoutDesignerViewModel}">
+                               d:DataContext="{d:DesignInstance local:GetWebRequestDesignerViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary x:Name="TheResources"
@@ -27,7 +26,7 @@
     </core:ActivityDesignerTemplate.Resources>
 
     <core:ActivityDesignerTemplate.RightButtons>
-        <core:ActivityDesignerButton x:Name="DoneButton"
+          <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="Done"
                                      Margin="0,0,9,12"
                                      IsValidatedBefore="True"
@@ -40,8 +39,6 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto"
                            MinHeight="50" />
-            <RowDefinition />
-
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
@@ -106,25 +103,11 @@
         <Label Grid.Column="0"
                Grid.Row="2"
                Style="{StaticResource ActivityLabelStyle}"
-               Content="Time Out Seconds"
-               VerticalAlignment="Top" />
-        <ui:IntellisenseTextBox
-                                Grid.Column="1"
-                                Grid.Row="2"
-                                DefaultText="100"
-                                Focusable="True"
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                Text="{Binding Path=ModelItem.TimeOutText, Mode=TwoWay,  NotifyOnTargetUpdated=True, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
-                                ToolTip="{x:Static help:HelpTextResources.WebRequestToolTipTimeOut}">
-        </ui:IntellisenseTextBox>
-        <Label Grid.Column="0"
-               Grid.Row="3"
-            Style="{StaticResource ActivityLabelStyle}"
                Content="Result"
                VerticalAlignment="Bottom" />
         <ui:IntellisenseTextBox Grid.Column="1"
-                                Grid.Row="3"
-            DefaultText="[[HTML]]"
+                                Grid.Row="2"
+                                DefaultText="[[HTML]]"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True}"
@@ -141,14 +124,14 @@
         </ui:IntellisenseTextBox>
 
         <preview:PreviewView Grid.Column="0"
-                             Grid.Row="4"
-            Grid.ColumnSpan="2"
+                             Grid.Row="3"
+                             Grid.ColumnSpan="2"
                              Margin="0"
                              DataContext="{Binding PreviewViewModel}" />
 
         <errors:OnError Grid.Column="0"
-                        Grid.Row="5"
-            Grid.ColumnSpan="2"
+                        Grid.Row="4"
+                        Grid.ColumnSpan="2"
                         Margin="2" />
 
     </Grid>
