@@ -385,18 +385,18 @@
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Designers2\GetWebRequest\GetWebRequestDesigner.xaml.cs">
+    <Compile Include="Designers2\GetWebRequest\GetWebRequestWithTimeout\GetWebRequestDesigner.xaml.cs">
       <DependentUpon>GetWebRequestDesigner.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Designers2\GetWebRequest\GetWebRequestDesignerViewModel.cs">
+    <Compile Include="Designers2\GetWebRequest\GetWebRequestWithTimeout\GetWebRequestDesignerViewModel.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Designers2\GetWebRequest\Large.xaml.cs">
+    <Compile Include="Designers2\GetWebRequest\GetWebRequestWithTimeout\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Designers2\GetWebRequest\Small.xaml.cs">
+    <Compile Include="Designers2\GetWebRequest\GetWebRequestWithTimeout\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -921,15 +921,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers2\GetWebRequest\GetWebRequestDesigner.xaml">
+    <Page Include="Designers2\GetWebRequest\GetWebRequestWithTimeout\GetWebRequestDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers2\GetWebRequest\Large.xaml">
+    <Page Include="Designers2\GetWebRequest\GetWebRequestWithTimeout\Large.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers2\GetWebRequest\Small.xaml">
+    <Page Include="Designers2\GetWebRequest\GetWebRequestWithTimeout\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

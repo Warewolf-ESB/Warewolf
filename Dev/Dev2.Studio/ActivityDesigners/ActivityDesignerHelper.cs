@@ -67,7 +67,7 @@ namespace Dev2.Studio.ActivityDesigners
             {
                 { typeof(DsfMultiAssignActivity), typeof(MultiAssignDesigner) },
                 { typeof(DsfDateTimeActivity), typeof(DateTimeDesigner) },
-                { typeof(DsfWebGetRequestWithTimeoutActivity), typeof(GetWebRequestDesigner) },
+                { typeof(DsfWebGetRequestWithTimeoutActivity), typeof(GetWebRequestWithTimeOutDesigner) },
                 { typeof(DsfFindRecordsMultipleCriteriaActivity), typeof(FindRecordsMultipleCriteriaDesigner) },
                 { typeof(DsfSqlBulkInsertActivity), typeof(SqlBulkInsertDesigner) },
                 { typeof(DsfSortRecordsActivity), typeof(SortRecordsDesigner) },
