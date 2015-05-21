@@ -38,6 +38,7 @@ namespace Warewolf.Studio.ViewModels
         bool _testPassed;
         bool _testFailed;
         bool _testing;
+        bool _isHyperLinkEnabled;
         string _resourceName;
         CancellationTokenSource _token;
         IList<string> _computerNames;
@@ -91,7 +92,7 @@ namespace Warewolf.Studio.ViewModels
         void SetupHeaderTextFromExisting()
         {
             HeaderText = Resources.Languages.Core.WebserviceEditHeaderLabel + _warewolfserverName.Trim() + "\\" + (_webServiceSource == null ? ResourceName : _webServiceSource.Name).Trim();
-            Header = Resources.Languages.Core.WebserviceEditHeaderLabel + ((_webServiceSource == null ? ResourceName : _webServiceSource.Name));
+            Header = ((_webServiceSource == null ? ResourceName : _webServiceSource.Name));
         }
 
         bool CanSave()
@@ -403,6 +404,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _testDefault = value;
                 OnPropertyChanged(() => TestDefault);
+                ViewModelUtils.RaiseCanExecuteChanged(TestCommand);
             }
         }
 
@@ -426,6 +428,10 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _testPassed = value;
+                if (_testPassed)
+                {
+                    IsHyperLinkEnabled = true;
+                }
                 OnPropertyChanged(()=>TestPassed);
                 ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
                 ViewModelUtils.RaiseCanExecuteChanged(ViewInBrowserCommand);
@@ -434,7 +440,17 @@ namespace Warewolf.Studio.ViewModels
         
  
         }
-        
+
+        public bool IsHyperLinkEnabled
+        {
+            get { return _isHyperLinkEnabled; }
+            set
+            {
+                _isHyperLinkEnabled = value;
+                OnPropertyChanged(() => IsHyperLinkEnabled);
+            }
+        }
+
 
         [ExcludeFromCodeCoverage]
         public string DefaultQueryLabel
@@ -589,7 +605,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _header + ((_webServiceSource!= null )&&Haschanged || (_webServiceSource == null && !IsEmpty) ? "*" : "");
+                return _header + ((_webServiceSource!= null )&&Haschanged || (_webServiceSource == null && !IsEmpty) ? " *" : "");
             }
             set
             {

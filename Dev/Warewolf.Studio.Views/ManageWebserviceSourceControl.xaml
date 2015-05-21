@@ -191,12 +191,12 @@
                     <core:HelpSetter Text="{x:Static languages:Core.DatabaseSourceTestConnectionHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
-            <Button Width="Auto" 
+            <!--<Button Width="Auto" 
                     Height="30" 
                     Margin="{StaticResource ElementBorderControlRight}" 
                     Command="{Binding ViewInBrowserCommand}" 
                     Visibility="{Binding Path=TestPassed,Converter={StaticResource BoolToVisibilityConverter}}"
-                    Content="{Binding ViewInBrowserLabel}"></Button>
+                    Content="{Binding ViewInBrowserLabel}"></Button>-->
             <Button Width="120" 
                     Height="30" 
                     Command="{Binding CancelTestCommand}" 
@@ -208,8 +208,12 @@
                     HorizontalAlignment="Left" 
                     VerticalAlignment="Center">
             <TextBlock Text="{Binding TestDefaultLabel}"/>
-            <TextBlock x:Name="TestDefault" 
-                     Text="{Binding TestDefault,UpdateSourceTrigger=PropertyChanged}">
+            <TextBlock x:Name="TestDefault">
+                <Hyperlink Command="{Binding ViewInBrowserCommand}" 
+                           IsEnabled="{Binding IsHyperLinkEnabled}" 
+                           NavigateUri="{Binding TestDefault,UpdateSourceTrigger=PropertyChanged}" >
+                    <TextBlock Text="{Binding TestDefault,UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                </Hyperlink>
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:Core.UserNameAuthenticationHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>

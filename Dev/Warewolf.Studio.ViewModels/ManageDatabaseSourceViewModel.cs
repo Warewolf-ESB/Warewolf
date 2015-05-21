@@ -118,7 +118,7 @@ namespace Warewolf.Studio.ViewModels
         void SetupHeaderTextFromExisting()
         {
             HeaderText = Resources.Languages.Core.DatabaseSourceServerEditHeaderLabel + _warewolfserverName.Trim() + "\\" + (_dbSource == null ? ResourceName : _dbSource.Name).Trim();
-            Header = Resources.Languages.Core.DatabaseSourceServerEditHeaderLabel + ((_dbSource == null ? ResourceName : _dbSource.Name));
+            Header = ((_dbSource == null ? ResourceName : _dbSource.Name));
         }
 
         bool CanSave()
@@ -603,7 +603,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _header + ((_dbSource!= null )&&Haschanged || (_dbSource == null && !IsEmpty) ? "*" : "");
+                return _header + ((_dbSource!= null )&&Haschanged || (_dbSource == null && !IsEmpty) ? " *" : "");
             }
             set
             {

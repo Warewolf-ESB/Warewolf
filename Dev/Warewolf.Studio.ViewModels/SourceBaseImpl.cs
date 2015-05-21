@@ -35,7 +35,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _header = value;
                 if (!ToModel().Equals(Item))
-                    _header = "*" + _header;
+                    _header = _header + " *";
                 
                 OnPropertyChanged(() => Header);
             }
