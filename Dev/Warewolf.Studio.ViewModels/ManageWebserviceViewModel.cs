@@ -234,6 +234,11 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _selectedSource = value;
+                if(_selectedSource != null)
+                {
+                    RequestUrlQuery = _selectedSource.DefaultQuery??"";
+                    
+                }
                 OnPropertyChanged(() => SelectedSource);
             }
         }
