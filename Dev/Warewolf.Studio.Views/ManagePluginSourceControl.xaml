@@ -47,7 +47,7 @@
                         Height="25"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        Margin="0,0,0,0">
+                        Margin="0,1,0,-1">
                 <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
                                     FontSize="16" 
                                     Icon="Refresh" 
