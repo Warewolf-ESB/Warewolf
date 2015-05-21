@@ -404,7 +404,7 @@
                                Text="{Binding MappingsHeader}" 
                                Style="{StaticResource SourceHeader}" ></TextBlock>
                     </StackPanel>
-                    <views:MappingsView Grid.Row="1"></views:MappingsView>
+                    <views:MappingsView Grid.Row="1" MaxWidth="1200"></views:MappingsView>
                 </Grid>
                 <Grid Grid.Row="5" Grid.Column="0">
                     <Grid.ColumnDefinitions>
