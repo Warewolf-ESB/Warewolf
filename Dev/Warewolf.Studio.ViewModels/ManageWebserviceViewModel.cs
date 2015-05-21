@@ -152,6 +152,10 @@ namespace Warewolf.Studio.ViewModels
                 {
                     RequestBodyEnabled = false;
                 }
+                else
+                {
+                    RequestBodyEnabled = true;
+                }
                 OnPropertyChanged(() => SelectedWebRequestMethod);
             }
         }
