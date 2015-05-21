@@ -183,6 +183,16 @@
     <Compile Include="Designers2\DropBox\Upload\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\GetWebRequest\GetWebRequest\GetWebRequestDesigner.xaml.cs">
+      <DependentUpon>GetWebRequestDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\GetWebRequest\GetWebRequest\GetWebRequestDesignerViewModel.cs" />
+    <Compile Include="Designers2\GetWebRequest\GetWebRequest\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\GetWebRequest\GetWebRequest\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\RecordsLength\RecordsLengthDesigner.xaml.cs">
       <DependentUpon>RecordsLengthDesigner.xaml</DependentUpon>
     </Compile>
@@ -749,6 +759,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\GetWebRequest\GetWebRequest\GetWebRequestDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\GetWebRequest\GetWebRequest\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\GetWebRequest\GetWebRequest\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\RecordsLength\RecordsLengthDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1216,9 +1238,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Designers2\GetWebRequest\GetWebRequest\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
