@@ -24,11 +24,11 @@ namespace Warewolf.Studio.ViewModels
         IDbSource _selectedSource;
         IDbAction _selectedAction;
         IDbAction _refreshSelectedAction;
-        ICollection<IDbInput> _inputs;
+        ICollection<IServiceInput> _inputs;
         private bool _inputsRequired;
         DataTable _testResults;
         private bool _isTesting;
-        IList<IDbOutputMapping> _outputMapping;
+        IList<IServiceOutputMapping> _outputMapping;
         bool _canSelectProcedure;
         bool _canEditMappings;
         bool _canTest;
@@ -54,7 +54,7 @@ namespace Warewolf.Studio.ViewModels
 
             Header = Resources.Languages.Core.DatabaseServiceDBSourceTabHeader;
             TestProcedureCommand = new DelegateCommand(TestAction,CanTestProcedure);
-            Inputs = new ObservableCollection<IDbInput>();
+            Inputs = new ObservableCollection<IServiceInput>();
             SaveCommand = new DelegateCommand(Save,CanSave);
             RefreshCommand = new DelegateCommand(Refresh);
             IsRefreshing = false;
@@ -85,7 +85,7 @@ namespace Warewolf.Studio.ViewModels
                     CanEditMappings = true;
                     TestResultsAvailable = true;
                     OutputMapping =
-                        new ObservableCollection<IDbOutputMapping>(GetDbOutputMappingsFromTable(TestResults));
+                        new ObservableCollection<IServiceOutputMapping>(GetDbOutputMappingsFromTable(TestResults));
                     TestSuccessful = true;
                 }
                 ErrorText = "";
@@ -271,9 +271,9 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        List<IDbOutputMapping> GetDbOutputMappingsFromTable(DataTable testResults)
+        List<IServiceOutputMapping> GetDbOutputMappingsFromTable(DataTable testResults)
         {
-            List<IDbOutputMapping> mappings = new List<IDbOutputMapping>();
+            List<IServiceOutputMapping> mappings = new List<IServiceOutputMapping>();
             // ReSharper disable once LoopCanBeConvertedToQuery
             for (int i = 0; i < testResults.Columns.Count; i++)
             {
@@ -402,7 +402,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 _selectedAction = value;
                 CanTest = _selectedAction != null;
-                Inputs = _selectedAction != null ? _selectedAction.Inputs : new Collection<IDbInput>();
+                Inputs = _selectedAction != null ? _selectedAction.Inputs : new Collection<IServiceInput>();
                 ViewModelUtils.RaiseCanExecuteChanged(TestProcedureCommand);
                 OnPropertyChanged(() => SelectedAction);
             }
@@ -475,7 +475,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public ICollection<IDbInput> Inputs
+        public ICollection<IServiceInput> Inputs
         {
             get
             {
@@ -513,7 +513,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public ICommand CreateNewSourceCommand { get; set; }
         public ICommand TestProcedureCommand { get;  set; }
-        public IList<IDbOutputMapping> OutputMapping
+        public IList<IServiceOutputMapping> OutputMapping
         {
             get
             {
@@ -591,7 +591,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     Name= Item.Name,
                     Action = SelectedAction,
-                    Inputs = Inputs==null? new List<IDbInput>(): Inputs.ToList(),
+                    Inputs = Inputs==null? new List<IServiceInput>(): Inputs.ToList(),
                     OutputMappings = OutputMapping,
                     Source = SelectedSource,
                     Path = Item.Path,
@@ -601,7 +601,7 @@ namespace Warewolf.Studio.ViewModels
             return new DatabaseService
             {
                 Action = SelectedAction,
-                Inputs = Inputs == null ? new List<IDbInput>() : Inputs.ToList(),
+                Inputs = Inputs == null ? new List<IServiceInput>() : Inputs.ToList(),
                 OutputMappings = OutputMapping,
                 Source = SelectedSource,
                 Name=Name,

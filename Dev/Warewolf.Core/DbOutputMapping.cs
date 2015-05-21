@@ -4,7 +4,7 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Core
 {
-    public class DbOutputMapping : BindableBase,IDbOutputMapping, IEquatable<DbOutputMapping>
+    public class DbOutputMapping : BindableBase,IServiceOutputMapping, IEquatable<DbOutputMapping>
     {
         string _outputName;
         string _recordSetName;

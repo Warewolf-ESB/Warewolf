@@ -10,8 +10,8 @@ namespace Dev2.Common.Interfaces.DB
         string Path { get; set; }
         IDbSource Source { get; set; }
         IDbAction Action { get; set; }
-        IList<IDbInput> Inputs { get; set; }
-        IList<IDbOutputMapping> OutputMappings { get; set; }
+        IList<IServiceInput> Inputs { get; set; }
+        IList<IServiceOutputMapping> OutputMappings { get; set; }
         Guid Id { get; set; }
     }
 }

@@ -13,8 +13,8 @@ namespace Warewolf.Core
         public string Path { get; set; }
         public IDbSource Source { get; set; }
         public IDbAction Action { get; set; }
-        public IList<IDbInput> Inputs { get; set; }
-        public IList<IDbOutputMapping> OutputMappings { get; set; }
+        public IList<IServiceInput> Inputs { get; set; }
+        public IList<IServiceOutputMapping> OutputMappings { get; set; }
         public string Name { get; set; }
         public Guid Id { get; set; }
 

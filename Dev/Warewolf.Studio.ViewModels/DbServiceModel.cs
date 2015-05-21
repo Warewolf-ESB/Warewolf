@@ -59,9 +59,9 @@ namespace Warewolf.Studio.ViewModels
            return _updateRepository.TestDbService(inputValues);          
         }
 
-        public IEnumerable<IDbOutputMapping> GetDbOutputMappings(IDbAction action)
+        public IEnumerable<IServiceOutputMapping> GetDbOutputMappings(IDbAction action)
         {
-            return new List<IDbOutputMapping> { new DbOutputMapping("bob", "The"), new DbOutputMapping("dora", "The"), new DbOutputMapping("Tree", "The") }; 
+            return new List<IServiceOutputMapping> { new DbOutputMapping("bob", "The"), new DbOutputMapping("dora", "The"), new DbOutputMapping("Tree", "The") }; 
         }
 
         public void SaveService(IDatabaseService toModel)

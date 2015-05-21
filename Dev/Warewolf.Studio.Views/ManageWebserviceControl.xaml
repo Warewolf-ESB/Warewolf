@@ -396,7 +396,7 @@
                     <StackPanel Grid.Row="0" 
                             Grid.Column="0" 
                             Background="{StaticResource WareWolfMenuBrush}" 
-                            HorizontalAlignment="Stretch" 
+                         
                             Orientation="Horizontal">
                         <TextBlock Text="5" 
                                Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
