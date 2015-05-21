@@ -29,14 +29,15 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
+                if (!ToModel().Equals(Item))
+                {
+                    return _header + " *";
+                }
                 return _header;
             }
             set
             {
                 _header = value;
-                if (!ToModel().Equals(Item))
-                    _header = _header + " *";
-                
                 OnPropertyChanged(() => Header);
             }
         }

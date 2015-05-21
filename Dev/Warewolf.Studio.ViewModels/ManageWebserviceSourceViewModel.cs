@@ -15,14 +15,13 @@ using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Microsoft.Practices.Prism.Commands;
-using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Warewolf.Core;
 using Warewolf.Studio.Models.Help;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ManageWebserviceSourceViewModel : BindableBase, IManageWebserviceSourceViewModel, IDockViewModel, IDisposable
+    public class ManageWebserviceSourceViewModel :  SourceBaseImpl<IWebServiceSource>, IManageWebserviceSourceViewModel,  IDisposable
     {
         private AuthenticationType _authenticationType;
         private string _hostName;
@@ -31,7 +30,7 @@ namespace Warewolf.Studio.ViewModels
         private string _defaultQuery;
         private string _testMessage;
         private string _testDefault;
-        private string _header;
+       // private string _header;
         readonly IManageWebServiceSourceModel _updateManager;
         readonly IEventAggregator _aggregator;
         IWebServiceSource _webServiceSource;
@@ -46,7 +45,7 @@ namespace Warewolf.Studio.ViewModels
         string _headerText;
         private bool _isDisposed;
 
-        public ManageWebserviceSourceViewModel(IManageWebServiceSourceModel updateManager, IEventAggregator aggregator)
+        public ManageWebserviceSourceViewModel(IManageWebServiceSourceModel updateManager, IEventAggregator aggregator):base(ResourceType.WebSource)
         {
             VerifyArgument.IsNotNull("updateManager", updateManager);
             VerifyArgument.IsNotNull("aggregator", aggregator);
@@ -138,7 +137,7 @@ namespace Warewolf.Studio.ViewModels
             return true;
         }
 
-        public void UpdateHelpDescriptor(string helpText)
+        public override void UpdateHelpDescriptor(string helpText)
         {
             var helpDescriptor = new HelpDescriptor("",helpText,null);
             VerifyArgument.IsNotNull("helpDescriptor", helpDescriptor);
@@ -199,13 +198,18 @@ namespace Warewolf.Studio.ViewModels
                     var src = ToSource();
                     src.Path = RequestServiceNameViewModel.ResourceName.Path ?? RequestServiceNameViewModel.ResourceName.Name;
                     Save(src);
+                    Item = src;
                     _webServiceSource = src;
                     SetupHeaderTextFromExisting();
                 }
             }
             else
             {
-                Save(ToSource());
+                var src = ToSource();
+                Save(src);
+                Item = src;
+                _webServiceSource = src;
+                SetupHeaderTextFromExisting();
             }
         }
 
@@ -304,6 +308,27 @@ namespace Warewolf.Studio.ViewModels
 
             }
         }
+
+        public override IWebServiceSource ToModel()
+        {
+            if (Item == null)
+            {
+                Item = ToSource();
+                return Item;
+            }
+
+            return new WebServiceSourceDefinition
+            {
+                Name = Item.Name,
+                HostName = HostName,
+                AuthenticationType = AuthenticationType,
+                DefaultQuery = DefaultQuery,
+                Id = Item.Id,
+                Path = Item.Path
+            };
+
+        }
+
         IRequestServiceNameViewModel RequestServiceNameViewModel { get; set; }
         bool Haschanged
         {
@@ -337,8 +362,6 @@ namespace Warewolf.Studio.ViewModels
                 {
                     _hostName = value;
                     TestDefault = _hostName + "" + DefaultQuery;
-                    OnPropertyChanged(() => HostName);
-                    _hostName = value;
                     OnPropertyChanged(() => HostName);
                     OnPropertyChanged(() => Header);
                     TestPassed = false;
@@ -597,28 +620,28 @@ namespace Warewolf.Studio.ViewModels
         }
 
 
-        public bool IsActive { get; set; }
+       // public bool IsActive { get; set; }
 
-        public event EventHandler IsActiveChanged;
+        //public event EventHandler IsActiveChanged;
 
-        public string Header
-        {
-            get
-            {
-                return _header + ((_webServiceSource!= null )&&Haschanged || (_webServiceSource == null && !IsEmpty) ? " *" : "");
-            }
-            set
-            {
-                _header = value;
-                OnPropertyChanged(() => Header);
-            }
-        }
+//        public string Header
+//        {
+//            get
+//            {
+//                return _header + ((_webServiceSource!= null )&&Haschanged || (_webServiceSource == null && !IsEmpty) ? " *" : "");
+//            }
+//            set
+//            {
+//                _header = value;
+//                OnPropertyChanged(() => Header);
+//            }
+//        }
         public bool IsEmpty { get { return String.IsNullOrEmpty(HostName) && AuthenticationType == AuthenticationType.Anonymous && String.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Password); } }
 
-        public ResourceType? Image
-        {
-            get { return ResourceType.WebSource; }
-        }
+//        public ResourceType? Image
+//        {
+//            get { return ResourceType.WebSource; }
+//        }
 
         public void Dispose()
         {

@@ -78,7 +78,7 @@
                     </StackPanel>
                     <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
                         <ComboBox x:Name="RequestTypes"
-                                  Width="Auto"
+                                  Width="50"
                                   Focusable="True"
                                   ItemsSource="{Binding WebRequestMethods}"
                                   Padding="{StaticResource ComboBoxItemPadding}"
@@ -169,7 +169,7 @@
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel HorizontalAlignment="Stretch">
-                                                <TextBox x:Name="HeaderTextBox" Text="{Binding Path=Name}" ToolTip="" Margin="1"></TextBox>
+                                                <TextBox x:Name="HeaderTextBox" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" ToolTip="" Margin="1"></TextBox>
                                                 <TextBlock IsHitTestVisible="False" 
                                                            Text="Header"
                                                            FontStyle="Italic"
@@ -196,7 +196,7 @@
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel HorizontalAlignment="Stretch">
-                                                <TextBox Text="{Binding Path=Value}" ToolTip="" Margin="1"></TextBox>
+                                                <TextBox Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" ToolTip="" Margin="1"></TextBox>
                                                 <TextBlock IsHitTestVisible="False" 
                                                            Text="Value"
                                                            FontStyle="Italic"

@@ -127,7 +127,7 @@ namespace Warewolf.Studio.ViewModels
             SelectedAction = service.Action;
             Inputs = service.Inputs;
             OutputMapping = service.OutputMappings;
-            Header = Resources.Languages.Core.DatabaseServiceDBSourceEditTabHeader + Name;
+            Header = Name;
             CanEditMappings = true;
         }
 
@@ -308,7 +308,7 @@ namespace Warewolf.Studio.ViewModels
                     Id = Guid.NewGuid();
                     _model.SaveService(ToModel());
                     Item = ToModel();
-                    Header = Resources.Languages.Core.DatabaseServiceDBSourceEditTabHeader + Path + Name;
+                    Header = Path + Name;
 
                 }
             }

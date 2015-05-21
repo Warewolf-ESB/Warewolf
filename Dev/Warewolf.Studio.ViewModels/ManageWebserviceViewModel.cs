@@ -617,8 +617,8 @@ namespace Warewolf.Studio.ViewModels
 
         public  NameValue()
         {
-            Name = "";
-            Value = "";
+            Name = "Bob";
+            Value = "Bob";
         }
 
         public string Name
