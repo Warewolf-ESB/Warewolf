@@ -46,19 +46,11 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// The underlying Web service
         /// </summary>
         IWebService WebService { get; set; }
-       
-        /// <summary>
-        /// Label for selecteing a header
-        /// </summary>
-        string SelectSourceHeader { get; }
+        
         /// <summary>
         /// Request headers
         /// </summary>
         ICollection<INameValue> Headers { get; set; }
-        /// <summary>
-        /// Select the headers
-        /// </summary>
-        string SelectHeadersHeader { get; set; }
 
         /// <summary>
         /// The Web service query string
@@ -71,19 +63,9 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         string SourceUrl { get; set; }
 
         /// <summary>
-        ///  The form Header
-        /// </summary>
-        string RequestUrlHeader { get; set; }
-
-        /// <summary>
         /// The Request Body
         /// </summary>
         string RequestBody { get; set; }
-
-        /// <summary>
-        /// Request Body Header
-        /// </summary>
-        string RequestBodyHeader { get; set; }
 
         /// <summary>
         /// is the rquest body enabled. only diabled for get;
