@@ -30,7 +30,7 @@ namespace ActivityUnitTests.ActivityTest
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
-    public class WebGetRequestActivityTests : BaseActivityUnitTest
+    public class WebGetRequestWithTimeoutActivityTests : BaseActivityUnitTest
     {
         /// <summary>
         ///Gets or sets the test context which provides
@@ -218,7 +218,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Setup for test--------------------------
             const string Url = "[[CompanyName]]";
             const string result = "[[res]]";
-            var act = new DsfWebGetRequestActivity { Url = Url, Result = result };
+            var act = new DsfWebGetRequestWithTimeoutActivity { Url = Url, Result = result };
 
             //------------Execute Test---------------------------
             act.UpdateForEachInputs(null);
@@ -234,7 +234,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Setup for test--------------------------
             const string Url = "[[CompanyName]]";
             const string result = "[[res]]";
-            var act = new DsfWebGetRequestActivity { Url = Url, Result = result };
+            var act = new DsfWebGetRequestWithTimeoutActivity { Url = Url, Result = result };
 
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>(Url, "Test2");
@@ -253,7 +253,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Setup for test--------------------------
             const string Url = "[[CompanyName]]";
             const string result = "[[res]]";
-            var act = new DsfWebGetRequestActivity { Url = Url, Result = result };
+            var act = new DsfWebGetRequestWithTimeoutActivity { Url = Url, Result = result };
 
             act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
@@ -268,7 +268,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Setup for test--------------------------
             const string Url = "[[CompanyName]]";
             const string result = "[[res]]";
-            var act = new DsfWebGetRequestActivity { Url = Url, Result = result };
+            var act = new DsfWebGetRequestWithTimeoutActivity { Url = Url, Result = result };
 
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test2");
@@ -286,7 +286,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Setup for test--------------------------
             const string Url = "[[CompanyName]]";
             const string result = "[[res]]";
-            var act = new DsfWebGetRequestActivity { Url = Url, Result = result };
+            var act = new DsfWebGetRequestWithTimeoutActivity { Url = Url, Result = result };
 
             var tuple1 = new Tuple<string, string>("[[res]]", "Test");
             //------------Execute Test---------------------------
@@ -303,7 +303,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Setup for test--------------------------
             const string Url = "[[CompanyName]]";
             const string result = "[[res]]";
-            var act = new DsfWebGetRequestActivity { Url = Url, Result = result };
+            var act = new DsfWebGetRequestWithTimeoutActivity { Url = Url, Result = result };
 
             //------------Execute Test---------------------------
             var dsfForEachItems = act.GetForEachInputs();
@@ -321,7 +321,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Setup for test--------------------------
             const string Url = "[[CompanyName]]";
             const string result = "[[res]]";
-            var act = new DsfWebGetRequestActivity { Url = Url, Result = result };
+            var act = new DsfWebGetRequestWithTimeoutActivity { Url = Url, Result = result };
 
             //------------Execute Test---------------------------
             var dsfForEachItems = act.GetForEachOutputs();
@@ -332,7 +332,7 @@ namespace ActivityUnitTests.ActivityTest
         }
 
 
-        static DsfWebGetRequestActivity GetWebGetRequestActivity(Mock<IWebRequestInvoker> mockWebRequestInvoker)
+        static DsfWebGetRequestWithTimeoutActivity GetWebGetRequestActivity(Mock<IWebRequestInvoker> mockWebRequestInvoker)
         {
             var webRequestInvoker = mockWebRequestInvoker.Object;
             var activity = GetWebGetRequestActivity();
@@ -340,9 +340,9 @@ namespace ActivityUnitTests.ActivityTest
             return activity;
         }
 
-        static DsfWebGetRequestActivity GetWebGetRequestActivity()
+        static DsfWebGetRequestWithTimeoutActivity GetWebGetRequestActivity()
         {
-            var activity = new DsfWebGetRequestActivity();
+            var activity = new DsfWebGetRequestWithTimeoutActivity();
             return activity;
         }
     }

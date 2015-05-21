@@ -357,7 +357,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
 
             
             var mockModelItem = new Mock<ModelItem>();
-            mockModelItem.Setup(mi => mi.ItemType).Returns(typeof(DsfWebGetRequestActivity));
+            mockModelItem.Setup(mi => mi.ItemType).Returns(typeof(DsfWebGetRequestWithTimeoutActivity));
             mockModelItem.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
             return mockModelItem;

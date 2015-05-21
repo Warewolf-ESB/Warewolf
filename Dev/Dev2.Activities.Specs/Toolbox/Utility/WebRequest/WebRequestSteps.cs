@@ -43,13 +43,13 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
             ScenarioContext.Current.TryGetValue("url", out url);
             string timeout;
             ScenarioContext.Current.TryGetValue("timeoutSeconds", out timeout);
-            var webGet = new DsfWebGetRequestActivity
+            var webGet = new DsfWebGetRequestWithTimeoutActivity
                 {
                     Result = ResultVariable,
                     Url = url ?? "",
                     Headers = header ?? "",
                     TimeoutSeconds = String.IsNullOrEmpty(timeout) ? 100 : int.Parse(timeout),
-                    TimeOutText = String.IsNullOrEmpty(timeout) ? "":timeout
+                    TimeOutText = String.IsNullOrEmpty(timeout) ? "" : timeout
                 };
 
             TestStartNode = new FlowStep
