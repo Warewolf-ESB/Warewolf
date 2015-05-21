@@ -47,9 +47,6 @@ namespace Warewolf.Studio.ViewModels
         ICollection<IServiceOutputMapping> _outputs;
         ICollection<IServiceInput> _inputs;
         string _outputName;
-        bool _isActive;
-        string _header;
-        ResourceType? _image;
         string _resourceName;
         bool _requestBodyEnabled;
         ICommand _editWebSourceCommand;
@@ -135,17 +132,19 @@ namespace Warewolf.Studio.ViewModels
             if(exp.IsScalarExpression)
             {
                 var scalar = exp as LanguageAST.LanguageExpression.ScalarExpression;
-                Variables.Add( new NameValue(){Name = WarewolfDataEvaluationCommon.LanguageExpressionToString(scalar), Value = ""  });
+                Variables.Add( new NameValue {Name = WarewolfDataEvaluationCommon.LanguageExpressionToString(scalar), Value = ""  });
             }
             if (exp.IsRecordSetExpression)
             {
                 var rec = exp as LanguageAST.LanguageExpression.RecordSetExpression;
-                Variables.Add(new NameValue() { Name = WarewolfDataEvaluationCommon.LanguageExpressionToString(rec), Value = "" });
+                Variables.Add(new NameValue { Name = WarewolfDataEvaluationCommon.LanguageExpressionToString(rec), Value = "" });
             }
             if (exp.IsComplexExpression)
             {
                 var rec = exp as LanguageAST.LanguageExpression.ComplexExpression;
+                // ReSharper disable PossibleNullReferenceException
                 foreach(var languageExpression in rec.Item)
+                    // ReSharper restore PossibleNullReferenceException
                 {
                     UpdateRequestVariables(WarewolfDataEvaluationCommon.LanguageExpressionToString(languageExpression));
                 }
