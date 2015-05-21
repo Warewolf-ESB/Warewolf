@@ -34,10 +34,8 @@ namespace Warewolf.Studio.ViewModels
         IWebServiceSource _selectedSource;
         IWebService _webService;
         ICollection<INameValue> _headers;
-        string _selectHeadersHeader;
         string _requestUrlQuery;
         string _sourceUrl;
-        string _requestUrlHeader;
         string _requestBody;
         ICollection<INameValue> _variables;
         string _response;
@@ -92,10 +90,6 @@ namespace Warewolf.Studio.ViewModels
         {
             WebService = new WebServiceDefinition();
             Header = Resources.Languages.Core.WebserviceTabHeader;
-            SelectSourceHeader = Resources.Languages.Core.WebserviceHeader;
-            SelectHeadersHeader = Resources.Languages.Core.WebserviceHeadersHeader;
-            RequestUrlHeader = Resources.Languages.Core.WebserviceRequestURLHeader;
-            RequestBodyHeader = Resources.Languages.Core.WebserviceRequestBodyHeader;
             WebRequestMethods = new ObservableCollection<WebRequestMethod>(Dev2EnumConverter.GetEnumsToList<WebRequestMethod>());
             SelectedWebRequestMethod = WebRequestMethods.First();
             Sources = new ObservableCollection<IWebServiceSource>(_model.RetrieveSources());
@@ -258,10 +252,14 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => WebService);
             }
         }
+
         /// <summary>
         /// Label for selecteing a header
         /// </summary>
-        public string SelectSourceHeader { get; set; }
+        public string SelectSourceHeader
+        {
+            get { return Resources.Languages.Core.WebserviceHeader; }
+        }
         /// <summary>
         /// Request headers
         /// </summary>
@@ -282,15 +280,7 @@ namespace Warewolf.Studio.ViewModels
         /// </summary>
         public string SelectHeadersHeader
         {
-            get
-            {
-                return _selectHeadersHeader;
-            }
-            set
-            {
-                _selectHeadersHeader = value;
-                OnPropertyChanged(() => SelectHeadersHeader);
-            }
+            get { return Resources.Languages.Core.WebserviceHeadersHeader; }
         }
         /// <summary>
         /// The Web service query string
@@ -328,15 +318,7 @@ namespace Warewolf.Studio.ViewModels
         /// </summary>
         public string RequestUrlHeader
         {
-            get
-            {
-                return _requestUrlHeader;
-            }
-            set
-            {
-                _requestUrlHeader = value;
-                OnPropertyChanged(() => RequestUrlHeader);
-            }
+            get { return Resources.Languages.Core.WebserviceRequestURLHeader; }
         }
         /// <summary>
         /// The Request Body
@@ -357,7 +339,10 @@ namespace Warewolf.Studio.ViewModels
         /// <summary>
         /// Request Body Header
         /// </summary>
-        public string RequestBodyHeader { get; set; }
+        public string RequestBodyHeader
+        {
+            get { return Resources.Languages.Core.WebserviceRequestBodyHeader; }
+        }
         /// <summary>
         /// Request Header
         /// </summary>
