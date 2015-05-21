@@ -212,7 +212,7 @@
                 <Hyperlink Command="{Binding ViewInBrowserCommand}" 
                            IsEnabled="{Binding IsHyperLinkEnabled}" 
                            NavigateUri="{Binding TestDefault,UpdateSourceTrigger=PropertyChanged}" >
-                    <TextBlock Text="{Binding TestDefault,UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                    <TextBlock Text="{Binding TestDefault,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource HoverUnderlineStyle}"></TextBlock>
                 </Hyperlink>
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:Core.UserNameAuthenticationHelp}" DataContext="{Binding}" />
