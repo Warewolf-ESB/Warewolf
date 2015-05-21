@@ -131,11 +131,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// </summary>
         ICommand CancelCommand { get; set; }
 
-        /// <summary>
-        /// Has the Source changed
-        /// </summary>
-        bool HasChanged { get; set; }
-        // ReSharper restore UnusedParameter.Global
+
 
 
         /// <summary>

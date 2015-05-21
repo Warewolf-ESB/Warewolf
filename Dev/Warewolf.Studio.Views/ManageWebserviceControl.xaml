@@ -89,6 +89,7 @@
                                   ItemsSource="{Binding Sources}"
                                   Padding="{StaticResource ComboBoxItemPadding}"
                                   Focusable="True"
+                                  SelectedItem="{Binding SelectedSource}"
                                   Margin="{StaticResource ElementBorderControlLeftTop}" />
                         <Button Width="25" 
                                 Command="{Binding SelectedSource}" 

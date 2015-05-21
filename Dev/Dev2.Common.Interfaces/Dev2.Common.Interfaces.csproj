@@ -218,6 +218,7 @@
     <Compile Include="DB\IDbServiceViewModel.cs" />
     <Compile Include="DB\IServiceInput.cs" />
     <Compile Include="DB\ISourceBase.cs" />
+    <Compile Include="DB\IWebServiceModel.cs" />
     <Compile Include="DB\IWebServiceService.cs" />
     <Compile Include="Deploy\IConflict.cs" />
     <Compile Include="Deploy\IConflictHandlerViewModel.cs" />
