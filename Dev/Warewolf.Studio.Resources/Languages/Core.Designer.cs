@@ -299,7 +299,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Database Service - .
+        ///   Looks up a localized string similar to Edit Database Connector Source - .
         /// </summary>
         public static string DatabaseSourceServerEditHeaderLabel {
             get {

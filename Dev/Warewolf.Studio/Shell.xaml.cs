@@ -135,7 +135,7 @@ namespace Warewolf.Studio
                         DataContext = new ManageWebServiceViewModel(ResourceType.WebService)
                     }
                 };
-                testWindow.ShowDialog();
+                testWindow.Show();
             }
             if (e.Key == Key.G && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
