@@ -65,7 +65,7 @@
                         <RowDefinition Height="Auto" ></RowDefinition>
                         <RowDefinition Height="7" ></RowDefinition>
                     </Grid.RowDefinitions>
-                    <StackPanel  Grid.Row="0" 
+                    <StackPanel Grid.Row="0" 
                              Grid.Column="0" 
                              Background="{StaticResource WareWolfMenuBrush}" 
                              HorizontalAlignment="Stretch" 
@@ -103,6 +103,7 @@
                             Width="100" ></Button>
                     </StackPanel>
                 </Grid>
+                <!-- REQUEST HEADERS -->
                 <Grid x:Name="RequestHeadersGrid" 
                       Grid.Row="1" 
                       Margin="{StaticResource GridBorderBottom}"
@@ -131,6 +132,7 @@
                                Text="{Binding RequestHeader}" 
                                Style="{StaticResource SourceHeader}" ></TextBlock>
                     </StackPanel>
+                    <!-- HEADER -->
                     <Grid Grid.Column="0" 
                           Grid.Row="1" >
                         <Grid.ColumnDefinitions>
@@ -145,7 +147,7 @@
                                    Grid.Column="0"
                                    Text="{Binding SelectHeadersHeader}" 
                                    FontWeight="Bold"></TextBlock>
-                        <DataGrid x:Name="RequestHeaderDataGrid" 
+                        <DataGrid x:Name="HeaderDataGrid" 
                                   Grid.Row="1" 
                                   Grid.Column="0"
                                   ItemsSource="{Binding Headers}" 
@@ -167,7 +169,25 @@
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel HorizontalAlignment="Stretch">
-                                                <TextBox Text="{Binding Path=Name}" ToolTip="" Margin="1"></TextBox>
+                                                <TextBox x:Name="HeaderTextBox" Text="{Binding Path=Name}" ToolTip="" Margin="1"></TextBox>
+                                                <TextBlock IsHitTestVisible="False" 
+                                                           Text="Header"
+                                                           FontStyle="Italic"
+                                                           VerticalAlignment="Center" 
+                                                           HorizontalAlignment="Left" 
+                                                           Margin="10,0,0,0" 
+                                                           Foreground="DarkGray">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="{x:Type TextBlock}">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Text, ElementName=HeaderTextBox}" Value="">
+                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
                                             </StackPanel>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
@@ -177,6 +197,24 @@
                                         <DataTemplate>
                                             <StackPanel HorizontalAlignment="Stretch">
                                                 <TextBox Text="{Binding Path=Value}" ToolTip="" Margin="1"></TextBox>
+                                                <TextBlock IsHitTestVisible="False" 
+                                                           Text="Value"
+                                                           FontStyle="Italic"
+                                                           VerticalAlignment="Center" 
+                                                           HorizontalAlignment="Left" 
+                                                           Margin="10,0,0,0" 
+                                                           Foreground="DarkGray">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="{x:Type TextBlock}">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Text, ElementName=HeaderTextBox}" Value="">
+                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
                                             </StackPanel>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
@@ -184,10 +222,9 @@
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>
-                    
+                    <!-- BODY -->
                     <Grid Grid.Column="1" 
-                          Grid.Row="1" 
-                          Margin="{StaticResource ControlBorderTopLeft}">
+                          Grid.Row="1" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
@@ -203,18 +240,28 @@
                                  Text="{Binding RequestBody}"
                                  HorizontalAlignment="Stretch" ></TextBox>
                     </Grid>
-                    <TextBlock Margin="{StaticResource ControlBorderTopLeft}"
-                               Grid.Column="0" 
+                    <!-- URL -->
+                    <TextBlock Grid.Column="0" 
                                Grid.Row="2" 
                                Text="{Binding RequestUrlHeader}" 
                                FontWeight="Bold"></TextBlock>
+                    <Grid Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Grid.Row="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="50*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                               Text="http://www.webservicex.net/country.asmx/GetCountries">
+                        </TextBlock>
                     <TextBox x:Name="RequestUrl"
                              HorizontalAlignment="Stretch"
                              Text="{Binding RequestUrlQuery}"
-                             Grid.ColumnSpan="2" 
-                             Grid.Column="0"
-                             Grid.Row="3"></TextBox>
+                             Grid.Column="1"></TextBox>
+                    </Grid>
                 </Grid>
+                <!-- REQUEST VARIABLES -->
                 <Grid x:Name="RequestVarGrid" 
                       Grid.Row="2" 
                       Margin="{StaticResource GridBorderBottom}"
@@ -242,19 +289,47 @@
                                    Text="{Binding VariablesHeader}" 
                                    Style="{StaticResource SourceHeader}" ></TextBlock>
                     </StackPanel>
-                    <TextBlock Grid.Column="0"
+                    <DataGrid x:Name="VariableDataGrid" 
                                Grid.Row="1"
-                               Margin="{StaticResource ControlBorderTop}"
-                               Text="{Binding SelectedSource.HostName}">
-                    </TextBlock>
-                    <TextBox x:Name="RequestVar"
+                                  Grid.Column="1"
+                                  ItemsSource="{Binding Variables}" 
                              Margin="{StaticResource ControlBorderTop}"
+                                  MaxHeight="180"
                              HorizontalAlignment="Stretch"
-                             Grid.Column="1"
-                             Grid.Row="1"
-                             Text="{Binding RequestUrlQuery}"
-                             ></TextBox>
+                                  MinColumnWidth="50"
+                                  GridLinesVisibility="Vertical" 
+                                  ColumnWidth="*" 
+                                  AutoGenerateColumns="False" 
+                                  HeadersVisibility="Column"
+                                  CanUserSortColumns="False"
+                                  CanUserReorderColumns="False"
+                                  BorderBrush="Transparent" 
+                                  CanUserResizeColumns="False" 
+                                  CanUserAddRows="True"
+                                  VerticalGridLinesBrush="Transparent">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="Alias" CanUserResize="True" Width="50*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel HorizontalAlignment="Stretch">
+                                            <TextBlock Text="{Binding Path=Name}" ToolTip="" Margin="1"></TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Value" CanUserResize="True" Width="50*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel HorizontalAlignment="Stretch">
+                                            <TextBox Text="{Binding Path=Value}" ToolTip="" Margin="1"></TextBox>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </Grid>
+                <!-- RESPONSE -->
                 <Grid x:Name="ResponseGrid" 
                       Grid.Row="3" 
                       Margin="{StaticResource GridBorderBottom}"
@@ -306,6 +381,7 @@
                         </ScrollViewer>
                     </Grid>
                 </Grid>
+                <!-- MAPPINGS -->
                 <Grid x:Name="MappingsGrid" 
                   Grid.Row="4" 
                   Grid.Column="0" 
@@ -332,23 +408,34 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" 
                                Text="{Binding ErrorText}" 
                                HorizontalAlignment="Left" 
                                TextWrapping="WrapWithOverflow" 
                                x:Name="ErrorTextBlock" ></TextBlock>
+                    <Button x:Name="TestButton" 
+                            Grid.Column="1" 
+                            Margin="{StaticResource ControlBorderTopRight}" 
+                            HorizontalAlignment="Right" 
+                            VerticalAlignment="Bottom" 
+                            Command="{Binding TestCommand}"
+                            Width="100">Test</Button>
                     <Button x:Name="SaveButton" 
-                        Grid.Column="1" 
+                            Grid.Column="2" 
                         Margin="{StaticResource ControlBorderTopRight}" 
                         HorizontalAlignment="Right" 
                         VerticalAlignment="Bottom" 
+                            Command="{Binding SaveCommand}" 
                         Width="100">Save</Button>
                     <Button x:Name="CancelButton" 
-                        Grid.Column="1" 
+                            Grid.Column="3" 
                         Margin="{StaticResource ControlBorderTop}" 
                         HorizontalAlignment="Right" 
                         VerticalAlignment="Bottom" 
+                            Command="{Binding CancelCommand}"
                         Width="100">Cancel</Button>
                 </Grid>
             </Grid>

@@ -111,6 +111,10 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// Has test passed
         /// </summary>
         bool TestPassed { get; set; }
+        /// <summary>
+        /// Has test passed
+        /// </summary>
+        bool IsHyperLinkEnabled { get; set; }
 
         /// <summary>
         /// has test failed

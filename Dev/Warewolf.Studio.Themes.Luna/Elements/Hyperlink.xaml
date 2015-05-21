@@ -23,10 +23,10 @@
                 <Setter Property="Foreground" Value="{StaticResource TextBoxHoverBorderBrush}" />
                 <Setter Property="TextBlock.TextDecorations" Value="Underline" />
             </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
+            <!--<Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Foreground" Value="{StaticResource TextBoxDisabledBackgroundBrush}" />
                 <Setter Property="TextBlock.TextDecorations" Value="Underline" />
-            </Trigger>
+            </Trigger>-->
         </Style.Triggers>
         <Setter Property="Foreground" Value="{StaticResource TextBoxHoverBorderBrush}" />
         <Setter Property="TextBlock.TextDecorations" Value="{x:Null}" />
