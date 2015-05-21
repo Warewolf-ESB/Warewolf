@@ -99,6 +99,7 @@ namespace Warewolf.Studio.ViewModels
             var headerCollection = new ObservableCollection<INameValue>();
             headerCollection.CollectionChanged += HeaderCollectionOnCollectionChanged;
             Headers = new ObservableCollection<INameValue>(new List<INameValue>{new NameValue()});
+            Variables =  new ObservableCollection<INameValue>(new List<INameValue>{new NameValue()});
         }
 
         bool CanTest()
@@ -117,7 +118,9 @@ namespace Warewolf.Studio.ViewModels
 
         public void UpdateRequestVariables(string name)
         {
-            
+            Variables.Add( new NameValue{Name="BOB",Value = "Builder"} );
+            Variables.Add(  new NameValue{Name = "var",Value = "100"});
+           
         }
 
         public string ResourceName
