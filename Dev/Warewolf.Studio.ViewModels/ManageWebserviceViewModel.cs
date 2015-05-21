@@ -83,6 +83,13 @@ namespace Warewolf.Studio.ViewModels
             IQueryManager queryProxy = new QueryManagerProxy(commController,connection);
             
             _model = new WebServiceModel(updateRepository,queryProxy,"bob");
+            TestCommand = new DelegateCommand(() =>
+            {
+                var output = _model.TestService(ToModel());
+                Response = output;
+            }, CanTest);
+            SaveCommand = new DelegateCommand(() => _model.SaveService(ToModel()), CanSave);
+            NewWebSourceCommand = new DelegateCommand(_model.CreateNewSource);
             Init();
            
         }
@@ -104,7 +111,7 @@ namespace Warewolf.Studio.ViewModels
 
         bool CanTest()
         {
-            return false;
+            return SelectedSource!=null;
         }
 
         void HeaderCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
@@ -151,6 +158,10 @@ namespace Warewolf.Studio.ViewModels
                 if (value == WebRequestMethod.Get)
                 {
                     RequestBodyEnabled = false;
+                }
+                else
+                {
+                    RequestBodyEnabled = true;
                 }
                 OnPropertyChanged(() => SelectedWebRequestMethod);
             }
@@ -243,6 +254,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     RequestUrlQuery = _selectedSource.DefaultQuery??"";
                     SourceUrl = _selectedSource.HostName;
+                    ViewModelUtils.RaiseCanExecuteChanged(TestCommand);
                 }
                 OnPropertyChanged(() => SelectedSource);
             }

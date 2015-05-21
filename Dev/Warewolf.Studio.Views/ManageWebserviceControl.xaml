@@ -81,6 +81,7 @@
                                   Width="50"
                                   Focusable="True"
                                   ItemsSource="{Binding WebRequestMethods}"
+                                  SelectedItem="{Binding SelectedWebRequestMethod}"
                                   Padding="{StaticResource ComboBoxItemPadding}"
                                   Margin="{StaticResource ElementBorderTop}"></ComboBox>
                         <ComboBox x:Name="SourcesComboBox" 
