@@ -33,6 +33,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FSharp.Core, Version=4.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Parsing\FSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="FsLexYacc.Runtime">
+      <HintPath>..\Binaries\Parsing\FsLexYacc.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="InfragisticsWPF4.DragDrop.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.DragDrop.v14.2.dll</HintPath>
     </Reference>
@@ -81,6 +88,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="policy.2.3.FSharp.Core">
+      <HintPath>..\Binaries\Parsing\policy.2.3.FSharp.Core.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -97,6 +107,15 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Warewolf.Storage">
+      <HintPath>..\Binaries\Parsing\Warewolf.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="WarewolfLanguageParser">
+      <HintPath>..\Binaries\Parsing\WarewolfLanguageParser.dll</HintPath>
+    </Reference>
+    <Reference Include="WarewolfParserInterop">
+      <HintPath>..\Binaries\Parsing\WarewolfParserInterop.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
