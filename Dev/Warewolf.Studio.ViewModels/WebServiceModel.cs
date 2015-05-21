@@ -43,7 +43,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string TestService(IWebService inputValues)
         {
-            return null;
+            return "<bob> <Tool>Hammer<Tool> <Tool>Crane<Tool> <Tool>Mixer<Tool></bob>"; //dummy data
         }
 
 
