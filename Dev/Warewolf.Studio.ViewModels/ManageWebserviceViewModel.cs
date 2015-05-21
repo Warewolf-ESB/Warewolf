@@ -64,6 +64,7 @@ namespace Warewolf.Studio.ViewModels
             TestCommand = new DelegateCommand(() => model.TestService(ToModel()), CanTest);
             SaveCommand = new DelegateCommand(() => model.SaveService(ToModel()), CanSave);
             NewWebSourceCommand = new DelegateCommand(model.CreateNewSource);
+            
             Init();
         }
 
@@ -97,6 +98,7 @@ namespace Warewolf.Studio.ViewModels
             EditWebSourceCommand = new DelegateCommand(() => _model.EditSource(SelectedSource), () => SelectedSource != null);
             var headerCollection = new ObservableCollection<INameValue>();
             headerCollection.CollectionChanged += HeaderCollectionOnCollectionChanged;
+            Headers = new ObservableCollection<INameValue>(new List<INameValue>{new NameValue()});
         }
 
         bool CanTest()
@@ -237,7 +239,7 @@ namespace Warewolf.Studio.ViewModels
                 if(_selectedSource != null)
                 {
                     RequestUrlQuery = _selectedSource.DefaultQuery??"";
-                    
+                    SourceUrl = _selectedSource.HostName;
                 }
                 OnPropertyChanged(() => SelectedSource);
             }
@@ -598,6 +600,45 @@ namespace Warewolf.Studio.ViewModels
         /// </summary>
         public void Dispose()
         {
+        }
+
+        #endregion
+    }
+
+    public class NameValue : INameValue
+    {
+        string _name;
+        string _value;
+
+        #region Implementation of INameValue
+
+        public  NameValue()
+        {
+            Name = "";
+            Value = "";
+        }
+
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                _name = value;
+            }
+        }
+        public string Value
+        {
+            get
+            {
+                return _value;
+            }
+            set
+            {
+                _value = value;
+            }
         }
 
         #endregion
