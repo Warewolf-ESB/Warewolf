@@ -33,6 +33,17 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Stubs
             AddTitleBarQuickVariableInputToggle();
         }
 
+        #region Overrides of ActivityCollectionDesignerViewModel<ActivityDTO>
+
+        protected override void DoCustomAction(string propertyName)
+        {
+            CustomActionCalled = true;
+        }
+
+        public bool CustomActionCalled { get; set; }
+
+        #endregion
+
         public void TestAddToCollection(IEnumerable<string> source, bool overwrite)
         {
             AddToCollection(source, overwrite);

@@ -149,6 +149,7 @@
     <Compile Include="Activities\DsfBaseActivity.cs" />
     <Compile Include="Activities\DsfDecision.cs" />
     <Compile Include="Activities\DsfDropBoxFileActivity.cs" />
+    <Compile Include="Activities\DsfCreateJsonActivity.cs" />
     <Compile Include="Activities\DsfRecordsetLengthActivity.cs" />
     <Compile Include="Activities\Debug\DebugItemStaticDataParams.cs" />
     <Compile Include="Activities\Debug\DebugOutputBase.cs" />
@@ -185,6 +186,7 @@
     <Compile Include="Activities\DsfSwitch.cs" />
     <Compile Include="Activities\DsfUniqueActivity.cs" />
     <Compile Include="Activities\DsfWebGetRequestActivity.cs" />
+    <Compile Include="Activities\DsfWebGetRequestWithTimeoutActivity.cs" />
     <Compile Include="Activities\DsfCommentActivity.cs" />
     <Compile Include="Activities\DsfWebserviceActivity.cs" />
     <Compile Include="Activities\DsfWorkflowActivity.cs" />
@@ -284,6 +286,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="TO\DataColumnMapping.cs" />
+    <Compile Include="TO\JsonMappingCompoundTo.cs" />
+    <Compile Include="TO\JsonMappingTo.cs" />
     <Compile Include="TO\ValidatedObject.cs" />
     <Compile Include="TO\XPathDTO.cs" />
     <Compile Include="Util.cs" />
@@ -302,6 +306,9 @@
     <Compile Include="Validation\IsValidExpressionRule.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Validation\IsValidJsonCreateMappingSourceExpression.cs" />
+    <Compile Include="Validation\IsValidJsonCreateMappingSourceRule.cs" />
+    <Compile Include="Validation\ShouldNotBeVariableRule.cs" />
     <Compile Include="Validation\VariableUtils.cs" />
     <Compile Include="Value Objects\ForEachBootstrapTO.cs" />
     <Compile Include="Value Objects\ForEachBootstrapTOEnvironment.cs" />

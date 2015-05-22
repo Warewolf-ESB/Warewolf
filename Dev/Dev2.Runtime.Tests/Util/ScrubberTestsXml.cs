@@ -59,44 +59,6 @@ namespace Dev2.Tests.Runtime.Util
         }
 
         [TestMethod]
-        public void ScrubberScrubXmlWithSapWsdlExpectedGeneratesValidOutputDescription()
-        {
-            var expectedPaths = new List<IPath>(new[]
-            {
-                new XmlPath("definitions:targetNamespace", "definitions:targetNamespace", "", "urn:sap-com:document:sap:rfc:functions"),
-                new XmlPath("definitions.types.schema:targetNamespace", "definitions.types.schema:targetNamespace", "", "urn:sap-com:document:sap:rfc:functions"),
-                new XmlPath("definitions.types.schema().element:name", "definitions.types.schema().element:name", "", "STFC_CONNECTION,STFC_CONNECTION.Response"),
-                new XmlPath("definitions.types.schema().element.complexType.sequence.element:name", "definitions.types.schema().element.complexType.sequence.element:name", "", "REQUTEXT,ECHOTEXT"),
-                new XmlPath("definitions.types.schema().element.complexType.sequence.element.simpleType.restriction:base", "definitions.types.schema().element.complexType.sequence.element.simpleType.restriction:base", "", "xsd:string,xsd:string"),
-                new XmlPath("definitions.types.schema().element.complexType.sequence.element.simpleType.restriction.length:value", "definitions.types.schema().element.complexType.sequence.element.simpleType.restriction.length:value", "", "255,255"),
-                new XmlPath("definitions.types.schema().element.complexType.sequence().element:name", "definitions.types.schema.element.complexType.sequence().element:name", "", "REQUTEXT,ECHOTEXT,RESPTEXT"),
-                new XmlPath("definitions.types.schema().element.complexType.sequence().element.simpleType.restriction:base", "definitions.types.schema.element.complexType.sequence().element.simpleType.restriction:base", "", "xsd:string,xsd:string,xsd:string"),
-                new XmlPath("definitions.types.schema().element.complexType.sequence().element.simpleType.restriction.length:value", "definitions.types.schema.element.complexType.sequence().element.simpleType.restriction.length:value", "", "255,255,255"),
-                new XmlPath("definitions().message:name", "definitions().message:name", "", "STFC_CONNECTIONInput,STFC_CONNECTIONOutput"),
-                new XmlPath("definitions().message.part:name", "definitions().message.part:name", "", "parameters,parameters"),
-                new XmlPath("definitions().message.part:element", "definitions().message.part:element", "", "s0:STFC_CONNECTION,s0:STFC_CONNECTION.Response"),
-                new XmlPath("definitions.portType:name", "definitions.portType:name", "", "STFC_CONNECTIONPortType"),
-                new XmlPath("definitions.portType.operation:name", "definitions.portType.operation:name", "", "STFC_CONNECTION"),
-                new XmlPath("definitions.portType.operation.input:message", "definitions.portType.operation.input:message", "", "s0:STFC_CONNECTIONInput"),
-                new XmlPath("definitions.portType.operation.output:message", "definitions.portType.operation.output:message", "", "s0:STFC_CONNECTIONOutput"),
-                new XmlPath("definitions.binding:name", "definitions.binding:name", "", "STFC_CONNECTIONBinding"),
-                new XmlPath("definitions.binding:type", "definitions.binding:type", "", "s0:STFC_CONNECTIONPortType"),
-                new XmlPath("definitions.binding.binding:style", "definitions.binding.binding:style", "", "document"),
-                new XmlPath("definitions.binding.binding:transport", "definitions.binding.binding:transport", "", "http://schemas.xmlsoap.org/soap/http"),
-                new XmlPath("definitions.binding.operation:name", "definitions.binding.operation:name", "", "STFC_CONNECTION"),
-                new XmlPath("definitions.binding.operation.operation:soapAction", "definitions.binding.operation.operation:soapAction", "", "http://www.sap.com/STFC_CONNECTION"),
-                new XmlPath("definitions.binding.operation.input.body:use", "definitions.binding.operation.input.body:use", "", "literal"),
-                new XmlPath("definitions.binding.operation.output.body:use", "definitions.binding.operation.output.body:use", "", "literal"),
-                new XmlPath("definitions.service:name", "definitions.service:name", "", "STFC_CONNECTIONService"),
-                new XmlPath("definitions.service.documentation", "definitions.service.documentation", "", "SAP Service STFC_CONNECTION via SOAP"),
-                new XmlPath("definitions.service.port:name", "definitions.service.port:name", "", "STFC_CONNECTIONPortType"),
-                new XmlPath("definitions.service.port:binding", "definitions.service.port:binding", "", "s0:STFC_CONNECTIONBinding"),
-                new XmlPath("definitions.service.port.address:location", "definitions.service.port.address:location", "", "http://binmain:8080/sap/bc/soap/rfc"),
-            });
-            VerifyScrub(XmlResource.Fetch("Bug9519_4").ToString(), expectedPaths);
-        }
-
-        [TestMethod]
         public void ScrubberScrubXmlWithAttributesExpectedGeneratesValidOutputDescription()
         {
             var expectedPaths = CreateCurrentWeatherExpectedPaths();

@@ -446,17 +446,24 @@ Scenario: Calculate the number of Months by using default format
 	|                 |
 	| [[result]] = 29 |
 
-Scenario: Calculate the number of Years by using default format
+Scenario: Calculate the number of Years by using default system date
 	Given I have a first date "2014/01/06 08:00:01.00" 
-	And I have a second date "2016/01/06 08:00:01.68" 
+	And I have a second date "" 
 	And the date format as ""
 	And I selected output in "Years" 	
 	When the datetime difference tool is executed
-	Then the difference should be "2"
-	And the execution has "NO" error
+	Then the execution has "NO" error
 	And the debug inputs as  
 	| Input 1                | Input 2                | Input Format | Output In |
-	| 2014/01/06 08:00:01.00 | 2016/01/06 08:00:01.68 | ""           | Years     |
-	And the debug output as 
-	|                |
-	| [[result]] = 2 |
+	| 2014/01/06 08:00:01.00 | now() = !!DateWithMS!! | ""           | Years     |
+
+Scenario: Calculate the number of Years by using default system date Input 1
+	Given I have a first date ""  
+	And I have a second date "2014/01/06 08:00:01.00" 
+	And the date format as ""
+	And I selected output in "Years" 	
+	When the datetime difference tool is executed
+	Then the execution has "NO" error
+	And the debug inputs as  
+	| Input 1                | Input 2                | Input Format | Output In |
+	| now() = !!DateWithMS!! | 2014/01/06 08:00:01.00 | ""           | Years     |

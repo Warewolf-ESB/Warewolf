@@ -11,6 +11,6 @@
     ScrollViewer.VerticalScrollBarVisibility="Hidden"
     AutomationProperties.AutomationId="UI_DownloadLatest_AutoID">
     <Grid>
-        <WebBrowser Name="Browser" LoadCompleted="wb_LoadCompleted" />
+        <WebBrowser Name="Browser" LoadCompleted="WbLoadCompleted" />
     </Grid>
 </Window>

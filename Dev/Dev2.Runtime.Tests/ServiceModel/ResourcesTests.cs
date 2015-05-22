@@ -20,6 +20,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Reflection;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.ServiceModel
@@ -244,6 +245,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void DataListInputWhereValidArgsDataListHasNoInputsExpectEmptyString()
         {
             //------------Setup for test--------------------------
+            LoadActivitiesPresentationDll();
             var workspaceID = Guid.NewGuid();
 
             var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
@@ -337,6 +339,20 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 {
                     DirectoryHelper.CleanUp(workspacePath);
                 }
+            }
+        }
+
+
+        static void LoadActivitiesPresentationDll()
+        {
+            try
+            {
+                Assembly.Load("System.Activities.Presentation");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                //This is for when it is run on the server. Because the server has some other way of getting DLL's
             }
         }
 
