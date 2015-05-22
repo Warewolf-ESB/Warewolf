@@ -114,11 +114,6 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
-        public static IDataValue CreateNewDataValue(string val, string tagName, bool isSystemRegion)
-        {
-            return new DataValue(val, tagName, isSystemRegion);
-        }
-
         public static IDev2LanguageParser CreateOutputParser()
         {
             return new OutputLanguageParser();
