@@ -387,6 +387,20 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         [TestMethod]
+        public void OuputDescriptionWhereRequestResponseHasXMLWithElementValuesAndAttributeValues()
+        {
+            //------------Setup for test--------------------------
+            var service = CreateDummyWebService();
+            service.RequestResponse = "<API><auth><code note=\"Authenticated\">10001</code><session note=\"Session Token\">62123409</session></auth></API>";
+            //------------Execute Test---------------------------
+            var outputDescription = service.GetOutputDescription();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(outputDescription);
+            Assert.AreEqual(4, outputDescription.DataSourceShapes[0].Paths.Count);
+
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("Services_FetchRecordsetList")]
         public void Services_FetchRecordsetList_WhenWebserviceWithJsonDataAndPrimitiveArrayType_ShouldNotIncludeInFieldsList()

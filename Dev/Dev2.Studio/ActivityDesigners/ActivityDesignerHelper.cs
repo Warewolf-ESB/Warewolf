@@ -20,6 +20,7 @@ using Dev2.Activities.Designers2.Comment;
 using Dev2.Activities.Designers2.Copy;
 using Dev2.Activities.Designers2.CountRecords;
 using Dev2.Activities.Designers2.Create;
+using Dev2.Activities.Designers2.CreateJSON;
 using Dev2.Activities.Designers2.DataMerge;
 using Dev2.Activities.Designers2.DataSplit;
 using Dev2.Activities.Designers2.DateTime;
@@ -34,6 +35,7 @@ using Dev2.Activities.Designers2.Foreach;
 using Dev2.Activities.Designers2.FormatNumber;
 using Dev2.Activities.Designers2.GatherSystemInformation;
 using Dev2.Activities.Designers2.GetWebRequest;
+using Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout;
 using Dev2.Activities.Designers2.Move;
 using Dev2.Activities.Designers2.MultiAssign;
 using Dev2.Activities.Designers2.Random;
@@ -66,7 +68,9 @@ namespace Dev2.Studio.ActivityDesigners
             {
                 { typeof(DsfMultiAssignActivity), typeof(MultiAssignDesigner) },
                 { typeof(DsfDateTimeActivity), typeof(DateTimeDesigner) },
+                { typeof(DsfWebGetRequestWithTimeoutActivity), typeof(GetWebRequestWithTimeOutDesigner) },
                 { typeof(DsfWebGetRequestActivity), typeof(GetWebRequestDesigner) },
+
                 { typeof(DsfFindRecordsMultipleCriteriaActivity), typeof(FindRecordsMultipleCriteriaDesigner) },
                 { typeof(DsfSqlBulkInsertActivity), typeof(SqlBulkInsertDesigner) },
                 { typeof(DsfSortRecordsActivity), typeof(SortRecordsDesigner) },
@@ -109,6 +113,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfFindRecordsActivity), typeof(DsfFindRecordsActivityDesigner) },
                 { typeof(DsfScriptingJavaScriptActivity), typeof(DsfScriptingJavaScriptDesigner) },
                 { typeof(DsfDropBoxFileActivity), typeof(DropboxUploadFileDesigner) },
+                { typeof(DsfCreateJsonActivity), typeof(CreateJsonDesigner) },
                 // Travis.Frisinger : 25.09.2012 - Removed Http Activity as it is out of sync with the current release 1 plans
             };
 

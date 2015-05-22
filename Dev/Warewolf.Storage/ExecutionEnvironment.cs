@@ -70,6 +70,8 @@ namespace Warewolf.Storage
         IEnumerable< WarewolfDataEvaluationCommon.WarewolfEvalResult> EvalForDataMerge(string exp);
 
         void AssignUnique(IEnumerable<string> distinctList, IEnumerable<string> valueList, IEnumerable<string> resList);
+
+        WarewolfDataEvaluationCommon.WarewolfEvalResult EvalForJson(string exp);
     }
     public class ExecutionEnvironment : IExecutionEnvironment
     {
@@ -102,6 +104,35 @@ namespace Warewolf.Storage
             }
 
         }
+
+        public WarewolfDataEvaluationCommon.WarewolfEvalResult EvalForJson(string exp)
+        {
+            if (string.IsNullOrEmpty(exp))
+            {
+                return WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
+            }
+            try
+            {
+                return PublicFunctions.EvalEnvExpression(exp, _env);
+            }
+            catch (IndexOutOfRangeException)
+            {
+                throw;
+            }
+            catch (Exception e)
+            {
+                if (e is IndexOutOfRangeException) throw;
+                if(IsRecordsetIdentifier(exp))
+                {
+                   var res =  new WarewolfAtomList<DataASTMutable.WarewolfAtom>(DataASTMutable.WarewolfAtom.Nothing);
+                    res.AddNothing();
+                    return WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomListresult(res);    
+                }
+                    return WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
+            }
+
+        }
+
 
         public IEnumerable< WarewolfDataEvaluationCommon.WarewolfEvalResult> EvalForDataMerge(string exp)
         {

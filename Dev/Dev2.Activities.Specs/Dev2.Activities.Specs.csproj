@@ -232,6 +232,12 @@
       <DependentUpon>CaseConversion.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Data\CaseConversion\CaseConversionSteps.cs" />
+    <Compile Include="Toolbox\Data\Create JSON\CreateJSON.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CreateJSON.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Data\Create JSON\CreateJsonSteps.cs" />
     <Compile Include="Toolbox\Data\DataMerge\DataMerge.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -480,6 +486,10 @@
     <None Include="Toolbox\Data\CaseConversion\CaseConversion.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CaseConversion.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Data\Create JSON\CreateJSON.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CreateJSON.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Data\DataMerge\DataMerge.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

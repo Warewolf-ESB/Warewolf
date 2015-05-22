@@ -24,7 +24,6 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Enums;
-using Dev2.Data.Storage;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
@@ -32,6 +31,7 @@ using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
+using ServiceStack.Common.Extensions;
 using Warewolf.Storage;
 
 // ReSharper disable InconsistentNaming
@@ -204,7 +204,6 @@ namespace Dev2.Runtime.ESB.Control
         /// <returns></returns>
         public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceId, out ErrorResultTO errors)
         {
-            Dev2Logger.Log.Info("START MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb().ToString("####.####") + " MBs ]");
             var resultID = GlobalConstants.NullDataListID;
             errors = new ErrorResultTO();
             var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
@@ -289,17 +288,6 @@ namespace Dev2.Runtime.ESB.Control
                 }
 
             }
-
-            var memoryUse = BinaryDataListStorageLayer.GetUsedMemoryInMb();
-            var logMemoryValue = memoryUse.ToString("####.####");
-
-            // ReSharper disable CompareOfFloatsByEqualityOperator
-            if(memoryUse == 0.0)
-            // ReSharper restore CompareOfFloatsByEqualityOperator
-            {
-                logMemoryValue = "0.0";
-            }
-            Dev2Logger.Log.Info("FINAL MEMORY USAGE AFTER DISPOSE [ " + logMemoryValue + " MBs ]");
 
             return resultID;
         }
@@ -400,6 +388,7 @@ namespace Dev2.Runtime.ESB.Control
             var innerEnvironment = dataObject.Environment;
             dataObject.PopEnvironment();
             DataListUtil.OutputsToEnvironment(innerEnvironment, dataObject.Environment, outputDefs);
+            innerEnvironment.Errors.ForEach(s => dataObject.Environment.AddError(s));
             return innerEnvironment;
         }
 

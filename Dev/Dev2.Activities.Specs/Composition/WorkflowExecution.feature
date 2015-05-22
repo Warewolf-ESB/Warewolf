@@ -299,10 +299,10 @@ Scenario: Workflow with Assign and Date and Time Difference tools executing agai
 	  And the 'InputDates' in Workflow 'WorkflowWithAssignAndDateTimeDifferencetools1' debug outputs as  
 	  | # |              |
 	  | 1 | [[a]] = 2014 |
-	  | 2 | [[b]] = 10.  |
+	  | 2 | [[b]] = 10.0  |
 	  And the 'DateAndTime' in WorkFlow 'WorkflowWithAssignAndDateTimeDifferencetools1' debug inputs as
 	  | Input 1       | Input 2    | Input Format | Output In |
-	  | 2020/[[b]]/01 = 2020/10./01 | 2030/01/01 | yyyy/mm/dd   | Years     |
+	  | 2020/[[b]]/01 = 2020/10.0/01 | 2030/01/01 | yyyy/mm/dd   | Years     |
 	  And the 'DateAndTime' in Workflow 'WorkflowWithAssignAndDateTimeDifferencetools1' debug outputs as 
 	  |               |
 	  | [[result]] = |
@@ -4091,7 +4091,7 @@ Examples:
 	  And "Testing - Async Test Master Test" contains "Volume Async Test" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable |
 	  | Volume           | 1000          |                     |             |
-	  When "Testing - Async Test Master Testv" is executed
+	  When "Testing - Async Test Master Testc" is executed
 	  Then the workflow execution has "NO" error	  
 	  And the 'Volume Async Test' in Workflow 'Volume Async Test' debug outputs as
 	  |                      |
@@ -4111,7 +4111,7 @@ Scenario: Executing Asynchrounous testing workflow error
 	  Given I have a workflow "Testing - Async Test Master Teste"
 	  And "Testing - Async Test Master Teste" contains "Async Must Not Bubble Up Error" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
-	  When "Testing - Async Test Master Teste" is executed
+	  When "Testing - Async Test Master Testc" is executed
 	  Then the workflow execution has "NO" error	  
 	  And the 'Async Must Not Bubble Up Error' in Workflow 'Async Must Not Bubble Up Error' debug outputs as
 	  |                      |
@@ -4163,16 +4163,9 @@ Scenario: Workflow with AsyncLogging and ForEach
 	 Then the workflow execution has "NO" error
 	 And the delta between "first time" and "second time" is less than "1200" milliseconds
 
-@ignore
-Scenario: Check outputs json (.json)
-	Given I have a workflow "Json Outputs"
-	When "Json Outputs" is executed as JSON
-	Then the execution has "NO" error
-	And Output is "{"rc" : [{"test":"a"}], "rc" : [{"test":""}], "st" : [{"test":"b"}], "sam" : [{"test":"c"}], "test":"1","t1":"test"}"
-
-@ignore
-Scenario: Check outputs json (.xml)
-	Given I have a workflow "Json Outputs"
-	When "Json Outputs" is executed as xml.
-	Then the execution has "NO" error
-	And Output is "<DataList><rc Index="1"><test>a</test></rc><rc Index="2"><test/></rc><st Index="1"><test>b</test></st><sam Index="1"><test>c</test></sam><test>1</test><t1>test</t1></DataList>"
+Scenario: Executing WF In ForEach with Sequence using Data from and Outside WF using a ForEach
+	Given I have a workflow "TestForEachSeqActivity"
+	And "TestForEachSeqActivity" contains "TestUsingTestSubWFInSeqWorkaround" from server "localhost" with mapping as
+	| Input to Service | From Variable | Output from Service | To Variable |
+	When "TestForEachSeqActivity" is executed
+	Then the workflow execution has "NO" error

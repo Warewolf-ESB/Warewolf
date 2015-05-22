@@ -918,6 +918,32 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Date and Time output format without inputs must return correct format")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DateandTime")]
+        public virtual void DateAndTimeOutputFormatWithoutInputsMustReturnCorrectFormat()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Date and Time output format without inputs must return correct format", ((string[])(null)));
+#line 260
+this.ScenarioSetup(scenarioInfo);
+#line 261
+       testRunner.Given("I have a date \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 262
+       testRunner.And("the input format as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 263
+       testRunner.And("the output format as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 264
+   testRunner.And("I selected Add time as \"Years\" with a value of 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 265
+       testRunner.When("the datetime tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 266
+       testRunner.Then("the datetime result should contain milliseconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 267
+       testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

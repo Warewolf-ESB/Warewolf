@@ -264,6 +264,24 @@ namespace Dev2.Services.Execution
             try
             {
                 var parameters = methodParameters as IList<MethodParameter> ?? methodParameters.ToList();
+                if (Service is WebService)
+                {
+                    var webService = Service as WebService;
+                    if (!String.IsNullOrEmpty(webService.RequestBody))
+                    {
+                        var methodParameter = new MethodParameter();
+                        methodParameter.Name = DataListUtil.RemoveLanguageBrackets(webService.RequestBody);
+                        methodParameter.Value = ExecutionEnvironment.WarewolfEvalResultToString(DataObj.Environment.Eval(webService.RequestBody));
+                        parameters.Add(methodParameter);
+                    }
+                    if (!String.IsNullOrEmpty(webService.RequestHeaders))
+                    {
+                        var methodParameter = new MethodParameter();
+                        methodParameter.Name = DataListUtil.RemoveLanguageBrackets(webService.RequestHeaders);
+                        methodParameter.Value = ExecutionEnvironment.WarewolfEvalResultToString(DataObj.Environment.Eval(webService.RequestHeaders));
+                        parameters.Add(methodParameter);
+                    }
+                }
                 string result;
                 if (parameters.Any())
                 {
@@ -368,7 +386,11 @@ namespace Dev2.Services.Execution
                         }
                         else
                         {
-                            DataObj.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(c.Name), c.InnerXml);
+                            var scalarName = outputDefs.FirstOrDefault(definition => definition.Name == c1.Name);
+                            if(scalarName != null)
+                            {
+                                DataObj.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(scalarName.RawValue), c1.InnerXml);
+                            }
                         }
                     }
                     else

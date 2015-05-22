@@ -18,6 +18,7 @@ using System.Security.Principal;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.DateAndTime;
+using Dev2.Common.DateAndTime.TO;
 using Microsoft.VisualBasic.Devices;
 
 // ReSharper disable InconsistentNaming
@@ -81,13 +82,7 @@ namespace Dev2.Activities
 
         public string GetFullDateTimeInformation()
         {
-            string fullPattern = CultureInfo.CurrentUICulture.DateTimeFormat.FullDateTimePattern;
-            if(fullPattern.Contains("ss"))
-            {
-                fullPattern = fullPattern.Insert(fullPattern.IndexOf("ss", StringComparison.Ordinal) + 2, ".fff");
-            }
-            var dateTimeString = DateTime.Now.ToString(fullPattern);
-            return dateTimeString;
+            return DateTime.Now.ToString(GlobalConstants.GlobalDefaultNowFormat);
         }
 
         public string GetDateTimeFormatInformation()

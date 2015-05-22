@@ -1,0 +1,23 @@
+
+<Source ID="53d118fe-0f6b-4ef7-8c96-bd85f08b3c7b" Version="1.0" Name="paypalpayment" ResourceType="WebSource" IsValid="false" ConnectionString="Address=https://api.sandbox.paypal.com/v1/payments/payment;DefaultQuery=;AuthenticationType=Anonymous" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+  <DisplayName>paypalpayment</DisplayName>
+  <Category>Sample Project\paypalpayment</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>h84jPJSTQsnL4w3l3ipXieRmwn4=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>KNuOhfJqHgscXVf90XgDg8zf3loKR+r7yHkDJBydaBNgdhVvoSyUia9S2CGHB1jW/rSkzEQ09Di+qIjSPGu/QamfD+aInhJlnYMQgFABou6dBdGh/NEgw6o/UXO05s3l6+1RKPv+siD6OuH8PdJeclF9ssLjMkC/VewkAltDK78=</SignatureValue>
+  </Signature>
+</Source>
