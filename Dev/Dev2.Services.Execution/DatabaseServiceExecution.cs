@@ -300,7 +300,7 @@ namespace Dev2.Services.Execution
                 // use positional adjustment
                 foreach (var def in defs)
                 {
-                    var idx = dtCols.IndexOf(def.MapsTo);
+                    var idx = dtCols.IndexOf(def.Name);
                     if (idx != -1)
                     {
                         if (def.IsRecordSet)
