@@ -153,7 +153,7 @@
                         <!--<ListBox Grid.Row="1" 
                                   Grid.Column="0"
                                   ItemsSource="{Binding Headers}"></ListBox>-->
-                        <ListBox Grid.Row="1" 
+                        <!--<ListBox Grid.Row="1" 
                                   Grid.Column="0"
                                   ItemsSource="{Binding Headers}">
                             <ListBox.ItemsPanel>
@@ -172,7 +172,7 @@
 
                             <ListBoxItem Content="{Binding Path=Name}" Grid.Row="0" Grid.Column="0"/>
                             <ListBoxItem Content="{Binding Path=Value}"  Grid.Row="0" Grid.Column="1"/>
-                        </ListBox>
+                        </ListBox>-->
                         <!--<DataGrid x:Name="HeaderDataGrid" 
                                   Grid.Row="1" 
                                   Grid.Column="0"
