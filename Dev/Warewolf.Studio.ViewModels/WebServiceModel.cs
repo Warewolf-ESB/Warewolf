@@ -4,6 +4,7 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
+using Dev2.Common.Interfaces.WebServices;
 
 namespace Warewolf.Studio.ViewModels
 {

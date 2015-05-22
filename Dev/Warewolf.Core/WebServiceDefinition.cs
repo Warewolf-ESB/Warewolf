@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
-using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
+using Dev2.Common.Interfaces.WebServices;
 
 namespace Warewolf.Core
 {
@@ -22,8 +22,9 @@ namespace Warewolf.Core
         IList<IServiceOutputMapping> _outputMappings;
         string _queryString;
         Guid _id;
+       IDbAction _action;
 
-        #region Implementation of IWebService
+       #region Implementation of IWebService
 
        /// <summary>
        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
@@ -118,8 +119,19 @@ namespace Warewolf.Core
                 _id = value;
             }
         }
+       public IDbAction Action
+       {
+           get
+           {
+               return _action;
+           }
+           set
+           {
+               _action = value;
+           }
+       }
 
-        #endregion
+       #endregion
         #region Equality members
 
         /// <summary>

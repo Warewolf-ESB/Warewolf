@@ -13,6 +13,7 @@ using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
+using Dev2.Common.Interfaces.WebServices;
 using Dev2.Controller;
 using Dev2.Network;
 using Microsoft.Practices.Prism.Commands;
@@ -637,7 +638,30 @@ namespace Warewolf.Studio.ViewModels
 
         public override IWebService ToModel()
         {
-            return WebService;
+            if (Item != null)
+            {
+                return new WebServiceDefinition()
+                {
+                    Name = Item.Name,
+                    Action = new DbAction{Inputs = Inputs.ToList(),Name=""},
+                    Inputs = Inputs == null ? new List<IServiceInput>() : Inputs.ToList(),
+                    OutputMappings = OutputMapping,
+                    Source = SelectedSource,
+                    Path = Item.Path,
+                    Id = Item.Id
+                };
+            }
+            return new WebServiceDefinition
+            {
+                Action = new DbAction { Inputs = Inputs.ToList(), Name = "" },
+                Inputs = Inputs == null ? new List<IServiceInput>() : Inputs.ToList(),
+                OutputMappings = OutputMapping,
+                Source = SelectedSource,
+                Name = "",
+                Path = "",
+                Id = Guid.NewGuid()
+            };
+
         }
 
 

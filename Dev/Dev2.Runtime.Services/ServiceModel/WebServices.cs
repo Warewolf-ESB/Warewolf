@@ -75,49 +75,7 @@ namespace Dev2.Runtime.ServiceModel
             {
                 service = JsonConvert.DeserializeObject<WebService>(args);
 
-                if(string.IsNullOrEmpty(service.RequestResponse))
-                {
-                    ErrorResultTO errors;
-                    ExecuteRequest(service, true, out errors, _webExecute);
-                    ((WebSource)service.Source).DisposeClient();
-                }
-
-                var preTestRsData = service.Recordsets;
-                service.RequestMessage = string.Empty;
-                service.JsonPathResult = string.Empty;
-
-                if(service.RequestResponse.IsJSON() && String.IsNullOrEmpty(service.JsonPath))
-                {
-                    service.ApplyPath();
-                    // we need to timeout this request after 10 seconds due to nasty pathing issues ;)
-                    Thread jsonMapTaskThread = null;
-                    var jsonMapTask = new Task(() =>
-                    {
-                        jsonMapTaskThread = Thread.CurrentThread;
-                        service.Recordsets = FetchRecordset(service, true);
-                    });
-
-                    jsonMapTask.Start();
-                    jsonMapTask.Wait(10000);
-
-                    if(!jsonMapTask.IsCompleted)
-                    {
-                        if(jsonMapTaskThread != null)
-                        {
-                            jsonMapTaskThread.Abort();
-                        }
-
-                        service.Recordsets = preTestRsData;
-                        service.RequestMessage = GlobalConstants.WebServiceTimeoutMessage;
-                    }
-
-                    jsonMapTask.Dispose();
-                }
-                else
-                {
-                    service.Recordsets = FetchRecordset(service, true);
-                }
-
+                TestWebService(service);
             }
             catch(Exception ex)
             {
@@ -131,6 +89,52 @@ namespace Dev2.Runtime.ServiceModel
             }
 
             return service;
+        }
+
+        public void TestWebService(WebService service)
+        {
+            if(string.IsNullOrEmpty(service.RequestResponse))
+            {
+                ErrorResultTO errors;
+                ExecuteRequest(service, true, out errors, _webExecute);
+                ((WebSource)service.Source).DisposeClient();
+            }
+
+            var preTestRsData = service.Recordsets;
+            service.RequestMessage = string.Empty;
+            service.JsonPathResult = string.Empty;
+
+            if(service.RequestResponse.IsJSON() && String.IsNullOrEmpty(service.JsonPath))
+            {
+                service.ApplyPath();
+                // we need to timeout this request after 10 seconds due to nasty pathing issues ;)
+                Thread jsonMapTaskThread = null;
+                var jsonMapTask = new Task(() =>
+                {
+                    jsonMapTaskThread = Thread.CurrentThread;
+                    service.Recordsets = FetchRecordset(service, true);
+                });
+
+                jsonMapTask.Start();
+                jsonMapTask.Wait(10000);
+
+                if(!jsonMapTask.IsCompleted)
+                {
+                    if(jsonMapTaskThread != null)
+                    {
+                        jsonMapTaskThread.Abort();
+                    }
+
+                    service.Recordsets = preTestRsData;
+                    service.RequestMessage = GlobalConstants.WebServiceTimeoutMessage;
+                }
+
+                jsonMapTask.Dispose();
+            }
+            else
+            {
+                service.Recordsets = FetchRecordset(service, true);
+            }
         }
 
         public WebService ApplyPath(string args, Guid workspaceId, Guid dataListId)
