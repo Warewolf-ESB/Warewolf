@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
 
@@ -11,9 +12,10 @@ namespace Dev2.Data
     {
         public DataListTO(string dataList, bool ignoreColumnDirection = false)
         {
+            var fixedDataList = dataList.Replace(GlobalConstants.SerializableResourceQuote, "\"").Replace(GlobalConstants.SerializableResourceSingleQuote, "\'");
             Inputs = new List<string>();
             Outputs = new List<string>();
-            using (var stringReader = new StringReader(dataList))
+            using (var stringReader = new StringReader(fixedDataList))
             {
                 var xDoc = XDocument.Load(stringReader);
 

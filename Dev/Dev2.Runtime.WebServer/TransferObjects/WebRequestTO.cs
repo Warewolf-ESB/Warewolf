@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Collections.Specialized;
 
 namespace Dev2.Runtime.WebServer.TransferObjects
 {
@@ -20,5 +21,14 @@ namespace Dev2.Runtime.WebServer.TransferObjects
         public string WebServerUrl { get; set; }
         public string Dev2WebServer { get; set; }
         public string RawRequestPayload { get; set; }
+        public NameValueCollection Variables { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
+        /// </summary>
+        public WebRequestTO()
+        {
+            Variables = new NameValueCollection();
+        }
     }
 }

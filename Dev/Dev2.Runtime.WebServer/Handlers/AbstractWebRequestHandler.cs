@@ -171,7 +171,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 // force it to XML if need be ;)
 
                 // Fetch and convert DL ;)
-                if(executionDlid != GlobalConstants.NullDataListID && !dataObject.Environment.HasErrors())
+                if(!dataObject.Environment.HasErrors())
                 {
                     // a normal service request
                     if(!esbExecuteRequest.WasInternalService)
@@ -187,11 +187,11 @@ namespace Dev2.Runtime.WebServer.Handlers
                             if (dataObject.ReturnType == EmitionTypes.JSON)
                             {
                                 formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
-                                executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, workspaceGuid,resource.DataList.ToString());
+                                executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString());
                             }
                             else if (dataObject.ReturnType == EmitionTypes.XML)
                             {
-                                executePayload = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, workspaceGuid,resource.DataList.ToString());
+                                executePayload = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, resource.DataList.ToString());
                             }
                             dataObject.Environment.AddError(allErrors.MakeDataListReady());
                         }
@@ -289,6 +289,11 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     dataObject.ServiceName = request.ServiceName;
                 }
+                foreach(string key in request.Variables)
+                {
+                    dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(key),request.Variables[key]);   
+                }
+                
             }
         }
 
@@ -312,7 +317,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             if(ctx.Request.Method == "GET")
             {
                 var pairs = ctx.Request.QueryString;
-                return ExtractKeyValuePairs(pairs);
+                return ExtractKeyValuePairs(pairs,ctx.Request.BoundVariables);
             }
 
             if(ctx.Request.Method == "POST")
@@ -361,7 +366,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                         }
 
                         // we need to process it as key value pairs ;)
-                        return ExtractKeyValuePairs(pairs);
+                        return ExtractKeyValuePairs(pairs,ctx.Request.BoundVariables);
                     }
                     catch(Exception ex)
                     {
@@ -373,7 +378,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             return string.Empty;
         }
 
-        static string ExtractKeyValuePairs(NameValueCollection pairs)
+        static string ExtractKeyValuePairs(NameValueCollection pairs, NameValueCollection boundVariables)
         {
             // Extract request keys ;)
             foreach(var key in pairs.AllKeys)
@@ -386,7 +391,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     return key; //We have a workspace id and XML DataList
                 }
-                //dataObject.Environment.Assign(DataListUtil.AddBrack(key),pairs[key]);
+                boundVariables.Add(key,pairs[key]);
                 
             }
 

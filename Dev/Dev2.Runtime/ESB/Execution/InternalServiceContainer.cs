@@ -10,17 +10,14 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Communication;
-using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Workspaces;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 
 namespace Dev2.Runtime.ESB.Execution
@@ -84,6 +81,7 @@ namespace Dev2.Runtime.ESB.Execution
         private void GenerateRequestDictionaryFromDataObject(out ErrorResultTO errors)
         {
             errors = null;
+            Request.Args = new Dictionary<string, StringBuilder>();
         }
     }
 }

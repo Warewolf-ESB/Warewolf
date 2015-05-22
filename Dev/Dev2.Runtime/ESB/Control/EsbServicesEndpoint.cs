@@ -438,7 +438,7 @@ namespace Dev2.Runtime.ESB.Control
             var invoker = new EsbServiceInvoker(this, this, theWorkspace);
             var generateInvokeContainer = invoker.GenerateInvokeContainer(dataObject, serviceID, true);
             generateInvokeContainer.Execute(out errors);
-            var convertFrom = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, workspaceId, "");
+            var convertFrom = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, "");
             var jsonSerializerSettings = new JsonSerializerSettings();
             var deserializeObject = JsonConvert.DeserializeObject<T>(convertFrom, jsonSerializerSettings);
             return deserializeObject;

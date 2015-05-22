@@ -21,7 +21,6 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.PathOperations.Enums;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -477,10 +476,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         public static List<IDebugItemResult> GetInputDebugItems(Activity act,IExecutionEnvironment env)
         {
-            ErrorResultTO errors;
-            var comiler = DataListFactory.CreateDataListCompiler();
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            IBinaryDataList dl = comiler.FetchBinaryDataList(result.DataListID, out errors);
 
             try
             {
