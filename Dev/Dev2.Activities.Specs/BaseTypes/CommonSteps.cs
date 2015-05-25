@@ -31,6 +31,8 @@ using Dev2.Activities.Specs.Toolbox.FileAndFolder;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Warewolf.Storage;
+using System.IO;
+using System.Text;
 
 namespace Dev2.Activities.Specs.BaseTypes
 {
@@ -56,9 +58,9 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             bool expected = anError.Equals("NO");
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            
-            string fetchErrors = string.Join(Environment.NewLine,result.Environment.Errors);
-            bool actual = result.Environment.Errors.Count==0;
+
+            string fetchErrors = string.Join(Environment.NewLine, result.Environment.Errors);
+            bool actual = result.Environment.Errors.Count == 0;
             string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actual ? "did not occur" : "did occur" + fetchErrors);
 
@@ -92,7 +94,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             var expectedDebugItems = BuildExpectedDebugItems(table);
 
             // Very specific case ;)
-            if(isDataMerge && expectedDebugItems.Count == 2)
+            if (isDataMerge && expectedDebugItems.Count == 2)
             {
                 // chop the first one off ;)
                 expectedDebugItems.RemoveAt(0);
@@ -107,7 +109,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -125,7 +127,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -151,11 +153,13 @@ namespace Dev2.Activities.Specs.BaseTypes
                     ScenarioContext.Current.Get<string>(SourceUsernameHolder),
                     ScenarioContext.Current.Get<string>(SourcePasswordHolder),
                     true);
-                var ops = ActivityIOFactory.CreatePutRawOperationTO(WriteType.Overwrite, Guid.NewGuid().ToString());
+                StringBuilder sb = new StringBuilder();
+                Enumerable.Range(1, 1000).ToList().ForEach(x => sb.Append(Guid.NewGuid().ToString()));
+                var ops = ActivityIOFactory.CreatePutRawOperationTO(WriteType.Overwrite, sb.ToString());
                 IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
-                if(sourceEndPoint.PathIs(sourceEndPoint.IOPath) == enPathType.File)
+                if (sourceEndPoint.PathIs(sourceEndPoint.IOPath) == enPathType.File)
                 {
-                    var result =  broker.PutRaw(sourceEndPoint, ops);
+                    var result = broker.PutRaw(sourceEndPoint, ops);
                     if (result != "Success")
                     {
                         result = broker.PutRaw(sourceEndPoint, ops);
@@ -165,14 +169,14 @@ namespace Dev2.Activities.Specs.BaseTypes
                         }
                     }
                 }
-                else if(sourceEndPoint.PathIs(sourceEndPoint.IOPath)==enPathType.Directory && source.Path.Contains("emptydir"))
+                else if (sourceEndPoint.PathIs(sourceEndPoint.IOPath) == enPathType.Directory && source.Path.Contains("emptydir"))
                 {
-                    broker.Create(sourceEndPoint, new Dev2CRUDOperationTO(true,false), false);
+                    broker.Create(sourceEndPoint, new Dev2CRUDOperationTO(true, false), false);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                Dev2Logger.Log.Debug("Create Source File for file op test error",e);               
+                Dev2Logger.Log.Debug("Create Source File for file op test error", e);
             }
 
         }
@@ -192,7 +196,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -223,7 +227,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         public void WhenValidatingTheTool()
         {
             var dev2Activity = TestStartNode.Action as IDev2Activity;
-            if(dev2Activity != null)
+            if (dev2Activity != null)
             {
                 var validationErrors = dev2Activity.PerformValidation();
                 ScenarioContext.Current.Add(ValidationErrors, validationErrors);
@@ -239,7 +243,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 if (validationErrors != null)
                 {
-                    Assert.AreEqual(0,validationErrors.Count);
+                    Assert.AreEqual(0, validationErrors.Count);
                 }
             }
             else
@@ -258,7 +262,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 if (validationErrors != null)
                 {
-                    Assert.AreEqual(0,validationErrors.Count);
+                    Assert.AreEqual(0, validationErrors.Count);
                 }
             }
             else
@@ -275,7 +279,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -311,7 +315,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             string error;
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
 
-            if(DataListUtil.IsValueRecordset(variable))
+            if (DataListUtil.IsValueRecordset(variable))
             {
                 string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
                 string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
@@ -320,7 +324,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
                 value = value.Replace('"', ' ').Trim();
 
-                if(string.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(value))
                 {
                     Assert.IsTrue(recordSetValues.Count == 0);
                 }
@@ -335,24 +339,24 @@ namespace Dev2.Activities.Specs.BaseTypes
                 value = value.Replace('"', ' ').Trim();
                 GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(variable),
                                            out actualValue, out error);
-                if(string.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(value))
                 {
                     actualValue = "";
                 }
                 actualValue = actualValue.Replace('"', ' ').Trim();
                 var type = "";
-                if(value == "String" || value == "Int32" || value == "Guid" || value == "DateTime")
+                if (value == "String" || value == "Int32" || value == "Guid" || value == "DateTime")
                 {
                     type = value;
                 }
-                if(string.IsNullOrEmpty(type))
+                if (string.IsNullOrEmpty(type))
                 {
                     Assert.AreEqual(value, actualValue);
                 }
                 else
                 {
                     Type component = Type.GetType("System." + type);
-                    if(component != null)
+                    if (component != null)
                     {
                         TypeConverter converter = TypeDescriptor.GetConverter(component);
 
@@ -370,12 +374,32 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
         }
 
+        [Then(@"the output is approximately '(.*)' the size of the original input")]
+        public void ThenTheOutputIsApproximatelyTheSizeOfTheOriginalInput(string compressionTimes)
+        {
+            var source = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            string inputFilePath, outputFilePath, error;
+
+            GetScalarValueFromEnvironment(source.Environment, DataListUtil.RemoveLanguageBrackets(ScenarioContext.Current.Get<string>(CommonSteps.SourceHolder)),
+                                       out inputFilePath, out error);
+
+            GetScalarValueFromEnvironment(source.Environment, DataListUtil.RemoveLanguageBrackets(ScenarioContext.Current.Get<string>(CommonSteps.DestinationHolder)),
+                                           out outputFilePath, out error);
+
+            var inputFile = new FileInfo(inputFilePath);
+            var outputFile = new FileInfo(outputFilePath);
+            double compressionTimesValue = double.Parse(compressionTimes);
+            Assert.AreEqual(
+                Math.Round(compressionTimesValue, 1),
+                Math.Round((double)(inputFile.Length) / (double)(outputFile.Length), 1));
+        }
+
         public static void AddVariableToVariableList(string resultVariable)
         {
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -386,21 +410,21 @@ namespace Dev2.Activities.Specs.BaseTypes
         public static void AddActivityToActivityList(string parentName, string activityName, Activity activity)
         {
             Dictionary<string, Activity> activityList;
-            if(!ScenarioContext.Current.TryGetValue("activityList", out activityList))
+            if (!ScenarioContext.Current.TryGetValue("activityList", out activityList))
             {
                 activityList = new Dictionary<string, Activity>();
                 ScenarioContext.Current.Add("activityList", activityList);
             }
 
             Activity parentActivity;
-            if(activityList.TryGetValue(parentName, out parentActivity))
+            if (activityList.TryGetValue(parentName, out parentActivity))
             {
-                if(parentActivity is DsfSequenceActivity)
+                if (parentActivity is DsfSequenceActivity)
                 {
                     var seq = parentActivity as DsfSequenceActivity;
                     seq.Activities.Add(activity);
                 }
-                else if(parentActivity is DsfForEachActivity)
+                else if (parentActivity is DsfForEachActivity)
                 {
                     var forEachActivity = parentActivity as DsfForEachActivity;
                     var activityFunc = new ActivityFunc<string, bool> { Handler = activity };
@@ -412,23 +436,23 @@ namespace Dev2.Activities.Specs.BaseTypes
                 var findAllForEach = activityList.FirstOrDefault(pair =>
                 {
                     var forEachActivity = pair.Value as DsfForEachActivity;
-                    if(forEachActivity == null)
+                    if (forEachActivity == null)
                         return false;
                     return forEachActivity.DataFunc.Handler != null && forEachActivity.DataFunc != null && (forEachActivity.DataFunc.Handler as DsfForEachActivity) != null;
                 });
                 var forEachParentActivity = findAllForEach.Value as DsfForEachActivity;
-                if(forEachParentActivity != null)
+                if (forEachParentActivity != null)
                 {
                     var activityFunc = new ActivityFunc<string, bool> { Handler = activity };
                     DsfForEachActivity foundCorrectParentForEach = null;
-                    while(forEachParentActivity != null)
+                    while (forEachParentActivity != null)
                     {
-                        if(forEachParentActivity.DataFunc != null && forEachParentActivity.DataFunc.Handler != null && forEachParentActivity.DataFunc.Handler.DisplayName == parentName)
+                        if (forEachParentActivity.DataFunc != null && forEachParentActivity.DataFunc.Handler != null && forEachParentActivity.DataFunc.Handler.DisplayName == parentName)
                         {
                             foundCorrectParentForEach = forEachParentActivity.DataFunc.Handler as DsfForEachActivity;
                             break;
                         }
-                        if(forEachParentActivity.DataFunc != null)
+                        if (forEachParentActivity.DataFunc != null)
                         {
                             forEachParentActivity = forEachParentActivity.DataFunc.Handler as DsfForEachActivity;
                         }
@@ -437,7 +461,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                             forEachParentActivity = null;
                         }
                     }
-                    if(foundCorrectParentForEach != null)
+                    if (foundCorrectParentForEach != null)
                     {
                         foundCorrectParentForEach.DataFunc = activityFunc;
                     }
@@ -463,11 +487,11 @@ namespace Dev2.Activities.Specs.BaseTypes
             string rawRef = DataListUtil.StripBracketsFromValue(value);
             string objRef = string.Empty;
 
-            if(partType == enIntellisensePartType.RecordsetsOnly)
+            if (partType == enIntellisensePartType.RecordsetsOnly)
             {
                 objRef = DataListUtil.ExtractRecordsetNameFromValue(rawRef);
             }
-            else if(partType == enIntellisensePartType.RecordsetFields)
+            else if (partType == enIntellisensePartType.RecordsetFields)
             {
                 objRef = DataListUtil.ExtractFieldNameFromValue(rawRef);
             }
@@ -475,7 +499,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             return objRef;
         }
 
-        public static List<IDebugItemResult> GetInputDebugItems(Activity act,IExecutionEnvironment env)
+        public static List<IDebugItemResult> GetInputDebugItems(Activity act, IExecutionEnvironment env)
         {
             ErrorResultTO errors;
             var comiler = DataListFactory.CreateDataListCompiler();
@@ -485,12 +509,12 @@ namespace Dev2.Activities.Specs.BaseTypes
             try
             {
                 DsfActivityAbstract<string> dsfActivityAbstractString = act as DsfActivityAbstract<string>;
-                if(dsfActivityAbstractString != null)
+                if (dsfActivityAbstractString != null)
                 {
                     return DebugItemResults(dsfActivityAbstractString, result.Environment);
                 }
                 DsfActivityAbstract<bool> dsfActivityAbstractBool = act as DsfActivityAbstract<bool>;
-                if(dsfActivityAbstractBool != null)
+                if (dsfActivityAbstractBool != null)
                 {
                     return DebugItemResults(dsfActivityAbstractBool, result.Environment);
                 }
@@ -513,9 +537,9 @@ namespace Dev2.Activities.Specs.BaseTypes
                 .SelectMany(r => r.ResultsList)
                 .ToList();
         }
-        public static List<IDebugItemResult> GetOutputDebugItems(Activity act , IExecutionEnvironment dl)
+        public static List<IDebugItemResult> GetOutputDebugItems(Activity act, IExecutionEnvironment dl)
         {
-      
+
 
 
 
@@ -542,9 +566,9 @@ namespace Dev2.Activities.Specs.BaseTypes
             List<IDebugItemResult> list = new List<IDebugItemResult>();
 
 
-            foreach(TableRow row in table.Rows)
+            foreach (TableRow row in table.Rows)
             {
-                for(int index = 0; index < columnHeaders.Length; index++)
+                for (int index = 0; index < columnHeaders.Length; index++)
                 {
                     var columnHeader = columnHeaders[index];
                     BuildDebugItems(row, index, columnHeader, list);
@@ -557,16 +581,16 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         static void BuildDebugItems(TableRow row, int index, string columnHeader, List<IDebugItemResult> list)
         {
-            if(!string.IsNullOrEmpty(row[index]))
+            if (!string.IsNullOrEmpty(row[index]))
             {
                 var debugItemResult = new DebugItemResult { Label = columnHeader };
                 var rowValue = row[index];
-                if(columnHeader == "Username")
+                if (columnHeader == "Username")
                 {
                     rowValue = rowValue.ResolveDomain();
                 }
 
-                if(columnHeader == "Statement")
+                if (columnHeader == "Statement")
                 {
                     debugItemResult.Value = rowValue;
                     debugItemResult.Type = DebugItemResultType.Value;
@@ -574,11 +598,11 @@ namespace Dev2.Activities.Specs.BaseTypes
                     return;
                 }
 
-                if(rowValue.Contains(" ="))
+                if (rowValue.Contains(" ="))
                 {
                     string[] multipleVarsOneLine;
 
-                    if(rowValue.Split('=').Length < 3 || rowValue.StartsWith("="))
+                    if (rowValue.Split('=').Length < 3 || rowValue.StartsWith("="))
                     {
                         multipleVarsOneLine = new[] { rowValue };
                     }
@@ -587,9 +611,9 @@ namespace Dev2.Activities.Specs.BaseTypes
                         multipleVarsOneLine = rowValue.Split(',');
                     }
 
-                    if(multipleVarsOneLine.Length > 0)
+                    if (multipleVarsOneLine.Length > 0)
                     {
-                        foreach(var singleRow in multipleVarsOneLine)
+                        foreach (var singleRow in multipleVarsOneLine)
                         {
                             AddSingleDebugResult(singleRow, debugItemResult);
                             list.Add(debugItemResult);
@@ -605,7 +629,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
                 else
                 {
-                    if(!string.IsNullOrEmpty(columnHeader) && columnHeader.Equals("#"))
+                    if (!string.IsNullOrEmpty(columnHeader) && columnHeader.Equals("#"))
                     {
 
                         debugItemResult.Label = rowValue;
@@ -615,7 +639,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     else
                     {
                         // Handle async stuff
-                        if(rowValue.Contains("asynchronously:"))
+                        if (rowValue.Contains("asynchronously:"))
                         {
                             var endIdx = rowValue.IndexOf(":", StringComparison.Ordinal);
                             endIdx += 1;
@@ -631,7 +655,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                         }
                     }
 
-                    
+
                     list.Add(debugItemResult);
                 }
             }
@@ -644,27 +668,27 @@ namespace Dev2.Activities.Specs.BaseTypes
             debugItemResult.Value = variableValuePair[1];
             debugItemResult.Type = DebugItemResultType.Variable;
             var variable = debugItemResult.Variable;
-            if(DataListUtil.IsValueRecordset(variable))
+            if (DataListUtil.IsValueRecordset(variable))
             {
                 var indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(variable);
-                if(!string.IsNullOrEmpty(indexRegionFromRecordset))
+                if (!string.IsNullOrEmpty(indexRegionFromRecordset))
                 {
                     int indexForRecset;
                     int.TryParse(indexRegionFromRecordset, out indexForRecset);
 
                     List<Tuple<string, string>> variableList;
-                    if(!ScenarioContext.Current.TryGetValue("variableList", out variableList))
+                    if (!ScenarioContext.Current.TryGetValue("variableList", out variableList))
                     {
                         return;
                     }
 
                     var indexType = enRecordsetIndexType.Star;
-                    if(variableList.Find(tuple => tuple.Item1 == variable) != null)
+                    if (variableList.Find(tuple => tuple.Item1 == variable) != null)
                     {
                         indexType = enRecordsetIndexType.Numeric;
                     }
 
-                    if(indexForRecset > 0 && indexType != enRecordsetIndexType.Numeric)
+                    if (indexForRecset > 0 && indexType != enRecordsetIndexType.Numeric)
                     {
                         var indexOfOpenningBracket = variable.IndexOf("(", StringComparison.Ordinal) + 1;
                         debugItemResult.GroupIndex = indexForRecset;
@@ -681,7 +705,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             RemoveTralingAndLeadingSpaces(expectedDebugItems, inputDebugItems);
 
-            for(int i = 0; i < expectedDebugItems.Count; i++)
+            for (int i = 0; i < expectedDebugItems.Count; i++)
             {
                 Verify(expectedDebugItems[i].Label ?? "", inputDebugItems[i].Label ?? "", "Labels", i);
                 Verify(expectedDebugItems[i].Variable ?? "", inputDebugItems[i].Variable ?? "", "Variables", i);
@@ -691,15 +715,15 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
                 else if (expectedDebugItems[i].Value != null && expectedDebugItems[i].Value.Equals("!!DateWithMS!!"))
                 {
-                    var dt = inputDebugItems[i].Value.Split(new []{'/',':','.',' '});
-                    Assert.IsTrue(dt.Length==8);
+                    var dt = inputDebugItems[i].Value.Split(new[] { '/', ':', '.', ' ' });
+                    Assert.IsTrue(dt.Length == 8);
                     Assert.IsTrue(inputDebugItems[i].Value.Contains("."));
                     int val;
-                    Assert.IsTrue( int.TryParse(dt[6],out val));
+                    Assert.IsTrue(int.TryParse(dt[6], out val));
                     Assert.IsTrue(dt.Last().EndsWith("AM") || dt.Last().EndsWith("PM"));
 
                 }
-                    //2016/01/06 08:00:01.68
+                //2016/01/06 08:00:01.68
                 else
                 {
                     Verify(expectedDebugItems[i].Value ?? "", inputDebugItems[i].Value ?? "", "Values", i);
@@ -712,23 +736,23 @@ namespace Dev2.Activities.Specs.BaseTypes
             expectedValue = expectedValue.Replace("‡", "=");
             string type = "";
 
-            if(!string.IsNullOrEmpty(expectedValue) && !expectedValue.Equals(actualValue, StringComparison.InvariantCultureIgnoreCase))
+            if (!string.IsNullOrEmpty(expectedValue) && !expectedValue.Equals(actualValue, StringComparison.InvariantCultureIgnoreCase))
             {
-                if(expectedValue == "String" || expectedValue == "Int32" || expectedValue == "Guid" || expectedValue == "DateTime")
+                if (expectedValue == "String" || expectedValue == "Int32" || expectedValue == "Guid" || expectedValue == "DateTime")
                 {
                     type = expectedValue;
                 }
             }
 
 
-            if(string.IsNullOrEmpty(type) && actualValue != null)
+            if (string.IsNullOrEmpty(type) && actualValue != null)
             {
                 Assert.AreEqual(expectedValue, actualValue.Replace("\\r\\n", Environment.NewLine), name + " are not equal at index" + index);
             }
             else
             {
                 Type component = Type.GetType("System." + type);
-                if(component != null)
+                if (component != null)
                 {
                     TypeConverter converter = TypeDescriptor.GetConverter(component);
 
@@ -746,34 +770,34 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         static void RemoveTralingAndLeadingSpaces(List<IDebugItemResult> expectedDebugItems, List<IDebugItemResult> inputDebugItems)
         {
-            for(int i = 0; i < expectedDebugItems.Count; i++)
+            for (int i = 0; i < expectedDebugItems.Count; i++)
             {
-                if(expectedDebugItems[i].Label != null)
+                if (expectedDebugItems[i].Label != null)
                 {
                     expectedDebugItems[i].Label = expectedDebugItems[i].Label.Replace('"', ' ').Trim();
                 }
 
-                if(inputDebugItems[i].Label != null)
+                if (inputDebugItems[i].Label != null)
                 {
                     inputDebugItems[i].Label = inputDebugItems[i].Label.Replace('"', ' ').Trim();
                 }
 
-                if(expectedDebugItems[i].Value != null)
+                if (expectedDebugItems[i].Value != null)
                 {
                     expectedDebugItems[i].Value = expectedDebugItems[i].Value.Replace('"', ' ').Trim();
                 }
 
-                if(inputDebugItems[i].Value != null)
+                if (inputDebugItems[i].Value != null)
                 {
                     inputDebugItems[i].Value = inputDebugItems[i].Value.Replace('"', ' ').Trim();
                 }
 
-                if(expectedDebugItems[i].Variable != null)
+                if (expectedDebugItems[i].Variable != null)
                 {
                     expectedDebugItems[i].Variable = expectedDebugItems[i].Variable.Replace('"', ' ').Trim();
                 }
 
-                if(inputDebugItems[i].Variable != null)
+                if (inputDebugItems[i].Variable != null)
                 {
                     inputDebugItems[i].Variable = inputDebugItems[i].Variable.Replace('"', ' ').Trim();
                 }
