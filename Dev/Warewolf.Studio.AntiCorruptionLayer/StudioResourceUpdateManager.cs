@@ -83,9 +83,9 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             return UpdateManagerProxy.TestDbService(inputValues);
         }
 
-        public void TestWebService(IWebService inputValues)
+        public string TestWebService(IWebService inputValues)
         {
-             UpdateManagerProxy.TestWebService(inputValues);
+             return UpdateManagerProxy.TestWebService(inputValues);
         }
     }
 }

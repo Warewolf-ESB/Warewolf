@@ -42,6 +42,6 @@ namespace Dev2.Common.Interfaces.Explorer
 
         DataTable TestDbService(IDatabaseService inputValues);
 
-        void TestWebService(IWebService inputValues);
+        string TestWebService(IWebService inputValues);
     }
 }

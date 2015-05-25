@@ -205,7 +205,7 @@ namespace Warewolf.Studio.ServerProxyLayer
                 throw new WarewolfTestException(output.Message.ToString(), null);
         }
 
-        public void TestWebService(IWebService service)
+        public string TestWebService(IWebService service)
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("TestWebService");
@@ -216,7 +216,7 @@ namespace Warewolf.Studio.ServerProxyLayer
                 throw new WarewolfTestException("Unable to contact Server", null);
             if (output.HasError)
                 throw new WarewolfTestException(output.Message.ToString(), null);
-            var outputd = serialiser.Deserialize<DataTable>(output.Message);
+            return output.Message.ToString();
         }
 
         #endregion

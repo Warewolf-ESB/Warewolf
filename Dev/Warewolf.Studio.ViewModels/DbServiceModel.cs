@@ -61,7 +61,7 @@ namespace Warewolf.Studio.ViewModels
 
         public IEnumerable<IServiceOutputMapping> GetDbOutputMappings(IDbAction action)
         {
-            return new List<IServiceOutputMapping> { new DbOutputMapping("bob", "The"), new DbOutputMapping("dora", "The"), new DbOutputMapping("Tree", "The") }; 
+            return new List<IServiceOutputMapping> { new ServiceOutputMapping("bob", "The"), new ServiceOutputMapping("dora", "The"), new ServiceOutputMapping("Tree", "The") }; 
         }
 
         public void SaveService(IDatabaseService toModel)

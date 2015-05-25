@@ -1,11 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
-using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Dev2.Common.Interfaces.WebServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -46,12 +46,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockModel.Setup(a => a.RetrieveSources()).Returns(new Collection<IWebServiceSource> { new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" } });
 
             var managewebServiceViewModel = new ManageWebServiceViewModel(ResourceType.WebService, mockModel.Object, mockSave.Object);
-            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new DbOutputMapping("bob", "dave") });
+            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
 
             managewebServiceViewModel.SelectedSource = new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" };
             managewebServiceViewModel.SelectedSource.DefaultQuery = "bob";
             managewebServiceViewModel.RequestBody = "da";
-            managewebServiceViewModel.Headers = new Collection<INameValue> { new NameValue { Name = "header", Value = "HeaderValues" } };
+            managewebServiceViewModel.Headers = new Collection<NameValue> { new NameValue { Name = "header", Value = "HeaderValues" } };
             managewebServiceViewModel.RequestUrlQuery = "@a";
 
             //------------Execute Test---------------------------
@@ -77,12 +77,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockModel.Setup(a => a.RetrieveSources()).Returns(new Collection<IWebServiceSource> { new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" } });
 
             var managewebServiceViewModel = new ManageWebServiceViewModel(ResourceType.WebService, mockModel.Object, mockSave.Object);
-            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new DbOutputMapping("bob", "dave") });
+            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
             managewebServiceViewModel.RequestBody = "dave";
             managewebServiceViewModel.SelectedSource = new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" };
             managewebServiceViewModel.SelectedSource.DefaultQuery = "bob";
             managewebServiceViewModel.RequestBody = "da";
-            managewebServiceViewModel.Headers = new Collection<INameValue> { new NameValue { Name = "header", Value = "HeaderValues" } };
+            managewebServiceViewModel.Headers = new Collection<NameValue> { new NameValue { Name = "header", Value = "HeaderValues" } };
             managewebServiceViewModel.RequestUrlQuery = "@a";
 
             //------------Execute Test---------------------------
@@ -103,12 +103,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockModel.Setup(a => a.RetrieveSources()).Returns(new Collection<IWebServiceSource> { new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" } });
 
             var managewebServiceViewModel = new ManageWebServiceViewModel(ResourceType.WebService, mockModel.Object, mockSave.Object);
-            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new DbOutputMapping("bob", "dave") });
+            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
             managewebServiceViewModel.RequestBody = "dave";
             managewebServiceViewModel.SelectedSource = new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" };
             managewebServiceViewModel.SelectedSource.DefaultQuery = "bob";
             managewebServiceViewModel.RequestBody = "da";
-            managewebServiceViewModel.Headers = new Collection<INameValue> { new NameValue { Name = "header", Value = "HeaderValues" } };
+            managewebServiceViewModel.Headers = new Collection<NameValue> { new NameValue { Name = "header", Value = "HeaderValues" } };
             managewebServiceViewModel.RequestUrlQuery = "@a";
             managewebServiceViewModel.SelectedSource = null;
             //------------Execute Test---------------------------
@@ -131,12 +131,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockModel.Setup(a => a.RetrieveSources()).Returns(new Collection<IWebServiceSource> { new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" } });
 
             var managewebServiceViewModel = new ManageWebServiceViewModel(ResourceType.WebService, mockModel.Object, mockSave.Object);
-            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new DbOutputMapping("bob", "dave") });
+            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
             managewebServiceViewModel.RequestBody = "dave";
             managewebServiceViewModel.SelectedSource = new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" };
             managewebServiceViewModel.SelectedSource.DefaultQuery = "bob";
             managewebServiceViewModel.RequestBody = "da";
-            managewebServiceViewModel.Headers = new Collection<INameValue> { new NameValue { Name = "header", Value = "HeaderValues" } };
+            managewebServiceViewModel.Headers = new Collection<NameValue> { new NameValue { Name = "header", Value = "HeaderValues" } };
 
             managewebServiceViewModel.SelectedSource = null;
             //------------Execute Test---------------------------
@@ -160,12 +160,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockModel.Setup(a => a.RetrieveSources()).Returns(new Collection<IWebServiceSource> { new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" } });
 
             var managewebServiceViewModel = new ManageWebServiceViewModel(ResourceType.WebService, mockModel.Object, mockSave.Object);
-            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new DbOutputMapping("bob", "dave") });
+            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
             managewebServiceViewModel.RequestBody = "dave";
             managewebServiceViewModel.SelectedSource = new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" };
             managewebServiceViewModel.SelectedSource.DefaultQuery = "bob";
             managewebServiceViewModel.RequestBody = "da";
-            managewebServiceViewModel.Headers = new Collection<INameValue> { new NameValue { Name = "header", Value = "HeaderValues" } };
+            managewebServiceViewModel.Headers = new Collection<NameValue> { new NameValue { Name = "header", Value = "HeaderValues" } };
 
             managewebServiceViewModel.SelectedSource = null;
             //------------Execute Test---------------------------
@@ -191,12 +191,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockModel.Setup(a => a.RetrieveSources()).Returns(new Collection<IWebServiceSource> { new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" } });
 
             var managewebServiceViewModel = new ManageWebServiceViewModel(ResourceType.WebService, mockModel.Object, mockSave.Object);
-            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new DbOutputMapping("bob", "dave") });
+            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
             managewebServiceViewModel.RequestBody = "dave";
             managewebServiceViewModel.SelectedSource = new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" };
             managewebServiceViewModel.SelectedSource.DefaultQuery = "bob";
             managewebServiceViewModel.RequestBody = "da";
-            managewebServiceViewModel.Headers = new Collection<INameValue> { new NameValue { Name = "header", Value = "HeaderValues" } };
+            managewebServiceViewModel.Headers = new Collection<NameValue> { new NameValue { Name = "header", Value = "HeaderValues" } };
 
             managewebServiceViewModel.SelectedSource = null;
             //------------Execute Test---------------------------
@@ -223,12 +223,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockModel.Setup(a => a.RetrieveSources()).Returns(new Collection<IWebServiceSource> { new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" } });
 
             var managewebServiceViewModel = new ManageWebServiceViewModel(ResourceType.WebService, mockModel.Object, mockSave.Object);
-            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new DbOutputMapping("bob", "dave") });
+            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
             managewebServiceViewModel.RequestBody = "dave";
             managewebServiceViewModel.SelectedSource = new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" };
             managewebServiceViewModel.SelectedSource.DefaultQuery = "bob";
             managewebServiceViewModel.RequestBody = "da";
-            managewebServiceViewModel.Headers = new Collection<INameValue> { new NameValue { Name = "header", Value = "HeaderValues" } };
+            managewebServiceViewModel.Headers = new Collection<NameValue> { new NameValue { Name = "header", Value = "HeaderValues" } };
 
             managewebServiceViewModel.SelectedSource = null;
             //------------Execute Test---------------------------
@@ -252,17 +252,17 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockModel.Setup(a => a.RetrieveSources()).Returns(new Collection<IWebServiceSource> { new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" } });
 
             var managewebServiceViewModel = new ManageWebServiceViewModel(ResourceType.WebService, mockModel.Object, mockSave.Object);
-            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new DbOutputMapping("bob", "dave") });
+            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
             managewebServiceViewModel.RequestBody = "dave";
             managewebServiceViewModel.SelectedSource = new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" };
             managewebServiceViewModel.SelectedSource.DefaultQuery = "bob";
             managewebServiceViewModel.RequestBody = "da";
-            managewebServiceViewModel.Headers = new Collection<INameValue> { new NameValue { Name = "header", Value = "HeaderValues" } };
+            managewebServiceViewModel.Headers = new Collection<NameValue> { new NameValue { Name = "header", Value = "HeaderValues" } };
 
             managewebServiceViewModel.SelectedSource = null;
             //------------Execute Test---------------------------
             Assert.AreEqual(0, managewebServiceViewModel.Variables.Count);
-            managewebServiceViewModel.Headers = new Collection<INameValue> { new NameValue { Name = "[[header]]", Value = "[[HeaderValues]]" } };
+            managewebServiceViewModel.Headers = new Collection<NameValue> { new NameValue { Name = "[[header]]", Value = "[[HeaderValues]]" } };
             ;
             //------------Assert Results-------------------------
 
@@ -272,6 +272,70 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("[[HeaderValues]]", managewebServiceViewModel.Variables.ToList()[1].Name);
             Assert.AreEqual("", managewebServiceViewModel.Variables.ToList()[1].Value);
         }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ManagewebServiceViewModel_ToModel")]
+        // ReSharper disable InconsistentNaming
+        public void ManagewebServiceViewModel_TestCommandCallsModel_UpdatesResponseCanSave()
+        {
+            //------------Setup for test--------------------------
+            var mockModel = new Mock<IWebServiceModel>();
+            var mockSave = new Mock<IRequestServiceNameViewModel>();
+            mockModel.Setup(a => a.RetrieveSources()).Returns(new Collection<IWebServiceSource> { new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" } });
+
+            var managewebServiceViewModel = new ManageWebServiceViewModel(ResourceType.WebService, mockModel.Object, mockSave.Object);
+            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
+
+            managewebServiceViewModel.SelectedSource = new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" };
+            managewebServiceViewModel.SelectedSource.DefaultQuery = "bob";
+            managewebServiceViewModel.RequestBody = "da";
+            managewebServiceViewModel.Headers = new Collection<NameValue> { new NameValue { Name = "header", Value = "HeaderValues" } };
+            managewebServiceViewModel.RequestUrlQuery = "@a";
+
+            mockModel.Setup(a => a.TestService(It.IsAny<IWebService>())).Returns("bob");
+
+            //------------Execute Test---------------------------
+            managewebServiceViewModel.TestCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(managewebServiceViewModel.Response,"bob");
+            Assert.IsTrue(managewebServiceViewModel.CanSave());
+            Assert.IsTrue(managewebServiceViewModel.CanEditMappings);
+            Assert.IsFalse(managewebServiceViewModel.IsTesting);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ManagewebServiceViewModel_ToModel")]
+        // ReSharper disable InconsistentNaming
+        public void ManagewebServiceViewModel_TestCommandCallsModel_UpdatesErrorIFailed()
+        {
+            //------------Setup for test--------------------------
+            var mockModel = new Mock<IWebServiceModel>();
+            var mockSave = new Mock<IRequestServiceNameViewModel>();
+            mockModel.Setup(a => a.RetrieveSources()).Returns(new Collection<IWebServiceSource> { new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" } });
+
+            var managewebServiceViewModel = new ManageWebServiceViewModel(ResourceType.WebService, mockModel.Object, mockSave.Object);
+            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
+
+            managewebServiceViewModel.SelectedSource = new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" };
+            managewebServiceViewModel.SelectedSource.DefaultQuery = "bob";
+            managewebServiceViewModel.RequestBody = "da";
+            managewebServiceViewModel.Headers = new Collection<NameValue> { new NameValue { Name = "header", Value = "HeaderValues" } };
+            managewebServiceViewModel.RequestUrlQuery = "@a";
+
+            mockModel.Setup(a => a.TestService(It.IsAny<IWebService>())).Throws(new Exception("bob error"));
+
+            //------------Execute Test---------------------------
+            managewebServiceViewModel.TestCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(managewebServiceViewModel.ErrorMessage, "bob error");
+            Assert.IsFalse(managewebServiceViewModel.CanSave());
+            Assert.IsFalse(managewebServiceViewModel.CanEditMappings);
+            Assert.IsFalse(managewebServiceViewModel.IsTesting);
+        }
+
+
 
         // ReSharper restore InconsistentNaming
     }

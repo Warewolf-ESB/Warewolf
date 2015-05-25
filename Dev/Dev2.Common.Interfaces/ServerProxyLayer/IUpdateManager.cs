@@ -67,6 +67,6 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
 
         void TestConnection(IWebServiceSource resource);
 
-        void TestWebService(IWebService inputValues);
+        string TestWebService(IWebService inputValues);
     }
 }

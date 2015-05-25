@@ -25,7 +25,7 @@ namespace Warewolf.Core
         string _queryString;
         Guid _id;
 
-        IList<INameValue> _headers;
+        List<NameValue> _headers;
         string _postData;
         string _requestUrl;
 
@@ -123,7 +123,7 @@ namespace Warewolf.Core
                 _id = value;
             }
         }
-        public IList<INameValue> Headers
+        public List<NameValue> Headers
         {
             get
             {

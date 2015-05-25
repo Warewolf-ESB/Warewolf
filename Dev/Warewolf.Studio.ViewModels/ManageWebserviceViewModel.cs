@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
@@ -34,17 +35,16 @@ namespace Warewolf.Studio.ViewModels
         ICollection<IWebServiceSource> _sources;
         IWebServiceSource _selectedSource;
         IWebService _webService;
-        ICollection<INameValue> _headers;
+        ICollection<NameValue> _headers;
         string _requestUrlQuery;
         string _sourceUrl;
         string _requestBody;
-        ICollection<INameValue> _variables;
+        ICollection<NameValue> _variables;
         string _response;
         ICommand _pastResponseCommand;
         ICommand _testCommand;
         ICommand _saveCommand;
         ICommand _cancelCommand;
-        bool _hasChanged;
         ICollection<IServiceOutputMapping> _outputs;
         ICollection<IServiceInput> _inputs;
         string _outputName;
@@ -52,6 +52,14 @@ namespace Warewolf.Studio.ViewModels
         bool _requestBodyEnabled;
         ICommand _editWebSourceCommand;
         IList<IServiceOutputMapping> _outputMapping;
+        bool _canSave;
+        string _errorMessage;
+        bool _isTesting;
+        bool _canEditMappings;
+        string _name;
+        Guid _id;
+        string _path;
+        bool _canEditHeadersAndUrl;
 
         #region Implementation of IManageWebServiceViewModel
 
@@ -60,17 +68,14 @@ namespace Warewolf.Studio.ViewModels
         {
             _model = model;
             _saveDialog = saveDialog;
-            TestCommand = new DelegateCommand(() => model.TestService(ToModel()), CanTest);
-            SaveCommand = new DelegateCommand(() => model.SaveService(ToModel()), CanSave);
+            TestCommand = new DelegateCommand(() => Test(model), CanTest);
+            SaveCommand = new DelegateCommand(() => Save(), CanSave);
             NewWebSourceCommand = new DelegateCommand(model.CreateNewSource);
             
             Init();
         }
 
-        bool CanSave()
-        {
-            return false;
-        }
+
 
         public ManageWebServiceViewModel(ResourceType webService)
             : base(webService)
@@ -101,18 +106,84 @@ namespace Warewolf.Studio.ViewModels
             SelectedWebRequestMethod = WebRequestMethods.First();
             Sources = new ObservableCollection<IWebServiceSource>(Model.RetrieveSources());
             Inputs = new ObservableCollection<IServiceInput>{new ServiceInput("a","a"),new ServiceInput("b","b")};
-            Outputs = new ObservableCollection<IServiceOutputMapping> { new DbOutputMapping("bob", "builder"), new DbOutputMapping("dora", "explorer") };
+            Outputs = new ObservableCollection<IServiceOutputMapping> { new ServiceOutputMapping("bob", "builder"), new ServiceOutputMapping("dora", "explorer") };
             EditWebSourceCommand = new DelegateCommand(() => Model.EditSource(SelectedSource), () => SelectedSource != null);
             var headerCollection = new ObservableCollection<INameValue>();
             headerCollection.CollectionChanged += HeaderCollectionOnCollectionChanged;
-            Headers = new ObservableCollection<INameValue>();
-            Variables =  new ObservableCollection<INameValue>();
+            Headers = new ObservableCollection<NameValue>();
+            Variables =  new ObservableCollection<NameValue>();
             RequestBody = "";
+            Response = "";
         }
 
         public bool CanTest()
         {
             return SelectedSource!=null;
+        }
+
+        void Save()
+        {
+            try
+            {
+
+
+                if (Item == null)
+                {
+                    var saveOutPut = _saveDialog.ShowSaveDialog();
+                    if (saveOutPut == MessageBoxResult.OK || saveOutPut == MessageBoxResult.Yes)
+                    {
+                        Name = _saveDialog.ResourceName.Name;
+                        Path = _saveDialog.ResourceName.Path;
+                        Id = Guid.NewGuid();
+                        _model.SaveService(ToModel());
+                        Item = ToModel();
+                        Header = Path + Name;
+
+                    }
+                }
+                else
+                {
+                    _model.SaveService(ToModel());
+                }
+                ErrorMessage = "";
+            }
+            catch (Exception err)
+            {
+
+                ErrorMessage = err.Message;
+            }
+        }
+
+
+
+        void Test(IWebServiceModel model)
+        {
+            try
+            {
+                IsTesting = true;
+                Response = model.TestService(ToModel());
+                _canSave = true;
+                ErrorMessage = "";
+                CanEditMappings = true;
+               
+                IsTesting = false;
+            }
+            catch (Exception err)
+            {
+                ErrorMessage = err.Message;
+                _canSave = false;
+                OutputMapping = new ObservableCollection<IServiceOutputMapping>();
+                IsTesting = false;
+                CanEditMappings = false;
+            }
+
+
+        }
+
+     
+        public bool CanSave()
+        {
+            return !String.IsNullOrEmpty(Response);
         }
 
         void HeaderCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
@@ -124,7 +195,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public void UpdateRequestVariables(string name)
+        void UpdateRequestVariables(string name)
         {
             var exp = WarewolfDataEvaluationCommon.ParseLanguageExpression(name);
             if(Variables.Any(a=>a.Name == name))
@@ -160,7 +231,7 @@ namespace Warewolf.Studio.ViewModels
 
         void RemoveUnused()
         {
-            IList<INameValue> unused = new List<INameValue>();
+            IList<NameValue> unused = new List<NameValue>();
             if (Variables != null)
             {
                 foreach (var nameValue in Variables)
@@ -181,6 +252,96 @@ namespace Warewolf.Studio.ViewModels
                 {
                     Variables.Remove(nameValue);
                 }
+            }
+        }
+
+        public string Path
+        {
+            get
+            {
+                return _path;
+            }
+            set
+            {
+                _path = value;
+                OnPropertyChanged(()=>Path);
+            }
+        }
+
+        public Guid Id
+        {
+            get
+            {
+                return _id;
+            }
+            set
+            {
+                _id = value;
+                OnPropertyChanged(() => Id);
+            }
+        }
+
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                _name = value;
+                OnPropertyChanged(() => Name);
+            }
+        }
+        public bool CanEditHeadersAndUrl
+        {
+            get
+            {
+                return _canEditHeadersAndUrl;
+            }
+            set
+            {
+                _canEditHeadersAndUrl = value;
+                OnPropertyChanged(() => CanEditHeadersAndUrl);
+            }
+        }
+
+        public bool CanEditMappings
+        {
+            get
+            {
+                return _canEditMappings;
+            }
+            set
+            {
+                _canEditMappings = value;
+                OnPropertyChanged(() => CanEditMappings);
+            }
+        }
+
+        public bool IsTesting
+        {
+            get
+            {
+                return _isTesting;
+            }
+            set
+            {
+                _isTesting = value;
+                OnPropertyChanged(() => IsTesting);
+            }
+        }
+
+        public string ErrorMessage
+        {
+            get
+            {
+                return _errorMessage;
+            }
+            set
+            {
+                _errorMessage = value;
+                OnPropertyChanged(ErrorMessage);
             }
         }
 
@@ -209,14 +370,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _selectedWebRequestMethod = value;
-                if (value == WebRequestMethod.Get)
-                {
-                    RequestBodyEnabled = false;
-                }
-                else
-                {
-                    RequestBodyEnabled = true;
-                }
+                RequestBodyEnabled = value != WebRequestMethod.Get;
                 OnPropertyChanged(() => SelectedWebRequestMethod);
             }
         }
@@ -286,7 +440,9 @@ namespace Warewolf.Studio.ViewModels
             {
                 return _sources;
             }
+            // ReSharper disable MemberCanBePrivate.Global
             set
+                // ReSharper restore MemberCanBePrivate.Global
             {
                 _sources = value;
                 OnPropertyChanged(()=> Sources);
@@ -308,7 +464,12 @@ namespace Warewolf.Studio.ViewModels
                 {
                     RequestUrlQuery = _selectedSource.DefaultQuery??"";
                     SourceUrl = _selectedSource.HostName;
+                    CanEditHeadersAndUrl = true;
                     ViewModelUtils.RaiseCanExecuteChanged(TestCommand);
+                }
+                else
+                {
+                    CanEditHeadersAndUrl = false;
                 }
                 OnPropertyChanged(() => SelectedSource);
             }
@@ -332,14 +493,16 @@ namespace Warewolf.Studio.ViewModels
         /// <summary>
         /// Label for selecteing a header
         /// </summary>
+        // ReSharper disable UnusedMember.Global
         public string SelectSourceHeader
+            // ReSharper restore UnusedMember.Global
         {
             get { return Resources.Languages.Core.WebserviceHeader; }
         }
         /// <summary>
         /// Request headers
         /// </summary>
-        public ICollection<INameValue> Headers
+        public ICollection<NameValue> Headers
         {
             get
             {
@@ -363,7 +526,9 @@ namespace Warewolf.Studio.ViewModels
         /// <summary>
         /// Select the headers
         /// </summary>
+        // ReSharper disable UnusedMember.Global
         public string SelectHeadersHeader
+            // ReSharper restore UnusedMember.Global
         {
             get { return Resources.Languages.Core.WebserviceHeadersHeader; }
         }
@@ -401,7 +566,9 @@ namespace Warewolf.Studio.ViewModels
         /// <summary>
         ///  The form Header
         /// </summary>
+        // ReSharper disable UnusedMember.Global
         public string RequestUrlHeader
+            // ReSharper restore UnusedMember.Global
         {
             get { return Resources.Languages.Core.WebserviceRequestURLHeader; }
         }
@@ -424,7 +591,9 @@ namespace Warewolf.Studio.ViewModels
         /// <summary>
         /// Request Body Header
         /// </summary>
+        // ReSharper disable UnusedMember.Global
         public string RequestBodyHeader
+            // ReSharper restore UnusedMember.Global
         {
             get { return Resources.Languages.Core.WebserviceRequestBodyHeader; }
         }
@@ -432,7 +601,9 @@ namespace Warewolf.Studio.ViewModels
         /// Request Header
         /// </summary>
         [ExcludeFromCodeCoverage]
+        // ReSharper disable UnusedMember.Global
         public string RequestHeader
+            // ReSharper restore UnusedMember.Global
         {
             get { return Resources.Languages.Core.WebserviceRequestHeader; }
 
@@ -441,7 +612,9 @@ namespace Warewolf.Studio.ViewModels
         /// Variables Header
         /// </summary>
         [ExcludeFromCodeCoverage]
+        // ReSharper disable UnusedMember.Global
         public string VariablesHeader
+            // ReSharper restore UnusedMember.Global
         {
             get { return Resources.Languages.Core.WebserviceVariablesHeader; }
             
@@ -457,7 +630,7 @@ namespace Warewolf.Studio.ViewModels
         /// <summary>
         /// the warewolf variables defined in the body,headers and query string
         /// </summary>
-        public ICollection<INameValue> Variables
+        public ICollection<NameValue> Variables
         {
             get
             {
@@ -473,7 +646,9 @@ namespace Warewolf.Studio.ViewModels
         /// Response Header
         /// </summary>
         [ExcludeFromCodeCoverage]
+        // ReSharper disable UnusedMember.Global
         public string ResponseHeader
+            // ReSharper restore UnusedMember.Global
         {
             get { return Resources.Languages.Core.WebserviceResponseHeader; }
         }

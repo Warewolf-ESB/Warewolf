@@ -17,7 +17,7 @@ namespace Dev2.Common.Interfaces.WebServices
         string QueryString { get; set; }
         string RequestUrl    { get; set; }
         Guid Id { get; set; }
-        IList<INameValue> Headers { get; set; }
+        List<NameValue> Headers { get; set; }
         string PostData { get; set; }
     }
 }
