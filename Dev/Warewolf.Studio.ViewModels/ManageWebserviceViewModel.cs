@@ -68,12 +68,25 @@ namespace Warewolf.Studio.ViewModels
         {
             _model = model;
             _saveDialog = saveDialog;
-            TestCommand = new DelegateCommand(() => Test(model), CanTest);
-            SaveCommand = new DelegateCommand(() => Save(), CanSave);
-            NewWebSourceCommand = new DelegateCommand(model.CreateNewSource);
+
             
             Init();
         }
+
+
+        public ManageWebServiceViewModel(ResourceType? image, IWebServiceModel model, IRequestServiceNameViewModel saveDialog,IWebService service)
+            : base(image)
+        {
+            _model = model;
+            _saveDialog = saveDialog;
+            RequestUrlQuery = service.QueryString;
+            Inputs = service.Inputs;
+            Outputs = service.OutputMappings;
+            Item = service;
+           
+            Init();
+        }
+
 
 
 
@@ -87,13 +100,8 @@ namespace Warewolf.Studio.ViewModels
             IQueryManager queryProxy = new QueryManagerProxy(commController,connection);
             
             _model = new WebServiceModel(updateRepository,queryProxy,"bob");
-            TestCommand = new DelegateCommand(() =>
-            {
-                var output = Model.TestService(ToModel());
-                Response = output;
-            }, CanTest);
-            SaveCommand = new DelegateCommand(() => Model.SaveService(ToModel()), CanSave);
-            NewWebSourceCommand = new DelegateCommand(Model.CreateNewSource);
+
+           
             Init();
            
         }
@@ -114,6 +122,10 @@ namespace Warewolf.Studio.ViewModels
             Variables =  new ObservableCollection<NameValue>();
             RequestBody = "";
             Response = "";
+            TestCommand = new DelegateCommand(() => Test(_model), CanTest);
+            SaveCommand = new DelegateCommand(Save, CanSave);
+            NewWebSourceCommand = new DelegateCommand(_model.CreateNewSource);
+
         }
 
         public bool CanTest()
@@ -162,6 +174,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsTesting = true;
                 Response = model.TestService(ToModel());
+                UpdateMappingsFromResponse();
                 _canSave = true;
                 ErrorMessage = "";
                 CanEditMappings = true;
@@ -180,7 +193,11 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
-     
+        void UpdateMappingsFromResponse()
+        {
+            //update inputs and outputs based on response test. 
+        }
+
         public bool CanSave()
         {
             return !String.IsNullOrEmpty(Response);
