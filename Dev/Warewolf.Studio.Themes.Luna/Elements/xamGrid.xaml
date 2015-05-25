@@ -9969,7 +9969,7 @@
                             </StackPanel>
                             <igBase:XamGrid x:Name="FilterGrid"
                                             Grid.Row="1"
-                                            Height="200"
+                                            
                                             AutoGenerateColumns="False"
                                             Background="{StaticResource FilterGridBackgroundBrush}"
                                             IsAlternateRowsEnabled="False">

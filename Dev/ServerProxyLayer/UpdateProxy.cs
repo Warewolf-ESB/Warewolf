@@ -11,6 +11,7 @@ using Dev2.Common.Interfaces.ServerDialogue;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Common.Interfaces.Studio.Core.Controller;
+using Dev2.Common.Interfaces.WebServices;
 using Dev2.Communication;
 
 namespace Warewolf.Studio.ServerProxyLayer
@@ -202,6 +203,20 @@ namespace Warewolf.Studio.ServerProxyLayer
                 throw new WarewolfTestException("Unable to contact Server", null);
             if (output.HasError)
                 throw new WarewolfTestException(output.Message.ToString(), null);
+        }
+
+        public void TestWebService(IWebService service)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("TestWebService");
+            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("WebService", serialiser.SerializeToBuilder(service));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output == null)
+                throw new WarewolfTestException("Unable to contact Server", null);
+            if (output.HasError)
+                throw new WarewolfTestException(output.Message.ToString(), null);
+            var outputd = serialiser.Deserialize<DataTable>(output.Message);
         }
 
         #endregion

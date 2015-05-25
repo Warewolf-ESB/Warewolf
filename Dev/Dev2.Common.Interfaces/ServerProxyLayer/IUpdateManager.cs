@@ -5,6 +5,7 @@ using System.Text;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerDialogue;
+using Dev2.Common.Interfaces.WebServices;
 
 namespace Dev2.Common.Interfaces.ServerProxyLayer
 {
@@ -65,5 +66,7 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         void SaveWebserviceSource(IWebServiceSource resource, Guid serverWorkspaceID);
 
         void TestConnection(IWebServiceSource resource);
+
+        void TestWebService(IWebService inputValues);
     }
 }

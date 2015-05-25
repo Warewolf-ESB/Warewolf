@@ -20,7 +20,7 @@ namespace Warewolf.Studio.Views
 
         public void EnterServerName(string serverName)
         {
-            ServerTextBox.Text = serverName;
+            ServerTextBox.EmptyText = serverName;
         }
 
         public Visibility GetDatabaseDropDownVisibility()

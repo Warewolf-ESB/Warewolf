@@ -8,6 +8,7 @@ using Dev2.Common.Interfaces.ServerDialogue;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Common.Interfaces.Studio.Core.Controller;
+using Dev2.Common.Interfaces.WebServices;
 using Warewolf.Studio.ServerProxyLayer;
 
 namespace Warewolf.Studio.AntiCorruptionLayer
@@ -80,6 +81,11 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public DataTable TestDbService(IDatabaseService inputValues)
         {
             return UpdateManagerProxy.TestDbService(inputValues);
+        }
+
+        public void TestWebService(IWebService inputValues)
+        {
+             UpdateManagerProxy.TestWebService(inputValues);
         }
     }
 }

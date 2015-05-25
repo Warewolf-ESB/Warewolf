@@ -107,6 +107,7 @@ namespace Warewolf.Studio.ViewModels
             headerCollection.CollectionChanged += HeaderCollectionOnCollectionChanged;
             Headers = new ObservableCollection<INameValue>();
             Variables =  new ObservableCollection<INameValue>();
+            RequestBody = "";
         }
 
         public bool CanTest()
@@ -151,9 +152,36 @@ namespace Warewolf.Studio.ViewModels
                 }
                
             }
-
+            RemoveUnused();
 
            
+           
+        }
+
+        void RemoveUnused()
+        {
+            IList<INameValue> unused = new List<INameValue>();
+            if (Variables != null)
+            {
+                foreach (var nameValue in Variables)
+                {
+                    if (String.IsNullOrEmpty(nameValue.Value))
+                    {
+                        if(!RequestUrlQuery.Contains(nameValue.Name) && !RequestBody.Contains(nameValue.Name) && ! Headers.Any(a=>a.Name.Contains(nameValue.Name) || a.Value.Contains(nameValue.Name)))
+                        {
+                          unused.Add(nameValue);
+                        }
+                    }
+                }
+
+            }
+            foreach(var nameValue in unused)
+            {
+                if(Variables != null)
+                {
+                    Variables.Remove(nameValue);
+                }
+            }
         }
 
         public string ResourceName

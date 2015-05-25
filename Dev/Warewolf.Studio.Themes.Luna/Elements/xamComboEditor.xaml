@@ -195,7 +195,7 @@
     <Style x:Key="ComboEditorItemControlStyle" TargetType="ig:ComboEditorItemControl">
         <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="FontSize" Value="13.333" />
-        <Setter Property="MinHeight" Value="30" />
+        <Setter Property="Height" Value="25" />
         <Setter Property="Padding" Value="5 3" />
         <Setter Property="Background" Value="{StaticResource TransparentBrush}" />
         <Setter Property="BorderBrush" Value="Transparent" />
@@ -322,7 +322,7 @@
     <Style x:Key="XamComboEditorStyle" TargetType="ig:XamComboEditor">
         <Setter Property="FontSize" Value="14.667" />
         <Setter Property="Padding" Value="4,3" />
-        <Setter Property="MinHeight" Value="32" />
+        <Setter Property="Height" Value="25" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="BorderThickness" Value="1" />
@@ -521,9 +521,7 @@
                                                              Popup="{Binding ElementName=Popup}"
                                                              ResizeElement="{Binding ElementName=RootPopupElement}"
                                                              Style="{StaticResource PopupResizerStyle}"
-                                                             Visibility="{Binding Path=AllowDropDownResizing,
-                                                                                  Converter={StaticResource boolToVisibility},
-                                                                                  RelativeSource={RelativeSource TemplatedParent}}">
+                                                             Visibility="Collapsed">
                                             <igPrim:PopupResizer.RenderTransform>
                                                 <TransformGroup>
                                                     <ScaleTransform />

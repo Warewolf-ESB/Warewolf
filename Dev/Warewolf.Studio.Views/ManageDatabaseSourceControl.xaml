@@ -11,6 +11,7 @@
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+             xmlns:ig="http://schemas.infragistics.com/xaml"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" BorderBrush="White"
              d:DataContext="{d:DesignInstance Type=dialogues:IManageDatabaseSourceViewModel,
@@ -19,7 +20,6 @@
     <UserControl.Resources>
         <views:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-        <views:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
     </UserControl.Resources>
     <Grid Background="White" 
           Margin="{StaticResource ElementBorder}"
@@ -65,7 +65,22 @@
                        Grid.Column="0"
                        Margin="{StaticResource ControlBorderTop}"
                        Text="{Binding ServerLabel}"/>
-            <TextBox x:Name="ServerTextBox" 
+            <ig:XamComboEditor x:Name="ServerTextBox"
+                               Grid.Row="1"
+                               Grid.Column="1" 
+                               Margin="{StaticResource ControlBorderTop}"
+                               IsEditable="True"
+                               AllowDrop="True"
+                               MaxDropDownHeight="200"
+                               CustomValueEnteredAction="Allow"
+                               ItemsSource="{Binding Path=ComputerNames}"
+                               views:FocusExtension.IsFocused="True">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:Core.DatabaseSourceServerHelp}"
+                                 DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </ig:XamComboEditor>
+            <!--<TextBox x:Name="ServerTextBox" 
                      views:AutoCompleteBehavior.AutoCompleteItemsSource="{Binding ComputerNames}" 
                      Grid.Row="1"
                      Grid.Column="1" 
@@ -76,7 +91,7 @@
                     <core:HelpSetter Text="{x:Static languages:Core.DatabaseSourceServerHelp}"
                                  DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
-            </TextBox>
+            </TextBox>-->
             <TextBlock VerticalAlignment="Center" 
                        Grid.Row="2"
                        Grid.Column="0"
