@@ -79,6 +79,7 @@ namespace Warewolf.Studio.ViewModels
         {
             _model = model;
             _saveDialog = saveDialog;
+            Variables = new ObservableCollection<NameValue>();
             RequestUrlQuery = service.QueryString;
             Inputs = service.Inputs;
             Outputs = service.OutputMappings;
