@@ -29,90 +29,11 @@
             </Setter.Value>			
         </Setter>-->
         </Style>
-
         <Style x:Key="FillerColCellStyle"   TargetType="ig:CellControl">
             <Setter Property="Visibility" Value="Collapsed"/>
             <!--<Setter Property="BorderBrush" Value="Transparent"/>
 		<Setter Property="BorderThickness" Value="0"/>-->
         </Style>
-
-        <!--<Style x:Key="AddRowStyling" TargetType="igPrim:AddNewRowCellControl">
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="Background">
-                <Setter.Value>
-                    <LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
-                        <LinearGradientBrush.GradientStops>
-                            <GradientStopCollection>
-                                <GradientStop Offset="0" Color="#FFFFFFFF"/>
-                                <GradientStop Offset="1" Color="#FFC3C3C3"/>
-                            </GradientStopCollection>
-                        </LinearGradientBrush.GradientStops>
-                    </LinearGradientBrush>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="BorderBrush" Value="#FF666666"/>
-            <Setter Property="BorderThickness" Value="0,2,0,2"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="Padding" Value="5"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="igPrim:AddNewRowCellControl">
-                        <Border x:Name="AddNewRowElem" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
-                            <Grid>
-                                <VisualStateManager.VisualStateGroups>
-                                    <VisualStateGroup x:Name="CommonStates">
-                                        <VisualState x:Name="Normal" />
-                                        <VisualState x:Name="MouseOver"/>
-                                        <VisualState x:Name="Alternate" />
-                                    </VisualStateGroup>
-                                    <VisualStateGroup x:Name="SelectedStates">
-                                        <VisualState x:Name="NotSelected"/>
-                                        <VisualState x:Name="Selected"/>
-                                    </VisualStateGroup>
-                                    <VisualStateGroup x:Name="ActiveStates"/>
-                                    <VisualStateGroup x:Name="FixedStates">
-                                        <VisualState x:Name="Fixed"/>
-                                        <VisualState x:Name="Unfixed"/>
-                                    </VisualStateGroup>
-                                </VisualStateManager.VisualStateGroups>
-                                <Rectangle Fill="#99FFFFFF" Height="1" VerticalAlignment="Top"/>
-                                <Border BorderThickness="0,0,1,0" BorderBrush="#FFC9CACA"/>
-                                <ContentPresenter   VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}"/>
-                            </Grid>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>-->
-        
-        <Style TargetType="{x:Type ListBox}">
-            <!-- Set the ItemTemplate of the ListBox to a DataTemplate which
-           explains how to display an object of type BitmapImage. -->
-            <Setter Property="ItemsPanel">
-                <Setter.Value>
-                    <ItemsPanelTemplate>
-                        <StackPanel />
-                    </ItemsPanelTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style TargetType="{x:Type ListBoxItem}">
-            <!-- Set the ItemTemplate of the ListBox to a DataTemplate which
-           explains how to display an object of type BitmapImage. -->
-            <Setter Property="BorderBrush" Value="Transparent">
-            </Setter>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                        <Border Background="Transparent" x:Name="IconBorder">
-                            <ContentPresenter />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <views:NotConverter x:Key="NotConverter"></views:NotConverter>
     </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Auto">
         <StackPanel MinWidth="600" MaxWidth="{Binding ElementName=UserControl, Path=ActualWidth}">
@@ -229,6 +150,8 @@
                                     Height="Auto"
                                     Grid.Column="0" 
                                     MaxWidth="600"
+                                    IsAlternateRowsEnabled="False"
+                                    DeleteKeyAction="DeleteRowOfActiveCell"
                                     ColumnWidth="*" 
                                     MaxHeight="180">
                             <ig:XamGrid.Columns>
@@ -253,7 +176,7 @@
                                                       IsEnterKeyEditingEnabled="True" 
                                                       IsF2EditingEnabled="True" 
                                                       IsOnCellActiveEditingEnabled="True"
-                                                      Style="{StaticResource AddNewRowCellControlStyle}"/>
+                                                      />
                             </ig:XamGrid.AddNewRowSettings>
                             <ig:XamGrid.SortingSettings>
                                 <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
@@ -348,9 +271,9 @@
                                 AutoGenerateColumns="False"
                                 Grid.Row="1" 
                                 Grid.Column="1"
-                                ColumnWidth="250" 
+                                ColumnWidth="*" 
                                 MaxWidth="1200"
-                                DeleteKeyAction="DeleteRowOfActiveCell"
+                                IsAlternateRowsEnabled="False"
                                 Margin="{StaticResource ControlBorderTop}"
                                 MaxHeight="180"
                                 BorderBrush="Transparent" >
