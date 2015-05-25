@@ -67,15 +67,15 @@ namespace Warewolf.AcceptanceTesting.DatabaseService
             _dbAction = new DbAction
             {
                 Name = "dbo.ConverToint",
-                Inputs = new List<IDbInput>{new DbInput("charValue","1")}
+                Inputs = new List<IServiceInput> { new ServiceInput("charValue", "1") }
             };
-            var dbInputs = new List<IDbInput>
+            var dbInputs = new List<IServiceInput>
             {
-                new DbInput("fname","Change"),
-                new DbInput("lname","Test"),
-                new DbInput("username","wolf"),
-                new DbInput("password","Dev"),
-                new DbInput("lastAccessDate","10/1/1990"),
+                new ServiceInput("fname","Change"),
+                new ServiceInput("lname","Test"),
+                new ServiceInput("username","wolf"),
+                new ServiceInput("password","Dev"),
+                new ServiceInput("lastAccessDate","10/1/1990"),
             };
             _dbInsertDummyAction = new DbAction
             {
@@ -183,7 +183,7 @@ namespace Warewolf.AcceptanceTesting.DatabaseService
             var inputs = view.GetInputs();
             foreach (var input in inputs.SourceCollection)
             {
-                var dbInput = input as IDbInput;
+                var dbInput = input as IServiceInput;
                 if (dbInput != null)
                 {
                     Assert.AreEqual(dbInput.Value,table.Rows[0][dbInput.Name]);
@@ -224,7 +224,7 @@ namespace Warewolf.AcceptanceTesting.DatabaseService
             {
                 foreach (var input in inputMappings.SourceCollection)
                 {
-                    var inputMapping = input as IDbInput;
+                    var inputMapping = input as IServiceInput;
                     if (inputMapping != null)
                     {
                         Assert.AreEqual(inputMapping.Name, table.Rows.ToList()[i][0]);
@@ -249,7 +249,7 @@ namespace Warewolf.AcceptanceTesting.DatabaseService
             {
                 foreach (var output in outputMappings.SourceCollection)
                 {
-                    var outputMapping = output as IDbOutputMapping;
+                    var outputMapping = output as IServiceOutputMapping;
                     if (outputMapping != null)
                     {
                     }
@@ -262,7 +262,7 @@ namespace Warewolf.AcceptanceTesting.DatabaseService
         {
             var databaseService = new Warewolf.Core.DatabaseService { Name = serviceName, Source = _demoDbSourceDefinition, Action = _dbInsertDummyAction,Inputs = _dbInsertDummyAction.Inputs};
             var dbOutputMapping = new DbOutputMapping("UserID", "UserID") { RecordSetName = "dbo_InsertDummyUser" };
-            databaseService.OutputMappings = new List<IDbOutputMapping>{dbOutputMapping};
+            databaseService.OutputMappings = new List<IServiceOutputMapping> { dbOutputMapping };
             ScenarioContext.Current.Remove("viewModel");
             ScenarioContext.Current.Remove("requestServiceNameViewModel");
             var requestServiceNameViewModelMock = new Mock<IRequestServiceNameViewModel>();
