@@ -305,7 +305,6 @@
     <Style x:Key="CalendarDayButtonStyle" TargetType="CalendarDayButton">
         <Setter Property="Background" Value="{StaticResource TransparentBrush}" />
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="MinWidth" Value="5" />
@@ -648,7 +647,6 @@
                             <TextBlock Margin="0,4,0,4"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
-                                       FontFamily="Segoe UI"
                                        FontSize="14"
                                        FontWeight="Bold"
                                        Text="{Binding}" />
@@ -1034,7 +1032,6 @@
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="FontSize" Value="14.667" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Padding" Value="8,4,8,0" />
         <Setter Property="Height" Value="Auto" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -1116,7 +1113,6 @@
     <Style TargetType="Hyperlink">
         <Setter Property="Foreground" Value="{StaticResource HyperlinkForegroundBrush}" />
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="TextBlock.TextDecorations" Value="{x:Null}" />
     </Style>
 
@@ -1134,7 +1130,6 @@
     <Style x:Key="TextBlockStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FontSize" Value="14.667" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
     </Style>
 
     <Style x:Key="ErrorMessageTextBlockStyle"
@@ -1146,7 +1141,6 @@
     <Style x:Key="LabelStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FontSize" Value="13.333" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
     </Style>
 
     <!--  *********************************  FixedRowSeparator Style  *********************************  -->
@@ -1733,7 +1727,6 @@
     <!--  *********************************  GridSortableListBoxItem Style  *********************************  -->
     <Style x:Key="GridSortableListBoxItemStyle" TargetType="igPrim:GridSortableListBoxItem">
         <Setter Property="FontSize" Value="14.667" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource GridSortableListBoxItemBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource GridSortableListBoxItemBorderBrush}" />
@@ -1896,7 +1889,6 @@
     <!--  *********************************  ColumnChooserListBoxItem Style  *********************************  -->
     <Style x:Key="ColumnChooserListBoxItemStyle" TargetType="ListBoxItem">
         <Setter Property="FontSize" Value="14.667" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource ListBoxItemBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource ListBoxItemBorderBrush}" />
@@ -2091,7 +2083,6 @@
     <Style x:Key="ColumnChooserDialogCloseButtonStyle" TargetType="Button">
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FontSize" Value="14.667" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Padding" Value="10,0,10,0" />
         <Setter Property="Height" Value="Auto" />
         <Setter Property="MinWidth" Value="30" />
@@ -2525,8 +2516,7 @@
     <!--  *********************************  HeaderCellControl Style  *********************************  -->
     <Style x:Key="HeaderCellControlStyle" TargetType="igPrim:HeaderCellControl">
         <Setter Property="FontSize" Value="14.667" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
-        <Setter Property="Foreground" Value="{StaticResource HeaderCellForegroundBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource WareWolfBlackBrush}" />
         <Setter Property="Background" Value="{StaticResource HeaderCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource HeaderCellBorderBrush}" />
         <Setter Property="BorderThickness" Value="0,0,1,0" />
@@ -3131,7 +3121,6 @@
     <!--  *********************************  ExpansionIndicatorHeaderCellControl Style  *********************************  -->
     <Style x:Key="ExpansionIndicatorHeaderCellControlStyle" TargetType="igPrim:ExpansionIndicatorHeaderCellControl">
         <Setter Property="FontSize" Value="14.667" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource HeaderCellForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource HeaderCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource HeaderCellBorderBrush}" />
@@ -3166,7 +3155,6 @@
     <!--  *********************************  RowSelectorHeaderCellControl Style  *********************************  -->
     <Style x:Key="RowSelectorHeaderCellControlStyle" TargetType="igPrim:RowSelectorHeaderCellControl">
         <Setter Property="FontSize" Value="14.667" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource HeaderCellForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource HeaderCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource HeaderCellBorderBrush}" />
@@ -3201,7 +3189,6 @@
     <!--  *********************************  AddNewRowExpansionIndicatorCellControl Style  *********************************  -->
     <Style x:Key="AddNewRowExpansionIndicatorCellControlStyle" TargetType="igPrim:AddNewRowExpansionIndicatorCellControl">
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource CellItemForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource ExpansionCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource ExpansionCellBorderBrush}" />
@@ -3261,7 +3248,6 @@
     <!--  *********************************  AddNewRowCellControl Style  *********************************  -->
     <Style x:Key="AddNewRowCellControlStyle" TargetType="igPrim:AddNewRowCellControl">
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource AddNewRowCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource AddNewRowCellBorderBrush}" />
@@ -3342,7 +3328,6 @@
     <!--  *********************************  ExpansionIndicatorCellControl Style  *********************************  -->
     <Style x:Key="ExpansionIndicatorCellControlStyle" TargetType="igPrim:ExpansionIndicatorCellControl">
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource CellItemForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource ExpansionCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource ExpansionCellBorderBrush}" />
@@ -3506,7 +3491,6 @@
     <!--  *********************************  RowSelectorCellControl Style  *********************************  -->
     <Style x:Key="RowSelectorCellControlStyle" TargetType="igPrim:RowSelectorCellControl">
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource CellItemForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource CellItemBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource CellItemBorderBrush}" />
@@ -3639,7 +3623,6 @@
     <!--  *********************************  CellControl Style  *********************************  -->
     <Style x:Key="CellControlStyle" TargetType="ig:CellControl">
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource CellItemBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource CellItemBorderBrush}" />
@@ -3751,7 +3734,6 @@
     <!--  *********************************  ChildBandCellControl Style  *********************************  -->
     <Style x:Key="ChildBandCellControlStyle" TargetType="igPrim:ChildBandCellControl">
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource HeaderCellForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource HeaderCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource HeaderCellBorderBrush}" />
@@ -3834,7 +3816,6 @@
     <!--  *********************************  FilterRowExpansionIndicatorCellControl Style  *********************************  -->
     <Style x:Key="FilterRowExpansionIndicatorCellControlStyle" TargetType="igPrim:FilterRowExpansionIndicatorCellControl">
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource CellItemForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource ExpansionCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource ExpansionCellBorderBrush}" />
@@ -3907,7 +3888,6 @@
     <!--  *********************************  FilterRowCellControl Style  *********************************  -->
     <Style x:Key="FilterRowCellControlStyle" TargetType="igPrim:FilterRowCellControl">
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource FilterRowCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource FilterRowCellBorderBrush}" />
@@ -4320,7 +4300,6 @@
     <!--  *********************************  SummaryRowExpansionIndicatorCellControl Style  *********************************  -->
     <Style x:Key="SummaryRowExpansionIndicatorCellControlStyle" TargetType="igPrim:SummaryRowExpansionIndicatorCellControl">
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource CellItemForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource ExpansionCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource ExpansionCellBorderBrush}" />
@@ -4407,7 +4386,6 @@
     <!--  *********************************  SummaryRowCellControl Style  *********************************  -->
     <Style x:Key="SummaryRowCellControlStyle" TargetType="igPrim:SummaryRowCellControl">
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource SummaryRowCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource SummaryRowCellBorderBrush}" />
@@ -4560,7 +4538,6 @@
     <!--  *********************************  ExpansionIndicatorFooterCellControl Style  *********************************  -->
     <Style x:Key="ExpansionIndicatorFooterCellControlStyle" TargetType="igPrim:ExpansionIndicatorFooterCellControl">
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource FooterCellForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource FooterCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource FooterCellBorderBrush}" />
@@ -4589,7 +4566,6 @@
     <!--  *********************************  RowSelectorFooterCellControl Style  *********************************  -->
     <Style x:Key="RowSelectorFooterCellControlStyle" TargetType="igPrim:RowSelectorFooterCellControl">
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource FooterCellForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource FooterCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource FooterCellBorderBrush}" />
@@ -4618,7 +4594,6 @@
     <!--  *********************************  FooterCellControl Style  *********************************  -->
     <Style x:Key="FooterCellControlStyle" TargetType="igPrim:FooterCellControl">
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource FooterCellForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource FooterCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource FooterCellBorderBrush}" />
@@ -4732,7 +4707,6 @@
     <!--  *********************************  PagerItem Style  *********************************  -->
     <Style x:Key="PagerItemStyle" TargetType="ListBoxItem">
         <Setter Property="FontSize" Value="14.667" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource PagerItemBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource PagerItemBorderBrush}" />
@@ -5226,7 +5200,6 @@
     <!--  *********************************  GroupByAreaCellControl Style  *********************************  -->
     <Style x:Key="GroupByAreaCellControlStyle" TargetType="igPrim:GroupByAreaCellControl">
         <Setter Property="FontSize" Value="14.667" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource GroupByAreaCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource GroupByAreaCellBorderBrush}" />
@@ -5495,7 +5468,6 @@
     <!--  *********************************  GroupByHeaderCellControl Style  *********************************  -->
     <Style x:Key="GroupByHeaderCellControlStyle" TargetType="igPrim:GroupByHeaderCellControl">
         <Setter Property="FontSize" Value="14.667" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource GroupByHeaderCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource GroupByHeaderCellBorderBrush}" />
@@ -5692,7 +5664,6 @@
     <!--  *********************************  GroupByColumnLayoutHeaderCellControl Style  *********************************  -->
     <Style x:Key="GroupByColumnLayoutHeaderCellControlStyle" TargetType="igPrim:GroupByColumnLayoutHeaderCellControl">
         <Setter Property="FontSize" Value="14.667" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource LightForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource GroupByColumnLayoutHeaderCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource GroupByColumnLayoutHeaderCellBorderBrush}" />
@@ -5730,7 +5701,6 @@
     <!--  *********************************  GroupByCellControl Style  *********************************  -->
     <Style x:Key="GroupByCellControlStyle" TargetType="igPrim:GroupByCellControl">
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Background" Value="{StaticResource GroupByCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource GroupByCellBorderBrush}" />
         <Setter Property="BorderThickness" Value="0,0,1,1" />
@@ -6058,7 +6028,6 @@
     <!--  *********************************  RootFilterXamMenuItem Style  *********************************  -->
     <Style x:Key="RootFilterXamMenuItemStyle" TargetType="igPrim:FilterMenuXamMenuItem">
         <Setter Property="FontSize" Value="14.667" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource TransparentBrush}" />
         <Setter Property="BorderThickness" Value="3" />
@@ -6537,7 +6506,6 @@
     <!--  *********************************  FilterXamMenuItem Style  *********************************  -->
     <Style x:Key="FilterXamMenuItemStyle" TargetType="igPrim:FilterMenuXamMenuItem">
         <Setter Property="FontSize" Value="14.667" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource TransparentBrush}" />
         <Setter Property="BorderThickness" Value="3" />
@@ -7190,7 +7158,6 @@
     <!--  *********************************  FilterSelectionListBoxItem Style  *********************************  -->
     <Style x:Key="FilterSelectionListBoxItemStyle" TargetType="ListBoxItem">
         <Setter Property="FontSize" Value="14.667" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource TransparentBrush}" />
         <Setter Property="Padding" Value="6,4" />
@@ -7284,7 +7251,6 @@
     <Style x:Key="FilterTextBoxWatermarkedStyle" TargetType="igPrim:FilterTextBoxWatermarked">
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FontSize" Value="14.667" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="MaxWidth" Value="Infinity" />
         <Setter Property="Template">
             <Setter.Value>
@@ -7963,7 +7929,6 @@
     <!--  *********************************  DateFilterTreeViewItem Style  *********************************  -->
     <Style x:Key="DateFilterTreeViewItemStyle" TargetType="igPrim:DateFilterTreeViewItem">
         <Setter Property="FontSize" Value="14.667" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource DateFilterTreeViewItemBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource DateFilterTreeViewItemBorderBrush}" />
@@ -8816,7 +8781,6 @@
     <Style x:Key="ConditionalFormattingCellControlStyle" TargetType="ig:ConditionalFormattingCellControl">
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Background" Value="{StaticResource CellItemBackgroundBrush}" />
         <Setter Property="AltBackground" Value="{StaticResource CellItemAltBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource CellItemBorderBrush}" />
@@ -9004,7 +8968,6 @@
     <!--  *********************************  GroupHeaderCellControl Style  *********************************  -->
     <Style x:Key="GroupHeaderCellControlStyle" TargetType="igPrim:GroupHeaderCellControl">
         <Setter Property="FontSize" Value="14.667" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource GroupHeaderCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource GroupHeaderCellBorderBrush}" />
@@ -9402,7 +9365,6 @@
     <Style x:Key="GroupCellControlStyle" TargetType="igPrim:GroupCellControl">
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="igPrim:GroupCellControl">
@@ -9416,7 +9378,6 @@
     <!--  *********************************  GroupFooterCellControl Style  *********************************  -->
     <Style x:Key="GroupFooterCellControlStyle" TargetType="igPrim:GroupFooterCellControl">
         <Setter Property="FontSize" Value="14.667" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource GroupFooterCellForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource GroupFooterCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource GroupFooterCellBorderBrush}" />
@@ -9437,7 +9398,6 @@
     <!--  *********************************  GroupDisplayCellControl Style  *********************************  -->
     <Style x:Key="GroupDisplayCellControlStyle" TargetType="igPrim:GroupDisplayCellControl">
         <Setter Property="FontSize" Value="13.333" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource CellItemBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource CellItemBorderBrush}" />
@@ -9562,7 +9522,6 @@
     <Style x:Key="ColumnLayoutTemplateCellControlStyle" TargetType="igPrim:ColumnLayoutTemplateCellControl">
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Background" Value="{StaticResource CellItemBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource CellItemBorderBrush}" />
         <Setter Property="BorderThickness" Value="0" />
@@ -9633,7 +9592,6 @@
     <!--  *********************************  MergedContentControl Style  *********************************  -->
     <Style TargetType="igPrim:MergedContentControl">
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource MergedContentCellForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource MergedContentCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource MergedContentCellBorderBrush}" />
@@ -9663,7 +9621,6 @@
     <!--  *********************************  MergedSummaryCellControl Style  *********************************  -->
     <Style x:Key="MergedSummaryCellControlStyle" TargetType="igPrim:MergedSummaryCellControl">
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource MergedSummaryCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource MergedSummaryCellBorderBrush}" />
@@ -9746,7 +9703,6 @@
     <Style x:Key="CustomFilterButtonStyle" TargetType="Button">
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FontSize" Value="14.667" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Padding" Value="10,0,10,2" />
         <Setter Property="Height" Value="Auto" />
         <Setter Property="MinWidth" Value="30" />
