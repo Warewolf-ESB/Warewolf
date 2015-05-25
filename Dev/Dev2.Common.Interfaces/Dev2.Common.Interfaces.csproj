@@ -278,6 +278,7 @@
     <Compile Include="IVersionChecker.cs" />
     <Compile Include="IWebLatestVersionDialog.cs" />
     <Compile Include="IXamlResource.cs" />
+    <Compile Include="NameValue.cs" />
     <Compile Include="NetworkStateChangedState.cs" />
     <Compile Include="PermissionsChangedArgs.cs" />
     <Compile Include="SaveDialog\IRequestServiceNameViewModel.cs" />

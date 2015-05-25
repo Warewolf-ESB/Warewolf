@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -26,7 +27,7 @@ namespace Warewolf.Studio.ViewModels
     {
         private enSourceType _serverType;
         private AuthenticationType _authenticationType;
-        private string _serverName;
+        private IComputerName _serverName;
         private string _databaseName;
         private string _userName;
         private string _password;
@@ -41,7 +42,7 @@ namespace Warewolf.Studio.ViewModels
         bool _testing;
         string _resourceName;
         CancellationTokenSource _token;
-        IList<string> _computerNames;
+        IList<IComputerName> _computerNames;
         readonly string _warewolfserverName;
         string _headerText;
         private bool _isDisposed;
@@ -64,11 +65,11 @@ namespace Warewolf.Studio.ViewModels
             _testPassed = false;
             _testFailed = false;
             DatabaseNames = new List<string>();
-            ComputerNames = new List<string>();
+            ComputerNames = new List<IComputerName>();
             // ReSharper disable MaximumChainedReferences
             new Task(()=>
             {
-                var names = _updateManager.GetComputerNames();
+                var names = _updateManager.GetComputerNames().Select(name=>new ComputerName{Name=name} as IComputerName).ToList();
                 Dispatcher.CurrentDispatcher.Invoke(() => ComputerNames = names);
             }).Start();
             // ReSharper restore MaximumChainedReferences
@@ -130,7 +131,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (Testing)
                 return false;
-            if (String.IsNullOrEmpty(ServerName))
+            if (ServerName != null && String.IsNullOrEmpty(ServerName.Name))
             {
                 return false;
             }
@@ -155,7 +156,7 @@ namespace Warewolf.Studio.ViewModels
             AuthenticationType = dbSource.AuthenticationType;
             UserName = dbSource.UserName;
             DatabaseName = dbSource.DbName;
-            ServerName = dbSource.ServerName;
+            ServerName = ComputerNames.FirstOrDefault(name => dbSource.ServerName==name.Name);
             Password = dbSource.Password;
             
         }
@@ -181,7 +182,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get { return AuthenticationType==AuthenticationType.User; }            
         }
-        public IList<string> ComputerNames
+        public IList<IComputerName> ComputerNames
         {
             get
             {
@@ -279,7 +280,7 @@ namespace Warewolf.Studio.ViewModels
                 return new DbSourceDefinition
                 {
                     AuthenticationType = AuthenticationType,
-                    ServerName = ServerName,
+                    ServerName = ServerName.Name,
                     Password = Password,
                     UserName = UserName,
                     Type = ServerType,
@@ -295,7 +296,7 @@ namespace Warewolf.Studio.ViewModels
             return new DbSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
-                ServerName = ServerName ,
+                ServerName = ServerName.Name ,
                 Password = Password,
                 UserName =  UserName ,
                 Type = ServerType,
@@ -309,7 +310,7 @@ namespace Warewolf.Studio.ViewModels
                 _dbSource.AuthenticationType = AuthenticationType;
                 _dbSource.DbName = DatabaseName;
                 _dbSource.Password = Password;
-                _dbSource.ServerName = ServerName;
+                _dbSource.ServerName = ServerName.Name;
                 _dbSource.UserName = UserName;
                 return _dbSource;
 
@@ -352,7 +353,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public string ServerName
+        public IComputerName ServerName
         {
             get { return _serverName; }
             set
@@ -611,7 +612,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Header);
             }
         }
-        public bool IsEmpty { get { return String.IsNullOrEmpty(ServerName) && AuthenticationType == AuthenticationType.Windows && String.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Password); } }
+        public bool IsEmpty { get { return ServerName != null && (String.IsNullOrEmpty(ServerName.Name) && AuthenticationType == AuthenticationType.Windows && String.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Password)); } }
 
         public ResourceType? Image
         {
@@ -654,5 +655,10 @@ namespace Warewolf.Studio.ViewModels
                 _isDisposed = true;
             }
         }
+    }
+
+    public class ComputerName : IComputerName
+    {
+        public string Name { get; set; }
     }
 }

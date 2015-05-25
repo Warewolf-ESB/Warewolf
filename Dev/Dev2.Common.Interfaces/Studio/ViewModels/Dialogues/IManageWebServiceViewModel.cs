@@ -50,7 +50,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// <summary>
         /// Request headers
         /// </summary>
-        ICollection<INameValue> Headers { get; set; }
+        ICollection<NameValue> Headers { get; set; }
 
         /// <summary>
         /// The Web service query string
@@ -75,7 +75,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// <summary>
         /// the warewolf variables defined in the body,headers and query string
         /// </summary>
-        ICollection<INameValue> Variables { get; set; }
+        ICollection<NameValue> Variables { get; set; }
 
         /// <summary>
         /// the response from the web service

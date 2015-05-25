@@ -34,11 +34,11 @@ namespace Warewolf.Studio.ViewModels
         ICollection<IWebServiceSource> _sources;
         IWebServiceSource _selectedSource;
         IWebService _webService;
-        ICollection<INameValue> _headers;
+        ICollection<NameValue> _headers;
         string _requestUrlQuery;
         string _sourceUrl;
         string _requestBody;
-        ICollection<INameValue> _variables;
+        ICollection<NameValue> _variables;
         string _response;
         ICommand _pastResponseCommand;
         ICommand _testCommand;
@@ -105,8 +105,8 @@ namespace Warewolf.Studio.ViewModels
             EditWebSourceCommand = new DelegateCommand(() => _model.EditSource(SelectedSource), () => SelectedSource != null);
             var headerCollection = new ObservableCollection<INameValue>();
             headerCollection.CollectionChanged += HeaderCollectionOnCollectionChanged;
-            Headers = new ObservableCollection<INameValue>(new List<INameValue>{new NameValue()});
-            Variables =  new ObservableCollection<INameValue>(new List<INameValue>{new NameValue()});
+            Headers = new ObservableCollection<NameValue>();
+            Variables = new ObservableCollection<NameValue>();
         }
 
         bool CanTest()
@@ -312,7 +312,7 @@ namespace Warewolf.Studio.ViewModels
         /// <summary>
         /// Request headers
         /// </summary>
-        public ICollection<INameValue> Headers
+        public ICollection<NameValue> Headers
         {
             get
             {
@@ -421,7 +421,7 @@ namespace Warewolf.Studio.ViewModels
         /// <summary>
         /// the warewolf variables defined in the body,headers and query string
         /// </summary>
-        public ICollection<INameValue> Variables
+        public ICollection<NameValue> Variables
         {
             get
             {
@@ -677,45 +677,6 @@ namespace Warewolf.Studio.ViewModels
         /// </summary>
         public void Dispose()
         {
-        }
-
-        #endregion
-    }
-
-    public class NameValue : INameValue
-    {
-        string _name;
-        string _value;
-
-        #region Implementation of INameValue
-
-        public  NameValue()
-        {
-            Name = "Bob";
-            Value = "Bob";
-        }
-
-        public string Name
-        {
-            get
-            {
-                return _name;
-            }
-            set
-            {
-                _name = value;
-            }
-        }
-        public string Value
-        {
-            get
-            {
-                return _value;
-            }
-            set
-            {
-                _value = value;
-            }
         }
 
         #endregion

@@ -127,6 +127,8 @@ namespace Warewolf.Studio
             {
                 //var testingWindow = new ControlStyleTestingWindow();
                 //testingWindow.Show();
+                var testingInfragistics = new InfragisticsControlStyles();
+                testingInfragistics.Show();
 
                 //var testWindow = new Window
                 //{
@@ -137,14 +139,14 @@ namespace Warewolf.Studio
                 //};
                 //testWindow.ShowDialog();
 
-                var testPlugWindow = new Window
-                {
-                    Content = new ManagePluginSourceControl()
-                    {
-                        
-                    }
-                };
-                testPlugWindow.ShowDialog();
+                //var testPlugWindow = new Window
+                //{
+                //    Content = new ManagePluginSourceControl()
+                //    {
+
+                //    }
+                //};
+                //testPlugWindow.ShowDialog();
             }
             if (e.Key == Key.G && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {

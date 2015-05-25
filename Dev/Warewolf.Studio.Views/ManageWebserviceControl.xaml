@@ -7,12 +7,85 @@
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:dialogues="clr-namespace:Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;assembly=Dev2.Common.Interfaces"
+             xmlns:ig="http://schemas.infragistics.com/xaml"
+             xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance Type=dialogues:IManageWebServiceViewModel,
                                               IsDesignTimeCreatable=False}">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <Style x:Key="FillerColHeader" TargetType="{x:Type igPrim:HeaderCellControl}">
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <!--<Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                          <Border>
+                              <Rectangle Margin="4" SnapsToDevicePixels="true" 
+                              Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" 
+                              StrokeThickness="0" StrokeDashArray="1 2" />
+                          </Border>
+                      </ControlTemplate>
+            </Setter.Value>			
+        </Setter>-->
+        </Style>
+
+        <Style x:Key="FillerColCellStyle"   TargetType="ig:CellControl">
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <!--<Setter Property="BorderBrush" Value="Transparent"/>
+		<Setter Property="BorderThickness" Value="0"/>-->
+        </Style>
+
+        <!--<Style x:Key="AddRowStyling" TargetType="igPrim:AddNewRowCellControl">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStopCollection>
+                                <GradientStop Offset="0" Color="#FFFFFFFF"/>
+                                <GradientStop Offset="1" Color="#FFC3C3C3"/>
+                            </GradientStopCollection>
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderBrush" Value="#FF666666"/>
+            <Setter Property="BorderThickness" Value="0,2,0,2"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="igPrim:AddNewRowCellControl">
+                        <Border x:Name="AddNewRowElem" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+                            <Grid>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal" />
+                                        <VisualState x:Name="MouseOver"/>
+                                        <VisualState x:Name="Alternate" />
+                                    </VisualStateGroup>
+                                    <VisualStateGroup x:Name="SelectedStates">
+                                        <VisualState x:Name="NotSelected"/>
+                                        <VisualState x:Name="Selected"/>
+                                    </VisualStateGroup>
+                                    <VisualStateGroup x:Name="ActiveStates"/>
+                                    <VisualStateGroup x:Name="FixedStates">
+                                        <VisualState x:Name="Fixed"/>
+                                        <VisualState x:Name="Unfixed"/>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                <Rectangle Fill="#99FFFFFF" Height="1" VerticalAlignment="Top"/>
+                                <Border BorderThickness="0,0,1,0" BorderBrush="#FFC9CACA"/>
+                                <ContentPresenter   VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>-->
+        
         <Style TargetType="{x:Type ListBox}">
             <!-- Set the ItemTemplate of the ListBox to a DataTemplate which
            explains how to display an object of type BitmapImage. -->
@@ -138,59 +211,69 @@
                           Grid.Row="1"
                           Grid.ColumnSpan="2">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="50*" />
+                            <ColumnDefinition Width="50*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="180" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" 
                                    Grid.Column="0"
                                    Text="{Binding SelectHeadersHeader}" 
                                    FontWeight="Bold"></TextBlock>
-                        
-                        <!--<ListBox Grid.Row="1" 
-                                  Grid.Column="0"
-                                  ItemsSource="{Binding Headers}"></ListBox>-->
-                        <!--<ListBox Grid.Row="1" 
-                                  Grid.Column="0"
-                                  ItemsSource="{Binding Headers}">
-                            <ListBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                    </Grid>
-                                </ItemsPanelTemplate>
-                            </ListBox.ItemsPanel>
-
-                            <ListBoxItem Content="{Binding Path=Name}" Grid.Row="0" Grid.Column="0"/>
-                            <ListBoxItem Content="{Binding Path=Value}"  Grid.Row="0" Grid.Column="1"/>
-                        </ListBox>-->
-                        <DataGrid x:Name="HeaderDataGrid" 
-                                  Grid.Row="1" 
-                                  Grid.Column="0"
-                                  Grid.ColumnSpan="2"
-                                  AutoGenerateColumns="True"
-                                  ItemsSource="{Binding Headers, UpdateSourceTrigger=PropertyChanged}" 
-                                 >
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Value" Binding="{Binding Path=Value}"/>
-                                <DataGridTemplateColumn Header="Name" CanUserResize="True" Width="*">
-                                    <DataGridTemplateColumn.CellTemplate>
+                        <ig:XamGrid x:Name="HeadersGrid" 
+                                    ItemsSource="{Binding Headers}" 
+                                    AutoGenerateColumns="False"
+                                    Grid.Row="1" 
+                                    Height="Auto"
+                                    Grid.Column="0" 
+                                    MaxWidth="600"
+                                    ColumnWidth="*" 
+                                    MaxHeight="180">
+                            <ig:XamGrid.Columns>
+                                <ig:TextColumn Key="Name" HeaderText="Name" Width="299">
+                                    <ig:TextColumn.AddNewRowEditorTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Name}"></TextBlock>
+                                            <TextBox Text="{Binding Path=Name, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
                                         </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                            </DataGrid.Columns>
-                        </DataGrid>
+                                    </ig:TextColumn.AddNewRowEditorTemplate>
+                                </ig:TextColumn>
+                                <ig:TextColumn Key="Value" HeaderText="Value" Width="299">
+                                    <ig:TextColumn.AddNewRowEditorTemplate>
+                                        <DataTemplate>
+                                            <TextBox Text="{Binding Path=Value, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
+                                        </DataTemplate>
+                                    </ig:TextColumn.AddNewRowEditorTemplate>
+                                </ig:TextColumn>
+                            </ig:XamGrid.Columns>
+                            <ig:XamGrid.AddNewRowSettings>
+                                <ig:AddNewRowSettings AllowAddNewRow="Top" 
+                                                      IsMouseActionEditingEnabled="SingleClick"
+                                                      IsEnterKeyEditingEnabled="True" 
+                                                      IsF2EditingEnabled="True" 
+                                                      IsOnCellActiveEditingEnabled="True"
+                                                      Style="{StaticResource AddNewRowCellControlStyle}"/>
+                            </ig:XamGrid.AddNewRowSettings>
+                            <ig:XamGrid.SortingSettings>
+                                <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
+                            </ig:XamGrid.SortingSettings>
+                            <ig:XamGrid.EditingSettings>
+                                <ig:EditingSettings AllowEditing="Cell"
+                                                    IsMouseActionEditingEnabled="SingleClick"
+                                                    IsEnterKeyEditingEnabled="True" 
+                                                    IsF2EditingEnabled="True" 
+                                                    IsOnCellActiveEditingEnabled="True" />
+                            </ig:XamGrid.EditingSettings>
+                            <!-- Conditional Formating is On-->
+                            <ig:XamGrid.ConditionalFormattingSettings>
+                                <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
+                            </ig:XamGrid.ConditionalFormattingSettings>
+                            <!-- Filler Column Setting is On-->
+                            <ig:XamGrid.FillerColumnSettings>
+                                <ig:FillerColumnSettings   Style="{StaticResource FillerColCellStyle}" HeaderStyle="{StaticResource FillerColHeader}" />
+                            </ig:XamGrid.FillerColumnSettings>
+                        </ig:XamGrid>
                     </Grid>
                     <!-- BODY -->
                     <Grid Grid.Column="1" 
@@ -260,29 +343,44 @@
                                    Text="{Binding VariablesHeader}" 
                                    Style="{StaticResource SourceHeader}" ></TextBlock>
                     </StackPanel>
-                    <DataGrid x:Name="VariableDataGrid" 
-                               Grid.Row="1"
-                                  Grid.Column="1"
-                                  ItemsSource="{Binding Variables}" 
-                             Margin="{StaticResource ControlBorderTop}"
-                                  MaxHeight="180"
-                             HorizontalAlignment="Stretch"
-                                  MinColumnWidth="50"
-                                  GridLinesVisibility="Vertical" 
-                                  ColumnWidth="*" 
-                                  AutoGenerateColumns="False" 
-                                  HeadersVisibility="Column"
-                                  CanUserSortColumns="False"
-                                  CanUserReorderColumns="False"
-                                  BorderBrush="Transparent" 
-                                  CanUserResizeColumns="False" 
-                                  CanUserAddRows="True"
-                                  VerticalGridLinesBrush="Transparent">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}"/>
-                            <DataGridTextColumn Header="Value" Binding="{Binding Path=Value}"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                    <ig:XamGrid ItemsSource="{Binding Variables}" 
+                                x:Name="VariablesGrid"
+                                AutoGenerateColumns="False"
+                                Grid.Row="1" 
+                                Grid.Column="1"
+                                ColumnWidth="250" 
+                                MaxWidth="1200"
+                                DeleteKeyAction="DeleteRowOfActiveCell"
+                                Margin="{StaticResource ControlBorderTop}"
+                                MaxHeight="180"
+                                BorderBrush="Transparent" >
+                        <ig:XamGrid.Columns>
+                            <ig:TextColumn Key="Name" HeaderText="Name" Width="600" IsReadOnly="True">
+                                <ig:TextColumn.AddNewRowEditorTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=Name, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
+                                    </DataTemplate>
+                                </ig:TextColumn.AddNewRowEditorTemplate>
+                            </ig:TextColumn>
+                            <ig:TextColumn Key="Value" HeaderText="Value" Width="600">
+                                <ig:TextColumn.AddNewRowEditorTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding Path=Value, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
+                                    </DataTemplate>
+                                </ig:TextColumn.AddNewRowEditorTemplate>
+                            </ig:TextColumn>
+                        </ig:XamGrid.Columns>
+                        <ig:XamGrid.SortingSettings>
+                            <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
+                        </ig:XamGrid.SortingSettings>
+                        <ig:XamGrid.EditingSettings>
+                            <ig:EditingSettings AllowEditing="Cell"
+                                                    IsMouseActionEditingEnabled="SingleClick"
+                                                    IsEnterKeyEditingEnabled="True" 
+                                                    IsF2EditingEnabled="True" 
+                                                    IsOnCellActiveEditingEnabled="True" />
+                        </ig:XamGrid.EditingSettings>
+                    </ig:XamGrid>
                 </Grid>
                 <!-- RESPONSE -->
                 <Grid x:Name="ResponseGrid" 

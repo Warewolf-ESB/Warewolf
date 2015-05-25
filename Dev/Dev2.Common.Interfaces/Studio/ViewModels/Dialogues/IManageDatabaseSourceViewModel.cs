@@ -23,7 +23,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// <summary>
         /// The Database Server Name
         /// </summary>
-        string ServerName { get; set; }
+        IComputerName ServerName { get; set; }
         
         /// <summary>
         /// The Database that the source is reading from
@@ -151,7 +151,12 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         bool UserAuthenticationSelected { get; }
 
 
-        IList<string> ComputerNames { get; set; } 
+        IList<IComputerName> ComputerNames { get; set; } 
+    }
+
+    public interface IComputerName
+    {
+        string Name { get; set; }
     }
 
     public interface IManageDatabaseSourceModel
