@@ -84,11 +84,11 @@ namespace Warewolf.Studio.ViewModels
             _model = new WebServiceModel(updateRepository,queryProxy,"bob");
             TestCommand = new DelegateCommand(() =>
             {
-                var output = _model.TestService(ToModel());
+                var output = Model.TestService(ToModel());
                 Response = output;
             }, CanTest);
-            SaveCommand = new DelegateCommand(() => _model.SaveService(ToModel()), CanSave);
-            NewWebSourceCommand = new DelegateCommand(_model.CreateNewSource);
+            SaveCommand = new DelegateCommand(() => Model.SaveService(ToModel()), CanSave);
+            NewWebSourceCommand = new DelegateCommand(Model.CreateNewSource);
             Init();
            
         }
@@ -99,17 +99,17 @@ namespace Warewolf.Studio.ViewModels
             Header = Resources.Languages.Core.WebserviceTabHeader;
             WebRequestMethods = new ObservableCollection<WebRequestMethod>(Dev2EnumConverter.GetEnumsToList<WebRequestMethod>());
             SelectedWebRequestMethod = WebRequestMethods.First();
-            Sources = new ObservableCollection<IWebServiceSource>(_model.RetrieveSources());
+            Sources = new ObservableCollection<IWebServiceSource>(Model.RetrieveSources());
             Inputs = new ObservableCollection<IServiceInput>{new ServiceInput("a","a"),new ServiceInput("b","b")};
             Outputs = new ObservableCollection<IServiceOutputMapping> { new DbOutputMapping("bob", "builder"), new DbOutputMapping("dora", "explorer") };
-            EditWebSourceCommand = new DelegateCommand(() => _model.EditSource(SelectedSource), () => SelectedSource != null);
+            EditWebSourceCommand = new DelegateCommand(() => Model.EditSource(SelectedSource), () => SelectedSource != null);
             var headerCollection = new ObservableCollection<INameValue>();
             headerCollection.CollectionChanged += HeaderCollectionOnCollectionChanged;
-            Headers = new ObservableCollection<INameValue>(new List<INameValue>{new NameValue()});
-            Variables =  new ObservableCollection<INameValue>(new List<INameValue>{new NameValue()});
+            Headers = new ObservableCollection<INameValue>();
+            Variables =  new ObservableCollection<INameValue>();
         }
 
-        bool CanTest()
+        public bool CanTest()
         {
             return SelectedSource!=null;
         }
@@ -152,8 +152,7 @@ namespace Warewolf.Studio.ViewModels
                
             }
 
-            Variables.Add( new NameValue{Name="BOB",Value = "Builder"} );
-            Variables.Add(  new NameValue{Name = "var",Value = "100"});
+
            
         }
 
@@ -321,6 +320,15 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _headers = value;
+                if (_headers != null)
+                {
+                    foreach (var nameValue in _headers)
+                    {
+                        UpdateRequestVariables(nameValue.Name);
+                        UpdateRequestVariables(nameValue.Value);
+                    }
+
+                }
                 OnPropertyChanged(() => Headers);
             }
         }
@@ -620,6 +628,13 @@ namespace Warewolf.Studio.ViewModels
                 return _saveDialog;
             }
         }
+        public IWebServiceModel Model
+        {
+            get
+            {
+                return _model;
+            }
+        }
 
         #endregion
 
@@ -640,26 +655,31 @@ namespace Warewolf.Studio.ViewModels
         {
             if (Item != null)
             {
-                return new WebServiceDefinition()
+                return new WebServiceDefinition
                 {
                     Name = Item.Name,
-                    Action = new DbAction{Inputs = Inputs.ToList(),Name=""},
                     Inputs = Inputs == null ? new List<IServiceInput>() : Inputs.ToList(),
                     OutputMappings = OutputMapping,
                     Source = SelectedSource,
                     Path = Item.Path,
-                    Id = Item.Id
+                    Id = Item.Id,
+                    Headers = Headers.ToList(),
+                    PostData = RequestBody,
+                    QueryString = RequestUrlQuery
                 };
             }
             return new WebServiceDefinition
             {
-                Action = new DbAction { Inputs = Inputs.ToList(), Name = "" },
+               
                 Inputs = Inputs == null ? new List<IServiceInput>() : Inputs.ToList(),
                 OutputMappings = OutputMapping,
                 Source = SelectedSource,
                 Name = "",
                 Path = "",
-                Id = Guid.NewGuid()
+                Id = Guid.NewGuid(),
+                PostData =  RequestBody,
+                Headers = Headers.ToList(),
+                QueryString = RequestUrlQuery
             };
 
         }
@@ -677,45 +697,6 @@ namespace Warewolf.Studio.ViewModels
         /// </summary>
         public void Dispose()
         {
-        }
-
-        #endregion
-    }
-
-    public class NameValue : INameValue
-    {
-        string _name;
-        string _value;
-
-        #region Implementation of INameValue
-
-        public  NameValue()
-        {
-            Name = "Bob";
-            Value = "Bob";
-        }
-
-        public string Name
-        {
-            get
-            {
-                return _name;
-            }
-            set
-            {
-                _name = value;
-            }
-        }
-        public string Value
-        {
-            get
-            {
-                return _value;
-            }
-            set
-            {
-                _value = value;
-            }
         }
 
         #endregion

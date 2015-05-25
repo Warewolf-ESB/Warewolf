@@ -40,7 +40,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var source = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, src.Source.Id);
                 var res = new WebService
                 {
-                    Method = new ServiceMethod(src.Name, src.Name, parameters, new OutputDescription(), new List<MethodOutput>(), src.Action.Name),
+                    Method = new ServiceMethod(src.Name, src.Name, parameters, new OutputDescription(), new List<MethodOutput>(),"test"),
                     ResourceName = src.Name,
                     ResourcePath = src.Path,
                     ResourceID = src.Id,
