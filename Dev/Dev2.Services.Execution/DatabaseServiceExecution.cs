@@ -303,7 +303,7 @@ namespace Dev2.Services.Execution
                     var idx = dtCols.IndexOf(def.Name);
                     if (idx != -1)
                     {
-                        if (def.IsRecordSet)
+                        if (def.IsRecordSet && DataListUtil.IsValueRecordsetWithFields(def.RawValue))
                         {
                             result.Add(idx, DataListUtil.ExtractFieldNameFromValue(def.RawValue));
                         }
