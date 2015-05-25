@@ -3,10 +3,29 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
         xmlns:ig="http://schemas.infragistics.com/xaml"
+        xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
         Title="InfragisticsControlStyles" Height="800" Width="600">
     <Window.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-        <core:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter" />
+        <Style x:Key="FillerColHeader" TargetType="{x:Type igPrim:HeaderCellControl}">
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <!--<Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                          <Border>
+                              <Rectangle Margin="4" SnapsToDevicePixels="true" 
+                              Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" 
+                              StrokeThickness="0" StrokeDashArray="1 2" />
+                          </Border>
+                      </ControlTemplate>
+            </Setter.Value>			
+        </Setter>-->
+        </Style>
+
+        <Style x:Key="FillerColCellStyle"   TargetType="ig:CellControl">
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <!--<Setter Property="BorderBrush" Value="Transparent"/>
+		<Setter Property="BorderThickness" Value="0"/>-->
+        </Style>
     </Window.Resources>
     <WrapPanel Orientation="Vertical" Margin="{StaticResource ContainerBorder}">
         <Grid>
@@ -23,9 +42,58 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            
-            <ig:XamGrid Grid.Row="0">
-                
+
+            <ig:XamGrid x:Name="HeadersGrid" 
+                                    ItemsSource="{Binding Headers}" 
+                                    AutoGenerateColumns="False"
+                                    Grid.Row="0" 
+                                    Height="Auto"
+                                    Grid.Column="0" 
+                                    MaxWidth="600"
+                                    ColumnWidth="*" 
+                                    MaxHeight="180">
+                <ig:XamGrid.Columns>
+                    <ig:TextColumn Key="Name" HeaderText="Name" Width="299">
+                        <ig:TextColumn.AddNewRowEditorTemplate>
+                            <DataTemplate>
+                                <TextBox Text="" />
+                            </DataTemplate>
+                        </ig:TextColumn.AddNewRowEditorTemplate>
+                    </ig:TextColumn>
+                    <ig:TextColumn Key="Value" HeaderText="Value" Width="299">
+                        <ig:TextColumn.AddNewRowEditorTemplate>
+                            <DataTemplate>
+                                <CheckBox />
+                            </DataTemplate>
+                        </ig:TextColumn.AddNewRowEditorTemplate>
+                    </ig:TextColumn>
+                </ig:XamGrid.Columns>
+                <ig:XamGrid.AddNewRowSettings>
+                    <ig:AddNewRowSettings AllowAddNewRow="Top" 
+                                                      IsMouseActionEditingEnabled="SingleClick"
+                                                      IsEnterKeyEditingEnabled="True" 
+                                                      IsF2EditingEnabled="True" 
+                                                      IsOnCellActiveEditingEnabled="True"
+                                                      />
+                </ig:XamGrid.AddNewRowSettings>
+                <ig:XamGrid.SortingSettings>
+                    <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
+                </ig:XamGrid.SortingSettings>
+                <ig:XamGrid.EditingSettings>
+                    <ig:EditingSettings AllowEditing="Cell"
+                                                    IsMouseActionEditingEnabled="SingleClick"
+                                                    IsEnterKeyEditingEnabled="True" 
+                                                    IsF2EditingEnabled="True" 
+                                                    IsOnCellActiveEditingEnabled="True" />
+                </ig:XamGrid.EditingSettings>
+                <!-- Conditional Formating is On-->
+                <ig:XamGrid.ConditionalFormattingSettings>
+                    <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
+                </ig:XamGrid.ConditionalFormattingSettings>
+                <!-- Filler Column Setting is On-->
+                <ig:XamGrid.FillerColumnSettings>
+                    <ig:FillerColumnSettings   Style="{StaticResource FillerColCellStyle}" HeaderStyle="{StaticResource FillerColHeader}" />
+                </ig:XamGrid.FillerColumnSettings>
             </ig:XamGrid>
 
             <ig:XamComboEditor x:Name="ComboEditor"
@@ -37,30 +105,6 @@
                                HorizontalAlignment="Left"
                                DisplayMemberPath="Company"
                                Height="30" Width="300" />
-
-            <!--<igDP:XamDataGrid DataSource="{Binding}" Name="xamDataGrid1" VerticalAlignment="Top" >
-                <igDP:XamDataGrid.FieldLayoutSettings>
-                    <igDP:FieldLayoutSettings AutoGenerateFields="False" />
-                </igDP:XamDataGrid.FieldLayoutSettings>
-                <igDP:XamDataGrid.FieldLayouts>
-                    <igDP:FieldLayout>
-                        <igDP:Field Name="Country"/>
-                        <igDP:UnboundField Name="Cities" Label="Cities" Width="Auto">
-                            <igDP:UnboundField.Settings>
-                                <igDP:FieldSettings>
-                                    <igDP:FieldSettings.EditorStyle>
-                                        <Style TargetType="{x:Type ig:XamComboEditor}">
-                                            <Style.Setters>
-                                                <Setter Property="ItemsSource" Value="{Binding DataItem.Cities}" />
-                                            </Style.Setters>
-                                        </Style>
-                                    </igDP:FieldSettings.EditorStyle>
-                                </igDP:FieldSettings>
-                            </igDP:UnboundField.Settings>
-                        </igDP:UnboundField>
-                    </igDP:FieldLayout>
-                </igDP:XamDataGrid.FieldLayouts>
-            </igDP:XamDataGrid>-->
 
         </Grid>
     </WrapPanel>
