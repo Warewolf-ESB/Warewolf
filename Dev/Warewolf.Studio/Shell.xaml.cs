@@ -125,8 +125,10 @@ namespace Warewolf.Studio
         {
             if (e.Key == Key.Home && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
-                var testingWindow = new ControlStyleTestingWindow();
-                testingWindow.Show();
+                //var testingWindow = new ControlStyleTestingWindow();
+                //testingWindow.Show();
+
+                
 
                 var testWindow = new Window
                 {
