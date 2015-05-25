@@ -76,7 +76,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public string HandlesType()
         {
-            return "TestDbService";
+            return "TestWebService";
         }
     }
 }
