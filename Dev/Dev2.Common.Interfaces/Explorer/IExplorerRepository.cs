@@ -7,6 +7,7 @@ using Dev2.Common.Interfaces.ServerDialogue;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Versioning;
+using Dev2.Common.Interfaces.WebServices;
 
 namespace Dev2.Common.Interfaces.Explorer
 {
@@ -40,5 +41,7 @@ namespace Dev2.Common.Interfaces.Explorer
         void Save(IDatabaseService toDbSource);
 
         DataTable TestDbService(IDatabaseService inputValues);
+
+        string TestWebService(IWebService inputValues);
     }
 }

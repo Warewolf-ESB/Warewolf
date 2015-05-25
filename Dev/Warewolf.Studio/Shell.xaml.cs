@@ -125,25 +125,23 @@ namespace Warewolf.Studio
         {
             if (e.Key == Key.Home && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
-                //var testingWindow = new ControlStyleTestingWindow();
-                //testingWindow.Show();
-                var testingInfragistics = new InfragisticsControlStyles();
-                testingInfragistics.Show();
+                var testingWindow = new ControlStyleTestingWindow();
+                testingWindow.Show();
 
-                //var testWindow = new Window
-                //{
-                //    Content = new ManageWebserviceControl()
-                //    {
-                //        DataContext = new ManageWebServiceViewModel(ResourceType.WebService)
-                //    }
-                //};
-                //testWindow.ShowDialog();
+                var testWindow = new Window
+                {
+                    Content = new ManageWebserviceControl()
+                    {
+                        DataContext = new ManageWebServiceViewModel(ResourceType.WebService)
+                    }
+                };
+                testWindow.ShowDialog();
 
                 //var testPlugWindow = new Window
                 //{
                 //    Content = new ManagePluginSourceControl()
                 //    {
-
+                        
                 //    }
                 //};
                 //testPlugWindow.ShowDialog();

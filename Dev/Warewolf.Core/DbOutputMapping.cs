@@ -4,7 +4,7 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Core
 {
-    public class DbOutputMapping : BindableBase,IServiceOutputMapping, IEquatable<DbOutputMapping>
+    public class ServiceOutputMapping : BindableBase,IServiceOutputMapping, IEquatable<ServiceOutputMapping>
     {
         string _outputName;
         string _recordSetName;
@@ -18,7 +18,7 @@ namespace Warewolf.Core
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
         /// <param name="other">An object to compare with this object.</param>
-        public bool Equals(DbOutputMapping other)
+        public bool Equals(ServiceOutputMapping other)
         {
             return false;
         }
@@ -44,7 +44,7 @@ namespace Warewolf.Core
             {
                 return false;
             }
-            return Equals((DbOutputMapping)obj);
+            return Equals((ServiceOutputMapping)obj);
         }
 
         /// <summary>
@@ -58,19 +58,19 @@ namespace Warewolf.Core
             return 397 ^ Name.GetHashCode() ^ OutputName.GetHashCode();
         }
 
-        public static bool operator ==(DbOutputMapping left, DbOutputMapping right)
+        public static bool operator ==(ServiceOutputMapping left, ServiceOutputMapping right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(DbOutputMapping left, DbOutputMapping right)
+        public static bool operator !=(ServiceOutputMapping left, ServiceOutputMapping right)
         {
             return !Equals(left, right);
         }
 
         #endregion
 
-        public DbOutputMapping(string name, string mapping)
+        public ServiceOutputMapping(string name, string mapping)
         {
             Name = name;
             OutputName = mapping;

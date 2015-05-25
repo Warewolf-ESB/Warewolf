@@ -284,7 +284,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 else
                 {
-                    var dbOutputMapping = new DbOutputMapping(column.ToString(), column.ToString()) { RecordSetName = RecordsetName };
+                    var dbOutputMapping = new ServiceOutputMapping(column.ToString(), column.ToString()) { RecordSetName = RecordsetName };
                     mappings.Add(dbOutputMapping);
                 }
             }

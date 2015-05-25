@@ -44,9 +44,12 @@ namespace Warewolf.Studio.ViewModels
 
         public string TestService(IWebService inputValues)
         {
+            if(_updateRepository != null)
+            {
+                _updateRepository.TestWebService(inputValues);
+            }
             return "<bob> <Tool>Hammer<Tool> <Tool>Crane<Tool> <Tool>Mixer<Tool></bob>"; //dummy data
         }
-
 
         public void SaveService(IWebService toModel)
         {

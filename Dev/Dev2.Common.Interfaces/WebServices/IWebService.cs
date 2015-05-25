@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 
 namespace Dev2.Common.Interfaces.WebServices
 {
@@ -13,7 +15,10 @@ namespace Dev2.Common.Interfaces.WebServices
         IList<IServiceInput> Inputs { get; set; }
         IList<IServiceOutputMapping> OutputMappings { get; set; }
         string QueryString { get; set; }
+        string RequestUrl    { get; set; }
         Guid Id { get; set; }
-        IDbAction Action { get; set; }
+        List<NameValue> Headers { get; set; }
+        string PostData { get; set; }
     }
 }
+
