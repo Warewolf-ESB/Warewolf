@@ -53,7 +53,8 @@ namespace Dev2.Common
             Random rand = GetRandom(ref seed);
             string result;
             if (powerOfTen != 1)
-                result = ((double)(rand.Next((int)(from * powerOfTen), (int)((to * powerOfTen) > 0 ? (to * powerOfTen + 1) : (to * powerOfTen)))) / (double)powerOfTen).ToString(CultureInfo.InvariantCulture);
+                result = (rand.NextDouble() * (to - from) + from).ToString(CultureInfo.InvariantCulture);
+            //result = ((double)(rand.Next((int)(from * powerOfTen), (int)((to * powerOfTen) > 0 ? (to * powerOfTen + 1) : (to * powerOfTen)))) / (double)powerOfTen).ToString(CultureInfo.InvariantCulture);
             else
                 result = rand.Next((int)from, (int)(to > 0 ? (to + 1) : to)).ToString(CultureInfo.InvariantCulture);
 
