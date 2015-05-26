@@ -119,9 +119,9 @@ namespace Warewolf.Studio.ViewModels
             Inputs = new ObservableCollection<IServiceInput>();
             OutputMapping = new ObservableCollection<IServiceOutputMapping>();
             EditWebSourceCommand = new DelegateCommand(() => Model.EditSource(SelectedSource), () => SelectedSource != null);
-            var headerCollection = new ObservableCollection<INameValue>();
+            var headerCollection = new ObservableCollection<NameValue>();
             headerCollection.CollectionChanged += HeaderCollectionOnCollectionChanged;
-            Headers = new ObservableCollection<NameValue>();
+            Headers = headerCollection;
             var variables = new ObservableCollection<NameValue>();
             variables.CollectionChanged+=VariablesOnCollectionChanged;
             Variables =  variables;
@@ -902,7 +902,7 @@ namespace Warewolf.Studio.ViewModels
                     Source = SelectedSource,
                     Path = Item.Path,
                     Id = Item.Id,
-                    Headers = Headers.ToList(),
+                    Headers = Headers.Select(value => new NameValue{Name=DataListUtil.RemoveLanguageBrackets(value.Name),Value=DataListUtil.RemoveLanguageBrackets(value.Value)}).ToList(),
                     PostData = RequestBody,
                     QueryString = RequestUrlQuery,
                     SourceUrl = SourceUrl,

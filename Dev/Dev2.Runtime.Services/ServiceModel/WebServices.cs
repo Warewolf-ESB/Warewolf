@@ -191,7 +191,7 @@ namespace Dev2.Runtime.ServiceModel
                     var header = service.Method.Parameters.FirstOrDefault(parameter => parameter.Name == nameValue.Name);
                     if(header != null)
                     {
-                        headers.Add(header.Name+":"+header.Value);
+                        headers.Add(nameValue.Name+":"+header.Value);
                     }
                 }
             }
