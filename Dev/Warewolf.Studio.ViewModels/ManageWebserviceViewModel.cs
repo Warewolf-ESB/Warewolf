@@ -265,12 +265,9 @@ namespace Warewolf.Studio.ViewModels
                     // ReSharper restore PossibleNullReferenceException
                 {
                     UpdateRequestVariables(WarewolfDataEvaluationCommon.LanguageExpressionToString(languageExpression));
-                }
-               
+                }               
             }
             RemoveUnused();
-
-           
            
         }
 
@@ -279,14 +276,11 @@ namespace Warewolf.Studio.ViewModels
             IList<NameValue> unused = new List<NameValue>();
             if (Variables != null)
             {
-                foreach (var nameValue in Variables)
+                foreach(var nameValue in Variables)
                 {
-                    if (String.IsNullOrEmpty(nameValue.Value))
+                    if(!RequestUrlQuery.Contains(nameValue.Name) && !RequestBody.Contains(nameValue.Name) && !Headers.Any(a => a.Name.Contains(nameValue.Name) || a.Value.Contains(nameValue.Name)))
                     {
-                        if(!RequestUrlQuery.Contains(nameValue.Name) && !RequestBody.Contains(nameValue.Name) && ! Headers.Any(a=>a.Name.Contains(nameValue.Name) || a.Value.Contains(nameValue.Name)))
-                        {
-                          unused.Add(nameValue);
-                        }
+                        unused.Add(nameValue);
                     }
                 }
 
