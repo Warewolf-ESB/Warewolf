@@ -47,7 +47,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockModel.Setup(a => a.RetrieveSources()).Returns(new Collection<IWebServiceSource> { new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" } });
 
             var managewebServiceViewModel = new ManageWebServiceViewModel(mockModel.Object, mockSave.Object);
-            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
+            managewebServiceViewModel.OutputMapping = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
 
             managewebServiceViewModel.SelectedSource = new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" };
             managewebServiceViewModel.RequestBody = "da";
@@ -77,7 +77,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockModel.Setup(a => a.RetrieveSources()).Returns(new Collection<IWebServiceSource> { new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" } });
 
             var managewebServiceViewModel = new ManageWebServiceViewModel(mockModel.Object, mockSave.Object);
-            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
+            managewebServiceViewModel.OutputMapping = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
             managewebServiceViewModel.RequestBody = "dave";
             managewebServiceViewModel.SelectedSource = new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" };
             managewebServiceViewModel.SelectedSource.DefaultQuery = "bob";
@@ -105,7 +105,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockModel.Setup(a => a.RetrieveSources()).Returns(new Collection<IWebServiceSource> { new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" } });
 
             var managewebServiceViewModel = new ManageWebServiceViewModel(mockModel.Object, mockSave.Object);
-            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
+            managewebServiceViewModel.OutputMapping = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
             managewebServiceViewModel.RequestBody = "dave";
             managewebServiceViewModel.SelectedSource = new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" };
             managewebServiceViewModel.SelectedSource.DefaultQuery = "bob";
@@ -133,7 +133,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockModel.Setup(a => a.RetrieveSources()).Returns(new Collection<IWebServiceSource> { new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" } });
 
             var managewebServiceViewModel = new ManageWebServiceViewModel(mockModel.Object, mockSave.Object);
-            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
+            managewebServiceViewModel.OutputMapping = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
             managewebServiceViewModel.RequestBody = "dave";
             managewebServiceViewModel.SelectedSource = new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" };
             managewebServiceViewModel.SelectedSource.DefaultQuery = "bob";
@@ -162,7 +162,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockModel.Setup(a => a.RetrieveSources()).Returns(new Collection<IWebServiceSource> { new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" } });
 
             var managewebServiceViewModel = new ManageWebServiceViewModel(mockModel.Object, mockSave.Object);
-            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
+            managewebServiceViewModel.OutputMapping = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
             managewebServiceViewModel.RequestBody = "dave";
             managewebServiceViewModel.SelectedSource = new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" };
             managewebServiceViewModel.SelectedSource.DefaultQuery = "bob";
@@ -193,7 +193,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockModel.Setup(a => a.RetrieveSources()).Returns(new Collection<IWebServiceSource> { new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" } });
 
             var managewebServiceViewModel = new ManageWebServiceViewModel(mockModel.Object, mockSave.Object);
-            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
+            managewebServiceViewModel.OutputMapping = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
             managewebServiceViewModel.RequestBody = "dave";
             managewebServiceViewModel.SelectedSource = new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" };
             managewebServiceViewModel.SelectedSource.DefaultQuery = "bob";
@@ -225,7 +225,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockModel.Setup(a => a.RetrieveSources()).Returns(new Collection<IWebServiceSource> { new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" } });
 
             var managewebServiceViewModel = new ManageWebServiceViewModel(mockModel.Object, mockSave.Object);
-            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
+            managewebServiceViewModel.OutputMapping = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
             managewebServiceViewModel.RequestBody = "dave";
             managewebServiceViewModel.SelectedSource = new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" };
             managewebServiceViewModel.SelectedSource.DefaultQuery = "bob";
@@ -254,7 +254,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockModel.Setup(a => a.RetrieveSources()).Returns(new Collection<IWebServiceSource> { new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" } });
 
             var managewebServiceViewModel = new ManageWebServiceViewModel(mockModel.Object, mockSave.Object);
-            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
+            managewebServiceViewModel.OutputMapping = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
             managewebServiceViewModel.RequestBody = "dave";
             managewebServiceViewModel.SelectedSource = new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" };
             managewebServiceViewModel.SelectedSource.DefaultQuery = "bob";
@@ -285,7 +285,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockModel.Setup(a => a.RetrieveSources()).Returns(new Collection<IWebServiceSource> { new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" } });
 
             var managewebServiceViewModel = new ManageWebServiceViewModel(mockModel.Object, mockSave.Object);
-            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
+            managewebServiceViewModel.OutputMapping = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
 
             managewebServiceViewModel.SelectedSource = new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" };
             managewebServiceViewModel.SelectedSource.DefaultQuery = "bob";
@@ -315,7 +315,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockModel.Setup(a => a.RetrieveSources()).Returns(new Collection<IWebServiceSource> { new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" } });
 
             var managewebServiceViewModel = new ManageWebServiceViewModel(mockModel.Object, mockSave.Object);
-            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
+            managewebServiceViewModel.OutputMapping = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
 
             managewebServiceViewModel.SelectedSource = new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" };
             managewebServiceViewModel.SelectedSource.DefaultQuery = "bob";
@@ -347,7 +347,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockModel.Setup(a => a.RetrieveSources()).Returns(new Collection<IWebServiceSource> { new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" } });
 
             var managewebServiceViewModel = new ManageWebServiceViewModel(mockModel.Object, mockSave.Object);
-            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
+            managewebServiceViewModel.OutputMapping = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
 
             managewebServiceViewModel.SelectedSource = new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" };
             managewebServiceViewModel.SelectedSource.DefaultQuery = "bob";
@@ -379,7 +379,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockModel.Setup(a => a.RetrieveSources()).Returns(new Collection<IWebServiceSource> { new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" } });
 
             var managewebServiceViewModel = new ManageWebServiceViewModel(mockModel.Object, mockSave.Object);
-            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
+            managewebServiceViewModel.OutputMapping = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
 
             managewebServiceViewModel.SelectedSource = new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" };
             managewebServiceViewModel.SelectedSource.DefaultQuery = "bob";
@@ -414,7 +414,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockModel.Setup(a => a.RetrieveSources()).Returns(new Collection<IWebServiceSource> { new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" } });
 
             var managewebServiceViewModel = new ManageWebServiceViewModel(mockModel.Object, mockSave.Object);
-            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
+            managewebServiceViewModel.OutputMapping = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
             var item = new WebServiceDefinition("name","path", new WebServiceSourceDefinition(), new List<IServiceInput>(), new List<IServiceOutputMapping>(),"a",Guid.NewGuid()  );
             managewebServiceViewModel.Item = item;
             //------------Execute Test---------------------------
@@ -440,7 +440,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var item = new WebServiceDefinition("name", "path", new WebServiceSourceDefinition(), new List<IServiceInput>(), new List<IServiceOutputMapping>(), "a", Guid.NewGuid());
 
             var managewebServiceViewModel = new ManageWebServiceViewModel(mockModel.Object, mockSave.Object,item);
-            managewebServiceViewModel.Outputs = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
+            managewebServiceViewModel.OutputMapping = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
 
             //------------Execute Test---------------------------
             managewebServiceViewModel.SaveCommand.Execute(null);

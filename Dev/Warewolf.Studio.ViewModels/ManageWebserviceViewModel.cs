@@ -17,6 +17,7 @@ using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Dev2.Common.Interfaces.WebServices;
 using Dev2.Communication;
 using Dev2.Controller;
+using Dev2.Data.Util;
 using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.Commands;
@@ -47,14 +48,12 @@ namespace Warewolf.Studio.ViewModels
         ICommand _testCommand;
         ICommand _saveCommand;
         ICommand _cancelCommand;
-        ICollection<IServiceOutputMapping> _outputs;
         ICollection<IServiceInput> _inputs;
         string _outputName;
         string _resourceName;
         bool _requestBodyEnabled;
         ICommand _editWebSourceCommand;
         IList<IServiceOutputMapping> _outputMapping;
-        bool _canSave;
         string _errorMessage;
         bool _isTesting;
         bool _canEditMappings;
@@ -62,6 +61,7 @@ namespace Warewolf.Studio.ViewModels
         Guid _id;
         string _path;
         bool _canEditHeadersAndUrl;
+        string _recordsetName;
 
         #region Implementation of IManageWebServiceViewModel
 
@@ -122,13 +122,28 @@ namespace Warewolf.Studio.ViewModels
             var headerCollection = new ObservableCollection<INameValue>();
             headerCollection.CollectionChanged += HeaderCollectionOnCollectionChanged;
             Headers = new ObservableCollection<NameValue>();
-            Variables =  new ObservableCollection<NameValue>();
+            var variables = new ObservableCollection<NameValue>();
+            variables.CollectionChanged+=VariablesOnCollectionChanged;
+            Variables =  variables;
             RequestBody = "";
             Response = "";
             TestCommand = new DelegateCommand(() => Test(_model), CanTest);
             SaveCommand = new DelegateCommand(Save, CanSave);
             NewWebSourceCommand = new DelegateCommand(() => _model.CreateNewSource());
+            
 
+        }
+
+        void VariablesOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        {
+            Inputs.Clear();
+            var newInputs = MapVariablesToInputs();
+            Inputs = newInputs;
+        }
+
+        List<IServiceInput> MapVariablesToInputs()
+        {
+            return Variables.Select(nameValue => new ServiceInput(DataListUtil.RemoveLanguageBrackets(nameValue.Name), nameValue.Value)).Cast<IServiceInput>().ToList();
         }
 
         public bool CanTest()
@@ -200,7 +215,13 @@ namespace Warewolf.Studio.ViewModels
             if(ResponseWebService != null)
             {
                 Response = ResponseWebService.RequestResponse;
-                var outputMapping = (from recordset in ResponseWebService.Recordsets from recordsetField in recordset.Fields select new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias)).Cast<IServiceOutputMapping>().ToList();
+                var outputMapping = ResponseWebService.Recordsets.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
+                {
+                    RecordsetName = recordset.Name;
+                    var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias) { RecordSetName = recordset.Name };
+                    return serviceOutputMapping;
+                }).Cast<IServiceOutputMapping>().ToList();
+                
                 OutputMapping = outputMapping;
             }
         }
@@ -787,6 +808,21 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => OutputMapping);
             }
         }
+        public string RecordsetName
+        {
+            get
+            {
+                return _recordsetName;
+            }
+            set
+            {
+                if(_recordsetName != value)
+                {
+                    _recordsetName = value;
+                    OnPropertyChanged(() => RecordsetName);
+                }
+            }
+        }
         /// <summary>
         /// Input region ColumnHeader
         /// </summary>
@@ -823,6 +859,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _outputName = value;
+                OnPropertyChanged(() => OutputName);
             }
         }
         /// <summary>
@@ -866,7 +903,7 @@ namespace Warewolf.Studio.ViewModels
                 return new WebServiceDefinition
                 {
                     Name = Item.Name,
-                    Inputs = Inputs == null ? new List<IServiceInput>() : Inputs.ToList(),
+                    Inputs = Inputs == null ? new List<IServiceInput>() : MapVariablesToInputs(),
                     OutputMappings = OutputMapping,
                     Source = SelectedSource,
                     Path = Item.Path,
@@ -880,8 +917,8 @@ namespace Warewolf.Studio.ViewModels
             }
             return new WebServiceDefinition
             {
-               
-                Inputs = Inputs == null ? new List<IServiceInput>() : Inputs.ToList(),
+
+                Inputs = Inputs == null ? new List<IServiceInput>() : MapVariablesToInputs(),
                 OutputMappings = OutputMapping,
                 Source = SelectedSource,
                 Name = "",
