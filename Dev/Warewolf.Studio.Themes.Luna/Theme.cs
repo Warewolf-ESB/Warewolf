@@ -18,7 +18,6 @@ namespace Warewolf.Studio.Themes.Luna
             //Mappings.Add(ControlMappingKeys.XamDataTree, BuildLocationString(assemblyFullName, @"\Elements\Explorer\Explorer.xaml"));
 
             // Standard Elements
-            Mappings.Add(ControlMappingKeys.XamComboEditor_WpfOnly, BuildLocationString(assemblyFullName, @"\Elements\xamComboEditor.xaml"));
             Mappings.Add(ControlMappingKeys.XamDataPresenter, BuildLocationString(assemblyFullName, @"\Elements\xamDataPresenter.xaml"));
            // Mappings.Add(ControlMappingKeys.XamDialogWindow, BuildLocationString(assemblyFullName, @"\Elements\xamDialogWindow.xaml"));
             Mappings.Add(ControlMappingKeys.XamFormulaEditor, BuildLocationString(assemblyFullName, @"\Elements\xamFormulaEditor.xaml"));

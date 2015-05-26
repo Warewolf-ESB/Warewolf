@@ -17,22 +17,13 @@
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
         <Style x:Key="FillerColHeader" TargetType="{x:Type igPrim:HeaderCellControl}">
             <Setter Property="Visibility" Value="Collapsed"/>
-            <!--<Setter Property="Control.Template">
-            <Setter.Value>
-                <ControlTemplate>
-                          <Border>
-                              <Rectangle Margin="4" SnapsToDevicePixels="true" 
-                              Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" 
-                              StrokeThickness="0" StrokeDashArray="1 2" />
-                          </Border>
-                      </ControlTemplate>
-            </Setter.Value>			
-        </Setter>-->
+            <Setter Property="Width" Value="0"/>
+            <Setter Property="MaxWidth" Value="0"/>
         </Style>
         <Style x:Key="FillerColCellStyle"   TargetType="ig:CellControl">
             <Setter Property="Visibility" Value="Collapsed"/>
-            <!--<Setter Property="BorderBrush" Value="Transparent"/>
-		<Setter Property="BorderThickness" Value="0"/>-->
+            <Setter Property="Width" Value="0"/>
+            <Setter Property="MaxWidth" Value="0"/>
         </Style>
     </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Auto">
@@ -143,60 +134,62 @@
                                    Grid.Column="0"
                                    Text="{Binding SelectHeadersHeader}" 
                                    FontWeight="Bold"></TextBlock>
-                        <ig:XamGrid x:Name="HeadersGrid" 
+                        <ScrollViewer Grid.Row="1" 
+                                      Grid.Column="0" 
+                                      HorizontalScrollBarVisibility="Auto" 
+                                      VerticalScrollBarVisibility="Auto">
+                            <StackPanel MaxWidth="600" MaxHeight="180">
+                                <ig:XamGrid x:Name="HeadersGrid" 
                                     ItemsSource="{Binding Headers}" 
                                     AutoGenerateColumns="False"
-                                    Grid.Row="1" 
-                                    Height="Auto"
-                                    Grid.Column="0" 
-                                    MaxWidth="600"
                                     IsAlternateRowsEnabled="False"
                                     DeleteKeyAction="DeleteRowOfActiveCell"
-                                    ColumnWidth="*" 
-                                    MaxHeight="180">
-                            <ig:XamGrid.Columns>
-                                <ig:TextColumn Key="Name" HeaderText="Name" Width="299">
-                                    <ig:TextColumn.AddNewRowEditorTemplate>
-                                        <DataTemplate>
-                                            <TextBox Text="{Binding Path=Name, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
-                                        </DataTemplate>
-                                    </ig:TextColumn.AddNewRowEditorTemplate>
-                                </ig:TextColumn>
-                                <ig:TextColumn Key="Value" HeaderText="Value" Width="299">
-                                    <ig:TextColumn.AddNewRowEditorTemplate>
-                                        <DataTemplate>
-                                            <TextBox Text="{Binding Path=Value, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
-                                        </DataTemplate>
-                                    </ig:TextColumn.AddNewRowEditorTemplate>
-                                </ig:TextColumn>
-                            </ig:XamGrid.Columns>
-                            <ig:XamGrid.AddNewRowSettings>
-                                <ig:AddNewRowSettings AllowAddNewRow="Top" 
+                                    ColumnWidth="*" >
+                                    <ig:XamGrid.Columns>
+                                        <ig:TextColumn Key="Name" HeaderText="Name" MinimumWidth="100">
+                                            <ig:TextColumn.AddNewRowEditorTemplate>
+                                                <DataTemplate>
+                                                    <TextBox Text="{Binding Path=Name, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
+                                                </DataTemplate>
+                                            </ig:TextColumn.AddNewRowEditorTemplate>
+                                        </ig:TextColumn>
+                                        <ig:TextColumn Key="Value" HeaderText="Value" MinimumWidth="100" IsResizable="False">
+                                            <ig:TextColumn.AddNewRowEditorTemplate>
+                                                <DataTemplate>
+                                                    <TextBox Text="{Binding Path=Value, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
+                                                </DataTemplate>
+                                            </ig:TextColumn.AddNewRowEditorTemplate>
+                                        </ig:TextColumn>
+                                    </ig:XamGrid.Columns>
+                                    <ig:XamGrid.AddNewRowSettings>
+                                        <ig:AddNewRowSettings AllowAddNewRow="Top" 
                                                       IsMouseActionEditingEnabled="SingleClick"
                                                       IsEnterKeyEditingEnabled="True" 
                                                       IsF2EditingEnabled="True" 
                                                       IsOnCellActiveEditingEnabled="True"
                                                       />
-                            </ig:XamGrid.AddNewRowSettings>
-                            <ig:XamGrid.SortingSettings>
-                                <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
-                            </ig:XamGrid.SortingSettings>
-                            <ig:XamGrid.EditingSettings>
-                                <ig:EditingSettings AllowEditing="Cell"
-                                                    IsMouseActionEditingEnabled="SingleClick"
+                                    </ig:XamGrid.AddNewRowSettings>
+                                    <ig:XamGrid.SortingSettings>
+                                        <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
+                                    </ig:XamGrid.SortingSettings>
+                                    <ig:XamGrid.EditingSettings>
+                                        <ig:EditingSettings AllowEditing="Cell"
+                                                    IsMouseActionEditingEnabled="DoubleClick"
                                                     IsEnterKeyEditingEnabled="True" 
                                                     IsF2EditingEnabled="True" 
-                                                    IsOnCellActiveEditingEnabled="True" />
-                            </ig:XamGrid.EditingSettings>
-                            <!-- Conditional Formating is On-->
-                            <ig:XamGrid.ConditionalFormattingSettings>
-                                <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
-                            </ig:XamGrid.ConditionalFormattingSettings>
-                            <!-- Filler Column Setting is On-->
-                            <ig:XamGrid.FillerColumnSettings>
-                                <ig:FillerColumnSettings   Style="{StaticResource FillerColCellStyle}" HeaderStyle="{StaticResource FillerColHeader}" />
-                            </ig:XamGrid.FillerColumnSettings>
-                        </ig:XamGrid>
+                                                    IsOnCellActiveEditingEnabled="False" />
+                                    </ig:XamGrid.EditingSettings>
+                                    <!-- Conditional Formating is On-->
+                                    <ig:XamGrid.ConditionalFormattingSettings>
+                                        <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
+                                    </ig:XamGrid.ConditionalFormattingSettings>
+                                    <!-- Filler Column Setting is On-->
+                                    <ig:XamGrid.FillerColumnSettings>
+                                        <ig:FillerColumnSettings   Style="{StaticResource FillerColCellStyle}" HeaderStyle="{StaticResource FillerColHeader}" />
+                                    </ig:XamGrid.FillerColumnSettings>
+                                </ig:XamGrid>
+                            </StackPanel>
+                        </ScrollViewer>
                     </Grid>
                     <!-- BODY -->
                     <Grid Grid.Column="1" 
@@ -278,14 +271,14 @@
                                 MaxHeight="180"
                                 BorderBrush="Transparent" >
                         <ig:XamGrid.Columns>
-                            <ig:TextColumn Key="Name" HeaderText="Name" Width="600" IsReadOnly="True">
+                            <ig:TextColumn Key="Name" HeaderText="Name" IsReadOnly="True" MinimumWidth="300">
                                 <ig:TextColumn.AddNewRowEditorTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Path=Name, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
                                     </DataTemplate>
                                 </ig:TextColumn.AddNewRowEditorTemplate>
                             </ig:TextColumn>
-                            <ig:TextColumn Key="Value" HeaderText="Value" Width="600">
+                            <ig:TextColumn Key="Value" HeaderText="Value" MinimumWidth="300" IsResizable="False">
                                 <ig:TextColumn.AddNewRowEditorTemplate>
                                     <DataTemplate>
                                         <TextBox Text="{Binding Path=Value, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
@@ -298,10 +291,10 @@
                         </ig:XamGrid.SortingSettings>
                         <ig:XamGrid.EditingSettings>
                             <ig:EditingSettings AllowEditing="Cell"
-                                                    IsMouseActionEditingEnabled="SingleClick"
+                                                    IsMouseActionEditingEnabled="DoubleClick"
                                                     IsEnterKeyEditingEnabled="True" 
                                                     IsF2EditingEnabled="True" 
-                                                    IsOnCellActiveEditingEnabled="True" />
+                                                    IsOnCellActiveEditingEnabled="False" />
                         </ig:XamGrid.EditingSettings>
                     </ig:XamGrid>
                 </Grid>
