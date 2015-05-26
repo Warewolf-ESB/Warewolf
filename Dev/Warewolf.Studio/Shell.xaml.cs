@@ -131,14 +131,14 @@ namespace Warewolf.Studio
                 //var testingInfraWindow = new InfragisticsControlTesting();
                 //testingInfraWindow.Show();
                 
-                var testWindow = new Window
-                {
-                    Content = new ManageWebserviceControl()
-                    {
-                        DataContext = new ManageWebServiceViewModel(ResourceType.WebService)
-                    }
-                };
-                testWindow.Show();
+                //var testWindow = new Window
+                //{
+                //    Content = new ManageWebserviceControl()
+                //    {
+                //        DataContext = new ManageWebServiceViewModel(ResourceType.WebService)
+                //    }
+                //};
+                //testWindow.Show();
 
 //                var testWindow = new Window
 //                {
