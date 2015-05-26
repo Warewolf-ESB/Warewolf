@@ -117,7 +117,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             databaseService.Path = path;
             databaseService.Source = new DbSourceDefinition();
             databaseService.Action = new DbAction();
-            databaseService.OutputMappings = new IServiceOutputMapping[] { new DbOutputMapping("TestOutput", "TestMapping") };
+            databaseService.OutputMappings = new IServiceOutputMapping[] { new ServiceOutputMapping("TestOutput", "TestMapping") };
             //------------Execute Test---------------------------
             var manageDatabaseServiceViewModel = new ManageDatabaseServiceViewModel(new Mock<IDbServiceModel>().Object, new Mock<IRequestServiceNameViewModel>().Object, databaseService);
             //------------Assert Results-------------------------

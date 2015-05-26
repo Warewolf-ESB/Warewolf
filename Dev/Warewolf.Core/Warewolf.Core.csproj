@@ -85,6 +85,7 @@
     <Compile Include="DbInput.cs" />
     <Compile Include="DbOutputMapping.cs" />
     <Compile Include="HelpDescriptor.cs" />
+    <Compile Include="NameValue.cs" />
     <Compile Include="ToolDescriptor.cs">
       <SubType>Code</SubType>
     </Compile>

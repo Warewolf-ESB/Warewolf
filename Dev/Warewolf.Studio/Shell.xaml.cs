@@ -127,23 +127,23 @@ namespace Warewolf.Studio
             {
                 //var testingWindow = new ControlStyleTestingWindow();
                 //testingWindow.Show();
-                var testingInfragistics = new InfragisticsControlStyles();
-                testingInfragistics.Show();
 
-                //var testWindow = new Window
-                //{
-                //    Content = new ManageWebserviceControl()
-                //    {
-                //        DataContext = new ManageWebServiceViewModel(ResourceType.WebService)
-                //    }
-                //};
-                //testWindow.ShowDialog();
+                
+
+                var testWindow = new Window
+                {
+                    Content = new ManageWebserviceControl()
+                    {
+                        DataContext = new ManageWebServiceViewModel(ResourceType.WebService)
+                    }
+                };
+                testWindow.ShowDialog();
 
                 //var testPlugWindow = new Window
                 //{
                 //    Content = new ManagePluginSourceControl()
                 //    {
-
+                        
                 //    }
                 //};
                 //testPlugWindow.ShowDialog();

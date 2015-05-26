@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
@@ -158,5 +159,14 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// </summary>
         string OutputAliasHeader { get; set; }
         string ResourceName { get; set; }
+        string ErrorMessage { get; set; }
+        bool IsTesting { get; set; }
+        bool CanEditMappings { get; set; }
+        string Path { get; set; }
+        Guid Id { get; set; }
+        string Name { get; set; }
+
+        bool CanEditHeadersAndUrl{get;set;}
+
     }
 }

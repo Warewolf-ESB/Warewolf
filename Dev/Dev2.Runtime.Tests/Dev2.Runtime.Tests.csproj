@@ -289,6 +289,7 @@
     <Compile Include="Services\AbstractServiceExecutionTests.cs" />
     <Compile Include="Services\PingTests.cs" />
     <Compile Include="Services\TestSettingsRead.cs" />
+    <Compile Include="Services\TestWebserviceTest.cs" />
     <Compile Include="TestResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -401,6 +402,10 @@
     <ProjectReference Include="..\Dev2.UnitTestUtils\Dev2.UnitTestUtils.csproj">
       <Project>{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}</Project>
       <Name>Dev2.UnitTestUtils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
+      <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
+      <Name>Warewolf.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
