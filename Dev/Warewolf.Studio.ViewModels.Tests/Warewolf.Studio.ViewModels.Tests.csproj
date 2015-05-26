@@ -61,6 +61,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -83,6 +84,7 @@
     <Compile Include="EnvironmentViewModelTests.cs" />
     <Compile Include="Help\HelpDescriptorViewModelTests.cs" />
     <Compile Include="Help\HelpViewModelTest.cs" />
+    <Compile Include="ManageDatabaseServiceViewModelTests.cs" />
     <Compile Include="ManageDatabaseSourceViewModelTests.cs" />
     <Compile Include="ManageWebServiceSourceViewModelTests.cs" />
     <Compile Include="ManageWebserviceViewModelTests.cs" />

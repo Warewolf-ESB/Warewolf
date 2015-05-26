@@ -246,6 +246,9 @@ namespace Warewolf.Studio.ViewModels
                 case ResourceType.WebSource:
                     CreateWebServiceSource();
                     break;
+                case ResourceType.WebService:
+                    CreateWebService();
+                    break;
                 case ResourceType.WorkflowService:
                     CreateWorkflowService();
                     break;
@@ -274,6 +277,13 @@ namespace Warewolf.Studio.ViewModels
         {
             var selectedId = Guid.NewGuid();
             var sourceViewModel = new ManageWebserviceSourceViewModel(new ManageWebServiceSourceModel(ActiveServer.UpdateRepository,ActiveServer.ResourceName), new RequestServiceNameViewModel(new EnvironmentViewModel(LocalhostServer, this), _unityContainer.Resolve<IRequestServiceNameView>(), selectedId),_aggregator);
+            GetRegion("Workspace").Add(sourceViewModel);
+        
+        }
+        private void CreateWebService()
+        {
+            var selectedId = Guid.NewGuid();
+            var sourceViewModel = new ManageWebServiceViewModel(new WebServiceModel(ActiveServer.UpdateRepository,ActiveServer.QueryProxy,ActiveServer.ResourceName), new RequestServiceNameViewModel(new EnvironmentViewModel(LocalhostServer, this), _unityContainer.Resolve<IRequestServiceNameView>(), selectedId));
             GetRegion("Workspace").Add(sourceViewModel);
         
         }
