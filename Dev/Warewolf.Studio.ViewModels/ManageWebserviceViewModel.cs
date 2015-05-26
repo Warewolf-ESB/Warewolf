@@ -15,8 +15,11 @@ using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Dev2.Common.Interfaces.WebServices;
+using Dev2.Communication;
 using Dev2.Controller;
+using Dev2.Data.Util;
 using Dev2.Network;
+using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
 using Warewolf.Studio.AntiCorruptionLayer;
@@ -45,14 +48,12 @@ namespace Warewolf.Studio.ViewModels
         ICommand _testCommand;
         ICommand _saveCommand;
         ICommand _cancelCommand;
-        ICollection<IServiceOutputMapping> _outputs;
         ICollection<IServiceInput> _inputs;
         string _outputName;
         string _resourceName;
         bool _requestBodyEnabled;
         ICommand _editWebSourceCommand;
         IList<IServiceOutputMapping> _outputMapping;
-        bool _canSave;
         string _errorMessage;
         bool _isTesting;
         bool _canEditMappings;
@@ -60,6 +61,7 @@ namespace Warewolf.Studio.ViewModels
         Guid _id;
         string _path;
         bool _canEditHeadersAndUrl;
+        string _recordsetName;
 
         #region Implementation of IManageWebServiceViewModel
 
@@ -82,7 +84,7 @@ namespace Warewolf.Studio.ViewModels
             Variables = new ObservableCollection<NameValue>();
             RequestUrlQuery = service.QueryString;
             Inputs = service.Inputs;
-            Outputs = service.OutputMappings;
+            OutputMapping = service.OutputMappings;
             Item = service;
            
             Init();
@@ -114,19 +116,34 @@ namespace Warewolf.Studio.ViewModels
             WebRequestMethods = new ObservableCollection<WebRequestMethod>(Dev2EnumConverter.GetEnumsToList<WebRequestMethod>());
             SelectedWebRequestMethod = WebRequestMethods.First();
             Sources = new ObservableCollection<IWebServiceSource>(Model.RetrieveSources());
-            Inputs = new ObservableCollection<IServiceInput>{new ServiceInput("a","a"),new ServiceInput("b","b")};
-            Outputs = new ObservableCollection<IServiceOutputMapping> { new ServiceOutputMapping("bob", "builder"), new ServiceOutputMapping("dora", "explorer") };
+            Inputs = new ObservableCollection<IServiceInput>();
+            OutputMapping = new ObservableCollection<IServiceOutputMapping>();
             EditWebSourceCommand = new DelegateCommand(() => Model.EditSource(SelectedSource), () => SelectedSource != null);
             var headerCollection = new ObservableCollection<INameValue>();
             headerCollection.CollectionChanged += HeaderCollectionOnCollectionChanged;
             Headers = new ObservableCollection<NameValue>();
-            Variables =  new ObservableCollection<NameValue>();
+            var variables = new ObservableCollection<NameValue>();
+            variables.CollectionChanged+=VariablesOnCollectionChanged;
+            Variables =  variables;
             RequestBody = "";
             Response = "";
             TestCommand = new DelegateCommand(() => Test(_model), CanTest);
             SaveCommand = new DelegateCommand(Save, CanSave);
-            NewWebSourceCommand = new DelegateCommand(_model.CreateNewSource);
+            NewWebSourceCommand = new DelegateCommand(() => _model.CreateNewSource());
+            
 
+        }
+
+        void VariablesOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        {
+            Inputs.Clear();
+            var newInputs = MapVariablesToInputs();
+            Inputs = newInputs;
+        }
+
+        List<IServiceInput> MapVariablesToInputs()
+        {
+            return Variables.Select(nameValue => new ServiceInput(DataListUtil.RemoveLanguageBrackets(nameValue.Name), nameValue.Value)).Cast<IServiceInput>().ToList();
         }
 
         public bool CanTest()
@@ -138,8 +155,6 @@ namespace Warewolf.Studio.ViewModels
         {
             try
             {
-
-
                 if (Item == null)
                 {
                     var saveOutPut = _saveDialog.ShowSaveDialog();
@@ -174,9 +189,9 @@ namespace Warewolf.Studio.ViewModels
             try
             {
                 IsTesting = true;
-                Response = model.TestService(ToModel());
+                var serializer = new Dev2JsonSerializer();
+                ResponseWebService = serializer.Deserialize<WebService>(model.TestService(ToModel()));
                 UpdateMappingsFromResponse();
-                _canSave = true;
                 ErrorMessage = "";
                 CanEditMappings = true;
                
@@ -185,7 +200,6 @@ namespace Warewolf.Studio.ViewModels
             catch (Exception err)
             {
                 ErrorMessage = err.Message;
-                _canSave = false;
                 OutputMapping = new ObservableCollection<IServiceOutputMapping>();
                 IsTesting = false;
                 CanEditMappings = false;
@@ -194,9 +208,22 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
+        public WebService ResponseWebService { get; set; }
+
         void UpdateMappingsFromResponse()
         {
-            //update inputs and outputs based on response test. 
+            if(ResponseWebService != null)
+            {
+                Response = ResponseWebService.RequestResponse;
+                var outputMapping = ResponseWebService.Recordsets.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
+                {
+                    RecordsetName = recordset.Name;
+                    var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias) { RecordSetName = recordset.Name };
+                    return serviceOutputMapping;
+                }).Cast<IServiceOutputMapping>().ToList();
+                
+                OutputMapping = outputMapping;
+            }
         }
 
         public bool CanSave()
@@ -755,26 +782,7 @@ namespace Warewolf.Studio.ViewModels
         }
       
         /// <summary>
-        /// Has the Source changed
-        /// </summary>
-
-        /// <summary>
-        /// List OfInputs
-        /// </summary>
-        public ICollection<IServiceOutputMapping> Outputs
-        {
-            get
-            {
-                return _outputs;
-            }
-            set
-            {
-                _outputs = value;
-                OnPropertyChanged(() => Outputs);
-            }
-        }
-        /// <summary>
-        /// List Of Outputs
+        /// List Of Inputs
         /// </summary>
         public ICollection<IServiceInput> Inputs
         {
@@ -798,6 +806,21 @@ namespace Warewolf.Studio.ViewModels
             {
                 _outputMapping = value;
                 OnPropertyChanged(() => OutputMapping);
+            }
+        }
+        public string RecordsetName
+        {
+            get
+            {
+                return _recordsetName;
+            }
+            set
+            {
+                if(_recordsetName != value)
+                {
+                    _recordsetName = value;
+                    OnPropertyChanged(() => RecordsetName);
+                }
             }
         }
         /// <summary>
@@ -836,6 +859,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _outputName = value;
+                OnPropertyChanged(() => OutputName);
             }
         }
         /// <summary>
@@ -879,20 +903,22 @@ namespace Warewolf.Studio.ViewModels
                 return new WebServiceDefinition
                 {
                     Name = Item.Name,
-                    Inputs = Inputs == null ? new List<IServiceInput>() : Inputs.ToList(),
+                    Inputs = Inputs == null ? new List<IServiceInput>() : MapVariablesToInputs(),
                     OutputMappings = OutputMapping,
                     Source = SelectedSource,
                     Path = Item.Path,
                     Id = Item.Id,
                     Headers = Headers.ToList(),
                     PostData = RequestBody,
-                    QueryString = RequestUrlQuery
+                    QueryString = RequestUrlQuery,
+                    SourceUrl = SourceUrl,
+                    RequestUrl = RequestUrlQuery
                 };
             }
             return new WebServiceDefinition
             {
-               
-                Inputs = Inputs == null ? new List<IServiceInput>() : Inputs.ToList(),
+
+                Inputs = Inputs == null ? new List<IServiceInput>() : MapVariablesToInputs(),
                 OutputMappings = OutputMapping,
                 Source = SelectedSource,
                 Name = "",
@@ -900,7 +926,10 @@ namespace Warewolf.Studio.ViewModels
                 Id = Guid.NewGuid(),
                 PostData =  RequestBody,
                 Headers = Headers.ToList(),
-                QueryString = RequestUrlQuery
+                QueryString = RequestUrlQuery,
+                SourceUrl = SourceUrl,
+                RequestUrl = RequestUrlQuery
+                
             };
 
         }

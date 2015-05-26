@@ -261,7 +261,7 @@ namespace Warewolf.AcceptanceTesting.DatabaseService
         public void GivenIOpenService(string serviceName)
         {
             var databaseService = new Warewolf.Core.DatabaseService { Name = serviceName, Source = _demoDbSourceDefinition, Action = _dbInsertDummyAction,Inputs = _dbInsertDummyAction.Inputs};
-            var dbOutputMapping = new DbOutputMapping("UserID", "UserID") { RecordSetName = "dbo_InsertDummyUser" };
+            var dbOutputMapping = new ServiceOutputMapping("UserID", "UserID") { RecordSetName = "dbo_InsertDummyUser" };
             databaseService.OutputMappings = new List<IServiceOutputMapping> { dbOutputMapping };
             ScenarioContext.Current.Remove("viewModel");
             ScenarioContext.Current.Remove("requestServiceNameViewModel");

@@ -7,5 +7,6 @@ namespace Dev2.Common.Interfaces.DB
         string MappingsHeader { get; }
         ICollection<IServiceInput> Inputs { get; }
         IList<IServiceOutputMapping> OutputMapping { get; set; }
+        string RecordsetName { get; set; }
     }
 }

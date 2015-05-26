@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Dev2.Common.Interfaces.ServerProxyLayer;
-using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Dev2.Common.Interfaces.WebServices;
 
 namespace Dev2.Common.Interfaces.DB

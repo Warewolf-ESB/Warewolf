@@ -219,7 +219,6 @@
     <Compile Include="DB\IServiceMappings.cs" />
     <Compile Include="DB\ISourceBase.cs" />
     <Compile Include="DB\IWebServiceModel.cs" />
-    <Compile Include="DB\IWebServiceService.cs" />
     <Compile Include="Deploy\IConflict.cs" />
     <Compile Include="Deploy\IConflictHandlerViewModel.cs" />
     <Compile Include="Deploy\IDeployModel.cs" />
@@ -399,7 +398,6 @@
     <Compile Include="WebRequestMethod.cs" />
     <Compile Include="WebServices\IWebService.cs" />
     <Compile Include="WebService\IWebServiceModel.cs" />
-    <Compile Include="WebService\IWebServiceService.cs" />
     <Compile Include="WindowsTaskScheduler\Wrappers\IAction.cs" />
     <Compile Include="WindowsTaskScheduler\Wrappers\IActionCollection.cs" />
     <Compile Include="WindowsTaskScheduler\Wrappers\IDev2Task.cs" />

@@ -17,7 +17,6 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Core.Graph;
-using Dev2.Data.ServiceModel;
 using Dev2.Data.Util;
 using Dev2.Util;
 using Newtonsoft.Json;

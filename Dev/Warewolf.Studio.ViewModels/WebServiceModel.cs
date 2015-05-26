@@ -3,7 +3,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.ServerProxyLayer;
-using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Dev2.Common.Interfaces.WebServices;
 
 namespace Warewolf.Studio.ViewModels
@@ -46,9 +45,9 @@ namespace Warewolf.Studio.ViewModels
         {
             if(_updateRepository != null)
             {
-                _updateRepository.TestWebService(inputValues);
+                return _updateRepository.TestWebService(inputValues);
             }
-            return "<bob> <Tool>Hammer<Tool> <Tool>Crane<Tool> <Tool>Mixer<Tool></bob>"; //dummy data
+            return "Error";
         }
 
         public void SaveService(IWebService toModel)
