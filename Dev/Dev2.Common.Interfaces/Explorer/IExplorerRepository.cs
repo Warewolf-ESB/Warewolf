@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerDialogue;
 using Dev2.Common.Interfaces.ServerProxyLayer;

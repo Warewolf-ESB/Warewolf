@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
-using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 
 namespace Dev2.Common.Interfaces.WebServices
 {
@@ -19,6 +17,7 @@ namespace Dev2.Common.Interfaces.WebServices
         Guid Id { get; set; }
         List<NameValue> Headers { get; set; }
         string PostData { get; set; }
+        string SourceUrl { get; set; }
     }
 }
 

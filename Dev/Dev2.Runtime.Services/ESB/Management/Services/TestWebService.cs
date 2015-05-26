@@ -4,9 +4,6 @@ using System.Linq;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.SaveDialog;
-using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Dev2.Common.Interfaces.WebServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
@@ -41,30 +38,19 @@ namespace Dev2.Runtime.ESB.Management.Services
                 // ReSharper disable MaximumChainedReferences
                 var parameters = src.Inputs==null?new List<MethodParameter>(): src.Inputs.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value }).ToList();
                 // ReSharper restore MaximumChainedReferences
-                var source = ResourceCatalogue.GetResource<WebSource>(GlobalConstants.ServerWorkspaceID, src.Source.Id);
-
-                if(source == null)
-                {
-                    msg.HasError = true;
-                    msg.Message = new StringBuilder("Unknown source");
-                    return serializer.SerializeToBuilder(msg);
-                }
 
                 var res = new WebService
                 {
                     Method = new ServiceMethod(src.Name, src.Name, parameters, new OutputDescription(), new List<MethodOutput>(),"test"),
+                    RequestUrl = string.Concat(src.SourceUrl,src.RequestUrl),
                     ResourceName = src.Name,
                     ResourcePath = src.Path,
-                    ResourceID = src.Id,
-                    Source = source
-
-
+                    ResourceID = src.Id
                 };
 
                 WebServices.TestWebService(res);
-                var result =res.Recordsets;
                 msg.HasError = false;
-                msg.Message = serializer.SerializeToBuilder(result);
+                msg.Message = serializer.SerializeToBuilder(res);
             }
             catch (Exception err)
             {
