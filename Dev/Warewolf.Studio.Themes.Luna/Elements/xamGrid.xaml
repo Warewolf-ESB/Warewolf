@@ -1032,7 +1032,7 @@
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="FontSize" Value="14.667" />
-        <Setter Property="Padding" Value="8,4,8,0" />
+        <!--<Setter Property="Padding" Value="8,4,8,0" />-->
         <Setter Property="Height" Value="Auto" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -1681,7 +1681,7 @@
     <Style x:Key="NoChromeButtonStyle" TargetType="Button">
         <Setter Property="Background" Value="{StaticResource TransparentBrush}" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Padding" Value="0" />
+        <!--<Setter Property="Padding" Value="0" />-->
         <Setter Property="Height" Value="Auto" />
         <Setter Property="MinWidth" Value="30" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -1731,7 +1731,7 @@
         <Setter Property="Background" Value="{StaticResource GridSortableListBoxItemBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource GridSortableListBoxItemBorderBrush}" />
         <Setter Property="BorderThickness" Value="0,0,0,1" />
-        <Setter Property="Padding" Value="6,4,20,4" />
+        <!--<Setter Property="Padding" Value="6,4,20,4" />-->
         <Setter Property="Height" Value="Auto" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Top" />
@@ -1780,7 +1780,7 @@
 
     <!--  *********************************  GridSortableListBox Style  *********************************  -->
     <Style x:Key="GridSortableListBoxStyle" TargetType="igPrim:GridSortableListBox">
-        <Setter Property="Padding" Value="1" />
+        <!--<Setter Property="Padding" Value="1" />-->
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource GridSortableListBoxBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource GridSortableListBoxBorderBrush}" />
@@ -1893,7 +1893,7 @@
         <Setter Property="Background" Value="{StaticResource ListBoxItemBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource ListBoxItemBorderBrush}" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="Padding" Value="6,4" />
+        <!--<Setter Property="Padding" Value="6,4" />-->
         <Setter Property="Height" Value="Auto" />
         <Setter Property="Template">
             <Setter.Value>
@@ -2006,7 +2006,7 @@
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="Height" Value="Auto" />
         <Setter Property="MinWidth" Value="30" />
-        <Setter Property="Padding" Value="8,3" />
+        <!--<Setter Property="Padding" Value="8,3" />-->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -2083,7 +2083,7 @@
     <Style x:Key="ColumnChooserDialogCloseButtonStyle" TargetType="Button">
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FontSize" Value="14.667" />
-        <Setter Property="Padding" Value="10,0,10,0" />
+        <!--<Setter Property="Padding" Value="10,0,10,0" />-->
         <Setter Property="Height" Value="Auto" />
         <Setter Property="MinWidth" Value="30" />
         <Setter Property="Template">
@@ -2137,7 +2137,7 @@
         <Setter Property="BorderBrush" Value="{StaticResource ColumnChooserDialogBorderBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="MaxHeight" Value="225" />
-        <Setter Property="Padding" Value="0,0,0,5" />
+        <!--<Setter Property="Padding" Value="0,0,0,5" />-->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="igPrim:ColumnChooserDialog">
@@ -2409,7 +2409,6 @@
     <!--  *********************************  HeaderDropDownControl Style  *********************************  -->
     <Style x:Key="HeaderDropDownControlStyle" TargetType="igPrim:HeaderDropDownControl">
         <Setter Property="Cursor" Value="Hand" />
-        <Setter Property="Padding" Value="0" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="igPrim:HeaderDropDownControl">
@@ -2472,7 +2471,6 @@
     <Style x:Key="HeaderDropDownButtonStyle" TargetType="Button">
         <Setter Property="Height" Value="Auto" />
         <Setter Property="MinWidth" Value="10" />
-        <Setter Property="Padding" Value="0" />
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -2515,14 +2513,14 @@
 
     <!--  *********************************  HeaderCellControl Style  *********************************  -->
     <Style x:Key="HeaderCellControlStyle" TargetType="igPrim:HeaderCellControl">
-        <Setter Property="FontSize" Value="14.667" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
+        <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="Foreground" Value="{StaticResource WareWolfBlackBrush}" />
         <Setter Property="Background" Value="{StaticResource HeaderCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource HeaderCellBorderBrush}" />
         <Setter Property="BorderThickness" Value="0,0,1,0" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Padding" Value="6,4" />
         <Setter Property="Height" Value="Auto" />
         <Setter Property="ResizingThreshold" Value="20" />
         <Setter Property="Template">
@@ -2619,18 +2617,23 @@
                                                             <igPrim:XamGridPopupCommandSource CommandType="ClosePopup" EventName="Click" />
                                                         </igBase:CommandSourceCollection>
                                                     </igBase:Commanding.Commands>
-                                                    <TextBlock Foreground="{StaticResource ForegroundBrush}" Text="{Binding Cell.Column.ColumnLayout.Grid.ColumnChooserSettings.ColumnChooserDisplayText, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                    <TextBlock Foreground="{StaticResource ForegroundBrush}" 
+                                                               Text="{Binding Cell.Column.ColumnLayout.Grid.ColumnChooserSettings.ColumnChooserDisplayText, RelativeSource={RelativeSource TemplatedParent}}" />
                                                 </Button>
                                             </StackPanel>
                                         </Grid>
                                     </Border>
                                 </Grid>
                             </igPrim:HeaderDropDownControl>
+                            <ContentControl x:Name="contentControl"
+                                            KeyboardNavigation.IsTabStop="False"
+                                            Foreground="{TemplateBinding Foreground}">
                             <ContentPresenter x:Name="headerContent"
                                               Grid.Column="1"
                                               Margin="{TemplateBinding Padding}"
                                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            </ContentControl>
                             <Grid x:Name="SortAndPinIndicators"
                                   Grid.Column="2"
                                   Margin="0,0,20,0"
@@ -2867,17 +2870,22 @@
                                 <VisualState x:Name="Normal" />
                                 <VisualState x:Name="MouseOver">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames BeginTime="0"
+                                        <!--<ObjectAnimationUsingKeyFrames BeginTime="0"
                                                                        Duration="00:00:00.001"
                                                                        Storyboard.TargetName="Bd"
                                                                        Storyboard.TargetProperty="Background">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource HeaderCellHoverBackgroundBrush}" />
-                                        </ObjectAnimationUsingKeyFrames>
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource HeaderCellHoverBackgroundBrush}" /> 
+                                        </ObjectAnimationUsingKeyFrames>-->
                                         <ObjectAnimationUsingKeyFrames BeginTime="0"
                                                                        Duration="00:00:00.001"
                                                                        Storyboard.TargetName="SortAndPinIndicators"
                                                                        Storyboard.TargetProperty="Background">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource HeaderCellHoverBackgroundBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="contentControl" Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource WareWolfOrangeBrush}">
+
+                                            </DiscreteObjectKeyFrame>
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -3120,13 +3128,12 @@
     
     <!--  *********************************  ExpansionIndicatorHeaderCellControl Style  *********************************  -->
     <Style x:Key="ExpansionIndicatorHeaderCellControlStyle" TargetType="igPrim:ExpansionIndicatorHeaderCellControl">
-        <Setter Property="FontSize" Value="14.667" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         <Setter Property="Foreground" Value="{StaticResource HeaderCellForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource HeaderCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource HeaderCellBorderBrush}" />
         <Setter Property="BorderThickness" Value="1,0,1,1" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="Padding" Value="6,4" />
         <Setter Property="Height" Value="Auto" />
         <Setter Property="Template">
             <Setter.Value>
@@ -3154,13 +3161,13 @@
     
     <!--  *********************************  RowSelectorHeaderCellControl Style  *********************************  -->
     <Style x:Key="RowSelectorHeaderCellControlStyle" TargetType="igPrim:RowSelectorHeaderCellControl">
-        <Setter Property="FontSize" Value="14.667" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
+        <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="Foreground" Value="{StaticResource HeaderCellForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource HeaderCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource HeaderCellBorderBrush}" />
         <Setter Property="BorderThickness" Value="0,0,1,1" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="Padding" Value="6,4" />
         <Setter Property="Height" Value="Auto" />
         <Setter Property="Template">
             <Setter.Value>
@@ -3188,13 +3195,12 @@
     
     <!--  *********************************  AddNewRowExpansionIndicatorCellControl Style  *********************************  -->
     <Style x:Key="AddNewRowExpansionIndicatorCellControlStyle" TargetType="igPrim:AddNewRowExpansionIndicatorCellControl">
-        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         <Setter Property="Foreground" Value="{StaticResource CellItemForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource ExpansionCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource ExpansionCellBorderBrush}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Padding" Value="6,4" />
         <Setter Property="Height" Value="Auto" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Template">
@@ -3247,14 +3253,13 @@
 
     <!--  *********************************  AddNewRowCellControl Style  *********************************  -->
     <Style x:Key="AddNewRowCellControlStyle" TargetType="igPrim:AddNewRowCellControl">
-        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource AddNewRowCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource AddNewRowCellBorderBrush}" />
         <Setter Property="BorderThickness" Value="0,1,1,1" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Padding" Value="6,4" />
         <Setter Property="Height" Value="Auto" />
         <Setter Property="Template">
             <Setter.Value>
@@ -3327,14 +3332,13 @@
 
     <!--  *********************************  ExpansionIndicatorCellControl Style  *********************************  -->
     <Style x:Key="ExpansionIndicatorCellControlStyle" TargetType="igPrim:ExpansionIndicatorCellControl">
-        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         <Setter Property="Foreground" Value="{StaticResource CellItemForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource ExpansionCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource ExpansionCellBorderBrush}" />
         <Setter Property="BorderThickness" Value="1 0 1 1" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Padding" Value="6,0" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="igPrim:ExpansionIndicatorCellControl">
@@ -3490,14 +3494,13 @@
 
     <!--  *********************************  RowSelectorCellControl Style  *********************************  -->
     <Style x:Key="RowSelectorCellControlStyle" TargetType="igPrim:RowSelectorCellControl">
-        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         <Setter Property="Foreground" Value="{StaticResource CellItemForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource CellItemBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource CellItemBorderBrush}" />
         <Setter Property="BorderThickness" Value="0 0 1 1" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Padding" Value="6,4" />
         <Setter Property="Height" Value="Auto" />
         <Setter Property="Template">
             <Setter.Value>
@@ -3622,12 +3625,11 @@
     
     <!--  *********************************  CellControl Style  *********************************  -->
     <Style x:Key="CellControlStyle" TargetType="ig:CellControl">
-        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource CellItemBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource CellItemBorderBrush}" />
         <Setter Property="BorderThickness" Value="0 0 1 1" />
-        <Setter Property="Padding" Value="6,4" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Height" Value="Auto" />
@@ -3733,13 +3735,12 @@
 
     <!--  *********************************  ChildBandCellControl Style  *********************************  -->
     <Style x:Key="ChildBandCellControlStyle" TargetType="igPrim:ChildBandCellControl">
-        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         <Setter Property="Foreground" Value="{StaticResource HeaderCellForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource HeaderCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource HeaderCellBorderBrush}" />
         <Setter Property="BorderThickness" Value="0,0,1,1" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="Padding" Value="6" />
         <Setter Property="Height" Value="Auto" />
         <Setter Property="Template">
             <Setter.Value>
@@ -3820,7 +3821,7 @@
         <Setter Property="Background" Value="{StaticResource ExpansionCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource ExpansionCellBorderBrush}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Padding" Value="6,4" />
+        <!--<Setter Property="Padding" Value="6,4" />-->
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Height" Value="Auto" />
@@ -3892,7 +3893,7 @@
         <Setter Property="Background" Value="{StaticResource FilterRowCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource FilterRowCellBorderBrush}" />
         <Setter Property="BorderThickness" Value="0,1,1,1" />
-        <Setter Property="Padding" Value="6,4" />
+        <!--<Setter Property="Padding" Value="6,4" />-->
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Height" Value="Auto" />
@@ -4304,7 +4305,7 @@
         <Setter Property="Background" Value="{StaticResource ExpansionCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource ExpansionCellBorderBrush}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Padding" Value="6,4" />
+        <!--<Setter Property="Padding" Value="6,4" />-->
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Height" Value="Auto" />
@@ -4390,7 +4391,7 @@
         <Setter Property="Background" Value="{StaticResource SummaryRowCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource SummaryRowCellBorderBrush}" />
         <Setter Property="BorderThickness" Value="0,1,1,1" />
-        <Setter Property="Padding" Value="7,3" />
+        <!--<Setter Property="Padding" Value="7,3" />-->
         <Setter Property="HorizontalContentAlignment" Value="Right" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Height" Value="Auto" />
@@ -4470,7 +4471,7 @@
         <Setter Property="Background" Value="{StaticResource PopupBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource PopupBorderBrush}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Padding" Value="0,12" />
+        <!--<Setter Property="Padding" Value="0,12" />-->
         <Setter Property="Margin" Value="0" />
         <Setter Property="CheckBoxStyle" Value="{StaticResource CheckBoxStyle}" />
         <Setter Property="Template">
@@ -4543,7 +4544,7 @@
         <Setter Property="BorderBrush" Value="{StaticResource FooterCellBorderBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="Padding" Value="6,4" />
+        <!--<Setter Property="Padding" Value="6,4" />-->
         <Setter Property="Height" Value="Auto" />
         <Setter Property="Template">
             <Setter.Value>
@@ -4571,7 +4572,7 @@
         <Setter Property="BorderBrush" Value="{StaticResource FooterCellBorderBrush}" />
         <Setter Property="BorderThickness" Value="0,1,1,1" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="Padding" Value="6,4" />
+        <!--<Setter Property="Padding" Value="6,4" />-->
         <Setter Property="Height" Value="Auto" />
         <Setter Property="Template">
             <Setter.Value>
@@ -4599,7 +4600,7 @@
         <Setter Property="BorderBrush" Value="{StaticResource FooterCellBorderBrush}" />
         <Setter Property="BorderThickness" Value="0,1,1,1" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="Padding" Value="6,4" />
+        <!--<Setter Property="Padding" Value="6,4" />-->
         <Setter Property="Height" Value="Auto" />
         <Setter Property="Template">
             <Setter.Value>
@@ -4634,7 +4635,7 @@
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Width" Value="30" />
         <Setter Property="Height" Value="30" />
-        <Setter Property="Padding" Value="0" />
+        <!--<Setter Property="Padding" Value="0" />-->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -4712,7 +4713,7 @@
         <Setter Property="BorderBrush" Value="{StaticResource PagerItemBorderBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Margin" Value="3" />
-        <Setter Property="Padding" Value="5,1" />
+        <!--<Setter Property="Padding" Value="5,1" />-->
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="VerticalAlignment" Value="Stretch" />
         <Setter Property="Height" Value="Auto" />
@@ -4816,7 +4817,7 @@
     <Style x:Key="PagerControlStyle" TargetType="igPrim:PagerControl">
         <Setter Property="MaximumAvailablePagerValues" Value="10" />
         <Setter Property="Margin" Value="0" />
-        <Setter Property="Padding" Value="8,0" />
+        <!--<Setter Property="Padding" Value="8,0" />-->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="igPrim:PagerControl">
@@ -4894,7 +4895,7 @@
     <Style x:Key="PagerCellControlStyle" TargetType="igPrim:PagerCellControl">
         <Setter Property="Background" Value="{StaticResource PagerAreaBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource PagerAreaBorderBrush}" />
-        <Setter Property="Padding" Value="4,0" />
+        <!--<Setter Property="Padding" Value="4,0" />-->
         <Setter Property="MinHeight" Value="36" />
         <Setter Property="Template">
             <Setter.Value>
@@ -5136,7 +5137,7 @@
         <Setter Property="BorderBrush" Value="{StaticResource GroupByAreaExpansionIndicatorBorderBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Cursor" Value="Hand" />
-        <Setter Property="Padding" Value="0" />
+        <!--<Setter Property="Padding" Value="0" />-->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
@@ -5473,7 +5474,7 @@
         <Setter Property="BorderBrush" Value="{StaticResource GroupByHeaderCellBorderBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="Padding" Value="6,4" />
+        <!--<Setter Property="Padding" Value="6,4" />-->
         <Setter Property="Height" Value="Auto" />
         <Setter Property="Template">
             <Setter.Value>
@@ -5671,7 +5672,7 @@
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Margin" Value="20,0,0,0" />
-        <Setter Property="Padding" Value="10,0" />
+        <!--<Setter Property="Padding" Value="10,0" />-->
         <Setter Property="Height" Value="Auto" />
         <Setter Property="Template">
             <Setter.Value>
@@ -5705,7 +5706,7 @@
         <Setter Property="BorderBrush" Value="{StaticResource GroupByCellBorderBrush}" />
         <Setter Property="BorderThickness" Value="0,0,1,1" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="Padding" Value="6,4" />
+        <!--<Setter Property="Padding" Value="6,4" />-->
         <Setter Property="Height" Value="Auto" />
         <Setter Property="Template">
             <Setter.Value>
@@ -5855,7 +5856,7 @@
         <Setter Property="Background" Value="{StaticResource PopupBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource PopupBorderBrush}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Padding" Value="12" />
+        <!--<Setter Property="Padding" Value="12" />-->
         <Setter Property="Margin" Value="1" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -5986,7 +5987,7 @@
     <!--  *********************************  FilterCheckBox Style  *********************************  -->
     <Style x:Key="FilterCheckBoxStyle" TargetType="CheckBox">
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Padding" Value="0" />
+        <!--<Setter Property="Padding" Value="0" />-->
         <Setter Property="MinWidth" Value="30" />
         <Setter Property="Height" Value="Auto" />
         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -7059,7 +7060,7 @@
         <Setter Property="Background" Value="{StaticResource FilterSelectionItemBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource FilterSelectionItemBorderBrush}" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="Padding" Value="0" />
+        <!--<Setter Property="Padding" Value="0" />-->
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Margin" Value="1" />
         <Setter Property="Height" Value="Auto" />
@@ -7160,7 +7161,7 @@
         <Setter Property="FontSize" Value="14.667" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource TransparentBrush}" />
-        <Setter Property="Padding" Value="6,4" />
+        <!--<Setter Property="Padding" Value="6,4" />-->
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
         <Setter Property="Height" Value="Auto" />
@@ -7191,7 +7192,7 @@
     <Style x:Key="ClearFilterTextboxWatermarkButtonStyle" TargetType="Button">
         <Setter Property="Background" Value="{StaticResource ButtonBackgroundBrush}" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
-        <Setter Property="Padding" Value="3" />
+        <!--<Setter Property="Padding" Value="3" />-->
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Template">
             <Setter.Value>
@@ -7315,7 +7316,7 @@
                         </Border>
                         <Border Margin="0,0,30,0"
                                 BorderThickness="1"
-                                Padding="6,4">
+                                Padding="0">
                             <TextBlock x:Name="Watermark"
                                        Grid.Row="0"
                                        VerticalAlignment="Center"
@@ -7351,7 +7352,7 @@
                                               BorderBrush="{x:Null}"
                                               DataContext="{Binding FilterSelectionControl,
                                                                     RelativeSource={RelativeSource TemplatedParent}}"
-                                              Padding="3,2,2,2"
+                                              Padding="0"
                                               Text="{Binding FilterSelectionControl.FilterText,
                                                              Mode=TwoWay,
                                                              RelativeSource={RelativeSource TemplatedParent}}">
@@ -7454,7 +7455,7 @@
         <Setter Property="BorderBrush" Value="{StaticResource PopupBorderBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Margin" Value="0" />
-        <Setter Property="Padding" Value="11,0,0,0" />
+        <!--<Setter Property="Padding" Value="11,0,0,0" />-->
         <Setter Property="CheckBoxStyle" Value="{StaticResource CheckBoxStyle}" />
         <Setter Property="Template">
             <Setter.Value>
@@ -7674,12 +7675,12 @@
                                 <CheckBox x:Name="SelectAllCheckBox"
                                           Grid.Row="4"
                                           Grid.Column="1"
-                                          Margin="-6,6,12,0"
+                                          Margin="0"
                                           Style="{StaticResource CheckBoxStyle}" />
                                 <CheckBox x:Name="AppendFiltersCheckBox"
                                           Grid.Row="5"
                                           Grid.Column="1"
-                                          Margin="-6,6,12,0"
+                                          Margin="0"
                                           Content="{Binding RelativeSource={RelativeSource TemplatedParent},
                                                             Path=AppendFilterText}"
                                           IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent},
@@ -7689,7 +7690,7 @@
                                 <!--  FilterSelectionValues  -->
                                 <CheckBox Grid.Row="6"
                                           Grid.Column="0"
-                                          Margin="0,8,0,0"
+                                          Margin="0,0,0,0"
                                           HorizontalAlignment="Center"
                                           VerticalAlignment="Top"
                                           IsChecked="{Binding Path=HasCheckedItems,
@@ -7933,7 +7934,7 @@
         <Setter Property="Background" Value="{StaticResource DateFilterTreeViewItemBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource DateFilterTreeViewItemBorderBrush}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Padding" Value="3" />
+        <!--<Setter Property="Padding" Value="3" />-->
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Top" />
         <Setter Property="Cursor" Value="Arrow" />
@@ -8220,7 +8221,7 @@
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Top" />
         <Setter Property="Cursor" Value="Arrow" />
-        <Setter Property="Padding" Value="1" />
+        <!--<Setter Property="Padding" Value="1" />-->
         <Setter Property="IsTabStop" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
@@ -8310,7 +8311,7 @@
         <Setter Property="DateFilterHierarchicalDataTemplate" Value="{StaticResource dateTreeDataTemplate}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Margin" Value="0" />
-        <Setter Property="Padding" Value="11,0,0,0" />
+        <!--<Setter Property="Padding" Value="11,0,0,0" />-->
         <Setter Property="CheckBoxStyle" Value="{StaticResource CheckBoxStyle}" />
         <Setter Property="Template">
             <Setter.Value>
@@ -8789,7 +8790,7 @@
         <Setter Property="NegativeBarBrush" Value="{StaticResource ConditionalFormattingCellNegativeBarBrush}" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Padding" Value="6,4" />
+        <!--<Setter Property="Padding" Value="6,4" />-->
         <Setter Property="Height" Value="Auto" />
         <Setter Property="Template">
             <Setter.Value>
@@ -8973,7 +8974,7 @@
         <Setter Property="BorderBrush" Value="{StaticResource GroupHeaderCellBorderBrush}" />
         <Setter Property="BorderThickness" Value="0,0,1,1" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="Padding" Value="6,4" />
+        <!--<Setter Property="Padding" Value="6,4" />-->
         <Setter Property="Height" Value="Auto" />
         <Setter Property="Template">
             <Setter.Value>
@@ -9383,7 +9384,7 @@
         <Setter Property="BorderBrush" Value="{StaticResource GroupFooterCellBorderBrush}" />
         <Setter Property="BorderThickness" Value="0,0,1,1" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="Padding" Value="6,4" />
+        <!--<Setter Property="Padding" Value="6,4" />-->
         <Setter Property="Height" Value="Auto" />
         <Setter Property="Template">
             <Setter.Value>
@@ -9405,7 +9406,7 @@
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="InnerControlMargin" Value="0" />
-        <Setter Property="Padding" Value="6,4" />
+        <!--<Setter Property="Padding" Value="6,4" />-->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="igPrim:GroupDisplayCellControl">
@@ -9527,7 +9528,7 @@
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Padding" Value="6,4" />
+        <!--<Setter Property="Padding" Value="6,4" />-->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="igPrim:ColumnLayoutTemplateCellControl">
@@ -9596,7 +9597,7 @@
         <Setter Property="Background" Value="{StaticResource MergedContentCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource MergedContentCellBorderBrush}" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Padding" Value="6,4" />
+        <!--<Setter Property="Padding" Value="6,4" />-->
         <Setter Property="Height" Value="Auto" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Top" />
@@ -9625,7 +9626,7 @@
         <Setter Property="Background" Value="{StaticResource MergedSummaryCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource MergedSummaryCellBorderBrush}" />
         <Setter Property="BorderThickness" Value="0,0,1,0" />
-        <Setter Property="Padding" Value="6,4" />
+        <!--<Setter Property="Padding" Value="6,4" />-->
         <Setter Property="HorizontalContentAlignment" Value="Right" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="SummaryDisplayTemplate">
@@ -9703,7 +9704,7 @@
     <Style x:Key="CustomFilterButtonStyle" TargetType="Button">
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FontSize" Value="14.667" />
-        <Setter Property="Padding" Value="10,0,10,2" />
+        <!--<Setter Property="Padding" Value="10,0,10,2" />-->
         <Setter Property="Height" Value="Auto" />
         <Setter Property="MinWidth" Value="30" />
         <Setter Property="BorderThickness" Value="1" />
@@ -9805,7 +9806,7 @@
         <Setter Property="Background" Value="{StaticResource CompoundFilterDialogBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource CompoundFilterDialogBorderBrush}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Padding" Value="10" />
+        <!--<Setter Property="Padding" Value="10" />-->
         <Setter Property="Margin" Value="1" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Center" />

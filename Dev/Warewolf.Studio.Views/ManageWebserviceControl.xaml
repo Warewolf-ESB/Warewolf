@@ -10,7 +10,7 @@
              xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300"
+             d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=dialogues:IManageWebServiceViewModel,
                                               IsDesignTimeCreatable=False}">
     <UserControl.Resources>
@@ -26,50 +26,48 @@
             <Setter Property="MaxWidth" Value="0"/>
         </Style>
     </UserControl.Resources>
-    <ScrollViewer HorizontalScrollBarVisibility="Auto">
-        <StackPanel MinWidth="600" MaxWidth="{Binding ElementName=UserControl, Path=ActualWidth}">
-            <Grid Margin="{StaticResource ElementBorder}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto" ></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto" ></RowDefinition>
-                    <RowDefinition Height="Auto" ></RowDefinition>
-                    <RowDefinition Height="Auto" ></RowDefinition>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Grid Grid.Row="0" 
+    <Grid Margin="{StaticResource ElementBorder}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto" ></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto" ></RowDefinition>
+            <RowDefinition Height="Auto" ></RowDefinition>
+            <RowDefinition Height="Auto" ></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" 
                       HorizontalAlignment="Stretch" 
                       Margin="{StaticResource GridBorderBottom}" >
-                    <!-- Select an Source-->
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" ></RowDefinition>
-                        <RowDefinition Height="Auto" ></RowDefinition>
-                        <RowDefinition Height="7" ></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="0" 
+            <!-- Select an Source-->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" ></RowDefinition>
+                <RowDefinition Height="Auto" ></RowDefinition>
+                <RowDefinition Height="7" ></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" 
                              Grid.Column="0" 
                              Background="{StaticResource WareWolfMenuBrush}" 
                              HorizontalAlignment="Stretch" 
                              Orientation="Horizontal">
-                        <TextBlock Text="1" 
+                <TextBlock Text="1" 
                                Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
-                        <TextBlock Margin="5" 
+                <TextBlock Margin="5" 
                                Text="{Binding SelectSourceHeader}" 
                                Style="{StaticResource SourceHeader}"></TextBlock>
-                    </StackPanel>
-                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
-                        <ComboBox x:Name="RequestTypes"
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+                <ComboBox x:Name="RequestTypes"
                                   Width="80"
                                   Focusable="True"
                                   ItemsSource="{Binding WebRequestMethods}"
                                   SelectedItem="{Binding SelectedWebRequestMethod}"
                                   Padding="{StaticResource ComboBoxItemPadding}"
                                   Margin="{StaticResource ElementBorderTop}"></ComboBox>
-                        <ComboBox x:Name="SourcesComboBox" 
+                <ComboBox x:Name="SourcesComboBox" 
                                   DisplayMemberPath="Name" 
                                   Width="250" 
                                   ItemsSource="{Binding Sources}"
@@ -77,198 +75,201 @@
                                   Focusable="True"
                                   SelectedItem="{Binding SelectedSource}"
                                   Margin="{StaticResource ElementBorderControlLeftTop}" />
-                        <Button Width="25" 
+                <Button Width="25" 
                                 Command="{Binding SelectedSource}" 
                                 IsEnabled="{Binding HasChanged}" 
                                 Content=" ... " 
                                 Margin="{StaticResource ElementBorderControlLeftTop}"></Button>
-                        <Button Content="New" 
+                <Button Content="New" 
                             Margin="{StaticResource ElementBorderControlLeftTop}"
                             Style="{StaticResource ButtonOrangeStyle}" 
                             Command="{Binding NewWebSourceCommand}" 
                             Width="100" ></Button>
-                    </StackPanel>
-                </Grid>
-                <!-- REQUEST HEADERS -->
-                <Grid x:Name="RequestHeadersGrid" 
+            </StackPanel>
+        </Grid>
+        <!-- REQUEST HEADERS -->
+        <Grid x:Name="RequestHeadersGrid" 
                       Grid.Row="1" 
                       Margin="{StaticResource GridBorderBottom}"
                       Grid.Column="0" >
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="7" ></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50*"></ColumnDefinition>
-                        <ColumnDefinition Width="50*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <!-- REQUEST HEADER -->
-                    <StackPanel Grid.Row="0" 
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="7" ></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50*"></ColumnDefinition>
+                <ColumnDefinition Width="50*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <!-- REQUEST HEADER -->
+            <StackPanel Grid.Row="0" 
                                 Grid.Column="0" 
                                 Grid.ColumnSpan="2"
                                 Background="{StaticResource WareWolfMenuBrush}" 
                                 HorizontalAlignment="Stretch" 
                                 Orientation="Horizontal">
-                        <TextBlock Text="2" 
+                <TextBlock Text="2" 
                                Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
-                        <TextBlock Margin="5" 
+                <TextBlock Margin="5" 
                                Text="{Binding RequestHeader}" 
                                Style="{StaticResource SourceHeader}" ></TextBlock>
-                    </StackPanel>
-                    <!-- HEADER -->
-                    <Grid Grid.Column="0" 
+            </StackPanel>
+            <!-- HEADER -->
+            <Grid Grid.Column="0" 
                           Grid.Row="1"
                           Grid.ColumnSpan="2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="50*" />
-                            <ColumnDefinition Width="50*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" 
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50*" />
+                    <ColumnDefinition Width="50*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" 
                                    Grid.Column="0"
                                    Text="{Binding SelectHeadersHeader}" 
                                    FontWeight="Bold"></TextBlock>
-                        <ScrollViewer Grid.Row="1" 
+                <ScrollViewer Grid.Row="1" 
                                       Grid.Column="0" 
                                       HorizontalScrollBarVisibility="Auto" 
                                       VerticalScrollBarVisibility="Auto">
-                            <StackPanel MaxWidth="600" MaxHeight="180">
-                                <ig:XamGrid x:Name="HeadersGrid" 
+                    <StackPanel Width="460" MaxHeight="180">
+                        <ig:XamGrid x:Name="HeadersGrid" 
                                     ItemsSource="{Binding Headers}" 
                                     AutoGenerateColumns="False"
                                     IsAlternateRowsEnabled="False"
                                     DeleteKeyAction="DeleteRowOfActiveCell"
                                     ColumnWidth="*" >
-                                    <ig:XamGrid.Columns>
-                                        <ig:TextColumn Key="Name" HeaderText="Name" MinimumWidth="100">
-                                            <ig:TextColumn.AddNewRowEditorTemplate>
-                                                <DataTemplate>
-                                                    <TextBox Text="{Binding Path=Name, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
-                                                </DataTemplate>
-                                            </ig:TextColumn.AddNewRowEditorTemplate>
-                                        </ig:TextColumn>
-                                        <ig:TextColumn Key="Value" HeaderText="Value" MinimumWidth="100" IsResizable="False">
-                                            <ig:TextColumn.AddNewRowEditorTemplate>
-                                                <DataTemplate>
-                                                    <TextBox Text="{Binding Path=Value, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
-                                                </DataTemplate>
-                                            </ig:TextColumn.AddNewRowEditorTemplate>
-                                        </ig:TextColumn>
-                                    </ig:XamGrid.Columns>
-                                    <ig:XamGrid.AddNewRowSettings>
-                                        <ig:AddNewRowSettings AllowAddNewRow="Top" 
+                            <ig:XamGrid.Columns>
+                                <ig:TextColumn Key="Name" HeaderText="Name" MinimumWidth="100">
+                                    <ig:TextColumn.AddNewRowEditorTemplate>
+                                        <DataTemplate>
+                                            <TextBox Text="{Binding Path=Name, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
+                                        </DataTemplate>
+                                    </ig:TextColumn.AddNewRowEditorTemplate>
+                                </ig:TextColumn>
+                                <ig:TextColumn Key="Value" HeaderText="Value" MinimumWidth="100" IsResizable="False">
+                                    <ig:TextColumn.AddNewRowEditorTemplate>
+                                        <DataTemplate>
+                                            <TextBox Text="{Binding Path=Value, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
+                                        </DataTemplate>
+                                    </ig:TextColumn.AddNewRowEditorTemplate>
+                                </ig:TextColumn>
+                            </ig:XamGrid.Columns>
+                            <ig:XamGrid.AddNewRowSettings>
+                                <ig:AddNewRowSettings AllowAddNewRow="Top" 
                                                       IsMouseActionEditingEnabled="SingleClick"
                                                       IsEnterKeyEditingEnabled="True" 
                                                       IsF2EditingEnabled="True" 
                                                       IsOnCellActiveEditingEnabled="True"
                                                       />
-                                    </ig:XamGrid.AddNewRowSettings>
-                                    <ig:XamGrid.SortingSettings>
-                                        <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
-                                    </ig:XamGrid.SortingSettings>
-                                    <ig:XamGrid.EditingSettings>
-                                        <ig:EditingSettings AllowEditing="Cell"
+                            </ig:XamGrid.AddNewRowSettings>
+                            <ig:XamGrid.SortingSettings>
+                                <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
+                            </ig:XamGrid.SortingSettings>
+                            <ig:XamGrid.EditingSettings>
+                                <ig:EditingSettings AllowEditing="Cell"
                                                     IsMouseActionEditingEnabled="DoubleClick"
                                                     IsEnterKeyEditingEnabled="True" 
                                                     IsF2EditingEnabled="True" 
                                                     IsOnCellActiveEditingEnabled="False" />
-                                    </ig:XamGrid.EditingSettings>
-                                    <!-- Conditional Formating is On-->
-                                    <ig:XamGrid.ConditionalFormattingSettings>
-                                        <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
-                                    </ig:XamGrid.ConditionalFormattingSettings>
-                                    <!-- Filler Column Setting is On-->
-                                    <ig:XamGrid.FillerColumnSettings>
-                                        <ig:FillerColumnSettings   Style="{StaticResource FillerColCellStyle}" HeaderStyle="{StaticResource FillerColHeader}" />
-                                    </ig:XamGrid.FillerColumnSettings>
-                                </ig:XamGrid>
-                            </StackPanel>
-                        </ScrollViewer>
-                    </Grid>
-                    <!-- BODY -->
-                    <Grid Grid.Column="1" 
+                            </ig:XamGrid.EditingSettings>
+                            <!-- Conditional Formating is On-->
+                            <ig:XamGrid.ConditionalFormattingSettings>
+                                <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
+                            </ig:XamGrid.ConditionalFormattingSettings>
+                            <!-- Filler Column Setting is On-->
+                            <ig:XamGrid.FillerColumnSettings>
+                                <ig:FillerColumnSettings   Style="{StaticResource FillerColCellStyle}" HeaderStyle="{StaticResource FillerColHeader}" />
+                            </ig:XamGrid.FillerColumnSettings>
+                        </ig:XamGrid>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+            <!-- BODY -->
+            <Grid Grid.Column="1" 
                           Grid.Row="1" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="7" ></RowDefinition>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="{Binding RequestBodyHeader}" 
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="7" ></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Text="{Binding RequestBodyHeader}" 
                                    FontWeight="Bold"></TextBlock>
-                        <TextBox Grid.Row="1" 
+                <TextBox Grid.Row="1" 
                                  x:Name="RequestBody"
                                  Text="{Binding RequestBody}"
                                  Visibility="{Binding RequestBodyEnabled, Converter={StaticResource BoolToVis}}"
                                  HorizontalAlignment="Stretch" ></TextBox>
-                    </Grid>
-                    <!-- URL -->
-                    <TextBlock Grid.Column="0" 
+            </Grid>
+            <!-- URL -->
+            <TextBlock Grid.Column="0" 
                                Grid.Row="2" 
                                Text="{Binding RequestUrlHeader}" 
                                FontWeight="Bold"></TextBlock>
-                    <Grid Grid.Column="0"
+            <Grid Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Grid.Row="3">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="50*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0"
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="50*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0"
                                Text="{Binding SourceUrl}">
-                        </TextBlock>
-                    <TextBox x:Name="RequestUrl"
+                </TextBlock>
+                <TextBox x:Name="RequestUrl"
                              HorizontalAlignment="Stretch"
                              Text="{Binding RequestUrlQuery}"
                              Grid.Column="1"></TextBox>
-                    </Grid>
-                </Grid>
-                <!-- REQUEST VARIABLES -->
-                <Grid x:Name="RequestVarGrid" 
+            </Grid>
+        </Grid>
+        <!-- REQUEST VARIABLES -->
+        <Grid x:Name="RequestVarGrid" 
                       Grid.Row="2" 
                       Margin="{StaticResource GridBorderBottom}"
                       Grid.Column="0" 
                       Visibility="Visible">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="7" ></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <!-- VARIABLES HEADER -->
-                    <StackPanel Grid.Row="0" 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="7" ></RowDefinition>
+            </Grid.RowDefinitions>
+            <!-- VARIABLES HEADER -->
+            <StackPanel Grid.Row="0" 
                                 Grid.Column="0" 
                                 Grid.ColumnSpan="2"
                                 Background="{StaticResource WareWolfMenuBrush}" 
                                 HorizontalAlignment="Stretch" 
                                 Orientation="Horizontal">
-                        <TextBlock Text="3" 
+                <TextBlock Text="3" 
                                    Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
-                        <TextBlock Margin="5" 
+                <TextBlock Margin="5" 
                                    Text="{Binding VariablesHeader}" 
                                    Style="{StaticResource SourceHeader}" ></TextBlock>
-                    </StackPanel>
+            </StackPanel>
+            <ScrollViewer Grid.Row="1" 
+                          Grid.Column="1"
+                          HorizontalScrollBarVisibility="Auto" 
+                          VerticalScrollBarVisibility="Auto">
+                <StackPanel Width="922" 
+                            MaxWidth="1200" 
+                            MaxHeight="180" 
+                            Margin="{StaticResource ControlBorderTop}">
                     <ig:XamGrid ItemsSource="{Binding Variables}" 
                                 x:Name="VariablesGrid"
                                 AutoGenerateColumns="False"
-                                Grid.Row="1" 
-                                Grid.Column="1"
                                 ColumnWidth="*" 
-                                MaxWidth="1200"
                                 IsAlternateRowsEnabled="False"
-                                Margin="{StaticResource ControlBorderTop}"
-                                MaxHeight="180"
                                 BorderBrush="Transparent" >
                         <ig:XamGrid.Columns>
                             <ig:TextColumn Key="Name" HeaderText="Name" IsReadOnly="True" MinimumWidth="300">
@@ -297,117 +298,116 @@
                                                     IsOnCellActiveEditingEnabled="False" />
                         </ig:XamGrid.EditingSettings>
                     </ig:XamGrid>
-                </Grid>
-                <!-- RESPONSE -->
-                <Grid x:Name="ResponseGrid" 
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+        <!-- RESPONSE -->
+        <Grid x:Name="ResponseGrid" 
                       Grid.Row="3" 
                       Margin="{StaticResource GridBorderBottom}"
                       Grid.Column="0" 
                       Visibility="Visible">
-                    <!-- Test-->
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="7" ></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="0" 
+            <!-- Test-->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="7" ></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" 
                             Grid.Column="0" 
                                 Grid.ColumnSpan="2"
                             Background="{StaticResource WareWolfMenuBrush}" 
                             HorizontalAlignment="Stretch" 
                             Orientation="Horizontal">
-                        <TextBlock Text="4" 
+                <TextBlock Text="4" 
                                    Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
-                        <TextBlock Margin="5" 
+                <TextBlock Margin="5" 
                                    Text="{Binding ResponseHeader}" 
                                    Style="{StaticResource SourceHeader}" ></TextBlock>
-                    </StackPanel>
-                    <Button Width="25" 
+            </StackPanel>
+            <Button Width="25" 
                             Height="25"
                             Grid.Column="0"
                             Click="Btn_OnClick"
                             Margin="{StaticResource ControlBorderTop}"
                             Grid.Row="1" >
-                        <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
+                <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
                                         FontSize="16" 
                                         FontWeight="DemiBold" 
                                         Icon="Pencil" 
                                         VerticalAlignment="Top" 
                                         HorizontalAlignment="Center"/>
-                    </Button>
-                    <Grid Grid.Column="1" Grid.Row="1">
-                        <ScrollViewer >
-                            <TextBlock x:Name="Response"
+            </Button>
+            <Grid Grid.Column="1" Grid.Row="1">
+                <ScrollViewer >
+                    <TextBlock x:Name="Response"
                                        Margin="{StaticResource ControlBorderLeftTop}"
                                        Text="{Binding Response}"
                                        TextWrapping="Wrap"
                                        MaxHeight="180"
                                        HorizontalAlignment="Stretch"></TextBlock>
-                        </ScrollViewer>
-                    </Grid>
-                </Grid>
-                <!-- MAPPINGS -->
-                <Grid x:Name="MappingsGrid" 
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+        <!-- MAPPINGS -->
+        <Grid x:Name="MappingsGrid" 
                   Grid.Row="4" 
                   Grid.Column="0" 
                   Visibility="Visible">
-                    <!-- Mappings-->
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="0" 
+            <!-- Mappings-->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" 
                             Grid.Column="0" 
                             Background="{StaticResource WareWolfMenuBrush}" 
-                         
                             Orientation="Horizontal">
-                        <TextBlock Text="5" 
+                <TextBlock Text="5" 
                                Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
-                        <TextBlock Margin="5" 
+                <TextBlock Margin="5" 
                                Text="{Binding MappingsHeader}" 
                                Style="{StaticResource SourceHeader}" ></TextBlock>
-                    </StackPanel>
-                    <views:MappingsView Grid.Row="1" MaxWidth="1200"></views:MappingsView>
-                </Grid>
-                <Grid Grid.Row="5" Grid.Column="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" 
+            </StackPanel>
+            <views:MappingsView Grid.Row="1"></views:MappingsView>
+        </Grid>
+        <Grid Grid.Row="5" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" 
                                Text="{Binding ErrorText}" 
                                HorizontalAlignment="Left" 
                                TextWrapping="WrapWithOverflow" 
                                x:Name="ErrorTextBlock" ></TextBlock>
-                    <Button x:Name="TestButton" 
+            <Button x:Name="TestButton" 
                             Grid.Column="1" 
                             Margin="{StaticResource ControlBorderTopRight}" 
                             HorizontalAlignment="Right" 
                             VerticalAlignment="Bottom" 
                             Command="{Binding TestCommand}"
                             Width="100">Test</Button>
-                    <Button x:Name="SaveButton" 
+            <Button x:Name="SaveButton" 
                             Grid.Column="2" 
                         Margin="{StaticResource ControlBorderTopRight}" 
                         HorizontalAlignment="Right" 
                         VerticalAlignment="Bottom" 
                             Command="{Binding SaveCommand}" 
                         Width="100">Save</Button>
-                    <Button x:Name="CancelButton" 
+            <Button x:Name="CancelButton" 
                             Grid.Column="3" 
                         Margin="{StaticResource ControlBorderTop}" 
                         HorizontalAlignment="Right" 
                         VerticalAlignment="Bottom" 
                             Command="{Binding CancelCommand}"
                         Width="100">Cancel</Button>
-                </Grid>
-            </Grid>
-        </StackPanel>
-    </ScrollViewer>
+        </Grid>
+    </Grid>
 </UserControl>

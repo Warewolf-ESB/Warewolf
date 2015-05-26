@@ -42,7 +42,7 @@ namespace Warewolf.Studio.Views
             {
                 be.UpdateTarget();
             }
-            return OutputsMappingDataGrid.Items;
+            return OutputsMappingDataGrid.ItemsSource as ItemCollection;
         }
     }
 }

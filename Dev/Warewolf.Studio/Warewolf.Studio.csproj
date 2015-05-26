@@ -276,12 +276,9 @@
     <Compile Include="Graph.xaml.cs">
       <DependentUpon>Graph.xaml</DependentUpon>
     </Compile>
-<<<<<<< HEAD
     <Compile Include="InfragisticsControlTesting.xaml.cs">
       <DependentUpon>InfragisticsControlTesting.xaml</DependentUpon>
     </Compile>
-=======
->>>>>>> 3d86396b5befcde38179232045dd59f3a6a4ff68
     <Compile Include="Properties\AssemblyCommonInfo.cs" />
     <Compile Include="Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>
@@ -318,13 +315,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-<<<<<<< HEAD
     <Page Include="InfragisticsControlTesting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-=======
->>>>>>> 3d86396b5befcde38179232045dd59f3a6a4ff68
     <Page Include="Shell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

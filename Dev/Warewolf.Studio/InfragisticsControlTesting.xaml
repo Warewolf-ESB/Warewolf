@@ -44,7 +44,6 @@
             </Grid.RowDefinitions>
 
             <ig:XamGrid x:Name="HeadersGrid" 
-                                    ItemsSource="{Binding Headers}" 
                                     AutoGenerateColumns="False"
                                     Grid.Row="0" 
                                     Height="Auto"
@@ -60,13 +59,13 @@
                             </DataTemplate>
                         </ig:TextColumn.AddNewRowEditorTemplate>
                     </ig:TextColumn>
-                    <ig:TextColumn Key="Value" HeaderText="Value" Width="299">
-                        <ig:TextColumn.AddNewRowEditorTemplate>
+                    <ig:CheckBoxColumn Key="Value" HeaderText="Value" Width="299">
+                        <ig:CheckBoxColumn.AddNewRowEditorTemplate>
                             <DataTemplate>
-                                <CheckBox />
+                                <CheckBox HorizontalAlignment="Center" />
                             </DataTemplate>
-                        </ig:TextColumn.AddNewRowEditorTemplate>
-                    </ig:TextColumn>
+                        </ig:CheckBoxColumn.AddNewRowEditorTemplate>
+                    </ig:CheckBoxColumn>
                 </ig:XamGrid.Columns>
                 <ig:XamGrid.AddNewRowSettings>
                     <ig:AddNewRowSettings AllowAddNewRow="Top" 
