@@ -43,8 +43,18 @@ namespace Warewolf.Studio.ViewModels
         private bool _isOutputMappingEmptyRows;
         private bool _showRecordSet;
 
+        /// <exception cref="ArgumentNullException"><paramref name="model"/> is <see langword="null" />.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="saveDialog"/> is <see langword="null" />.</exception>
         public ManageDatabaseServiceViewModel(IDbServiceModel model,IRequestServiceNameViewModel saveDialog):base(ResourceType.DbService)
         {
+            if(model == null)
+            {
+                throw new ArgumentNullException("model");
+            }
+            if(saveDialog == null)
+            {
+                throw new ArgumentNullException("saveDialog");
+            }
             _model = model;
             _saveDialog = saveDialog;
             CanEditSource = true;
@@ -63,6 +73,18 @@ namespace Warewolf.Studio.ViewModels
             IsInputsEmptyRows = false;
             IsOutputMappingEmptyRows = false;
             ShowRecordSet = true;
+        }
+
+        /// <exception cref="ArgumentNullException"><paramref name="model" /> is <see langword="null" />.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="saveDialog"/> is <see langword="null" />.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="service"/> is <see langword="null" />.</exception>
+        public ManageDatabaseServiceViewModel(IDbServiceModel model, IRequestServiceNameViewModel saveDialog, IDatabaseService service):this(model,saveDialog)
+        {
+            if(service == null)
+            {
+                throw new ArgumentNullException("service");
+            }
+            FromService(service);
         }
 
         public ICommand RefreshCommand { get; set; }
@@ -103,19 +125,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public ManageDatabaseServiceViewModel(IDbServiceModel model,IRequestServiceNameViewModel saveDialog,IDatabaseService service):base(ResourceType.DbService)
-        {
-            _model = model;
-            _saveDialog = saveDialog;
-            FromService(service);
-            CanEditSource = true;
-            CreateNewSourceCommand = new DelegateCommand(model.CreateNewSource);
-            EditSourceCommand = new DelegateCommand(()=>model.EditSource(SelectedSource));
-            Sources = model.RetrieveSources();
-
-            TestProcedureCommand = new DelegateCommand(TestAction, CanTestProcedure);
-            SaveCommand = new DelegateCommand(Save,CanSave);
-        }
+        
 
         void FromService(IDatabaseService service)
         {
@@ -486,7 +496,7 @@ namespace Warewolf.Studio.ViewModels
                 _inputs = value;
                 IsInputsEmptyRows = true;
                 InputsRequired = false;
-                if (_inputs.Count >= 1)
+                if (_inputs != null && _inputs.Count >= 1)
                 {
                     InputsRequired = true;
                     IsInputsEmptyRows = false;
@@ -504,7 +514,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _testResults = value;
                 IsTestResultsEmptyRows = true;
-                if (_testResults.Rows.Count >= 1)
+                if (_testResults != null && _testResults.Rows.Count >= 1)
                 {
                     IsTestResultsEmptyRows = false;
                 }

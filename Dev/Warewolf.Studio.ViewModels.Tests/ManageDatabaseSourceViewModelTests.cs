@@ -211,7 +211,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             manageDatabaseSourceViewModel.AuthenticationType = AuthenticationType.Public;
             manageDatabaseSourceViewModel.UserName = "dave";
             manageDatabaseSourceViewModel.DatabaseName = "dbNAme";
-            manageDatabaseSourceViewModel.ServerName = "mon";
+            manageDatabaseSourceViewModel.ServerName = new ComputerName { Name = "mon" };
             Assert.IsTrue(manageDatabaseSourceViewModel.CanTest());
 
 
@@ -234,7 +234,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             manageDatabaseSourceViewModel.AuthenticationType = AuthenticationType.User;
            
             manageDatabaseSourceViewModel.DatabaseName = "dbNAme";
-            manageDatabaseSourceViewModel.ServerName = "mon";
+            manageDatabaseSourceViewModel.ServerName = new ComputerName { Name = "mon" };
             Assert.IsFalse(manageDatabaseSourceViewModel.CanTest());
 
             manageDatabaseSourceViewModel.UserName = "dave";
