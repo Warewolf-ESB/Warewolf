@@ -131,8 +131,6 @@ namespace Warewolf.Studio
                 //var testingInfraWindow = new InfragisticsControlTesting();
                 //testingInfraWindow.Show();
                 
-
-<<<<<<< HEAD
                 var testWindow = new Window
                 {
                     Content = new ManageWebserviceControl()
@@ -141,7 +139,7 @@ namespace Warewolf.Studio
                     }
                 };
                 testWindow.Show();
-=======
+
 //                var testWindow = new Window
 //                {
 //                    Content = new ManageWebserviceControl()
@@ -150,7 +148,6 @@ namespace Warewolf.Studio
 //                    }
 //                };
 //                testWindow.ShowDialog();
->>>>>>> 3d86396b5befcde38179232045dd59f3a6a4ff68
 
                 //var testPlugWindow = new Window
                 //{
