@@ -63,8 +63,8 @@ namespace Warewolf.Studio.ViewModels
 
         #region Implementation of IManageWebServiceViewModel
 
-        public ManageWebServiceViewModel(ResourceType? image, IWebServiceModel model, IRequestServiceNameViewModel saveDialog)
-            : base(image)
+        public ManageWebServiceViewModel(IWebServiceModel model, IRequestServiceNameViewModel saveDialog)
+            : base(ResourceType.WebService)
         {
             _model = model;
             _saveDialog = saveDialog;
@@ -74,8 +74,8 @@ namespace Warewolf.Studio.ViewModels
         }
 
 
-        public ManageWebServiceViewModel(ResourceType? image, IWebServiceModel model, IRequestServiceNameViewModel saveDialog,IWebService service)
-            : base(image)
+        public ManageWebServiceViewModel(IWebServiceModel model, IRequestServiceNameViewModel saveDialog,IWebService service)
+            : base(ResourceType.WebService)
         {
             _model = model;
             _saveDialog = saveDialog;
@@ -91,8 +91,8 @@ namespace Warewolf.Studio.ViewModels
 
 
 
-        public ManageWebServiceViewModel(ResourceType webService)
-            : base(webService)
+        public ManageWebServiceViewModel()
+            : base(ResourceType.WebService)
         {
             var commController = new  CommunicationControllerFactory();
             var connection = new ServerProxy( new Uri( "http://localhost:3142"));

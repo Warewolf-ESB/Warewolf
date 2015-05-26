@@ -130,14 +130,14 @@ namespace Warewolf.Studio
 
                 
 
-                var testWindow = new Window
-                {
-                    Content = new ManageWebserviceControl()
-                    {
-                        DataContext = new ManageWebServiceViewModel(ResourceType.WebService)
-                    }
-                };
-                testWindow.ShowDialog();
+//                var testWindow = new Window
+//                {
+//                    Content = new ManageWebserviceControl()
+//                    {
+//                        DataContext = new ManageWebServiceViewModel(ResourceType.WebService)
+//                    }
+//                };
+//                testWindow.ShowDialog();
 
                 //var testPlugWindow = new Window
                 //{
