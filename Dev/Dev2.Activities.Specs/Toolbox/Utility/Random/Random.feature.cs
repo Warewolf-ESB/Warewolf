@@ -704,6 +704,47 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Generate decimal Numbers one digit")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Random")]
+        public virtual void GenerateDecimalNumbersOneDigit()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Generate decimal Numbers one digit", ((string[])(null)));
+#line 217
+this.ScenarioSetup(scenarioInfo);
+#line 218
+ testRunner.Given("I have a type as \"Numbers\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 219
+ testRunner.And("I have a range from \"0.1\" to \"0.9\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 220
+ testRunner.When("the random tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 221
+ testRunner.Then("the result from the random tool should be of type \"System.Double\" with a length o" +
+                    "f \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 222
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Random",
+                        "From",
+                        "To"});
+            table31.AddRow(new string[] {
+                        "Numbers",
+                        "0.1",
+                        "0.9"});
+#line 223
+ testRunner.And("the debug inputs as", ((string)(null)), table31, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table32.AddRow(new string[] {
+                        "[[result]] = Double"});
+#line 226
+ testRunner.And("the debug output as", ((string)(null)), table32, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

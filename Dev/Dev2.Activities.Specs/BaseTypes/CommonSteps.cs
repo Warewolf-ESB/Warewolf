@@ -738,7 +738,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             if (!string.IsNullOrEmpty(expectedValue) && !expectedValue.Equals(actualValue, StringComparison.InvariantCultureIgnoreCase))
             {
-                if (expectedValue == "String" || expectedValue == "Int32" || expectedValue == "Guid" || expectedValue == "DateTime")
+                if (expectedValue == "String" || expectedValue == "Int32" || expectedValue == "Guid" || expectedValue == "DateTime" || expectedValue == "Double")
                 {
                     type = expectedValue;
                 }

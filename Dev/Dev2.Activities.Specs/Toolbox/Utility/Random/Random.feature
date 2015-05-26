@@ -213,3 +213,17 @@ Scenario: Generate Letters and Numbers with a negative recordset index for lengt
 	| Letters & Numbers | [[rec(-1).set]] = |
 
 
+	
+Scenario: Generate decimal Numbers one digit
+	Given I have a type as "Numbers"
+	And I have a range from "0.1" to "0.9" 
+	When the random tool is executed 
+	Then the result from the random tool should be of type "System.Double" with a length of "3"
+	And the execution has "NO" error
+	And the debug inputs as  
+	| Random  | From | To |
+	| Numbers | 0.1    | 0.9  |
+	And the debug output as 
+	|                     |
+	| [[result]] = Double |	
+
