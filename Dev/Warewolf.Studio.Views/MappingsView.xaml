@@ -4,12 +4,24 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:db="clr-namespace:Dev2.Common.Interfaces.DB;assembly=Dev2.Common.Interfaces"
+             xmlns:ig="http://schemas.infragistics.com/xaml"
+             xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" 
-             d:DataContext="{d:DesignInstance Type=db:IManageDbServiceViewModel,
+             d:DataContext="{d:DesignInstance Type=db:IServiceMappings,
                                               IsDesignTimeCreatable=False}">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibility"></BooleanToVisibilityConverter>
+        <Style x:Key="FillerColHeader" TargetType="{x:Type igPrim:HeaderCellControl}">
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Setter Property="Width" Value="0"/>
+            <Setter Property="MaxWidth" Value="0"/>
+        </Style>
+        <Style x:Key="FillerColCellStyle"   TargetType="ig:CellControl">
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Setter Property="Width" Value="0"/>
+            <Setter Property="MaxWidth" Value="0"/>
+        </Style>
     </UserControl.Resources>
     <Grid x:Name="MappingsGrid">
         <!-- Mappings-->
@@ -25,7 +37,67 @@
         </Grid.RowDefinitions>
 
         <TextBlock FontWeight="Bold" Grid.Row="0" ></TextBlock>
-        <DataGrid x:Name="InputsMappingDataGrid" Grid.Row="1" 
+        <ScrollViewer Grid.Row="1" 
+                      HorizontalScrollBarVisibility="Auto" 
+                      VerticalScrollBarVisibility="Auto">
+            <StackPanel MaxHeight="180">
+                <ig:XamGrid x:Name="InputsMappingDataGrid" 
+                    ItemsSource="{Binding Inputs}" 
+                    IsAlternateRowsEnabled="False"
+                            AutoGenerateColumns="False" 
+                    ColumnWidth="*">
+                    <ig:XamGrid.Columns>
+                        <ig:TextColumn Key="Name" HeaderText="Input" MinimumWidth="100">
+                            <ig:TextColumn.AddNewRowEditorTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" ToolTip="{Binding Path=Name}"></TextBlock>
+                                </DataTemplate>
+                            </ig:TextColumn.AddNewRowEditorTemplate>
+                        </ig:TextColumn>
+                        <ig:TextColumn Key="DefaultValue" HeaderText="Default Value" MinimumWidth="100">
+                            <ig:TextColumn.AddNewRowEditorTemplate>
+                                <DataTemplate>
+                                    <TextBox Text="{Binding Path=DefaultValue, UpdateSourceTrigger=PropertyChanged}" Margin="0"></TextBox>
+                                </DataTemplate>
+                            </ig:TextColumn.AddNewRowEditorTemplate>
+                        </ig:TextColumn>
+                        <ig:CheckBoxColumn Key="RequiredField" HeaderText="Required" MinimumWidth="100">
+                            <ig:CheckBoxColumn.AddNewRowEditorTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding Path=RequiredField, Mode=TwoWay}" Margin="0" HorizontalAlignment="Center"></CheckBox>
+                                </DataTemplate>
+                            </ig:CheckBoxColumn.AddNewRowEditorTemplate>
+                        </ig:CheckBoxColumn>
+                        <ig:CheckBoxColumn Key="EmptyIsNull" HeaderText="Empty Is Null" MinimumWidth="100" IsResizable="False">
+                            <ig:CheckBoxColumn.AddNewRowEditorTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding Path=EmptyIsNull, Mode=TwoWay}" HorizontalAlignment="Center" Margin="0"></CheckBox>
+                                </DataTemplate>
+                            </ig:CheckBoxColumn.AddNewRowEditorTemplate>
+                        </ig:CheckBoxColumn>
+                    </ig:XamGrid.Columns>
+                    <ig:XamGrid.SortingSettings>
+                        <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
+                    </ig:XamGrid.SortingSettings>
+                    <ig:XamGrid.EditingSettings>
+                        <ig:EditingSettings AllowEditing="Cell"
+                                                    IsMouseActionEditingEnabled="DoubleClick"
+                                                    IsEnterKeyEditingEnabled="True" 
+                                                    IsF2EditingEnabled="True" 
+                                                    IsOnCellActiveEditingEnabled="False" />
+                    </ig:XamGrid.EditingSettings>
+                    <!-- Conditional Formating is On-->
+                    <ig:XamGrid.ConditionalFormattingSettings>
+                        <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
+                    </ig:XamGrid.ConditionalFormattingSettings>
+                    <!-- Filler Column Setting is On-->
+                    <ig:XamGrid.FillerColumnSettings>
+                        <ig:FillerColumnSettings   Style="{StaticResource FillerColCellStyle}" HeaderStyle="{StaticResource FillerColHeader}" />
+                    </ig:XamGrid.FillerColumnSettings>
+                </ig:XamGrid>
+            </StackPanel>
+        </ScrollViewer>
+        <!--<DataGrid x:Name="InputsMappingDataGrid" Grid.Row="1" 
                           ItemsSource="{Binding Inputs}" 
                           HorizontalScrollBarVisibility="Disabled" 
                           MaxHeight="180"
@@ -90,7 +162,7 @@
                     </Style.Triggers>
                 </Style>
             </DataGrid.Style>
-        </DataGrid>
+        </DataGrid>-->
         <TextBlock Grid.Row="2" Text="None" 
                    HorizontalAlignment="Center" 
                    VerticalAlignment="Center" 

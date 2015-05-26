@@ -276,8 +276,8 @@
     <Compile Include="Graph.xaml.cs">
       <DependentUpon>Graph.xaml</DependentUpon>
     </Compile>
-    <Compile Include="InfragisticsControlStyles.xaml.cs">
-      <DependentUpon>InfragisticsControlStyles.xaml</DependentUpon>
+    <Compile Include="InfragisticsControlTesting.xaml.cs">
+      <DependentUpon>InfragisticsControlTesting.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyCommonInfo.cs" />
     <Compile Include="Shell.xaml.cs">
@@ -315,7 +315,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="InfragisticsControlStyles.xaml">
+    <Page Include="InfragisticsControlTesting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

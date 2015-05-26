@@ -128,6 +128,8 @@ namespace Warewolf.Studio
                 //var testingWindow = new ControlStyleTestingWindow();
                 //testingWindow.Show();
 
+                //var testingInfraWindow = new InfragisticsControlTesting();
+                //testingInfraWindow.Show();
                 
 
                 var testWindow = new Window
@@ -137,7 +139,7 @@ namespace Warewolf.Studio
                         DataContext = new ManageWebServiceViewModel(ResourceType.WebService)
                     }
                 };
-                testWindow.ShowDialog();
+                testWindow.Show();
 
                 //var testPlugWindow = new Window
                 //{
