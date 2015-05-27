@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common;
@@ -89,6 +90,8 @@ namespace Dev2.Runtime.ServiceModel.Data
             Method = CreateInputsMethod(action);
             Recordsets = CreateOutputsRecordsetList(action);
         }
+
+        public List<NameValue> Headers { get; set; } 
 
         #endregion
 

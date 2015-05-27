@@ -45,7 +45,10 @@ namespace Dev2.Runtime.ESB.Management.Services
                     RequestUrl = string.Concat(src.SourceUrl,src.RequestUrl),
                     ResourceName = src.Name,
                     ResourcePath = src.Path,
-                    ResourceID = src.Id
+                    ResourceID = src.Id,
+                    RequestBody = src.PostData,
+                    Headers = src.Headers
+                    
                 };
 
                 WebServices.TestWebService(res);

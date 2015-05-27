@@ -182,11 +182,22 @@ namespace Dev2.Runtime.ServiceModel
         {
             var requestHeaders = SetParameters(service.Method.Parameters, service.RequestHeaders);
             var headers = string.IsNullOrEmpty(requestHeaders)
-                              ? new string[0]
-                              : requestHeaders.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries);
+                              ? new List<string>()
+                              : requestHeaders.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            if(service.Headers != null && service.Headers.Count > 0)
+            {
+                foreach(var nameValue in service.Headers)
+                {
+                    var header = service.Method.Parameters.FirstOrDefault(parameter => parameter.Name == nameValue.Name);
+                    if(header != null)
+                    {
+                        headers.Add(nameValue.Name+":"+header.Value);
+                    }
+                }
+            }
             var requestUrl = SetParameters(service.Method.Parameters, service.RequestUrl);
             var requestBody = SetParameters(service.Method.Parameters, service.RequestBody);
-            service.RequestResponse = webExecute(service.Source as WebSource, service.RequestMethod, requestUrl, requestBody, throwError, out errors, headers);
+            service.RequestResponse = webExecute(service.Source as WebSource, service.RequestMethod, requestUrl, requestBody, throwError, out errors, headers.ToArray());
             if(!String.IsNullOrEmpty(service.JsonPath))
             {
                 service.ApplyPath();
@@ -196,6 +207,8 @@ namespace Dev2.Runtime.ServiceModel
         #endregion
 
         #region SetParameters
+
+       
 
         static string SetParameters(IEnumerable<MethodParameter> parameters, string s)
         {

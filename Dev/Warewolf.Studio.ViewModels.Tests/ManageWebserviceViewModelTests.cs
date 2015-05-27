@@ -8,6 +8,8 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.WebServices;
+using Dev2.Communication;
+using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Core;
@@ -292,13 +294,14 @@ namespace Warewolf.Studio.ViewModels.Tests
             managewebServiceViewModel.RequestBody = "da";
             managewebServiceViewModel.Headers = new Collection<NameValue> { new NameValue { Name = "header", Value = "HeaderValues" } };
             managewebServiceViewModel.RequestUrlQuery = "@a";
-
-            mockModel.Setup(a => a.TestService(It.IsAny<IWebService>())).Returns("bob");
+            var serializer = new Dev2JsonSerializer();
+            var serializedWebService = serializer.Serialize(new WebService{RequestResponse = "bob"});
+            mockModel.Setup(a => a.TestService(It.IsAny<IWebService>())).Returns(serializedWebService);
 
             //------------Execute Test---------------------------
             managewebServiceViewModel.TestCommand.Execute(null);
             //------------Assert Results-------------------------
-            Assert.AreEqual(managewebServiceViewModel.Response,"bob");
+            Assert.AreEqual("bob",managewebServiceViewModel.Response);
             Assert.IsTrue(managewebServiceViewModel.CanSave());
             Assert.IsTrue(managewebServiceViewModel.CanEditMappings);
             Assert.IsFalse(managewebServiceViewModel.IsTesting);
