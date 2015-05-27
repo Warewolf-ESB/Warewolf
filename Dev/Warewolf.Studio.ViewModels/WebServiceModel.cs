@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.WebService;
 using Dev2.Common.Interfaces.WebServices;
 
 namespace Warewolf.Studio.ViewModels
@@ -52,6 +52,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void SaveService(IWebService toModel)
         {
+            _updateRepository.Save(toModel);
         }
 
         #endregion
