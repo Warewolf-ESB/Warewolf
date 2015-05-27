@@ -123,7 +123,7 @@
                                 </DataTemplate>
                             </ig:TextColumn.AddNewRowEditorTemplate>
                         </ig:TextColumn>
-                        <ig:TextColumn Key="Name" HeaderText="Alias"  MinimumWidth="100">
+                        <ig:TextColumn Key="Name" HeaderText="Alias"  MinimumWidth="100" IsResizable="False">
                             <ig:TextColumn.AddNewRowEditorTemplate>
                                 <DataTemplate>
                                     <TextBox Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=Name}" Margin="1"></TextBox>
