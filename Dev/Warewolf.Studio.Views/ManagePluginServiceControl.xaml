@@ -1,0 +1,306 @@
+﻿<UserControl x:Class="Warewolf.Studio.Views.ManagePluginServiceControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
+             xmlns:views="clr-namespace:Warewolf.Studio.Views"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </UserControl.Resources>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <StackPanel MinWidth="600" MaxWidth="{Binding ElementName=UserControl, Path=ActualWidth}">
+            <Grid Margin="{StaticResource ElementBorder}" 
+                  Width="922"
+                  MaxWidth="1200">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto" ></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto" ></RowDefinition>
+                    <RowDefinition Height="Auto" ></RowDefinition>
+                    <RowDefinition Height="Auto" ></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <!-- SELECT SOURCE -->
+                <Grid Grid.Row="0" 
+                      HorizontalAlignment="Stretch" 
+                      Margin="{StaticResource GridBorderBottom}" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" ></RowDefinition>
+                        <RowDefinition Height="Auto" ></RowDefinition>
+                        <RowDefinition Height="7" ></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <!-- SOURCE HEADER -->
+                    <StackPanel Grid.Row="0" 
+                             Grid.Column="0" 
+                             Background="{StaticResource WareWolfMenuBrush}" 
+                             HorizontalAlignment="Stretch" 
+                             Orientation="Horizontal">
+                        <TextBlock Text="1" 
+                               Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
+                        <TextBlock Margin="5" 
+                               Text="Select a Source" 
+                               Style="{StaticResource SourceHeader}"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+                        <ComboBox x:Name="SourcesComboBox" 
+                                  DisplayMemberPath="Name" 
+                                  Width="250" 
+                                  Padding="{StaticResource ComboBoxItemPadding}"
+                                  Focusable="True"
+                                  Margin="{StaticResource ElementBorderTop}" />
+                        <Button Width="25" 
+                                Content=" ... " 
+                                Margin="{StaticResource ElementBorderControlLeftTop}"></Button>
+                        <Button Content="New" 
+                                Margin="{StaticResource ElementBorderControlLeftTop}"
+                                Style="{StaticResource ButtonOrangeStyle}" 
+                                Width="100" ></Button>
+                    </StackPanel>
+                </Grid>
+                <!-- SELECT NAMESPACE -->
+                <Grid x:Name="NamespaceGrid" 
+                      Grid.Row="1" 
+                      Margin="{StaticResource GridBorderBottom}"
+                      Visibility="Visible"
+                      Grid.Column="0" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="7" ></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <!-- NAMESPACE HEADER -->
+                    <StackPanel Grid.Row="0" 
+                                Background="{StaticResource WareWolfMenuBrush}" 
+                                HorizontalAlignment="Stretch" 
+                                Orientation="Horizontal">
+                        <TextBlock Text="2" 
+                               Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
+                        <TextBlock Margin="5" 
+                               Text="Select a Namespace" 
+                               Style="{StaticResource SourceHeader}" ></TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+                        <ComboBox x:Name="NamespaceComboBox" 
+                                  DisplayMemberPath="Name" 
+                                  Width="250" 
+                                  Padding="{StaticResource ComboBoxItemPadding}"
+                                  Focusable="True"
+                                  Margin="{StaticResource ElementBorderTop}" />
+                    </StackPanel>
+                </Grid>
+                <!-- SELECT ACTION -->
+                <Grid x:Name="ActionGrid" 
+                      Grid.Row="2" 
+                      Margin="{StaticResource GridBorderBottom}"
+                      Visibility="Visible"
+                      Grid.Column="0" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="7" ></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <!-- ACTION HEADER -->
+                    <StackPanel Grid.Row="0" 
+                                Background="{StaticResource WareWolfMenuBrush}" 
+                                HorizontalAlignment="Stretch" 
+                                Orientation="Horizontal">
+                        <TextBlock Text="3" 
+                               Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
+                        <TextBlock Margin="5" 
+                               Text="Select an Action" 
+                               Style="{StaticResource SourceHeader}" ></TextBlock>
+                    </StackPanel>
+                    <Grid Grid.Row="1" Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition ></RowDefinition>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" >
+                        <!-- Choose data Source Action-->
+                        <ComboBox x:Name="ActionsComboBox" 
+                                  Width="250" 
+                                  Padding="{StaticResource ComboBoxItemPadding}"
+                                  DisplayMemberPath="Name" 
+                                  Text="Choose" 
+                                  Margin="{StaticResource ElementBorderTop}"></ComboBox>
+                        <!-- NEED TO ADD LOGIC TO REFRESH COMMAND AND VISIBILITY -->
+                        <Button Width="25" 
+                                Height="25" 
+                                Margin="{StaticResource ElementBorderControlLeftTop}">
+                            <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
+                                            FontSize="16" 
+                                            Icon="Refresh" 
+                                            Margin="0,2,0,0"
+                                            VerticalAlignment="Center" 
+                                            HorizontalAlignment="Center"/>
+                        </Button>
+                        <!-- NEED TO ADD LOGIC TO VISIBILITY -->
+                        <views:CircularProgressBar Margin="{StaticResource ElementBorderControlLeftTop}"
+                                                   Width="25"
+                                                   Height="25"
+                                                   Padding="2.5"/>
+                        </StackPanel>
+                        <ScrollViewer Grid.Row="1" 
+                                      HorizontalScrollBarVisibility="Auto" 
+                                      VerticalScrollBarVisibility="Auto">
+                            <TextBox Margin="{StaticResource ControlBorderTop}"
+                                     HorizontalAlignment="Stretch"
+                                     TextWrapping="Wrap"
+                                     MaxHeight="180"></TextBox>
+                        </ScrollViewer>
+                    </Grid>
+                </Grid>
+                <!-- TEST VALUES -->
+                <Grid x:Name="TestGrid" 
+                      Grid.Row="3" 
+                      Margin="{StaticResource GridBorderBottom}"
+                      Visibility="Visible"
+                      Grid.Column="0" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="7"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <!-- TEST VALUES HEADER -->
+                    <StackPanel Grid.Row="0" 
+                                Background="{StaticResource WareWolfMenuBrush}" 
+                                HorizontalAlignment="Stretch" 
+                                Orientation="Horizontal">
+                        <TextBlock Text="4" 
+                               Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
+                        <TextBlock Margin="5" 
+                               Text="Provide Test Values" 
+                               Style="{StaticResource SourceHeader}" ></TextBlock>
+                    </StackPanel>
+                    <Grid Grid.Row="1" Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Row="0" Margin="{StaticResource ElementBorderTop}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="TestButton" 
+                                Grid.Column="0"
+                                Margin="{StaticResource ControlBorderTopRight}" 
+                                HorizontalAlignment="Left" 
+                                VerticalAlignment="Bottom" 
+                                Width="100">Test</Button>
+                            <views:CircularProgressBar Grid.Column="1"
+                                                       Width="25"
+                                                       HorizontalAlignment="Right" 
+                                                       Height="25"
+                                                       Margin="0,2,0,0"
+                                                       Padding="2.5" />
+                        </Grid>
+                        <ScrollViewer Grid.Row="1" 
+                                      HorizontalScrollBarVisibility="Auto" 
+                                      VerticalScrollBarVisibility="Auto">
+                            <TextBox Margin="{StaticResource ControlBorderTop}"
+                                     HorizontalAlignment="Stretch"
+                                     TextWrapping="Wrap"
+                                     MaxHeight="180"></TextBox>
+                        </ScrollViewer>
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock 
+                                Grid.Column="0"
+                                Margin="{StaticResource ControlBorderTop}" 
+                                HorizontalAlignment="Left" 
+                                VerticalAlignment="Center" 
+                                Width="100">Test Results</TextBlock>
+                        </Grid>
+                        <ScrollViewer Grid.Row="3" 
+                                      HorizontalScrollBarVisibility="Auto" 
+                                      VerticalScrollBarVisibility="Auto">
+                            <TextBox HorizontalAlignment="Stretch"
+                                     TextWrapping="Wrap"
+                                     MaxHeight="180"></TextBox>
+                        </ScrollViewer>
+                    </Grid>
+                </Grid>
+                <Grid x:Name="MappingsGrid" 
+                  Grid.Row="4" 
+                  Grid.Column="0" >
+                    <!-- Mappings-->
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" 
+                            Grid.Column="0" 
+                            Background="{StaticResource WareWolfMenuBrush}" 
+                            HorizontalAlignment="Stretch" 
+                            Orientation="Horizontal">
+                        <TextBlock Text="5" 
+                               Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
+                        <TextBlock Margin="5" 
+                               Text="Defaults and Mappings" 
+                               Style="{StaticResource SourceHeader}" ></TextBlock>
+                    </StackPanel>
+                    <views:MappingsView x:Name="MappingsView" Grid.Row="1"></views:MappingsView>
+                </Grid>
+                <!-- SAVE/CANCEL -->
+                <Grid Grid.Row="5" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" 
+                               Text="" 
+                               HorizontalAlignment="Left" 
+                               TextWrapping="WrapWithOverflow" 
+                               x:Name="ErrorTextBlock" ></TextBlock>
+                    <Button x:Name="SaveButton" 
+                            Grid.Column="2" 
+                            Margin="{StaticResource ControlBorderTopRight}" 
+                            HorizontalAlignment="Right" 
+                            VerticalAlignment="Bottom" 
+                            Width="100">OK</Button>
+                    <Button x:Name="CancelButton" 
+                            Grid.Column="3" 
+                            Margin="{StaticResource ControlBorderTop}" 
+                            HorizontalAlignment="Right" 
+                            VerticalAlignment="Bottom" 
+                            Width="100">Cancel</Button>
+                </Grid>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
