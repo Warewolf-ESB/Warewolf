@@ -902,7 +902,7 @@ namespace Warewolf.Studio.ViewModels
                     Path = Item.Path,
                     Id = Item.Id,
                     Headers = Headers.Select(value => new NameValue{Name=DataListUtil.RemoveLanguageBrackets(value.Name),Value=DataListUtil.RemoveLanguageBrackets(value.Value)}).ToList(),
-                    PostData = RequestBody,
+                    PostData = DataListUtil.RemoveLanguageBrackets(RequestBody),
                     QueryString = RequestUrlQuery,
                     SourceUrl = SourceUrl,
                     RequestUrl = RequestUrlQuery
@@ -917,7 +917,7 @@ namespace Warewolf.Studio.ViewModels
                 Name = "",
                 Path = "",
                 Id = Guid.NewGuid(),
-                PostData =  RequestBody,
+                PostData = DataListUtil.RemoveLanguageBrackets(RequestBody),
                 Headers = Headers.Select(value => new NameValue { Name = DataListUtil.RemoveLanguageBrackets(value.Name), Value = DataListUtil.RemoveLanguageBrackets(value.Value) }).ToList(),
                 QueryString = RequestUrlQuery,
                 SourceUrl = SourceUrl,

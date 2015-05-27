@@ -70,6 +70,90 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ManageWebServiceViewModel_ToModel")]
+        public void ManageWebServiceViewModel_ToModel_WhenHeadersHaveVariables_ShouldStripBraces()
+        {
+            //------------Setup for test--------------------------
+            var mockModel = new Mock<IWebServiceModel>();
+            var mockSave = new Mock<IRequestServiceNameViewModel>();
+            mockModel.Setup(a => a.RetrieveSources()).Returns(new Collection<IWebServiceSource> { new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" } });
+
+            var managewebServiceViewModel = new ManageWebServiceViewModel(mockModel.Object, mockSave.Object);
+            managewebServiceViewModel.OutputMapping = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
+
+            managewebServiceViewModel.SelectedSource = new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" };
+            managewebServiceViewModel.RequestBody = "da";
+            managewebServiceViewModel.Headers = new Collection<NameValue> { new NameValue { Name = "[[header]]", Value = "[[HeaderValues]]" } };
+            managewebServiceViewModel.RequestUrlQuery = "@a";
+            //------------Execute Test---------------------------
+            IWebService model = managewebServiceViewModel.ToModel();
+            //------------Assert Results-------------------------
+            Assert.AreEqual("@a", model.QueryString);
+            Assert.AreEqual(model.PostData, "da");
+            Assert.IsTrue(model.Headers.Count > 0);
+            Assert.AreEqual("header", model.Headers[0].Name);
+            Assert.AreEqual("HeaderValues", model.Headers[0].Value);
+            Assert.AreEqual("@a", model.QueryString);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ManageWebServiceViewModel_ToModel")]
+        public void ManageWebServiceViewModel_ToModel_WhenPostDataHaveVariables_ShouldStripBraces()
+        {
+            //------------Setup for test--------------------------
+            var mockModel = new Mock<IWebServiceModel>();
+            var mockSave = new Mock<IRequestServiceNameViewModel>();
+            mockModel.Setup(a => a.RetrieveSources()).Returns(new Collection<IWebServiceSource> { new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" } });
+
+            var managewebServiceViewModel = new ManageWebServiceViewModel(mockModel.Object, mockSave.Object);
+            managewebServiceViewModel.OutputMapping = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
+
+            managewebServiceViewModel.SelectedSource = new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" };
+            managewebServiceViewModel.RequestBody = "[[da]]";
+            managewebServiceViewModel.Headers = new Collection<NameValue> { new NameValue { Name = "[[header]]", Value = "[[HeaderValues]]" } };
+            managewebServiceViewModel.RequestUrlQuery = "@a";
+            //------------Execute Test---------------------------
+            IWebService model = managewebServiceViewModel.ToModel();
+            //------------Assert Results-------------------------
+            Assert.AreEqual("@a", model.QueryString);
+            Assert.AreEqual("da", model.PostData);
+            Assert.IsTrue(model.Headers.Count > 0);
+            Assert.AreEqual("header", model.Headers[0].Name);
+            Assert.AreEqual("HeaderValues", model.Headers[0].Value);
+            Assert.AreEqual("@a", model.QueryString);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ManageWebServiceViewModel_ToModel")]
+        public void ManageWebServiceViewModel_ToModel_WhenQueryStringDataHaveVariables_ShouldStripBraces()
+        {
+            //------------Setup for test--------------------------
+            var mockModel = new Mock<IWebServiceModel>();
+            var mockSave = new Mock<IRequestServiceNameViewModel>();
+            mockModel.Setup(a => a.RetrieveSources()).Returns(new Collection<IWebServiceSource> { new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" } });
+
+            var managewebServiceViewModel = new ManageWebServiceViewModel(mockModel.Object, mockSave.Object);
+            managewebServiceViewModel.OutputMapping = new Collection<IServiceOutputMapping>(new IServiceOutputMapping[] { new ServiceOutputMapping("bob", "dave") });
+
+            managewebServiceViewModel.SelectedSource = new WebServiceSourceDefinition { Name = "bob", DefaultQuery = "mook" };
+            managewebServiceViewModel.RequestBody = "da";
+            managewebServiceViewModel.Headers = new Collection<NameValue> { new NameValue { Name = "header", Value = "HeaderValues" } };
+            managewebServiceViewModel.RequestUrlQuery = "a=[[a]]";
+            //------------Execute Test---------------------------
+            IWebService model = managewebServiceViewModel.ToModel();
+            //------------Assert Results-------------------------
+            Assert.AreEqual("a=[[a]]", model.QueryString);
+            Assert.AreEqual("da", model.PostData);
+            Assert.AreEqual("a",model.Inputs[0].Name);
+            Assert.IsTrue(model.Headers.Count > 0);
+            Assert.AreEqual("header", model.Headers[0].Name);
+            Assert.AreEqual("HeaderValues", model.Headers[0].Value);
+        }
+
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ManagewebServiceViewModel_Save")]
         public void ManagewebServiceViewModel_SaveCommandCallsModel()
