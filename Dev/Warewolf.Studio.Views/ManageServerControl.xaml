@@ -7,6 +7,10 @@
              xmlns:serviceModel="clr-namespace:Dev2.Common.Interfaces.Runtime.ServiceModel;assembly=Dev2.Common.Interfaces"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:wpfTextBoxAutoComplete="clr-namespace:WPFTextBoxAutoComplete;assembly=WPFTextBoxAutoComplete"
+             xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+             xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" BorderBrush="White">
 
@@ -14,140 +18,188 @@
         <views:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </UserControl.Resources>
-    <Grid Background="White">
-
-        <Grid Grid.Row="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="40"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-
-                <RowDefinition Height="50"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Background="{StaticResource WareWolfMenuBrush}">
-                <Grid x:Name="Header">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="40" ></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock 
-                         Grid.Column="1" Grid.Row="0" 
-                        Style="{StaticResource SourceHeader}" 
-                        Text="{Binding Path=HeaderText}" Visibility="Visible"/>
-                </Grid>
-            </Grid>
-
-            <Grid Grid.Row="1">
+    <Grid Background="White"
+          Margin="{StaticResource ElementBorder}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel Background="{StaticResource WareWolfMenuBrush}" 
+                        HorizontalAlignment="Stretch">
+            <TextBlock Margin="5" 
+                           Text="{Binding HeaderText}" 
+                           Style="{StaticResource SourceHeader}" />
+        </StackPanel>
+        <Grid Grid.Row="1" Margin="{StaticResource ElementBorderTop}" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding ElementName=Authentication, Path=ActualWidth}"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Text="{Binding Path= AddressLabel}" Grid.Column="0"></TextBlock>
+            <Grid Grid.Row="0" Grid.Column="1" >
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="24"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="200"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Grid Grid.Column="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="150"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-
-                        <RowDefinition Height="40"/>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Text="{Binding Path= AddressLabel}" Grid.Column="0"></TextBlock>
-                    <Grid Grid.Column="1" Grid.Row="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="75"></ColumnDefinition>
-                            <ColumnDefinition Width="5"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="10"></ColumnDefinition>
-                            <ColumnDefinition Width="75"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <TextBox Text="{Binding Path=Address}" Grid.Column="2" Grid.Row="0"  ToolTip="{Binding Path=AddressToolTip}" ></TextBox>
-
-                        <ComboBox Width="75" Grid.Column="0" ItemsSource="{Binding Path=Protocols}" IsEditable="False"  ToolTip="{Binding Path=ProtocolToolTip}"  SelectedItem="{Binding Path=Protocol}"  >
-                            <ComboBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <VirtualizingStackPanel Orientation="Vertical" />
-                                </ItemsPanelTemplate>
-                            </ComboBox.ItemsPanel>
-                        </ComboBox>
-                        <TextBlock Grid.Column="3" HorizontalAlignment="Center" Text=":"></TextBlock>
-                        <TextBox Grid.Column="4" Text="{Binding SelectedPort}" wpfTextBoxAutoComplete:AutoCompleteBehavior.AutoCompleteItemsSource="{Binding Ports}"  ToolTip="{Binding Path=PortToolTip}"></TextBox>
-                    </Grid>
-
-                    <TextBlock Grid.Row="1" Grid.Column="0"  Text="{Binding Path=AuthenticationLabel}" ></TextBlock>
-                    <Grid Grid.Column="1" Grid.Row="1">
-                        <Grid.ColumnDefinitions>
-
-                            <ColumnDefinition></ColumnDefinition>
-
-                            <ColumnDefinition></ColumnDefinition>
-
-                            <ColumnDefinition></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <RadioButton Grid.Column="0" ToolTip="{Binding Path=WindowsAuthenticationToolTip}" Padding="5,0" VerticalAlignment="Center"  HorizontalAlignment="Left" IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.Windows}}">Windows</RadioButton>
-
-                        <RadioButton Grid.Column="1" ToolTip="{Binding Path=UserAuthenticationToolTip}"  Padding="5,0" VerticalAlignment="Center" HorizontalAlignment="Left" IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.User}}">User</RadioButton>
-
-                        <RadioButton Grid.Column="2" ToolTip="{Binding Path=PublicToolTip}"  Padding="5,0" VerticalAlignment="Center" HorizontalAlignment="Left"  IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.Public}}">Public</RadioButton>
-
-                    </Grid>
-
-                    <TextBlock Text="User Name" Grid.Column="0" Grid.Row="2" Visibility="{Binding Path=IsUserNameVisible,Converter={StaticResource BoolToVisibilityConverter}}"></TextBlock>
-                    <TextBox Text="{Binding Path=UserName}" ToolTip="{Binding Path=UserNameToolTip}"  Grid.Column="1" Grid.Row="2" Visibility="{Binding Path=IsUserNameVisible,Converter={StaticResource BoolToVisibilityConverter}}"></TextBox>
-
-                    <TextBlock Text="Password" Grid.Row="3" Grid.Column="0" Visibility="{Binding Path=IsUserNameVisible,Converter={StaticResource BoolToVisibilityConverter}}"></TextBlock>
-                    <TextBox Text="{Binding Path=Password}" ToolTip="{Binding Path=PasswordToolTip}"  Grid.Column="1" Grid.Row="3" Visibility="{Binding Path=IsUserNameVisible,Converter={StaticResource BoolToVisibilityConverter}}"></TextBox>
-                    <Grid Grid.Row="4" Grid.Column="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="5"></ColumnDefinition>
-                            <ColumnDefinition Width="19"></ColumnDefinition>
-                            <ColumnDefinition Width="65"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding Path=TestMessage}" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" ></TextBlock>
-                        <fa:ImageAwesome Width="14"  Height="14" Foreground="{StaticResource WareWolfOrangeBrush}" Visibility="{Binding Path=TestPassed,Converter={StaticResource BoolToVisibilityConverter}}" Icon="Check" HorizontalAlignment="Right" Grid.Column="2"/>
-                        <fa:ImageAwesome Width="14" Height="14" Foreground="{StaticResource WareWolfOrangeBrush}" Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}" Icon="Ban" HorizontalAlignment="Right" Grid.Column="2"/>
-                        <views:CircularProgressBar Grid.Row="0"
-                                       Grid.Column="2"
-                                       Width="14"
-                                       Height="14"
-                                       Visibility="{Binding Path=Testing,Converter={StaticResource BoolToVisibilityConverter}}" />
-                        <Button Grid.Column="3" ToolTip="{Binding Path=TestToolTip}"  HorizontalAlignment="Right" Width="60" Height="30" Content="Test" Command="{Binding Path=TestCommand}"/>
-                    </Grid>
-                </Grid>
-            </Grid>
-
-            <Grid Grid.Row="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="5"></RowDefinition>
-                    <RowDefinition Height="30"></RowDefinition>
-                    <RowDefinition Height="20"></RowDefinition>
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="20"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="5"></ColumnDefinition>
-                        <ColumnDefinition Width="60"></ColumnDefinition>
-                        <ColumnDefinition Width="20"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="1" Style="{StaticResource ErrorTextBlockStyle}"  TextAlignment="Right" VerticalAlignment="Center" Text="{Binding Path=Validate}"></TextBlock>
-                    <Button Grid.Column="3"  Width="60" Height="30"  Content="Save" IsEnabled="{Binding Path=CanClickOk}" ToolTip="{Binding Path=SaveToolTip}"   Command="{Binding Path=OkCommand}"></Button>
-
-                </Grid>
-
+                <ComboBox Width="75" 
+                          ItemsSource="{Binding Path=Protocols}" 
+                          IsEditable="False" 
+                          Margin="{StaticResource ElementBorderControlRight}"
+                          ToolTip="{Binding Path=ProtocolToolTip}" 
+                          SelectedItem="{Binding Path=Protocol}"  >
+                    <ComboBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel Orientation="Vertical" />
+                        </ItemsPanelTemplate>
+                    </ComboBox.ItemsPanel>
+                </ComboBox>
+                <TextBox Grid.Column="1" 
+                         Text="{Binding Path=Address}" 
+                         ToolTip="{Binding Path=AddressToolTip}" ></TextBox>
+                <TextBlock Grid.Column="2" 
+                           HorizontalAlignment="Center" 
+                           Text=":"></TextBlock>
+                <TextBox Grid.Column="3" 
+                         MinWidth="35"
+                         Text="{Binding SelectedPort}" 
+                         wpfTextBoxAutoComplete:AutoCompleteBehavior.AutoCompleteItemsSource="{Binding Ports}" 
+                         ToolTip="{Binding Path=PortToolTip}"></TextBox>
             </Grid>
         </Grid>
+        <Grid Grid.Row="2"
+              Margin="0,-3,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="0" 
+                       x:Name="Authentication"
+                       Text="{Binding Path=AuthenticationLabel}" ></TextBlock>
+            <Grid Grid.Column="1" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <RadioButton ToolTip="{Binding Path=WindowsAuthenticationToolTip}" 
+                             Padding="0,0,5,0" 
+                             VerticalAlignment="Center" 
+                             HorizontalAlignment="Left" 
+                             Margin="{StaticResource ElementBorderControlRight}"
+                             IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, 
+                                        ConverterParameter={x:Static serviceModel:AuthenticationType.Windows}}">Windows</RadioButton>
+                <RadioButton Grid.Column="1" 
+                             ToolTip="{Binding Path=UserAuthenticationToolTip}" 
+                             Padding="0,0,5,0" 
+                             VerticalAlignment="Center" 
+                             HorizontalAlignment="Left" 
+                             Margin="{StaticResource ElementBorderControlRight}"
+                             IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, 
+                                        ConverterParameter={x:Static serviceModel:AuthenticationType.User}}">User</RadioButton>
+                <RadioButton Grid.Column="2" 
+                             ToolTip="{Binding Path=PublicToolTip}" 
+                             Padding="0,0,5,0" 
+                             VerticalAlignment="Center" 
+                             HorizontalAlignment="Left" 
+                             IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, 
+                                        ConverterParameter={x:Static serviceModel:AuthenticationType.Public}}">Public</RadioButton>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="3" 
+              x:Name="UserNamePasswordContainer"
+              Margin="0,-3,0,0"
+              Visibility="{Binding Path=IsUserNameVisible,Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding ElementName=Authentication, Path=ActualWidth}"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding UserNameLabel}" ></TextBlock>
+            <TextBox Grid.Row="0" 
+                     Grid.Column="1" 
+                     Text="{Binding Path=UserName}" 
+                     ToolTip="{Binding Path=UserNameToolTip}" ></TextBox>
+            <TextBlock Grid.Row="1" 
+                       Grid.Column="0" 
+                       Margin="{StaticResource ControlBorderTop}"
+                       Text="{Binding PasswordLabel}" ></TextBlock>
+            <PasswordBox x:Name="PasswordTextBox" 
+                         Grid.Row="1" 
+                         Grid.Column="1"
+                         Margin="{StaticResource ControlBorderTop}"
+                         ToolTip="{Binding Path=PasswordToolTip}"
+                         customControls:PasswordBoxAssistant.BindPassword="true"
+                         customControls:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:Core.PasswordAuthenticationHelp}"
+                                 DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </PasswordBox>
+        </Grid>
+        <StackPanel Grid.Row="4" 
+                    Margin="{StaticResource ControlBorderTop}"
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Center">
+            <TextBlock Text="{Binding Path=TestMessage}" 
+                       HorizontalAlignment="Right" 
+                       VerticalAlignment="Center" ></TextBlock>
+            <fa:ImageAwesome Width="14"  
+                             Height="14" 
+                             Foreground="{StaticResource WareWolfOrangeBrush}" 
+                             Margin="{StaticResource ElementBorderControlRight}"
+                             Visibility="{Binding Path=TestPassed,Converter={StaticResource BoolToVisibilityConverter}}" 
+                             Icon="Check" 
+                             HorizontalAlignment="Right" />
+            <fa:ImageAwesome Width="14" 
+                             Height="14" 
+                             Foreground="{StaticResource WareWolfOrangeBrush}" 
+                             Margin="{StaticResource ElementBorderControlRight}"
+                             Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}" 
+                             Icon="Ban" 
+                             HorizontalAlignment="Right" />
+            <views:CircularProgressBar Width="14"
+                                       Height="14"
+                                       Margin="{StaticResource ElementBorderControlRight}"
+                                       Visibility="{Binding Path=Testing,Converter={StaticResource BoolToVisibilityConverter}}" />
+            <Button ToolTip="{Binding Path=TestToolTip}" 
+                    HorizontalAlignment="Right" 
+                    Width="60" 
+                    Height="30" 
+                    Content="Test" 
+                    Command="{Binding Path=TestCommand}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="5" 
+                    Margin="{StaticResource ControlBorderTop}"
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right" >
+            <TextBlock Style="{StaticResource ErrorTextBlockStyle}"  
+                       TextAlignment="Right" 
+                       Margin="{StaticResource ElementBorderControlRight}"
+                       VerticalAlignment="Center" 
+                       Text="{Binding Path=Validate}"></TextBlock>
+            <Button Width="60" 
+                    Height="30" 
+                    Content="Save" 
+                    IsEnabled="{Binding Path=CanClickOk}" 
+                    ToolTip="{Binding Path=SaveToolTip}" 
+                    Command="{Binding Path=OkCommand}"></Button>
+        </StackPanel>
     </Grid>
-
-
-
 </UserControl>
