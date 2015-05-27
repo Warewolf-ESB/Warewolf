@@ -40,7 +40,8 @@
         <ScrollViewer Grid.Row="1" 
                       HorizontalScrollBarVisibility="Auto" 
                       VerticalScrollBarVisibility="Auto">
-            <StackPanel MaxWidth="1200" Width="922" MaxHeight="180">
+            <StackPanel Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=ActualWidth}" 
+                        MaxHeight="180">
                 <ig:XamGrid x:Name="InputsMappingDataGrid" 
                             ItemsSource="{Binding Inputs}" 
                             IsAlternateRowsEnabled="False"
@@ -109,7 +110,8 @@
         <ScrollViewer Grid.Row="4" 
                       HorizontalScrollBarVisibility="Auto" 
                       VerticalScrollBarVisibility="Auto">
-            <StackPanel MaxWidth="1200" Width="922" MaxHeight="180">
+            <StackPanel Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=ActualWidth}" 
+                        MaxHeight="180">
                 <ig:XamGrid x:Name="OutputsMappingDataGrid" 
                             ItemsSource="{Binding OutputMapping}" 
                             IsAlternateRowsEnabled="False"

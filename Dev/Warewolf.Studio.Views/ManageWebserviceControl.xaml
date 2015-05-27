@@ -27,9 +27,8 @@
         </Style>
     </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-        <StackPanel MinWidth="600" MaxWidth="{Binding ElementName=UserControl, Path=ActualWidth}">
-            <Grid Margin="{StaticResource ElementBorder}" Width="922"
-                  MaxWidth="1200">
+        <StackPanel MinWidth="600" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=ActualWidth}">
+            <Grid Margin="{StaticResource ElementBorder}" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto" ></RowDefinition>
@@ -267,8 +266,7 @@
                     <ScrollViewer Grid.Row="1" 
                           HorizontalScrollBarVisibility="Auto" 
                           VerticalScrollBarVisibility="Auto">
-                        <StackPanel Width="922" 
-                            MaxWidth="1200" 
+                        <StackPanel Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=ActualWidth}"
                             MaxHeight="180" 
                             Margin="{StaticResource ControlBorderTop}">
                             <ig:XamGrid ItemsSource="{Binding Variables}" 
@@ -344,11 +342,11 @@
                         <RowDefinition Height="7" ></RowDefinition>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" 
-                            Grid.Column="0" 
+                                Grid.Column="0" 
                                 Grid.ColumnSpan="2"
-                            Background="{StaticResource WareWolfMenuBrush}" 
-                            HorizontalAlignment="Stretch" 
-                            Orientation="Horizontal">
+                                Background="{StaticResource WareWolfMenuBrush}" 
+                                HorizontalAlignment="Stretch" 
+                                Orientation="Horizontal">
                         <TextBlock Text="4" 
                                    Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
                         <TextBlock Margin="5" 
@@ -359,7 +357,7 @@
                             Height="25"
                             Grid.Column="0"
                             Click="Btn_OnClick"
-                            Margin="{StaticResource ControlBorderTop}"
+                            Margin="{StaticResource ElementBorderTop}"
                             VerticalAlignment="Top"
                             Grid.Row="1" >
                         <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
@@ -399,7 +397,7 @@
                                Text="{Binding MappingsHeader}" 
                                Style="{StaticResource SourceHeader}" ></TextBlock>
                     </StackPanel>
-                    <views:MappingsView Grid.Row="1"></views:MappingsView>
+                    <views:MappingsView Grid.Row="1" ></views:MappingsView>
                 </Grid>
                 <Grid Grid.Row="5" Grid.Column="0">
                     <Grid.ColumnDefinitions>
