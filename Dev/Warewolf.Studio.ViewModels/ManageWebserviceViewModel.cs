@@ -14,6 +14,7 @@ using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
+using Dev2.Common.Interfaces.WebService;
 using Dev2.Common.Interfaces.WebServices;
 using Dev2.Communication;
 using Dev2.Controller;
@@ -130,8 +131,6 @@ namespace Warewolf.Studio.ViewModels
             TestCommand = new DelegateCommand(() => Test(_model), CanTest);
             SaveCommand = new DelegateCommand(Save, CanSave);
             NewWebSourceCommand = new DelegateCommand(() => _model.CreateNewSource());
-            
-
         }
 
         void VariablesOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
@@ -919,7 +918,7 @@ namespace Warewolf.Studio.ViewModels
                 Path = "",
                 Id = Guid.NewGuid(),
                 PostData =  RequestBody,
-                Headers = Headers.ToList(),
+                Headers = Headers.Select(value => new NameValue { Name = DataListUtil.RemoveLanguageBrackets(value.Name), Value = DataListUtil.RemoveLanguageBrackets(value.Value) }).ToList(),
                 QueryString = RequestUrlQuery,
                 SourceUrl = SourceUrl,
                 RequestUrl = RequestUrlQuery

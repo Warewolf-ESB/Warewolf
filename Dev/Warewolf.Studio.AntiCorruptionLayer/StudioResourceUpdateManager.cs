@@ -68,6 +68,11 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         }
 
+        public void Save(IWebService model)
+        {
+            UpdateManagerProxy.SaveWebservice(model,GlobalConstants.ServerWorkspaceID);
+        }
+
         public void Save(IWebServiceSource resource)
         {
             UpdateManagerProxy.SaveWebserviceSource(resource, GlobalConstants.ServerWorkspaceID);

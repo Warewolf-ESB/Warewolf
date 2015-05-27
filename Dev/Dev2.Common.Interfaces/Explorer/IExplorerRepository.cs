@@ -28,19 +28,15 @@ namespace Dev2.Common.Interfaces.Explorer
     public interface IStudioUpdateManager
     {
         void Save(IServerSource serverSource);
+        void Save(IDbSource toDbSource);
+        void Save(IWebService model);
+        void Save(IWebServiceSource model);
+        void Save(IDatabaseService toDbSource);
 
         string TestConnection(IServerSource serverSource);
         void TestConnection(IWebServiceSource serverSource);
-        
         IList<string> TestDbConnection(IDbSource serverSource);
-
-        void Save(IDbSource toDbSource);
-        void Save(IWebServiceSource toDbSource);
-
-        void Save(IDatabaseService toDbSource);
-
         DataTable TestDbService(IDatabaseService inputValues);
-
         string TestWebService(IWebService inputValues);
     }
 }
