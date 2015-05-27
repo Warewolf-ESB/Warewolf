@@ -94,6 +94,7 @@
                 <Grid x:Name="RequestHeadersGrid" 
                       Grid.Row="1" 
                       Margin="{StaticResource GridBorderBottom}"
+                      Visibility="{Binding Path=CanEditHeadersAndUrl, Converter={StaticResource BoolToVis}}"
                       Grid.Column="0" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -240,13 +241,13 @@
                 <Grid x:Name="RequestVarGrid" 
                       Grid.Row="2" 
                       Margin="{StaticResource GridBorderBottom}"
-                      Grid.Column="0" 
-                      Visibility="Visible">
+                      Visibility="{Binding Path=CanEditHeadersAndUrl, Converter={StaticResource BoolToVis}}"
+                      Grid.Column="0" >
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="7" ></RowDefinition>
@@ -254,7 +255,6 @@
                     <!-- VARIABLES HEADER -->
                     <StackPanel Grid.Row="0" 
                                 Grid.Column="0" 
-                                Grid.ColumnSpan="2"
                                 Background="{StaticResource WareWolfMenuBrush}" 
                                 HorizontalAlignment="Stretch" 
                                 Orientation="Horizontal">
@@ -265,7 +265,6 @@
                                    Style="{StaticResource SourceHeader}" ></TextBlock>
                     </StackPanel>
                     <ScrollViewer Grid.Row="1" 
-                          Grid.Column="1"
                           HorizontalScrollBarVisibility="Auto" 
                           VerticalScrollBarVisibility="Auto">
                         <StackPanel Width="922" 
@@ -307,13 +306,33 @@
                             </ig:XamGrid>
                         </StackPanel>
                     </ScrollViewer>
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="TestButton" 
+                                Grid.Column="0"
+                                Margin="{StaticResource ControlBorderTopRight}" 
+                                HorizontalAlignment="Left" 
+                                VerticalAlignment="Bottom" 
+                                Command="{Binding TestCommand}"
+                                Width="100">Test</Button>
+                        <views:CircularProgressBar Grid.Column="1"
+                                               Width="25"
+                                               HorizontalAlignment="Right" 
+                                               Height="25"
+                                               Padding="1.5"
+                                               Visibility="{Binding Path=IsTesting,Converter={StaticResource BoolToVis}}" />
+                    </Grid>
                 </Grid>
                 <!-- RESPONSE -->
                 <Grid x:Name="ResponseGrid" 
                       Grid.Row="3" 
                       Margin="{StaticResource GridBorderBottom}"
                       Grid.Column="0" 
-                      Visibility="Visible">
+                      Visibility="{Binding Path=CanEditHeadersAndUrl, Converter={StaticResource BoolToVis}}">
                     <!-- Test-->
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -364,7 +383,7 @@
                 <Grid x:Name="MappingsGrid" 
                   Grid.Row="4" 
                   Grid.Column="0" 
-                  Visibility="Visible">
+                  Visibility="{Binding Path=CanEditMappings,Converter={StaticResource BoolToVis}}">
                     <!-- Mappings-->
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"></RowDefinition>
@@ -394,27 +413,20 @@
                                HorizontalAlignment="Left" 
                                TextWrapping="WrapWithOverflow" 
                                x:Name="ErrorTextBlock" ></TextBlock>
-                    <Button x:Name="TestButton" 
-                            Grid.Column="1" 
+                    <Button x:Name="SaveButton" 
+                            Grid.Column="2" 
                             Margin="{StaticResource ControlBorderTopRight}" 
                             HorizontalAlignment="Right" 
                             VerticalAlignment="Bottom" 
-                            Command="{Binding TestCommand}"
-                            Width="100">Test</Button>
-                    <Button x:Name="SaveButton" 
-                            Grid.Column="2" 
-                        Margin="{StaticResource ControlBorderTopRight}" 
-                        HorizontalAlignment="Right" 
-                        VerticalAlignment="Bottom" 
                             Command="{Binding SaveCommand}" 
-                        Width="100">Save</Button>
+                            Width="100">Save</Button>
                     <Button x:Name="CancelButton" 
                             Grid.Column="3" 
-                        Margin="{StaticResource ControlBorderTop}" 
-                        HorizontalAlignment="Right" 
-                        VerticalAlignment="Bottom" 
+                            Margin="{StaticResource ControlBorderTop}" 
+                            HorizontalAlignment="Right" 
+                            VerticalAlignment="Bottom" 
                             Command="{Binding CancelCommand}"
-                        Width="100">Cancel</Button>
+                            Width="100">Cancel</Button>
                 </Grid>
             </Grid>
         </StackPanel>
