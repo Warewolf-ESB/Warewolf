@@ -273,7 +273,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            const string expected = @"Change This 5435123130t Lete2435r Upper Case";
+            const string expected = @"Change This 5435123130T Lete2435r Upper Case";
             string actual;
             string error;
 

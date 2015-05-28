@@ -213,3 +213,45 @@ Scenario: Generate Letters and Numbers with a negative recordset index for lengt
 	| Letters & Numbers | [[rec(-1).set]] = |
 
 
+	
+Scenario: Generate decimal Numbers one digit
+	Given I have a type as "Numbers"
+	And I have a range from "0.1" to "0.9" 
+	When the random tool is executed 
+	Then the result from the random tool should be of the same type as "System.Double" 
+	And the execution has "NO" error
+	And the debug inputs as  
+	| Random  | From | To |
+	| Numbers | 0.1    | 0.9  |
+	And the debug output as 
+	|                     |
+	| [[result]] = Double |	
+
+	
+Scenario: Generate decimal Numbers many digits
+	Given I have a type as "Numbers"
+	And I have a range from "0.000000001" to "0.9" 
+	When the random tool is executed 
+	Then the result from the random tool should be of the same type as "System.Double" 
+	And the execution has "NO" error
+	And the debug inputs as  
+	| Random  | From | To |
+	| Numbers | 0.000000001    | 0.9  |
+	And the debug output as 
+	|                     |
+	| [[result]] = Double |	
+
+
+Scenario: Generate a Number between 5.5 and 5.5
+	Given I have a type as "Numbers"
+	And I have a range from "5.5" to "5.5" 
+	When the random tool is executed 
+	Then the result from the random tool should be of the same type as "System.Double" 
+	And the random value will be between "5.5" and "5.5" inclusive 
+	And the execution has "NO" error
+	And the debug inputs as  
+	| Random  | From | To |
+	| Numbers | 5.5    | 5.5  |
+	And the debug output as 
+	|                     |
+	| [[result]] = Double |
