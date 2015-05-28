@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Text;
 using System.Xml;
 using Dev2.Common;
@@ -270,7 +271,10 @@ namespace Dev2
                                         if (DataListUtil.ExtractFieldNameFromValue(definition) == subc.Name)
                                         {
                                             var recSetAppend = DataListUtil.ReplaceRecordsetIndexWithBlank(definition);
-                                            dataObject.Environment.AssignWithFrame(new AssignValue( recSetAppend, subc.InnerXml));
+                                            var a = subc.InnerXml;
+                                            a = RemoveXMLPrefix(a);
+                                                dataObject.Environment.AssignWithFrame(new AssignValue(recSetAppend, a));
+                                     
                                         }
                                     }
                                 }
@@ -280,8 +284,9 @@ namespace Dev2
                         {
                             // fetch recordset index
                             // process recordset
-
-                            dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(c.Name), c.InnerXml);
+                            var a = c.InnerXml;
+                            a = RemoveXMLPrefix(a);
+                            dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(c.Name), a);
                         }
                     }
                     else
@@ -299,6 +304,16 @@ namespace Dev2
             {
                 dataObject.Environment.CommitAssign();
             }
+        }
+
+        static string RemoveXMLPrefix(string a)
+        {
+            if(a.StartsWith(GlobalConstants.XMLPrefix))
+            {
+                a = a.Replace(GlobalConstants.XMLPrefix, "");
+                a = Encoding.UTF8.GetString(Convert.FromBase64String(a));
+            }
+            return a;
         }
 
         public static string GetXmlInputFromEnvironment(IDSFDataObject dataObject, Guid workspaceGuid, string dataList)

@@ -34,7 +34,9 @@ namespace Dev2.Activities
                 webserviceExecution.InstanceInputDefinitions = inputs;
                 ErrorResultTO invokeErrors;
                 var result = webserviceExecution.Execute(out invokeErrors);
-                dataObject.Environment.AddError(invokeErrors.MakeDataListReady());
+                string err = invokeErrors.MakeDataListReady();
+                if(!string.IsNullOrEmpty(err))
+                dataObject.Environment.AddError(err);
                 return result;
             }
             return Guid.NewGuid();

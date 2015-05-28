@@ -144,7 +144,7 @@ namespace Dev2.Common
 
         //Resource Constants
         public const string ResourceFileExtension = ".xml";
-
+        public const string XMLPrefix = "~XML~";
         //Windows Service constants
         public const string ServiceName = "Warewolf Server";
 

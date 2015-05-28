@@ -338,6 +338,7 @@ namespace Dev2.Runtime.WebServer.Handlers
         protected static string GetPostData(ICommunicationContext ctx, string postDataListId)
         {
             var baseStr = HttpUtility.UrlDecode(ctx.Request.Uri.ToString());
+            baseStr = HttpUtility.UrlDecode(CleanupXml(baseStr));
             if(baseStr != null)
             {
                 var startIdx = baseStr.IndexOf("?", StringComparison.Ordinal);
@@ -354,7 +355,8 @@ namespace Dev2.Runtime.WebServer.Handlers
             // Not an XML payload - Handle it as a GET or POST request ;)
             if(ctx.Request.Method == "GET")
             {
-                var pairs = ctx.Request.QueryString;
+              baseStr = "";
+                var pairs = String.IsNullOrEmpty(baseStr)? ctx.Request.QueryString : HttpUtility.ParseQueryString(baseStr.Substring(baseStr.IndexOf("?")+1));
                 return ExtractKeyValuePairs(pairs);
             }
 
@@ -416,6 +418,24 @@ namespace Dev2.Runtime.WebServer.Handlers
             return string.Empty;
         }
 
+        static string CleanupXml(string baseStr)
+        {
+          
+           NameValueCollection args =  HttpUtility.ParseQueryString(baseStr.Substring(baseStr.IndexOf("?")));
+           var url = baseStr.Substring(0, baseStr.IndexOf("?")+1);
+           List<string> results = new List<string>();
+           foreach (var arg in args.AllKeys)
+            {
+              
+               if(args[arg].IsXml())
+               {
+                   var txt = args[arg] ;
+                   results.Add(arg+"="+ string.Format(GlobalConstants.XMLPrefix+"{0}", Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(txt))));
+               }
+            }
+           return url + string.Join("&", results);
+        }
+
         static string ExtractKeyValuePairs(NameValueCollection pairs)
         {
             IBinaryDataList bdl = Dev2BinaryDataListFactory.CreateDataList();
@@ -440,7 +460,12 @@ namespace Dev2.Runtime.WebServer.Handlers
                 IBinaryDataListEntry entry;
                 if(bdl.TryGetEntry(key, out entry, out error))
                 {
-                    var item = Dev2BinaryDataListFactory.CreateBinaryItem(pairs[key], key);
+                    string res = pairs[key];
+                    if (pairs[key].IsXml())
+                    {
+                        res= GlobalConstants.XMLPrefix+ Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(res));
+                    }
+                    var item = Dev2BinaryDataListFactory.CreateBinaryItem(res, key);
                     entry.TryPutScalar(item, out error);
                     if(!string.IsNullOrEmpty(error))
                     {
