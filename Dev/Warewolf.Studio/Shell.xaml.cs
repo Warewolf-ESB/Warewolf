@@ -128,14 +128,14 @@ namespace Warewolf.Studio
                 //var testingWindow = new ControlStyleTestingWindow();
                 //testingWindow.Show();
 
-                //var testingInfraWindow = new InfragisticsControlTesting();
-                //testingInfraWindow.Show();
+                var testingInfraWindow = new InfragisticsControlTesting();
+                testingInfraWindow.Show();
 
-                var pluginService = new Window()
-                {
-                    Content = new ManagePluginServiceControl()
-                };
-                pluginService.Show();
+                //var pluginService = new Window()
+                //{
+                //    Content = new ManagePluginServiceControl()
+                //};
+                //pluginService.Show();
 
                 //var testWindow = new Window
                 //{
