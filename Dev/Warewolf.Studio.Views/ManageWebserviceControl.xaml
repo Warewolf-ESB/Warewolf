@@ -9,13 +9,14 @@
              xmlns:dialogues="clr-namespace:Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;assembly=Dev2.Common.Interfaces"
              xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=dialogues:IManageWebServiceViewModel,
                                               IsDesignTimeCreatable=False}">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
-        <Style x:Key="FillerColHeader" TargetType="{x:Type igPrim:HeaderCellControl}">
+        <!--<Style x:Key="FillerColHeader" TargetType="{x:Type igPrim:HeaderCellControl}">
             <Setter Property="Visibility" Value="Collapsed"/>
             <Setter Property="Width" Value="0"/>
             <Setter Property="MaxWidth" Value="0"/>
@@ -24,10 +25,10 @@
             <Setter Property="Visibility" Value="Collapsed"/>
             <Setter Property="Width" Value="0"/>
             <Setter Property="MaxWidth" Value="0"/>
-        </Style>
+        </Style>-->
     </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-        <StackPanel MinWidth="600" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=ActualWidth}">
+        <StackPanel MinWidth="600" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}">
             <Grid Margin="{StaticResource ElementBorder}" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
@@ -122,6 +123,7 @@
                     <!-- HEADER -->
                     <Grid Grid.Column="0" 
                           Grid.Row="1"
+                          Margin="{StaticResource ElementBorderControlRight}"
                           Grid.ColumnSpan="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="50*" />
@@ -138,28 +140,44 @@
                         <ScrollViewer Grid.Row="1" 
                                       Grid.Column="0" 
                                       HorizontalScrollBarVisibility="Auto" 
-                                      VerticalScrollBarVisibility="Auto">
-                            <Grid Width="460" MaxHeight="110">
+                                      VerticalScrollBarVisibility="Auto"
+                                      MaxHeight="110">
+                            <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" 
+                                  MinWidth="400">
                                 <ig:XamGrid x:Name="HeadersGrid" 
-                                    ItemsSource="{Binding Headers}" 
-                                    AutoGenerateColumns="False"
-                                    IsAlternateRowsEnabled="False"
-                                    DeleteKeyAction="DeleteRowOfActiveCell"
-                                            ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                            ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                    ColumnWidth="*" >
+                                                    ItemsSource="{Binding Headers}" 
+                                                    AutoGenerateColumns="False"
+                                                    IsAlternateRowsEnabled="False"
+                                                    DeleteKeyAction="DeleteRowOfActiveCell"
+                                                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                    ColumnWidth="*" >
                                     <ig:XamGrid.Columns>
                                         <ig:TextColumn Key="Name" HeaderText="Name" MinimumWidth="100">
                                             <ig:TextColumn.AddNewRowEditorTemplate>
                                                 <DataTemplate>
-                                                    <TextBox Text="{Binding Path=Name, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
+                                                    <!--<TextBox Style="{StaticResource NoBorderTextBoxStyle}" 
+                                                             Text="{Binding Path=Name, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />-->
+                                                    <xctk:WatermarkTextBox Style="{StaticResource NoBorderTextBoxStyle}" 
+                                                                           Watermark="Header"
+                                                                           Height="25"
+                                                                           VerticalContentAlignment="Center"
+                                                                           Text="{Binding Path=Name, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}">
+                                                    </xctk:WatermarkTextBox>
                                                 </DataTemplate>
                                             </ig:TextColumn.AddNewRowEditorTemplate>
                                         </ig:TextColumn>
                                         <ig:TextColumn Key="Value" HeaderText="Value" MinimumWidth="100" IsResizable="False">
                                             <ig:TextColumn.AddNewRowEditorTemplate>
                                                 <DataTemplate>
-                                                    <TextBox Text="{Binding Path=Value, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
+                                                    <!--<TextBox Style="{StaticResource NoBorderTextBoxStyle}" 
+                                                             Text="{Binding Path=Value, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />-->
+                                                    <xctk:WatermarkTextBox Style="{StaticResource NoBorderTextBoxStyle}" 
+                                                                           Watermark="Value"
+                                                                           Height="25"
+                                                                           VerticalContentAlignment="Center"
+                                                                           Text="{Binding Path=Value, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}">
+                                                    </xctk:WatermarkTextBox>
                                                 </DataTemplate>
                                             </ig:TextColumn.AddNewRowEditorTemplate>
                                         </ig:TextColumn>
@@ -177,42 +195,55 @@
                                     </ig:XamGrid.SortingSettings>
                                     <ig:XamGrid.EditingSettings>
                                         <ig:EditingSettings AllowEditing="Cell"
-                                                    IsMouseActionEditingEnabled="DoubleClick"
+                                                    IsMouseActionEditingEnabled="SingleClick"
                                                     IsEnterKeyEditingEnabled="True" 
                                                     IsF2EditingEnabled="True" 
-                                                    IsOnCellActiveEditingEnabled="False" />
+                                                    IsOnCellActiveEditingEnabled="True" />
                                     </ig:XamGrid.EditingSettings>
                                     <!-- Conditional Formating is On-->
                                     <ig:XamGrid.ConditionalFormattingSettings>
                                         <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
                                     </ig:XamGrid.ConditionalFormattingSettings>
                                     <!-- Filler Column Setting is On-->
-                                    <ig:XamGrid.FillerColumnSettings>
+                                    <!--<ig:XamGrid.FillerColumnSettings>
                                         <ig:FillerColumnSettings   Style="{StaticResource FillerColCellStyle}" HeaderStyle="{StaticResource FillerColHeader}" />
-                                    </ig:XamGrid.FillerColumnSettings>
+                                    </ig:XamGrid.FillerColumnSettings>-->
                                 </ig:XamGrid>
                             </Grid>
                         </ScrollViewer>
                     </Grid>
                     <!-- BODY -->
                     <Grid Grid.Column="1" 
-                          Grid.Row="1" >
+                          Grid.Row="1" 
+                          Margin="{StaticResource ElementBorderControlLeft}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="7" ></RowDefinition>
                         </Grid.RowDefinitions>
                         <TextBlock Text="{Binding RequestBodyHeader}" 
+                                   Visibility="{Binding RequestBodyEnabled, Converter={StaticResource BoolToVis}}"
                                    FontWeight="Bold"></TextBlock>
-                        <TextBox Grid.Row="1" 
+                        <!--<TextBox Grid.Row="1" 
                                  x:Name="RequestBody"
                                  MaxHeight="110"
                                  Text="{Binding RequestBody}"
                                  Visibility="{Binding RequestBodyEnabled, Converter={StaticResource BoolToVis}}"
-                                 HorizontalAlignment="Stretch" ></TextBox>
+                                 HorizontalAlignment="Stretch" ></TextBox>-->
+                        <xctk:WatermarkTextBox Grid.Row="1" 
+                                               x:Name="RequestBody"
+                                               Height="55"
+                                               MaxHeight="110"
+                                               TextWrapping="Wrap"
+                                               Text="{Binding RequestBody}"
+                                               Visibility="{Binding RequestBodyEnabled, Converter={StaticResource BoolToVis}}"
+                                               Watermark="Body"
+                                               AcceptsReturn="True"
+                                               VerticalScrollBarVisibility="Auto"
+                                               HorizontalAlignment="Stretch">
+                        </xctk:WatermarkTextBox>
                     </Grid>
                     <!-- URL -->
                     <TextBlock Grid.Column="0" 
@@ -230,10 +261,20 @@
                            Visibility="{Binding CanEditHeadersAndUrl, Converter={StaticResource BoolToVis}}"
                                Text="{Binding SourceUrl}">
                         </TextBlock>
-                        <TextBox x:Name="RequestUrl"
+                        <!--<TextBox x:Name="RequestUrl"
                              HorizontalAlignment="Stretch"
                              Text="{Binding RequestUrlQuery}"
-                             Grid.Column="1"></TextBox>
+                             Grid.Column="1">
+                            
+                        </TextBox>-->
+                        <xctk:WatermarkTextBox x:Name="RequestUrl"
+                                               HorizontalAlignment="Stretch"
+                                               Text="{Binding RequestUrlQuery}"
+                                               Height="25"
+                                               VerticalContentAlignment="Center"
+                                                Watermark="URL"
+                                               Grid.Column="1">
+                        </xctk:WatermarkTextBox>
                     </Grid>
                 </Grid>
                 <!-- REQUEST VARIABLES -->

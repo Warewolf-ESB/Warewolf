@@ -12,7 +12,7 @@
                                               IsDesignTimeCreatable=False}">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibility"></BooleanToVisibilityConverter>
-        <Style x:Key="FillerColHeader" TargetType="{x:Type igPrim:HeaderCellControl}">
+        <!--<Style x:Key="FillerColHeader" TargetType="{x:Type igPrim:HeaderCellControl}">
             <Setter Property="Visibility" Value="Collapsed"/>
             <Setter Property="Width" Value="0"/>
             <Setter Property="MaxWidth" Value="0"/>
@@ -21,7 +21,7 @@
             <Setter Property="Visibility" Value="Collapsed"/>
             <Setter Property="Width" Value="0"/>
             <Setter Property="MaxWidth" Value="0"/>
-        </Style>
+        </Style>-->
     </UserControl.Resources>
     <Grid x:Name="MappingsGrid">
         <!-- Mappings-->
@@ -92,9 +92,9 @@
                         <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
                     </ig:XamGrid.ConditionalFormattingSettings>
                     <!-- Filler Column Setting is On-->
-                    <ig:XamGrid.FillerColumnSettings>
+                    <!--<ig:XamGrid.FillerColumnSettings>
                         <ig:FillerColumnSettings   Style="{StaticResource FillerColCellStyle}" HeaderStyle="{StaticResource FillerColHeader}" />
-                    </ig:XamGrid.FillerColumnSettings>
+                    </ig:XamGrid.FillerColumnSettings>-->
                 </ig:XamGrid>
             </StackPanel>
         </ScrollViewer>
@@ -148,9 +148,9 @@
                         <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
                     </ig:XamGrid.ConditionalFormattingSettings>
                     <!-- Filler Column Setting is On-->
-                    <ig:XamGrid.FillerColumnSettings>
+                    <!--<ig:XamGrid.FillerColumnSettings>
                         <ig:FillerColumnSettings   Style="{StaticResource FillerColCellStyle}" HeaderStyle="{StaticResource FillerColHeader}" />
-                    </ig:XamGrid.FillerColumnSettings>
+                    </ig:XamGrid.FillerColumnSettings>-->
                 </ig:XamGrid>
             </StackPanel>
         </ScrollViewer>
