@@ -14,6 +14,7 @@ using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
+using FluentAssertions;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Data.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -30,7 +31,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -75,7 +76,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -88,12 +89,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
         public void GivenIHaveACalculateVariableEqualTo(string recordset, Table table)
         {
             List<TableRow> tableRows = table.Rows.ToList();
-            for(int i = 0; i < tableRows.Count; i++)
+            for (int i = 0; i < tableRows.Count; i++)
             {
                 List<Tuple<string, string>> variableList;
                 ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-                if(variableList == null)
+                if (variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
                     ScenarioContext.Current.Add("variableList", variableList);
@@ -115,19 +116,19 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
             if (expectedResult == "[Now]")
             {
 
-                Assert.IsTrue( DateTime.Parse(actualValue).Subtract(DateTime.Now).TotalMilliseconds < 1000);
+                DateTime.Parse(actualValue).Subtract(DateTime.Now).TotalMilliseconds.Should().BeLessThan(1000, "we expect DateTime.Now but give a 1 second grace period for the formula to complete");
                 return;
             }
             if (expectedResult == "[Today]")
             {
 
-                Assert.IsTrue(DateTime.Parse(actualValue).Day== DateTime.Now.Day);
+                DateTime.Parse(actualValue).Day.Should().Be(DateTime.Now.Day, "we expect today's date");
                 return;
             }
             if (expectedResult == "[Int]")
             {
                 int outval;
-                Assert.IsTrue(int.TryParse(actualValue,out outval));
+                Assert.IsTrue(int.TryParse(actualValue, out outval));
                 return;
             }
             else
@@ -135,20 +136,25 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
 
                 if (string.IsNullOrEmpty(expectedResult))
                 {
-                    Assert.IsTrue(string.IsNullOrEmpty(actualValue));
+                    actualValue.Should().BeNullOrEmpty("the expected value is null or empty");
                 }
                 else
                 {
-                    Assert.AreEqual(expectedResult, actualValue);
+                    actualValue.Should().Be(expectedResult);
                 }
             }
+        }
+
+        [Then(@"the calculate result should be null")]
+        public void ThenTheCalculateResultShouldBeNull()
+        {
         }
 
         [Given(@"I have the Example formula '(.*)'")]
         public void GivenIHaveTheExampleFormula(string formula)
         {
             ScenarioContext.Current.Add("formula", formula);
-        
+
         }
 
 

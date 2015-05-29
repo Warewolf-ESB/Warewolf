@@ -17,6 +17,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using ActivityUnitTests;
+using FluentAssertions;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.PathOperations.Enums;
 using Dev2.Data.Util;
@@ -56,15 +57,17 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Then(@"the execution has '(.*)' error")]
         public void ThenTheExecutionHasError(string anError)
         {
-            bool expected = anError.Equals("NO");
+            bool expectedNoError = anError.Equals("NO");
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
 
             string fetchErrors = string.Join(Environment.NewLine, result.Environment.Errors);
-            bool actual = result.Environment.Errors.Count == 0;
+            bool actuallyHasErrors = result.Environment.Errors.Count == 0;
             string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
-                                           actual ? "did not occur" : "did occur" + fetchErrors);
+                                           actuallyHasErrors ? "did not occur" : "did occur" + fetchErrors);
 
-            Assert.IsTrue(expected == actual, message);
+            Assert.IsTrue(expectedNoError == actuallyHasErrors, message);
+            if (!expectedNoError && anError != "AN")
+                fetchErrors.Should().Contain(anError);
         }
 
         [Then(@"the debug inputs as")]
@@ -701,7 +704,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         static void CollectionsAssert(List<IDebugItemResult> expectedDebugItems, List<IDebugItemResult> inputDebugItems)
         {
-            Assert.AreEqual(expectedDebugItems.Count, inputDebugItems.Count);
+            inputDebugItems.Count.Should().Be(expectedDebugItems.Count);
 
             RemoveTralingAndLeadingSpaces(expectedDebugItems, inputDebugItems);
 
@@ -747,7 +750,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             if (string.IsNullOrEmpty(type) && actualValue != null)
             {
-                Assert.AreEqual(expectedValue, actualValue.Replace("\\r\\n", Environment.NewLine), name + " are not equal at index" + index);
+                actualValue.Replace("\\r\\n", Environment.NewLine).Should().Be(expectedValue, name + " are not equal at index" + index);
             }
             else
             {

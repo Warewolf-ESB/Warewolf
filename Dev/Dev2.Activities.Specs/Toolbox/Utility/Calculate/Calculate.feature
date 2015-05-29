@@ -64,13 +64,27 @@ Scenario: Calculate using incorrect formula
 	Given I have the formula "asdf"
 	When the calculate tool is executed
 	Then the calculate result should be ""
-	And the execution has "AN" error
+	And the execution has "Formula syntax error. Unable to compile the formula: Unexpected end of file, on line: 1 column: 5" error
 	And the debug inputs as  
 	| fx = |
 	| asdf |	
 	And the debug output as 
 	|               |
 	| [[result]] = |
+
+	Scenario: Calculate using incorrect argument expression for formula 
+	Given I have the formula "sum([[b]]+[[c]])"
+	And I have a calculate variable "[[b]]" equal to "+1 +1"
+	And I have a calculate variable "[[c]]" equal to "+1"
+	When the calculate tool is executed
+	Then the calculate result should be ""
+		And the execution has "Incorrect type of argument or operand. Unable to calculate: " error 
+	And the debug inputs as  
+	| fx = |
+	| sum([[b]]+[[c]]) = sum(+1 +1++1) |	
+	And the debug output as 
+	|               |
+	| [[result]] =  |
 
 Scenario: Calculate using variable as full calculation
 	Given I have a calculate variable "[[var]]" equal to "SUM(1,2,3)-5"
@@ -88,7 +102,7 @@ Scenario: Calculate using variable as full calculation
 Scenario: Calculate using a negative index recordset value
 	Given I have the formula "[[my(-1).formula]]"
 	When the calculate tool is executed
-	Then the execution has "AN" error
+	Then the execution has "Recordset index [ -1 ] is not greater than zero" error
 	And the debug inputs as  
 	| fx =                 |
 	| [[my(-1).formula]] = |	
