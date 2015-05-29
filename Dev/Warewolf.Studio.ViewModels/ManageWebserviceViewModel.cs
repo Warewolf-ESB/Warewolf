@@ -94,7 +94,7 @@ namespace Warewolf.Studio.ViewModels
 
 
 
-        public ManageWebServiceViewModel()
+        public ManageWebServiceViewModel(IShellViewModel shell)
             : base(ResourceType.WebService)
         {
             var commController = new  CommunicationControllerFactory();
@@ -103,7 +103,7 @@ namespace Warewolf.Studio.ViewModels
             IStudioUpdateManager updateRepository = new StudioResourceUpdateManager(commController,connection); 
             IQueryManager queryProxy = new QueryManagerProxy(commController,connection);
             
-            _model = new WebServiceModel(updateRepository,queryProxy,"bob");
+            _model = new WebServiceModel(updateRepository,queryProxy,shell,"bob");
 
            
             Init();
@@ -116,7 +116,7 @@ namespace Warewolf.Studio.ViewModels
             Header = Resources.Languages.Core.WebserviceTabHeader;
             WebRequestMethods = new ObservableCollection<WebRequestMethod>(Dev2EnumConverter.GetEnumsToList<WebRequestMethod>());
             SelectedWebRequestMethod = WebRequestMethods.First();
-            Sources = new ObservableCollection<IWebServiceSource>(Model.RetrieveSources());
+            Sources = Model.Sources;
             Inputs = new ObservableCollection<IServiceInput>();
             OutputMapping = new ObservableCollection<IServiceOutputMapping>();
             EditWebSourceCommand = new DelegateCommand(() => Model.EditSource(SelectedSource), () => SelectedSource != null);
@@ -129,9 +129,12 @@ namespace Warewolf.Studio.ViewModels
             RequestBody = "";
             Response = "";
             TestCommand = new DelegateCommand(() => Test(_model), CanTest);
+            CreateNewSourceCommand = new DelegateCommand(_model.CreateNewSource);
             SaveCommand = new DelegateCommand(Save, CanSave);
             NewWebSourceCommand = new DelegateCommand(() => _model.CreateNewSource());
         }
+
+        public DelegateCommand CreateNewSourceCommand { get; set; }
 
         void VariablesOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
         {

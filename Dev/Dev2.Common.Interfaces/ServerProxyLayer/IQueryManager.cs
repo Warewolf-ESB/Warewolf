@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces.Data;
@@ -71,5 +72,7 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         IList<IDbAction> FetchDbActions(IDbSource source);
 
         IEnumerable<IWebServiceSource> FetchWebServiceSources();
+
+        ObservableCollection<IWebServiceSource> WebSources { get; set; }
     }
 }

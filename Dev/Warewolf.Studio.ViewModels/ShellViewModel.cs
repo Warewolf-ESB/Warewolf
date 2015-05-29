@@ -134,9 +134,13 @@ namespace Warewolf.Studio.ViewModels
 
         public void EditResource(IDbSource selectedSource)
         {
-            Guid.NewGuid();
             var dbSourceViewModel = new ManageDatabaseSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.ResourceName), _aggregator,selectedSource);
             GetRegion("Workspace").Add(dbSourceViewModel);
+        } 
+        public void EditResource(IWebServiceSource selectedSource)
+        {
+            var sourceViewModel = new ManageWebserviceSourceViewModel(new ManageWebServiceSourceModel(ActiveServer.UpdateRepository, ActiveServer.ResourceName), _aggregator,selectedSource);
+            GetRegion("Workspace").Add(sourceViewModel);            
         }
 
         public IViewsCollection GetRegionViews(string regionName)
@@ -283,7 +287,7 @@ namespace Warewolf.Studio.ViewModels
         private void CreateWebService()
         {
             var selectedId = Guid.NewGuid();
-            var sourceViewModel = new ManageWebServiceViewModel(new WebServiceModel(ActiveServer.UpdateRepository,ActiveServer.QueryProxy,ActiveServer.ResourceName), new RequestServiceNameViewModel(new EnvironmentViewModel(LocalhostServer, this), _unityContainer.Resolve<IRequestServiceNameView>(), selectedId));
+            var sourceViewModel = new ManageWebServiceViewModel(new WebServiceModel(ActiveServer.UpdateRepository,ActiveServer.QueryProxy,this,ActiveServer.ResourceName), new RequestServiceNameViewModel(new EnvironmentViewModel(LocalhostServer, this), _unityContainer.Resolve<IRequestServiceNameView>(), selectedId));
             GetRegion("Workspace").Add(sourceViewModel);
         
         }

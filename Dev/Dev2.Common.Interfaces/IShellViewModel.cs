@@ -43,5 +43,6 @@ namespace Dev2.Common.Interfaces
         void ServerSourceAdded(IServerSource source);
 
         void EditResource(IDbSource selectedSource);
+        void EditResource(IWebServiceSource selectedSource);
     }
 }

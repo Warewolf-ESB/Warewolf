@@ -330,11 +330,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         IRequestServiceNameViewModel RequestServiceNameViewModel { get; set; }
-        bool Haschanged
-        {
-            get { return !ToSource().Equals(_webServiceSource) ; }
-        }
-
+        
         public AuthenticationType AuthenticationType
         {
             get { return _authenticationType; }

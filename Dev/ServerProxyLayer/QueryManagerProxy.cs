@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Explorer;
@@ -124,7 +124,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             var comsController = CommunicationControllerFactory.CreateController("FetchExplorerItemsService");
 
             var workspaceId = Connection.WorkspaceID;
-            var result = await comsController.ExecuteCommandAsync<IExplorerItem>(Connection, workspaceId);
+            var result = await comsController.ExecuteCommandAsync<IExplorerItem>(Connection, workspaceId);            
             return result;
         }
         #endregion
@@ -194,6 +194,8 @@ namespace Warewolf.Studio.ServerProxyLayer
             return fetchWebServiceSources;
         
         }
+
+        public ObservableCollection<IWebServiceSource> WebSources { get; set; }
     }
          
     

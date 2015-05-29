@@ -622,7 +622,6 @@ namespace Warewolf.Studio.ViewModels
 
         public override void UpdateHelpDescriptor(string helpText)
         {
-            throw new NotImplementedException();
         }
 
         #endregion

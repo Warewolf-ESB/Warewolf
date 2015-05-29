@@ -75,12 +75,24 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public void Save(IWebServiceSource resource)
         {
-            UpdateManagerProxy.SaveWebserviceSource(resource, GlobalConstants.ServerWorkspaceID);
+            try
+            {
+                UpdateManagerProxy.SaveWebserviceSource(resource, GlobalConstants.ServerWorkspaceID);
+                if(WebServiceSourceSaved != null)
+                {
+                    WebServiceSourceSaved(resource);
+                }
+            }
+            catch(Exception)
+            {
+                //
+            }
         }
 
         public void Save(IDatabaseService toDbSource)
         {
             UpdateManagerProxy.SaveDbService(toDbSource);
+
         }
 
         public DataTable TestDbService(IDatabaseService inputValues)
@@ -92,5 +104,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         {
              return UpdateManagerProxy.TestWebService(inputValues);
         }
+
+        public event Action<IWebServiceSource> WebServiceSourceSaved;
     }
 }

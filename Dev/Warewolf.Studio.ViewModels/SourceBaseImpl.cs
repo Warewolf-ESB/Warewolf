@@ -9,7 +9,7 @@ namespace Warewolf.Studio.ViewModels
     {
         string _header;
 
-        public SourceBaseImpl(ResourceType? image)
+        protected SourceBaseImpl(ResourceType? image)
         {
             Image = image;
         }
