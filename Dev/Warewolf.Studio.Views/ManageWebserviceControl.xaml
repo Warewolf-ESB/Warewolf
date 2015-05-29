@@ -195,7 +195,7 @@
                                         </ig:TextColumn>
                                     </ig:XamGrid.Columns>
                                     <ig:XamGrid.AddNewRowSettings>
-                                        <ig:AddNewRowSettings AllowAddNewRow="Top" 
+                                        <ig:AddNewRowSettings AllowAddNewRow="Bottom" 
                                                       IsMouseActionEditingEnabled="SingleClick"
                                                       IsEnterKeyEditingEnabled="True" 
                                                       IsF2EditingEnabled="True" 
