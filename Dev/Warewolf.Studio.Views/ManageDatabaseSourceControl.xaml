@@ -74,6 +74,7 @@
                                MaxDropDownHeight="200"
                                CustomValueEnteredAction="Allow"
                                ItemsSource="{Binding Path=ComputerNames}"
+                               SelectedItem="{Binding ServerName,UpdateSourceTrigger=PropertyChanged}"
                                views:FocusExtension.IsFocused="True">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:Core.DatabaseSourceServerHelp}"

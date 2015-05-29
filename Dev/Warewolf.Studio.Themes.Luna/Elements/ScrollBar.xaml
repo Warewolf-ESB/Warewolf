@@ -401,9 +401,9 @@
                                    Value="{Binding HorizontalOffset,
                                                    Mode=OneWay,
                                                    RelativeSource={RelativeSource TemplatedParent}}" />
-                        <Rectangle Grid.Row="1"
+                        <!--<Rectangle Grid.Row="1"
                                    Grid.Column="1"
-                                   Fill="{StaticResource ScrollbarBackgroundBrush}" />
+                                   Fill="{StaticResource ScrollbarBackgroundBrush}" />-->
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

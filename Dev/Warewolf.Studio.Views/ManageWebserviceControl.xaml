@@ -17,16 +17,9 @@
                                               IsDesignTimeCreatable=False}">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
-        <!--<Style x:Key="FillerColHeader" TargetType="{x:Type igPrim:HeaderCellControl}">
-            <Setter Property="Visibility" Value="Collapsed"/>
-            <Setter Property="Width" Value="0"/>
-            <Setter Property="MaxWidth" Value="0"/>
-        </Style>
-        <Style x:Key="FillerColCellStyle"   TargetType="ig:CellControl">
-            <Setter Property="Visibility" Value="Collapsed"/>
-            <Setter Property="Width" Value="0"/>
-            <Setter Property="MaxWidth" Value="0"/>
-        </Style>-->
+            <Style TargetType="ig:XamContextMenu">
+            <Setter Property="Background" Value="#FFFFFFFF"/>
+            </Style>
     </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
         <StackPanel MinWidth="600" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}">
@@ -212,6 +205,24 @@
                                                     IsF2EditingEnabled="True" 
                                                     IsOnCellActiveEditingEnabled="True" />
                                     </ig:XamGrid.EditingSettings>
+                                    <ig:ContextMenuService.Manager>
+                                        <ig:ContextMenuManager>
+                                            <ig:ContextMenuManager.ContextMenu>
+                                                <ig:XamContextMenu ItemClicked="XamContextMenu_ItemClicked">
+                                                    <ig:XamMenuItem Header="Insert Row" Click="XamMenuItem_Click">
+                                                        <ig:XamMenuItem.Icon>
+                                                            <Image Source="{x:Null}"/>
+                                                        </ig:XamMenuItem.Icon>
+                                                    </ig:XamMenuItem>
+                                                    <ig:XamMenuItem Header="Delete Row">
+                                                        <ig:XamMenuItem.Icon>
+                                                            <Image Source="{x:Null}"/>
+                                                        </ig:XamMenuItem.Icon>
+                                                    </ig:XamMenuItem>
+                                                </ig:XamContextMenu>
+                                            </ig:ContextMenuManager.ContextMenu>
+                                        </ig:ContextMenuManager>
+                                    </ig:ContextMenuService.Manager>
                                 </ig:XamGrid>
                             </Grid>
                         </ScrollViewer>

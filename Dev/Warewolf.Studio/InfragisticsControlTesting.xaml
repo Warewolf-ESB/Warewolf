@@ -158,6 +158,23 @@
                     </customControls:WatermarkTextBox.Watermark>
                 </TextBox>
             </AdornerDecorator>
+
+            <ig:XamGrid Grid.Row="3" x:Name="Grid1" CellEnteredEditMode="Grid1_CellEnteredEditMode" CellExitingEditMode="Grid1_CellExitingEditMode" >
+                <ig:XamGrid.Columns>
+                <ig:TemplateColumn Key="PropertyName">
+                    <ig:TemplateColumn.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding PropertyName}" />
+                        </DataTemplate>
+                    </ig:TemplateColumn.ItemTemplate>
+                    <ig:TemplateColumn.EditorTemplate>
+                        <DataTemplate>
+                            <TextBox x:Name="NameEditorTemplateTextBox" Text="{Binding PropertyName}" IsReadOnly="True" />
+                        </DataTemplate>
+                    </ig:TemplateColumn.EditorTemplate>
+                </ig:TemplateColumn>
+                </ig:XamGrid.Columns>
+            </ig:XamGrid>
         </Grid>
     </WrapPanel>
 </Window>
