@@ -120,12 +120,13 @@ namespace Warewolf.Studio.ViewModels
             Inputs = new ObservableCollection<IServiceInput>();
             OutputMapping = new ObservableCollection<IServiceOutputMapping>();
             EditWebSourceCommand = new DelegateCommand(() => Model.EditSource(SelectedSource), () => SelectedSource != null);
+            var variables = new ObservableCollection<NameValue>();
+            variables.CollectionChanged += VariablesOnCollectionChanged;
+            Variables = variables;
             var headerCollection = new ObservableCollection<NameValue>();
             headerCollection.CollectionChanged += HeaderCollectionOnCollectionChanged;
             Headers = headerCollection;
-            var variables = new ObservableCollection<NameValue>();
-            variables.CollectionChanged+=VariablesOnCollectionChanged;
-            Variables =  variables;
+            Headers.Add(new ObservableAwareNameValue(headerCollection));
             RequestBody = "";
             Response = "";
             TestCommand = new DelegateCommand(() => Test(_model), CanTest);

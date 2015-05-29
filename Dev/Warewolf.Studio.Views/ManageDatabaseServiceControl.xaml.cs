@@ -78,7 +78,7 @@ namespace Warewolf.Studio.Views
             {
                 be.UpdateTarget();
             }
-            return OutputsDataGrid.Items;
+            return OutputsDataGrid.ItemsSource as ItemCollection;
         }
 
         public IDbSource GetSelectedDataSource()

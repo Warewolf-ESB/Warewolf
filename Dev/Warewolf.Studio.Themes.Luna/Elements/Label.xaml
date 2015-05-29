@@ -6,6 +6,9 @@
         <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Styles.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
+    <SolidColorBrush x:Key="TextBoxWatermarkBorderBrush" Color="{StaticResource WarewolfDisabledText}" />
+    <SolidColorBrush x:Key="TextBoxWatermarkOuterBorderBrush" Color="{StaticResource WarewolfWatermark}" />
+
     <!--  *********************************  Label Style  *********************************  -->
     <Style x:Key="LabelStyle" TargetType="{x:Type Label}">
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
@@ -15,6 +18,49 @@
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="Padding" Value="4" />
+    </Style>
+
+    <Style x:Key="WatermarkLabelStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+        <Setter Property="Foreground" Value="{StaticResource TextBoxWatermarkBorderBrush}" />
+        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="FontStyle" Value="Italic" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Padding" Value="4" />
+        <Setter Property="Validation.ErrorTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <AdornedElementPlaceholder />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="Validation.HasError" Value="True">
+                <Setter Property="TextElement.Foreground" Value="{StaticResource ValidationErrorElement}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="WatermarkOuterLabelStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+        <Setter Property="Foreground" Value="{StaticResource TextBoxWatermarkOuterBorderBrush}" />
+        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="FontStyle" Value="Italic" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Padding" Value="4" />
+        <Setter Property="Validation.ErrorTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <AdornedElementPlaceholder />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="Validation.HasError" Value="True">
+                <Setter Property="TextElement.Foreground" Value="{StaticResource ValidationErrorElement}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <!--  *********************************  Implicit Styles  *********************************  -->

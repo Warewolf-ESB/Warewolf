@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

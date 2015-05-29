@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Infragistics.Controls.Grids.Primitives;
 
 namespace Warewolf.Studio
 {
@@ -33,6 +34,24 @@ namespace Warewolf.Studio
         {
             public string Country { get; set; }
             public List<string> Cities { get; set; }
+        }
+
+        private void Grid1_CellEnteredEditMode(object sender, Infragistics.Controls.Grids.EditingCellEventArgs e)
+        {
+            if (e.Cell.Column.Key == "Name" && e.Cell is AddNewRowCell)
+            {
+                TextBox tb = e.Editor as TextBox;
+                tb.IsReadOnly = true;
+            }
+        }
+
+        private void Grid1_CellExitingEditMode(object sender, Infragistics.Controls.Grids.ExitEditingCellEventArgs e)
+        {
+            if (e.Cell.Column.Key == "Name" && e.Cell is AddNewRowCell)
+            {
+                TextBox tb = e.Editor as TextBox;
+                tb.IsReadOnly = false;
+            }
         }
     }
 }
