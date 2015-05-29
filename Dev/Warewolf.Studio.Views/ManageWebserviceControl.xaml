@@ -146,15 +146,25 @@
                             <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" 
                                   MinWidth="400">
                                 <ig:XamGrid x:Name="HeadersGrid" 
-                                                    ItemsSource="{Binding Headers}" 
-                                                    AutoGenerateColumns="False"
-                                                    IsAlternateRowsEnabled="False"
-                                                    DeleteKeyAction="DeleteRowOfActiveCell"
-                                                    ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                                    ColumnWidth="*" >
+                                            ItemsSource="{Binding Headers}" 
+                                            AutoGenerateColumns="False"
+                                            RowHover="Row"
+                                            IsAlternateRowsEnabled="False"
+                                            ColumnLayoutHeaderVisibility="Never"
+                                            DeleteKeyAction="DeleteRowOfActiveCell"
+                                            ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                            ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                            ColumnWidth="*" >
+                                    <ig:XamGrid.SelectionSettings>
+                                        <ig:SelectionSettings CellClickAction="SelectRow" CellSelection="None" />
+                                    </ig:XamGrid.SelectionSettings>
                                     <ig:XamGrid.Columns>
                                         <ig:TextColumn Key="Name" HeaderText="Name" MinimumWidth="100">
+                                            <ig:TextColumn.AddNewRowItemTemplate>
+                                                <DataTemplate>
+                                                    <Label Style="{StaticResource WatermarkOuterLabelStyle}">Header</Label>
+                                                </DataTemplate>
+                                            </ig:TextColumn.AddNewRowItemTemplate>
                                             <ig:TextColumn.AddNewRowEditorTemplate>
                                                 <DataTemplate>
                                                     <TextBox Style="{StaticResource NoBorderTextBoxStyle}" 
@@ -167,6 +177,11 @@
                                             </ig:TextColumn.AddNewRowEditorTemplate>
                                         </ig:TextColumn>
                                         <ig:TextColumn Key="Value" HeaderText="Value" MinimumWidth="100" IsResizable="False">
+                                            <ig:TextColumn.AddNewRowItemTemplate>
+                                                <DataTemplate>
+                                                    <Label Style="{StaticResource WatermarkOuterLabelStyle}">Value</Label>
+                                                </DataTemplate>
+                                            </ig:TextColumn.AddNewRowItemTemplate>
                                             <ig:TextColumn.AddNewRowEditorTemplate>
                                                 <DataTemplate>
                                                     <TextBox Style="{StaticResource NoBorderTextBoxStyle}" 
@@ -197,9 +212,6 @@
                                                     IsF2EditingEnabled="True" 
                                                     IsOnCellActiveEditingEnabled="True" />
                                     </ig:XamGrid.EditingSettings>
-                                    <ig:XamGrid.ColumnLayoutHeaderVisibility>
-                                        <ig:ColumnLayoutHeaderVisibility>Never</ig:ColumnLayoutHeaderVisibility>
-                                    </ig:XamGrid.ColumnLayoutHeaderVisibility>
                                 </ig:XamGrid>
                             </Grid>
                         </ScrollViewer>
