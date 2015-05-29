@@ -505,13 +505,18 @@ namespace Dev2.Studio.ViewModels.Workflow
             foreach(var item in WorkflowInputs)
             {
                 string error;
+                string val = item.Value;
+                if(item.Value != null && item.Value.IsXml())
+                {
+                    val = string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(val)));
+                }
                 if(item.IsRecordset && !string.IsNullOrEmpty(item.Value))
                 {
-                    DataList.TryCreateRecordsetValue(item.Value, item.Field, item.Recordset, Convert.ToInt32(item.RecordsetIndex), out error);
+                    DataList.TryCreateRecordsetValue(val, item.Field, item.Recordset, Convert.ToInt32(item.RecordsetIndex), out error);
                 }
                 else if(!item.IsRecordset)
                 {
-                    DataList.TryCreateScalarValue(item.Value, item.Field, out error);
+                    DataList.TryCreateScalarValue(val, item.Field, out error);
                 }
             }
 

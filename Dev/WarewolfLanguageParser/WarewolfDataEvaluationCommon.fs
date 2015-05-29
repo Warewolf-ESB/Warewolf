@@ -102,7 +102,7 @@ let getRecordSetIndexAsInt (recset:WarewolfRecordset) (position:int) =
     | Ordinal -> if recset.LastIndex <  position then
                     failwith "row does not exist"
                  else
-                    position
+                    position - 1
     | _->
             let indexes = recset.Data.[PositionColumn]
             let positionAsAtom = Int position
@@ -249,7 +249,7 @@ and ParseLanguageExpression  (lang:string) : LanguageExpression=
                     res
     else WarewolfAtomAtomExpression (ParseAtom lang)
 and evalARow  ( index:int) (recset:WarewolfRecordset) (name:string) (env:WarewolfEnvironment)=
-    let blank = Map.map (fun a b -> new WarewolfAtomList<WarewolfAtom>(WarewolfAtom.Nothing, [ EvalResultToString (Eval env (sprintf "[[%s(%i).%s]]" name index a) ) |> DataString])) recset.Data
+    let blank = Map.map (fun a b -> new WarewolfAtomList<WarewolfAtom>(WarewolfAtom.Nothing, [ recset.Data.[a].[index] |> WarewolfAtomRecordtoString|> DataString ])) recset.Data
     {recset with Data = blank}
 
 and EvalDataSetExpression (env: WarewolfEnvironment)  (name:RecordSetName) =
@@ -259,7 +259,7 @@ and EvalDataSetExpression (env: WarewolfEnvironment)  (name:RecordSetName) =
         match name.Index with
             | Star -> WarewolfRecordSetResult env.RecordSets.[name.Name]
             | IntIndex a -> WarewolfRecordSetResult (evalARow (getRecordSetIndexAsInt recset a) recset name.Name env)
-            | Last  -> WarewolfRecordSetResult ( evalARow  recset.LastIndex recset  name.Name env)
+            | Last  -> WarewolfRecordSetResult ( evalARow  (getRecordSetIndexAsInt recset recset.LastIndex) recset  name.Name env)
             | IndexExpression b -> 
                                    let res = Eval env (LanguageExpressionToString b) |> EvalResultToString
                                    match b with 

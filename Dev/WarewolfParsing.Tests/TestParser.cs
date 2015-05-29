@@ -777,8 +777,6 @@ namespace WarewolfParsingTest
         [TestCategory("WarewolfParse_Eval")]
         public void WarewolfParse_Eval_RecordSet()
         {
-
-
             var assigns = new List<IAssignValue>
              {
                  new AssignValue("[[rec(25).a]]", "25"),
@@ -791,9 +789,50 @@ namespace WarewolfParsingTest
             var testEnv3 = PublicFunctions.EvalMultiAssign(assigns, testEnv);
             PublicFunctions.EvalEnvExpression("[[rec()]]", testEnv3);
 
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_RecordSet_Sorted()
+        {
+            var assigns = new List<IAssignValue>
+             {
+                 new AssignValue("[[rec(25).a]]", "25"),
+                 new AssignValue("[[rec(27).b]]", "33"),
+                 new AssignValue("[[rec(29).b]]", "26"),
 
 
+             };
+            var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
+            var testEnv3 = PublicFunctions.EvalMultiAssign(assigns, testEnv);
+            var res = PublicFunctions.EvalEnvExpression("[[rec()]]", testEnv3);
+            Assert.IsTrue(res.IsWarewolfRecordSetResult);
+            var x = (res as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult).Item;
+            Assert.AreEqual("29",x.Data[DataASTMutable.PositionColumn][0].ToString()  );
+            Assert.AreEqual("26", x.Data["b"][0].ToString());
+        }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_RecordSet_Index()
+        {
+            var assigns = new List<IAssignValue>
+             {
+                 new AssignValue("[[rec(25).a]]", "25"),
+                 new AssignValue("[[rec(27).b]]", "33"),
+                 new AssignValue("[[rec(29).b]]", "26"),
+
+
+             };
+            var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
+            var testEnv3 = PublicFunctions.EvalMultiAssign(assigns, testEnv);
+            var res = PublicFunctions.EvalEnvExpression("[[rec(27)]]", testEnv3);
+            Assert.IsTrue(res.IsWarewolfRecordSetResult);
+            var x = (res as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult).Item;
+            Assert.AreEqual("27", x.Data[DataASTMutable.PositionColumn][0].ToString());
+            Assert.AreEqual("33", x.Data["b"][0].ToString());
         }
 
 
