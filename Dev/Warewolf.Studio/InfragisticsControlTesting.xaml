@@ -4,6 +4,7 @@
         xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
         xmlns:ig="http://schemas.infragistics.com/xaml"
         xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
+        xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
         Title="InfragisticsControlTesting" Height="600" Width="800">
     <Window.Resources>
         <Style x:Key="FillerColHeader" TargetType="{x:Type igPrim:HeaderCellControl}">
@@ -25,6 +26,56 @@
             <Setter Property="Visibility" Value="Collapsed"/>
             <!--<Setter Property="BorderBrush" Value="Transparent"/>
 		<Setter Property="BorderThickness" Value="0"/>-->
+        </Style>
+
+        <Style x:Key="AddRowStyling" TargetType="igPrim:AddNewRowCellControl">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStopCollection>
+                                <GradientStop Offset="0" Color="#FFFFFFFF"/>
+                                <GradientStop Offset="1" Color="#FFC3C3C3"/>
+                            </GradientStopCollection>
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderBrush" Value="#FF666666"/>
+            <Setter Property="BorderThickness" Value="0,2,0,2"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="igPrim:AddNewRowCellControl">
+                        <Border x:Name="AddNewRowElem" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+                            <Grid>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal" />
+                                        <VisualState x:Name="MouseOver"/>
+                                        <VisualState x:Name="Alternate" />
+                                    </VisualStateGroup>
+                                    <VisualStateGroup x:Name="SelectedStates">
+                                        <VisualState x:Name="NotSelected"/>
+                                        <VisualState x:Name="Selected"/>
+                                    </VisualStateGroup>
+                                    <VisualStateGroup x:Name="ActiveStates"/>
+                                    <VisualStateGroup x:Name="FixedStates">
+                                        <VisualState x:Name="Fixed"/>
+                                        <VisualState x:Name="Unfixed"/>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                <Rectangle Fill="#99FFFFFF" Height="1" VerticalAlignment="Top"/>
+                                <Border BorderThickness="0,0,1,0" BorderBrush="#FFC9CACA"/>
+                                <ContentPresenter   VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Window.Resources>
     <WrapPanel Orientation="Vertical" Margin="{StaticResource ContainerBorder}">
@@ -85,14 +136,9 @@
                                                     IsF2EditingEnabled="True" 
                                                     IsOnCellActiveEditingEnabled="True" />
                 </ig:XamGrid.EditingSettings>
-                <!-- Conditional Formating is On-->
-                <ig:XamGrid.ConditionalFormattingSettings>
-                    <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
-                </ig:XamGrid.ConditionalFormattingSettings>
-                <!-- Filler Column Setting is On-->
-                <ig:XamGrid.FillerColumnSettings>
-                    <ig:FillerColumnSettings   Style="{StaticResource FillerColCellStyle}" HeaderStyle="{StaticResource FillerColHeader}" />
-                </ig:XamGrid.FillerColumnSettings>
+                <ig:XamGrid.ColumnLayoutHeaderVisibility>
+                    <ig:ColumnLayoutHeaderVisibility>Never</ig:ColumnLayoutHeaderVisibility>
+                </ig:XamGrid.ColumnLayoutHeaderVisibility>
             </ig:XamGrid>
 
             <ig:XamComboEditor x:Name="ComboEditor"
@@ -105,6 +151,13 @@
                                DisplayMemberPath="Company"
                                Height="30" Width="300" />
 
+            <AdornerDecorator Grid.Row="2">
+                <TextBox x:Name="SearchTextBox">
+                    <customControls:WatermarkTextBox.Watermark>
+                        <Label Style="{StaticResource WatermarkLabelStyle}">Type here to search text</Label>
+                    </customControls:WatermarkTextBox.Watermark>
+                </TextBox>
+            </AdornerDecorator>
         </Grid>
     </WrapPanel>
 </Window>

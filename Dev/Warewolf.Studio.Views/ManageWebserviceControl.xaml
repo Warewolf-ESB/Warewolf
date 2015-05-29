@@ -10,6 +10,7 @@
              xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=dialogues:IManageWebServiceViewModel,
@@ -156,28 +157,24 @@
                                         <ig:TextColumn Key="Name" HeaderText="Name" MinimumWidth="100">
                                             <ig:TextColumn.AddNewRowEditorTemplate>
                                                 <DataTemplate>
-                                                    <!--<TextBox Style="{StaticResource NoBorderTextBoxStyle}" 
-                                                             Text="{Binding Path=Name, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />-->
-                                                    <xctk:WatermarkTextBox Style="{StaticResource NoBorderTextBoxStyle}" 
-                                                                           Watermark="Header"
-                                                                           Height="25"
-                                                                           VerticalContentAlignment="Center"
-                                                                           Text="{Binding Path=Name, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}">
-                                                    </xctk:WatermarkTextBox>
+                                                    <TextBox Style="{StaticResource NoBorderTextBoxStyle}" 
+                                                             Text="{Binding Path=Name, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" >
+                                                        <customControls:WatermarkTextBox.Watermark>
+                                                            <Label Style="{StaticResource WatermarkLabelStyle}">Header</Label>
+                                                        </customControls:WatermarkTextBox.Watermark>
+                                                    </TextBox>
                                                 </DataTemplate>
                                             </ig:TextColumn.AddNewRowEditorTemplate>
                                         </ig:TextColumn>
                                         <ig:TextColumn Key="Value" HeaderText="Value" MinimumWidth="100" IsResizable="False">
                                             <ig:TextColumn.AddNewRowEditorTemplate>
                                                 <DataTemplate>
-                                                    <!--<TextBox Style="{StaticResource NoBorderTextBoxStyle}" 
-                                                             Text="{Binding Path=Value, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />-->
-                                                    <xctk:WatermarkTextBox Style="{StaticResource NoBorderTextBoxStyle}" 
-                                                                           Watermark="Value"
-                                                                           Height="25"
-                                                                           VerticalContentAlignment="Center"
-                                                                           Text="{Binding Path=Value, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}">
-                                                    </xctk:WatermarkTextBox>
+                                                    <TextBox Style="{StaticResource NoBorderTextBoxStyle}" 
+                                                             Text="{Binding Path=Value, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" >
+                                                        <customControls:WatermarkTextBox.Watermark>
+                                                            <Label Style="{StaticResource WatermarkLabelStyle}">Value</Label>
+                                                        </customControls:WatermarkTextBox.Watermark>
+                                                    </TextBox>
                                                 </DataTemplate>
                                             </ig:TextColumn.AddNewRowEditorTemplate>
                                         </ig:TextColumn>
@@ -200,14 +197,9 @@
                                                     IsF2EditingEnabled="True" 
                                                     IsOnCellActiveEditingEnabled="True" />
                                     </ig:XamGrid.EditingSettings>
-                                    <!-- Conditional Formating is On-->
-                                    <ig:XamGrid.ConditionalFormattingSettings>
-                                        <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
-                                    </ig:XamGrid.ConditionalFormattingSettings>
-                                    <!-- Filler Column Setting is On-->
-                                    <!--<ig:XamGrid.FillerColumnSettings>
-                                        <ig:FillerColumnSettings   Style="{StaticResource FillerColCellStyle}" HeaderStyle="{StaticResource FillerColHeader}" />
-                                    </ig:XamGrid.FillerColumnSettings>-->
+                                    <ig:XamGrid.ColumnLayoutHeaderVisibility>
+                                        <ig:ColumnLayoutHeaderVisibility>Never</ig:ColumnLayoutHeaderVisibility>
+                                    </ig:XamGrid.ColumnLayoutHeaderVisibility>
                                 </ig:XamGrid>
                             </Grid>
                         </ScrollViewer>
@@ -221,29 +213,36 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <TextBlock Text="{Binding RequestBodyHeader}" 
                                    Visibility="{Binding RequestBodyEnabled, Converter={StaticResource BoolToVis}}"
                                    FontWeight="Bold"></TextBlock>
-                        <!--<TextBox Grid.Row="1" 
-                                 x:Name="RequestBody"
-                                 MaxHeight="110"
+                        <ScrollViewer Grid.Row="1" 
+                                      Grid.Column="0" 
+                                      HorizontalScrollBarVisibility="Auto" 
+                                      VerticalScrollBarVisibility="Auto"
+                                      MaxHeight="110">
+                        <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" 
+                                  MinWidth="400">
+                        <TextBox x:Name="RequestBody"
+                                 Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ig:XamGrid}}, Path=ActualHeight}"
+                                 AcceptsReturn="True"
+                                 TextWrapping="Wrap"
                                  Text="{Binding RequestBody}"
                                  Visibility="{Binding RequestBodyEnabled, Converter={StaticResource BoolToVis}}"
-                                 HorizontalAlignment="Stretch" ></TextBox>-->
-                        <xctk:WatermarkTextBox Grid.Row="1" 
-                                               x:Name="RequestBody"
-                                               Height="55"
-                                               MaxHeight="110"
-                                               TextWrapping="Wrap"
-                                               Text="{Binding RequestBody}"
-                                               Visibility="{Binding RequestBodyEnabled, Converter={StaticResource BoolToVis}}"
-                                               Watermark="Body"
-                                               AcceptsReturn="True"
-                                               VerticalScrollBarVisibility="Auto"
-                                               HorizontalAlignment="Stretch">
-                        </xctk:WatermarkTextBox>
+                                 VerticalScrollBarVisibility="Auto"
+                                 VerticalContentAlignment="Stretch"
+                                 VerticalAlignment="Stretch"
+                                 HorizontalAlignment="Stretch" >
+                            <customControls:WatermarkTextBox.Watermark>
+                                <StackPanel VerticalAlignment="Top">
+                                    <Label Style="{StaticResource WatermarkLabelStyle}">Body</Label>
+                                </StackPanel>
+                            </customControls:WatermarkTextBox.Watermark>
+                        </TextBox>
+                            </Grid>
+                        </ScrollViewer>
                     </Grid>
                     <!-- URL -->
                     <TextBlock Grid.Column="0" 
@@ -261,20 +260,14 @@
                            Visibility="{Binding CanEditHeadersAndUrl, Converter={StaticResource BoolToVis}}"
                                Text="{Binding SourceUrl}">
                         </TextBlock>
-                        <!--<TextBox x:Name="RequestUrl"
+                        <TextBox x:Name="RequestUrl"
                              HorizontalAlignment="Stretch"
-                             Text="{Binding RequestUrlQuery}"
+                             Text="{Binding RequestUrlQuery, UpdateSourceTrigger=PropertyChanged}"
                              Grid.Column="1">
-                            
-                        </TextBox>-->
-                        <xctk:WatermarkTextBox x:Name="RequestUrl"
-                                               HorizontalAlignment="Stretch"
-                                               Text="{Binding RequestUrlQuery}"
-                                               Height="25"
-                                               VerticalContentAlignment="Center"
-                                                Watermark="URL"
-                                               Grid.Column="1">
-                        </xctk:WatermarkTextBox>
+                            <customControls:WatermarkTextBox.Watermark>
+                                <Label Style="{StaticResource WatermarkLabelStyle}">URL</Label>
+                            </customControls:WatermarkTextBox.Watermark>
+                        </TextBox>
                     </Grid>
                 </Grid>
                 <!-- REQUEST VARIABLES -->
