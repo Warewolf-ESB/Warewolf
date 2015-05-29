@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ErrorHandling;
@@ -225,6 +226,17 @@ namespace Warewolf.Studio.ServerProxyLayer
             var comsController = CommunicationControllerFactory.CreateController("SaveWebservice");
             Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("Webservice", serialiser.SerializeToBuilder(model));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output.HasError)
+                throw new WarewolfSaveException(output.Message.ToString(), null);
+        }
+
+        public void SavePluginSource(IPluginSource source, Guid serverWorkspaceID)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("SavePluginSource");
+            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("PluginSource", serialiser.SerializeToBuilder(source));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
                 throw new WarewolfSaveException(output.Message.ToString(), null);

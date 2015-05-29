@@ -234,6 +234,7 @@
     <Compile Include="Diagnostics\Debug\IDebugState.cs" />
     <Compile Include="Diagnostics\Debug\IDebugSubItem.cs" />
     <Compile Include="Diagnostics\Debug\IDebugWriter.cs" />
+    <Compile Include="DllListing.cs" />
     <Compile Include="enFindMissingType.cs" />
     <Compile Include="Enums\enRandomType.cs" />
     <Compile Include="Enums\enScriptType.cs" />
@@ -263,6 +264,7 @@
     <Compile Include="IManageDatabaseSourceView.cs" />
     <Compile Include="IMenuView.cs" />
     <Compile Include="INetworkStateChangedEventArgs.cs" />
+    <Compile Include="IPluginSource.cs" />
     <Compile Include="IRequestServiceNameView.cs" />
     <Compile Include="IResourceDefinition.cs" />
     <Compile Include="ISchedulerView.cs" />
@@ -280,6 +282,7 @@
     <Compile Include="NameValue.cs" />
     <Compile Include="NetworkStateChangedState.cs" />
     <Compile Include="PermissionsChangedArgs.cs" />
+    <Compile Include="PluginSourceDefinition.cs" />
     <Compile Include="SaveDialog\IRequestServiceNameViewModel.cs" />
     <Compile Include="ServerDialogue\IServerSource.cs" />
     <Compile Include="ServerProxyLayer\IDbSource.cs" />
@@ -289,6 +292,8 @@
     <Compile Include="Studio\IMenuViewModel.cs" />
     <Compile Include="Studio\IVariableListViewModel.cs" />
     <Compile Include="Studio\ViewModels\Dialogues\IManageDatabaseSourceViewModel.cs" />
+    <Compile Include="Studio\ViewModels\Dialogues\IManagePluginSourceModel.cs" />
+    <Compile Include="Studio\ViewModels\Dialogues\IManagePluginSourceViewModel.cs" />
     <Compile Include="Studio\ViewModels\Dialogues\IManageWebserviceSourceViewModel.cs" />
     <Compile Include="Studio\ViewModels\Dialogues\IManageWebServiceViewModel.cs" />
     <Compile Include="Studio\ViewModels\Dialogues\INewServerDialogue.cs" />

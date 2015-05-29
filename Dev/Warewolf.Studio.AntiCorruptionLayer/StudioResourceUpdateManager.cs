@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.ServerDialogue;
@@ -42,7 +43,10 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             UpdateManagerProxy.SaveServerSource(serverSource, GlobalConstants.ServerWorkspaceID);
         }
 
-
+        public void Save(IPluginSource source)
+        {
+            UpdateManagerProxy.SavePluginSource(source, GlobalConstants.ServerWorkspaceID);
+        }
 
         public string TestConnection(IServerSource serverSource)
         {

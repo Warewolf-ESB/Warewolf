@@ -129,6 +129,8 @@
     <Compile Include="ManageDatabaseServiceViewModel.cs" />
     <Compile Include="ManageDatabaseSourceModel.cs" />
     <Compile Include="ManageDatabaseSourceViewModel.cs" />
+    <Compile Include="ManagePluginSourceModel.cs" />
+    <Compile Include="ManagePluginSourceViewModel.cs" />
     <Compile Include="ManageWebServiceSourceModel.cs" />
     <Compile Include="ManageWebserviceSourceViewModel.cs" />
     <Compile Include="ManageWebserviceViewModel.cs" />
@@ -179,6 +181,10 @@
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</Project>
       <Name>Dev2.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
+      <Project>{6007C1F1-CE38-474A-A88C-0C05A77BC415}</Project>
+      <Name>Dev2.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
       <Project>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</Project>

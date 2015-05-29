@@ -15,6 +15,7 @@ namespace Dev2.Common.Interfaces.Explorer
         void Save(IWebService model);
         void Save(IWebServiceSource model);
         void Save(IDatabaseService toDbSource);
+        void Save(IPluginSource source);
 
         string TestConnection(IServerSource serverSource);
         void TestConnection(IWebServiceSource serverSource);
@@ -23,5 +24,7 @@ namespace Dev2.Common.Interfaces.Explorer
         string TestWebService(IWebService inputValues);
 
         event Action<IWebServiceSource> WebServiceSourceSaved;
+
+        
     }
 }

@@ -70,5 +70,7 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         string TestWebService(IWebService inputValues);
 
         void SaveWebservice(IWebService model, Guid serverWorkspaceID);
+
+        void SavePluginSource(IPluginSource source, Guid serverWorkspaceID);
     }
 }
