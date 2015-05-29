@@ -56,9 +56,20 @@ namespace Dev2.Common
                 result = (rand.NextDouble() * (to - from) + from).ToString(CultureInfo.InvariantCulture);
             //result = ((double)(rand.Next((int)(from * powerOfTen), (int)((to * powerOfTen) > 0 ? (to * powerOfTen + 1) : (to * powerOfTen)))) / (double)powerOfTen).ToString(CultureInfo.InvariantCulture);
             else
-                result = rand.Next((int)from, (int)(to > 0 ? (to + 1) : to)).ToString(CultureInfo.InvariantCulture);
+            {
+                if (IsInIntRange(from) && IsInIntRange(to))
+                    result = rand.Next((int)from, (int)(to > 0 ? (to + 1) : to)).ToString(CultureInfo.InvariantCulture);
+                else
+                    result = (Math.Round(rand.NextDouble() * (to - from) + from)).ToString(CultureInfo.InvariantCulture);
+
+            }
 
             return result;
+        }
+
+        private bool IsInIntRange(double x)
+        {
+            return x >= int.MinValue && x <= int.MaxValue;
         }
 
         private uint GetDecimalPlaces(double from, double to)

@@ -255,3 +255,48 @@ Scenario: Generate a Number between 5.5 and 5.5
 	And the debug output as 
 	|                     |
 	| [[result]] = Double |
+
+	
+Scenario: Generate a Number between double min and double max
+	Given I have a type as "Numbers"
+	And I have a range from "-0.000000000000005" to "170000000000000" 
+	When the random tool is executed 
+	Then the result from the random tool should be of the same type as "System.Double" 
+	And the random value will be between "-0.000000000000005" and "170000000000000" inclusive 
+	And the execution has "NO" error
+	And the debug inputs as  
+	| Random  | From | To |
+	| Numbers | -0.000000000000005    | 170000000000000  |
+	And the debug output as 
+	|                     |
+	| [[result]] = Double |
+
+	
+#Scenario: Generate a Number between double min and double max
+	#Given I have a type as "Numbers"
+	#And I have a range from "5.0E-324" to "1.7E+308" 
+	#When the random tool is executed 
+	#Then the result from the random tool should be of the same type as "System.Double" 
+	#And the random value will be between "5.0-E324" and "1.7+E308" inclusive 
+	#And the execution has "NO" error
+	#And the debug inputs as  
+	#| Random  | From | To |
+	#| Numbers | 5.E-324    | 1.7E+308  |
+	#And the debug output as 
+	#|                     |
+	#| [[result]] = Double |
+
+		
+Scenario: Generate a Number between double min and double max with no decimals
+	Given I have a type as "Numbers"
+	And I have a range from "0" to "170000000000000" 
+	When the random tool is executed 
+	Then the result from the random tool should be of the same type as "System.Double" 
+	And the random value will be between "0" and "170000000000000" inclusive 
+	And the execution has "NO" error
+	And the debug inputs as  
+	| Random  | From | To |
+	| Numbers | 0    | 170000000000000  |
+	And the debug output as 
+	|                     |
+	| [[result]] = Double |
