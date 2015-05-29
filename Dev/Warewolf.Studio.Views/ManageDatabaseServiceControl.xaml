@@ -6,6 +6,8 @@
              xmlns:db="clr-namespace:Dev2.Common.Interfaces.DB;assembly=Dev2.Common.Interfaces"
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:ig="http://schemas.infragistics.com/xaml"
+             xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
              mc:Ignorable="d" 
              x:Name="UserControl"
              d:DesignHeight="300" d:DesignWidth="300" 
@@ -42,8 +44,8 @@
         </Style>
         <views:NotConverter x:Key="NotConverter"></views:NotConverter>
     </UserControl.Resources>
-    <ScrollViewer HorizontalScrollBarVisibility="Auto">
-        <StackPanel MinWidth="600" MaxWidth="{Binding ElementName=UserControl, Path=ActualWidth}">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <StackPanel MinWidth="600" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}">
             <Grid Margin="{StaticResource ElementBorder}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
@@ -235,47 +237,39 @@
                            Text="{Binding OutputsLabel}" 
                            FontWeight="Bold" 
                            Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}"></TextBlock>
-                    <DataGrid x:Name="OutputsDataGrid" 
-                          Margin="0,-2,0,0"
-                          Grid.Row="5" 
-                          MaxHeight="180"
-                          MinColumnWidth="50"
-                          HorizontalScrollBarVisibility="Auto" 
-                          ItemsSource="{Binding TestResults}" 
-                          Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}" 
-                          GridLinesVisibility="Vertical" 
-                          ColumnWidth="*" 
-                          HeadersVisibility="Column"
-                          AutoGenerateColumns="True" 
-                          CanUserSortColumns="False"
-                          CanUserReorderColumns="False"
-                          BorderBrush="Transparent" 
-                          CanUserResizeColumns="True" 
-                          VerticalGridLinesBrush="Transparent" >
-                        <DataGrid.RowDetailsTemplate>
-                            <DataTemplate>
-                                <StackPanel>
-                                    <TextBlock Text="No Record Found" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </DataGrid.RowDetailsTemplate>
-                        <DataGrid.Style>
-                            <Style TargetType="DataGrid">
-                                <Setter Property="RowDetailsVisibilityMode" Value="Collapsed"></Setter>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding TestResults.Rows}" Value="0">
-                                        <Setter Property="RowHeight" Value="10"></Setter>
-                                        <Setter Property="RowDetailsVisibilityMode" Value="Visible"></Setter>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGrid.Style>
-                    </DataGrid>
-                    <!--<TextBlock Grid.Row="6" Text="None" 
-                   HorizontalAlignment="Center" 
-                   VerticalAlignment="Center" 
-                   Background="Transparent"
-                   Visibility="Hidden" />-->
+                    <ScrollViewer Grid.Row="1" 
+                                      Grid.Column="0" 
+                                      HorizontalScrollBarVisibility="Auto" 
+                                      VerticalScrollBarVisibility="Auto"
+                                      MaxHeight="110">
+                        <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" 
+                                  MinWidth="400">
+                            <ig:XamGrid x:Name="OutputsDataGrid" 
+                                            ItemsSource="{Binding TestResults}" 
+                                            AutoGenerateColumns="True" 
+                                            RowHover="Row"
+                                            IsAlternateRowsEnabled="False"
+                                        Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}" 
+                                            DeleteKeyAction="DeleteRowOfActiveCell"
+                                            ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                            ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                            ColumnWidth="*" >
+                                <ig:XamGrid.SelectionSettings>
+                                    <ig:SelectionSettings CellClickAction="SelectRow" CellSelection="None" />
+                                </ig:XamGrid.SelectionSettings>
+                                <ig:XamGrid.SortingSettings>
+                                    <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
+                                </ig:XamGrid.SortingSettings>
+                                <ig:XamGrid.EditingSettings>
+                                    <ig:EditingSettings AllowEditing="Cell"
+                                                    IsMouseActionEditingEnabled="SingleClick"
+                                                    IsEnterKeyEditingEnabled="True" 
+                                                    IsF2EditingEnabled="True" 
+                                                    IsOnCellActiveEditingEnabled="True" />
+                                </ig:XamGrid.EditingSettings>
+                            </ig:XamGrid>
+                        </Grid>
+                    </ScrollViewer>
                 </Grid>
                 <Grid x:Name="MappingsGrid" 
                   Grid.Row="4" 

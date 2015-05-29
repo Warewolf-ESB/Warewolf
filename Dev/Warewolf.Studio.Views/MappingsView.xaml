@@ -62,17 +62,17 @@
                                 </DataTemplate>
                             </ig:TextColumn.AddNewRowEditorTemplate>
                         </ig:TextColumn>
-                        <ig:TemplateColumn Key="RequiredField" HeaderText="Required" MinimumWidth="100">
-                            <ig:TemplateColumn.AddNewRowEditorTemplate>
+                        <ig:CheckBoxColumn Key="RequiredField" HeaderText="Required" MinimumWidth="100">
+                            <ig:CheckBoxColumn.AddNewRowEditorTemplate>
                                 <DataTemplate>
-                                    <CheckBox IsChecked="{Binding Path=RequiredField, Mode=TwoWay}" HorizontalAlignment="Center"></CheckBox>
+                                    <CheckBox IsChecked="{Binding Path=RequiredField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"></CheckBox>
                                 </DataTemplate>
-                            </ig:TemplateColumn.AddNewRowEditorTemplate>
-                        </ig:TemplateColumn>
+                            </ig:CheckBoxColumn.AddNewRowEditorTemplate>
+                        </ig:CheckBoxColumn>
                         <ig:CheckBoxColumn Key="EmptyIsNull" HeaderText="Empty Is Null" MinimumWidth="100" IsResizable="False">
                             <ig:CheckBoxColumn.AddNewRowEditorTemplate>
                                 <DataTemplate>
-                                    <CheckBox IsChecked="{Binding Path=EmptyIsNull, Mode=TwoWay}" HorizontalAlignment="Center"></CheckBox>
+                                    <CheckBox IsChecked="{Binding Path=EmptyIsNull, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"></CheckBox>
                                 </DataTemplate>
                             </ig:CheckBoxColumn.AddNewRowEditorTemplate>
                         </ig:CheckBoxColumn>
@@ -91,10 +91,6 @@
                     <ig:XamGrid.ConditionalFormattingSettings>
                         <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
                     </ig:XamGrid.ConditionalFormattingSettings>
-                    <!-- Filler Column Setting is On-->
-                    <!--<ig:XamGrid.FillerColumnSettings>
-                        <ig:FillerColumnSettings   Style="{StaticResource FillerColCellStyle}" HeaderStyle="{StaticResource FillerColHeader}" />
-                    </ig:XamGrid.FillerColumnSettings>-->
                 </ig:XamGrid>
             </StackPanel>
         </ScrollViewer>

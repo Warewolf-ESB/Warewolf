@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Infragistics.Controls.Grids;
 
 namespace Warewolf.Studio.Views
 {
@@ -28,6 +29,16 @@ namespace Warewolf.Studio.Views
         {
             var manageWebservicePasteView = new ManageWebservicePasteView();
             manageWebservicePasteView.ShowView();
+        }
+
+        private void XamContextMenu_ItemClicked(object sender, Infragistics.Controls.Menus.ItemClickedEventArgs e)
+        {
+
+        }
+
+        private void XamMenuItem_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }
