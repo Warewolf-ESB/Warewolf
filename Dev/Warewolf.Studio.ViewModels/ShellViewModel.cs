@@ -250,6 +250,9 @@ namespace Warewolf.Studio.ViewModels
                 case ResourceType.WebSource:
                     CreateWebServiceSource();
                     break;
+                case ResourceType.PluginSource:
+                    CreatePluginSource();
+                    break;
                 case ResourceType.WebService:
                     CreateWebService();
                     break;
@@ -281,6 +284,14 @@ namespace Warewolf.Studio.ViewModels
         {
             var selectedId = Guid.NewGuid();
             var sourceViewModel = new ManageWebserviceSourceViewModel(new ManageWebServiceSourceModel(ActiveServer.UpdateRepository,ActiveServer.ResourceName), new RequestServiceNameViewModel(new EnvironmentViewModel(LocalhostServer, this), _unityContainer.Resolve<IRequestServiceNameView>(), selectedId),_aggregator);
+            GetRegion("Workspace").Add(sourceViewModel);
+        
+        }
+        
+        private void CreatePluginSource()
+        {
+            var selectedId = Guid.NewGuid();
+            var sourceViewModel = new ManagePluginSourceViewModel(new ManagePluginSourceModel(ActiveServer.UpdateRepository,ActiveServer.QueryProxy,ActiveServer.ResourceName), new RequestServiceNameViewModel(new EnvironmentViewModel(LocalhostServer, this), _unityContainer.Resolve<IRequestServiceNameView>(), selectedId),_aggregator);
             GetRegion("Workspace").Add(sourceViewModel);
         
         }
