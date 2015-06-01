@@ -167,6 +167,8 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         string Name { get; set; }
 
         bool CanEditHeadersAndUrl{get;set;}
-
+        ICommand AddHeaderCommand { get; }
+        ICommand RemoveHeaderCommand { get; }
+        NameValue SelectedRow { get; }
     }
 }

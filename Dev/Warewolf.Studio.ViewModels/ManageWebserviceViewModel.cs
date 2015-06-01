@@ -63,6 +63,9 @@ namespace Warewolf.Studio.ViewModels
         string _path;
         bool _canEditHeadersAndUrl;
         string _recordsetName;
+        ICommand _addHeaderCommand;
+        ICommand _removeHeaderCommand;
+        NameValue _selectedRow;
 
         #region Implementation of IManageWebServiceViewModel
 
@@ -133,6 +136,7 @@ namespace Warewolf.Studio.ViewModels
             CreateNewSourceCommand = new DelegateCommand(_model.CreateNewSource);
             SaveCommand = new DelegateCommand(Save, CanSave);
             NewWebSourceCommand = new DelegateCommand(() => _model.CreateNewSource());
+            //AddHeaderCommand = new DelegateCommand(()=>headerCollection.Remove())
         }
 
         public DelegateCommand CreateNewSourceCommand { get; set; }
@@ -345,6 +349,31 @@ namespace Warewolf.Studio.ViewModels
             {
                 _canEditHeadersAndUrl = value;
                 OnPropertyChanged(() => CanEditHeadersAndUrl);
+            }
+        }
+        public ICommand AddHeaderCommand
+        {
+            get
+            {
+                return _addHeaderCommand;
+            }
+        }
+        public ICommand RemoveHeaderCommand
+        {
+            get
+            {
+                return _removeHeaderCommand;
+            }
+        }
+        public NameValue SelectedRow
+        {
+            get
+            {
+                return _selectedRow;
+            }
+            set
+            {
+                _selectedRow = value;
             }
         }
 
