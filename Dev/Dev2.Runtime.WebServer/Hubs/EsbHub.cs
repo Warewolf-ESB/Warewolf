@@ -376,6 +376,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             return base.OnReconnected();
         }
 
+        // TODO: cjr - deprecated in 2.2.0 of SignalR - need work or alternative 
         //public override Task OnDisconnected()
         //{
         //    ServerAuthorizationService.Instance.PermissionsModified -= PermissionsHaveBeenModified;
