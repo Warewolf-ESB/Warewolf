@@ -205,7 +205,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <Grid Grid.Row="0" Margin="{StaticResource ElementBorderTop}">
+                        <Grid Grid.Row="0" Margin="{StaticResource ControlBorderTop}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
@@ -213,7 +213,7 @@
                             </Grid.ColumnDefinitions>
                             <Button x:Name="TestButton" 
                                 Grid.Column="0"
-                                Margin="{StaticResource ControlBorderTopRight}" 
+                                Margin="{StaticResource ElementBorderControlRight}" 
                                 HorizontalAlignment="Left" 
                                 VerticalAlignment="Bottom" 
                                 Width="100">Test</Button>

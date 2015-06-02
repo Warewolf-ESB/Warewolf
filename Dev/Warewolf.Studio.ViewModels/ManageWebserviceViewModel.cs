@@ -62,6 +62,7 @@ namespace Warewolf.Studio.ViewModels
         Guid _id;
         string _path;
         bool _canEditHeadersAndUrl;
+        bool _canEditResponse;
         string _recordsetName;
         ICommand _addHeaderCommand;
         ICommand _removeHeaderCommand;
@@ -212,6 +213,7 @@ namespace Warewolf.Studio.ViewModels
                 UpdateMappingsFromResponse();
                 ErrorMessage = "";
                 CanEditMappings = true;
+                CanEditResponse = true;
                
                 IsTesting = false;
             }
@@ -221,6 +223,7 @@ namespace Warewolf.Studio.ViewModels
                 OutputMapping = new ObservableCollection<IServiceOutputMapping>();
                 IsTesting = false;
                 CanEditMappings = false;
+                CanEditResponse = false;
             }
 
 
@@ -404,6 +407,16 @@ namespace Warewolf.Studio.ViewModels
                set
             {
                  _selectedDataItems = value;
+            }
+        }
+
+        public bool CanEditResponse
+        {
+            get { return _canEditResponse; }
+            set 
+            {
+                _canEditResponse = value;
+                OnPropertyChanged(() => CanEditResponse);
             }
         }
 

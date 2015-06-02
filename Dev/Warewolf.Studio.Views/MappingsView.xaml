@@ -12,16 +12,6 @@
                                               IsDesignTimeCreatable=False}">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibility"></BooleanToVisibilityConverter>
-        <!--<Style x:Key="FillerColHeader" TargetType="{x:Type igPrim:HeaderCellControl}">
-            <Setter Property="Visibility" Value="Collapsed"/>
-            <Setter Property="Width" Value="0"/>
-            <Setter Property="MaxWidth" Value="0"/>
-        </Style>
-        <Style x:Key="FillerColCellStyle"   TargetType="ig:CellControl">
-            <Setter Property="Visibility" Value="Collapsed"/>
-            <Setter Property="Width" Value="0"/>
-            <Setter Property="MaxWidth" Value="0"/>
-        </Style>-->
     </UserControl.Resources>
     <Grid x:Name="MappingsGrid">
         <!-- Mappings-->
@@ -40,7 +30,7 @@
         <ScrollViewer Grid.Row="1" 
                       HorizontalScrollBarVisibility="Auto" 
                       VerticalScrollBarVisibility="Auto">
-            <StackPanel Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=ActualWidth}" 
+            <StackPanel Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" 
                         MaxHeight="180">
                 <ig:XamGrid x:Name="InputsMappingDataGrid" 
                             ItemsSource="{Binding Inputs}" 
@@ -87,7 +77,6 @@
                                                     IsF2EditingEnabled="True" 
                                                     IsOnCellActiveEditingEnabled="True" />
                     </ig:XamGrid.EditingSettings>
-                    <!-- Conditional Formating is On-->
                     <ig:XamGrid.ConditionalFormattingSettings>
                         <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
                     </ig:XamGrid.ConditionalFormattingSettings>
@@ -139,14 +128,9 @@
                                                     IsF2EditingEnabled="True" 
                                                     IsOnCellActiveEditingEnabled="True" />
                     </ig:XamGrid.EditingSettings>
-                    <!-- Conditional Formating is On-->
                     <ig:XamGrid.ConditionalFormattingSettings>
                         <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
                     </ig:XamGrid.ConditionalFormattingSettings>
-                    <!-- Filler Column Setting is On-->
-                    <!--<ig:XamGrid.FillerColumnSettings>
-                        <ig:FillerColumnSettings   Style="{StaticResource FillerColCellStyle}" HeaderStyle="{StaticResource FillerColHeader}" />
-                    </ig:XamGrid.FillerColumnSettings>-->
                 </ig:XamGrid>
             </StackPanel>
         </ScrollViewer>
