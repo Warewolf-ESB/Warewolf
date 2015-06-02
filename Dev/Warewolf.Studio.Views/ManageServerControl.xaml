@@ -62,10 +62,19 @@
                             <VirtualizingStackPanel Orientation="Vertical" />
                         </ItemsPanelTemplate>
                     </ComboBox.ItemsPanel>
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:Core.ServerProtocolHelp}"
+                                 DataContext="{Binding}" />
+                    </i:Interaction.Behaviors>
                 </ComboBox>
                 <TextBox Grid.Column="1" 
                          Text="{Binding Path=Address}" 
-                         ToolTip="{Binding Path=AddressToolTip}" ></TextBox>
+                         ToolTip="{Binding Path=AddressToolTip}" >
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:Core.ServerAddressHelp}"
+                                 DataContext="{Binding}" />
+                    </i:Interaction.Behaviors>
+                </TextBox>
                 <TextBlock Grid.Column="2" 
                            HorizontalAlignment="Center" 
                            Text=":"></TextBlock>
@@ -73,7 +82,12 @@
                          MinWidth="35"
                          Text="{Binding SelectedPort}" 
                          wpfTextBoxAutoComplete:AutoCompleteBehavior.AutoCompleteItemsSource="{Binding Ports}" 
-                         ToolTip="{Binding Path=PortToolTip}"></TextBox>
+                         ToolTip="{Binding Path=PortToolTip}">
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:Core.ServerSelectPortHelp}"
+                                 DataContext="{Binding}" />
+                    </i:Interaction.Behaviors>
+                </TextBox>
             </Grid>
         </Grid>
         <Grid Grid.Row="2"

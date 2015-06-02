@@ -63,6 +63,8 @@ namespace Warewolf.Studio.ViewModels
         string _path;
         bool _canEditHeadersAndUrl;
         bool _canEditResponse;
+        bool _isInputsEmptyRows;
+        bool _isOutputMappingEmptyRows;
         string _recordsetName;
 
         #region Implementation of IManageWebServiceViewModel
@@ -358,6 +360,26 @@ namespace Warewolf.Studio.ViewModels
             {
                 _canEditResponse = value;
                 OnPropertyChanged(() => CanEditResponse);
+            }
+        }
+
+        public bool IsInputsEmptyRows
+        {
+            get { return _isInputsEmptyRows; }
+            set
+            {
+                _isInputsEmptyRows = value;
+                OnPropertyChanged(() => IsInputsEmptyRows);
+            }
+        }
+
+        public bool IsOutputMappingEmptyRows
+        {
+            get { return _isOutputMappingEmptyRows; }
+            set
+            {
+                _isOutputMappingEmptyRows = value;
+                OnPropertyChanged(() => IsOutputMappingEmptyRows);
             }
         }
 
@@ -803,6 +825,11 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _inputs = value;
+                IsInputsEmptyRows = true;
+                if (_inputs.Count >= 1)
+                {
+                    IsInputsEmptyRows = false;
+                }
                 OnPropertyChanged(() => Inputs);
             }
         }
@@ -815,6 +842,12 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _outputMapping = value;
+                IsOutputMappingEmptyRows = true;
+                if (_outputMapping.Count >= 1)
+                {
+                    IsOutputMappingEmptyRows = false;
+                }
+
                 OnPropertyChanged(() => OutputMapping);
             }
         }

@@ -12,6 +12,7 @@
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+             xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              x:Name="ExplorerViewControl"
              d:DataContext="{d:DesignInstance Type=viewModels:IExplorerViewModel,
                                               IsDesignTimeCreatable=False}"
@@ -67,7 +68,12 @@
                                               ClearSearchCommand="{Binding ClearSearchTextCommand}"
                                               LabelText="Filter"
                                               HorizontalAlignment="Stretch"
-                                              Text="{Binding SearchText, Delay=300, UpdateSourceTrigger=PropertyChanged}" />
+                                              Text="{Binding SearchText, Delay=300, UpdateSourceTrigger=PropertyChanged}" >
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:Core.ExplorerViewFilterSearchHelp}"
+                                 DataContext="{Binding}" />
+                    </i:Interaction.Behaviors>
+                </customControls:SearchTextBox>
                 <Button Grid.Row="0"
                         Grid.Column="1"
                         Width="25"
@@ -83,6 +89,10 @@
                                     Icon="Refresh" 
                                     VerticalAlignment="Top" 
                                     HorizontalAlignment="Center"/>
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:Core.ExplorerViewRefreshHelp}"
+                                 DataContext="{Binding}" />
+                    </i:Interaction.Behaviors>
                 </Button>
                 <views:CircularProgressBar Grid.Row="0"
                                            Grid.Column="1"

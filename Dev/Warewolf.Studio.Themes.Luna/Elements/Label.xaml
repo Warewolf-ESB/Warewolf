@@ -27,7 +27,7 @@
         <Setter Property="FontWeight" Value="Normal"/>
         <Setter Property="FontStyle" Value="Italic" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="Padding" Value="4" />
+        <Setter Property="Margin" Value="-6,2,0,0" />
         <Setter Property="Validation.ErrorTemplate">
             <Setter.Value>
                 <ControlTemplate>
@@ -48,7 +48,7 @@
         <Setter Property="FontWeight" Value="Normal"/>
         <Setter Property="FontStyle" Value="Italic" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="Padding" Value="4" />
+        <Setter Property="Margin" Value="-6,2,0,0" />
         <Setter Property="Validation.ErrorTemplate">
             <Setter.Value>
                 <ControlTemplate>

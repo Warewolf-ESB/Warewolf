@@ -16,21 +16,19 @@
     <Grid x:Name="MappingsGrid">
         <!-- Mappings-->
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition />
             <RowDefinition Height="7" ></RowDefinition>
         </Grid.RowDefinitions>
 
-        <TextBlock FontWeight="Bold" Grid.Row="0" ></TextBlock>
-        <ScrollViewer Grid.Row="1" 
+        <ScrollViewer Grid.Row="0" 
                       HorizontalScrollBarVisibility="Auto" 
                       VerticalScrollBarVisibility="Auto">
             <StackPanel Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" 
+                        Margin="{StaticResource ControlBorderTop}"
                         MaxHeight="180">
                 <ig:XamGrid x:Name="InputsMappingDataGrid" 
                             ItemsSource="{Binding Inputs}" 
@@ -48,21 +46,24 @@
                         <ig:TextColumn Key="DefaultValue" HeaderText="Default Value"  MinimumWidth="100">
                             <ig:TextColumn.AddNewRowEditorTemplate>
                                 <DataTemplate>
-                                    <TextBox Text="{Binding Path=DefaultValue, UpdateSourceTrigger=PropertyChanged}" Margin="0"></TextBox>
+                                    <TextBox Style="{StaticResource NoBorderTextBoxStyle}" 
+                                             Text="{Binding Path=DefaultValue, UpdateSourceTrigger=PropertyChanged}" Margin="0"></TextBox>
                                 </DataTemplate>
                             </ig:TextColumn.AddNewRowEditorTemplate>
                         </ig:TextColumn>
                         <ig:CheckBoxColumn Key="RequiredField" HeaderText="Required" MinimumWidth="100">
                             <ig:CheckBoxColumn.AddNewRowEditorTemplate>
                                 <DataTemplate>
-                                    <CheckBox IsChecked="{Binding Path=RequiredField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"></CheckBox>
+                                    <CheckBox Style="{StaticResource CheckBoxXamGridStyle}" 
+                                              IsChecked="{Binding Path=RequiredField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"></CheckBox>
                                 </DataTemplate>
                             </ig:CheckBoxColumn.AddNewRowEditorTemplate>
                         </ig:CheckBoxColumn>
                         <ig:CheckBoxColumn Key="EmptyIsNull" HeaderText="Empty Is Null" MinimumWidth="100" IsResizable="False">
                             <ig:CheckBoxColumn.AddNewRowEditorTemplate>
                                 <DataTemplate>
-                                    <CheckBox IsChecked="{Binding Path=EmptyIsNull, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"></CheckBox>
+                                    <CheckBox Style="{StaticResource CheckBoxXamGridStyle}" 
+                                              IsChecked="{Binding Path=EmptyIsNull, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"></CheckBox>
                                 </DataTemplate>
                             </ig:CheckBoxColumn.AddNewRowEditorTemplate>
                         </ig:CheckBoxColumn>
@@ -83,19 +84,15 @@
                 </ig:XamGrid>
             </StackPanel>
         </ScrollViewer>
-        <TextBlock Grid.Row="2" Text="None" 
+        <TextBlock Grid.Row="1" Text="None" 
                    HorizontalAlignment="Center" 
                    VerticalAlignment="Center" 
-                   Visibility="Hidden" />
-        <!--<TextBlock Grid.Row="2" Text="None" 
-                   HorizontalAlignment="Center" 
-                   VerticalAlignment="Center" 
-                   Visibility="{Binding IsInputsEmptyRows, Converter={StaticResource BoolToVisibility}}" />-->
-        <TextBlock Grid.Row="3" FontWeight="Bold" ></TextBlock>
-        <ScrollViewer Grid.Row="4" 
+                   Visibility="{Binding IsInputsEmptyRows, Converter={StaticResource BoolToVisibility}}" />
+        <ScrollViewer Grid.Row="2" 
                       HorizontalScrollBarVisibility="Auto" 
                       VerticalScrollBarVisibility="Auto">
             <StackPanel Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=ActualWidth}" 
+                        Margin="{StaticResource ElementBorderTop}"
                         MaxHeight="180">
                 <ig:XamGrid x:Name="OutputsMappingDataGrid" 
                             ItemsSource="{Binding OutputMapping}" 
@@ -106,14 +103,15 @@
                         <ig:TextColumn Key="OutputName" HeaderText="Output" MinimumWidth="100" IsReadOnly="True">
                             <ig:TextColumn.AddNewRowEditorTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding OutputName}" ToolTip="{Binding Path=OutputName}"></TextBlock>
+                                    <TextBlock Text="{Binding OutputName}" ToolTip="{Binding Path=OutputName}" Margin="2"></TextBlock>
                                 </DataTemplate>
                             </ig:TextColumn.AddNewRowEditorTemplate>
                         </ig:TextColumn>
                         <ig:TextColumn Key="Name" HeaderText="Alias"  MinimumWidth="100" IsResizable="False">
                             <ig:TextColumn.AddNewRowEditorTemplate>
                                 <DataTemplate>
-                                    <TextBox Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=Name}" Margin="1"></TextBox>
+                                    <TextBox Style="{StaticResource NoBorderTextBoxStyle}" 
+                                             Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=Name}" Margin="2"></TextBox>
                                 </DataTemplate>
                             </ig:TextColumn.AddNewRowEditorTemplate>
                         </ig:TextColumn>
@@ -134,21 +132,16 @@
                 </ig:XamGrid>
             </StackPanel>
         </ScrollViewer>
-        <TextBlock Grid.Row="5" Text="None" 
+        <TextBlock Grid.Row="3" Text="None" 
                    HorizontalAlignment="Center" 
                    VerticalAlignment="Center" 
                    Background="Transparent"
-                   Visibility="Hidden" />
-        <!--<TextBlock Grid.Row="5" Text="None" 
-                   HorizontalAlignment="Center" 
-                   VerticalAlignment="Center" 
-                   Background="Transparent"
-                   Visibility="{Binding IsOutputMappingEmptyRows, Converter={StaticResource BoolToVisibility}}" />-->
+                   Visibility="{Binding IsOutputMappingEmptyRows, Converter={StaticResource BoolToVisibility}}" />
         <StackPanel Orientation="Horizontal" 
-                    Grid.Row="6" Visibility="{Binding ShowRecordSet, Converter={StaticResource BoolToVisibility}}"
+                    Grid.Row="4" Visibility="{Binding ShowRecordSet, Converter={StaticResource BoolToVisibility}}"
                     Margin="0,2,0,0" >
             <TextBlock Text="Recordset Name" ></TextBlock>
-            <TextBox MinWidth="100" Margin="-1,0,0,0" 
+            <TextBox MinWidth="367" Margin="-1,0,0,0" 
                      Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
         </StackPanel>
     </Grid>

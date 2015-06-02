@@ -757,6 +757,36 @@ You need Administrator permission.</value>
   <data name="DatabaseSourceTestConnectionHelp" xml:space="preserve">
     <value>&lt;body&gt;&lt;p&gt;DatabaseSourceTestConnectionHelp&lt;/p&gt;&lt;/body&gt;</value>
   </data>
+  <data name="DatabaseServiceSourceTypesHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;DatabaseServiceSourceTypesHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="DatabaseServiceEditSourceHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;DatabaseServiceEditSourceHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="DatabaseServiceNewSourceHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;DatabaseServiceNewSourceHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="DatabaseServiceSelectActionHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;DatabaseServiceSelectActionHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="DatabaseServiceRefreshHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;DatabaseServiceRefreshHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="DatabaseServiceInputsHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;DatabaseServiceInputsHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="DatabaseServiceTestHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;DatabaseServiceTestHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="ServerProtocolHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;ServerProtocolHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="ServerAddressHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;ServerAddressHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="ServerSelectPortHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;ServerSelectPortHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
   <data name="PasswordAuthenticationHelp" xml:space="preserve">
     <value>&lt;body&gt;&lt;p&gt;PasswordAuthenticationHelp&lt;/p&gt;&lt;/body&gt;</value>
   </data>
@@ -769,6 +799,24 @@ You need Administrator permission.</value>
   <data name="WindowsAuthenticationHelp" xml:space="preserve">
     <value>&lt;body&gt;&lt;p&gt;WindowsAuthenticationHelp&lt;/p&gt;&lt;/body&gt;</value>
   </data>
+  <data name="ConnectControlViewSelectHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;ConnectControlViewSelectHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="ConnectControlViewEditHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;ConnectControlViewEditHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="ConnectControlViewToggleConnectionHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;ConnectControlViewToggleConnectionHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="ExplorerViewFilterSearchHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;ExplorerViewFilterSearchHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="ExplorerViewRefreshHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;ExplorerViewRefreshHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  
+  
+  
   <data name="DatabaseServiceActionHeader" xml:space="preserve">
     <value>Select an Action</value>
   </data>

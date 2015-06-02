@@ -3,6 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
+             xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              d:DataContext="{d:DesignInstance Type=interfaces:IConnectControlViewModel,
@@ -25,7 +28,11 @@
                   Grid.Column="0"
                   ToolTip="{Binding Path=ConnectionsToolTip}"
                   ItemsSource="{Binding Servers}"
-                  SelectedItem="{Binding SelectedConnection}">            
+                  SelectedItem="{Binding SelectedConnection}">
+            <i:Interaction.Behaviors>
+                <core:HelpSetter Text="{x:Static languages:Core.ConnectControlViewSelectHelp}"
+                                 DataContext="{Binding}" />
+            </i:Interaction.Behaviors>
         </ComboBox>
         <Button Margin="0"
                 Grid.Row="0"
@@ -40,6 +47,10 @@
             <fa:FontAwesome FontSize="4" Icon="Square" HorizontalAlignment="Left"/>
             <fa:FontAwesome FontSize="4" Icon="Square" HorizontalAlignment="Left"/>
             </TextBlock>
+            <i:Interaction.Behaviors>
+                <core:HelpSetter Text="{x:Static languages:Core.ConnectControlViewEditHelp}"
+                                 DataContext="{Binding}" />
+            </i:Interaction.Behaviors>
         </Button>
         <Button Margin="{StaticResource ElementBorderControlLeft}" 
                 Grid.Row="0"
@@ -51,6 +62,10 @@
                 Padding="3,4,3,3"
                 HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom">
             <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="16" FontWeight="DemiBold" Icon="Link" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+            <i:Interaction.Behaviors>
+                <core:HelpSetter Text="{x:Static languages:Core.ConnectControlViewToggleConnectionHelp}"
+                                 DataContext="{Binding}" />
+            </i:Interaction.Behaviors>
         </Button>
     </Grid>
 

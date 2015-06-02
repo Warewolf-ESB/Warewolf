@@ -8,5 +8,7 @@ namespace Dev2.Common.Interfaces.DB
         ICollection<IServiceInput> Inputs { get; }
         IList<IServiceOutputMapping> OutputMapping { get; set; }
         string RecordsetName { get; set; }
+        bool IsInputsEmptyRows { get; set; }
+        bool IsOutputMappingEmptyRows { get; set; }
     }
 }
