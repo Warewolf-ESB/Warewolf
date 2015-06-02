@@ -11,6 +11,9 @@
              xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:interactivity="http://www.codeplex.com/prism"
+             xmlns:xamGridEx="clr-namespace:Warewolf.Studio.Views.XamGridEx"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=dialogues:IManageWebServiceViewModel,
@@ -20,6 +23,11 @@
             <Style TargetType="ig:XamContextMenu">
             <Setter Property="Background" Value="#FFFFFFFF"/>
             </Style>
+        <!--<Style TargetType="{Binding ElementName=HeadersGrid}" x:Key="bob">
+
+            <EventSetter Event="MouseRightButtonUp" Handler="{Binding }"/>
+
+        </Style>-->
     </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
         <Grid x:Name="GridMain"  MinWidth="600" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}">
@@ -132,7 +140,7 @@
                                       MaxHeight="110">
                             <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" 
                                   MinWidth="400">
-                                <ig:XamGrid x:Name="HeadersGrid" 
+                                <xamGridEx:XamGridEx x:Name="HeadersGrid" 
                                             ItemsSource="{Binding Headers}" 
                                             AutoGenerateColumns="False"
                                             RowHover="Row"
@@ -156,9 +164,11 @@
                                                         <customControls:WatermarkTextBox.Watermark>
                                                             <Label Style="{StaticResource WatermarkLabelStyle}">Header</Label>
                                                         </customControls:WatermarkTextBox.Watermark>
+                                     
                                                     </TextBox>
                                                 </DataTemplate>
                                             </ig:TextColumn.AddNewRowEditorTemplate>
+                                            
                                         </ig:TextColumn>
                                         <ig:TextColumn Key="Value" HeaderText="Value" MinimumWidth="100" IsResizable="False">
                                             <ig:TextColumn.AddNewRowItemTemplate>
@@ -173,6 +183,7 @@
                                                         <customControls:WatermarkTextBox.Watermark>
                                                             <Label Style="{StaticResource WatermarkLabelStyle}">Value</Label>
                                                         </customControls:WatermarkTextBox.Watermark>
+
                                                     </TextBox>
                                                 </DataTemplate>
                                             </ig:TextColumn.AddNewRowEditorTemplate>
@@ -183,30 +194,31 @@
                                     </ig:XamGrid.SortingSettings>
                                     <ig:XamGrid.EditingSettings>
                                         <ig:EditingSettings AllowEditing="Hover"
-                                                            IsMouseActionEditingEnabled="SingleClick"
-                                                            IsEnterKeyEditingEnabled="True" 
-                                                            IsF2EditingEnabled="True" 
+                                                    IsMouseActionEditingEnabled="SingleClick"
+                                                    IsEnterKeyEditingEnabled="True" 
+                                                    IsF2EditingEnabled="True" 
                                                             IsOnCellActiveEditingEnabled="False" />
                                     </ig:XamGrid.EditingSettings>
-                                    <ig:ContextMenuService.Manager>
-                                        <ig:ContextMenuManager>
-                                            <ig:ContextMenuManager.ContextMenu>
-                                                <ig:XamContextMenu ItemClicked="XamContextMenu_ItemClicked">
-                                                    <ig:XamMenuItem Header="Insert Row" Click="XamMenuItem_Click">
+
+                                    <xamGridEx:XamGridEx.ContextMenuSettings>
+                                        <xamGridEx:ContextMenuSettings AllowContextMenu="True">
+                                            <xamGridEx:ContextMenuSettings.ContextMenu>
+                                                <ig:XamContextMenu >
+                                                    <ig:XamMenuItem Header="Insert Row" Command="{Binding  Path=AddRowCommand}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Source="{x:Null}"/>
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
-                                                    <ig:XamMenuItem Header="Delete Row">
+                                                    <ig:XamMenuItem Header="Delete Row"  Command="{Binding  Path=RemoveRowCommand}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Source="{x:Null}"/>
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                 </ig:XamContextMenu>
-                                            </ig:ContextMenuManager.ContextMenu>
-                                        </ig:ContextMenuManager>
-                                    </ig:ContextMenuService.Manager>
-                                </ig:XamGrid>
+                                            </xamGridEx:ContextMenuSettings.ContextMenu>
+                                        </xamGridEx:ContextMenuSettings>
+                                    </xamGridEx:XamGridEx.ContextMenuSettings>
+                                </xamGridEx:XamGridEx>
                             </Grid>
                         </ScrollViewer>
                     </Grid>
@@ -304,14 +316,14 @@
                     </StackPanel>
                     <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                         <StackPanel Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=ActualWidth}"
-                                    MaxHeight="180" 
-                                    Margin="{StaticResource ControlBorderTop}">
+                            MaxHeight="180" 
+                            Margin="{StaticResource ControlBorderTop}">
                             <ig:XamGrid x:Name="VariablesGrid" 
                                         ItemsSource="{Binding Variables}" 
-                                        AutoGenerateColumns="False"
-                                        ColumnWidth="*" 
-                                        IsAlternateRowsEnabled="False"
-                                        BorderBrush="Transparent" >
+                                AutoGenerateColumns="False"
+                                ColumnWidth="*" 
+                                IsAlternateRowsEnabled="False"
+                                BorderBrush="Transparent" >
                                 <ig:XamGrid.Columns>
                                     <ig:TextColumn Key="Name" HeaderText="Name" IsReadOnly="True" MinimumWidth="300">
                                         <ig:TextColumn.AddNewRowEditorTemplate>
@@ -333,10 +345,10 @@
                                 </ig:XamGrid.SortingSettings>
                                 <ig:XamGrid.EditingSettings>
                                     <ig:EditingSettings AllowEditing="Row"
-                                                        IsMouseActionEditingEnabled="DoubleClick"
-                                                        IsEnterKeyEditingEnabled="True" 
-                                                        IsF2EditingEnabled="True" 
-                                                        IsOnCellActiveEditingEnabled="False" />
+                                                    IsMouseActionEditingEnabled="DoubleClick"
+                                                    IsEnterKeyEditingEnabled="True" 
+                                                    IsF2EditingEnabled="True" 
+                                                    IsOnCellActiveEditingEnabled="False" />
                                 </ig:XamGrid.EditingSettings>
                             </ig:XamGrid>
                         </StackPanel>

@@ -249,6 +249,7 @@
     </Compile>
     <Compile Include="ExplorerViewTestClass.cs" />
     <Compile Include="FocusExtension.cs" />
+    <Compile Include="GridRightClickBehaviour.cs" />
     <Compile Include="HelpTextValue.cs" />
     <Compile Include="HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
@@ -317,6 +318,9 @@
     <Compile Include="WorkflowDesignerView.xaml.cs">
       <DependentUpon>WorkflowDesignerView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XamGrid\ContextMenuOpeningEventArgs.cs" />
+    <Compile Include="XamGrid\ContextMenuSettings.cs" />
+    <Compile Include="XamGrid\XamGridEx.cs" />
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

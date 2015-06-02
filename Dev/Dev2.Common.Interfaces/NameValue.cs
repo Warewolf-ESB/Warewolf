@@ -1,7 +1,9 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
+using Microsoft.Practices.Prism.Commands;
 
 namespace Dev2.Common.Interfaces
 {
@@ -81,8 +83,8 @@ namespace Dev2.Common.Interfaces
 
         #endregion
 
-        string _name;
-        string _value;
+       protected string _name;
+       protected string _value;
 
         #region Implementation of INameValue
 
@@ -123,18 +125,36 @@ namespace Dev2.Common.Interfaces
     public class ObservableAwareNameValue:NameValue
     {
         readonly ObservableCollection<NameValue> _sourceCollection;
-        string _name;
-        string _value;
+        readonly Action<string> _update;
 
-        public ObservableAwareNameValue(ObservableCollection<NameValue> sourceCollection )
+        ICommand _removeRowCommand;
+        ICommand _addRowCommand;
+        public ObservableAwareNameValue(ObservableCollection<NameValue> sourceCollection,Action<string> update )
         {
             _sourceCollection = sourceCollection;
+            _update = update;
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             Name = "";
 
             Value = "";
+            _addRowCommand = new DelegateCommand(AddRow);
+            _removeRowCommand = new DelegateCommand(RemoveRow);
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
+
+        void RemoveRow()
+        {
+            if(!ReferenceEquals(_sourceCollection.Last(),this))
+            {
+                _sourceCollection.Remove(this);
+            }
+        }
+
+        void AddRow()
+        {
+            _sourceCollection.Insert(_sourceCollection.IndexOf(this),new ObservableAwareNameValue(_sourceCollection,_update));
+        }
+
         #region Overrides of NameValue
 
         public override string Name
@@ -147,9 +167,13 @@ namespace Dev2.Common.Interfaces
             {
                 if (!String.IsNullOrEmpty(value) && String.IsNullOrEmpty(_value) && String.IsNullOrEmpty(_name) && _sourceCollection.Last()==this)
                 {
-                    _sourceCollection.Add(new ObservableAwareNameValue(_sourceCollection));
+                    _sourceCollection.Add(new ObservableAwareNameValue(_sourceCollection,_update));
                 }
                 _name = value;
+                if(_update != null)
+                {
+                    _update(_name);
+                }
             }
         }
 
@@ -165,10 +189,35 @@ namespace Dev2.Common.Interfaces
             {
                 if(!String.IsNullOrEmpty(value)  && String.IsNullOrEmpty(_value) && String.IsNullOrEmpty(_name) && _sourceCollection.Last()==this)
                 {
-                    _sourceCollection.Add(new ObservableAwareNameValue(_sourceCollection));
+                    _sourceCollection.Add(new ObservableAwareNameValue(_sourceCollection,_update));
                 }
                 _value = value;
-                
+                if(_update != null)
+                {
+                    _update(_value);
+                }
+            }
+        }
+        public ICommand RemoveRowCommand
+        {
+            get
+            {
+                return _removeRowCommand;
+            }
+            set
+            {
+                _removeRowCommand = value;
+            }
+        }
+        public ICommand AddRowCommand
+        {
+            get
+            {
+                return _addRowCommand;
+            }
+            set
+            {
+                _addRowCommand = value;
             }
         }
 
