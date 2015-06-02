@@ -142,7 +142,7 @@ namespace Dev2.Common.Interfaces
 
         void RemoveRow()
         {
-            if(!Equals(_sourceCollection.Last()))
+            if(!ReferenceEquals(_sourceCollection.Last(),this))
             {
                 _sourceCollection.Remove(this);
             }
