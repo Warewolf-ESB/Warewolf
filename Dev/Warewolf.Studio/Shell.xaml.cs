@@ -131,11 +131,11 @@ namespace Warewolf.Studio
                 //var testingInfraWindow = new InfragisticsControlTesting();
                 //testingInfraWindow.Show();
 
-                //var pluginService = new Window()
-                //{
-                //    Content = new ManagePluginServiceControl()
-                //};
-                //pluginService.Show();
+                var pluginService = new Window()
+                {
+                    Content = new ManagePluginServiceControl()
+                };
+                pluginService.ShowDialog();
 
                 //var testWindow = new Window
                 //{
