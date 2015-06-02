@@ -1,7 +1,9 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
+using Microsoft.Practices.Prism.Commands;
 
 namespace Dev2.Common.Interfaces
 {
@@ -81,8 +83,8 @@ namespace Dev2.Common.Interfaces
 
         #endregion
 
-        string _name;
-        string _value;
+       protected string _name;
+       protected string _value;
 
         #region Implementation of INameValue
 
@@ -123,9 +125,9 @@ namespace Dev2.Common.Interfaces
     public class ObservableAwareNameValue:NameValue
     {
         readonly ObservableCollection<NameValue> _sourceCollection;
-        string _name;
-        string _value;
 
+        ICommand _removeRowCommand;
+        ICommand _addRowCommand;
         public ObservableAwareNameValue(ObservableCollection<NameValue> sourceCollection )
         {
             _sourceCollection = sourceCollection;
@@ -133,8 +135,24 @@ namespace Dev2.Common.Interfaces
             Name = "";
 
             Value = "";
+            _addRowCommand = new DelegateCommand(AddRow);
+            _removeRowCommand = new DelegateCommand(RemoveRow);
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
+
+        void RemoveRow()
+        {
+            if(!Equals(_sourceCollection.Last()))
+            {
+                _sourceCollection.Remove(this);
+            }
+        }
+
+        void AddRow()
+        {
+            _sourceCollection.Insert(_sourceCollection.IndexOf(this),new ObservableAwareNameValue(_sourceCollection));
+        }
+
         #region Overrides of NameValue
 
         public override string Name
@@ -169,6 +187,28 @@ namespace Dev2.Common.Interfaces
                 }
                 _value = value;
                 
+            }
+        }
+        public ICommand RemoveRowCommand
+        {
+            get
+            {
+                return _removeRowCommand;
+            }
+            set
+            {
+                _removeRowCommand = value;
+            }
+        }
+        public ICommand AddRowCommand
+        {
+            get
+            {
+                return _addRowCommand;
+            }
+            set
+            {
+                _addRowCommand = value;
             }
         }
 

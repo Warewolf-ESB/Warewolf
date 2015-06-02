@@ -170,5 +170,6 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         ICommand AddHeaderCommand { get; }
         ICommand RemoveHeaderCommand { get; }
         NameValue SelectedRow { get; }
+        ICollection<object> SelectedDataItems { get; set; }
     }
 }

@@ -66,6 +66,7 @@ namespace Warewolf.Studio.ViewModels
         ICommand _addHeaderCommand;
         ICommand _removeHeaderCommand;
         NameValue _selectedRow;
+        ICollection<object> _selectedDataItems;
 
         #region Implementation of IManageWebServiceViewModel
 
@@ -136,7 +137,17 @@ namespace Warewolf.Studio.ViewModels
             CreateNewSourceCommand = new DelegateCommand(_model.CreateNewSource);
             SaveCommand = new DelegateCommand(Save, CanSave);
             NewWebSourceCommand = new DelegateCommand(() => _model.CreateNewSource());
-            //AddHeaderCommand = new DelegateCommand(()=>headerCollection.Remove())
+            RemoveHeaderCommand = new DelegateCommand( DeleteCell);
+            AddHeaderCommand = new DelegateCommand(Add);
+        }
+
+        private void DeleteCell()
+        {
+            Headers.Remove(SelectedRow);
+        }
+        private void Add()
+        {
+            Headers.Remove(SelectedRow);
         }
 
         public DelegateCommand CreateNewSourceCommand { get; set; }
@@ -357,12 +368,20 @@ namespace Warewolf.Studio.ViewModels
             {
                 return _addHeaderCommand;
             }
+            set
+            {
+                _addHeaderCommand = value;
+            }
         }
         public ICommand RemoveHeaderCommand
         {
             get
             {
                 return _removeHeaderCommand;
+            }
+            set
+            {
+                _removeHeaderCommand = value;
             }
         }
         public NameValue SelectedRow
@@ -374,6 +393,17 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _selectedRow = value;
+            }
+        }
+        public ICollection<object> SelectedDataItems
+        {
+            get
+            {
+                return _selectedDataItems;
+            }
+               set
+            {
+                 _selectedDataItems = value;
             }
         }
 
