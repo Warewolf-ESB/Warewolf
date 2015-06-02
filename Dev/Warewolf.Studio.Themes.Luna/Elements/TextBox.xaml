@@ -282,6 +282,7 @@
         <Setter Property="Background" Value="{StaticResource TextBoxBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource TextBoxTransparentBorderBrush}" />
         <Setter Property="Height" Value="25" />
+        <Setter Property="Margin" Value="1,2,2,2"/>
 
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />

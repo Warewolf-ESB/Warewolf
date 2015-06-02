@@ -63,6 +63,8 @@ namespace Warewolf.Studio.ViewModels
         string _path;
         bool _canEditHeadersAndUrl;
         bool _canEditResponse;
+        bool _isInputsEmptyRows;
+        bool _isOutputMappingEmptyRows;
         string _recordsetName;
         ICommand _addHeaderCommand;
         ICommand _removeHeaderCommand;
@@ -131,7 +133,7 @@ namespace Warewolf.Studio.ViewModels
             var headerCollection = new ObservableCollection<NameValue>();
             headerCollection.CollectionChanged += HeaderCollectionOnCollectionChanged;
             Headers = headerCollection;
-            Headers.Add(new ObservableAwareNameValue(headerCollection));
+            Headers.Add(new ObservableAwareNameValue(headerCollection, UpdateRequestVariables));
             RequestBody = "";
             Response = "";
             TestCommand = new DelegateCommand(() => Test(_model), CanTest);
@@ -213,7 +215,6 @@ namespace Warewolf.Studio.ViewModels
                 UpdateMappingsFromResponse();
                 ErrorMessage = "";
                 CanEditMappings = true;
-                CanEditResponse = true;
                
                 IsTesting = false;
             }
@@ -223,7 +224,6 @@ namespace Warewolf.Studio.ViewModels
                 OutputMapping = new ObservableCollection<IServiceOutputMapping>();
                 IsTesting = false;
                 CanEditMappings = false;
-                CanEditResponse = false;
             }
 
 
@@ -365,6 +365,18 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => CanEditHeadersAndUrl);
             }
         }
+        public bool CanEditResponse
+        {
+            get
+            {
+                return _canEditResponse;
+            }
+            set
+            {
+                _canEditResponse = value;
+                OnPropertyChanged(()=>CanEditResponse);
+            }
+        }
         public ICommand AddHeaderCommand
         {
             get
@@ -410,13 +422,23 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool CanEditResponse
+        public bool IsInputsEmptyRows
         {
-            get { return _canEditResponse; }
-            set 
+            get { return _isInputsEmptyRows; }
+            set
             {
-                _canEditResponse = value;
-                OnPropertyChanged(() => CanEditResponse);
+                _isInputsEmptyRows = value;
+                OnPropertyChanged(() => IsInputsEmptyRows);
+            }
+        }
+
+        public bool IsOutputMappingEmptyRows
+        {
+            get { return _isOutputMappingEmptyRows; }
+            set
+            {
+                _isOutputMappingEmptyRows = value;
+                OnPropertyChanged(() => IsOutputMappingEmptyRows);
             }
         }
 
@@ -862,6 +884,11 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _inputs = value;
+                IsInputsEmptyRows = true;
+                if (_inputs.Count >= 1)
+                {
+                    IsInputsEmptyRows = false;
+                }
                 OnPropertyChanged(() => Inputs);
             }
         }
@@ -874,6 +901,12 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _outputMapping = value;
+                IsOutputMappingEmptyRows = true;
+                if (_outputMapping.Count >= 1)
+                {
+                    IsOutputMappingEmptyRows = false;
+                }
+
                 OnPropertyChanged(() => OutputMapping);
             }
         }

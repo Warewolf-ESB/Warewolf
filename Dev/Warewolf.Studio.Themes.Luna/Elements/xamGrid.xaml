@@ -52,8 +52,8 @@
 
     <!--  ColumnChooserDialog Brushes  -->
     <SolidColorBrush x:Key="ColumnChooserDialogBackgroundBrush" Color="{StaticResource Color_009}" />
-    <SolidColorBrush x:Key="ColumnChooserDialogBorderBrush" Color="{StaticResource Color_024}" />
-    <SolidColorBrush x:Key="ColumnChooserHeaderBackgroundBrush" Color="{StaticResource Color_024}" />
+    <SolidColorBrush x:Key="ColumnChooserDialogBorderBrush" Color="red" />
+    <SolidColorBrush x:Key="ColumnChooserHeaderBackgroundBrush" Color="red" />
     <SolidColorBrush x:Key="ColumnChooserPopupVSeparatorBackgroundBrush" Color="{StaticResource Color_016}" />
 
     <!--  PopupResizer Brushes  -->
@@ -66,13 +66,13 @@
 
     <SolidColorBrush x:Key="HeaderCellHoverBackgroundBrush" Color="{StaticResource Color_005}" />
 
-    <SolidColorBrush x:Key="HeaderCellMovingBorderBrush" Color="{StaticResource Color_024}" />
+    <SolidColorBrush x:Key="HeaderCellMovingBorderBrush" Color="red" />
     <SolidColorBrush x:Key="HeaderCellMovingBackgroundBrush" Color="{StaticResource Color_067}" />
 
     <SolidColorBrush x:Key="HeaderCellForegroundBrush" Color="{StaticResource Color_068}" />
     <SolidColorBrush x:Key="HeaderCellGlyphBackgroundBrush" Color="{StaticResource Color_003}" />
     <SolidColorBrush x:Key="HeaderCellGlyphLightBrush" Color="{StaticResource Color_003}" />
-    <SolidColorBrush x:Key="HeaderCellRedFilterGlyphBackgroundBrush" Color="{StaticResource Color_024}" />
+    <SolidColorBrush x:Key="HeaderCellRedFilterGlyphBackgroundBrush" Color="red" />
 
     <!--  ExpansionCell Brushes  -->
     <SolidColorBrush x:Key="ExpansionCellBackgroundBrush" Color="{StaticResource Color_009}" />
@@ -3581,7 +3581,7 @@
                                 Background="{StaticResource RowSelectorCellActiveBackgroundBrush}"
                                 Visibility="Collapsed" />
                         <Border x:Name="hoverElem"
-                                Background="{StaticResource RowSelectorCellHoverBackgroundBrush}"
+                                Background="Transparent"
                                 BorderBrush="{StaticResource RowSelectorCellHoverBorderBrush}"
                                 BorderThickness="1"
                                 Visibility="Collapsed" />
@@ -3708,7 +3708,7 @@
                                 Background="{StaticResource CellItemSelectedBackgroundBrush}"
                                 Visibility="Collapsed" />
                         <Border x:Name="ActiveSelected"
-                                BorderBrush="{StaticResource CellItemSelectedBorderBrush}"
+                                BorderBrush="Transparent"
                                 BorderThickness="1"
                                 Visibility="Collapsed" />
                         <Border x:Name="hoverElem"

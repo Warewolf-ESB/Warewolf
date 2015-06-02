@@ -31,7 +31,7 @@
     </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
         <Grid x:Name="GridMain"  MinWidth="600" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}">
-            <Grid Margin="{StaticResource ElementBorder}" >
+            <Grid Margin="{StaticResource ElementBorder}" x:Name="GridContainer" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto" ></RowDefinition>
@@ -43,7 +43,8 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Grid Grid.Row="0" HorizontalAlignment="Stretch" Margin="{StaticResource GridBorderBottom}" >
+                <Grid Grid.Row="0" HorizontalAlignment="Stretch" Margin="{StaticResource GridBorderBottom}" 
+                      Width="{Binding ElementName=GridContainer, Path=ActualWidth}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" ></RowDefinition>
@@ -240,24 +241,25 @@
                                       HorizontalScrollBarVisibility="Auto" 
                                       VerticalScrollBarVisibility="Auto"
                                       MaxHeight="110">
-                        <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" 
+                            <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" 
                                   MinWidth="400">
-                        <TextBox x:Name="RequestBody"
+                                <TextBox x:Name="RequestBody"
                                  Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ig:XamGrid}}, Path=ActualHeight}"
                                  AcceptsReturn="True"
                                  TextWrapping="Wrap"
                                  Text="{Binding RequestBody}"
+                                 Padding="4,4,0,0"
                                  Visibility="{Binding RequestBodyEnabled, Converter={StaticResource BoolToVis}}"
                                  VerticalScrollBarVisibility="Auto"
                                  VerticalContentAlignment="Stretch"
                                  VerticalAlignment="Stretch"
                                  HorizontalAlignment="Stretch" >
-                            <customControls:WatermarkTextBox.Watermark>
-                                <StackPanel VerticalAlignment="Top">
-                                    <Label Style="{StaticResource WatermarkLabelStyle}">Body</Label>
-                                </StackPanel>
-                            </customControls:WatermarkTextBox.Watermark>
-                        </TextBox>
+                                    <customControls:WatermarkTextBox.Watermark>
+                                        <StackPanel VerticalAlignment="Top">
+                                            <Label Margin="-6,-6,0,0" Style="{StaticResource WatermarkLabelStyle}">Body</Label>
+                                        </StackPanel>
+                                    </customControls:WatermarkTextBox.Watermark>
+                                </TextBox>
                             </Grid>
                         </ScrollViewer>
                     </Grid>
@@ -279,6 +281,7 @@
                         </TextBlock>
                         <TextBox x:Name="RequestUrl"
                              HorizontalAlignment="Stretch"
+                                 Padding="4,0,0,0"
                              Text="{Binding RequestUrlQuery, UpdateSourceTrigger=PropertyChanged}"
                              Grid.Column="1">
                             <customControls:WatermarkTextBox.Watermark>

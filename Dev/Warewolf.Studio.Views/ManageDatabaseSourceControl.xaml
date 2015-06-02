@@ -81,18 +81,6 @@
                                  DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </ig:XamComboEditor>
-            <!--<TextBox x:Name="ServerTextBox" 
-                     views:AutoCompleteBehavior.AutoCompleteItemsSource="{Binding ComputerNames}" 
-                     Grid.Row="1"
-                     Grid.Column="1" 
-                     Margin="{StaticResource ControlBorderTop}"
-                     Text="{Binding ServerName,UpdateSourceTrigger=PropertyChanged}"
-                     views:FocusExtension.IsFocused="True" >
-                <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:Core.DatabaseSourceServerHelp}"
-                                 DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-            </TextBox>-->
             <TextBlock VerticalAlignment="Center" 
                        Grid.Row="2"
                        Grid.Column="0"
