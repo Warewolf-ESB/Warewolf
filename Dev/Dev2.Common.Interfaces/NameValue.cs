@@ -125,12 +125,14 @@ namespace Dev2.Common.Interfaces
     public class ObservableAwareNameValue:NameValue
     {
         readonly ObservableCollection<NameValue> _sourceCollection;
+        readonly Action<string> _update;
 
         ICommand _removeRowCommand;
         ICommand _addRowCommand;
-        public ObservableAwareNameValue(ObservableCollection<NameValue> sourceCollection )
+        public ObservableAwareNameValue(ObservableCollection<NameValue> sourceCollection,Action<string> update )
         {
             _sourceCollection = sourceCollection;
+            _update = update;
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             Name = "";
 
@@ -150,7 +152,7 @@ namespace Dev2.Common.Interfaces
 
         void AddRow()
         {
-            _sourceCollection.Insert(_sourceCollection.IndexOf(this),new ObservableAwareNameValue(_sourceCollection));
+            _sourceCollection.Insert(_sourceCollection.IndexOf(this),new ObservableAwareNameValue(_sourceCollection,_update));
         }
 
         #region Overrides of NameValue
@@ -165,9 +167,13 @@ namespace Dev2.Common.Interfaces
             {
                 if (!String.IsNullOrEmpty(value) && String.IsNullOrEmpty(_value) && String.IsNullOrEmpty(_name) && _sourceCollection.Last()==this)
                 {
-                    _sourceCollection.Add(new ObservableAwareNameValue(_sourceCollection));
+                    _sourceCollection.Add(new ObservableAwareNameValue(_sourceCollection,_update));
                 }
                 _name = value;
+                if(_update != null)
+                {
+                    _update(_name);
+                }
             }
         }
 
@@ -183,10 +189,13 @@ namespace Dev2.Common.Interfaces
             {
                 if(!String.IsNullOrEmpty(value)  && String.IsNullOrEmpty(_value) && String.IsNullOrEmpty(_name) && _sourceCollection.Last()==this)
                 {
-                    _sourceCollection.Add(new ObservableAwareNameValue(_sourceCollection));
+                    _sourceCollection.Add(new ObservableAwareNameValue(_sourceCollection,_update));
                 }
                 _value = value;
-                
+                if(_update != null)
+                {
+                    _update(_value);
+                }
             }
         }
         public ICommand RemoveRowCommand

@@ -62,12 +62,12 @@ namespace Warewolf.Studio.ViewModels
         Guid _id;
         string _path;
         bool _canEditHeadersAndUrl;
-        bool _canEditResponse;
         string _recordsetName;
         ICommand _addHeaderCommand;
         ICommand _removeHeaderCommand;
         NameValue _selectedRow;
         ICollection<object> _selectedDataItems;
+        bool _canEditResponse;
 
         #region Implementation of IManageWebServiceViewModel
 
@@ -131,7 +131,7 @@ namespace Warewolf.Studio.ViewModels
             var headerCollection = new ObservableCollection<NameValue>();
             headerCollection.CollectionChanged += HeaderCollectionOnCollectionChanged;
             Headers = headerCollection;
-            Headers.Add(new ObservableAwareNameValue(headerCollection));
+            Headers.Add(new ObservableAwareNameValue(headerCollection, UpdateRequestVariables));
             RequestBody = "";
             Response = "";
             TestCommand = new DelegateCommand(() => Test(_model), CanTest);
@@ -213,7 +213,6 @@ namespace Warewolf.Studio.ViewModels
                 UpdateMappingsFromResponse();
                 ErrorMessage = "";
                 CanEditMappings = true;
-                CanEditResponse = true;
                
                 IsTesting = false;
             }
@@ -223,7 +222,6 @@ namespace Warewolf.Studio.ViewModels
                 OutputMapping = new ObservableCollection<IServiceOutputMapping>();
                 IsTesting = false;
                 CanEditMappings = false;
-                CanEditResponse = false;
             }
 
 
@@ -365,6 +363,18 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => CanEditHeadersAndUrl);
             }
         }
+        public bool CanEditResponse
+        {
+            get
+            {
+                return _canEditResponse;
+            }
+            set
+            {
+                _canEditResponse = value;
+                OnPropertyChanged(()=>CanEditResponse);
+            }
+        }
         public ICommand AddHeaderCommand
         {
             get
@@ -407,16 +417,6 @@ namespace Warewolf.Studio.ViewModels
                set
             {
                  _selectedDataItems = value;
-            }
-        }
-
-        public bool CanEditResponse
-        {
-            get { return _canEditResponse; }
-            set 
-            {
-                _canEditResponse = value;
-                OnPropertyChanged(() => CanEditResponse);
             }
         }
 
