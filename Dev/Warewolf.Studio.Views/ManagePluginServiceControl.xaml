@@ -205,7 +205,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <Grid Grid.Row="0" Margin="{StaticResource ElementBorderTop}">
+                        <Grid Grid.Row="0" Margin="{StaticResource ControlBorderTop}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
