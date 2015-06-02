@@ -275,7 +275,7 @@
 
     <!--  *********************************  No Border TextBox Style  *********************************  -->
     <Style x:Key="NoBorderTextBoxStyle" TargetType="TextBox">
-        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
@@ -303,7 +303,7 @@
                                         <ObjectAnimationUsingKeyFrames Duration="0"
                                                                        Storyboard.TargetName="Border"
                                                                        Storyboard.TargetProperty="BorderBrush">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TextBoxHoverBorderBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TextBoxTransparentBorderBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Duration="0"
                                                                        Storyboard.TargetName="Border"
@@ -403,7 +403,7 @@
                                 IsHitTestVisible="False"
                                 Opacity="0" />
                         <Border x:Name="FocusVisualElement"
-                                BorderBrush="{StaticResource TextBoxFocusedBrush}"
+                                BorderBrush="{StaticResource TextBoxTransparentBorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 IsHitTestVisible="False"
                                 Opacity="0" />

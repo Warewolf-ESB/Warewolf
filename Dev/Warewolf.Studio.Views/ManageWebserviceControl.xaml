@@ -9,7 +9,6 @@
              xmlns:dialogues="clr-namespace:Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;assembly=Dev2.Common.Interfaces"
              xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
-             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:interactivity="http://www.codeplex.com/prism"
@@ -20,14 +19,9 @@
                                               IsDesignTimeCreatable=False}">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
-            <Style TargetType="ig:XamContextMenu">
+        <Style TargetType="ig:XamContextMenu">
             <Setter Property="Background" Value="#FFFFFFFF"/>
-            </Style>
-        <!--<Style TargetType="{Binding ElementName=HeadersGrid}" x:Key="bob">
-
-            <EventSetter Event="MouseRightButtonUp" Handler="{Binding }"/>
-
-        </Style>-->
+        </Style>
     </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
         <Grid x:Name="GridMain"  MinWidth="600" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}">
@@ -141,6 +135,7 @@
                             <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" 
                                   MinWidth="400">
                                 <xamGridEx:XamGridEx x:Name="HeadersGrid" 
+                                                     Style="{StaticResource XamGridStyle}"
                                             ItemsSource="{Binding Headers}" 
                                             AutoGenerateColumns="False"
                                             RowHover="Row"

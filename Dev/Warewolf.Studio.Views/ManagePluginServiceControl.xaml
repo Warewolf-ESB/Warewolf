@@ -12,10 +12,8 @@
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
     </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-        <Grid MinWidth="600" MaxWidth="{Binding ElementName=UserControl, Path=ActualWidth}">
-            <Grid Margin="{StaticResource ElementBorder}" 
-                  Width="922"
-                  MaxWidth="1200">
+        <Grid x:Name="GridMain"  MinWidth="600" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}">
+            <Grid Margin="{StaticResource ElementBorder}" x:Name="GridContainer" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto" ></RowDefinition>
@@ -30,7 +28,8 @@
                 <!-- SELECT SOURCE -->
                 <Grid Grid.Row="0" 
                       HorizontalAlignment="Stretch" 
-                      Margin="{StaticResource GridBorderBottom}" >
+                      Margin="{StaticResource GridBorderBottom}" 
+                      Width="{Binding ElementName=GridContainer, Path=ActualWidth}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="29" ></RowDefinition>
@@ -62,7 +61,13 @@
                                   Width="250" 
                                   Padding="{StaticResource ComboBoxItemPadding}"
                                   Margin="{StaticResource ElementBorderControlRight}"
-                                  Focusable="True" />
+                                  Focusable="True" >
+                            <customControls:WatermarkTextBox.Watermark>
+                                <StackPanel VerticalAlignment="Top">
+                                    <Label Style="{StaticResource WatermarkLabelStyle}">Choose...</Label>
+                                </StackPanel>
+                            </customControls:WatermarkTextBox.Watermark>
+                        </ComboBox>
                         <Button Width="25" 
                                 Grid.Column="1"
                                 Height="26"
@@ -81,7 +86,8 @@
                       Grid.Row="1" 
                       Margin="{StaticResource GridBorderBottom}"
                       Visibility="Visible"
-                      Grid.Column="0" >
+                      Grid.Column="0" 
+                      Width="{Binding ElementName=GridContainer, Path=ActualWidth}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -116,7 +122,8 @@
                       Grid.Row="2" 
                       Margin="{StaticResource GridBorderBottom}"
                       Visibility="Visible"
-                      Grid.Column="0" >
+                      Grid.Column="0" 
+                      Width="{Binding ElementName=GridContainer, Path=ActualWidth}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -192,7 +199,8 @@
                       Grid.Row="3" 
                       Margin="{StaticResource GridBorderBottom}"
                       Visibility="Visible"
-                      Grid.Column="0" >
+                      Grid.Column="0" 
+                      Width="{Binding ElementName=GridContainer, Path=ActualWidth}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -293,7 +301,8 @@
                     <views:MappingsView x:Name="MappingsView" Grid.Row="1"></views:MappingsView>
                 </Grid>
                 <!-- SAVE/CANCEL -->
-                <Grid Grid.Row="5" >
+                <Grid Grid.Row="5" 
+                      Width="{Binding ElementName=GridContainer, Path=ActualWidth}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>

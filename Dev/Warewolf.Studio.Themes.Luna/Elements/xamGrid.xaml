@@ -3313,7 +3313,7 @@
                                    Stroke="{StaticResource TransparentBrush}"
                                    StrokeThickness="1"
                                    Visibility="Collapsed" />
-                        <ContentPresenter Margin="0"
+                        <ContentPresenter Margin="1,1,2,2"
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                     </Grid>
@@ -3791,7 +3791,7 @@
                                    Visibility="Collapsed" />
                         <Rectangle x:Name="ActiveRect"
                                    Fill="{StaticResource CellItemSelectedBackgroundBrush}"
-                                   Stroke="{StaticResource CellItemSelectedBorderBrush}"
+                                   Stroke="Transparent"
                                    Visibility="Collapsed" />
                         <ContentControl x:Name="contentControl" Foreground="{StaticResource HeaderCellForegroundBrush}">
                             <ContentPresenter Margin="{TemplateBinding Padding}"
@@ -4018,7 +4018,7 @@
                                    Visibility="Collapsed" />
                         <Rectangle x:Name="ActiveRect"
                                    Fill="{StaticResource TransparentBrush}"
-                                   Stroke="{StaticResource CellItemSelectedBorderBrush}"
+                                   Stroke="Transparent"
                                    StrokeThickness="1"
                                    Visibility="Collapsed" />
                         <Grid>
@@ -4441,7 +4441,7 @@
                         </Border>
                         <Rectangle x:Name="ActiveRect"
                                    Fill="{StaticResource TransparentBrush}"
-                                   Stroke="{StaticResource CellItemSelectedBorderBrush}"
+                                   Stroke="Transparent"
                                    StrokeThickness="1"
                                    Visibility="Collapsed" />
                         <StackPanel x:Name="SummaryDisplay"
@@ -5738,7 +5738,7 @@
                                    Visibility="Collapsed" />
                         <Rectangle x:Name="ActiveRect"
                                    Fill="{StaticResource CellItemSelectedBackgroundBrush}"
-                                   Stroke="{StaticResource CellItemSelectedBorderBrush}"
+                                   Stroke="Transparent"
                                    StrokeThickness="1"
                                    Visibility="Collapsed" />
                         <ContentControl x:Name="contentControl" Foreground="{StaticResource HeaderCellForegroundBrush}">
@@ -8747,6 +8747,7 @@
     <Style BasedOn="{StaticResource DataBarControlStyle}" TargetType="igPrim:DataBarControl" />
 
     <!--  *********************************  ConditionalFormattingCellControl Style  *********************************  -->
+    <!-- USE THIS SECTION TO CHANGE THE MOUSE OVER ELEMENTS -->
     <Style x:Key="ConditionalFormattingCellControlStyle" TargetType="ig:ConditionalFormattingCellControl">
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
@@ -8888,19 +8889,19 @@
                         <Border x:Name="cellSelected"
                                 Grid.ColumnSpan="2"
                                 Margin="{TemplateBinding BorderThickness}"
-                                Background="{StaticResource CellItemSelectedBackgroundBrush}"
-                                BorderBrush="{StaticResource CellItemSelectedBorderBrush}"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
                                 BorderThickness="1"
                                 Visibility="Collapsed" />
                         <Border x:Name="ActiveSelected"
                                 Grid.ColumnSpan="2"
-                                BorderBrush="{StaticResource CellItemSelectedBorderBrush}"
+                                BorderBrush="Transparent"
                                 BorderThickness="1"
                                 Visibility="Collapsed" />
                         <Border x:Name="hoverElem"
                                 Grid.ColumnSpan="2"
                                 Background="{StaticResource CellItemHoverBackgroundBrush}"
-                                BorderBrush="{StaticResource CellItemHoverBorderBrush}"
+                                BorderBrush="Transparent"
                                 BorderThickness="1"
                                 Visibility="Collapsed" />
                         <igPrim:DataBarControl x:Name="DataBar"
@@ -8918,6 +8919,7 @@
                                         Visibility="Collapsed" />
                         <ContentControl x:Name="contentControl"
                                         Grid.Column="1"
+                                        Margin="1,1,2,2"
                                         HorizontalContentAlignment="Stretch"
                                         VerticalContentAlignment="Stretch"
                                         Foreground="{TemplateBinding Foreground}">

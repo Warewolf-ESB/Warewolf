@@ -275,15 +275,15 @@
                         <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" 
                                   MinWidth="400">
                             <ig:XamGrid x:Name="OutputsDataGrid" 
-                                            ItemsSource="{Binding TestResults}" 
-                                            AutoGenerateColumns="True" 
-                                            RowHover="Row"
-                                            IsAlternateRowsEnabled="False"
+                                        ItemsSource="{Binding TestResults}" 
+                                        AutoGenerateColumns="True" 
+                                        RowHover="Row"
+                                        IsAlternateRowsEnabled="False"
                                         Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}" 
-                                            DeleteKeyAction="DeleteRowOfActiveCell"
-                                            ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                            ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                            ColumnWidth="*" >
+                                        DeleteKeyAction="DeleteRowOfActiveCell"
+                                        ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                        ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                        ColumnWidth="*" >
                                 <ig:XamGrid.SelectionSettings>
                                     <ig:SelectionSettings CellClickAction="SelectRow" CellSelection="None" />
                                 </ig:XamGrid.SelectionSettings>
