@@ -22,7 +22,7 @@
             </Style>
     </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-        <StackPanel MinWidth="600" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}">
+        <Grid x:Name="GridMain"  MinWidth="600" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}">
             <Grid Margin="{StaticResource ElementBorder}" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
@@ -98,18 +98,14 @@
                         <ColumnDefinition Width="50*"></ColumnDefinition>
                         <ColumnDefinition Width="50*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <!-- REQUEST HEADER -->
                     <StackPanel Grid.Row="0" 
                                 Grid.Column="0" 
                                 Grid.ColumnSpan="2"
                                 Background="{StaticResource WareWolfMenuBrush}" 
                                 HorizontalAlignment="Stretch" 
                                 Orientation="Horizontal">
-                        <TextBlock Text="2" 
-                               Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
-                        <TextBlock Margin="5" 
-                               Text="{Binding RequestHeader}" 
-                               Style="{StaticResource SourceHeader}" ></TextBlock>
+                        <TextBlock Text="2" Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
+                        <TextBlock Margin="5" Text="{Binding RequestHeader}" Style="{StaticResource SourceHeader}" ></TextBlock>
                     </StackPanel>
                     <!-- HEADER -->
                     <Grid Grid.Column="0" 
@@ -147,6 +143,11 @@
                                             ColumnWidth="*" >
                                     <ig:XamGrid.Columns>
                                         <ig:TextColumn Key="Name" HeaderText="Name" MinimumWidth="100">
+                                            <ig:TextColumn.AddNewRowItemTemplate>
+                                                <DataTemplate>
+                                                    <Label Style="{StaticResource WatermarkLabelStyle}">Header</Label>
+                                                </DataTemplate>
+                                            </ig:TextColumn.AddNewRowItemTemplate>
                                             <ig:TextColumn.AddNewRowEditorTemplate>
                                                 <DataTemplate>
                                                     <TextBox Style="{StaticResource NoBorderTextBoxStyle}" 
@@ -159,6 +160,11 @@
                                             </ig:TextColumn.AddNewRowEditorTemplate>
                                         </ig:TextColumn>
                                         <ig:TextColumn Key="Value" HeaderText="Value" MinimumWidth="100" IsResizable="False">
+                                            <ig:TextColumn.AddNewRowItemTemplate>
+                                                <DataTemplate>
+                                                    <Label Style="{StaticResource WatermarkLabelStyle}">Value</Label>
+                                                </DataTemplate>
+                                            </ig:TextColumn.AddNewRowItemTemplate>
                                             <ig:TextColumn.AddNewRowEditorTemplate>
                                                 <DataTemplate>
                                                     <TextBox Style="{StaticResource NoBorderTextBoxStyle}" 
@@ -175,11 +181,11 @@
                                         <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
                                     </ig:XamGrid.SortingSettings>
                                     <ig:XamGrid.EditingSettings>
-                                        <ig:EditingSettings AllowEditing="Cell"
-                                                    IsMouseActionEditingEnabled="SingleClick"
-                                                    IsEnterKeyEditingEnabled="True" 
-                                                    IsF2EditingEnabled="True" 
-                                                    IsOnCellActiveEditingEnabled="True" />
+                                        <ig:EditingSettings AllowEditing="Hover"
+                                                            IsMouseActionEditingEnabled="SingleClick"
+                                                            IsEnterKeyEditingEnabled="True" 
+                                                            IsF2EditingEnabled="True" 
+                                                            IsOnCellActiveEditingEnabled="False" />
                                     </ig:XamGrid.EditingSettings>
                                     <ig:ContextMenuService.Manager>
                                         <ig:ContextMenuManager>
@@ -290,15 +296,10 @@
                                 Background="{StaticResource WareWolfMenuBrush}" 
                                 HorizontalAlignment="Stretch" 
                                 Orientation="Horizontal">
-                        <TextBlock Text="3" 
-                                   Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
-                        <TextBlock Margin="5" 
-                                   Text="{Binding VariablesHeader}" 
-                                   Style="{StaticResource SourceHeader}" ></TextBlock>
+                        <TextBlock Text="3" Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
+                        <TextBlock Margin="5" Text="{Binding VariablesHeader}" Style="{StaticResource SourceHeader}"></TextBlock>
                     </StackPanel>
-                    <ScrollViewer Grid.Row="1" 
-                          HorizontalScrollBarVisibility="Auto" 
-                          VerticalScrollBarVisibility="Auto">
+                    <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                         <StackPanel Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=ActualWidth}"
                                     MaxHeight="180" 
                                     Margin="{StaticResource ControlBorderTop}">
@@ -328,7 +329,7 @@
                                     <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
                                 </ig:XamGrid.SortingSettings>
                                 <ig:XamGrid.EditingSettings>
-                                    <ig:EditingSettings AllowEditing="Cell"
+                                    <ig:EditingSettings AllowEditing="Row"
                                                         IsMouseActionEditingEnabled="DoubleClick"
                                                         IsEnterKeyEditingEnabled="True" 
                                                         IsF2EditingEnabled="True" 
@@ -363,8 +364,7 @@
                       Grid.Row="3" 
                       Margin="{StaticResource GridBorderBottom}"
                       Grid.Column="0" 
-                      Visibility="{Binding Path=CanEditHeadersAndUrl, Converter={StaticResource BoolToVis}}">
-                    <!-- Test-->
+                      Visibility="{Binding Path=CanEditResponse, Converter={StaticResource BoolToVis}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
@@ -389,10 +389,10 @@
                     <Button Width="25" 
                             Height="25"
                             Grid.Column="0"
+                            Grid.Row="1"
                             Click="Btn_OnClick"
                             Margin="{StaticResource ElementBorderTop}"
-                            VerticalAlignment="Top"
-                            Grid.Row="1" >
+                            VerticalAlignment="Top">
                         <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
                                         FontSize="16" 
                                         FontWeight="DemiBold" 
@@ -403,15 +403,15 @@
                     <ScrollViewer Grid.Column="1" 
                                   Grid.Row="1" 
                                   MaxHeight="110"
-                                  VerticalScrollBarVisibility="Auto" >
-                        <Grid Margin="{StaticResource ControlBorderLeftTop}" 
-                              Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" 
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Auto">
+                        <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" 
                               MinWidth="400">
                             <TextBlock x:Name="Response"
+                                       Margin="{StaticResource ControlBorderLeftTop}"
                                        Text="{Binding Response}"
                                        VerticalAlignment="Stretch"
                                        TextWrapping="Wrap"
-                                       MaxHeight="180"
                                        HorizontalAlignment="Stretch"></TextBlock>
                         </Grid>
                     </ScrollViewer>
@@ -465,6 +465,6 @@
                             Width="100">Cancel</Button>
                 </Grid>
             </Grid>
-        </StackPanel>
+        </Grid>
     </ScrollViewer>
 </UserControl>

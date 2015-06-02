@@ -30,7 +30,7 @@
         <ScrollViewer Grid.Row="1" 
                       HorizontalScrollBarVisibility="Auto" 
                       VerticalScrollBarVisibility="Auto">
-            <StackPanel Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=ActualWidth}" 
+            <StackPanel Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" 
                         MaxHeight="180">
                 <ig:XamGrid x:Name="InputsMappingDataGrid" 
                             ItemsSource="{Binding Inputs}" 

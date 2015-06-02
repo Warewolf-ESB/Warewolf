@@ -167,6 +167,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         string Name { get; set; }
 
         bool CanEditHeadersAndUrl{get;set;}
+        bool CanEditResponse { get; set; }
 
     }
 }

@@ -128,8 +128,8 @@ namespace Warewolf.Studio
                 //var testingWindow = new ControlStyleTestingWindow();
                 //testingWindow.Show();
 
-                var testingInfraWindow = new InfragisticsControlTesting();
-                testingInfraWindow.Show();
+                //var testingInfraWindow = new InfragisticsControlTesting();
+                //testingInfraWindow.Show();
 
                 //var pluginService = new Window()
                 //{
@@ -164,14 +164,14 @@ namespace Warewolf.Studio
 //                };
 //                testWindow.ShowDialog();
 
-                //var testPlugWindow = new Window
-                //{
-                //    Content = new ManagePluginSourceControl()
-                //    {
+                var testPlugWindow = new Window
+                {
+                    Content = new ManagePluginSourceControl()
+                    {
 
-                //    }
-                //};
-                //testPlugWindow.ShowDialog();
+                    }
+                };
+                testPlugWindow.ShowDialog();
             }
             if (e.Key == Key.G && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
