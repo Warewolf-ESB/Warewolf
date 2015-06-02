@@ -213,7 +213,7 @@
                             </Grid.ColumnDefinitions>
                             <Button x:Name="TestButton" 
                                 Grid.Column="0"
-                                Margin="{StaticResource ControlBorderTopRight}" 
+                                Margin="{StaticResource ElementBorderControlRight}" 
                                 HorizontalAlignment="Left" 
                                 VerticalAlignment="Bottom" 
                                 Width="100">Test</Button>
