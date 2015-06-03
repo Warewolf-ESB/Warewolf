@@ -12,11 +12,7 @@ namespace Warewolf.Studio.Views
         {
             InitializeComponent();
         }
-        private void Btn_OnClick(object sender, RoutedEventArgs e)
-        {
-            var manageWebservicePasteView = new ManageWebservicePasteView();
-            manageWebservicePasteView.ShowView();
-        }
+
 
         private void XamContextMenu_ItemClicked(object sender, Infragistics.Controls.Menus.ItemClickedEventArgs e)
         {

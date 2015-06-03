@@ -150,7 +150,7 @@ namespace Warewolf.Studio.ViewModels
         public string OpenPasteWindow(string current)
         {
             var pasteView = _unityContainer.Resolve<IPasteView>();
-            return  pasteView.ShowView();
+            return  pasteView.ShowView(current);
         }
 
         public IViewsCollection GetRegionViews(string regionName)

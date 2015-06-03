@@ -403,7 +403,7 @@
                             Grid.Column="0"
                             Grid.Row="1"
                             Command="{Binding PasteResponseCommand}"
-                            Click="Btn_OnClick"
+                           
                             Margin="{StaticResource ElementBorderTop}"
                             VerticalAlignment="Top">
                         <fa:FontAwesome TextOptions.TextFormattingMode="Display" 

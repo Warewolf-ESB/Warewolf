@@ -19,6 +19,6 @@ namespace Dev2.Common.Interfaces.WebService
         IQueryManager QueryProxy { get; }
         ObservableCollection<IWebServiceSource> Sources { get; }
 
-        string HandlePasteResponse();
+        string HandlePasteResponse(string current);
     }
 }

@@ -37,7 +37,7 @@ namespace Warewolf.Studio.Views
             var vm = new PasteVM(text);
             _window.DataContext = vm;
             _window.ShowDialog();
-            return 
+            return vm.Text;
         }
 
         void RemoveBlackOutEffect()

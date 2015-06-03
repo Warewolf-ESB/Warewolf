@@ -27,6 +27,8 @@ namespace Warewolf.Studio.ViewModels
             
         }
 
+
+
         public string HandlePasteResponse(string current)
         {
             return _shell.OpenPasteWindow(current);

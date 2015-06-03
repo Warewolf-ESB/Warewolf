@@ -69,7 +69,7 @@ namespace Warewolf.Studio
             Container.RegisterInstance<IExceptionHandler>(new WarewolfExceptionHandler(new Dictionary<Type, Action>()));
     
             Container.RegisterInstance<IHelpView>(new HelpView());
-
+            Container.RegisterInstance<IPasteView>(new ManageWebservicePasteView());
      
             ICollection<IVariableListViewColumnViewModel> colls = new ObservableCollection<IVariableListViewColumnViewModel>();
             colls.Add(new VariableListColumnViewModel("col", "bob", new Mock<IVariableListViewModel>().Object, colls) { Input = true });
