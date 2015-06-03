@@ -18,30 +18,37 @@
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <views:NotConverter x:Key="NotConverter" />
     </UserControl.Resources>
-    <Grid Margin="{Binding ElementBorder}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Grid MinWidth="600" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}">
+            <Grid Margin="{StaticResource ElementBorder}" x:Name="GridContainer">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" Orientation="Horizontal">
-            <TextBlock Margin="5" Text="New Plugin Source" Style="{StaticResource SourceHeader}" />
-        </StackPanel>
-        <Grid  Grid.Row="1">
-           <Grid.ColumnDefinitions>
-               <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30"></RowDefinition>
-            </Grid.RowDefinitions>
-            <customControls:SearchTextBox Grid.Row="0" 
+                <StackPanel Grid.Row="0" 
+                            Width="{Binding ElementName=GridContainer, Path=ActualWidth}"
+                            Background="{StaticResource WareWolfMenuBrush}" 
+                            HorizontalAlignment="Stretch" 
+                            Orientation="Horizontal">
+                    <TextBlock Margin="5" Text="New Plugin Source" Style="{StaticResource SourceHeader}" />
+                </StackPanel>
+                <Grid  Grid.Row="1"
+                       Width="{Binding ElementName=GridContainer, Path=ActualWidth}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <customControls:SearchTextBox Grid.Row="0" 
                                               Margin="{StaticResource ControlBorderTopRight}"
                                               Grid.Column="0"
                                               x:Name="SearchTextBox" 
@@ -50,7 +57,7 @@
                                               LabelText="Filter"
                                               ClearSearchCommand="{Binding ClearSearchTextCommand}"
                                               HorizontalAlignment="Stretch" />
-            <Button Grid.Row="0"
+                    <Button Grid.Row="0"
                         Grid.Column="1"
                         Width="25"
                         Height="25"
@@ -59,131 +66,139 @@
                         Margin="0,1,0,-1"
                     Command="{Binding RefreshCommand}"
                     Visibility="{Binding IsLoading,Converter={StaticResource NotConverter}}">
-                <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
+                        <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
                                     FontSize="16" 
                                     Icon="Refresh" 
                                     VerticalAlignment="Center" 
                                     HorizontalAlignment="Center"/>
-            </Button>
-            <views:CircularProgressBar Grid.Row="0"
+                    </Button>
+                    <views:CircularProgressBar Grid.Row="0"
                                            Grid.Column="1"
                                            Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibilityConverter}}"
                                            Width="25"
                                            Height="25"
                                            Padding="2.5" />
-        </Grid>
+                </Grid>
 
-        <ig:XamDataTree Margin="{StaticResource ControlBorderTop}"
-                        x:Name="ExplorerTree"
-                        Grid.Row="2"
-                        ActiveDataItem="{Binding SelectedDll, Mode=TwoWay}"
-                        ItemsSource="{Binding DllListings}"
-                        IsSelectedMemberPath="IsSelected"
-                        DisplayMemberPath="Name"
-                        NodeLineVisibility="Hidden" >
-
-            <ig:XamDataTree.EditingSettings>
-                <ig:TreeEditingSettings AllowDeletion="False"
+                <ScrollViewer Grid.Row="2"
+                                      HorizontalScrollBarVisibility="Auto" 
+                                      VerticalScrollBarVisibility="Auto"
+                                      MaxHeight="654">
+                    <Grid Width="{Binding ElementName=GridContainer, Path=ActualWidth}"
+                          Margin="0,-2,0,0">
+                        <ig:XamDataTree x:Name="ExplorerTree"
+                                        ActiveDataItem="{Binding SelectedDll, Mode=TwoWay}"
+                                        ItemsSource="{Binding DllListings}"
+                                        IsSelectedMemberPath="IsSelected"
+                                        DisplayMemberPath="Name"
+                                        NodeLineVisibility="Hidden" >
+                            <ig:XamDataTree.EditingSettings>
+                                <ig:TreeEditingSettings AllowDeletion="False"
                                         AllowEditing="False"
                                         IsEnterKeyEditingEnabled="False"
                                         IsF2EditingEnabled="False"
                                         IsMouseActionEditingEnabled="None"
                                         IsOnNodeActiveEditingEnabled="False"
                                         />
-            </ig:XamDataTree.EditingSettings>
-
-            <ig:XamDataTree.GlobalNodeLayouts>
-                <ig:NodeLayout Key="Children"
-                                   DisplayMemberPath="Name"
-                                   IsExpandedMemberPath="IsExpanded"
-                               Visibility="{Binding Path=Data.IsVisible,                               
+                            </ig:XamDataTree.EditingSettings>
+                            <ig:XamDataTree.GlobalNodeLayouts>
+                                <ig:NodeLayout Key="Children"
+                                               DisplayMemberPath="Name"
+                                               IsExpandedMemberPath="IsExpanded"
+                                               Visibility="{Binding Path=Data.IsVisible,                               
                                                     Converter={StaticResource BoolToVisibilityConverter}}">
-                    <ig:NodeLayout.ItemTemplate>
-                        <DataTemplate>
-                            <!-- ADD NEW GRID LAYOUT TO ALIGN DATA TREE ITEMS -->
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
+                                    <ig:NodeLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <!-- ADD NEW GRID LAYOUT TO ALIGN DATA TREE ITEMS -->
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                                </Grid.ColumnDefinitions>
 
-                                <!-- ADD TEXT TRIMMING TO DISPLAY ECLIPSE ON VIEW WIDTH SETTING -->
-                                <TextBlock x:Name="ResourceNameTextBlock"
-                                                   MinWidth="5"
-                                                   Height="20"
-                                                   Focusable="True"
-                                                   TextTrimming="CharacterEllipsis"
-                                                   VerticalAlignment="Center"
-                                                   HorizontalAlignment="Stretch"
-                                                   Text="{Binding Path=Data.Name}">
+                                                <!-- ADD TEXT TRIMMING TO DISPLAY ECLIPSE ON VIEW WIDTH SETTING -->
+                                                <TextBlock x:Name="ResourceNameTextBlock"
+                                                           MinWidth="5"
+                                                           Height="20"
+                                                           Focusable="True"
+                                                           TextTrimming="CharacterEllipsis"
+                                                           VerticalAlignment="Center"
+                                                           HorizontalAlignment="Stretch"
+                                                           Text="{Binding Path=Data.Name}">
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="MouseLeftButtonDown">
                                                     <interactivity:InvokeCommandAction Command="{Binding}" TriggerParameterPath="ClickCount" />
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
-                                </TextBlock>
-                            </Grid>
-                        </DataTemplate>
-                    </ig:NodeLayout.ItemTemplate>
-                    <ig:NodeLayout.ExpandedIconTemplate>
-                        <DataTemplate>
-                            <Image x:Name="ResourceImage"
-                                           Width="14"
-                                           Height="14"
-                                           Margin="-37,0,0,0">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="MouseLeftButtonDown">
-                                        <interactivity:InvokeCommandAction Command="{Binding}" TriggerParameterPath="ClickCount" />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </Image>
-                        </DataTemplate>
-                    </ig:NodeLayout.ExpandedIconTemplate>
-                    <ig:NodeLayout.CollapsedIconTemplate>
-                        <DataTemplate>
-                            <!-- CHANGE TOP MARGIN TO ALIGN RESOURCE IMAGE -->
-                            <Image x:Name="ResourceImage"
-                                           Width="14"
-                                           Height="15"
-                                           Margin="-37,0,-5,0">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="MouseLeftButtonDown">
-                                        <interactivity:InvokeCommandAction Command="{Binding}" TriggerParameterPath="ClickCount" />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </Image>
-                        </DataTemplate>
-                    </ig:NodeLayout.CollapsedIconTemplate>
-                </ig:NodeLayout>
-            </ig:XamDataTree.GlobalNodeLayouts>
-        </ig:XamDataTree>
+                                                </TextBlock>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ig:NodeLayout.ItemTemplate>
+                                    <ig:NodeLayout.ExpandedIconTemplate>
+                                        <DataTemplate>
+                                            <Image x:Name="ResourceImage"
+                                                   Width="14"
+                                                   Height="14"
+                                                   Margin="-37,0,0,0">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="MouseLeftButtonDown">
+                                                        <interactivity:InvokeCommandAction Command="{Binding}" TriggerParameterPath="ClickCount" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Image>
+                                        </DataTemplate>
+                                    </ig:NodeLayout.ExpandedIconTemplate>
+                                    <ig:NodeLayout.CollapsedIconTemplate>
+                                        <DataTemplate>
+                                            <!-- CHANGE TOP MARGIN TO ALIGN RESOURCE IMAGE -->
+                                            <Image x:Name="ResourceImage"
+                                                   Width="14"
+                                                   Height="15"
+                                                   Margin="-37,0,-5,0">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="MouseLeftButtonDown">
+                                                        <interactivity:InvokeCommandAction Command="{Binding}" TriggerParameterPath="ClickCount" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Image>
+                                        </DataTemplate>
+                                    </ig:NodeLayout.CollapsedIconTemplate>
+                                </ig:NodeLayout>
+                            </ig:XamDataTree.GlobalNodeLayouts>
+                        </ig:XamDataTree>
+                    </Grid>
+                </ScrollViewer>
 
-        <Grid Grid.Row="3" Margin="{StaticResource ControlBorderTop}" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="Assembly"></TextBlock>
-            <TextBox Grid.Column="1" Text="{Binding SelectedDll.FullName}"></TextBox>
-        </Grid>
-        <Grid Grid.Row="4" Margin="{StaticResource ControlBorderTop}" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Button Grid.Column="1"
+                <Grid Grid.Row="3" Margin="0,-2,0,0"
+                      Width="{Binding ElementName=GridContainer, Path=ActualWidth}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Assembly"></TextBlock>
+                    <TextBox Grid.Column="1" Text="{Binding SelectedDll.FullName}"></TextBox>
+                </Grid>
+                <Grid Grid.Row="4" Margin="{StaticResource ControlBorderTop}" 
+                      Width="{Binding ElementName=GridContainer, Path=ActualWidth}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="1"
                     x:Name="SaveButton" 
                     Margin="{StaticResource ElementBorderControlRight}"
                     Width="60" 
                     Height="30" 
                     Command="{Binding OkCommand}" 
                     Content="Save"></Button>
-            <Button Grid.Column="2"
+                    <Button Grid.Column="2"
                     x:Name="CancelButton" 
                     Width="60" 
                     Height="30" 
                     Command="{Binding}" 
                     Content="Cancel"></Button>
+                </Grid>
+            </Grid>
         </Grid>
-    </Grid>
+    </ScrollViewer>
 </UserControl>

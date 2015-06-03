@@ -1130,6 +1130,7 @@
     <Style x:Key="TextBlockStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
+        <Setter Property="Padding" Value="4,0,0,0"/>
     </Style>
 
     <Style x:Key="ErrorMessageTextBlockStyle"
@@ -1141,6 +1142,7 @@
     <Style x:Key="LabelStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
+        <Setter Property="Padding" Value="4,0,0,0"/>
     </Style>
 
     <!--  *********************************  FixedRowSeparator Style  *********************************  -->
@@ -3220,6 +3222,7 @@
         <Setter Property="Background" Value="{StaticResource AddNewRowSelectorCellBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource AddNewRowSelectorCellBorderBrush}" />
         <Setter Property="BorderThickness" Value="0,1,1,1" />
+        <Setter Property="Padding" Value="4,0,0,0"/>
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Height" Value="Auto" />
@@ -3492,6 +3495,7 @@
         <Setter Property="Background" Value="{StaticResource CellItemBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource CellItemBorderBrush}" />
         <Setter Property="BorderThickness" Value="0 0 1 1" />
+        <Setter Property="Padding" Value="4,0,0,0"/>
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Height" Value="Auto" />
@@ -3624,6 +3628,7 @@
         <Setter Property="Background" Value="{StaticResource CellItemBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource CellItemBorderBrush}" />
         <Setter Property="BorderThickness" Value="0 0 1 1" />
+        <Setter Property="Padding" Value="4,0,0,0"/>
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Height" Value="Auto" />
@@ -8748,7 +8753,7 @@
     <Style BasedOn="{StaticResource DataBarControlStyle}" TargetType="igPrim:DataBarControl" />
 
     <!--  *********************************  ConditionalFormattingCellControl Style  *********************************  -->
-    <!-- USE THIS SECTION TO CHANGE THE MOUSE OVER ELEMENTS -->
+    <!-- USE THIS SECTION TO CHANGE THE NON AUTO GENERATED CONTROLS, ALONG WITH THE INNER CONTROL PRESENTER -->
     <Style x:Key="ConditionalFormattingCellControlStyle" TargetType="ig:ConditionalFormattingCellControl">
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />

@@ -136,15 +136,14 @@
                                   MinWidth="400">
                                 <xamGridEx:XamGridEx x:Name="HeadersGrid" 
                                                      Style="{StaticResource XamGridStyle}"
-                                            ItemsSource="{Binding Headers}" 
-                                            AutoGenerateColumns="False"
-                                            RowHover="Row"
-                                            IsAlternateRowsEnabled="False"
-                                            ColumnLayoutHeaderVisibility="Never"
-                                            DeleteKeyAction="DeleteRowOfActiveCell"
-                                            ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                            ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                            ColumnWidth="*" >
+                                                     ItemsSource="{Binding Headers}" 
+                                                     AutoGenerateColumns="False"
+                                                     IsAlternateRowsEnabled="False"
+                                                     ColumnLayoutHeaderVisibility="Never"
+                                                     DeleteKeyAction="DeleteRowOfActiveCell"
+                                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                     ColumnWidth="*" >
                                     <ig:XamGrid.Columns>
                                         <ig:TextColumn Key="Name" HeaderText="Name" MinimumWidth="100">
                                             <ig:TextColumn.AddNewRowItemTemplate>
@@ -159,11 +158,9 @@
                                                         <customControls:WatermarkTextBox.Watermark>
                                                             <Label Style="{StaticResource WatermarkLabelStyle}">Header</Label>
                                                         </customControls:WatermarkTextBox.Watermark>
-                                     
                                                     </TextBox>
                                                 </DataTemplate>
                                             </ig:TextColumn.AddNewRowEditorTemplate>
-                                            
                                         </ig:TextColumn>
                                         <ig:TextColumn Key="Value" HeaderText="Value" MinimumWidth="100" IsResizable="False">
                                             <ig:TextColumn.AddNewRowItemTemplate>
@@ -178,7 +175,6 @@
                                                         <customControls:WatermarkTextBox.Watermark>
                                                             <Label Style="{StaticResource WatermarkLabelStyle}">Value</Label>
                                                         </customControls:WatermarkTextBox.Watermark>
-
                                                     </TextBox>
                                                 </DataTemplate>
                                             </ig:TextColumn.AddNewRowEditorTemplate>
@@ -188,13 +184,15 @@
                                         <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
                                     </ig:XamGrid.SortingSettings>
                                     <ig:XamGrid.EditingSettings>
-                                        <ig:EditingSettings AllowEditing="Hover"
-                                                    IsMouseActionEditingEnabled="SingleClick"
-                                                    IsEnterKeyEditingEnabled="True" 
-                                                    IsF2EditingEnabled="True" 
+                                        <ig:EditingSettings AllowEditing="Cell"
+                                                            IsMouseActionEditingEnabled="SingleClick"
+                                                            IsEnterKeyEditingEnabled="True" 
+                                                            IsF2EditingEnabled="True" 
                                                             IsOnCellActiveEditingEnabled="False" />
                                     </ig:XamGrid.EditingSettings>
-
+                                    <ig:XamGrid.ConditionalFormattingSettings>
+                                        <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
+                                    </ig:XamGrid.ConditionalFormattingSettings>
                                     <xamGridEx:XamGridEx.ContextMenuSettings>
                                         <xamGridEx:ContextMenuSettings AllowContextMenu="True">
                                             <xamGridEx:ContextMenuSettings.ContextMenu>
