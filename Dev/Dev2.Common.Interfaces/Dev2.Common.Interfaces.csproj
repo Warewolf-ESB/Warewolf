@@ -264,6 +264,7 @@
     <Compile Include="IManageDatabaseSourceView.cs" />
     <Compile Include="IMenuView.cs" />
     <Compile Include="INetworkStateChangedEventArgs.cs" />
+    <Compile Include="IPasteView.cs" />
     <Compile Include="IPluginAction.cs" />
     <Compile Include="IPluginService.cs" />
     <Compile Include="IPluginSource.cs" />

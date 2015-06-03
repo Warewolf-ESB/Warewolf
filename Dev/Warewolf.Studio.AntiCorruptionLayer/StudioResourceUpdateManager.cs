@@ -113,11 +113,12 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public string TestPluginService(IPluginService inputValues)
         {
-            return null;
+            return UpdateManagerProxy.TestPluginService(inputValues);
         }
 
         public void Save(IPluginService toDbSource)
         {
+            UpdateManagerProxy.SavePluginService(toDbSource);
         }
     }
 }

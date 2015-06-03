@@ -76,7 +76,7 @@ namespace Warewolf.Studio.ViewModels
             _handler = _unityContainer.Resolve<IExceptionHandler>();
            
             _handler.AddHandler(typeof(WarewolfInvalidPermissionsException), () => PopupController.Show(PopupMessages.GetInvalidPermissionException()));
-
+            
         }
 
         public IPopupController PopupController { get;  set; }
@@ -145,6 +145,12 @@ namespace Warewolf.Studio.ViewModels
 
         public void EditResource(IPluginSource selectedSource)
         {
+        }
+
+        public string OpenPasteWindow(string current)
+        {
+            var pasteView = _unityContainer.Resolve<IPasteView>();
+            return  pasteView.ShowView();
         }
 
         public IViewsCollection GetRegionViews(string regionName)

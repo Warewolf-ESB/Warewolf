@@ -33,7 +33,8 @@
                  VerticalContentAlignment="Top"
                  SnapsToDevicePixels="True" 
                  VerticalScrollBarVisibility="Auto"
-                 HorizontalScrollBarVisibility="Disabled"></TextBox>
+                 HorizontalScrollBarVisibility="Disabled"
+                 Text="{Binding PasteText}"></TextBox>
         <StackPanel Grid.Row="1" 
                     Margin="0,-2,5,5"
                     Orientation="Horizontal" 

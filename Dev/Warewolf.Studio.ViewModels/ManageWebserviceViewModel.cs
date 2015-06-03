@@ -140,6 +140,7 @@ namespace Warewolf.Studio.ViewModels
             CreateNewSourceCommand = new DelegateCommand(_model.CreateNewSource);
             SaveCommand = new DelegateCommand(Save, CanSave);
             NewWebSourceCommand = new DelegateCommand(() => _model.CreateNewSource());
+            PasteResponseCommand = new DelegateCommand(() => _model.HandlePasteResponse());
             RemoveHeaderCommand = new DelegateCommand( DeleteCell);
             AddHeaderCommand = new DelegateCommand(Add);
         }

@@ -181,6 +181,7 @@
     <Compile Include="ESB\Management\Services\GetDllListings.cs" />
     <Compile Include="ESB\Management\Services\SaveDbService.cs" />
     <Compile Include="ESB\Management\Services\SaveDbSourceSource.cs" />
+    <Compile Include="ESB\Management\Services\SavePluginService.cs" />
     <Compile Include="ESB\Management\Services\SavePluginSource.cs" />
     <Compile Include="ESB\Management\Services\SaveWebService.cs" />
     <Compile Include="ESB\Management\Services\SaveWebserviceSource.cs" />

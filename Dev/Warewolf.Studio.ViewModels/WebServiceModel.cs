@@ -26,6 +26,12 @@ namespace Warewolf.Studio.ViewModels
             }
             
         }
+
+        public string HandlePasteResponse(string current)
+        {
+            return _shell.OpenPasteWindow(current);
+        }
+
         readonly IShellViewModel _shell;
         readonly string _serverName;
         ObservableCollection<IWebServiceSource> _sources;

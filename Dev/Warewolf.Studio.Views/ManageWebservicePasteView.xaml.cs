@@ -1,24 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using Dev2.Common.Interfaces;
 
 namespace Warewolf.Studio.Views
 {
     /// <summary>
     /// Interaction logic for ManageWebservicePasteView.xaml
     /// </summary>
-    public partial class ManageWebservicePasteView
+    public partial class ManageWebservicePasteView:IPasteView
     {
         Grid _blackoutGrid;
         Window _window;
@@ -28,7 +19,9 @@ namespace Warewolf.Studio.Views
             InitializeComponent();
         }
 
-        public void ShowView()
+
+
+        public string ShowView(string text)
         {
             IsModal = true;
             var effect = new BlurEffect { Radius = 10, KernelType = KernelType.Gaussian, RenderingBias = RenderingBias.Quality };
@@ -41,7 +34,10 @@ namespace Warewolf.Studio.Views
             Application.Current.MainWindow.Effect = effect;
 
             _window = new Window { WindowStyle = WindowStyle.None, AllowsTransparency = true, Background = Brushes.Transparent, SizeToContent = SizeToContent.Manual, MinWidth = 640, MinHeight = 480, ResizeMode = ResizeMode.CanResize, WindowStartupLocation = WindowStartupLocation.CenterScreen, Content = this };
+            var vm = new PasteVM(text);
+            _window.DataContext = vm;
             _window.ShowDialog();
+            return 
         }
 
         void RemoveBlackOutEffect()
@@ -63,6 +59,27 @@ namespace Warewolf.Studio.Views
         private void CancelButton_OnClick(object sender, RoutedEventArgs e)
         {
             RequestClose();
+        }
+
+
+    }
+
+    public class PasteVM
+    {
+         string _text;
+
+        public PasteVM(string text)
+        {
+            _text = text;
+        }
+
+        public string Text
+        {
+            get
+            {
+                return _text;
+            }
+            set { _text = value; }
         }
     }
 }

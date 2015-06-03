@@ -46,5 +46,7 @@ namespace Dev2.Common.Interfaces
         void EditResource(IWebServiceSource selectedSource);
 
         void EditResource(IPluginSource selectedSource);
+
+        string OpenPasteWindow(string current);
     }
 }
