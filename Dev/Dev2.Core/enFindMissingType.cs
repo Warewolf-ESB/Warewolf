@@ -13,7 +13,7 @@
 
 namespace Dev2
 {
-    // ReSharper disable once InconsistentNaming
+    // ReSharper disable InconsistentNaming
     public enum enFindMissingType
     {
         DataGridActivity,

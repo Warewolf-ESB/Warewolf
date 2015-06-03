@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mime;
 using System.Text;
 using System.Xml;
 using Dev2.Common;
@@ -151,7 +150,7 @@ namespace Dev2
                 result.Append("}");
                 result.Append("]");
                 i++;
-                if (i < recSets.Count())
+                if (i <= recSets.Count())
                 {
                     result.Append(",");
                 }
