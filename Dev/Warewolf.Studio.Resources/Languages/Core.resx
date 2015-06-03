@@ -763,6 +763,9 @@ You need Administrator permission.</value>
   <data name="DatabaseSourceTestConnectionHelp" xml:space="preserve">
     <value>&lt;body&gt;&lt;p&gt;DatabaseSourceTestConnectionHelp&lt;/p&gt;&lt;/body&gt;</value>
   </data>
+  <data name="DatabaseSourceCancelHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;DatabaseSourceCancelHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
   <data name="DatabaseServiceSourceTypesHelp" xml:space="preserve">
     <value>&lt;body&gt;&lt;p&gt;DatabaseServiceSourceTypesHelp&lt;/p&gt;&lt;/body&gt;</value>
   </data>
@@ -784,14 +787,120 @@ You need Administrator permission.</value>
   <data name="DatabaseServiceTestHelp" xml:space="preserve">
     <value>&lt;body&gt;&lt;p&gt;DatabaseServiceTestHelp&lt;/p&gt;&lt;/body&gt;</value>
   </data>
+  <data name="DatabaseServiceSaveHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;DatabaseServiceSaveHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="WebServiceWebRequestHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;WebServiceWebRequestHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="WebServiceSourcesHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;WebServiceSourcesHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="WebServiceSelectedSourceHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;WebServiceSelectedSourceHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="WebServiceNewWebSourceHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;WebServiceNewWebSourceHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="WebServiceRequestBodyHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;WebServiceRequestBodyHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="WebServiceRequestUrlHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;WebServiceRequestUrlHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="WebServiceTestCommandHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;WebServiceTestCommandHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="WebServicePasteHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;WebServicePasteHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="WebServiceSaveCommandHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;WebServiceSaveCommandHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="WebServiceCancelCommandHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;WebServiceCancelCommandHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="WebServicePasteInputHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;WebServicePasteInputHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="WebServicePasteSaveCommandHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;WebServicePasteSaveCommandHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="WebServicePasteCancelCommandHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;WebServicePasteCancelCommandHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="PluginSourceClearSearchHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;PluginSourceClearSearchHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="PluginSourceRefreshCommandHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;PluginSourceRefreshCommandHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="PluginSourceDllFullNameHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;PluginSourceDllFullNameHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="PluginSourceOkCommandHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;PluginSourceOkCommandHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="PluginSourceCancelCommandHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;PluginSourceCancelCommandHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+
+  <data name="PluginServiceSourcesHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;PluginServiceSourcesHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="PluginServiceEditSourceHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;PluginServiceEditSourceHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="PluginServiceNewSourceHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;PluginServiceNewSourceHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="PluginServiceNamespaceHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;PluginServiceNamespaceHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="PluginServiceSelectActionHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;PluginServiceSelectActionHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="PluginServiceRefreshHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;PluginServiceRefreshHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="PluginServiceTestInputHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;PluginServiceTestInputHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="PluginServiceTestResultsHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;PluginServiceTestResultsHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="PluginServiceSaveCommandHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;PluginServiceSaveCommandHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="PluginServiceCancelCommandHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;PluginServiceCancelCommandHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="MappingsRecordsetNameHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;MappingsRecordsetNameHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
   <data name="ServerProtocolHelp" xml:space="preserve">
     <value>&lt;body&gt;&lt;p&gt;ServerProtocolHelp&lt;/p&gt;&lt;/body&gt;</value>
   </data>
   <data name="ServerAddressHelp" xml:space="preserve">
     <value>&lt;body&gt;&lt;p&gt;ServerAddressHelp&lt;/p&gt;&lt;/body&gt;</value>
   </data>
+  <data name="ServerSelectWindowsHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;ServerSelectWindowsHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="ServerSelectUserHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;ServerSelectUserHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="ServerSelectPublicHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;ServerSelectPublicHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
   <data name="ServerSelectPortHelp" xml:space="preserve">
     <value>&lt;body&gt;&lt;p&gt;ServerSelectPortHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="ServerTestConnectionHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;ServerTestConnectionHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="ServerSaveHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;ServerSaveHelp&lt;/p&gt;&lt;/body&gt;</value>
   </data>
   <data name="PasswordAuthenticationHelp" xml:space="preserve">
     <value>&lt;body&gt;&lt;p&gt;PasswordAuthenticationHelp&lt;/p&gt;&lt;/body&gt;</value>

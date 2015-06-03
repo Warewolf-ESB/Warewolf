@@ -344,7 +344,12 @@
                         HorizontalAlignment="Right" 
                         Command="{Binding SaveCommand}" 
                         VerticalAlignment="Bottom" 
-                        Width="100">Save</Button>
+                        Width="100">Save
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceSaveHelp}"
+                                 DataContext="{Binding}" />
+                        </i:Interaction.Behaviors>
+                    </Button>
                 </Grid>
             </Grid>
         </StackPanel>

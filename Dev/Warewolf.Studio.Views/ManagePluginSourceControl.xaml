@@ -10,6 +10,8 @@
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                     xmlns:interactivity="http://www.codeplex.com/prism"
                     xmlns:dialogues="clr-namespace:Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;assembly=Dev2.Common.Interfaces"
+                    xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                    xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                     mc:Ignorable="d" 
                d:DataContext="{d:DesignInstance Type=dialogues:IManagePluginSourceViewModel,
                                               IsDesignTimeCreatable=False}"
@@ -57,19 +59,28 @@
                                               Style="{StaticResource SearchTextboxStyle}"
                                               LabelText="Filter"
                                               ClearSearchCommand="{Binding ClearSearchTextCommand}"
-                                              HorizontalAlignment="Stretch" />
+                                              HorizontalAlignment="Stretch" >
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{x:Static languages:Core.PluginSourceClearSearchHelp}"
+                                                         DataContext="{Binding}" />
+                        </i:Interaction.Behaviors>
+                    </customControls:SearchTextBox>
                     <Button Grid.Row="0"
-                        Grid.Column="1"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
+                            Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
                             Margin="0,3,0,-1"
-                    Command="{Binding RefreshCommand}"
-                    Visibility="{Binding IsLoading,Converter={StaticResource NotConverter}}">
+                            Command="{Binding RefreshCommand}"
+                            Visibility="{Binding IsLoading,Converter={StaticResource NotConverter}}">
                         <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
                                     FontSize="16" 
                                     Icon="Refresh" 
                                     VerticalAlignment="Center" 
                                     HorizontalAlignment="Center"/>
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{x:Static languages:Core.PluginSourceRefreshCommandHelp}"
+                                                         DataContext="{Binding}" />
+                        </i:Interaction.Behaviors>
                     </Button>
                     <views:CircularProgressBar Grid.Row="0"
                                            Grid.Column="1"
@@ -174,7 +185,12 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Assembly"></TextBlock>
-                    <TextBox Grid.Column="1" Text="{Binding SelectedDll.FullName}"></TextBox>
+                    <TextBox Grid.Column="1" Text="{Binding SelectedDll.FullName}">
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{x:Static languages:Core.PluginSourceDllFullNameHelp}"
+                                                         DataContext="{Binding}" />
+                        </i:Interaction.Behaviors>
+                    </TextBox>
                 </Grid>
                 <Grid Grid.Row="4" Margin="{StaticResource ControlBorderTop}" 
                       Width="{Binding ElementName=GridContainer, Path=ActualWidth}">
@@ -184,18 +200,28 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <Button Grid.Column="1"
-                    x:Name="SaveButton" 
-                    Margin="{StaticResource ElementBorderControlRight}"
-                    Width="60" 
-                    Height="30" 
-                    Command="{Binding OkCommand}" 
-                    Content="Save"></Button>
+                            x:Name="SaveButton" 
+                            Margin="{StaticResource ElementBorderControlRight}"
+                            Width="60" 
+                            Height="30" 
+                            Command="{Binding OkCommand}" 
+                            Content="Save">
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{x:Static languages:Core.PluginSourceOkCommandHelp}"
+                                                         DataContext="{Binding}" />
+                        </i:Interaction.Behaviors>
+                    </Button>
                     <Button Grid.Column="2"
-                    x:Name="CancelButton" 
-                    Width="60" 
-                    Height="30" 
-                    Command="{Binding}" 
-                    Content="Cancel"></Button>
+                            x:Name="CancelButton" 
+                            Width="60" 
+                            Height="30" 
+                            Command="{Binding}" 
+                            Content="Cancel">
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{x:Static languages:Core.PluginSourceCancelCommandHelp}"
+                                                         DataContext="{Binding}" />
+                        </i:Interaction.Behaviors>
+                    </Button>
                 </Grid>
             </Grid>
         </Grid>

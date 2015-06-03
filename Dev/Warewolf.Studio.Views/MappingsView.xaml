@@ -6,6 +6,9 @@
              xmlns:db="clr-namespace:Dev2.Common.Interfaces.DB;assembly=Dev2.Common.Interfaces"
              xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+             xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="800" 
              d:DataContext="{d:DesignInstance Type=db:IServiceMappings,
@@ -23,7 +26,6 @@
             <RowDefinition />
             <RowDefinition Height="7" ></RowDefinition>
         </Grid.RowDefinitions>
-
         <ScrollViewer Grid.Row="0" 
                       HorizontalScrollBarVisibility="Auto" 
                       VerticalScrollBarVisibility="Auto">
@@ -163,7 +165,12 @@
                     Margin="0,2,0,0" >
             <TextBlock Text="Recordset Name" ></TextBlock>
             <TextBox MinWidth="367" Margin="-1,0,0,0" 
-                     Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
+                     Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}" >
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:Core.MappingsRecordsetNameHelp}"
+                                                         DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </TextBox>
         </StackPanel>
     </Grid>
 </UserControl>

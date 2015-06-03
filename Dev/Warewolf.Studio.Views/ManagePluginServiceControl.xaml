@@ -6,6 +6,9 @@
              xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+             xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
@@ -67,18 +70,32 @@
                                     <Label Style="{StaticResource WatermarkLabelStyle}">Choose...</Label>
                                 </StackPanel>
                             </customControls:WatermarkTextBox.Watermark>
+                            <i:Interaction.Behaviors>
+                                <core:HelpSetter Text="{x:Static languages:Core.PluginServiceSourcesHelp}"
+                                                         DataContext="{Binding}" />
+                            </i:Interaction.Behaviors>
                         </ComboBox>
                         <Button Width="25" 
                                 Grid.Column="1"
                                 Height="26"
                                 Content=" ... " 
-                                Margin="0,-1,3,0"></Button>
+                                Margin="0,-1,3,0">
+                            <i:Interaction.Behaviors>
+                                <core:HelpSetter Text="{x:Static languages:Core.PluginServiceEditSourceHelp}"
+                                                         DataContext="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </Button>
                         <Button Content="New" 
                                 Height="26"
                                 Grid.Column="2"
                                 Margin="0,-1,0,0"
                                 Style="{StaticResource ButtonOrangeStyle}" 
-                                Width="100" ></Button>
+                                Width="100" >
+                            <i:Interaction.Behaviors>
+                                <core:HelpSetter Text="{x:Static languages:Core.PluginServiceNewSourceHelp}"
+                                                         DataContext="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </Button>
                     </Grid>
                 </Grid>
                 <!-- SELECT NAMESPACE -->
@@ -114,7 +131,12 @@
                                   Width="250" 
                                   Padding="{StaticResource ComboBoxItemPadding}"
                                   Focusable="True"
-                                  Margin="{StaticResource ElementBorderTop}" />
+                                  Margin="{StaticResource ElementBorderTop}" >
+                            <i:Interaction.Behaviors>
+                                <core:HelpSetter Text="{x:Static languages:Core.PluginServiceNamespaceHelp}"
+                                                         DataContext="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </ComboBox>
                     </StackPanel>
                 </Grid>
                 <!-- SELECT ACTION -->
@@ -158,28 +180,37 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                        <!-- Choose data Source Action-->
-                        <ComboBox x:Name="ActionsComboBox" 
+                            <!-- Choose data Source Action-->
+                            <ComboBox x:Name="ActionsComboBox" 
                                   Grid.Column="0"
                                   Width="250" 
                                   Padding="{StaticResource ComboBoxItemPadding}"
                                   DisplayMemberPath="Name" 
                                   Text="Choose" 
-                                  Margin="{StaticResource ElementBorderControlRight}"></ComboBox>
-                        <!-- NEED TO ADD LOGIC TO REFRESH COMMAND AND VISIBILITY -->
-                        <Button Width="25" 
+                                  Margin="{StaticResource ElementBorderControlRight}">
+                                <i:Interaction.Behaviors>
+                                    <core:HelpSetter Text="{x:Static languages:Core.PluginServiceSelectActionHelp}"
+                                                         DataContext="{Binding}" />
+                                </i:Interaction.Behaviors>
+                            </ComboBox>
+                            <!-- NEED TO ADD LOGIC TO REFRESH COMMAND AND VISIBILITY -->
+                            <Button Width="25" 
                                 Height="25" 
                                 Margin="0,-1,0,0"
                                 Grid.Column="1">
-                            <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
+                                <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
                                             FontSize="16" 
                                             Icon="Refresh" 
                                             Margin="0,2,0,0"
                                             VerticalAlignment="Center" 
                                             HorizontalAlignment="Center"/>
-                        </Button>
-                        <!-- NEED TO ADD LOGIC TO VISIBILITY -->
-                        <views:CircularProgressBar Grid.Column="1"
+                                <i:Interaction.Behaviors>
+                                    <core:HelpSetter Text="{x:Static languages:Core.PluginServiceRefreshHelp}"
+                                                         DataContext="{Binding}" />
+                                </i:Interaction.Behaviors>
+                            </Button>
+                            <!-- NEED TO ADD LOGIC TO VISIBILITY -->
+                            <views:CircularProgressBar Grid.Column="1"
                                                    Width="25"
                                                    Height="25"
                                                    Padding="2.5"/>
@@ -256,7 +287,12 @@
                             <TextBox Margin="{StaticResource ControlBorderTop}"
                                      HorizontalAlignment="Stretch"
                                      TextWrapping="Wrap"
-                                     MaxHeight="180"></TextBox>
+                                     MaxHeight="180">
+                                <i:Interaction.Behaviors>
+                                    <core:HelpSetter Text="{x:Static languages:Core.PluginServiceTestInputHelp}"
+                                                         DataContext="{Binding}" />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
                         </ScrollViewer>
                         <Grid Grid.Row="2">
                             <Grid.ColumnDefinitions>
@@ -275,7 +311,12 @@
                                       VerticalScrollBarVisibility="Auto">
                             <TextBox HorizontalAlignment="Stretch"
                                      TextWrapping="Wrap"
-                                     MaxHeight="180"></TextBox>
+                                     MaxHeight="180">
+                                <i:Interaction.Behaviors>
+                                    <core:HelpSetter Text="{x:Static languages:Core.PluginServiceTestResultsHelp}"
+                                                         DataContext="{Binding}" />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
                         </ScrollViewer>
                     </Grid>
                 </Grid>
@@ -319,13 +360,23 @@
                             Margin="{StaticResource ControlBorderTopRight}" 
                             HorizontalAlignment="Right" 
                             VerticalAlignment="Bottom" 
-                            Width="100">OK</Button>
+                            Width="100">OK
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{x:Static languages:Core.PluginServiceSaveCommandHelp}"
+                                                         DataContext="{Binding}" />
+                        </i:Interaction.Behaviors>
+                    </Button>
                     <Button x:Name="CancelButton" 
                             Grid.Column="3" 
                             Margin="{StaticResource ControlBorderTop}" 
                             HorizontalAlignment="Right" 
                             VerticalAlignment="Bottom" 
-                            Width="100">Cancel</Button>
+                            Width="100">Cancel
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{x:Static languages:Core.PluginServiceCancelCommandHelp}"
+                                                         DataContext="{Binding}" />
+                        </i:Interaction.Behaviors>
+                    </Button>
                 </Grid>
             </Grid>
         </Grid>
