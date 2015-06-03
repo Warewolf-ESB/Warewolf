@@ -8,6 +8,9 @@
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
+             xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              mc:Ignorable="d" 
              x:Name="UserControl"
              d:DesignHeight="300" d:DesignWidth="300" 
@@ -84,18 +87,33 @@
                                   Padding="{StaticResource ComboBoxItemPadding}"
                                   Focusable="True"
                                   Margin="{StaticResource ElementBorderTop}" 
-                                  SelectedItem="{Binding SelectedSource}" />
+                                  SelectedItem="{Binding SelectedSource}" >
+                            <i:Interaction.Behaviors>
+                                <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceSourceTypesHelp}"
+                                 DataContext="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </ComboBox>
                         <Button Command="{Binding EditSourceCommand}" 
                                 IsEnabled="{Binding CanEditSource}" 
                                 Width="25" 
                                 Content=" ... " 
-                                Margin="{StaticResource ElementBorderControlLeftTop}"></Button>
+                                Margin="{StaticResource ElementBorderControlLeftTop}">
+                            <i:Interaction.Behaviors>
+                                <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceEditSourceHelp}"
+                                 DataContext="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </Button>
                         <TextBlock Padding="0" Text="or" Margin="{StaticResource ElementBorderControlLeftTop}"></TextBlock>
                         <Button Content="{Binding NewButtonLabel}" 
                             Margin="{StaticResource ElementBorderControlLeftTop}"
                             Style="{StaticResource ButtonOrangeStyle}" 
                             Command="{Binding CreateNewSourceCommand}" 
-                            Width="100" ></Button>
+                            Width="100" >
+                            <i:Interaction.Behaviors>
+                                <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceNewSourceHelp}"
+                                 DataContext="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </Button>
                     </StackPanel>
                 </Grid>
                 <Grid x:Name="SelectAnActionGrid" 
@@ -131,7 +149,12 @@
                                   SelectedItem="{Binding SelectedAction, Mode=TwoWay}" 
                                   Text="Choose" 
                                   SelectedValue="{Binding SelectedAction, Mode=TwoWay}"
-                                  Margin="{StaticResource ElementBorderTop}"></ComboBox>
+                                  Margin="{StaticResource ElementBorderTop}">
+                            <i:Interaction.Behaviors>
+                                <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceSelectActionHelp}"
+                                 DataContext="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </ComboBox>
                         <Button Width="25" Height="25" 
                                 Margin="{StaticResource ElementBorderControlLeftTop}"
                                 Command="{Binding RefreshCommand}"
@@ -141,6 +164,10 @@
                                     Icon="Refresh" 
                                     VerticalAlignment="Top" 
                                     HorizontalAlignment="Center"/>
+                            <i:Interaction.Behaviors>
+                                <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceRefreshHelp}"
+                                 DataContext="{Binding}" />
+                            </i:Interaction.Behaviors>
                         </Button>
                         <views:CircularProgressBar Margin="{StaticResource ElementBorderControlLeftTop}"
                                                    Width="25"
@@ -203,7 +230,12 @@
                                                 <ColumnDefinition />
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Margin="{StaticResource ControlBorderTop}" Text="{Binding Path=Name }" Width="85"></TextBlock>
-                                            <TextBox Grid.Column="1" Margin="{StaticResource ControlBorderTop}" Text="{Binding Path=Value}" Width="200"></TextBox>
+                                            <TextBox Grid.Column="1" Margin="{StaticResource ControlBorderTop}" Text="{Binding Path=Value}" Width="200">
+                                                <i:Interaction.Behaviors>
+                                                    <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceInputsHelp}"
+                                                                     DataContext="{Binding}" />
+                                                </i:Interaction.Behaviors>
+                                            </TextBox>
                                         </Grid>
                                     </StackPanel>
                                 </DataTemplate>
@@ -216,7 +248,12 @@
                                 HorizontalAlignment="Right" 
                                 Command="{Binding TestProcedureCommand}" 
                                 VerticalAlignment="Bottom" 
-                                Width="100">Test</Button>
+                                Width="100">Test
+                            <i:Interaction.Behaviors>
+                                <core:HelpSetter Text="{x:Static languages:Core.DatabaseServiceTestHelp}"
+                                 DataContext="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </Button>
                         <views:CircularProgressBar Grid.Row="1"
                                                Grid.Column="1"
                                                Width="25"
@@ -238,15 +275,15 @@
                         <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" 
                                   MinWidth="400">
                             <ig:XamGrid x:Name="OutputsDataGrid" 
-                                            ItemsSource="{Binding TestResults}" 
-                                            AutoGenerateColumns="True" 
-                                            RowHover="Row"
-                                            IsAlternateRowsEnabled="False"
+                                        ItemsSource="{Binding TestResults}" 
+                                        AutoGenerateColumns="True" 
+                                        RowHover="Row"
+                                        IsAlternateRowsEnabled="False"
                                         Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVis}}" 
-                                            DeleteKeyAction="DeleteRowOfActiveCell"
-                                            ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                            ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                            ColumnWidth="*" >
+                                        DeleteKeyAction="DeleteRowOfActiveCell"
+                                        ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                        ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                        ColumnWidth="*" >
                                 <ig:XamGrid.SelectionSettings>
                                     <ig:SelectionSettings CellClickAction="SelectRow" CellSelection="None" />
                                 </ig:XamGrid.SelectionSettings>

@@ -103,17 +103,35 @@
                                     ColumnWidth="*" 
                                     MaxHeight="180">
                 <ig:XamGrid.Columns>
-                    <ig:TextColumn Key="Name" HeaderText="Name" Width="299">
+                    <ig:TextColumn Key="Name" HeaderText="Input" MinimumWidth="100" IsReadOnly="True">
                         <ig:TextColumn.AddNewRowEditorTemplate>
                             <DataTemplate>
-                                <TextBox Text="" />
+                                <TextBlock Text="test"></TextBlock>
                             </DataTemplate>
                         </ig:TextColumn.AddNewRowEditorTemplate>
                     </ig:TextColumn>
-                    <ig:CheckBoxColumn Key="Value" HeaderText="Value" Width="299">
+                    <ig:TextColumn Key="DefaultValue" HeaderText="Default Value"  MinimumWidth="100">
+                        <ig:TextColumn.AddNewRowEditorTemplate>
+                            <DataTemplate>
+                                <TextBox Text="" Margin="0">
+                                    <customControls:WatermarkTextBox.Watermark>
+                                        <Label Style="{StaticResource WatermarkLabelStyle}">Default Value</Label>
+                                    </customControls:WatermarkTextBox.Watermark>
+                                </TextBox>
+                            </DataTemplate>
+                        </ig:TextColumn.AddNewRowEditorTemplate>
+                    </ig:TextColumn>
+                    <ig:CheckBoxColumn Key="RequiredField" HeaderText="Required" MinimumWidth="100">
                         <ig:CheckBoxColumn.AddNewRowEditorTemplate>
                             <DataTemplate>
-                                <CheckBox HorizontalAlignment="Center" />
+                                <CheckBox HorizontalAlignment="Center"></CheckBox>
+                            </DataTemplate>
+                        </ig:CheckBoxColumn.AddNewRowEditorTemplate>
+                    </ig:CheckBoxColumn>
+                    <ig:CheckBoxColumn Key="EmptyIsNull" HeaderText="Empty Is Null" MinimumWidth="100" IsResizable="False">
+                        <ig:CheckBoxColumn.AddNewRowEditorTemplate>
+                            <DataTemplate>
+                                <CheckBox HorizontalAlignment="Center"></CheckBox>
                             </DataTemplate>
                         </ig:CheckBoxColumn.AddNewRowEditorTemplate>
                     </ig:CheckBoxColumn>

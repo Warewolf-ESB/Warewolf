@@ -4,7 +4,7 @@
 	<s:Boolean x:Key="/Default/CodeEditing/GenerateMemberBody/WrapIntoRegions/@EntryValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeEditing/Intellisense/CodeCompletion/IntelliSenseCompletingCharacters/CSharpCompletingCharacters/UpgradedFromVSSettings/@EntryValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeEditing/TypingAssist/FormatBlockOnRBrace/@EntryValue">False</s:Boolean>
-	<s:Boolean x:Key="/Default/CodeEditing/TypingAssist/FormatStatementOnSemicolon/@EntryValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeEditing/TypingAssist/FormatStatementOnSemicolon/@EntryValue">False</s:Boolean>	
 	<s:Int64 x:Key="/Default/CodeInspection/ComplexityAnalysis/Threshold/@EntryValue">20</s:Int64>
 	<s:Int64 x:Key="/Default/CodeInspection/CleanCode/ClassTooBigMaximum/@EntryValue">35</s:Int64>
 	<s:Int64 x:Key="/Default/CodeInspection/CleanCode/ExcessiveIndentationMaximum/@EntryValue">5</s:Int64>
@@ -13,7 +13,32 @@
 	<s:Int64 x:Key="/Default/CodeInspection/CleanCode/TooManyChainedReferencesMaximum/@EntryValue">6</s:Int64>
 	<s:Int64 x:Key="/Default/CodeInspection/CleanCode/TooManyMethodArgumentsMaximum/@EntryValue">8</s:Int64>	
 	<s:Boolean x:Key="/Default/CodeInspection/ExcludedFiles/FileMasksToSkip/=_002ASteps_002Ecs/@EntryIndexedValue">True</s:Boolean>	
-	<s:Boolean x:Key="/Default/CodeInspection/ExcludedFiles/FileMasksToSkip/=_002AUIMap_002Ecs/@EntryIndexedValue">True</s:Boolean>	
+	<s:Boolean x:Key="/Default/CodeInspection/ExcludedFiles/FileMasksToSkip/=_002AUIMap_002Ecs/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeInspection/ExcludedFiles/FileMasksToSkip/=_002A_002Emin_002Ejs/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeInspection/ExcludedFiles/FileMasksToSkip/=_002A_002Emin_002Ejs/@EntryIndexRemoved">True</s:Boolean>	
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=034E0B3D_002D3BDC_002D4B8E_002DBC77_002DEC09877B6FBF/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=134EC485_002D9C05_002D4EE2_002D8C35_002D6A8B6A5528BF/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=1B229665_002D1631_002D4275_002DAFBD_002DCB5B7775E4CA/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=1FD73E36_002DFC73_002D4BDF_002DBCBA_002D278A44F06550/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=211601FA_002D019A_002D4F23_002D9A30_002D5FE5344E1BE1/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=2A8088A6_002D8F8D_002D42FD_002DB877_002DD809C494C561/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=2C7F0E32_002DC4C4_002D422D_002DA767_002D92F3B3510392/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=3C4AC14C_002D4134_002D48A6_002DA9EA_002D9D47218E05C5/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=3C6D24ED_002D71A4_002D4A97_002DA941_002D15C02754A0DE/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=56C3C6A6_002D7325_002D40FD_002D945E_002DC529CABE2579/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=6A65D99B_002D61C5_002D4376_002DB4F7_002D71A503F9351F/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7D8F4122_002D9557_002D4433_002DA4D0_002D7E960D1C32B9/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=85617545_002D2121_002D4683_002D9828_002DDAEDB5878CE9/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=86E580CD_002DC480_002D435A_002D8978_002DA9C27377C900/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=96E59B04_002D1506_002D4554_002DB46A_002DB2B494116B07/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=A03004BE_002D79B5_002D47AF_002D88EF_002D112197619A5F/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=B0564C7A_002D9DA8_002D4751_002DB5D4_002DD446138E0987/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=B27B3F88_002D100B_002D496F_002DB574_002D04684F612BB9/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=BA2D7EFC_002DD8F2_002D42FB_002D8867_002D3B328AA2A38E/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=D754B817_002DA714_002D4E6E_002DBD46_002D8C4FFFFBDACB/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=DD7772F4_002DE445_002D48F6_002DB594_002DB4C31E962336/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=E580C1E3_002D01E4_002D424F_002DA6B2_002D279C3079C3BF/@EntryIndexedValue">ExplicitlyExcluded</s:String>	
+	<s:String x:Key="/Default/CodeInspection/GeneratedCode/GeneratedFileMasks/=_002A_002Efeature_002Ecs/@EntryIndexedValue">*.feature.cs</s:String>
 	<s:String x:Key="/Default/CodeInspection/Highlighting/AnalysisEnabled/@EntryValue">SOLUTION</s:String>	
 	<s:Boolean x:Key="/Default/CodeInspection/Highlighting/IdentifierHighlightingEnabled/@EntryValue">True</s:Boolean>
 	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=AccessToForEachVariableInClosure/@EntryIndexedValue">ERROR</s:String>
@@ -265,6 +290,16 @@
 	<s:String x:Key="/Default/CodeStyle/CodeFormatting/XmlFormatter/TagAttributeIndenting/@EntryValue">OneStep</s:String>
 	<s:String x:Key="/Default/CodeStyle/CSharpMemberOrderPattern/LayoutType/@EntryValue">UsingRegions</s:String>
 	<s:Boolean x:Key="/Default/CodeStyle/CSharpUsing/AllowAlias/@EntryValue">False</s:Boolean>
+	<s:String x:Key="/Default/CodeStyle/FileHeader/FileHeaderText/@EntryValue">&#xD;
+/*&#xD;
+*  Warewolf - The Easy Service Bus&#xD;
+*  Copyright $CURRENT_YEAR$ by Warewolf Ltd &lt;alpha@warewolf.io&gt;&#xD;
+*  Licensed under GNU Affero General Public License 3.0 or later. &#xD;
+*  Some rights reserved.&#xD;
+*  Visit our website for more information &lt;http://warewolf.io/&gt;&#xD;
+*  AUTHORS &lt;http://warewolf.io/authors.php&gt; , CONTRIBUTORS &lt;http://warewolf.io/contributors.php&gt;&#xD;
+*  @license GNU Affero General Public License &lt;http://www.gnu.org/licenses/agpl-3.0.html&gt;&#xD;
+*/</s:String>
 	<s:Boolean x:Key="/Default/CodeStyle/Generate/=EqualityMembers/@KeyIndexDefined">True</s:Boolean>
 	<s:String x:Key="/Default/CodeStyle/Generate/=EqualityMembers/Options/=EqualityOperators/@EntryIndexedValue">True</s:String>
 	<s:String x:Key="/Default/CodeStyle/Generate/=EqualityMembers/Options/=ImplementIEquatable/@EntryIndexedValue">True</s:String>
