@@ -30,20 +30,15 @@ namespace Dev2.Communication
         readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Objects,
-                TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple,
-                ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
-                PreserveReferencesHandling = PreserveReferencesHandling.Objects
+                TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
             };
         readonly JsonSerializerSettings _deSerializerSettings = new JsonSerializerSettings
             {
-                TypeNameHandling = TypeNameHandling.Objects,
-                ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
-                PreserveReferencesHandling = PreserveReferencesHandling.Objects
+                TypeNameHandling = TypeNameHandling.Objects
             };
-        public string Serialize<T>(T message)
+        public string Serialize<T>(T obj)
         {
-            VerifyArgument.IsNotNull("message", message);
-            return JsonConvert.SerializeObject(message, Formatting, _serializerSettings);
+            return JsonConvert.SerializeObject(obj, Formatting, _serializerSettings);
         }
 
         public T Deserialize<T>([NotNull] string message)

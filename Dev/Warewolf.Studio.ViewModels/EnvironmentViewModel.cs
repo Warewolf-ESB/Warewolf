@@ -153,7 +153,7 @@ namespace Warewolf.Studio.ViewModels
             CanCreatePluginSource = false;
             CanCreateServerSource = false;
             CanCreateWebService = false;
-            CanCreateWebSource = true;
+            CanCreateWebSource = false;
             CanDelete = true;
             CanDeploy = false;
             CanRename = true;
@@ -542,7 +542,7 @@ namespace Warewolf.Studio.ViewModels
             itemCreated.CanCreatePluginSource = false;
             itemCreated.CanCreateServerSource = false;
             itemCreated.CanCreateWebService = false;
-            itemCreated.CanCreateWebSource = true;
+            itemCreated.CanCreateWebSource = false;
             itemCreated.CanCreateWorkflowService = false;
             itemCreated.CanDeploy = false;
             itemCreated.CanShowVersions = false;

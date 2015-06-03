@@ -1207,6 +1207,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Plugin Connector Source - .
+        /// </summary>
+        public static string PluginSourceEditHeaderLabel {
+            get {
+                return ResourceManager.GetString("PluginSourceEditHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Plugin Connector Source.
+        /// </summary>
+        public static string PluginSourceNewHeaderLabel {
+            get {
+                return ResourceManager.GetString("PluginSourceNewHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The following task has been renamed {0} -&gt; {1}. You will lose the history for the old task.{2} Would you like to save the new name?{2}-------------------------------------------------------------------&quot; + &quot;Yes - Save with the new name.{2}No - Save with the old name.{2}Cancel - Returns you to Scheduler..
         /// </summary>
         public static string RenameConflictDescription {

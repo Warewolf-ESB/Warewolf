@@ -9,8 +9,15 @@
                     xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                     xmlns:interactivity="http://www.codeplex.com/prism"
-                     mc:Ignorable="d" 
+                    xmlns:dialogues="clr-namespace:Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;assembly=Dev2.Common.Interfaces"
+                    mc:Ignorable="d" 
+               d:DataContext="{d:DesignInstance Type=dialogues:IManagePluginSourceViewModel,
+                                              IsDesignTimeCreatable=False}"
                      d:DesignHeight="450" d:DesignWidth="800" BorderBrush="White">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <views:NotConverter x:Key="NotConverter" />
+    </UserControl.Resources>
     <Grid Margin="{Binding ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -38,8 +45,10 @@
                                               Margin="{StaticResource ControlBorderTopRight}"
                                               Grid.Column="0"
                                               x:Name="SearchTextBox" 
+                                              Text="{Binding SearchTerm, Delay=300, UpdateSourceTrigger=PropertyChanged}"
                                               Style="{StaticResource SearchTextboxStyle}"
                                               LabelText="Filter"
+                                              ClearSearchCommand="{Binding ClearSearchTextCommand}"
                                               HorizontalAlignment="Stretch" />
             <Button Grid.Row="0"
                         Grid.Column="1"
@@ -47,7 +56,8 @@
                         Height="25"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        Margin="0,1,0,-1">
+                        Margin="0,1,0,-1"
+                    Visibility="{Binding IsLoading,Converter={StaticResource NotConverter}}">
                 <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
                                     FontSize="16" 
                                     Icon="Refresh" 
@@ -56,6 +66,7 @@
             </Button>
             <views:CircularProgressBar Grid.Row="0"
                                            Grid.Column="1"
+                                           Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibilityConverter}}"
                                            Width="25"
                                            Height="25"
                                            Padding="2.5" />
@@ -64,15 +75,17 @@
         <ig:XamDataTree Margin="{StaticResource ControlBorderTop}"
                         x:Name="ExplorerTree"
                         Grid.Row="2"
+                        ActiveDataItem="{Binding SelectedDll, Mode=TwoWay}"
+                        ItemsSource="{Binding DllListings}"
                         IsSelectedMemberPath="IsSelected"
-                        DisplayMemberPath="DisplayName"
+                        DisplayMemberPath="Name"
                         NodeLineVisibility="Hidden" >
 
             <ig:XamDataTree.EditingSettings>
                 <ig:TreeEditingSettings AllowDeletion="False"
-                                        AllowEditing="True"
+                                        AllowEditing="False"
                                         IsEnterKeyEditingEnabled="False"
-                                        IsF2EditingEnabled="True"
+                                        IsF2EditingEnabled="False"
                                         IsMouseActionEditingEnabled="None"
                                         IsOnNodeActiveEditingEnabled="False"
                                         />
@@ -80,16 +93,10 @@
 
             <ig:XamDataTree.GlobalNodeLayouts>
                 <ig:NodeLayout Key="Children"
-                                   DisplayMemberPath="ResourceName"
-                                   IsExpandedMemberPath="IsExpanded">
-
-                    <ig:NodeLayout.EditorTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <TextBox MaxWidth="200" Height="25"></TextBox>
-                            </Grid>
-                        </DataTemplate>
-                    </ig:NodeLayout.EditorTemplate>
+                                   DisplayMemberPath="Name"
+                                   IsExpandedMemberPath="IsExpanded"
+                               Visibility="{Binding Path=Data.IsVisible,                               
+                                                    Converter={StaticResource BoolToVisibilityConverter}}">
                     <ig:NodeLayout.ItemTemplate>
                         <DataTemplate>
                             <!-- ADD NEW GRID LAYOUT TO ALIGN DATA TREE ITEMS -->
@@ -106,7 +113,7 @@
                                                    TextTrimming="CharacterEllipsis"
                                                    VerticalAlignment="Center"
                                                    HorizontalAlignment="Stretch"
-                                                   Text="{Binding}">
+                                                   Text="{Binding Path=Data.Name}">
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="MouseLeftButtonDown">
                                                     <interactivity:InvokeCommandAction Command="{Binding}" TriggerParameterPath="ClickCount" />
@@ -155,7 +162,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TextBlock Text="Assembly"></TextBlock>
-            <TextBox Grid.Column="1"></TextBox>
+            <TextBox Grid.Column="1" Text="{Binding SelectedDll.FullName}"></TextBox>
         </Grid>
         <Grid Grid.Row="4" Margin="{StaticResource ControlBorderTop}" >
             <Grid.ColumnDefinitions>
@@ -168,7 +175,7 @@
                     Margin="{StaticResource ElementBorderControlRight}"
                     Width="60" 
                     Height="30" 
-                    Command="{Binding}" 
+                    Command="{Binding OkCommand}" 
                     Content="Save"></Button>
             <Button Grid.Column="2"
                     x:Name="CancelButton" 

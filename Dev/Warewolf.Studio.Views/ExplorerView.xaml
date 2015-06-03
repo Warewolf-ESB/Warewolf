@@ -539,8 +539,6 @@
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
 
-                                                    <ig:XamMenuSeparator />
-
                                                     <ig:XamMenuItem Name="NewPluginSource"
                                                                 Command="{Binding Path=Data.NewCommand}"
                                                                 CommandParameter="{x:Static data:ResourceType.PluginSource}"
@@ -553,7 +551,7 @@
                                                                Source="{StaticResource Explorer-DLL-Create}" />
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
-
+                                                    <ig:XamMenuSeparator />
                                                     <ig:XamMenuItem Name="Rename"
 																InputGestureText="[F2]"
                                                                 Command="{Binding Path=Data.RenameCommand}"

@@ -197,18 +197,18 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public ObservableCollection<IWebServiceSource> WebSources { get; set; }
 
-        public List<DllListing> GetDllListings()
+        public List<IDllListing> GetDllListings(IDllListing listing)
         {
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("GetDllListingsService");
-
+            comsController.AddPayloadArgument("currentDllListing", serializer.Serialize(listing));
             var workspaceId = Connection.WorkspaceID;
             var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
             if (result.HasError)
             {
                 throw new WarewolfSupportServiceException(result.Message.ToString(), null);
             }
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            var dllListings = serializer.Deserialize<List<DllListing>>(result.Message.ToString());
+            var dllListings = serializer.Deserialize<List<IDllListing>>(result.Message.ToString());
             return dllListings;
         }
     }

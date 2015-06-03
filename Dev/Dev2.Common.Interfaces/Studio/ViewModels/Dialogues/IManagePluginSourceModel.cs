@@ -5,7 +5,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
     public interface IManagePluginSourceModel
     {
         string ServerName { get; }
-        List<DllListing> GetDllListings();
+        IList<IDllListing> GetDllListings(IDllListing listing);
         void Save(IPluginSource toDbSource);
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -12,13 +13,14 @@ using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Warewolf.Core;
+using Warewolf.Studio.Core;
 using Warewolf.Studio.Models.Help;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ManagePluginSourceViewModel : SourceBaseImpl<IPluginSource>, IDisposable
+    public class ManagePluginSourceViewModel : SourceBaseImpl<IPluginSource>, IDisposable, IManagePluginSourceViewModel
     {
-        DllListing _selectedDll;
+        IDllListingModel _selectedDll;
         readonly IManagePluginSourceModel _updateManager ;
         readonly IEventAggregator _aggregator;
         IPluginSource _pluginSource;
@@ -26,8 +28,11 @@ namespace Warewolf.Studio.ViewModels
         readonly string _warewolfserverName;
         string _headerText;
         private bool _isDisposed;
-        List<DllListing> _dllListings;
+        List<IDllListingModel> _dllListings;
+        bool _isLoading;
+        string _searchTerm;
 
+        /// <exception cref="Exception">A delegate callback throws an exception.</exception>
         public ManagePluginSourceViewModel(IManagePluginSourceModel updateManager, IEventAggregator aggregator):base(ResourceType.PluginSource)
         {
             VerifyArgument.IsNotNull("updateManager", updateManager);
@@ -35,20 +40,73 @@ namespace Warewolf.Studio.ViewModels
             _updateManager = updateManager;
             _aggregator = aggregator;
 
-            HeaderText = Resources.Languages.Core.DatabaseSourceServerNewHeaderLabel;// "New Database Connector Source Server DatabaseSourceServerHeaderLabel";
-            Header = Resources.Languages.Core.DatabaseSourceServerNewHeaderLabel;
-            OkCommand = new DelegateCommand(SaveConnection,CanSave);
+            HeaderText = Resources.Languages.Core.PluginSourceNewHeaderLabel;
+            Header = Resources.Languages.Core.PluginSourceNewHeaderLabel;
+            OkCommand = new DelegateCommand(Save,CanSave);
+            CancelCommand = new DelegateCommand(() => CloseAction.Invoke());
+            ClearSearchTextCommand = new DelegateCommand(() => SearchTerm = "");
             // ReSharper disable MaximumChainedReferences
             new Task(()=>
             {
-                var names = _updateManager.GetDllListings();
-                Dispatcher.CurrentDispatcher.Invoke(() => DllListings = names);
+                IsLoading = true;
+                var names = _updateManager.GetDllListings(null).Select(input => new DllListingModel(_updateManager,input)).ToList();
+                Dispatcher.CurrentDispatcher.Invoke(() =>
+                {
+                    DllListings = new List<IDllListingModel>(names);
+                    IsLoading = false;
+                });
             }).Start();
             // ReSharper restore MaximumChainedReferences
             _warewolfserverName = updateManager.ServerName;
         }
 
-        public List<DllListing> DllListings
+        public ICommand ClearSearchTextCommand { get; set; }
+
+        public bool IsLoading
+        {
+            get
+            {
+                return _isLoading;
+            }
+            set
+            {
+                _isLoading = value;
+                OnPropertyChanged(() => IsLoading);
+            }
+        }
+
+        public string SearchTerm
+        {
+            get
+            {
+                return _searchTerm;
+            }
+            set
+            {
+                if(!value.Equals(_searchTerm))
+                {
+                    _searchTerm = value;
+                    PerformSearch(_searchTerm);
+                    OnPropertyChanged(() => SearchTerm);
+                }
+            }
+        }
+
+        void PerformSearch(string searchTerm)
+        {
+            if (DllListings != null)
+            {
+                foreach (var dllListingModel in DllListings)
+                {
+                    dllListingModel.Filter(searchTerm);
+                }
+                OnPropertyChanged(() => DllListings);
+            }
+        }
+
+        public ICommand CancelCommand { get; set; }
+        public Action CloseAction { get; set; }
+        public List<IDllListingModel> DllListings
         {
             get
             {
@@ -80,10 +138,10 @@ namespace Warewolf.Studio.ViewModels
 
         void FromSource(IPluginSource pluginSource)
         {
-            SelectedDll = pluginSource.SelectedDll;
+            SelectedDll = new DllListingModel(_updateManager,pluginSource.SelectedDll);
         }
 
-        public DllListing SelectedDll
+        public IDllListingModel SelectedDll
         {
             get
             {
@@ -93,18 +151,19 @@ namespace Warewolf.Studio.ViewModels
             {
                 _selectedDll = value;
                 OnPropertyChanged(() => SelectedDll);
+                ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
             }
         }
 
         void SetupHeaderTextFromExisting()
         {
-            HeaderText = Resources.Languages.Core.DatabaseSourceServerEditHeaderLabel + _warewolfserverName.Trim() + "\\" + (_pluginSource == null ? ResourceName : _pluginSource.Name).Trim();
+            HeaderText = Resources.Languages.Core.PluginSourceEditHeaderLabel + _warewolfserverName.Trim() + "\\" + (_pluginSource == null ? ResourceName : _pluginSource.Name).Trim();
             Header = ((_pluginSource == null ? ResourceName : _pluginSource.Name));
         }
 
         bool CanSave()
         {
-            return _selectedDll!=null;
+            return _selectedDll!=null&& !string.IsNullOrEmpty(_selectedDll.FullName) &&_selectedDll.FullName.EndsWith(".dll");
         }
 
         public override void UpdateHelpDescriptor(string helpText)
@@ -133,7 +192,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        void SaveConnection()
+        void Save()
         {
             if(_pluginSource == null)
             {
