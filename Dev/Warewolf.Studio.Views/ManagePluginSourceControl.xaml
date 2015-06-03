@@ -57,6 +57,7 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         Margin="0,1,0,-1"
+                    Command="{Binding RefreshCommand}"
                     Visibility="{Binding IsLoading,Converter={StaticResource NotConverter}}">
                 <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
                                     FontSize="16" 

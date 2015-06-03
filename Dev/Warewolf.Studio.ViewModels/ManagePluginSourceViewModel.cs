@@ -45,19 +45,27 @@ namespace Warewolf.Studio.ViewModels
             OkCommand = new DelegateCommand(Save,CanSave);
             CancelCommand = new DelegateCommand(() => CloseAction.Invoke());
             ClearSearchTextCommand = new DelegateCommand(() => SearchTerm = "");
+            RefreshCommand = new DelegateCommand(PerformLoadAll);
             // ReSharper disable MaximumChainedReferences
-            new Task(()=>
+            PerformLoadAll();
+            // ReSharper restore MaximumChainedReferences
+            _warewolfserverName = updateManager.ServerName;
+        }
+
+        public ICommand RefreshCommand { get; set; }
+
+        void PerformLoadAll()
+        {
+            new Task(() =>
             {
                 IsLoading = true;
-                var names = _updateManager.GetDllListings(null).Select(input => new DllListingModel(_updateManager,input)).ToList();
+                var names = _updateManager.GetDllListings(null).Select(input => new DllListingModel(_updateManager, input)).ToList();
                 Dispatcher.CurrentDispatcher.Invoke(() =>
                 {
                     DllListings = new List<IDllListingModel>(names);
                     IsLoading = false;
                 });
             }).Start();
-            // ReSharper restore MaximumChainedReferences
-            _warewolfserverName = updateManager.ServerName;
         }
 
         public ICommand ClearSearchTextCommand { get; set; }
@@ -119,6 +127,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        /// <exception cref="Exception">A delegate callback throws an exception.</exception>
         public ManagePluginSourceViewModel(IManagePluginSourceModel updateManager, IRequestServiceNameViewModel requestServiceNameViewModel, IEventAggregator aggregator)
             : this(updateManager, aggregator)
         {
@@ -127,6 +136,8 @@ namespace Warewolf.Studio.ViewModels
             RequestServiceNameViewModel = requestServiceNameViewModel;
 
         }
+
+        /// <exception cref="Exception">A delegate callback throws an exception.</exception>
         public ManagePluginSourceViewModel(IManagePluginSourceModel updateManager, IEventAggregator aggregator, IPluginSource pluginSource)
             : this(updateManager,  aggregator)
         {

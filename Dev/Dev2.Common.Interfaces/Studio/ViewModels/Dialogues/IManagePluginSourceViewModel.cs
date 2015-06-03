@@ -12,5 +12,6 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         bool IsLoading { get; set; }
         string SearchTerm { get; set; }
         ICommand ClearSearchTextCommand { get; }
+        ICommand RefreshCommand { get; set; }
     }
 }
