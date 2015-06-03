@@ -110,5 +110,14 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         }
 
         public event Action<IWebServiceSource> WebServiceSourceSaved;
+
+        public string TestPluginService(IPluginService inputValues)
+        {
+            return null;
+        }
+
+        public void Save(IPluginService toDbSource)
+        {
+        }
     }
 }

@@ -211,6 +211,16 @@ namespace Warewolf.Studio.ServerProxyLayer
             var dllListings = serializer.Deserialize<List<DllListing>>(result.Message.ToString());
             return dllListings;
         }
+
+        public IList<IPluginSource> FetchPluginSources()
+        {
+            return null;
+        }
+
+        public IList<IPluginAction> PluginActions(IPluginSource source)
+        {
+            return null;
+        }
     }
          
     

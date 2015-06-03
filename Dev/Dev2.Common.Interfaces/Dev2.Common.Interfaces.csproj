@@ -264,6 +264,8 @@
     <Compile Include="IManageDatabaseSourceView.cs" />
     <Compile Include="IMenuView.cs" />
     <Compile Include="INetworkStateChangedEventArgs.cs" />
+    <Compile Include="IPluginAction.cs" />
+    <Compile Include="IPluginService.cs" />
     <Compile Include="IPluginSource.cs" />
     <Compile Include="IRequestServiceNameView.cs" />
     <Compile Include="IResourceDefinition.cs" />
@@ -282,6 +284,9 @@
     <Compile Include="NameValue.cs" />
     <Compile Include="NetworkStateChangedState.cs" />
     <Compile Include="PermissionsChangedArgs.cs" />
+    <Compile Include="PluginServiceDefinition.cs" />
+    <Compile Include="PluginService\IPluginServiceModel.cs" />
+    <Compile Include="PluginService\IPluginServiceViewModel.cs" />
     <Compile Include="PluginSourceDefinition.cs" />
     <Compile Include="SaveDialog\IRequestServiceNameViewModel.cs" />
     <Compile Include="ServerDialogue\IServerSource.cs" />

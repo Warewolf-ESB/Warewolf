@@ -44,5 +44,7 @@ namespace Dev2.Common.Interfaces
 
         void EditResource(IDbSource selectedSource);
         void EditResource(IWebServiceSource selectedSource);
+
+        void EditResource(IPluginSource selectedSource);
     }
 }

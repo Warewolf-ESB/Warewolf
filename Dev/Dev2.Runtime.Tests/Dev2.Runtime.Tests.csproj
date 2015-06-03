@@ -288,6 +288,7 @@
     <Compile Include="Services\RenameResourceTests.cs" />
     <Compile Include="Services\AbstractServiceExecutionTests.cs" />
     <Compile Include="Services\PingTests.cs" />
+    <Compile Include="Services\TestPluginServiceTest.cs" />
     <Compile Include="Services\TestSettingsRead.cs" />
     <Compile Include="Services\TestWebserviceTest.cs" />
     <Compile Include="Services\TestGetDllListings.cs" />

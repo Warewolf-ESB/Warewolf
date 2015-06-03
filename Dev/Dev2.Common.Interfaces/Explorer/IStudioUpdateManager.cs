@@ -25,6 +25,8 @@ namespace Dev2.Common.Interfaces.Explorer
 
         event Action<IWebServiceSource> WebServiceSourceSaved;
 
-        
+        string TestPluginService(IPluginService inputValues);
+
+        void Save(IPluginService toDbSource);
     }
 }

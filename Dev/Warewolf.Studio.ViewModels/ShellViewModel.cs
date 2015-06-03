@@ -143,6 +143,10 @@ namespace Warewolf.Studio.ViewModels
             GetRegion("Workspace").Add(sourceViewModel);            
         }
 
+        public void EditResource(IPluginSource selectedSource)
+        {
+        }
+
         public IViewsCollection GetRegionViews(string regionName)
         {
             var region = GetRegion(regionName);

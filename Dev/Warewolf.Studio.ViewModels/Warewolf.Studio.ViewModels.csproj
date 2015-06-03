@@ -129,6 +129,7 @@
     <Compile Include="ManageDatabaseServiceViewModel.cs" />
     <Compile Include="ManageDatabaseSourceModel.cs" />
     <Compile Include="ManageDatabaseSourceViewModel.cs" />
+    <Compile Include="ManagePluginServiceViewModel.cs" />
     <Compile Include="ManagePluginSourceModel.cs" />
     <Compile Include="ManagePluginSourceViewModel.cs" />
     <Compile Include="ManageWebServiceSourceModel.cs" />
@@ -136,6 +137,7 @@
     <Compile Include="ManageWebserviceViewModel.cs" />
     <Compile Include="MenuViewModel.cs" />
     <Compile Include="NewServerViewModel.cs" />
+    <Compile Include="PluginServiceModel.cs" />
     <Compile Include="RequestServiceNameViewModel.cs" />
     <Compile Include="ServerAddedEvent.cs" />
     <Compile Include="SourceBaseImpl.cs" />

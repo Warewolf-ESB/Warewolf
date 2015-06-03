@@ -24,14 +24,14 @@ namespace Dev2.Common.Interfaces.DB
         bool IsRefreshing { get; set; }
         // ReSharper disable ReturnTypeCanBeEnumerable.Global
         bool InputsRequired { get; set; }
-        bool IsInputsEmptyRows { get; set; }
+
         // ReSharper restore ReturnTypeCanBeEnumerable.Global
         DataTable TestResults { get; set; }
         bool IsTestResultsEmptyRows { get; set; }
         ICommand CreateNewSourceCommand { get; set; }
         ICommand TestProcedureCommand { get; set; }
         bool IsTesting { get; set; }
-        bool IsOutputMappingEmptyRows { get; set; }
+
         ICommand SaveCommand { get; set; }
         bool CanSelectProcedure { get; set; }
         bool CanEditMappings { get; set; }
