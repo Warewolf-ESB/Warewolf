@@ -75,10 +75,11 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
 
         ObservableCollection<IWebServiceSource> WebSources { get; set; }
 
-        List<DllListing> GetDllListings();
+
 
         IList<IPluginSource> FetchPluginSources();
 
         IList<IPluginAction> PluginActions(IPluginSource source);
+        List<IDllListing> GetDllListings(IDllListing listing);
     }
 }

@@ -1,8 +1,11 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 using Dev2.Common.Interfaces;
+using Microsoft.Practices.Prism.Commands;
+using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.Views
 {
@@ -34,7 +37,7 @@ namespace Warewolf.Studio.Views
             Application.Current.MainWindow.Effect = effect;
 
             _window = new Window { WindowStyle = WindowStyle.None, AllowsTransparency = true, Background = Brushes.Transparent, SizeToContent = SizeToContent.Manual, MinWidth = 640, MinHeight = 480, ResizeMode = ResizeMode.CanResize, WindowStartupLocation = WindowStartupLocation.CenterScreen, Content = this };
-            var vm = new PasteVM(text);
+            var vm = new PasteVm(text, RequestClose);
             _window.DataContext = vm;
             _window.ShowDialog();
             return vm.Text;
@@ -64,13 +67,54 @@ namespace Warewolf.Studio.Views
 
     }
 
-    public class PasteVM
+    public class PasteVm : BindableBase
     {
          string _text;
+        readonly Action _action;
+        DelegateCommand _saveCommand;
+        DelegateCommand _cancelCommand;
 
-        public PasteVM(string text)
+        public PasteVm(string text, Action action)
         {
             _text = text;
+            _action = action;
+            SaveCommand = new DelegateCommand(Save);
+            CancelCommand = new DelegateCommand(Cancel);
+        }
+
+        void Cancel()
+        {
+            Text = "";
+            _action();
+        }
+
+        void Save()
+        {
+            _action();
+        }
+
+        public DelegateCommand CancelCommand
+        {
+            get
+            {
+                return _cancelCommand;
+            }
+            set
+            {
+                _cancelCommand = value;
+            }
+        }
+
+        public DelegateCommand SaveCommand
+        {
+            get
+            {
+                return _saveCommand;
+            }
+            set
+            {
+                _saveCommand = value;
+            }
         }
 
         public string Text
@@ -79,7 +123,13 @@ namespace Warewolf.Studio.Views
             {
                 return _text;
             }
-            set { _text = value; }
+            set
+            {
+                _text = value; 
+                OnPropertyChanged(()=>Text);
+            }
         }
+
+        
     }
 }

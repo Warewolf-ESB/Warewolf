@@ -259,6 +259,7 @@
     <Compile Include="IConnectionStatusChangedEventArg.cs" />
     <Compile Include="IDeployViewControl.cs" />
     <Compile Include="IDev2Activity.cs" />
+    <Compile Include="IDllListing.cs" />
     <Compile Include="IExplorerView.cs" />
     <Compile Include="IHelpView.cs" />
     <Compile Include="IManageDatabaseSourceView.cs" />

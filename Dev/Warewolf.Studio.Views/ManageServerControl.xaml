@@ -114,7 +114,12 @@
                              HorizontalAlignment="Left" 
                              Margin="{StaticResource ElementBorderControlRight}"
                              IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, 
-                                        ConverterParameter={x:Static serviceModel:AuthenticationType.Windows}}">Windows</RadioButton>
+                                        ConverterParameter={x:Static serviceModel:AuthenticationType.Windows}}">Windows
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:Core.ServerSelectWindowsHelp}"
+                                 DataContext="{Binding}" />
+                    </i:Interaction.Behaviors>
+                </RadioButton>
                 <RadioButton Grid.Column="1" 
                              ToolTip="{Binding Path=UserAuthenticationToolTip}" 
                              Padding="0,0,5,0" 
@@ -122,14 +127,24 @@
                              HorizontalAlignment="Left" 
                              Margin="{StaticResource ElementBorderControlRight}"
                              IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, 
-                                        ConverterParameter={x:Static serviceModel:AuthenticationType.User}}">User</RadioButton>
+                                        ConverterParameter={x:Static serviceModel:AuthenticationType.User}}">User
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:Core.ServerSelectUserHelp}"
+                                 DataContext="{Binding}" />
+                    </i:Interaction.Behaviors>
+                </RadioButton>
                 <RadioButton Grid.Column="2" 
                              ToolTip="{Binding Path=PublicToolTip}" 
                              Padding="0,0,5,0" 
                              VerticalAlignment="Center" 
                              HorizontalAlignment="Left" 
                              IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, 
-                                        ConverterParameter={x:Static serviceModel:AuthenticationType.Public}}">Public</RadioButton>
+                                        ConverterParameter={x:Static serviceModel:AuthenticationType.Public}}">Public
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:Core.ServerSelectPublicHelp}"
+                                 DataContext="{Binding}" />
+                    </i:Interaction.Behaviors>
+                </RadioButton>
             </Grid>
         </Grid>
         <Grid Grid.Row="3" 
@@ -148,7 +163,12 @@
             <TextBox Grid.Row="0" 
                      Grid.Column="1" 
                      Text="{Binding Path=UserName}" 
-                     ToolTip="{Binding Path=UserNameToolTip}" ></TextBox>
+                     ToolTip="{Binding Path=UserNameToolTip}" >
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:Core.UserNameAuthenticationHelp}"
+                                 DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </TextBox>
             <TextBlock Grid.Row="1" 
                        Grid.Column="0" 
                        Margin="{StaticResource ControlBorderTop}"
@@ -197,7 +217,12 @@
                     Width="60" 
                     Height="30" 
                     Content="Test" 
-                    Command="{Binding Path=TestCommand}"/>
+                    Command="{Binding Path=TestCommand}">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:Core.ServerTestConnectionHelp}"
+                                 DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
         </StackPanel>
         <StackPanel Grid.Row="5" 
                     Margin="{StaticResource ControlBorderTop}"
@@ -213,7 +238,12 @@
                     Content="Save" 
                     IsEnabled="{Binding Path=CanClickOk}" 
                     ToolTip="{Binding Path=SaveToolTip}" 
-                    Command="{Binding Path=OkCommand}"></Button>
+                    Command="{Binding Path=OkCommand}">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:Core.ServerSaveHelp}"
+                                 DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
         </StackPanel>
     </Grid>
 </UserControl>

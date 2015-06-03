@@ -43,9 +43,9 @@ namespace Warewolf.Studio.ViewModels
 
         public string ServerName { get; private set; }
 
-        public List<DllListing> GetDllListings()
+        public IList<IDllListing> GetDllListings(IDllListing listing)
         {
-            return _queryProxy.GetDllListings();
+            return _queryProxy.GetDllListings(listing);
         }
 
         public void Save(IPluginSource source)

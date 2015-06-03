@@ -216,7 +216,7 @@ namespace Warewolf.Studio.ViewModels
                 UpdateMappingsFromResponse();
                 ErrorMessage = "";
                 CanEditMappings = true;
-               
+                CanEditResponse = true;
                 IsTesting = false;
             }
             catch (Exception err)
@@ -225,6 +225,7 @@ namespace Warewolf.Studio.ViewModels
                 OutputMapping = new ObservableCollection<IServiceOutputMapping>();
                 IsTesting = false;
                 CanEditMappings = false;
+                CanEditResponse = false;
             }
 
 

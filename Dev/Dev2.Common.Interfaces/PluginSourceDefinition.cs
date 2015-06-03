@@ -8,7 +8,7 @@ namespace Dev2.Common.Interfaces
 
         public string Name { get; set; }
         public Guid Id { get; set; }
-        public DllListing SelectedDll { get; set; }
+        public IDllListing SelectedDll { get; set; }
         public string Path { get; set; }
 
         #endregion

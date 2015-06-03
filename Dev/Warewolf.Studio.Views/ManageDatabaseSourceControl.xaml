@@ -219,7 +219,12 @@
             <Button Width="120" 
                     Height="30" 
                     Command="{Binding CancelTestCommand}" 
-                    Content="{Binding CancelTestLabel}"></Button>
+                    Content="{Binding CancelTestLabel}">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:Core.DatabaseSourceCancelHelp}"
+                                 DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
         </StackPanel>
         <Button x:Name="SaveButton" 
                 Grid.Row="5" 

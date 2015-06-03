@@ -5,6 +5,10 @@
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:views="clr-namespace:Warewolf.Studio.Views"
                     xmlns:ig="http://schemas.infragistics.com/xaml"
+                    xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
+                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                    xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                    xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                     CloseButtonVisibility="Collapsed"
                     HeaderIconVisibility="Collapsed"
                     MaximizeButtonVisibility="Collapsed"
@@ -33,8 +37,18 @@
                  VerticalContentAlignment="Top"
                  SnapsToDevicePixels="True" 
                  VerticalScrollBarVisibility="Auto"
-                 HorizontalScrollBarVisibility="Disabled"
-                 Text="{Binding PasteText}"></TextBox>
+                 HorizontalScrollBarVisibility="Disabled" Text="{Binding Text}">
+            <customControls:WatermarkTextBox.Watermark>
+                <StackPanel VerticalAlignment="Top">
+                    <Label Margin="-6,-6,0,0" Style="{StaticResource WatermarkLabelStyle}">Paste response here</Label>
+                </StackPanel>
+            </customControls:WatermarkTextBox.Watermark>
+            <i:Interaction.Behaviors>
+                <core:HelpSetter Text="{x:Static languages:Core.WebServicePasteInputHelp}"
+                                                         DataContext="{Binding}" />
+            </i:Interaction.Behaviors>
+       
+        </TextBox>
         <StackPanel Grid.Row="1" 
                     Margin="0,-2,5,5"
                     Orientation="Horizontal" 
@@ -44,14 +58,24 @@
                     Margin="{StaticResource ElementBorderControlRight}"
                     Width="60" 
                     Height="30" 
-                    Command="{Binding}" 
-                    Content="Save"></Button>
+                    Command="{Binding SaveCommand}" 
+                    Content="Save">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:Core.WebServicePasteSaveCommandHelp}"
+                                                         DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
             <Button x:Name="CancelButton" 
                     Width="60" 
                     Height="30" 
-                    Command="{Binding}" 
-                    Click="CancelButton_OnClick"
-                    Content="Cancel"></Button>
+                    Command="{Binding Path=Cancel}" 
+
+                    Content="Cancel">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:Core.WebServicePasteCancelCommandHelp}"
+                                                         DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
         </StackPanel>
     </Grid>
 </ig:XamDialogWindow>

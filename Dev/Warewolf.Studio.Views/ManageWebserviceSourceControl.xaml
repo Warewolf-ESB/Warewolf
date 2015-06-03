@@ -21,8 +21,7 @@
         <views:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </UserControl.Resources>
-    <Grid Background="White" 
-          x:Name="SourceGrid"
+    <Grid x:Name="SourceGrid"
           Margin="{StaticResource ElementBorder}"
           FocusManager.FocusedElement="{Binding ElementName=ServerTextBox}">
         <Grid.RowDefinitions>

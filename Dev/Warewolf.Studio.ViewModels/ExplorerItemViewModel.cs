@@ -66,14 +66,15 @@ namespace Warewolf.Studio.ViewModels
             RenameCommand = new DelegateCommand(() => IsRenaming = true);
             Server = server;
             NewCommand = new DelegateCommand<ResourceType?>(type => shellViewModel.NewResource(type, ResourceId));
-            CanCreateDbService = true; //todo:remove
-            CanCreateWorkflowService = true; //todo:remove
-            CanCreateServerSource = true; //todo:remove
-            CanCreateDbSource = true; //todo:remove
-            CanRename = true; //todo:remove
-            CanDelete = true; //todo:remove
+            CanCreateDbService = true; 
+            CanCreateWorkflowService = true; 
+            CanCreateServerSource = true; 
+            CanCreateDbSource = true; 
+            CanRename = true; 
+            CanDelete = true; 
             CanShowDependencies = true;
             CanCreatePluginService = true;
+            CanCreatePluginSource = true;
             CanCreateWebSource = true;
             CanCreateWebService = true;
             _explorerRepository = server.ExplorerRepository;
@@ -597,7 +598,7 @@ namespace Warewolf.Studio.ViewModels
                          CanCreateDbService = false,
                          CanCreateDbSource = false,
                          CanCreatePluginService = false,
-                         CanCreateWebSource = true,
+                         CanCreateWebSource = false,
 						ResourceType = ResourceType.Version
                     }
                     ));

@@ -6,6 +6,9 @@
              xmlns:db="clr-namespace:Dev2.Common.Interfaces.DB;assembly=Dev2.Common.Interfaces"
              xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+             xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="800" 
              d:DataContext="{d:DesignInstance Type=db:IServiceMappings,
@@ -23,7 +26,6 @@
             <RowDefinition />
             <RowDefinition Height="7" ></RowDefinition>
         </Grid.RowDefinitions>
-
         <ScrollViewer Grid.Row="0" 
                       HorizontalScrollBarVisibility="Auto" 
                       VerticalScrollBarVisibility="Auto">
@@ -47,26 +49,47 @@
                             <ig:TextColumn.AddNewRowEditorTemplate>
                                 <DataTemplate>
                                     <TextBox Style="{StaticResource NoBorderTextBoxStyle}" 
-                                             Text="{Binding Path=DefaultValue, UpdateSourceTrigger=PropertyChanged}" Margin="0"></TextBox>
+                                             Text="{Binding Path=DefaultValue, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                                 </DataTemplate>
                             </ig:TextColumn.AddNewRowEditorTemplate>
                         </ig:TextColumn>
-                        <ig:CheckBoxColumn Key="RequiredField" HeaderText="Required" MinimumWidth="100">
-                            <ig:CheckBoxColumn.AddNewRowEditorTemplate>
+                        <ig:UnboundColumn Key="RequiredField" 
+                                          HeaderText="Required" 
+                                          MinimumWidth="100">
+                            <ig:UnboundColumn.ItemTemplate>
                                 <DataTemplate>
-                                    <CheckBox Style="{StaticResource CheckBoxXamGridStyle}" 
+                                    <CheckBox Style="{StaticResource CheckBoxXamGridStyle}"
                                               IsChecked="{Binding Path=RequiredField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"></CheckBox>
                                 </DataTemplate>
-                            </ig:CheckBoxColumn.AddNewRowEditorTemplate>
-                        </ig:CheckBoxColumn>
-                        <ig:CheckBoxColumn Key="EmptyIsNull" HeaderText="Empty Is Null" MinimumWidth="100" IsResizable="False">
-                            <ig:CheckBoxColumn.AddNewRowEditorTemplate>
+                            </ig:UnboundColumn.ItemTemplate>
+                        </ig:UnboundColumn>
+                        <ig:UnboundColumn Key="EmptyIsNull" 
+                                          HeaderText="Empty Is Null" 
+                                          IsResizable="False"
+                                          MinimumWidth="100">
+                            <ig:UnboundColumn.ItemTemplate>
                                 <DataTemplate>
                                     <CheckBox Style="{StaticResource CheckBoxXamGridStyle}" 
                                               IsChecked="{Binding Path=EmptyIsNull, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"></CheckBox>
                                 </DataTemplate>
+                            </ig:UnboundColumn.ItemTemplate>
+                        </ig:UnboundColumn>
+                        <!--<ig:CheckBoxColumn Key="RequiredField" HeaderText="Required" MinimumWidth="100">
+                            <ig:CheckBoxColumn.AddNewRowEditorTemplate>
+                                <DataTemplate>
+                                    <CheckBox Margin="0,-4,0,0" Style="{StaticResource CheckBoxXamGridStyle}" 
+                                              IsChecked="{Binding Path=RequiredField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"></CheckBox>
+                                </DataTemplate>
                             </ig:CheckBoxColumn.AddNewRowEditorTemplate>
-                        </ig:CheckBoxColumn>
+                        </ig:CheckBoxColumn>-->
+                        <!--<ig:CheckBoxColumn Key="EmptyIsNull" HeaderText="Empty Is Null" MinimumWidth="100" IsResizable="False">
+                            <ig:CheckBoxColumn.AddNewRowEditorTemplate>
+                                <DataTemplate>
+                                    <CheckBox Margin="0,-4,0,0" Style="{StaticResource CheckBoxXamGridStyle}" 
+                                              IsChecked="{Binding Path=EmptyIsNull, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"></CheckBox>
+                                </DataTemplate>
+                            </ig:CheckBoxColumn.AddNewRowEditorTemplate>
+                        </ig:CheckBoxColumn>-->
                     </ig:XamGrid.Columns>
                     <ig:XamGrid.SortingSettings>
                         <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
@@ -100,10 +123,10 @@
                             AutoGenerateColumns="False" 
                             ColumnWidth="*">
                     <ig:XamGrid.Columns>
-                        <ig:TextColumn Key="OutputName" HeaderText="Output" MinimumWidth="100" IsReadOnly="True">
+                        <ig:TextColumn x:Name="OutputColumn" Key="OutputName" HeaderText="Output" MinimumWidth="100" IsReadOnly="True">
                             <ig:TextColumn.AddNewRowEditorTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding OutputName}" ToolTip="{Binding Path=OutputName}" Margin="2"></TextBlock>
+                                    <TextBlock IsEnabled="False" Text="{Binding OutputName}" ToolTip="{Binding Path=OutputName}"></TextBlock>
                                 </DataTemplate>
                             </ig:TextColumn.AddNewRowEditorTemplate>
                         </ig:TextColumn>
@@ -111,7 +134,7 @@
                             <ig:TextColumn.AddNewRowEditorTemplate>
                                 <DataTemplate>
                                     <TextBox Style="{StaticResource NoBorderTextBoxStyle}" 
-                                             Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=Name}" Margin="2"></TextBox>
+                                             Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=Name}"></TextBox>
                                 </DataTemplate>
                             </ig:TextColumn.AddNewRowEditorTemplate>
                         </ig:TextColumn>
@@ -142,7 +165,12 @@
                     Margin="0,2,0,0" >
             <TextBlock Text="Recordset Name" ></TextBlock>
             <TextBox MinWidth="367" Margin="-1,0,0,0" 
-                     Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
+                     Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}" >
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:Core.MappingsRecordsetNameHelp}"
+                                                         DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </TextBox>
         </StackPanel>
     </Grid>
 </UserControl>
