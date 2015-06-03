@@ -176,58 +176,40 @@ namespace Dev2.Runtime.WebServer.Hubs
                         }
                         sb.Append(envelope.Content);
 
-                        if (endOfStream)
+                        MessageCache.TryRemove(messageId, out sb);
+                        var request = _serializer.Deserialize<EsbExecuteRequest>(sb);
+
+                        var user = string.Empty;
+                        // ReSharper disable ConditionIsAlwaysTrueOrFalse
+                        if (Context.User.Identity != null)
+                        // ReSharper restore ConditionIsAlwaysTrueOrFalse
                         {
-                            MessageCache.TryRemove(messageId, out sb);
-                            var request = _serializer.Deserialize<EsbExecuteRequest>(sb);
-
-                            var user = string.Empty;
-                            // ReSharper disable ConditionIsAlwaysTrueOrFalse
-                            if (Context.User.Identity != null)
-                            // ReSharper restore ConditionIsAlwaysTrueOrFalse
-                            {
-                                user = Context.User.Identity.Name;
-                                // set correct principle ;)
-                                Thread.CurrentPrincipal = Context.User;
-                                Dev2Logger.Log.Debug("Execute Command Invoked For [ " + user + " ] For Service [ " + request.ServiceName + " ]");
-                            }
-
-                            var processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceId, dataListId, Context.ConnectionId);
-                            // Convert to chunked msg store for fetch ;)
-                            var length = processRequest.Length;
-                            var startIdx = 0;
-                            var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
-
-                            for (var q = 0; q < rounds; q++)
-                            {
-                                var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
-                                if (len > (length - startIdx))
-                                {
-                                    len = (length - startIdx);
-                                }
-
-                                // always place requesting user in here ;)
-                                var future = new FutureReceipt
-                                {
-                                    PartID = q,
-                                    RequestID = messageId,
-                                    User = user
-                                };
-
-                                var value = processRequest.Substring(startIdx, len);
-
-                                if (!ResultsCache.Instance.AddResult(future, value))
-                                {
-                                    Dev2Logger.Log.Error(new Exception("Failed to build future receipt for [ " + Context.ConnectionId + " ] Value [ " + value + " ]"));
-                                }
-
-                                startIdx += len;
-                            }
-
-                            return new Receipt { PartID = envelope.PartID, ResultParts = rounds };
+                            user = Context.User.Identity.Name;
+                            // set correct principle ;)
+                            Thread.CurrentPrincipal = Context.User;
+                            Dev2Logger.Log.Debug("Execute Command Invoked For [ " + user + " ] For Service [ " + request.ServiceName + " ]");
                         }
 
-                        return new Receipt { PartID = envelope.PartID, ResultParts = -1 };
+                        var processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceId, dataListId, Context.ConnectionId);
+                        var length = processRequest.Length;
+
+                        // always place requesting user in here ;)
+                        var future = new FutureReceipt
+                        {
+                            PartID = 0,
+                            RequestID = messageId,
+                            User = user
+                        };
+
+                        var value = processRequest.ToString();
+
+                        if (!ResultsCache.Instance.AddResult(future, value))
+                        {
+                            Dev2Logger.Log.Error(new Exception("Failed to build future receipt for [ " + Context.ConnectionId + " ] Value [ " + value + " ]"));
+                        }
+
+                        return new Receipt { PartID = envelope.PartID, ResultParts = 1 };
+
                     }
                     catch (Exception e)
                     {
