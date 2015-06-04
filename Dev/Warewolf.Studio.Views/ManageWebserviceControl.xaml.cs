@@ -12,16 +12,5 @@ namespace Warewolf.Studio.Views
         {
             InitializeComponent();
         }
-
-
-        private void XamContextMenu_ItemClicked(object sender, Infragistics.Controls.Menus.ItemClickedEventArgs e)
-        {
-
-        }
-
-        private void XamMenuItem_Click(object sender, EventArgs e)
-        {
-            
-        }
     }
 }
