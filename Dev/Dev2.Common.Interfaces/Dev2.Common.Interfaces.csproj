@@ -76,6 +76,9 @@
     <Reference Include="Caliburn.Micro">
       <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
     </Reference>
+    <Reference Include="Dev2.Common">
+      <HintPath>..\Warewolf.ResourceManagement\bin\Debug\Dev2.Common.dll</HintPath>
+    </Reference>
     <Reference Include="Dev2.Data">
       <HintPath>..\Warewolf.ResourceManagement\bin\Debug\Dev2.Data.dll</HintPath>
     </Reference>
@@ -264,6 +267,7 @@
     <Compile Include="IHelpView.cs" />
     <Compile Include="IManageDatabaseSourceView.cs" />
     <Compile Include="IMenuView.cs" />
+    <Compile Include="INamespaceItem.cs" />
     <Compile Include="INetworkStateChangedEventArgs.cs" />
     <Compile Include="IPasteView.cs" />
     <Compile Include="IPluginAction.cs" />

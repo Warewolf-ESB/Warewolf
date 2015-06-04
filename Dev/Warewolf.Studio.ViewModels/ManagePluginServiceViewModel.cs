@@ -56,6 +56,8 @@ namespace Warewolf.Studio.ViewModels
         bool _showResults;
         PluginService _responseService;
         bool _canSave;
+        ICollection<INamespaceItem> _nameSpaces;
+        INamespaceItem _selectedNamespace;
 
         #region Implementation of IServiceMappings
 
@@ -68,6 +70,7 @@ namespace Warewolf.Studio.ViewModels
             Inputs = new ObservableCollection<IServiceInput>();
             OutputMapping = new ObservableCollection<IServiceOutputMapping>();
             AvalaibleActions = new ObservableCollection<IPluginAction>();
+            NameSpaces = new ObservableCollection<INamespaceItem>();
             Sources = _model.RetrieveSources();
             ErrorText = "";
             TestPluginCommand = new DelegateCommand(() => Test(_model));
@@ -192,7 +195,8 @@ namespace Warewolf.Studio.ViewModels
                 _selectedSource = value;
                 if(value != null)
                 {
-                    AvalaibleActions = new ObservableCollection<IPluginAction>(_model.GetActions(value));
+                   
+                    NameSpaces = new ObservableCollection<INamespaceItem>(_model.GetNameSpaces(value));
                 }
                 OnPropertyChanged(() => SelectedSource);
             }
@@ -572,6 +576,32 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _canSave = value;
+            }
+        }
+        public ICollection<INamespaceItem> NameSpaces
+        {
+            get
+            {
+                return _nameSpaces;
+            }
+            set
+            {
+                _nameSpaces = value;
+                OnPropertyChanged(()=>NameSpaces);
+            }
+        }
+        public INamespaceItem SelectedNamespace
+        {
+            get
+            {
+                return _selectedNamespace;
+            }
+            set
+            {
+                _selectedNamespace = value;
+                if(SelectedNamespace != null)
+                AvalaibleActions = new ObservableCollection<IPluginAction>(_model.GetActions(SelectedSource, value));
+                OnPropertyChanged(() => SelectedNamespace);
             }
         }
     }

@@ -194,8 +194,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             var model = new Mock<IPluginServiceModel>();
             var lst = new List<IPluginSource> { new PluginSourceDefinition(), new PluginSourceDefinition() };
             model.Setup(a => a.RetrieveSources()).Returns(lst);
-            model.Setup(a => a.GetActions(lst[0])).Returns(new List<IPluginAction> { new PluginAction { FullName = "bob" }, new PluginAction() { FullName = "Dave" } });
-            model.Setup(a => a.GetActions(lst[1])).Returns(new List<IPluginAction> { new PluginAction { FullName = "dora" }, new PluginAction() { FullName = "carmen" } });
+            model.Setup(a => a.GetActions(lst[0],new Mock<INamespaceItem>().Object)).Returns(new List<IPluginAction> { new PluginAction { FullName = "bob" }, new PluginAction() { FullName = "Dave" } });
+            model.Setup(a => a.GetActions(lst[1], new Mock<INamespaceItem>().Object)).Returns(new List<IPluginAction> { new PluginAction { FullName = "dora" }, new PluginAction() { FullName = "carmen" } });
             if(failTest)
             {
                 model.Setup(a => a.TestService(It.IsAny<IPluginService>())).Throws(new Exception("message"));

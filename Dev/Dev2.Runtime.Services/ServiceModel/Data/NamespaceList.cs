@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using Dev2.Common;
 using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ServiceModel.Data
@@ -22,26 +23,5 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             return JsonConvert.SerializeObject(this);
         }
-    }
-
-    [Serializable]
-    public class NamespaceItem
-    {
-        #region ToString
-
-        public override string ToString()
-        {
-            return JsonConvert.SerializeObject(this);
-        }
-
-        #endregion
-
-        public string AssemblyLocation { get; set; }
-
-        public string AssemblyName { get; set; }
-
-        public string FullName { get; set; }
-
-        public string MethodName { get; set; }
     }
 }

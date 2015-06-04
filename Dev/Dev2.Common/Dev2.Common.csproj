@@ -135,6 +135,7 @@
     <Compile Include="ExtMethods\TypeExtensions.cs" />
     <Compile Include="GlobalConstants.cs" />
     <Compile Include="Lookups\CompressionRatios.cs" />
+    <Compile Include="NamespaceItem.cs" />
     <Compile Include="Patterns\SpookyAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflection\GAC.cs" />
