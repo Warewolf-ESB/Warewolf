@@ -175,6 +175,7 @@
     <Compile Include="ESB\Management\Services\AddFolderService.cs" />
     <Compile Include="ESB\Management\Services\FetchDbActions.cs" />
     <Compile Include="ESB\Management\Services\FetchDbSources.cs" />
+    <Compile Include="ESB\Management\Services\FetchPluginSources.cs" />
     <Compile Include="ESB\Management\Services\FetchWebSources.cs" />
     <Compile Include="ESB\Management\Services\FindResourceByID.cs" />
     <Compile Include="ESB\Management\Services\GetComputeNames.cs" />
