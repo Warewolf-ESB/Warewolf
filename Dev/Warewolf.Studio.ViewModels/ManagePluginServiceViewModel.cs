@@ -146,6 +146,7 @@ namespace Warewolf.Studio.ViewModels
                     }
                 }
                 OnPropertyChanged(() => OutputMapping);
+                ViewModelUtils.RaiseCanExecuteChanged(SaveCommand);
             }
         }
         public string RecordsetName
@@ -219,6 +220,7 @@ namespace Warewolf.Studio.ViewModels
                     NameSpaces = new ObservableCollection<INamespaceItem>(_model.GetNameSpaces(value));
                 }
                 OnPropertyChanged(() => SelectedSource);
+                ViewModelUtils.RaiseCanExecuteChanged(SaveCommand);
             }
         }
 
@@ -549,6 +551,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _testSuccessful = value;
+                ViewModelUtils.RaiseCanExecuteChanged(SaveCommand);
                 OnPropertyChanged(() => TestSuccessful);
             }
         }
