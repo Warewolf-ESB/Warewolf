@@ -241,7 +241,20 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IList<IPluginAction> PluginActions(IPluginSource source, INamespaceItem ns)
         {
-            return new IPluginAction[0];
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var comsController = CommunicationControllerFactory.CreateController("FetchPluginActions");
+            
+            comsController.AddPayloadArgument("source", serializer.SerializeToBuilder(source));
+            comsController.AddPayloadArgument("namespace", serializer.SerializeToBuilder(ns));
+            var workspaceId = Connection.WorkspaceID;
+            var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
+            if (result.HasError)
+            {
+                throw new WarewolfSupportServiceException(result.Message.ToString(), null);
+            }
+
+
+            return serializer.Deserialize<List<IPluginAction>>(result.Message.ToString());
         }
     }
          
