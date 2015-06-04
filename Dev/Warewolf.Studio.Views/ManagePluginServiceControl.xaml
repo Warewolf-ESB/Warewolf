@@ -16,6 +16,7 @@
                                               IsDesignTimeCreatable=False}">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <views:NotConverter x:Key="NotConverter" />
     </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
         <Grid x:Name="GridMain"  MinWidth="600" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}">
@@ -66,7 +67,7 @@
                                   DisplayMemberPath="Name" 
                                   Width="250" 
                                   ItemsSource="{Binding Sources}"
-                                  Padding="{StaticResource ComboBoxItemPadding}"
+                                  
                                   Margin="{StaticResource ElementBorderControlRight}"
                                   Focusable="True" >
                             <!--<customControls:WatermarkTextBox.Watermark>
@@ -193,16 +194,14 @@
                                       DisplayMemberPath="Name" 
                                       Text="Choose" 
                                       ItemsSource="{Binding AvalaibleActions}"
-                                      Margin="{StaticResource ElementBorderControlRight}">
+                                      Margin="0,5,3,0">
                                 <i:Interaction.Behaviors>
                                     <core:HelpSetter Text="{x:Static languages:Core.PluginServiceSelectActionHelp}"
                                                          DataContext="{Binding}" />
                                 </i:Interaction.Behaviors>
                             </ComboBox>
                             <!-- NEED TO ADD LOGIC TO REFRESH COMMAND AND VISIBILITY -->
-                            <Button Width="25" 
-                                    Height="25" 
-                                    Margin="0,5,0,-1"
+                            <Button Margin="0,5,0,0"
                                     Grid.Column="1"
                                     Command="{Binding RefreshCommand}"
                                     Visibility="{Binding IsRefreshing,Converter={StaticResource NotConverter}}">
