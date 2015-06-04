@@ -103,6 +103,17 @@
                                     ColumnWidth="*" 
                                     MaxHeight="180">
                 <ig:XamGrid.Columns>
+                    <ig:DateColumn Key="Date" HeaderText="Date" EditorDisplayBehavior="Always">
+                        <!--<ig:DateColumn.AddNewRowEditorTemplate>
+                            <DataTemplate>
+                                <TextBox Text="" Margin="0">
+                                    <customControls:WatermarkTextBox.Watermark>
+                                        <Label Style="{StaticResource WatermarkLabelStyle}">Default Value</Label>
+                                    </customControls:WatermarkTextBox.Watermark>
+                                </TextBox>
+                            </DataTemplate>
+                        </ig:DateColumn.AddNewRowEditorTemplate>-->
+                    </ig:DateColumn>
                     <ig:TextColumn Key="Name" HeaderText="Input" MinimumWidth="100" IsReadOnly="True">
                         <ig:TextColumn.AddNewRowEditorTemplate>
                             <DataTemplate>
