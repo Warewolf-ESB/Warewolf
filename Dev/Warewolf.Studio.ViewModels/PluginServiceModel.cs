@@ -42,6 +42,11 @@ namespace Warewolf.Studio.ViewModels
             return _queryProxy.PluginActions(source);
         }
 
+        public ICollection<INamespaceItem> GetNameSpaces(IPluginSource source)
+        {
+            return _queryProxy.FetchNamespaces(source);
+        }
+
         public void CreateNewSource()
         {
             _shell.NewResource(ResourceType.PluginSource, Guid.NewGuid());

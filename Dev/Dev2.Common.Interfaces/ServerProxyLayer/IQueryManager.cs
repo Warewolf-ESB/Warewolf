@@ -81,5 +81,7 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
 
         IList<IPluginAction> PluginActions(IPluginSource source);
         List<IDllListing> GetDllListings(IDllListing listing);
+
+        ICollection<INamespaceItem> FetchNamespaces(IPluginSource source);
     }
 }

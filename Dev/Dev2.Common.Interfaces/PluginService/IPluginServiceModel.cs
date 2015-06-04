@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Data;
 using Dev2.Common.Interfaces.DB;
 
 namespace Dev2.Common.Interfaces.PluginService
@@ -8,6 +7,7 @@ namespace Dev2.Common.Interfaces.PluginService
     {
         ICollection<IPluginSource> RetrieveSources();
         ICollection<IPluginAction> GetActions(IPluginSource source);
+        ICollection<INamespaceItem> GetNameSpaces(IPluginSource source);
         void CreateNewSource();
         void EditSource(IPluginSource selectedSource);
         string TestService(IPluginService inputValues);

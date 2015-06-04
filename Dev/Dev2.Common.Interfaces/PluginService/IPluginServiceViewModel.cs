@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.DB;
 
@@ -44,5 +45,6 @@ namespace Dev2.Common.Interfaces.PluginService
         string ErrorText { get; set; }
 
         bool ShowResults { get; set; }
+        ICollection<INamespaceItem> NameSpaces { get; set; }
     }
 }

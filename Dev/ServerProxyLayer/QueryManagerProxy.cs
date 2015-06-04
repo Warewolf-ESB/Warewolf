@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
@@ -210,6 +211,18 @@ namespace Warewolf.Studio.ServerProxyLayer
             }
             var dllListings = serializer.Deserialize<List<IDllListing>>(result.Message.ToString());
             return dllListings;
+        }
+
+        public ICollection<INamespaceItem> FetchNamespaces(IPluginSource source)
+        {
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var comsController = CommunicationControllerFactory.CreateController("FetchPluginNameSpaces");
+            comsController.AddPayloadArgument("source", serializer.SerializeToBuilder(source));
+            var workspaceId = Connection.WorkspaceID;
+            var payload = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
+            if (payload.HasError)
+                throw new WarewolfTestException(payload.Message.ToString(), null);
+            return serializer.Deserialize<List<INamespaceItem>>(payload.Message);
         }
 
         public IList<IPluginSource> FetchPluginSources()
