@@ -877,6 +877,11 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _inputs = value;
+                IsInputsEmptyRows = true;
+                if (_inputs.Count >= 1)
+                {
+                    IsInputsEmptyRows = false;
+                }
                 OnPropertyChanged(() => Inputs);
             }
         }
@@ -889,6 +894,11 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _outputMapping = value;
+                IsOutputMappingEmptyRows = true;
+                if (_outputMapping.Count >= 1)
+                {
+                    IsOutputMappingEmptyRows = false;
+                }
                 OnPropertyChanged(() => OutputMapping);
             }
         }
@@ -916,6 +926,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _isInputsEmptyRows = value;
+                OnPropertyChanged(() => IsInputsEmptyRows);
             }
         }
         public bool IsOutputMappingEmptyRows
@@ -927,6 +938,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _isOutputMappingEmptyRows = value;
+                OnPropertyChanged(() => IsOutputMappingEmptyRows);
             }
         }
         /// <summary>
