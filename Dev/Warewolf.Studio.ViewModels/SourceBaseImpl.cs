@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
@@ -46,6 +48,7 @@ namespace Warewolf.Studio.ViewModels
         #endregion
 
         public bool IsActive { get; set; }
+
         public event EventHandler IsActiveChanged;
         public abstract void UpdateHelpDescriptor(string helpText);
     }

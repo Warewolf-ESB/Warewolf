@@ -306,6 +306,7 @@
                             <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
                                 <xamGridEx:XamGridEx x:Name="HeadersGrid" 
                                                      Style="{StaticResource XamGridStyle}"
+                                                     DataContext="{Binding Path=InputValues}"
                                             AutoGenerateColumns="False"
                                             IsAlternateRowsEnabled="False"
                                             ColumnLayoutHeaderVisibility="Never"
@@ -318,7 +319,7 @@
                                             <ig:TextColumn.AddNewRowEditorTemplate>
                                                 <DataTemplate>
                                                     <TextBox Style="{StaticResource NoBorderTextBoxStyle}" 
-                                                             Text="" >
+                                                             Text="{Binding Name}" >
                                                         <customControls:WatermarkTextBox.Watermark>
                                                             <Label Style="{StaticResource WatermarkLabelStyle}">Header</Label>
                                                         </customControls:WatermarkTextBox.Watermark>
@@ -330,7 +331,7 @@
                                             <ig:TextColumn.AddNewRowEditorTemplate>
                                                 <DataTemplate>
                                                     <TextBox Style="{StaticResource NoBorderTextBoxStyle}" 
-                                                             Text="" >
+                                                             Text="{Binding Value}" >
                                                         <customControls:WatermarkTextBox.Watermark>
                                                             <Label Style="{StaticResource WatermarkLabelStyle}">Value</Label>
                                                         </customControls:WatermarkTextBox.Watermark>

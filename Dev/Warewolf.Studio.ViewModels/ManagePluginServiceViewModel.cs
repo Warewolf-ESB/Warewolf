@@ -10,6 +10,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.PluginService;
 using Dev2.Common.Interfaces.SaveDialog;
+using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Dev2.Communication;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.Commands;
@@ -60,6 +61,7 @@ namespace Warewolf.Studio.ViewModels
         bool _canSave;
         ICollection<INamespaceItem> _nameSpaces;
         INamespaceItem _selectedNamespace;
+        ICollection<NameValue> _inputValues;
 
         #region Implementation of IServiceMappings
 
@@ -294,7 +296,24 @@ namespace Warewolf.Studio.ViewModels
                 _selectedAction = value;
                 CanTest = _selectedAction != null;
                 Inputs = _selectedAction != null ? _selectedAction.Inputs : new Collection<IServiceInput>();
+                if(_selectedAction != null)
+                {
+                    InputValues = new ObservableCollection<NameValue>(_selectedAction.Variables.Select(a=>a as NameValue));
+                }
+
                 OnPropertyChanged(() => SelectedAction);
+            }
+        }
+        public ICollection<NameValue> InputValues
+        {
+            get
+            {
+                return _inputValues;
+            }
+            set
+            {
+                _inputValues = value;
+                OnPropertyChanged(()=>InputValues);
             }
         }
         public ICollection<IPluginAction> AvalaibleActions

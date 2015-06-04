@@ -48,5 +48,6 @@ namespace Dev2.Common.Interfaces.PluginService
         bool ShowResults { get; set; }
         ICollection<INamespaceItem> NameSpaces { get; set; }
         INamespaceItem SelectedNamespace { get; set; }
+        ICollection<NameValue> InputValues { get; set; }
     }
 }
