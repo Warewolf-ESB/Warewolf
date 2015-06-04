@@ -214,7 +214,16 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IList<IPluginSource> FetchPluginSources()
         {
-            return null;
+            var comsController = CommunicationControllerFactory.CreateController("FetchPluginSources");
+
+            var workspaceId = Connection.WorkspaceID;
+            var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
+            if (result.HasError)
+            {
+                throw new WarewolfSupportServiceException(result.Message.ToString(), null);
+            }
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            return serializer.Deserialize<List<IPluginSource>>(result.Message.ToString());
         }
 
         public IList<IPluginAction> PluginActions(IPluginSource source)
