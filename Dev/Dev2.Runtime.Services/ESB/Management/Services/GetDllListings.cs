@@ -48,7 +48,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         static List<IDllListing> GetDllListing(IDllListing src)
         {
             var completeList = new List<IDllListing>();
-            var fileSystemParent = new DllListing{Name = "FileSystem",IsDirectory = true};
+            var fileSystemParent = new DllListing{Name = "File System",IsDirectory = true};
             var gacItem = new DllListing { Name = "GAC", IsDirectory = true };
 
             if(src == null)

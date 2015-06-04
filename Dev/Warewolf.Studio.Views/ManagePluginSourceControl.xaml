@@ -20,7 +20,7 @@
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <views:NotConverter x:Key="NotConverter" />
     </UserControl.Resources>
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
         <Grid MinWidth="600" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}">
             <Grid Margin="{StaticResource ElementBorder}" x:Name="GridContainer">
                 <Grid.ColumnDefinitions>
@@ -83,21 +83,23 @@
                         </i:Interaction.Behaviors>
                     </Button>
                     <views:CircularProgressBar Grid.Row="0"
-                                           Grid.Column="1"
-                                           Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibilityConverter}}"
-                                           Width="25"
-                                           Height="25"
-                                           Padding="2.5" />
+                                               Grid.Column="1"
+                                               Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibilityConverter}}"
+                                               Width="25"
+                                               Height="25"
+                                               Padding="2.5" />
                 </Grid>
 
-                <ScrollViewer Grid.Row="2"
-                              Margin="0,-4,0,0"
-                                      HorizontalScrollBarVisibility="Auto" 
-                                      VerticalScrollBarVisibility="Auto"
-                                      MaxHeight="654">
-                    <Grid Width="{Binding ElementName=GridContainer, Path=ActualWidth}"
-                          Margin="0,-4,0,0">
-                        <ig:XamDataTree x:Name="ExplorerTree" 
+                <Grid Grid.Row="2" 
+                      Margin="{StaticResource ControlBorderTop}"
+                      Width="{Binding RelativeSource={RelativeSource FindAncestor,
+                            AncestorType={x:Type Grid}},Path=ColumnDefinitions[0].ActualWidth}"
+                      MaxHeight="{Binding RelativeSource={RelativeSource FindAncestor,
+                                                         AncestorType={x:Type Grid}},Path=RowDefinitions[2].ActualHeight}">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" 
+                              VerticalScrollBarVisibility="Auto">
+                        <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}">
+                            <ig:XamDataTree x:Name="ExplorerTree" 
                                         ActiveDataItem="{Binding SelectedDll, Mode=TwoWay}"
                                         ItemsSource="{Binding DllListings}"
                                         IsSelectedMemberPath="IsSelected"
@@ -176,10 +178,10 @@
                                 </ig:NodeLayout>
                             </ig:XamDataTree.GlobalNodeLayouts>
                         </ig:XamDataTree>
-                    </Grid>
+                        </Grid>
                 </ScrollViewer>
-
-                <Grid Grid.Row="3" Margin="0,-2,0,0"
+                </Grid>
+                <Grid Grid.Row="3" Margin="{StaticResource ControlBorderTop}"
                       Width="{Binding ElementName=GridContainer, Path=ActualWidth}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
