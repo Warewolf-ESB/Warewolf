@@ -53,9 +53,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             var pluginServiceModel = new PluginServiceModel(new Mock<IStudioUpdateManager>().Object, qm.Object, new Mock<IShellViewModel>().Object, "");
             //------------Execute Test---------------------------
 
-            pluginServiceModel.GetActions(src.Object);
+            pluginServiceModel.GetActions(src.Object,new Mock<INamespaceItem>().Object);
             //------------Assert Results-------------------------
-            qm.Verify(a => a.PluginActions(src.Object), Times.Once());
+            qm.Verify(a => a.PluginActions(src.Object,new Mock<INamespaceItem>().Object), Times.Once());
         }
 
 
