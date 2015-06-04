@@ -318,12 +318,8 @@
                                         <ig:TextColumn Key="Name" HeaderText="Name" MinimumWidth="100">
                                             <ig:TextColumn.AddNewRowEditorTemplate>
                                                 <DataTemplate>
-                                                    <TextBox Style="{StaticResource NoBorderTextBoxStyle}" 
-                                                             Text="{Binding Name}" >
-                                                        <customControls:WatermarkTextBox.Watermark>
-                                                            <Label Style="{StaticResource WatermarkLabelStyle}">Header</Label>
-                                                        </customControls:WatermarkTextBox.Watermark>
-                                                    </TextBox>
+                                                    <TextBlock Text="{Binding Name}" >
+                                                    </TextBlock>
                                                 </DataTemplate>
                                             </ig:TextColumn.AddNewRowEditorTemplate>
                                         </ig:TextColumn>
@@ -448,6 +444,7 @@
                             Margin="{StaticResource ControlBorderTopRight}" 
                             HorizontalAlignment="Right" 
                             VerticalAlignment="Bottom" 
+                            Command="{Binding SaveCommand}" 
                             Width="100">OK
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{x:Static languages:Core.PluginServiceSaveCommandHelp}"
