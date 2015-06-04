@@ -91,12 +91,13 @@
                 </Grid>
 
                 <ScrollViewer Grid.Row="2"
+                              Margin="0,-4,0,0"
                                       HorizontalScrollBarVisibility="Auto" 
                                       VerticalScrollBarVisibility="Auto"
                                       MaxHeight="654">
                     <Grid Width="{Binding ElementName=GridContainer, Path=ActualWidth}"
-                          Margin="0,-2,0,0">
-                        <ig:XamDataTree x:Name="ExplorerTree"
+                          Margin="0,-4,0,0">
+                        <ig:XamDataTree x:Name="ExplorerTree" 
                                         ActiveDataItem="{Binding SelectedDll, Mode=TwoWay}"
                                         ItemsSource="{Binding DllListings}"
                                         IsSelectedMemberPath="IsSelected"
