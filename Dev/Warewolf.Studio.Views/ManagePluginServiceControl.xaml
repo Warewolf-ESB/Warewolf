@@ -135,7 +135,8 @@
                     <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
                         <ComboBox x:Name="NamespaceComboBox" 
                                   DisplayMemberPath="FullName" 
-                                  Width="250" 
+                                  MinWidth="250"
+                                  Width="Auto" 
                                   ItemsSource="{Binding NameSpaces}"
                                   Padding="{StaticResource ComboBoxItemPadding}"
                                   Focusable="True"
@@ -192,7 +193,8 @@
                             <!-- Choose data Source Action-->
                             <ComboBox x:Name="ActionsComboBox" 
                                       Grid.Column="0"
-                                      Width="250" 
+                                      MinWidth="250"
+                                      Width="Auto" 
                                       Padding="{StaticResource ComboBoxItemPadding}"
                                       DisplayMemberPath="Method" 
                                       Text="Choose" 
@@ -286,8 +288,7 @@
                                     Command="{Binding TestPluginCommand}"
                                     HorizontalAlignment="Left" 
                                     VerticalAlignment="Bottom" 
-                                    Width="100"
-                                    Visibility="{Binding IsTesting,Converter={StaticResource NotConverter}}">Test</Button>
+                                    Width="100">Test</Button>
                             <views:CircularProgressBar Grid.Column="1"
                                                        Width="25"
                                                        HorizontalAlignment="Right" 
@@ -300,6 +301,7 @@
                                       Grid.Column="0" 
                                       HorizontalScrollBarVisibility="Auto" 
                                       VerticalScrollBarVisibility="Auto"
+                                      Margin="{StaticResource ControlBorderTop}"
                                       MaxHeight="110">
                             <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
                                 <xamGridEx:XamGridEx x:Name="HeadersGrid" 
