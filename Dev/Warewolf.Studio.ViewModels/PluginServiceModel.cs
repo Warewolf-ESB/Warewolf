@@ -7,6 +7,7 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.PluginService;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Core;
 
 namespace Warewolf.Studio.ViewModels
