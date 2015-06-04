@@ -136,13 +136,21 @@ namespace Warewolf.Studio.ViewModels
             Headers.Add(new ObservableAwareNameValue(headerCollection, UpdateRequestVariables));
             RequestBody = "";
             Response = "";
-            TestCommand = new DelegateCommand(() => Test(_model), CanTest);
+            TestCommand = new DelegateCommand(() => Test(_model,ToModel()), CanTest);
             CreateNewSourceCommand = new DelegateCommand(_model.CreateNewSource);
             SaveCommand = new DelegateCommand(Save, CanSave);
             NewWebSourceCommand = new DelegateCommand(() => _model.CreateNewSource());
-            PasteResponseCommand = new DelegateCommand(() => Response= _model.HandlePasteResponse(Response??""));
+            PasteResponseCommand = new DelegateCommand(HandlePasteResponse);
             RemoveHeaderCommand = new DelegateCommand( DeleteCell);
             AddHeaderCommand = new DelegateCommand(Add);
+        }
+
+        void HandlePasteResponse()
+        {
+            Response = _model.HandlePasteResponse(Response ?? "");
+            var resp = ToModel();
+            resp.Response = Response;
+            Test(_model,resp);
         }
 
         private void DeleteCell()
@@ -206,18 +214,19 @@ namespace Warewolf.Studio.ViewModels
 
 
 
-        void Test(IWebServiceModel model)
+        void Test(IWebServiceModel model,IWebService service)
         {
             try
             {
                 IsTesting = true;
                 var serializer = new Dev2JsonSerializer();
-                ResponseWebService = serializer.Deserialize<WebService>(model.TestService(ToModel()));
+                ResponseWebService = serializer.Deserialize<WebService>(model.TestService(service));
                 UpdateMappingsFromResponse();
                 ErrorMessage = "";
                 CanEditMappings = true;
                 CanEditResponse = true;
                 IsTesting = false;
+                ViewModelUtils.RaiseCanExecuteChanged(SaveCommand);
             }
             catch (Exception err)
             {

@@ -96,7 +96,7 @@ namespace Dev2.Runtime.ServiceModel
             return service;
         }
 
-        public void TestWebService(WebService service)
+        public void TestWebService(WebService service )
         {
             if(string.IsNullOrEmpty(service.RequestResponse))
             {

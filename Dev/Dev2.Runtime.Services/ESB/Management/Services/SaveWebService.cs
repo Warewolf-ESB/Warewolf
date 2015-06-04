@@ -38,7 +38,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 // ReSharper disable MaximumChainedReferences
                 var parameters = src.Inputs == null ? new List<MethodParameter>() : src.Inputs.Select(a => new MethodParameter() { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value }).ToList();
                 // ReSharper restore MaximumChainedReferences
-                var source = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, src.Source.Id);
+                var source = ResourceCatalog.Instance.GetResource<WebSource>(GlobalConstants.ServerWorkspaceID, src.Source.Id);
                 var output = new List<MethodOutput>(src.OutputMappings.Select(a => new MethodOutput(a.Name, a.OutputName, "", false, a.RecordSetName, false, "", false, "", false)));
                 var recset = new Recordset();
                 recset.Fields.AddRange( new List<RecordsetField>(src.OutputMappings.Select(a=> new RecordsetField{Name = a.Name, Alias = a.OutputName,RecordsetAlias = a.RecordSetName, Path = new DataTablePath( a.RecordSetName,a.Name)})));
@@ -92,7 +92,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
         public string HandlesType()
         {
-            return "SaveDbService";
+            return "SaveWebService";
         }
     }
 }

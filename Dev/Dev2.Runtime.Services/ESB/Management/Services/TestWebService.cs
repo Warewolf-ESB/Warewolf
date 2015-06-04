@@ -47,8 +47,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                     ResourcePath = src.Path,
                     ResourceID = src.Id,
                     RequestBody = src.PostData,
-                    Headers = src.Headers
-                    
+                    Headers = src.Headers,
+                    RequestResponse =  src.Response
+                   
                 };
 
                 WebServices.TestWebService(res);

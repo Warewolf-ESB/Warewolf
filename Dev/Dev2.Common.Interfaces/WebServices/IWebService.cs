@@ -18,6 +18,7 @@ namespace Dev2.Common.Interfaces.WebServices
         List<NameValue> Headers { get; set; }
         string PostData { get; set; }
         string SourceUrl { get; set; }
+        string Response { get; set; }
     }
 }
 

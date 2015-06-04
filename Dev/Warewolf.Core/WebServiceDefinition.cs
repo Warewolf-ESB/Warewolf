@@ -45,6 +45,7 @@ namespace Warewolf.Core
         public List<NameValue> Headers { get; set; }
         public string PostData { get; set; }
         public string SourceUrl { get; set; }
+        public string Response { get; set; }
 
         #region Equality members
 

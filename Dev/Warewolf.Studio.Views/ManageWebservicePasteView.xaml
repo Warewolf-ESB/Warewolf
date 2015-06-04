@@ -68,7 +68,7 @@
             <Button x:Name="CancelButton" 
                     Width="60" 
                     Height="30" 
-                    Command="{Binding Path=Cancel}" 
+                    Command="{Binding Path=CancelCommand}" 
 
                     Content="Cancel">
                 <i:Interaction.Behaviors>

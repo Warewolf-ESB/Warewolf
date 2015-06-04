@@ -223,7 +223,7 @@ namespace Warewolf.Studio.ServerProxyLayer
         public void SaveWebservice(IWebService model, Guid serverWorkspaceID)
         {
             var con = Connection;
-            var comsController = CommunicationControllerFactory.CreateController("SaveWebservice");
+            var comsController = CommunicationControllerFactory.CreateController("SaveWebService");
             Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("Webservice", serialiser.SerializeToBuilder(model));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
