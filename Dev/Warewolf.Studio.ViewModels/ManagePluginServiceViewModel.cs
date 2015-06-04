@@ -55,7 +55,7 @@ namespace Warewolf.Studio.ViewModels
         bool _testResultsAvailable;
         string _errorText;
         bool _showResults;
-        PluginService _responseService;
+        RecordsetList _responseService;
         bool _canSave;
         ICollection<INamespaceItem> _nameSpaces;
         INamespaceItem _selectedNamespace;
@@ -226,7 +226,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsTesting = true;
                 var serializer = new Dev2JsonSerializer();
-                ResponseService = serializer.Deserialize<PluginService>(model.TestService(ToModel()));
+                ResponseService = serializer.Deserialize<RecordsetList>( model.TestService(ToModel()));
                 UpdateMappingsFromResponse();
                 ErrorText = "";
                 CanEditMappings = true;
@@ -247,9 +247,9 @@ namespace Warewolf.Studio.ViewModels
         {
             if (ResponseService != null)
             {
-                Response = ResponseService.Recordsets;
+                Response = ResponseService;
                 // ReSharper disable MaximumChainedReferences
-                var outputMapping = ResponseService.Recordsets.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
+                var outputMapping = ResponseService.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
                 {
                     RecordsetName = recordset.Name;
                     var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias) { RecordSetName = recordset.Name };
@@ -260,7 +260,7 @@ namespace Warewolf.Studio.ViewModels
                 OutputMapping = outputMapping;
             }
         }
-        public PluginService ResponseService
+        public RecordsetList ResponseService
         {
             get
             {
