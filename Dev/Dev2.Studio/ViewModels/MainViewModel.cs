@@ -31,6 +31,7 @@ using Dev2.Helpers;
 using Dev2.Instrumentation;
 using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Security;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
@@ -63,6 +64,7 @@ using Dev2.Studio.Views.ResourceManagement;
 using Dev2.Threading;
 using Dev2.Utils;
 using Dev2.Views.DropBox;
+using Dev2.Views.SharepointServerSource;
 using Dev2.Webs;
 using Dev2.Webs.Callbacks;
 using Dev2.Workspaces;
@@ -706,6 +708,10 @@ namespace Dev2.Studio.ViewModels
             {
                 CreateOAuthType(ActiveEnvironment, resourceType, resourcePath);
             }
+            else if (resourceType == "SharepointServerSource")
+            {
+                CreateSharepointServerSourceType(ActiveEnvironment, resourceType, resourcePath);
+            }
             else
             {
                 var resourceModel = ResourceModelFactory.CreateResourceModel(ActiveEnvironment, resourceType);
@@ -719,6 +725,12 @@ namespace Dev2.Studio.ViewModels
         {
             var resource =  ResourceModelFactory.CreateResourceModel(ActiveEnvironment, resourceType);
             SaveDropBoxSource(activeEnvironment, resourceType, resourcePath, resource,shouldAuthorise);
+        }
+        
+        public void CreateSharepointServerSourceType(IEnvironmentModel activeEnvironment, string resourceType, string resourcePath, bool shouldAuthorise = true)
+        {
+            var resource =  ResourceModelFactory.CreateResourceModel(ActiveEnvironment, resourceType);
+            SaveSharepointSourceSource(activeEnvironment,  resource);
         }
 
         public IDropboxFactory DropboxFactory
@@ -746,16 +758,47 @@ namespace Dev2.Studio.ViewModels
  
             }
         }
+        
+        void SaveSharepointSourceSource(IEnvironmentModel activeEnvironment, IContextualResourceModel resource)
+        {
+            var drop = new SharepointServerSource();
+            var vm = new SharepointServerSourceViewModel(drop) { Resource = resource };
+            drop.DataContext = vm;
+            var showDialog = ShowSharepoint(drop, vm);
+            if(showDialog != null && showDialog.Value && vm.Resource.ID == Guid.Empty)
+            {
+                ShowSharepointSourceServerSaveDialog(vm.Resource, activeEnvironment,vm.ServerName,vm.UserName,vm.Password,vm.AuthenticationType);
+            }
+            else if (showDialog != null && showDialog.Value && vm.Resource.ID != Guid.Empty)
+            {
+                // ReSharper disable once MaximumChainedReferences
+                var source = new SharepointSource { Server = vm.ServerName, UserName = vm.UserName,Password = vm.Password,AuthenticationType = vm.AuthenticationType, ResourceName = vm.Resource.ResourceName, ResourcePath = vm.Resource.Category, IsNewResource = true, ResourceID = vm.Resource.ID }.ToStringBuilder();
+                ActiveEnvironment.ResourceRepository.SaveResource(ActiveEnvironment, source, GlobalConstants.ServerWorkspaceID);
+ 
+            }
+        }
 
         public System.Action<IContextualResourceModel, IEnvironmentModel, string, string> ShowSaveDialog
         {
             get { return _showSaveDialog ?? RootWebSite.ShowNewOAuthsourceSaveDialog; }
             set { _showSaveDialog = value; }
         }
+        
+        public System.Action<IContextualResourceModel, IEnvironmentModel, string, string,string,AuthenticationType> ShowSharepointSourceServerSaveDialog
+        {
+            get { return _showSharepointServerSourceSaveDialog ?? RootWebSite.ShowNewSharepointServerSourceSaveDialog; }
+            set { _showSharepointServerSourceSaveDialog = value; }
+        }
         public Func<DropBoxViewWindow, DropBoxSourceViewModel, bool?> ShowDropboxAction
         {
             get { return _showDropAction ?? ((drop,vm) => drop.ShowDialog()); }
             set{_showDropAction = value;}
+       
+        }
+        public Func<SharepointServerSource, SharepointServerSourceViewModel, bool?> ShowSharepoint
+        {
+            get { return _showSharepointAction ?? ((drop, vm) => drop.ShowDialog()); }
+            set { _showSharepointAction = value; }
        
         }
         private void ShowEditResourceWizard(object resourceModelToEdit)
@@ -764,6 +807,10 @@ namespace Dev2.Studio.ViewModels
             if (resourceModel != null && resourceModel.ServerResourceType.EqualsIgnoreCase("OauthSource"))
             {
                 SaveDropBoxSource(ActiveEnvironment, "DropboxSource", resourceModel.Category, resourceModel,true);
+            }
+            else if (resourceModel != null && resourceModel.ServerResourceType.EqualsIgnoreCase("SharepointServerSource"))
+            {
+                SaveSharepointSourceSource(ActiveEnvironment,resourceModel);
             }
             else
             DisplayResourceWizard(resourceModel, true);
@@ -1627,7 +1674,9 @@ namespace Dev2.Studio.ViewModels
 
         public Func<bool> IsBusyDownloadingInstaller;
         public Func<DropBoxViewWindow, DropBoxSourceViewModel, bool?> _showDropAction;
+        public Func<SharepointServerSource, SharepointServerSourceViewModel, bool?> _showSharepointAction;
         Action<IContextualResourceModel, IEnvironmentModel, string, string> _showSaveDialog;
+        Action<IContextualResourceModel, IEnvironmentModel, string, string,string,AuthenticationType> _showSharepointServerSourceSaveDialog;
         IDropboxFactory _dropboxFactory;
 
         public bool IsDownloading()
