@@ -67,6 +67,7 @@
                                   DisplayMemberPath="Name" 
                                   Width="250" 
                                   ItemsSource="{Binding Sources}"
+                                  SelectedItem="{Binding SelectedSource}"
                                   Padding="{StaticResource ComboBoxItemPadding}"
                                   Margin="{StaticResource ElementBorderControlRight}"
                                   Focusable="True" >
@@ -132,12 +133,14 @@
                     </StackPanel>
                     <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
                         <ComboBox x:Name="NamespaceComboBox" 
-                                  DisplayMemberPath="Name" 
+                                  DisplayMemberPath="FullName" 
                                   Width="250" 
-                                  ItemsSource="{Binding Sources}"
+                                  ItemsSource="{Binding NameSpaces}"
                                   Padding="{StaticResource ComboBoxItemPadding}"
                                   Focusable="True"
-                                  Margin="{StaticResource ElementBorderTop}" >
+                                  Margin="{StaticResource ElementBorderTop}" 
+                                  SelectedItem="{Binding SelectedNamespace}"
+                                  >
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter Text="{x:Static languages:Core.PluginServiceNamespaceHelp}"
                                                          DataContext="{Binding}" />

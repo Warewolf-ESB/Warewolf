@@ -6,7 +6,7 @@ namespace Dev2.Common.Interfaces.PluginService
     public interface IPluginServiceModel
     {
         ICollection<IPluginSource> RetrieveSources();
-        ICollection<IPluginAction> GetActions(IPluginSource source);
+        ICollection<IPluginAction> GetActions(IPluginSource source, INamespaceItem value);
         ICollection<INamespaceItem> GetNameSpaces(IPluginSource source);
         void CreateNewSource();
         void EditSource(IPluginSource selectedSource);

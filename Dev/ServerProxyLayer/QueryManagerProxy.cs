@@ -239,9 +239,9 @@ namespace Warewolf.Studio.ServerProxyLayer
             return serializer.Deserialize<List<IPluginSource>>(result.Message.ToString());
         }
 
-        public IList<IPluginAction> PluginActions(IPluginSource source)
+        public IList<IPluginAction> PluginActions(IPluginSource source, INamespaceItem ns)
         {
-            return null;
+            return new IPluginAction[0];
         }
     }
          
