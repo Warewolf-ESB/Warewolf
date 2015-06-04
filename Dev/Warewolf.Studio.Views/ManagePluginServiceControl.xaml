@@ -194,9 +194,10 @@
                                       Grid.Column="0"
                                       Width="250" 
                                       Padding="{StaticResource ComboBoxItemPadding}"
-                                      DisplayMemberPath="Name" 
+                                      DisplayMemberPath="Method" 
                                       Text="Choose" 
                                       ItemsSource="{Binding AvalaibleActions}"
+                                      SelectedItem="{Binding SelectedAction}"
                                       Margin="{StaticResource ElementBorderControlRight}">
                                 <i:Interaction.Behaviors>
                                     <core:HelpSetter Text="{x:Static languages:Core.PluginServiceSelectActionHelp}"
