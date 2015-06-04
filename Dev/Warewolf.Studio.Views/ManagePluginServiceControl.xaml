@@ -178,7 +178,6 @@
                     </StackPanel>
                     <Grid Grid.Row="1" Grid.Column="0">
                         <Grid.RowDefinitions>
-                            <RowDefinition ></RowDefinition>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
@@ -191,7 +190,30 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <!-- Choose data Source Action-->
-                            <ComboBox x:Name="ActionsComboBox" 
+                            <ig:XamComboEditor x:Name="ActionsComboBox"
+                                               Grid.Column="0" 
+                                               Margin="0,5,3,0"
+                                               IsEditable="True"
+                                               MinWidth="250"
+                                               AllowDrop="True"
+                                               MaxDropDownHeight="200"
+                                               CustomValueEnteredAction="Allow"
+                                               ItemsSource="{Binding AvalaibleActions}"
+                                               SelectedItem="{Binding SelectedAction,UpdateSourceTrigger=PropertyChanged}"
+                                               views:FocusExtension.IsFocused="True">
+                                <ig:XamComboEditor.ItemFilters>
+                                    <ig:ComboItemFilter FieldName="FullName" LogicalOperator="And">
+                                        <ig:ComboItemFilter.Conditions>
+                                            <ig:ComparisonCondition Operator="Contains" />
+                                        </ig:ComboItemFilter.Conditions>
+                                    </ig:ComboItemFilter>
+                                </ig:XamComboEditor.ItemFilters>
+                                <i:Interaction.Behaviors>
+                                    <core:HelpSetter Text="{x:Static languages:Core.PluginServiceSelectActionHelp}"
+                                 DataContext="{Binding}" />
+                                </i:Interaction.Behaviors>
+                            </ig:XamComboEditor>
+                            <!--<ComboBox x:Name="ActionsComboBox" 
                                       Grid.Column="0"
                                       MinWidth="250"
                                       Width="Auto" 
@@ -205,7 +227,7 @@
                                     <core:HelpSetter Text="{x:Static languages:Core.PluginServiceSelectActionHelp}"
                                                          DataContext="{Binding}" />
                                 </i:Interaction.Behaviors>
-                            </ComboBox>
+                            </ComboBox>-->
                             <!-- NEED TO ADD LOGIC TO REFRESH COMMAND AND VISIBILITY -->
                             <Button Margin="0,5,0,0"
                                     Grid.Column="1"
@@ -229,14 +251,6 @@
                                                    Padding="2.5"
                                                        Visibility="{Binding IsRefreshing,Converter={StaticResource BoolToVisibilityConverter}}"/>
                         </Grid>
-                        <ScrollViewer Grid.Row="1" 
-                                      HorizontalScrollBarVisibility="Auto" 
-                                      VerticalScrollBarVisibility="Auto">
-                            <TextBox Margin="{StaticResource ControlBorderTop}"
-                                     HorizontalAlignment="Stretch"
-                                     TextWrapping="Wrap"
-                                     MaxHeight="180"></TextBox>
-                        </ScrollViewer>
                     </Grid>
                 </Grid>
                 <!-- TEST VALUES -->

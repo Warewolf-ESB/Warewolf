@@ -76,6 +76,13 @@
                                ItemsSource="{Binding Path=ComputerNames}"
                                SelectedItem="{Binding ServerName,UpdateSourceTrigger=PropertyChanged}"
                                views:FocusExtension.IsFocused="True">
+                <ig:XamComboEditor.ItemFilters>
+                    <ig:ComboItemFilter FieldName="Name" LogicalOperator="And">
+                        <ig:ComboItemFilter.Conditions>
+                            <ig:ComparisonCondition Operator="Contains" />
+                        </ig:ComboItemFilter.Conditions>
+                    </ig:ComboItemFilter>
+                </ig:XamComboEditor.ItemFilters>
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:Core.DatabaseSourceServerHelp}"
                                  DataContext="{Binding}" />
