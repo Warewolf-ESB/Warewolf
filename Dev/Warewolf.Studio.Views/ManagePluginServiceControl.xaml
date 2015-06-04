@@ -68,7 +68,6 @@
                                   Width="250" 
                                   ItemsSource="{Binding Sources}"
                                   SelectedItem="{Binding SelectedSource}"
-                                  Padding="{StaticResource ComboBoxItemPadding}"
                                   Margin="{StaticResource ElementBorderControlRight}"
                                   Focusable="True" >
                             <!--<customControls:WatermarkTextBox.Watermark>
@@ -139,8 +138,7 @@
                                   Padding="{StaticResource ComboBoxItemPadding}"
                                   Focusable="True"
                                   Margin="{StaticResource ElementBorderTop}" 
-                                  SelectedItem="{Binding SelectedNamespace}"
-                                  >
+                                  SelectedItem="{Binding SelectedNamespace}">
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter Text="{x:Static languages:Core.PluginServiceNamespaceHelp}"
                                                          DataContext="{Binding}" />
@@ -198,16 +196,15 @@
                                       Text="Choose" 
                                       ItemsSource="{Binding AvalaibleActions}"
                                       SelectedItem="{Binding SelectedAction}"
-                                      Margin="{StaticResource ElementBorderControlRight}">
+                                    
+                                      Margin="0,5,3,0">
                                 <i:Interaction.Behaviors>
                                     <core:HelpSetter Text="{x:Static languages:Core.PluginServiceSelectActionHelp}"
                                                          DataContext="{Binding}" />
                                 </i:Interaction.Behaviors>
                             </ComboBox>
                             <!-- NEED TO ADD LOGIC TO REFRESH COMMAND AND VISIBILITY -->
-                            <Button Width="25" 
-                                    Height="25" 
-                                    Margin="0,5,0,-1"
+                            <Button Margin="0,5,0,0"
                                     Grid.Column="1"
                                     Command="{Binding RefreshCommand}"
                                     Visibility="{Binding IsRefreshing,Converter={StaticResource NotConverter}}">

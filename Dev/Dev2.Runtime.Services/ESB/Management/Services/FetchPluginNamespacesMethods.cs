@@ -7,6 +7,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
@@ -42,7 +43,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var methods = services.Methods(serializer.Serialize(svc), Guid.Empty, Guid.Empty).Select(a => new PluginAction()
                 {FullName  = a.FullName,
                     Inputs = a.Parameters.Select(x=> new ServiceInput(x.Name,x.DefaultValue??""){Name = x.Name,DefaultValue = x.DefaultValue,EmptyIsNull = x.EmptyToNull,RequiredField = x.IsRequired} as IServiceInput).ToList(),
-                    Method = a.ExecuteAction
+                    Method = a.ExecuteAction,
+                  Variables = a.Parameters.Select(x => new NameValue() { Name = x.Name.PadRight(30) + x.TypeName, Value = ""} as INameValue).ToList(),
                 } as IPluginAction
                     ).ToList()  ;
                 return serializer.SerializeToBuilder(new ExecuteMessage()
