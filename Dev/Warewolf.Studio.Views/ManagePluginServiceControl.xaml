@@ -9,10 +9,13 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+             xmlns:pluginService="clr-namespace:Dev2.Common.Interfaces.PluginService;assembly=Dev2.Common.Interfaces"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance Type=pluginService:IPluginServiceViewModel,
+                                              IsDesignTimeCreatable=False}">
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
         <Grid x:Name="GridMain"  MinWidth="600" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}">
@@ -35,7 +38,7 @@
                       Width="{Binding ElementName=GridContainer, Path=ActualWidth}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="29" ></RowDefinition>
+                        <RowDefinition Height="Auto" ></RowDefinition>
                         <RowDefinition Height="Auto" ></RowDefinition>
                         <RowDefinition Height="7" ></RowDefinition>
                     </Grid.RowDefinitions>
@@ -62,14 +65,15 @@
                                   Grid.Column="0"
                                   DisplayMemberPath="Name" 
                                   Width="250" 
+                                  ItemsSource="{Binding Sources}"
                                   Padding="{StaticResource ComboBoxItemPadding}"
                                   Margin="{StaticResource ElementBorderControlRight}"
                                   Focusable="True" >
-                            <customControls:WatermarkTextBox.Watermark>
+                            <!--<customControls:WatermarkTextBox.Watermark>
                                 <StackPanel VerticalAlignment="Top">
                                     <Label Style="{StaticResource WatermarkLabelStyle}">Choose...</Label>
                                 </StackPanel>
-                            </customControls:WatermarkTextBox.Watermark>
+                            </customControls:WatermarkTextBox.Watermark>-->
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter Text="{x:Static languages:Core.PluginServiceSourcesHelp}"
                                                          DataContext="{Binding}" />
@@ -129,6 +133,7 @@
                         <ComboBox x:Name="NamespaceComboBox" 
                                   DisplayMemberPath="Name" 
                                   Width="250" 
+                                  ItemsSource="{Binding Sources}"
                                   Padding="{StaticResource ComboBoxItemPadding}"
                                   Focusable="True"
                                   Margin="{StaticResource ElementBorderTop}" >
@@ -174,7 +179,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <Grid Grid.Row="0" Margin="{StaticResource ElementBorderTop}">
+                        <Grid Grid.Row="0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
@@ -182,12 +187,13 @@
                             </Grid.ColumnDefinitions>
                             <!-- Choose data Source Action-->
                             <ComboBox x:Name="ActionsComboBox" 
-                                  Grid.Column="0"
-                                  Width="250" 
-                                  Padding="{StaticResource ComboBoxItemPadding}"
-                                  DisplayMemberPath="Name" 
-                                  Text="Choose" 
-                                  Margin="{StaticResource ElementBorderControlRight}">
+                                      Grid.Column="0"
+                                      Width="250" 
+                                      Padding="{StaticResource ComboBoxItemPadding}"
+                                      DisplayMemberPath="Name" 
+                                      Text="Choose" 
+                                      ItemsSource="{Binding AvalaibleActions}"
+                                      Margin="{StaticResource ElementBorderControlRight}">
                                 <i:Interaction.Behaviors>
                                     <core:HelpSetter Text="{x:Static languages:Core.PluginServiceSelectActionHelp}"
                                                          DataContext="{Binding}" />
@@ -195,9 +201,11 @@
                             </ComboBox>
                             <!-- NEED TO ADD LOGIC TO REFRESH COMMAND AND VISIBILITY -->
                             <Button Width="25" 
-                                Height="25" 
-                                Margin="0,-1,0,0"
-                                Grid.Column="1">
+                                    Height="25" 
+                                    Margin="0,5,0,-1"
+                                    Grid.Column="1"
+                                    Command="{Binding RefreshCommand}"
+                                    Visibility="{Binding IsRefreshing,Converter={StaticResource NotConverter}}">
                                 <fa:FontAwesome TextOptions.TextFormattingMode="Display" 
                                             FontSize="16" 
                                             Icon="Refresh" 
@@ -213,7 +221,8 @@
                             <views:CircularProgressBar Grid.Column="1"
                                                    Width="25"
                                                    Height="25"
-                                                   Padding="2.5"/>
+                                                   Padding="2.5"
+                                                       Visibility="{Binding IsRefreshing,Converter={StaticResource BoolToVisibilityConverter}}"/>
                         </Grid>
                         <ScrollViewer Grid.Row="1" 
                                       HorizontalScrollBarVisibility="Auto" 
@@ -269,17 +278,20 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Button x:Name="TestButton" 
-                                Grid.Column="0"
-                                Margin="{StaticResource ElementBorderControlRight}" 
-                                HorizontalAlignment="Left" 
-                                VerticalAlignment="Bottom" 
-                                Width="100">Test</Button>
+                                    Grid.Column="0"
+                                    Margin="{StaticResource ElementBorderControlRight}" 
+                                    Command="{Binding TestPluginCommand}"
+                                    HorizontalAlignment="Left" 
+                                    VerticalAlignment="Bottom" 
+                                    Width="100"
+                                    Visibility="{Binding IsTesting,Converter={StaticResource NotConverter}}">Test</Button>
                             <views:CircularProgressBar Grid.Column="1"
                                                        Width="25"
                                                        HorizontalAlignment="Right" 
                                                        Height="25"
                                                        Margin="0,2,0,0"
-                                                       Padding="2.5" />
+                                                       Padding="2.5" 
+                                                       Visibility="{Binding IsTesting,Converter={StaticResource BoolToVisibilityConverter}}"/>
                         </Grid>
                         <ScrollViewer Grid.Row="1" 
                                       HorizontalScrollBarVisibility="Auto" 
