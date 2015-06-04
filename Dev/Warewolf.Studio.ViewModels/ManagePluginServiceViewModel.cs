@@ -116,6 +116,11 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _inputs = value;
+                IsInputsEmptyRows = true;
+                if (_inputs != null && _inputs.Count >= 1)
+                {
+                    IsInputsEmptyRows = false;
+                }
                 OnPropertyChanged(()=>Inputs);
             }
         }
@@ -128,6 +133,14 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _outputMapping = value;
+                IsOutputMappingEmptyRows = true;
+                if (_outputMapping != null)
+                {
+                    if (_outputMapping.Count >= 1)
+                    {
+                        IsOutputMappingEmptyRows = false;
+                    }
+                }
                 OnPropertyChanged(() => OutputMapping);
             }
         }
