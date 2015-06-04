@@ -320,6 +320,7 @@
                             <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
                                 <xamGridEx:XamGridEx x:Name="HeadersGrid" 
                                                      Style="{StaticResource XamGridStyle}"
+                                                     DataContext="{Binding Path=InputValues}"
                                             AutoGenerateColumns="False"
                                             IsAlternateRowsEnabled="False"
                                             ColumnLayoutHeaderVisibility="Never"
@@ -331,7 +332,7 @@
                                         <ig:TextColumn Key="Name" HeaderText="Name" MinimumWidth="100">
                                             <ig:TextColumn.AddNewRowEditorTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock Text="" >
+                                                    <TextBlock Text="{Binding Name}" >
                                                     </TextBlock>
                                                 </DataTemplate>
                                             </ig:TextColumn.AddNewRowEditorTemplate>
@@ -340,7 +341,7 @@
                                             <ig:TextColumn.AddNewRowEditorTemplate>
                                                 <DataTemplate>
                                                     <TextBox Style="{StaticResource NoBorderTextBoxStyle}" 
-                                                             Text="" >
+                                                             Text="{Binding Value}" >
                                                         <customControls:WatermarkTextBox.Watermark>
                                                             <Label Style="{StaticResource WatermarkLabelStyle}">Value</Label>
                                                         </customControls:WatermarkTextBox.Watermark>
