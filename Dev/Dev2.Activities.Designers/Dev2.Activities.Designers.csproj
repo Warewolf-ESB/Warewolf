@@ -518,6 +518,16 @@
     <Compile Include="Designers2\Service\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\SharepointListRead\SharepointListReadDesigner.xaml.cs">
+      <DependentUpon>SharepointListReadDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListRead\SharepointListReadDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharepointListRead\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListRead\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\SortRecords\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -1061,6 +1071,18 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\Service\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharepointListRead\SharepointListReadDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharepointListRead\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharepointListRead\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
