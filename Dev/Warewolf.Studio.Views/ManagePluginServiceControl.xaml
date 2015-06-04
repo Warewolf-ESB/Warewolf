@@ -109,8 +109,8 @@
                 <Grid x:Name="NamespaceGrid" 
                       Grid.Row="1" 
                       Margin="{StaticResource GridBorderBottom}"
-                      Visibility="Visible"
                       Grid.Column="0" 
+                      Visibility="{Binding Path=CanEditNamespace, Converter={StaticResource BoolToVis}}"
                       Width="{Binding ElementName=GridContainer, Path=ActualWidth}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -152,7 +152,7 @@
                 <Grid x:Name="ActionGrid" 
                       Grid.Row="2" 
                       Margin="{StaticResource GridBorderBottom}"
-                      Visibility="Visible"
+                      Visibility="{Binding Path=CanSelectMethod, Converter={StaticResource BoolToVis}}"
                       Grid.Column="0" 
                       Width="{Binding ElementName=GridContainer, Path=ActualWidth}">
                     <Grid.RowDefinitions>
@@ -194,9 +194,10 @@
                                       Grid.Column="0"
                                       Width="250" 
                                       Padding="{StaticResource ComboBoxItemPadding}"
-                                      DisplayMemberPath="Name" 
+                                      DisplayMemberPath="Method" 
                                       Text="Choose" 
                                       ItemsSource="{Binding AvalaibleActions}"
+                                      SelectedItem="{Binding SelectedAction}"
                                       Margin="0,5,3,0">
                                 <i:Interaction.Behaviors>
                                     <core:HelpSetter Text="{x:Static languages:Core.PluginServiceSelectActionHelp}"
@@ -240,7 +241,7 @@
                 <Grid x:Name="TestGrid" 
                       Grid.Row="3" 
                       Margin="{StaticResource GridBorderBottom}"
-                      Visibility="Visible"
+                      Visibility="{Binding Path=CanTest,Converter={StaticResource BoolToVis}}"
                       Grid.Column="0" 
                       Width="{Binding ElementName=GridContainer, Path=ActualWidth}">
                     <Grid.RowDefinitions>
@@ -405,7 +406,8 @@
                 </Grid>
                 <Grid x:Name="MappingsGrid" 
                   Grid.Row="4" 
-                  Grid.Column="0" >
+                  Grid.Column="0" 
+                      Visibility="{Binding Path=CanEditMappings,Converter={StaticResource BoolToVis}}">
                     <!-- Mappings-->
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"></RowDefinition>

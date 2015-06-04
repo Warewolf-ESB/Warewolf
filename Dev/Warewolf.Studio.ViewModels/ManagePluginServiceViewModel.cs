@@ -35,6 +35,7 @@ namespace Warewolf.Studio.ViewModels
         string _pluginSourceActionHeader;
         ICommand _editSourceCommand;
         bool _canEditSource;
+        bool _canEditNamespace;
         string _newButtonLabel;
         string _testHeader;
         string _inputsLabel;
@@ -209,7 +210,10 @@ namespace Warewolf.Studio.ViewModels
                 _selectedSource = value;
                 if(value != null)
                 {
-                   
+                    CanTest = false;
+                    CanEditMappings = false;
+                    CanSelectMethod = false;
+                    CanEditNamespace = true;
                     NameSpaces = new ObservableCollection<INamespaceItem>(_model.GetNameSpaces(value));
                 }
                 OnPropertyChanged(() => SelectedSource);
@@ -326,6 +330,18 @@ namespace Warewolf.Studio.ViewModels
             {
                 _canEditSource = value;
                 OnPropertyChanged(()=>CanEditSource);
+            }
+        }
+        public bool CanEditNamespace
+        {
+            get
+            {
+                return _canEditSource;
+            }
+            set
+            {
+                _canEditSource = value;
+                OnPropertyChanged(() => CanEditNamespace);
             }
         }
         public string NewButtonLabel
@@ -613,8 +629,13 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _selectedNamespace = value;
-                if(SelectedNamespace != null)
-                AvalaibleActions = new ObservableCollection<IPluginAction>(_model.GetActions(SelectedSource, value));
+                if (SelectedNamespace != null)
+                {
+                    CanTest = false;
+                    CanEditMappings = false;
+                    CanSelectMethod = true;
+                    AvalaibleActions = new ObservableCollection<IPluginAction>(_model.GetActions(SelectedSource, value));
+                }
                 OnPropertyChanged(() => SelectedNamespace);
             }
         }
