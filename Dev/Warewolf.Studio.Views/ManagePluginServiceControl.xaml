@@ -109,8 +109,8 @@
                 <Grid x:Name="NamespaceGrid" 
                       Grid.Row="1" 
                       Margin="{StaticResource GridBorderBottom}"
-                      Visibility="Visible"
                       Grid.Column="0" 
+                      Visibility="{Binding Path=CanEditNamespace, Converter={StaticResource BoolToVis}}"
                       Width="{Binding ElementName=GridContainer, Path=ActualWidth}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -135,7 +135,8 @@
                     <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
                         <ComboBox x:Name="NamespaceComboBox" 
                                   DisplayMemberPath="FullName" 
-                                  Width="250" 
+                                  MinWidth="250"
+                                  Width="Auto" 
                                   ItemsSource="{Binding NameSpaces}"
                                   Padding="{StaticResource ComboBoxItemPadding}"
                                   Focusable="True"
@@ -152,7 +153,7 @@
                 <Grid x:Name="ActionGrid" 
                       Grid.Row="2" 
                       Margin="{StaticResource GridBorderBottom}"
-                      Visibility="Visible"
+                      Visibility="{Binding Path=CanSelectMethod, Converter={StaticResource BoolToVis}}"
                       Grid.Column="0" 
                       Width="{Binding ElementName=GridContainer, Path=ActualWidth}">
                     <Grid.RowDefinitions>
@@ -192,13 +193,13 @@
                             <!-- Choose data Source Action-->
                             <ComboBox x:Name="ActionsComboBox" 
                                       Grid.Column="0"
-                                      Width="250" 
+                                      MinWidth="250"
+                                      Width="Auto" 
                                       Padding="{StaticResource ComboBoxItemPadding}"
                                       DisplayMemberPath="Method" 
                                       Text="Choose" 
                                       ItemsSource="{Binding AvalaibleActions}"
                                       SelectedItem="{Binding SelectedAction}"
-                                    
                                       Margin="0,5,3,0">
                                 <i:Interaction.Behaviors>
                                     <core:HelpSetter Text="{x:Static languages:Core.PluginServiceSelectActionHelp}"
@@ -242,7 +243,7 @@
                 <Grid x:Name="TestGrid" 
                       Grid.Row="3" 
                       Margin="{StaticResource GridBorderBottom}"
-                      Visibility="Visible"
+                      Visibility="{Binding Path=CanTest,Converter={StaticResource BoolToVis}}"
                       Grid.Column="0" 
                       Width="{Binding ElementName=GridContainer, Path=ActualWidth}">
                     <Grid.RowDefinitions>
@@ -287,8 +288,7 @@
                                     Command="{Binding TestPluginCommand}"
                                     HorizontalAlignment="Left" 
                                     VerticalAlignment="Bottom" 
-                                    Width="100"
-                                    Visibility="{Binding IsTesting,Converter={StaticResource NotConverter}}">Test</Button>
+                                    Width="100">Test</Button>
                             <views:CircularProgressBar Grid.Column="1"
                                                        Width="25"
                                                        HorizontalAlignment="Right" 
@@ -301,6 +301,7 @@
                                       Grid.Column="0" 
                                       HorizontalScrollBarVisibility="Auto" 
                                       VerticalScrollBarVisibility="Auto"
+                                      Margin="{StaticResource ControlBorderTop}"
                                       MaxHeight="110">
                             <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
                                 <xamGridEx:XamGridEx x:Name="HeadersGrid" 
@@ -407,7 +408,8 @@
                 </Grid>
                 <Grid x:Name="MappingsGrid" 
                   Grid.Row="4" 
-                  Grid.Column="0" >
+                  Grid.Column="0" 
+                      Visibility="{Binding Path=CanEditMappings,Converter={StaticResource BoolToVis}}">
                     <!-- Mappings-->
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"></RowDefinition>

@@ -17,6 +17,7 @@ namespace Dev2.Common.Interfaces.PluginService
         string PluginSourceActionHeader { get; }
         ICommand EditSourceCommand { get; }
         bool CanEditSource { get; }
+        bool CanEditNamespace { get; set; }
         string NewButtonLabel { get; }
         string TestHeader { get; }
         string InputsLabel { get; }

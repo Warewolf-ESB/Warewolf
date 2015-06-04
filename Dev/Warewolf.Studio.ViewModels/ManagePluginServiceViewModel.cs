@@ -30,11 +30,13 @@ namespace Warewolf.Studio.ViewModels
         ICollection<IPluginSource> _sources;
         IPluginSource _selectedSource;
         IPluginAction _selectedAction;
+        IPluginAction _refreshSelectedAction;
         ICollection<IPluginAction> _avalaibleActions;
         string _pluginSourceHeader;
         string _pluginSourceActionHeader;
         ICommand _editSourceCommand;
         bool _canEditSource;
+        bool _canEditNamespace;
         string _newButtonLabel;
         string _testHeader;
         string _inputsLabel;
@@ -73,6 +75,7 @@ namespace Warewolf.Studio.ViewModels
             NameSpaces = new ObservableCollection<INamespaceItem>();
             Sources = _model.RetrieveSources();
             Header = Resources.Languages.Core.PluginServiceNewHeaderLabel;
+            RefreshCommand = new DelegateCommand(Refresh);
             ErrorText = "";
             TestPluginCommand = new DelegateCommand(() => Test(_model));
             SaveCommand = new DelegateCommand(() => Save(ToModel()));
@@ -209,7 +212,10 @@ namespace Warewolf.Studio.ViewModels
                 _selectedSource = value;
                 if(value != null)
                 {
-                   
+                    CanTest = false;
+                    CanEditMappings = false;
+                    CanSelectMethod = false;
+                    CanEditNamespace = true;
                     NameSpaces = new ObservableCollection<INamespaceItem>(_model.GetNameSpaces(value));
                 }
                 OnPropertyChanged(() => SelectedSource);
@@ -277,9 +283,17 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
+                if ((!Equals(value, _selectedAction) && _selectedAction != null) || _selectedAction == null)
+                {
+                    IsTestResultsEmptyRows = false;
+                    TestResultsAvailable = false;
+                    CanEditMappings = false;
+                    TestSuccessful = false;
+                    OutputMapping = null;
+                }
                 _selectedAction = value;
-                if(value!=null)
-                CanTest = true;
+                CanTest = _selectedAction != null;
+                Inputs = _selectedAction != null ? _selectedAction.Inputs : new Collection<IServiceInput>();
                 OnPropertyChanged(() => SelectedAction);
             }
         }
@@ -328,6 +342,18 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(()=>CanEditSource);
             }
         }
+        public bool CanEditNamespace
+        {
+            get
+            {
+                return _canEditSource;
+            }
+            set
+            {
+                _canEditSource = value;
+                OnPropertyChanged(() => CanEditNamespace);
+            }
+        }
         public string NewButtonLabel
         {
             get
@@ -357,6 +383,27 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         public ICommand RefreshCommand { get; set; }
+        private void Refresh()
+        {
+            IsRefreshing = true;
+            PerformRefresh();
+            IsRefreshing = false;
+        }
+        private void PerformRefresh()
+        {
+            try
+            {
+                _refreshSelectedAction = SelectedAction;
+                AvalaibleActions = new ObservableCollection<IPluginAction>(_model.GetActions(SelectedSource, SelectedNamespace));
+                SelectedAction = AvalaibleActions.FirstOrDefault(action => _refreshSelectedAction != null && action.FullName == _refreshSelectedAction.FullName);
+                ErrorText = "";
+            }
+            catch (Exception e)
+            {
+                ErrorText = e.Message;
+                AvalaibleActions = null;
+            }
+        }
         public bool IsRefreshing
         {
             get
@@ -613,8 +660,13 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _selectedNamespace = value;
-                if(SelectedNamespace != null)
-                AvalaibleActions = new ObservableCollection<IPluginAction>(_model.GetActions(SelectedSource, value));
+                if (SelectedNamespace != null)
+                {
+                    CanTest = false;
+                    CanEditMappings = false;
+                    CanSelectMethod = true;
+                    AvalaibleActions = new ObservableCollection<IPluginAction>(_model.GetActions(SelectedSource, value));
+                }
                 OnPropertyChanged(() => SelectedNamespace);
             }
         }
