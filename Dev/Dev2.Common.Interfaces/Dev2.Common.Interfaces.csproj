@@ -186,6 +186,7 @@
     <Compile Include="Infrastructure\SharedModels\ICompileMessageTO.cs" />
     <Compile Include="Infrastructure\SharedModels\IDbColumn.cs" />
     <Compile Include="Infrastructure\SharedModels\IDbColumnList.cs" />
+    <Compile Include="Infrastructure\SharedModels\ISharepointFieldTo.cs" />
     <Compile Include="Interfaces\IDev2TOFn.cs" />
     <Compile Include="IPulseLogger.cs" />
     <Compile Include="ISharepointReadListTo.cs" />
