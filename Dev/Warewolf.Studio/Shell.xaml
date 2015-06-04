@@ -200,6 +200,9 @@
         <DataTemplate DataType="{x:Type viewModels:ManageDatabaseServiceViewModel}">
             <views:ManageDatabaseServiceControl />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:ManagePluginServiceViewModel}">
+            <views:ManagePluginServiceControl />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:ManageDatabaseSourceViewModel}">
             <views:ManageDatabaseSourceControl />
         </DataTemplate>

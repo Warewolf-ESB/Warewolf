@@ -263,6 +263,9 @@ namespace Warewolf.Studio.ViewModels
                 case ResourceType.PluginSource:
                     CreatePluginSource();
                     break;
+                case ResourceType.PluginService:
+                    CreatePluginService();
+                    break;
                 case ResourceType.WebService:
                     CreateWebService();
                     break;
@@ -275,6 +278,13 @@ namespace Warewolf.Studio.ViewModels
                 default: return;
 
             }
+        }
+
+        void CreatePluginService()
+        {
+            var selectedId = Guid.NewGuid();
+            var sourceViewModel = new ManagePluginServiceViewModel(new PluginServiceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, this, ActiveServer.ResourceName), new RequestServiceNameViewModel(new EnvironmentViewModel(LocalhostServer, this), _unityContainer.Resolve<IRequestServiceNameView>(), selectedId));
+            GetRegion("Workspace").Add(sourceViewModel);
         }
 
         void CreateDbService()
