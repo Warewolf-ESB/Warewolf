@@ -69,7 +69,7 @@ namespace Dev2.Network
             ServerEvents = EventPublishers.Studio;
 
             var uriString = serverUri;
-            if(!serverUri.EndsWith("dsf"))
+            if (!serverUri.EndsWith("dsf"))
             {
                 uriString = serverUri + (serverUri.EndsWith("/") ? "" : "/") + "dsf";
             }
@@ -100,17 +100,17 @@ namespace Dev2.Network
             UserName = userName;
             Password = password;
             AuthenticationType = userName == "\\" ? AuthenticationType.Public : AuthenticationType.User;
-            if(AuthenticationType == AuthenticationType.Public)
+            if (AuthenticationType == AuthenticationType.Public)
             {
                 Principal = null;
-            }           
+            }
         }
 
         public bool IsLocalHost { get { return DisplayName == "localhost"; } }
 
         protected void InitializeEsbProxy()
         {
-            if(EsbProxy == null)
+            if (EsbProxy == null)
             {
                 EsbProxy = HubConnection.CreateHubProxy("esb");
                 EsbProxy.On<string>("SendMemo", OnMemoReceived);
@@ -125,13 +125,13 @@ namespace Dev2.Network
             }
         }
 
-        public Action<Guid, CompileMessageList> ReceivedResourceAffectedMessage {get;set;}
+        public Action<Guid, CompileMessageList> ReceivedResourceAffectedMessage { get; set; }
         void OnReceiveResourcesAffectedMemo(string objString)
         {
             var obj = _serializer.Deserialize<CompileMessageList>(objString);
             if (ReceivedResourceAffectedMessage != null)
             {
-                ReceivedResourceAffectedMessage(obj.ServiceID,obj);
+                ReceivedResourceAffectedMessage(obj.ServiceID, obj);
             }
         }
 
@@ -144,7 +144,7 @@ namespace Dev2.Network
         {
             Dev2Logger.Log.Debug("*********** Hub connection down");
             IsConnected = false;
-            if(IsShuttingDown)
+            if (IsShuttingDown)
             {
                 return;
             }
@@ -172,7 +172,7 @@ namespace Dev2.Network
 
         protected void HubConnectionStateChanged(StateChange stateChange)
         {
-            switch(stateChange.NewState)
+            switch (stateChange.NewState)
             {
                 case ConnectionState.Connected:
                     IsConnected = true;
@@ -200,36 +200,36 @@ namespace Dev2.Network
             ID = id;
             try
             {
-                if(!IsLocalHost)
+                if (!IsLocalHost)
                 {
-                    if(HubConnection.State == ConnectionState.Reconnecting)
+                    if (HubConnection.State == ConnectionState.Reconnecting)
                     {
                         HubConnection.Stop(new TimeSpan(0, 0, 0, 1));
                     }
                 }
 
-                if(HubConnection.State == ConnectionState.Disconnected)
+                if (HubConnection.State == ConnectionState.Disconnected)
                 {
                     ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
-                    if(!HubConnection.Start().Wait(5000))
+                    if (!HubConnection.Start().Wait(5000))
                     {
-                        if(!IsLocalHost)
+                        if (!IsLocalHost)
                         {
                             ConnectionRetry();
                         }
                     }
                 }
             }
-            catch(AggregateException aex)
+            catch (AggregateException aex)
             {
                 aex.Flatten();
                 aex.Handle(ex =>
                 {
                     Dev2Logger.Log.Error(this, aex);
                     var hex = ex as HttpClientException;
-                    if(hex != null)
+                    if (hex != null)
                     {
-                        switch(hex.Response.StatusCode)
+                        switch (hex.Response.StatusCode)
                         {
                             case HttpStatusCode.Unauthorized:
                             case HttpStatusCode.Forbidden:
@@ -240,11 +240,11 @@ namespace Dev2.Network
                     throw new NotConnectedException();
                 });
             }
-            catch(NotConnectedException)
+            catch (NotConnectedException)
             {
                 throw;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 HandleConnectError(e);
             }
@@ -257,7 +257,7 @@ namespace Dev2.Network
 
             var application = Application.Current;
             MessageBoxResult res = MessageBoxResult.No;
-            if(application != null && application.Dispatcher != null)
+            if (application != null && application.Dispatcher != null)
             {
                 application.Dispatcher.Invoke(() =>
                     {
@@ -265,9 +265,9 @@ namespace Dev2.Network
                     });
             }
 
-            if(res == MessageBoxResult.Yes)
+            if (res == MessageBoxResult.Yes)
             {
-                if(!HubConnection.Start().Wait(5000))
+                if (!HubConnection.Start().Wait(5000))
                 {
                     ConnectionRetry();
                 }
@@ -291,9 +291,9 @@ namespace Dev2.Network
 
         protected virtual void StartReconnectTimer()
         {
-            if(IsLocalHost)
+            if (IsLocalHost)
             {
-                if(_reconnectHeartbeat == null)
+                if (_reconnectHeartbeat == null)
                 {
                     _reconnectHeartbeat = new System.Timers.Timer();
                     _reconnectHeartbeat.Elapsed += OnReconnectHeartbeatElapsed;
@@ -306,7 +306,7 @@ namespace Dev2.Network
 
         public virtual void StopReconnectHeartbeat()
         {
-            if(_reconnectHeartbeat != null)
+            if (_reconnectHeartbeat != null)
             {
                 _reconnectHeartbeat.Stop();
                 _reconnectHeartbeat.Dispose();
@@ -318,7 +318,7 @@ namespace Dev2.Network
         void OnReconnectHeartbeatElapsed(object sender, ElapsedEventArgs args)
         {
             Connect(ID);
-            if(IsConnected)
+            if (IsConnected)
             {
                 StopReconnectHeartbeat();
                 ConnectControlSingleton.Instance.Refresh(Guid.Empty);
@@ -333,18 +333,18 @@ namespace Dev2.Network
             {
                 IsShuttingDown = true;
                 IsConnected = false;
-                HubConnection.Stop(new TimeSpan(0, 0, 0,5));
+                HubConnection.Stop(new TimeSpan(0, 0, 0, 5));
             }
-            catch(AggregateException aex)
+            catch (AggregateException aex)
             {
                 aex.Flatten();
                 aex.Handle(ex =>
                 {
                     Dev2Logger.Log.Error(this, aex);
                     var hex = ex as HttpClientException;
-                    if(hex != null)
+                    if (hex != null)
                     {
-                        switch(hex.Response.StatusCode)
+                        switch (hex.Response.StatusCode)
                         {
                             case HttpStatusCode.Unauthorized:
                             case HttpStatusCode.Forbidden:
@@ -355,7 +355,7 @@ namespace Dev2.Network
                     throw new NotConnectedException();
                 });
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Log.Error(this, e);
             }
@@ -363,13 +363,13 @@ namespace Dev2.Network
 
         public void Verify(Action<ConnectResult> callback, bool wait = true)
         {
-            if(IsConnected)
+            if (IsConnected)
             {
                 return;
             }
             ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
 
-            if(wait)
+            if (wait)
             {
                 HubConnection.Start().Wait(MillisecondsTimeout);
                 callback(HubConnection.State == ConnectionState.Connected
@@ -387,7 +387,7 @@ namespace Dev2.Network
 
         public void StartAutoConnect()
         {
-            if(IsConnected)
+            if (IsConnected)
             {
                 return;
             }
@@ -425,7 +425,7 @@ namespace Dev2.Network
                 // Handle it more gracefully ;)
                 RaisePermissionsModified(obj.ModifiedPermissions);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Log.Error(this, e);
             }
@@ -438,7 +438,7 @@ namespace Dev2.Network
         {
             var serverExplorerItem = _serializer.Deserialize<ServerExplorerItem>(obj);
             serverExplorerItem.ServerId = ID;
-            if(ItemAddedMessageAction != null)
+            if (ItemAddedMessageAction != null)
             {
                 ItemAddedMessageAction(serverExplorerItem);
             }
@@ -449,7 +449,7 @@ namespace Dev2.Network
         {
             var serverExplorerItem = _serializer.Deserialize<ServerExplorerItem>(obj);
             serverExplorerItem.ServerId = ID;
-            if(ItemItemDeletedMessageAction != null)
+            if (ItemItemDeletedMessageAction != null)
             {
                 ItemItemDeletedMessageAction(serverExplorerItem);
             }
@@ -459,7 +459,7 @@ namespace Dev2.Network
         void OnItemUpdatedMessageReceived(string obj)
         {
             var serverExplorerItem = _serializer.Deserialize<ServerExplorerItem>(obj);
-            if(ItemItemUpdatedMessageAction != null)
+            if (ItemItemUpdatedMessageAction != null)
             {
                 ItemItemUpdatedMessageAction(serverExplorerItem);
             }
@@ -490,12 +490,12 @@ namespace Dev2.Network
 
         void RaisePermissionsChanged()
         {
-            if(PermissionsChanged != null)
+            if (PermissionsChanged != null)
             {
                 PermissionsChanged(this, EventArgs.Empty);
             }
-        } 
-        
+        }
+
         public event EventHandler<List<WindowsGroupPermission>> PermissionsModified;
 
         void RaisePermissionsModified(List<WindowsGroupPermission> args)
@@ -508,7 +508,7 @@ namespace Dev2.Network
 
         void UpdateIsAuthorized(bool isAuthorized)
         {
-            if(IsAuthorized != isAuthorized)
+            if (IsAuthorized != isAuthorized)
             {
                 IsAuthorized = isAuthorized;
                 RaisePermissionsChanged();
@@ -518,7 +518,7 @@ namespace Dev2.Network
         protected virtual void OnNetworkStateChanged(NetworkStateEventArgs e)
         {
             var handler = NetworkStateChanged;
-            if(handler != null)
+            if (handler != null)
             {
                 handler(this, e);
             }
@@ -526,7 +526,7 @@ namespace Dev2.Network
 
         public StringBuilder ExecuteCommand(StringBuilder payload, Guid workspaceId, Guid dataListId)
         {
-            if(payload == null || payload.Length == 0)
+            if (payload == null || payload.Length == 0)
             {
                 throw new ArgumentNullException("payload");
             }
@@ -535,63 +535,37 @@ namespace Dev2.Network
 
             // build up payload 
             var length = payload.Length;
-            var startIdx = 0;
-            var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
-
             var messageId = Guid.NewGuid();
-            List<Envelope> mailToSend = new List<Envelope>();
-            for(int i = 0; i < rounds; i++)
+            var envelope = new Envelope
             {
-                var envelope = new Envelope { PartID = i, Type = typeof(Envelope) };
+                PartID = 0,
+                Type = typeof(Envelope)
+            };
 
-                var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
-                if(len > (payload.Length - startIdx))
-                {
-                    len = (payload.Length - startIdx);
-                }
-
-                envelope.Content = payload.Substring(startIdx, len);
-                startIdx += len;
-
-                mailToSend.Add(envelope);
-            }
-
-            // Send and receive chunks from the server ;)
+            envelope.Content = payload.ToString();
             var result = new StringBuilder();
-            for(int i = 0; i < mailToSend.Count; i++)
+            Task<Receipt> invoke = EsbProxy.Invoke<Receipt>("ExecuteCommand", envelope, true, workspaceId, dataListId, messageId);
+            Wait(invoke, result);
+            if (invoke.IsFaulted)
             {
-                bool isEnd = (i + 1 == mailToSend.Count);
-                Task<Receipt> invoke = EsbProxy.Invoke<Receipt>("ExecuteCommand", mailToSend[i], isEnd, workspaceId, dataListId, messageId);
-                Wait(invoke, result);
-                if(invoke.IsFaulted)
-                {
-                    break;
-                }
-                // now build up the result in fragments ;)
-                if(isEnd)
-                {
-                    var totalToFetch = invoke.Result.ResultParts;
-                    for(int q = 0; q < totalToFetch; q++)
-                    {
-                        Task<string> fragmentInvoke = EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = q, RequestID = messageId });
-                        Wait(fragmentInvoke, result);
-                        if(!fragmentInvoke.IsFaulted && fragmentInvoke.Result != null)
-                        {
-                            result.Append(fragmentInvoke.Result);
-                        }
-                    }
-                }
+                throw new Exception("Task execution in faulted state.");
+            }
+            Task<string> fragmentInvoke = EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId });
+            Wait(fragmentInvoke, result);
+            if (!fragmentInvoke.IsFaulted && fragmentInvoke.Result != null)
+            {
+                result.Append(fragmentInvoke.Result);
             }
 
             // prune any result for old datalist junk ;)
-            if(result.Length > 0)
+            if (result.Length > 0)
             {
                 // Only return Dev2System.ManagmentServicePayload if present ;)
                 var start = result.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", false);
-                if(start > 0)
+                if (start > 0)
                 {
                     var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
-                    if(start < end && (end - start) > 1)
+                    if (start < end && (end - start) > 1)
                     {
                         // we can return the trimmed payload instead
                         start += (GlobalConstants.ManagementServicePayload.Length + 2);
@@ -601,7 +575,6 @@ namespace Dev2.Network
             }
 
             return result;
-
         }
 
         protected virtual T Wait<T>(Task<T> task, StringBuilder result)
@@ -616,27 +589,27 @@ namespace Dev2.Network
                 task.WaitWithPumping(millisecondsTimeout);
                 return task.Result;
             }
-            catch(AggregateException aex)
+            catch (AggregateException aex)
             {
                 var hasDisconnected = false;
                 aex.Handle(ex =>
                 {
                     result.AppendFormat("<Error>{0}</Error>", ex.Message);
                     var hex = ex as HttpRequestException;
-                    if(hex != null)
+                    if (hex != null)
                     {
                         hasDisconnected = true;
                         return true; // This we know how to handle this
                     }
                     var ioex = ex as InvalidOperationException;
-                    if(ioex != null && ioex.Message.Contains(@"Connection started reconnecting before invocation result was received"))
+                    if (ioex != null && ioex.Message.Contains(@"Connection started reconnecting before invocation result was received"))
                     {
                         Dev2Logger.Log.Debug("Connection is reconnecting");
                         return true; // This we know how to handle this
                     }
                     // handle 403 errors when permissions have been removed ;)
                     var hce = ex as HttpClientException;
-                    if(hce != null && hce.Message.Contains("StatusCode: 403"))
+                    if (hce != null && hce.Message.Contains("StatusCode: 403"))
                     {
                         Dev2Logger.Log.Debug("Forbidden - Most Likely Permissions Changed.");
                         // Signal not-authorized anymore ;)
@@ -648,7 +621,7 @@ namespace Dev2.Network
                     Dev2Logger.Log.Error(this, ex);
                     return true; // Let anything else stop the application.
                 });
-                if(hasDisconnected)
+                if (hasDisconnected)
                 {
                     HasDisconnected();
                 }
