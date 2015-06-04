@@ -275,14 +275,13 @@
 
     <!--  *********************************  No Border TextBox Style  *********************************  -->
     <Style x:Key="NoBorderTextBoxStyle" TargetType="TextBox">
-        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="Background" Value="{StaticResource TextBoxBackgroundBrush}" />
-        <Setter Property="BorderBrush" Value="{StaticResource TextBoxTransparentBorderBrush}" />
-        <Setter Property="Height" Value="25" />
-        <Setter Property="Margin" Value="1,2,2,2"/>
+        <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorderBrush}" />
+        <Setter Property="Height" Value="Auto" />
 
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -303,7 +302,7 @@
                                         <ObjectAnimationUsingKeyFrames Duration="0"
                                                                        Storyboard.TargetName="Border"
                                                                        Storyboard.TargetProperty="BorderBrush">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TextBoxTransparentBorderBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TextBoxHoverBorderBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Duration="0"
                                                                        Storyboard.TargetName="Border"
@@ -403,7 +402,7 @@
                                 IsHitTestVisible="False"
                                 Opacity="0" />
                         <Border x:Name="FocusVisualElement"
-                                BorderBrush="{StaticResource TextBoxTransparentBorderBrush}"
+                                BorderBrush="{StaticResource TextBoxHoverBorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 IsHitTestVisible="False"
                                 Opacity="0" />

@@ -1191,7 +1191,7 @@
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                         <Border.Resources>
-                            <Style BasedOn="{StaticResource TextBoxStyle}" TargetType="TextBox" />
+                            <Style BasedOn="{StaticResource NoBorderTextBoxStyle}" TargetType="TextBox" />
                             <Style BasedOn="{StaticResource ComboBoxStyle}" TargetType="ComboBox" />
                             <Style BasedOn="{StaticResource CheckBoxStyle}" TargetType="CheckBox" />
                             <DataTemplate x:Key="DefaultDeferredScrollingTemplate">
