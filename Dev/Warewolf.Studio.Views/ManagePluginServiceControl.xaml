@@ -295,16 +295,23 @@
                         </Grid>
                         <ScrollViewer Grid.Row="1" 
                                       HorizontalScrollBarVisibility="Auto" 
-                                      VerticalScrollBarVisibility="Auto">
-                            <TextBox Margin="{StaticResource ControlBorderTop}"
-                                     HorizontalAlignment="Stretch"
-                                     TextWrapping="Wrap"
-                                     MaxHeight="180">
-                                <i:Interaction.Behaviors>
-                                    <core:HelpSetter Text="{x:Static languages:Core.PluginServiceTestInputHelp}"
+                                      VerticalScrollBarVisibility="Auto"
+                                      MaxHeight="110">
+                            <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
+                                <TextBox Margin="{StaticResource ControlBorderTop}"
+                                         HorizontalAlignment="Stretch"
+                                         AcceptsReturn="True"
+                                         TextWrapping="Wrap"
+                                         Height="90"
+                                         VerticalScrollBarVisibility="Auto"
+                                         VerticalContentAlignment="Stretch"
+                                         VerticalAlignment="Stretch">
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:Core.PluginServiceTestInputHelp}"
                                                          DataContext="{Binding}" />
-                                </i:Interaction.Behaviors>
-                            </TextBox>
+                                    </i:Interaction.Behaviors>
+                                </TextBox>
+                            </Grid>
                         </ScrollViewer>
                         <Grid Grid.Row="2">
                             <Grid.ColumnDefinitions>
@@ -320,15 +327,22 @@
                         </Grid>
                         <ScrollViewer Grid.Row="3" 
                                       HorizontalScrollBarVisibility="Auto" 
-                                      VerticalScrollBarVisibility="Auto">
-                            <TextBox HorizontalAlignment="Stretch"
-                                     TextWrapping="Wrap"
-                                     MaxHeight="180">
-                                <i:Interaction.Behaviors>
-                                    <core:HelpSetter Text="{x:Static languages:Core.PluginServiceTestResultsHelp}"
+                                      VerticalScrollBarVisibility="Auto"
+                                      MaxHeight="110">
+                            <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
+                                <TextBox HorizontalAlignment="Stretch"
+                                         AcceptsReturn="True"
+                                         TextWrapping="Wrap"
+                                         Height="90"
+                                         VerticalScrollBarVisibility="Auto"
+                                         VerticalContentAlignment="Stretch"
+                                         VerticalAlignment="Stretch">
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:Core.PluginServiceTestResultsHelp}"
                                                          DataContext="{Binding}" />
-                                </i:Interaction.Behaviors>
-                            </TextBox>
+                                    </i:Interaction.Behaviors>
+                                </TextBox>
+                            </Grid>
                         </ScrollViewer>
                     </Grid>
                 </Grid>
