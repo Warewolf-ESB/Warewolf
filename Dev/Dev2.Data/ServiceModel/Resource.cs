@@ -50,6 +50,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             { ResourceType.WorkflowService, "Service" },
             { ResourceType.ServerSource, "Source" },
             { ResourceType.OauthSource, "Source" },
+            { ResourceType.SharepointServerSource, "Source" },
         };
         IVersionInfo _versionInfo;
 

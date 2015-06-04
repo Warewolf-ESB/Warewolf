@@ -201,6 +201,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Scheduler.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\3rd Party Connectors\Sharepoint\ReadItemFromList.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReadItemFromList.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\3rd Party Connectors\Sharepoint\ReadItemFromListSteps.cs" />
     <Compile Include="Toolbox\ControlFlow\Decision\Decision.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -466,6 +472,10 @@
     <None Include="Scheduler\Scheduler.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Scheduler.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\3rd Party Connectors\Sharepoint\ReadItemFromList.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ReadItemFromList.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\ControlFlow\Decision\Decision.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
