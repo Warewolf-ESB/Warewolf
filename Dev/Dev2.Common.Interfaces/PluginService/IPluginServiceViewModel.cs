@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Windows.Input;
-using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.DB;
 
-namespace Dev2.Common.Interfaces.DB
+namespace Dev2.Common.Interfaces.PluginService
 {
-    public interface IManageDbServiceViewModel : IServiceMappings
+    public interface IPluginServiceViewModel :IServiceMappings
     {
-        ICollection<IDbSource> Sources { get; set; }
-        IDbSource SelectedSource { get; set; }
-        IDbAction SelectedAction { get; set; }
-        ICollection<IDbAction> AvalaibleActions { get; set; }
-        string DataSourceHeader { get; }
-        string DataSourceActionHeader { get; }
+
+        ICollection<IPluginSource> Sources { get; set; }
+        IPluginSource SelectedSource { get; set; }
+        IPluginAction SelectedAction { get; set; }
+        ICollection<IPluginAction> AvalaibleActions { get; set; }
+        string PluginSourceHeader { get; }
+        string PluginSourceActionHeader { get; }
         ICommand EditSourceCommand { get; }
         bool CanEditSource { get; }
         string NewButtonLabel { get; }
@@ -26,27 +26,23 @@ namespace Dev2.Common.Interfaces.DB
         bool InputsRequired { get; set; }
 
         // ReSharper restore ReturnTypeCanBeEnumerable.Global
-        DataTable TestResults { get; set; }
+        string TestResults { get; set; }
         bool IsTestResultsEmptyRows { get; set; }
         ICommand CreateNewSourceCommand { get; set; }
-        ICommand TestProcedureCommand { get; set; }
+        ICommand TestPluginCommand { get; set; }
         bool IsTesting { get; set; }
 
         ICommand SaveCommand { get; set; }
-        bool CanSelectProcedure { get; set; }
+        bool CanSelectMethod { get; set; }
         bool CanEditMappings { get; set; }
         bool CanTest { get; set; }
         string Path { get; set; }
         string Name { get; set; }
-       Guid Id{get;set;}
-       bool TestSuccessful { get; set; }
-       bool TestResultsAvailable { get; set; }
-       string ErrorText { get; set; }
-       
-       bool ShowRecordSet { get; set; }
-    }
+        Guid Id { get; set; }
+        bool TestSuccessful { get; set; }
+        bool TestResultsAvailable { get; set; }
+        string ErrorText { get; set; }
 
-    public interface IDbOutput
-    {
+        bool ShowResults { get; set; }
     }
 }

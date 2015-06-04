@@ -181,6 +181,7 @@
     <Compile Include="ESB\Management\Services\GetDllListings.cs" />
     <Compile Include="ESB\Management\Services\SaveDbService.cs" />
     <Compile Include="ESB\Management\Services\SaveDbSourceSource.cs" />
+    <Compile Include="ESB\Management\Services\SavePluginService.cs" />
     <Compile Include="ESB\Management\Services\SavePluginSource.cs" />
     <Compile Include="ESB\Management\Services\SaveWebService.cs" />
     <Compile Include="ESB\Management\Services\SaveWebserviceSource.cs" />
@@ -235,6 +236,7 @@
     <Compile Include="ESB\Management\Services\SettingsWrite.cs" />
     <Compile Include="ESB\Management\Services\TestConnectionService.cs" />
     <Compile Include="ESB\Management\Services\TestDbService.cs" />
+    <Compile Include="ESB\Management\Services\TestPluginService.cs" />
     <Compile Include="ESB\Management\Services\TestWebService.cs" />
     <Compile Include="ESB\Management\Services\TestWebserviceSourceService.cs" />
     <Compile Include="Execution\ExecutionToken.cs" />

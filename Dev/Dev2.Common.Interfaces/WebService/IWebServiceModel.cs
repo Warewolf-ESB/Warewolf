@@ -18,5 +18,7 @@ namespace Dev2.Common.Interfaces.WebService
         IStudioUpdateManager UpdateRepository { get; }
         IQueryManager QueryProxy { get; }
         ObservableCollection<IWebServiceSource> Sources { get; }
+
+        string HandlePasteResponse(string current);
     }
 }

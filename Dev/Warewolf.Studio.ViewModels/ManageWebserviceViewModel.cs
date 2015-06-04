@@ -62,14 +62,14 @@ namespace Warewolf.Studio.ViewModels
         Guid _id;
         string _path;
         bool _canEditHeadersAndUrl;
-        bool _canEditResponse;
-        bool _isInputsEmptyRows;
-        bool _isOutputMappingEmptyRows;
         string _recordsetName;
         ICommand _addHeaderCommand;
         ICommand _removeHeaderCommand;
         NameValue _selectedRow;
         ICollection<object> _selectedDataItems;
+        bool _canEditResponse;
+        bool _isInputsEmptyRows;
+        bool _isOutputMappingEmptyRows;
 
         #region Implementation of IManageWebServiceViewModel
 
@@ -140,6 +140,7 @@ namespace Warewolf.Studio.ViewModels
             CreateNewSourceCommand = new DelegateCommand(_model.CreateNewSource);
             SaveCommand = new DelegateCommand(Save, CanSave);
             NewWebSourceCommand = new DelegateCommand(() => _model.CreateNewSource());
+            PasteResponseCommand = new DelegateCommand(() => Response= _model.HandlePasteResponse(Response??""));
             RemoveHeaderCommand = new DelegateCommand( DeleteCell);
             AddHeaderCommand = new DelegateCommand(Add);
         }
@@ -229,6 +230,8 @@ namespace Warewolf.Studio.ViewModels
 
 
         }
+
+
 
         public WebService ResponseWebService { get; set; }
 
@@ -420,26 +423,6 @@ namespace Warewolf.Studio.ViewModels
                set
             {
                  _selectedDataItems = value;
-            }
-        }
-
-        public bool IsInputsEmptyRows
-        {
-            get { return _isInputsEmptyRows; }
-            set
-            {
-                _isInputsEmptyRows = value;
-                OnPropertyChanged(() => IsInputsEmptyRows);
-            }
-        }
-
-        public bool IsOutputMappingEmptyRows
-        {
-            get { return _isOutputMappingEmptyRows; }
-            set
-            {
-                _isOutputMappingEmptyRows = value;
-                OnPropertyChanged(() => IsOutputMappingEmptyRows);
             }
         }
 
@@ -885,11 +868,6 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _inputs = value;
-                IsInputsEmptyRows = true;
-                if (_inputs.Count >= 1)
-                {
-                    IsInputsEmptyRows = false;
-                }
                 OnPropertyChanged(() => Inputs);
             }
         }
@@ -902,12 +880,6 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _outputMapping = value;
-                IsOutputMappingEmptyRows = true;
-                if (_outputMapping.Count >= 1)
-                {
-                    IsOutputMappingEmptyRows = false;
-                }
-
                 OnPropertyChanged(() => OutputMapping);
             }
         }
@@ -924,6 +896,28 @@ namespace Warewolf.Studio.ViewModels
                     _recordsetName = value;
                     OnPropertyChanged(() => RecordsetName);
                 }
+            }
+        }
+        public bool IsInputsEmptyRows
+        {
+            get
+            {
+                return _isInputsEmptyRows;
+            }
+            set
+            {
+                _isInputsEmptyRows = value;
+            }
+        }
+        public bool IsOutputMappingEmptyRows
+        {
+            get
+            {
+                return _isOutputMappingEmptyRows;
+            }
+            set
+            {
+                _isOutputMappingEmptyRows = value;
             }
         }
         /// <summary>

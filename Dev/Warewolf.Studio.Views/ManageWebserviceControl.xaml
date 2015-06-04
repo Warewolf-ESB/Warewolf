@@ -21,13 +21,13 @@
                                               IsDesignTimeCreatable=False}">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
-        <Style TargetType="ig:XamContextMenu">
+            <Style TargetType="ig:XamContextMenu">
             <Setter Property="Background" Value="#FFFFFFFF"/>
-        </Style>
+            </Style>
     </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
         <Grid x:Name="GridMain"  MinWidth="600" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}">
-            <Grid Margin="{StaticResource ElementBorder}" x:Name="GridContainer" >
+            <Grid Margin="{StaticResource ElementBorder}" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto" ></RowDefinition>
@@ -39,8 +39,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Grid Grid.Row="0" HorizontalAlignment="Stretch" Margin="{StaticResource GridBorderBottom}" 
-                      Width="{Binding ElementName=GridContainer, Path=ActualWidth}">
+                <Grid Grid.Row="0" HorizontalAlignment="Stretch" Margin="{StaticResource GridBorderBottom}" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" ></RowDefinition>
@@ -158,14 +157,14 @@
                                   MinWidth="400">
                                 <xamGridEx:XamGridEx x:Name="HeadersGrid" 
                                                      Style="{StaticResource XamGridStyle}"
-                                                     ItemsSource="{Binding Headers}" 
-                                                     AutoGenerateColumns="False"
-                                                     IsAlternateRowsEnabled="False"
-                                                     ColumnLayoutHeaderVisibility="Never"
-                                                     DeleteKeyAction="DeleteRowOfActiveCell"
-                                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                                     ColumnWidth="*" >
+                                            ItemsSource="{Binding Headers}" 
+                                            AutoGenerateColumns="False"
+                                            IsAlternateRowsEnabled="False"
+                                            ColumnLayoutHeaderVisibility="Never"
+                                            DeleteKeyAction="DeleteRowOfActiveCell"
+                                            ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                            ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                            ColumnWidth="*" >
                                     <ig:XamGrid.Columns>
                                         <ig:TextColumn Key="Name" HeaderText="Name" MinimumWidth="100">
                                             <ig:TextColumn.AddNewRowItemTemplate>
@@ -207,9 +206,9 @@
                                     </ig:XamGrid.SortingSettings>
                                     <ig:XamGrid.EditingSettings>
                                         <ig:EditingSettings AllowEditing="Cell"
-                                                            IsMouseActionEditingEnabled="SingleClick"
-                                                            IsEnterKeyEditingEnabled="True" 
-                                                            IsF2EditingEnabled="True" 
+                                                    IsMouseActionEditingEnabled="SingleClick"
+                                                    IsEnterKeyEditingEnabled="True" 
+                                                    IsF2EditingEnabled="True" 
                                                             IsOnCellActiveEditingEnabled="False" />
                                     </ig:XamGrid.EditingSettings>
                                     <ig:XamGrid.ConditionalFormattingSettings>
@@ -259,19 +258,18 @@
                             <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" 
                                   MinWidth="400">
                                 <TextBox x:Name="RequestBody"
-                                         Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ig:XamGrid}}, Path=ActualHeight}"
-                                         AcceptsReturn="True"
-                                         TextWrapping="Wrap"
-                                         Text="{Binding RequestBody}"
-                                         Padding="4,4,0,0"
-                                         Visibility="{Binding RequestBodyEnabled, Converter={StaticResource BoolToVis}}"
-                                         VerticalScrollBarVisibility="Auto"
-                                         VerticalContentAlignment="Stretch"
-                                         VerticalAlignment="Stretch"
-                                         HorizontalAlignment="Stretch" >
+                                 Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ig:XamGrid}}, Path=ActualHeight}"
+                                 AcceptsReturn="True"
+                                 TextWrapping="Wrap"
+                                 Text="{Binding RequestBody}"
+                                 Visibility="{Binding RequestBodyEnabled, Converter={StaticResource BoolToVis}}"
+                                 VerticalScrollBarVisibility="Auto"
+                                 VerticalContentAlignment="Stretch"
+                                 VerticalAlignment="Stretch"
+                                 HorizontalAlignment="Stretch" >
                                     <customControls:WatermarkTextBox.Watermark>
                                         <StackPanel VerticalAlignment="Top">
-                                            <Label Margin="-6,-6,0,0" Style="{StaticResource WatermarkLabelStyle}">Body</Label>
+                                    <Label Style="{StaticResource WatermarkLabelStyle}">Body</Label>
                                         </StackPanel>
                                     </customControls:WatermarkTextBox.Watermark>
                                     <i:Interaction.Behaviors>
@@ -299,10 +297,9 @@
                                Text="{Binding SourceUrl}">
                         </TextBlock>
                         <TextBox x:Name="RequestUrl"
-                                 HorizontalAlignment="Stretch"
-                                 Padding="4,0,0,0"
-                                 Text="{Binding RequestUrlQuery, UpdateSourceTrigger=PropertyChanged}"
-                                 Grid.Column="1">
+                             HorizontalAlignment="Stretch"
+                             Text="{Binding RequestUrlQuery, UpdateSourceTrigger=PropertyChanged}"
+                             Grid.Column="1">
                             <customControls:WatermarkTextBox.Watermark>
                                 <Label Style="{StaticResource WatermarkLabelStyle}">URL</Label>
                             </customControls:WatermarkTextBox.Watermark>
@@ -343,10 +340,10 @@
                             Margin="{StaticResource ControlBorderTop}">
                             <ig:XamGrid x:Name="VariablesGrid" 
                                         ItemsSource="{Binding Variables}" 
-                                        AutoGenerateColumns="False"
-                                        ColumnWidth="*" 
-                                        IsAlternateRowsEnabled="False"
-                                        BorderBrush="Transparent" >
+                                AutoGenerateColumns="False"
+                                ColumnWidth="*" 
+                                IsAlternateRowsEnabled="False"
+                                BorderBrush="Transparent" >
                                 <ig:XamGrid.Columns>
                                     <ig:TextColumn Key="Name" HeaderText="Name" IsReadOnly="True" MinimumWidth="300">
                                         <ig:TextColumn.AddNewRowEditorTemplate>
@@ -433,7 +430,8 @@
                             Height="25"
                             Grid.Column="0"
                             Grid.Row="1"
-                            Click="Btn_OnClick"
+                            Command="{Binding PasteResponseCommand}"
+                           
                             Margin="{StaticResource ElementBorderTop}"
                             VerticalAlignment="Top">
                         <fa:FontAwesome TextOptions.TextFormattingMode="Display" 

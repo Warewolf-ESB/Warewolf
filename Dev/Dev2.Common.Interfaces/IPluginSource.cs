@@ -1,4 +1,5 @@
 using System;
+using System.Dynamic;
 
 namespace Dev2.Common.Interfaces
 {

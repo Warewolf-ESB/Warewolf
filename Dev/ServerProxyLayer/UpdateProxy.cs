@@ -242,6 +242,31 @@ namespace Warewolf.Studio.ServerProxyLayer
                 throw new WarewolfSaveException(output.Message.ToString(), null);
         }
 
+        public string TestPluginService(IPluginService plugin)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("TestPluginService");
+            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("PluginService", serialiser.SerializeToBuilder(plugin));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output == null)
+                throw new WarewolfTestException("Unable to contact Server", null);
+            if (output.HasError)
+                throw new WarewolfTestException(output.Message.ToString(), null);
+            return output.Message.ToString();
+        }
+
+        public void SavePluginService(IPluginService service)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("SavePluginService");
+            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("PluginService", serialiser.SerializeToBuilder(service));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output.HasError)
+                throw new WarewolfSaveException(output.Message.ToString(), null);
+        }
+
         #endregion
     }
 

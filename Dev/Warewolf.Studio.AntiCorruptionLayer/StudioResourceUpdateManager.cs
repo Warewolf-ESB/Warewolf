@@ -110,5 +110,15 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         }
 
         public event Action<IWebServiceSource> WebServiceSourceSaved;
+
+        public string TestPluginService(IPluginService inputValues)
+        {
+            return UpdateManagerProxy.TestPluginService(inputValues);
+        }
+
+        public void Save(IPluginService toDbSource)
+        {
+            UpdateManagerProxy.SavePluginService(toDbSource);
+        }
     }
 }

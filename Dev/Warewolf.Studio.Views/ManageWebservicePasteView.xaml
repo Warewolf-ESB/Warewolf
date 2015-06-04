@@ -37,7 +37,7 @@
                  VerticalContentAlignment="Top"
                  SnapsToDevicePixels="True" 
                  VerticalScrollBarVisibility="Auto"
-                 HorizontalScrollBarVisibility="Disabled">
+                 HorizontalScrollBarVisibility="Disabled" Text="{Binding Text}">
             <customControls:WatermarkTextBox.Watermark>
                 <StackPanel VerticalAlignment="Top">
                     <Label Margin="-6,-6,0,0" Style="{StaticResource WatermarkLabelStyle}">Paste response here</Label>
@@ -47,6 +47,7 @@
                 <core:HelpSetter Text="{x:Static languages:Core.WebServicePasteInputHelp}"
                                                          DataContext="{Binding}" />
             </i:Interaction.Behaviors>
+       
         </TextBox>
         <StackPanel Grid.Row="1" 
                     Margin="0,-2,5,5"
@@ -57,7 +58,7 @@
                     Margin="{StaticResource ElementBorderControlRight}"
                     Width="60" 
                     Height="30" 
-                    Command="{Binding}" 
+                    Command="{Binding SaveCommand}" 
                     Content="Save">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:Core.WebServicePasteSaveCommandHelp}"
@@ -67,8 +68,8 @@
             <Button x:Name="CancelButton" 
                     Width="60" 
                     Height="30" 
-                    Command="{Binding}" 
-                    Click="CancelButton_OnClick"
+                    Command="{Binding Path=Cancel}" 
+
                     Content="Cancel">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:Core.WebServicePasteCancelCommandHelp}"

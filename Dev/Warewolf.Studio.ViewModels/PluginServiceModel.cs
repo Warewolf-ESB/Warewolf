@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
+using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.PluginService;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Warewolf.Core;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class DbServiceModel : IDbServiceModel
+    public class PluginServiceModel:IPluginServiceModel
     {
         readonly IStudioUpdateManager _updateRepository;
         readonly IQueryManager _queryProxy;
@@ -19,8 +20,9 @@ namespace Warewolf.Studio.ViewModels
 
         #region Implementation of IDbServiceModel
 
-        public DbServiceModel(IStudioUpdateManager updateRepository, IQueryManager queryProxy,IShellViewModel shell, string serverName)
+        public PluginServiceModel(IStudioUpdateManager updateRepository, IQueryManager queryProxy, IShellViewModel shell, string serverName)
         {
+            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "updateRepository", updateRepository }, { "queryProxy", queryProxy }, { "shell", shell } ,{"serverName",serverName} });
             _updateRepository = updateRepository;
             _queryProxy = queryProxy;
             _shell = shell;
@@ -28,45 +30,46 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
-        public ICollection<IDbSource> RetrieveSources()
+        public ICollection<IPluginSource> RetrieveSources()
         {
 
-           return _queryProxy.FetchDbSources();
+            return _queryProxy.FetchPluginSources();
 
         }
 
-        public ICollection<IDbAction> GetActions(IDbSource source)
+        public ICollection<IPluginAction> GetActions(IPluginSource source)
         {
-            return _queryProxy.FetchDbActions(source);
+            return _queryProxy.PluginActions(source);
         }
 
         public void CreateNewSource()
         {
-            _shell.NewResource(ResourceType.DbSource, Guid.NewGuid());
+            _shell.NewResource(ResourceType.PluginSource, Guid.NewGuid());
         }
 
-        public void EditSource(IDbSource selectedSource)
+        public void EditSource(IPluginSource selectedSource)
         {
             _shell.EditResource(selectedSource);
 
         }
 
-        public  DataTable TestService(IDatabaseService inputValues)
+        public  string TestService(IPluginService inputValues)
         {
-           return _updateRepository.TestDbService(inputValues);          
+           return _updateRepository.TestPluginService(inputValues);          
         }
 
-        public IEnumerable<IServiceOutputMapping> GetDbOutputMappings(IDbAction action)
+        public IEnumerable<IServiceOutputMapping> GetPluginOutputMappings(IPluginAction action)
         {
             return new List<IServiceOutputMapping> { new ServiceOutputMapping("bob", "The"), new ServiceOutputMapping("dora", "The"), new ServiceOutputMapping("Tree", "The") }; 
         }
 
-        public void SaveService(IDatabaseService toModel)
+        public void SaveService(IPluginService toModel)
         {
       
             _updateRepository.Save(toModel);
         }
 
         #endregion
+
     }
 }

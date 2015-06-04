@@ -76,7 +76,7 @@ namespace Warewolf.Studio.ViewModels
             _handler = _unityContainer.Resolve<IExceptionHandler>();
            
             _handler.AddHandler(typeof(WarewolfInvalidPermissionsException), () => PopupController.Show(PopupMessages.GetInvalidPermissionException()));
-
+            
         }
 
         public IPopupController PopupController { get;  set; }
@@ -141,6 +141,16 @@ namespace Warewolf.Studio.ViewModels
         {
             var sourceViewModel = new ManageWebserviceSourceViewModel(new ManageWebServiceSourceModel(ActiveServer.UpdateRepository, ActiveServer.ResourceName), _aggregator,selectedSource);
             GetRegion("Workspace").Add(sourceViewModel);            
+        }
+
+        public void EditResource(IPluginSource selectedSource)
+        {
+        }
+
+        public string OpenPasteWindow(string current)
+        {
+            var pasteView = _unityContainer.Resolve<IPasteView>();
+            return  pasteView.ShowView(current);
         }
 
         public IViewsCollection GetRegionViews(string regionName)
