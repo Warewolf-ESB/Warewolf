@@ -697,6 +697,12 @@ You need Administrator permission.</value>
   <data name="PluginSourceEditHeaderLabel" xml:space="preserve">
     <value>Edit Plugin Connector Source - </value>
   </data>
+  <data name="PluginServiceNewHeaderLabel" xml:space="preserve">
+    <value>New Plugin Connector Service</value>
+  </data>
+  <data name="PluginSserviceEditHeaderLabel" xml:space="preserve">
+    <value>Edit Plugin Connector Service - </value>
+  </data>
     <data name="DatabaseSourceServerEditHeaderLabel" xml:space="preserve">
     <value>Edit Database Connector Source - </value>
   </data>

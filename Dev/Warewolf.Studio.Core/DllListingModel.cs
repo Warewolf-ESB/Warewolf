@@ -47,6 +47,7 @@ namespace Warewolf.Studio.Core
                         return inner != null && inner.IsVisible;
                     }));
                 }
+                
                 return _children;
             }
             set
@@ -67,7 +68,8 @@ namespace Warewolf.Studio.Core
                 _isExpanded = value;
                 if (_isExpanded && _updateManager != null && (Children == null || Children.Count == 0))
                 {
-                    Children = new List<IDllListing>(_updateManager.GetDllListings(_dllListing).Select(input => new DllListingModel(_updateManager, input)).ToList());                    
+                    Children = new List<IDllListing>(_updateManager.GetDllListings(_dllListing).Select(input => new DllListingModel(_updateManager, input)).ToList());
+                    IsExpanderVisible = Children != null && Children.Count > 0;
                 }
             }
         }
@@ -77,6 +79,11 @@ namespace Warewolf.Studio.Core
             get
             {
                 return IsDirectory;
+            }
+            set
+            {
+                IsDirectory = value;
+                OnPropertyChanged(() => IsExpanderVisible);
             }
         }
 

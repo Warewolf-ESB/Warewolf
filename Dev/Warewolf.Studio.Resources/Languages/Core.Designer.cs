@@ -1369,6 +1369,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Plugin Connector Service.
+        /// </summary>
+        public static string PluginServiceNewHeaderLabel {
+            get {
+                return ResourceManager.GetString("PluginServiceNewHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;body&gt;&lt;p&gt;PluginServiceNewSourceHelp&lt;/p&gt;&lt;/body&gt;.
         /// </summary>
         public static string PluginServiceNewSourceHelp {
@@ -1491,6 +1500,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string PluginSourceRefreshCommandHelp {
             get {
                 return ResourceManager.GetString("PluginSourceRefreshCommandHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Plugin Connector Service - .
+        /// </summary>
+        public static string PluginSserviceEditHeaderLabel {
+            get {
+                return ResourceManager.GetString("PluginSserviceEditHeaderLabel", resourceCulture);
             }
         }
         

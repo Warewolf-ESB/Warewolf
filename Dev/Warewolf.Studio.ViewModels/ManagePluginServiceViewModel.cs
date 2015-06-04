@@ -72,6 +72,7 @@ namespace Warewolf.Studio.ViewModels
             AvalaibleActions = new ObservableCollection<IPluginAction>();
             NameSpaces = new ObservableCollection<INamespaceItem>();
             Sources = _model.RetrieveSources();
+            Header = Resources.Languages.Core.PluginServiceNewHeaderLabel;
             ErrorText = "";
             TestPluginCommand = new DelegateCommand(() => Test(_model));
             SaveCommand = new DelegateCommand(() => Save(ToModel()));

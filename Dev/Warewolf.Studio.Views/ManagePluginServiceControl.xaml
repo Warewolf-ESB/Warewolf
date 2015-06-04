@@ -10,6 +10,8 @@
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              xmlns:pluginService="clr-namespace:Dev2.Common.Interfaces.PluginService;assembly=Dev2.Common.Interfaces"
+             xmlns:xamGridEx="clr-namespace:Warewolf.Studio.Views.XamGridEx"
+             xmlns:ig="http://schemas.infragistics.com/xaml"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance Type=pluginService:IPluginServiceViewModel,
@@ -296,17 +298,79 @@
                                                        Visibility="{Binding IsTesting,Converter={StaticResource BoolToVisibilityConverter}}"/>
                         </Grid>
                         <ScrollViewer Grid.Row="1" 
+                                      Grid.Column="0" 
                                       HorizontalScrollBarVisibility="Auto" 
-                                      VerticalScrollBarVisibility="Auto">
-                            <TextBox Margin="{StaticResource ControlBorderTop}"
-                                     HorizontalAlignment="Stretch"
-                                     TextWrapping="Wrap"
-                                     MaxHeight="180">
-                                <i:Interaction.Behaviors>
-                                    <core:HelpSetter Text="{x:Static languages:Core.PluginServiceTestInputHelp}"
-                                                         DataContext="{Binding}" />
-                                </i:Interaction.Behaviors>
-                            </TextBox>
+                                      VerticalScrollBarVisibility="Auto"
+                                      MaxHeight="110">
+                            <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
+                                <xamGridEx:XamGridEx x:Name="HeadersGrid" 
+                                                     Style="{StaticResource XamGridStyle}"
+                                            AutoGenerateColumns="False"
+                                            IsAlternateRowsEnabled="False"
+                                            ColumnLayoutHeaderVisibility="Never"
+                                            DeleteKeyAction="DeleteRowOfActiveCell"
+                                            ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                            ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                            ColumnWidth="*" >
+                                    <ig:XamGrid.Columns>
+                                        <ig:TextColumn Key="Name" HeaderText="Name" MinimumWidth="100">
+                                            <ig:TextColumn.AddNewRowEditorTemplate>
+                                                <DataTemplate>
+                                                    <TextBox Style="{StaticResource NoBorderTextBoxStyle}" 
+                                                             Text="" >
+                                                        <customControls:WatermarkTextBox.Watermark>
+                                                            <Label Style="{StaticResource WatermarkLabelStyle}">Header</Label>
+                                                        </customControls:WatermarkTextBox.Watermark>
+                                                    </TextBox>
+                                                </DataTemplate>
+                                            </ig:TextColumn.AddNewRowEditorTemplate>
+                                        </ig:TextColumn>
+                                        <ig:TextColumn Key="Value" HeaderText="Value" MinimumWidth="100" IsResizable="False">
+                                            <ig:TextColumn.AddNewRowEditorTemplate>
+                                                <DataTemplate>
+                                                    <TextBox Style="{StaticResource NoBorderTextBoxStyle}" 
+                                                             Text="" >
+                                                        <customControls:WatermarkTextBox.Watermark>
+                                                            <Label Style="{StaticResource WatermarkLabelStyle}">Value</Label>
+                                                        </customControls:WatermarkTextBox.Watermark>
+                                                    </TextBox>
+                                                </DataTemplate>
+                                            </ig:TextColumn.AddNewRowEditorTemplate>
+                                        </ig:TextColumn>
+                                    </ig:XamGrid.Columns>
+                                    <ig:XamGrid.SortingSettings>
+                                        <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
+                                    </ig:XamGrid.SortingSettings>
+                                    <ig:XamGrid.EditingSettings>
+                                        <ig:EditingSettings AllowEditing="Cell"
+                                                    IsMouseActionEditingEnabled="SingleClick"
+                                                    IsEnterKeyEditingEnabled="True" 
+                                                    IsF2EditingEnabled="True" 
+                                                            IsOnCellActiveEditingEnabled="False" />
+                                    </ig:XamGrid.EditingSettings>
+                                    <ig:XamGrid.ConditionalFormattingSettings>
+                                        <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
+                                    </ig:XamGrid.ConditionalFormattingSettings>
+                                    <xamGridEx:XamGridEx.ContextMenuSettings>
+                                        <xamGridEx:ContextMenuSettings AllowContextMenu="True">
+                                            <xamGridEx:ContextMenuSettings.ContextMenu>
+                                                <ig:XamContextMenu >
+                                                    <ig:XamMenuItem Header="Insert Row" Command="{Binding  Path=AddRowCommand}">
+                                                        <ig:XamMenuItem.Icon>
+                                                            <Image Source="{x:Null}"/>
+                                                        </ig:XamMenuItem.Icon>
+                                                    </ig:XamMenuItem>
+                                                    <ig:XamMenuItem Header="Delete Row"  Command="{Binding  Path=RemoveRowCommand}">
+                                                        <ig:XamMenuItem.Icon>
+                                                            <Image Source="{x:Null}"/>
+                                                        </ig:XamMenuItem.Icon>
+                                                    </ig:XamMenuItem>
+                                                </ig:XamContextMenu>
+                                            </xamGridEx:ContextMenuSettings.ContextMenu>
+                                        </xamGridEx:ContextMenuSettings>
+                                    </xamGridEx:XamGridEx.ContextMenuSettings>
+                                </xamGridEx:XamGridEx>
+                            </Grid>
                         </ScrollViewer>
                         <Grid Grid.Row="2">
                             <Grid.ColumnDefinitions>
@@ -322,15 +386,22 @@
                         </Grid>
                         <ScrollViewer Grid.Row="3" 
                                       HorizontalScrollBarVisibility="Auto" 
-                                      VerticalScrollBarVisibility="Auto">
-                            <TextBox HorizontalAlignment="Stretch"
-                                     TextWrapping="Wrap"
-                                     MaxHeight="180">
-                                <i:Interaction.Behaviors>
-                                    <core:HelpSetter Text="{x:Static languages:Core.PluginServiceTestResultsHelp}"
+                                      VerticalScrollBarVisibility="Auto"
+                                      MaxHeight="110">
+                            <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
+                                <TextBox HorizontalAlignment="Stretch"
+                                         AcceptsReturn="True"
+                                         TextWrapping="Wrap"
+                                         Height="90"
+                                         VerticalScrollBarVisibility="Auto"
+                                         VerticalContentAlignment="Stretch"
+                                         VerticalAlignment="Stretch">
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:Core.PluginServiceTestResultsHelp}"
                                                          DataContext="{Binding}" />
-                                </i:Interaction.Behaviors>
-                            </TextBox>
+                                    </i:Interaction.Behaviors>
+                                </TextBox>
+                            </Grid>
                         </ScrollViewer>
                     </Grid>
                 </Grid>
