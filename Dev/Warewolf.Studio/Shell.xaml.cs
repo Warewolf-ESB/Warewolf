@@ -125,53 +125,11 @@ namespace Warewolf.Studio
         {
             if (e.Key == Key.Home && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
-                //var testingWindow = new ControlStyleTestingWindow();
-                //testingWindow.Show();
+                var testingWindow = new ControlStyleTestingWindow();
+                testingWindow.Show();
 
                 var testingInfraWindow = new InfragisticsControlTesting();
                 testingInfraWindow.Show();
-
-                //var pluginService = new Window()
-                //{
-                //    Content = new ManagePluginServiceControl()
-                //};
-                //pluginService.ShowDialog();
-
-                //var testWindow = new Window
-                //{
-                //    Content = new ManageWebserviceControl()
-                //    {
-                //        DataContext = new ManageWebServiceViewModel(ResourceType.WebService)
-                //    }
-                //};
-                //testWindow.Show();
-
-                //var testWindow = new Window
-                //{
-                //    Content = new ManageWebserviceControl()
-                //    {
-                //        DataContext = new ManageWebServiceViewModel(ResourceType.WebService)
-                //    }
-                //};
-                //testWindow.Show();
-
-//                var testWindow = new Window
-//                {
-//                    Content = new ManageWebserviceControl()
-//                    {
-//                        DataContext = new ManageWebServiceViewModel(ResourceType.WebService)
-//                    }
-//                };
-//                testWindow.ShowDialog();
-
-                var testPlugWindow = new Window
-                {
-                    Content = new ManagePluginSourceControl()
-                    {
-
-                    }
-                };
-                testPlugWindow.ShowDialog();
             }
             if (e.Key == Key.G && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
