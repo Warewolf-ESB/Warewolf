@@ -30,7 +30,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             var workspaceID = GetWorkspaceID(ctx);
 
             var requestTO = new WebRequestTO { ServiceName = serviceName, WebServerUrl = ctx.Request.Uri.ToString(), Dev2WebServer = String.Format("{0}://{1}", ctx.Request.Uri.Scheme, ctx.Request.Uri.Authority) };
-            var data = GetPostData(ctx, Guid.Empty.ToString());
+            var data = GetPostData(ctx);
 
             if(!String.IsNullOrEmpty(data))
             {

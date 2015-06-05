@@ -14,6 +14,8 @@ using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
 using Dev2.Communication;
+using Dev2.Data;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.Management;
@@ -31,7 +33,23 @@ namespace Dev2.Runtime.ESB.Execution
         public InternalServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request)
             : base(sa, dataObj, theWorkspace, esbChannel, request)
         {
-
+            var dataListTO = new DataListTO(sa.DataListSpecification.ToString());
+            if(request.Args == null)
+            {
+                request.Args = new Dictionary<string, StringBuilder>();
+                foreach(var input in dataListTO.Inputs)
+                {
+                    var warewolfEvalResult = dataObj.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(input));
+                    if(warewolfEvalResult.IsWarewolfAtomResult)
+                    {
+                        var scalarResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                        if(scalarResult != null && !scalarResult.Item.IsNothing)
+                        {
+                            request.Args.Add(input, new StringBuilder(scalarResult.Item.ToString()));
+                        }
+                    }
+                }
+            }
         }
 
         public override Guid Execute(out ErrorResultTO errors)
@@ -81,7 +99,7 @@ namespace Dev2.Runtime.ESB.Execution
         private void GenerateRequestDictionaryFromDataObject(out ErrorResultTO errors)
         {
             errors = null;
-            Request.Args = new Dictionary<string, StringBuilder>();
+            Request.Args = new Dictionary<string, StringBuilder>();            
         }
     }
 }
