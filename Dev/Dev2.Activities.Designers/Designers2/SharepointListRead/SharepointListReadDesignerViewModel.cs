@@ -28,6 +28,7 @@ using Dev2.Data.ServiceModel;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
@@ -58,6 +59,11 @@ namespace Dev2.Activities.Designers2.SharepointListRead
         {
             FullName = "Select a List..."
         };
+        public SharepointListReadDesignerViewModel(ModelItem modelItem)
+            : this(modelItem, new AsyncWorker(), EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
+        {
+           // Modelitem = modelItem;
+        }
         public SharepointListReadDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
             : base(modelItem)
         {

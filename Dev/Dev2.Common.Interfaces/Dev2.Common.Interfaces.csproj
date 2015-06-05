@@ -189,6 +189,7 @@
     <Compile Include="Infrastructure\SharedModels\ISharepointFieldTo.cs" />
     <Compile Include="Interfaces\IDev2TOFn.cs" />
     <Compile Include="IPulseLogger.cs" />
+    <Compile Include="ISharepointListTo.cs" />
     <Compile Include="ISharepointReadListTo.cs" />
     <Compile Include="ISharepointSource.cs" />
     <Compile Include="IVersionStrategy.cs" />

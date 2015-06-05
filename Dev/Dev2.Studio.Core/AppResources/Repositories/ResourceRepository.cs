@@ -1044,7 +1044,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public List<ISharepointFieldTo> GetSharepointListFields(ISharepointSource source, SharepointListTo list)
         {
-            var comController = new CommunicationController { ServiceName = "GetFieldsForListService" };
+            var comController = new CommunicationController { ServiceName = "GetSharepointListFields" };
             comController.AddPayloadArgument("SharepointServer", _serializer.Serialize(source));
             comController.AddPayloadArgument("ListName", _serializer.Serialize(list.FullName));
 

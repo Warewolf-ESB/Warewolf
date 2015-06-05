@@ -5,7 +5,7 @@
         xmlns:sharepointServerSource="clr-namespace:Dev2.Views.SharepointServerSource"
         xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties;assembly=Dev2.Activities.Designers"
         Title="SharepointServerSource" Height="150" Width="300" WindowStyle="None"
-        d:DataContext="{d:DesignInstance sharepointServerSource:SharepointServerSourceViewModel,IsDesignTimeCreatable=False}">
+        >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"></RowDefinition>

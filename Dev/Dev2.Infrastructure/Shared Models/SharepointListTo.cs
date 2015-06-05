@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
-    public class SharepointListTo
+    public class SharepointListTo : ISharepointListTo
     {
         public string FullName { get; set; }
         public List<ISharepointFieldTo> Fields { get; set; }

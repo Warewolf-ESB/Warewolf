@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Warewolf.Sharepoint;
 
 namespace Dev2.Data.ServiceModel
 {
@@ -79,6 +81,34 @@ namespace Dev2.Data.ServiceModel
                 );
 
             return result;
+        }
+
+        public List<SharepointListTo> LoadLists()
+        {
+            string userName = null;
+            string password = null;
+           
+            if(AuthenticationType == AuthenticationType.Windows)
+            {
+                userName = UserName;
+                password = Password;
+            }
+            var sharepointHelper = new SharepointHelper(Server,userName,password);
+            return sharepointHelper.LoadLists();
+        }
+
+        public List<ISharepointFieldTo> LoadFieldsForList(string listName)
+        {
+            string userName = null;
+            string password = null;
+
+            if (AuthenticationType == AuthenticationType.Windows)
+            {
+                userName = UserName;
+                password = Password;
+            }
+            var sharepointHelper = new SharepointHelper(Server, userName, password);
+            return sharepointHelper.LoadFieldsForList(listName);
         }
     }
 }

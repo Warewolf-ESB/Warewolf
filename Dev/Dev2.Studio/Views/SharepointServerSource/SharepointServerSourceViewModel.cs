@@ -22,7 +22,7 @@ namespace Dev2.Views.SharepointServerSource
             {
                 if(IsWindows)
                 {
-                    AuthenticationType = AuthenticationType.Windows;
+                    AuthenticationType = AuthenticationType.Windows;                    
                 }
                 if(IsUser)
                 {

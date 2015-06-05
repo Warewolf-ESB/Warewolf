@@ -83,12 +83,12 @@
                 Content="..."
                 Command="{Binding EditSharepointServerCommand}"
                 Style="{StaticResource ActivityEditButtonStyle}"
-                ToolTip="Edit Database Source"
+                ToolTip="Edit Sharepoint Server Source"
                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_EditDatabaseCommand_AutoID}" />
 
             <Label Grid.Column="0"
                Grid.Row="1"
-               Content="Table"
+               Content="List"
                Style="{StaticResource ActivityMapppingLabelStyle}" />
             <ComboBox Grid.Column="1"
                   Grid.Row="1"
