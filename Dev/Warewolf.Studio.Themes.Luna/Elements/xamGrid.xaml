@@ -3309,7 +3309,7 @@
                                 BorderThickness="{TemplateBinding BorderThickness}" />
                         <Rectangle x:Name="MouseOver1"
                                    Margin="{TemplateBinding BorderThickness}"
-                                   Fill="{StaticResource CellItemHoverBackgroundBrush}"
+                                   Fill="Transparent"
                                    Visibility="Collapsed" />
                         <Rectangle x:Name="ActiveRect"
                                    Fill="{StaticResource TransparentBrush}"
@@ -3718,7 +3718,7 @@
                                 BorderThickness="1"
                                 Visibility="Collapsed" />
                         <Border x:Name="hoverElem"
-                                Background="{StaticResource CellItemHoverBackgroundBrush}"
+                                Background="Transparent"
                                 BorderBrush="Transparent"
                                 BorderThickness="1"
                                 Visibility="Collapsed" />
@@ -4018,7 +4018,7 @@
                                 BorderThickness="{TemplateBinding BorderThickness}" />
                         <Rectangle x:Name="MouseOver1"
                                    Margin="{TemplateBinding BorderThickness}"
-                                   Fill="{StaticResource CellItemHoverBackgroundBrush}"
+                                   Fill="Transparent"
                                    Stroke="{StaticResource CellItemHoverBorderBrush}"
                                    StrokeThickness="1"
                                    Visibility="Collapsed" />
@@ -8906,7 +8906,7 @@
                                 Visibility="Collapsed" />
                         <Border x:Name="hoverElem"
                                 Grid.ColumnSpan="2"
-                                Background="{StaticResource CellItemHoverBackgroundBrush}"
+                                Background="Transparent"
                                 BorderBrush="Transparent"
                                 BorderThickness="1"
                                 Visibility="Collapsed" />
