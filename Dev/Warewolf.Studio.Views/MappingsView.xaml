@@ -46,16 +46,7 @@
                                 </DataTemplate>
                             </ig:TextColumn.AddNewRowEditorTemplate>
                         </ig:TextColumn>
-                        <xamGridEx:TextBoxColumn Key="DefaultValue" HeaderText="Default Value"  MinimumWidth="100">
-                            <!--<customControls:WatermarkTextBox.Watermark>
-                                                <Label Style="{StaticResource WatermarkLabelStyle}">Default Value</Label>
-                                            </customControls:WatermarkTextBox.Watermark>-->
-                            <!--<ig:TextColumn.AddNewRowEditorTemplate>
-                                <DataTemplate>
-                                    <TextBox Style="{StaticResource NoBorderTextBoxStyle}" 
-                                             Text="{Binding Path=DefaultValue, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                                </DataTemplate>
-                            </ig:TextColumn.AddNewRowEditorTemplate>-->
+                        <xamGridEx:TextBoxColumn Key="DefaultValue" HeaderText="Default Value"  MinimumWidth="100" Watermark="Default Value">
                         </xamGridEx:TextBoxColumn>
                         <ig:UnboundColumn Key="RequiredField" 
                                           HeaderText="Required" 
@@ -63,7 +54,8 @@
                             <ig:UnboundColumn.ItemTemplate>
                                 <DataTemplate>
                                     <CheckBox Style="{StaticResource CheckBoxXamGridStyle}"
-                                              IsChecked="{Binding Path=RequiredField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"></CheckBox>
+                                              IsChecked="{Binding Path=RequiredField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                              HorizontalAlignment="Center"></CheckBox>
                                 </DataTemplate>
                             </ig:UnboundColumn.ItemTemplate>
                         </ig:UnboundColumn>
@@ -134,10 +126,7 @@
                                 </DataTemplate>
                             </ig:TextColumn.AddNewRowEditorTemplate>
                         </ig:TextColumn>
-                        <xamGridEx:TextBoxColumn Key="Name" HeaderText="Alias"  MinimumWidth="100" IsResizable="False">
-                            <!--<customControls:WatermarkTextBox.Watermark>
-                                                <Label Style="{StaticResource WatermarkLabelStyle}">Alias</Label>
-                                            </customControls:WatermarkTextBox.Watermark>-->
+                        <xamGridEx:TextBoxColumn Key="Name" HeaderText="Alias"  MinimumWidth="100" IsResizable="False" Watermark="Alias">
                         </xamGridEx:TextBoxColumn>
                     </ig:XamGrid.Columns>
                     <ig:XamGrid.SortingSettings>

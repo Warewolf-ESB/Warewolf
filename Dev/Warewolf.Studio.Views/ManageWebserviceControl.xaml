@@ -166,15 +166,9 @@
                                             ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                             ColumnWidth="*" >
                                     <ig:XamGrid.Columns>
-                                        <xamGridEx:TextBoxColumn Key="Name" HeaderText="Name" MinimumWidth="100">
-                                            <!--<customControls:WatermarkTextBox.Watermark>
-                                                <Label Style="{StaticResource WatermarkLabelStyle}">Header</Label>
-                                            </customControls:WatermarkTextBox.Watermark>-->
+                                        <xamGridEx:TextBoxColumn Key="Name" HeaderText="Name" MinimumWidth="100" Watermark="Header">
                                         </xamGridEx:TextBoxColumn>
-                                        <xamGridEx:TextBoxColumn Key="Value" HeaderText="Value" MinimumWidth="100" IsResizable="False" >
-                                            <!--<customControls:WatermarkTextBox.Watermark>
-                                                <Label Style="{StaticResource WatermarkLabelStyle}">Value</Label>
-                                            </customControls:WatermarkTextBox.Watermark>-->
+                                        <xamGridEx:TextBoxColumn Key="Value" HeaderText="Value" MinimumWidth="100" IsResizable="False" Watermark="Value">
                                         </xamGridEx:TextBoxColumn>
                                     </ig:XamGrid.Columns>
                                     <ig:XamGrid.SortingSettings>
@@ -242,12 +236,8 @@
                                  VerticalScrollBarVisibility="Auto"
                                  VerticalContentAlignment="Stretch"
                                  VerticalAlignment="Stretch"
-                                 HorizontalAlignment="Stretch" >
-                                    <customControls:WatermarkTextBox.Watermark>
-                                        <StackPanel VerticalAlignment="Top">
-                                    <Label Style="{StaticResource WatermarkLabelStyle}">Body</Label>
-                                        </StackPanel>
-                                    </customControls:WatermarkTextBox.Watermark>
+                                 HorizontalAlignment="Stretch" 
+                                         Padding="2,2,0,0" customControls:WatermarkTextBox.Watermark="Body">
                                     <i:Interaction.Behaviors>
                                         <core:HelpSetter Text="{x:Static languages:Core.WebServiceRequestBodyHelp}"
                                                          DataContext="{Binding}" />
@@ -275,10 +265,7 @@
                         <TextBox x:Name="RequestUrl"
                              HorizontalAlignment="Stretch"
                              Text="{Binding RequestUrlQuery, UpdateSourceTrigger=PropertyChanged}"
-                             Grid.Column="1">
-                            <customControls:WatermarkTextBox.Watermark>
-                                <Label Style="{StaticResource WatermarkLabelStyle}">URL</Label>
-                            </customControls:WatermarkTextBox.Watermark>
+                             Grid.Column="1" customControls:WatermarkTextBox.Watermark="URL">
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter Text="{x:Static languages:Core.WebServiceRequestUrlHelp}"
                                                          DataContext="{Binding}" />

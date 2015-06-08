@@ -27,7 +27,12 @@ namespace Warewolf.Studio.CustomControls
             this.IsHitTestVisible = false;
 
             this.contentPresenter = new ContentPresenter();
-            this.contentPresenter.Content = watermark;
+            TextBlock textBlock = new TextBlock();
+            textBlock.FontStyle = FontStyles.Italic;
+            textBlock.VerticalAlignment = VerticalAlignment.Top;
+            textBlock.Text = watermark.ToString();
+            textBlock.Padding = new Thickness(4);
+            this.contentPresenter.Content = textBlock;
             this.contentPresenter.Opacity = 0.5;
             this.contentPresenter.Margin = new Thickness(Control.Margin.Left + Control.Padding.Left, Control.Margin.Top + Control.Padding.Top, 0, 0);
 
