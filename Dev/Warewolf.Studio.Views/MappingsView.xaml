@@ -9,6 +9,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+             xmlns:xamGridEx="clr-namespace:Warewolf.Studio.Views.XamGridEx"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="800" 
              d:DataContext="{d:DesignInstance Type=db:IServiceMappings,
@@ -45,14 +46,17 @@
                                 </DataTemplate>
                             </ig:TextColumn.AddNewRowEditorTemplate>
                         </ig:TextColumn>
-                        <ig:TextColumn Key="DefaultValue" HeaderText="Default Value"  MinimumWidth="100">
-                            <ig:TextColumn.AddNewRowEditorTemplate>
+                        <xamGridEx:TextBoxColumn Key="DefaultValue" HeaderText="Default Value"  MinimumWidth="100">
+                            <!--<customControls:WatermarkTextBox.Watermark>
+                                                <Label Style="{StaticResource WatermarkLabelStyle}">Default Value</Label>
+                                            </customControls:WatermarkTextBox.Watermark>-->
+                            <!--<ig:TextColumn.AddNewRowEditorTemplate>
                                 <DataTemplate>
                                     <TextBox Style="{StaticResource NoBorderTextBoxStyle}" 
                                              Text="{Binding Path=DefaultValue, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                                 </DataTemplate>
-                            </ig:TextColumn.AddNewRowEditorTemplate>
-                        </ig:TextColumn>
+                            </ig:TextColumn.AddNewRowEditorTemplate>-->
+                        </xamGridEx:TextBoxColumn>
                         <ig:UnboundColumn Key="RequiredField" 
                                           HeaderText="Required" 
                                           MinimumWidth="100">
@@ -96,10 +100,10 @@
                     </ig:XamGrid.SortingSettings>
                     <ig:XamGrid.EditingSettings>
                         <ig:EditingSettings AllowEditing="Cell"
-                                                    IsMouseActionEditingEnabled="SingleClick"
-                                                    IsEnterKeyEditingEnabled="True" 
-                                                    IsF2EditingEnabled="True" 
-                                                    IsOnCellActiveEditingEnabled="True" />
+                                                    IsMouseActionEditingEnabled="None"
+                                                    IsEnterKeyEditingEnabled="False" 
+                                                    IsF2EditingEnabled="False" 
+                                                    IsOnCellActiveEditingEnabled="False" />
                     </ig:XamGrid.EditingSettings>
                     <ig:XamGrid.ConditionalFormattingSettings>
                         <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
@@ -130,14 +134,11 @@
                                 </DataTemplate>
                             </ig:TextColumn.AddNewRowEditorTemplate>
                         </ig:TextColumn>
-                        <ig:TextColumn Key="Name" HeaderText="Alias"  MinimumWidth="100" IsResizable="False">
-                            <ig:TextColumn.AddNewRowEditorTemplate>
-                                <DataTemplate>
-                                    <TextBox Style="{StaticResource NoBorderTextBoxStyle}" 
-                                             Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=Name}"></TextBox>
-                                </DataTemplate>
-                            </ig:TextColumn.AddNewRowEditorTemplate>
-                        </ig:TextColumn>
+                        <xamGridEx:TextBoxColumn Key="Name" HeaderText="Alias"  MinimumWidth="100" IsResizable="False">
+                            <!--<customControls:WatermarkTextBox.Watermark>
+                                                <Label Style="{StaticResource WatermarkLabelStyle}">Alias</Label>
+                                            </customControls:WatermarkTextBox.Watermark>-->
+                        </xamGridEx:TextBoxColumn>
                     </ig:XamGrid.Columns>
                     <ig:XamGrid.SortingSettings>
                         <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>

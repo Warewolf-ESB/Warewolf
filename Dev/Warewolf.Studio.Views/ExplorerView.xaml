@@ -527,14 +527,6 @@
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
 
-                                                    <ig:XamMenuItem Name="NewFolderFromItem"
-                                                                InputGestureText="[Ctrl+Shift+F]"
-                                                                Command="{Binding Path=Data.CreateFolderCommand}"
-                                                                CommandParameter="{x:Static data:ResourceType.PluginService}"
-                                                                Header="New Folder"
-                                                                Visibility="{Binding Path=Data.CanCreateFolder,
-                                                                                     Converter={StaticResource BoolToVisibilityConverter}}">
-                                                    </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewPluginService"
                                                                 InputGestureText="[Ctrl+Shift+P]"
                                                                 Command="{Binding Path=Data.NewCommand}"
@@ -562,6 +554,14 @@
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuSeparator />
+                                                    <ig:XamMenuItem Name="NewFolderFromItem"
+                                                                InputGestureText="[Ctrl+Shift+F]"
+                                                                Command="{Binding Path=Data.CreateFolderCommand}"
+                                                                CommandParameter="{x:Static data:ResourceType.PluginService}"
+                                                                Header="New Folder"
+                                                                Visibility="{Binding Path=Data.CanCreateFolder,
+                                                                                     Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="Rename"
 																InputGestureText="[F2]"
                                                                 Command="{Binding Path=Data.RenameCommand}"

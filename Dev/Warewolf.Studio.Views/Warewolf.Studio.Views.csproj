@@ -239,6 +239,7 @@
       <DependentUpon>ConnectControlView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\CustomIcons.cs" />
+    <Compile Include="Converters\ComboBoxToMaxItemWidthConverter.cs" />
     <Compile Include="Converters\MessageBoxImageToSystemIconConverter.cs" />
     <Compile Include="DbSyntaxEditor.xaml.cs">
       <DependentUpon>DbSyntaxEditor.xaml</DependentUpon>

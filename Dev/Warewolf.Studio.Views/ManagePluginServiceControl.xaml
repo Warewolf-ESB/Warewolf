@@ -12,6 +12,7 @@
              xmlns:pluginService="clr-namespace:Dev2.Common.Interfaces.PluginService;assembly=Dev2.Common.Interfaces"
              xmlns:xamGridEx="clr-namespace:Warewolf.Studio.Views.XamGridEx"
              xmlns:ig="http://schemas.infragistics.com/xaml"
+             xmlns:converters="clr-namespace:Warewolf.Studio.Views.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance Type=pluginService:IPluginServiceViewModel,
@@ -19,6 +20,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <views:NotConverter x:Key="NotConverter" />
+        <converters:ComboEditorToMaxItemWidthConverter x:Key="ComboEditorToMaxItemWidthConverter"/>
     </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
         <Grid x:Name="GridMain"  MinWidth="600" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}">
@@ -133,20 +135,31 @@
                                Style="{StaticResource SourceHeader}" ></TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
-                        <ComboBox x:Name="NamespaceComboBox" 
-                                  DisplayMemberPath="FullName" 
-                                  MinWidth="250"
-                                  Width="Auto" 
-                                  ItemsSource="{Binding NameSpaces}"
-                                  Padding="{StaticResource ComboBoxItemPadding}"
-                                  Focusable="True"
-                                  Margin="{StaticResource ElementBorderTop}" 
-                                  SelectedItem="{Binding SelectedNamespace}">
+                        <ig:XamComboEditor x:Name="NamespaceComboBox" 
+                                           ItemsSource="{Binding NameSpaces}"
+                                           DisplayMemberPath="FullName" 
+                                           SelectedItem="{Binding SelectedNamespace}"
+                                           MinWidth="250"
+                                           AllowDrop="True"
+                                           MaxDropDownHeight="200"
+                                           IsEditable="True"
+                                           CustomValueEnteredAction="Allow"
+                                           Padding="{StaticResource ComboBoxItemPadding}"
+                                           Focusable="True"
+                                           Margin="{StaticResource ElementBorderTop}" 
+                                           Width="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource ComboEditorToMaxItemWidthConverter }, UpdateSourceTrigger=PropertyChanged}">
+                            <ig:XamComboEditor.ItemFilters>
+                                <ig:ComboItemFilter FieldName="FullName" LogicalOperator="And">
+                                    <ig:ComboItemFilter.Conditions>
+                                        <ig:ComparisonCondition Operator="Contains" />
+                                    </ig:ComboItemFilter.Conditions>
+                                </ig:ComboItemFilter>
+                            </ig:XamComboEditor.ItemFilters>
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter Text="{x:Static languages:Core.PluginServiceNamespaceHelp}"
                                                          DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
-                        </ComboBox>
+                        </ig:XamComboEditor>
                     </StackPanel>
                 </Grid>
                 <!-- SELECT ACTION -->
@@ -213,21 +226,6 @@
                                  DataContext="{Binding}" />
                                 </i:Interaction.Behaviors>
                             </ig:XamComboEditor>
-                            <!--<ComboBox x:Name="ActionsComboBox" 
-                                      Grid.Column="0"
-                                      MinWidth="250"
-                                      Width="Auto" 
-                                      Padding="{StaticResource ComboBoxItemPadding}"
-                                      DisplayMemberPath="Method" 
-                                      Text="Choose" 
-                                      ItemsSource="{Binding AvalaibleActions}"
-                                      SelectedItem="{Binding SelectedAction}"
-                                      Margin="0,5,3,0">
-                                <i:Interaction.Behaviors>
-                                    <core:HelpSetter Text="{x:Static languages:Core.PluginServiceSelectActionHelp}"
-                                                         DataContext="{Binding}" />
-                                </i:Interaction.Behaviors>
-                            </ComboBox>-->
                             <!-- NEED TO ADD LOGIC TO REFRESH COMMAND AND VISIBILITY -->
                             <Button Margin="0,5,0,0"
                                     Grid.Column="1"
@@ -288,7 +286,8 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="50*"></ColumnDefinition>
+                            <ColumnDefinition Width="50*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Row="0" Margin="{StaticResource ControlBorderTop}">
                             <Grid.ColumnDefinitions>
@@ -318,16 +317,17 @@
                                       Margin="{StaticResource ControlBorderTop}"
                                       MaxHeight="110">
                             <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
-                                <xamGridEx:XamGridEx x:Name="HeadersGrid" 
+                                <xamGridEx:XamGridEx x:Name="InputGrid" 
                                                      Style="{StaticResource XamGridStyle}"
                                                      DataContext="{Binding Path=InputValues}"
-                                            AutoGenerateColumns="False"
-                                            IsAlternateRowsEnabled="False"
-                                            ColumnLayoutHeaderVisibility="Never"
-                                            DeleteKeyAction="DeleteRowOfActiveCell"
-                                            ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                            ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                            ColumnWidth="*" >
+                                                     AutoGenerateColumns="False"
+                                                     IsAlternateRowsEnabled="False"
+                                                     ColumnLayoutHeaderVisibility="Never"
+                                                     DeleteKeyAction="DeleteRowOfActiveCell"
+                                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                     ColumnWidth="*" 
+                                                     MinWidth="400">
                                     <ig:XamGrid.Columns>
                                         <ig:TextColumn Key="Name" HeaderText="Name" MinimumWidth="100">
                                             <ig:TextColumn.AddNewRowEditorTemplate>
@@ -337,18 +337,11 @@
                                                 </DataTemplate>
                                             </ig:TextColumn.AddNewRowEditorTemplate>
                                         </ig:TextColumn>
-                                        <ig:TextColumn Key="Value" HeaderText="Value" MinimumWidth="100" IsResizable="False">
-                                            <ig:TextColumn.AddNewRowEditorTemplate>
-                                                <DataTemplate>
-                                                    <TextBox Style="{StaticResource NoBorderTextBoxStyle}" 
-                                                             Text="{Binding Value}" >
-                                                        <customControls:WatermarkTextBox.Watermark>
-                                                            <Label Style="{StaticResource WatermarkLabelStyle}">Value</Label>
-                                                        </customControls:WatermarkTextBox.Watermark>
-                                                    </TextBox>
-                                                </DataTemplate>
-                                            </ig:TextColumn.AddNewRowEditorTemplate>
-                                        </ig:TextColumn>
+                                        <xamGridEx:TextBoxColumn Key="Value" HeaderText="Value" MinimumWidth="100" IsResizable="False">
+                                            <!--<customControls:WatermarkTextBox.Watermark>
+                                                <Label Style="{StaticResource WatermarkLabelStyle}">Value</Label>
+                                            </customControls:WatermarkTextBox.Watermark>-->
+                                        </xamGridEx:TextBoxColumn>
                                     </ig:XamGrid.Columns>
                                     <ig:XamGrid.SortingSettings>
                                         <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
@@ -384,7 +377,9 @@
                                 </xamGridEx:XamGridEx>
                             </Grid>
                         </ScrollViewer>
-                        <Grid Grid.Row="2">
+                        <Grid Grid.Row="2" 
+                              Grid.Column="0" 
+                              Grid.ColumnSpan="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
@@ -396,7 +391,9 @@
                                 VerticalAlignment="Center" 
                                 Width="100">Test Results</TextBlock>
                         </Grid>
-                        <ScrollViewer Grid.Row="3" 
+                        <ScrollViewer Grid.Row="3"
+                                      Grid.Column="0" 
+                                      Grid.ColumnSpan="2"
                                       HorizontalScrollBarVisibility="Auto" 
                                       VerticalScrollBarVisibility="Auto"
                                       MaxHeight="110">

@@ -274,7 +274,7 @@
     </Style>
 
     <!--  *********************************  No Border TextBox Style  *********************************  -->
-    <Style x:Key="NoBorderTextBoxStyle" TargetType="TextBox">
+    <Style x:Key="XamGridTextBoxStyle" TargetType="TextBox">
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />

@@ -291,11 +291,11 @@
                                     <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
                                 </ig:XamGrid.SortingSettings>
                                 <ig:XamGrid.EditingSettings>
-                                    <ig:EditingSettings AllowEditing="Cell"
-                                                    IsMouseActionEditingEnabled="SingleClick"
-                                                    IsEnterKeyEditingEnabled="True" 
-                                                    IsF2EditingEnabled="True" 
-                                                    IsOnCellActiveEditingEnabled="True" />
+                                    <ig:EditingSettings AllowEditing="None"
+                                                    IsMouseActionEditingEnabled="None"
+                                                    IsEnterKeyEditingEnabled="False" 
+                                                    IsF2EditingEnabled="False" 
+                                                    IsOnCellActiveEditingEnabled="False" />
                                 </ig:XamGrid.EditingSettings>
                             </ig:XamGrid>
                         </Grid>
