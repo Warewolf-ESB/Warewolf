@@ -407,7 +407,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Database Connector Source - .
+        ///   Looks up a localized string similar to Edit Database Source - .
         /// </summary>
         public static string DatabaseSourceServerEditHeaderLabel {
             get {
@@ -434,7 +434,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Database Connector Source.
+        ///   Looks up a localized string similar to New Database Source.
         /// </summary>
         public static string DatabaseSourceServerNewHeaderLabel {
             get {
@@ -1369,7 +1369,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Plugin Connector Service.
+        ///   Looks up a localized string similar to New Plugin Service.
         /// </summary>
         public static string PluginServiceNewHeaderLabel {
             get {
@@ -1468,7 +1468,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Plugin Connector Source - .
+        ///   Looks up a localized string similar to Edit Plugin Source - .
         /// </summary>
         public static string PluginSourceEditHeaderLabel {
             get {
@@ -1477,7 +1477,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Plugin Connector Source.
+        ///   Looks up a localized string similar to New Plugin Source.
         /// </summary>
         public static string PluginSourceNewHeaderLabel {
             get {
@@ -1504,7 +1504,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Plugin Connector Service - .
+        ///   Looks up a localized string similar to Edit Plugin Service - .
         /// </summary>
         public static string PluginSserviceEditHeaderLabel {
             get {
@@ -2031,7 +2031,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Webservice Connector Source - .
+        ///   Looks up a localized string similar to Edit Webservice Source - .
         /// </summary>
         public static string WebserviceEditHeaderLabel {
             get {
@@ -2058,7 +2058,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Webservice Connector Source.
+        ///   Looks up a localized string similar to New Webservice Source.
         /// </summary>
         public static string WebserviceNewHeaderLabel {
             get {
@@ -2193,7 +2193,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Webservice Connector.
+        ///   Looks up a localized string similar to New Webservice.
         /// </summary>
         public static string WebserviceTabHeader {
             get {
