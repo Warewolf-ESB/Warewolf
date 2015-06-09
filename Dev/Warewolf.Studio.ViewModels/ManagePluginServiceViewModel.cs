@@ -80,7 +80,7 @@ namespace Warewolf.Studio.ViewModels
             RefreshCommand = new DelegateCommand(Refresh);
             ErrorText = "";
             TestPluginCommand = new DelegateCommand(() => Test(_model));
-            SaveCommand = new DelegateCommand(() => Save(ToModel()));
+            SaveCommand = new DelegateCommand(() => Save(ToModel()), () => CanSave);
         }
 
         void Save(IPluginService toModel)
@@ -238,6 +238,7 @@ namespace Warewolf.Studio.ViewModels
                 CanEditMappings = true;
                 CanSave = true;
                 IsTesting = false;
+               
             }
             catch (Exception err)
             {
@@ -255,15 +256,16 @@ namespace Warewolf.Studio.ViewModels
             {
                 Response = ResponseService;
                 // ReSharper disable MaximumChainedReferences
-                var outputMapping = ResponseService.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
-                {
-                    RecordsetName = recordset.Name;
-                    var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias) { RecordSetName = recordset.Name };
-                    return serviceOutputMapping;
-                }).Cast<IServiceOutputMapping>().ToList();
+                //var outputMapping = ResponseService.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
+                //{
+                //    RecordsetName = recordset.Name;
+                //    var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias) { RecordSetName = recordset.Name };
+                //    return serviceOutputMapping;
+                //}).Cast<IServiceOutputMapping>().ToList();
                 // ReSharper restore MaximumChainedReferences
 
-                OutputMapping = outputMapping;
+                OutputMapping = new IServiceOutputMapping[]{new ServiceOutputMapping("Name","Name"){RecordSetName = "rec"} };
+
             }
         }
         public RecordsetList ResponseService

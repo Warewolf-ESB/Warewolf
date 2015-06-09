@@ -35,14 +35,15 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 IPluginService serviceDef = serializer.Deserialize<IPluginService>(resourceDefinition);
                 // ReSharper disable MaximumChainedReferences
-                var parameters = serviceDef.Inputs == null ? new List<MethodParameter>() : serviceDef.Inputs.Select(a => new MethodParameter() { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value }).ToList();
-                // ReSharper restore MaximumChainedReferences
+                               // ReSharper restore MaximumChainedReferences
                 var source = ResourceCatalogue.GetResource<PluginSource>(GlobalConstants.ServerWorkspaceID, serviceDef.Source.Id);
                 var output = new List<MethodOutput>(serviceDef.OutputMappings.Select(a => new MethodOutput(a.Name, a.OutputName, "", false, a.RecordSetName, false, "", false, "", false)));
                 var recset = new RecordsetList();
                 var rec = new Recordset();
                 rec.Fields.AddRange(new List<RecordsetField>(serviceDef.OutputMappings.Select(a => new RecordsetField { Name = a.Name, Alias = a.OutputName, RecordsetAlias = a.RecordSetName, Path = new DataTablePath(a.RecordSetName, a.Name) })));
                 recset.Add(rec);
+                var parameters = serviceDef.Inputs == null ? new List<MethodParameter>() : serviceDef.Inputs.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value, Type = a.TypeName }).ToList();
+
                 var res = new PluginService
                 {
                     Method = new ServiceMethod(serviceDef.Name, serviceDef.Name, parameters, null, output, serviceDef.Action.Method),
@@ -50,11 +51,20 @@ namespace Dev2.Runtime.ESB.Management.Services
                     ResourcePath = serviceDef.Path,
                     ResourceID = serviceDef.Id,
                     Source = source,
-                    Recordsets = recset
-                    
+                    Recordsets = recset,
+                    Namespace = serviceDef.Action.FullName,
 
 
                 };
+                IPluginService src = serializer.Deserialize<IPluginService>(resourceDefinition);
+
+   
+
+                // ReSharper disable MaximumChainedReferences
+                              // ReSharper restore MaximumChainedReferences
+                var pluginsrc = ResourceCatalog.Instance.GetResource<PluginSource>(GlobalConstants.ServerWorkspaceID, src.Source.Id);
+
+
                 ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res);
                 var explorerItem = ServerExplorerRepo.UpdateItem(res);
 
@@ -89,7 +99,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             get
             {
-                return _resourceCatalogue?? ResourceCatalog.Instance;;
+                return _resourceCatalogue?? ResourceCatalog.Instance;
             }
             set
             {

@@ -212,10 +212,11 @@
                                                MaxDropDownHeight="200"
                                                CustomValueEnteredAction="Allow"
                                                ItemsSource="{Binding AvalaibleActions}"
+                                               DisplayMemberPath="Method"
                                                SelectedItem="{Binding SelectedAction,UpdateSourceTrigger=PropertyChanged}"
                                                views:FocusExtension.IsFocused="True">
                                 <ig:XamComboEditor.ItemFilters>
-                                    <ig:ComboItemFilter FieldName="FullName" LogicalOperator="And">
+                                    <ig:ComboItemFilter FieldName="Method" LogicalOperator="And">
                                         <ig:ComboItemFilter.Conditions>
                                             <ig:ComparisonCondition Operator="Contains" />
                                         </ig:ComboItemFilter.Conditions>
@@ -319,7 +320,7 @@
                             <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" >
                                 <xamGridEx:XamGridEx x:Name="InputGrid" 
                                                      Style="{StaticResource XamGridStyle}"
-                                                     DataContext="{Binding Path=InputValues}"
+                                                     ItemsSource="{Binding Path=InputValues}"
                                                      AutoGenerateColumns="False"
                                                      IsAlternateRowsEnabled="False"
                                                      ColumnLayoutHeaderVisibility="Never"
