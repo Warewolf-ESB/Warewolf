@@ -55,4 +55,5 @@ Please note that Warewolf is built for Windows 7 and Windows Server 2008. [We do
 Developed with the help of ReSharper
 
 
-![resharper logo](http://warewolf.io/images/Resharper%20Logo.png)
+[![resharper logo](http://warewolf.io/images/Resharper%20Logo.png)](https://www.jetbrains.com/resharper/)
+
