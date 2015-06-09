@@ -201,6 +201,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Scheduler.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\3rd Party Connectors\Sharepoint\CreateItemInList.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CreateItemInList.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\3rd Party Connectors\Sharepoint\CreateItemInListSteps.cs" />
     <Compile Include="Toolbox\3rd Party Connectors\Sharepoint\ReadItemFromList.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -472,6 +478,10 @@
     <None Include="Scheduler\Scheduler.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Scheduler.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\3rd Party Connectors\Sharepoint\CreateItemInList.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CreateItemInList.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\3rd Party Connectors\Sharepoint\ReadItemFromList.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

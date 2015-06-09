@@ -8,6 +8,7 @@ using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
@@ -97,7 +98,7 @@ namespace Dev2.Activities.Sharepoint
                     using(var ctx = sharepointSource.CreateSharepointHelper().GetContext())
                     {
                         List list = ctx.Web.Lists.GetByTitle(SharepointList);
-                        var camlQuery = BuildCamlQuery();
+                        var camlQuery = BuildCamlQuery(env);
                         var listItems = list.GetItems(camlQuery);
                         ctx.Load(list.Fields);
                         ctx.Load(listItems);
@@ -153,7 +154,7 @@ namespace Dev2.Activities.Sharepoint
             return ReadListItems.Where(to => !string.IsNullOrEmpty(to.VariableName));
         }
 
-        CamlQuery BuildCamlQuery()
+        CamlQuery BuildCamlQuery(IExecutionEnvironment env)
         {
             var camlQuery = CamlQuery.CreateAllItemsQuery();
             var validFilters = new List<SharepointSearchTo>();
@@ -171,10 +172,10 @@ namespace Dev2.Activities.Sharepoint
                 }
                 foreach (var sharepointSearchTo in validFilters)
                 {
-                    var buildQueryFromTo = BuildQueryFromTo(sharepointSearchTo);
+                    var buildQueryFromTo = BuildQueryFromTo(sharepointSearchTo, env);
                     if(buildQueryFromTo != null)
                     {
-                        queryString.AppendLine(buildQueryFromTo);
+                        queryString.AppendLine(string.Join(Environment.NewLine,buildQueryFromTo));
                     }
                 }
                 if (filterCount > 1)
@@ -188,9 +189,13 @@ namespace Dev2.Activities.Sharepoint
             return camlQuery;
         }
 
-        string BuildQueryFromTo(SharepointSearchTo sharepointSearchTo)
+        IEnumerable<string> BuildQueryFromTo(SharepointSearchTo sharepointSearchTo, IExecutionEnvironment env)
         {
-            return string.Format("{0}<FieldRef Name=\"{1}\"></FieldRef><Value Type=\"Text\">{2}</Value>{3}", SharepointSearchOptions.GetStartTagForSearchOption(sharepointSearchTo.SearchType), sharepointSearchTo.FieldName, sharepointSearchTo.ValueToMatch, SharepointSearchOptions.GetEndTagForSearchOption(sharepointSearchTo.SearchType));
+            WarewolfIterator iterator = new WarewolfIterator(env.Eval(sharepointSearchTo.ValueToMatch));
+            while(iterator.HasMoreData())
+            {
+                yield return string.Format("{0}<FieldRef Name=\"{1}\"></FieldRef><Value Type=\"Text\">{2}</Value>{3}", SharepointSearchOptions.GetStartTagForSearchOption(sharepointSearchTo.SearchType), sharepointSearchTo.FieldName, iterator.GetNextValue(), SharepointSearchOptions.GetEndTagForSearchOption(sharepointSearchTo.SearchType));    
+            }
         }
 
         void AddOutputDebug(IDSFDataObject dataObject, IExecutionEnvironment env)
