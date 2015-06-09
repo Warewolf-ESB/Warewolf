@@ -338,10 +338,7 @@
                                                 </DataTemplate>
                                             </ig:TextColumn.AddNewRowEditorTemplate>
                                         </ig:TextColumn>
-                                        <xamGridEx:TextBoxColumn Key="Value" HeaderText="Value" MinimumWidth="100" IsResizable="False">
-                                            <!--<customControls:WatermarkTextBox.Watermark>
-                                                <Label Style="{StaticResource WatermarkLabelStyle}">Value</Label>
-                                            </customControls:WatermarkTextBox.Watermark>-->
+                                        <xamGridEx:TextBoxColumn Key="Value" HeaderText="Value" MinimumWidth="100" IsResizable="False" Watermark="Value">
                                         </xamGridEx:TextBoxColumn>
                                     </ig:XamGrid.Columns>
                                     <ig:XamGrid.SortingSettings>
