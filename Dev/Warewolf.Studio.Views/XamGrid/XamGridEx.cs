@@ -67,11 +67,7 @@ namespace Warewolf.Studio.Views.XamGridEx
         public static readonly DependencyProperty WatermarkProperty =
             DependencyProperty.Register("Watermark",
                                         typeof(string),
-                                        typeof(TextBoxColumn),new PropertyMetadata(null));
-
- 
-
-        
+                                        typeof(TextBoxColumn), new PropertyMetadata(null));
 
         public string Watermark
         {
@@ -91,16 +87,10 @@ namespace Warewolf.Studio.Views.XamGridEx
     public class TextColumnContentProvider : ColumnContentProviderBase
     {
         WatermarkTextBox _textBox;
+
         public override void AdjustDisplayElement(Cell cell)
         {
-            if (cell.Column.ActualWidth < 230)
-            {
-                _textBox.Width = cell.Column.ActualWidth - 3;
-            }
-            else
-            {
-                _textBox.Width = cell.Column.ActualWidth - 4;   
-            }
+            _textBox.Width = cell.Column.ActualWidth - 3;
             _textBox.Height = cell.Row.MinimumRowHeightResolved;
             base.AdjustDisplayElement(cell);
         }
@@ -117,15 +107,15 @@ namespace Warewolf.Studio.Views.XamGridEx
 
         public override FrameworkElement ResolveDisplayElement(Cell cell, Binding cellBinding)
         {
-            TextBoxColumn column = (TextBoxColumn)cell.Column;
-            
+            TextBoxColumn column = (TextBoxColumn) cell.Column;
+
             cell.Control.Padding = new Thickness();
             cell.Control.Cell.Control.Padding = new Thickness();
-            this._textBox.SetValue(WatermarkTextBox.WatermarkProperty,column.Watermark);
+            this._textBox.SetValue(WatermarkTextBox.WatermarkProperty, column.Watermark);
             this._textBox.SetBinding(TextBox.TextProperty, cellBinding);
-            _textBox.Width = cell.Column.ActualWidth - 4;
+            _textBox.Width = cell.Column.ActualWidth - 3;
             _textBox.Height = cell.Row.MinimumRowHeightResolved;
-            return _textBox; 
+            return _textBox;
         }
 
         protected override FrameworkElement ResolveEditorControl(Cell cell, object editorValue, double availableWidth,
@@ -138,6 +128,76 @@ namespace Warewolf.Studio.Views.XamGridEx
         public override object ResolveValueFromEditor(Cell cell)
         {
             return _textBox.Text;
+        }
+    }
+
+    public class CheckBoxColumn : EditableColumn
+    {
+        public static readonly DependencyProperty CheckBoxProperty =
+            DependencyProperty.Register("CheckBox",
+                                        typeof(string),
+                                        typeof(CheckBoxColumn), new PropertyMetadata(null));
+
+        public string CheckBox
+        {
+            get { return (string)GetValue(CheckBoxProperty); }
+            set
+            {
+                SetValue(CheckBoxProperty, value);
+            }
+        }
+
+        protected override ColumnContentProviderBase GenerateContentProvider()
+        {
+            return new CheckBoxColumnContentProvider();
+        }
+    }
+
+    public class CheckBoxColumnContentProvider : ColumnContentProviderBase
+    {
+        CheckBox _checkBox;
+
+        public override void AdjustDisplayElement(Cell cell)
+        {
+            _checkBox.Height = cell.Row.MinimumRowHeightResolved;
+            cell.Column.HorizontalContentAlignment = HorizontalAlignment.Center;
+            base.AdjustDisplayElement(cell);
+        }
+
+        public CheckBoxColumnContentProvider()
+        {
+            _checkBox = new CheckBox();
+            _checkBox.Style = Application.Current.TryFindResource("CheckBoxXamGridStyle") as Style;
+        }
+
+        public override bool RemovePaddingDuringEditing
+        {
+            get { return true; }
+        }
+
+        public override FrameworkElement ResolveDisplayElement(Cell cell, Binding cellBinding)
+        {
+            CheckBoxColumn column = (CheckBoxColumn)cell.Column;
+
+            cell.Control.Padding = new Thickness();
+            cell.Control.Cell.Control.Padding = new Thickness();
+            this._checkBox.SetValue(WatermarkTextBox.WatermarkProperty, column.CheckBox);
+            this._checkBox.SetBinding(TextBox.TextProperty, cellBinding);
+            _checkBox.Height = cell.Row.MinimumRowHeightResolved;
+            cell.Column.HorizontalContentAlignment = HorizontalAlignment.Center;
+            return _checkBox;
+        }
+
+        protected override FrameworkElement ResolveEditorControl(Cell cell, object editorValue, double availableWidth,
+             double availableHeight, Binding editorBinding)
+        {
+            if (editorValue != null) this._checkBox.IsChecked = (bool)editorValue;
+            return this._checkBox;
+        }
+
+        public override object ResolveValueFromEditor(Cell cell)
+        {
+            return _checkBox.IsChecked;
         }
     }
 }

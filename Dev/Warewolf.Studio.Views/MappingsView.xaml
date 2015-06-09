@@ -48,44 +48,10 @@
                         </ig:TextColumn>
                         <xamGridEx:TextBoxColumn Key="DefaultValue" HeaderText="Default Value"  MinimumWidth="100" Watermark="Default Value">
                         </xamGridEx:TextBoxColumn>
-                        <ig:UnboundColumn Key="RequiredField" 
-                                          HeaderText="Required" 
-                                          MinimumWidth="100">
-                            <ig:UnboundColumn.ItemTemplate>
-                                <DataTemplate>
-                                    <CheckBox Style="{StaticResource CheckBoxXamGridStyle}"
-                                              IsChecked="{Binding Path=RequiredField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                              HorizontalAlignment="Center"></CheckBox>
-                                </DataTemplate>
-                            </ig:UnboundColumn.ItemTemplate>
-                        </ig:UnboundColumn>
-                        <ig:UnboundColumn Key="EmptyIsNull" 
-                                          HeaderText="Empty Is Null" 
-                                          IsResizable="False"
-                                          MinimumWidth="100">
-                            <ig:UnboundColumn.ItemTemplate>
-                                <DataTemplate>
-                                    <CheckBox Style="{StaticResource CheckBoxXamGridStyle}" 
-                                              IsChecked="{Binding Path=EmptyIsNull, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"></CheckBox>
-                                </DataTemplate>
-                            </ig:UnboundColumn.ItemTemplate>
-                        </ig:UnboundColumn>
-                        <!--<ig:CheckBoxColumn Key="RequiredField" HeaderText="Required" MinimumWidth="100">
-                            <ig:CheckBoxColumn.AddNewRowEditorTemplate>
-                                <DataTemplate>
-                                    <CheckBox Margin="0,-4,0,0" Style="{StaticResource CheckBoxXamGridStyle}" 
-                                              IsChecked="{Binding Path=RequiredField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"></CheckBox>
-                                </DataTemplate>
-                            </ig:CheckBoxColumn.AddNewRowEditorTemplate>
-                        </ig:CheckBoxColumn>-->
-                        <!--<ig:CheckBoxColumn Key="EmptyIsNull" HeaderText="Empty Is Null" MinimumWidth="100" IsResizable="False">
-                            <ig:CheckBoxColumn.AddNewRowEditorTemplate>
-                                <DataTemplate>
-                                    <CheckBox Margin="0,-4,0,0" Style="{StaticResource CheckBoxXamGridStyle}" 
-                                              IsChecked="{Binding Path=EmptyIsNull, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"></CheckBox>
-                                </DataTemplate>
-                            </ig:CheckBoxColumn.AddNewRowEditorTemplate>
-                        </ig:CheckBoxColumn>-->
+                        <xamGridEx:CheckBoxColumn Key="RequiredField" HeaderText="Required" MinimumWidth="100">
+                        </xamGridEx:CheckBoxColumn>
+                        <xamGridEx:CheckBoxColumn Key="EmptyIsNull" HeaderText="Empty Is Null" IsResizable="False" MinimumWidth="100">
+                        </xamGridEx:CheckBoxColumn>
                     </ig:XamGrid.Columns>
                     <ig:XamGrid.SortingSettings>
                         <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
@@ -110,13 +76,14 @@
         <ScrollViewer Grid.Row="2" 
                       HorizontalScrollBarVisibility="Auto" 
                       VerticalScrollBarVisibility="Auto">
-            <StackPanel Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=ActualWidth}" 
+            <StackPanel Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}" 
                         Margin="{StaticResource ElementBorderTop}"
                         MaxHeight="180">
                 <ig:XamGrid x:Name="OutputsMappingDataGrid" 
                             ItemsSource="{Binding OutputMapping}" 
                             IsAlternateRowsEnabled="False"
                             AutoGenerateColumns="False" 
+                            Margin="0,0,1,0"
                             ColumnWidth="*">
                     <ig:XamGrid.Columns>
                         <ig:TextColumn x:Name="OutputColumn" Key="OutputName" HeaderText="Output" MinimumWidth="100" IsReadOnly="True">
@@ -126,7 +93,7 @@
                                 </DataTemplate>
                             </ig:TextColumn.AddNewRowEditorTemplate>
                         </ig:TextColumn>
-                        <xamGridEx:TextBoxColumn Key="Name" HeaderText="Alias"  MinimumWidth="100" IsResizable="False" Watermark="Alias">
+                        <xamGridEx:TextBoxColumn Key="Name" HeaderText="Alias" MinimumWidth="100" IsResizable="False" Watermark="Alias">
                         </xamGridEx:TextBoxColumn>
                     </ig:XamGrid.Columns>
                     <ig:XamGrid.SortingSettings>
