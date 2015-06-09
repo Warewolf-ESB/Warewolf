@@ -13,5 +13,6 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         string SearchTerm { get; set; }
         ICommand ClearSearchTextCommand { get; }
         ICommand RefreshCommand { get; set; }
+        IDllListingModel GacItem { get; }
     }
 }

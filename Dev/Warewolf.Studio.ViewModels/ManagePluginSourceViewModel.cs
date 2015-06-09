@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -31,6 +32,7 @@ namespace Warewolf.Studio.ViewModels
         List<IDllListingModel> _dllListings;
         bool _isLoading;
         string _searchTerm;
+        private IDllListingModel _gacItem;
 
         /// <exception cref="Exception">A delegate callback throws an exception.</exception>
         public ManagePluginSourceViewModel(IManagePluginSourceModel updateManager, IEventAggregator aggregator):base(ResourceType.PluginSource)
@@ -54,6 +56,16 @@ namespace Warewolf.Studio.ViewModels
 
         public ICommand RefreshCommand { get; set; }
 
+        public IDllListingModel GacItem
+        {
+            get { return _gacItem; }
+            set
+            {
+                _gacItem = value;
+                OnPropertyChanged(() => GacItem);
+            }
+        }
+
         void PerformLoadAll()
         {
             new Task(() =>
@@ -64,6 +76,10 @@ namespace Warewolf.Studio.ViewModels
                 {
                     DllListings = new List<IDllListingModel>(names);
                     IsLoading = false;
+                    if (DllListings != null && DllListings.Count > 1)
+                    {
+                        GacItem = DllListings[1];
+                    }
                 });
             }).Start();
         }

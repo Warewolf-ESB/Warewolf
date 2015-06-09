@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Infragistics.Controls.Menus;
+using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.Views
 {
@@ -23,6 +25,19 @@ namespace Warewolf.Studio.Views
         public ManagePluginSourceControl()
         {
             InitializeComponent();
+        }
+
+        private void ExplorerTree_OnNodeExpansionChanging(object sender, CancellableNodeExpansionChangedEventArgs e)
+        {
+            if (DataContext != null)
+            {
+                var node = e.Node.Data as DllListingModel;
+                if (node != null)
+                {
+                    node.IsExpanded = e.Node.IsExpanded;
+                    node.ExpandingCommand.Execute(null);
+                }
+            }
         }
     }
 }
