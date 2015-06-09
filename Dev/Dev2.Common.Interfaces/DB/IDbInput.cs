@@ -1,4 +1,6 @@
-﻿namespace Dev2.Common.Interfaces.DB
+﻿using System;
+
+namespace Dev2.Common.Interfaces.DB
 {
     public interface IServiceInput
     {
@@ -7,5 +9,7 @@
         string DefaultValue { get; set; }
         bool RequiredField { get; set; }
         bool EmptyIsNull { get; set; }
+        Type TypeName { get; set; }
     }
+
 }

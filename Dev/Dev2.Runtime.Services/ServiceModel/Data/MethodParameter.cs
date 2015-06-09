@@ -31,6 +31,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 return Type != null ? Type.FullName : "";
             }
+
         }
     }
 }

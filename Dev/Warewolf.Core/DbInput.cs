@@ -99,6 +99,7 @@ namespace Warewolf.Core
         public string DefaultValue { get; set; }
         public bool RequiredField { get; set; }
         public bool EmptyIsNull { get; set; }
+        public Type TypeName { get; set; }
 
         #endregion
     }
