@@ -85,30 +85,29 @@ namespace Dev2.Data.ServiceModel
 
         public List<SharepointListTo> LoadLists()
         {
-            string userName = null;
-            string password = null;
-           
-            if(AuthenticationType == AuthenticationType.Windows)
-            {
-                userName = UserName;
-                password = Password;
-            }
-            var sharepointHelper = new SharepointHelper(Server,userName,password);
+            var sharepointHelper = CreateSharepointHelper();
             return sharepointHelper.LoadLists();
         }
 
         public List<ISharepointFieldTo> LoadFieldsForList(string listName)
         {
+           
+            var sharepointHelper = CreateSharepointHelper();
+            return sharepointHelper.LoadFieldsForList(listName);
+        }
+
+        public SharepointHelper CreateSharepointHelper()
+        {
             string userName = null;
             string password = null;
 
-            if (AuthenticationType == AuthenticationType.Windows)
+            if(AuthenticationType == AuthenticationType.User)
             {
                 userName = UserName;
                 password = Password;
             }
             var sharepointHelper = new SharepointHelper(Server, userName, password);
-            return sharepointHelper.LoadFieldsForList(listName);
+            return sharepointHelper;
         }
     }
 }

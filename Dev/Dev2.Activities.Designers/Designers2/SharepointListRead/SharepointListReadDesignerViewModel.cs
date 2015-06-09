@@ -18,7 +18,6 @@ using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
-using Dev2.Activities.Designers2.FindRecordsMultipleCriteria;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
@@ -30,13 +29,10 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
 using Dev2.TO;
-using Dev2.Validation;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers2.SharepointListRead
 {
@@ -77,7 +73,6 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             _eventPublisher = eventPublisher;
 
             WhereOptions = new ObservableCollection<string>(SharepointSearchOptions.SearchOptions());
-            SearchTypeUpdatedCommand = new DelegateCommand(OnSearchTypeChanged);
 
             SharepointServers = new ObservableCollection<SharepointSource>();
             Lists = new ObservableCollection<SharepointListTo>();
@@ -154,9 +149,12 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             var selectedDatabase = SelectedSharepointServer;
             _asyncWorker.Start(() => GetSharepointLists(selectedDatabase), tableList =>
             {
-               foreach (var listTo in tableList.OrderBy(t => t.FullName))
+                if(tableList != null)
                 {
-                    Lists.Add(listTo);
+                    foreach (var listTo in tableList.OrderBy(t => t.FullName))
+                    {
+                        Lists.Add(listTo);
+                    }
                 }
                 if (continueWith != null)
                 {
@@ -167,7 +165,15 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
         void SetSelectedSharepointServer(SharepointSource sharepointServerSource)
         {
-            var selectSharepointSource = sharepointServerSource == null ? null : SharepointServers.FirstOrDefault(d => d.ResourceID == sharepointServerSource.ResourceID);
+            var selectSharepointSource = sharepointServerSource == null ? null : SharepointServers.FirstOrDefault(d =>
+            {
+                var resourceID = sharepointServerSource.ResourceID;
+                if(SharepointServerResourceId != Guid.Empty)
+                {
+                    resourceID = SharepointServerResourceId;
+                }
+                return d.ResourceID == resourceID;
+            });
             if (selectSharepointSource == null)
             {
                 if (SharepointServers.FirstOrDefault(d => d.Equals(SelectSharepointSource)) == null)
@@ -180,8 +186,14 @@ namespace Dev2.Activities.Designers2.SharepointListRead
         }
         IEnumerable<SharepointSource> GetSharepointServers()
         {
-            return _environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(_environmentModel, enSourceType.SharepointServerSource);
+            var sources = _environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(_environmentModel, enSourceType.SharepointServerSource);
+            if(sources == null)
+            {
+                sources = new List<SharepointSource>();
+            }
+            return sources;
         }
+
         void LoadSharepointServerSources(System.Action continueWith = null)
         {
             SharepointServers.Clear();
@@ -189,9 +201,12 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
             _asyncWorker.Start(() => GetSharepointServers().OrderBy(r => r.ResourceName), sharepointSources =>
             {
-                foreach (var sharepointSource in sharepointSources)
+                if(sharepointSources != null)
                 {
-                    SharepointServers.Add(sharepointSource);
+                    foreach (var sharepointSource in sharepointSources)
+                    {
+                        SharepointServers.Add(sharepointSource);
+                    }
                 }
                 if (continueWith != null)
                 {
@@ -328,7 +343,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             if (SelectedList != null)
             {
                 IsRefreshing = true;
-                Lists.Remove(SelectedList);
+                Lists.Remove(SelectSharepointList);
                 SharepointList = SelectedList.FullName;
                 LoadListFields(() => { IsRefreshing = false; });
             }
@@ -350,14 +365,19 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             }
 
             ModelItemCollection.Clear();
+            dynamic mi = ModelItem;
+            InitializeItems(mi.FilterCriteria);
             var selectedSharepointServer = SelectedSharepointServer;
             var selectedList = SelectedList;
             // ReSharper disable ImplicitlyCapturedClosure
             _asyncWorker.Start(() => GetListFields(selectedSharepointServer, selectedList), columnList =>
             // ReSharper restore ImplicitlyCapturedClosure
             {
-                var fieldMappings = columnList.Select(mapping => new SharepointReadListTo("", mapping.Name)).Cast<ISharepointReadListTo>().ToList();
-                ReadListItems = fieldMappings;
+                if(columnList != null)
+                {
+                    var fieldMappings = columnList.Select(mapping => new SharepointReadListTo("", mapping.Name)).ToList();
+                    ReadListItems = fieldMappings;
+                }
                 if (continueWith != null)
                 {
                     continueWith();
@@ -365,11 +385,11 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             });
         }
 
-        public List<ISharepointReadListTo> ReadListItems
+        public List<SharepointReadListTo> ReadListItems
         {
             get
             {
-                return GetProperty<List<ISharepointReadListTo>>();
+                return GetProperty<List<SharepointReadListTo>>();
             }
             set
             {
@@ -396,18 +416,37 @@ namespace Dev2.Activities.Designers2.SharepointListRead
                 }
             }
         }
-        public bool IsListSelected { get; set; }
+
+        public bool IsSharepointServerSelected { get { return SelectedSharepointServer != SelectSharepointSource; } }
+
+        public bool IsListSelected { get { return SelectedList != SelectSharepointList; } }
 
         void RefreshLists()
         {
+            IsRefreshing = true;
+
+            LoadLists(() =>
+            {
+                SetSelectedList(SharepointList);
+
+                LoadListFields(() =>
+                {
+                    IsRefreshing = false;
+                });
+            });
         }
 
         public RelayCommand RefreshListsCommand { get; set; }
 
-        public bool IsSharepointServerSelected { get; set; }
 
         void EditSharepointSource()
         {
+            var resourceModel = _environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == SelectedSharepointServer.ResourceName);
+            if (resourceModel != null)
+            {
+                _eventPublisher.Publish(new ShowEditResourceWizardMessage(resourceModel));
+                RefreshSharepointSources();
+            }
         }
 
         public RelayCommand EditSharepointServerCommand { get; set; }
@@ -418,113 +457,60 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
         public override string CollectionName { get { return "FilterCriteria"; } }
 
-        public ICommand SearchTypeUpdatedCommand { get; private set; }
 
         public ObservableCollection<string> WhereOptions { get; private set; }
 
-        string FieldsToSearch { get { return GetProperty<string>(); } }
 
-        public bool IsFieldsToSearchFocused { get { return (bool)GetValue(IsFieldsToSearchFocusedProperty); } set { SetValue(IsFieldsToSearchFocusedProperty, value); } }
-        public static readonly DependencyProperty IsFieldsToSearchFocusedProperty = DependencyProperty.Register("IsFieldsToSearchFocused", typeof(bool), typeof(FindRecordsMultipleCriteriaDesignerViewModel), new PropertyMetadata(default(bool)));
+       
 
-        string Result { get { return GetProperty<string>(); } }
-
-        public bool IsResultFocused { get { return (bool)GetValue(IsResultFocusedProperty); } set { SetValue(IsResultFocusedProperty, value); } }
-        public static readonly DependencyProperty IsResultFocusedProperty = DependencyProperty.Register("IsResultFocused", typeof(bool), typeof(FindRecordsMultipleCriteriaDesignerViewModel), new PropertyMetadata(default(bool)));
-
-        void OnSearchTypeChanged(object indexObj)
-        {
-            var index = (int)indexObj;
-
-            if(index == -1)
-            {
-                index = 0;
-            }
-
-            if(index < 0 || index >= ItemCount)
-            {
-                return;
-            }
-
-            var mi = ModelItemCollection[index];
-
-            var searchType = mi.GetProperty("SearchType") as string;
-
-            if(searchType == "Is Between" || searchType == "Not Between")
-            {
-                mi.SetProperty("IsSearchCriteriaVisible", false);
-            }
-            else
-            {
-                mi.SetProperty("IsSearchCriteriaVisible", true);
-            }
-
-            var requiresCriteria = _requiresSearchCriteria.Contains(searchType);
-            mi.SetProperty("IsSearchCriteriaEnabled", requiresCriteria);
-            if(!requiresCriteria)
-            {
-                mi.SetProperty("SearchCriteria", string.Empty);
-            }
-        }
+//        protected override IEnumerable<IActionableErrorInfo> ValidateThis()
+//        {
+//            // ReSharper disable LoopCanBeConvertedToQuery
+//            foreach(var error in GetRuleSet("FieldsToSearch").ValidateRules("'In Field(s)'", () => IsFieldsToSearchFocused = true))
+//            // ReSharper restore LoopCanBeConvertedToQuery
+//            {
+//                yield return error;
+//            }
+//            // ReSharper disable LoopCanBeConvertedToQuery
+//            foreach(var error in GetRuleSet("Result").ValidateRules("'Result'", () => IsResultFocused = true))
+//            // ReSharper restore LoopCanBeConvertedToQuery
+//            {
+//                yield return error;
+//            }
+//        }
 
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()
         {
-            // ReSharper disable LoopCanBeConvertedToQuery
-            foreach(var error in GetRuleSet("FieldsToSearch").ValidateRules("'In Field(s)'", () => IsFieldsToSearchFocused = true))
-            // ReSharper restore LoopCanBeConvertedToQuery
-            {
-                yield return error;
-            }
-            // ReSharper disable LoopCanBeConvertedToQuery
-            foreach(var error in GetRuleSet("Result").ValidateRules("'Result'", () => IsResultFocused = true))
-            // ReSharper restore LoopCanBeConvertedToQuery
-            {
-                yield return error;
-            }
+            yield break;
         }
 
         protected override IEnumerable<IActionableErrorInfo> ValidateCollectionItem(ModelItem mi)
         {
-            var dto = mi.GetCurrentValue() as FindRecordsTO;
+            var dto = mi.GetCurrentValue() as SharepointSearchTo;
             if(dto == null)
             {
                 yield break;
             }
 
-            foreach (var error in dto.GetRuleSet("SearchCriteria", GetDatalistString()).ValidateRules("'Match'", () => mi.SetProperty("IsSearchCriteriaFocused", true)))
-            {
-                yield return error;
-            }
-
-            foreach(var error in dto.GetRuleSet("From", GetDatalistString()).ValidateRules("'From'", () => mi.SetProperty("IsFromFocused", true)))
-            {
-                yield return error;
-            }
-
-            foreach(var error in dto.GetRuleSet("To", GetDatalistString()).ValidateRules("'To'", () => mi.SetProperty("IsToFocused", true)))
-            {
-                yield return error;
-            }
+//            foreach (var error in dto.GetRuleSet("SearchCriteria", GetDatalistString()).ValidateRules("'Match'", () => mi.SetProperty("IsSearchCriteriaFocused", true)))
+//            {
+//                yield return error;
+//            }
+//
+//            foreach(var error in dto.GetRuleSet("From", GetDatalistString()).ValidateRules("'From'", () => mi.SetProperty("IsFromFocused", true)))
+//            {
+//                yield return error;
+//            }
+//
+//            foreach(var error in dto.GetRuleSet("To", GetDatalistString()).ValidateRules("'To'", () => mi.SetProperty("IsToFocused", true)))
+//            {
+//                yield return error;
+//            }
         }
 
         public IRuleSet GetRuleSet(string propertyName)
         {
             var ruleSet = new RuleSet();
-
-            switch(propertyName)
-            {
-                case "FieldsToSearch":
-                    ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => FieldsToSearch));
-                    ruleSet.Add(new IsValidExpressionRule(() => FieldsToSearch, GetDatalistString(), "1"));
-                    ruleSet.Add(new HasNoDuplicateEntriesRule(() => FieldsToSearch));
-                    ruleSet.Add(new HasNoIndexsInRecordsetsRule(() => FieldsToSearch));
-                    break;
-
-                case "Result":
-                    ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => Result));
-                    ruleSet.Add(new IsValidExpressionRule(() => Result, GetDatalistString(),"1"));
-                    break;
-            }
             return ruleSet;
         }
     }

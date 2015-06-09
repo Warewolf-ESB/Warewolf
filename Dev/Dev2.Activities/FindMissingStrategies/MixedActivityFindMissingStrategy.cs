@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Dev2.Activities;
+using Dev2.Activities.Sharepoint;
 using Dev2.Interfaces;
 using Dev2.Util;
 using Dev2.Utilities;
@@ -65,6 +66,16 @@ namespace Dev2.FindMissingStrategies
                     {
                         results.Add(dsAct.JsonString);
                     }
+                }
+            }
+            if (activityType == typeof(SharepointReadListActivity))
+            {
+                var dsAct = activity as SharepointReadListActivity;
+                if (dsAct != null)
+                {
+                    results.AddRange(InternalFindMissing(dsAct.ReadListItems));
+                    results.AddRange(InternalFindMissing(dsAct.FilterCriteria));
+                    
                 }
             }
             else if(activityType == typeof(DsfDataMergeActivity))

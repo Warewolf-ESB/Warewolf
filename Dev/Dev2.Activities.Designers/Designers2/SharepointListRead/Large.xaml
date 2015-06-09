@@ -42,8 +42,9 @@
     </core:ActivityDesignerTemplate.RightButtons>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
@@ -57,7 +58,6 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-
             <Label Grid.Column="0"
                Grid.Row="0"
                Content="Sharepoint Server"
@@ -194,7 +194,6 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <controls:Dev2DataGrid Grid.Row="1"
                                Grid.Column="0"
@@ -236,15 +235,10 @@
                                 <ComboBox Style="{StaticResource ActivityComboBoxStyle}"
                                       ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
                                       Margin="0,0,2,0"
-                                      ItemsSource="{Binding DataContext.FieldNames, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
+                                      DisplayMemberPath="FieldName"
+                                      ItemsSource="{Binding DataContext.ReadListItems, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                       SelectedValue="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
                                       ToolTip="{x:Static help:HelpTextResources.SharepointToolTipFieldToFilterOn}">
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="SourceUpdated">
-                                            <i:InvokeCommandAction Command="{Binding DataContext.SearchTypeUpdatedCommand, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
-                                                               CommandParameter="{Binding SelectedIndex, RelativeSource={RelativeSource AncestorType=controls:Dev2DataGrid}}" />
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
                                     <i:Interaction.Behaviors>
                                         <help:HelpSetter Text="{x:Static help:HelpTextResources.SharepointHelpFieldToMatchOn}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
@@ -276,12 +270,6 @@
                                       ItemsSource="{Binding DataContext.WhereOptions, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                       SelectedValue="{Binding SearchType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
                                       ToolTip="{x:Static help:HelpTextResources.FindToolTipLookForMatchType}">
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="SourceUpdated">
-                                            <i:InvokeCommandAction Command="{Binding DataContext.SearchTypeUpdatedCommand, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
-                                                               CommandParameter="{Binding SelectedIndex, RelativeSource={RelativeSource AncestorType=controls:Dev2DataGrid}}" />
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
                                     <i:Interaction.Behaviors>
                                         <help:HelpSetter Text="{x:Static help:HelpTextResources.FindHelpLookForMatchType}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
@@ -363,9 +351,9 @@
                                  DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </CheckBox>
-            <errors:OnError Grid.Row="5"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="2" />
+            
     </Grid>
+        <errors:OnError Grid.Row="2"
+                        Grid.ColumnSpan="2" />
    </Grid>
 </core:ActivityDesignerTemplate>

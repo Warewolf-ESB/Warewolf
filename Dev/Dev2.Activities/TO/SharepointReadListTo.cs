@@ -1,12 +1,17 @@
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Providers.Validation.Rules;
+using Dev2.Util;
 
 namespace Dev2.TO
 {
     public class SharepointReadListTo : ValidatedObject, ISharepointReadListTo
     {
         int _indexNumber;
+
+        public SharepointReadListTo()
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
@@ -18,6 +23,7 @@ namespace Dev2.TO
         }
 
         public string FieldName { get; set; }
+        [FindMissing]
         public string VariableName { get; set; }
         public int IndexNumber { get { return _indexNumber; } set { OnPropertyChanged(ref _indexNumber, value); } }
 

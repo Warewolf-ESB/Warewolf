@@ -3,12 +3,13 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Text;
 using Dev2.Activities.Debug;
-using Dev2.Common.Interfaces;
+using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.ServiceModel;
+using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.TO;
@@ -25,12 +26,12 @@ namespace Dev2.Activities.Sharepoint
         public SharepointReadListActivity()
         {
             DisplayName = "Sharepoint Read List Item";
-            ReadListItems = new List<ISharepointReadListTo>();
+            ReadListItems = new List<SharepointReadListTo>();
             FilterCriteria = new List<SharepointSearchTo>();
             RequireAllCriteriaToMatch = true;
         }
 
-        public IList<ISharepointReadListTo> ReadListItems { get; set; }
+        public IList<SharepointReadListTo> ReadListItems { get; set; }
         public Guid SharepointServerResourceId { get; set; }
         public string SharepointList { get; set; }
         public List<SharepointSearchTo> FilterCriteria { get; set; }
@@ -63,62 +64,112 @@ namespace Dev2.Activities.Sharepoint
         {
             return null;
         }
+
+        public override enFindMissingType GetFindMissingType()
+        {
+            return enFindMissingType.MixedActivity;
+        }
+
         int _indexCounter = 1;
+
         protected override void ExecuteTool(IDSFDataObject dataObject)
         {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
             _indexCounter = 1;
-
-            if(ReadListItems != null && ReadListItems.Count > 0)
+            ErrorResultTO allErrors = new ErrorResultTO();
+            try
             {
-                var sharepointSource = ResourceCatalog.Instance.GetResource<SharepointSource>(dataObject.WorkspaceID, SharepointServerResourceId);
-                var env = dataObject.Environment;
-                if (dataObject.IsDebugMode())
+                var sharepointReadListTos = GetValidReadListItems().ToList();
+                if(sharepointReadListTos.Any())
                 {
-                    AddInputDebug(env);
-                }
-                using(var ctx = new ClientContext(sharepointSource.Server))
-                {
-                    ctx.Credentials = CredentialCache.DefaultNetworkCredentials;
-                    List list = ctx.Web.Lists.GetByTitle(SharepointList);
-                    var camlQuery = BuildCamlQuery();
-                    var listItems = list.GetItems(camlQuery);
-                    ctx.Load(list.Fields);
-                    ctx.Load(listItems);
-                    ctx.ExecuteQuery();
-                    foreach(var listItem in listItems)
+                    var sharepointSource = ResourceCatalog.Instance.GetResource<SharepointSource>(dataObject.WorkspaceID, SharepointServerResourceId);
+                    if(sharepointSource == null)
                     {
-                        foreach(var sharepointReadListTo in ReadListItems)
+                        var contents = ResourceCatalog.Instance.GetResourceContents(dataObject.WorkspaceID, SharepointServerResourceId);
+                        sharepointSource = new SharepointSource(contents.ToXElement());
+                    }
+                    var env = dataObject.Environment;
+                    if(dataObject.IsDebugMode())
+                    {
+                        AddInputDebug(env);
+                    }
+                    using(var ctx = sharepointSource.CreateSharepointHelper().GetContext())
+                    {
+                        List list = ctx.Web.Lists.GetByTitle(SharepointList);
+                        var camlQuery = BuildCamlQuery();
+                        var listItems = list.GetItems(camlQuery);
+                        ctx.Load(list.Fields);
+                        ctx.Load(listItems);
+                        ctx.ExecuteQuery();
+                        foreach(var listItem in listItems)
                         {
-                            var variableName = sharepointReadListTo.VariableName;
-                            var fieldToName = sharepointReadListTo.FieldName;
-                            var fieldName = list.Fields.FirstOrDefault(field => field.Title == fieldToName);
-                            if(fieldName != null)
+
+                            foreach(var sharepointReadListTo in sharepointReadListTos)
                             {
-                                var listItemValue = listItem[fieldName.InternalName].ToString();
-                                env.AssignWithFrame(new AssignValue(variableName, listItemValue));                                
+                                var variableName = sharepointReadListTo.VariableName;
+                                var fieldToName = sharepointReadListTo.FieldName;
+                                var fieldName = list.Fields.FirstOrDefault(field => field.Title == fieldToName);
+                                if(fieldName != null)
+                                {
+                                    var listItemValue = listItem[fieldName.InternalName].ToString();
+                                    env.AssignWithFrame(new AssignValue(variableName, listItemValue));
+                                }
                             }
-                        }                        
-                    }                    
+                        }
+                    }
+                    env.CommitAssign();
+                    AddOutputDebug(dataObject, env);
                 }
-                env.CommitAssign();
-                AddOutputDebug(dataObject, env);
             }
+            catch(Exception e)
+            {
+                Dev2Logger.Log.Error("SharepointReadListActivity", e);
+                allErrors.AddError(e.Message);
+            }
+            finally
+            {
+                var hasErrors = allErrors.HasErrors();
+                if(hasErrors)
+                {
+                    DisplayAndWriteError("SharepointReadListActivity", allErrors);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
+                }
+                if(dataObject.IsDebugMode())
+                {
+                    DispatchDebugState(dataObject, StateType.Before);
+                    DispatchDebugState(dataObject, StateType.After);
+                }
+            }
+        }
+
+        IEnumerable<SharepointReadListTo> GetValidReadListItems()
+        {
+            if(ReadListItems == null)
+            {
+                return new List<SharepointReadListTo>();
+            }
+            return ReadListItems.Where(to => !string.IsNullOrEmpty(to.VariableName));
         }
 
         CamlQuery BuildCamlQuery()
         {
             var camlQuery = CamlQuery.CreateAllItemsQuery();
-            if (FilterCriteria != null && FilterCriteria.Count > 0)
+            var validFilters = new List<SharepointSearchTo>();
+            if(FilterCriteria != null)
             {
-                var filterCount = FilterCriteria.Count;
+                validFilters = FilterCriteria.Where(to => !string.IsNullOrEmpty(to.FieldName) && !string.IsNullOrEmpty(to.ValueToMatch)).ToList();
+            }
+            var filterCount = validFilters.Count;
+            if (filterCount > 0)
+            {
                 var queryString = new StringBuilder("<View><Query><Where>");
                 if(filterCount > 1)
                 {
                     queryString.Append("<And>");
                 }
-                foreach(var sharepointSearchTo in FilterCriteria)
+                foreach (var sharepointSearchTo in validFilters)
                 {
                     var buildQueryFromTo = BuildQueryFromTo(sharepointSearchTo);
                     if(buildQueryFromTo != null)
@@ -147,7 +198,8 @@ namespace Dev2.Activities.Sharepoint
             if(dataObject.IsDebugMode())
             {
                 var outputIndex = 1;
-                foreach(var varDebug in ReadListItems)
+                var validItems = GetValidReadListItems().ToList();
+                foreach (var varDebug in validItems)
                 {
                     var debugItem = new DebugItem();
                     AddDebugItem(new DebugItemStaticDataParams("", outputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
@@ -161,7 +213,8 @@ namespace Dev2.Activities.Sharepoint
 
         void AddInputDebug(IExecutionEnvironment env)
         {
-            foreach(var varDebug in ReadListItems)
+            var validItems = GetValidReadListItems().ToList();
+            foreach (var varDebug in validItems)
             {
                 DebugItem debugItem = new DebugItem();
                 AddDebugItem(new DebugItemStaticDataParams("", _indexCounter.ToString(CultureInfo.InvariantCulture)), debugItem);

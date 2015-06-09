@@ -163,7 +163,7 @@ namespace Dev2.TO
 
         public bool CanRemove()
         {
-            if (string.IsNullOrEmpty(ValueToMatch) && string.IsNullOrEmpty(SearchType))
+            if (string.IsNullOrEmpty(FieldName))
             {
                 return true;
             }
@@ -172,7 +172,7 @@ namespace Dev2.TO
 
         public bool CanAdd()
         {
-            return !string.IsNullOrEmpty(SearchType);
+            return !string.IsNullOrEmpty(SearchType) && !string.IsNullOrEmpty(FieldName);
         }
 
         public void ClearRow()
@@ -231,7 +231,11 @@ namespace Dev2.TO
                         ruleSet.Add(new IsValidExpressionRule(() => To, datalist, "1"));
                     }
                     break;
-                case "SearchCriteria":
+                case "FieldName":
+                    if (FieldName.Length == 0)
+                        ruleSet.Add(new IsStringEmptyRule(() => ValueToMatch));
+                    break;
+                case "ValueToMatch":
                     if (ValueToMatch.Length == 0)
                         ruleSet.Add(new IsStringEmptyRule(() => ValueToMatch));
                     ruleSet.Add(new IsValidExpressionRule(() => ValueToMatch, datalist, "1"));

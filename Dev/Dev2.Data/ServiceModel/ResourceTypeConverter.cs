@@ -144,6 +144,9 @@ namespace Dev2.Data.ServiceModel
                 case enSourceType.OauthSource:
                     resourceType = ResourceType.OauthSource;
                     break;
+                case enSourceType.SharepointServerSource:
+                    resourceType = ResourceType.SharepointServerSource;
+                    break;
             }
             return resourceType;
         }

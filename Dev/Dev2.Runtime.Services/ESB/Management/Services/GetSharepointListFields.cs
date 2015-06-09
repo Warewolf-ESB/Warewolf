@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Communication;
@@ -75,8 +76,14 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             try
             {
+                listName = serializer.Deserialize<string>(listName);
                 var sharepointSource = serializer.Deserialize<SharepointSource>(serializedSource);
                 var source = ResourceCatalog.Instance.GetResource<SharepointSource>(theWorkspace.ID, sharepointSource.ResourceID);
+                if (source == null)
+                {
+                    var contents = ResourceCatalog.Instance.GetResourceContents(theWorkspace.ID, sharepointSource.ResourceID);
+                    source = new SharepointSource(contents.ToXElement());
+                }
                 List<ISharepointFieldTo> fields = source.LoadFieldsForList(listName);
                 return serializer.SerializeToBuilder(fields);
             }

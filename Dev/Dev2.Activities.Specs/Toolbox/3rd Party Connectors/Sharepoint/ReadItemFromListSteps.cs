@@ -32,7 +32,7 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
         [Given(@"I map the list fields as")]
         public void GivenIMapTheListFieldsAs(Table table)
         {
-            var sharepointReadListTos = new List<ISharepointReadListTo>();
+            var sharepointReadListTos = new List<SharepointReadListTo>();
             // ReSharper disable once LoopCanBeConvertedToQuery
             foreach(var row in table.Rows)
             {
@@ -88,7 +88,7 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
 
         protected override void BuildDataList()
         {
-            List<ISharepointReadListTo> sharepointReadListTos;
+            List<SharepointReadListTo> sharepointReadListTos;
             ISharepointSource sharepointServerSource;
             string sharepointList;
             List<SharepointSearchTo> searchCriteria;
