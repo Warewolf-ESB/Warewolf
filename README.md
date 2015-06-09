@@ -51,3 +51,6 @@ Please note that Warewolf is built for Windows 7 and Windows Server 2008. [We do
 
 
 **LICENCE:** Licensed under [GNU Affero General Public License 3.0](http://www.gnu.org/licenses/agpl-3.0.html) or later
+
+Developed with the help of ReSharper
+![resharper logo](http://www.warewolf.io/ftp:/images/Resharper%20Logo.png)
