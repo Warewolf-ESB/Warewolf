@@ -36,7 +36,7 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
             // ReSharper disable once LoopCanBeConvertedToQuery
             foreach(var row in table.Rows)
             {
-                sharepointReadListTos.Add(new SharepointReadListTo(row["Variable"], row["Field Name"]));
+                sharepointReadListTos.Add(new SharepointReadListTo(row["Variable"], row["Field Name"],""));
             }
             ScenarioContext.Current.Add("sharepointReadListTos",sharepointReadListTos);
         }

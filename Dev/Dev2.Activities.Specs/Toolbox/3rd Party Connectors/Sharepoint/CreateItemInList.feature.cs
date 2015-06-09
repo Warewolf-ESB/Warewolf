@@ -96,7 +96,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 13
  testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 14
- testRunner.When("the sharepoint tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("the sharepoint create list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 15
  testRunner.Then("the value of \"[[Result]]\" equals \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 16
@@ -158,7 +158,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 34
  testRunner.And("I have a variable \"[[title]]\" with value \"My New Warewolf Acceptance Test Item\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
- testRunner.When("the sharepoint tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("the sharepoint create list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 36
  testRunner.Then("the value of \"[[Result]]\" equals \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 37
@@ -216,12 +216,12 @@ this.ScenarioSetup(scenarioInfo);
 #line 53
  testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 54
- testRunner.And("I have a variable \"[[items().name]]\" with value \"Created From Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a variable \"[[items(1).name]]\" with value \"Created From Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 55
- testRunner.And("I have a variable \"[[items().title]]\" with value \"My New Warewolf Acceptance Test" +
-                    " Item\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a variable \"[[items(1).title]]\" with value \"My New Warewolf Acceptance Tes" +
+                    "t Item\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 56
- testRunner.When("the sharepoint tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("the sharepoint create list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 57
  testRunner.Then("the value of \"[[Result]]\" equals \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 58
@@ -279,12 +279,12 @@ this.ScenarioSetup(scenarioInfo);
 #line 74
  testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 75
- testRunner.And("I have a variable \"[[items().name]]\" with value \"Created From Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a variable \"[[items(1).name]]\" with value \"Created From Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 76
- testRunner.And("I have a variable \"[[items().title]]\" with value \"My New Warewolf Acceptance Test" +
-                    " Item\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a variable \"[[items(1).title]]\" with value \"My New Warewolf Acceptance Tes" +
+                    "t Item\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 77
- testRunner.When("the sharepoint tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("the sharepoint create list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 78
  testRunner.Then("the value of \"[[Result]]\" equals \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 79
@@ -342,17 +342,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 95
  testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 96
- testRunner.And("I have a variable \"[[items().name]]\" with value \"Created From Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a variable \"[[items(1).name]]\" with value \"Created From Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 97
- testRunner.And("I have a variable \"[[items().title]]\" with value \"My New Warewolf Acceptance Test" +
-                    " Item\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a variable \"[[items(1).title]]\" with value \"My New Warewolf Acceptance Tes" +
+                    "t Item\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 98
- testRunner.And("I have a variable \"[[items().name]]\" with value \"Created From Warewolf 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a variable \"[[items(2).name]]\" with value \"Created From Warewolf 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 99
- testRunner.And("I have a variable \"[[items().title]]\" with value \"My New Warewolf Acceptance Test" +
-                    " Item 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a variable \"[[items(2).title]]\" with value \"My New Warewolf Acceptance Tes" +
+                    "t Item 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 100
- testRunner.When("the sharepoint tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("the sharepoint create list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 101
  testRunner.Then("the value of \"[[Result]]\" equals \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 102
@@ -368,7 +368,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[items(1).name]] = Created From Warewolf"});
             table14.AddRow(new string[] {
                         "",
-                        "Name",
+                        "",
                         "[[items(2).name]] = Created From Warewolf 2"});
             table14.AddRow(new string[] {
                         "2",
@@ -376,7 +376,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[items(1).title]] = My New Warewolf Acceptance Test Item"});
             table14.AddRow(new string[] {
                         "",
-                        "Title",
+                        "",
                         "[[items(2).title]] = My New Warewolf Acceptance Test Item 2"});
 #line 103
  testRunner.And("the debug inputs as", ((string)(null)), table14, "And ");

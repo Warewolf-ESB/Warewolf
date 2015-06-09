@@ -375,7 +375,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             {
                 if(columnList != null)
                 {
-                    var fieldMappings = columnList.Select(mapping => new SharepointReadListTo("", mapping.Name)).ToList();
+                    var fieldMappings = columnList.Select(mapping => new SharepointReadListTo("", mapping.Name,mapping.InternalName)).ToList();
                     ReadListItems = fieldMappings;
                 }
                 if (continueWith != null)

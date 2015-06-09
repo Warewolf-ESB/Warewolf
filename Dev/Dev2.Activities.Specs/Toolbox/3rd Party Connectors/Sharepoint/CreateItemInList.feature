@@ -11,7 +11,7 @@ Scenario: Create Item static data
 	| Name       | Created From Warewolf                |
 	| Title      | My New Warewolf Acceptance Test Item |
 	And I have result variable as "[[Result]]"
-	When the sharepoint tool is executed
+	When the sharepoint create list item tool is executed
 	Then the value of "[[Result]]" equals "Success"
 	And the execution has "NO" error
 	And the debug inputs as
@@ -32,7 +32,7 @@ Scenario: Create Item scalar data
 	And I have result variable as "[[Result]]"
 	And I have a variable "[[name]]" with value "Created From Warewolf"
 	And I have a variable "[[title]]" with value "My New Warewolf Acceptance Test Item"
-	When the sharepoint tool is executed
+	When the sharepoint create list item tool is executed
 	Then the value of "[[Result]]" equals "Success"
 	And the execution has "NO" error
 	And the debug inputs as
@@ -51,9 +51,9 @@ Scenario: Create Item recordset last record
 	| Name       | [[items().name]]  |
 	| Title      | [[items().title]] |
 	And I have result variable as "[[Result]]"
-	And I have a variable "[[items().name]]" with value "Created From Warewolf"
-	And I have a variable "[[items().title]]" with value "My New Warewolf Acceptance Test Item"
-	When the sharepoint tool is executed
+	And I have a variable "[[items(1).name]]" with value "Created From Warewolf"
+	And I have a variable "[[items(1).title]]" with value "My New Warewolf Acceptance Test Item"
+	When the sharepoint create list item tool is executed
 	Then the value of "[[Result]]" equals "Success"
 	And the execution has "NO" error
 	And the debug inputs as
@@ -72,9 +72,9 @@ Scenario: Create Item recordset given record index
 	| Name       | [[items(1).name]]  |
 	| Title      | [[items(1).title]] |
 	And I have result variable as "[[Result]]"
-	And I have a variable "[[items().name]]" with value "Created From Warewolf"
-	And I have a variable "[[items().title]]" with value "My New Warewolf Acceptance Test Item"
-	When the sharepoint tool is executed
+	And I have a variable "[[items(1).name]]" with value "Created From Warewolf"
+	And I have a variable "[[items(1).title]]" with value "My New Warewolf Acceptance Test Item"
+	When the sharepoint create list item tool is executed
 	Then the value of "[[Result]]" equals "Success"
 	And the execution has "NO" error
 	And the debug inputs as
@@ -93,19 +93,19 @@ Scenario: Create Item recordset all records
 	| Name       | [[items(*).name]]  |
 	| Title      | [[items(*).title]] |
 	And I have result variable as "[[Result]]"
-	And I have a variable "[[items().name]]" with value "Created From Warewolf"
-	And I have a variable "[[items().title]]" with value "My New Warewolf Acceptance Test Item"
-	And I have a variable "[[items().name]]" with value "Created From Warewolf 2"
-	And I have a variable "[[items().title]]" with value "My New Warewolf Acceptance Test Item 2"
-	When the sharepoint tool is executed
+	And I have a variable "[[items(1).name]]" with value "Created From Warewolf"
+	And I have a variable "[[items(1).title]]" with value "My New Warewolf Acceptance Test Item"
+	And I have a variable "[[items(2).name]]" with value "Created From Warewolf 2"
+	And I have a variable "[[items(2).title]]" with value "My New Warewolf Acceptance Test Item 2"
+	When the sharepoint create list item tool is executed
 	Then the value of "[[Result]]" equals "Success"
 	And the execution has "NO" error
 	And the debug inputs as
 	| # | Field Name | Variable                                                    |
 	| 1 | Name       | [[items(1).name]] = Created From Warewolf                   |
-	|   | Name       | [[items(2).name]] = Created From Warewolf 2                 |
+	|   |            | [[items(2).name]] = Created From Warewolf 2                 |
 	| 2 | Title      | [[items(1).title]] = My New Warewolf Acceptance Test Item   |
-	|   | Title      | [[items(2).title]] = My New Warewolf Acceptance Test Item 2 |
+	|   |            | [[items(2).title]] = My New Warewolf Acceptance Test Item 2 |
 	And the debug output as 
 	|                      |
 	| [[Result]] = Success |
