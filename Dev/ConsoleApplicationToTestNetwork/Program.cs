@@ -14,12 +14,15 @@ namespace ConsoleApplicationToTestNetwork
     {
         static void Main(string[] args)
         {
-            string uri = "http://localHost:3142";  //"http://sandbox-1:3142"; //"http://localHost:3142/";
+            string uri = "http://sandbox-dev2:3142";  //"http://sandbox-1:3142"; //"http://localHost:3142/";
             List<string> timings = new List<string>();
             float incrementingFactor = 1.125f;
             int maxNumberOfGuidChunks = 1 << 12,
+                roundsPerPacketStep = 10,
                 numberOfGuidsPerChunk = 1 << 5,
                 maxMessageSize = 1 << 24;
+
+            List<double> timingsPerRound = new List<double>();
             StringBuilder sb = new StringBuilder(maxMessageSize);
             Enumerable.Range(0, numberOfGuidsPerChunk).ToList().ForEach(x => sb.Append(Guid.NewGuid()));
             string chunkOfGuids = sb.ToString();
@@ -29,7 +32,7 @@ namespace ConsoleApplicationToTestNetwork
 
             // header
             timings.Add(string.Format("URI:, '{0}'", uri));
-            timings.Add(string.Format("Max message size:, {0}, Initial block size:, {1}, Incrementing factor:, {2}", maxMessageSize, numberOfGuidsPerChunk, incrementingFactor));
+            timings.Add(string.Format("Max message size:, {0}, Initial block size:, {1}, Incrementing factor:, {2}, Rounds per packet size:, {3}", maxMessageSize, numberOfGuidsPerChunk, incrementingFactor, roundsPerPacketStep));
 
             using (var serverProxy = new ServerProxy(new Uri(uri)))
             {
@@ -37,18 +40,25 @@ namespace ConsoleApplicationToTestNetwork
                 CommunicationControllerFactory cf = new CommunicationControllerFactory();
                 while (sb.Length < maxMessageSize)
                 {
-                    var controller = cf.CreateController("TestNetworkService");
-                    controller.AddPayloadArgument("payload", sb);
-                    DateTime start = DateTime.Now;
-                    // send very large message
-                    var svc = controller.ExecuteCommand<ExecuteMessage>(serverProxy, Guid.NewGuid());
+                    timingsPerRound.Clear();
+                    for (int i = 0; i < roundsPerPacketStep; i++)
+                    {
+                        var controller = cf.CreateController("TestNetworkService");
+                        controller.AddPayloadArgument("payload", sb);
+                        DateTime start = DateTime.Now;
+                        // send very large message
+                        var svc = controller.ExecuteCommand<ExecuteMessage>(serverProxy, Guid.NewGuid());
 
-                    TimeSpan elapsed = DateTime.Now - start;
-                    string toAdd = string.Format("{0}, {1}", sb.Length, elapsed.TotalMilliseconds);
+                        TimeSpan elapsed = DateTime.Now - start;
+                        timingsPerRound.Add(elapsed.TotalMilliseconds);
+
+                        // give the server time to clear it's queue 
+                        System.Threading.Thread.Sleep((int)Math.Round(elapsed.TotalMilliseconds) * 2);
+                    }
+                    string toAdd = string.Format("{0}, {1}", sb.Length, timingsPerRound.Sum() / roundsPerPacketStep);
                     Console.WriteLine(toAdd);
                     timings.Add(toAdd);
-                    // give the server time to clear it's queue 
-                    System.Threading.Thread.Sleep((int)Math.Round(elapsed.TotalMilliseconds) * 2);
+                    // build new packet that is incrementingFactor bigger than previous
                     StringBuilder tmpSb = new StringBuilder();
                     tmpSb.Append(sb.ToString());
                     Enumerable.Range(1, (int)Math.Ceiling(incrementingFactor)).ToList().ForEach(x =>

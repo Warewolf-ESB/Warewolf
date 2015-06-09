@@ -133,8 +133,6 @@ E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.Stud
 E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\Dev2.UndoFramework.pdb
 E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\SSL Generation\makecert.exe
 E:\git\rep1\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\SSL Generation\CreateCertificate.bat
-E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\SSL Generation\makecert.exe
-E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\SSL Generation\CreateCertificate.bat
 E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\ConsoleApplicationToTestNetwork.exe.config
 E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\ConsoleApplicationToTestNetwork.exe
 E:\git\rep2\warewolf-esb\Dev\ConsoleApplicationToTestNetwork\bin\Debug\ConsoleApplicationToTestNetwork.pdb
