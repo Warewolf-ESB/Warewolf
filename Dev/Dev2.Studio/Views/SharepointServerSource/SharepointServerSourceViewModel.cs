@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -135,15 +136,16 @@ namespace Dev2.Views.SharepointServerSource
             {
                 _resource = value;
                 var xaml = _resource.WorkflowXaml;
-                if(xaml == null)
+                if (xaml.IsNullOrEmpty() && _resource.ID != Guid.Empty)
                 {
                     var message = _environment.ResourceRepository.FetchResourceDefinition(_environment, GlobalConstants.ServerWorkspaceID, _resource.ID);
                     xaml = message.Message;
+                    if (!xaml.IsNullOrEmpty())
+                    {
+                        UpdateBasedOnResource(new SharepointSource(xaml.ToXElement()));
+                    }
                 }
-                if(xaml != null)
-                {
-                    UpdateBasedOnResource(new SharepointSource(xaml.ToXElement()));
-                }
+                
             }
         }
 
