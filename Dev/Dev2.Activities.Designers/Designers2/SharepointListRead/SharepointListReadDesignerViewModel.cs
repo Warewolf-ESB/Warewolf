@@ -441,7 +441,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
         void EditSharepointSource()
         {
-            var resourceModel = _environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == SelectedSharepointServer.ResourceName);
+            var resourceModel = _environmentModel.ResourceRepository.FindSingle(c => c.ID == SelectedSharepointServer.ResourceID);
             if (resourceModel != null)
             {
                 _eventPublisher.Publish(new ShowEditResourceWizardMessage(resourceModel));
