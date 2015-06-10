@@ -371,7 +371,11 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             {
                 if(columnList != null)
                 {
-                    var fieldMappings = columnList.Select(mapping => new SharepointReadListTo(DataListUtil.CreateRecordsetDisplayValue(selectedList.FullName,mapping.Name.Replace(" ",""),"*"), mapping.Name,mapping.InternalName)).ToList();
+                    var fieldMappings = columnList.Select(mapping =>
+                    {
+                        var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue(selectedList.FullName,mapping.Name.Replace(" ",""),"*");
+                        return new SharepointReadListTo(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), mapping.Name, mapping.InternalName);
+                    }).ToList();
                     ReadListItems = fieldMappings;
                 }
                 if (continueWith != null)

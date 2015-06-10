@@ -115,7 +115,16 @@ namespace Dev2.Activities.Sharepoint
                                 var fieldName = list.Fields.FirstOrDefault(field => field.Title == fieldToName);
                                 if(fieldName != null)
                                 {
-                                    var listItemValue = listItem[fieldName.InternalName].ToString();
+                                    var listItemValue = "";
+                                    try
+                                    {
+                                        var sharepointValue = listItem[fieldName.InternalName];
+                                        listItemValue = sharepointValue.ToString();
+                                    }
+                                    catch(NullReferenceException)
+                                    {
+                                        //Ignore null value from Sharepoint
+                                    }
                                     env.AssignWithFrame(new AssignValue(variableName, listItemValue));
                                 }
                             }
