@@ -6,6 +6,7 @@
         xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties;assembly=Dev2.Activities.Designers"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:help="clr-namespace:Dev2.Help"
+        xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
         Icon="pack://application:,,,/Warewolf Studio;component/Warewolf.ico"
         Title="SharePoint Server Source" MinHeight="250" MaxHeight="250" ResizeMode="CanResize" 
         MinWidth="490" Width="490" MaxWidth="550" WindowStyle="SingleBorderWindow"  WindowStartupLocation="CenterScreen">
@@ -33,7 +34,7 @@
                      Margin="3,0,0,0" 
                      VerticalAlignment="Center" 
                      Grid.Row="0" Grid.Column="1" 
-                     Text="{Binding ServerName}"></TextBox>
+                     Text="{Binding ServerName}" customControls:WatermarkTextBox.Watermark="http://YourSharePointServer"></TextBox>
             <TextBlock x:Name="Authentication" 
                                VerticalAlignment="Center" 
                                Grid.Row="1" 
