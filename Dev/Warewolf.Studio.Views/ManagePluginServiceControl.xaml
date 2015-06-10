@@ -330,7 +330,7 @@
                                                      ColumnWidth="*" 
                                                      MinWidth="400">
                                     <ig:XamGrid.Columns>
-                                        <ig:TextColumn Key="Name" HeaderText="Name" MinimumWidth="100">
+                                        <ig:TextColumn Key="Name" HeaderText="Name" MinimumWidth="100" IsReadOnly="True">
                                             <ig:TextColumn.AddNewRowEditorTemplate>
                                                 <DataTemplate>
                                                     <TextBlock Text="{Binding Name}" >
