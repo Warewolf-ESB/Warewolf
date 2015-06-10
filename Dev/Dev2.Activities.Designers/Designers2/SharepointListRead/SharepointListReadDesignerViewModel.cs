@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces;
@@ -24,6 +23,7 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Data.ServiceModel;
+using Dev2.Data.Util;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
@@ -39,7 +39,6 @@ namespace Dev2.Activities.Designers2.SharepointListRead
     public class SharepointListReadDesignerViewModel : ActivityCollectionDesignerViewModel<SharepointSearchTo>
     {
         public Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
-        readonly IList<string> _requiresSearchCriteria = new List<string> { "Doesn't Contain", "Contains", "=", "<> (Not Equal)", "Ends With", "Doesn't Start With", "Doesn't End With", "Starts With", "Is Regex", "Not Regex", ">", "<", "<=", ">=" };
         readonly IEventAggregator _eventPublisher;
         static readonly SharepointSource NewSharepointSource = new SharepointSource
         {
@@ -186,11 +185,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
         }
         IEnumerable<SharepointSource> GetSharepointServers()
         {
-            var sources = _environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(_environmentModel, enSourceType.SharepointServerSource);
-            if(sources == null)
-            {
-                sources = new List<SharepointSource>();
-            }
+            var sources = _environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(_environmentModel, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
             return sources;
         }
 
@@ -375,7 +370,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             {
                 if(columnList != null)
                 {
-                    var fieldMappings = columnList.Select(mapping => new SharepointReadListTo("", mapping.Name,mapping.InternalName)).ToList();
+                    var fieldMappings = columnList.Select(mapping => new SharepointReadListTo(DataListUtil.CreateRecordsetDisplayValue(selectedList.FullName,mapping.Name.Replace(" ",""),"*"), mapping.Name,mapping.InternalName)).ToList();
                     ReadListItems = fieldMappings;
                 }
                 if (continueWith != null)
