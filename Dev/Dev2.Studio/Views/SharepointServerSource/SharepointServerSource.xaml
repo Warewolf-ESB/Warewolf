@@ -4,47 +4,92 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:sharepointServerSource="clr-namespace:Dev2.Views.SharepointServerSource"
         xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties;assembly=Dev2.Activities.Designers"
-        Title="SharepointServerSource" Height="150" Width="300" WindowStyle="None"
-        >
-    <Grid>
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:help="clr-namespace:Dev2.Help"
+        Icon="pack://application:,,,/Warewolf Studio;component/Warewolf.ico"
+        Title="SharePoint Server Source" MinHeight="250" MaxHeight="250" ResizeMode="CanResize" 
+        MinWidth="490" Width="490" MaxWidth="550" WindowStyle="SingleBorderWindow"  WindowStartupLocation="CenterScreen">
+    <Grid Margin="5">
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"></RowDefinition>
-            <RowDefinition Height="30"></RowDefinition>
-            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Label VerticalAlignment="Center" Grid.Row="0" Grid.Column="0">Server Name:</Label>
-        <TextBox VerticalAlignment="Center" Height="25" Grid.Row="0" Grid.Column="1" Text="{Binding ServerName}"></TextBox>
-        <Label VerticalAlignment="Center" Grid.Row="1" Grid.Column="0">Authentication Type:</Label>
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch">
-            <RadioButton GroupName="AuthenticationType" IsChecked="{Binding IsWindows}" Margin="0,0,5,0">Windows</RadioButton>
-            <RadioButton GroupName="AuthenticationType" IsChecked="{Binding IsUser}">User</RadioButton>
-        </StackPanel>
-        <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Visibility="{Binding IsUser,Converter={StaticResource BoolToVisConverter}}">
+        <Grid Grid.Row="0" Grid.Column="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"></RowDefinition>
-                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="{Binding ActualWidth, ElementName=Authentication, UpdateSourceTrigger=PropertyChanged}"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label VerticalAlignment="Center" Grid.Row="0" Grid.Column="0">User Name:</Label>
-            <TextBox VerticalAlignment="Center" Height="25" Grid.Row="0" Grid.Column="1" Text="{Binding UserName}"></TextBox>
-            <Label VerticalAlignment="Center" Grid.Row="1" Grid.Column="0">Password:</Label>
-            <PasswordBox VerticalAlignment="Center" Height="25" Grid.Row="1" Grid.Column="1"
-               attachedProperties:PasswordBoxAssistant.BindPassword="true"
-               attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></PasswordBox>
+            <TextBlock VerticalAlignment="Center" >Server Name:</TextBlock>
+            <TextBox x:Name="ServerName"
+                     Margin="3,0,0,0" 
+                     VerticalAlignment="Center" 
+                     Grid.Row="0" Grid.Column="1" 
+                     Text="{Binding ServerName}"></TextBox>
+            <TextBlock x:Name="Authentication" 
+                               VerticalAlignment="Center" 
+                               Grid.Row="1" 
+                               Grid.Column="0">Authentication Type:</TextBlock>
+            <StackPanel Margin="3,0,0,0" 
+                                Orientation="Horizontal" 
+                                VerticalAlignment="Center" 
+                                Grid.Row="1" Grid.Column="1" 
+                                HorizontalAlignment="Stretch">
+                <RadioButton GroupName="AuthenticationType" IsChecked="{Binding IsWindows}" Margin="0,0,3,0">Windows</RadioButton>
+                <RadioButton GroupName="AuthenticationType" IsChecked="{Binding IsUser}">User</RadioButton>
+            </StackPanel>
         </Grid>
-        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Right">
-            <Label VerticalAlignment="Center" Margin="0,0,5,0" Content="{Binding TestResult}"></Label>
-            <Button Command="{Binding TestCommand}" Margin="0,0,5,0">Test</Button>
-            <Button Command="{Binding SaveCommand}" Margin="0,0,5,0">Save</Button>
-            <Button Command="{Binding CancelCommand}" Margin="0,0,5,0">Cancel</Button>
+        <Grid Grid.Row="2" 
+              Grid.Column="0" 
+              Margin="0,0,0,0"
+              Visibility="{Binding IsUser,Converter={StaticResource BoolToVisConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding ActualWidth, ElementName=Authentication, UpdateSourceTrigger=PropertyChanged}"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock VerticalAlignment="Center" 
+                       Grid.Row="0" 
+                       Grid.Column="0">User Name:</TextBlock>
+            <TextBox VerticalAlignment="Center" 
+                     Margin="3,0,0,0" 
+                     Grid.Row="0" 
+                     Grid.Column="1" 
+                     Text="{Binding UserName}"></TextBox>
+            <TextBlock VerticalAlignment="Center" 
+                       Margin="0,3,0,0"
+                       Grid.Row="1" 
+                       Grid.Column="0">Password:</TextBlock>
+            <PasswordBox VerticalAlignment="Center" 
+                         Grid.Row="1" 
+                         Grid.Column="1"
+                         Margin="3,3,0,0"
+                         attachedProperties:PasswordBoxAssistant.BindPassword="true"
+                         attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></PasswordBox>
+        </Grid>
+        <StackPanel Orientation="Horizontal" 
+                        Margin="0,1,-2,-2"
+                        Grid.Row="3" 
+                        Grid.Column="0" 
+                        VerticalAlignment="Bottom" 
+                        HorizontalAlignment="Right">
+            <TextBlock Style="{StaticResource TextBlockErrorStyle}"
+                       Margin="0,0,3,0" 
+                       Text="{Binding TestResult}"></TextBlock>
+            <Button Width="50" Command="{Binding TestCommand}" Margin="0,0,3,0">Test</Button>
+            <Button Width="50" Command="{Binding SaveCommand}" Margin="0,0,3,0">Save</Button>
+            <Button Width="50" Command="{Binding CancelCommand}">Cancel</Button>
         </StackPanel>
     </Grid>
 </Window>
