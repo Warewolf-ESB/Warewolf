@@ -20,7 +20,7 @@
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <views:NotConverter x:Key="NotConverter" />
     </UserControl.Resources>
-<!--    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">-->
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
         <Grid MinWidth="600" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=ActualWidth}">
             <Grid Margin="{StaticResource ElementBorder}" x:Name="GridContainer">
                 <Grid.ColumnDefinitions>
@@ -207,5 +207,5 @@
                 </Grid>
             </Grid>
         </Grid>
-<!--    </ScrollViewer>-->
+    </ScrollViewer>
 </UserControl>

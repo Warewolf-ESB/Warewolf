@@ -301,6 +301,7 @@
                             <ig:XamGrid x:Name="VariablesGrid" 
                                         ItemsSource="{Binding Variables}" 
                                 AutoGenerateColumns="False"
+                                        Margin="0,0,1,0"
                                 ColumnWidth="*" 
                                 IsAlternateRowsEnabled="False"
                                 BorderBrush="Transparent" >
