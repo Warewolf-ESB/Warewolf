@@ -41,6 +41,7 @@
                attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></PasswordBox>
         </Grid>
         <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+            <Label VerticalAlignment="Center" Margin="0,0,5,0" Content="{Binding TestResult}"></Label>
             <Button Command="{Binding TestCommand}" Margin="0,0,5,0">Test</Button>
             <Button Command="{Binding SaveCommand}" Margin="0,0,5,0">Save</Button>
             <Button Command="{Binding CancelCommand}" Margin="0,0,5,0">Cancel</Button>

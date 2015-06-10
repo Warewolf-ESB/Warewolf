@@ -109,5 +109,11 @@ namespace Dev2.Data.ServiceModel
             var sharepointHelper = new SharepointHelper(Server, userName, password);
             return sharepointHelper;
         }
+
+        public string TestConnection()
+        {
+            var helper = CreateSharepointHelper();
+            return helper.TestConnection();
+        }
     }
 }

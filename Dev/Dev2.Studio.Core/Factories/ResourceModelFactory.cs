@@ -168,6 +168,13 @@ namespace Dev2.Studio.Core.Factories
                         resource.ResourceName = resourceName;
                         resource.ID = Guid.Empty;
                         break;
+                    case "SharepointServerSource":
+                        resource.ResourceType = ResourceType.Source;
+                        resource.DisplayName = displayName;
+                        resource.ServerResourceType = "SharepointServerSource";
+                        resource.ResourceName = resourceName;
+                        resource.ID = Guid.Empty;
+                        break;
                 }
                 return resource;
             }

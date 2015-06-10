@@ -69,5 +69,25 @@ namespace Warewolf.Sharepoint
             }
             return fields;
         }
+
+        public string TestConnection()
+        {
+            var result = "Test Successful";
+            try
+            {
+                using(var ctx = GetContext())
+                {
+                    Web web = ctx.Web;
+                    ctx.Load(web);
+                    ctx.ExecuteQuery();
+                }
+            }
+            catch(Exception e)
+            {
+                result = "Test Failed: " + e.Message;
+            }
+
+            return result;
+        }
     }
 }
