@@ -56,11 +56,10 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Label Grid.Column="0"
                Grid.Row="0"
-               Content="Sharepoint Server"
+               Content="Server"
                Style="{StaticResource ActivityMapppingLabelStyle}" />
             <ComboBox Grid.Column="1"
                   Grid.Row="0"
@@ -111,25 +110,27 @@
                 Style="{StaticResource ActivityRefreshButtonStyle}"
                 ToolTip="Refresh Lists"
                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RefreshTablesCommand_AutoID}" />
-            <controls:Dev2DataGrid Grid.Row="2"
-                               Grid.Column="0"
-                               Grid.ColumnSpan="3"
-                               x:Name="SmallDataGrid"
-                               HeadersVisibility="None"
-                               Height="78"
-                               ItemsSource="{Binding ModelItem.ReadListItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                               Style="{StaticResource ActivityMapppingDataGridStyle}">
-                <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
-                <DataGrid.Columns>
-                    <DataGridTemplateColumn Width="SizeToCells"
+            <Grid Grid.Row="2"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <controls:Dev2DataGrid x:Name="SmallDataGrid"
+                                       HeadersVisibility="None"
+                                       ItemsSource="{Binding ModelItem.ReadListItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       Style="{StaticResource ActivityMapppingDataGridStyle}">
+                    <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Width="SizeToCells"
                                         MinWidth="65"
                                         Header="From Field"
                                         HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=interfaces:ISharepointReadListTo}">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
-                                    <TextBlock Text="{Binding FieldName}"
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
+                                        <TextBlock Text="{Binding FieldName}"
                                            TextTrimming="CharacterEllipsis"
                                            VerticalAlignment="Center"
                                            Padding="3,0"
@@ -141,19 +142,19 @@
                                         <Binding Path="IndexNumber" />
                                     </MultiBinding>
                                 </AutomationProperties.AutomationId>
-                                    </TextBlock>
-                                </Grid>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Width="*"
+                                        </TextBlock>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Width="*"
                                         MinWidth="125"
                                         Header="[[Variable]]"
                                         HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=interfaces:ISharepointReadListTo}">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <ui:IntellisenseTextBox DefaultText="[[Recordset(*).field]]"
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ui:IntellisenseTextBox DefaultText="[[Recordset(*).field]]"
                                                     AllowMultilinePaste="False"
                                                     AcceptsReturn="False"
                                                     MaxHeight="52"
@@ -161,27 +162,28 @@
                                                     ToolTip="{x:Static help:HelpTextResources.SharepointToolTipToVariable}"
                                                     Text="{Binding VariableName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
-                                    <i:Interaction.Behaviors>
-                                        <help:HelpSetter Text="{x:Static help:HelpTextResources.SharepointToolTipToVariable}"
+                                        <i:Interaction.Behaviors>
+                                            <help:HelpSetter Text="{x:Static help:HelpTextResources.SharepointToolTipToVariable}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                                        <errors:ErrorsSetter Source="{Binding}"
+                                            <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="VariableName"
                                                          SourcePropertyValue="{Binding VariableName, UpdateSourceTrigger=PropertyChanged}"
                                                          Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                                    </i:Interaction.Behaviors>
-                                    <AutomationProperties.AutomationId>
-                                        <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
-                                            <Binding Path="DataContext.ModelItem.AutomationID"
+                                        </i:Interaction.Behaviors>
+                                        <AutomationProperties.AutomationId>
+                                            <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
+                                                <Binding Path="DataContext.ModelItem.AutomationID"
                                                  RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
-                                            <Binding Path="IndexNumber" />
-                                        </MultiBinding>
-                                    </AutomationProperties.AutomationId>
-                                </ui:IntellisenseTextBox>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </controls:Dev2DataGrid>
+                                                <Binding Path="IndexNumber" />
+                                            </MultiBinding>
+                                        </AutomationProperties.AutomationId>
+                                    </ui:IntellisenseTextBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </controls:Dev2DataGrid>
+            </Grid>
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -226,7 +228,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Width="150"
+                    <DataGridTemplateColumn Width="30*"
                                         Header="Field Name"
                                         HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=to:SharepointSearchTo}">
@@ -258,7 +260,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Width="150"
+                    <DataGridTemplateColumn Width="30*"
                                         Header="Match Type"
                                         HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=to:SharepointSearchTo}">
@@ -289,7 +291,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Width="*"
+                    <DataGridTemplateColumn Width="30*"
                                         Header="Value"
                                         HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=to:SharepointSearchTo}">

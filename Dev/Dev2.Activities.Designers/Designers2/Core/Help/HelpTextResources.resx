@@ -3140,11 +3140,11 @@ Allowed:
 Select a preconfigured Sharepoint server source or "New Sharepoint server Source..." to add a new one.</value>
   </data>
       <data name="SharepointHelpList" xml:space="preserve">
-    <value>Select a list to read from.
-If the list has changed or recently added to the source, click the refresh button.
+    <value>Select a list to read data from.
+If the list changed, click the refresh button.
 
 Allowed:
-Select a list to read from.</value>
+Select a list to read data from.</value>
   </data>
       <data name="SharepointHelpFieldToMatchOn" xml:space="preserve">
     <value>Select the field you want to match on.

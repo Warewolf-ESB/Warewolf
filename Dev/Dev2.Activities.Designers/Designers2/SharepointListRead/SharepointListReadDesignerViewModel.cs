@@ -71,6 +71,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             _environmentModel = environmentModel;
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             _eventPublisher = eventPublisher;
+            ShowExampleWorkflowLink = Visibility.Collapsed;
 
             WhereOptions = new ObservableCollection<string>(SharepointSearchOptions.SearchOptions());
 
