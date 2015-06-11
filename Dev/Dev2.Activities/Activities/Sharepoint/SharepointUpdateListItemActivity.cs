@@ -16,7 +16,6 @@ using Dev2.Runtime.Hosting;
 using Dev2.TO;
 using Microsoft.SharePoint.Client;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Warewolf.Sharepoint;
 using Warewolf.Storage;
 
 namespace Dev2.Activities.Sharepoint
@@ -100,7 +99,7 @@ namespace Dev2.Activities.Sharepoint
                     var sharepointHelper = sharepointSource.CreateSharepointHelper();
                     using (var ctx = sharepointHelper.GetContext())
                     {
-                        var camlQuery = BuildCamlQuery(env);
+                        var camlQuery = _sharepointUtils.BuildCamlQuery(env,FilterCriteria);
                         List list = sharepointHelper.LoadFieldsForList(SharepointList, ctx);
                         var listItems = list.GetItems(camlQuery);
                         ctx.Load(listItems);
