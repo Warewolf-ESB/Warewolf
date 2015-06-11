@@ -10,6 +10,7 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data;
 using Dev2.Data.ServiceModel;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Runtime.Hosting;
@@ -97,14 +98,15 @@ namespace Dev2.Activities.Sharepoint
                     {
                         AddInputDebug(env);
                     }
-                    using(var ctx = sharepointSource.CreateSharepointHelper().GetContext())
+                    var sharepointHelper = sharepointSource.CreateSharepointHelper();
+                    using(var ctx = sharepointHelper.GetContext())
                     {
-                        List list = ctx.Web.Lists.GetByTitle(SharepointList);
                         var camlQuery = BuildCamlQuery(env);
+                        List list =  sharepointHelper.LoadFieldsForList(SharepointList, ctx);
                         var listItems = list.GetItems(camlQuery);
-                        ctx.Load(list.Fields);
                         ctx.Load(listItems);
                         ctx.ExecuteQuery();
+                        var index = 1;
                         foreach(var listItem in listItems)
                         {
 
@@ -119,15 +121,35 @@ namespace Dev2.Activities.Sharepoint
                                     try
                                     {
                                         var sharepointValue = listItem[fieldName.InternalName];
-                                        listItemValue = sharepointValue.ToString();
+                                        if(sharepointValue != null)
+                                        {
+                                            var userValue = sharepointValue as FieldUserValue;
+                                            var fieldValue = sharepointValue as FieldLookupValue;
+                                            if(userValue != null)
+                                            {
+                                                sharepointValue = userValue.LookupValue;
+                                            }
+                                            if(fieldValue != null)
+                                            {
+                                                sharepointValue = fieldValue.LookupValue;
+                                            }
+                                            listItemValue = sharepointValue.ToString();
+                                        }
                                     }
-                                    catch(NullReferenceException)
+                                    catch(Exception e)
                                     {
-                                        //Ignore null value from Sharepoint
+                                        Dev2Logger.Log.Error(e);
+                                        //Ignore sharepoint exception on retrieval not all fields can be retrieved.
                                     }
-                                    env.AssignWithFrame(new AssignValue(variableName, listItemValue));
+                                    var correctedVariable = variableName;
+                                    if (DataListUtil.IsValueRecordset(variableName) && DataListUtil.IsStarIndex(variableName))
+                                    {
+                                        correctedVariable = DataListUtil.ReplaceStarWithFixedIndex(variableName, index);
+                                    }
+                                    env.AssignWithFrame(new AssignValue(correctedVariable, listItemValue));
                                 }
                             }
+                            index++;
                         }
                     }
                     env.CommitAssign();

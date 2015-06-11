@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Runtime.ServiceModel.Data;
@@ -58,8 +60,7 @@ namespace Warewolf.Sharepoint
             var fields = new List<ISharepointFieldTo>();
             using(var ctx = GetContext())
             {
-                List list = ctx.Web.Lists.GetByTitle(listName);
-                ctx.Load(list.Fields);
+                var list = LoadFieldsForList(listName, ctx);
                 ctx.ExecuteQuery();
                 var fieldCollection = list.Fields;
                 foreach(var field in fieldCollection)
@@ -69,7 +70,7 @@ namespace Warewolf.Sharepoint
             }
             return fields;
         }
-
+        
         public string TestConnection()
         {
             var result = "Test Successful";
@@ -88,6 +89,13 @@ namespace Warewolf.Sharepoint
             }
 
             return result;
+        }
+
+        public List LoadFieldsForList(string listName, ClientContext ctx)
+        {
+            List list = ctx.Web.Lists.GetByTitle(listName);  
+            ctx.Load(list.Fields, collection => collection.Where(field => field.Hidden==false));
+            return list;
         }
     }
 }
