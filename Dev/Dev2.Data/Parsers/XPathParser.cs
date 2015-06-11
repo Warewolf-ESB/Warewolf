@@ -83,7 +83,7 @@ namespace Dev2.Data.Parsers
                                     reader.Skip();
                                 }
                                 // skip white space ;)
-                                while(reader.Value.IndexOf("\n", StringComparison.Ordinal) >= 0)
+                                while(reader.Value.IndexOf("\n", StringComparison.Ordinal) >= 0 || reader.NodeType == XmlNodeType.Comment)
                                 {
                                     reader.Skip();
                                 }
