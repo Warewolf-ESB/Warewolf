@@ -195,18 +195,6 @@ namespace Dev2.TO
             }
         }
         public bool Inserted { get; set; }
-//        public string InternalName
-//        {
-//            get
-//            {
-//                return _internalName;
-//            }
-//            set
-//            {
-//                _internalName = value;
-//                OnPropertyChanged();
-//            }
-//        }
 
         public bool IsEmpty()
         {

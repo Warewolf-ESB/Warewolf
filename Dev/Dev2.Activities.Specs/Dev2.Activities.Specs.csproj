@@ -213,6 +213,12 @@
       <DependentUpon>ReadItemFromList.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\3rd Party Connectors\Sharepoint\ReadItemFromListSteps.cs" />
+    <Compile Include="Toolbox\3rd Party Connectors\Sharepoint\UpdateItemInList.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UpdateItemInList.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\3rd Party Connectors\Sharepoint\UpdateItemInListSteps.cs" />
     <Compile Include="Toolbox\ControlFlow\Decision\Decision.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -486,6 +492,10 @@
     <None Include="Toolbox\3rd Party Connectors\Sharepoint\ReadItemFromList.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ReadItemFromList.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\3rd Party Connectors\Sharepoint\UpdateItemInList.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>UpdateItemInList.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\ControlFlow\Decision\Decision.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
