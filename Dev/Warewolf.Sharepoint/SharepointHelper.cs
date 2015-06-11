@@ -54,12 +54,12 @@ namespace Warewolf.Sharepoint
             return lists;
         }
 
-        public List<ISharepointFieldTo> LoadFieldsForList(string listName)
+        public List<ISharepointFieldTo> LoadFieldsForList(string listName,bool editableFieldsOnly)
         {
             var fields = new List<ISharepointFieldTo>();
             using(var ctx = GetContext())
             {
-                var list = LoadFieldsForList(listName, ctx);
+                var list = LoadFieldsForList(listName, ctx, editableFieldsOnly);
                 ctx.ExecuteQuery();
                 var fieldCollection = list.Fields;
                 foreach(var field in fieldCollection)
@@ -90,10 +90,17 @@ namespace Warewolf.Sharepoint
             return result;
         }
 
-        public List LoadFieldsForList(string listName, ClientContext ctx)
+        public List LoadFieldsForList(string listName, ClientContext ctx, bool editableFieldsOnly)
         {
-            List list = ctx.Web.Lists.GetByTitle(listName);  
-            ctx.Load(list.Fields, collection => collection.Where(field => field.Hidden==false));
+            List list = ctx.Web.Lists.GetByTitle(listName);
+            if(editableFieldsOnly)
+            {
+                ctx.Load(list.Fields, collection => collection.Where(field => field.Hidden == false && field.ReadOnlyField==false));
+            }
+            else
+            {
+                ctx.Load(list.Fields, collection => collection.Where(field => field.Hidden == false));
+            }
             return list;
         }
     }

@@ -1,10 +1,11 @@
-﻿using System;
-using System.Activities.Statements;
+﻿using System.Activities.Statements;
 using System.Collections.Generic;
 using Dev2.Activities.Sharepoint;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Common.Interfaces;
+using Dev2.Data.ServiceModel;
 using Dev2.TO;
+using Microsoft.SharePoint.Client;
 using TechTalk.SpecFlow;
 
 namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
@@ -38,22 +39,78 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
             ScenarioContext.Current.Add("result", result);
         }
 
+        [AfterScenario("sharepoint")]
+        public void AfterScenario()
+        {
+            SharepointSource sharepointServerSource;
+            string sharepointList;
+            ScenarioContext.Current.TryGetValue("sharepointServer", out sharepointServerSource);
+            ScenarioContext.Current.TryGetValue("sharepointList", out sharepointList);
+            using(var ctx = sharepointServerSource.CreateSharepointHelper().GetContext())
+            {
+                var list = ctx.Web.Lists.GetByTitle(sharepointList);
+                var listItems = list.GetItems(CamlQuery.CreateAllItemsQuery());
+                ctx.Load(listItems);
+                ctx.ExecuteQuery();
+                var totalListItems = listItems.Count;
+                if (totalListItems > 0)
+                {
+                    for (var counter = totalListItems - 1; counter > -1; counter--)
+                    {
+                        listItems[counter].DeleteObject();
+                        ctx.ExecuteQuery();
+                    }
+                }
+            }
+        }
+
+        [Given(@"I create (.*) items in the list")]
+        public void GivenICreateItemsInTheList(int numberOfItemsToCreate)
+        {
+            SharepointSource sharepointServerSource;
+            string sharepointList;
+            ScenarioContext.Current.TryGetValue("sharepointServer", out sharepointServerSource);
+            ScenarioContext.Current.TryGetValue("sharepointList", out sharepointList);
+            using(var ctx = sharepointServerSource.CreateSharepointHelper().GetContext())
+            {
+                var list = ctx.Web.Lists.GetByTitle(sharepointList);
+                for(int i = 0; i < numberOfItemsToCreate; i++)
+                {
+                    var itemCreateInfo = new ListItemCreationInformation();
+                    var listItem = list.AddItem(itemCreateInfo);
+                    listItem["Title"] = "Acceptance Testing Item " + numberOfItemsToCreate;
+                    listItem["mk7s"] = "Acceptance Testing Item Name " + numberOfItemsToCreate;
+                    listItem.Update();
+                    ctx.ExecuteQuery();
+                }
+            }
+        }
+
         protected override void BuildDataList()
         {
             List<SharepointReadListTo> sharepointReadListTos;
             ISharepointSource sharepointServerSource;
             string sharepointList;
             string resultVar;
+            List<SharepointSearchTo> searchCriteria;
+            bool requireAllCriteriaToMatch;
             ScenarioContext.Current.TryGetValue("sharepointReadListTos", out sharepointReadListTos);
             ScenarioContext.Current.TryGetValue("sharepointServer", out sharepointServerSource);
             ScenarioContext.Current.TryGetValue("sharepointList", out sharepointList);
             ScenarioContext.Current.TryGetValue("resultVar", out resultVar);
+            ScenarioContext.Current.TryGetValue("searchCriteria", out searchCriteria);
+            if (!ScenarioContext.Current.TryGetValue("requireAllCriteriaToMatch", out requireAllCriteriaToMatch))
+            {
+                requireAllCriteriaToMatch = true;
+            }
             BuildShapeAndTestData();
             var sharepointUpdateListItemActivity = new SharepointUpdateListItemActivity
             {
                 SharepointServerResourceId = sharepointServerSource.ResourceID,
                 SharepointList = sharepointList,
                 UpdateValues = sharepointReadListTos,
+                RequireAllCriteriaToMatch = requireAllCriteriaToMatch,
+                FilterCriteria = searchCriteria,
                 Result = resultVar
             };
 

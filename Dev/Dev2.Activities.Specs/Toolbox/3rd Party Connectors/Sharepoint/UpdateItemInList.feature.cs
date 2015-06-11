@@ -32,7 +32,8 @@ namespace Dev2.Activities.Specs.Toolbox._3RdPartyConnectors.Sharepoint
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "UpdateItemInList", "In order to update and item in a SharePoint list\nAs a Warewolf user\nI want to a t" +
-                    "ool that allows updating the item", ProgrammingLanguage.CSharp, ((string[])(null)));
+                    "ool that allows updating the item", ProgrammingLanguage.CSharp, new string[] {
+                        "sharepoint"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -69,17 +70,32 @@ namespace Dev2.Activities.Specs.Toolbox._3RdPartyConnectors.Sharepoint
             testRunner.CollectScenarioErrors();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Update all items in list with static data")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "UpdateItemInList")]
-        public virtual void UpdateAllItemsInListWithStaticData()
+        public virtual void FeatureBackground()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update all items in list with static data", ((string[])(null)));
 #line 7
-this.ScenarioSetup(scenarioInfo);
 #line 8
  testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
+ testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 10
+ testRunner.And("I create 2 items in the list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Update all items in list with static data")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "UpdateItemInList")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("sharepoint")]
+        public virtual void UpdateAllItemsInListWithStaticData()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update all items in list with static data", ((string[])(null)));
+#line 12
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 13
+ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 14
  testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -91,15 +107,15 @@ this.ScenarioSetup(scenarioInfo);
             table1.AddRow(new string[] {
                         "Title",
                         "My Updated Warewolf Acceptance Test Item"});
-#line 10
- testRunner.And("I map the list update fields as", ((string)(null)), table1, "And ");
-#line 14
- testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
+ testRunner.And("I map the list update fields as", ((string)(null)), table1, "And ");
+#line 19
+ testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 20
  testRunner.When("the sharepoint update list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 16
+#line 21
  testRunner.Then("the value of \"[[Result]]\" equals \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 17
+#line 22
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -109,19 +125,19 @@ this.ScenarioSetup(scenarioInfo);
             table2.AddRow(new string[] {
                         "1",
                         "Name",
-                        "Created From Warewolf"});
+                        "Updated From Warewolf"});
             table2.AddRow(new string[] {
                         "2",
                         "Title",
-                        "My New Warewolf Acceptance Test Item"});
-#line 18
+                        "My Updated Warewolf Acceptance Test Item"});
+#line 23
  testRunner.And("the debug inputs as", ((string)(null)), table2, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table3.AddRow(new string[] {
                         "[[Result]] = Success"});
-#line 22
+#line 27
  testRunner.And("the debug output as", ((string)(null)), table3, "And ");
 #line hidden
             this.ScenarioCleanup();

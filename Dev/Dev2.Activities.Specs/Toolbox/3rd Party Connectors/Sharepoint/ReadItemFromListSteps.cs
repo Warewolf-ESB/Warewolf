@@ -18,6 +18,7 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
         [Given(@"I have a sharepoint source to ""(.*)""")]
         public void GivenIHaveASharepointSourceTo(string server)
         {
+            if(ScenarioContext.Current.ContainsKey("sharepointServer")) return;
             var source = new SharepointSource { Server = server, ResourceName = "localSharepointServerSource", ResourceID = Guid.NewGuid(), ResourceType = ResourceType.SharepointServerSource };
             ResourceCatalog.Instance.SaveResource(Guid.Empty, source);
             ScenarioContext.Current.Add("sharepointServer",source);
@@ -26,6 +27,7 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
         [Given(@"I select ""(.*)"" list")]
         public void GivenISelectList(string sharepointList)
         {
+            if (ScenarioContext.Current.ContainsKey("sharepointList")) return;
             ScenarioContext.Current.Add("sharepointList",sharepointList);
         }
 

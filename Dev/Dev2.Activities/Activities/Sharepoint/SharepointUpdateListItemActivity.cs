@@ -97,23 +97,23 @@ namespace Dev2.Activities.Sharepoint
                         AddInputDebug(env);
                     }
                     var sharepointHelper = sharepointSource.CreateSharepointHelper();
-                    using (var ctx = sharepointHelper.GetContext())
+                    using(var ctx = sharepointHelper.GetContext())
                     {
-                        var camlQuery = _sharepointUtils.BuildCamlQuery(env,FilterCriteria);
-                        List list = sharepointHelper.LoadFieldsForList(SharepointList, ctx);
+                        var camlQuery = _sharepointUtils.BuildCamlQuery(env, FilterCriteria);
+                        List list = sharepointHelper.LoadFieldsForList(SharepointList, ctx,true);
                         var listItems = list.GetItems(camlQuery);
                         ctx.Load(listItems);
+                        ctx.ExecuteQuery();
                         var iteratorList = new WarewolfListIterator();
                         foreach(var sharepointReadListTo in sharepointReadListTos)
                         {
                             var warewolfIterator = new WarewolfIterator(env.Eval(sharepointReadListTo.VariableName));
                             iteratorList.AddVariableToIterateOn(warewolfIterator);
-                            listOfIterators.Add(sharepointReadListTo.InternalName,warewolfIterator);
+                            listOfIterators.Add(sharepointReadListTo.InternalName, warewolfIterator);
                         }
-                        while(iteratorList.HasMoreData())
+                        foreach(var listItem in listItems)
                         {
-                            var itemCreateInfo = new ListItemCreationInformation();
-                            var listItem = list.AddItem(itemCreateInfo);
+
                             foreach(var warewolfIterator in listOfIterators)
                             {
                                 listItem[warewolfIterator.Key] = warewolfIterator.Value.GetNextValue();
@@ -128,7 +128,7 @@ namespace Dev2.Activities.Sharepoint
             }
             catch (Exception e)
             {
-                Dev2Logger.Log.Error("SharepointReadListActivity", e);
+                Dev2Logger.Log.Error("SharepointUpdateListItemActivity", e);
                 allErrors.AddError(e.Message);
             }
             finally
@@ -137,7 +137,7 @@ namespace Dev2.Activities.Sharepoint
                 if (hasErrors)
                 {
                     dataObject.Environment.Assign(Result, "Failed");
-                    DisplayAndWriteError("SharepointReadListActivity", allErrors);
+                    DisplayAndWriteError("SharepointUpdateListItemActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
                 }

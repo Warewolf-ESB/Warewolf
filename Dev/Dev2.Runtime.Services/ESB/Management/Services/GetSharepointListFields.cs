@@ -43,6 +43,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             string serializedSource = null;
             string listName = null;
+            string editableOnly = null;
             StringBuilder tmp;
             values.TryGetValue("SharepointServer", out tmp);
             if(tmp != null)
@@ -54,7 +55,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 listName = tmp.ToString();
             }
-
+            values.TryGetValue("OnlyEditable", out tmp);
+            if (tmp != null)
+            {
+                editableOnly = tmp.ToString();
+            }
            
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
 
@@ -74,6 +79,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Log.Debug("No sharepoint list name set.");
                 return serializer.SerializeToBuilder(res);
             }
+            var editableFieldsOnly = false;
+            if(!string.IsNullOrEmpty(editableOnly))
+            {
+                editableFieldsOnly = serializer.Deserialize<bool>(editableOnly);
+            }
             try
             {
                 listName = serializer.Deserialize<string>(listName);
@@ -84,7 +94,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     var contents = ResourceCatalog.Instance.GetResourceContents(theWorkspace.ID, sharepointSource.ResourceID);
                     source = new SharepointSource(contents.ToXElement());
                 }
-                List<ISharepointFieldTo> fields = source.LoadFieldsForList(listName);
+                List<ISharepointFieldTo> fields = source.LoadFieldsForList(listName, editableFieldsOnly);
                 return serializer.SerializeToBuilder(fields);
             }
             catch(Exception ex)
