@@ -5,7 +5,7 @@
 	  and map the number of found items to the result
 	  and delete the found  items from the Sharepoint List
 
-Background:
+Background: Clear out the Sharepoint list we will use for testing
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
 	And I select "AcceptanceTesting" list
 	And I have result variable as "[[Result]]"
