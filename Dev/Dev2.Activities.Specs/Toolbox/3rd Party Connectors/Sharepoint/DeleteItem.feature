@@ -5,6 +5,15 @@
 	  and map the number of found items to the result
 	  and delete the found  items from the Sharepoint List
 
+Background:
+	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
+	And I select "AcceptanceTesting" list
+	And I have result variable as "[[Result]]"
+	When the sharepoint delete item from list tool is executed
+	Then the execution has "NO" error
+	And clear the activity
+	
+
 Scenario: Delete Item from list with no criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
 	And I select "AcceptanceTesting" list
@@ -72,11 +81,11 @@ Scenario: Delete Item from Sharepoint list with Greater Than criteria
 	When the sharepoint create list item tool is executed
 	And the activity is cleared
 	When the sharepoint delete item from list tool is executed
-	Then the value of "[[Result]]" equals "2"
+	Then the value of "[[Result]]" equals "1"
 	And the execution has "NO" error
 	And the debug output as 
 	|                                             |
-	| [[Result]] = 2 |
+	| [[Result]] = 1 |
 
 Scenario: Delete Item from list with Greater Than Equal criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
