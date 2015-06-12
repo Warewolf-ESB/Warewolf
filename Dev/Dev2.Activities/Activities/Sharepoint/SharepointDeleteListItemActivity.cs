@@ -105,7 +105,7 @@ namespace Dev2.Activities.Sharepoint
                 var sharepointHelper = sharepointSource.CreateSharepointHelper();
                 using (var ctx = sharepointHelper.GetContext())
                 {
-                    var camlQuery = BuildCamlQuery(env);
+                    var camlQuery = _sharepointUtils.BuildCamlQuery(env, FilterCriteria);
                     List list = sharepointHelper.LoadFieldsForList(SharepointList, ctx, false);
                     listItems = list.GetItems(camlQuery);
                     ctx.Load(listItems);
@@ -183,49 +183,7 @@ namespace Dev2.Activities.Sharepoint
             }
         }
 
-        CamlQuery BuildCamlQuery(IExecutionEnvironment env)
-        {
-            var camlQuery = CamlQuery.CreateAllItemsQuery();
-            var validFilters = new List<SharepointSearchTo>();
-            if (FilterCriteria != null)
-            {
-                validFilters = FilterCriteria.Where(to => !string.IsNullOrEmpty(to.FieldName) && !string.IsNullOrEmpty(to.ValueToMatch)).ToList();
-            }
-            var filterCount = validFilters.Count;
-            if (filterCount > 0)
-            {
-                var queryString = new StringBuilder("<View><Query><Where>");
-                if (filterCount > 1)
-                {
-                    queryString.Append("<And>");
-                }
-                foreach (var sharepointSearchTo in validFilters)
-                {
-                    var buildQueryFromTo = BuildQueryFromTo(sharepointSearchTo, env);
-                    if (buildQueryFromTo != null)
-                    {
-                        queryString.AppendLine(string.Join(Environment.NewLine, buildQueryFromTo));
-                    }
-                }
-                if (filterCount > 1)
-                {
-                    queryString.Append("</And>");
-                }
-                queryString.Append("</Where></Query></View>");
-                camlQuery.ViewXml = queryString.ToString();
 
-            }
-            return camlQuery;
-        }
-
-        IEnumerable<string> BuildQueryFromTo(SharepointSearchTo sharepointSearchTo, IExecutionEnvironment env)
-        {
-            WarewolfIterator iterator = new WarewolfIterator(env.Eval(sharepointSearchTo.ValueToMatch));
-            while (iterator.HasMoreData())
-            {
-                yield return string.Format("{0}<FieldRef Name=\"{1}\"></FieldRef><Value Type=\"Text\">{2}</Value>{3}", SharepointSearchOptions.GetStartTagForSearchOption(sharepointSearchTo.SearchType), sharepointSearchTo.FieldName, iterator.GetNextValue(), SharepointSearchOptions.GetEndTagForSearchOption(sharepointSearchTo.SearchType));
-            }
-        }
 
         void AddOutputDebug(IDSFDataObject dataObject, IExecutionEnvironment env)
         {
