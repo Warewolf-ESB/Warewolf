@@ -4,6 +4,24 @@
 	I want a tool that will allow be to provide criteria to find and item 
 	  and map the item properties to Warewolf variables
 
+Background: Setup for sharepoint scenerio
+	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
+	And I select "AcceptanceTesting" list
+	And all items are deleted from the list
+	And I map the list input fields as
+	| Variable                      | Field Name         |
+	| Warewolf Created Item Name 1  | Name               |
+	| Warewolf Created Item Title 1 | Title              |
+	| 1                             | IntField           |
+	| 10.52                         | CurrencyField      |
+	| 2015/06/12                    | DateField          |
+	| 2015/06/12 09:00 AM           | DateTimeField      |
+	| False                         | BoolField          |
+	| Warewolf Created Text Field 1 | MultilineTextField |
+	| Warewolf Required Field 1     | RequiredField      |	
+	When the sharepoint create list item tool is executed
+	Then the execution has "NO" error	
+
 Scenario: Read Item from list with no criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
 	And I select "AcceptanceTesting" list

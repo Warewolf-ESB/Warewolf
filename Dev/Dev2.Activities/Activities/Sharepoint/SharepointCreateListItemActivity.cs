@@ -8,6 +8,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
@@ -91,15 +92,17 @@ namespace Dev2.Activities.Sharepoint
                     {
                         AddInputDebug(env);
                     }
-                    using (var ctx = sharepointSource.CreateSharepointHelper().GetContext())
+                    var sharepointHelper = sharepointSource.CreateSharepointHelper();
+                    var fields = sharepointHelper.LoadFieldsForList(SharepointList, true);
+                    using (var ctx = sharepointHelper.GetContext())
                     {
-                        var list = ctx.Web.Lists.GetByTitle(SharepointList);
+                        var list = sharepointHelper.LoadFieldsForList(SharepointList, ctx, true);
                         var iteratorList = new WarewolfListIterator();
                         foreach(var sharepointReadListTo in sharepointReadListTos)
                         {
                             var warewolfIterator = new WarewolfIterator(env.Eval(sharepointReadListTo.VariableName));
                             iteratorList.AddVariableToIterateOn(warewolfIterator);
-                            listOfIterators.Add(sharepointReadListTo.InternalName,warewolfIterator);
+                            listOfIterators.Add(sharepointReadListTo.FieldName,warewolfIterator);
                         }
                         while(iteratorList.HasMoreData())
                         {
@@ -107,7 +110,13 @@ namespace Dev2.Activities.Sharepoint
                             var listItem = list.AddItem(itemCreateInfo);
                             foreach(var warewolfIterator in listOfIterators)
                             {
-                                listItem[warewolfIterator.Key] = warewolfIterator.Value.GetNextValue();
+                                var sharepointFieldTo = fields.FirstOrDefault(to => to.Name == warewolfIterator.Key);
+                                if(sharepointFieldTo != null)
+                                {
+                                    object value = warewolfIterator.Value.GetNextValue();
+                                    value = CastWarewolfValueToCorrectType(value, sharepointFieldTo.Type);
+                                    listItem[sharepointFieldTo.InternalName] = value;
+                                }
                             }
                             listItem.Update();
                             ctx.ExecuteQuery();
@@ -140,9 +149,35 @@ namespace Dev2.Activities.Sharepoint
             }
         }
 
+        object CastWarewolfValueToCorrectType(object value, SharepointFieldType type)
+        {
+            object returnValue = null;
+            switch(type)
+            {
+                case SharepointFieldType.Boolean:
+                    returnValue = Convert.ToBoolean(value);
+                    break;
+                case SharepointFieldType.Currency:
+                    returnValue = Convert.ToDecimal(value,CultureInfo.CurrentCulture.NumberFormat);
+                    break;
+                case SharepointFieldType.DateTime:
+                    returnValue = Convert.ToDateTime(value, CultureInfo.CurrentCulture.DateTimeFormat);
+                    break;
+                case SharepointFieldType.Integer:
+                case SharepointFieldType.Number:
+                    returnValue = Convert.ToInt32(value);
+                    break;
+                case SharepointFieldType.Text:
+                case SharepointFieldType.Note:
+                    returnValue = value.ToString();
+                    break;                
+            }
+            return returnValue;
+        }
+
         void AddOutputDebug(IDSFDataObject dataObject, IExecutionEnvironment env)
         {
-            if(dataObject.IsDebugMode())
+            if(dataObject.IsDebugMode() && !string.IsNullOrEmpty(Result))
             {
                 var debugItem = new DebugItem();
                 AddDebugItem(new DebugEvalResult(Result, "", env), debugItem);

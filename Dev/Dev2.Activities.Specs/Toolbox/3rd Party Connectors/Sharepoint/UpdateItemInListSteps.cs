@@ -42,6 +42,11 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
         [AfterScenario("sharepoint")]
         public void AfterScenario()
         {
+            DeleteAllItems();
+        }
+
+        static void DeleteAllItems()
+        {
             SharepointSource sharepointServerSource;
             string sharepointList;
             ScenarioContext.Current.TryGetValue("sharepointServer", out sharepointServerSource);
@@ -53,9 +58,9 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
                 ctx.Load(listItems);
                 ctx.ExecuteQuery();
                 var totalListItems = listItems.Count;
-                if (totalListItems > 0)
+                if(totalListItems > 0)
                 {
-                    for (var counter = totalListItems - 1; counter > -1; counter--)
+                    for(var counter = totalListItems - 1; counter > -1; counter--)
                     {
                         listItems[counter].DeleteObject();
                         ctx.ExecuteQuery();
@@ -64,26 +69,22 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
             }
         }
 
-        [Given(@"I create (.*) items in the list")]
-        public void GivenICreateItemsInTheList(int numberOfItemsToCreate)
+        [Given(@"all items are deleted from the list")]
+        public void GivenAllItemsAreDeletedFromTheList()
+        {
+            DeleteAllItems();
+        }
+
+
+        [Given(@"I create the follwing items in the list")]
+        [Then(@"I create the follwing items in the list")]
+        public void GivenICreateItemsInTheList(Table table)
         {
             SharepointSource sharepointServerSource;
             string sharepointList;
             ScenarioContext.Current.TryGetValue("sharepointServer", out sharepointServerSource);
             ScenarioContext.Current.TryGetValue("sharepointList", out sharepointList);
-            using(var ctx = sharepointServerSource.CreateSharepointHelper().GetContext())
-            {
-                var list = ctx.Web.Lists.GetByTitle(sharepointList);
-                for(int i = 0; i < numberOfItemsToCreate; i++)
-                {
-                    var itemCreateInfo = new ListItemCreationInformation();
-                    var listItem = list.AddItem(itemCreateInfo);
-                    listItem["Title"] = "Acceptance Testing Item " + numberOfItemsToCreate;
-                    listItem["mk7s"] = "Acceptance Testing Item Name " + numberOfItemsToCreate;
-                    listItem.Update();
-                    ctx.ExecuteQuery();
-                }
-            }
+            GivenIMapTheListUpdateFieldsAs(table);
         }
 
         protected override void BuildDataList()

@@ -36,20 +36,6 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
             ScenarioContext.Current.Add("resultVar",resultVar);
         }
 
-//        [Given(@"I have a variable ""(.*)"" with value ""(.*)""")]
-//        public void GivenIHaveAVariableWithValue(string variable, string value)
-//        {
-//            List<Tuple<string, string>> variableList;
-//            ScenarioContext.Current.TryGetValue("variableList", out variableList);
-//
-//            if (variableList == null)
-//            {
-//                variableList = new List<Tuple<string, string>>();
-//                ScenarioContext.Current.Add("variableList", variableList);
-//            }
-//            variableList.Add(new Tuple<string, string>(variable, value));
-//        }
-
         [When(@"the sharepoint create list item tool is executed")]
         public void WhenTheSharepointCreateListItemToolIsExecuted()
         {

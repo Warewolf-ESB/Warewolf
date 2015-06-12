@@ -31,8 +31,8 @@ namespace Dev2.Activities.Specs.Toolbox._3RdPartyConnectors.Sharepoint
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "UpdateItemInList", "In order to update and item in a SharePoint list\nAs a Warewolf user\nI want to a t" +
-                    "ool that allows updating the item", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "UpdateItemInList", "In order to update and item in a SharePoint list\r\nAs a Warewolf user\r\nI want to a" +
+                    " tool that allows updating the item", ProgrammingLanguage.CSharp, new string[] {
                         "sharepoint"});
             testRunner.OnFeatureStart(featureInfo);
         }

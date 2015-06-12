@@ -32,6 +32,7 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
         }
 
         [Given(@"I map the list fields as")]
+        [Then(@"I map the list fields as")]
         public void GivenIMapTheListFieldsAs(Table table)
         {
             var sharepointReadListTos = new List<SharepointReadListTo>();
