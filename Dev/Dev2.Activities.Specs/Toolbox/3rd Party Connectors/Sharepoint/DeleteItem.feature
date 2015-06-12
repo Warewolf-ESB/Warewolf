@@ -44,10 +44,13 @@ Scenario: Delete Item from Sharepoint list with Equal criteria
 	| Field Name | Variable           |
 	| Name       | [[items(*).name]]  |
 	| Title      | [[items(*).title]] |
+	| RequiredField      | [[items(*).required]] |
 	And I have a variable "[[items(1).name]]" with value "100"
 	And I have a variable "[[items(1).title]]" with value "One"
+	And I have a variable "[[items(1).required]]" with value "One"
 	And I have a variable "[[items(2).name]]" with value "200"
 	And I have a variable "[[items(2).title]]" with value "Two"
+	And I have a variable "[[items(2).required]]" with value "Two"
 	And search criteria as
 	| Field Name | Search Type | Value | From | To |
 	| Title         | Equals      | Two     |      |    |
@@ -66,13 +69,14 @@ Scenario: Delete Item from Sharepoint list with Greater Than criteria
 	And I select "AcceptanceTesting" list
 		And I map the list input fields as
 	| Field Name | Variable           |
-	| IntField       | [[items(*).name]]  |
+	| IntField       | [[items(*).intfield]]  |
 	| Title      | [[items(*).title]] |
-	And I have a variable "[[items(1).name]]" with value "100"
+	| RequiredField      | [[items(*).title]] |
+	And I have a variable "[[items(1).intfield]]" with value "100"
 	And I have a variable "[[items(1).title]]" with value "One"
-	And I have a variable "[[items(2).name]]" with value "200"
+	And I have a variable "[[items(2).intfield]]" with value "200"
 	And I have a variable "[[items(2).title]]" with value "Two"
-	And I have a variable "[[items(3).name]]" with value "300"
+	And I have a variable "[[items(3).intfield]]" with value "300"
 	And I have a variable "[[items(3).title]]" with value "Three"
 	And search criteria as
 	| Field Name | Search Type | Value | From | To |
@@ -92,8 +96,9 @@ Scenario: Delete Item from list with Greater Than Equal criteria
 	And I select "AcceptanceTesting" list
 		And I map the list input fields as
 	| Field Name | Variable           |
-	| Name       | [[items(*).name]]  |
+	| IntField       | [[items(*).name]]  |
 	| Title      | [[items(*).title]] |
+	| RequiredField      | [[items(*).title]] |
 	And I have a variable "[[items(1).name]]" with value "100"
 	And I have a variable "[[items(1).title]]" with value "One"
 	And I have a variable "[[items(2).name]]" with value "200"
@@ -102,7 +107,7 @@ Scenario: Delete Item from list with Greater Than Equal criteria
 	And I have a variable "[[items(3).title]]" with value "Three"
 	And search criteria as
 	| Field Name | Search Type | Value | From | To |
-	| Name         | >=      | 100     |      |    |
+	| IntField         | >=      | 100     |      |    |
 	And I have result variable as "[[Result]]"
 	When the sharepoint create list item tool is executed
 	And the activity is cleared
@@ -118,8 +123,9 @@ Scenario: Delete Item from Sharepoint list with Less Than criteria
 	And I select "AcceptanceTesting" list
 		And I map the list input fields as
 	| Field Name | Variable           |
-	| Name       | [[items(*).name]]  |
+	| IntField       | [[items(*).name]]  |
 	| Title      | [[items(*).title]] |
+	| RequiredField      | [[items(*).title]] |
 	And I have a variable "[[items(1).name]]" with value "100"
 	And I have a variable "[[items(1).title]]" with value "One"
 	And I have a variable "[[items(2).name]]" with value "200"
@@ -128,7 +134,7 @@ Scenario: Delete Item from Sharepoint list with Less Than criteria
 	And I have a variable "[[items(3).title]]" with value "Three"
 	And search criteria as
 	| Field Name | Search Type | Value | From | To |
-	| Name         | <      | 200     |      |    |
+	| IntField         | <      | 200     |      |    |
 	And I have result variable as "[[Result]]"
 	When the sharepoint create list item tool is executed
 	And the activity is cleared
@@ -144,8 +150,9 @@ Scenario: Delete Item from list with Less Than Equal criteria
 	And I select "AcceptanceTesting" list
 		And I map the list input fields as
 	| Field Name | Variable           |
-	| Name       | [[items(*).name]]  |
+	| IntField       | [[items(*).name]]  |
 	| Title      | [[items(*).title]] |
+	| RequiredField      | [[items(*).title]] |
 	And I have a variable "[[items(1).name]]" with value "100"
 	And I have a variable "[[items(1).title]]" with value "One"
 	And I have a variable "[[items(2).name]]" with value "200"
@@ -154,7 +161,7 @@ Scenario: Delete Item from list with Less Than Equal criteria
 	And I have a variable "[[items(3).title]]" with value "Three"
 	And search criteria as
 	| Field Name | Search Type | Value | From | To |
-	| Name         | <=      | 200     |      |    |
+	| IntField         | <=      | 200     |      |    |
 	And I have result variable as "[[Result]]"
 	When the sharepoint create list item tool is executed
 	And the activity is cleared
@@ -170,8 +177,9 @@ Scenario: Delete Item from Sharepoint list with Not Equal criteria
 	And I select "AcceptanceTesting" list
 		And I map the list input fields as
 	| Field Name | Variable           |
-	| Name       | [[items(*).name]]  |
+	| IntField       | [[items(*).name]]  |
 	| Title      | [[items(*).title]] |
+	| RequiredField      | [[items(*).title]] |
 	And I have a variable "[[items(1).name]]" with value "100"
 	And I have a variable "[[items(1).title]]" with value "One"
 	And I have a variable "[[items(2).name]]" with value "200"
@@ -180,7 +188,7 @@ Scenario: Delete Item from Sharepoint list with Not Equal criteria
 	And I have a variable "[[items(3).title]]" with value "Three"
 	And search criteria as
 	| Field Name | Search Type | Value | From | To |
-	| Name         | <>      | 200     |      |    |
+	| IntField         | <>      | 200     |      |    |
 	And I have result variable as "[[Result]]"
 	When the sharepoint create list item tool is executed
 	And the activity is cleared
@@ -196,17 +204,18 @@ Scenario: Delete Item from list with Contains criteria
 	And I select "AcceptanceTesting" list
 		And I map the list input fields as
 	| Field Name | Variable           |
-	| Name       | [[items(*).name]]  |
+	| IntField       | [[items(*).name]]  |
 	| Title      | [[items(*).title]] |
+	| RequiredField      | [[items(*).title]] |
 	And I have a variable "[[items(1).name]]" with value "100"
-	And I have a variable "[[items(1).title]]" with value "One"
+	And I have a variable "[[items(1).title]]" with value "one"
 	And I have a variable "[[items(2).name]]" with value "200"
-	And I have a variable "[[items(2).title]]" with value "Two"
+	And I have a variable "[[items(2).title]]" with value "one two"
 	And I have a variable "[[items(3).name]]" with value "300"
-	And I have a variable "[[items(3).title]]" with value "Three"
+	And I have a variable "[[items(3).title]]" with value "three"
 	And search criteria as
 	| Field Name | Search Type | Value | From | To |
-	| Title         | Contains      | o     |      |    |
+	| Title         | Contains      | one     |      |    |
 	And I have result variable as "[[Result]]"
 	When the sharepoint create list item tool is executed
 	And the activity is cleared
