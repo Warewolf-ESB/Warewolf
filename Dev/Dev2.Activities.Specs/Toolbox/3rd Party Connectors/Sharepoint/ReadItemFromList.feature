@@ -45,13 +45,11 @@ Scenario: Read Item from list with no criteria
 		| [[list().id]]    | ID         |
 		| [[list().name]]  | Name       |
 		| [[list().title]] | Title      |
-	When the sharepoint tool is executed
-	Then the value of "[[list(1).id]]" equals 1
-	Then the value of "[[list(1).name]]" equals "name1"
-	Then the value of "[[list(1).title]]" equals "Do not delete this item"
-	Then the value of "[[list(2).id]]" equals 2
-	Then the value of "[[list(2).name]]" equals "name2"
-	Then the value of "[[list(2).title]]" equals "Do not delete item 2"
+	When the sharepoint tool is executed 
+	Then the value of "[[list(1).name]]" equals "Warewolf Created Item Name 1"
+	Then the value of "[[list(1).title]]" equals "Warewolf Created Item Title 1"
+	Then the value of "[[list(2).name]]" equals "Warewolf Created Item Name 2"
+	Then the value of "[[list(2).title]]" equals "Warewolf Created Item Title 2"
 	And the execution has "NO" error
 	And the debug inputs as
 	| # | Variable           | Field Name |
@@ -59,40 +57,40 @@ Scenario: Read Item from list with no criteria
 	| 2 | [[list().name]] =  | Name       |
 	| 3 | [[list().title]] = | Title      |
 	And the debug output as 
-	| # |                                             |
-	| 1 | [[list(1).id]] = 1                          |
-	|   | [[list(2).id]] = 2                          |
-	| 2 | [[list(1).name]] = name1                    |
-	|   | [[list(2).name]] = name2                    |
-	| 3 | [[list(1).title]] = Do not delete this item |
-	|   | [[list(2).title]] = Do not delete item 2    |
+	| # |                                                    |
+	| 1 | [[list(1).id]] = Int32                             |
+	|   | [[list(2).id]] = Int32                             |
+	| 2 | [[list(1).name]] = Warewolf Created Item Name 1    |
+	|   | [[list(2).name]] = Warewolf Created Item Name 2    |
+	| 3 | [[list(1).title]] = Warewolf Created Item Title 1  |
+	|   | [[list(2).title]] = Warewolf Created Item Title 2 |
 
 Scenario: Read Item from Sharepoint list with Equal criteria
 Given I have a sharepoint source to "http://rsaklfsvrsharep/"
 	And I select "AcceptanceTesting" list
 	And I map the list fields as
 		| Variable         | Field Name |
-		| [[list().id]]    | ID         |
+		| [[list().id]]    | IntField         |
 		| [[list().name]]  | Name       |
 		| [[list().title]] | Title      |
 	And search criteria as
 	| Field Name | Search Type | Value | From | To |
-	| ID         | Equals      | 2     |      |    |
+	| IntField   | Equals      | 2     |      |    |
 	When the sharepoint tool is executed	
 	Then the value of "[[list(1).id]]" equals 2
-	Then the value of "[[list(1).name]]" equals "name2"
-	Then the value of "[[list(1).title]]" equals "Do not delete item 2"
+	Then the value of "[[list(1).name]]" equals "Warewolf Created Item Name 2"
+	Then the value of "[[list(1).title]]" equals "Warewolf Created Item Title 2"
 	And the execution has "NO" error
 	And the debug inputs as
 	| # | Variable           | Field Name |
-	| 1 | [[list().id]] =    | ID         |
+	| 1 | [[list().id]] =    | IntField         |
 	| 2 | [[list().name]] =  | Name       |
 	| 3 | [[list().title]] = | Title      |
 	And the debug output as 
-	| # |                                          |
-	| 1 | [[list(1).id]] = 2                       |
-	| 2 | [[list(1).name]] = name2                 |
-	| 3 | [[list(1).title]] = Do not delete item 2 |
+	| # |                                                   |
+	| 1 | [[list(1).id]] = 2                                |
+	| 2 | [[list(1).name]] = Warewolf Created Item Name 2   |
+	| 3 | [[list(1).title]] = Warewolf Created Item Title 2 |
 
 Scenario: Read Item from Sharepoint list with Greater Than criteria
 Given I have a sharepoint source to "http://rsaklfsvrsharep/"

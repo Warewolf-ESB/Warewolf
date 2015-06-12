@@ -85,7 +85,13 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
             {
                 var searchTo = new SharepointSearchTo();
                 var fieldName = row["Field Name"];
+                var internalName = fieldName;
+                if (fieldName == "Name")
+                {
+                    internalName = "mk7s";
+                }
                 var searchType = row["Search Type"];
+                searchTo.InternalName = internalName;
                 searchTo.FieldName = fieldName;
                 searchTo.SearchType = searchType;
                 var valueMatch = row["Value"];
