@@ -239,7 +239,7 @@ this.FeatureBackground();
                         "Field Name",
                         "Variable"});
             table6.AddRow(new string[] {
-                        "Name",
+                        "IntField",
                         "[[items(*).name]]"});
             table6.AddRow(new string[] {
                         "Title",
@@ -266,7 +266,7 @@ this.FeatureBackground();
                         "From",
                         "To"});
             table7.AddRow(new string[] {
-                        "Name",
+                        "IntField",
                         ">",
                         "100",
                         "",

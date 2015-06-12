@@ -66,7 +66,7 @@ Scenario: Delete Item from Sharepoint list with Greater Than criteria
 	And I select "AcceptanceTesting" list
 		And I map the list input fields as
 	| Field Name | Variable           |
-	| Name       | [[items(*).name]]  |
+	| IntField       | [[items(*).name]]  |
 	| Title      | [[items(*).title]] |
 	And I have a variable "[[items(1).name]]" with value "100"
 	And I have a variable "[[items(1).title]]" with value "One"
@@ -76,7 +76,7 @@ Scenario: Delete Item from Sharepoint list with Greater Than criteria
 	And I have a variable "[[items(3).title]]" with value "Three"
 	And search criteria as
 	| Field Name | Search Type | Value | From | To |
-	| Name         | >      | 100     |      |    |
+	| IntField         | >      | 100     |      |    |
 	And I have result variable as "[[Result]]"
 	When the sharepoint create list item tool is executed
 	And the activity is cleared
