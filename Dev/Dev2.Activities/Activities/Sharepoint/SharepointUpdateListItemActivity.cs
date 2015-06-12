@@ -97,10 +97,11 @@ namespace Dev2.Activities.Sharepoint
                         AddInputDebug(env);
                     }
                     var sharepointHelper = sharepointSource.CreateSharepointHelper();
+                    var fields = sharepointHelper.LoadFieldsForList(SharepointList, true);
                     using(var ctx = sharepointHelper.GetContext())
                     {
-                        var camlQuery = _sharepointUtils.BuildCamlQuery(env, FilterCriteria);
-                        List list = sharepointHelper.LoadFieldsForList(SharepointList, ctx,true);
+                        var camlQuery = _sharepointUtils.BuildCamlQuery(env, FilterCriteria, fields);
+                        List list = ctx.Web.Lists.GetByTitle(SharepointList);
                         var listItems = list.GetItems(camlQuery);
                         ctx.Load(listItems);
                         ctx.ExecuteQuery();

@@ -114,7 +114,7 @@ namespace Dev2.Activities.Sharepoint
                                 if(sharepointFieldTo != null)
                                 {
                                     object value = warewolfIterator.Value.GetNextValue();
-                                    value = CastWarewolfValueToCorrectType(value, sharepointFieldTo.Type);
+                                    value = _sharepointUtils.CastWarewolfValueToCorrectType(value, sharepointFieldTo.Type);
                                     listItem[sharepointFieldTo.InternalName] = value;
                                 }
                             }
@@ -147,32 +147,6 @@ namespace Dev2.Activities.Sharepoint
                     DispatchDebugState(dataObject, StateType.After);
                 }
             }
-        }
-
-        object CastWarewolfValueToCorrectType(object value, SharepointFieldType type)
-        {
-            object returnValue = null;
-            switch(type)
-            {
-                case SharepointFieldType.Boolean:
-                    returnValue = Convert.ToBoolean(value);
-                    break;
-                case SharepointFieldType.Currency:
-                    returnValue = Convert.ToDecimal(value,CultureInfo.CurrentCulture.NumberFormat);
-                    break;
-                case SharepointFieldType.DateTime:
-                    returnValue = Convert.ToDateTime(value, CultureInfo.CurrentCulture.DateTimeFormat);
-                    break;
-                case SharepointFieldType.Integer:
-                case SharepointFieldType.Number:
-                    returnValue = Convert.ToInt32(value);
-                    break;
-                case SharepointFieldType.Text:
-                case SharepointFieldType.Note:
-                    returnValue = value.ToString();
-                    break;                
-            }
-            return returnValue;
         }
 
         void AddOutputDebug(IDSFDataObject dataObject, IExecutionEnvironment env)

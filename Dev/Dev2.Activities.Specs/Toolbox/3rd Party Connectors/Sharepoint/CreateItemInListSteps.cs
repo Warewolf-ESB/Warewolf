@@ -1,5 +1,4 @@
-﻿using System;
-using System.Activities.Statements;
+﻿using System.Activities.Statements;
 using System.Collections.Generic;
 using Dev2.Activities.Sharepoint;
 using Dev2.Activities.Specs.BaseTypes;
@@ -13,6 +12,7 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
     public class CreateItemInListSteps : RecordSetBases
     {
         [Given(@"I map the list input fields as")]
+        [Then(@"I map the list input fields as")]
         public void GivenIMapTheListInputFieldsAs(Table table)
         {
             var sharepointReadListTos = new List<SharepointReadListTo>();
@@ -26,6 +26,10 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
                     internalName = "mk7s";
                 }
                 sharepointReadListTos.Add(new SharepointReadListTo(row["Variable"], fieldName, internalName));
+            }
+            if (ScenarioContext.Current.ContainsKey("sharepointReadListTos"))
+            {
+                ScenarioContext.Current.Remove("sharepointReadListTos");
             }
             ScenarioContext.Current.Add("sharepointReadListTos", sharepointReadListTos);
         }
@@ -67,7 +71,10 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
             {
                 Action = sharepointReadListActivity
             };
-
+            if(ScenarioContext.Current.ContainsKey("activity"))
+            {
+                ScenarioContext.Current.Remove("activity");
+            }
             ScenarioContext.Current.Add("activity", sharepointReadListActivity);
         }
     }

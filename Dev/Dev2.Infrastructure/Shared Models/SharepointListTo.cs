@@ -35,5 +35,26 @@ namespace Dev2.Runtime.ServiceModel.Data
         public double MinValue { get; set; }
         public double MaxValue { get; set; }
         public bool IsRequired { get; set; }
+
+        public string GetFieldType()
+        {
+            switch(Type)
+            {
+                case SharepointFieldType.Boolean:
+                    return "Boolean";
+                case SharepointFieldType.Currency:
+                    return "Currency";
+                case SharepointFieldType.DateTime:
+                    return "DateTime";
+                case SharepointFieldType.Number:
+                case SharepointFieldType.Integer:
+                    return "Integer";
+                case SharepointFieldType.Text:
+                case SharepointFieldType.Note:
+                    return "Text";
+                default:
+                    return "Text";
+            }
+        }
     }
 }

@@ -22,6 +22,7 @@ namespace Dev2.TO
         bool _isFromFocused;
         bool _isToFocused;
         string _fieldName;
+        string _internalName;
 
         public SharepointSearchTo()
             : this("Field Name", "Equal","", 0)
@@ -192,6 +193,19 @@ namespace Dev2.TO
                 _fieldName = value;
                 OnPropertyChanged();
                 RaiseCanAddRemoveChanged();
+            }
+        }
+
+        public string InternalName
+        {
+            get
+            {
+                return _internalName;
+            }
+            set
+            {
+                _internalName = value;
+                OnPropertyChanged();
             }
         }
         public bool Inserted { get; set; }

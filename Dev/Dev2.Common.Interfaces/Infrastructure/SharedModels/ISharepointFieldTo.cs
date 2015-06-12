@@ -10,6 +10,8 @@ namespace Dev2.Common.Interfaces.Infrastructure.SharedModels
         double MinValue { get; set; }
         double MaxValue { get; set; }
         bool IsRequired { get; set; }
+
+        string GetFieldType();
     }
 
     public enum SharepointFieldType

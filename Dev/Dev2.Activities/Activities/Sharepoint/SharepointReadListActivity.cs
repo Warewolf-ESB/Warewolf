@@ -104,10 +104,11 @@ namespace Dev2.Activities.Sharepoint
                         AddInputDebug(env);
                     }
                     var sharepointHelper = sharepointSource.CreateSharepointHelper();
+                    var fields = sharepointHelper.LoadFieldsForList(SharepointList, true);
                     using(var ctx = sharepointHelper.GetContext())
                     {
-                        var camlQuery = _sharepointUtils.BuildCamlQuery(env, FilterCriteria);
-                        List list =  sharepointHelper.LoadFieldsForList(SharepointList, ctx,false);
+                        var camlQuery = _sharepointUtils.BuildCamlQuery(env, FilterCriteria,fields);
+                        List list = ctx.Web.Lists.GetByTitle(SharepointList);
                         var listItems = list.GetItems(camlQuery);
                         ctx.Load(listItems);
                         ctx.ExecuteQuery();
@@ -119,7 +120,7 @@ namespace Dev2.Activities.Sharepoint
                             {
                                 var variableName = sharepointReadListTo.VariableName;
                                 var fieldToName = sharepointReadListTo.FieldName;
-                                var fieldName = list.Fields.FirstOrDefault(field => field.Title == fieldToName);
+                                var fieldName = fields.FirstOrDefault(field => field.Name == fieldToName);
                                 if(fieldName != null)
                                 {
                                     var listItemValue = "";

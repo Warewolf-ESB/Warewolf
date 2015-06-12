@@ -21,6 +21,19 @@ Background: Setup for sharepoint scenerio
 	| Warewolf Required Field 1     | RequiredField      |	
 	When the sharepoint create list item tool is executed
 	Then the execution has "NO" error	
+	And I map the list input fields as
+	| Variable                      | Field Name         |
+	| Warewolf Created Item Name 2  | Name               |
+	| Warewolf Created Item Title 2 | Title              |
+	| 2                             | IntField           |
+	| 12.52                         | CurrencyField      |
+	| 2015/06/11                    | DateField          |
+	| 2015/06/11 19:00 AM           | DateTimeField      |
+	| True                          | BoolField          |
+	| Warewolf Created Text Field 2 | MultilineTextField |
+	| Warewolf Required Field 2     | RequiredField      |
+	When the sharepoint create list item tool is executed
+	Then the execution has "NO" error	
 
 Scenario: Read Item from list with no criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
