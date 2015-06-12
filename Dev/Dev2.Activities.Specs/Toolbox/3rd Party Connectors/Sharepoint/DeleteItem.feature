@@ -293,30 +293,61 @@ Scenario: Delete Item from list with Multiple criteria return single results
 	| [[Result]] = 1 |
 
 Scenario: Delete Item from list with Multiple criteria do not match all criteria
-	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
+			Given I have a sharepoint source to "http://rsaklfsvrsharep/"
 	And I select "AcceptanceTesting" list
-	And I map the list fields as
-		| Variable         | Field Name |
-		| [[list().id]]    | ID         |
-		| [[list().name]]  | Name       |
-		| [[list().title]] | Title      |
-		And search criteria as
+		And I map the list input fields as
+	| Field Name | Variable           |
+	| Name       | [[items(*).name]]  |
+	| Title      | [[items(*).title]] |
+	And I have a variable "[[items(1).name]]" with value "100"
+	And I have a variable "[[items(1).title]]" with value "One"
+	And I have a variable "[[items(2).name]]" with value "200"
+	And I have a variable "[[items(2).title]]" with value "Two"
+	And I have a variable "[[items(3).name]]" with value "300"
+	And I have a variable "[[items(3).title]]" with value "Three"
+	And I have a variable "[[items(4).name]]" with value "400"
+	And I have a variable "[[items(4).title]]" with value "4th"
+	And search criteria as
 	| Field Name | Search Type | Value | From | To |
-	| Title      | Contains    | Do    |      |    |
-	| ID         | <           | 2     |      |    |
+	| Title         | Contains      | o     |      |    |
+	| Name         | <      | 200     |      |    |
 	And do not require all criteria to match
+	And I have result variable as "[[Result]]"
+	When the sharepoint create list item tool is executed
+	And the activity is cleared
 	When the sharepoint delete item from list tool is executed
-	Then the value of "[[list(1).id]]" equals 1
-	Then the value of "[[list(1).name]]" equals "name1"
-	Then the value of "[[list(1).title]]" equals "Do not read this item"
+	Then the value of "[[Result]]" equals "2"
 	And the execution has "NO" error
-	And the debug inputs as
-	| # | Variable           | Field Name |
-	| 1 | [[list().id]] =    | ID         |
-	| 2 | [[list().name]] =  | Name       |
-	| 3 | [[list().title]] = | Title      |
 	And the debug output as 
-	| # |                                             |
-	| 1 | [[list(1).id]] = 1                          |
-	| 2 | [[list(1).name]] = name1                    |
-	| 3 | [[list(1).title]] = Do not read this item |
+	|                                             |
+	| [[Result]] = 2 |
+
+	
+Scenario: Delete Item from list with Multiple criteria match all criteria finds nothing
+			Given I have a sharepoint source to "http://rsaklfsvrsharep/"
+	And I select "AcceptanceTesting" list
+		And I map the list input fields as
+	| Field Name | Variable           |
+	| Name       | [[items(*).name]]  |
+	| Title      | [[items(*).title]] |
+	And I have a variable "[[items(1).name]]" with value "100"
+	And I have a variable "[[items(1).title]]" with value "One"
+	And I have a variable "[[items(2).name]]" with value "200"
+	And I have a variable "[[items(2).title]]" with value "Two"
+	And I have a variable "[[items(3).name]]" with value "300"
+	And I have a variable "[[items(3).title]]" with value "Three"
+	And I have a variable "[[items(4).name]]" with value "400"
+	And I have a variable "[[items(4).title]]" with value "4th"
+	And search criteria as
+	| Field Name | Search Type | Value | From | To |
+	| Title         | Contains      | n     |      |    |
+	| Name         | >      | 200     |      |    |
+	And I have result variable as "[[Result]]"
+	When the sharepoint create list item tool is executed
+	And the activity is cleared
+	When the sharepoint delete item from list tool is executed
+	Then the value of "[[Result]]" equals "0"
+	And the execution has "NO" error
+	And the debug output as 
+	|                                             |
+	| [[Result]] = 0 |
