@@ -258,6 +258,11 @@
       <DependentUpon>CreateItemInList.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\3rd Party Connectors\Sharepoint\CreateItemInListSteps.cs" />
+    <Compile Include="Toolbox\3rd Party Connectors\Sharepoint\DeleteItem1.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DeleteItem.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox\3rd Party Connectors\Sharepoint\DeleteItemFromListSteps.cs" />
     <Compile Include="Toolbox\3rd Party Connectors\Sharepoint\ReadItemFromList.feature.cs">
       <AutoGen>True</AutoGen>
@@ -540,6 +545,10 @@
     <None Include="Toolbox\3rd Party Connectors\Sharepoint\CreateItemInList.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CreateItemInList.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\3rd Party Connectors\Sharepoint\DeleteItem.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DeleteItem1.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\3rd Party Connectors\Sharepoint\ReadItemFromList.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
