@@ -51,6 +51,8 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
         public void ThenClearTheActivity()
         {
             WhenTheActivityIsCleared();
+            if (ScenarioContext.Current.ContainsKey("resultVar"))
+                ScenarioContext.Current.Remove("resultVar");
         }
 
         [When(@"the activity is cleared")]
@@ -58,8 +60,7 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
         {
             if (ScenarioContext.Current.ContainsKey("result"))
                 ScenarioContext.Current.Remove("result");
-            if (ScenarioContext.Current.ContainsKey("resultVar"))
-                ScenarioContext.Current.Remove("resultVar");
+
             if (ScenarioContext.Current.ContainsKey("activity"))
                 ScenarioContext.Current.Remove("activity");
         }
