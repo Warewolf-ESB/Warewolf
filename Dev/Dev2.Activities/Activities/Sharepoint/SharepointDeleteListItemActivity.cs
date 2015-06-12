@@ -81,6 +81,7 @@ namespace Dev2.Activities.Sharepoint
         }
 
         readonly SharepointUtils _sharepointUtils;
+        private int _indexCounter;
 
         protected override void ExecuteTool(IDSFDataObject dataObject)
         {
@@ -194,6 +195,37 @@ namespace Dev2.Activities.Sharepoint
 
         void AddInputDebug(IExecutionEnvironment env)
         {
+            if (FilterCriteria != null && FilterCriteria.Count() > 0)
+            {
+                string requireAllCriteriaToMatch = RequireAllCriteriaToMatch ? "Yes" : "No";
+
+                foreach (var varDebug in FilterCriteria)
+                {
+                    DebugItem debugItem = new DebugItem();
+                    AddDebugItem(new DebugItemStaticDataParams("", _indexCounter.ToString(CultureInfo.InvariantCulture)), debugItem);
+                    var fieldName = varDebug.FieldName;
+                    if (!string.IsNullOrEmpty(fieldName))
+                    {
+                        AddDebugItem(new DebugEvalResult(fieldName, "Field Name", env), debugItem);
+                        //AddDebugItem(new DebugItemStaticDataParams(varDebug.FieldName, "Field Name"), debugItem);
+                    }
+                    var searchType = varDebug.SearchType;
+                    if (!string.IsNullOrEmpty(searchType))
+                    {
+                        AddDebugItem(new DebugEvalResult(searchType, "Search Type", env), debugItem);
+                    }
+                    var valueToMatch = varDebug.ValueToMatch;
+                    if (!string.IsNullOrEmpty(valueToMatch))
+                    {
+                        AddDebugItem(new DebugEvalResult(valueToMatch, "Value", env), debugItem);
+                    }
+
+                    AddDebugItem(new DebugEvalResult(requireAllCriteriaToMatch, "Require All Criteria To Match", env), debugItem);
+
+                    _indexCounter++;
+                    _debugInputs.Add(debugItem);
+                }
+            }
         }
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
