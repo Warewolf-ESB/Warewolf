@@ -258,6 +258,7 @@
       <DependentUpon>CreateItemInList.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\3rd Party Connectors\Sharepoint\CreateItemInListSteps.cs" />
+    <Compile Include="Toolbox\3rd Party Connectors\Sharepoint\DeleteItemFromListSteps.cs" />
     <Compile Include="Toolbox\3rd Party Connectors\Sharepoint\ReadItemFromList.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

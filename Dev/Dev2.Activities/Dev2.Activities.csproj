@@ -253,6 +253,7 @@
     <Compile Include="Activities\IEmailSender.cs" />
     <Compile Include="Activities\IFlowNodeActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointCreateListItemActivity.cs" />
+    <Compile Include="Activities\Sharepoint\SharepointDeleteListItemActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointReadListActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointUpdateListItemActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointUtils.cs" />
