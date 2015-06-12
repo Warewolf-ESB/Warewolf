@@ -47,13 +47,21 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
                 ScenarioContext.Current.Remove("result");
             ScenarioContext.Current.Add("result", result);
         }
+        [Then(@"clear the activity")]
+        public void ThenClearTheActivity()
+        {
+            WhenTheActivityIsCleared();
+        }
+
         [When(@"the activity is cleared")]
         public void WhenTheActivityIsCleared()
         {
             if (ScenarioContext.Current.ContainsKey("result"))
                 ScenarioContext.Current.Remove("result");
-            if (ScenarioContext.Current.ContainsKey("action"))
-                ScenarioContext.Current.Remove("action");
+            if (ScenarioContext.Current.ContainsKey("resultVar"))
+                ScenarioContext.Current.Remove("resultVar");
+            if (ScenarioContext.Current.ContainsKey("activity"))
+                ScenarioContext.Current.Remove("activity");
         }
 
 

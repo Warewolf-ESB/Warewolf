@@ -5,6 +5,15 @@
 	  and map the number of found items to the result
 	  and delete the found  items from the Sharepoint List
 
+Background:
+	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
+	And I select "AcceptanceTesting" list
+	And I have result variable as "[[Result]]"
+	When the sharepoint delete item from list tool is executed
+	Then the execution has "NO" error
+	And clear the activity
+	
+
 Scenario: Delete Item from list with no criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
 	And I select "AcceptanceTesting" list
