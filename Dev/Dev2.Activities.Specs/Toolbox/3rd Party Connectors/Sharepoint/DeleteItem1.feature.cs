@@ -282,14 +282,14 @@ this.FeatureBackground();
 #line 83
  testRunner.When("the sharepoint delete item from list tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 84
- testRunner.Then("the value of \"[[Result]]\" equals \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[Result]]\" equals \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 85
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table8.AddRow(new string[] {
-                        "[[Result]] = 1"});
+                        "[[Result]] = 2"});
 #line 86
  testRunner.And("the debug output as", ((string)(null)), table8, "And ");
 #line hidden

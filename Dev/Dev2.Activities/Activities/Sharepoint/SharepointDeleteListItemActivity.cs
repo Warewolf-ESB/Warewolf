@@ -195,32 +195,36 @@ namespace Dev2.Activities.Sharepoint
 
         void AddInputDebug(IExecutionEnvironment env)
         {
-            string requireAllCriteriaToMatch = RequireAllCriteriaToMatch ? "Yes" : "No";
-            foreach (var varDebug in FilterCriteria)
+            if (FilterCriteria != null && FilterCriteria.Count() > 0)
             {
-                DebugItem debugItem = new DebugItem();
-                AddDebugItem(new DebugItemStaticDataParams("", _indexCounter.ToString(CultureInfo.InvariantCulture)), debugItem);
-                var fieldName = varDebug.FieldName;
-                if (!string.IsNullOrEmpty(fieldName))
-                {
-                    AddDebugItem(new DebugEvalResult(fieldName, "Field Name", env), debugItem);
-                    //AddDebugItem(new DebugItemStaticDataParams(varDebug.FieldName, "Field Name"), debugItem);
-                }
-                var searchType = varDebug.SearchType;
-                if (!string.IsNullOrEmpty(searchType))
-                {
-                    AddDebugItem(new DebugEvalResult(searchType, "Search Type", env), debugItem);
-                }
-                var valueToMatch = varDebug.ValueToMatch;
-                if (!string.IsNullOrEmpty(valueToMatch))
-                {
-                    AddDebugItem(new DebugEvalResult(valueToMatch, "Value", env), debugItem);
-                }
+                string requireAllCriteriaToMatch = RequireAllCriteriaToMatch ? "Yes" : "No";
 
-                AddDebugItem(new DebugEvalResult(requireAllCriteriaToMatch, "Require All Criteria To Match", env), debugItem);
+                foreach (var varDebug in FilterCriteria)
+                {
+                    DebugItem debugItem = new DebugItem();
+                    AddDebugItem(new DebugItemStaticDataParams("", _indexCounter.ToString(CultureInfo.InvariantCulture)), debugItem);
+                    var fieldName = varDebug.FieldName;
+                    if (!string.IsNullOrEmpty(fieldName))
+                    {
+                        AddDebugItem(new DebugEvalResult(fieldName, "Field Name", env), debugItem);
+                        //AddDebugItem(new DebugItemStaticDataParams(varDebug.FieldName, "Field Name"), debugItem);
+                    }
+                    var searchType = varDebug.SearchType;
+                    if (!string.IsNullOrEmpty(searchType))
+                    {
+                        AddDebugItem(new DebugEvalResult(searchType, "Search Type", env), debugItem);
+                    }
+                    var valueToMatch = varDebug.ValueToMatch;
+                    if (!string.IsNullOrEmpty(valueToMatch))
+                    {
+                        AddDebugItem(new DebugEvalResult(valueToMatch, "Value", env), debugItem);
+                    }
 
-                _indexCounter++;
-                _debugInputs.Add(debugItem);
+                    AddDebugItem(new DebugEvalResult(requireAllCriteriaToMatch, "Require All Criteria To Match", env), debugItem);
+
+                    _indexCounter++;
+                    _debugInputs.Add(debugItem);
+                }
             }
         }
 
