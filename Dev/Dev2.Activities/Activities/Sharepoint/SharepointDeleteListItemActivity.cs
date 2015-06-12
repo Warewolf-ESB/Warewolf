@@ -183,8 +183,6 @@ namespace Dev2.Activities.Sharepoint
             }
         }
 
-
-
         void AddOutputDebug(IDSFDataObject dataObject, IExecutionEnvironment env)
         {
             if (dataObject.IsDebugMode())
