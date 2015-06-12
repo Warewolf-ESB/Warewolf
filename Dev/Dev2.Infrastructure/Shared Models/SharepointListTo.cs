@@ -29,5 +29,9 @@ namespace Dev2.Runtime.ServiceModel.Data
     {
         public string Name { get; set; }
         public string InternalName { get; set; }
+        public SharepointFieldType Type { get; set; }
+        public int MinLength { get; set; }
+        public int MaxLength { get; set; }
+        public bool IsRequired { get; set; }
     }
 }
