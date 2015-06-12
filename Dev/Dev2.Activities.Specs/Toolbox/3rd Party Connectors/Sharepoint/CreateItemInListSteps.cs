@@ -45,6 +45,10 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            if(ScenarioContext.Current.ContainsKey("result"))
+            {
+                ScenarioContext.Current.Remove("result");
+            }
             ScenarioContext.Current.Add("result", result);
         }
 

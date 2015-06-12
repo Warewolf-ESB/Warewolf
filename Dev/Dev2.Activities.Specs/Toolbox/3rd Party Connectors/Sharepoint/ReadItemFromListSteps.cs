@@ -41,6 +41,7 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
             {
                 sharepointReadListTos.Add(new SharepointReadListTo(row["Variable"], row["Field Name"],""));
             }
+           
             ScenarioContext.Current.Add("sharepointReadListTos",sharepointReadListTos);
         }
 
@@ -49,7 +50,25 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            
             ScenarioContext.Current.Add("result", result);
+        }
+
+        [Then(@"scenerio is clean")]
+        public void ThenScenerioIsClean()
+        {
+            if (ScenarioContext.Current.ContainsKey("sharepointReadListTos"))
+            {
+                ScenarioContext.Current.Remove("sharepointReadListTos");
+            }
+            if (ScenarioContext.Current.ContainsKey("result"))
+            {
+                ScenarioContext.Current.Remove("result");
+            }
+            if (ScenarioContext.Current.ContainsKey("activity"))
+            {
+                ScenarioContext.Current.Remove("activity");
+            }
         }
 
         [Given(@"do not require all criteria to match")]
