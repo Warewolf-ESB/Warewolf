@@ -32,6 +32,8 @@ namespace Dev2.Runtime.ServiceModel.Data
         public SharepointFieldType Type { get; set; }
         public int MinLength { get; set; }
         public int MaxLength { get; set; }
+        public double MinValue { get; set; }
+        public double MaxValue { get; set; }
         public bool IsRequired { get; set; }
     }
 }

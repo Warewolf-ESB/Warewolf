@@ -7,6 +7,8 @@ namespace Dev2.Common.Interfaces.Infrastructure.SharedModels
         SharepointFieldType Type { get; set; }
         int MinLength { get; set; }
         int MaxLength { get; set; }
+        double MinValue { get; set; }
+        double MaxValue { get; set; }
         bool IsRequired { get; set; }
     }
 
