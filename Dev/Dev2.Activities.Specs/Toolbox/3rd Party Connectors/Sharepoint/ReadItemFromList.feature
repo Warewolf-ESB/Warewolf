@@ -97,27 +97,27 @@ Given I have a sharepoint source to "http://rsaklfsvrsharep/"
 	And I select "AcceptanceTesting" list
 	And I map the list fields as
 		| Variable         | Field Name |
-		| [[list().id]]    | ID         |
+		| [[list().id]]    | IntField         |
 		| [[list().name]]  | Name       |
 		| [[list().title]] | Title      |
 	And search criteria as
 	| Field Name | Search Type | Value | From | To |
-	| ID         | >           | 1     |      |    |
+	| IntField         | >           | 1     |      |    |
 	When the sharepoint tool is executed	
 	Then the value of "[[list(1).id]]" equals 2
-	Then the value of "[[list(1).name]]" equals "name2"
-	Then the value of "[[list(1).title]]" equals "Do not delete item 2"
+	Then the value of "[[list(1).name]]" equals "Warewolf Created Item Name 2"
+	Then the value of "[[list(1).title]]" equals "Warewolf Created Item Title 2"
 	And the execution has "NO" error
 	And the debug inputs as
 	| # | Variable           | Field Name |
-	| 1 | [[list().id]] =    | ID         |
+	| 1 | [[list().id]] =    | IntField         |
 	| 2 | [[list().name]] =  | Name       |
 	| 3 | [[list().title]] = | Title      |
 	And the debug output as 
-	| # |                                          |
-	| 1 | [[list(1).id]] = 2                       |
-	| 2 | [[list(1).name]] = name2                 |
-	| 3 | [[list(1).title]] = Do not delete item 2 |
+	| # |                                                   |
+	| 1 | [[list(1).id]] = 2                                |
+	| 2 | [[list(1).name]] = Warewolf Created Item Name 2   |
+	| 3 | [[list(1).title]] = Warewolf Created Item Title 2 |
 
 Scenario: Read Item from list with Greater Than Equal criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"

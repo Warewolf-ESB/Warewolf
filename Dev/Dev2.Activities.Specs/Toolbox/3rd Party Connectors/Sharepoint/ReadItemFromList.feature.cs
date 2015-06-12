@@ -360,7 +360,7 @@ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((
                         "Field Name"});
             table10.AddRow(new string[] {
                         "[[list().id]]",
-                        "ID"});
+                        "IntField"});
             table10.AddRow(new string[] {
                         "[[list().name]]",
                         "Name"});
@@ -377,7 +377,7 @@ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((
                         "From",
                         "To"});
             table11.AddRow(new string[] {
-                        "ID",
+                        "IntField",
                         ">",
                         "1",
                         "",
@@ -389,9 +389,9 @@ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((
 #line 107
  testRunner.Then("the value of \"[[list(1).id]]\" equals 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 108
- testRunner.Then("the value of \"[[list(1).name]]\" equals \"name2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(1).name]]\" equals \"Warewolf Created Item Name 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 109
- testRunner.Then("the value of \"[[list(1).title]]\" equals \"Do not delete item 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(1).title]]\" equals \"Warewolf Created Item Title 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 110
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -402,7 +402,7 @@ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((
             table12.AddRow(new string[] {
                         "1",
                         "[[list().id]] =",
-                        "ID"});
+                        "IntField"});
             table12.AddRow(new string[] {
                         "2",
                         "[[list().name]] =",
@@ -422,10 +422,10 @@ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((
                         "[[list(1).id]] = 2"});
             table13.AddRow(new string[] {
                         "2",
-                        "[[list(1).name]] = name2"});
+                        "[[list(1).name]] = Warewolf Created Item Name 2"});
             table13.AddRow(new string[] {
                         "3",
-                        "[[list(1).title]] = Do not delete item 2"});
+                        "[[list(1).title]] = Warewolf Created Item Title 2"});
 #line 116
  testRunner.And("the debug output as", ((string)(null)), table13, "And ");
 #line hidden
