@@ -232,6 +232,8 @@
 /Dev/Warewolf.Core/obj
 /Dev/Warewolf.Core.Test/bin
 /Dev/Warewolf.Core.Test/obj
+/Dev/Warewolf.Sharepoint/bin
+/Dev/Warewolf.Sharepoint/obj
 /Dev/Warewolf.Studio.Core.Test/bin
 /Dev/Warewolf.Studio.Core.Test/obj
 /Dev/Warewolf.Studio.Models/bin
@@ -240,8 +242,6 @@
 /Dev/Warewolf.Studio.Models.Tests/obj
 /Dev/Warewolf.Studio.Themes.Luna/bin
 /Dev/Warewolf.Studio.Themes.Luna/obj
-/Dev/Warewolf.UnittestingUtils/bin
-/Dev/Warewolf.UnittestingUtils/obj
 /Dev/Warewolf.Studio.AntiCorruptionLayer/bin
 /Dev/Warewolf.Studio.AntiCorruptionLayer/obj
 /Dev/Warewolf.Studio.AntiCorruptionLayer.Tests/bin
@@ -252,6 +252,8 @@
 /Dev/Warewolf.Studio.CustomControls.Tests/obj
 /Dev/Warewolf.Storage/bin
 /Dev/Warewolf.Storage/obj
+/Dev/Warewolf.UnittestingUtils/bin
+/Dev/Warewolf.UnittestingUtils/obj
 /Dev/Warewolf.ResourceManagement/bin
 /Dev/Warewolf.ResourceManagement/obj
 /Dev/WarewolfParserInterop/bin

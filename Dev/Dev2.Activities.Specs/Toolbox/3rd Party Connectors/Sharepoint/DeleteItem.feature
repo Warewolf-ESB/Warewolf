@@ -60,6 +60,9 @@ Scenario: Delete Item from Sharepoint list with Equal criteria
 	When the sharepoint delete item from list tool is executed
 	Then the value of "[[Result]]" equals "1"
 	And the execution has "NO" error
+	And the debug inputs as 
+	| # | Field Name | Search Type | Value | Require All Criteria To Match |
+	| 1 | Title      | =      | Two   | Yes                           |
 	And the debug output as 
 	|                                             |
 	| [[Result]] = 1 |
@@ -87,6 +90,9 @@ Scenario: Delete Item from Sharepoint list with Greater Than criteria
 	When the sharepoint delete item from list tool is executed
 	Then the value of "[[Result]]" equals "2"
 	And the execution has "NO" error
+	And the debug inputs as 
+	| # | Field Name | Search Type | Value | Require All Criteria To Match |
+	| 1 | IntField      | >      | 100   | Yes                           |
 	And the debug output as 
 	|                                             |
 	| [[Result]] = 2 |
@@ -114,6 +120,9 @@ Scenario: Delete Item from list with Greater Than Equal criteria
 	When the sharepoint delete item from list tool is executed
 	Then the value of "[[Result]]" equals "3"
 	And the execution has "NO" error
+	And the debug inputs as 
+	| # | Field Name | Search Type | Value | Require All Criteria To Match |
+	| 1 | IntField      | >=      | 100   | Yes                           |
 	And the debug output as 
 	|                                             |
 	| [[Result]] = 3 |
@@ -141,6 +150,9 @@ Scenario: Delete Item from Sharepoint list with Less Than criteria
 	When the sharepoint delete item from list tool is executed
 	Then the value of "[[Result]]" equals "1"
 	And the execution has "NO" error
+	And the debug inputs as 
+	| # | Field Name | Search Type | Value | Require All Criteria To Match |
+	| 1 | IntField      | <      | 200   | Yes                           |
 	And the debug output as 
 	|                                             |
 	| [[Result]] = 1 |
@@ -168,6 +180,9 @@ Scenario: Delete Item from list with Less Than Equal criteria
 	When the sharepoint delete item from list tool is executed
 	Then the value of "[[Result]]" equals "2"
 	And the execution has "NO" error
+	And the debug inputs as 
+	| # | Field Name | Search Type | Value | Require All Criteria To Match |
+	| 1 | IntField      | <=      | 200   | Yes                           |
 	And the debug output as 
 	|                                             |
 	| [[Result]] = 2 |
@@ -195,6 +210,9 @@ Scenario: Delete Item from Sharepoint list with Not Equal criteria
 	When the sharepoint delete item from list tool is executed
 	Then the value of "[[Result]]" equals "2"
 	And the execution has "NO" error
+	And the debug inputs as 
+	| # | Field Name | Search Type | Value | Require All Criteria To Match |
+	| 1 | IntField      | <>      | 200   | Yes                           |
 	And the debug output as 
 	|                                             |
 	| [[Result]] = 2 |
