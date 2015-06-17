@@ -265,10 +265,11 @@ Scenario: Read Item from list with Contains criteria
 	Then the value of "[[list(2).title]]" equals "Warewolf Created Item Title 2"
 	And the execution has "NO" error
 	And the debug inputs as
-	| # | Variable           | Field Name |
-	| 1 | [[list().id]] =    | IntField   |
-	| 2 | [[list().name]] =  | Name       |
-	| 3 | [[list().title]] = | Title      |
+	| # | Variable           | Field Name | Search Type | Value    | Require All Criteria To Match |
+	| 1 | [[list().id]] =    | IntField   |             |          |                               |
+	| 2 | [[list().name]] =  | Name       |             |          |                               |
+	| 3 | [[list().title]] = | Title      |             |          |                               |
+	| 4 |               | Title           | Contains    | Warewolf | Yes                           |
 	And the debug output as 
 	| # |                                                   |
 	| 1 | [[list(1).id]] = 1                                |
@@ -298,10 +299,11 @@ Scenario: Read Item from list with Begins With criteria
 	Then the value of "[[list(2).title]]" equals "Warewolf Created Item Title 2"
 	And the execution has "NO" error
 	And the debug inputs as
-	| # | Variable           | Field Name |
-	| 1 | [[list().id]] =    | IntField   |
-	| 2 | [[list().name]] =  | Name       |
-	| 3 | [[list().title]] = | Title      |
+	| # | Variable           | Field Name | Search Type | Value    | Require All Criteria To Match |
+	| 1 | [[list().id]] =    | IntField   |             |          |                               |
+	| 2 | [[list().name]] =  | Name       |             |          |                               |
+	| 3 | [[list().title]] = | Title      |             |          |                               |
+	| 4 |               | Title           | Begins With | Warewolf | Yes                           |
 	And the debug output as 
 	| # |                                                   |
 	| 1 | [[list(1).id]] = 1                                |
@@ -332,10 +334,12 @@ Scenario: Read Item from list with Multiple criteria return multiple results
 	Then the value of "[[list(2).title]]" equals "Warewolf Created Item Title 2"
 	And the execution has "NO" error
 	And the debug inputs as
-	| # | Variable           | Field Name |
-	| 1 | [[list().id]] =    | IntField   |
-	| 2 | [[list().name]] =  | Name       |
-	| 3 | [[list().title]] = | Title      |
+	| # | Variable           | Field Name | Search Type | Value    | Require All Criteria To Match |
+	| 1 | [[list().id]] =    | IntField   |             |          |                               |
+	| 2 | [[list().name]] =  | Name       |             |          |                               |
+	| 3 | [[list().title]] = | Title      |             |          |                               |
+	| 4 |               | Title           | Contains    | Warewolf | Yes                           |
+	| 5 |            | IntField           | <=          | 2        | Yes                           |
 	And the debug output as 
 	| # |                                                   |
 	| 1 | [[list(1).id]] = 1                                |
@@ -363,10 +367,12 @@ Scenario: Read Item from list with Multiple criteria return single results
 	Then the value of "[[list(1).title]]" equals "Warewolf Created Item Title 1"
 	And the execution has "NO" error
 	And the debug inputs as
-	| # | Variable           | Field Name |
-	| 1 | [[list().id]] =    | IntField   |
-	| 2 | [[list().name]] =  | Name       |
-	| 3 | [[list().title]] = | Title      |
+	| # | Variable           | Field Name | Search Type | Value    | Require All Criteria To Match |
+	| 1 | [[list().id]] =    | IntField   |             |          |                               |
+	| 2 | [[list().name]] =  | Name       |             |          |                               |
+	| 3 | [[list().title]] = | Title      |             |          |                               |
+	| 4 |               | Title           | Contains    | Warewolf | Yes                           |
+	| 5 |            | IntField           | <           | 2        | Yes                           |
 	And the debug output as 
 	| # |                                                   |
 	| 1 | [[list(1).id]] = 1                                |
@@ -392,10 +398,12 @@ Scenario: Read Item from list with Multiple criteria do not match all criteria
 	Then the value of "[[list(1).title]]" equals "Warewolf Created Item Title 1"
 	And the execution has "NO" error
 	And the debug inputs as
-	| # | Variable           | Field Name |
-	| 1 | [[list().id]] =    | IntField   |
-	| 2 | [[list().name]] =  | Name       |
-	| 3 | [[list().title]] = | Title      |
+	| # | Variable           | Field Name | Search Type | Value    | Require All Criteria To Match |
+	| 1 | [[list().id]] =    | IntField   |             |          |                               |
+	| 2 | [[list().name]] =  | Name       |             |          |                               |
+	| 3 | [[list().title]] = | Title      |             |          |                               |
+	| 4 |               | Title           | Contains    | Warewolf | No                            |
+	| 5 |            | IntField           | <           | 2        | No                            |
 	And the debug output as 
 	| # |                                                   |
 	| 1 | [[list(1).id]] = 1                                |
