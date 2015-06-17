@@ -199,7 +199,7 @@ Scenario: Delete Item from list with Multiple criteria return multiple results
 	And the execution has "NO" error
 	And the debug inputs as 
 	| # | Field Name | Search Type | Value | Require All Criteria To Match |
-	| 1 | Title      | Contains    | o     |                               |
+	| 1 | Title      | Contains    | o     | Yes                           |
 	| 2 | IntField   | <=          | 2     | Yes                           |
 	And the debug output as 
 	|                |
@@ -229,8 +229,8 @@ Scenario: Delete Item from list with Multiple criteria do not match all criteria
 	And I select "AcceptanceTesting" list
 	And search criteria as
 	| Field Name | Search Type | Value | From | To |
-	| Title      | Contains    | o     |      |    |
-	| IntField   | <           | 200   |      |    |
+	| Title      | Contains    | 2     |      |    |
+	| IntField   | <           | 2   |      |    |
 	And do not require all criteria to match
 	And I have result variable as "[[Result]]"
 	When the sharepoint delete item from list tool is executed
@@ -238,8 +238,8 @@ Scenario: Delete Item from list with Multiple criteria do not match all criteria
 	And the execution has "NO" error
 	And the debug inputs as 
 	| # | Field Name | Search Type | Value | Require All Criteria To Match |
-	| 1 | Title      | Contains    | o     |                               |
-	| 2 | IntField   | <           | 200   | No                            |
+	| 1 | Title      | Contains    | 2     | No                           |
+	| 2 | IntField   | <           | 2   | No                            |
 	And the debug output as 
 	|                |
 	| [[Result]] = 2 |
@@ -259,7 +259,7 @@ Scenario: Delete Item from list with Multiple criteria match all criteria finds 
 	And the execution has "NO" error
 	And the debug inputs as 
 	| # | Field Name | Search Type | Value | Require All Criteria To Match |
-	| 1 | Title      | Contains    | z     |                               |
+	| 1 | Title      | Contains    | z     | No                            |
 	| 2 | IntField   | >           | 200   | No                            |
 	And the debug output as 
 	|                |

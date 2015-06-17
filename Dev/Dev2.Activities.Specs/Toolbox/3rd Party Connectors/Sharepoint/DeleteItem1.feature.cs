@@ -753,7 +753,7 @@ this.FeatureBackground();
                         "Title",
                         "Contains",
                         "o",
-                        ""});
+                        "Yes"});
             table29.AddRow(new string[] {
                         "2",
                         "IntField",
@@ -872,13 +872,13 @@ this.FeatureBackground();
             table34.AddRow(new string[] {
                         "Title",
                         "Contains",
-                        "o",
+                        "2",
                         "",
                         ""});
             table34.AddRow(new string[] {
                         "IntField",
                         "<",
-                        "200",
+                        "2",
                         "",
                         ""});
 #line 230
@@ -904,13 +904,13 @@ this.FeatureBackground();
                         "1",
                         "Title",
                         "Contains",
-                        "o",
-                        ""});
+                        "2",
+                        "No"});
             table35.AddRow(new string[] {
                         "2",
                         "IntField",
                         "<",
-                        "200",
+                        "2",
                         "No"});
 #line 239
  testRunner.And("the debug inputs as", ((string)(null)), table35, "And ");
@@ -982,7 +982,7 @@ this.FeatureBackground();
                         "Title",
                         "Contains",
                         "z",
-                        ""});
+                        "No"});
             table38.AddRow(new string[] {
                         "2",
                         "IntField",
