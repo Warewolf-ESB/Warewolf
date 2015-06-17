@@ -461,15 +461,31 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Field Name",
-                        "Variable"});
+                        "Variable",
+                        "Search Type",
+                        "Value",
+                        "Require All Criteria To Match"});
             table16.AddRow(new string[] {
                         "1",
                         "Name",
-                        "Updated From Warewolf"});
+                        "Updated From Warewolf",
+                        "",
+                        "",
+                        ""});
             table16.AddRow(new string[] {
                         "2",
                         "Title",
-                        "My Updated Warewolf Acceptance Test Item"});
+                        "My Updated Warewolf Acceptance Test Item",
+                        "",
+                        "",
+                        ""});
+            table16.AddRow(new string[] {
+                        "3",
+                        "Name",
+                        "",
+                        "Contains",
+                        "Warewolf",
+                        "Yes"});
 #line 119
  testRunner.And("the debug inputs as", ((string)(null)), table16, "And ");
 #line hidden
@@ -477,7 +493,7 @@ this.FeatureBackground();
                         ""});
             table17.AddRow(new string[] {
                         "[[Result]] = Success"});
-#line 123
+#line 124
  testRunner.And("the debug output as", ((string)(null)), table17, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -490,13 +506,13 @@ this.FeatureBackground();
         public virtual void UpdateAllItemsInListWithStaticDataAndFilterHasVariable()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update all items in list with static data and filter has variable", ((string[])(null)));
-#line 127
+#line 128
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 128
- testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 129
+ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 130
  testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
@@ -508,7 +524,7 @@ this.FeatureBackground();
             table18.AddRow(new string[] {
                         "Title",
                         "My Updated Warewolf Acceptance Test Item"});
-#line 130
+#line 131
  testRunner.And("I map the list update fields as", ((string)(null)), table18, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
@@ -523,39 +539,55 @@ this.FeatureBackground();
                         "[[filterVal]]",
                         "",
                         ""});
-#line 134
+#line 135
  testRunner.And("search criteria as", ((string)(null)), table19, "And ");
-#line 137
- testRunner.And("I have a variable \"[[filterVal]]\" with a value \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 138
- testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a variable \"[[filterVal]]\" with a value \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 139
- testRunner.When("the sharepoint update list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 140
- testRunner.Then("the value of \"[[Result]]\" equals \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the sharepoint update list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 141
+ testRunner.Then("the value of \"[[Result]]\" equals \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 142
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Field Name",
-                        "Variable"});
+                        "Variable",
+                        "Search Type",
+                        "Value",
+                        "Require All Criteria To Match"});
             table20.AddRow(new string[] {
                         "1",
                         "Name",
-                        "Updated From Warewolf"});
+                        "Updated From Warewolf",
+                        "",
+                        "",
+                        ""});
             table20.AddRow(new string[] {
                         "2",
                         "Title",
-                        "My Updated Warewolf Acceptance Test Item"});
-#line 142
+                        "My Updated Warewolf Acceptance Test Item",
+                        "",
+                        "",
+                        ""});
+            table20.AddRow(new string[] {
+                        "3",
+                        "IntField",
+                        "",
+                        "=",
+                        "[[filterVal]]",
+                        "Yes"});
+#line 143
  testRunner.And("the debug inputs as", ((string)(null)), table20, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table21.AddRow(new string[] {
                         "[[Result]] = Success"});
-#line 146
+#line 148
  testRunner.And("the debug output as", ((string)(null)), table21, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -568,13 +600,13 @@ this.FeatureBackground();
         public virtual void UpdateAllItemsInListWithScalarDataAndFilterHasVariable()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update all items in list with scalar data and filter has variable", ((string[])(null)));
-#line 150
+#line 152
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 151
+#line 153
  testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 152
+#line 154
  testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
@@ -586,7 +618,7 @@ this.FeatureBackground();
             table22.AddRow(new string[] {
                         "Title",
                         "[[updateTitle]]"});
-#line 153
+#line 155
  testRunner.And("I map the list update fields as", ((string)(null)), table22, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
@@ -601,21 +633,21 @@ this.FeatureBackground();
                         "[[filterVal]]",
                         "",
                         ""});
-#line 157
+#line 159
  testRunner.And("search criteria as", ((string)(null)), table23, "And ");
-#line 160
- testRunner.And("I have a variable \"[[filterVal]]\" with a value \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 161
- testRunner.And("I have a variable \"[[updateTitle]]\" with a value \"Updated Title from Variable\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 162
- testRunner.And("I have a variable \"[[updateName]]\" with a value \"Updated Name from Variable\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a variable \"[[filterVal]]\" with a value \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 163
- testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a variable \"[[updateTitle]]\" with a value \"Updated Title from Variable\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 164
- testRunner.When("the sharepoint update list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I have a variable \"[[updateName]]\" with a value \"Updated Name from Variable\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 165
- testRunner.Then("the value of \"[[Result]]\" equals \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 166
+ testRunner.When("the sharepoint update list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 167
+ testRunner.Then("the value of \"[[Result]]\" equals \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 168
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
@@ -630,14 +662,14 @@ this.FeatureBackground();
                         "2",
                         "Title",
                         "[[updateTitle]] = Updated Title from Variable"});
-#line 167
+#line 169
  testRunner.And("the debug inputs as", ((string)(null)), table24, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table25.AddRow(new string[] {
                         "[[Result]] = Success"});
-#line 171
+#line 173
  testRunner.And("the debug output as", ((string)(null)), table25, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -650,13 +682,13 @@ this.FeatureBackground();
         public virtual void UpdateAllItemsInListWithRecordsetData()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update all items in list with recordset data", ((string[])(null)));
-#line 175
+#line 177
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 176
+#line 178
  testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 177
+#line 179
  testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
@@ -668,25 +700,25 @@ this.FeatureBackground();
             table26.AddRow(new string[] {
                         "Title",
                         "[[rec(*).title]]"});
-#line 178
+#line 180
  testRunner.And("I map the list update fields as", ((string)(null)), table26, "And ");
-#line 182
+#line 184
  testRunner.And("I have a variable \"[[rec(1).title]]\" with a value \"Updated Title from Variable 1\"" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 183
+#line 185
  testRunner.And("I have a variable \"[[rec(1).name]]\" with a value \"Updated Name from Variable 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 184
+#line 186
  testRunner.And("I have a variable \"[[rec(2).title]]\" with a value \"Updated Title from Variable 2\"" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 185
- testRunner.And("I have a variable \"[[rec(2).name]]\" with a value \"Updated Name from Variable 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 186
- testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 187
- testRunner.When("the sharepoint update list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I have a variable \"[[rec(2).name]]\" with a value \"Updated Name from Variable 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 188
- testRunner.Then("the value of \"[[Result]]\" equals \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 189
+ testRunner.When("the sharepoint update list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 190
+ testRunner.Then("the value of \"[[Result]]\" equals \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 191
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
@@ -709,14 +741,14 @@ this.FeatureBackground();
                         "",
                         "",
                         "[[rec(2).title]] = Updated Title from Variable 2"});
-#line 190
+#line 192
  testRunner.And("the debug inputs as", ((string)(null)), table27, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table28.AddRow(new string[] {
                         "[[Result]] = Success"});
-#line 196
+#line 198
  testRunner.And("the debug output as", ((string)(null)), table28, "And ");
 #line hidden
             this.ScenarioCleanup();
