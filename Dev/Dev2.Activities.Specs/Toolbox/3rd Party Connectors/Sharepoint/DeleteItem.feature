@@ -414,3 +414,4 @@ Scenario: Delete Item from list with Multiple criteria match all criteria finds 
 	And the debug output as 
 	|                                             |
 	| [[Result]] = 0 |
+	
