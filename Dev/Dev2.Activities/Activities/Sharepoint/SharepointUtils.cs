@@ -41,7 +41,8 @@ namespace Dev2.Activities.Sharepoint
                 }
                 foreach (var sharepointSearchTo in validFilters)
                 {
-                    var sharepointFieldTo = fields.FirstOrDefault(to => to.InternalName == sharepointSearchTo.InternalName);
+                    var searchTo = sharepointSearchTo;
+                    var sharepointFieldTo = fields.FirstOrDefault(to => to.InternalName == searchTo.InternalName);
                     var buildQueryFromTo = BuildQueryFromTo(sharepointSearchTo, env, sharepointFieldTo);
                     if(buildQueryFromTo != null)
                     {
@@ -59,7 +60,7 @@ namespace Dev2.Activities.Sharepoint
             return camlQuery;
         }
 
-        public IEnumerable<string> BuildQueryFromTo(SharepointSearchTo sharepointSearchTo, IExecutionEnvironment env, ISharepointFieldTo sharepointFieldTo)
+        IEnumerable<string> BuildQueryFromTo(SharepointSearchTo sharepointSearchTo, IExecutionEnvironment env, ISharepointFieldTo sharepointFieldTo)
         {
             WarewolfIterator iterator = new WarewolfIterator(env.Eval(sharepointSearchTo.ValueToMatch));
             while(iterator.HasMoreData())
