@@ -578,7 +578,7 @@ this.FeatureBackground();
                         "IntField",
                         "",
                         "=",
-                        "[[filterVal]]",
+                        "[[filterVal]] = 2",
                         "Yes"});
 #line 143
  testRunner.And("the debug inputs as", ((string)(null)), table20, "And ");
@@ -653,15 +653,31 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Field Name",
-                        "Variable"});
+                        "Variable",
+                        "Search Type",
+                        "Value",
+                        "Require All Criteria To Match"});
             table24.AddRow(new string[] {
                         "1",
                         "Name",
-                        "[[updateName]] = Updated Name from Variable"});
+                        "[[updateName]] = Updated Name from Variable",
+                        "",
+                        "",
+                        ""});
             table24.AddRow(new string[] {
                         "2",
                         "Title",
-                        "[[updateTitle]] = Updated Title from Variable"});
+                        "[[updateTitle]] = Updated Title from Variable",
+                        "",
+                        "",
+                        ""});
+            table24.AddRow(new string[] {
+                        "3",
+                        "IntField",
+                        "",
+                        "=",
+                        "[[filterVal]] = 2",
+                        "Yes"});
 #line 169
  testRunner.And("the debug inputs as", ((string)(null)), table24, "And ");
 #line hidden
@@ -669,7 +685,7 @@ this.FeatureBackground();
                         ""});
             table25.AddRow(new string[] {
                         "[[Result]] = Success"});
-#line 173
+#line 174
  testRunner.And("the debug output as", ((string)(null)), table25, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -682,13 +698,13 @@ this.FeatureBackground();
         public virtual void UpdateAllItemsInListWithRecordsetData()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update all items in list with recordset data", ((string[])(null)));
-#line 177
+#line 178
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 178
- testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 179
+ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 180
  testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
@@ -700,25 +716,25 @@ this.FeatureBackground();
             table26.AddRow(new string[] {
                         "Title",
                         "[[rec(*).title]]"});
-#line 180
+#line 181
  testRunner.And("I map the list update fields as", ((string)(null)), table26, "And ");
-#line 184
+#line 185
  testRunner.And("I have a variable \"[[rec(1).title]]\" with a value \"Updated Title from Variable 1\"" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 185
- testRunner.And("I have a variable \"[[rec(1).name]]\" with a value \"Updated Name from Variable 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 186
+ testRunner.And("I have a variable \"[[rec(1).name]]\" with a value \"Updated Name from Variable 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 187
  testRunner.And("I have a variable \"[[rec(2).title]]\" with a value \"Updated Title from Variable 2\"" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 187
- testRunner.And("I have a variable \"[[rec(2).name]]\" with a value \"Updated Name from Variable 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 188
- testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a variable \"[[rec(2).name]]\" with a value \"Updated Name from Variable 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 189
- testRunner.When("the sharepoint update list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 190
- testRunner.Then("the value of \"[[Result]]\" equals \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the sharepoint update list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 191
+ testRunner.Then("the value of \"[[Result]]\" equals \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 192
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
@@ -741,14 +757,14 @@ this.FeatureBackground();
                         "",
                         "",
                         "[[rec(2).title]] = Updated Title from Variable 2"});
-#line 192
+#line 193
  testRunner.And("the debug inputs as", ((string)(null)), table27, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table28.AddRow(new string[] {
                         "[[Result]] = Success"});
-#line 198
+#line 199
  testRunner.And("the debug output as", ((string)(null)), table28, "And ");
 #line hidden
             this.ScenarioCleanup();

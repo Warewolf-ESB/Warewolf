@@ -144,7 +144,7 @@ Scenario: Update all items in list with static data and filter has variable
 	| # | Field Name | Variable                                 | Search Type | Value         | Require All Criteria To Match |
 	| 1 | Name       | Updated From Warewolf                    |             |               |                               |
 	| 2 | Title      | My Updated Warewolf Acceptance Test Item |             |               |                               |
-	| 3 | IntField   |                                          | =      | [[filterVal]] | Yes                           |
+	| 3 | IntField   |                                          | =      | [[filterVal]] = 2 | Yes                           |
 	And the debug output as 
 	|                      |
 	| [[Result]] = Success |
@@ -167,9 +167,10 @@ Scenario: Update all items in list with scalar data and filter has variable
 	Then the value of "[[Result]]" equals "Success"
 	And the execution has "NO" error
 	And the debug inputs as
-	| # | Field Name | Variable                                      |
-	| 1 | Name       | [[updateName]] = Updated Name from Variable   |
-	| 2 | Title      | [[updateTitle]] = Updated Title from Variable |
+	| # | Field Name | Variable                                      | Search Type | Value             | Require All Criteria To Match |
+	| 1 | Name       | [[updateName]] = Updated Name from Variable   |             |                   |                               |
+	| 2 | Title      | [[updateTitle]] = Updated Title from Variable |             |                   |                               |
+	| 3 | IntField   |                                               | =           | [[filterVal]] = 2 | Yes                           |
 	And the debug output as 
 	|                      |
 	| [[Result]] = Success |
