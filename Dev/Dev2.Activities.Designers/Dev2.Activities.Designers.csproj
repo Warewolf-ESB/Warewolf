@@ -518,6 +518,26 @@
     <Compile Include="Designers2\Service\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\SharepointListCreate\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListCreate\SharepointListCreateDesigner.xaml.cs">
+      <DependentUpon>SharepointListCreateDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListCreate\SharepointListCreateDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharepointListCreate\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListDelete\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListDelete\SharepointListDeleteDesigner.xaml.cs">
+      <DependentUpon>SharepointListDeleteDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListDelete\SharepointListDeleteDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharepointListDelete\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\SharepointListRead\SharepointListReadDesigner.xaml.cs">
       <DependentUpon>SharepointListReadDesigner.xaml</DependentUpon>
     </Compile>
@@ -526,6 +546,16 @@
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\SharepointListRead\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListUpdate\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListUpdate\SharepointListUpdateDesigner.xaml.cs">
+      <DependentUpon>SharepointListUpdateDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListUpdate\SharepointListUpdateDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharepointListUpdate\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\SortRecords\Small.xaml.cs">
@@ -1074,6 +1104,30 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\SharepointListCreate\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\SharepointListCreate\SharepointListCreateDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\SharepointListCreate\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\SharepointListDelete\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\SharepointListDelete\SharepointListDeleteDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\SharepointListDelete\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Designers2\SharepointListRead\SharepointListReadDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1085,6 +1139,18 @@
     <Page Include="Designers2\SharepointListRead\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharepointListUpdate\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\SharepointListUpdate\SharepointListUpdateDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\SharepointListUpdate\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\SortRecords\Small.xaml">
       <SubType>Designer</SubType>

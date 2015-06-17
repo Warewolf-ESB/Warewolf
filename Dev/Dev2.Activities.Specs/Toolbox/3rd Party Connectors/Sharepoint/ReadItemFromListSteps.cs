@@ -18,6 +18,7 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
         [Given(@"I have a sharepoint source to ""(.*)""")]
         public void GivenIHaveASharepointSourceTo(string server)
         {
+            if(ScenarioContext.Current.ContainsKey("sharepointServer")) return;
             var source = new SharepointSource { Server = server, ResourceName = "localSharepointServerSource", ResourceID = Guid.NewGuid(), ResourceType = ResourceType.SharepointServerSource };
             ResourceCatalog.Instance.SaveResource(Guid.Empty, source);
             ScenarioContext.Current.Add("sharepointServer",source);
@@ -26,10 +27,12 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
         [Given(@"I select ""(.*)"" list")]
         public void GivenISelectList(string sharepointList)
         {
+            if (ScenarioContext.Current.ContainsKey("sharepointList")) return;
             ScenarioContext.Current.Add("sharepointList",sharepointList);
         }
 
         [Given(@"I map the list fields as")]
+        [Then(@"I map the list fields as")]
         public void GivenIMapTheListFieldsAs(Table table)
         {
             var sharepointReadListTos = new List<SharepointReadListTo>();
@@ -38,6 +41,7 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
             {
                 sharepointReadListTos.Add(new SharepointReadListTo(row["Variable"], row["Field Name"],""));
             }
+           
             ScenarioContext.Current.Add("sharepointReadListTos",sharepointReadListTos);
         }
 
@@ -46,7 +50,25 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            
             ScenarioContext.Current.Add("result", result);
+        }
+
+        [Then(@"scenerio is clean")]
+        public void ThenScenerioIsClean()
+        {
+            if (ScenarioContext.Current.ContainsKey("sharepointReadListTos"))
+            {
+                ScenarioContext.Current.Remove("sharepointReadListTos");
+            }
+            if (ScenarioContext.Current.ContainsKey("result"))
+            {
+                ScenarioContext.Current.Remove("result");
+            }
+            if (ScenarioContext.Current.ContainsKey("activity"))
+            {
+                ScenarioContext.Current.Remove("activity");
+            }
         }
 
         [Given(@"do not require all criteria to match")]
@@ -63,7 +85,13 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
             {
                 var searchTo = new SharepointSearchTo();
                 var fieldName = row["Field Name"];
+                var internalName = fieldName;
+                if (fieldName == "Name")
+                {
+                    internalName = "mk7s";
+                }
                 var searchType = row["Search Type"];
+                searchTo.InternalName = internalName;
                 searchTo.FieldName = fieldName;
                 searchTo.SearchType = searchType;
                 var valueMatch = row["Value"];

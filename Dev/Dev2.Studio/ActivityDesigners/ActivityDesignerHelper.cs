@@ -47,6 +47,9 @@ using Dev2.Activities.Designers2.Replace;
 using Dev2.Activities.Designers2.Script;
 using Dev2.Activities.Designers2.Sequence;
 using Dev2.Activities.Designers2.Service;
+using Dev2.Activities.Designers2.SharepointListCreate;
+using Dev2.Activities.Designers2.SharepointListDelete;
+using Dev2.Activities.Designers2.SharepointListUpdate;
 using Dev2.Activities.Designers2.SharepointListRead;
 using Dev2.Activities.Designers2.SortRecords;
 using Dev2.Activities.Designers2.SqlBulkInsert;
@@ -117,6 +120,11 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfDropBoxFileActivity), typeof(DropboxUploadFileDesigner) },
                 { typeof(DsfCreateJsonActivity), typeof(CreateJsonDesigner) },
                 { typeof(SharepointReadListActivity), typeof(SharepointListReadDesigner) },
+                { typeof(SharepointCreateListItemActivity), typeof(SharepointListCreateDesigner) },
+                //REPLACE WITH SHAREPOINT DELETE ACTIVITY
+                //{ typeof(SharepointDeleteListItemActivity), typeof(SharepointListDeleteDesigner) },
+                //REPLACE WITH SHAREPOINT UPDATE ACTIVITY
+                //{ typeof(SharepointUpdateListItemActivity), typeof(SharepointListUpdateDesigner) },
                 // Travis.Frisinger : 25.09.2012 - Removed Http Activity as it is out of sync with the current release 1 plans
             };
 

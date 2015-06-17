@@ -3,13 +3,12 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Data;
 using Dev2.Data.ServiceModel;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Runtime.Hosting;
@@ -38,6 +37,13 @@ namespace Dev2.Activities.Sharepoint
         public string SharepointList { get; set; }
         public List<SharepointSearchTo> FilterCriteria { get; set; }
         public bool RequireAllCriteriaToMatch { get; set; }
+        public SharepointUtils SharepointUtils
+        {
+            get
+            {
+                return _sharepointUtils;
+            }
+        }
 
         /// <summary>
         /// When overridden runs the activity's execution logic 
@@ -97,14 +103,16 @@ namespace Dev2.Activities.Sharepoint
                     {
                         AddInputDebug(env);
                     }
-                    using(var ctx = sharepointSource.CreateSharepointHelper().GetContext())
+                    var sharepointHelper = sharepointSource.CreateSharepointHelper();
+                    var fields = sharepointHelper.LoadFieldsForList(SharepointList, false);
+                    using(var ctx = sharepointHelper.GetContext())
                     {
+                        var camlQuery = _sharepointUtils.BuildCamlQuery(env, FilterCriteria,fields);
                         List list = ctx.Web.Lists.GetByTitle(SharepointList);
-                        var camlQuery = BuildCamlQuery(env);
                         var listItems = list.GetItems(camlQuery);
-                        ctx.Load(list.Fields);
                         ctx.Load(listItems);
                         ctx.ExecuteQuery();
+                        var index = 1;
                         foreach(var listItem in listItems)
                         {
 
@@ -112,13 +120,42 @@ namespace Dev2.Activities.Sharepoint
                             {
                                 var variableName = sharepointReadListTo.VariableName;
                                 var fieldToName = sharepointReadListTo.FieldName;
-                                var fieldName = list.Fields.FirstOrDefault(field => field.Title == fieldToName);
+                                var fieldName = fields.FirstOrDefault(field => field.Name == fieldToName);
                                 if(fieldName != null)
                                 {
-                                    var listItemValue = listItem[fieldName.InternalName].ToString();
-                                    env.AssignWithFrame(new AssignValue(variableName, listItemValue));
+                                    var listItemValue = "";
+                                    try
+                                    {
+                                        var sharepointValue = listItem[fieldName.InternalName];
+                                        if(sharepointValue != null)
+                                        {
+                                            var userValue = sharepointValue as FieldUserValue;
+                                            var fieldValue = sharepointValue as FieldLookupValue;
+                                            if(userValue != null)
+                                            {
+                                                sharepointValue = userValue.LookupValue;
+                                            }
+                                            if(fieldValue != null)
+                                            {
+                                                sharepointValue = fieldValue.LookupValue;
+                                            }
+                                            listItemValue = sharepointValue.ToString();
+                                        }
+                                    }
+                                    catch(Exception e)
+                                    {
+                                        Dev2Logger.Log.Error(e);
+                                        //Ignore sharepoint exception on retrieval not all fields can be retrieved.
+                                    }
+                                    var correctedVariable = variableName;
+                                    if (DataListUtil.IsValueRecordset(variableName) && DataListUtil.IsStarIndex(variableName))
+                                    {
+                                        correctedVariable = DataListUtil.ReplaceStarWithFixedIndex(variableName, index);
+                                    }
+                                    env.AssignWithFrame(new AssignValue(correctedVariable, listItemValue));
                                 }
                             }
+                            index++;
                         }
                     }
                     env.CommitAssign();
@@ -144,50 +181,6 @@ namespace Dev2.Activities.Sharepoint
                     DispatchDebugState(dataObject, StateType.Before);
                     DispatchDebugState(dataObject, StateType.After);
                 }
-            }
-        }
-
-        CamlQuery BuildCamlQuery(IExecutionEnvironment env)
-        {
-            var camlQuery = CamlQuery.CreateAllItemsQuery();
-            var validFilters = new List<SharepointSearchTo>();
-            if(FilterCriteria != null)
-            {
-                validFilters = FilterCriteria.Where(to => !string.IsNullOrEmpty(to.FieldName) && !string.IsNullOrEmpty(to.ValueToMatch)).ToList();
-            }
-            var filterCount = validFilters.Count;
-            if (filterCount > 0)
-            {
-                var queryString = new StringBuilder("<View><Query><Where>");
-                if(filterCount > 1)
-                {
-                    queryString.Append("<And>");
-                }
-                foreach (var sharepointSearchTo in validFilters)
-                {
-                    var buildQueryFromTo = BuildQueryFromTo(sharepointSearchTo, env);
-                    if(buildQueryFromTo != null)
-                    {
-                        queryString.AppendLine(string.Join(Environment.NewLine,buildQueryFromTo));
-                    }
-                }
-                if (filterCount > 1)
-                {
-                    queryString.Append("</And>");
-                }
-                queryString.Append("</Where></Query></View>");
-                camlQuery.ViewXml = queryString.ToString();
-               
-            }
-            return camlQuery;
-        }
-
-        IEnumerable<string> BuildQueryFromTo(SharepointSearchTo sharepointSearchTo, IExecutionEnvironment env)
-        {
-            WarewolfIterator iterator = new WarewolfIterator(env.Eval(sharepointSearchTo.ValueToMatch));
-            while(iterator.HasMoreData())
-            {
-                yield return string.Format("{0}<FieldRef Name=\"{1}\"></FieldRef><Value Type=\"Text\">{2}</Value>{3}", SharepointSearchOptions.GetStartTagForSearchOption(sharepointSearchTo.SearchType), sharepointSearchTo.FieldName, iterator.GetNextValue(), SharepointSearchOptions.GetEndTagForSearchOption(sharepointSearchTo.SearchType));    
             }
         }
 

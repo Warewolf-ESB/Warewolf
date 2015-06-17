@@ -89,11 +89,10 @@ namespace Dev2.Data.ServiceModel
             return sharepointHelper.LoadLists();
         }
 
-        public List<ISharepointFieldTo> LoadFieldsForList(string listName)
+        public List<ISharepointFieldTo> LoadFieldsForList(string listName,bool editableFieldsOnly = false)
         {
-           
             var sharepointHelper = CreateSharepointHelper();
-            return sharepointHelper.LoadFieldsForList(listName);
+            return sharepointHelper.LoadFieldsForList(listName, editableFieldsOnly);
         }
 
         public SharepointHelper CreateSharepointHelper()
@@ -108,6 +107,12 @@ namespace Dev2.Data.ServiceModel
             }
             var sharepointHelper = new SharepointHelper(Server, userName, password);
             return sharepointHelper;
+        }
+
+        public string TestConnection()
+        {
+            var helper = CreateSharepointHelper();
+            return helper.TestConnection();
         }
     }
 }

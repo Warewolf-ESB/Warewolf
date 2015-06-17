@@ -41,7 +41,7 @@
 
         <Label Grid.Column="0"
                Grid.Row="0"
-               Content="Sharepoint Server"
+               Content="Server"
                Style="{StaticResource ActivityMapppingLabelStyle}" />
         <ComboBox Grid.Column="1"
                   Grid.Row="0"

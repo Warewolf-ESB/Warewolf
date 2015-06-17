@@ -762,7 +762,7 @@ namespace Dev2.Studio.ViewModels
         void SaveSharepointSourceSource(IEnvironmentModel activeEnvironment, IContextualResourceModel resource)
         {
             var drop = new SharepointServerSource();
-            var vm = new SharepointServerSourceViewModel(drop) { Resource = resource };
+            var vm = new SharepointServerSourceViewModel(drop,activeEnvironment) { Resource = resource };
             drop.DataContext = vm;
             var showDialog = ShowSharepoint(drop, vm);
             if(showDialog != null && showDialog.Value && vm.Resource.ID == Guid.Empty)

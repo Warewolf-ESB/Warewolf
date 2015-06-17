@@ -4500,11 +4500,11 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a list to read from.
-        ///If the list has changed or recently added to the source, click the refresh button.
+        ///   Looks up a localized string similar to Select a list to read data from.
+        ///If the list changed, click the refresh button.
         ///
         ///Allowed:
-        ///Select a list to read from..
+        ///Select a list to read data from..
         /// </summary>
         public static string SharepointHelpList {
             get {

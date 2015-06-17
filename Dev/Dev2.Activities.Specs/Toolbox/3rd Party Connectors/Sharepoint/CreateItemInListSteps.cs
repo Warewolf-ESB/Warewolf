@@ -1,5 +1,4 @@
-﻿using System;
-using System.Activities.Statements;
+﻿using System.Activities.Statements;
 using System.Collections.Generic;
 using Dev2.Activities.Sharepoint;
 using Dev2.Activities.Specs.BaseTypes;
@@ -13,6 +12,7 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
     public class CreateItemInListSteps : RecordSetBases
     {
         [Given(@"I map the list input fields as")]
+        [Then(@"I map the list input fields as")]
         public void GivenIMapTheListInputFieldsAs(Table table)
         {
             var sharepointReadListTos = new List<SharepointReadListTo>();
@@ -27,6 +27,10 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
                 }
                 sharepointReadListTos.Add(new SharepointReadListTo(row["Variable"], fieldName, internalName));
             }
+            if (ScenarioContext.Current.ContainsKey("sharepointReadListTos"))
+            {
+                ScenarioContext.Current.Remove("sharepointReadListTos");
+            }
             ScenarioContext.Current.Add("sharepointReadListTos", sharepointReadListTos);
         }
 
@@ -36,25 +40,15 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
             ScenarioContext.Current.Add("resultVar",resultVar);
         }
 
-//        [Given(@"I have a variable ""(.*)"" with value ""(.*)""")]
-//        public void GivenIHaveAVariableWithValue(string variable, string value)
-//        {
-//            List<Tuple<string, string>> variableList;
-//            ScenarioContext.Current.TryGetValue("variableList", out variableList);
-//
-//            if (variableList == null)
-//            {
-//                variableList = new List<Tuple<string, string>>();
-//                ScenarioContext.Current.Add("variableList", variableList);
-//            }
-//            variableList.Add(new Tuple<string, string>(variable, value));
-//        }
-
         [When(@"the sharepoint create list item tool is executed")]
         public void WhenTheSharepointCreateListItemToolIsExecuted()
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            if(ScenarioContext.Current.ContainsKey("result"))
+            {
+                ScenarioContext.Current.Remove("result");
+            }
             ScenarioContext.Current.Add("result", result);
         }
 
@@ -81,7 +75,10 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
             {
                 Action = sharepointReadListActivity
             };
-
+            if(ScenarioContext.Current.ContainsKey("activity"))
+            {
+                ScenarioContext.Current.Remove("activity");
+            }
             ScenarioContext.Current.Add("activity", sharepointReadListActivity);
         }
     }
