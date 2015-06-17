@@ -78,7 +78,85 @@ namespace Dev2.Activities.Specs.Toolbox._3RdPartyConnectors.Sharepoint
 #line 9
  testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
- testRunner.And("I create 2 items in the list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("all items are deleted from the list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable",
+                        "Field Name"});
+            table1.AddRow(new string[] {
+                        "Warewolf Created Item Name 1",
+                        "Name"});
+            table1.AddRow(new string[] {
+                        "Warewolf Created Item Title 1",
+                        "Title"});
+            table1.AddRow(new string[] {
+                        "1",
+                        "IntField"});
+            table1.AddRow(new string[] {
+                        "10.52",
+                        "CurrencyField"});
+            table1.AddRow(new string[] {
+                        "2015/06/12",
+                        "DateField"});
+            table1.AddRow(new string[] {
+                        "2015/06/12 09:00 AM",
+                        "DateTimeField"});
+            table1.AddRow(new string[] {
+                        "False",
+                        "BoolField"});
+            table1.AddRow(new string[] {
+                        "Warewolf Created Text Field 1",
+                        "MultilineTextField"});
+            table1.AddRow(new string[] {
+                        "Warewolf Required Field 1",
+                        "RequiredField"});
+#line 11
+ testRunner.And("I map the list input fields as", ((string)(null)), table1, "And ");
+#line 22
+ testRunner.When("the sharepoint create list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 23
+ testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 24
+ testRunner.And("scenerio is clean", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable",
+                        "Field Name"});
+            table2.AddRow(new string[] {
+                        "Warewolf Created Item Name 2",
+                        "Name"});
+            table2.AddRow(new string[] {
+                        "Warewolf Created Item Title 2",
+                        "Title"});
+            table2.AddRow(new string[] {
+                        "2",
+                        "IntField"});
+            table2.AddRow(new string[] {
+                        "12.52",
+                        "CurrencyField"});
+            table2.AddRow(new string[] {
+                        "2015/06/11",
+                        "DateField"});
+            table2.AddRow(new string[] {
+                        "2015/06/11 11:00 AM",
+                        "DateTimeField"});
+            table2.AddRow(new string[] {
+                        "True",
+                        "BoolField"});
+            table2.AddRow(new string[] {
+                        "Warewolf Created Text Field 2",
+                        "MultilineTextField"});
+            table2.AddRow(new string[] {
+                        "Warewolf Required Field 2",
+                        "RequiredField"});
+#line 25
+ testRunner.And("I map the list input fields as", ((string)(null)), table2, "And ");
+#line 36
+ testRunner.When("the sharepoint create list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 37
+ testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 38
+ testRunner.And("scenerio is clean", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
         }
         
@@ -89,56 +167,525 @@ namespace Dev2.Activities.Specs.Toolbox._3RdPartyConnectors.Sharepoint
         public virtual void UpdateAllItemsInListWithStaticData()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update all items in list with static data", ((string[])(null)));
-#line 12
+#line 40
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 13
+#line 41
  testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 14
+#line 42
  testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field Name",
                         "Variable"});
-            table1.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "Name",
                         "Updated From Warewolf"});
-            table1.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "Title",
                         "My Updated Warewolf Acceptance Test Item"});
-#line 15
- testRunner.And("I map the list update fields as", ((string)(null)), table1, "And ");
-#line 19
+#line 43
+ testRunner.And("I map the list update fields as", ((string)(null)), table3, "And ");
+#line 47
  testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 20
+#line 48
  testRunner.When("the sharepoint update list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 21
+#line 49
  testRunner.Then("the value of \"[[Result]]\" equals \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 22
+#line 50
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Field Name",
                         "Variable"});
-            table2.AddRow(new string[] {
+            table4.AddRow(new string[] {
                         "1",
                         "Name",
                         "Updated From Warewolf"});
-            table2.AddRow(new string[] {
+            table4.AddRow(new string[] {
                         "2",
                         "Title",
                         "My Updated Warewolf Acceptance Test Item"});
-#line 23
- testRunner.And("the debug inputs as", ((string)(null)), table2, "And ");
+#line 51
+ testRunner.And("the debug inputs as", ((string)(null)), table4, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table3.AddRow(new string[] {
+            table5.AddRow(new string[] {
                         "[[Result]] = Success"});
-#line 27
- testRunner.And("the debug output as", ((string)(null)), table3, "And ");
+#line 55
+ testRunner.And("the debug output as", ((string)(null)), table5, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Update all items in list with static data and filter")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "UpdateItemInList")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("sharepoint")]
+        public virtual void UpdateAllItemsInListWithStaticDataAndFilter()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update all items in list with static data and filter", ((string[])(null)));
+#line 59
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 60
+ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 61
+ testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field Name",
+                        "Variable"});
+            table6.AddRow(new string[] {
+                        "Name",
+                        "Updated From Warewolf"});
+            table6.AddRow(new string[] {
+                        "Title",
+                        "My Updated Warewolf Acceptance Test Item"});
+#line 62
+ testRunner.And("I map the list update fields as", ((string)(null)), table6, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field Name",
+                        "Search Type",
+                        "Value",
+                        "From",
+                        "To"});
+            table7.AddRow(new string[] {
+                        "IntField",
+                        "Equals",
+                        "2",
+                        "",
+                        ""});
+#line 66
+ testRunner.And("search criteria as", ((string)(null)), table7, "And ");
+#line 69
+ testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 70
+ testRunner.When("the sharepoint update list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 71
+ testRunner.Then("the value of \"[[Result]]\" equals \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 72
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Field Name",
+                        "Variable"});
+            table8.AddRow(new string[] {
+                        "1",
+                        "Name",
+                        "Updated From Warewolf"});
+            table8.AddRow(new string[] {
+                        "2",
+                        "Title",
+                        "My Updated Warewolf Acceptance Test Item"});
+#line 73
+ testRunner.And("the debug inputs as", ((string)(null)), table8, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table9.AddRow(new string[] {
+                        "[[Result]] = Success"});
+#line 77
+ testRunner.And("the debug output as", ((string)(null)), table9, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Update all items in list with static data and filter contains")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "UpdateItemInList")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("sharepoint")]
+        public virtual void UpdateAllItemsInListWithStaticDataAndFilterContains()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update all items in list with static data and filter contains", ((string[])(null)));
+#line 81
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 82
+ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 83
+ testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field Name",
+                        "Variable"});
+            table10.AddRow(new string[] {
+                        "Name",
+                        "Updated From Warewolf"});
+            table10.AddRow(new string[] {
+                        "Title",
+                        "My Updated Warewolf Acceptance Test Item"});
+#line 84
+ testRunner.And("I map the list update fields as", ((string)(null)), table10, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field Name",
+                        "Search Type",
+                        "Value",
+                        "From",
+                        "To"});
+            table11.AddRow(new string[] {
+                        "Name",
+                        "Contains",
+                        "2",
+                        "",
+                        ""});
+#line 88
+ testRunner.And("search criteria as", ((string)(null)), table11, "And ");
+#line 91
+ testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 92
+ testRunner.When("the sharepoint update list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 93
+ testRunner.Then("the value of \"[[Result]]\" equals \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 94
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Field Name",
+                        "Variable"});
+            table12.AddRow(new string[] {
+                        "1",
+                        "Name",
+                        "Updated From Warewolf"});
+            table12.AddRow(new string[] {
+                        "2",
+                        "Title",
+                        "My Updated Warewolf Acceptance Test Item"});
+#line 95
+ testRunner.And("the debug inputs as", ((string)(null)), table12, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table13.AddRow(new string[] {
+                        "[[Result]] = Success"});
+#line 99
+ testRunner.And("the debug output as", ((string)(null)), table13, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Update all items in list with static data and filter contains returns multiple it" +
+            "ems")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "UpdateItemInList")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("sharepoint")]
+        public virtual void UpdateAllItemsInListWithStaticDataAndFilterContainsReturnsMultipleItems()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update all items in list with static data and filter contains returns multiple it" +
+                    "ems", ((string[])(null)));
+#line 103
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 104
+ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 105
+ testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field Name",
+                        "Variable"});
+            table14.AddRow(new string[] {
+                        "Name",
+                        "Updated From Warewolf"});
+            table14.AddRow(new string[] {
+                        "Title",
+                        "My Updated Warewolf Acceptance Test Item"});
+#line 106
+ testRunner.And("I map the list update fields as", ((string)(null)), table14, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field Name",
+                        "Search Type",
+                        "Value",
+                        "From",
+                        "To"});
+            table15.AddRow(new string[] {
+                        "Name",
+                        "Contains",
+                        "Warewolf",
+                        "",
+                        ""});
+#line 110
+ testRunner.And("search criteria as", ((string)(null)), table15, "And ");
+#line 113
+ testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 114
+ testRunner.When("the sharepoint update list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 115
+ testRunner.Then("the value of \"[[Result]]\" equals \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 116
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Field Name",
+                        "Variable"});
+            table16.AddRow(new string[] {
+                        "1",
+                        "Name",
+                        "Updated From Warewolf"});
+            table16.AddRow(new string[] {
+                        "2",
+                        "Title",
+                        "My Updated Warewolf Acceptance Test Item"});
+#line 117
+ testRunner.And("the debug inputs as", ((string)(null)), table16, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table17.AddRow(new string[] {
+                        "[[Result]] = Success"});
+#line 121
+ testRunner.And("the debug output as", ((string)(null)), table17, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Update all items in list with static data and filter has variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "UpdateItemInList")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("sharepoint")]
+        public virtual void UpdateAllItemsInListWithStaticDataAndFilterHasVariable()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update all items in list with static data and filter has variable", ((string[])(null)));
+#line 125
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 126
+ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 127
+ testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field Name",
+                        "Variable"});
+            table18.AddRow(new string[] {
+                        "Name",
+                        "Updated From Warewolf"});
+            table18.AddRow(new string[] {
+                        "Title",
+                        "My Updated Warewolf Acceptance Test Item"});
+#line 128
+ testRunner.And("I map the list update fields as", ((string)(null)), table18, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field Name",
+                        "Search Type",
+                        "Value",
+                        "From",
+                        "To"});
+            table19.AddRow(new string[] {
+                        "IntField",
+                        "Equals",
+                        "[[filterVal]]",
+                        "",
+                        ""});
+#line 132
+ testRunner.And("search criteria as", ((string)(null)), table19, "And ");
+#line 135
+ testRunner.And("I have a variable \"[[filterVal]]\" with a value \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 136
+ testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 137
+ testRunner.When("the sharepoint update list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 138
+ testRunner.Then("the value of \"[[Result]]\" equals \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 139
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Field Name",
+                        "Variable"});
+            table20.AddRow(new string[] {
+                        "1",
+                        "Name",
+                        "Updated From Warewolf"});
+            table20.AddRow(new string[] {
+                        "2",
+                        "Title",
+                        "My Updated Warewolf Acceptance Test Item"});
+#line 140
+ testRunner.And("the debug inputs as", ((string)(null)), table20, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table21.AddRow(new string[] {
+                        "[[Result]] = Success"});
+#line 144
+ testRunner.And("the debug output as", ((string)(null)), table21, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Update all items in list with scalar data and filter has variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "UpdateItemInList")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("sharepoint")]
+        public virtual void UpdateAllItemsInListWithScalarDataAndFilterHasVariable()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update all items in list with scalar data and filter has variable", ((string[])(null)));
+#line 148
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 149
+ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 150
+ testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field Name",
+                        "Variable"});
+            table22.AddRow(new string[] {
+                        "Name",
+                        "[[updateName]]"});
+            table22.AddRow(new string[] {
+                        "Title",
+                        "[[updateTitle]]"});
+#line 151
+ testRunner.And("I map the list update fields as", ((string)(null)), table22, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field Name",
+                        "Search Type",
+                        "Value",
+                        "From",
+                        "To"});
+            table23.AddRow(new string[] {
+                        "IntField",
+                        "Equals",
+                        "[[filterVal]]",
+                        "",
+                        ""});
+#line 155
+ testRunner.And("search criteria as", ((string)(null)), table23, "And ");
+#line 158
+ testRunner.And("I have a variable \"[[filterVal]]\" with a value \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 159
+ testRunner.And("I have a variable \"[[updateTitle]]\" with a value \"Updated Title from Variable\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 160
+ testRunner.And("I have a variable \"[[updateName]]\" with a value \"Updated Name from Variable\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 161
+ testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 162
+ testRunner.When("the sharepoint update list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 163
+ testRunner.Then("the value of \"[[Result]]\" equals \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 164
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Field Name",
+                        "Variable"});
+            table24.AddRow(new string[] {
+                        "1",
+                        "Name",
+                        "[[updateName]] = Updated Name from Variable"});
+            table24.AddRow(new string[] {
+                        "2",
+                        "Title",
+                        "[[updateTitle]] = Updated Title from Variable"});
+#line 165
+ testRunner.And("the debug inputs as", ((string)(null)), table24, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table25.AddRow(new string[] {
+                        "[[Result]] = Success"});
+#line 169
+ testRunner.And("the debug output as", ((string)(null)), table25, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Update all items in list with recordset data")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "UpdateItemInList")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("sharepoint")]
+        public virtual void UpdateAllItemsInListWithRecordsetData()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update all items in list with recordset data", ((string[])(null)));
+#line 173
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 174
+ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 175
+ testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field Name",
+                        "Variable"});
+            table26.AddRow(new string[] {
+                        "Name",
+                        "[[rec(*).name]]"});
+            table26.AddRow(new string[] {
+                        "Title",
+                        "[[rec(*).title]]"});
+#line 176
+ testRunner.And("I map the list update fields as", ((string)(null)), table26, "And ");
+#line 180
+ testRunner.And("I have a variable \"[[rec(1).title]]\" with a value \"Updated Title from Variable 1\"" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 181
+ testRunner.And("I have a variable \"[[rec(1).name]]\" with a value \"Updated Name from Variable 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 182
+ testRunner.And("I have a variable \"[[rec(2).title]]\" with a value \"Updated Title from Variable 2\"" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 183
+ testRunner.And("I have a variable \"[[rec(2).name]]\" with a value \"Updated Name from Variable 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 184
+ testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 185
+ testRunner.When("the sharepoint update list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 186
+ testRunner.Then("the value of \"[[Result]]\" equals \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 187
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Field Name",
+                        "Variable"});
+            table27.AddRow(new string[] {
+                        "1",
+                        "Name",
+                        "[[rec(1).name]] = Updated Name from Variable 1"});
+            table27.AddRow(new string[] {
+                        "",
+                        "",
+                        "[[rec(2).name]] = Updated Name from Variable 2"});
+            table27.AddRow(new string[] {
+                        "2",
+                        "Title",
+                        "[[rec(1).title]] = Updated Title from Variable 1"});
+            table27.AddRow(new string[] {
+                        "",
+                        "",
+                        "[[rec(2).title]] = Updated Title from Variable 2"});
+#line 188
+ testRunner.And("the debug inputs as", ((string)(null)), table27, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table28.AddRow(new string[] {
+                        "[[Result]] = Success"});
+#line 194
+ testRunner.And("the debug output as", ((string)(null)), table28, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
