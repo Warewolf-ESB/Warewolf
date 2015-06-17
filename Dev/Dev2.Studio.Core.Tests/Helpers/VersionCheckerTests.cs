@@ -79,7 +79,7 @@ namespace Dev2.Core.Tests.Helpers
             VersionCheckerTestClass versionChecker = new VersionCheckerTestClass(mockWebClient.Object) { ShowPopupResult = MessageBoxResult.No, CurrentVersion = new Version(0, 0, 0, 1) };
             var newerVersion = versionChecker.GetNewerVersion();
 
-            Assert.IsTrue(newerVersion);
+            Assert.IsTrue(newerVersion, "Current version (" + versionChecker.Current + ") is not newer than Latest (" + versionChecker.Latest + ")");
         }
 
         [TestMethod]
