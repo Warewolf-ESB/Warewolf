@@ -79,13 +79,85 @@ namespace Dev2.Activities.Specs.Toolbox._3RdPartyConnectors.Sharepoint
 #line 10
  testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
- testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("all items are deleted from the list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable",
+                        "Field Name"});
+            table1.AddRow(new string[] {
+                        "Warewolf Created Item Name 1",
+                        "Name"});
+            table1.AddRow(new string[] {
+                        "Warewolf Created Item Title 1",
+                        "Title"});
+            table1.AddRow(new string[] {
+                        "1",
+                        "IntField"});
+            table1.AddRow(new string[] {
+                        "10.52",
+                        "CurrencyField"});
+            table1.AddRow(new string[] {
+                        "2015/06/12",
+                        "DateField"});
+            table1.AddRow(new string[] {
+                        "2015/06/12 09:00 AM",
+                        "DateTimeField"});
+            table1.AddRow(new string[] {
+                        "False",
+                        "BoolField"});
+            table1.AddRow(new string[] {
+                        "Warewolf Created Text Field 1",
+                        "MultilineTextField"});
+            table1.AddRow(new string[] {
+                        "Warewolf Required Field 1",
+                        "RequiredField"});
 #line 12
- testRunner.When("the sharepoint delete item from list tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 13
+ testRunner.And("I map the list input fields as", ((string)(null)), table1, "And ");
+#line 23
+ testRunner.When("the sharepoint create list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 24
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 14
- testRunner.And("clear the activity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 25
+ testRunner.And("scenerio is clean", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable",
+                        "Field Name"});
+            table2.AddRow(new string[] {
+                        "Warewolf Created Item Name 2",
+                        "Name"});
+            table2.AddRow(new string[] {
+                        "Warewolf Created Item Title 2",
+                        "Title"});
+            table2.AddRow(new string[] {
+                        "2",
+                        "IntField"});
+            table2.AddRow(new string[] {
+                        "12.52",
+                        "CurrencyField"});
+            table2.AddRow(new string[] {
+                        "2015/06/11",
+                        "DateField"});
+            table2.AddRow(new string[] {
+                        "2015/06/11 11:00 AM",
+                        "DateTimeField"});
+            table2.AddRow(new string[] {
+                        "True",
+                        "BoolField"});
+            table2.AddRow(new string[] {
+                        "Warewolf Created Text Field 2",
+                        "MultilineTextField"});
+            table2.AddRow(new string[] {
+                        "Warewolf Required Field 2",
+                        "RequiredField"});
+#line 26
+ testRunner.And("I map the list input fields as", ((string)(null)), table2, "And ");
+#line 37
+ testRunner.When("the sharepoint create list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 38
+ testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 39
+ testRunner.And("scenerio is clean", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
         }
         
@@ -95,55 +167,29 @@ namespace Dev2.Activities.Specs.Toolbox._3RdPartyConnectors.Sharepoint
         public virtual void DeleteItemFromListWithNoCriteria()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Item from list with no criteria", ((string[])(null)));
-#line 17
+#line 42
 this.ScenarioSetup(scenarioInfo);
 #line 8
 this.FeatureBackground();
-#line 18
+#line 43
  testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 19
+#line 44
  testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Field Name",
-                        "Variable"});
-            table1.AddRow(new string[] {
-                        "Name",
-                        "[[items(*).name]]"});
-            table1.AddRow(new string[] {
-                        "Title",
-                        "[[items(*).title]]"});
-#line 20
- testRunner.And("I map the list input fields as", ((string)(null)), table1, "And ");
-#line 24
- testRunner.And("I have a variable \"[[items(1).name]]\" with value \"Created From Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 25
- testRunner.And("I have a variable \"[[items(1).title]]\" with value \"My New Warewolf Acceptance Tes" +
-                    "t Item\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 26
- testRunner.And("I have a variable \"[[items(2).name]]\" with value \"Created From Warewolf 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 27
- testRunner.And("I have a variable \"[[items(2).title]]\" with value \"My New Warewolf Acceptance Tes" +
-                    "t Item 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 30
+#line 45
  testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 31
- testRunner.When("the sharepoint create list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 32
- testRunner.And("the activity is cleared", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 33
+#line 46
  testRunner.When("the sharepoint delete item from list tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 34
+#line 47
  testRunner.Then("the value of \"[[Result]]\" equals \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 35
+#line 48
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table2.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "[[Result]] = 2"});
-#line 36
- testRunner.And("the debug output as", ((string)(null)), table2, "And ");
+#line 49
+ testRunner.And("the debug output as", ((string)(null)), table3, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -154,41 +200,14 @@ this.FeatureBackground();
         public virtual void DeleteItemFromSharepointListWithEqualCriteria()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Item from Sharepoint list with Equal criteria", ((string[])(null)));
-#line 40
+#line 53
 this.ScenarioSetup(scenarioInfo);
 #line 8
 this.FeatureBackground();
-#line 41
+#line 54
  testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 42
+#line 55
  testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Field Name",
-                        "Variable"});
-            table3.AddRow(new string[] {
-                        "Name",
-                        "[[items(*).name]]"});
-            table3.AddRow(new string[] {
-                        "Title",
-                        "[[items(*).title]]"});
-            table3.AddRow(new string[] {
-                        "RequiredField",
-                        "[[items(*).required]]"});
-#line 43
-  testRunner.And("I map the list input fields as", ((string)(null)), table3, "And ");
-#line 48
- testRunner.And("I have a variable \"[[items(1).name]]\" with value \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 49
- testRunner.And("I have a variable \"[[items(1).title]]\" with value \"One\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 50
- testRunner.And("I have a variable \"[[items(1).required]]\" with value \"One\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 51
- testRunner.And("I have a variable \"[[items(2).name]]\" with value \"200\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 52
- testRunner.And("I have a variable \"[[items(2).title]]\" with value \"Two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 53
- testRunner.And("I have a variable \"[[items(2).required]]\" with value \"Two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field Name",
@@ -197,19 +216,15 @@ this.FeatureBackground();
                         "From",
                         "To"});
             table4.AddRow(new string[] {
-                        "Title",
+                        "IntField",
                         "Equals",
-                        "Two",
+                        "2",
                         "",
                         ""});
-#line 54
+#line 56
  testRunner.And("search criteria as", ((string)(null)), table4, "And ");
-#line 57
- testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 58
- testRunner.When("the sharepoint create list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 59
- testRunner.And("the activity is cleared", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 60
  testRunner.When("the sharepoint delete item from list tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 61
@@ -225,9 +240,9 @@ this.FeatureBackground();
                         "Require All Criteria To Match"});
             table5.AddRow(new string[] {
                         "1",
-                        "Title",
+                        "IntField",
                         "=",
-                        "Two",
+                        "2",
                         "Yes"});
 #line 63
  testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
@@ -259,79 +274,48 @@ this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field Name",
-                        "Variable"});
-            table7.AddRow(new string[] {
-                        "IntField",
-                        "[[items(*).intfield]]"});
-            table7.AddRow(new string[] {
-                        "Title",
-                        "[[items(*).title]]"});
-            table7.AddRow(new string[] {
-                        "RequiredField",
-                        "[[items(*).title]]"});
-#line 73
-  testRunner.And("I map the list input fields as", ((string)(null)), table7, "And ");
-#line 78
- testRunner.And("I have a variable \"[[items(1).intfield]]\" with value \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 79
- testRunner.And("I have a variable \"[[items(1).title]]\" with value \"One\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 80
- testRunner.And("I have a variable \"[[items(2).intfield]]\" with value \"200\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 81
- testRunner.And("I have a variable \"[[items(2).title]]\" with value \"Two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 82
- testRunner.And("I have a variable \"[[items(3).intfield]]\" with value \"300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 83
- testRunner.And("I have a variable \"[[items(3).title]]\" with value \"Three\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Field Name",
                         "Search Type",
                         "Value",
                         "From",
                         "To"});
-            table8.AddRow(new string[] {
-                        "IntField",
+            table7.AddRow(new string[] {
+                        "CurrencyField",
                         ">",
-                        "100",
+                        "10",
                         "",
                         ""});
-#line 84
- testRunner.And("search criteria as", ((string)(null)), table8, "And ");
-#line 87
+#line 73
+ testRunner.And("search criteria as", ((string)(null)), table7, "And ");
+#line 76
  testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 88
- testRunner.When("the sharepoint create list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 89
- testRunner.And("the activity is cleared", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 90
+#line 77
  testRunner.When("the sharepoint delete item from list tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 91
+#line 78
  testRunner.Then("the value of \"[[Result]]\" equals \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 92
+#line 79
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Field Name",
                         "Search Type",
                         "Value",
                         "Require All Criteria To Match"});
-            table9.AddRow(new string[] {
+            table8.AddRow(new string[] {
                         "1",
-                        "IntField",
+                        "CurrencyField",
                         ">",
-                        "100",
+                        "10",
                         "Yes"});
-#line 93
- testRunner.And("the debug inputs as", ((string)(null)), table9, "And ");
+#line 80
+ testRunner.And("the debug inputs as", ((string)(null)), table8, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table10.AddRow(new string[] {
+            table9.AddRow(new string[] {
                         "[[Result]] = 2"});
-#line 96
- testRunner.And("the debug output as", ((string)(null)), table10, "And ");
+#line 83
+ testRunner.And("the debug output as", ((string)(null)), table9, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -342,90 +326,59 @@ this.FeatureBackground();
         public virtual void DeleteItemFromListWithGreaterThanEqualCriteria()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Item from list with Greater Than Equal criteria", ((string[])(null)));
-#line 100
+#line 87
 this.ScenarioSetup(scenarioInfo);
 #line 8
 this.FeatureBackground();
-#line 101
+#line 88
  testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 102
+#line 89
  testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Field Name",
-                        "Variable"});
-            table11.AddRow(new string[] {
-                        "IntField",
-                        "[[items(*).name]]"});
-            table11.AddRow(new string[] {
-                        "Title",
-                        "[[items(*).title]]"});
-            table11.AddRow(new string[] {
-                        "RequiredField",
-                        "[[items(*).title]]"});
-#line 103
-  testRunner.And("I map the list input fields as", ((string)(null)), table11, "And ");
-#line 108
- testRunner.And("I have a variable \"[[items(1).name]]\" with value \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 109
- testRunner.And("I have a variable \"[[items(1).title]]\" with value \"One\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 110
- testRunner.And("I have a variable \"[[items(2).name]]\" with value \"200\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 111
- testRunner.And("I have a variable \"[[items(2).title]]\" with value \"Two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 112
- testRunner.And("I have a variable \"[[items(3).name]]\" with value \"300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 113
- testRunner.And("I have a variable \"[[items(3).title]]\" with value \"Three\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field Name",
                         "Search Type",
                         "Value",
                         "From",
                         "To"});
-            table12.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "IntField",
                         ">=",
-                        "100",
+                        "1",
                         "",
                         ""});
-#line 114
- testRunner.And("search criteria as", ((string)(null)), table12, "And ");
-#line 117
+#line 90
+ testRunner.And("search criteria as", ((string)(null)), table10, "And ");
+#line 93
  testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 118
- testRunner.When("the sharepoint create list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 119
- testRunner.And("the activity is cleared", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 120
+#line 94
  testRunner.When("the sharepoint delete item from list tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 121
- testRunner.Then("the value of \"[[Result]]\" equals \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 122
+#line 95
+ testRunner.Then("the value of \"[[Result]]\" equals \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 96
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Field Name",
                         "Search Type",
                         "Value",
                         "Require All Criteria To Match"});
-            table13.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "1",
                         "IntField",
                         ">=",
-                        "100",
+                        "1",
                         "Yes"});
-#line 123
- testRunner.And("the debug inputs as", ((string)(null)), table13, "And ");
+#line 97
+ testRunner.And("the debug inputs as", ((string)(null)), table11, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table14.AddRow(new string[] {
-                        "[[Result]] = 3"});
-#line 126
- testRunner.And("the debug output as", ((string)(null)), table14, "And ");
+            table12.AddRow(new string[] {
+                        "[[Result]] = 2"});
+#line 100
+ testRunner.And("the debug output as", ((string)(null)), table12, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -436,41 +389,77 @@ this.FeatureBackground();
         public virtual void DeleteItemFromSharepointListWithLessThanCriteria()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Item from Sharepoint list with Less Than criteria", ((string[])(null)));
-#line 130
+#line 104
 this.ScenarioSetup(scenarioInfo);
 #line 8
 this.FeatureBackground();
-#line 131
+#line 105
  testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 132
+#line 106
  testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field Name",
-                        "Variable"});
-            table15.AddRow(new string[] {
+                        "Search Type",
+                        "Value",
+                        "From",
+                        "To"});
+            table13.AddRow(new string[] {
                         "IntField",
-                        "[[items(*).name]]"});
+                        "<",
+                        "2",
+                        "",
+                        ""});
+#line 107
+ testRunner.And("search criteria as", ((string)(null)), table13, "And ");
+#line 110
+ testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 111
+ testRunner.When("the sharepoint delete item from list tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 112
+ testRunner.Then("the value of \"[[Result]]\" equals \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 113
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Field Name",
+                        "Search Type",
+                        "Value",
+                        "Require All Criteria To Match"});
+            table14.AddRow(new string[] {
+                        "1",
+                        "IntField",
+                        "<",
+                        "2",
+                        "Yes"});
+#line 114
+ testRunner.And("the debug inputs as", ((string)(null)), table14, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
             table15.AddRow(new string[] {
-                        "Title",
-                        "[[items(*).title]]"});
-            table15.AddRow(new string[] {
-                        "RequiredField",
-                        "[[items(*).title]]"});
-#line 133
-  testRunner.And("I map the list input fields as", ((string)(null)), table15, "And ");
-#line 138
- testRunner.And("I have a variable \"[[items(1).name]]\" with value \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 139
- testRunner.And("I have a variable \"[[items(1).title]]\" with value \"One\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 140
- testRunner.And("I have a variable \"[[items(2).name]]\" with value \"200\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 141
- testRunner.And("I have a variable \"[[items(2).title]]\" with value \"Two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 142
- testRunner.And("I have a variable \"[[items(3).name]]\" with value \"300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 143
- testRunner.And("I have a variable \"[[items(3).title]]\" with value \"Three\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        "[[Result]] = 1"});
+#line 117
+ testRunner.And("the debug output as", ((string)(null)), table15, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Item from list with Less Than Equal criteria")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeleteItemFromList")]
+        public virtual void DeleteItemFromListWithLessThanEqualCriteria()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Item from list with Less Than Equal criteria", ((string[])(null)));
+#line 121
+this.ScenarioSetup(scenarioInfo);
+#line 8
+this.FeatureBackground();
+#line 122
+ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 123
+ testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field Name",
@@ -480,23 +469,19 @@ this.FeatureBackground();
                         "To"});
             table16.AddRow(new string[] {
                         "IntField",
-                        "<",
-                        "200",
+                        "<=",
+                        "2",
                         "",
                         ""});
-#line 144
+#line 124
  testRunner.And("search criteria as", ((string)(null)), table16, "And ");
-#line 147
+#line 127
  testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 148
- testRunner.When("the sharepoint create list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 149
- testRunner.And("the activity is cleared", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 150
+#line 128
  testRunner.When("the sharepoint delete item from list tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 151
- testRunner.Then("the value of \"[[Result]]\" equals \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 152
+#line 129
+ testRunner.Then("the value of \"[[Result]]\" equals \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 130
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
@@ -508,112 +493,18 @@ this.FeatureBackground();
             table17.AddRow(new string[] {
                         "1",
                         "IntField",
-                        "<",
-                        "200",
+                        "<=",
+                        "2",
                         "Yes"});
-#line 153
+#line 131
  testRunner.And("the debug inputs as", ((string)(null)), table17, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table18.AddRow(new string[] {
-                        "[[Result]] = 1"});
-#line 156
- testRunner.And("the debug output as", ((string)(null)), table18, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Item from list with Less Than Equal criteria")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeleteItemFromList")]
-        public virtual void DeleteItemFromListWithLessThanEqualCriteria()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Item from list with Less Than Equal criteria", ((string[])(null)));
-#line 160
-this.ScenarioSetup(scenarioInfo);
-#line 8
-this.FeatureBackground();
-#line 161
- testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 162
- testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Field Name",
-                        "Variable"});
-            table19.AddRow(new string[] {
-                        "IntField",
-                        "[[items(*).name]]"});
-            table19.AddRow(new string[] {
-                        "Title",
-                        "[[items(*).title]]"});
-            table19.AddRow(new string[] {
-                        "RequiredField",
-                        "[[items(*).title]]"});
-#line 163
-  testRunner.And("I map the list input fields as", ((string)(null)), table19, "And ");
-#line 168
- testRunner.And("I have a variable \"[[items(1).name]]\" with value \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 169
- testRunner.And("I have a variable \"[[items(1).title]]\" with value \"One\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 170
- testRunner.And("I have a variable \"[[items(2).name]]\" with value \"200\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 171
- testRunner.And("I have a variable \"[[items(2).title]]\" with value \"Two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 172
- testRunner.And("I have a variable \"[[items(3).name]]\" with value \"300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 173
- testRunner.And("I have a variable \"[[items(3).title]]\" with value \"Three\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Field Name",
-                        "Search Type",
-                        "Value",
-                        "From",
-                        "To"});
-            table20.AddRow(new string[] {
-                        "IntField",
-                        "<=",
-                        "200",
-                        "",
-                        ""});
-#line 174
- testRunner.And("search criteria as", ((string)(null)), table20, "And ");
-#line 177
- testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 178
- testRunner.When("the sharepoint create list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 179
- testRunner.And("the activity is cleared", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 180
- testRunner.When("the sharepoint delete item from list tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 181
- testRunner.Then("the value of \"[[Result]]\" equals \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 182
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "Field Name",
-                        "Search Type",
-                        "Value",
-                        "Require All Criteria To Match"});
-            table21.AddRow(new string[] {
-                        "1",
-                        "IntField",
-                        "<=",
-                        "200",
-                        "Yes"});
-#line 183
- testRunner.And("the debug inputs as", ((string)(null)), table21, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table22.AddRow(new string[] {
                         "[[Result]] = 2"});
-#line 186
- testRunner.And("the debug output as", ((string)(null)), table22, "And ");
+#line 134
+ testRunner.And("the debug output as", ((string)(null)), table18, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -624,90 +515,59 @@ this.FeatureBackground();
         public virtual void DeleteItemFromSharepointListWithNotEqualCriteria()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Item from Sharepoint list with Not Equal criteria", ((string[])(null)));
-#line 190
+#line 138
 this.ScenarioSetup(scenarioInfo);
 #line 8
 this.FeatureBackground();
-#line 191
+#line 139
  testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 192
+#line 140
  testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Field Name",
-                        "Variable"});
-            table23.AddRow(new string[] {
-                        "IntField",
-                        "[[items(*).name]]"});
-            table23.AddRow(new string[] {
-                        "Title",
-                        "[[items(*).title]]"});
-            table23.AddRow(new string[] {
-                        "RequiredField",
-                        "[[items(*).title]]"});
-#line 193
-  testRunner.And("I map the list input fields as", ((string)(null)), table23, "And ");
-#line 198
- testRunner.And("I have a variable \"[[items(1).name]]\" with value \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 199
- testRunner.And("I have a variable \"[[items(1).title]]\" with value \"One\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 200
- testRunner.And("I have a variable \"[[items(2).name]]\" with value \"200\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 201
- testRunner.And("I have a variable \"[[items(2).title]]\" with value \"Two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 202
- testRunner.And("I have a variable \"[[items(3).name]]\" with value \"300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 203
- testRunner.And("I have a variable \"[[items(3).title]]\" with value \"Three\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field Name",
                         "Search Type",
                         "Value",
                         "From",
                         "To"});
-            table24.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "IntField",
                         "<>",
-                        "200",
+                        "2",
                         "",
                         ""});
-#line 204
- testRunner.And("search criteria as", ((string)(null)), table24, "And ");
-#line 207
+#line 141
+ testRunner.And("search criteria as", ((string)(null)), table19, "And ");
+#line 144
  testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 208
- testRunner.When("the sharepoint create list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 209
- testRunner.And("the activity is cleared", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 210
+#line 145
  testRunner.When("the sharepoint delete item from list tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 211
- testRunner.Then("the value of \"[[Result]]\" equals \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 212
+#line 146
+ testRunner.Then("the value of \"[[Result]]\" equals \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 147
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Field Name",
                         "Search Type",
                         "Value",
                         "Require All Criteria To Match"});
-            table25.AddRow(new string[] {
+            table20.AddRow(new string[] {
                         "1",
                         "IntField",
                         "<>",
-                        "200",
+                        "2",
                         "Yes"});
-#line 213
- testRunner.And("the debug inputs as", ((string)(null)), table25, "And ");
+#line 148
+ testRunner.And("the debug inputs as", ((string)(null)), table20, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table26.AddRow(new string[] {
-                        "[[Result]] = 2"});
-#line 216
- testRunner.And("the debug output as", ((string)(null)), table26, "And ");
+            table21.AddRow(new string[] {
+                        "[[Result]] = 1"});
+#line 151
+ testRunner.And("the debug output as", ((string)(null)), table21, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -718,41 +578,140 @@ this.FeatureBackground();
         public virtual void DeleteItemFromListWithContainsCriteria()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Item from list with Contains criteria", ((string[])(null)));
-#line 220
+#line 155
 this.ScenarioSetup(scenarioInfo);
 #line 8
 this.FeatureBackground();
-#line 221
+#line 156
   testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 222
+#line 157
  testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field Name",
-                        "Variable"});
-            table27.AddRow(new string[] {
-                        "IntField",
-                        "[[items(*).name]]"});
-            table27.AddRow(new string[] {
+                        "Search Type",
+                        "Value",
+                        "From",
+                        "To"});
+            table22.AddRow(new string[] {
                         "Title",
-                        "[[items(*).title]]"});
+                        "Contains",
+                        "Warewolf",
+                        "",
+                        ""});
+#line 158
+ testRunner.And("search criteria as", ((string)(null)), table22, "And ");
+#line 161
+ testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 162
+ testRunner.When("the sharepoint delete item from list tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 163
+ testRunner.Then("the value of \"[[Result]]\" equals \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 164
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Field Name",
+                        "Search Type",
+                        "Value",
+                        "Require All Criteria To Match"});
+            table23.AddRow(new string[] {
+                        "1",
+                        "Title",
+                        "Contains",
+                        "Warewolf",
+                        "Yes"});
+#line 165
+ testRunner.And("the debug inputs as", ((string)(null)), table23, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table24.AddRow(new string[] {
+                        "[[Result]] = 2"});
+#line 168
+ testRunner.And("the debug output as", ((string)(null)), table24, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Item from list with Begins With criteria")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeleteItemFromList")]
+        public virtual void DeleteItemFromListWithBeginsWithCriteria()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Item from list with Begins With criteria", ((string[])(null)));
+#line 172
+this.ScenarioSetup(scenarioInfo);
+#line 8
+this.FeatureBackground();
+#line 173
+ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 174
+ testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field Name",
+                        "Search Type",
+                        "Value",
+                        "From",
+                        "To"});
+            table25.AddRow(new string[] {
+                        "Title",
+                        "Begins With",
+                        "Warewolf",
+                        "",
+                        ""});
+#line 175
+ testRunner.And("search criteria as", ((string)(null)), table25, "And ");
+#line 178
+ testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 179
+ testRunner.When("the sharepoint delete item from list tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 180
+ testRunner.Then("the value of \"[[Result]]\" equals \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 181
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Field Name",
+                        "Search Type",
+                        "Value",
+                        "Require All Criteria To Match"});
+            table26.AddRow(new string[] {
+                        "1",
+                        "Title",
+                        "Begins With",
+                        "Warewolf",
+                        "Yes"});
+#line 182
+ testRunner.And("the debug inputs as", ((string)(null)), table26, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
             table27.AddRow(new string[] {
-                        "RequiredField",
-                        "[[items(*).title]]"});
-#line 223
-  testRunner.And("I map the list input fields as", ((string)(null)), table27, "And ");
-#line 228
- testRunner.And("I have a variable \"[[items(1).name]]\" with value \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 229
- testRunner.And("I have a variable \"[[items(1).title]]\" with value \"one\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 230
- testRunner.And("I have a variable \"[[items(2).name]]\" with value \"200\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 231
- testRunner.And("I have a variable \"[[items(2).title]]\" with value \"one two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 232
- testRunner.And("I have a variable \"[[items(3).name]]\" with value \"300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 233
- testRunner.And("I have a variable \"[[items(3).title]]\" with value \"three\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        "[[Result]] = 2"});
+#line 185
+ testRunner.And("the debug output as", ((string)(null)), table27, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Item from list with Multiple criteria return multiple results")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeleteItemFromList")]
+        public virtual void DeleteItemFromListWithMultipleCriteriaReturnMultipleResults()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Item from list with Multiple criteria return multiple results", ((string[])(null)));
+#line 189
+this.ScenarioSetup(scenarioInfo);
+#line 8
+this.FeatureBackground();
+#line 190
+ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 191
+ testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field Name",
@@ -763,22 +722,24 @@ this.FeatureBackground();
             table28.AddRow(new string[] {
                         "Title",
                         "Contains",
-                        "one",
+                        "o",
                         "",
                         ""});
-#line 234
+            table28.AddRow(new string[] {
+                        "IntField",
+                        "<=",
+                        "2",
+                        "",
+                        ""});
+#line 192
  testRunner.And("search criteria as", ((string)(null)), table28, "And ");
-#line 237
+#line 196
  testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 238
- testRunner.When("the sharepoint create list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 239
- testRunner.And("the activity is cleared", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 240
+#line 197
  testRunner.When("the sharepoint delete item from list tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 241
+#line 198
  testRunner.Then("the value of \"[[Result]]\" equals \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 242
+#line 199
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
@@ -791,221 +752,23 @@ this.FeatureBackground();
                         "1",
                         "Title",
                         "Contains",
-                        "one",
+                        "o",
+                        ""});
+            table29.AddRow(new string[] {
+                        "2",
+                        "IntField",
+                        "<=",
+                        "2",
                         "Yes"});
-#line 243
+#line 200
  testRunner.And("the debug inputs as", ((string)(null)), table29, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table30.AddRow(new string[] {
                         "[[Result]] = 2"});
-#line 246
+#line 204
  testRunner.And("the debug output as", ((string)(null)), table30, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Item from list with Begins With criteria")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeleteItemFromList")]
-        public virtual void DeleteItemFromListWithBeginsWithCriteria()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Item from list with Begins With criteria", ((string[])(null)));
-#line 250
-this.ScenarioSetup(scenarioInfo);
-#line 8
-this.FeatureBackground();
-#line 251
- testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 252
- testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Field Name",
-                        "Variable"});
-            table31.AddRow(new string[] {
-                        "IntField",
-                        "[[items(*).name]]"});
-            table31.AddRow(new string[] {
-                        "Title",
-                        "[[items(*).title]]"});
-            table31.AddRow(new string[] {
-                        "RequiredField",
-                        "[[items(*).title]]"});
-#line 253
-  testRunner.And("I map the list input fields as", ((string)(null)), table31, "And ");
-#line 258
- testRunner.And("I have a variable \"[[items(1).name]]\" with value \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 259
- testRunner.And("I have a variable \"[[items(1).title]]\" with value \"one\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 260
- testRunner.And("I have a variable \"[[items(2).name]]\" with value \"200\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 261
- testRunner.And("I have a variable \"[[items(2).title]]\" with value \"one two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 262
- testRunner.And("I have a variable \"[[items(3).name]]\" with value \"300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 263
- testRunner.And("I have a variable \"[[items(3).title]]\" with value \"three\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Field Name",
-                        "Search Type",
-                        "Value",
-                        "From",
-                        "To"});
-            table32.AddRow(new string[] {
-                        "Title",
-                        "Begins With",
-                        "one",
-                        "",
-                        ""});
-#line 264
- testRunner.And("search criteria as", ((string)(null)), table32, "And ");
-#line 267
- testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 268
- testRunner.When("the sharepoint create list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 269
- testRunner.And("the activity is cleared", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 270
- testRunner.When("the sharepoint delete item from list tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 271
- testRunner.Then("the value of \"[[Result]]\" equals \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 272
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "Field Name",
-                        "Search Type",
-                        "Value",
-                        "Require All Criteria To Match"});
-            table33.AddRow(new string[] {
-                        "1",
-                        "Title",
-                        "Begins With",
-                        "one",
-                        "Yes"});
-#line 273
- testRunner.And("the debug inputs as", ((string)(null)), table33, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table34.AddRow(new string[] {
-                        "[[Result]] = 2"});
-#line 276
- testRunner.And("the debug output as", ((string)(null)), table34, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Item from list with Multiple criteria return multiple results")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeleteItemFromList")]
-        public virtual void DeleteItemFromListWithMultipleCriteriaReturnMultipleResults()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Item from list with Multiple criteria return multiple results", ((string[])(null)));
-#line 280
-this.ScenarioSetup(scenarioInfo);
-#line 8
-this.FeatureBackground();
-#line 281
- testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 282
- testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Field Name",
-                        "Variable"});
-            table35.AddRow(new string[] {
-                        "IntField",
-                        "[[items(*).intfield]]"});
-            table35.AddRow(new string[] {
-                        "Title",
-                        "[[items(*).title]]"});
-            table35.AddRow(new string[] {
-                        "RequiredField",
-                        "[[items(*).title]]"});
-#line 283
-  testRunner.And("I map the list input fields as", ((string)(null)), table35, "And ");
-#line 288
- testRunner.And("I have a variable \"[[items(1).intfield]]\" with value \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 289
- testRunner.And("I have a variable \"[[items(1).title]]\" with value \"One\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 290
- testRunner.And("I have a variable \"[[items(2).intfield]]\" with value \"200\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 291
- testRunner.And("I have a variable \"[[items(2).title]]\" with value \"Two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 292
- testRunner.And("I have a variable \"[[items(3).intfield]]\" with value \"300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 293
- testRunner.And("I have a variable \"[[items(3).title]]\" with value \"Three\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 294
- testRunner.And("I have a variable \"[[items(4).intfield]]\" with value \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 295
- testRunner.And("I have a variable \"[[items(4).title]]\" with value \"4th\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Field Name",
-                        "Search Type",
-                        "Value",
-                        "From",
-                        "To"});
-            table36.AddRow(new string[] {
-                        "Title",
-                        "Contains",
-                        "o",
-                        "",
-                        ""});
-            table36.AddRow(new string[] {
-                        "IntField",
-                        "<=",
-                        "300",
-                        "",
-                        ""});
-#line 296
- testRunner.And("search criteria as", ((string)(null)), table36, "And ");
-#line 300
- testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 301
- testRunner.When("the sharepoint create list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 302
- testRunner.And("the activity is cleared", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 303
- testRunner.When("the sharepoint delete item from list tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 304
- testRunner.Then("the value of \"[[Result]]\" equals \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 305
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "Field Name",
-                        "Search Type",
-                        "Value",
-                        "Require All Criteria To Match"});
-            table37.AddRow(new string[] {
-                        "1",
-                        "Title",
-                        "Contains",
-                        "o",
-                        "Yes"});
-            table37.AddRow(new string[] {
-                        "2",
-                        "IntField",
-                        "<>",
-                        "300",
-                        "Yes"});
-#line 306
- testRunner.And("the debug inputs as", ((string)(null)), table37, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table38.AddRow(new string[] {
-                        "[[Result]] = 3"});
-#line 310
- testRunner.And("the debug output as", ((string)(null)), table38, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1016,106 +779,71 @@ this.FeatureBackground();
         public virtual void DeleteItemFromListWithMultipleCriteriaReturnSingleResults()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Item from list with Multiple criteria return single results", ((string[])(null)));
-#line 314
+#line 208
 this.ScenarioSetup(scenarioInfo);
 #line 8
 this.FeatureBackground();
-#line 315
-  testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 316
+#line 209
+ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 210
  testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Field Name",
-                        "Variable"});
-            table39.AddRow(new string[] {
-                        "IntField",
-                        "[[items(*).intfield]]"});
-            table39.AddRow(new string[] {
-                        "Title",
-                        "[[items(*).title]]"});
-            table39.AddRow(new string[] {
-                        "RequiredField",
-                        "[[items(*).title]]"});
-#line 317
-  testRunner.And("I map the list input fields as", ((string)(null)), table39, "And ");
-#line 322
- testRunner.And("I have a variable \"[[items(1).intfield]]\" with value \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 323
- testRunner.And("I have a variable \"[[items(1).title]]\" with value \"One\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 324
- testRunner.And("I have a variable \"[[items(2).intfield]]\" with value \"200\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 325
- testRunner.And("I have a variable \"[[items(2).title]]\" with value \"Two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 326
- testRunner.And("I have a variable \"[[items(3).intfield]]\" with value \"300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 327
- testRunner.And("I have a variable \"[[items(3).title]]\" with value \"Three\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 328
- testRunner.And("I have a variable \"[[items(4).intfield]]\" with value \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 329
- testRunner.And("I have a variable \"[[items(4).title]]\" with value \"4th\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field Name",
                         "Search Type",
                         "Value",
                         "From",
                         "To"});
-            table40.AddRow(new string[] {
+            table31.AddRow(new string[] {
                         "Title",
                         "Contains",
-                        "e",
+                        "1",
                         "",
                         ""});
-            table40.AddRow(new string[] {
+            table31.AddRow(new string[] {
                         "IntField",
-                        "Equals",
-                        "300",
+                        "<=",
+                        "2",
                         "",
                         ""});
-#line 330
- testRunner.And("search criteria as", ((string)(null)), table40, "And ");
-#line 334
+#line 211
+ testRunner.And("search criteria as", ((string)(null)), table31, "And ");
+#line 215
  testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 335
- testRunner.When("the sharepoint create list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 336
- testRunner.And("the activity is cleared", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 337
+#line 216
  testRunner.When("the sharepoint delete item from list tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 338
+#line 217
  testRunner.Then("the value of \"[[Result]]\" equals \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 339
+#line 218
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Field Name",
                         "Search Type",
                         "Value",
                         "Require All Criteria To Match"});
-            table41.AddRow(new string[] {
+            table32.AddRow(new string[] {
                         "1",
                         "Title",
                         "Contains",
-                        "e",
+                        "1",
                         "Yes"});
-            table41.AddRow(new string[] {
+            table32.AddRow(new string[] {
                         "2",
                         "IntField",
-                        "=",
-                        "300",
+                        "<=",
+                        "2",
                         "Yes"});
-#line 340
- testRunner.And("the debug inputs as", ((string)(null)), table41, "And ");
+#line 219
+ testRunner.And("the debug inputs as", ((string)(null)), table32, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table42.AddRow(new string[] {
+            table33.AddRow(new string[] {
                         "[[Result]] = 1"});
-#line 344
- testRunner.And("the debug output as", ((string)(null)), table42, "And ");
+#line 223
+ testRunner.And("the debug output as", ((string)(null)), table33, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1126,108 +854,73 @@ this.FeatureBackground();
         public virtual void DeleteItemFromListWithMultipleCriteriaDoNotMatchAllCriteria()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Item from list with Multiple criteria do not match all criteria", ((string[])(null)));
-#line 348
+#line 227
 this.ScenarioSetup(scenarioInfo);
 #line 8
 this.FeatureBackground();
-#line 349
-   testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 350
+#line 228
+ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 229
  testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table43 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Field Name",
-                        "Variable"});
-            table43.AddRow(new string[] {
-                        "IntField",
-                        "[[items(*).intfield]]"});
-            table43.AddRow(new string[] {
-                        "Title",
-                        "[[items(*).title]]"});
-            table43.AddRow(new string[] {
-                        "RequiredField",
-                        "[[items(*).title]]"});
-#line 351
-  testRunner.And("I map the list input fields as", ((string)(null)), table43, "And ");
-#line 356
- testRunner.And("I have a variable \"[[items(1).intfield]]\" with value \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 357
- testRunner.And("I have a variable \"[[items(1).title]]\" with value \"One\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 358
- testRunner.And("I have a variable \"[[items(2).intfield]]\" with value \"200\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 359
- testRunner.And("I have a variable \"[[items(2).title]]\" with value \"Two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 360
- testRunner.And("I have a variable \"[[items(3).intfield]]\" with value \"300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 361
- testRunner.And("I have a variable \"[[items(3).title]]\" with value \"Three\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 362
- testRunner.And("I have a variable \"[[items(4).intfield]]\" with value \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 363
- testRunner.And("I have a variable \"[[items(4).title]]\" with value \"4th\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table44 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field Name",
                         "Search Type",
                         "Value",
                         "From",
                         "To"});
-            table44.AddRow(new string[] {
+            table34.AddRow(new string[] {
                         "Title",
                         "Contains",
                         "o",
                         "",
                         ""});
-            table44.AddRow(new string[] {
+            table34.AddRow(new string[] {
                         "IntField",
                         "<",
                         "200",
                         "",
                         ""});
-#line 364
- testRunner.And("search criteria as", ((string)(null)), table44, "And ");
-#line 368
+#line 230
+ testRunner.And("search criteria as", ((string)(null)), table34, "And ");
+#line 234
  testRunner.And("do not require all criteria to match", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 369
+#line 235
  testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 370
- testRunner.When("the sharepoint create list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 371
- testRunner.And("the activity is cleared", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 372
+#line 236
  testRunner.When("the sharepoint delete item from list tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 373
+#line 237
  testRunner.Then("the value of \"[[Result]]\" equals \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 374
+#line 238
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Field Name",
                         "Search Type",
                         "Value",
                         "Require All Criteria To Match"});
-            table45.AddRow(new string[] {
+            table35.AddRow(new string[] {
                         "1",
                         "Title",
                         "Contains",
                         "o",
-                        "No"});
-            table45.AddRow(new string[] {
+                        ""});
+            table35.AddRow(new string[] {
                         "2",
                         "IntField",
                         "<",
                         "200",
                         "No"});
-#line 375
- testRunner.And("the debug inputs as", ((string)(null)), table45, "And ");
+#line 239
+ testRunner.And("the debug inputs as", ((string)(null)), table35, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table46 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table46.AddRow(new string[] {
+            table36.AddRow(new string[] {
                         "[[Result]] = 2"});
-#line 379
- testRunner.And("the debug output as", ((string)(null)), table46, "And ");
+#line 243
+ testRunner.And("the debug output as", ((string)(null)), table36, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1238,106 +931,73 @@ this.FeatureBackground();
         public virtual void DeleteItemFromListWithMultipleCriteriaMatchAllCriteriaFindsNothing()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Item from list with Multiple criteria match all criteria finds nothing", ((string[])(null)));
-#line 384
+#line 248
 this.ScenarioSetup(scenarioInfo);
 #line 8
 this.FeatureBackground();
-#line 385
-   testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 386
+#line 249
+ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 250
  testRunner.And("I select \"AcceptanceTesting\" list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table47 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Field Name",
-                        "Variable"});
-            table47.AddRow(new string[] {
-                        "IntField",
-                        "[[items(*).intfield]]"});
-            table47.AddRow(new string[] {
-                        "Title",
-                        "[[items(*).title]]"});
-            table47.AddRow(new string[] {
-                        "RequiredField",
-                        "[[items(*).title]]"});
-#line 387
-  testRunner.And("I map the list input fields as", ((string)(null)), table47, "And ");
-#line 392
- testRunner.And("I have a variable \"[[items(1).intfield]]\" with value \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 393
- testRunner.And("I have a variable \"[[items(1).title]]\" with value \"One\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 394
- testRunner.And("I have a variable \"[[items(2).intfield]]\" with value \"200\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 395
- testRunner.And("I have a variable \"[[items(2).title]]\" with value \"Two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 396
- testRunner.And("I have a variable \"[[items(3).intfield]]\" with value \"300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 397
- testRunner.And("I have a variable \"[[items(3).title]]\" with value \"Three\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 398
- testRunner.And("I have a variable \"[[items(4).intfield]]\" with value \"400\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 399
- testRunner.And("I have a variable \"[[items(4).title]]\" with value \"4th\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table48 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field Name",
                         "Search Type",
                         "Value",
                         "From",
                         "To"});
-            table48.AddRow(new string[] {
+            table37.AddRow(new string[] {
                         "Title",
                         "Contains",
-                        "n",
+                        "z",
                         "",
                         ""});
-            table48.AddRow(new string[] {
+            table37.AddRow(new string[] {
                         "IntField",
                         ">",
                         "200",
                         "",
                         ""});
-#line 400
- testRunner.And("search criteria as", ((string)(null)), table48, "And ");
-#line 404
+#line 251
+ testRunner.And("search criteria as", ((string)(null)), table37, "And ");
+#line 255
+ testRunner.And("do not require all criteria to match", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 256
  testRunner.And("I have result variable as \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 405
- testRunner.When("the sharepoint create list item tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 406
- testRunner.And("the activity is cleared", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 407
+#line 257
  testRunner.When("the sharepoint delete item from list tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 408
+#line 258
  testRunner.Then("the value of \"[[Result]]\" equals \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 409
+#line 259
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table49 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Field Name",
                         "Search Type",
                         "Value",
                         "Require All Criteria To Match"});
-            table49.AddRow(new string[] {
+            table38.AddRow(new string[] {
                         "1",
                         "Title",
                         "Contains",
-                        "n",
-                        "No"});
-            table49.AddRow(new string[] {
+                        "z",
+                        ""});
+            table38.AddRow(new string[] {
                         "2",
                         "IntField",
                         ">",
                         "200",
                         "No"});
-#line 410
- testRunner.And("the debug inputs as", ((string)(null)), table49, "And ");
+#line 260
+ testRunner.And("the debug inputs as", ((string)(null)), table38, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table50 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table50.AddRow(new string[] {
+            table39.AddRow(new string[] {
                         "[[Result]] = 0"});
-#line 414
- testRunner.And("the debug output as", ((string)(null)), table50, "And ");
+#line 264
+ testRunner.And("the debug output as", ((string)(null)), table39, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

@@ -5,94 +5,81 @@
 	  and map the number of found items to the result
 	  and delete the found  items from the Sharepoint List
 
-Background: Clear out the Sharepoint list we will use for testing
+Background: Setup for sharepoint scenerio
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
 	And I select "AcceptanceTesting" list
-	And I have result variable as "[[Result]]"
-	When the sharepoint delete item from list tool is executed
-	Then the execution has "NO" error
-	And clear the activity
+	And all items are deleted from the list
+	And I map the list input fields as
+	| Variable                      | Field Name         |
+	| Warewolf Created Item Name 1  | Name               |
+	| Warewolf Created Item Title 1 | Title              |
+	| 1                             | IntField           |
+	| 10.52                         | CurrencyField      |
+	| 2015/06/12                    | DateField          |
+	| 2015/06/12 09:00 AM           | DateTimeField      |
+	| False                         | BoolField          |
+	| Warewolf Created Text Field 1 | MultilineTextField |
+	| Warewolf Required Field 1     | RequiredField      |	
+	When the sharepoint create list item tool is executed
+	Then the execution has "NO" error	
+	And scenerio is clean
+	And I map the list input fields as
+	| Variable                      | Field Name         |
+	| Warewolf Created Item Name 2  | Name               |
+	| Warewolf Created Item Title 2 | Title              |
+	| 2                             | IntField           |
+	| 12.52                         | CurrencyField      |
+	| 2015/06/11                    | DateField          |
+	| 2015/06/11 11:00 AM           | DateTimeField      |
+	| True                          | BoolField          |
+	| Warewolf Created Text Field 2 | MultilineTextField |
+	| Warewolf Required Field 2     | RequiredField      |
+	When the sharepoint create list item tool is executed
+	Then the execution has "NO" error	
+	And scenerio is clean
 	
 
 Scenario: Delete Item from list with no criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
 	And I select "AcceptanceTesting" list
-	And I map the list input fields as
-	| Field Name | Variable           |
-	| Name       | [[items(*).name]]  |
-	| Title      | [[items(*).title]] |
-	And I have a variable "[[items(1).name]]" with value "Created From Warewolf"
-	And I have a variable "[[items(1).title]]" with value "My New Warewolf Acceptance Test Item"
-	And I have a variable "[[items(2).name]]" with value "Created From Warewolf 2"
-	And I have a variable "[[items(2).title]]" with value "My New Warewolf Acceptance Test Item 2"
-	#And I have a variable "[[items(3).name]]" with value "Created From Warewolf 3"
-	#And I have a variable "[[items(3).title]]" with value "My New Warewolf Acceptance Test Item 3"
 	And I have result variable as "[[Result]]"
-	When the sharepoint create list item tool is executed
-	And the activity is cleared
 	When the sharepoint delete item from list tool is executed
 	Then the value of "[[Result]]" equals "2"
 	And the execution has "NO" error
 	And the debug output as 
-	|                                             |
+	|                |
 	| [[Result]] = 2 |
 
 Scenario: Delete Item from Sharepoint list with Equal criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
 	And I select "AcceptanceTesting" list
-		And I map the list input fields as
-	| Field Name | Variable           |
-	| Name       | [[items(*).name]]  |
-	| Title      | [[items(*).title]] |
-	| RequiredField      | [[items(*).required]] |
-	And I have a variable "[[items(1).name]]" with value "100"
-	And I have a variable "[[items(1).title]]" with value "One"
-	And I have a variable "[[items(1).required]]" with value "One"
-	And I have a variable "[[items(2).name]]" with value "200"
-	And I have a variable "[[items(2).title]]" with value "Two"
-	And I have a variable "[[items(2).required]]" with value "Two"
 	And search criteria as
 	| Field Name | Search Type | Value | From | To |
-	| Title         | Equals      | Two     |      |    |
+	| IntField   | Equals      | 2     |      |    |
 	And I have result variable as "[[Result]]"
-	When the sharepoint create list item tool is executed
-	And the activity is cleared
 	When the sharepoint delete item from list tool is executed
 	Then the value of "[[Result]]" equals "1"
 	And the execution has "NO" error
 	And the debug inputs as 
 	| # | Field Name | Search Type | Value | Require All Criteria To Match |
-	| 1 | Title      | =      | Two   | Yes                           |
+	| 1 | IntField   | =           | 2     | Yes                           |
 	And the debug output as 
-	|                                             |
+	|                |
 	| [[Result]] = 1 |
 
 Scenario: Delete Item from Sharepoint list with Greater Than criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
 	And I select "AcceptanceTesting" list
-		And I map the list input fields as
-	| Field Name | Variable           |
-	| IntField       | [[items(*).intfield]]  |
-	| Title      | [[items(*).title]] |
-	| RequiredField      | [[items(*).title]] |
-	And I have a variable "[[items(1).intfield]]" with value "100"
-	And I have a variable "[[items(1).title]]" with value "One"
-	And I have a variable "[[items(2).intfield]]" with value "200"
-	And I have a variable "[[items(2).title]]" with value "Two"
-	And I have a variable "[[items(3).intfield]]" with value "300"
-	And I have a variable "[[items(3).title]]" with value "Three"
 	And search criteria as
-	| Field Name | Search Type | Value | From | To |
-	| IntField         | >      | 100     |      |    |
+	| Field Name    | Search Type | Value | From | To |
+	| CurrencyField | >           | 10    |      |    |
 	And I have result variable as "[[Result]]"
-	When the sharepoint create list item tool is executed
-	And the activity is cleared
 	When the sharepoint delete item from list tool is executed
 	Then the value of "[[Result]]" equals "2"
 	And the execution has "NO" error
 	And the debug inputs as 
-	| # | Field Name | Search Type | Value | Require All Criteria To Match |
-	| 1 | IntField      | >      | 100   | Yes                           |
+	| # | Field Name    | Search Type | Value | Require All Criteria To Match |
+	| 1 | CurrencyField | >           | 10    | Yes                           |
 	And the debug output as 
 	|                                             |
 	| [[Result]] = 2 |
@@ -100,318 +87,181 @@ Scenario: Delete Item from Sharepoint list with Greater Than criteria
 Scenario: Delete Item from list with Greater Than Equal criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
 	And I select "AcceptanceTesting" list
-		And I map the list input fields as
-	| Field Name | Variable           |
-	| IntField       | [[items(*).name]]  |
-	| Title      | [[items(*).title]] |
-	| RequiredField      | [[items(*).title]] |
-	And I have a variable "[[items(1).name]]" with value "100"
-	And I have a variable "[[items(1).title]]" with value "One"
-	And I have a variable "[[items(2).name]]" with value "200"
-	And I have a variable "[[items(2).title]]" with value "Two"
-	And I have a variable "[[items(3).name]]" with value "300"
-	And I have a variable "[[items(3).title]]" with value "Three"
 	And search criteria as
 	| Field Name | Search Type | Value | From | To |
-	| IntField         | >=      | 100     |      |    |
+	| IntField   | >=          | 1     |      |    |
 	And I have result variable as "[[Result]]"
-	When the sharepoint create list item tool is executed
-	And the activity is cleared
 	When the sharepoint delete item from list tool is executed
-	Then the value of "[[Result]]" equals "3"
+	Then the value of "[[Result]]" equals "2"
 	And the execution has "NO" error
 	And the debug inputs as 
 	| # | Field Name | Search Type | Value | Require All Criteria To Match |
-	| 1 | IntField      | >=      | 100   | Yes                           |
+	| 1 | IntField   | >=          | 1     | Yes                           |
 	And the debug output as 
-	|                                             |
-	| [[Result]] = 3 |
+	|                |
+	| [[Result]] = 2 |
 
 Scenario: Delete Item from Sharepoint list with Less Than criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
 	And I select "AcceptanceTesting" list
-		And I map the list input fields as
-	| Field Name | Variable           |
-	| IntField       | [[items(*).name]]  |
-	| Title      | [[items(*).title]] |
-	| RequiredField      | [[items(*).title]] |
-	And I have a variable "[[items(1).name]]" with value "100"
-	And I have a variable "[[items(1).title]]" with value "One"
-	And I have a variable "[[items(2).name]]" with value "200"
-	And I have a variable "[[items(2).title]]" with value "Two"
-	And I have a variable "[[items(3).name]]" with value "300"
-	And I have a variable "[[items(3).title]]" with value "Three"
 	And search criteria as
 	| Field Name | Search Type | Value | From | To |
-	| IntField         | <      | 200     |      |    |
+	| IntField   | <           | 2     |      |    |
 	And I have result variable as "[[Result]]"
-	When the sharepoint create list item tool is executed
-	And the activity is cleared
 	When the sharepoint delete item from list tool is executed
 	Then the value of "[[Result]]" equals "1"
 	And the execution has "NO" error
 	And the debug inputs as 
 	| # | Field Name | Search Type | Value | Require All Criteria To Match |
-	| 1 | IntField      | <      | 200   | Yes                           |
+	| 1 | IntField   | <           | 2     | Yes                           |
 	And the debug output as 
-	|                                             |
+	|                |
 	| [[Result]] = 1 |
 
 Scenario: Delete Item from list with Less Than Equal criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
 	And I select "AcceptanceTesting" list
-		And I map the list input fields as
-	| Field Name | Variable           |
-	| IntField       | [[items(*).name]]  |
-	| Title      | [[items(*).title]] |
-	| RequiredField      | [[items(*).title]] |
-	And I have a variable "[[items(1).name]]" with value "100"
-	And I have a variable "[[items(1).title]]" with value "One"
-	And I have a variable "[[items(2).name]]" with value "200"
-	And I have a variable "[[items(2).title]]" with value "Two"
-	And I have a variable "[[items(3).name]]" with value "300"
-	And I have a variable "[[items(3).title]]" with value "Three"
 	And search criteria as
 	| Field Name | Search Type | Value | From | To |
-	| IntField         | <=      | 200     |      |    |
+	| IntField   | <=          | 2     |      |    |
 	And I have result variable as "[[Result]]"
-	When the sharepoint create list item tool is executed
-	And the activity is cleared
 	When the sharepoint delete item from list tool is executed
 	Then the value of "[[Result]]" equals "2"
 	And the execution has "NO" error
 	And the debug inputs as 
 	| # | Field Name | Search Type | Value | Require All Criteria To Match |
-	| 1 | IntField      | <=      | 200   | Yes                           |
+	| 1 | IntField   | <=          | 2     | Yes                           |
 	And the debug output as 
-	|                                             |
+	|                |
 	| [[Result]] = 2 |
 
 Scenario: Delete Item from Sharepoint list with Not Equal criteria
 	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
 	And I select "AcceptanceTesting" list
-		And I map the list input fields as
-	| Field Name | Variable           |
-	| IntField       | [[items(*).name]]  |
-	| Title      | [[items(*).title]] |
-	| RequiredField      | [[items(*).title]] |
-	And I have a variable "[[items(1).name]]" with value "100"
-	And I have a variable "[[items(1).title]]" with value "One"
-	And I have a variable "[[items(2).name]]" with value "200"
-	And I have a variable "[[items(2).title]]" with value "Two"
-	And I have a variable "[[items(3).name]]" with value "300"
-	And I have a variable "[[items(3).title]]" with value "Three"
 	And search criteria as
 	| Field Name | Search Type | Value | From | To |
-	| IntField         | <>      | 200     |      |    |
+	| IntField   | <>          | 2     |      |    |
 	And I have result variable as "[[Result]]"
-	When the sharepoint create list item tool is executed
-	And the activity is cleared
-	When the sharepoint delete item from list tool is executed
-	Then the value of "[[Result]]" equals "2"
-	And the execution has "NO" error
-	And the debug inputs as 
-	| # | Field Name | Search Type | Value | Require All Criteria To Match |
-	| 1 | IntField      | <>      | 200   | Yes                           |
-	And the debug output as 
-	|                                             |
-	| [[Result]] = 2 |
-
-Scenario: Delete Item from list with Contains criteria
-		Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
-		And I map the list input fields as
-	| Field Name | Variable           |
-	| IntField       | [[items(*).name]]  |
-	| Title      | [[items(*).title]] |
-	| RequiredField      | [[items(*).title]] |
-	And I have a variable "[[items(1).name]]" with value "100"
-	And I have a variable "[[items(1).title]]" with value "one"
-	And I have a variable "[[items(2).name]]" with value "200"
-	And I have a variable "[[items(2).title]]" with value "one two"
-	And I have a variable "[[items(3).name]]" with value "300"
-	And I have a variable "[[items(3).title]]" with value "three"
-	And search criteria as
-	| Field Name | Search Type | Value | From | To |
-	| Title         | Contains      | one     |      |    |
-	And I have result variable as "[[Result]]"
-	When the sharepoint create list item tool is executed
-	And the activity is cleared
-	When the sharepoint delete item from list tool is executed
-	Then the value of "[[Result]]" equals "2"
-	And the execution has "NO" error
-	And the debug inputs as 
-	| # | Field Name | Search Type | Value | Require All Criteria To Match |
-	| 1 | Title      | Contains      | one   | Yes                           |
-	And the debug output as 
-	|                                             |
-	| [[Result]] = 2 |
-
-Scenario: Delete Item from list with Begins With criteria
-	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
-		And I map the list input fields as
-	| Field Name | Variable           |
-	| IntField       | [[items(*).name]]  |
-	| Title      | [[items(*).title]] |
-	| RequiredField      | [[items(*).title]] |
-	And I have a variable "[[items(1).name]]" with value "100"
-	And I have a variable "[[items(1).title]]" with value "one"
-	And I have a variable "[[items(2).name]]" with value "200"
-	And I have a variable "[[items(2).title]]" with value "one two"
-	And I have a variable "[[items(3).name]]" with value "300"
-	And I have a variable "[[items(3).title]]" with value "three"
-	And search criteria as
-	| Field Name | Search Type | Value | From | To |
-	| Title         | Begins With      | one     |      |    |
-	And I have result variable as "[[Result]]"
-	When the sharepoint create list item tool is executed
-	And the activity is cleared
-	When the sharepoint delete item from list tool is executed
-	Then the value of "[[Result]]" equals "2"
-	And the execution has "NO" error
-	And the debug inputs as 
-	| # | Field Name | Search Type | Value | Require All Criteria To Match |
-	| 1 | Title      | Begins With      | one   | Yes                           |
-	And the debug output as 
-	|                                             |
-	| [[Result]] = 2 |
-
-Scenario: Delete Item from list with Multiple criteria return multiple results
-	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
-		And I map the list input fields as
-	| Field Name    | Variable              |
-	| IntField      | [[items(*).intfield]] |
-	| Title         | [[items(*).title]]    |
-	| RequiredField | [[items(*).title]]    |
-	And I have a variable "[[items(1).intfield]]" with value "100"
-	And I have a variable "[[items(1).title]]" with value "One"
-	And I have a variable "[[items(2).intfield]]" with value "200"
-	And I have a variable "[[items(2).title]]" with value "Two"
-	And I have a variable "[[items(3).intfield]]" with value "300"
-	And I have a variable "[[items(3).title]]" with value "Three"
-	And I have a variable "[[items(4).intfield]]" with value "400"
-	And I have a variable "[[items(4).title]]" with value "4th"
-	And search criteria as
-	| Field Name | Search Type | Value | From | To |
-	| Title         | Contains      | o     |      |    |
-	| IntField         | <=      | 300     |      |    |
-	And I have result variable as "[[Result]]"
-	When the sharepoint create list item tool is executed
-	And the activity is cleared
-	When the sharepoint delete item from list tool is executed
-	Then the value of "[[Result]]" equals "3"
-	And the execution has "NO" error
-	And the debug inputs as 
-	| # | Field Name | Search Type | Value | Require All Criteria To Match |
-	| 1 | Title      | Contains      | o   | Yes                           |
-	| 2 | IntField      | <>      | 300   | Yes                           |
-	And the debug output as 
-	|                                             |
-	| [[Result]] = 3 |
-
-Scenario: Delete Item from list with Multiple criteria return single results
-		Given I have a sharepoint source to "http://rsaklfsvrsharep/"
-	And I select "AcceptanceTesting" list
-		And I map the list input fields as
-	| Field Name    | Variable              |
-	| IntField      | [[items(*).intfield]] |
-	| Title         | [[items(*).title]]    |
-	| RequiredField | [[items(*).title]]    |
-	And I have a variable "[[items(1).intfield]]" with value "100"
-	And I have a variable "[[items(1).title]]" with value "One"
-	And I have a variable "[[items(2).intfield]]" with value "200"
-	And I have a variable "[[items(2).title]]" with value "Two"
-	And I have a variable "[[items(3).intfield]]" with value "300"
-	And I have a variable "[[items(3).title]]" with value "Three"
-	And I have a variable "[[items(4).intfield]]" with value "400"
-	And I have a variable "[[items(4).title]]" with value "4th"
-	And search criteria as
-	| Field Name | Search Type | Value | From | To |
-	| Title         | Contains      | e     |      |    |
-	| IntField         | Equals      | 300     |      |    |
-	And I have result variable as "[[Result]]"
-	When the sharepoint create list item tool is executed
-	And the activity is cleared
 	When the sharepoint delete item from list tool is executed
 	Then the value of "[[Result]]" equals "1"
 	And the execution has "NO" error
 	And the debug inputs as 
 	| # | Field Name | Search Type | Value | Require All Criteria To Match |
-	| 1 | Title      | Contains      | e   | Yes                           |
-	| 2 | IntField      | =      | 300   | Yes                           |
+	| 1 | IntField   | <>          | 2     | Yes                           |
 	And the debug output as 
-	|                                             |
+	|                |
 	| [[Result]] = 1 |
 
-Scenario: Delete Item from list with Multiple criteria do not match all criteria
-			Given I have a sharepoint source to "http://rsaklfsvrsharep/"
+Scenario: Delete Item from list with Contains criteria
+		Given I have a sharepoint source to "http://rsaklfsvrsharep/"
 	And I select "AcceptanceTesting" list
-		And I map the list input fields as
-	| Field Name    | Variable              |
-	| IntField      | [[items(*).intfield]] |
-	| Title         | [[items(*).title]]    |
-	| RequiredField | [[items(*).title]]    |
-	And I have a variable "[[items(1).intfield]]" with value "100"
-	And I have a variable "[[items(1).title]]" with value "One"
-	And I have a variable "[[items(2).intfield]]" with value "200"
-	And I have a variable "[[items(2).title]]" with value "Two"
-	And I have a variable "[[items(3).intfield]]" with value "300"
-	And I have a variable "[[items(3).title]]" with value "Three"
-	And I have a variable "[[items(4).intfield]]" with value "400"
-	And I have a variable "[[items(4).title]]" with value "4th"
+	And search criteria as
+	| Field Name | Search Type | Value    | From | To |
+	| Title      | Contains    | Warewolf |      |    |
+	And I have result variable as "[[Result]]"
+	When the sharepoint delete item from list tool is executed
+	Then the value of "[[Result]]" equals "2"
+	And the execution has "NO" error
+	And the debug inputs as 
+	| # | Field Name | Search Type | Value    | Require All Criteria To Match |
+	| 1 | Title      | Contains    | Warewolf | Yes                           |
+	And the debug output as 
+	|                |
+	| [[Result]] = 2 |
+
+Scenario: Delete Item from list with Begins With criteria
+	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
+	And I select "AcceptanceTesting" list
+	And search criteria as
+	| Field Name | Search Type | Value    | From | To |
+	| Title      | Begins With | Warewolf |      |    |
+	And I have result variable as "[[Result]]"
+	When the sharepoint delete item from list tool is executed
+	Then the value of "[[Result]]" equals "2"
+	And the execution has "NO" error
+	And the debug inputs as 
+	| # | Field Name | Search Type | Value    | Require All Criteria To Match |
+	| 1 | Title      | Begins With | Warewolf | Yes                           |
+	And the debug output as 
+	|                |
+	| [[Result]] = 2 |
+
+Scenario: Delete Item from list with Multiple criteria return multiple results
+	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
+	And I select "AcceptanceTesting" list
 	And search criteria as
 	| Field Name | Search Type | Value | From | To |
-	| Title         | Contains      | o     |      |    |
-	| IntField         | <      | 200     |      |    |
-	And do not require all criteria to match
+	| Title      | Contains    | o     |      |    |
+	| IntField   | <=          | 2     |      |    |
 	And I have result variable as "[[Result]]"
-	When the sharepoint create list item tool is executed
-	And the activity is cleared
 	When the sharepoint delete item from list tool is executed
 	Then the value of "[[Result]]" equals "2"
 	And the execution has "NO" error
 	And the debug inputs as 
 	| # | Field Name | Search Type | Value | Require All Criteria To Match |
-	| 1 | Title      | Contains      | o   | No                           |
-	| 2 | IntField      | <      | 200   | No                           |
+	| 1 | Title      | Contains    | o     |                               |
+	| 2 | IntField   | <=          | 2     | Yes                           |
 	And the debug output as 
-	|                                             |
+	|                |
+	| [[Result]] = 2 |
+
+Scenario: Delete Item from list with Multiple criteria return single results
+	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
+	And I select "AcceptanceTesting" list
+	And search criteria as
+	| Field Name | Search Type | Value | From | To |
+	| Title      | Contains    | 1     |      |    |
+	| IntField   | <=          | 2     |      |    |
+	And I have result variable as "[[Result]]"
+	When the sharepoint delete item from list tool is executed
+	Then the value of "[[Result]]" equals "1"
+	And the execution has "NO" error
+	And the debug inputs as 
+	| # | Field Name | Search Type | Value | Require All Criteria To Match |
+	| 1 | Title      | Contains    | 1     | Yes                           |
+	| 2 | IntField   | <=          | 2     | Yes                           |
+	And the debug output as 
+	|                |
+	| [[Result]] = 1 |
+
+Scenario: Delete Item from list with Multiple criteria do not match all criteria
+	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
+	And I select "AcceptanceTesting" list
+	And search criteria as
+	| Field Name | Search Type | Value | From | To |
+	| Title      | Contains    | o     |      |    |
+	| IntField   | <           | 200   |      |    |
+	And do not require all criteria to match
+	And I have result variable as "[[Result]]"
+	When the sharepoint delete item from list tool is executed
+	Then the value of "[[Result]]" equals "2"
+	And the execution has "NO" error
+	And the debug inputs as 
+	| # | Field Name | Search Type | Value | Require All Criteria To Match |
+	| 1 | Title      | Contains    | o     |                               |
+	| 2 | IntField   | <           | 200   | No                            |
+	And the debug output as 
+	|                |
 	| [[Result]] = 2 |
 
 	
 Scenario: Delete Item from list with Multiple criteria match all criteria finds nothing
-			Given I have a sharepoint source to "http://rsaklfsvrsharep/"
+	Given I have a sharepoint source to "http://rsaklfsvrsharep/"
 	And I select "AcceptanceTesting" list
-		And I map the list input fields as
-	| Field Name    | Variable              |
-	| IntField      | [[items(*).intfield]] |
-	| Title         | [[items(*).title]]    |
-	| RequiredField | [[items(*).title]]    |
-	And I have a variable "[[items(1).intfield]]" with value "100"
-	And I have a variable "[[items(1).title]]" with value "One"
-	And I have a variable "[[items(2).intfield]]" with value "200"
-	And I have a variable "[[items(2).title]]" with value "Two"
-	And I have a variable "[[items(3).intfield]]" with value "300"
-	And I have a variable "[[items(3).title]]" with value "Three"
-	And I have a variable "[[items(4).intfield]]" with value "400"
-	And I have a variable "[[items(4).title]]" with value "4th"
 	And search criteria as
 	| Field Name | Search Type | Value | From | To |
-	| Title         | Contains      | n     |      |    |
-	| IntField         | >      | 200     |      |    |
+	| Title      | Contains    | z     |      |    |
+	| IntField   | >           | 200   |      |    |
+	And do not require all criteria to match
 	And I have result variable as "[[Result]]"
-	When the sharepoint create list item tool is executed
-	And the activity is cleared
 	When the sharepoint delete item from list tool is executed
 	Then the value of "[[Result]]" equals "0"
 	And the execution has "NO" error
 	And the debug inputs as 
 	| # | Field Name | Search Type | Value | Require All Criteria To Match |
-	| 1 | Title      | Contains      | n   | No                           |
-	| 2 | IntField      | >      | 200   | No                           |
+	| 1 | Title      | Contains    | z     |                               |
+	| 2 | IntField   | >           | 200   | No                            |
 	And the debug output as 
-	|                                             |
+	|                |
 	| [[Result]] = 0 |
 	
