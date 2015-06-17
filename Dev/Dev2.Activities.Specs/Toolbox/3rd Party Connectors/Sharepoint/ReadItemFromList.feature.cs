@@ -490,7 +490,7 @@ this.FeatureBackground();
                         "Field Name"});
             table14.AddRow(new string[] {
                         "[[list().id]]",
-                        "ID"});
+                        "IntField"});
             table14.AddRow(new string[] {
                         "[[list().name]]",
                         "Name"});
@@ -507,7 +507,7 @@ this.FeatureBackground();
                         "From",
                         "To"});
             table15.AddRow(new string[] {
-                        "ID",
+                        "IntField",
                         ">=",
                         "1",
                         "",
@@ -519,15 +519,15 @@ this.FeatureBackground();
 #line 136
  testRunner.Then("the value of \"[[list(1).id]]\" equals 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 137
- testRunner.Then("the value of \"[[list(1).name]]\" equals \"name1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(1).name]]\" equals \"Warewolf Created Item Name 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 138
- testRunner.Then("the value of \"[[list(1).title]]\" equals \"Do not delete this item\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(1).title]]\" equals \"Warewolf Created Item Title 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 139
  testRunner.Then("the value of \"[[list(2).id]]\" equals 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 140
- testRunner.Then("the value of \"[[list(2).name]]\" equals \"name2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(2).name]]\" equals \"Warewolf Created Item Name 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 141
- testRunner.Then("the value of \"[[list(2).title]]\" equals \"Do not delete item 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(2).title]]\" equals \"Warewolf Created Item Title 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 142
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -541,7 +541,7 @@ this.FeatureBackground();
             table16.AddRow(new string[] {
                         "1",
                         "[[list().id]] =",
-                        "ID",
+                        "IntField",
                         "",
                         "",
                         ""});
@@ -562,7 +562,7 @@ this.FeatureBackground();
             table16.AddRow(new string[] {
                         "4",
                         "",
-                        "ID",
+                        "IntField",
                         ">=",
                         "1",
                         "Yes"});
@@ -580,16 +580,16 @@ this.FeatureBackground();
                         "[[list(2).id]] = 2"});
             table17.AddRow(new string[] {
                         "2",
-                        "[[list(1).name]] = name1"});
+                        "[[list(1).name]] = Warewolf Created Item Name 1"});
             table17.AddRow(new string[] {
                         "",
-                        "[[list(2).name]] = name2"});
+                        "[[list(2).name]] = Warewolf Created Item Name 2"});
             table17.AddRow(new string[] {
                         "3",
-                        "[[list(1).title]] = Do not delete this item"});
+                        "[[list(1).title]] = Warewolf Created Item Title 1"});
             table17.AddRow(new string[] {
                         "",
-                        "[[list(2).title]] = Do not delete item 2"});
+                        "[[list(2).title]] = Warewolf Created Item Title 2"});
 #line 149
  testRunner.And("the debug output as", ((string)(null)), table17, "And ");
 #line hidden
@@ -616,7 +616,7 @@ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((
                         "Field Name"});
             table18.AddRow(new string[] {
                         "[[list().id]]",
-                        "ID"});
+                        "IntField"});
             table18.AddRow(new string[] {
                         "[[list().name]]",
                         "Name"});
@@ -633,7 +633,7 @@ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((
                         "From",
                         "To"});
             table19.AddRow(new string[] {
-                        "ID",
+                        "IntField",
                         "<",
                         "2",
                         "",
@@ -645,9 +645,9 @@ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((
 #line 170
  testRunner.Then("the value of \"[[list(1).id]]\" equals 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 171
- testRunner.Then("the value of \"[[list(1).name]]\" equals \"name1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(1).name]]\" equals \"Warewolf Created Item Name 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 172
- testRunner.Then("the value of \"[[list(1).title]]\" equals \"Do not delete this item\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(1).title]]\" equals \"Warewolf Created Item Title 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 173
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -661,7 +661,7 @@ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((
             table20.AddRow(new string[] {
                         "1",
                         "[[list().id]] =",
-                        "ID",
+                        "IntField",
                         "",
                         "",
                         ""});
@@ -682,7 +682,7 @@ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((
             table20.AddRow(new string[] {
                         "4",
                         "",
-                        "ID",
+                        "IntField",
                         "<",
                         "2",
                         "Yes"});
@@ -697,10 +697,10 @@ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((
                         "[[list(1).id]] = 1"});
             table21.AddRow(new string[] {
                         "2",
-                        "[[list(1).name]] = name1"});
+                        "[[list(1).name]] = Warewolf Created Item Name 1"});
             table21.AddRow(new string[] {
                         "3",
-                        "[[list(1).title]] = Do not delete this item"});
+                        "[[list(1).title]] = Warewolf Created Item Title 1"});
 #line 180
  testRunner.And("the debug output as", ((string)(null)), table21, "And ");
 #line hidden
@@ -727,7 +727,7 @@ this.FeatureBackground();
                         "Field Name"});
             table22.AddRow(new string[] {
                         "[[list().id]]",
-                        "ID"});
+                        "IntField"});
             table22.AddRow(new string[] {
                         "[[list().name]]",
                         "Name"});
@@ -744,7 +744,7 @@ this.FeatureBackground();
                         "From",
                         "To"});
             table23.AddRow(new string[] {
-                        "ID",
+                        "IntField",
                         "<=",
                         "2",
                         "",
@@ -756,15 +756,15 @@ this.FeatureBackground();
 #line 198
  testRunner.Then("the value of \"[[list(1).id]]\" equals 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 199
- testRunner.Then("the value of \"[[list(1).name]]\" equals \"name1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(1).name]]\" equals \"Warewolf Created Item Name 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 200
- testRunner.Then("the value of \"[[list(1).title]]\" equals \"Do not delete this item\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(1).title]]\" equals \"Warewolf Created Item Title 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 201
  testRunner.Then("the value of \"[[list(2).id]]\" equals 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 202
- testRunner.Then("the value of \"[[list(2).name]]\" equals \"name2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(2).name]]\" equals \"Warewolf Created Item Name 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 203
- testRunner.Then("the value of \"[[list(2).title]]\" equals \"Do not delete item 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(2).title]]\" equals \"Warewolf Created Item Title 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 204
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -778,7 +778,7 @@ this.FeatureBackground();
             table24.AddRow(new string[] {
                         "1",
                         "[[list().id]] =",
-                        "ID",
+                        "IntField",
                         "",
                         "",
                         ""});
@@ -799,7 +799,7 @@ this.FeatureBackground();
             table24.AddRow(new string[] {
                         "4",
                         "",
-                        "ID",
+                        "IntField",
                         "<=",
                         "2",
                         "Yes"});
@@ -817,16 +817,16 @@ this.FeatureBackground();
                         "[[list(2).id]] = 2"});
             table25.AddRow(new string[] {
                         "2",
-                        "[[list(1).name]] = name1"});
+                        "[[list(1).name]] = Warewolf Created Item Name 1"});
             table25.AddRow(new string[] {
                         "",
-                        "[[list(2).name]] = name2"});
+                        "[[list(2).name]] = Warewolf Created Item Name 2"});
             table25.AddRow(new string[] {
                         "3",
-                        "[[list(1).title]] = Do not delete this item"});
+                        "[[list(1).title]] = Warewolf Created Item Title 1"});
             table25.AddRow(new string[] {
                         "",
-                        "[[list(2).title]] = Do not delete item 2"});
+                        "[[list(2).title]] = Warewolf Created Item Title 2"});
 #line 211
  testRunner.And("the debug output as", ((string)(null)), table25, "And ");
 #line hidden
@@ -853,7 +853,7 @@ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((
                         "Field Name"});
             table26.AddRow(new string[] {
                         "[[list().id]]",
-                        "ID"});
+                        "IntField"});
             table26.AddRow(new string[] {
                         "[[list().name]]",
                         "Name"});
@@ -870,7 +870,7 @@ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((
                         "From",
                         "To"});
             table27.AddRow(new string[] {
-                        "ID",
+                        "IntField",
                         "<>",
                         "2",
                         "",
@@ -882,9 +882,9 @@ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((
 #line 232
  testRunner.Then("the value of \"[[list(1).id]]\" equals 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 233
- testRunner.Then("the value of \"[[list(1).name]]\" equals \"name1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(1).name]]\" equals \"Warewolf Created Item Name 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 234
- testRunner.Then("the value of \"[[list(1).title]]\" equals \"Do not delete this item\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(1).title]]\" equals \"Warewolf Created Item Title 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 235
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -898,7 +898,7 @@ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((
             table28.AddRow(new string[] {
                         "1",
                         "[[list().id]] =",
-                        "ID",
+                        "IntField",
                         "",
                         "",
                         ""});
@@ -919,7 +919,7 @@ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((
             table28.AddRow(new string[] {
                         "4",
                         "",
-                        "ID",
+                        "IntField",
                         "<>",
                         "2",
                         "Yes"});
@@ -934,10 +934,10 @@ testRunner.Given("I have a sharepoint source to \"http://rsaklfsvrsharep/\"", ((
                         "[[list(1).id]] = 1"});
             table29.AddRow(new string[] {
                         "2",
-                        "[[list(1).name]] = name1"});
+                        "[[list(1).name]] = Warewolf Created Item Name 1"});
             table29.AddRow(new string[] {
                         "3",
-                        "[[list(1).title]] = Do not delete this item"});
+                        "[[list(1).title]] = Warewolf Created Item Title 1"});
 #line 242
  testRunner.And("the debug output as", ((string)(null)), table29, "And ");
 #line hidden
@@ -964,7 +964,7 @@ this.FeatureBackground();
                         "Field Name"});
             table30.AddRow(new string[] {
                         "[[list().id]]",
-                        "ID"});
+                        "IntField"});
             table30.AddRow(new string[] {
                         "[[list().name]]",
                         "Name"});
@@ -983,7 +983,7 @@ this.FeatureBackground();
             table31.AddRow(new string[] {
                         "Title",
                         "Contains",
-                        "delete",
+                        "Warewolf",
                         "",
                         ""});
 #line 256
@@ -993,15 +993,15 @@ this.FeatureBackground();
 #line 260
  testRunner.Then("the value of \"[[list(1).id]]\" equals 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 261
- testRunner.Then("the value of \"[[list(1).name]]\" equals \"name1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(1).name]]\" equals \"Warewolf Created Item Name 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 262
- testRunner.Then("the value of \"[[list(1).title]]\" equals \"Do not delete this item\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(1).title]]\" equals \"Warewolf Created Item Title 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 263
  testRunner.Then("the value of \"[[list(2).id]]\" equals 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 264
- testRunner.Then("the value of \"[[list(2).name]]\" equals \"name2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(2).name]]\" equals \"Warewolf Created Item Name 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 265
- testRunner.Then("the value of \"[[list(2).title]]\" equals \"Do not delete item 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(2).title]]\" equals \"Warewolf Created Item Title 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 266
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1012,7 +1012,7 @@ this.FeatureBackground();
             table32.AddRow(new string[] {
                         "1",
                         "[[list().id]] =",
-                        "ID"});
+                        "IntField"});
             table32.AddRow(new string[] {
                         "2",
                         "[[list().name]] =",
@@ -1035,16 +1035,16 @@ this.FeatureBackground();
                         "[[list(2).id]] = 2"});
             table33.AddRow(new string[] {
                         "2",
-                        "[[list(1).name]] = name1"});
+                        "[[list(1).name]] = Warewolf Created Item Name 1"});
             table33.AddRow(new string[] {
                         "",
-                        "[[list(2).name]] = name2"});
+                        "[[list(2).name]] = Warewolf Created Item Name 2"});
             table33.AddRow(new string[] {
                         "3",
-                        "[[list(1).title]] = Do not delete this item"});
+                        "[[list(1).title]] = Warewolf Created Item Title 1"});
             table33.AddRow(new string[] {
                         "",
-                        "[[list(2).title]] = Do not delete item 2"});
+                        "[[list(2).title]] = Warewolf Created Item Title 2"});
 #line 272
  testRunner.And("the debug output as", ((string)(null)), table33, "And ");
 #line hidden
@@ -1071,7 +1071,7 @@ this.FeatureBackground();
                         "Field Name"});
             table34.AddRow(new string[] {
                         "[[list().id]]",
-                        "ID"});
+                        "IntField"});
             table34.AddRow(new string[] {
                         "[[list().name]]",
                         "Name"});
@@ -1090,7 +1090,7 @@ this.FeatureBackground();
             table35.AddRow(new string[] {
                         "Title",
                         "Begins With",
-                        "Do",
+                        "Warewolf",
                         "",
                         ""});
 #line 289
@@ -1100,15 +1100,15 @@ this.FeatureBackground();
 #line 293
  testRunner.Then("the value of \"[[list(1).id]]\" equals 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 294
- testRunner.Then("the value of \"[[list(1).name]]\" equals \"name1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(1).name]]\" equals \"Warewolf Created Item Name 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 295
- testRunner.Then("the value of \"[[list(1).title]]\" equals \"Do not delete this item\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(1).title]]\" equals \"Warewolf Created Item Title 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 296
  testRunner.Then("the value of \"[[list(2).id]]\" equals 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 297
- testRunner.Then("the value of \"[[list(2).name]]\" equals \"name2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(2).name]]\" equals \"Warewolf Created Item Name 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 298
- testRunner.Then("the value of \"[[list(2).title]]\" equals \"Do not delete item 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(2).title]]\" equals \"Warewolf Created Item Title 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 299
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1119,7 +1119,7 @@ this.FeatureBackground();
             table36.AddRow(new string[] {
                         "1",
                         "[[list().id]] =",
-                        "ID"});
+                        "IntField"});
             table36.AddRow(new string[] {
                         "2",
                         "[[list().name]] =",
@@ -1142,16 +1142,16 @@ this.FeatureBackground();
                         "[[list(2).id]] = 2"});
             table37.AddRow(new string[] {
                         "2",
-                        "[[list(1).name]] = name1"});
+                        "[[list(1).name]] = Warewolf Created Item Name 1"});
             table37.AddRow(new string[] {
                         "",
-                        "[[list(2).name]] = name2"});
+                        "[[list(2).name]] = Warewolf Created Item Name 2"});
             table37.AddRow(new string[] {
                         "3",
-                        "[[list(1).title]] = Do not delete this item"});
+                        "[[list(1).title]] = Warewolf Created Item Title 1"});
             table37.AddRow(new string[] {
                         "",
-                        "[[list(2).title]] = Do not delete item 2"});
+                        "[[list(2).title]] = Warewolf Created Item Title 2"});
 #line 305
  testRunner.And("the debug output as", ((string)(null)), table37, "And ");
 #line hidden
@@ -1178,7 +1178,7 @@ this.FeatureBackground();
                         "Field Name"});
             table38.AddRow(new string[] {
                         "[[list().id]]",
-                        "ID"});
+                        "IntField"});
             table38.AddRow(new string[] {
                         "[[list().name]]",
                         "Name"});
@@ -1197,11 +1197,11 @@ this.FeatureBackground();
             table39.AddRow(new string[] {
                         "Title",
                         "Contains",
-                        "Do",
+                        "Warewolf",
                         "",
                         ""});
             table39.AddRow(new string[] {
-                        "ID",
+                        "IntField",
                         "<=",
                         "2",
                         "",
@@ -1213,15 +1213,15 @@ this.FeatureBackground();
 #line 327
  testRunner.Then("the value of \"[[list(1).id]]\" equals 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 328
- testRunner.Then("the value of \"[[list(1).name]]\" equals \"name1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(1).name]]\" equals \"Warewolf Created Item Name 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 329
- testRunner.Then("the value of \"[[list(1).title]]\" equals \"Do not delete this item\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(1).title]]\" equals \"Warewolf Created Item Title 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 330
  testRunner.Then("the value of \"[[list(2).id]]\" equals 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 331
- testRunner.Then("the value of \"[[list(2).name]]\" equals \"name2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(2).name]]\" equals \"Warewolf Created Item Name 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 332
- testRunner.Then("the value of \"[[list(2).title]]\" equals \"Do not delete item 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(2).title]]\" equals \"Warewolf Created Item Title 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 333
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1232,7 +1232,7 @@ this.FeatureBackground();
             table40.AddRow(new string[] {
                         "1",
                         "[[list().id]] =",
-                        "ID"});
+                        "IntField"});
             table40.AddRow(new string[] {
                         "2",
                         "[[list().name]] =",
@@ -1255,16 +1255,16 @@ this.FeatureBackground();
                         "[[list(2).id]] = 2"});
             table41.AddRow(new string[] {
                         "2",
-                        "[[list(1).name]] = name1"});
+                        "[[list(1).name]] = Warewolf Created Item Name 1"});
             table41.AddRow(new string[] {
                         "",
-                        "[[list(2).name]] = name2"});
+                        "[[list(2).name]] = Warewolf Created Item Name 2"});
             table41.AddRow(new string[] {
                         "3",
-                        "[[list(1).title]] = Do not delete this item"});
+                        "[[list(1).title]] = Warewolf Created Item Title 1"});
             table41.AddRow(new string[] {
                         "",
-                        "[[list(2).title]] = Do not delete item 2"});
+                        "[[list(2).title]] = Warewolf Created Item Title 2"});
 #line 339
  testRunner.And("the debug output as", ((string)(null)), table41, "And ");
 #line hidden
@@ -1291,7 +1291,7 @@ this.FeatureBackground();
                         "Field Name"});
             table42.AddRow(new string[] {
                         "[[list().id]]",
-                        "ID"});
+                        "IntField"});
             table42.AddRow(new string[] {
                         "[[list().name]]",
                         "Name"});
@@ -1310,11 +1310,11 @@ this.FeatureBackground();
             table43.AddRow(new string[] {
                         "Title",
                         "Contains",
-                        "Do",
+                        "Warewolf",
                         "",
                         ""});
             table43.AddRow(new string[] {
-                        "ID",
+                        "IntField",
                         "<",
                         "2",
                         "",
@@ -1326,9 +1326,9 @@ this.FeatureBackground();
 #line 361
  testRunner.Then("the value of \"[[list(1).id]]\" equals 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 362
- testRunner.Then("the value of \"[[list(1).name]]\" equals \"name1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(1).name]]\" equals \"Warewolf Created Item Name 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 363
- testRunner.Then("the value of \"[[list(1).title]]\" equals \"Do not delete this item\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(1).title]]\" equals \"Warewolf Created Item Title 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 364
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1339,7 +1339,7 @@ this.FeatureBackground();
             table44.AddRow(new string[] {
                         "1",
                         "[[list().id]] =",
-                        "ID"});
+                        "IntField"});
             table44.AddRow(new string[] {
                         "2",
                         "[[list().name]] =",
@@ -1359,10 +1359,10 @@ this.FeatureBackground();
                         "[[list(1).id]] = 1"});
             table45.AddRow(new string[] {
                         "2",
-                        "[[list(1).name]] = name1"});
+                        "[[list(1).name]] = Warewolf Created Item Name 1"});
             table45.AddRow(new string[] {
                         "3",
-                        "[[list(1).title]] = Do not delete this item"});
+                        "[[list(1).title]] = Warewolf Created Item Title 1"});
 #line 370
  testRunner.And("the debug output as", ((string)(null)), table45, "And ");
 #line hidden
@@ -1389,7 +1389,7 @@ this.FeatureBackground();
                         "Field Name"});
             table46.AddRow(new string[] {
                         "[[list().id]]",
-                        "ID"});
+                        "IntField"});
             table46.AddRow(new string[] {
                         "[[list().name]]",
                         "Name"});
@@ -1408,11 +1408,11 @@ this.FeatureBackground();
             table47.AddRow(new string[] {
                         "Title",
                         "Contains",
-                        "Do",
+                        "Warewolf",
                         "",
                         ""});
             table47.AddRow(new string[] {
-                        "ID",
+                        "IntField",
                         "<",
                         "2",
                         "",
@@ -1426,9 +1426,9 @@ this.FeatureBackground();
 #line 390
  testRunner.Then("the value of \"[[list(1).id]]\" equals 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 391
- testRunner.Then("the value of \"[[list(1).name]]\" equals \"name1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(1).name]]\" equals \"Warewolf Created Item Name 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 392
- testRunner.Then("the value of \"[[list(1).title]]\" equals \"Do not delete this item\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of \"[[list(1).title]]\" equals \"Warewolf Created Item Title 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 393
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1439,7 +1439,7 @@ this.FeatureBackground();
             table48.AddRow(new string[] {
                         "1",
                         "[[list().id]] =",
-                        "ID"});
+                        "IntField"});
             table48.AddRow(new string[] {
                         "2",
                         "[[list().name]] =",
@@ -1459,10 +1459,10 @@ this.FeatureBackground();
                         "[[list(1).id]] = 1"});
             table49.AddRow(new string[] {
                         "2",
-                        "[[list(1).name]] = name1"});
+                        "[[list(1).name]] = Warewolf Created Item Name 1"});
             table49.AddRow(new string[] {
                         "3",
-                        "[[list(1).title]] = Do not delete this item"});
+                        "[[list(1).title]] = Warewolf Created Item Title 1"});
 #line 399
  testRunner.And("the debug output as", ((string)(null)), table49, "And ");
 #line hidden
