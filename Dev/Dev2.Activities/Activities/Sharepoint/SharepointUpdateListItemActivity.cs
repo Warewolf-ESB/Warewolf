@@ -98,7 +98,7 @@ namespace Dev2.Activities.Sharepoint
                     }
                     var sharepointHelper = sharepointSource.CreateSharepointHelper();
                     var fields = sharepointHelper.LoadFieldsForList(SharepointList, true);
-                    using(var ctx = sharepointHelper.GetContext())
+                    using (var ctx = sharepointHelper.GetContext())
                     {
                         var camlQuery = _sharepointUtils.BuildCamlQuery(env, FilterCriteria, fields);
                         List list = ctx.Web.Lists.GetByTitle(SharepointList);
@@ -106,16 +106,16 @@ namespace Dev2.Activities.Sharepoint
                         ctx.Load(listItems);
                         ctx.ExecuteQuery();
                         var iteratorList = new WarewolfListIterator();
-                        foreach(var sharepointReadListTo in sharepointReadListTos)
+                        foreach (var sharepointReadListTo in sharepointReadListTos)
                         {
                             var warewolfIterator = new WarewolfIterator(env.Eval(sharepointReadListTo.VariableName));
                             iteratorList.AddVariableToIterateOn(warewolfIterator);
                             listOfIterators.Add(sharepointReadListTo.InternalName, warewolfIterator);
                         }
-                        foreach(var listItem in listItems)
+                        foreach (var listItem in listItems)
                         {
 
-                            foreach(var warewolfIterator in listOfIterators)
+                            foreach (var warewolfIterator in listOfIterators)
                             {
                                 listItem[warewolfIterator.Key] = warewolfIterator.Value.GetNextValue();
                             }
@@ -123,7 +123,7 @@ namespace Dev2.Activities.Sharepoint
                             ctx.ExecuteQuery();
                         }
                     }
-                    env.Assign(Result,"Success");
+                    env.Assign(Result, "Success");
                     AddOutputDebug(dataObject, env);
                 }
             }
@@ -152,7 +152,7 @@ namespace Dev2.Activities.Sharepoint
 
         void AddOutputDebug(IDSFDataObject dataObject, IExecutionEnvironment env)
         {
-            if(dataObject.IsDebugMode())
+            if (dataObject.IsDebugMode())
             {
                 var debugItem = new DebugItem();
                 AddDebugItem(new DebugEvalResult(Result, "", env), debugItem);
@@ -175,6 +175,37 @@ namespace Dev2.Activities.Sharepoint
                 }
                 _indexCounter++;
                 _debugInputs.Add(debugItem);
+            }
+            if (FilterCriteria != null && FilterCriteria.Count() > 0)
+            {
+                string requireAllCriteriaToMatch = RequireAllCriteriaToMatch ? "Yes" : "No";
+
+                foreach (var varDebug in FilterCriteria)
+                {
+                    DebugItem debugItem = new DebugItem();
+                    AddDebugItem(new DebugItemStaticDataParams("", _indexCounter.ToString(CultureInfo.InvariantCulture)), debugItem);
+                    var fieldName = varDebug.FieldName;
+                    if (!string.IsNullOrEmpty(fieldName))
+                    {
+                        AddDebugItem(new DebugEvalResult(fieldName, "Field Name", env), debugItem);
+                        //AddDebugItem(new DebugItemStaticDataParams(varDebug.FieldName, "Field Name"), debugItem);
+                    }
+                    var searchType = varDebug.SearchType;
+                    if (!string.IsNullOrEmpty(searchType))
+                    {
+                        AddDebugItem(new DebugEvalResult(searchType, "Search Type", env), debugItem);
+                    }
+                    var valueToMatch = varDebug.ValueToMatch;
+                    if (!string.IsNullOrEmpty(valueToMatch))
+                    {
+                        AddDebugItem(new DebugEvalResult(valueToMatch, "Value", env), debugItem);
+                    }
+
+                    AddDebugItem(new DebugEvalResult(requireAllCriteriaToMatch, "Require All Criteria To Match", env), debugItem);
+
+                    _indexCounter++;
+                    _debugInputs.Add(debugItem);
+                }
             }
         }
 
