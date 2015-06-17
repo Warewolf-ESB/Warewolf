@@ -164,11 +164,7 @@ namespace Dev2.TO
 
         public bool CanRemove()
         {
-            if (string.IsNullOrEmpty(FieldName))
-            {
-                return true;
-            }
-            return false;
+            return string.IsNullOrEmpty(FieldName);
         }
 
         public bool CanAdd()
@@ -224,34 +220,17 @@ namespace Dev2.TO
             }
             switch (propertyName)
             {
-                case "SearchType":
-                    if (SearchType == "Starts With" || SearchType == "Ends With" || SearchType == "Doesn't Start With" || SearchType == "Doesn't End With")
-                    {
-                        ruleSet.Add(new IsStringEmptyRule(() => SearchType));
-                        ruleSet.Add(new IsValidExpressionRule(() => SearchType, datalist, "1"));
-                    }
-                    break;
-                case "From":
-                    if (SearchType == "Is Between" || SearchType == "Is Not Between")
-                    {
-                        ruleSet.Add(new IsStringEmptyRule(() => From));
-                        ruleSet.Add(new IsValidExpressionRule(() => From, datalist, "1"));
-                    }
-                    break;
-                case "To":
-                    if (SearchType == "Is Between" || SearchType == "Is Not Between")
-                    {
-                        ruleSet.Add(new IsStringEmptyRule(() => To));
-                        ruleSet.Add(new IsValidExpressionRule(() => To, datalist, "1"));
-                    }
-                    break;
                 case "FieldName":
-                    if (FieldName.Length == 0)
-                        ruleSet.Add(new IsStringEmptyRule(() => ValueToMatch));
+                    if(FieldName.Length == 0)
+                    {
+                        ruleSet.Add(new IsStringEmptyRule(() => FieldName));
+                    }
                     break;
                 case "ValueToMatch":
-                    if (ValueToMatch.Length == 0)
+                    if(ValueToMatch.Length == 0)
+                    {
                         ruleSet.Add(new IsStringEmptyRule(() => ValueToMatch));
+                    }
                     ruleSet.Add(new IsValidExpressionRule(() => ValueToMatch, datalist, "1"));
                     break;
             }

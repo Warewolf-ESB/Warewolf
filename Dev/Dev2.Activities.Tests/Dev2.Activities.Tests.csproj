@@ -207,6 +207,7 @@
     <Compile Include="TOTests\JsonMappingCompoundTests.cs" />
     <Compile Include="TOTests\JsonMappingEvaluatedTests.cs" />
     <Compile Include="TOTests\JsonMappingToTest.cs" />
+    <Compile Include="TOTests\SharepointSearchToTests.cs" />
     <Compile Include="TOTests\ValidatedObjectTests.cs" />
     <Compile Include="Utils\DsfFakeActivity.cs" />
     <Compile Include="Utils\FindRecordsDisplayUtilTests.cs" />
