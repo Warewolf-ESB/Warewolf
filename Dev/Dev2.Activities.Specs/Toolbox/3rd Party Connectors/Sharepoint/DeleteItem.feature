@@ -60,6 +60,9 @@ Scenario: Delete Item from Sharepoint list with Equal criteria
 	When the sharepoint delete item from list tool is executed
 	Then the value of "[[Result]]" equals "1"
 	And the execution has "NO" error
+	And the debug inputs as 
+	| # | Field Name | Search Type | Value | Require All Criteria To Match |
+	| 1 | Title      | =      | Two   | Yes                           |
 	And the debug output as 
 	|                                             |
 	| [[Result]] = 1 |

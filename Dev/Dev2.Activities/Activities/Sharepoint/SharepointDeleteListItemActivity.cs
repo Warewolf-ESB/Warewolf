@@ -33,6 +33,7 @@ namespace Dev2.Activities.Sharepoint
             FilterCriteria = new List<SharepointSearchTo>();
             RequireAllCriteriaToMatch = true;
             _sharepointUtils = new SharepointUtils();
+            _indexCounter = 1;
         }
 
         /// <summary>
