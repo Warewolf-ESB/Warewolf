@@ -85,7 +85,8 @@ namespace Dev2.FindMissingStrategies
                 var dsAct = activity as SharepointCreateListItemActivity;
                 if (dsAct != null)
                 {
-                    results.AddRange(InternalFindMissing(dsAct.ReadListItems));                    
+                    results.AddRange(InternalFindMissing(dsAct.ReadListItems));
+                    results.Add(dsAct.Result);
                 }
             }
             if (activityType == typeof(SharepointDeleteListItemActivity))
@@ -94,7 +95,9 @@ namespace Dev2.FindMissingStrategies
                 if (dsAct != null)
                 {
                     results.AddRange(InternalFindMissing(dsAct.FilterCriteria));
+                    results.Add(dsAct.DeleteCount);
                 }
+                
             }
             if (activityType == typeof(SharepointUpdateListItemActivity))
             {
@@ -103,6 +106,7 @@ namespace Dev2.FindMissingStrategies
                 {
                     results.AddRange(InternalFindMissing(dsAct.ReadListItems));
                     results.AddRange(InternalFindMissing(dsAct.FilterCriteria));
+                    results.Add(dsAct.Result);
                 }
             }
             else if(activityType == typeof(DsfDataMergeActivity))

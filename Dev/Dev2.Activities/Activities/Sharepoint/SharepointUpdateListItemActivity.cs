@@ -177,12 +177,13 @@ namespace Dev2.Activities.Sharepoint
                 _indexCounter++;
                 _debugInputs.Add(debugItem);
             }
-            if (FilterCriteria != null && FilterCriteria.Count() > 0)
+            if (FilterCriteria != null && FilterCriteria.Any())
             {
                 string requireAllCriteriaToMatch = RequireAllCriteriaToMatch ? "Yes" : "No";
 
                 foreach (var varDebug in FilterCriteria)
                 {
+                    if (string.IsNullOrEmpty(varDebug.FieldName)) return;
                     DebugItem debugItem = new DebugItem();
                     AddDebugItem(new DebugItemStaticDataParams("", _indexCounter.ToString(CultureInfo.InvariantCulture)), debugItem);
                     var fieldName = varDebug.FieldName;

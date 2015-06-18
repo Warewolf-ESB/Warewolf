@@ -159,8 +159,8 @@
            AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RefreshImage_AutoID}"/>
     
     <customControls:CircularProgressBar x:Key="RefreshProgressBar"
-                                        Height="16"
-                                        Width="16"
+                                        Height="18"
+                                        Width="18"
                                         Margin="0,0,0,0"
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Center"

@@ -27,6 +27,7 @@ namespace Dev2.Activities.Sharepoint
         {
             DisplayName = "Sharepoint Delete List Item";
             FilterCriteria = new List<SharepointSearchTo>();
+            ReadListItems = new List<SharepointReadListTo>();
             RequireAllCriteriaToMatch = true;
             _sharepointUtils = new SharepointUtils();
             _indexCounter = 1;
@@ -38,7 +39,7 @@ namespace Dev2.Activities.Sharepoint
         [Outputs("DeleteCount")]
         [FindMissing]
         public string DeleteCount { get; set; }
-
+        public IList<SharepointReadListTo> ReadListItems { get; set; }
         public Guid SharepointServerResourceId { get; set; }
         public string SharepointList { get; set; }
         public List<SharepointSearchTo> FilterCriteria { get; set; }
@@ -118,43 +119,6 @@ namespace Dev2.Activities.Sharepoint
                     ctx.ExecuteQuery();
                 }
                 var successfulDeleteCount = listItems.Count();
-
-                /*
-            foreach (var listItem in listItems)
-            {
-                try
-                {
-                listItem.DeleteObject();
-                successfulDeleteCount++;
-                }
-                catch (Microsoft.SharePoint.SPException e)
-                {
-                    deleteErrorMessage = "List item is an instance of a recurring event which is not a recurrence exception. Error code: -2146232832.";
-                    throw e;
-                }
-                catch (Microsoft.SharePoint.SPQueryThrottledException e)
-                {
-                    deleteErrorMessage = "Throttling limit is exceeded by the operation. Error code: -2147024860.";
-                    throw e;
-                }
-                catch (System.ArgumentException e)
-                {
-                    deleteErrorMessage = "List item does not exist. Error code: -2147024809.";
-                    throw e;
-                }
-                catch (System.InvalidOperationException e)
-                {
-                    deleteErrorMessage = "List does not support this operation or the list item does not exist in the external list. Error code: -1.";
-                    throw e;
-                }
-                catch (System.UnauthorizedAccessException e)
-                {
-                    deleteErrorMessage = "The current user has insufficient permissions. Error code: -2147024891.";
-                    throw e;
-                }
-
-                */
-
                 dataObject.Environment.Assign(DeleteCount, successfulDeleteCount.ToString());
                 env.CommitAssign();
                 AddOutputDebug(dataObject);
@@ -197,6 +161,7 @@ namespace Dev2.Activities.Sharepoint
 
                 foreach (var varDebug in FilterCriteria)
                 {
+                    if(string.IsNullOrEmpty(varDebug.FieldName)) return;
                     DebugItem debugItem = new DebugItem();
                     AddDebugItem(new DebugItemStaticDataParams("", _indexCounter.ToString(CultureInfo.InvariantCulture)), debugItem);
                     var fieldName = varDebug.FieldName;

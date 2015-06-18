@@ -98,7 +98,42 @@
                                ItemsSource="{Binding ModelItem.ReadListItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource ActivityMapppingDataGridStyle}">
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
-            <DataGrid.Columns>
+            <DataGrid.Columns>              
+                <DataGridTemplateColumn Width="*"
+                                        MinWidth="125"
+                                        Header="[[Variable]]"
+                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                        d:DataContext="{d:DesignInstance Type=interfaces:ISharepointReadListTo}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ui:IntellisenseTextBox DefaultText="[[Recordset(*).field]]"
+                                                    AllowMultilinePaste="True"
+                                                    AcceptsReturn="True"
+                                                    MaxHeight="52"
+                                                    TextWrapping="Wrap"
+                                                    WrapInBrackets="False"
+                                                    ToolTip="{x:Static help:HelpTextResources.SharepointToolTipToVariable}"
+                                                    Text="{Binding VariableName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
+                                <i:Interaction.Behaviors>
+                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SharepointToolTipToVariable}"
+                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                    <errors:ErrorsSetter Source="{Binding}"
+                                                         SourcePropertyName="VariableName"
+                                                         SourcePropertyValue="{Binding VariableName, UpdateSourceTrigger=PropertyChanged}"
+                                                         Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                </i:Interaction.Behaviors>
+                                <AutomationProperties.AutomationId>
+                                    <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
+                                        <Binding Path="DataContext.ModelItem.AutomationID"
+                                                 RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                        <Binding Path="IndexNumber" />
+                                    </MultiBinding>
+                                </AutomationProperties.AutomationId>
+                            </ui:IntellisenseTextBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTemplateColumn Width="SizeToCells"
                                         MinWidth="65"
                                         Header="From Field"
@@ -121,40 +156,6 @@
                                 </AutomationProperties.AutomationId>
                                 </TextBlock>
                             </Grid>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="*"
-                                        MinWidth="125"
-                                        Header="[[Variable]]"
-                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
-                                        d:DataContext="{d:DesignInstance Type=interfaces:ISharepointReadListTo}">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ui:IntellisenseTextBox DefaultText="[[Recordset(*).field]]"
-                                                    AllowMultilinePaste="False"
-                                                    AcceptsReturn="False"
-                                                    MaxHeight="52"
-                                                    TextWrapping="NoWrap"
-                                                    ToolTip="{x:Static help:HelpTextResources.SharepointToolTipToVariable}"
-                                                    Text="{Binding VariableName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
-                                <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SharepointToolTipToVariable}"
-                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                                    <errors:ErrorsSetter Source="{Binding}"
-                                                         SourcePropertyName="VariableName"
-                                                         SourcePropertyValue="{Binding VariableName, UpdateSourceTrigger=PropertyChanged}"
-                                                         Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                                </i:Interaction.Behaviors>
-                                <AutomationProperties.AutomationId>
-                                    <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
-                                        <Binding Path="DataContext.ModelItem.AutomationID"
-                                                 RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
-                                        <Binding Path="IndexNumber" />
-                                    </MultiBinding>
-                                </AutomationProperties.AutomationId>
-                            </ui:IntellisenseTextBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

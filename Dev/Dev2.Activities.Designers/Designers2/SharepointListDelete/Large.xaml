@@ -292,7 +292,7 @@
             <Label Content="Result"
                Style="{StaticResource ActivityMapppingLabelStyle}" />
             <ui:IntellisenseTextBox Grid.Column="1"
-                                    DefaultText="[[InsertSuccess]]"
+                                    DefaultText="[[DeleteSuccess]]"
                                     WrapInBrackets="True"
                                     Text="{Binding ModelItem.DeleteCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
