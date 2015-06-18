@@ -209,6 +209,10 @@
                                 Orientation="Horizontal" 
                                 HorizontalAlignment="Right" 
                                 VerticalAlignment="Center">
+                        <views:CircularProgressBar Width="14"
+                                       Height="14"
+                                       Margin="{StaticResource ElementBorderControlRight}" 
+                                       Visibility="{Binding Path=Testing,Converter={StaticResource BoolToVisibilityConverter}}" />
                         <Button ToolTip="{Binding Path=SendToolTip}" 
                                 HorizontalAlignment="Right" 
                                 Width="Auto" 
