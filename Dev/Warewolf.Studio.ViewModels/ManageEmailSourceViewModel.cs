@@ -50,7 +50,7 @@ namespace Warewolf.Studio.ViewModels
 
         private bool _isDisposed;
 
-        public ManageEmailSourceViewModel(IManageEmailSourceModel updateManager, RequestServiceNameViewModel requestServiceNameViewModel, IEventAggregator aggregator):base(ResourceType.EmailSource)
+        public ManageEmailSourceViewModel(IManageEmailSourceModel updateManager, IRequestServiceNameViewModel requestServiceNameViewModel, IEventAggregator aggregator):base(ResourceType.EmailSource)
         {
             VerifyArgument.IsNotNull("updateManager", updateManager);
             VerifyArgument.IsNotNull("aggregator", aggregator);
@@ -82,23 +82,36 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => TestCommand);
         }
 
-        public ManageEmailSourceViewModel(IManageEmailSourceModel updateManager, RequestServiceNameViewModel requestServiceNameViewModel, IEventAggregator aggregator, IEmailServiceSource emailServiceSource)
+        public ManageEmailSourceViewModel(IManageEmailSourceModel updateManager, IRequestServiceNameViewModel requestServiceNameViewModel, IEventAggregator aggregator, IEmailServiceSource emailServiceSource)
             : this(updateManager, requestServiceNameViewModel, aggregator)
         {
             VerifyArgument.IsNotNull("emailServiceSource", emailServiceSource);
             _emailServiceSource = emailServiceSource;
+            FromSource(emailServiceSource);
             SetupHeaderTextFromExisting();
+            
         }
 
+        void FromSource(IEmailServiceSource emailServiceSource)
+        {
+            HostName = emailServiceSource.HostName;
+            UserName = emailServiceSource.UserName;
+            Password = emailServiceSource.Password;
+            EnableSsl = emailServiceSource.EnableSsl;
+            Port = emailServiceSource.Port;
+            Timeout = emailServiceSource.Timeout;
+            EmailFrom = emailServiceSource.EmailFrom;
+            EmailTo = emailServiceSource.EmailTo;
+        }
         void SetupHeaderTextFromExisting()
         {
-            HeaderText = Resources.Languages.Core.EmailSourceEditHeaderLabel + _warewolfserverName.Trim() + "\\" + (_hostName ?? ResourceName).Trim();
-            Header = ((_hostName ?? ResourceName));
+            HeaderText = Resources.Languages.Core.EmailSourceEditHeaderLabel + _warewolfserverName.Trim() + "\\" + (_emailServiceSource.HostName ?? ResourceName).Trim();
+            Header = ((_emailServiceSource.HostName ?? ResourceName));
         }
 
         bool CanSave()
         {
-            return TestPassed && !String.IsNullOrEmpty(HostName) && !String.IsNullOrEmpty(UserName) && !String.IsNullOrEmpty(Password);
+            return TestPassed;
         }
 
         public bool CanTest()

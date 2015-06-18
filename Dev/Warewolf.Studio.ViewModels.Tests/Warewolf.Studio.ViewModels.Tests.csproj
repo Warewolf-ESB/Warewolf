@@ -92,6 +92,7 @@
     <Compile Include="Help\HelpViewModelTest.cs" />
     <Compile Include="ManageDatabaseServiceViewModelTests.cs" />
     <Compile Include="ManageDatabaseSourceViewModelTests.cs" />
+    <Compile Include="ManageEmailSourceViewModelTests.cs" />
     <Compile Include="ManagePluginServiceViewModelTests.cs" />
     <Compile Include="ManageWebServiceSourceViewModelTests.cs" />
     <Compile Include="ManageWebserviceViewModelTests.cs" />
