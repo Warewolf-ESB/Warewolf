@@ -85,6 +85,8 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             DependencyProperty.Register("IsRefreshing", typeof(bool), typeof(SharepointListDesignerViewModelBase), new PropertyMetadata(false));
         public static readonly DependencyProperty SelectedListProperty =
             DependencyProperty.Register("SelectedList", typeof(SharepointListTo), typeof(SharepointListDesignerViewModelBase), new PropertyMetadata(null, OnSelectedListChanged));
+        public static readonly DependencyProperty ListItemsProperty =
+            DependencyProperty.Register("ListItems", typeof(List<SharepointReadListTo>), typeof(SharepointListDesignerViewModelBase), new PropertyMetadata(new List<SharepointReadListTo>()));
         public bool IsSelectedSharepointServerFocused { get { return (bool)GetValue(IsSelectedSharepointServerFocusedProperty); } set { SetValue(IsSelectedSharepointServerFocusedProperty, value); } }
         public bool IsSelectedListFocused { get { return (bool)GetValue(IsSelectedListFocusedProperty); } set { SetValue(IsSelectedListFocusedProperty, value); } }
         public SharepointSource SelectedSharepointServer
@@ -128,7 +130,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
                 RefreshListsCommand.RaiseCanExecuteChanged();
             }
         }
-        public List<SharepointReadListTo> ReadListItems
+        List<SharepointReadListTo> ReadListItems
         {
             get
             {
@@ -138,7 +140,21 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             {
                 if (!_isInitializing)
                 {
-                    SetProperty(value);
+                    SetProperty(value);                    
+                }
+            }
+        }
+        public List<SharepointReadListTo> ListItems
+        {
+            get
+            {
+                return (List<SharepointReadListTo>)GetValue(ListItemsProperty);
+            }
+            set
+            {
+                if (!_isInitializing)
+                {
+                    SetValue(ListItemsProperty, value);
                 }
             }
         }
@@ -385,6 +401,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
                             }
                         }
                     }
+                    ListItems = ReadListItems;
                 }
                 if (continueWith != null)
                 {
