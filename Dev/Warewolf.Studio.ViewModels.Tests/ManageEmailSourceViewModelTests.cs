@@ -123,11 +123,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             var updateManager = new Mock<IManageEmailSourceModel>();
 
             var manageEmailSourceViewModel = new ManageEmailSourceViewModel(updateManager.Object, dialog.Object, new Mock<IEventAggregator>().Object);
+
             updateManager.Setup(a => a.TestConnection(It.IsAny<IEmailServiceSource>())).Returns(It.IsAny<string>());
             Assert.IsFalse(manageEmailSourceViewModel.OkCommand.CanExecute(null));
             manageEmailSourceViewModel.OkCommand.Execute(null);
             dialog.Verify(a => a.ShowSaveDialog(), Times.Once());
-            updateManager.Verify(a => a.Save(It.IsAny<EmailServiceSourceDefinition>()));
         }
 
         [TestMethod]
@@ -180,7 +180,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(manageEmailSourceViewModel.OkCommand.CanExecute(null));
             manageEmailSourceViewModel.OkCommand.Execute(null);
             dialog.Verify(a => a.ShowSaveDialog(), Times.Once());
-            updateManager.Verify(a => a.Save(It.IsAny<EmailServiceSourceDefinition>()));
             Assert.AreEqual(manageEmailSourceViewModel.Header, "New Email Source");
 
         }
@@ -220,8 +219,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 Assert.AreEqual(a.EmailTo, "Bob@builders.com");
             });
             Assert.IsFalse(manageEmailSourceViewModel.OkCommand.CanExecute(null));
-            manageEmailSourceViewModel.TestCommand.Execute(null);
-            manageEmailSourceViewModel.TestPassed.Should().BeTrue();
+            manageEmailSourceViewModel.SendCommand.Execute(null);
         }
 
         [TestMethod]
@@ -244,7 +242,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             manageEmailSourceViewModel.Timeout = 100;
             manageEmailSourceViewModel.EmailFrom = "bob@builders.com";
             manageEmailSourceViewModel.EmailTo = "bob@builders.com";
-            Assert.IsTrue(manageEmailSourceViewModel.CanTest());
         }
 
         [TestMethod]
