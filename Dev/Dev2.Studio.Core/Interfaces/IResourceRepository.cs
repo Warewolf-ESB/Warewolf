@@ -58,7 +58,7 @@ namespace Dev2.Studio.Core.Interfaces
         DbTableList GetDatabaseTables(DbSource dbSource);
         List<SharepointListTo> GetSharepointLists(SharepointSource source);
         DbColumnList GetDatabaseTableColumns(DbSource dbSource, DbTable dbTable);
-        List<ISharepointFieldTo> GetSharepointListFields(ISharepointSource source, SharepointListTo list);
+        List<ISharepointFieldTo> GetSharepointListFields(ISharepointSource source, SharepointListTo list,bool onlyEditable);
         ExecuteMessage GetDependenciesXml(IContextualResourceModel resourceModel, bool getDependsOnMe);
         List<string> GetDependanciesOnList(List<IContextualResourceModel> resourceModels, IEnvironmentModel environmentModel, bool getDependsOnMe = false);
         List<IResourceModel> GetUniqueDependencies(IContextualResourceModel resourceModel);

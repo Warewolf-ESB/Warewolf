@@ -35,6 +35,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public double MinValue { get; set; }
         public double MaxValue { get; set; }
         public bool IsRequired { get; set; }
+        public bool IsEditable { get; set; }
 
         public string GetFieldType()
         {

@@ -3,22 +3,18 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.TO;
 using Microsoft.SharePoint.Client;
-using Microsoft.SharePoint;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
-using WarewolfParserInterop;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Dev2.Util;
 
@@ -88,7 +84,6 @@ namespace Dev2.Activities.Sharepoint
         {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            int successfulDeleteCount = 0;
             ErrorResultTO allErrors = new ErrorResultTO();
             try
             {
@@ -122,7 +117,7 @@ namespace Dev2.Activities.Sharepoint
                     list.Update();
                     ctx.ExecuteQuery();
                 }
-                successfulDeleteCount = listItems.Count();
+                var successfulDeleteCount = listItems.Count();
 
                 /*
             foreach (var listItem in listItems)
@@ -162,7 +157,7 @@ namespace Dev2.Activities.Sharepoint
 
                 dataObject.Environment.Assign(DeleteCount, successfulDeleteCount.ToString());
                 env.CommitAssign();
-                AddOutputDebug(dataObject, env);
+                AddOutputDebug(dataObject);
             }
             catch (Exception e)
             {
@@ -186,7 +181,7 @@ namespace Dev2.Activities.Sharepoint
             }
         }
 
-        void AddOutputDebug(IDSFDataObject dataObject, IExecutionEnvironment env)
+        void AddOutputDebug(IDSFDataObject dataObject)
         {
             if (dataObject.IsDebugMode())
             {
@@ -196,7 +191,7 @@ namespace Dev2.Activities.Sharepoint
 
         void AddInputDebug(IExecutionEnvironment env)
         {
-            if (FilterCriteria != null && FilterCriteria.Count() > 0)
+            if (FilterCriteria != null && FilterCriteria.Any())
             {
                 string requireAllCriteriaToMatch = RequireAllCriteriaToMatch ? "Yes" : "No";
 

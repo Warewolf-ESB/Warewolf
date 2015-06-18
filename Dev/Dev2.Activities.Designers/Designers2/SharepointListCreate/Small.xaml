@@ -11,10 +11,12 @@
                                xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+                               xmlns:sharepointListCreate="clr-namespace:Dev2.Activities.Designers2.SharepointListCreate"
                                Width="290"
                                MaxWidth="290"
                                Padding="7"
                                mc:Ignorable="d" 
+                               d:DataContext="{d:DesignInstance sharepointListCreate:SharepointListCreateDesignerViewModel}"
                                d:DesignHeight="300" d:DesignWidth="300">
     
     <core:ActivityDesignerTemplate.Resources>
@@ -94,7 +96,7 @@
                                x:Name="SmallDataGrid"
                                HeadersVisibility="None"
                                Height="78"
-                               ItemsSource="{Binding ModelItem.FieldValues, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               ItemsSource="{Binding ModelItem.ReadListItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource ActivityMapppingDataGridStyle}">
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
             <DataGrid.Columns>
@@ -171,10 +173,10 @@
                                 WrapInBrackets="True"
                                 Text="{Binding ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
-                                ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipResult}"
+                                ToolTip="{x:Static help:HelpTextResources.SharepointInsertToolTipResult}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.SQLBulkInsertHelpResult}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.SharepointInsertHelpResult}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Result"

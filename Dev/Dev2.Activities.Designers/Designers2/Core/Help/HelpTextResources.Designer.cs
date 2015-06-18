@@ -4488,6 +4488,36 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the number of records deleted.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record.
+        ///
+        ///Allowed:
+        ///[[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string SharepointDeleteHelpResult {
+            get {
+                return ResourceManager.GetString("SharepointDeleteHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the number of items deleted.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string SharepointDelteToolTipResult {
+            get {
+                return ResourceManager.GetString("SharepointDelteToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the field you want to match on.
         ///
         ///Allowed:
@@ -4519,6 +4549,36 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string SharepointHelpServer {
             get {
                 return ResourceManager.GetString("SharepointHelpServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or Failure.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record.
+        ///
+        ///Allowed:
+        ///[[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string SharepointInsertHelpResult {
+            get {
+                return ResourceManager.GetString("SharepointInsertHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or Failure.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string SharepointInsertToolTipResult {
+            get {
+                return ResourceManager.GetString("SharepointInsertToolTipResult", resourceCulture);
             }
         }
         

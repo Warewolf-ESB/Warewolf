@@ -67,7 +67,7 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
             {
                 SharepointServerResourceId = sharepointServerSource.ResourceID,
                 SharepointList = sharepointList,
-                FieldValues = sharepointReadListTos,
+                ReadListItems = sharepointReadListTos,
                 Result = resultVar
             };
 

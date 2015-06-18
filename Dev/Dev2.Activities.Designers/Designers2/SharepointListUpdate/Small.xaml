@@ -11,10 +11,12 @@
                                xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+                               xmlns:sharepointListUpdate="clr-namespace:Dev2.Activities.Designers2.SharepointListUpdate"
                                Width="290"
                                MaxWidth="290"
                                Padding="7"
                                mc:Ignorable="d"
+                               d:DataContext="{d:DesignInstance sharepointListUpdate:SharepointListUpdateDesignerViewModel}"
                                d:DesignWidth="230">
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary x:Name="TheResources"
@@ -170,10 +172,10 @@
                                 WrapInBrackets="True"
                                 Text="{Binding ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
-                                ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipResult}"
+                                ToolTip="{x:Static help:HelpTextResources.SharepointInsertToolTipResult}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.SQLBulkInsertHelpResult}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.SharepointInsertHelpResult}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Result"

@@ -1042,11 +1042,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return lists;
         }
 
-        public List<ISharepointFieldTo> GetSharepointListFields(ISharepointSource source, SharepointListTo list)
+        public List<ISharepointFieldTo> GetSharepointListFields(ISharepointSource source, SharepointListTo list,bool onlyEditableFields)
         {
             var comController = new CommunicationController { ServiceName = "GetSharepointListFields" };
             comController.AddPayloadArgument("SharepointServer", _serializer.Serialize(source));
             comController.AddPayloadArgument("ListName", _serializer.Serialize(list.FullName));
+            comController.AddPayloadArgument("OnlyEditable", _serializer.Serialize(onlyEditableFields));
 
             var fields = comController.ExecuteCommand<List<ISharepointFieldTo>>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
 

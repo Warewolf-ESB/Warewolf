@@ -74,8 +74,35 @@ namespace Dev2.FindMissingStrategies
                 if (dsAct != null)
                 {
                     results.AddRange(InternalFindMissing(dsAct.ReadListItems));
+                    if(dsAct.FilterCriteria != null)
+                    {
+                        results.AddRange(InternalFindMissing(dsAct.FilterCriteria));
+                    }
+                }
+            }
+            if (activityType == typeof(SharepointCreateListItemActivity))
+            {
+                var dsAct = activity as SharepointCreateListItemActivity;
+                if (dsAct != null)
+                {
+                    results.AddRange(InternalFindMissing(dsAct.ReadListItems));                    
+                }
+            }
+            if (activityType == typeof(SharepointDeleteListItemActivity))
+            {
+                var dsAct = activity as SharepointDeleteListItemActivity;
+                if (dsAct != null)
+                {
                     results.AddRange(InternalFindMissing(dsAct.FilterCriteria));
-                    
+                }
+            }
+            if (activityType == typeof(SharepointUpdateListItemActivity))
+            {
+                var dsAct = activity as SharepointUpdateListItemActivity;
+                if (dsAct != null)
+                {
+                    results.AddRange(InternalFindMissing(dsAct.ReadListItems));
+                    results.AddRange(InternalFindMissing(dsAct.FilterCriteria));
                 }
             }
             else if(activityType == typeof(DsfDataMergeActivity))

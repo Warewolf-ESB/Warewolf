@@ -8,13 +8,13 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.TO;
+using Dev2.Util;
 using Microsoft.SharePoint.Client;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
@@ -28,10 +28,11 @@ namespace Dev2.Activities.Sharepoint
         public SharepointCreateListItemActivity()
         {
             DisplayName = "Sharepoint Create List Item";
-            FieldValues = new List<SharepointReadListTo>();
+            ReadListItems = new List<SharepointReadListTo>();
             _sharepointUtils = new SharepointUtils();
         }
 
+        [FindMissing]
         public new string Result { get; set; }
         /// <summary>
         /// When overridden runs the activity's execution logic 
@@ -77,7 +78,7 @@ namespace Dev2.Activities.Sharepoint
             ErrorResultTO allErrors = new ErrorResultTO();
             try
             {
-                var sharepointReadListTos = _sharepointUtils.GetValidReadListItems(FieldValues).ToList();
+                var sharepointReadListTos = _sharepointUtils.GetValidReadListItems(ReadListItems).ToList();
                 if (sharepointReadListTos.Any())
                 {
                     var sharepointSource = ResourceCatalog.Instance.GetResource<SharepointSource>(dataObject.WorkspaceID, SharepointServerResourceId);
@@ -161,7 +162,7 @@ namespace Dev2.Activities.Sharepoint
 
         void AddInputDebug(IExecutionEnvironment env)
         {
-            var validItems = _sharepointUtils.GetValidReadListItems(FieldValues).ToList();
+            var validItems = _sharepointUtils.GetValidReadListItems(ReadListItems).ToList();
             foreach (var varDebug in validItems)
             {
                 DebugItem debugItem = new DebugItem();
@@ -197,6 +198,6 @@ namespace Dev2.Activities.Sharepoint
 
         public Guid SharepointServerResourceId { get; set; }
         public string SharepointList { get; set; }
-        public List<SharepointReadListTo> FieldValues { get; set; }
+        public List<SharepointReadListTo> ReadListItems { get; set; }
     }
 }

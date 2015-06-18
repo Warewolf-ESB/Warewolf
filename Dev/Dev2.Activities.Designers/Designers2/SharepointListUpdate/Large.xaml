@@ -24,6 +24,7 @@
                                MaxHeight="Infinity"
                                Padding="7"
                                mc:Ignorable="d"
+                               d:DataContext="{d:DesignInstance sharepointListUpdate:SharepointListUpdateDesignerViewModel}"
                                d:DesignWidth="280">
 
     <core:ActivityDesignerTemplate.Resources>
@@ -239,8 +240,10 @@
                                       ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
                                       Margin="0,0,2,0"
                                       DisplayMemberPath="FieldName"
-                                      ItemsSource="{Binding DataContext.ReadListItems, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
-                                      SelectedValue="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
+                                      SelectedValuePath="InternalName"
+                                      ItemsSource="{Binding DataContext.ReadListItems, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"                                          
+                                      SelectedItem="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
+                                      SelectedValue="{Binding InternalName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
                                       ToolTip="{x:Static help:HelpTextResources.SharepointToolTipFieldToFilterOn}">
                                     <i:Interaction.Behaviors>
                                         <help:HelpSetter Text="{x:Static help:HelpTextResources.SharepointHelpFieldToMatchOn}"
@@ -369,11 +372,11 @@
                                     WrapInBrackets="True"
                                     Text="{Binding ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
-                                ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipResult}"
+                                ToolTip="{x:Static help:HelpTextResources.SharepointInsertToolTipResult}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsResultFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}">
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SQLBulkInsertHelpResult}"
+                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SharepointInsertHelpResult}"
                                  DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Result"

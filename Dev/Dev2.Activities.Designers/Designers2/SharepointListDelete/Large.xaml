@@ -15,6 +15,7 @@
                                xmlns:system="clr-namespace:System;assembly=mscorlib"
                                xmlns:to="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
                                xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
+                               xmlns:sharepointListDelete="clr-namespace:Dev2.Activities.Designers2.SharepointListDelete"
                                Width="350"
                                MinWidth="350"
                                MinHeight="380"
@@ -23,6 +24,7 @@
                                MaxHeight="Infinity"
                                Padding="7"
                                mc:Ignorable="d"
+                               d:DataContext="{d:DesignInstance sharepointListDelete:SharepointListDeleteDesignerViewModel}"
                                d:DesignWidth="280">
 
     <core:ActivityDesignerTemplate.Resources>
@@ -162,8 +164,10 @@
                                       ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
                                       Margin="0,0,2,0"
                                       DisplayMemberPath="FieldName"
-                                      ItemsSource="{Binding DataContext.ReadListItems, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
-                                      SelectedValue="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
+                                      SelectedValuePath="InternalName"
+                                      ItemsSource="{Binding DataContext.ReadListItems, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"                                          
+                                      SelectedItem="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
+                                      SelectedValue="{Binding InternalName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
                                       ToolTip="{x:Static help:HelpTextResources.SharepointToolTipFieldToFilterOn}">
                                     <i:Interaction.Behaviors>
                                         <help:HelpSetter Text="{x:Static help:HelpTextResources.SharepointHelpFieldToMatchOn}"
@@ -290,17 +294,17 @@
             <ui:IntellisenseTextBox Grid.Column="1"
                                     DefaultText="[[InsertSuccess]]"
                                     WrapInBrackets="True"
-                                    Text="{Binding ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Text="{Binding ModelItem.DeleteCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
-                                ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipResult}"
+                                ToolTip="{x:Static help:HelpTextResources.SharepointDelteToolTipResult}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsResultFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}">
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SQLBulkInsertHelpResult}"
+                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SharepointDeleteHelpResult}"
                                  DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Result"
-                                     SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyValue="{Binding ModelItem.DeleteCount, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>

@@ -65,7 +65,10 @@ namespace Dev2.Activities.Designers2.Core
             AddBlankRow();
             UpdateDisplayName();
 
-            ModelItemCollection.CollectionChanged+=ModelItemCollectionOnCollectionChanged;
+            if(ModelItemCollection != null)
+            {
+                ModelItemCollection.CollectionChanged+=ModelItemCollectionOnCollectionChanged;
+            }
         }
 
         void ModelItemCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
@@ -81,8 +84,11 @@ namespace Dev2.Activities.Designers2.Core
                 if(dto != null && dto.CanRemove())
                 {
                     // old row is blank so remove
-                    var index = ModelItemCollection.IndexOf(oldItem) + 1;
-                    RemoveDto(dto, index);
+                    if(ModelItemCollection != null)
+                    {
+                        var index = ModelItemCollection.IndexOf(oldItem) + 1;
+                        RemoveDto(dto, index);
+                    }
                 }
             }
             if(newItem != null)
@@ -165,10 +171,13 @@ namespace Dev2.Activities.Designers2.Core
 
         protected override void AddToCollection(IEnumerable<string> source, bool overwrite)
         {
-            var firstModelItem = ModelItemCollection.FirstOrDefault();
-            if(firstModelItem != null)
+            if(ModelItemCollection != null)
             {
-                _initialDto = (TDev2TOFn)firstModelItem.GetCurrentValue();
+                var firstModelItem = ModelItemCollection.FirstOrDefault();
+                if(firstModelItem != null)
+                {
+                    _initialDto = (TDev2TOFn)firstModelItem.GetCurrentValue();
+                }
             }
 
             var indexNumber = GetIndexForAdd(overwrite);
@@ -198,7 +207,10 @@ namespace Dev2.Activities.Designers2.Core
             var indexNumber = 1;
             if(overwrite)
             {
-                ModelItemCollection.Clear();
+                if(ModelItemCollection != null)
+                {
+                    ModelItemCollection.Clear();
+                }
 
                 // Add blank row
                 AddDto(indexNumber);
@@ -206,16 +218,19 @@ namespace Dev2.Activities.Designers2.Core
             else
             {
                 var lastDto = GetLastDto();
-                indexNumber = ModelItemCollection.IndexOf(GetModelItem(ItemCount)) + 1;
-
-                if(ModelItemCollection.Count == 2)
+                if(ModelItemCollection != null)
                 {
-                    // Check whether we have 2 blank rows
-                    var firstDto = GetDto(1);
-                    if(firstDto.CanRemove() && lastDto.CanRemove())
+                    indexNumber = ModelItemCollection.IndexOf(GetModelItem(ItemCount)) + 1;
+
+                    if(ModelItemCollection.Count == 2)
                     {
-                        RemoveAt(indexNumber, lastDto);
-                        indexNumber = indexNumber - 1;
+                        // Check whether we have 2 blank rows
+                        var firstDto = GetDto(1);
+                        if(firstDto.CanRemove() && lastDto.CanRemove())
+                        {
+                            RemoveAt(indexNumber, lastDto);
+                            indexNumber = indexNumber - 1;
+                        }
                     }
                 }
             }
@@ -259,14 +274,17 @@ namespace Dev2.Activities.Designers2.Core
             AttachEvents(dto);
 
             var idx = indexNumber - 1;
-            if(idx >= ModelItemCollection.Count)
+            if(ModelItemCollection != null && idx >= ModelItemCollection.Count)
             {
                 ModelItem modelItem = ModelItemUtils.CreateModelItem(dto);
                 ModelItemCollection.Add(modelItem);
             }
             else
             {
-                ModelItemCollection.Insert(idx, dto);
+                if(ModelItemCollection != null)
+                {
+                    ModelItemCollection.Insert(idx, dto);
+                }
             }
         }
 
@@ -349,10 +367,13 @@ namespace Dev2.Activities.Designers2.Core
         /// </summary>
         void ProcessModelItemCollection(int startIndex, Action<ModelItem> processModelItem)
         {
-            startIndex = Math.Max(startIndex, 0);
-            for(var i = startIndex; i < ModelItemCollection.Count; i++)
+            if(ModelItemCollection != null)
             {
-                processModelItem(ModelItemCollection[i]);
+                startIndex = Math.Max(startIndex, 0);
+                for(var i = startIndex; i < ModelItemCollection.Count; i++)
+                {
+                    processModelItem(ModelItemCollection[i]);
+                }
             }
         }
 

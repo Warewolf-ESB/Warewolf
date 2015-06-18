@@ -243,7 +243,6 @@
                                       ItemsSource="{Binding DataContext.ReadListItems, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"                                          
                                       SelectedItem="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
                                       SelectedValue="{Binding InternalName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                                      SelectionChanged="SearchToFieldChanged"
                                       ToolTip="{x:Static help:HelpTextResources.SharepointToolTipFieldToFilterOn}">
                                     <i:Interaction.Behaviors>
                                         <help:HelpSetter Text="{x:Static help:HelpTextResources.SharepointHelpFieldToMatchOn}"

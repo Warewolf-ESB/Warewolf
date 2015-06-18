@@ -11,10 +11,12 @@
                                xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+                               xmlns:sharepointListDelete="clr-namespace:Dev2.Activities.Designers2.SharepointListDelete"
                                Width="290"
                                MaxWidth="290"
                                Padding="7"
                                mc:Ignorable="d"
+                               d:DataContext="{d:DesignInstance sharepointListDelete:SharepointListDeleteDesignerViewModel}"
                                d:DesignWidth="230">
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary x:Name="TheResources"
@@ -168,16 +170,16 @@
                                 Grid.ColumnSpan="2"
                                 DefaultText="[[InsertSuccess]]"
                                 WrapInBrackets="True"
-                                Text="{Binding ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Text="{Binding ModelItem.DeleteCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
-                                ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipResult}"
+                                ToolTip="{x:Static help:HelpTextResources.SharepointDelteToolTipResult}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.SQLBulkInsertHelpResult}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.SharepointDeleteHelpResult}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Result"
-                                     SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyValue="{Binding ModelItem.DeleteCount, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>

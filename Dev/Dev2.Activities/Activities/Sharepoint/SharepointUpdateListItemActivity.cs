@@ -14,6 +14,7 @@ using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.TO;
+using Dev2.Util;
 using Microsoft.SharePoint.Client;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
@@ -27,7 +28,7 @@ namespace Dev2.Activities.Sharepoint
         public SharepointUpdateListItemActivity()
         {
             DisplayName = "Sharepoint Update List Item";
-            UpdateValues = new List<SharepointReadListTo>();
+            ReadListItems = new List<SharepointReadListTo>();
             FilterCriteria = new List<SharepointSearchTo>();
             RequireAllCriteriaToMatch = true;
             _sharepointUtils = new SharepointUtils();
@@ -35,7 +36,7 @@ namespace Dev2.Activities.Sharepoint
 
         public List<SharepointSearchTo> FilterCriteria { get; set; }
         public bool RequireAllCriteriaToMatch { get; set; }
-
+        [FindMissing]
         public new string Result { get; set; }
         /// <summary>
         /// When overridden runs the activity's execution logic 
@@ -81,7 +82,7 @@ namespace Dev2.Activities.Sharepoint
             ErrorResultTO allErrors = new ErrorResultTO();
             try
             {
-                var sharepointReadListTos = _sharepointUtils.GetValidReadListItems(UpdateValues).ToList();
+                var sharepointReadListTos = _sharepointUtils.GetValidReadListItems(ReadListItems).ToList();
                 if (sharepointReadListTos.Any())
                 {
                     var sharepointSource = ResourceCatalog.Instance.GetResource<SharepointSource>(dataObject.WorkspaceID, SharepointServerResourceId);
@@ -162,7 +163,7 @@ namespace Dev2.Activities.Sharepoint
 
         void AddInputDebug(IExecutionEnvironment env)
         {
-            var validItems = _sharepointUtils.GetValidReadListItems(UpdateValues).ToList();
+            var validItems = _sharepointUtils.GetValidReadListItems(ReadListItems).ToList();
             foreach (var varDebug in validItems)
             {
                 DebugItem debugItem = new DebugItem();
@@ -229,6 +230,6 @@ namespace Dev2.Activities.Sharepoint
 
         public Guid SharepointServerResourceId { get; set; }
         public string SharepointList { get; set; }
-        public List<SharepointReadListTo> UpdateValues { get; set; }
+        public List<SharepointReadListTo> ReadListItems { get; set; }
     }
 }

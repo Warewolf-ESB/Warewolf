@@ -240,6 +240,18 @@ Returns Success or the record numbers with errors.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
+    <data name="SharepointDelteToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the number of items deleted.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+     <data name="SharepointInsertToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or Failure.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
   <data name="SqlBulkInsertToolTipTimeout" xml:space="preserve">
     <value>The number of seconds you would like the operation to complete in.
 All batches in total must complete within this time period.
@@ -3188,6 +3200,30 @@ Preserve source identity values.</value>
   <data name="SQLBulkInsertHelpResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns Success or the record numbers with errors.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+    <data name="SharepointDeleteHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the number of records deleted.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+     <data name="SharepointInsertHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or Failure.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record.
 

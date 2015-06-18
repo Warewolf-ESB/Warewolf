@@ -73,7 +73,7 @@ namespace Warewolf.Sharepoint
 
         static SharepointFieldTo CreateSharepointFieldToFromSharepointField(Field field)
         {
-            var sharepointFieldTo = new SharepointFieldTo { Name = field.Title, InternalName = field.InternalName, IsRequired = field.Required };
+            var sharepointFieldTo = new SharepointFieldTo { Name = field.Title, InternalName = field.InternalName, IsRequired = field.Required,IsEditable = !field.ReadOnlyField};
             switch(field.FieldTypeKind)
             {
                 case FieldType.Invalid:
