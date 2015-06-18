@@ -3134,10 +3134,8 @@ Data
 [[Recordset().Field]]</value>
   </data>
     <data name="SharepointHelpServer" xml:space="preserve">
-    <value>Select a preconfigured Sharepoint server source or "New Sharepoint server Source..." to add a new one.
-
-Allowed:
-Select a preconfigured Sharepoint server source or "New Sharepoint server Source..." to add a new one.</value>
+    <value>Select a preconfigured Sharepoint server source or "New Sharepoint Server Source..." to add a new one.
+</value>
   </data>
       <data name="SharepointHelpList" xml:space="preserve">
     <value>Select a list to read data from.

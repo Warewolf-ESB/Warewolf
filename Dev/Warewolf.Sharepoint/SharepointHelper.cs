@@ -79,6 +79,7 @@ namespace Warewolf.Sharepoint
                 case FieldType.Invalid:
                     break;
                 case FieldType.Integer:
+                case FieldType.Counter:
                     sharepointFieldTo.Type = SharepointFieldType.Integer;
                     var intField = field as FieldNumber;
                     if(intField != null)
@@ -88,6 +89,7 @@ namespace Warewolf.Sharepoint
                     }
                     break;
                 case FieldType.Text:
+                case FieldType.Choice:
                     sharepointFieldTo.Type = SharepointFieldType.Text;
                     var textField = field as FieldText;
                     if(textField != null)
@@ -101,12 +103,6 @@ namespace Warewolf.Sharepoint
                 case FieldType.DateTime:
                     sharepointFieldTo.Type = SharepointFieldType.DateTime;
                     break;
-                case FieldType.Counter:
-                    break;
-                case FieldType.Choice:
-                    break;
-                case FieldType.Lookup:
-                    break;
                 case FieldType.Boolean:
                     sharepointFieldTo.Type = SharepointFieldType.Boolean;
                     break;
@@ -118,55 +114,9 @@ namespace Warewolf.Sharepoint
                         sharepointFieldTo.MaxValue = numberField.MaximumValue;
                         sharepointFieldTo.MinValue = numberField.MinimumValue;
                     }
-                    break;
-                case FieldType.Currency:
-                    sharepointFieldTo.Type = SharepointFieldType.Currency;
-                    break;
-                case FieldType.URL:
-                    break;
-                case FieldType.Computed:
-                    break;
-                case FieldType.Threading:
-                    break;
-                case FieldType.Guid:
-                    break;
-                case FieldType.MultiChoice:
-                    break;
-                case FieldType.GridChoice:
-                    break;
-                case FieldType.Calculated:
-                    break;
-                case FieldType.File:
-                    break;
-                case FieldType.Attachments:
-                    break;
-                case FieldType.User:
-                    break;
-                case FieldType.Recurrence:
-                    break;
-                case FieldType.CrossProjectLink:
-                    break;
-                case FieldType.ModStat:
-                    break;
-                case FieldType.Error:
-                    break;
-                case FieldType.ContentTypeId:
-                    break;
-                case FieldType.PageSeparator:
-                    break;
-                case FieldType.ThreadIndex:
-                    break;
-                case FieldType.WorkflowStatus:
-                    break;
-                case FieldType.AllDayEvent:
-                    break;
-                case FieldType.WorkflowEventType:
-                    break;
-                case FieldType.Geolocation:
-                    break;
-                case FieldType.OutcomeChoice:
-                    break;
-                case FieldType.MaxItems:
+                    break;               
+                default:
+                    sharepointFieldTo.Type = SharepointFieldType.Text;
                     break;
             }
             return sharepointFieldTo;

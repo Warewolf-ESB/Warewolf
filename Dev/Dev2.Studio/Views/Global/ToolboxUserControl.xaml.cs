@@ -172,10 +172,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
                 category.Add(new ToolboxItemWrapper(typeof(DsfDropBoxFileActivity), "/Images/dropbox-windows.png", "Dropbox-File"));
                 category.Add(new ToolboxItemWrapper(typeof(SharepointReadListActivity), "/images/ToolFindRecords-32.png", "Sharepoint Read List Items"));
                 category.Add(new ToolboxItemWrapper(typeof(SharepointCreateListItemActivity), "/images/ToolFindRecords-32.png", "Sharepoint Create List Items"));
-                //REPLACE WITH SHAREPOINT DELETE ACTIVITY
-                //category.Add(new ToolboxItemWrapper(typeof(SharepointDeleteListItemActivity), "/images/ToolFindRecords-32.png", "Sharepoint Delete List Items"));
-                //REPLACE WITH SHAREPOINT UPDATE ACTIVITY
-                //category.Add(new ToolboxItemWrapper(typeof(SharepointUpdateListItemActivity), "/images/ToolFindRecords-32.png", "Sharepoint Update List Items"));
+                category.Add(new ToolboxItemWrapper(typeof(SharepointDeleteListItemActivity), "/images/ToolFindRecords-32.png", "Sharepoint Delete List Items"));
+                category.Add(new ToolboxItemWrapper(typeof(SharepointUpdateListItemActivity), "/images/ToolFindRecords-32.png", "Sharepoint Update List Items"));
             }
         }
 

@@ -4513,10 +4513,8 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a preconfigured Sharepoint server source or &quot;New Sharepoint server Source...&quot; to add a new one.
-        ///
-        ///Allowed:
-        ///Select a preconfigured Sharepoint server source or &quot;New Sharepoint server Source...&quot; to add a new one..
+        ///   Looks up a localized string similar to Select a preconfigured Sharepoint server source or &quot;New Sharepoint Server Source...&quot; to add a new one.
+        ///.
         /// </summary>
         public static string SharepointHelpServer {
             get {

@@ -75,7 +75,6 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfDateTimeActivity), typeof(DateTimeDesigner) },
                 { typeof(DsfWebGetRequestWithTimeoutActivity), typeof(GetWebRequestWithTimeOutDesigner) },
                 { typeof(DsfWebGetRequestActivity), typeof(GetWebRequestDesigner) },
-
                 { typeof(DsfFindRecordsMultipleCriteriaActivity), typeof(FindRecordsMultipleCriteriaDesigner) },
                 { typeof(DsfSqlBulkInsertActivity), typeof(SqlBulkInsertDesigner) },
                 { typeof(DsfSortRecordsActivity), typeof(SortRecordsDesigner) },
@@ -121,11 +120,8 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfCreateJsonActivity), typeof(CreateJsonDesigner) },
                 { typeof(SharepointReadListActivity), typeof(SharepointListReadDesigner) },
                 { typeof(SharepointCreateListItemActivity), typeof(SharepointListCreateDesigner) },
-                //REPLACE WITH SHAREPOINT DELETE ACTIVITY
-                //{ typeof(SharepointDeleteListItemActivity), typeof(SharepointListDeleteDesigner) },
-                //REPLACE WITH SHAREPOINT UPDATE ACTIVITY
-                //{ typeof(SharepointUpdateListItemActivity), typeof(SharepointListUpdateDesigner) },
-                // Travis.Frisinger : 25.09.2012 - Removed Http Activity as it is out of sync with the current release 1 plans
+                { typeof(SharepointDeleteListItemActivity), typeof(SharepointListDeleteDesigner) },
+                { typeof(SharepointUpdateListItemActivity), typeof(SharepointListUpdateDesigner) }
             };
 
             workflowVm.InitializeDesigner(designerAttributes, liteInit);

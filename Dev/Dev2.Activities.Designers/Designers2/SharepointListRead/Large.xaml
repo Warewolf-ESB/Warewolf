@@ -239,9 +239,11 @@
                                       ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
                                       Margin="0,0,2,0"
                                       DisplayMemberPath="FieldName"
-                                      SelectedValuePath="FieldName"
+                                      SelectedValuePath="InternalName"
                                       ItemsSource="{Binding DataContext.ReadListItems, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"                                          
-                                      SelectedValue="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
+                                      SelectedItem="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
+                                      SelectedValue="{Binding InternalName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
+                                      SelectionChanged="SearchToFieldChanged"
                                       ToolTip="{x:Static help:HelpTextResources.SharepointToolTipFieldToFilterOn}">
                                     <i:Interaction.Behaviors>
                                         <help:HelpSetter Text="{x:Static help:HelpTextResources.SharepointHelpFieldToMatchOn}"

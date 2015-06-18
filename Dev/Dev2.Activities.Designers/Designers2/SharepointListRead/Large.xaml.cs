@@ -9,7 +9,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Collections;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Dev2.Activities.Designers2.SharepointListRead
 {
@@ -24,6 +26,19 @@ namespace Dev2.Activities.Designers2.SharepointListRead
         protected override IInputElement GetInitialFocusElement()
         {
             return InitialFocusElement;
+        }
+
+        void SearchToFieldChanged(object sender, SelectionChangedEventArgs routedEventArgs)
+        {
+            var vm = DataContext as SharepointListReadDesignerViewModel;
+            if(vm != null)
+            {
+                var addedItems = routedEventArgs.AddedItems;
+                if(addedItems != null)
+                {
+                    
+                }
+            }
         }
     }
 }

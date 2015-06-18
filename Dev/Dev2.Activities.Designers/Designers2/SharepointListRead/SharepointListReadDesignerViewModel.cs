@@ -100,7 +100,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
                 LoadLists(() =>
                 {
                     SetSelectedList(SharepointList);
-                    LoadListFields(() =>
+                    LoadListFields(false,() =>
                     {
                         IsRefreshing = false;
                         if (isInitializing)
@@ -165,15 +165,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
         void SetSelectedSharepointServer(SharepointSource sharepointServerSource)
         {
-            var selectSharepointSource = sharepointServerSource == null ? null : SharepointServers.FirstOrDefault(d =>
-            {
-                var resourceID = sharepointServerSource.ResourceID;
-                if(SharepointServerResourceId != Guid.Empty)
-                {
-                    resourceID = SharepointServerResourceId;
-                }
-                return d.ResourceID == resourceID;
-            });
+            var selectSharepointSource = sharepointServerSource ?? SharepointServers.FirstOrDefault(d => d.ResourceID == SharepointServerResourceId);
             if (selectSharepointSource == null)
             {
                 if (SharepointServers.FirstOrDefault(d => d.Equals(SelectSharepointSource)) == null)
@@ -285,7 +277,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             {
                 // Restore Selection
                 SetSelectedList(listName);
-                LoadListFields(() => { IsRefreshing = false; });
+                LoadListFields(true,() => { IsRefreshing = false; });
             });
         }
 
@@ -341,18 +333,14 @@ namespace Dev2.Activities.Designers2.SharepointListRead
                 IsRefreshing = true;
                 Lists.Remove(SelectSharepointList);
                 SharepointList = SelectedList.FullName;
-                LoadListFields(() => { IsRefreshing = false; });
+                LoadListFields(true,() => { IsRefreshing = false; });
             }
         }
 
-        void LoadListFields(System.Action continueWith=null)
+        void LoadListFields(bool isFromListChange=false,System.Action continueWith=null)
         {
             if (!IsListSelected || _isInitializing)
             {
-                if (!_isInitializing)
-                {
-                    ModelItemCollection.Clear();
-                }
                 if (continueWith != null)
                 {
                     continueWith();
@@ -360,9 +348,6 @@ namespace Dev2.Activities.Designers2.SharepointListRead
                 return;
             }
 
-            ModelItemCollection.Clear();
-            dynamic mi = ModelItem;
-            InitializeItems(mi.FilterCriteria);
             var selectedSharepointServer = SelectedSharepointServer;
             var selectedList = SelectedList;
             // ReSharper disable ImplicitlyCapturedClosure
@@ -376,7 +361,21 @@ namespace Dev2.Activities.Designers2.SharepointListRead
                         var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue(selectedList.FullName,mapping.Name.Replace(" ",""),"*");
                         return new SharepointReadListTo(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), mapping.Name, mapping.InternalName);
                     }).ToList();
-                    ReadListItems = fieldMappings;
+                    if (ReadListItems == null || ReadListItems.Count == 0 || isFromListChange)
+                    {
+                        ReadListItems = fieldMappings;
+                    }
+                    else
+                    {
+                        foreach(var sharepointReadListTo in fieldMappings)
+                        {
+                            var readListTo = ReadListItems.FirstOrDefault(to => to.FieldName == sharepointReadListTo.FieldName);
+                            if(readListTo == null)
+                            {
+                                ReadListItems.Add(sharepointReadListTo);
+                            }
+                        }
+                    }
                 }
                 if (continueWith != null)
                 {
@@ -429,7 +428,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             {
                 SetSelectedList(SharepointList);
 
-                LoadListFields(() =>
+                LoadListFields(false,() =>
                 {
                     IsRefreshing = false;
                 });

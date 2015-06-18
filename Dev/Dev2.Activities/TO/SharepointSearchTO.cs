@@ -186,6 +186,8 @@ namespace Dev2.TO
             }
             set
             {
+                if (value == null) return;
+
                 _fieldName = value;
                 OnPropertyChanged();
                 RaiseCanAddRemoveChanged();
@@ -200,8 +202,11 @@ namespace Dev2.TO
             }
             set
             {
+                if(value==null) return;
+                
                 _internalName = value;
                 OnPropertyChanged();
+                RaiseCanAddRemoveChanged();
             }
         }
         public bool Inserted { get; set; }
