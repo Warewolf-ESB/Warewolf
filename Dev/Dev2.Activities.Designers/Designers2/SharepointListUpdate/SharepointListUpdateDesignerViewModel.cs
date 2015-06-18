@@ -10,10 +10,8 @@
 */
 
 using System.Activities.Presentation.Model;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Dev2.Activities.Designers2.SharepointListRead;
-using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Services.Events;
@@ -38,20 +36,6 @@ namespace Dev2.Activities.Designers2.SharepointListUpdate
         public override string CollectionName { get { return "FilterCriteria"; } }
 
         public ObservableCollection<string> WhereOptions { get; private set; }
-
-        protected override IEnumerable<IActionableErrorInfo> ValidateThis()
-        {
-            yield break;
-        }
-
-        protected override IEnumerable<IActionableErrorInfo> ValidateCollectionItem(ModelItem mi)
-        {
-            var dto = mi.GetCurrentValue() as SharepointSearchTo;
-            if(dto == null)
-            {
-                yield break;
-            }
-        }
 
         public IRuleSet GetRuleSet(string propertyName)
         {

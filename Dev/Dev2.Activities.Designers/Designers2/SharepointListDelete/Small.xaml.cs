@@ -18,7 +18,6 @@ namespace Dev2.Activities.Designers2.SharepointListDelete
         public Small()
         {
             InitializeComponent();
-            DataGrid = LargeDataGrid;
         }
 
         protected override IInputElement GetInitialFocusElement()

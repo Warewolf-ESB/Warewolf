@@ -43,8 +43,6 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
@@ -56,7 +54,10 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
+
             <Label Grid.Column="0"
                Grid.Row="0"
                Content="Server"
@@ -110,22 +111,9 @@
                 Style="{StaticResource ActivityRefreshButtonStyle}"
                 ToolTip="Refresh Lists"
                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RefreshTablesCommand_AutoID}" />
-        </Grid>
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="180" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <controls:Dev2DataGrid Grid.Row="1"
+            <controls:Dev2DataGrid Grid.Row="2"
                                Grid.Column="0"
-                               Grid.ColumnSpan="2"
+                               Grid.ColumnSpan="3"
                                x:Name="LargeDataGrid"
                                ItemsSource="{Binding ModelItem.FilterCriteria, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource ActivityMapppingDataGridStyle}"
@@ -269,48 +257,31 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </controls:Dev2DataGrid>
-            <CheckBox Grid.Row="2"
-                  Grid.Column="0"
-                  Grid.ColumnSpan="2"
-                  Content="Require All Matches To Be True"
-                  IsChecked="{Binding ModelItem.RequireAllCriteriaToMatch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  ToolTip="{x:Static help:HelpTextResources.FindToolTipRequireAllMatchesToBeTrue}"
-                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RequireAllTrue_AutoID}">
-                <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.FindHelpRequireAllMatchesToBeTrue}"
-                                 DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-            </CheckBox>
-
-        </Grid>
-
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Label Content="Result"
+            <Label Grid.Row="3"
+               Grid.Column="0"
+               Content="Result"
                Style="{StaticResource ActivityMapppingLabelStyle}" />
-            <ui:IntellisenseTextBox Grid.Column="1"
-                                    DefaultText="[[DeleteSuccess]]"
-                                    WrapInBrackets="True"
-                                    Text="{Binding ModelItem.DeleteCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            <ui:IntellisenseTextBox Grid.Row="3"
+                                Grid.Column="1"
+                                Grid.ColumnSpan="2"
+                                DefaultText="[[DeleteCount]]"
+                                WrapInBrackets="True"
+                                Text="{Binding ModelItem.DeleteCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
                                 ToolTip="{x:Static help:HelpTextResources.SharepointDelteToolTipResult}"
-                                attachedProperties:FocusSetter.IsFocused="{Binding IsResultFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}">
                 <i:Interaction.Behaviors>
                     <help:HelpSetter Text="{x:Static help:HelpTextResources.SharepointDeleteHelpResult}"
                                  DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="Result"
+                                     SourcePropertyName="DeleteCount"
                                      SourcePropertyValue="{Binding ModelItem.DeleteCount, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
         </Grid>
 
-        <errors:OnError Grid.Row="3"
+        <errors:OnError Grid.Row="1"
                         Grid.ColumnSpan="2" />
     </Grid>
 </core:ActivityDesignerTemplate>
