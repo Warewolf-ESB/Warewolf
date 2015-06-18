@@ -150,6 +150,7 @@ namespace Warewolf.Studio.ViewModels
         public bool CanCreateWebSource { get; set; }
         public bool CanCreatePluginService { get; set; }
         public bool CanCreatePluginSource { get; set; }
+        public bool CanCreateEmailSource { get; set; }
         public bool CanRename { get; set; }
         public bool CanDelete { get; set; }
         public bool CanCreateFolder { get; set; }

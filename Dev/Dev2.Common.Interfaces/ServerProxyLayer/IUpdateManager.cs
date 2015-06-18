@@ -4,6 +4,7 @@ using System.Data;
 using System.Text;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Email;
 using Dev2.Common.Interfaces.ServerDialogue;
 using Dev2.Common.Interfaces.WebServices;
 
@@ -76,5 +77,9 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         string TestPluginService(IPluginService inputValues);
 
         void SavePluginService(IPluginService toDbSource);
+
+        string TestEmailServiceSource(IEmailServiceSource emailServiceSource);
+
+        void SaveEmailServiceSource(IEmailServiceSource emailServiceSource, Guid serverWorkspaceID);
     }
 }

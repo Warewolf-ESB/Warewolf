@@ -881,6 +881,59 @@ You need Administrator permission.</value>
   <data name="PluginServiceCancelCommandHelp" xml:space="preserve">
     <value>&lt;body&gt;&lt;p&gt;PluginServiceCancelCommandHelp&lt;/p&gt;&lt;/body&gt;</value>
   </data>
+  
+  <data name="EmailSourceNewHeaderLabel" xml:space="preserve">
+    <value>New Email Source</value>
+  </data>
+  <data name="EmailSourceEditHeaderLabel" xml:space="preserve">
+    <value>Edit Email Source - </value>
+  </data>
+  <data name="HostNameLabel" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="EmailSourceEnableSslLabel" xml:space="preserve">
+    <value>Enable SSL</value>
+  </data>
+  <data name="PortLabel" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="EmailSourceTimeoutLabel" xml:space="preserve">
+    <value>Timeout</value>
+  </data>
+  <data name="EmailSourceEmailFromLabel" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="EmailSourceEmailToLabel" xml:space="preserve">
+    <value>To</value>
+  </data>
+  <data name="EmailSourceHostNameHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;EmailSourceHostNameHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="EmailSourceEnableSslHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;EmailSourceEnableSslHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="EmailSourcePortHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;EmailSourcePortHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="EmailSourceTimeoutHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;EmailSourceTimeoutHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="EmailSourceEmailFromHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;EmailSourceEmailFromHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="EmailSourceEmailToHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;EmailSourceEmailToHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="EmailSourceTestHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;EmailSourceTestHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="EmailSourceSaveHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;EmailSourceSaveHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="EmailSourceCancelHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;EmailSourceCancelHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  
   <data name="MappingsRecordsetNameHelp" xml:space="preserve">
     <value>&lt;body&gt;&lt;p&gt;MappingsRecordsetNameHelp&lt;/p&gt;&lt;/body&gt;</value>
   </data>

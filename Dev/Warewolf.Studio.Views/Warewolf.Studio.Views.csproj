@@ -262,6 +262,9 @@
     <Compile Include="ManageDatabaseSourceControl.xaml.cs">
       <DependentUpon>ManageDatabaseSourceControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ManageEmailSourceControl.xaml.cs">
+      <DependentUpon>ManageEmailSourceControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ManagePluginServiceControl.xaml.cs">
       <DependentUpon>ManagePluginServiceControl.xaml</DependentUpon>
     </Compile>
@@ -358,6 +361,10 @@
     <Page Include="ManageDatabaseSourceControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ManageEmailSourceControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ManagePluginServiceControl.xaml">
       <SubType>Designer</SubType>

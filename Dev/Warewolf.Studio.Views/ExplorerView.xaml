@@ -299,6 +299,18 @@
                                                                Source="{StaticResource Explorer-DLL-Create}" />
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
+                                                    <ig:XamMenuItem Name="NewEmailSource"
+                                                                Command="{Binding Path=Data.NewCommand}"
+                                                                CommandParameter="{x:Static data:ResourceType.EmailSource}"
+                                                                Header="New Email Source"
+                                                                Visibility="{Binding Path=Data.CanCreateEmailSource,
+                                                                                     Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <ig:XamMenuItem.Icon>
+                                                            <Image Width="12"
+                                                               Height="12"
+                                                               Source="{StaticResource Utility-SendMail}" />
+                                                        </ig:XamMenuItem.Icon>
+                                                    </ig:XamMenuItem>
 
                                                     <ig:XamMenuItem Name="NewFolder"
                                                                 InputGestureText="[Ctrl+Shift+F]"
@@ -551,6 +563,19 @@
                                                             <Image Width="12"
                                                                Height="12"
                                                                Source="{StaticResource Explorer-DLL-Create}" />
+                                                        </ig:XamMenuItem.Icon>
+                                                    </ig:XamMenuItem>
+
+                                                    <ig:XamMenuItem Name="NewEmailSource"
+                                                                Command="{Binding Path=Data.NewCommand}"
+                                                                CommandParameter="{x:Static data:ResourceType.EmailSource}"
+                                                                Header="New Email Source"
+                                                                Visibility="{Binding Path=Data.CanCreateEmailSource,
+                                                                                     Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <ig:XamMenuItem.Icon>
+                                                            <Image Width="12"
+                                                               Height="12"
+                                                               Source="{StaticResource Utility-SendMail}" />
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuSeparator />

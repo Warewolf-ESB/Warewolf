@@ -263,6 +263,9 @@ namespace Warewolf.Studio.ViewModels
                 case ResourceType.PluginSource:
                     CreatePluginSource();
                     break;
+                case ResourceType.EmailSource:
+                    CreateEmailSource();
+                    break;
                 case ResourceType.PluginService:
                     CreatePluginService();
                     break;
@@ -315,6 +318,15 @@ namespace Warewolf.Studio.ViewModels
             GetRegion("Workspace").Add(sourceViewModel);
         
         }
+
+        private void CreateEmailSource()
+        {
+            var selectedId = Guid.NewGuid();
+            var sourceViewModel = new ManageEmailSourceViewModel(new ManageEmailSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.ResourceName), new RequestServiceNameViewModel(new EnvironmentViewModel(LocalhostServer, this), _unityContainer.Resolve<IRequestServiceNameView>(), selectedId), _aggregator);
+            GetRegion("Workspace").Add(sourceViewModel);
+
+        }
+
         private void CreateWebService()
         {
             var selectedId = Guid.NewGuid();

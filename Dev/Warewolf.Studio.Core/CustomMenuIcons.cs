@@ -42,6 +42,7 @@ namespace Warewolf.Studio.Core
 
             {MenuIcons.WebSource, "Explorer-WebService-Create"},
             {MenuIcons.PluginSource, "Explorer-DLL-Create"},
+            {MenuIcons.EmailSource, "Utility-SendMail"},
             {MenuIcons.DbSource, "Explorer-DB-Create"},
             {MenuIcons.ServerSource, "System-Logo-Create"},
 
@@ -132,6 +133,14 @@ namespace Warewolf.Studio.Core
             get
             {
                 return MenuIconsDictionary[MenuIcons.PluginSource];
+            }
+        }
+
+        public static string EmailSource
+        {
+            get
+            {
+                return MenuIconsDictionary[MenuIcons.EmailSource];
             }
         }
 

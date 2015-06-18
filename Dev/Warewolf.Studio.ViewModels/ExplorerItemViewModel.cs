@@ -75,6 +75,7 @@ namespace Warewolf.Studio.ViewModels
             CanShowDependencies = true;
             CanCreatePluginService = true;
             CanCreatePluginSource = true;
+            CanCreateEmailSource = true;
             CanCreateWebSource = true;
             CanCreateWebService = true;
             _explorerRepository = server.ExplorerRepository;
@@ -166,6 +167,7 @@ namespace Warewolf.Studio.ViewModels
                    CanShowVersions = CanShowVersions,
                    CanRename = CanRename,
                    CanCreatePluginSource = CanCreatePluginSource,
+                   CanCreateEmailSource = CanCreateEmailSource,
                    CanCreateServerSource = CanCreateServerSource,
                    CanCreateWebService = CanCreateWebService,
                    CanCreateWebSource = CanCreateWebSource,
@@ -456,6 +458,7 @@ namespace Warewolf.Studio.ViewModels
         public bool CanCreateWebSource { get; set; }
         public bool CanCreatePluginService { get; set; }
         public bool CanCreatePluginSource { get; set; }
+        public bool CanCreateEmailSource { get; set; }
         // ReSharper disable MemberCanBePrivate.Global
         public bool CanCreateWorkflowService { get; set; }
         // ReSharper restore MemberCanBePrivate.Global
@@ -594,6 +597,7 @@ namespace Warewolf.Studio.ViewModels
 						ResourceId = ResourceId,
                          IsVersion = true,
                          CanCreatePluginSource = false,
+                         CanCreateEmailSource = false,
 						CanCreateWebService = false,
                          CanCreateDbService = false,
                          CanCreateDbSource = false,

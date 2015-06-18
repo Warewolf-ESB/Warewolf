@@ -151,6 +151,7 @@ namespace Warewolf.Studio.ViewModels
             CanCreateFolder = true;
             CanCreatePluginService = false;
             CanCreatePluginSource = false;
+            CanCreateEmailSource = false;
             CanCreateServerSource = false;
             CanCreateWebService = false;
             CanCreateWebSource = false;
@@ -278,6 +279,7 @@ namespace Warewolf.Studio.ViewModels
         public bool CanCreateWebSource { get; set; }
         public bool CanCreatePluginService { get; set; }
         public bool CanCreatePluginSource { get; set; }
+        public bool CanCreateEmailSource { get; set; }
         public bool CanRename { get; set; }
         public bool CanDelete { get; set; }
         public bool CanCreateFolder
@@ -540,6 +542,7 @@ namespace Warewolf.Studio.ViewModels
             itemCreated.CanCreateDbSource = false;
             itemCreated.CanCreatePluginService = false;
             itemCreated.CanCreatePluginSource = false;
+            itemCreated.CanCreateEmailSource = false;
             itemCreated.CanCreateServerSource = false;
             itemCreated.CanCreateWebService = false;
             itemCreated.CanCreateWebSource = false;

@@ -174,6 +174,7 @@
     <Compile Include="Core\DbSourceDefinition.cs" />
     <Compile Include="Core\DynamicServices\Globals.cs" />
     <Compile Include="Core\DynamicServices\IDynamicServiceObject.cs" />
+    <Compile Include="Core\EmailServiceSourceDefinition.cs" />
     <Compile Include="Core\Globals.cs" />
     <Compile Include="Core\Graph\IDataBrowser.cs" />
     <Compile Include="Core\Graph\IDataSourceShape.cs" />
@@ -238,6 +239,7 @@
     <Compile Include="Diagnostics\Debug\IDebugSubItem.cs" />
     <Compile Include="Diagnostics\Debug\IDebugWriter.cs" />
     <Compile Include="DllListing.cs" />
+    <Compile Include="Email\IEmailServiceSource.cs" />
     <Compile Include="enFindMissingType.cs" />
     <Compile Include="Enums\enRandomType.cs" />
     <Compile Include="Enums\enScriptType.cs" />
@@ -303,6 +305,7 @@
     <Compile Include="Studio\IMenuViewModel.cs" />
     <Compile Include="Studio\IVariableListViewModel.cs" />
     <Compile Include="Studio\ViewModels\Dialogues\IManageDatabaseSourceViewModel.cs" />
+    <Compile Include="Studio\ViewModels\Dialogues\IManageEmailSourceViewModel.cs" />
     <Compile Include="Studio\ViewModels\Dialogues\IManagePluginSourceModel.cs" />
     <Compile Include="Studio\ViewModels\Dialogues\IManagePluginSourceViewModel.cs" />
     <Compile Include="Studio\ViewModels\Dialogues\IManageWebserviceSourceViewModel.cs" />

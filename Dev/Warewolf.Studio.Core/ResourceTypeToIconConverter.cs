@@ -34,6 +34,8 @@ namespace Warewolf.Studio.Core
                         return dict[CustomMenuIcons.DbService] as DrawingImage;
                     case ResourceType.PluginSource:
                         return dict[CustomMenuIcons.PluginSource] as DrawingImage;
+                    case ResourceType.EmailSource:
+                        return dict[CustomMenuIcons.EmailSource] as DrawingImage;
                     case ResourceType.WebService:
                         return dict[CustomMenuIcons.WebService] as DrawingImage;
                     case ResourceType.DbSource:

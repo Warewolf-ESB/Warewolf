@@ -18,6 +18,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         bool CanCreateWebSource { get; set; }
         bool CanCreatePluginService { get; set; }
         bool CanCreatePluginSource { get; set; }
+        bool CanCreateEmailSource { get; set; }
         bool CanRename { get; set; }
         bool CanDelete { get; set; }
         bool CanCreateFolder { get; set; }

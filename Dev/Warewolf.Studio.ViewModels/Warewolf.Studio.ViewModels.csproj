@@ -129,6 +129,8 @@
     <Compile Include="ManageDatabaseServiceViewModel.cs" />
     <Compile Include="ManageDatabaseSourceModel.cs" />
     <Compile Include="ManageDatabaseSourceViewModel.cs" />
+    <Compile Include="ManageEmailSourceModel.cs" />
+    <Compile Include="ManageEmailSourceViewModel.cs" />
     <Compile Include="ManagePluginServiceViewModel.cs" />
     <Compile Include="ManagePluginSourceModel.cs" />
     <Compile Include="ManagePluginSourceViewModel.cs" />

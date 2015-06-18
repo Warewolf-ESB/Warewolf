@@ -693,6 +693,141 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;body&gt;&lt;p&gt;EmailSourceCancelHelp&lt;/p&gt;&lt;/body&gt;.
+        /// </summary>
+        public static string EmailSourceCancelHelp {
+            get {
+                return ResourceManager.GetString("EmailSourceCancelHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Email Source - .
+        /// </summary>
+        public static string EmailSourceEditHeaderLabel {
+            get {
+                return ResourceManager.GetString("EmailSourceEditHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;body&gt;&lt;p&gt;EmailSourceEmailFromHelp&lt;/p&gt;&lt;/body&gt;.
+        /// </summary>
+        public static string EmailSourceEmailFromHelp {
+            get {
+                return ResourceManager.GetString("EmailSourceEmailFromHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From.
+        /// </summary>
+        public static string EmailSourceEmailFromLabel {
+            get {
+                return ResourceManager.GetString("EmailSourceEmailFromLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;body&gt;&lt;p&gt;EmailSourceEmailToHelp&lt;/p&gt;&lt;/body&gt;.
+        /// </summary>
+        public static string EmailSourceEmailToHelp {
+            get {
+                return ResourceManager.GetString("EmailSourceEmailToHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To.
+        /// </summary>
+        public static string EmailSourceEmailToLabel {
+            get {
+                return ResourceManager.GetString("EmailSourceEmailToLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;body&gt;&lt;p&gt;EmailSourceEnableSslHelp&lt;/p&gt;&lt;/body&gt;.
+        /// </summary>
+        public static string EmailSourceEnableSslHelp {
+            get {
+                return ResourceManager.GetString("EmailSourceEnableSslHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable SSL.
+        /// </summary>
+        public static string EmailSourceEnableSslLabel {
+            get {
+                return ResourceManager.GetString("EmailSourceEnableSslLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;body&gt;&lt;p&gt;EmailSourceHostNameHelp&lt;/p&gt;&lt;/body&gt;.
+        /// </summary>
+        public static string EmailSourceHostNameHelp {
+            get {
+                return ResourceManager.GetString("EmailSourceHostNameHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Email Source.
+        /// </summary>
+        public static string EmailSourceNewHeaderLabel {
+            get {
+                return ResourceManager.GetString("EmailSourceNewHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;body&gt;&lt;p&gt;EmailSourcePortHelp&lt;/p&gt;&lt;/body&gt;.
+        /// </summary>
+        public static string EmailSourcePortHelp {
+            get {
+                return ResourceManager.GetString("EmailSourcePortHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;body&gt;&lt;p&gt;EmailSourceSaveHelp&lt;/p&gt;&lt;/body&gt;.
+        /// </summary>
+        public static string EmailSourceSaveHelp {
+            get {
+                return ResourceManager.GetString("EmailSourceSaveHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;body&gt;&lt;p&gt;EmailSourceTestHelp&lt;/p&gt;&lt;/body&gt;.
+        /// </summary>
+        public static string EmailSourceTestHelp {
+            get {
+                return ResourceManager.GetString("EmailSourceTestHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;body&gt;&lt;p&gt;EmailSourceTimeoutHelp&lt;/p&gt;&lt;/body&gt;.
+        /// </summary>
+        public static string EmailSourceTimeoutHelp {
+            get {
+                return ResourceManager.GetString("EmailSourceTimeoutHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Timeout.
+        /// </summary>
+        public static string EmailSourceTimeoutLabel {
+            get {
+                return ResourceManager.GetString("EmailSourceTimeoutLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to EnvironmentExplorerRefreshToolTip.
         /// </summary>
         public static string EnvironmentExplorerRefreshToolTip {
@@ -897,6 +1032,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string GenericConfirmation {
             get {
                 return ResourceManager.GetString("GenericConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Host.
+        /// </summary>
+        public static string HostNameLabel {
+            get {
+                return ResourceManager.GetString("HostNameLabel", resourceCulture);
             }
         }
         
@@ -1509,6 +1653,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string PluginSserviceEditHeaderLabel {
             get {
                 return ResourceManager.GetString("PluginSserviceEditHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Port.
+        /// </summary>
+        public static string PortLabel {
+            get {
+                return ResourceManager.GetString("PortLabel", resourceCulture);
             }
         }
         

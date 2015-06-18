@@ -4,6 +4,7 @@ using System.Data;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Email;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.ServerDialogue;
 using Dev2.Common.Interfaces.ServerProxyLayer;
@@ -48,12 +49,22 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             UpdateManagerProxy.SavePluginSource(source, GlobalConstants.ServerWorkspaceID);
         }
 
+        public void Save(IEmailServiceSource emailServiceSource)
+        {
+            UpdateManagerProxy.SaveEmailServiceSource(emailServiceSource, GlobalConstants.ServerWorkspaceID);
+        }
+
         public string TestConnection(IServerSource serverSource)
         {
 
 
             return UpdateManagerProxy.TestConnection(serverSource);
 
+        }
+
+        public string TestConnection(IEmailServiceSource emailServiceSource)
+        {
+            return UpdateManagerProxy.TestEmailServiceSource(emailServiceSource);
         }
 
         public void TestConnection(IWebServiceSource resource)
