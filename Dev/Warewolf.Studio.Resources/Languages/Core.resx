@@ -644,7 +644,7 @@ You need Administrator permission.</value>
     <value>Configure settings</value>
   </data>
   <data name="MenuWebServiceToolTip" xml:space="preserve">
-    <value>Create a new web-service</value>
+    <value>Create a new web service</value>
   </data>
   <data name="ServerSourceDialogAddressPortTip" xml:space="preserve">
     <value>Enter the port on the server</value>
@@ -691,29 +691,29 @@ You need Administrator permission.</value>
   <data name="DatabaseSourceServerNewHeaderLabel" xml:space="preserve">
     <value>New Database Source</value>
   </data>
-    <data name="PluginSourceNewHeaderLabel" xml:space="preserve">
+  <data name="PluginSourceNewHeaderLabel" xml:space="preserve">
     <value>New Plugin Source</value>
   </data>
   <data name="PluginSourceEditHeaderLabel" xml:space="preserve">
     <value>Edit Plugin Source - </value>
   </data>
   <data name="PluginServiceNewHeaderLabel" xml:space="preserve">
-    <value>New Plugin Service</value>
+    <value>New Plugin Connector</value>
   </data>
   <data name="PluginSserviceEditHeaderLabel" xml:space="preserve">
-    <value>Edit Plugin Service - </value>
+    <value>Edit Plugin Connector - </value>
   </data>
-    <data name="DatabaseSourceServerEditHeaderLabel" xml:space="preserve">
+  <data name="DatabaseSourceServerEditHeaderLabel" xml:space="preserve">
     <value>Edit Database Source - </value>
   </data>
   <data name="DatabaseWebserviceLabel" xml:space="preserve">
     <value>Address:</value>
   </data>
   <data name="WebserviceNewHeaderLabel" xml:space="preserve">
-    <value>New Webservice Source</value>
+    <value>New Web Source</value>
   </data>
   <data name="WebserviceEditHeaderLabel" xml:space="preserve">
-    <value>Edit Webservice Source - </value>
+    <value>Edit Web Source - </value>
   </data>
   <data name="DatabaseSourceServerToolTip" xml:space="preserve">
     <value>Select the database source you want to use</value>
@@ -725,7 +725,7 @@ You need Administrator permission.</value>
     <value>Select the type of database you want to connect to</value>
   </data>
   <data name="WebserviceTabHeader" xml:space="preserve">
-    <value>New Webservice</value>
+    <value>New Web Service</value>
   </data>
   <data name="WebserviceHeader" xml:space="preserve">
     <value>Select Request Method and Source</value>
@@ -850,7 +850,6 @@ You need Administrator permission.</value>
   <data name="PluginSourceCancelCommandHelp" xml:space="preserve">
     <value>&lt;body&gt;&lt;p&gt;PluginSourceCancelCommandHelp&lt;/p&gt;&lt;/body&gt;</value>
   </data>
-
   <data name="PluginServiceSourcesHelp" xml:space="preserve">
     <value>&lt;body&gt;&lt;p&gt;PluginServiceSourcesHelp&lt;/p&gt;&lt;/body&gt;</value>
   </data>
@@ -881,7 +880,6 @@ You need Administrator permission.</value>
   <data name="PluginServiceCancelCommandHelp" xml:space="preserve">
     <value>&lt;body&gt;&lt;p&gt;PluginServiceCancelCommandHelp&lt;/p&gt;&lt;/body&gt;</value>
   </data>
-  
   <data name="EmailSourceNewHeaderLabel" xml:space="preserve">
     <value>New Email Source</value>
   </data>
@@ -933,7 +931,6 @@ You need Administrator permission.</value>
   <data name="EmailSourceCancelHelp" xml:space="preserve">
     <value>&lt;body&gt;&lt;p&gt;EmailSourceCancelHelp&lt;/p&gt;&lt;/body&gt;</value>
   </data>
-  
   <data name="MappingsRecordsetNameHelp" xml:space="preserve">
     <value>&lt;body&gt;&lt;p&gt;MappingsRecordsetNameHelp&lt;/p&gt;&lt;/body&gt;</value>
   </data>
@@ -988,9 +985,6 @@ You need Administrator permission.</value>
   <data name="ExplorerViewRefreshHelp" xml:space="preserve">
     <value>&lt;body&gt;&lt;p&gt;ExplorerViewRefreshHelp&lt;/p&gt;&lt;/body&gt;</value>
   </data>
-  
-  
-  
   <data name="DatabaseServiceActionHeader" xml:space="preserve">
     <value>Select an Action</value>
   </data>
@@ -998,7 +992,7 @@ You need Administrator permission.</value>
     <value>Data Source</value>
   </data>
   <data name="DatabaseServiceDBSourceTabHeader" xml:space="preserve">
-    <value>New DB Service</value>
+    <value>New DB Connector</value>
   </data>
   <data name="DatabaseServiceDBSourceEditTabHeader" xml:space="preserve">
     <value>Edit:</value>

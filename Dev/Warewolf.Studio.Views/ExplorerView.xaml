@@ -227,7 +227,7 @@
                                                                 InputGestureText="[Ctrl+Shift+D]"
                                                                 Command="{Binding Path=Data.NewCommand}"
                                                                 CommandParameter="{x:Static data:ResourceType.DbService}"
-                                                                Header="New Database Service"
+                                                                Header="New Database Connector"
                                                                 Visibility="{Binding Path=Data.CanCreateDbService,
                                                                                      Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
@@ -278,7 +278,7 @@
                                                                 InputGestureText="[Ctrl+Shift+P]"
                                                                 Command="{Binding Path=Data.NewCommand}"
                                                                 CommandParameter="{x:Static data:ResourceType.PluginService}"
-                                                                Header="New Plugin Service"
+                                                                Header="New Plugin Connector"
                                                                 Visibility="{Binding Path=Data.CanCreatePluginService,
                                                                                      Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
@@ -489,7 +489,7 @@
                                                                 InputGestureText="[Ctrl+Shift+D]"
                                                                 Command="{Binding Path=Data.NewCommand}"
                                                                 CommandParameter="{x:Static data:ResourceType.DbService}"
-                                                                Header="New Database Service"
+                                                                Header="New Database Connector"
                                                                 Visibility="{Binding Path=Data.CanCreateDbService,
                                                                                      Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
@@ -543,7 +543,7 @@
                                                                 InputGestureText="[Ctrl+Shift+P]"
                                                                 Command="{Binding Path=Data.NewCommand}"
                                                                 CommandParameter="{x:Static data:ResourceType.PluginService}"
-                                                                Header="New Plugin Service"
+                                                                Header="New Plugin Connector"
                                                                 Visibility="{Binding Path=Data.CanCreatePluginService,
                                                                                      Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>

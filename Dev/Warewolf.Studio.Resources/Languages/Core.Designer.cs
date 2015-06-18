@@ -227,7 +227,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New DB Service.
+        ///   Looks up a localized string similar to New DB Connector.
         /// </summary>
         public static string DatabaseServiceDBSourceTabHeader {
             get {
@@ -1333,7 +1333,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a new web-service.
+        ///   Looks up a localized string similar to Create a new web service.
         /// </summary>
         public static string MenuWebServiceToolTip {
             get {
@@ -1513,7 +1513,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Plugin Service.
+        ///   Looks up a localized string similar to New Plugin Connector.
         /// </summary>
         public static string PluginServiceNewHeaderLabel {
             get {
@@ -1648,7 +1648,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Plugin Service - .
+        ///   Looks up a localized string similar to Edit Plugin Connector - .
         /// </summary>
         public static string PluginSserviceEditHeaderLabel {
             get {
@@ -2184,7 +2184,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Webservice Source - .
+        ///   Looks up a localized string similar to Edit Web Source - .
         /// </summary>
         public static string WebserviceEditHeaderLabel {
             get {
@@ -2211,7 +2211,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Webservice Source.
+        ///   Looks up a localized string similar to New Web Source.
         /// </summary>
         public static string WebserviceNewHeaderLabel {
             get {
@@ -2346,7 +2346,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Webservice.
+        ///   Looks up a localized string similar to New Web Service.
         /// </summary>
         public static string WebserviceTabHeader {
             get {

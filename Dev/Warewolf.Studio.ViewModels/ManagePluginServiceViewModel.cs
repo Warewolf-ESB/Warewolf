@@ -72,6 +72,7 @@ namespace Warewolf.Studio.ViewModels
             _model = model;
             _saveDialog = saveDialog;
             Inputs = new ObservableCollection<IServiceInput>();
+            CreateNewSourceCommand = new DelegateCommand(model.CreateNewSource);
             OutputMapping = new ObservableCollection<IServiceOutputMapping>();
             AvalaibleActions = new ObservableCollection<IPluginAction>();
             NameSpaces = new ObservableCollection<INamespaceItem>();

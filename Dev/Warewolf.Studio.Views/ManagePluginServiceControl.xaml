@@ -99,6 +99,7 @@
                                 Height="26"
                                 Grid.Column="2"
                                 Margin="0,-1,0,0"
+                                Command="{Binding CreateNewSourceCommand}"
                                 Style="{StaticResource ButtonOrangeStyle}" 
                                 Width="100" >
                             <i:Interaction.Behaviors>
