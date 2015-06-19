@@ -10,12 +10,14 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.ErrorHandling;
 using Dev2.Common.Interfaces.Help;
+using Dev2.Common.Interfaces.PluginService;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Common.Interfaces.ServerDialogue;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
+using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.ServiceModel;
 using Dev2.Util;
@@ -145,6 +147,9 @@ namespace Warewolf.Studio.ViewModels
 
         public void EditResource(IPluginSource selectedSource)
         {
+            IManagePluginSourceModel src = new ManagePluginSourceModel(ActiveServer.UpdateRepository,ActiveServer.QueryProxy,ActiveServer.ResourceName);
+            var dbSourceViewModel = new ManagePluginSourceViewModel(src, _aggregator,selectedSource);
+            GetRegion("Workspace").Add(dbSourceViewModel);
         }
 
         public string OpenPasteWindow(string current)
