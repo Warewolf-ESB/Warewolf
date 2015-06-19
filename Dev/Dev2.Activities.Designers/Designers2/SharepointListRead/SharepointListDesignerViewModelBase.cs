@@ -75,8 +75,6 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             RefreshListsCommand = new RelayCommand(o => RefreshLists(), o => IsListSelected);
             
             RefreshSharepointSources(true);
-            IsRefreshing = true;
-            IsRefreshing = false;
             
         }
         public static readonly DependencyProperty IsSelectedSharepointServerFocusedProperty =
