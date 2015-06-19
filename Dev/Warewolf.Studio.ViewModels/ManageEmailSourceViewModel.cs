@@ -43,8 +43,6 @@ namespace Warewolf.Studio.ViewModels
         bool _testFailed;
         bool _testing;
         string _headerText;
-        private bool _showEmailTest;
-        private bool _enableEmailTest;
         private bool _enableSend;
         readonly string _warewolfserverName;
 
@@ -60,26 +58,17 @@ namespace Warewolf.Studio.ViewModels
             RequestServiceNameViewModel = requestServiceNameViewModel;
             HeaderText = Resources.Languages.Core.EmailSourceNewHeaderLabel;
             Header = Resources.Languages.Core.EmailSourceNewHeaderLabel;
-            TestCommand = new DelegateCommand(EnableTestFields);
             SendCommand = new DelegateCommand(TestConnection, CanTest);
             OkCommand = new DelegateCommand(SaveConnection, CanSave);
             Testing = false;
             _testPassed = false;
             _testFailed = false;
-            ShowEmailTest = false;
             EnableSend = false;
             EnableSslNo = true;
             Port = 25;
             Timeout = 100;
             // ReSharper restore MaximumChainedReferences
             _warewolfserverName = updateManager.ServerName;
-        }
-
-        private void EnableTestFields()
-        {
-            ShowEmailTest = true;
-            OnPropertyChanged(() => ShowEmailTest);
-            OnPropertyChanged(() => TestCommand);
         }
 
         public ManageEmailSourceViewModel(IManageEmailSourceModel updateManager, IRequestServiceNameViewModel requestServiceNameViewModel, IEventAggregator aggregator, IEmailServiceSource emailServiceSource)
@@ -184,25 +173,14 @@ namespace Warewolf.Studio.ViewModels
             get { return _hostName; }
             set
             {
-                EnableEmailTest = false;
                 if (value != _hostName)
                 {
                     _hostName = value;
-
-                    if (!string.IsNullOrWhiteSpace(_hostName) && !string.IsNullOrWhiteSpace(UserName) && !string.IsNullOrWhiteSpace(Password))
-                    {
-                        EnableEmailTest = true;
-                    }
-                    else
-                    {
-                        EnableEmailTest = false;
-                        ShowEmailTest = false;
-                    }
+                    TestMessage = String.Empty;
 
                     OnPropertyChanged(() => HostName);
                     OnPropertyChanged(() => Header);
-                    OnPropertyChanged(() => ShowEmailTest);
-                    OnPropertyChanged(() => EnableEmailTest);
+                    OnPropertyChanged(() => TestMessage);
                     TestPassed = false;
                     ViewModelUtils.RaiseCanExecuteChanged(SendCommand);
                     ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
@@ -215,25 +193,19 @@ namespace Warewolf.Studio.ViewModels
             get { return _userName; }
             set
             {
-                _userName = value;
-
-                if (!string.IsNullOrWhiteSpace(HostName) && !string.IsNullOrWhiteSpace(_userName) && !string.IsNullOrWhiteSpace(Password))
+                if (value != _userName)
                 {
-                    EnableEmailTest = true;
-                }
-                else
-                {
-                    EnableEmailTest = false;
-                    ShowEmailTest = false;
-                }
+                    _userName = value;
+                    EmailFrom = _userName;
+                    TestMessage = String.Empty;
 
-                OnPropertyChanged(() => UserName);
-                OnPropertyChanged(() => Header);
-                OnPropertyChanged(() => ShowEmailTest);
-                OnPropertyChanged(() => EnableEmailTest);
-                TestPassed = false;
-                ViewModelUtils.RaiseCanExecuteChanged(SendCommand);
-                ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
+                    OnPropertyChanged(() => UserName);
+                    OnPropertyChanged(() => Header);
+                    OnPropertyChanged(() => TestMessage);
+                    TestPassed = false;
+                    ViewModelUtils.RaiseCanExecuteChanged(SendCommand);
+                    ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
+                }
             }
         }
 
@@ -242,25 +214,18 @@ namespace Warewolf.Studio.ViewModels
             get { return _password; }
             set
             {
-                _password = value;
-
-                if (!string.IsNullOrWhiteSpace(HostName) && !string.IsNullOrWhiteSpace(UserName) && !string.IsNullOrWhiteSpace(_password))
+                if (value != _password)
                 {
-                    EnableEmailTest = true;
-                }
-                else
-                {
-                    EnableEmailTest = false;
-                    ShowEmailTest = false;
-                }
+                    _password = value;
+                    TestMessage = String.Empty;
 
-                OnPropertyChanged(() => Password);
-                OnPropertyChanged(() => Header);
-                OnPropertyChanged(() => ShowEmailTest);
-                OnPropertyChanged(() => EnableEmailTest);
-                TestPassed = false;
-                ViewModelUtils.RaiseCanExecuteChanged(SendCommand);
-                ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
+                    OnPropertyChanged(() => Password);
+                    OnPropertyChanged(() => Header);
+                    OnPropertyChanged(() => TestMessage);
+                    TestPassed = false;
+                    ViewModelUtils.RaiseCanExecuteChanged(SendCommand);
+                    ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
+                }
             }
         }
 
@@ -269,13 +234,18 @@ namespace Warewolf.Studio.ViewModels
             get { return _enableSsl; }
             set
             {
-                _enableSsl = value;
+                if (value != _enableSsl)
+                {
+                    _enableSsl = value;
+                    TestMessage = String.Empty;
 
-                OnPropertyChanged(() => EnableSsl);
-                OnPropertyChanged(() => Header);
-                TestPassed = false;
-                ViewModelUtils.RaiseCanExecuteChanged(SendCommand);
-                ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
+                    OnPropertyChanged(() => EnableSsl);
+                    OnPropertyChanged(() => Header);
+                    OnPropertyChanged(() => TestMessage);
+                    TestPassed = false;
+                    ViewModelUtils.RaiseCanExecuteChanged(SendCommand);
+                    ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
+                }
             }
         }
         public bool EnableSslYes
@@ -322,18 +292,23 @@ namespace Warewolf.Studio.ViewModels
             get { return _port; }
             set
             {
-                _port = value;
-
-                if (!_port.ToString().IsNumeric())
+                if (value != _port)
                 {
-                    OkCommand.CanExecute(false);
-                }
+                    _port = value;
+                    TestMessage = String.Empty;
 
-                OnPropertyChanged(() => Port);
-                OnPropertyChanged(() => Header);
-                TestPassed = false;
-                ViewModelUtils.RaiseCanExecuteChanged(SendCommand);
-                ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
+                    if (!_port.ToString().IsNumeric())
+                    {
+                        OkCommand.CanExecute(false);
+                    }
+
+                    OnPropertyChanged(() => Port);
+                    OnPropertyChanged(() => Header);
+                    OnPropertyChanged(() => TestMessage);
+                    TestPassed = false;
+                    ViewModelUtils.RaiseCanExecuteChanged(SendCommand);
+                    ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
+                }
             }
         }
 
@@ -342,18 +317,23 @@ namespace Warewolf.Studio.ViewModels
             get { return _timeout; }
             set
             {
-                _timeout = value;
-
-                if (!_timeout.ToString().IsNumeric())
+                if (value != _timeout)
                 {
-                    OkCommand.CanExecute(false);
-                }
+                    _timeout = value;
+                    TestMessage = String.Empty;
 
-                OnPropertyChanged(() => Timeout);
-                OnPropertyChanged(() => Header);
-                TestPassed = false;
-                ViewModelUtils.RaiseCanExecuteChanged(SendCommand);
-                ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
+                    if (!_timeout.ToString().IsNumeric())
+                    {
+                        OkCommand.CanExecute(false);
+                    }
+
+                    OnPropertyChanged(() => Timeout);
+                    OnPropertyChanged(() => Header);
+                    OnPropertyChanged(() => TestMessage);
+                    TestPassed = false;
+                    ViewModelUtils.RaiseCanExecuteChanged(SendCommand);
+                    ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
+                }
             }
         }
 
@@ -362,24 +342,29 @@ namespace Warewolf.Studio.ViewModels
             get { return _emailFrom; }
             set
             {
-                _emailFrom = value;
-
-                EnableSend = true;
-                if (!_emailFrom.IsEmail())
+                if (value != _emailFrom)
                 {
-                    EnableSend = false;
-                }
-                if (EmailTo == null || !EmailTo.IsEmail())
-                {
-                    EnableSend = false;
-                }
+                    _emailFrom = value;
+                    TestMessage = String.Empty;
 
-                OnPropertyChanged(() => EmailFrom);
-                OnPropertyChanged(() => Header);
-                OnPropertyChanged(() => EnableSend);
-                TestPassed = false;
-                ViewModelUtils.RaiseCanExecuteChanged(SendCommand);
-                ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
+                    EnableSend = true;
+                    if (!_emailFrom.IsEmail())
+                    {
+                        EnableSend = false;
+                    }
+                    if (EmailTo == null || !EmailTo.IsEmail())
+                    {
+                        EnableSend = false;
+                    }
+
+                    OnPropertyChanged(() => EmailFrom);
+                    OnPropertyChanged(() => Header);
+                    OnPropertyChanged(() => EnableSend);
+                    OnPropertyChanged(() => TestMessage);
+                    TestPassed = false;
+                    ViewModelUtils.RaiseCanExecuteChanged(SendCommand);
+                    ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
+                }
             }
         }
 
@@ -388,24 +373,29 @@ namespace Warewolf.Studio.ViewModels
             get { return _emailTo; }
             set
             {
-                _emailTo = value;
-
-                EnableSend = true;
-                if (!_emailTo.IsEmail())
+                if (value != _emailTo)
                 {
-                    EnableSend = false;
-                }
-                if (EmailFrom == null || !EmailFrom.IsEmail())
-                {
-                    EnableSend = false;
-                }
+                    _emailTo = value;
+                    TestMessage = String.Empty;
 
-                OnPropertyChanged(() => EmailTo);
-                OnPropertyChanged(() => Header);
-                OnPropertyChanged(() => EnableSend);
-                TestPassed = false;
-                ViewModelUtils.RaiseCanExecuteChanged(SendCommand);
-                ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
+                    EnableSend = true;
+                    if (!_emailTo.IsEmail())
+                    {
+                        EnableSend = false;
+                    }
+                    if (EmailFrom == null || !EmailFrom.IsEmail())
+                    {
+                        EnableSend = false;
+                    }
+
+                    OnPropertyChanged(() => EmailTo);
+                    OnPropertyChanged(() => Header);
+                    OnPropertyChanged(() => EnableSend);
+                    OnPropertyChanged(() => TestMessage);
+                    TestPassed = false;
+                    ViewModelUtils.RaiseCanExecuteChanged(SendCommand);
+                    ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
+                }
             }
         }
 
@@ -574,29 +564,9 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public ICommand TestCommand { get; set; }
-
         public ICommand SendCommand { get; set; }
         public ICommand OkCommand { get; set; }
 
-        public bool ShowEmailTest 
-        {
-            get { return _showEmailTest; }
-            set
-            {
-                _showEmailTest = value;
-                OnPropertyChanged(() => ShowEmailTest);
-            }
-        }
-        public bool EnableEmailTest
-        {
-            get { return _enableEmailTest; }
-            set
-            {
-                _enableEmailTest = value;
-                OnPropertyChanged(() => EnableEmailTest);
-            }
-        }
         public bool EnableSend
         {
             get { return _enableSend; }

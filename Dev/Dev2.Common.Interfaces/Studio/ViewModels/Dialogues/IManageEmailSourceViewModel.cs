@@ -92,10 +92,6 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         string EmailToLabel { get; }
 
         /// <summary>
-        /// Command for testing
-        /// </summary>
-        ICommand TestCommand { get; set; }
-        /// <summary>
         /// Command for save/ok
         /// </summary>
         ICommand OkCommand { get; set; }
