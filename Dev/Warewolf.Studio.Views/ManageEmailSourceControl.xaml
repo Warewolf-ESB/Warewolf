@@ -33,10 +33,13 @@
                             Width="{Binding ElementName=GridContainer, Path=ActualWidth}"
                             Background="{StaticResource WareWolfMenuBrush}" 
                             HorizontalAlignment="Stretch" 
+                            Margin="{StaticResource ElementBorderBottom}"
                             Orientation="Horizontal">
+                    <TextBlock Text="1" 
+                               Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
                     <TextBlock Margin="5" Text="New Email Source" Style="{StaticResource SourceHeader}" />
                 </StackPanel>
-                <Grid Grid.Row="1" Margin="{StaticResource ElementBorderTop}">
+                <Grid Grid.Row="1" Margin="{StaticResource GridBorderBottom}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
@@ -48,6 +51,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="7" ></RowDefinition>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Text="{Binding HostNameLabel}"
                                Margin="{StaticResource ControlBorderTop}"/>
@@ -158,6 +162,8 @@
                             Background="{StaticResource WareWolfMenuBrush}" 
                             HorizontalAlignment="Stretch" 
                             Orientation="Horizontal">
+                        <TextBlock Text="2" 
+                               Style="{StaticResource TextBlockOrangeNumberStyle}"></TextBlock>
                         <TextBlock Margin="5" Text="Send Test Email" Style="{StaticResource SourceHeader}" />
                     </StackPanel>
 

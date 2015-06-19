@@ -4,6 +4,9 @@ using System.Windows;
 using System.Windows.Data;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
+using Infragistics.Controls.Editors.Primitives;
+using Infragistics.Windows;
+using Warewolf.Studio.CustomControls;
 
 namespace Warewolf.Studio.Views
 {
@@ -15,12 +18,11 @@ namespace Warewolf.Studio.Views
         public ManageDatabaseSourceControl()
         {
             InitializeComponent();
-            ServerTextBox.Focus();
         }
 
         public void EnterServerName(string serverName)
         {
-            ServerTextBox.EmptyText = serverName;
+            //ServerTextBox.EmptyText = serverName;
         }
 
         public Visibility GetDatabaseDropDownVisibility()

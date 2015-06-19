@@ -35,7 +35,6 @@ namespace Warewolf.Studio.ViewModels
         ICollection<IPluginAction> _avalaibleActions;
         string _pluginSourceHeader;
         string _pluginSourceActionHeader;
-        ICommand _editSourceCommand;
         bool _canEditSource;
         bool _canEditNamespace;
         string _newButtonLabel;
@@ -71,8 +70,9 @@ namespace Warewolf.Studio.ViewModels
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "model", model }, { "saveDialog", saveDialog } });
             _model = model;
             _saveDialog = saveDialog;
-            Inputs = new ObservableCollection<IServiceInput>();
             CreateNewSourceCommand = new DelegateCommand(model.CreateNewSource);
+            EditSourceCommand = new DelegateCommand(() => model.EditSource(SelectedSource));
+            Inputs = new ObservableCollection<IServiceInput>();
             OutputMapping = new ObservableCollection<IServiceOutputMapping>();
             AvalaibleActions = new ObservableCollection<IPluginAction>();
             NameSpaces = new ObservableCollection<INamespaceItem>();
@@ -213,17 +213,17 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                _selectedSource = value;
-                if(value != null)
+                if (!Equals(_selectedSource, value))
                 {
+                    _selectedSource = value;
                     CanTest = false;
                     CanEditMappings = false;
                     CanSelectMethod = false;
                     CanEditNamespace = true;
                     NameSpaces = new ObservableCollection<INamespaceItem>(_model.GetNameSpaces(value));
+                    OnPropertyChanged(() => SelectedSource);
+                    ViewModelUtils.RaiseCanExecuteChanged(SaveCommand);
                 }
-                OnPropertyChanged(() => SelectedSource);
-                ViewModelUtils.RaiseCanExecuteChanged(SaveCommand);
             }
         }
 
@@ -347,13 +347,7 @@ namespace Warewolf.Studio.ViewModels
                 return _pluginSourceActionHeader;
             }
         }
-        public ICommand EditSourceCommand
-        {
-            get
-            {
-                return _editSourceCommand;
-            }
-        }
+        public ICommand EditSourceCommand { get; private set; }
         public bool CanEditSource
         {
             get

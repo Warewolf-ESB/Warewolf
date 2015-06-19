@@ -68,14 +68,16 @@
             <ig:XamComboEditor x:Name="ServerTextBox"
                                Grid.Row="1"
                                Grid.Column="1" 
+                               ItemsSource="{Binding Path=ComputerNames}"
+                               SelectedItem="{Binding ServerName,UpdateSourceTrigger=PropertyChanged}"
                                Margin="{StaticResource ControlBorderTop}"
                                IsEditable="True"
                                AllowDrop="True"
+                               Style="{StaticResource XamComboEditorStyle}"
                                MaxDropDownHeight="200"
                                CustomValueEnteredAction="Allow"
-                               ItemsSource="{Binding Path=ComputerNames}"
-                               SelectedItem="{Binding ServerName,UpdateSourceTrigger=PropertyChanged}"
-                               views:FocusExtension.IsFocused="True">
+                               Focusable="False"
+                               views:FocusExtension.IsFocused="False">
                 <ig:XamComboEditor.ItemFilters>
                     <ig:ComboItemFilter FieldName="Name" LogicalOperator="And">
                         <ig:ComboItemFilter.Conditions>

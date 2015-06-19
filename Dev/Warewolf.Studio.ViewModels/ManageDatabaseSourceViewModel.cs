@@ -155,10 +155,10 @@ namespace Warewolf.Studio.ViewModels
             ResourceName = dbSource.Name;
             AuthenticationType = dbSource.AuthenticationType;
             UserName = dbSource.UserName;
-            DatabaseName = dbSource.DbName;
             ServerName = ComputerNames.FirstOrDefault(name => dbSource.ServerName==name.Name);
             Password = dbSource.Password;
-            
+            TestConnection();
+            DatabaseName = dbSource.DbName;
         }
 
         public string ResourceName
@@ -276,11 +276,10 @@ namespace Warewolf.Studio.ViewModels
 
         IDbSource ToNewDbSource()
         {
-          
-                return new DbSourceDefinition
+            return new DbSourceDefinition
                 {
                     AuthenticationType = AuthenticationType,
-                    ServerName = ServerName.Name,
+                    ServerName = GetServerName(),
                     Password = Password,
                     UserName = UserName,
                     Type = ServerType,
@@ -290,13 +289,23 @@ namespace Warewolf.Studio.ViewModels
                 };
         }
 
+        private string GetServerName()
+        {
+            var serverName = "";
+            if (ServerName != null)
+            {
+                serverName = ServerName.Name;
+            }
+            return serverName;
+        }
+
         IDbSource ToDbSource()
         {
             if(_dbSource == null)
             return new DbSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
-                ServerName = ServerName.Name ,
+                ServerName = GetServerName(),
                 Password = Password,
                 UserName =  UserName ,
                 Type = ServerType,
@@ -310,7 +319,7 @@ namespace Warewolf.Studio.ViewModels
                 _dbSource.AuthenticationType = AuthenticationType;
                 _dbSource.DbName = DatabaseName;
                 _dbSource.Password = Password;
-                _dbSource.ServerName = ServerName.Name;
+                _dbSource.ServerName = GetServerName();
                 _dbSource.UserName = UserName;
                 return _dbSource;
 
@@ -355,7 +364,7 @@ namespace Warewolf.Studio.ViewModels
 
         public IComputerName ServerName
         {
-            get { return _serverName; }
+            get { return _serverName?? new ComputerName(); }
             set
             {
                 if (value != _serverName)
