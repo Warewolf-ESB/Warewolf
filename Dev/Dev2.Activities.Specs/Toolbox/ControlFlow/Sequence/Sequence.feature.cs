@@ -923,7 +923,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Left"});
 #line 260
-   testRunner.And("\"Test\" contains Data Merge \"Data Merge\" into \"[[result]]\" as", ((string)(null)), table43, "And ");
+      testRunner.And("\"Test\" contains Data Merge \"Data Merge\" into \"[[result]]\" as", ((string)(null)), table43, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table44 = new TechTalk.SpecFlow.Table(new string[] {
                         "String",
