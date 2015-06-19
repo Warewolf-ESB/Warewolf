@@ -57,7 +57,7 @@ namespace Warewolf.Studio.ViewModels
             }
             _model = model;
             _saveDialog = saveDialog;
-            CanEditSource = true;
+            CanEditSource = false;
             CreateNewSourceCommand = new DelegateCommand(model.CreateNewSource);
             EditSourceCommand = new DelegateCommand(()=>model.EditSource(SelectedSource));
             Sources = model.RetrieveSources();
@@ -371,7 +371,9 @@ namespace Warewolf.Studio.ViewModels
                     CanSelectProcedure = value != null;
                     PerformRefresh();
                     SelectedAction = null;
-                    OnPropertyChanged(() => SelectedSource); 
+                    CanEditSource = true;
+                    OnPropertyChanged(() => SelectedSource);
+                    OnPropertyChanged(() => CanEditSource); 
                     ViewModelUtils.RaiseCanExecuteChanged(SaveCommand);
                 }
 
