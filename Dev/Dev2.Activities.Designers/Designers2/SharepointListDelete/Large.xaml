@@ -257,6 +257,18 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </controls:Dev2DataGrid>
+            <CheckBox Grid.Row="2"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="2"
+                  Content="Require All Matches To Be True"
+                  IsChecked="{Binding ModelItem.RequireAllCriteriaToMatch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="{x:Static help:HelpTextResources.FindToolTipRequireAllMatchesToBeTrue}"
+                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RequireAllTrue_AutoID}">
+                <i:Interaction.Behaviors>
+                    <help:HelpSetter Text="{x:Static help:HelpTextResources.FindHelpRequireAllMatchesToBeTrue}"
+                                 DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </CheckBox>
             <Label Grid.Row="3"
                Grid.Column="0"
                Content="Result"

@@ -117,7 +117,6 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <controls:Dev2DataGrid x:Name="SmallDataGrid"
-                                       HeadersVisibility="None"
                                        Margin="0"
                                        ItemsSource="{Binding ModelItem.ReadListItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                        Style="{StaticResource ActivityMapppingDataGridStyle}">
@@ -133,6 +132,7 @@
                                     <ui:IntellisenseTextBox DefaultText="[[Recordset(*).field]]"
                                                     AllowMultilinePaste="True"
                                                     AcceptsReturn="True"
+                                                    AllowUserInsertLine="True"
                                                     WrapInBrackets="False"
                                                     MaxHeight="52"
                                                     TextWrapping="Wrap"
@@ -160,7 +160,7 @@
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Width="SizeToCells"
                                         MinWidth="65"
-                                        Header="From Field"
+                                        Header="To Field"
                                         HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=interfaces:ISharepointReadListTo}">
                             <DataGridTemplateColumn.CellTemplate>

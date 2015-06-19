@@ -151,8 +151,8 @@
 
     <Image x:Key="RefreshImage"
            Source="pack://application:,,,/Dev2.Activities.Designers;component/Images/Refresh-16.png"
-           Width="14"
-           Height="14"
+           Width="18"
+           Height="18"
            HorizontalAlignment="Center"
            VerticalAlignment="Center"
            Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterInverse}}"

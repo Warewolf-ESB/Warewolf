@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Xml;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces;
@@ -12,6 +13,7 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.Util;
+using Dev2.DataList.Contract;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core;
@@ -71,8 +73,10 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
             EditSharepointServerCommand = new RelayCommand(o => EditSharepointSource(), o => IsSharepointServerSelected);
             RefreshListsCommand = new RelayCommand(o => RefreshLists(), o => IsListSelected);
-
+            
             RefreshSharepointSources(true);
+            IsRefreshing = true;
+            IsRefreshing = false;
             
         }
         public static readonly DependencyProperty IsSelectedSharepointServerFocusedProperty =
@@ -383,7 +387,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
                 {
                     var fieldMappings = columnList.Select(mapping =>
                     {
-                        var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue(selectedList.FullName,mapping.Name.Replace(" ",""),"*");
+                        var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue(selectedList.FullName,GetValidVariableName(mapping),"*");
                         return new SharepointReadListTo(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), mapping.Name, mapping.InternalName);
                     }).ToList();
                     if (ReadListItems == null || ReadListItems.Count == 0 || isFromListChange)
@@ -408,6 +412,22 @@ namespace Dev2.Activities.Designers2.SharepointListRead
                     continueWith();
                 }
             });
+        }
+
+        static string GetValidVariableName(ISharepointFieldTo mapping)
+        {
+            var fixedName = mapping.InternalName;
+            var startIndexOfEncoding = fixedName.IndexOf("_", StringComparison.OrdinalIgnoreCase);
+            var endIndexOfEncoding = fixedName.LastIndexOf("_", StringComparison.OrdinalIgnoreCase);
+            if(startIndexOfEncoding > 0 && endIndexOfEncoding > 0)
+            {
+                fixedName = fixedName.Remove(startIndexOfEncoding, endIndexOfEncoding - startIndexOfEncoding);
+            }
+            if (fixedName[0] == 'f' || fixedName[0] == '_')
+            {
+                fixedName = fixedName.Remove(0, 1);
+            }
+            return fixedName;
         }
 
         List<ISharepointFieldTo> GetListFields(ISharepointSource source, SharepointListTo list)

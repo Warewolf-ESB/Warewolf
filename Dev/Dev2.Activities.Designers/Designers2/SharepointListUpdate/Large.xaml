@@ -18,8 +18,8 @@
                                xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                                Width="350"
                                MinWidth="350"
-                               MinHeight="380"
-                               Height="350"
+                               MinHeight="450"
+                               Height="450"
                                MaxWidth="Infinity"
                                MaxHeight="Infinity"
                                Padding="7"
@@ -42,8 +42,8 @@
     </core:ActivityDesignerTemplate.RightButtons>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
@@ -118,7 +118,6 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <controls:Dev2DataGrid x:Name="SmallDataGrid"
-                                       HeadersVisibility="None"
                                        Margin="0"
                                        ItemsSource="{Binding ModelItem.ReadListItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                        Style="{StaticResource ActivityMapppingDataGridStyle}">
@@ -133,6 +132,7 @@
                                 <DataTemplate>
                                     <ui:IntellisenseTextBox DefaultText="[[Recordset(*).field]]"
                                                     AllowMultilinePaste="True"
+                                                    AllowUserInsertLine="True"
                                                     AcceptsReturn="True"
                                                     MaxHeight="52"
                                                     TextWrapping="Wrap"
@@ -161,7 +161,7 @@
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Width="SizeToCells"
                                         MinWidth="65"
-                                        Header="From Field"
+                                        Header="To Field"
                                         HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=interfaces:ISharepointReadListTo}">
                             <DataGridTemplateColumn.CellTemplate>
