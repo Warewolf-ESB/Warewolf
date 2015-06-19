@@ -6,7 +6,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Infragistics.Controls.Editors.Primitives;
 using Infragistics.Windows;
-using Warewolf.Studio.CustomControls;
+using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
 {
@@ -107,6 +107,18 @@ namespace Warewolf.Studio.Views
         public string GetErrorMessage()
         {
             return ErrorTextBlock.Text;
+        }
+        private void XamComboEditor_Loaded(object sender, RoutedEventArgs e)
+        {
+            SpecializedTextBox txt = Utilities.GetDescendantFromType(sender as DependencyObject, typeof(SpecializedTextBox), false) as SpecializedTextBox;
+            if (txt != null)
+            {
+                txt.SelectAll();
+                txt.Focus();
+                var selectedItem = ServerTextBox.SelectedItem as ComputerName;
+                if (selectedItem != null) txt.Text = selectedItem.Name;
+                ServerTextBox.Style = Application.Current.TryFindResource("XamComboEditorStyle") as Style;
+            }
         }
     }
 

@@ -34,8 +34,8 @@ namespace Warewolf.Studio.ViewModels
         private string _testMessage;
         private IList<string> _databaseNames;
         private string _header;
-        readonly IManageDatabaseSourceModel _updateManager ;
-        readonly IEventAggregator _aggregator;
+        IManageDatabaseSourceModel _updateManager ;
+        IEventAggregator _aggregator;
          IDbSource _dbSource;
         bool _testPassed;
         bool _testFailed;
@@ -49,23 +49,7 @@ namespace Warewolf.Studio.ViewModels
 
         public ManageDatabaseSourceViewModel(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator)
         {
-            VerifyArgument.IsNotNull("updateManager", updateManager);
-            VerifyArgument.IsNotNull("aggregator", aggregator);
-            _updateManager = updateManager;
-            _aggregator = aggregator;
-
-            HeaderText = Resources.Languages.Core.DatabaseSourceServerNewHeaderLabel;// "New Database Connector Source Server DatabaseSourceServerHeaderLabel";
-            Header = Resources.Languages.Core.DatabaseSourceServerNewHeaderLabel;
-            TestCommand = new DelegateCommand(TestConnection,CanTest);
-            OkCommand = new DelegateCommand(SaveConnection,CanSave);
-            CancelTestCommand = new DelegateCommand(CancelTest,CanCancelTest);
-            Testing = false;
-            Types = new List<enSourceType> { enSourceType.SqlDatabase };
-            ServerType = enSourceType.SqlDatabase;
-            _testPassed = false;
-            _testFailed = false;
-            DatabaseNames = new List<string>();
-            ComputerNames = new List<IComputerName>();
+            PerformInitialise(updateManager, aggregator);
             // ReSharper disable MaximumChainedReferences
             new Task(()=>
             {
@@ -74,6 +58,28 @@ namespace Warewolf.Studio.ViewModels
             }).Start();
             // ReSharper restore MaximumChainedReferences
             _warewolfserverName = updateManager.ServerName;
+        }
+
+        private void PerformInitialise(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator)
+        {
+            VerifyArgument.IsNotNull("updateManager", updateManager);
+            VerifyArgument.IsNotNull("aggregator", aggregator);
+            _updateManager = updateManager;
+            _aggregator = aggregator;
+
+            HeaderText = Resources.Languages.Core.DatabaseSourceServerNewHeaderLabel;
+                // "New Database Connector Source Server DatabaseSourceServerHeaderLabel";
+            Header = Resources.Languages.Core.DatabaseSourceServerNewHeaderLabel;
+            TestCommand = new DelegateCommand(TestConnection, CanTest);
+            OkCommand = new DelegateCommand(SaveConnection, CanSave);
+            CancelTestCommand = new DelegateCommand(CancelTest, CanCancelTest);
+            Testing = false;
+            Types = new List<enSourceType> {enSourceType.SqlDatabase};
+            ServerType = enSourceType.SqlDatabase;
+            _testPassed = false;
+            _testFailed = false;
+            DatabaseNames = new List<string>();
+            ComputerNames = new List<IComputerName>();
         }
 
         bool CanCancelTest()
@@ -100,20 +106,31 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public ManageDatabaseSourceViewModel(IManageDatabaseSourceModel updateManager, IRequestServiceNameViewModel requestServiceNameViewModel, IEventAggregator aggregator)
-            : this(updateManager, aggregator)
         {
             VerifyArgument.IsNotNull("requestServiceNameViewModel", requestServiceNameViewModel);
-
+            PerformInitialise(updateManager, aggregator);
             RequestServiceNameViewModel = requestServiceNameViewModel;
 
         }
-        public ManageDatabaseSourceViewModel(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator, IDbSource dbSource)
-            : this(updateManager,  aggregator)
+        public ManageDatabaseSourceViewModel(IManageDatabaseSourceModel updateManager,  IEventAggregator aggregator, IDbSource dbSource)
         {
             VerifyArgument.IsNotNull("dbSource", dbSource);
+            PerformInitialise(updateManager, aggregator);
+            _warewolfserverName = "localhost";
             _dbSource = dbSource;
-             SetupHeaderTextFromExisting();
-            FromDbSource(dbSource);
+            var task = new Task(() =>
+            {
+                var names = _updateManager.GetComputerNames().Select(name => new ComputerName { Name = name } as IComputerName).ToList();
+                Dispatcher.CurrentDispatcher.Invoke(() => ComputerNames = names);               
+            });
+            task.ContinueWith(task1 =>
+            {
+                FromDbSource(dbSource);
+                SetupHeaderTextFromExisting();
+            });
+            task.Start();
+            
+            
         }
 
         void SetupHeaderTextFromExisting()

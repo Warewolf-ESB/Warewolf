@@ -20,6 +20,15 @@
     <UserControl.Resources>
         <views:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <Style TargetType="{x:Type ig:XamComboEditor}">
+            <!--<Setter Property="DataContext" Value="{Binding ElementName=ServerTextBox, Path=DataContext}"/>
+            <Setter Property="ItemsSource" Value="{Binding ComputerNames}" />
+            <Setter Property="DisplayMemberPath" Value="Name" />
+            <Setter Property="SelectedValuePath" Value="Name"/>
+
+            <Setter Property="SelectedItem" Value="{Binding ComputerNames[0], Mode=OneWay}"/>-->
+            <EventSetter Event="Loaded" Handler="XamComboEditor_Loaded"/>
+        </Style>
     </UserControl.Resources>
     <Grid Background="White" 
           Margin="{StaticResource ElementBorder}"
@@ -73,11 +82,12 @@
                                Margin="{StaticResource ControlBorderTop}"
                                IsEditable="True"
                                AllowDrop="True"
-                               Style="{StaticResource XamComboEditorStyle}"
+                               
                                MaxDropDownHeight="200"
                                CustomValueEnteredAction="Allow"
                                Focusable="False"
-                               views:FocusExtension.IsFocused="False">
+                               views:FocusExtension.IsFocused="False"
+                               Loaded="XamComboEditor_Loaded">
                 <ig:XamComboEditor.ItemFilters>
                     <ig:ComboItemFilter FieldName="Name" LogicalOperator="And">
                         <ig:ComboItemFilter.Conditions>
