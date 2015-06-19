@@ -79,6 +79,8 @@ namespace Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter
                     regionTarget.BringIntoView();
 
                     regionTarget.Items.Insert(startIndex, contentPane);
+                    regionTarget.Items.MoveCurrentTo(contentPane);
+                    regionTarget.SelectedIndex = startIndex;
                 }
             }
             else if (e.Action == NotifyCollectionChangedAction.Remove)
