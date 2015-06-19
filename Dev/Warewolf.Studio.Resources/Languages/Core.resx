@@ -725,7 +725,7 @@ You need Administrator permission.</value>
     <value>Select the type of database you want to connect to</value>
   </data>
   <data name="WebserviceTabHeader" xml:space="preserve">
-    <value>New Web Service</value>
+    <value>New Web Service Connector</value>
   </data>
   <data name="WebserviceHeader" xml:space="preserve">
     <value>Select Request Method and Source</value>

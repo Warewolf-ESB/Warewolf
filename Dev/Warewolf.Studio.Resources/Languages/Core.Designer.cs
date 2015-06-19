@@ -2346,7 +2346,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Web Service.
+        ///   Looks up a localized string similar to New Web Service Connector.
         /// </summary>
         public static string WebserviceTabHeader {
             get {

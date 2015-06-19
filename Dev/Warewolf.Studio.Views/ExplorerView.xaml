@@ -253,7 +253,7 @@
                                                                 InputGestureText="[Ctrl+Shift+W]"
                                                                 Command="{Binding Path=Data.NewCommand}"
                                                                 CommandParameter="{x:Static data:ResourceType.WebService}"
-                                                                Header="New Web Service"
+                                                                Header="New Web Service Connector"
                                                                 Visibility="{Binding Path=Data.CanCreateWebService,
                                                                                      Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
@@ -516,7 +516,7 @@
                                                                 InputGestureText="[Ctrl+Shift+W]"
                                                                 Command="{Binding Path=Data.NewCommand}"
                                                                 CommandParameter="{x:Static data:ResourceType.WebService}"
-                                                                Header="New Web Service"
+                                                                Header="New Web Service Connector"
                                                                 Visibility="{Binding Path=Data.CanCreateWebService,
                                                                                      Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
