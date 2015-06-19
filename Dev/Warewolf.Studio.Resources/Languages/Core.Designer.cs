@@ -2184,7 +2184,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Web Source - .
+        ///   Looks up a localized string similar to Edit Web Service Source - .
         /// </summary>
         public static string WebserviceEditHeaderLabel {
             get {
@@ -2211,7 +2211,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Web Source.
+        ///   Looks up a localized string similar to New Web Service Source.
         /// </summary>
         public static string WebserviceNewHeaderLabel {
             get {

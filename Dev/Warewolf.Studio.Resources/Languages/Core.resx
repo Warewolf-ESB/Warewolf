@@ -710,10 +710,10 @@ You need Administrator permission.</value>
     <value>Address:</value>
   </data>
   <data name="WebserviceNewHeaderLabel" xml:space="preserve">
-    <value>New Web Source</value>
+    <value>New Web Service Source</value>
   </data>
   <data name="WebserviceEditHeaderLabel" xml:space="preserve">
-    <value>Edit Web Source - </value>
+    <value>Edit Web Service Source - </value>
   </data>
   <data name="DatabaseSourceServerToolTip" xml:space="preserve">
     <value>Select the database source you want to use</value>

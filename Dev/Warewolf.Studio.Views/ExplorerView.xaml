@@ -265,7 +265,7 @@
                                                     <ig:XamMenuItem Name="NewWebSource"
                                                                 Command="{Binding Path=Data.NewCommand}"
                                                                 CommandParameter="{x:Static data:ResourceType.WebSource}"
-                                                                Header="New Web Source"
+                                                                Header="New Web Service Source"
                                                                 Visibility="{Binding Path=Data.CanCreateWebSource,
                                                                                      Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
@@ -529,7 +529,7 @@
                                                     <ig:XamMenuItem Name="NewWebSource"
                                                                 Command="{Binding Path=Data.NewCommand}"
                                                                 CommandParameter="{x:Static data:ResourceType.WebSource}"
-                                                                Header="New Web Source"
+                                                                Header="New Web Service Source"
                                                                 Visibility="{Binding Path=Data.CanCreateWebSource,
                                                                                      Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
