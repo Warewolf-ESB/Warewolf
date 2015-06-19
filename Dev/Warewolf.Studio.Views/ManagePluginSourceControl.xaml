@@ -40,7 +40,7 @@
                             Background="{StaticResource WareWolfMenuBrush}" 
                             HorizontalAlignment="Stretch" 
                             Orientation="Horizontal">
-                    <TextBlock Margin="5" Text="New Plugin Source" Style="{StaticResource SourceHeader}" />
+                    <TextBlock Margin="5" Text="{Binding HeaderText}" Style="{StaticResource SourceHeader}" />
                 </StackPanel>
                 <Grid  Grid.Row="1"
                        Width="{Binding ElementName=GridContainer, Path=ActualWidth}"

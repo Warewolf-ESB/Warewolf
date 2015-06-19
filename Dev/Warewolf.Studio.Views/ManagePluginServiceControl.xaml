@@ -89,7 +89,8 @@
                                 Height="26"
                                 Content=" ... " 
                                 IsEnabled="{Binding CanEditNamespace}"
-                                Margin="0,-1,3,0">
+                                Margin="0,-1,3,0"
+                                Command="{Binding EditSourceCommand}">
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter Text="{x:Static languages:Core.PluginServiceEditSourceHelp}"
                                                          DataContext="{Binding}" />

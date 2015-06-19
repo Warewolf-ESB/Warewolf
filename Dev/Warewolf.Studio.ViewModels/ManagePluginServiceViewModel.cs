@@ -10,7 +10,6 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.PluginService;
 using Dev2.Common.Interfaces.SaveDialog;
-using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Dev2.Communication;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.Commands;
@@ -72,7 +71,6 @@ namespace Warewolf.Studio.ViewModels
             _model = model;
             _saveDialog = saveDialog;
             Inputs = new ObservableCollection<IServiceInput>();
-            CreateNewSourceCommand = new DelegateCommand(model.CreateNewSource);
             OutputMapping = new ObservableCollection<IServiceOutputMapping>();
             AvalaibleActions = new ObservableCollection<IPluginAction>();
             NameSpaces = new ObservableCollection<INamespaceItem>();
@@ -82,6 +80,8 @@ namespace Warewolf.Studio.ViewModels
             ErrorText = "";
             TestPluginCommand = new DelegateCommand(() => Test(_model));
             SaveCommand = new DelegateCommand(() => Save(ToModel()), () => CanSave);
+            CreateNewSourceCommand = new DelegateCommand(() => _model.CreateNewSource());
+            EditSourceCommand = new DelegateCommand(() => _model.EditSource(SelectedSource));
         }
 
         void Save(IPluginService toModel)
@@ -349,10 +349,8 @@ namespace Warewolf.Studio.ViewModels
         }
         public ICommand EditSourceCommand
         {
-            get
-            {
-                return _editSourceCommand;
-            }
+            get;
+            set;
         }
         public bool CanEditSource
         {
