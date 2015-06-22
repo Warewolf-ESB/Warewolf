@@ -54,7 +54,7 @@
                 <ComboBox Width="75" 
                           ItemsSource="{Binding Path=Protocols}" 
                           IsEditable="False" 
-                          Margin="{StaticResource ElementBorderControlRight}"
+                          Margin="{StaticResource ControlBorderRight}"
                           ToolTip="{Binding Path=ProtocolToolTip}" 
                           SelectedItem="{Binding Path=Protocol}"  >
                     <ComboBox.ItemsPanel>
@@ -112,7 +112,7 @@
                              Padding="0,0,5,0" 
                              VerticalAlignment="Center" 
                              HorizontalAlignment="Left" 
-                             Margin="{StaticResource ElementBorderControlRight}"
+                             Margin="{StaticResource ControlBorderRight}"
                              IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, 
                                         ConverterParameter={x:Static serviceModel:AuthenticationType.Windows}}">Windows
                     <i:Interaction.Behaviors>
@@ -125,7 +125,7 @@
                              Padding="0,0,5,0" 
                              VerticalAlignment="Center" 
                              HorizontalAlignment="Left" 
-                             Margin="{StaticResource ElementBorderControlRight}"
+                             Margin="{StaticResource ControlBorderRight}"
                              IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, 
                                         ConverterParameter={x:Static serviceModel:AuthenticationType.User}}">User
                     <i:Interaction.Behaviors>
@@ -197,20 +197,20 @@
             <fa:ImageAwesome Width="14"  
                              Height="14" 
                              Foreground="{StaticResource WareWolfOrangeBrush}" 
-                             Margin="{StaticResource ElementBorderControlRight}"
+                             Margin="{StaticResource ControlBorderRight}"
                              Visibility="{Binding Path=TestPassed,Converter={StaticResource BoolToVisibilityConverter}}" 
                              Icon="Check" 
                              HorizontalAlignment="Right" />
             <fa:ImageAwesome Width="14" 
                              Height="14" 
                              Foreground="{StaticResource WareWolfOrangeBrush}" 
-                             Margin="{StaticResource ElementBorderControlRight}"
+                             Margin="{StaticResource ControlBorderRight}"
                              Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}" 
                              Icon="Ban" 
                              HorizontalAlignment="Right" />
             <views:CircularProgressBar Width="14"
                                        Height="14"
-                                       Margin="{StaticResource ElementBorderControlRight}"
+                                       Margin="{StaticResource ControlBorderRight}"
                                        Visibility="{Binding Path=Testing,Converter={StaticResource BoolToVisibilityConverter}}" />
             <Button ToolTip="{Binding Path=TestToolTip}" 
                     HorizontalAlignment="Right" 
@@ -230,7 +230,7 @@
                     HorizontalAlignment="Right" >
             <TextBlock Style="{StaticResource ErrorTextBlockStyle}"  
                        TextAlignment="Right" 
-                       Margin="{StaticResource ElementBorderControlRight}"
+                       Margin="{StaticResource ControlBorderRight}"
                        VerticalAlignment="Center" 
                        Text="{Binding Path=Validate}"></TextBlock>
             <Button Width="60" 

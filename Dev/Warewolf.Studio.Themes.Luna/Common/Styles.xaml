@@ -166,21 +166,15 @@
         <Thickness.Right>3</Thickness.Right>
         <Thickness.Top>0</Thickness.Top>
     </Thickness>
-    <Thickness x:Key="ElementBorderControlLeft">
+    <Thickness x:Key="ControlBorderLeft">
         <Thickness.Bottom>0</Thickness.Bottom>
         <Thickness.Left>3</Thickness.Left>
         <Thickness.Right>0</Thickness.Right>
         <Thickness.Top>0</Thickness.Top>
     </Thickness>
-    <Thickness x:Key="ElementBorderControlRight">
+    <Thickness x:Key="ControlBorderRight">
         <Thickness.Bottom>0</Thickness.Bottom>
         <Thickness.Left>0</Thickness.Left>
-        <Thickness.Right>3</Thickness.Right>
-        <Thickness.Top>0</Thickness.Top>
-    </Thickness>
-    <Thickness x:Key="ElementBorderControlLeftRight">
-        <Thickness.Bottom>0</Thickness.Bottom>
-        <Thickness.Left>3</Thickness.Left>
         <Thickness.Right>3</Thickness.Right>
         <Thickness.Top>0</Thickness.Top>
     </Thickness>

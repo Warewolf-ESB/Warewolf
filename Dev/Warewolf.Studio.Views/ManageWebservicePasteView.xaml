@@ -55,7 +55,7 @@
                     HorizontalAlignment="Right" 
                     VerticalAlignment="Center">
             <Button x:Name="SaveButton" 
-                    Margin="{StaticResource ElementBorderControlRight}"
+                    Margin="{StaticResource ControlBorderRight}"
                     Width="60" 
                     Height="30" 
                     Command="{Binding SaveCommand}" 

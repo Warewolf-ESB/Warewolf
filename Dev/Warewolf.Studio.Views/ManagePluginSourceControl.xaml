@@ -183,7 +183,7 @@
                     </Grid.ColumnDefinitions>
                     <Button Grid.Column="1"
                             x:Name="SaveButton" 
-                            Margin="{StaticResource ElementBorderControlRight}"
+                            Margin="{StaticResource ControlBorderRight}"
                             Width="60" 
                             Height="30" 
                             Command="{Binding OkCommand}" 

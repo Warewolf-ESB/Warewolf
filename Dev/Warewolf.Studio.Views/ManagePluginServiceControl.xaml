@@ -72,7 +72,7 @@
                                   Width="250" 
                                   ItemsSource="{Binding Sources}"
                                   SelectedItem="{Binding SelectedSource}"
-                                  Margin="{StaticResource ElementBorderControlRight}"
+                                  Margin="{StaticResource ControlBorderRight}"
                                   Focusable="True" >
                             <!--<customControls:WatermarkTextBox.Watermark>
                                 <StackPanel VerticalAlignment="Top">
@@ -301,7 +301,7 @@
                             </Grid.ColumnDefinitions>
                             <Button x:Name="TestButton" 
                                     Grid.Column="0"
-                                    Margin="{StaticResource ElementBorderControlRight}" 
+                                    Margin="{StaticResource ControlBorderRight}" 
                                     Command="{Binding TestPluginCommand}"
                                     HorizontalAlignment="Left" 
                                     VerticalAlignment="Bottom" 

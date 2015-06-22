@@ -23,7 +23,7 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <ComboBox Margin="{StaticResource ElementBorderControlRight}"
+        <ComboBox Margin="{StaticResource ControlBorderRight}"
                   Grid.Row="0"
                   Grid.Column="0"
                   ToolTip="{Binding Path=ConnectionsToolTip}"
@@ -52,7 +52,7 @@
                                  DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </Button>
-        <Button Margin="{StaticResource ElementBorderControlLeft}" 
+        <Button Margin="{StaticResource ControlBorderLeft}" 
                 Grid.Row="0"
                 Grid.Column="2"
                 Width="25"

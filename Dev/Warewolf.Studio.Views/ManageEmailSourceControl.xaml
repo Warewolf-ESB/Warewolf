@@ -102,7 +102,7 @@
                         <RadioButton Padding="0,0,5,0" 
                                      VerticalAlignment="Center" 
                                      HorizontalAlignment="Left" 
-                                     Margin="{StaticResource ElementBorderControlRight}"
+                                     Margin="{StaticResource ControlBorderRight}"
                                      IsChecked="{Binding EnableSslYes, UpdateSourceTrigger=PropertyChanged}">Yes
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter Text="{x:Static languages:Core.EmailSourceEnableSslHelp}"
@@ -113,7 +113,7 @@
                                      Padding="0,0,5,0" 
                                      VerticalAlignment="Center" 
                                      HorizontalAlignment="Left" 
-                                     Margin="{StaticResource ElementBorderControlRight}"
+                                     Margin="{StaticResource ControlBorderRight}"
                                      IsChecked="{Binding EnableSslNo, UpdateSourceTrigger=PropertyChanged}">No
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter Text="{x:Static languages:Core.EmailSourceEnableSslHelp}"
@@ -198,12 +198,12 @@
                                 VerticalAlignment="Center">
                         <TextBlock Style="{StaticResource ErrorTextBlockStyle}"  
                                TextAlignment="Right" 
-                               Margin="{StaticResource ElementBorderControlRight}"
+                               Margin="{StaticResource ControlBorderRight}"
                                VerticalAlignment="Center" 
                                Text="{Binding TestMessage}"></TextBlock>
                         <views:CircularProgressBar Width="14"
                                        Height="14"
-                                       Margin="{StaticResource ElementBorderControlRight}" 
+                                       Margin="{StaticResource ControlBorderRight}" 
                                        Visibility="{Binding Path=Testing,Converter={StaticResource BoolToVisibilityConverter}}" />
                         <Button ToolTip="{Binding Path=SendToolTip}" 
                                 HorizontalAlignment="Right" 

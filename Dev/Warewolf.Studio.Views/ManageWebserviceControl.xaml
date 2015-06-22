@@ -206,7 +206,7 @@
                     <!-- BODY -->
                     <Grid Grid.Column="1" 
                           Grid.Row="1" 
-                          Margin="{StaticResource ElementBorderControlLeft}">
+                          Margin="{StaticResource ControlBorderLeft}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
