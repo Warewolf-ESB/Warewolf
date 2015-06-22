@@ -144,6 +144,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
                 {
                     SetProperty(value);                    
                 }
+                ListItems = value;
             }
         }
         public List<SharepointReadListTo> ListItems
@@ -154,10 +155,9 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             }
             set
             {
-                if (!_isInitializing)
-                {
-                    SetValue(ListItemsProperty, value);
-                }
+
+                SetValue(ListItemsProperty, value);
+
             }
         }
         string SharepointList
@@ -366,7 +366,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
         void LoadListFields(bool isFromListChange=false,System.Action continueWith=null)
         {
-            if (!IsListSelected || _isInitializing)
+            if (!IsListSelected)
             {
                 if (continueWith != null)
                 {
@@ -385,7 +385,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
                 {
                     var fieldMappings = columnList.Select(mapping =>
                     {
-                        var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue(selectedList.FullName,GetValidVariableName(mapping),"*");
+                        var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue(selectedList.FullName.Replace(" ","").Replace(".",""),GetValidVariableName(mapping),"*");
                         return new SharepointReadListTo(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), mapping.Name, mapping.InternalName);
                     }).ToList();
                     if (ReadListItems == null || ReadListItems.Count == 0 || isFromListChange)
@@ -414,14 +414,15 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
         static string GetValidVariableName(ISharepointFieldTo mapping)
         {
-            var fixedName = mapping.InternalName;
+            var fixedName = mapping.Name.Replace(" ","").Replace(".","").Replace(":","").Replace(",","");
+            fixedName = XmlConvert.EncodeName(fixedName);
             var startIndexOfEncoding = fixedName.IndexOf("_", StringComparison.OrdinalIgnoreCase);
             var endIndexOfEncoding = fixedName.LastIndexOf("_", StringComparison.OrdinalIgnoreCase);
             if(startIndexOfEncoding > 0 && endIndexOfEncoding > 0)
             {
-                fixedName = fixedName.Remove(startIndexOfEncoding, endIndexOfEncoding - startIndexOfEncoding);
+                fixedName = fixedName.Remove(startIndexOfEncoding-1, endIndexOfEncoding - startIndexOfEncoding);
             }
-            if (fixedName[0] == 'f' || fixedName[0] == '_')
+            if (fixedName[0] == 'f' || fixedName[0] == '_' || Char.IsNumber(fixedName[0]))
             {
                 fixedName = fixedName.Remove(0, 1);
             }
