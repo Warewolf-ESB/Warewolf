@@ -1,0 +1,76 @@
+﻿<Window x:Class="Warewolf.Studio.Views.SplashPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="SplashPage" 
+        Height="230"
+        Width="480"
+        BorderThickness="0"
+        ResizeMode="NoResize"
+        WindowStyle="None">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="30*"/>
+        </Grid.RowDefinitions>
+
+        <!-- WAREWOL LOGO -->
+        <Grid Grid.Row="0">
+            <Image></Image>
+        </Grid>
+        
+        <!-- WAREWOLF VERSIONS -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30*"/>
+                <ColumnDefinition Width="30*"/>
+                <ColumnDefinition Width="40*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Studio"></TextBlock>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Version"></TextBlock>
+            
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="Server"></TextBlock>
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="Version"></TextBlock>
+        </Grid>
+
+        <!-- WAREWOLF -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40*"/>
+                <ColumnDefinition Width="60*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="Dev" Grid.Column="0" Grid.Row="0" >
+                <Hyperlink Command="" 
+                           IsEnabled="True" 
+                           NavigateUri="" >
+                    <TextBlock Text="dev2 web" Style="{StaticResource HoverUnderlineStyle}"></TextBlock>
+                </Hyperlink>
+            </TextBlock>
+            <TextBlock x:Name="Warewolf" Grid.Column="0" Grid.Row="1" >
+                <Hyperlink Command="" 
+                           IsEnabled="True" 
+                           NavigateUri="" >
+                    <TextBlock Text="warewolf web" Style="{StaticResource HoverUnderlineStyle}"></TextBlock>
+                </Hyperlink>
+            </TextBlock>
+            
+            <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" 
+                        Orientation="Horizontal" 
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Center">
+                <Button Content="Contributors"></Button>
+                <Button Content="Community"></Button>
+                <Button Content="Expert Help"></Button>
+            </StackPanel>
+        </Grid>
+
+    </Grid>
+</Window>

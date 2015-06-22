@@ -306,6 +306,9 @@
     <Compile Include="SourcesOuterControl.xaml.cs">
       <DependentUpon>SourcesOuterControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SplashPage.xaml.cs">
+      <DependentUpon>SplashPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ToolboxView.xaml.cs">
       <DependentUpon>ToolboxView.xaml</DependentUpon>
     </Compile>
@@ -407,6 +410,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SourcesOuterControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SplashPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
