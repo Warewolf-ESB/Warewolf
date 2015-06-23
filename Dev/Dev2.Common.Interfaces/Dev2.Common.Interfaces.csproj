@@ -266,6 +266,7 @@
     <Compile Include="IDev2Activity.cs" />
     <Compile Include="IDllListing.cs" />
     <Compile Include="IExplorerView.cs" />
+    <Compile Include="IExternalProcessExecutor.cs" />
     <Compile Include="IHelpView.cs" />
     <Compile Include="IManageDatabaseSourceView.cs" />
     <Compile Include="IMenuView.cs" />
@@ -279,6 +280,8 @@
     <Compile Include="IResourceDefinition.cs" />
     <Compile Include="ISchedulerView.cs" />
     <Compile Include="ISchedulerViewModel.cs" />
+    <Compile Include="ISplashView.cs" />
+    <Compile Include="ISplashViewModel.cs" />
     <Compile Include="IToolboxView.cs" />
     <Compile Include="IUpdatesHelp.cs" />
     <Compile Include="IVariableListView.cs" />

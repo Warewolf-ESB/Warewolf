@@ -143,6 +143,7 @@
     <Compile Include="RequestServiceNameViewModel.cs" />
     <Compile Include="ServerAddedEvent.cs" />
     <Compile Include="SourceBaseImpl.cs" />
+    <Compile Include="SplashViewModel.cs" />
     <Compile Include="TestConnection.cs" />
     <Compile Include="VariableList\VariableListColumnViewModel.cs" />
     <Compile Include="VariableList\VariableListViewRecordSetViewModel.cs" />

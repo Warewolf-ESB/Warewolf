@@ -10,7 +10,6 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.ErrorHandling;
 using Dev2.Common.Interfaces.Help;
-using Dev2.Common.Interfaces.PluginService;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Common.Interfaces.ServerDialogue;
@@ -156,6 +155,15 @@ namespace Warewolf.Studio.ViewModels
         {
             var pasteView = _unityContainer.Resolve<IPasteView>();
             return  pasteView.ShowView(current);
+        }
+
+        public void ShowAboutBox(IServer server)
+        {
+            var splashView = _unityContainer.Resolve<ISplashView>();
+            var splashViewModel = _unityContainer.Resolve<ISplashViewModel>(new ParameterOverrides { { "server", server }, { "externalProcessExecutor", _unityContainer.Resolve<IExternalProcessExecutor>() } });
+            splashView.DataContext = splashViewModel;
+            splashView.Show(true);
+
         }
 
         public IViewsCollection GetRegionViews(string regionName)

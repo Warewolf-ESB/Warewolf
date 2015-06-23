@@ -40,7 +40,7 @@ namespace Warewolf.Studio.Views
             var imageSource = new MessageBoxImageToSystemIconConverter().Convert(message.Image, null, null, null) as string;
             if(imageSource != null)
             {
-                MessageImage.Source = new BitmapImage(new Uri(imageSource));
+                //MessageImage.Source = new BitmapImage(new Uri(imageSource));
             }
             SetupButtons(message);
             var effect = new BlurEffect { Radius = 10, KernelType = KernelType.Gaussian, RenderingBias = RenderingBias.Quality };

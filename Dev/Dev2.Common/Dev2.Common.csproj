@@ -128,6 +128,7 @@
     <Compile Include="DB Support\DB_Sanity\MS_SQL_Sanitizer.cs" />
     <Compile Include="Dev2EnumConverter.cs" />
     <Compile Include="Dev2Tokenizer.cs" />
+    <Compile Include="ExternalProcessExecutor.cs" />
     <Compile Include="ExtMethods\BaseEnumExtensions.cs" />
     <Compile Include="ExtMethods\DirectoryInfoExtensionMethods.cs" />
     <Compile Include="ExtMethods\FieldInfoExtensionMethods.cs" />

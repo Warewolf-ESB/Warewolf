@@ -48,5 +48,7 @@ namespace Dev2.Common.Interfaces
         void EditResource(IPluginSource selectedSource);
 
         string OpenPasteWindow(string current);
+
+        void ShowAboutBox(IServer server);
     }
 }
