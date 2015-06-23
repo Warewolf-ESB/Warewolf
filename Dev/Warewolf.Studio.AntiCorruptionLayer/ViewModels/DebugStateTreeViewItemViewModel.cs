@@ -7,6 +7,7 @@ using Dev2;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
+using Warewolf.Studio.AntiCorruptionLayer.Interfaces;
 
 namespace Warewolf.Studio.AntiCorruptionLayer.ViewModels
 {
@@ -208,5 +209,65 @@ namespace Warewolf.Studio.AntiCorruptionLayer.ViewModels
         }
 
         #endregion
+    }
+
+    public class DebugLineItem : IDebugLineItem
+    {
+        public DebugLineItem()
+        {
+        }
+
+        public DebugLineItem(IDebugItemResult result)
+        {
+            Type = result.Type;
+            Value = result.Value;
+            MoreLink = result.MoreLink;
+            Label = result.Label;
+            Variable = result.Variable;
+            Operator = result.Operator;
+        }
+
+        public string MoreLink { get; set; }
+        public DebugItemResultType Type { get; set; }
+        public string Value { get; set; }
+        public string Label { get; set; }
+        public string Variable { get; set; }
+        public string Operator { get; set; }
+    }
+
+    public class DebugLineGroup : IDebugLineItem
+    {
+        public DebugLineGroup(string groupName, string groupLabel)
+        {
+            GroupName = groupName;
+            Rows = new Dictionary<int, DebugLineGroupRow>();
+            GroupLabel = groupLabel;
+        }
+
+        public string MoreLink { get; set; }
+        public string GroupName { get; set; }
+        public string GroupLabel { get; set; }
+        public Dictionary<int, DebugLineGroupRow> Rows { get; private set; }
+    }
+
+    public class DebugLineGroupRow
+    {
+        public DebugLineGroupRow()
+        {
+            LineItems = new List<IDebugLineItem>();
+        }
+
+        public List<IDebugLineItem> LineItems { get; private set; }
+    }
+
+    public class DebugLine
+    {
+        public DebugLine()
+        {
+            LineItems = new List<IDebugLineItem>();
+        }
+
+        public List<IDebugLineItem> LineItems { get; private set; }
+
     }
 }
