@@ -96,8 +96,6 @@ namespace Warewolf.Studio.ViewModels
             }
           
             _wd.Context.Services.Subscribe<DesignerView>(DesigenrViewSubscribe);
-            _wd.View.PreviewDrop += ViewPreviewDrop;
-            _wd.View.PreviewDragEnter+=ViewOnPreviewDragEnter;
             
         }
 
@@ -177,14 +175,6 @@ namespace Warewolf.Studio.ViewModels
             }
 
             MetadataStore.AddAttributeTable(builder.CreateTable());
-        }
-
-        private void ViewOnPreviewDragEnter(object sender, DragEventArgs dragEventArgs)
-        {     
-        }
-
-        private void ViewPreviewDrop(object sender, DragEventArgs e)
-        {
         }
 
         public Dictionary<Type, Type> GetTools()
@@ -352,7 +342,6 @@ namespace Warewolf.Studio.ViewModels
 
         public void UpdateHelpDescriptor(string helpText)
         {
-            throw new NotImplementedException();
         }
     }
 }

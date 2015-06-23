@@ -92,6 +92,7 @@
     </Compile>
     <Compile Include="ToolDescriptorCore.cs" />
     <Compile Include="ToolDescriptorInfo.cs" />
+    <Compile Include="ViewModelUtils.cs" />
     <Compile Include="WarewolfExceptionHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebServiceDefinition.cs" />
