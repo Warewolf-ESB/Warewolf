@@ -10,6 +10,7 @@ using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Dev2.Common.Interfaces;
 using Infragistics.Windows.Controls;
 using Infragistics.Windows.DockManager;
 using Infragistics.Windows.DockManager.Events;
