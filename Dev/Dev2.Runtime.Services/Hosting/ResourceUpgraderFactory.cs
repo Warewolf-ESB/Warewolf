@@ -18,19 +18,28 @@ namespace Dev2.Runtime.Hosting
 {
     public static class ResourceUpgraderFactory
     {
-     
-       public static IResourceUpgrader GetUpgrader()
-       {
-           return new ResourceUpgrader(CreateUpgradePath());
-       }
 
-       private static List<IUpgradePath> CreateUpgradePath()
+        public static IResourceUpgrader GetUpgrader()
+        {
+            return new ResourceUpgrader(CreateUpgradePath());
+        }
+
+        private static List<IUpgradePath> CreateUpgradePath()
         {
             List<IUpgradePath> upgrades = new List<IUpgradePath>
             {
-                new UpgradePath(new Version(), new Version(0, 4, 17, 27001), new BaseResourceUpgrader())
+                new UpgradePath(
+                    upgradesFrom: new Version(), 
+                    upgradesTo: new Version(0, 4, 17, 27001), 
+                    upgrade: new BaseResourceUpgrader()
+                    ),
+                    new UpgradePath(
+                    upgradesFrom: new Version(), 
+                    upgradesTo: new Version(0, 4, 20, 27001), 
+                    upgrade: new BaseResourceUpgrader()
+                    )
             };
-           return upgrades;
+            return upgrades;
         }
     }
 }

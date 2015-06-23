@@ -90,6 +90,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
     </Reference>
+    <Reference Include="FluentAssertions, Version=3.3.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentAssertions.3.3.0\lib\net45\FluentAssertions.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentAssertions.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentAssertions.3.3.0\lib\net45\FluentAssertions.Core.dll</HintPath>
+    </Reference>
     <Reference Include="HgCo.WindowsLive.SkyDriveServiceClient">
       <HintPath>..\Binaries\HgCo.WindowsLive.SkyDriveServiceClient.dll</HintPath>
     </Reference>
@@ -194,6 +202,9 @@
     <Compile Include="Hosting\VersionStrategyTests.cs" />
     <Compile Include="Plugins\DllExtractor.cs" />
     <Compile Include="ResourceUpgraders\BaseUpgradeConvertorTests.cs" />
+    <Compile Include="ResourceUpgraders\EncryptionResourceUpgraderTests.cs" />
+    <Compile Include="Security\AESThenHMACTests.cs" />
+    <Compile Include="Security\DPAPIWrapperTests.cs" />
     <Compile Include="ServiceModel\OauthSourceTest.cs" />
     <Compile Include="Services\CreateFolderTest.cs" />
     <Compile Include="Services\DeleteItemsTest.cs" />
@@ -583,6 +594,7 @@
     <EmbeddedResource Include="XML\mondayothersource3.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Security\Data\" />
     <Folder Include="WF\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
