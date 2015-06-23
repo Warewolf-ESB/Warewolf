@@ -2,13 +2,20 @@
 using System.Activities.Core.Presentation;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Metadata;
+using System.Activities.Presentation.Services;
 using System.Activities.Presentation.View;
+using System.Activities.Statements;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.Versioning;
+using System.Text;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Xaml;
 using Dev2.Activities;
 using Dev2.Activities.Designers2.BaseConvert;
@@ -52,6 +59,7 @@ using Dev2.Activities.Designers2.WriteFile;
 using Dev2.Activities.Designers2.XPath;
 using Dev2.Activities.Designers2.Zip;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Studio.Core;
@@ -68,6 +76,8 @@ namespace Warewolf.Studio.ViewModels
         string _header;
         readonly WorkflowDesigner _wd;
         private DataListViewModel _dataListViewModel;
+        ModelService _modelService;
+        readonly WorkflowHelper _helper;
 
         public WorkflowServiceDesignerViewModel(IXamlResource resource)
         {
@@ -80,24 +90,141 @@ namespace Warewolf.Studio.ViewModels
             _wd = new WorkflowDesigner();
             OldIntellisenseStuff();
             DesignerSetup();
+            _helper = new WorkflowHelper();
             if (resource.Xaml == null)
             {
                 IsNewWorkflow = true;
-                var helper = new WorkflowHelper();
-                _wd.Load(helper.CreateWorkflow("Untitled 1"));
-                Header = "Untitled 1";
+                resource.ResourceName = "Untitled 1";
+                _wd.Load(_helper.CreateWorkflow("Untitled 1"));
+                resource.Xaml = ServiceDefinition;
             }
             else
             {
                 IsNewWorkflow = false;
-                _wd.Text = resource.Xaml.ToString();
+                var xaml = _helper.SanitizeXaml(resource.Xaml);
+                _wd.Text = xaml.ToString();
                 _wd.Load();
-                Header = resource.ResourceName;
+             
             }
-          
-            _wd.Context.Services.Subscribe<DesignerView>(DesigenrViewSubscribe);
-            
+            Header = resource.ResourceName;
+            _wd.Context.Services.Subscribe<DesignerView>(DesignerViewSubscribe);
+
+
+            CommandManager.AddPreviewCanExecuteHandler(_wd.View, CanExecuteRoutedEventHandler);
+            _wd.ModelChanged += WdOnModelChanged;
+            _wd.View.Focus();
+            _helper.EnsureImplementation(_modelService);
+            WorkflowDesignerIcons.Activities.Flowchart = new DrawingBrush(new ImageDrawing(new BitmapImage(new Uri(@"pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images/Workflow-32.png")), new Rect(0, 0, 16, 16)));
+            WorkflowDesignerIcons.Activities.StartNode = new DrawingBrush(new ImageDrawing(new BitmapImage(new Uri(@"pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images/StartNode.png")), new Rect(0, 0, 32, 32)));
         }
+        /// <summary>
+        ///     Handler attached to intercept checks for executing the delete command
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">
+        ///     The <see cref="CanExecuteRoutedEventArgs" /> instance containing the event data.
+        /// </param>
+        protected void CanExecuteRoutedEventHandler(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (e.Command == ApplicationCommands.Delete ||      //triggered from deleting an activity
+                e.Command == EditingCommands.Delete ||          //triggered from editing displayname, expressions, etc
+                e.Command == System.Activities.Presentation.View.DesignerView.CopyCommand ||
+                e.Command == System.Activities.Presentation.View.DesignerView.CutCommand)
+            {
+                PreventCommandFromBeingExecuted(e);
+            }
+            if (e.Command == ApplicationCommands.Paste || e.Command == System.Activities.Presentation.View.DesignerView.PasteCommand)
+            {
+                PreventPasteFromBeingExecuted(e);
+            }
+        }
+
+        /// <summary>
+        ///     Prevents the delete from being executed if it is a FlowChart.
+        /// </summary>
+        /// <param name="e">
+        ///     The <see cref="CanExecuteRoutedEventArgs" /> instance containing the event data.
+        /// </param>
+        void PreventCommandFromBeingExecuted(CanExecuteRoutedEventArgs e)
+        {
+            if (Designer != null && Designer.Context != null)
+            {
+                var selection = Designer.Context.Items.GetValue<Selection>();
+
+                if (selection == null || selection.PrimarySelection == null)
+                    return;
+
+                if (selection.PrimarySelection.ItemType != typeof(Flowchart) &&
+                   selection.SelectedObjects.All(modelItem => modelItem.ItemType != typeof(Flowchart)))
+                    return;
+            }
+
+            e.CanExecute = false;
+            e.Handled = true;
+        }
+
+        void PreventPasteFromBeingExecuted(CanExecuteRoutedEventArgs e)
+        {
+        }
+
+        public WorkflowDesigner Designer { get { return _wd; } }
+        protected void WdOnModelChanged(object sender, EventArgs eventArgs)
+        {
+            var checkServiceDefinition = CheckServiceDefinition();
+            var checkDataList = CheckDataList();
+            
+            var isWorkflowSaved = checkServiceDefinition && checkDataList;
+            Resource.IsWorkflowSaved = isWorkflowSaved;
+            //_workspaceSave = false;
+            if(!isWorkflowSaved)
+            {
+                Header = Resource.ResourceName + "*";
+            }
+            else
+            {
+                Header = Resource.ResourceName;
+            }
+        }
+        string _originalDataList;
+        bool CheckDataList()
+        {
+            if (_originalDataList == null)
+                return true;
+            if (Resource.DataList != null)
+            {
+                string currentDataList = Resource.DataList.Replace("<DataList>", "").Replace("</DataList>", "");
+                return currentDataList.SpaceCaseInsenstiveComparision(_originalDataList);
+            }
+            return true;
+        }
+
+
+        void ModelServiceSubscribe(ModelService instance)
+        {
+            _modelService = instance;
+            _modelService.ModelChanged += ModelServiceModelChanged;
+        }
+
+        /// <summary>
+        /// Models the service model changed.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="ModelChangedEventArgs"/> instance containing the event data.</param>
+        protected void ModelServiceModelChanged(object sender, ModelChangedEventArgs e)
+        {
+        }
+
+        void ProcessDataListOnLoad()
+        {
+            //AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(true, false);
+        }
+
+        bool CheckServiceDefinition()
+        {
+            return ServiceDefinition.IsEqual(Resource.Xaml);
+        }
+
+        public StringBuilder ServiceDefinition { get { return _helper.SerializeWorkflow(_modelService); } }
 
         private void OldIntellisenseStuff()
         {
@@ -175,6 +302,7 @@ namespace Warewolf.Studio.ViewModels
             }
 
             MetadataStore.AddAttributeTable(builder.CreateTable());
+            _wd.Context.Services.Subscribe<ModelService>(ModelServiceSubscribe);
         }
 
         public Dictionary<Type, Type> GetTools()
@@ -228,7 +356,7 @@ namespace Warewolf.Studio.ViewModels
             return designerAttributes;
         }
 
-        void DesigenrViewSubscribe(DesignerView instance)
+        void DesignerViewSubscribe(DesignerView instance)
         {
             // PBI 9221 : TWR : 2013.04.22 - .NET 4.5 upgrade
             instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.None;

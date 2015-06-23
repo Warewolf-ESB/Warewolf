@@ -350,6 +350,24 @@ namespace Dev2.Common.Common
             return result.CleanEncodingHeaderForXmlSave();
         }
 
+        public static string ExceptChars(this string str, IEnumerable<char> toExclude)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (char c in str)
+            {
+                // ReSharper disable PossibleMultipleEnumeration
+                if (!toExclude.Contains(c))
+                    // ReSharper restore PossibleMultipleEnumeration
+                    sb.Append(c);
+            }
+            return sb.ToString();
+        }
+
+        public static bool SpaceCaseInsenstiveComparision(this string stringa, string stringb)
+        {
+            return (stringa == null && stringb == null) || (stringa != null && stringa.ToLower().ExceptChars(new[] { ' ', '\t', '\n', '\r' }).Equals(stringb.ToLower().ExceptChars(new[] { ' ', '\t', '\n', '\r' })));
+        }
+
         public static bool IsEqual(this StringBuilder sb, StringBuilder that)
         {
             if (that != null && (sb != null && sb.Length == that.Length))
