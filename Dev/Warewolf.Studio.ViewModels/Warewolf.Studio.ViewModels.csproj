@@ -161,7 +161,6 @@
     <Compile Include="VariableList\DatalistViewScalarViewModel.cs" />
     <Compile Include="VariableList\VariableListViewModel.cs" />
     <Compile Include="VersionInfoViewModel.cs" />
-    <Compile Include="ViewModelUtils.cs" />
     <Compile Include="WarewolfInvalidTypeException.cs" />
     <Compile Include="WebServiceModel.cs" />
     <Compile Include="WorkflowServiceDesignerViewModel.cs" />

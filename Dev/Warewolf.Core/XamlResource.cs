@@ -192,6 +192,7 @@ namespace Warewolf.Core
         #region Implementation of IXamlResource
 
         public StringBuilder Xaml { get; set; }
+        public bool IsWorkflowSaved { get; set; }
 
         #endregion
     }
