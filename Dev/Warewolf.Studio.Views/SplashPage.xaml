@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
         Title="SplashPage" 
         Height="400"
         Width="800"
@@ -97,10 +98,14 @@
                         Command="{Binding CommunityCommand}"
                         Margin="{StaticResource ControlBorderRight}"
                         Style="{StaticResource PopupRoundedCornerButtonStyle}"></Button>
-                <Button Content="Expert Help" 
-                        Width="Auto"
+                <Button Width="Auto"
                         Command="{Binding ExpertHelpCommand}"
-                        Style="{StaticResource PopupRoundedCornerButtonStyle}"></Button>
+                        Style="{StaticResource PopupRoundedCornerBlueButtonStyle}">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <fa:FontAwesome Margin="5,0,2,0" Foreground="#FFF3700D" Icon="LightningBolt" VerticalAlignment="Center" HorizontalAlignment="Center"></fa:FontAwesome>
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Expert Help</TextBlock>
+                        </StackPanel>
+                    </Button>
             </StackPanel>
         </Grid>
         </Grid>
