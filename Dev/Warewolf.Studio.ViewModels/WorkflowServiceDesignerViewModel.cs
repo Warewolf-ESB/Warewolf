@@ -2,6 +2,7 @@
 using System.Activities.Core.Presentation;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Metadata;
+using System.Activities.Presentation.Model;
 using System.Activities.Presentation.Services;
 using System.Activities.Presentation.View;
 using System.Activities.Statements;
@@ -24,6 +25,7 @@ using Dev2.Activities.Designers2.CaseConvert;
 using Dev2.Activities.Designers2.CommandLine;
 using Dev2.Activities.Designers2.Comment;
 using Dev2.Activities.Designers2.Copy;
+using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.CountRecords;
 using Dev2.Activities.Designers2.Create;
 using Dev2.Activities.Designers2.DataMerge;
@@ -94,36 +96,77 @@ namespace Warewolf.Studio.ViewModels
             if (resource.Xaml == null)
             {
                 IsNewWorkflow = true;
-                resource.ResourceName = "Untitled 1";
+                Resource.ResourceName = "Untitled 1";
                 _wd.Load(_helper.CreateWorkflow("Untitled 1"));
-                resource.Xaml = ServiceDefinition;
+                Resource.Xaml = ServiceDefinition;
             }
             else
             {
                 IsNewWorkflow = false;
-                var xaml = _helper.SanitizeXaml(resource.Xaml);
+                var xaml = _helper.SanitizeXaml(Resource.Xaml);
                 _wd.Text = xaml.ToString();
                 _wd.Load();
              
             }
-            Header = resource.ResourceName;
+            Header = Resource.ResourceName;
             _wd.Context.Services.Subscribe<DesignerView>(DesignerViewSubscribe);
 
 
             CommandManager.AddPreviewCanExecuteHandler(_wd.View, CanExecuteRoutedEventHandler);
             _wd.ModelChanged += WdOnModelChanged;
+            _wd.View.PreviewDrop += ViewPreviewDrop;
+
+            //_wd.View.PreviewMouseDown += ViewPreviewMouseDown;
             _wd.View.Focus();
             _helper.EnsureImplementation(_modelService);
             WorkflowDesignerIcons.Activities.Flowchart = new DrawingBrush(new ImageDrawing(new BitmapImage(new Uri(@"pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images/Workflow-32.png")), new Rect(0, 0, 16, 16)));
             WorkflowDesignerIcons.Activities.StartNode = new DrawingBrush(new ImageDrawing(new BitmapImage(new Uri(@"pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images/StartNode.png")), new Rect(0, 0, 32, 32)));
         }
+
         /// <summary>
-        ///     Handler attached to intercept checks for executing the delete command
+        /// Views the preview drop.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">
-        ///     The <see cref="CanExecuteRoutedEventArgs" /> instance containing the event data.
-        /// </param>
+        /// <param name="e">The <see cref="DragEventArgs"/> instance containing the event data.</param>
+        void ViewPreviewDrop(object sender, DragEventArgs e)
+        {
+
+            bool dropOccured = true;
+            DataObject = e.Data.GetData(typeof(ExplorerItemViewModel));
+            if (DataObject != null)
+            {
+                IsItemDragged.Instance.IsDragged = true;
+            }
+
+            var isWorkflow = e.Data.GetData("WorkflowItemTypeNameFormat") as string;
+            if (isWorkflow != null)
+            {
+                // PBI 10652 - 2013.11.04 - TWR - Refactored to enable re-use!
+
+//                var resourcePicked = ResourcePickerDialog.ShowDropDialog(ref _resourcePickerDialog, isWorkflow, out _vm);
+//
+//                if (_vm != null && resourcePicked)
+//                {
+//                    e.Data.SetData(_vm.SelectedExplorerItemModel);
+//                }
+//                if (_vm != null && !resourcePicked)
+//                {
+//                    e.Handled = true;
+//                    dropOccured = false;
+//                }
+            }
+            if (dropOccured)
+            {
+                //_workspaceSave = false;
+                Resource.IsWorkflowSaved = false;
+                //NotifyOfPropertyChange(() => DisplayName);
+            }
+            //_resourcePickerDialog = null;
+
+        }
+
+
+      
         protected void CanExecuteRoutedEventHandler(object sender, CanExecuteRoutedEventArgs e)
         {
             if (e.Command == ApplicationCommands.Delete ||      //triggered from deleting an activity
@@ -204,15 +247,152 @@ namespace Warewolf.Studio.ViewModels
             _modelService = instance;
             _modelService.ModelChanged += ModelServiceModelChanged;
         }
-
-        /// <summary>
-        /// Models the service model changed.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="ModelChangedEventArgs"/> instance containing the event data.</param>
-        protected void ModelServiceModelChanged(object sender, ModelChangedEventArgs e)
+        public static readonly string[] SelfConnectProperties =
         {
+            "Next", 
+            "True", 
+            "False", 
+            "Default", 
+            "Key"
+        };
+
+        protected dynamic DataObject { get; set; }
+
+         protected void ModelServiceModelChanged(object sender, ModelChangedEventArgs e)
+         {
+         // BUG 9143 - 2013.07.03 - TWR - added
+            if (e.ModelChangeInfo != null &&
+                e.ModelChangeInfo.ModelChangeType == ModelChangeType.PropertyChanged)
+            {
+                if (SelfConnectProperties.Contains(e.ModelChangeInfo.PropertyName))
+                {
+                    if (e.ModelChangeInfo.Subject == e.ModelChangeInfo.Value)
+                    {
+                        var modelProperty = e.ModelChangeInfo.Value.Properties[e.ModelChangeInfo.PropertyName];
+                        if (modelProperty != null)
+                        {
+                            modelProperty.ClearValue();
+                        }
+                    }
+                    return;
+                }
+
+                if (e.ModelChangeInfo.PropertyName == "StartNode")
+                {
+                    return;
+                }
+            }
+
+            //ItemsAdded is obsolete - see e.ModelChangeInfo for correct usage
+            //Code below is obsolete
+#pragma warning disable 618
+            if (e.ItemsAdded != null)
+            {
+                PerformAddItems(e.ItemsAdded.ToList());
+            }
+            else if (e.PropertiesChanged != null)
+            {
+                if (e.PropertiesChanged.Any(mp => mp.Name == "Handler"))
+                {
+                    if (DataObject != null)
+                    {
+                        ModelItemPropertyChanged(e);
+                    }
+                    else
+                    {
+                        ModelItemAdded(e);
+                    }
+                }
+            }
         }
+
+        void ModelItemAdded(ModelChangedEventArgs e)
+        {
+            ModelProperty modelProperty = e.PropertiesChanged.FirstOrDefault(mp => mp.Name == "Handler");
+#pragma warning restore 618
+
+            if (modelProperty != null)
+            {
+//                if (_vm != null)
+//                {
+//                    IContextualResourceModel resource = _vm.SelectedResourceModel;
+//                    if (resource != null)
+//                    {
+//                        DsfActivity droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, null, true, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
+//
+//                        droppedActivity.ServiceName = droppedActivity.DisplayName = droppedActivity.ToolboxFriendlyName = resource.Category;
+//                        droppedActivity.IconPath = resource.IconPath;
+//
+//                        modelProperty.SetValue(droppedActivity);
+//                    }
+//                    _vm.Dispose();
+//                    _vm = null;
+//                }
+            }
+        }
+
+        void ModelItemPropertyChanged(ModelChangedEventArgs e)
+        {
+#pragma warning disable 618
+            var navigationItemViewModel = DataObject as ExplorerItemViewModel;
+
+            // ReSharper disable CSharpWarnings::CS0618
+            ModelProperty modelProperty = e.PropertiesChanged.FirstOrDefault(mp => mp.Name == "Handler");
+            // ReSharper restore CSharpWarnings::CS0618
+
+            if (navigationItemViewModel != null && modelProperty != null)
+            {
+                //IEnvironmentViewModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == navigationItemViewModel.EnvironmentId);
+                //if (environmentModel != null)
+                {
+//                    var resource = environmentModel.ResourceRepository.FindSingle(c => c.ID == navigationItemViewModel.ResourceId) as IContextualResourceModel;
+//                    if (resource != null)
+//                    {
+//                        //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
+//                        DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
+//                        d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
+//                        d.IconPath = resource.IconPath;
+//                        UpdateForRemote(d, resource);
+//                        modelProperty.SetValue(d);
+//                    }
+                }
+            }
+            DataObject = null;
+#pragma warning restore 618
+        }
+
+        protected List<ModelItem> PerformAddItems(List<ModelItem> addedItems)
+        // ReSharper restore ExcessiveIndentation
+        // ReSharper restore MethodTooLong
+        {
+            for (int i = 0; i < addedItems.Count(); i++)
+            {
+                var mi = addedItems.ToList()[i];
+
+                if (mi.Content != null)
+                {
+                    var computedValue = mi.Content.ComputedValue;
+                    if (computedValue is IDev2Activity)
+                    {
+                        //2013.08.19: Ashley Lewis for bug 10116 - New unique id on paste
+                        (computedValue as IDev2Activity).UniqueID = Guid.NewGuid().ToString();
+                    }
+                }
+
+
+                if (mi.ItemType == typeof(FlowSwitch<string>))
+                {
+                }
+                else if (mi.ItemType == typeof(FlowDecision))
+                {
+                }
+                else if (mi.ItemType == typeof(FlowStep))
+                {
+                }
+            }
+            return addedItems;
+        }
+
 
         void ProcessDataListOnLoad()
         {
