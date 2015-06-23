@@ -1,4 +1,4 @@
-﻿/* Written by Brian Lagunas
+/* Written by Brian Lagunas
  * Blog: http://brianlagunas.com
  * Twitter: @brianlagunas
  * Email: blagunas@infragistics.com 
@@ -6,7 +6,7 @@
 
 using Dev2.Common.Interfaces.Data;
 
-namespace Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter
+namespace Dev2.Common.Interfaces
 {
     public interface IDockAware
     {

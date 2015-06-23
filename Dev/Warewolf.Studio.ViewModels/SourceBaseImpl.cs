@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;

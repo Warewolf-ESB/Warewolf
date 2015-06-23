@@ -265,6 +265,8 @@
     <Compile Include="IDeployViewControl.cs" />
     <Compile Include="IDev2Activity.cs" />
     <Compile Include="IDllListing.cs" />
+    <Compile Include="IDockAware.cs" />
+    <Compile Include="IDockViewModel.cs" />
     <Compile Include="IExplorerView.cs" />
     <Compile Include="IExternalProcessExecutor.cs" />
     <Compile Include="IHelpView.cs" />

@@ -124,7 +124,6 @@
     <Compile Include="ConnectControlViewModel.cs" />
     <Compile Include="DbServiceModel.cs" />
     <Compile Include="DeployItemMessage.cs" />
-    <Compile Include="IDockViewModel.cs" />
     <Compile Include="ExplorerItemNodeViewModel.cs" />
     <Compile Include="ManageDatabaseServiceViewModel.cs" />
     <Compile Include="ManageDatabaseSourceModel.cs" />
