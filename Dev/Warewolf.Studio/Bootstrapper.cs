@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
+using System.Threading;
 using System.Windows;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -95,16 +96,50 @@ namespace Warewolf.Studio
         }
         
         #endregion
+        public static ISplashView _splashView;
 
+        private ManualResetEvent ResetSplashCreated;
+        private Thread SplashThread;
         protected override void InitializeShell()
         {
+            ResetSplashCreated = new ManualResetEvent(false);
+            
+            SplashThread = new Thread(ShowSplash);
+            SplashThread.SetApartmentState(ApartmentState.STA);
+            SplashThread.IsBackground = true;
+            SplashThread.Name = "Splash Screen";
+            SplashThread.Start();
+            ResetSplashCreated.WaitOne();
             base.InitializeShell();
-
             var window = (Window)Shell;
             window.Show();
+            if (window.IsVisible)
+            {
+                _splashView.CloseSplash();
+            }            
 
         }
 
+
+        private void ShowSplash()
+        {
+            // Create the window 
+            
+            var shellViewModel = Container.Resolve<IShellViewModel>();
+            var splashViewModel = Container.Resolve<ISplashViewModel>(new ParameterOverrides { { "server", shellViewModel.LocalhostServer }, { "externalProcessExecutor", Container.Resolve<IExternalProcessExecutor>() } });
+
+            SplashPage splashPage = new SplashPage();
+            splashPage.DataContext = splashViewModel;
+            _splashView = splashPage;
+            // Show it 
+            splashPage.Show(false);
+            // Now that the window is created, allow the rest of the startup to run 
+            if(ResetSplashCreated != null)
+            {
+                ResetSplashCreated.Set();
+            }
+            System.Windows.Threading.Dispatcher.Run();
+        }
         protected override RegionAdapterMappings ConfigureRegionAdapterMappings()
         {
             RegionAdapterMappings mappings = base.ConfigureRegionAdapterMappings();

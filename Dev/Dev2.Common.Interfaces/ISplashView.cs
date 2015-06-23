@@ -4,6 +4,8 @@ namespace Dev2.Common.Interfaces
 {
     public interface ISplashView : IView
     {
-        void Show();
+        void Show(bool isDialog);
+
+        void CloseSplash();
     }
 }

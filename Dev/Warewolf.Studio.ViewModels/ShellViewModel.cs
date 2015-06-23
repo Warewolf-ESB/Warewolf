@@ -162,7 +162,7 @@ namespace Warewolf.Studio.ViewModels
             var splashView = _unityContainer.Resolve<ISplashView>();
             var splashViewModel = _unityContainer.Resolve<ISplashViewModel>(new ParameterOverrides { { "server", server }, { "externalProcessExecutor", _unityContainer.Resolve<IExternalProcessExecutor>() } });
             splashView.DataContext = splashViewModel;
-            splashView.Show();
+            splashView.Show(true);
 
         }
 

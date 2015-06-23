@@ -38,6 +38,8 @@ namespace Warewolf.Studio
             SourceInitialized += WinSourceInitialized;
         }
 
+
+
         void WinSourceInitialized(object sender, EventArgs e)
         {
             Maximise();
@@ -167,7 +169,25 @@ namespace Warewolf.Studio
         private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
             LoadShellViewModel();
+            
         }
+
+        #region Overrides of Window
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Window.ContentRendered"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnContentRendered(EventArgs e)
+        {
+            if (ViewModelLoaded != null)
+            {
+                ViewModelLoaded();
+            }
+            base.OnContentRendered(e);
+        }
+
+        #endregion
 
         protected virtual void LoadShellViewModel()
         {
@@ -177,6 +197,8 @@ namespace Warewolf.Studio
                 viewModel.Initialize();
             }
         }
+
+        public Action ViewModelLoaded { get; set; }
 
         private void SlidingMenuPane_OnSizeChanged(object sender, SizeChangedEventArgs e)
         {

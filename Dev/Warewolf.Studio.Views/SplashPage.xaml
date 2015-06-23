@@ -14,10 +14,12 @@
         ResizeMode="NoResize"
         WindowStyle="None"
         mc:Ignorable="d"
+        KeyUp="SplashPage_OnKeyUp"
+        Closing="SplashPage_OnClosing"
         MouseUp="SplashPage_OnMouseUp"
         d:DataContext="{d:DesignInstance Type=interfaces:ISplashViewModel,
                                               IsDesignTimeCreatable=False}">
-    <Grid>
+    <Grid ToolTip="To close this view, click on the box or press the Esc key on your keyboard">
         <Grid.Background>
             <ImageBrush ImageSource="/Warewolf.Studio.Themes.Luna;component/Images/newmoon.jpg"/>
         </Grid.Background>
