@@ -91,6 +91,50 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="SourceHeaderWhite" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Larger}" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Foreground" Value="{StaticResource WareWolfWhiteBrush}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <!--<Setter Property="Margin" Value="10,0,0,0" />-->
+        <Setter Property="Padding" Value="4" />
+        <Setter Property="Validation.ErrorTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <AdornedElementPlaceholder />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="Validation.HasError" Value="True">
+                <Setter Property="TextElement.Foreground" Value="{StaticResource ValidationErrorElement}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <Style x:Key="TextBlockWhiteStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+        <Setter Property="Foreground" Value="{StaticResource WareWolfWhiteBrush}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Padding" Value="4" />
+        <Setter Property="Validation.ErrorTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <AdornedElementPlaceholder />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="Validation.HasError" Value="True">
+                <Setter Property="TextElement.Foreground" Value="{StaticResource ValidationErrorElement}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 
     <Style x:Key="MenuTextBlockStyle" TargetType="TextBlock">
 <!--        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />-->

@@ -4,8 +4,8 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using FontAwesome.WPF;
 using Infragistics.Windows.DockManager.Events;
 using Warewolf.Studio.ViewModels;
@@ -125,11 +125,20 @@ namespace Warewolf.Studio
         {
             if (e.Key == Key.Home && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
-                var testingWindow = new ControlStyleTestingWindow();
-                testingWindow.Show();
+                //var testingWindow = new ControlStyleTestingWindow();
+                //testingWindow.Show();
 
-                var testingInfraWindow = new InfragisticsControlTesting();
-                testingInfraWindow.Show();
+                //var testingInfraWindow = new InfragisticsControlTesting();
+                //testingInfraWindow.Show();
+
+                var splashview = new SplashPage();
+                var shellViewModel = DataContext as ShellViewModel;
+                if(shellViewModel != null)
+                {
+                    var vm = new SplashViewModel(shellViewModel.ActiveServer,new ExternalProcessExecutor());
+                    splashview.DataContext = vm;
+                }
+                splashview.ShowDialog();
             }
             if (e.Key == Key.G && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {

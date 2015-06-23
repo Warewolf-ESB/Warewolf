@@ -340,9 +340,7 @@ namespace Warewolf.Studio.ViewModels
 
 	    void ShowServerVersionAbout()
         {
-            var serverVersion = Server.GetServerVersion();
-            var studioVersion = Utils.FetchVersionInfo();
-            ShellViewModel.ShowPopup(PopupMessages.GetServerVersionMessage(studioVersion, serverVersion));
+            ShellViewModel.ShowAboutBox(Server);
         }
 
         string GetChildNameFromChildren()

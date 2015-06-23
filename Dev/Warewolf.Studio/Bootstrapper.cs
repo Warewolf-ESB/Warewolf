@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Windows;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DataList.DatalistView;
 using Dev2.Common.Interfaces.ErrorHandling;
@@ -67,7 +68,9 @@ namespace Warewolf.Studio
             Container.RegisterInstance<IToolboxView>(new ToolboxView());
             Container.RegisterInstance<IMenuView>(new MenuView());
             Container.RegisterInstance<IExceptionHandler>(new WarewolfExceptionHandler(new Dictionary<Type, Action>()));
-    
+            Container.RegisterInstance<ISplashView>(new SplashPage());
+            Container.RegisterInstance<IExternalProcessExecutor>(new ExternalProcessExecutor());
+            Container.RegisterType<ISplashViewModel,SplashViewModel>();
             Container.RegisterInstance<IHelpView>(new HelpView());
             Container.RegisterInstance<IPasteView>(new ManageWebservicePasteView());
      

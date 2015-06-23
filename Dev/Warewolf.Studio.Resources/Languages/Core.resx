@@ -1024,4 +1024,21 @@ You need Administrator permission.</value>
   <data name="ViewInBrowserLabel" xml:space="preserve">
     <value>View Results In Browser</value>
   </data>
+
+  <data name="DevUrl" xml:space="preserve">
+    <value>http://dev2.co.za/</value>
+  </data>
+  <data name="WarewolfUrl" xml:space="preserve">
+    <value>http://warewolf.io/</value>
+  </data>
+  <data name="ContributorsUrl" xml:space="preserve">
+    <value>http://warewolf.io/contributors.php</value>
+  </data>
+  <data name="CommunityUrl" xml:space="preserve">
+    <value>http://community.warewolf.io/</value>
+  </data>
+  <data name="ExpertHelpUrl" xml:space="preserve">
+    <value>http://warewolf.io/knowledge-base/</value>
+  </data>
+
 </root>

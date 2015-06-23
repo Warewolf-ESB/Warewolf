@@ -128,6 +128,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to http://community.warewolf.io/.
+        /// </summary>
+        public static string CommunityUrl {
+            get {
+                return ResourceManager.GetString("CommunityUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the Warewolf server you want to use or add a new one.
         /// </summary>
         public static string ConnectControlConnectionsToolTip {
@@ -178,6 +187,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ConnectControlViewToggleConnectionHelp {
             get {
                 return ResourceManager.GetString("ConnectControlViewToggleConnectionHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://warewolf.io/contributors.php.
+        /// </summary>
+        public static string ContributorsUrl {
+            get {
+                return ResourceManager.GetString("ContributorsUrl", resourceCulture);
             }
         }
         
@@ -556,6 +574,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DeleteVersionMessageHeader {
             get {
                 return ResourceManager.GetString("DeleteVersionMessageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://dev2.co.za/.
+        /// </summary>
+        public static string DevUrl {
+            get {
+                return ResourceManager.GetString("DevUrl", resourceCulture);
             }
         }
         
@@ -951,6 +978,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ExampleWorkflowNotFound {
             get {
                 return ResourceManager.GetString("ExampleWorkflowNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://warewolf.io/knowledge-base/.
+        /// </summary>
+        public static string ExpertHelpUrl {
+            get {
+                return ResourceManager.GetString("ExpertHelpUrl", resourceCulture);
             }
         }
         
@@ -2171,6 +2207,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string Warewolf_Logo {
             get {
                 return ResourceManager.GetString("Warewolf_Logo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://warewolf.io/.
+        /// </summary>
+        public static string WarewolfUrl {
+            get {
+                return ResourceManager.GetString("WarewolfUrl", resourceCulture);
             }
         }
         
