@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Dev2;
@@ -772,7 +773,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer.ViewModels
                 var lastDebugStateProcessed = _lastStep;
                 _lastStep = null;
                 _dispatchLastDebugState = true;
-                AddItemToTreeImpl(new DebugState { StateType = StateType.Message, Message = Warewolf.Studio.Resources.Languages.Services.CompilerMessage_ExecutionInterrupted, ParentID = lastDebugStateProcessed.ParentID });
+                AddItemToTreeImpl(new DebugState { StateType = StateType.Message, Message = "", ParentID = lastDebugStateProcessed.ParentID });
                 AddItemToTreeImpl(lastDebugStateProcessed);
                 _dispatchLastDebugState = false;
             }

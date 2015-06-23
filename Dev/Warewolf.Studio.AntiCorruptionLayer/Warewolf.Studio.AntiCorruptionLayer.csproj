@@ -30,6 +30,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Caliburn.Micro">
+      <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\Binaries\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="Caliburn.Micro, Version=1.4.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
@@ -56,6 +65,10 @@
     <Reference Include="System.ObjectModel" />
     <Reference Include="System.Runtime" />
     <Reference Include="System.Xaml" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -74,14 +87,20 @@
     <Compile Include="Factory\ExceptionFactory.cs" />
     <Compile Include="Factory\WorkSurfaceContextFactory.cs" />
     <Compile Include="Factory\WorkSurfaceKeyFactory.cs" />
+    <Compile Include="ButtonPopupWorkaroundBehavior.cs" />
+    <Compile Include="DebugLineTemplateSelector.cs" />
+    <Compile Include="DebugStyleSelector.cs" />
+    <Compile Include="Dev2StatusBar.cs" />
     <Compile Include="Interfaces\IDebugLineItem.cs" />
     <Compile Include="Interfaces\IDebugTreeViewItemViewModel.cs" />
     <Compile Include="NetworkStateChangedEventArgs.cs" />
+    <Compile Include="PopupBuildVisualTreeOnLoad.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="StudioResourceUpdateManager.cs" />
     <Compile Include="StudioServerProxy.cs" />
     <Compile Include="Utils\DeployStatsTOComparer.cs" />
+    <Compile Include="TreeviewScrollToEndOnNewContent.cs" />
     <Compile Include="Utils\FrameworkElementExtensionMethods.cs" />
     <Compile Include="Utils\OpeningWorkflowsHelper.cs" />
     <Compile Include="Utils\ResourceChangeHandler.cs" />
@@ -103,6 +122,12 @@
     <Compile Include="Views\IDialog.cs" />
     <Compile Include="Views\IResourcePickerDialog.cs" />
     <Compile Include="Views\ResourcePickerDialog.cs" />
+    <Compile Include="ViewModels\DebugStateTreeViewItemViewModel.cs" />
+    <Compile Include="ViewModels\DebugStringTreeViewItemViewModel.cs" />
+    <Compile Include="ViewModels\DebugTreeViewItemViewModel.cs" />
+    <Compile Include="Views\DebugOutputView.xaml.cs">
+      <DependentUpon>DebugOutputView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
@@ -124,10 +149,14 @@
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
       <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
       <Name>Dev2.Core</Name>
+    <ProjectReference Include="..\Dev2.CustomControls\Dev2.CustomControls.csproj">
+      <Project>{F5162BDB-D3DB-480E-92E4-FD732904A247}</Project>
+      <Name>Dev2.CustomControls</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.CustomControls\Dev2.CustomControls.csproj">
       <Project>{F5162BDB-D3DB-480E-92E4-FD732904A247}</Project>
       <Name>Dev2.CustomControls</Name>
+    </ProjectReference>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
       <Project>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</Project>
@@ -162,6 +191,13 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup />
+  <ItemGroup>
+    <Page Include="Views\DebugOutputView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
