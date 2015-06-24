@@ -145,7 +145,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if(_workflowInputs == null)
                 {
                     _workflowInputs = new OptomizedObservableCollection<IDataListItem>();
-                    _workflowInputs.CollectionChanged += (o, args) => OnPropertyChanged("WorkflowInputCount");
+                    //_workflowInputs.CollectionChanged += (o, args) => OnPropertyChanged("WorkflowInputCount");
                 }
                 return _workflowInputs;
             }
@@ -174,7 +174,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             set
             {
                 _rememberInputs = value;
-                OnPropertyChanged("RememberInputs");
+                //OnPropertyChanged("RememberInputs");
             }
         }
 
@@ -190,7 +190,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             set
             {
                 _xmlData = value;
-                OnPropertyChanged("XmlData");
+               // OnPropertyChanged("XmlData");
             }
         }
         #endregion Properties
@@ -210,7 +210,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     return;
                 }
                 _canViewInBrowser = value;
-                OnPropertyChanged("CanViewInBrowser");
+                //OnPropertyChanged("CanViewInBrowser");
                 ViewInBrowserCommand.RaiseCanExecuteChanged();
             }
         }
@@ -228,7 +228,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     return;
                 }
                 _canDebug = value;
-                OnPropertyChanged("CanDebug");
+                //OnPropertyChanged("CanDebug");
                 OkCommand.RaiseCanExecuteChanged();
             }
         }

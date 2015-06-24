@@ -24,6 +24,7 @@ using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Services.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
+using Dev2.Diagnostics;
 using Dev2.Factory;
 using Dev2.Messages;
 using Dev2.Providers.Events;
@@ -62,7 +63,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         #region private fields
 
         //IDataListViewModel _dataListViewModel;
-        IWorkSurfaceViewModel _workSurfaceViewModel;
+        WorkflowDesignerViewModel _workSurfaceViewModel;
         DebugOutputViewModel _debugOutputViewModel;
         IContextualResourceModel _contextualResourceModel;
 
@@ -128,7 +129,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
         }
 
-        public IWorkSurfaceViewModel WorkSurfaceViewModel
+        public WorkflowDesignerViewModel WorkSurfaceViewModel
         {
             get
             {
@@ -142,7 +143,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 }
 
                 _workSurfaceViewModel = value;               
-                OnPropertyChanged("WorkSurfaceViewModel");
+                //OnPropertyChanged("WorkSurfaceViewModel");
 
                 var isWorkFlowDesigner = _workSurfaceViewModel is IWorkflowDesignerViewModel;
                 if(isWorkFlowDesigner)
@@ -158,12 +159,12 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         #region ctors
 
-        public WorkSurfaceContextViewModel(WorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel)
+        public WorkSurfaceContextViewModel(WorkSurfaceKey workSurfaceKey, WorkflowDesignerViewModel workSurfaceViewModel)
             : this(EventPublishers.Aggregator, workSurfaceKey, workSurfaceViewModel)
         {
         }
 
-        public WorkSurfaceContextViewModel(IEventAggregator eventPublisher, WorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel)
+        public WorkSurfaceContextViewModel(IEventAggregator eventPublisher, WorkSurfaceKey workSurfaceKey, WorkflowDesignerViewModel workSurfaceViewModel)
         {
             if(workSurfaceKey == null)
             {
@@ -275,11 +276,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
             else
             {
-                if(!(WorkSurfaceViewModel is HelpViewModel))
-                {
-                    Save(message.Resource, message.IsLocalSave, message.AddToTabManager);
-                }
-
+                Save(message.Resource, message.IsLocalSave, message.AddToTabManager);
             }
         }
 
@@ -290,14 +287,14 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 //tab title
                 ContextualResourceModel.ResourceName = message.NewName;
-                _workSurfaceViewModel.NotifyOfPropertyChange("DisplayName");
+                //_workSurfaceViewModel.("DisplayName");
             }
         }
 
         public void Handle(UpdateWorksurfaceFlowNodeDisplayName message)
         {
             Dev2Logger.Log.Info(message.GetType().Name);
-            NotifyOfPropertyChange("ContextualResourceModel");
+            //OnPropertyChanged("ContextualResourceModel");
         }
 
         #endregion IHandle
@@ -470,7 +467,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             inputDataViewModel.DebugExecutionStart += () =>
             {
                 DebugOutputViewModel.DebugStatus = DebugStatus.Executing;
-                var workfloDesignerViewModel = WorkSurfaceViewModel as WorkflowDesignerViewModel;
+                var workfloDesignerViewModel = WorkSurfaceViewModel;
                 if(workfloDesignerViewModel != null)
                 {
                     workfloDesignerViewModel.GetWorkflowLink();
@@ -488,7 +485,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             var mode = isDebug ? DebugMode.DebugInteractive : DebugMode.Run;
             var inputDataViewModel = WorkflowInputDataViewModel.Create(resourceModel, DebugOutputViewModel.SessionID, mode);
-            inputDataViewModel.Parent = this;
             return inputDataViewModel;
         }
 
@@ -588,7 +584,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void ShowSaveDialog(IContextualResourceModel resourceModel, bool addToTabManager)
         {
-            RootWebSite.ShowNewWorkflowSaveDialog(resourceModel, null, addToTabManager);
         }
 
         public void Save(bool isLocalSave = false, bool isStudioShutdown = false)
@@ -596,7 +591,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             Save(ContextualResourceModel, isLocalSave, isStudioShutdown: isStudioShutdown);
             if(WorkSurfaceViewModel != null)
             {
-                WorkSurfaceViewModel.NotifyOfPropertyChange("DisplayName");
+               // WorkSurfaceViewModel.NotifyOfPropertyChange("DisplayName");
             }
         }
 
@@ -607,7 +602,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void FindMissing()
         {
-            WorkflowDesignerViewModel model = WorkSurfaceViewModel as WorkflowDesignerViewModel;
+            WorkflowDesignerViewModel model = WorkSurfaceViewModel;
             if(model != null)
             {
                 var vm = model;
@@ -732,12 +727,11 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         #region overrides
 
         [ExcludeFromCodeCoverage]
-        protected override void OnActivate()
+        protected void OnActivate()
         {
-            base.OnActivate();
             DataListSingleton.SetDataList(DataListViewModel);
 
-            var workflowDesignerViewModel = WorkSurfaceViewModel as WorkflowDesignerViewModel;
+            var workflowDesignerViewModel = WorkSurfaceViewModel;
             if(workflowDesignerViewModel != null)
             {
                 //workflowDesignerViewModel.AddMissingWithNoPopUpAndFindUnusedDataListItems();
@@ -755,7 +749,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         /// Child classes can override this method to perform 
         ///  clean-up logic, such as removing event handlers.
         /// </summary>
-        protected override void OnDispose()
+        protected void OnDispose()
         {
             if(_environmentModel != null)
             {
@@ -780,7 +774,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 DataListViewModel.Dispose();
             }
 
-            base.OnDispose();
         }
 
         #endregion

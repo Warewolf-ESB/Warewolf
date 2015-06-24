@@ -55,7 +55,6 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Dialogs;
 using Dev2.Factories;
-using Dev2.Factory;
 using Dev2.Interfaces;
 using Dev2.Messages;
 using Dev2.Models;
@@ -85,6 +84,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.AntiCorruptionLayer.Factory;
 using Warewolf.Studio.AntiCorruptionLayer.Utils;
 using Warewolf.Studio.AntiCorruptionLayer.Views;
+using System.Linq.Expressions;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Workflow
@@ -287,7 +287,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     _workflowLink = workflowUri.ToString();
                 }
             }
-            OnPropertyChanged("DisplayWorkflowLink");
+            ////OnPropertyChanged("DisplayWorkflowLink");
             return _workflowLink;
         }
 
@@ -340,7 +340,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             set
             {
                 _popupContent = value;
-                OnPropertyChanged("PopupContent");
+                ////OnPropertyChanged("PopupContent");
             }
         }
 
@@ -385,7 +385,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void UpdateWorkflowLink(string newLink)
         {
             DisplayWorkflowLink = newLink;
-            OnPropertyChanged("DisplayWorkflowLink");
+            ////OnPropertyChanged("DisplayWorkflowLink");
         }
 
         public StringBuilder DesignerText { get { return ServiceDefinition; } }
@@ -1513,7 +1513,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                     ResourceModel.IsWorkflowSaved = checkServiceDefinition && checkDataList;
                     _workspaceSave = false;
-                    OnPropertyChanged("DisplayName");
+                    ////OnPropertyChanged("DisplayName");
                 }
                 else
                 {
@@ -1782,7 +1782,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 _workspaceSave = false;
                 ResourceModel.IsWorkflowSaved = false;
-                OnPropertyChanged("DisplayName");
+                //OnPropertyChanged("DisplayName");
             }
             _resourcePickerDialog = null;
 

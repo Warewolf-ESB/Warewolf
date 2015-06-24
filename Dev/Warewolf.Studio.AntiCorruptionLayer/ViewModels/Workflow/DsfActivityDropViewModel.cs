@@ -38,7 +38,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Ctor
 
-        public DsfActivityDropViewModel(INavigationViewModel navigationViewModel, enDsfActivityType dsfActivityType)
+        public DsfActivityDropViewModel(NavigationViewModel navigationViewModel, enDsfActivityType dsfActivityType)
         {
             NavigationViewModel = navigationViewModel;
             ActivityType = dsfActivityType;

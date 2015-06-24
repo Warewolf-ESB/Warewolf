@@ -24,7 +24,6 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Workflow;
-using Dev2.Studio.Views.Workflow;
 using Dev2.Threading;
 
 namespace Dev2.Dialogs
@@ -35,7 +34,7 @@ namespace Dev2.Dialogs
     {
         readonly enDsfActivityType _activityType;
 
-        readonly INavigationViewModel _navigationViewModel;
+        readonly NavigationViewModel _navigationViewModel;
         IEnvironmentModel _environmentModel;
         IStudioResourceRepository _studio;
 
@@ -119,7 +118,8 @@ namespace Dev2.Dialogs
 
         protected virtual IDialog CreateDialog(DsfActivityDropViewModel dataContext)
         {
-            return new DsfActivityDropWindow { DataContext = dataContext };
+           // return new DsfActivityDropWindow { DataContext = dataContext };
+            return null;
         }
 
         public static enDsfActivityType DetermineDropActivityType(string typeName)
