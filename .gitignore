@@ -183,6 +183,14 @@
 /Dev/Studio.UI.Load.Specs/obj
 /Dev/Test.Localisation/bin
 /Dev/Test.Localisation/obj
+/Dev/RunDatalistEval/bin
+/Dev/RunDatalistEval/obj
+/Dev/WarewolfParserInterop/bin
+/Dev/WarewolfParserInterop/obj
+/Dev/WarewolfParsing.Tests/bin
+/Dev/WarewolfParsing.Tests/obj
+/Dev/WarewolfLanguageParser/bin
+/Dev/WarewolfLanguageParser/obj
 /Dev/Warewolf.AcceptanceTesting.Core/bin
 /Dev/Warewolf.AcceptanceTesting.Core/obj
 /Dev/Warewolf.AcceptanceTesting.Help/bin
@@ -191,6 +199,8 @@
 /Dev/Warewolf.AcceptanceTesting.Explorer/obj
 /Dev/Warewolf.AcceptanceTesting.SaveDialog/bin
 /Dev/Warewolf.AcceptanceTesting.SaveDialog/obj
+/Dev/Warewolf.Sharepoint/bin
+/Dev/Warewolf.Sharepoint/obj
 /Dev/Warewolf.Studio/bin
 /Dev/Warewolf.Studio/obj
 /Dev/Warewolf.Studio.Core/bin
@@ -227,16 +237,8 @@
 /Dev/Warewolf.Studio.CustomControls/obj
 /Dev/Warewolf.Studio.CustomControls.Tests/bin
 /Dev/Warewolf.Studio.CustomControls.Tests/obj
-/Dev/RunDatalistEval/bin
-/Dev/RunDatalistEval/obj
 /Dev/Warewolf.Storage/bin
 /Dev/Warewolf.Storage/obj
-/Dev/WarewolfParserInterop/bin
-/Dev/WarewolfParserInterop/obj
-/Dev/WarewolfParsing.Tests/bin
-/Dev/WarewolfParsing.Tests/obj
-/Dev/WarewolfLanguageParser/bin
-/Dev/WarewolfLanguageParser/obj
 /Dev/Warewolf.ResourceManagement/bin
 /Dev/Warewolf.ResourceManagement/obj
 
