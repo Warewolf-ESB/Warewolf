@@ -102,8 +102,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.Client">
+    <Reference Include="Microsoft.AspNet.SignalR.Client, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Client.old">
+      <HintPath>..\Binaries\Microsoft.AspNet.SignalR.Client.old.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -576,6 +580,18 @@
     <ProjectReference Include="..\Dev2.Scheduler\Dev2.Scheduler.csproj">
       <Project>{4DB41F93-E0B7-454C-B4C4-B7E20671E7AB}</Project>
       <Name>Dev2.Scheduler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.SignalR.Wrappers.New\Dev2.SignalR.Wrappers.New.csproj">
+      <Project>{335E9126-30E1-4D23-B642-5D6BF82E2C09}</Project>
+      <Name>Dev2.SignalR.Wrappers.New</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.SignalR.Wrappers.Old\Dev2.SignalR.Wrappers.Old.csproj">
+      <Project>{CA1EC490-5138-4714-8188-15D4BF6334DA}</Project>
+      <Name>Dev2.SignalR.Wrappers.Old</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.SignalR.Wrappers\Dev2.SignalR.Wrappers.Interfaces.csproj">
+      <Project>{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}</Project>
+      <Name>Dev2.SignalR.Wrappers.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.UndoFramework\Dev2.UndoFramework.csproj">
       <Project>{632E4898-1B1B-474C-A028-D13A5C914F11}</Project>

@@ -142,6 +142,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Client.old">
+      <HintPath>..\Binaries\Microsoft.AspNet.SignalR.Client.old.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Microsoft.Expression.Interactions.dll</HintPath>
@@ -1060,7 +1063,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <None Include="Achitecture\EnvironmentRepositoryRelationships.cd" />
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="app.manifest" />
     <None Include="packages.config" />
     <None Include="Warewolf Studio.exe.config">
@@ -1348,6 +1353,10 @@
     <ProjectReference Include="..\Dev2.Scheduler\Dev2.Scheduler.csproj">
       <Project>{4DB41F93-E0B7-454C-B4C4-B7E20671E7AB}</Project>
       <Name>Dev2.Scheduler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.SignalR.Wrappers\Dev2.SignalR.Wrappers.Interfaces.csproj">
+      <Project>{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}</Project>
+      <Name>Dev2.SignalR.Wrappers.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
       <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>

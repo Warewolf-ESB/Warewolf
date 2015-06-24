@@ -38,9 +38,11 @@ using Dev2.Messages;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
+using Dev2.SignalR.Wrappers;
+using Dev2.SignalR.Wrappers.New;
+using Dev2.SignalR.Wrappers.Old;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
-using Microsoft.AspNet.SignalR.Client;
 using ServiceStack.Messaging.Rcon;
 
 namespace Dev2.Network
@@ -51,6 +53,7 @@ namespace Dev2.Network
         private const int MillisecondsTimeout = 10000;
         readonly IAsyncWorker _asyncWorker;
         readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
+        ICredentials _credentials;
 
         public ServerProxy(Uri serverUri)
             : this(serverUri.ToString(), CredentialCache.DefaultNetworkCredentials, new AsyncWorker())
@@ -75,22 +78,48 @@ namespace Dev2.Network
             }
             AppServerUri = new Uri(uriString);
             WebServerUri = new Uri(uriString.Replace("/dsf", ""));
-
+            Credentials = credentials;
 
             Dev2Logger.Log.Debug("***** Attempting Server Hub : " + uriString + " -> " + CredentialCache.DefaultNetworkCredentials.Domain + @"\" + CredentialCache.DefaultNetworkCredentials.UserName);
-            HubConnection = new HubConnection(uriString) { Credentials = credentials };
-            HubConnection.Error += OnHubConnectionError;
-            HubConnection.Closed += HubConnectionOnClosed;
-            HubConnection.StateChanged += HubConnectionStateChanged;
-            //HubConnection.TraceLevel = TraceLevels.All;
-            //HubConnection.TraceWriter = new Dev2LoggingTextWriter();
-            InitializeEsbProxy();
+
+            try
+            {
+                HubConnection = new HubConnectionWrapper(uriString) { Credentials = credentials }; ;
+                HubConnection.Error += OnHubConnectionError;
+                HubConnection.Closed += HubConnectionOnClosed;
+                HubConnection.StateChanged += HubConnectionStateChanged;
+                //HubConnection.TraceLevel = TraceLevels.All;
+                //HubConnection.TraceWriter = new Dev2LoggingTextWriter();
+                InitializeEsbProxy();
+            }
+            catch(Exception err)
+            {
+                Dev2Logger.Log.Error(err);
+
+                HubConnection = new HubConnectionWrapperOld(uriString) { Credentials = credentials }; ;
+                HubConnection.Error += OnHubConnectionError;
+                HubConnection.Closed += HubConnectionOnClosed;
+                HubConnection.StateChanged += HubConnectionStateChanged;
+                //HubConnection.TraceLevel = TraceLevels.All;
+                //HubConnection.TraceWriter = new Dev2LoggingTextWriter();
+                InitializeEsbProxy();
+            }
+
             _asyncWorker = worker;
 
         }
 
-
-
+        public ICredentials Credentials
+        {
+            get
+            {
+                return _credentials;
+            }
+            set
+            {
+                _credentials = value;
+            }
+        }
 
         public IPrincipal Principal { get; set; }
 
@@ -170,22 +199,22 @@ namespace Dev2.Network
             ServerEvents.Publish(new DebugWriterWriteMessage { DebugState = obj });
         }
 
-        protected void HubConnectionStateChanged(StateChange stateChange)
+        protected void HubConnectionStateChanged(IStateChangeWrapped stateChange)
         {
             switch (stateChange.NewState)
             {
-                case ConnectionState.Connected:
+                case ConnectionStateWrapped.Connected:
                     IsConnected = true;
                     UpdateIsAuthorized(true);
                     OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Offline, NetworkState.Online));
                     break;
-                case ConnectionState.Connecting:
-                case ConnectionState.Reconnecting:
+                case ConnectionStateWrapped.Connecting:
+                case ConnectionStateWrapped.Reconnecting:
                     IsConnected = false;
                     UpdateIsAuthorized(false);
                     OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Offline, NetworkState.Connecting));
                     break;
-                case ConnectionState.Disconnected:
+                case ConnectionStateWrapped.Disconnected:
                     HasDisconnected();
                     break;
             }
@@ -202,34 +231,71 @@ namespace Dev2.Network
             {
                 if (!IsLocalHost)
                 {
-                    if (HubConnection.State == ConnectionState.Reconnecting)
+                    if (HubConnection.State == ConnectionStateWrapped.Reconnecting)
                     {
                         HubConnection.Stop(new TimeSpan(0, 0, 0, 1));
                     }
                 }
 
-                if (HubConnection.State == ConnectionState.Disconnected)
+                if (HubConnection.State == ConnectionStateWrapped.Disconnected)
                 {
                     ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
-                    if (!HubConnection.Start().Wait(5000))
+                    try
                     {
-                        if (!IsLocalHost)
+
+                
+                        if (!HubConnection.Start().Wait(5000))
                         {
-                            ConnectionRetry();
+                            if (!IsLocalHost)
+                            {
+                                ConnectionRetry();
+                            }
                         }
+                    }
+                    catch (AggregateException aex)
+                    {
+                        Dev2Logger.Log.Error(aex);
+                        HubConnection = new HubConnectionWrapperOld(AppServerUri.ToString()) { Credentials = Credentials }; ;
+                        HubConnection.Error += OnHubConnectionError;
+                        HubConnection.Closed += HubConnectionOnClosed;
+                        HubConnection.StateChanged += HubConnectionStateChanged;
+                        //HubConnection.TraceLevel = TraceLevels.All;
+                        //HubConnection.TraceWriter = new Dev2LoggingTextWriter();
+                        InitializeEsbProxy();
+                        if (!HubConnection.Start().Wait(5000))
+                        {
+                            if (!IsLocalHost)
+                            {
+                                ConnectionRetry();
+                            }
+                        }
+
                     }
                 }
             }
             catch (AggregateException aex)
             {
+
+
                 aex.Flatten();
                 aex.Handle(ex =>
                 {
                     Dev2Logger.Log.Error(this, aex);
-                    var hex = ex as HttpClientException;
+                    var hex = ex as HttpClientExceptionWrapped;
                     if (hex != null)
                     {
                         switch (hex.Response.StatusCode)
+                        {
+                            case HttpStatusCode.Unauthorized:
+                            case HttpStatusCode.Forbidden:
+                                UpdateIsAuthorized(false);
+                                throw new UnauthorizedAccessException();
+                        }
+                    }
+                    var hexOld = ex as HttpClientExceptionWrappedOld;
+                    if (hexOld != null)
+                    {
+                        switch (hexOld.Response.StatusCode)
                         {
                             case HttpStatusCode.Unauthorized:
                             case HttpStatusCode.Forbidden:
@@ -341,10 +407,21 @@ namespace Dev2.Network
                 aex.Handle(ex =>
                 {
                     Dev2Logger.Log.Error(this, aex);
-                    var hex = ex as HttpClientException;
+                    var hex = ex as HttpClientExceptionWrapped;
                     if (hex != null)
                     {
                         switch (hex.Response.StatusCode)
+                        {
+                            case HttpStatusCode.Unauthorized:
+                            case HttpStatusCode.Forbidden:
+                                UpdateIsAuthorized(false);
+                                throw new NotConnectedException();
+                        }
+                    }
+                    var hexold = ex as HttpClientExceptionWrappedOld;
+                    if (hexold != null)
+                    {
+                        switch (hexold.Response.StatusCode)
                         {
                             case HttpStatusCode.Unauthorized:
                             case HttpStatusCode.Forbidden:
@@ -372,14 +449,14 @@ namespace Dev2.Network
             if (wait)
             {
                 HubConnection.Start().Wait(MillisecondsTimeout);
-                callback(HubConnection.State == ConnectionState.Connected
+                callback(HubConnection.State == ConnectionStateWrapped.Connected
                              ? ConnectResult.Success
                              : ConnectResult.ConnectFailed);
             }
             else
             {
                 HubConnection.Start();
-                AsyncWorker.Start(() => Thread.Sleep(MillisecondsTimeout), () => callback(HubConnection.State == ConnectionState.Connected
+                AsyncWorker.Start(() => Thread.Sleep(MillisecondsTimeout), () => callback(HubConnection.State == ConnectionStateWrapped.Connected
                                      ? ConnectResult.Success
                                      : ConnectResult.ConnectFailed));
             }
@@ -396,9 +473,9 @@ namespace Dev2.Network
 
         public IEventPublisher ServerEvents { get; set; }
 
-        public IHubProxy EsbProxy { get; protected set; }
+        public IHubProxyWrapper EsbProxy { get; protected set; }
 
-        public HubConnection HubConnection { get; private set; }
+        public IHubConnectionWrapper HubConnection { get; private set; }
 
         void OnHubConnectionError(Exception exception)
         {
@@ -608,7 +685,7 @@ namespace Dev2.Network
                         return true; // This we know how to handle this
                     }
                     // handle 403 errors when permissions have been removed ;)
-                    var hce = ex as HttpClientException;
+                    var hce = ex as HttpClientExceptionWrapped;
                     if (hce != null && hce.Message.Contains("StatusCode: 403"))
                     {
                         Dev2Logger.Log.Debug("Forbidden - Most Likely Permissions Changed.");
@@ -616,7 +693,14 @@ namespace Dev2.Network
                         UpdateIsAuthorized(false);
                         return true;
                     }
-
+                    var hceOld = ex as HttpClientExceptionWrappedOld;
+                    if (hceOld != null && hceOld.Message.Contains("StatusCode: 403"))
+                    {
+                        Dev2Logger.Log.Debug("Forbidden - Most Likely Permissions Changed.");
+                        // Signal not-authorized anymore ;)
+                        UpdateIsAuthorized(false);
+                        return true;
+                    }
                     // handle generic errors ;)                   
                     Dev2Logger.Log.Error(this, ex);
                     return true; // Let anything else stop the application.

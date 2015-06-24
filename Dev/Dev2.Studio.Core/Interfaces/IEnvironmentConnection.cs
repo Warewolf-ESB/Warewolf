@@ -20,8 +20,9 @@ using Dev2.Data.ServiceModel.Messages;
 using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
+using Dev2.SignalR.Wrappers;
 using Dev2.Threading;
-using Microsoft.AspNet.SignalR.Client;
+
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
@@ -46,7 +47,7 @@ namespace Dev2.Studio.Core.Interfaces
 
         StringBuilder ExecuteCommand(StringBuilder xmlRequest, Guid workspaceId, Guid dataListId);
 
-        IHubProxy EsbProxy { get; }
+        IHubProxyWrapper EsbProxy { get; }
 
         bool IsConnected { get; }
         string Alias { get; set; }
@@ -68,6 +69,6 @@ namespace Dev2.Studio.Core.Interfaces
         IPrincipal Principal { get; }
         event EventHandler<List<WindowsGroupPermission>> PermissionsModified;
         Action<Guid, CompileMessageList> ReceivedResourceAffectedMessage { get; set; }
-        HubConnection HubConnection { get; }
+        IHubConnectionWrapper HubConnection { get; }
     }
 }
