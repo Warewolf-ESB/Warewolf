@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,6 +13,7 @@ using Dev2;
 using Dev2.Data.Enums;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Helpers;
+using Dev2.TO;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
@@ -64,18 +65,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }),
                 // ReSharper disable ImplicitlyCapturedClosure
             TypeSwitch.Case<GatherSystemInformationTO>(x => toReturn =
-                // ReSharper restore ImplicitlyCapturedClosure
                 new GatherSystemInformationTO(enTypeOfSystemInformationToGather.FullDateTime,
                     initializeWith, index, inserted)),
-                // ReSharper disable ImplicitlyCapturedClosure
             TypeSwitch.Case<XPathDTO>(x => toReturn = new XPathDTO(initializeWith, "", index,  inserted)),
-                // ReSharper restore ImplicitlyCapturedClosure
-                // ReSharper disable ImplicitlyCapturedClosure
             TypeSwitch.Case<FindRecordsTO>(() => toReturn = new FindRecordsTO("", "", index, inserted)),
-                // ReSharper restore ImplicitlyCapturedClosure
-                // ReSharper disable ImplicitlyCapturedClosure
+            TypeSwitch.Case<JsonMappingTo>(() => toReturn = new JsonMappingTo(initializeWith,index,inserted)),
             TypeSwitch.Default(() => toReturn = null));
-            // ReSharper restore ImplicitlyCapturedClosure
 
             return toReturn;
         }

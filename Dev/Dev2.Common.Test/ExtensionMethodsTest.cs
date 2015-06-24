@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,6 +15,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
+using ChinhDo.Transactions;
 using Dev2.Common.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -407,7 +408,8 @@ namespace Dev2.Common.Tests
             StringBuilder value = new StringBuilder(val);
 
             //------------Execute Test---------------------------
-            value.WriteToFile(tmpFile, Encoding.UTF8);
+            IFileManager fm = new TxFileManager();
+            value.WriteToFile(tmpFile, Encoding.UTF8,fm);
 
             //------------Assert Results-------------------------
             var result = File.ReadAllText(tmpFile);
@@ -421,6 +423,31 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ExtensionMethods_WriteToFile")]
+        public void ExtensionMethods_WriteToFile_RollbackIfError()
+        {
+            //------------Setup for test--------------------------
+            var tmpFile = Path.GetTempFileName();
+            File.WriteAllText(tmpFile, "this is going to be some very long test just to ensure we can over write it");
+            const string val = "<x><y>1</y></x>";
+            StringBuilder value = new StringBuilder(val);
+
+            //------------Execute Test---------------------------
+            IFileManager fm = new TxFileManager();
+            value.WriteToFile(tmpFile, Encoding.UTF8, fm);
+
+            //------------Assert Results-------------------------
+            var result = File.ReadAllText(tmpFile);
+
+            // clean up ;)
+            File.Delete(tmpFile);
+
+            Assert.AreEqual(val, result, "WriteToFile did not truncate");
+        }
+
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ExtensionMethods_WriteToFile")]
         public void ExtensionMethods_WriteToFile_WhenSavingStringBuilder_ExpectSavedFile()
         {
             //------------Setup for test--------------------------
@@ -429,7 +456,7 @@ namespace Dev2.Common.Tests
             StringBuilder value = new StringBuilder(val);
 
             //------------Execute Test---------------------------
-            value.WriteToFile(tmpFile, Encoding.UTF8);
+            value.WriteToFile(tmpFile, Encoding.UTF8,new TxFileManager());
 
             //------------Assert Results-------------------------
             var result = File.ReadAllText(tmpFile);

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -27,15 +27,20 @@ namespace Dev2.Activities
             return ExecuteRequest(method, url, null, headers);
         }
 
+        public string ExecuteRequest(string method, string url, List<Tuple<string, string>> headers, int timeoutMilliseconds)
+        {
+            return ExecuteRequest(timeoutMilliseconds, method, url, null, headers);
+        }
+
         public string ExecuteRequest(string method, string url, string data, List<Tuple<string, string>> headers = null, Action<string> asyncCallback = null)
         {
-            using(var webClient = new WebClient())
+            using (var webClient = new WebClient())
             {
                 webClient.Credentials = CredentialCache.DefaultCredentials;
 
-                if(headers != null)
+                if (headers != null)
                 {
-                    foreach(var header in headers)
+                    foreach (var header in headers)
                     {
                         webClient.Headers.Add(header.Item1, header.Item2);
                     }
@@ -43,10 +48,10 @@ namespace Dev2.Activities
 
                 var uri = new Uri(url.Contains("http://") || url.Contains("https://") ? url : "http://" + url);
 
-                switch(method)
+                switch (method)
                 {
                     case "GET":
-                        if(asyncCallback == null)
+                        if (asyncCallback == null)
                         {
                             return webClient.DownloadString(uri);
                         }
@@ -54,7 +59,7 @@ namespace Dev2.Activities
                         webClient.DownloadStringAsync(uri, null);
                         break;
                     case "POST":
-                        if(asyncCallback == null)
+                        if (asyncCallback == null)
                         {
                             return webClient.UploadString(uri, data);
                         }
@@ -66,5 +71,60 @@ namespace Dev2.Activities
             return string.Empty;
         }
 
+        // TODO: factor out the guts of this and the default timout method above with a private method taking a WebClient object
+        public string ExecuteRequest(int timeoutMilliseconds, string method, string url, string data, List<Tuple<string, string>> headers = null, Action<string> asyncCallback = null)
+        {
+            using (var webClient = new WebClientWithTimeout(timeoutMilliseconds))
+            {
+                webClient.Credentials = CredentialCache.DefaultCredentials;
+
+                if (headers != null)
+                {
+                    foreach (var header in headers)
+                    {
+                        webClient.Headers.Add(header.Item1, header.Item2);
+                    }
+                }
+
+                var uri = new Uri(url.Contains("http://") || url.Contains("https://") ? url : "http://" + url);
+
+                switch (method)
+                {
+                    case "GET":
+                        if (asyncCallback == null)
+                        {
+                            return webClient.DownloadString(uri);
+                        }
+                        webClient.DownloadStringCompleted += (sender, args) => asyncCallback(args.Result);
+                        webClient.DownloadStringAsync(uri, null);
+                        break;
+                    case "POST":
+                        if (asyncCallback == null)
+                        {
+                            return webClient.UploadString(uri, data);
+                        }
+                        webClient.UploadStringCompleted += (sender, args) => asyncCallback(args.Result);
+                        webClient.UploadStringAsync(uri, data);
+                        break;
+                }
+            }
+            return string.Empty;
+        }
+
+        class WebClientWithTimeout : WebClient
+        {
+            readonly int _timeoutMilliseconds;
+            public WebClientWithTimeout(int timeoutMilliseconds)
+            {
+                _timeoutMilliseconds = timeoutMilliseconds;
+            }
+
+            protected override WebRequest GetWebRequest(Uri address)
+            {
+                var webRequest = base.GetWebRequest(address);
+                webRequest.Timeout = _timeoutMilliseconds;
+                return webRequest;
+            }
+        }
     }
 }

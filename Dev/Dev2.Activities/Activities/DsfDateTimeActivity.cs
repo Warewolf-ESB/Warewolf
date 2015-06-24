@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,6 +14,8 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
+using System.Threading;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
@@ -139,8 +141,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         AddDebugInputItem(new DebugEvalResult(DateTime, "Input", dataObject.Environment));
                     }
-
-                    var dateTimePattern = string.Format("{0} {1}", CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern, CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern);
+                    var cultureType = typeof(CultureInfo);
+                    var fieldInfo = cultureType.GetField("s_userDefaultCulture",BindingFlags.NonPublic | BindingFlags.Static);
+                    if (fieldInfo != null)
+                    {
+                        var val = fieldInfo.GetValue(CultureInfo.CurrentCulture);
+                        var newCul = val as CultureInfo;
+                        if (newCul != null)
+                        {
+                            Thread.CurrentThread.CurrentCulture = newCul;      
+                        }
+                    }
+                    var dateTimePattern = string.Format("{0} {1}", Thread.CurrentThread.CurrentCulture.DateTimeFormat.ShortDatePattern, Thread.CurrentThread.CurrentCulture.DateTimeFormat.LongTimePattern);
 
                     if(string.IsNullOrEmpty(InputFormat))
                     {

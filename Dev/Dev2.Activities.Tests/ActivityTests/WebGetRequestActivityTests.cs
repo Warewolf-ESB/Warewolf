@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -30,7 +30,7 @@ namespace ActivityUnitTests.ActivityTest
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
-    public class WebGetRequestActivityTests : BaseActivityUnitTest
+    public class WebGetRequestWithTimeoutActivityTests : BaseActivityUnitTest
     {
         /// <summary>
         ///Gets or sets the test context which provides
@@ -73,6 +73,7 @@ namespace ActivityUnitTests.ActivityTest
             var activity = GetWebGetRequestActivity();
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(activity, typeof(DsfActivityAbstract<string>));
+            Assert.AreEqual(100, activity.TimeoutSeconds);
         }
 
         [TestMethod]
@@ -118,7 +119,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Execute Test---------------------------
             var executeProcess = ExecuteProcess();
             //------------Assert Results-------------------------
-            mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url, It.IsAny<List<Tuple<string, string>>>()), Times.Once());
+            mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>()), Times.Once());
         }
 
         [TestMethod]
@@ -129,7 +130,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Setup for test--------------------------
             var mock = new Mock<IWebRequestInvoker>();
             const string Message = "This is a forced exception";
-            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Tuple<string, string>>>())).Throws(new InvalidDataException(Message));
+            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>())).Throws(new InvalidDataException(Message));
             var activity = GetWebGetRequestActivity(mock);
             activity.Method = "GET";
             activity.Url = "BodyValue";
@@ -141,10 +142,41 @@ namespace ActivityUnitTests.ActivityTest
             //------------Execute Test---------------------------
             var executeProcess = ExecuteProcess();
             //------------Assert Results-------------------------
-            mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url, It.IsAny<List<Tuple<string, string>>>()), Times.Once());
-            Assert.IsTrue(Compiler.HasErrors(executeProcess.DataListID));
+            mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>()), Times.Once());
             string errorString = DataObject.Environment.FetchErrors();
             StringAssert.Contains(errorString, Message);
+        }
+
+        [TestMethod]
+        [Owner("Kerneels Roos")]
+        [TestCategory("WebGetRequestActivity_Errors")]
+        public void WebGetRequestExecuteWhereErrorExpectErrorAdded_TimeoutSecondsOutOfRange()
+        {
+            //------------Setup for test--------------------------
+            var mock = new Mock<IWebRequestInvoker>();
+            const string Url = "http://localhost";
+            const string ExpectedResult = "Request Made";
+            mock.Setup(invoker => invoker.ExecuteRequest("GET", Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>())).Returns(ExpectedResult);
+            var activity = GetWebGetRequestActivity(mock);
+            activity.Method = "GET";
+            activity.Url = "[[Url]]";
+            activity.Result = "[[Res]]";
+            activity.TimeOutText = "-1";
+            TestStartNode = new FlowStep
+            {
+                Action = activity
+            };
+            TestData = string.Format("<root><Url>{0}</Url></root>", Url);
+            CurrentDl = "<ADL><Res></Res><Url></Url></ADL>";
+            //------------Execute Test---------------------------
+            var result = ExecuteProcess();
+            //------------Assert Results-------------------------
+            mock.Verify(sender => sender.ExecuteRequest(activity.Method, Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>()), Times.Never());
+            string actual;
+            string error;
+            GetScalarValueFromEnvironment(result.Environment, "Res", out actual, out error);
+            Assert.AreNotEqual(ExpectedResult, actual);
+            Assert.IsNotNull(error);
         }
 
 
@@ -155,7 +187,7 @@ namespace ActivityUnitTests.ActivityTest
             var mock = new Mock<IWebRequestInvoker>();
             const string Url = "http://localhost";
             const string ExpectedResult = "Request Made";
-            mock.Setup(invoker => invoker.ExecuteRequest("GET", Url, It.IsAny<List<Tuple<string, string>>>())).Returns(ExpectedResult);
+            mock.Setup(invoker => invoker.ExecuteRequest("GET", Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>())).Returns(ExpectedResult);
             var activity = GetWebGetRequestActivity(mock);
             activity.Method = "GET";
             activity.Url = "[[Url]]";
@@ -169,7 +201,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            mock.Verify(sender => sender.ExecuteRequest(activity.Method, Url, It.IsAny<List<Tuple<string, string>>>()), Times.Once());
+            mock.Verify(sender => sender.ExecuteRequest(activity.Method, Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>()), Times.Once());
             string actual;
             string error;
             GetScalarValueFromEnvironment(result.Environment, "Res", out actual, out error);
@@ -186,7 +218,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Setup for test--------------------------
             const string Url = "[[CompanyName]]";
             const string result = "[[res]]";
-            var act = new DsfWebGetRequestActivity { Url = Url, Result = result };
+            var act = new DsfWebGetRequestWithTimeoutActivity { Url = Url, Result = result };
 
             //------------Execute Test---------------------------
             act.UpdateForEachInputs(null);
@@ -202,7 +234,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Setup for test--------------------------
             const string Url = "[[CompanyName]]";
             const string result = "[[res]]";
-            var act = new DsfWebGetRequestActivity { Url = Url, Result = result };
+            var act = new DsfWebGetRequestWithTimeoutActivity { Url = Url, Result = result };
 
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>(Url, "Test2");
@@ -221,7 +253,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Setup for test--------------------------
             const string Url = "[[CompanyName]]";
             const string result = "[[res]]";
-            var act = new DsfWebGetRequestActivity { Url = Url, Result = result };
+            var act = new DsfWebGetRequestWithTimeoutActivity { Url = Url, Result = result };
 
             act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
@@ -236,7 +268,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Setup for test--------------------------
             const string Url = "[[CompanyName]]";
             const string result = "[[res]]";
-            var act = new DsfWebGetRequestActivity { Url = Url, Result = result };
+            var act = new DsfWebGetRequestWithTimeoutActivity { Url = Url, Result = result };
 
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test2");
@@ -254,7 +286,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Setup for test--------------------------
             const string Url = "[[CompanyName]]";
             const string result = "[[res]]";
-            var act = new DsfWebGetRequestActivity { Url = Url, Result = result };
+            var act = new DsfWebGetRequestWithTimeoutActivity { Url = Url, Result = result };
 
             var tuple1 = new Tuple<string, string>("[[res]]", "Test");
             //------------Execute Test---------------------------
@@ -271,7 +303,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Setup for test--------------------------
             const string Url = "[[CompanyName]]";
             const string result = "[[res]]";
-            var act = new DsfWebGetRequestActivity { Url = Url, Result = result };
+            var act = new DsfWebGetRequestWithTimeoutActivity { Url = Url, Result = result };
 
             //------------Execute Test---------------------------
             var dsfForEachItems = act.GetForEachInputs();
@@ -289,7 +321,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Setup for test--------------------------
             const string Url = "[[CompanyName]]";
             const string result = "[[res]]";
-            var act = new DsfWebGetRequestActivity { Url = Url, Result = result };
+            var act = new DsfWebGetRequestWithTimeoutActivity { Url = Url, Result = result };
 
             //------------Execute Test---------------------------
             var dsfForEachItems = act.GetForEachOutputs();
@@ -300,7 +332,7 @@ namespace ActivityUnitTests.ActivityTest
         }
 
 
-        static DsfWebGetRequestActivity GetWebGetRequestActivity(Mock<IWebRequestInvoker> mockWebRequestInvoker)
+        static DsfWebGetRequestWithTimeoutActivity GetWebGetRequestActivity(Mock<IWebRequestInvoker> mockWebRequestInvoker)
         {
             var webRequestInvoker = mockWebRequestInvoker.Object;
             var activity = GetWebGetRequestActivity();
@@ -308,9 +340,9 @@ namespace ActivityUnitTests.ActivityTest
             return activity;
         }
 
-        static DsfWebGetRequestActivity GetWebGetRequestActivity()
+        static DsfWebGetRequestWithTimeoutActivity GetWebGetRequestActivity()
         {
-            var activity = new DsfWebGetRequestActivity();
+            var activity = new DsfWebGetRequestWithTimeoutActivity();
             return activity;
         }
     }

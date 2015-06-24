@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -146,6 +146,12 @@ namespace Dev2.Activities
             try
             {
                 var runtimeSource = ResourceCatalog.Instance.GetResource<EmailSource>(dataObject.WorkspaceID, SelectedEmailSource.ResourceID);
+               
+                if(runtimeSource==null)
+                {
+                    dataObject.Environment.Errors.Add("Invalid Email Source");
+                    return;
+                }
                 if(IsDebug)
                 {
                     var fromAccount = FromAccount;

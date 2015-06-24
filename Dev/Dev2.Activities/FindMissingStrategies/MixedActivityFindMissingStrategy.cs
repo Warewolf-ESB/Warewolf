@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -51,6 +51,19 @@ namespace Dev2.FindMissingStrategies
                     if(!string.IsNullOrEmpty(dsAct.SourceString))
                     {
                         results.Add(dsAct.SourceString);
+                    }
+                }
+            }            
+            
+            if(activityType == typeof(DsfCreateJsonActivity))
+            {
+                var dsAct = activity as DsfCreateJsonActivity;
+                if(dsAct != null)
+                {
+                    results.AddRange(InternalFindMissing(dsAct.JsonMappings));
+                    if(!string.IsNullOrEmpty(dsAct.JsonString))
+                    {
+                        results.Add(dsAct.JsonString);
                     }
                 }
             }

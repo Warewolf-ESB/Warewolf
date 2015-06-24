@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -32,6 +32,17 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Stubs
         {
             AddTitleBarQuickVariableInputToggle();
         }
+
+        #region Overrides of ActivityCollectionDesignerViewModel<ActivityDTO>
+
+        protected override void DoCustomAction(string propertyName)
+        {
+            CustomActionCalled = true;
+        }
+
+        public bool CustomActionCalled { get; set; }
+
+        #endregion
 
         public void TestAddToCollection(IEnumerable<string> source, bool overwrite)
         {

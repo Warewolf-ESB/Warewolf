@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -257,7 +257,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             Assert.IsFalse(viewModel.IsTableSelected);
             Assert.AreEqual(1, viewModel.OnSelectedDatabaseChangedHitCount);
             Assert.AreEqual(0, viewModel.OnSelectedTableChangedHitCount);
-
+            Assert.IsTrue(viewModel.EditDatabaseCommand.CanExecute(null));
             // Skip "Select a table" 
             VerifyTables(databases[expectedDatabase], viewModel.Tables.Skip(1).ToList());
         }
@@ -400,7 +400,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             //------------Assert Results-------------------------
             Assert.AreEqual(dbTable.FullName, viewModel.TableName);
-
+            Assert.IsTrue(viewModel.RefreshTablesCommand.CanExecute(null));
             Assert.IsTrue(viewModel.IsTableSelected);
             Assert.AreEqual(1, viewModel.OnSelectedTableChangedHitCount);
 
@@ -492,7 +492,6 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             //------------Execute Test---------------------------
             viewModel.RefreshTablesCommand.Execute(null);
 
-
             //------------Assert Results-------------------------
             Assert.AreEqual(selectedTable.TableName, viewModel.SelectedTable.TableName);
 
@@ -503,6 +502,38 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             VerifyColumns(selectedTable.Columns, actual);
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("SqlBulkInsertDesignerViewModel_RefreshTablesCommand")]
+        public void SqlBulkInsertDesignerViewModel_RefreshTablesCommand_SecondTime_ReloadsTableAndColumns()
+        {
+            //------------Setup for test--------------------------
+            var databases = CreateDatabases(2);
+
+            var selectedDatabase = databases.Keys.First();
+            var selectedTables = databases[selectedDatabase];
+            var selectedTable = selectedTables.Items[3];
+
+            var modelItem = CreateModelItem();
+            modelItem.SetProperty("Database", selectedDatabase);
+            modelItem.SetProperty("TableName", selectedTable.FullName);
+            modelItem.SetProperty("InputMappings", selectedTable.Columns.Select(c => new DataColumnMapping { OutputColumn = c, InputColumn = "bob the" }).ToList());
+
+            var viewModel = CreateViewModel(modelItem, databases);
+
+            //------------Execute Test---------------------------
+            viewModel.RefreshTablesCommand.Execute(null);
+            viewModel.RefreshTablesCommand.Execute(null);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(selectedTable.TableName, viewModel.SelectedTable.TableName);
+
+            VerifyTables(selectedTables, viewModel.Tables.ToList());
+
+            var actual = viewModel.InputMappings.Select(m => m.OutputColumn).ToList();
+
+            VerifyColumns(selectedTable.Columns, actual);
+        }
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SqlBulkInsertDesignerViewModel_EditDbSource")]

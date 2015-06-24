@@ -940,7 +940,19 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You can use [[Scalar]] as well as [[Recordset().Fields]]..
+        ///   Looks up a localized string similar to To create JSON data, enter the Name and Data of the JSON variables. 
+        ///To create JSON Arrays use a single recordset field with a star for every record e.g. 
+        ///[[rec(*).name]] 
+        ///To create JSON Objects, use a comma seperated list of recordset fields, or, just the recordset name to use the whole recordset. e.g. 
+        ///[[rec(*).surname]], [[rec(*).name]], [[rec(*).middle]] 
+        ///or simply 
+        ///[[rec(*)]]
+        ///
+        ///Allowed:
+        ///Data
+        ///[[Scalar]]
+        ///[[Recordset(n).Field]]
+        ///[[Recordset(*)]].
         /// </summary>
         public static string CreateJSONHelpInput {
             get {
@@ -949,7 +961,12 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to The JSON variable name will default to the Warewolf variable name in the Data column. 
+        ///Array and Object names will default to the recordset name used. 
+        ///Object data names will be the field names of the recordset.
+        ///
+        ///Allowed:
+        ///Data.
         /// </summary>
         public static string CreateJSONHelpName {
             get {
@@ -976,19 +993,13 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Number:- &quot;String&quot; : number where &quot;String&quot; is the Name field and number is the Input field value. Note: Numbers can have decimal places. 
-        ///Integer:- &quot;String&quot; : integer where &quot;String&quot; is the Name field and integer is the Input field value. Note: Integers do not have decimal places. 
-        ///Object:- &quot;ObjectName&quot;:{&quot;key&quot;:&quot;value&quot;,...}
-        ///where &quot;ObjectName&quot; is the Name field and key is the Input variables name and value is the value of the variable. You can use (*) notation as well as comma separated values to build this  [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string CreateJSONHelpType {
-            get {
-                return ResourceManager.GetString("CreateJSONHelpType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This field will be converted to JSON data. You can add multiple fields by using a comma. This allows you to create Arrays and Objects from multiple fields in a recordset. To use an entire recordset simply leave off the field name e.g. Recordset(*).
+        ///   Looks up a localized string similar to To create JSON data, enter the Name and Data of the JSON variables. 
+        ///To create JSON Arrays use a single recordset field with a star for every record e.g. 
+        ///[[rec(*).name]] 
+        ///To create JSON Objects, use a comma seperated list of recordset fields, or, just the recordset name to use the whole recordset. e.g. 
+        ///[[rec(*).surname]], [[rec(*).name]], [[rec(*).middle]] 
+        ///or simply 
+        ///[[rec(*)]].
         /// </summary>
         public static string CreateJSONToolTipInput {
             get {
@@ -997,7 +1008,9 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This field will be converted to JSON data. To name a key pair, object or array, put the name you want to use in here..
+        ///   Looks up a localized string similar to The JSON variable name will default to the Warewolf variable name in the Data column. 
+        ///Array and Object names will default to the recordset name used. 
+        ///Object data names will be the field names of the recordset..
         /// </summary>
         public static string CreateJSONToolTipName {
             get {
@@ -1014,18 +1027,6 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string CreateJSONToolTipResult {
             get {
                 return ResourceManager.GetString("CreateJSONToolTipResult", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Number:- &quot;String&quot; : number where &quot;String&quot; is the Name field and number is the Input field value. Note: Numbers can have decimal places. 
-        ///Integer:- &quot;String&quot; : integer where &quot;String&quot; is the Name field and integer is the Input field value. Note: Integers do not have decimal places. 
-        ///Object:- &quot;ObjectName&quot;:{&quot;key&quot;:&quot;value&quot;,...}
-        ///where &quot;ObjectName&quot; is the Name field and key is the Input variables name and value is the value of the variable. You can use (*) notation as well as comma separated values to build this  [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string CreateJSONToolTipType {
-            get {
-                return ResourceManager.GetString("CreateJSONToolTipType", resourceCulture);
             }
         }
         
@@ -5348,6 +5349,15 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string WebRequestToolTipResult {
             get {
                 return ResourceManager.GetString("WebRequestToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The length of time to wait for a web request to complete before failing.
+        /// </summary>
+        public static string WebRequestToolTipTimeOut {
+            get {
+                return ResourceManager.GetString("WebRequestToolTipTimeOut", resourceCulture);
             }
         }
         

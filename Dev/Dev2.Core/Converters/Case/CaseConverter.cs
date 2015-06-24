@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -134,9 +134,10 @@ namespace Dev2
             string str = txInfo.ToTitleCase(stringToConvert);
 
             //Juries Bug 8725
-            var reg = new Regex(@"[0-9]+\w{1}", RegexOptions.Compiled | RegexOptions.Multiline);
+            //var reg = new Regex(@"[0-9]+\w{1}", RegexOptions.Compiled | RegexOptions.Multiline);
 
-            return reg.Replace(str, s => s.Value.ToLower());
+            //return reg.Replace(str, s => s.Value.ToLower());
+            return str;
         }
 
         #endregion Convert Methods

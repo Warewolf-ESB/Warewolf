@@ -166,11 +166,31 @@
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Core\CEventHelper.cs" />
+    <Compile Include="Designers2\CreateJSON\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\CreateJSON\CreateJsonDesigner.xaml.cs">
+      <DependentUpon>CreateJsonDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\CreateJSON\CreateJsonDesignerViewModel.cs" />
+    <Compile Include="Designers2\CreateJSON\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\DropBox\Upload\DropboxUploadFileDesigner.xaml.cs">
       <DependentUpon>DropboxUploadFileDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\DropBox\Upload\DropBoxUploadFileViewModel.cs" />
     <Compile Include="Designers2\DropBox\Upload\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\GetWebRequest\GetWebRequest\GetWebRequestDesigner.xaml.cs">
+      <DependentUpon>GetWebRequestDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\GetWebRequest\GetWebRequest\GetWebRequestDesignerViewModel.cs" />
+    <Compile Include="Designers2\GetWebRequest\GetWebRequest\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\GetWebRequest\GetWebRequest\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\RecordsLength\RecordsLengthDesigner.xaml.cs">
@@ -375,18 +395,18 @@
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Designers2\GetWebRequest\GetWebRequestDesigner.xaml.cs">
+    <Compile Include="Designers2\GetWebRequest\GetWebRequestWithTimeout\GetWebRequestDesigner.xaml.cs">
       <DependentUpon>GetWebRequestDesigner.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Designers2\GetWebRequest\GetWebRequestDesignerViewModel.cs">
+    <Compile Include="Designers2\GetWebRequest\GetWebRequestWithTimeout\GetWebRequestDesignerViewModel.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Designers2\GetWebRequest\Large.xaml.cs">
+    <Compile Include="Designers2\GetWebRequest\GetWebRequestWithTimeout\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Designers2\GetWebRequest\Small.xaml.cs">
+    <Compile Include="Designers2\GetWebRequest\GetWebRequestWithTimeout\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -719,11 +739,35 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\CreateJSON\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\CreateJSON\CreateJsonDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\CreateJSON\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\DropBox\Upload\DropboxUploadFileDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\DropBox\Upload\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\GetWebRequest\GetWebRequest\GetWebRequestDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\GetWebRequest\GetWebRequest\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\GetWebRequest\GetWebRequest\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -899,15 +943,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers2\GetWebRequest\GetWebRequestDesigner.xaml">
+    <Page Include="Designers2\GetWebRequest\GetWebRequestWithTimeout\GetWebRequestDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers2\GetWebRequest\Large.xaml">
+    <Page Include="Designers2\GetWebRequest\GetWebRequestWithTimeout\Large.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers2\GetWebRequest\Small.xaml">
+    <Page Include="Designers2\GetWebRequest\GetWebRequestWithTimeout\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1194,6 +1238,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

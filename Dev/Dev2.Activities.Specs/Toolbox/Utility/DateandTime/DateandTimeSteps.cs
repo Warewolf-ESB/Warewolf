@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -146,5 +146,21 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
                 Assert.AreEqual(expectedResult, actualValue);
             }
         }
+
+        [Then(@"the datetime result should contain milliseconds")]
+        public void ThenTheDatetimeResultShouldContainMilliseconds()
+        {
+
+            string error;
+            string actualValue;
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+
+            GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+                                       out actualValue, out error);
+            Assert.IsTrue(actualValue.Contains("."));
+            
+
+        }
+
     }
 }

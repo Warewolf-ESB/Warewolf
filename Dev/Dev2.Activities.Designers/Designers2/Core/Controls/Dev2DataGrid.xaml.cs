@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -31,6 +31,7 @@ namespace Dev2.Activities.Designers2.Core.Controls
     public partial class Dev2DataGrid
     {
         readonly Func<Visual, FrameworkElement> _getVisualChild;
+        static int _skipNumber;
 
         public Dev2DataGrid()
             : this(GetVisualChild<IntellisenseTextBox>)
@@ -171,19 +172,19 @@ namespace Dev2.Activities.Designers2.Core.Controls
             return false;
         }
 
-        public IInputElement GetFocusElement(int rowIndex)
+        public IInputElement GetFocusElement(int rowIndex, int inputsToSkip=0)
         {
             if(rowIndex >= 0 && rowIndex < Items.Count)
             {
                 var row = GetRow(rowIndex);
-                return GetFocusElement(row);
+                return GetFocusElement(row,inputsToSkip);
             }
             return null;
         }
 
-        public IInputElement GetFocusElement(DataGridRow row)
+        public IInputElement GetFocusElement(DataGridRow row, int inputsToSkip = 0)
         {
-            return GetVisualChild(row);
+            return GetVisualChild(row,inputsToSkip);
         }
 
         bool SetFocus(Visual row)
@@ -198,17 +199,11 @@ namespace Dev2.Activities.Designers2.Core.Controls
                 }
             }));
             return true;
-            //var visualChild = GetVisualChild(row);
-            //if(visualChild != null)
-            //{
-            //    Keyboard.Focus(visualChild);
-            //    return true;
-            //}
-            //return false;
         }
 
-        FrameworkElement GetVisualChild(Visual row)
+        FrameworkElement GetVisualChild(Visual row, int inputsToSkip = 0)
         {
+            _skipNumber = inputsToSkip;
             return row != null ? _getVisualChild(row) : null;
         }
 
@@ -226,14 +221,19 @@ namespace Dev2.Activities.Designers2.Core.Controls
         {
             var child = default(T);
             var numVisuals = VisualTreeHelper.GetChildrenCount(parent);
-            for(var i = 0; i < numVisuals; i++)
+            for (var i = 0; i < numVisuals; i++)
             {
                 var v = (Visual)VisualTreeHelper.GetChild(parent, i);
                 child = v as T ?? GetVisualChild<T>(v);
                 if(child != null)
                 {
-                    break;
-                }
+                    if (_skipNumber == 0)
+                    {
+                        break;
+                    }
+                    _skipNumber--;
+                    child = null;
+                }                
             }
             return child;
         }

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -225,8 +225,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected void DoErrorHandling(IDSFDataObject dataObject)
         {
             string errorString = dataObject.Environment.FetchErrors();
-            ErrorResultTO tmpErrorsAfter = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
-            _tmpErrors.MergeErrors(tmpErrorsAfter);
+            _tmpErrors.AddError(errorString);
             if(_tmpErrors.HasErrors())
             {
                 if(!(this is DsfFlowDecisionActivity))
@@ -252,7 +251,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var esbChannel = dataObject.EsbChannel;
                     ErrorResultTO tmpErrors;
                     esbChannel.ExecuteLogErrorRequest(dataObject, dataObject.WorkspaceID, OnErrorWorkflow, out tmpErrors);
-                    dataObject.Environment.AddError(tmpErrors.MakeDisplayReady());
+                    if(tmpErrors != null)
+                    {
+                        dataObject.Environment.AddError(tmpErrors.MakeDisplayReady());
+                    }
                 }
             }
             catch(Exception e)
@@ -726,7 +728,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public virtual IDev2Activity Execute(IDSFDataObject data)
         {
-            ExecuteTool(data);
+            try
+            {
+                var className = GetType().Name;
+                Tracker.TrackEvent(TrackerEventGroup.ActivityExecution, className);
+
+                ExecuteTool(data);
+            }
+            catch (Exception ex)
+            {
+                data.Environment.AddError(ex.Message);
+                Dev2Logger.Log.Error("OnExecute", ex);
+            
+            }
+            finally
+            {
+                if (!_isExecuteAsync || _isOnDemandSimulation)
+                {
+                    DoErrorHandling(data);
+                }
+
+            }
+
+            
             if(NextNodes != null && NextNodes.Count()>0)
             {
                     NextNodes.First().Execute(data);

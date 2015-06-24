@@ -47,7 +47,7 @@ namespace Dev2.Activities
             {
 
                 Dev2Logger.Log.Error(e);
-                return new DsfActivity();
+                throw;
             }
         }
 

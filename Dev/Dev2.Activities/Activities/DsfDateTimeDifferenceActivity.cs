@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -124,7 +124,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if(string.IsNullOrEmpty(Input1))
                     {
-                        AddDebugInputItem(new DebugItemStaticDataParams(DateTime.Now.ToString(CultureInfo.CurrentCulture), "now()", "Input 1", "="));
+                        AddDebugInputItem(new DebugItemStaticDataParams(DateTime.Now.ToString(GlobalConstants.GlobalDefaultNowFormat), "now()", "Input 1", "="));
                     }
                     else
                     {
@@ -133,7 +133,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     if(string.IsNullOrEmpty(Input2))
                     {
-                        AddDebugInputItem(new DebugItemStaticDataParams(DateTime.Now.ToString(CultureInfo.CurrentCulture), "now()", "Input 2", "="));
+                        AddDebugInputItem(new DebugItemStaticDataParams(DateTime.Now.ToString(GlobalConstants.GlobalDefaultNowFormat), "now()", "Input 2", "="));
                     }
                     else
                     {

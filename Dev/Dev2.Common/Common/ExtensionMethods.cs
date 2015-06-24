@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,6 +16,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Xml.Linq;
+using ChinhDo.Transactions;
 
 namespace Dev2.Common.Common
 {
@@ -75,7 +76,8 @@ namespace Dev2.Common.Common
         /// <param name="sb">The sb.</param>
         /// <param name="fileName">Name of the file.</param>
         /// <param name="encoding">The encoding.</param>
-        public static void WriteToFile(this StringBuilder sb, string fileName, Encoding encoding)
+        /// <param name="fileManager"></param>
+        public static void WriteToFile(this StringBuilder sb, string fileName, Encoding encoding,IFileManager fileManager)
         {
             int length = sb.Length;
             int startIdx = 0;
@@ -91,7 +93,7 @@ namespace Dev2.Common.Common
                     // Ensure it gets closed ;)
                 }
             }
-
+            fileManager.Snapshot(fileName);
             using (
                 var fs = new FileStream(fileName, FileMode.Truncate, FileAccess.Write, FileShare.ReadWrite, 4096, true))
             {

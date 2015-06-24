@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -95,9 +95,9 @@ namespace Dev2.Activities
 
             try
             {
-                if(!errors.HasErrors())
+                if (!errors.HasErrors())
                 {
-                    if(dataObject.IsDebugMode())
+                    if (dataObject.IsDebugMode())
                     {
                         AddDebugInputItem(Length, From, To, dataObject.Environment, RandomType);
                     }
@@ -111,24 +111,24 @@ namespace Dev2.Activities
                     colItr.AddVariableToIterateOn(toItr);
 
                     Dev2Random dev2Random = new Dev2Random();
-                    while(colItr.HasMoreData())
+                    while (colItr.HasMoreData())
                     {
                         int lengthNum = -1;
-                        int fromNum = -1;
-                        int toNum = -1;
+                        double fromNum = -1.0;
+                        double toNum = -1.0;
 
                         string fromValue = colItr.FetchNextValue(fromItr);
                         string toValue = colItr.FetchNextValue(toItr);
                         string lengthValue = colItr.FetchNextValue(lengthItr);
 
-                        if(RandomType != enRandomType.Guid)
+                        if (RandomType != enRandomType.Guid)
                         {
-                            if(RandomType == enRandomType.Numbers)
+                            if (RandomType == enRandomType.Numbers)
                             {
                                 #region Getting the From
 
                                 fromNum = GetFromValue(fromValue, out errors);
-                                if(errors.HasErrors())
+                                if (errors.HasErrors())
                                 {
                                     allErrors.MergeErrors(errors);
                                     continue;
@@ -139,7 +139,7 @@ namespace Dev2.Activities
                                 #region Getting the To
 
                                 toNum = GetToValue(toValue, out errors);
-                                if(errors.HasErrors())
+                                if (errors.HasErrors())
                                 {
                                     allErrors.MergeErrors(errors);
                                     continue;
@@ -152,7 +152,7 @@ namespace Dev2.Activities
                                 #region Getting the Length
 
                                 lengthNum = GetLengthValue(lengthValue, out errors);
-                                if(errors.HasErrors())
+                                if (errors.HasErrors())
                                 {
                                     allErrors.MergeErrors(errors);
                                     continue;
@@ -165,7 +165,7 @@ namespace Dev2.Activities
 
                         var rule = new IsSingleValueRule(() => Result);
                         var single = rule.Check();
-                        if(single != null)
+                        if (single != null)
                         {
                             allErrors.AddError(single.Message);
                         }
@@ -176,12 +176,12 @@ namespace Dev2.Activities
                     }
                 }
                 allErrors.MergeErrors(errors);
-                if(!allErrors.HasErrors())
+                if (!allErrors.HasErrors())
                 {
                     AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Log.Error("DSFRandomActivity", e);
                 allErrors.AddError(e.Message);
@@ -190,15 +190,15 @@ namespace Dev2.Activities
             {
                 // Handle Errors
                 var hasErrors = allErrors.HasErrors();
-                if(hasErrors)
+                if (hasErrors)
                 {
                     DisplayAndWriteError("DsfRandomActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
                 }
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
-                    if(hasErrors)
+                    if (hasErrors)
                     {
                         AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
@@ -210,22 +210,22 @@ namespace Dev2.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
-            if(updates != null)
+            if (updates != null)
             {
-                foreach(Tuple<string, string> t in updates)
+                foreach (Tuple<string, string> t in updates)
                 {
 
-                    if(t.Item1 == From)
+                    if (t.Item1 == From)
                     {
                         From = t.Item2;
                     }
 
-                    if(t.Item1 == To)
+                    if (t.Item1 == To)
                     {
                         To = t.Item2;
                     }
 
-                    if(t.Item1 == Length)
+                    if (t.Item1 == Length)
                     {
                         Length = t.Item2;
                     }
@@ -235,10 +235,10 @@ namespace Dev2.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
-            if(updates != null)
+            if (updates != null)
             {
                 var itemUpdate = updates.FirstOrDefault(tuple => tuple.Item1 == Result);
-                if(itemUpdate != null)
+                if (itemUpdate != null)
                 {
                     Result = itemUpdate.Item2;
                 }
@@ -249,35 +249,35 @@ namespace Dev2.Activities
 
         #region Private Methods
 
-        private int GetFromValue(string fromValue, out ErrorResultTO errors)
+        private double GetFromValue(string fromValue, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            int fromNum;
-            if(string.IsNullOrEmpty(fromValue))
+            double fromNum;
+            if (string.IsNullOrEmpty(fromValue))
             {
-                errors.AddError("Please ensure that you have entered an integer for Start.");
+                errors.AddError("Please ensure that you have entered an integer or decimal number for Start.");
                 return -1;
             }
-            if(!int.TryParse(fromValue, out fromNum))
+            if (!double.TryParse(fromValue, out fromNum))
             {
-                errors.AddError("Please ensure that the Start is an integer.");
+                errors.AddError(string.Format("Please ensure that the Start is an integer or decimal number from {0} to {1}.", double.MinValue, double.MaxValue));
                 return -1;
             }
             return fromNum;
         }
 
-        private int GetToValue(string toValue, out ErrorResultTO errors)
+        private double GetToValue(string toValue, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            int toNum;
-            if(string.IsNullOrEmpty(toValue))
+            double toNum;
+            if (string.IsNullOrEmpty(toValue))
             {
-                errors.AddError("Please ensure that you have entered an integer for End.");
+                errors.AddError("Please ensure that you have entered an integer or decimal number for End.");
                 return -1;
             }
-            if(!int.TryParse(toValue, out toNum))
+            if (!double.TryParse(toValue, out toNum))
             {
-                errors.AddError("Please ensure that the End is an integer.");
+                errors.AddError(string.Format("Please ensure that the End is an integer or decimal number from {0} to {1}.", double.MinValue, double.MaxValue));
                 return -1;
             }
             return toNum;
@@ -287,19 +287,19 @@ namespace Dev2.Activities
         {
             errors = new ErrorResultTO();
             int lengthNum;
-            if(string.IsNullOrEmpty(lengthValue))
+            if (string.IsNullOrEmpty(lengthValue))
             {
                 errors.AddError("Please ensure that you have entered an integer for Length.");
                 return -1;
             }
 
-            if(!int.TryParse(lengthValue, out lengthNum))
+            if (!int.TryParse(lengthValue, out lengthNum))
             {
                 errors.AddError("Please ensure that the Length is an integer value.");
                 return -1;
             }
 
-            if(lengthNum < 1)
+            if (lengthNum < 1)
             {
                 errors.AddError("Please enter a positive integer for the Length.");
                 return -1;
@@ -312,12 +312,12 @@ namespace Dev2.Activities
         {
             AddDebugInputItem(new DebugItemStaticDataParams(randomType.GetDescription(), "Random"));
 
-            if(randomType == enRandomType.Guid)
+            if (randomType == enRandomType.Guid)
             {
                 return;
             }
 
-            if(randomType == enRandomType.Numbers)
+            if (randomType == enRandomType.Numbers)
             {
                 AddDebugInputItem(new DebugEvalResult(fromExpression, "From", executionEnvironment));
                 AddDebugInputItem(new DebugEvalResult(toExpression, "To", executionEnvironment));
@@ -334,7 +334,7 @@ namespace Dev2.Activities
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
-            foreach(IDebugItem debugInput in _debugInputs)
+            foreach (IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FlushStringBuilder();
             }
@@ -343,7 +343,7 @@ namespace Dev2.Activities
 
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
-            foreach(IDebugItem debugOutput in _debugOutputs)
+            foreach (IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }

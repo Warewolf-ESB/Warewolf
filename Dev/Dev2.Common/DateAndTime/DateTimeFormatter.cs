@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -102,9 +102,16 @@ namespace Dev2.Common.DateAndTime
                     if (string.IsNullOrWhiteSpace(outputFormat))
                     {
                         //07.03.2013: Ashley Lewis - Bug 9167 null to default
-                        outputFormat =
-                            dateTimeParser.TranslateDotNetToDev2Format(GlobalConstants.Dev2DotNetDefaultDateTimeFormat,
-                                out error);
+
+
+                        string shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
+                        string longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
+                        string finalPattern = shortPattern + " " + longPattern;
+                        if (finalPattern.Contains("ss"))
+                        {
+                            outputFormat = finalPattern.Insert(finalPattern.IndexOf("ss", StringComparison.Ordinal) + 2, ".fff");
+                            outputFormat =dateTimeParser.TranslateDotNetToDev2Format(outputFormat,out error);
+                        }
                     }
 
                     //

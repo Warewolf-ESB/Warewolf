@@ -236,7 +236,6 @@
       </SubType>
     </Compile>
     <Compile Include="Internal Services\GetComputerNamesTests.cs" />
-    <Compile Include="Internal Services\RenameResourceServiceTests.cs" />
     <Compile Include="Server Test\Build.Test\ApplicationServerBuildTests.cs" />
     <Compile Include="Server Test\InternalServices\FindDependenciesServiceTest.cs" />
     <Compile Include="Server Test\InternalServices\FindDirectoryServiceTest.cs" />
@@ -245,7 +244,6 @@
     <Compile Include="Server Test\InternalServices\FindResourceServiceTest.cs" />
     <Compile Include="Server Test\InternalServices\SaveResourceServiceTest.cs" />
     <Compile Include="Server Test\RelativeUriResourceTest.cs" />
-    <Compile Include="Server Test\ServerLifecycleManagerTest.cs" />
     <Compile Include="Server Test\TimeZoneChanges.cs" />
     <Compile Include="Server Test\Workspace\XML\XmlResource.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\Models\EnviromentModelTests.cs" />
@@ -255,8 +253,6 @@
     <Compile Include="Enums\Activities.cs" />
     <Compile Include="Enums\enViewModelType.cs" />
     <Compile Include="Enums\enViewTypes.cs" />
-    <Compile Include="Internal Services\GetCurrentLogFileServicesTest.cs" />
-    <Compile Include="Internal Services\RenameResourceCategoryServicesTest.cs" />
     <Compile Include="Internal Services\SystemServicesTest.cs" />
     <Compile Include="Activities\UtilTest.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\Models\EnvironmentConnectionTests.cs" />
@@ -268,7 +264,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Server Test\ComplexWebpageTest.cs" />
     <Compile Include="ServerSettings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

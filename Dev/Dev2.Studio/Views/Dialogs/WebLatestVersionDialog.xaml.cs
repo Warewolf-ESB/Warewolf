@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,7 +10,9 @@
 */
 
 using System;
-using System.Windows;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Windows.Controls;
 using System.Windows.Navigation;
 
 namespace Dev2.Views.Dialogs
@@ -18,18 +20,54 @@ namespace Dev2.Views.Dialogs
     /// <summary>
     /// Interaction logic for WebLatestVersionDialog.xaml
     /// </summary>
-    public partial class WebLatestVersionDialog : Window
+    public partial class WebLatestVersionDialog
     {
         public WebLatestVersionDialog()
         {
             InitializeComponent();
+            Browser.Navigated += Navigated;
             Browser.Navigate(new Uri("http://www.warewolf.io/start_new.php"));
         }
 
-        void wb_LoadCompleted(object sender, NavigationEventArgs e)
+        void Navigated(object sender, NavigationEventArgs e)
         {
-            Browser.Width = Browser.ActualWidth + 32; 
+            SetSilent(Browser,true);
+        }
+
+        void WbLoadCompleted(object sender, NavigationEventArgs e)
+        {
+            Browser.Width = Browser.ActualWidth + 64;
             Browser.Height = Browser.ActualHeight + 32;
         }
+
+
+        private static void SetSilent(WebBrowser browser, bool silent)
+        {
+            if (browser == null)
+                throw new ArgumentNullException("browser");
+
+            // get an IWebBrowser2 from the document
+            IOleServiceProvider sp = browser.Document as IOleServiceProvider;
+            if (sp != null)
+            {
+                Guid iidIWebBrowserApp = new Guid("0002DF05-0000-0000-C000-000000000046");
+                Guid iidIWebBrowser2 = new Guid("D30C1661-CDAF-11d0-8A3E-00C04FC9E26E");
+
+                object webBrowser;
+                sp.QueryService(ref iidIWebBrowserApp, ref iidIWebBrowser2, out webBrowser);
+                if (webBrowser != null)
+                {
+                    webBrowser.GetType().InvokeMember("Silent", BindingFlags.Instance | BindingFlags.Public | BindingFlags.PutDispProperty, null, webBrowser, new object[] { silent });
+                }
+            }
+        }
     }
+
+    [ComImport, Guid("6D5140C1-7436-11CE-8034-00AA006009FA"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IOleServiceProvider
+    {
+        [PreserveSig]
+        int QueryService([In] ref Guid guidService, [In] ref Guid riid, [MarshalAs(UnmanagedType.IDispatch)] out object ppvObject);
+    }
+
 }

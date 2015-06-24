@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -30,7 +30,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -54,17 +54,17 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
                     Result = ResultVariable
                 };
 
-            if(!string.IsNullOrEmpty(length))
+            if (!string.IsNullOrEmpty(length))
             {
                 dsfRandom.Length = length;
             }
 
-            if(!string.IsNullOrEmpty(rangeFrom))
+            if (!string.IsNullOrEmpty(rangeFrom))
             {
                 dsfRandom.From = rangeFrom;
             }
 
-            if(!string.IsNullOrEmpty(rangeTo))
+            if (!string.IsNullOrEmpty(rangeTo))
             {
                 dsfRandom.To = rangeTo;
             }
@@ -117,7 +117,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
             TypeConverter converter = TypeDescriptor.GetConverter(Type.GetType(type));
             // ReSharper restore AssignNullToNotNullAttribute
             converter.ConvertFrom(actualValue);
-            if(length == 0)
+            if (length == 0)
             {
                 Assert.IsTrue(String.IsNullOrEmpty(actualValue));
             }
@@ -125,6 +125,20 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
             {
                 Assert.AreEqual(length, actualValue.Length);
             }
+        }
+
+        [Then(@"the result from the random tool should be of the same type as ""(.*)""")]
+        public void ThenTheResultFromTheRandomToolShouldBeOfTheSameTypeAs(string type)
+        {
+            string error;
+            string actualValue;
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            GetScalarValueFromEnvironment(result.Environment, ResultVariable,
+                                       out actualValue, out error);
+            // ReSharper disable AssignNullToNotNullAttribute
+            TypeConverter converter = TypeDescriptor.GetConverter(Type.GetType(type));
+            // ReSharper restore AssignNullToNotNullAttribute
+            converter.ConvertFrom(actualValue);
         }
 
         [Then(@"the random value will be ""(.*)""")]
@@ -138,5 +152,19 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
                                        out actualValue, out error);
             Assert.AreEqual(value, actualValue);
         }
+
+        [Then(@"the random value will be between ""(.*)"" and ""(.*)"" inclusive")]
+        public void ThenTheRandomValueWillBeBetweenAndInclusive(Decimal from, Decimal to)
+        {
+            string error;
+            string actualValue;
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+                                       out actualValue, out error);
+            decimal d = decimal.Parse(actualValue);
+            Assert.IsTrue(d >= from && d <= to);
+        }
+
+
     }
 }

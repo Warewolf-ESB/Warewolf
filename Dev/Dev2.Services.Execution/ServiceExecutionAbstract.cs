@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -156,10 +156,10 @@ namespace Dev2.Services.Execution
                 var itrs = new List<IWarewolfIterator>(5);
                 IWarewolfListIterator itrCollection = new WarewolfListIterator();
                 ServiceMethod method = Service.Method;
-                List<MethodParameter> inputs = method.Parameters;
+                var inputs = method.Parameters;
                 if (inputs.Count == 0)
                 {
-                    ExecuteService(Service.Method.Parameters, out invokeErrors, outputFormatter);
+                    ExecuteService(inputs as IEnumerable<MethodParameter>, out invokeErrors, outputFormatter);
                     errors.MergeErrors(invokeErrors);
                 }
                 else
@@ -264,6 +264,24 @@ namespace Dev2.Services.Execution
             try
             {
                 var parameters = methodParameters as IList<MethodParameter> ?? methodParameters.ToList();
+                if (Service is WebService)
+                {
+                    var webService = Service as WebService;
+                    if (!String.IsNullOrEmpty(webService.RequestBody))
+                    {
+                        var methodParameter = new MethodParameter();
+                        methodParameter.Name = DataListUtil.RemoveLanguageBrackets(webService.RequestBody);
+                        methodParameter.Value = ExecutionEnvironment.WarewolfEvalResultToString(DataObj.Environment.Eval(webService.RequestBody));
+                        parameters.Add(methodParameter);
+                    }
+                    if (!String.IsNullOrEmpty(webService.RequestHeaders))
+                    {
+                        var methodParameter = new MethodParameter();
+                        methodParameter.Name = DataListUtil.RemoveLanguageBrackets(webService.RequestHeaders);
+                        methodParameter.Value = ExecutionEnvironment.WarewolfEvalResultToString(DataObj.Environment.Eval(webService.RequestHeaders));
+                        parameters.Add(methodParameter);
+                    }
+                }
                 string result;
                 if (parameters.Any())
                 {
@@ -368,7 +386,11 @@ namespace Dev2.Services.Execution
                         }
                         else
                         {
-                            DataObj.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(c.Name), c.InnerXml);
+                            var scalarName = outputDefs.FirstOrDefault(definition => definition.Name == c1.Name);
+                            if(scalarName != null)
+                            {
+                                DataObj.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(scalarName.RawValue), c1.InnerXml);
+                            }
                         }
                     }
                     else

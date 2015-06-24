@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -116,6 +116,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
                 category.Add(new ToolboxItemWrapper(typeof(DsfDataSplitActivity), "/images/ToolDataSplit-32.png", "Data Split"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfIndexActivity), "/images/ToolFindIndex-32.png", "Find Index"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfReplaceActivity), "/images/ToolReplace-32.png", "Replace"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfCreateJsonActivity), "/images/ToolCreateJSON-32.png", "Create JSON"));
             }
 
 
@@ -131,7 +132,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
                 category.Add(new ToolboxItemWrapper(typeof(DsfGatherSystemInformationActivity), "/images/ToolSystemInformation-32.png", "System Information"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfXPathActivity), "/images/ToolUtilityXpath-32.png", "XPath"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfCommentActivity), "/images/ToolComment-32.png", "Comment"));
-                category.Add(new ToolboxItemWrapper(typeof(DsfWebGetRequestActivity), "/images/ToolGetWebRequest-32.png", "Web Request"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfWebGetRequestWithTimeoutActivity), "/images/ToolGetWebRequest-32.png", "Web Request"));
             }
 
 

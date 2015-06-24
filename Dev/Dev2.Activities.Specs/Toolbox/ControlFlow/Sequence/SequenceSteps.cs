@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -525,12 +525,12 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         {
             DsfSequenceActivity sequence;
             ScenarioContext.Current.TryGetValue("activity", out sequence);
-            //            var activityList = CommonSteps.GetActivityList();
-            //
-            //            foreach(var activity in activityList)
-            //            {
-            //                sequence.Activities.Add(activity.Value);
-            //            }
+//                        var activityList = CommonSteps.GetActivityList();
+//            
+//                        foreach(var activity in activityList)
+//                        {
+//                            sequence.Activities.Add(activity.Value);
+//                        }
             return sequence;
         }
 

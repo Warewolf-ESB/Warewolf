@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -105,14 +105,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 }
                             }
                         }
-                        if(dataObject.IsDebugMode())
-                        {
-                            if(!String.IsNullOrEmpty(Result))
-                            {
-                                AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
-                            }
-                        }
                         allErrors.MergeErrors(errors);
+                    }
+                    else
+                    {
+                        foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                        {
+                            dataObject.Environment.Assign(region, "");
+                        }
+                    }
+                    if (dataObject.IsDebugMode())
+                    {
+                        if (!String.IsNullOrEmpty(Result))
+                        {
+                            AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment));
+                        }
                     }
                 }
                 catch(Exception ex)

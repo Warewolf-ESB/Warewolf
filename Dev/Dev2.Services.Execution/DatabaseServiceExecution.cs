@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -186,18 +186,18 @@ namespace Dev2.Services.Execution
             {
                 var defs = DataListFactory.CreateOutputParser().Parse(InstanceOutputDefintions);
                 HashSet<string> processedRecNames = new HashSet<string>();
-
+                IDictionary<int, string> colMapping = BuildColumnNameToIndexMap(executeService.Columns, defs);
                 foreach (var def in defs)
                 {
                     var expression = def.Value;
                     var rs = def.RawValue;
-                    var rsName = Data.Util.DataListUtil.ExtractRecordsetNameFromValue(expression);
-                    var rsType = Data.Util.DataListUtil.GetRecordsetIndexType(expression);
-                    var rowIndex = Data.Util.DataListUtil.ExtractIndexRegionFromRecordset(expression);
+                    var rsName = DataListUtil.ExtractRecordsetNameFromValue(expression);
+                    var rsType = DataListUtil.GetRecordsetIndexType(expression);
+                    var rowIndex = DataListUtil.ExtractIndexRegionFromRecordset(expression);
                     var rsNameUse = def.RecordSetName;
                     environment.AssignDataShape(def.RawValue);
                     
-                    if (Data.Util.DataListUtil.IsValueRecordset(rs))
+                    if (DataListUtil.IsValueRecordset(rs))
                     {
                         if (string.IsNullOrEmpty(rsName))
                         {
@@ -214,9 +214,7 @@ namespace Dev2.Services.Execution
                         }
 
                         processedRecNames.Add(rsName);
-                        IDictionary<int, string> colMapping = BuildColumnNameToIndexMap(
-                                                                                        executeService.Columns,
-                                                                                        defs);
+                        
 
                         // now convert to binary datalist ;)
                         int rowIdx = 1;
@@ -248,7 +246,7 @@ namespace Dev2.Services.Execution
 
                                     if (colMapping.TryGetValue(idx, out colName))
                                     {
-                                        var displayExpression = Data.Util.DataListUtil.AddBracketsToValueIfNotExist(Data.Util.DataListUtil.CreateRecordsetDisplayValue(Data.Util.DataListUtil.ExtractRecordsetNameFromValue(def.Value), colName, rowIdx.ToString()));
+                                        var displayExpression = DataListUtil.AddBracketsToValueIfNotExist(Data.Util.DataListUtil.CreateRecordsetDisplayValue(Data.Util.DataListUtil.ExtractRecordsetNameFromValue(def.Value), colName, rowIdx.ToString()));
                                         environment.Assign(displayExpression, item.ToString());
                                     }
 
@@ -273,13 +271,13 @@ namespace Dev2.Services.Execution
 
                             while (pos < cols.Count && idx == -1)
                             {
-                                if (cols[pos].ColumnName == expression)
+                                if (colMapping[pos] == expression)
                                 {
                                     idx = pos;
                                 }
                                 pos++;
                             }
-                            environment.Assign(Data.Util.DataListUtil.AddBracketsToValueIfNotExist(expression), row[idx].ToString());
+                            environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(expression), row[idx].ToString());
                         }
                     }
                 }
@@ -297,18 +295,6 @@ namespace Dev2.Services.Execution
         // ReSharper restore ParameterTypeCanBeEnumerable.Local
         {
             Dictionary<int, string> result = new Dictionary<int, string>();
-
-//
-//            foreach (var dlC in dlCols)
-//            {
-//                var idx = dtCols.IndexOf(dlC.ColumnName);
-//
-//                if (idx != -1)
-//                {
-//                    result.Add(idx, dlC.ColumnName);
-//                }
-//            }
-
             if (result.Count == 0 && defs != null)
             {
                 // use positional adjustment
@@ -317,13 +303,13 @@ namespace Dev2.Services.Execution
                     var idx = dtCols.IndexOf(def.Name);
                     if (idx != -1)
                     {
-                        if (def.IsRecordSet)
+                        if (def.IsRecordSet && DataListUtil.IsValueRecordsetWithFields(def.RawValue))
                         {
                             result.Add(idx, DataListUtil.ExtractFieldNameFromValue(def.RawValue));
                         }
                         else
                         {
-                            result.Add(idx, def.Name);
+                            result.Add(idx, def.Value);
                         }
 
                     }
@@ -354,6 +340,7 @@ namespace Dev2.Services.Execution
             }
             catch (Exception ex)
             {
+                Dev2Logger.Log.Error("Sql Error:",ex);
                 errors.AddError(string.Format("{0}{1}","Sql Error: ", ex.Message));
             }
         }

@@ -124,6 +124,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
     </Reference>
+    <Reference Include="ChinhDo.Transactions">
+      <HintPath>..\packages\TxFileManager.1.3\lib\net20\ChinhDo.Transactions.dll</HintPath>
+    </Reference>
     <Reference Include="CommandLine">
       <HintPath>..\Binaries\CommandLine.dll</HintPath>
     </Reference>

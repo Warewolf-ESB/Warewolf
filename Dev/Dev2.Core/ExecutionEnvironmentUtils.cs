@@ -14,7 +14,7 @@ namespace Dev2
 {
     public static class ExecutionEnvironmentUtils
     {
-        public static string GetXmlOutputFromEnvironment(IDSFDataObject dataObject, Guid workspaceGuid,string dataList)
+        public static string GetXmlOutputFromEnvironment(IDSFDataObject dataObject,string dataList)
         {
             var environment = dataObject.Environment;
             var dataListTO = new DataListTO(dataList);
@@ -34,7 +34,7 @@ namespace Dev2
                     {
                         warewolfEvalResult = environment.Eval(name);
                     }
-                    catch(Exception)
+                    catch
                     {
                         //Possible that the output defs have variables that were never initialised (i.e. null)
                     }
@@ -93,7 +93,7 @@ namespace Dev2
             return result.ToString();
         }
 
-        public static string GetJsonOutputFromEnvironment(IDSFDataObject dataObject, Guid workspaceGuid,string dataList)
+        public static string GetJsonOutputFromEnvironment(IDSFDataObject dataObject,string dataList)
         {
             var environment = dataObject.Environment;
             var dataListTO = new DataListTO(dataList);
@@ -102,7 +102,8 @@ namespace Dev2
             var scalarOutputs = dataListTO.Outputs.Where(s => !DataListUtil.IsValueRecordset(s));
             var recSetOutputs = dataListTO.Outputs.Where(DataListUtil.IsValueRecordset);
             var groupedRecSets = recSetOutputs.GroupBy(DataListUtil.ExtractRecordsetNameFromValue);
-            foreach (var groupedRecSet in groupedRecSets)
+            var recSets = groupedRecSets as IGrouping<string, string>[] ?? groupedRecSets.ToArray();
+            foreach (var groupedRecSet in recSets)
             {
                 var i = 0;
                 var warewolfListIterators = new WarewolfListIterator();
@@ -114,15 +115,18 @@ namespace Dev2
                     warewolfListIterators.AddVariableToIterateOn(warewolfIterator);
 
                 }
+                result.Append("\"");
+                result.Append(groupedRecSet.Key);
+                result.Append("\" : [");
+                
+                
                 while (warewolfListIterators.HasMoreData())
                 {
-                    result.Append("\"");
-                    result.Append(groupedRecSet.Key);
-                    result.Append("\" : [");
                     int colIdx = 0;
+                    result.Append("{");
                     foreach (var namedIterator in iterators)
                     {
-                        result.Append("{");
+                        
                         var value = warewolfListIterators.FetchNextValue(namedIterator.Value);
                         result.Append("\"");
                         result.Append(namedIterator.Key);
@@ -137,17 +141,19 @@ namespace Dev2
                         }
 
                     }
-
-                    result.Append("}");
-                    result.Append("]");
-                    i++;
-                    if (i <= warewolfListIterators.GetMax())
+                    if (warewolfListIterators.HasMoreData())
                     {
-                        result.Append(", ");
+                        result.Append("}");
+                        result.Append(",");
                     }
-
                 }
-
+                result.Append("}");
+                result.Append("]");
+                i++;
+                if (i <= recSets.Count())
+                {
+                    result.Append(",");
+                }
 
             }
 
@@ -174,10 +180,9 @@ namespace Dev2
                     result.Append(",");
                 }
             }
-
-            result.Append("}");
             var jsonOutputFromEnvironment = result.ToString();
-            return jsonOutputFromEnvironment.TrimEnd(',');
+            jsonOutputFromEnvironment += "}";
+            return jsonOutputFromEnvironment;
         }
 
         public static void UpdateEnvironmentFromXmlPayload(IDSFDataObject dataObject, StringBuilder rawPayload, string dataList)
@@ -265,7 +270,10 @@ namespace Dev2
                                         if (DataListUtil.ExtractFieldNameFromValue(definition) == subc.Name)
                                         {
                                             var recSetAppend = DataListUtil.ReplaceRecordsetIndexWithBlank(definition);
-                                            dataObject.Environment.AssignWithFrame(new AssignValue( recSetAppend, subc.InnerXml));
+                                            var a = subc.InnerXml;
+                                            a = RemoveXMLPrefix(a);
+                                                dataObject.Environment.AssignWithFrame(new AssignValue(recSetAppend, a));
+                                     
                                         }
                                     }
                                 }
@@ -275,8 +283,9 @@ namespace Dev2
                         {
                             // fetch recordset index
                             // process recordset
-
-                            dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(c.Name), c.InnerXml);
+                            var a = c.InnerXml;
+                            a = RemoveXMLPrefix(a);
+                            dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(c.Name), a);
                         }
                     }
                     else
@@ -294,6 +303,16 @@ namespace Dev2
             {
                 dataObject.Environment.CommitAssign();
             }
+        }
+
+        static string RemoveXMLPrefix(string a)
+        {
+            if(a.StartsWith(GlobalConstants.XMLPrefix))
+            {
+                a = a.Replace(GlobalConstants.XMLPrefix, "");
+                a = Encoding.UTF8.GetString(Convert.FromBase64String(a));
+            }
+            return a;
         }
 
         public static string GetXmlInputFromEnvironment(IDSFDataObject dataObject, Guid workspaceGuid, string dataList)

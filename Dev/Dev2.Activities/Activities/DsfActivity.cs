@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -452,7 +452,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             ErrorResultTO allErrors = new ErrorResultTO();
 
-            dataObject.EnvironmentID = EnvironmentID.Expression == null ? Guid.Empty : Guid.Parse(EnvironmentID.Expression.ToString());
+            dataObject.EnvironmentID = (EnvironmentID==null || EnvironmentID.Expression == null) ? Guid.Empty : Guid.Parse(EnvironmentID.Expression.ToString());
             dataObject.RemoteServiceType = Type.Expression == null ? "" : Type.Expression.ToString();
             ParentServiceName = dataObject.ServiceName;
 
@@ -543,6 +543,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }
             }
+                catch(Exception err)
+                {
+                    dataObject.Environment.Errors.Add(err.Message);
+                }
             finally
             {
 

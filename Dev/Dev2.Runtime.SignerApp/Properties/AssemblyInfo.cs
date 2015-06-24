@@ -1,4 +1,4 @@
-
+﻿
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -21,7 +21,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Warewolf")]
 [assembly: AssemblyProduct("Business Design Studio")]
-[assembly: AssemblyCopyright("Copyright � Warewolf 2013")]
+[assembly: AssemblyCopyright("Copyright © Warewolf 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

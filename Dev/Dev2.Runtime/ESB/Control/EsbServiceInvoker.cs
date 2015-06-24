@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -53,7 +53,16 @@ namespace Dev2.Runtime.ESB
 
         #endregion
 
-        static ConcurrentDictionary<Guid, ServiceAction> _cache = new ConcurrentDictionary<Guid, ServiceAction>();
+        static readonly ConcurrentDictionary<Guid, ServiceAction> Cache = new ConcurrentDictionary<Guid, ServiceAction>();
+
+        public static void RemoveFromCache(Guid resourceID)
+        {
+            if (Cache != null)
+            {
+                ServiceAction sa;
+                Cache.TryRemove(resourceID, out sa);
+            }
+        }
         // 2012.10.17 - 5782: TWR - Changed to work off the workspace host and made read only
 
         public bool IsLoggingEnabled
@@ -213,9 +222,9 @@ namespace Dev2.Runtime.ESB
             if(isLocalInvoke)
             {
                 ServiceAction sa;
-                if(_cache.ContainsKey(dataObject.ResourceID))
+                if(Cache.ContainsKey(dataObject.ResourceID))
                 {
-                    sa = _cache[dataObject.ResourceID];
+                    sa = Cache[dataObject.ResourceID];
   
                     return GenerateContainer(sa, dataObject, _workspace);
                 }
@@ -227,7 +236,7 @@ namespace Dev2.Runtime.ESB
                 {
                     sa = theService.Actions.FirstOrDefault();
                     MapServiceActionDependencies(sa, sl);
-                    _cache.TryAdd(dataObject.ResourceID, sa);
+                    Cache.TryAdd(dataObject.ResourceID, sa);
                     return GenerateContainer(sa, dataObject, _workspace);
                 }
 
@@ -251,9 +260,9 @@ namespace Dev2.Runtime.ESB
             if(isLocalInvoke)
             {
 
-                if (_cache.ContainsKey(dataObject.ResourceID))
+                if (Cache.ContainsKey(dataObject.ResourceID))
                 {
-                    ServiceAction sa = _cache[dataObject.ResourceID];
+                    ServiceAction sa = Cache[dataObject.ResourceID];
 
                     return GenerateContainer(sa, dataObject, _workspace);
                 }
@@ -271,7 +280,7 @@ namespace Dev2.Runtime.ESB
                     {
                         var sa = theService.Actions.FirstOrDefault();
                         MapServiceActionDependencies(sa, sl);
-                        _cache.TryAdd(dataObject.ResourceID, sa);
+                        Cache.TryAdd(dataObject.ResourceID, sa);
                         executionContainer = GenerateContainer(sa, dataObject, _workspace);
                     }
 

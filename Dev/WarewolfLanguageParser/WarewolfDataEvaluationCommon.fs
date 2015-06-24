@@ -21,8 +21,8 @@ type WarewolfEvalResult =
 let GetDecimalPlaces (decimalNumber:float) =
     let mutable decimalPlaces = 1;
     let mutable powers = 10.0;
-    if (decimalNumber > 0.0) then
-        while not(((decimalNumber * powers) % 1.0) = 0.0) do
+    if (decimalNumber > 0.0) || (decimalNumber < 0.0) then
+        while not ( abs((decimalNumber * powers) % 1.0) = 0.0) do
             powers <- powers*10.0
             decimalPlaces <-decimalPlaces+1
     decimalPlaces;
@@ -43,11 +43,31 @@ let WarewolfAtomRecordtoString (x:WarewolfAtomRecord )=
         | DataString a -> a
         | Nothing -> ""
         | PositionedValue (a,b) -> b.ToString()
+
 let EvalResultToString (a:WarewolfEvalResult) = 
     match a with
     | WarewolfAtomResult x -> AtomtoString x
     | WarewolfAtomListresult x -> Seq.map WarewolfAtomRecordtoString x |> fun a->System.String.Join(",",a)
     | WarewolfRecordSetResult x -> Map.toList x.Data |> List.filter (fun (a, b) ->not (a=PositionColumn)) |>  List.map snd |> Seq.collect (fun a->a) |> fun a->System.String.Join(",",a)
+    
+let AtomToJsonCompatibleObject (a:WarewolfAtom) :System.Object= 
+    match a with 
+        | Int a -> a :> System.Object
+        | DataString a -> match a with
+                            | z when z.ToLower() = "true" ->true :> System.Object
+                            | z when z.ToLower() = "false" -> false:>System.Object
+                            | _-> a:> System.Object
+        | Float a ->a :> System.Object
+        | Nothing->null:>System.Object
+        | _ -> "" :> System.Object
+
+
+let EvalResultToJsonCompatibleObject (a:WarewolfEvalResult) :System.Object= 
+    match a with
+    | WarewolfAtomResult x -> AtomToJsonCompatibleObject x
+    | WarewolfAtomListresult x -> Seq.map AtomToJsonCompatibleObject x:>System.Object
+
+    | _ -> failwith "json eval results can only work on atoms" 
 
 let EvalResultToStringNoCommas (a:WarewolfEvalResult) = 
     match a with
@@ -82,7 +102,7 @@ let getRecordSetIndexAsInt (recset:WarewolfRecordset) (position:int) =
     | Ordinal -> if recset.LastIndex <  position then
                     failwith "row does not exist"
                  else
-                    position
+                    position - 1
     | _->
             let indexes = recset.Data.[PositionColumn]
             let positionAsAtom = Int position
@@ -229,7 +249,7 @@ and ParseLanguageExpression  (lang:string) : LanguageExpression=
                     res
     else WarewolfAtomAtomExpression (ParseAtom lang)
 and evalARow  ( index:int) (recset:WarewolfRecordset) (name:string) (env:WarewolfEnvironment)=
-    let blank = Map.map (fun a b -> new WarewolfAtomList<WarewolfAtom>(WarewolfAtom.Nothing, [ EvalResultToString (Eval env (sprintf "[[%s(%i).%s]]" name index a) ) |> DataString])) recset.Data
+    let blank = Map.map (fun a b -> new WarewolfAtomList<WarewolfAtom>(WarewolfAtom.Nothing, [ recset.Data.[a].[index] |> WarewolfAtomRecordtoString|> DataString ])) recset.Data
     {recset with Data = blank}
 
 and EvalDataSetExpression (env: WarewolfEnvironment)  (name:RecordSetName) =
@@ -239,7 +259,7 @@ and EvalDataSetExpression (env: WarewolfEnvironment)  (name:RecordSetName) =
         match name.Index with
             | Star -> WarewolfRecordSetResult env.RecordSets.[name.Name]
             | IntIndex a -> WarewolfRecordSetResult (evalARow (getRecordSetIndexAsInt recset a) recset name.Name env)
-            | Last  -> WarewolfRecordSetResult ( evalARow  recset.LastIndex recset  name.Name env)
+            | Last  -> WarewolfRecordSetResult ( evalARow  (getRecordSetIndexAsInt recset recset.LastIndex) recset  name.Name env)
             | IndexExpression b -> 
                                    let res = Eval env (LanguageExpressionToString b) |> EvalResultToString
                                    match b with 

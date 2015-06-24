@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -54,20 +54,20 @@ namespace Dev2.Common
         // ReSharper restore UnusedMember.Global
 
         public static string DefaultServerLogFileConfig = "<log4net>" +
-                                             "<appender name=\"LogFileAppender\" type=\"log4net.Appender.RollingFileAppender\">"+
-                                            "<file type=\"log4net.Util.PatternString\" value=\"wareWolf-Server.log\" />"+
-    "<!-- Example using environment variables in params -->"+
-    "<!-- <file value=\"${TMP}\\log-file.txt\" /> -->"+
-    "<appendToFile value=\"true\" />"+
-    "<rollingStyle value=\"Size\" />"+
-    "<maxSizeRollBackups value=\"1\" />"+
-    "<maximumFileSize value=\"200MB\" />"+
-    "<!-- An alternate output encoding can be specified -->"+
-    "<!-- <encoding value=\"unicodeFFFE\" /> -->"+
-    "<layout type=\"log4net.Layout.PatternLayout\">"+
+                                             "<appender name=\"LogFileAppender\" type=\"Log4Net.Async.AsyncRollingFileAppender,Log4Net.Async\">" +
+                                            "<file type=\"log4net.Util.PatternString\" value=\"wareWolf-Server.log\" />" +
+    "<!-- Example using environment variables in params -->" +
+    "<!-- <file value=\"${TMP}\\log-file.txt\" /> -->" +
+    "<appendToFile value=\"true\" />" +
+    "<rollingStyle value=\"Size\" />" +
+    "<maxSizeRollBackups value=\"1\" />" +
+    "<maximumFileSize value=\"200MB\" />" +
+    "<!-- An alternate output encoding can be specified -->" +
+    "<!-- <encoding value=\"unicodeFFFE\" /> -->" +
+    "<layout type=\"log4net.Layout.PatternLayout\">" +
     "<header value=\"[Header]&#xD;&#xA;\" />" +
                                              "<footer value=\"[Footer]&#xD;&#xA;\" />" +
-                                             "<conversionPattern value=\"%date [%thread] %-5level %type{3} - %message%newline\" />" +
+                                             "<conversionPattern value=\"%date [%thread] %-5level - %message%newline\" />" +
                                              "</layout>" +
                                              "<!-- Alternate layout using XML			" +
                                              "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
@@ -80,7 +80,7 @@ namespace Dev2.Common
                                              "</log4net>";
 
         public static string DefaultStudioLogFileConfig = "<log4net>" +
-                                             "<appender name=\"LogFileAppender\" type=\"log4net.Appender.RollingFileAppender\">"+
+                                             "<appender name=\"LogFileAppender\" type=\"Log4Net.Async.AsyncRollingFileAppender,Log4Net.Async\">" +
                                             "<file type=\"log4net.Util.PatternString\" value=\"${LOCALAPPDATA}\\Warewolf\\Studio Logs\\Warewolf Studio.log\" />"+
     "<!-- Example using environment variables in params -->"+
     "<!-- <file value=\"${TMP}\\log-file.txt\" /> -->"+
@@ -93,7 +93,7 @@ namespace Dev2.Common
     "<layout type=\"log4net.Layout.PatternLayout\">"+
     "<header value=\"[Header]&#xD;&#xA;\" />" +
                                              "<footer value=\"[Footer]&#xD;&#xA;\" />" +
-                                             "<conversionPattern value=\"%date [%thread] %-5level %type{3} - %message%newline\" />" +
+                                             "<conversionPattern value=\"%date [%thread] %-5level - %message%newline\" />" +
                                              "</layout>" +
                                              "<!-- Alternate layout using XML			" +
                                              "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
@@ -102,6 +102,7 @@ namespace Dev2.Common
                                              "<root>" +
                                              "<level value=\"DEBUG\" />" +
                                              "<appender-ref ref=\"LogFileAppender\" />" +
+                                           
                                              "</root>" +
                                              "</log4net>";
 
@@ -143,7 +144,7 @@ namespace Dev2.Common
 
         //Resource Constants
         public const string ResourceFileExtension = ".xml";
-
+        public const string XMLPrefix = "~XML~";
         //Windows Service constants
         public const string ServiceName = "Warewolf Server";
 
@@ -337,7 +338,7 @@ or type_desc LIKE '%Procedure%'";
         public static readonly string ShortTimePattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
         public static readonly string Dev2DotNetDefaultDateTimeFormat = ShortTimePattern + " " + LongTimePattern;
         public static readonly string Dev2CustomDefaultDateTimeFormat = "d MM yyyy 24h:min.ss sp";
-
+        public const string GlobalDefaultNowFormat = "yyyy/MM/dd hh:mm:ss.fff tt";
         // Query Network Computer Names
         public static readonly int NetworkComputerNameQueryFreq = 900000;
 

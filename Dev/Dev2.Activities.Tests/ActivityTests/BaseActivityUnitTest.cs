@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -217,7 +217,7 @@ namespace ActivityUnitTests
                 dataObject.ResourceID = Guid.NewGuid();
             }
             dataObject.Environment = DataObject.Environment;
-            wfec.Eval(() => FlowchartProcess,dataObject.ResourceID,dataObject);
+            wfec.Eval(FlowchartProcess,dataObject.ResourceID,dataObject);
             DataObject = dataObject;
             return dataObject;
         }
@@ -270,7 +270,7 @@ namespace ActivityUnitTests
             WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, mockChannel.Object);
 
             errors.ClearErrors();
-            wfec.Eval(() => FlowchartProcess,Guid.NewGuid(),dataObject);
+            wfec.Eval(FlowchartProcess,Guid.NewGuid(),dataObject);
 
             return mockChannel;
         }

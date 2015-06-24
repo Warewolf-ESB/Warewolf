@@ -2,7 +2,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -312,7 +312,14 @@ namespace Dev2
             {
                 File.WriteAllText(settingsConfigFile, GlobalConstants.DefaultServerLogFileConfig);
             }
-            XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
+            try
+            {
+                XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+            }
             InitializeCommandLineArguments();
         }
 

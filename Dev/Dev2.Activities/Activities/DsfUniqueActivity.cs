@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -83,9 +83,9 @@ namespace Dev2.Activities
 
             var allErrors = new ErrorResultTO();
             InitializeDebug(dataObject);
-            var toresultfields = Result.Split(new[] { ',' });
-            var fromFields = InFields.Split(new[] { ',' });
-            var fromResultFieldresultfields = ResultFields.Split(new[] { ',' });
+            var toresultfields = Result.Split(',');
+            var fromFields = InFields.Split(',');
+            var fromResultFieldresultfields = ResultFields.Split(',');
 
             try
             {
@@ -120,7 +120,7 @@ namespace Dev2.Activities
             }
             finally
             {
-                PostExecute(dataObject, toresultfields, fromFields, fromResultFieldresultfields, allErrors.HasErrors());
+                PostExecute(dataObject, toresultfields, allErrors.HasErrors());
                 // Handle Errors
                 var hasErrors = allErrors.HasErrors();
                 if(hasErrors)
@@ -140,7 +140,7 @@ namespace Dev2.Activities
             }
         }
 
-        void PostExecute(IDSFDataObject dataObject, IEnumerable<string> toresultfields, IEnumerable<string> fromFields, IEnumerable<string> fromResultFieldresultfields, bool hasErrors)
+        void PostExecute(IDSFDataObject dataObject, IEnumerable<string> toresultfields, bool hasErrors)
         {
             if(dataObject.IsDebugMode())
             {

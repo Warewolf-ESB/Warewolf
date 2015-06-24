@@ -1,6 +1,6 @@
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,12 +17,12 @@ namespace Dev2.Common
 {
     public class Dev2Random
     {
-        public string GetRandom(enRandomType type, int length, int from, int to)
+        public string GetRandom(enRandomType type, int length, double from, double to)
         {
             int seed = DateTime.Now.Millisecond;
             if ((length < 0 && type != enRandomType.Guid && type != enRandomType.Numbers))
             {
-                throw new ArgumentException();
+                throw new ArgumentException("length must be greater than or equal to zero if the type is Letters or LettersAndNumbers");
             }
 
             switch (type)
@@ -40,20 +40,57 @@ namespace Dev2.Common
             }
         }
 
-        private string GenerateNumbers(int from, int to, ref int seed)
+        private string GenerateNumbers(double from, double to, ref int seed)
         {
             //Added for BUG 9506 to account for when the from is larger thean the to.
             if (from > to)
             {
-                int tmpTo = to;
+                double tmpTo = to;
                 to = from;
                 from = tmpTo;
             }
+            int powerOfTen = (int)(Math.Pow(10, GetDecimalPlaces(from, to)));
             Random rand = GetRandom(ref seed);
-            string result = rand.Next(from, to > 0 ? to + 1 : to).ToString(CultureInfo.InvariantCulture);
+            string result;
+            if (powerOfTen != 1)
+                result = (rand.NextDouble() * (to - from) + from).ToString(CultureInfo.InvariantCulture);
+            //result = ((double)(rand.Next((int)(from * powerOfTen), (int)((to * powerOfTen) > 0 ? (to * powerOfTen + 1) : (to * powerOfTen)))) / (double)powerOfTen).ToString(CultureInfo.InvariantCulture);
+            else
+            {
+                if (IsInIntRange(from) && IsInIntRange(to))
+                    result = rand.Next((int)from, (int)(to > 0 ? (to + 1) : to)).ToString(CultureInfo.InvariantCulture);
+                else
+                    result = (Math.Round(rand.NextDouble() * (to - from) + from)).ToString(CultureInfo.InvariantCulture);
+
+            }
+
             return result;
         }
 
+        private bool IsInIntRange(double x)
+        {
+            return x >= int.MinValue && x <= int.MaxValue;
+        }
+
+        private uint GetDecimalPlaces(double from, double to)
+        {
+            double smallest = Math.Min(
+                Math.Abs(from),
+                Math.Abs(to)
+                );
+            double largest = Math.Max(
+                Math.Abs(from),
+                Math.Abs(to)
+                );
+            return (uint)(Math.Max(DecimalPlaces(smallest), DecimalPlaces(largest)));
+        }
+
+        private uint DecimalPlaces(double x)
+        {
+            uint places = 0;
+            for (; ((x * Math.Pow(10, (double)places)) % 1) != 0; places++) ;
+            return places;
+        }
         private string GenerateLetters(int length, ref int seed)
         {
             int charStart = EnvironmentVariables.CharacterMap.LettersStartNumber;
@@ -64,7 +101,7 @@ namespace Dev2.Common
             for (int i = 0; i < length; i++)
             {
                 Random rand = GetRandom(ref seed);
-                result.Append((char) (rand.Next(charStart, charEnd)));
+                result.Append((char)(rand.Next(charStart, charEnd)));
             }
 
             return result.ToString();

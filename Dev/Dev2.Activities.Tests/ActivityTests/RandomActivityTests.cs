@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -54,7 +54,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.IsTrue(actualNum >= Start && actualNum <= End);
             }
@@ -77,7 +77,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.IsTrue(dataListItems.Count == 10);
                 int firstRes;
@@ -110,13 +110,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            const string Expected = "Please ensure that you have entered an integer for Start.";
+            const string Expected = "Please ensure that you have entered an integer or decimal number for Start.";
             string actual;
             GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(Expected, actual);
             }
@@ -134,13 +134,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            const string Expected = "Please ensure that you have entered an integer for End.";
+            const string Expected = "Please ensure that you have entered an integer or decimal number for End.";
             string actual;
             GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(Expected, actual);
             }
@@ -167,7 +167,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             int.TryParse(actual, out innerResult);
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.IsTrue(innerResult >= -10 && innerResult <= 10);
             }
@@ -185,13 +185,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            const string Expected = "Please ensure that you have entered an integer for Start.";
+            const string Expected = "Please ensure that you have entered an integer or decimal number for Start.";
             string actual;
             GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(Expected, actual);
             }
@@ -209,13 +209,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            const string Expected = "Please ensure that you have entered an integer for End.";
+            const string Expected = "Please ensure that you have entered an integer or decimal number for End.";
             string actual;
             GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(Expected, actual);
             }
@@ -233,13 +233,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            const string Expected = "Please ensure that the End is an integer.";
+            string Expected = string.Format("Please ensure that the End is an integer or decimal number from {0} to {1}.", double.MinValue, double.MaxValue);
             string actual;
             GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(Expected, actual);
             }
@@ -257,13 +257,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            const string Expected = "Please ensure that the Start is an integer.";
+            string Expected = string.Format("Please ensure that the Start is an integer or decimal number from {0} to {1}.", double.MinValue, double.MaxValue);
             string actual;
             GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(Expected, actual);
             }
@@ -291,7 +291,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(Length, actual.Length);
             }
@@ -314,7 +314,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(10, actual.Length);
             }
@@ -338,7 +338,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(Expected, actual);
             }
@@ -362,7 +362,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(Expected, actual);
             }
@@ -386,7 +386,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(Expected, actual);
             }

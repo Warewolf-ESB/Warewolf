@@ -95,6 +95,19 @@ Scenario: Convert a sentence starting with a number to Sentence case
 	| # |                            |
 	| 1 | [[var]] = 1 warewolf rocks |
 
+Scenario: Convert a sentence starting with a number directly in front of a word to Title Case
+	Given I have a case convert variable "[[var]]" with a value of "1warewolf Rocks"	
+	And I convert a variable "[[var]]" to "Title Case"
+	When the case conversion tool is executed
+	Then the sentence will be "1Warewolf Rocks"
+	And the execution has "NO" error
+	And the debug inputs as  
+	| # | Convert                    | To         |
+	| 1 | [[var]] = 1warewolf Rocks | Title Case |
+	And the debug output as  
+	| # |                            |
+	| 1 | [[var]] = 1Warewolf Rocks |
+
 Scenario: Convert a sentence starting with a number to Title Case
 	Given I have a case convert variable "[[var]]" with a value of "1 WAREWOLF Rocks"	
 	And I convert a variable "[[var]]" to "Title Case"

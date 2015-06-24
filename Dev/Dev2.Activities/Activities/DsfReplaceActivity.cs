@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -139,60 +139,64 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IWarewolfListIterator iteratorCollection = new WarewolfListIterator();
 
                 var finRes = dataObject.Environment.Eval(Find);
-                if(ExecutionEnvironment.IsNothing(finRes))
+                if (ExecutionEnvironment.IsNothing(finRes))
                 {
-                    throw new Exception("Undefined variable:" + Find);
-                }
-
-                var itrFind = new WarewolfIterator(dataObject.Environment.Eval(Find));
-                iteratorCollection.AddVariableToIterateOn(itrFind);
-
-                var itrReplace = new WarewolfIterator(dataObject.Environment.Eval(ReplaceWith));
-                iteratorCollection.AddVariableToIterateOn(itrReplace);
-                var rule = new IsSingleValueRule(() => Result);
-                var single = rule.Check();
-                if(single != null)
-                {
-                    allErrors.AddError(single.Message);
+                    if (!string.IsNullOrEmpty(Result))
+                    {
+                        dataObject.Environment.Assign(Result, replacementTotal.ToString(CultureInfo.InvariantCulture));
+                    }
                 }
                 else
                 {
-                    while(iteratorCollection.HasMoreData())
-                    {
-                        // now process each field for entire evaluated Where expression....                    
-                        var findValue = iteratorCollection.FetchNextValue(itrFind);
-                        var replaceWithValue = iteratorCollection.FetchNextValue(itrReplace);
-                        foreach(string s in toSearch)
-                        {
-                            if(!DataListUtil.IsEvaluated(s))
-                            {
-                                allErrors.AddError("Please insert only variables into Fields To Search");
-                                return;
-                            }
-                            if(!string.IsNullOrEmpty(findValue))
-                            {
-                                dataObject.Environment.ApplyUpdate(s, a => DataASTMutable.WarewolfAtom.NewDataString(replaceOperation.Replace(a.ToString(), findValue, replaceWithValue, CaseMatch, out errors, ref replacementCount)));
-                            }
+                    var itrFind = new WarewolfIterator(dataObject.Environment.Eval(Find));
+                    iteratorCollection.AddVariableToIterateOn(itrFind);
 
-                            replacementTotal += replacementCount;
-                            if(dataObject.IsDebugMode() && !allErrors.HasErrors())
+                    var itrReplace = new WarewolfIterator(dataObject.Environment.Eval(ReplaceWith));
+                    iteratorCollection.AddVariableToIterateOn(itrReplace);
+                    var rule = new IsSingleValueRule(() => Result);
+                    var single = rule.Check();
+                    if (single != null)
+                    {
+                        allErrors.AddError(single.Message);
+                    }
+                    else
+                    {
+                        while (iteratorCollection.HasMoreData())
+                        {
+                            // now process each field for entire evaluated Where expression....                    
+                            var findValue = iteratorCollection.FetchNextValue(itrFind);
+                            var replaceWithValue = iteratorCollection.FetchNextValue(itrReplace);
+                            foreach (string s in toSearch)
                             {
-                                if(!string.IsNullOrEmpty(Result))
+                                if (!DataListUtil.IsEvaluated(s))
                                 {
-                                    if(replacementCount > 0)
+                                    allErrors.AddError("Please insert only variables into Fields To Search");
+                                    return;
+                                }
+                                if (!string.IsNullOrEmpty(findValue))
+                                {
+                                    dataObject.Environment.ApplyUpdate(s, a => DataASTMutable.WarewolfAtom.NewDataString(replaceOperation.Replace(a.ToString(), findValue, replaceWithValue, CaseMatch, out errors, ref replacementCount)));
+                                }
+
+                                replacementTotal += replacementCount;
+                                if (dataObject.IsDebugMode() && !allErrors.HasErrors())
+                                {
+                                    if (!string.IsNullOrEmpty(Result))
                                     {
-                                        AddDebugOutputItem(new DebugEvalResult(s, "", dataObject.Environment));
+                                        if (replacementCount > 0)
+                                        {
+                                            AddDebugOutputItem(new DebugEvalResult(s, "", dataObject.Environment));
+                                        }
                                     }
                                 }
                             }
                         }
                     }
+                    if (!string.IsNullOrEmpty(Result))
+                    {
+                        dataObject.Environment.Assign(Result, replacementTotal.ToString(CultureInfo.InvariantCulture));
+                    }
                 }
-                if(!string.IsNullOrEmpty(Result))
-                {
-                    dataObject.Environment.Assign(Result, replacementTotal.ToString(CultureInfo.InvariantCulture));
-                }
-
                 if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
                     if(!string.IsNullOrEmpty(Result))

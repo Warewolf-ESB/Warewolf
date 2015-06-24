@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Dev2.Common;
@@ -85,7 +86,8 @@ namespace Dev2.Runtime.Hosting
             }
 
             var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-            var folders = Directory.EnumerateDirectories(workspacePath, "*", SearchOption.AllDirectories);
+            var folders = new List<string> { workspacePath };
+            folders.AddRange(Directory.EnumerateDirectories(workspacePath, "*", SearchOption.AllDirectories));
             foreach(var path in folders.Select(folder => Path.Combine(workspacePath, folder)))
             {
                 if(Directory.Exists(path))

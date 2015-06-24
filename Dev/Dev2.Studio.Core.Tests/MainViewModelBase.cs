@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Reflection;
 using System.Text;
 using System.Windows;
 using Caliburn.Micro;
@@ -118,7 +117,6 @@ namespace Dev2.Core.Tests
             // ReSharper disable ObjectCreationAsStatement
             new WorkspaceItemRepository(mockWorkspaceItemRepository.Object);
             // ReSharper restore ObjectCreationAsStatement
-            FindCefSharpWpfDll();//Ashley: Load Xaml references manually...
             Mock<IConnectControlViewModel> mockConnectControlViewModel = new Mock<IConnectControlViewModel>();
             MainViewModel = new MainViewModel(EventAggregator.Object, asyncWorker.Object, environmentRepo,
                 new Mock<IVersionChecker>().Object, false, BrowserPopupController.Object, PopupController.Object
@@ -131,15 +129,6 @@ namespace Dev2.Core.Tests
         }
 
         protected Mock<IBrowserPopupController> BrowserPopupController;
-
-        static void FindCefSharpWpfDll()
-        {
-            var assemblyPath = Path.Combine(Environment.CurrentDirectory, @"..\..\..\Binaries\CefSharp\CefSharp.Wpf.dll");
-            if(File.Exists(assemblyPath))
-            {
-                Assembly.LoadFile(assemblyPath);
-            }
-        }
 
         protected Mock<IContextualResourceModel> CreateResource(ResourceType resourceType)
         {
