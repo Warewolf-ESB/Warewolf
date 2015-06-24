@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Dev2.Activities;
+using Dev2.Activities.Sharepoint;
 using Dev2.Interfaces;
 using Dev2.Util;
 using Dev2.Utilities;
@@ -65,6 +66,47 @@ namespace Dev2.FindMissingStrategies
                     {
                         results.Add(dsAct.JsonString);
                     }
+                }
+            }
+            if (activityType == typeof(SharepointReadListActivity))
+            {
+                var dsAct = activity as SharepointReadListActivity;
+                if (dsAct != null)
+                {
+                    results.AddRange(InternalFindMissing(dsAct.ReadListItems));
+                    if(dsAct.FilterCriteria != null)
+                    {
+                        results.AddRange(InternalFindMissing(dsAct.FilterCriteria));
+                    }
+                }
+            }
+            if (activityType == typeof(SharepointCreateListItemActivity))
+            {
+                var dsAct = activity as SharepointCreateListItemActivity;
+                if (dsAct != null)
+                {
+                    results.AddRange(InternalFindMissing(dsAct.ReadListItems));
+                    results.Add(dsAct.Result);
+                }
+            }
+            if (activityType == typeof(SharepointDeleteListItemActivity))
+            {
+                var dsAct = activity as SharepointDeleteListItemActivity;
+                if (dsAct != null)
+                {
+                    results.AddRange(InternalFindMissing(dsAct.FilterCriteria));
+                    results.Add(dsAct.DeleteCount);
+                }
+                
+            }
+            if (activityType == typeof(SharepointUpdateListItemActivity))
+            {
+                var dsAct = activity as SharepointUpdateListItemActivity;
+                if (dsAct != null)
+                {
+                    results.AddRange(InternalFindMissing(dsAct.ReadListItems));
+                    results.AddRange(InternalFindMissing(dsAct.FilterCriteria));
+                    results.Add(dsAct.Result);
                 }
             }
             else if(activityType == typeof(DsfDataMergeActivity))

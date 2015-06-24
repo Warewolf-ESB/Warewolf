@@ -16,6 +16,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Controls;
 using Dev2.Activities;
+using Dev2.Activities.Sharepoint;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable CheckNamespace
@@ -169,7 +170,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
             if (category != null)
             {
                 category.Add(new ToolboxItemWrapper(typeof(DsfDropBoxFileActivity), "/Images/dropbox-windows.png", "Dropbox-File"));
-               
+            }
+            category = GetToolboxCategoryByName("SharePoint");
+            if (category != null)
+            {
+                category.Add(new ToolboxItemWrapper(typeof(SharepointReadListActivity), "/images/ToolFindRecords-32.png", "Read List Item(s)"));
+                category.Add(new ToolboxItemWrapper(typeof(SharepointCreateListItemActivity), "/images/ToolFindRecords-32.png", "Create List Item(s)"));
+                category.Add(new ToolboxItemWrapper(typeof(SharepointDeleteListItemActivity), "/images/ToolFindRecords-32.png", "Delete List Item(s)"));
+                category.Add(new ToolboxItemWrapper(typeof(SharepointUpdateListItemActivity), "/images/ToolFindRecords-32.png", "Update List Item(s)"));
             }
         }
 

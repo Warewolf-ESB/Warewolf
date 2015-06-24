@@ -175,6 +175,20 @@ This is a variable from an input field. Use comma-separated values for each inde
 Preview (scalar field - including indexed recordsets and ())
 This is a variable from an input field. Put some test info in and click the Preview button to test your result.</value>
   </data>
+    <data name="SharepointToolTipServer" xml:space="preserve">
+    <value>Select a preconfigured Sharepoint server source or "New Sharepoint Server Source..." to add a new one.</value>
+  </data>
+    <data name="SharepointToolTipList" xml:space="preserve">
+    <value>Select a list to read from.
+If the list has changed or recently added to the source, click the refresh button.</value>
+  </data>
+      <data name="SharepointToolTipToVariable" xml:space="preserve">
+    <value>To read list item data into a variable, put the variable here.
+    </value>
+  </data>
+    <data name="SharepointToolTipFieldToFilterOn" xml:space="preserve">
+    <value>Select the field you want to match on.</value>
+  </data>
   <data name="SqlBulkInsertHelpTimeout" xml:space="preserve">
     <value>The number of seconds you would like the operation to complete in.
 All batches in total must complete within this time period.
@@ -223,6 +237,18 @@ To quickly change the input data, press the Quick Variable Input button and amen
   <data name="SqlBulkInsertToolTipResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns Success or the record numbers with errors.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+    <data name="SharepointDelteToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the number of items deleted.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+     <data name="SharepointInsertToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or Failure.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
@@ -3119,6 +3145,23 @@ Data
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
+    <data name="SharepointHelpServer" xml:space="preserve">
+    <value>Select a preconfigured Sharepoint server source or "New Sharepoint Server Source..." to add a new one.
+</value>
+  </data>
+      <data name="SharepointHelpList" xml:space="preserve">
+    <value>Select a list to read data from.
+If the list changed, click the refresh button.
+
+Allowed:
+Select a list to read data from.</value>
+  </data>
+      <data name="SharepointHelpFieldToMatchOn" xml:space="preserve">
+    <value>Select the field you want to match on.
+
+Allowed:
+na</value>
+  </data>
   <data name="SQLBulkInsertHelpBatchSize" xml:space="preserve">
     <value>The number of rows you would like to insert at a time.
 The default is 0 which will do everything in 1 batch.
@@ -3135,7 +3178,7 @@ Number
 
 Allowed:
 Check constraints while data is being inserted.</value>
-  </data>
+  </data>    
   <data name="SQLBulkInsertHelpDatabase" xml:space="preserve">
     <value>Select a preconfigured database source or "New Database Source..." to add a new one.
 
@@ -3157,6 +3200,30 @@ Preserve source identity values.</value>
   <data name="SQLBulkInsertHelpResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns Success or the record numbers with errors.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+    <data name="SharepointDeleteHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the number of records deleted.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+     <data name="SharepointInsertHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or Failure.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record.
 

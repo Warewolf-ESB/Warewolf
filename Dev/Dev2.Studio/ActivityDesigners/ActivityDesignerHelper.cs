@@ -47,6 +47,10 @@ using Dev2.Activities.Designers2.Replace;
 using Dev2.Activities.Designers2.Script;
 using Dev2.Activities.Designers2.Sequence;
 using Dev2.Activities.Designers2.Service;
+using Dev2.Activities.Designers2.SharepointListCreate;
+using Dev2.Activities.Designers2.SharepointListDelete;
+using Dev2.Activities.Designers2.SharepointListUpdate;
+using Dev2.Activities.Designers2.SharepointListRead;
 using Dev2.Activities.Designers2.SortRecords;
 using Dev2.Activities.Designers2.SqlBulkInsert;
 using Dev2.Activities.Designers2.UniqueRecords;
@@ -54,6 +58,7 @@ using Dev2.Activities.Designers2.Unzip;
 using Dev2.Activities.Designers2.WriteFile;
 using Dev2.Activities.Designers2.XPath;
 using Dev2.Activities.Designers2.Zip;
+using Dev2.Activities.Sharepoint;
 using Dev2.Studio.ViewModels.Workflow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -70,7 +75,6 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfDateTimeActivity), typeof(DateTimeDesigner) },
                 { typeof(DsfWebGetRequestWithTimeoutActivity), typeof(GetWebRequestWithTimeOutDesigner) },
                 { typeof(DsfWebGetRequestActivity), typeof(GetWebRequestDesigner) },
-
                 { typeof(DsfFindRecordsMultipleCriteriaActivity), typeof(FindRecordsMultipleCriteriaDesigner) },
                 { typeof(DsfSqlBulkInsertActivity), typeof(SqlBulkInsertDesigner) },
                 { typeof(DsfSortRecordsActivity), typeof(SortRecordsDesigner) },
@@ -114,7 +118,10 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfScriptingJavaScriptActivity), typeof(DsfScriptingJavaScriptDesigner) },
                 { typeof(DsfDropBoxFileActivity), typeof(DropboxUploadFileDesigner) },
                 { typeof(DsfCreateJsonActivity), typeof(CreateJsonDesigner) },
-                // Travis.Frisinger : 25.09.2012 - Removed Http Activity as it is out of sync with the current release 1 plans
+                { typeof(SharepointReadListActivity), typeof(SharepointListReadDesigner) },
+                { typeof(SharepointCreateListItemActivity), typeof(SharepointListCreateDesigner) },
+                { typeof(SharepointDeleteListItemActivity), typeof(SharepointListDeleteDesigner) },
+                { typeof(SharepointUpdateListItemActivity), typeof(SharepointListUpdateDesigner) }
             };
 
             workflowVm.InitializeDesigner(designerAttributes, liteInit);
