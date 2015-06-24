@@ -16,11 +16,12 @@ namespace Dev2.TO
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
-        public SharepointReadListTo(string variableName, string fieldName, string internalName)
+        public SharepointReadListTo(string variableName, string fieldName, string internalName, string type)
         {
             FieldName = fieldName;
             VariableName = variableName;
             InternalName = internalName;
+            Type = type;
         }
 
         public string InternalName { get; set; }
@@ -28,6 +29,8 @@ namespace Dev2.TO
         public string FieldName { get; set; }
         [FindMissing]
         public string VariableName { get; set; }
+        public string Type { get; set; }
+        public bool IsRequired { get; set; }
         public int IndexNumber { get { return _indexNumber; } set { OnPropertyChanged(ref _indexNumber, value); } }
 
         public bool CanRemove()

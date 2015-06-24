@@ -166,11 +166,46 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
-                                        <TextBlock Text="{Binding FieldName}"
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="4" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0"
+                                               Text="*"
+                                               ToolTip="Required"
+                                               VerticalAlignment="Top"
+                                               Margin="0"
+                                               Visibility="{Binding IsRequired, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                        <TextBlock Grid.Column="1" Text="{Binding FieldName}"
                                            TextTrimming="CharacterEllipsis"
                                            VerticalAlignment="Center"
                                            Padding="3,0"
                                            ToolTip="{Binding FieldName}">                               
+                                <AutomationProperties.AutomationId>
+                                    <MultiBinding StringFormat="UI_{0}_Row{1}_OutputColumnName_AutoID">
+                                        <Binding Path="DataContext.ModelItem.AutomationID"
+                                                 RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                        <Binding Path="IndexNumber" />
+                                    </MultiBinding>
+                                </AutomationProperties.AutomationId>
+                                        </TextBlock>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Width="SizeToCells"
+                                        MinWidth="65"
+                                        Header="Type"
+                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                        d:DataContext="{d:DesignInstance Type=interfaces:ISharepointReadListTo}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
+                                        <TextBlock Text="{Binding Type}"
+                                           TextTrimming="CharacterEllipsis"
+                                           VerticalAlignment="Center"
+                                           Padding="3,0"
+                                           ToolTip="{Binding Type}">                               
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_Row{1}_OutputColumnName_AutoID">
                                         <Binding Path="DataContext.ModelItem.AutomationID"

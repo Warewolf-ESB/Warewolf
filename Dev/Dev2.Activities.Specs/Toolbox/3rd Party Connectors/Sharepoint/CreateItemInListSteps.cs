@@ -25,7 +25,7 @@ namespace Dev2.Activities.Specs.Toolbox._3rd_Party_Connectors.Sharepoint
                 {
                     internalName = "mk7s";
                 }
-                sharepointReadListTos.Add(new SharepointReadListTo(row["Variable"], fieldName, internalName));
+                sharepointReadListTos.Add(new SharepointReadListTo(row["Variable"], fieldName, internalName,""));
             }
             if (ScenarioContext.Current.ContainsKey("sharepointReadListTos"))
             {

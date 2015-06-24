@@ -39,7 +39,7 @@ namespace Dev2.Tests.Activities.Utils
             var sharepointUtils = new SharepointUtils();
             
             //------------Execute Test---------------------------
-            var validList = sharepointUtils.GetValidReadListItems(new List<SharepointReadListTo> { new SharepointReadListTo("Bob", "Title", "Title"), new SharepointReadListTo(null, "Title", "Title") });
+            var validList = sharepointUtils.GetValidReadListItems(new List<SharepointReadListTo> { new SharepointReadListTo("Bob", "Title", "Title",""), new SharepointReadListTo(null, "Title", "Title","") });
             //------------Assert Results-------------------------
             Assert.IsNotNull(validList);
             var tos = validList as IList<SharepointReadListTo> ?? validList.ToList();
@@ -56,7 +56,7 @@ namespace Dev2.Tests.Activities.Utils
             var sharepointUtils = new SharepointUtils();
             
             //------------Execute Test---------------------------
-            var validList = sharepointUtils.GetValidReadListItems(new List<SharepointReadListTo> { new SharepointReadListTo("Bob", "Title", "Title"), new SharepointReadListTo(null, "Title", "Title") });
+            var validList = sharepointUtils.GetValidReadListItems(new List<SharepointReadListTo> { new SharepointReadListTo("Bob", "Title", "Title", ""), new SharepointReadListTo(null, "Title", "Title", "") });
             //------------Assert Results-------------------------
             Assert.IsNotNull(validList);
             var tos = validList as IList<SharepointReadListTo> ?? validList.ToList();
@@ -73,7 +73,7 @@ namespace Dev2.Tests.Activities.Utils
             var sharepointUtils = new SharepointUtils();
             
             //------------Execute Test---------------------------
-            var validList = sharepointUtils.GetValidReadListItems(new List<SharepointReadListTo> { new SharepointReadListTo("Bob", "Title", "Title"), new SharepointReadListTo("", "Title", "Title") });
+            var validList = sharepointUtils.GetValidReadListItems(new List<SharepointReadListTo> { new SharepointReadListTo("Bob", "Title", "Title", ""), new SharepointReadListTo("", "Title", "Title", "") });
             //------------Assert Results-------------------------
             Assert.IsNotNull(validList);
             var tos = validList as IList<SharepointReadListTo> ?? validList.ToList();

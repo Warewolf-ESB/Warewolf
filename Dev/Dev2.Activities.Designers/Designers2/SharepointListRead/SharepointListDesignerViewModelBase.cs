@@ -13,7 +13,6 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.Util;
-using Dev2.DataList.Contract;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core;
@@ -386,7 +385,9 @@ namespace Dev2.Activities.Designers2.SharepointListRead
                     var fieldMappings = columnList.Select(mapping =>
                     {
                         var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue(selectedList.FullName.Replace(" ","").Replace(".",""),GetValidVariableName(mapping),"*");
-                        return new SharepointReadListTo(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), mapping.Name, mapping.InternalName);
+                        var sharepointReadListTo = new SharepointReadListTo(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), mapping.Name, mapping.InternalName,mapping.Type.ToString());
+                        sharepointReadListTo.IsRequired = mapping.IsRequired;
+                        return sharepointReadListTo;
                     }).ToList();
                     if (ReadListItems == null || ReadListItems.Count == 0 || isFromListChange)
                     {

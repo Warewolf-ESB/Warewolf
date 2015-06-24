@@ -88,6 +88,9 @@ namespace Warewolf.Sharepoint
                         sharepointFieldTo.MinValue = intField.MinimumValue;
                     }
                     break;
+                case FieldType.Currency:
+                    sharepointFieldTo.Type = SharepointFieldType.Currency;
+                    break;
                 case FieldType.Text:
                 case FieldType.Choice:
                     sharepointFieldTo.Type = SharepointFieldType.Text;
