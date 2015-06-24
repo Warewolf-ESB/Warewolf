@@ -12,7 +12,7 @@
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+    <Grid Margin="{StaticResource ElementBorder}">
         <Grid.Resources>
             <converters:IsValidDateTimeConverter x:Key="IsValidDateTimeConverter" />
 
@@ -295,7 +295,7 @@
             </Border>
         </Popup>
 
-        <Grid Margin="2">
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -304,7 +304,7 @@
 
             <customControls:FilterTextBox Grid.Column="0"
                                            Width="Auto"
-                                           Margin="0,0,-2,0"
+                                           Margin="{StaticResource ControlBorderRight}"
                                            SearchText="{Binding Path=SearchText,Mode=TwoWay}" 
                                            HorizontalContentAlignment="Stretch"
                                            VerticalAlignment="Stretch" />
@@ -313,7 +313,7 @@
                     x:Name="OptionsButton"
                     Content="Options"
                     Command="{Binding ShowOptionsCommand}"
-                    Margin="0,0,2,0"
+                    Margin="{StaticResource ControlBorderRight}"
                     AutomationProperties.AutomationId="UI_DebugOutputOptionsButton_AutoID">
                 <i:Interaction.Behaviors>
                     <antiCorruptionLayer:ButtonPopupWorkaroundBehavior IsInWorkaroundState="{Binding SkipOptionsCommandExecute, Mode=TwoWay}" />
@@ -323,7 +323,7 @@
             <Button Grid.Column="2"
                     Content="{Binding ExpandAllMode, Converter={StaticResource BoolToPlusMinusConverter}}"
                     Command="{Binding ExpandAllCommand}"
-                    Margin="0,0,3,0"
+                    Margin="{StaticResource ControlBorderRight}"
                     Width="20"
                     AutomationProperties.AutomationId="UI_DebugOutputExpandAllMode_AutoID" />
         </Grid>
@@ -337,11 +337,11 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <TreeView Grid.Row="0" 
-                      ItemsSource="{Binding RootItems, NotifyOnSourceUpdated=True}" 
-                      VirtualizingStackPanel.IsVirtualizing="True"
-                      VirtualizingStackPanel.VirtualizationMode="Recycling"
-                      BorderBrush="Transparent"
-                      x:Name="DebugOutputTree">
+                               ItemsSource="{Binding RootItems, NotifyOnSourceUpdated=True}" 
+                               VirtualizingStackPanel.IsVirtualizing="True"
+                               VirtualizingStackPanel.VirtualizationMode="Recycling"
+                               BorderBrush="Transparent"
+                               x:Name="DebugOutputTree">
                     <TreeView.InputBindings>
                         <KeyBinding Gesture="CTRL+A" Command="{Binding SelectAllCommand}" />
                     </TreeView.InputBindings>
@@ -369,8 +369,7 @@
                                         Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}"
                                         cal:Message.Attach="OpenMoreLink($DataContext)"
                                         cal:Action.TargetWithoutContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}">
-                                    <TextBlock Margin="0 -7"
-                                               Padding="0,0,0,5">...</TextBlock>
+                                    <TextBlock Margin="0 -7" Padding="0,0,0,5">...</TextBlock>
                                 </Button>
                             </StackPanel>
                         </DataTemplate>
@@ -401,8 +400,7 @@
                                         Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}"
                                         cal:Message.Attach="OpenMoreLink($DataContext)"
                                         cal:Action.TargetWithoutContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}">
-                                    <TextBlock Margin="0 -7"
-                                               Padding="0,0,0,5">...</TextBlock>
+                                    <TextBlock Margin="0 -7" Padding="0,0,0,5">...</TextBlock>
                                 </Button>
                             </StackPanel>
                         </DataTemplate>
@@ -449,17 +447,12 @@
                             </Grid>
                         </DataTemplate>
 
-                        <HierarchicalDataTemplate ItemsSource="{Binding Children}" 
-                                              DataType="{x:Type diagnostics2:DebugStringTreeViewItemViewModel}">
-                            <TextBlock Grid.Row="0"
-                                       Text="{Binding Content}"
-                                       HorizontalAlignment="Stretch" />
+                        <HierarchicalDataTemplate ItemsSource="{Binding Children}" DataType="{x:Type diagnostics2:DebugStringTreeViewItemViewModel}">
+                            <TextBlock Text="{Binding Content}" HorizontalAlignment="Stretch" />
                         </HierarchicalDataTemplate>
 
-                        <HierarchicalDataTemplate ItemsSource="{Binding Children}" 
-                                              DataType="{x:Type diagnostics2:DebugStateTreeViewItemViewModel}">
-                            <Grid HorizontalAlignment="Stretch"
-                                  KeyboardNavigation.DirectionalNavigation="Continue">
+                        <HierarchicalDataTemplate ItemsSource="{Binding Children}" DataType="{x:Type diagnostics2:DebugStateTreeViewItemViewModel}">
+                            <Grid HorizontalAlignment="Stretch" KeyboardNavigation.DirectionalNavigation="Continue">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
@@ -521,6 +514,7 @@
                                            Grid.Column="2"
                                            Text="{Binding Content.Server}"
                                            Style="{StaticResource ServerVisibility}" />
+                                
                                 <TextBlock Grid.Row="3"
                                            Grid.Column="1"
                                            Style="{StaticResource TypeVisibility}">
@@ -547,14 +541,15 @@
                                 <TextBlock Grid.Row="4"
                                            Grid.Column="1"
                                            Style="{StaticResource EndTimeVisibility}">
-                            <Run Text="End Time" />
-                            <Run Text=": " />
+                                    <Run Text="End Time" />
+                                    <Run Text=": " />
                                 </TextBlock>
                                 <TextBlock Grid.Row="4"
                                            Grid.Column="2"
                                            Text="{Binding Content.EndTime, Converter={StaticResource DateTimeToStringConverter}}" 
                                            Style="{StaticResource EndTimeVisibility}" 
                                            AutomationProperties.AutomationId="UI_DebugOutputTimeTextBlock_AutoID" />
+                                
                                 <TextBlock Grid.Row="5"
                                            Grid.Column="1"
                                            Style="{StaticResource DurationVisibility}">
@@ -566,6 +561,7 @@
                                            Text="{Binding Content.Duration, Converter={StaticResource TimeSpanToStringConverter}}"
                                            Style="{StaticResource DurationVisibility}"
                                            AutomationProperties.AutomationId="UI_DebugOutputDurationTextBlock_AutoID" />
+                                
                                 <TextBlock Grid.Row="6"
                                            Grid.Column="1"
                                            Style="{StaticResource InputsVisibility}">
@@ -610,6 +606,7 @@
                                            Grid.Column="2"
                                            Text="{Binding Content.Origin}"
                                            Style="{StaticResource OriginVisibility}" />
+                                
                                 <TextBlock Grid.Row="9"
                                            Grid.Column="1"
                                            Style="{StaticResource UserVisibility}">
@@ -620,6 +617,7 @@
                                            Grid.Column="2"
                                            Text="{Binding Content.ExecutingUser}"
                                            Style="{StaticResource UserVisibility}" />
+                                
                                 <TextBlock Grid.Row="10"
                                            Grid.Column="1"
                                            Style="{StaticResource StepsVisibility}">
@@ -630,6 +628,7 @@
                                            Grid.Column="2"
                                            Text="{Binding Content.NumberOfSteps}"
                                            Style="{StaticResource StepsVisibility}" />
+                                
                                 <TextBlock Grid.Row="11"
                                            Grid.Column="1"
                                            Style="{StaticResource ErrorsVisibility}">
