@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using MySql.Data.MySqlClient;
+using Dev2.Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql
 {
@@ -17,7 +18,7 @@ namespace Dev2.Services.Sql
         {
             VerifyArgument.IsNotNull("connectionString", connectionString);
 
-            return new MySqlConnection(connectionString);
+            return new MySqlConnection(DPAPIWrapper.Decrypt(connectionString));
         }
 
         public IDbCommand CreateCommand(IDbConnection connection, CommandType commandType, string commandText)
@@ -25,24 +26,24 @@ namespace Dev2.Services.Sql
             return new MySqlCommand(commandText, connection as MySqlConnection)
             {
                 CommandType = commandType,
-                CommandTimeout = (int) GlobalConstants.TransactionTimeout.TotalSeconds,
+                CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds,
             };
         }
 
         public DataTable GetSchema(IDbConnection connection, string collectionName)
         {
 
-                    return GetMySqlServerSchema(connection);
+            return GetMySqlServerSchema(connection);
 
         }
 
         DataTable GetMySqlServerSchema(IDbConnection connection)
         {
-            if(! (connection is MySqlConnection))
+            if (!(connection is MySqlConnection))
                 throw new Exception("Invalid Mqsql Connection");
 
             return ((MySqlConnection)connection).GetSchema();
-            
+
         }
 
 
