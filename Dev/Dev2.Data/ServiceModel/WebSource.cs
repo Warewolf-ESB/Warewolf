@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Xml.Linq;
 using Dev2.Common.Common;
+using Dev2.Warewolf.Security.Encryption;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -73,7 +74,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 { "Password", string.Empty }
             };
 
-            ParseProperties(xml.AttributeSafe("ConnectionString"), properties);
+            ParseProperties(DPAPIWrapper.Decrypt(xml.AttributeSafe("ConnectionString")), properties);
 
             Address = properties["Address"];
             DefaultQuery = properties["DefaultQuery"];
@@ -107,7 +108,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
 
             result.Add(
-                new XAttribute("ConnectionString", connectionString),
+                new XAttribute("ConnectionString", DPAPIWrapper.Encrypt(connectionString)),
                 new XAttribute("Type", ResourceType),
                 new XElement("TypeOf", ResourceType)
                 );

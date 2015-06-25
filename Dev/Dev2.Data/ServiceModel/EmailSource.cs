@@ -15,6 +15,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Xml.Linq;
 using Dev2.Common.Common;
+using Dev2.Warewolf.Security.Encryption;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Runtime.ServiceModel.Data
@@ -88,7 +89,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 { "Timeout", string.Empty },
             };
 
-            ParseProperties(xml.AttributeSafe("ConnectionString"), properties);
+            ParseProperties(DPAPIWrapper.Decrypt(xml.AttributeSafe("ConnectionString")), properties);
 
             Host = properties["Host"];
             UserName = properties["UserName"];
@@ -135,7 +136,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 );
 
             result.Add(
-                new XAttribute("ConnectionString", connectionString),
+                new XAttribute("ConnectionString", DPAPIWrapper.Encrypt(connectionString)),
                 new XAttribute("Type", ResourceType),
                 new XElement("TypeOf", ResourceType)
                 );

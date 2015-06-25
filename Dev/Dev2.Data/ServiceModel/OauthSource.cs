@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Warewolf.Security.Encryption;
 
 namespace Dev2.Data.ServiceModel
 {
@@ -41,7 +42,7 @@ namespace Dev2.Data.ServiceModel
                 { "Key", string.Empty }
             };
 
-            ParseProperties(xml.AttributeSafe("ConnectionString"), properties);
+            ParseProperties(DPAPIWrapper.Decrypt(xml.AttributeSafe("ConnectionString")), properties);
 
             Secret = properties["Secret"];
             Key = properties["Key"];
@@ -63,7 +64,7 @@ namespace Dev2.Data.ServiceModel
                 );
 
             result.Add(
-                new XAttribute("ConnectionString", connectionString),
+                new XAttribute("ConnectionString", DPAPIWrapper.Encrypt(connectionString)),
                 new XAttribute("Type", ResourceType),
                 new XElement("TypeOf", ResourceType)
                 );
