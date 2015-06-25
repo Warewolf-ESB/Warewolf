@@ -16,6 +16,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.Mail;
 using ActivityUnitTests;
 using Dev2.Activities;
+using Dev2.Common.ExtMethods;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
@@ -436,7 +438,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("BccValue", activity.Bcc);
             Assert.AreEqual("AttachmentsValue", activity.Attachments);
             Assert.AreEqual("ToValue", activity.To);
-            Assert.AreEqual("PasswordValue", activity.Password);
+            Assert.IsTrue(activity.Password.IsBase64());
         }
 
         [TestMethod]

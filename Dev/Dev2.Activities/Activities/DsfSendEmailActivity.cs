@@ -12,6 +12,7 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Net.Mail;
@@ -27,6 +28,7 @@ using Dev2.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Util;
+using Dev2.Warewolf.Security.Encryption;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 
@@ -38,6 +40,7 @@ namespace Dev2.Activities
 
         IEmailSender _emailSender;
         IDSFDataObject _dataObject;
+        string _password;
 
         #endregion
 
@@ -51,7 +54,38 @@ namespace Dev2.Activities
         [FindMissing]
         public string FromAccount { get; set; }
         [FindMissing]
-        public string Password { get; set; }
+        public string Password
+        {
+            get { return _password; }
+            set
+            {
+                if (DataListUtil.ShouldEncrypt(value))
+                {
+                    try
+                    {
+                        _password = DPAPIWrapper.Encrypt(value);
+                    }
+                    catch (Exception)
+                    {
+                        _password = value;
+                    }
+                }
+                else
+                {
+                    _password = value;
+                }
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        protected string DecryptedPassword
+        {
+            get
+            {
+                return DataListUtil.NotEncrypted(Password) ? Password : DPAPIWrapper.Decrypt(Password);
+            }
+        }
+
         [FindMissing]
         public string To { get; set; }
         [FindMissing]
@@ -173,7 +207,7 @@ namespace Dev2.Activities
                 var fromAccountItr = new WarewolfIterator(dataObject.Environment.Eval(FromAccount ?? string.Empty));
                 colItr.AddVariableToIterateOn(fromAccountItr);
 
-                var passwordItr = new WarewolfIterator(dataObject.Environment.Eval(Password));
+                var passwordItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedPassword));
                 colItr.AddVariableToIterateOn(passwordItr);
 
                 var toItr = new WarewolfIterator(dataObject.Environment.Eval(To));
