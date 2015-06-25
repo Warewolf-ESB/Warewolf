@@ -10,7 +10,17 @@ namespace Dev2.Warewolf.Security.Encryption
     {
         static DataProtectionScope _dataProtectionScope = DataProtectionScope.LocalMachine;
 
+        public static string DecryptIfEncrypted(string input)
+        {
+            if (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input) || !input.IsBase64()) return input;
+            return Decrypt(input);
+        }
 
+        public static string EncryptIfDecrypted(string input)
+        {
+            if (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input) || input.IsBase64()) return input;
+            return Encrypt(input);
+        }
         /// <summary>
         /// Encrypts a given password and returns the encrypted data
         /// as a base64 string.
@@ -115,6 +125,6 @@ namespace Dev2.Warewolf.Security.Encryption
             }
         }
 
-        
+
     }
 }
