@@ -12,19 +12,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Drawing;
 using System.IO;
-using Dev2.Common.Interfaces.Security;
-using Dev2.Communication;
-using Dev2.Runtime.Services.Security.Encryption;
-using Dev2.Services.Security;
-using Microsoft.AspNet.SignalR.Hosting;
+using Dev2.Warewolf.Security.Encryption;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using FluentAssertions;
 
-namespace Dev2.Tests.Runtime.Security
+namespace Dev2.Warewolf.Security.Tests.Encryption
 {
     [TestClass]
     public class AESThenHMACTests

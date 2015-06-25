@@ -14,48 +14,103 @@ using System.Xml.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Runtime.Services.Security;
+using Dev2.Warewolf.Security.Encryption;
+using System.Collections.Generic;
 
 namespace Dev2.Runtime.ResourceUpgrades
 {
     public class EncryptionResourceUpgrader : IResourceUpgrade
     {
+        Dictionary<string, StringTransform> _replacements = new Dictionary<string, StringTransform>();
+
+        void BuildReplacements()
+        {
+            _replacements.Add("Source", new StringTransform
+            {
+                SearchRegex = new Regex(@"<Source ID=""[a-e0-9\-]+"" .*ConnectionString=""([^""]+)"" .*>"),
+                GroupNumbers = new int[] { 1 },
+                TransformFunction = DPAPIWrapper.Encrypt
+            }
+                );
+            _replacements.Add(
+            "DsfAbstractFileActivity", new StringTransform
+            {
+                SearchRegex = new Regex(@"&lt;([a-zA-Z0-9]+:)?(DsfFileWrite|DsfFileRead|DsfFolderRead|DsfPathCopy|DsfPathCreate|DsfPathDelete|DsfPathMove|DsfPathRename|DsfZip|DsfUnzip) .*?Password=""([^""]+)"" .*?&gt;"),
+                GroupNumbers = new int[] { 3 },
+                TransformFunction = DPAPIWrapper.Encrypt
+            }
+            );
+        }
+
         #region Implementation of IResourceUpgrade
         public EncryptionResourceUpgrader()
         {
             UpgradeFunc = Upgrade;
+            BuildReplacements();
         }
 
         XElement Upgrade(XElement arg)
         {
             string xml = arg.ToString();
-            xml = EncryptConnectionStrings(xml);
+            xml = EncryptPasswordsAndConnectionStrings(xml);
             return XElement.Parse(xml);
-        }
-
-        public string EncryptConnectionStrings(string xml)
-        {
-            var connectionStringRegex = new Regex(@"<Source ID=""[a-e0-9\-]+"" .*ConnectionString=""([^""]+)"" .*>");
-            MatchCollection matches = connectionStringRegex.Matches(xml);
-            if (matches.Count == 0) return xml;
-            StringBuilder result = new StringBuilder(xml);
-            StringBuilder encrypted = new StringBuilder();
-            foreach (Match match in matches)
-            {
-                result.Remove(match.Index, match.Length);
-                encrypted.Clear();
-                encrypted.Append(match.Value);
-                Group group = match.Groups[1];
-                int indexInMatch = group.Index - match.Index;
-                encrypted.Remove(indexInMatch, group.Length);
-                encrypted.Insert(indexInMatch, DPAPIWrapper.Encrypt(group.Value));
-                result.Insert(match.Index, encrypted.ToString());
-            }
-            return result.ToString();
         }
 
         public Func<XElement, XElement> UpgradeFunc { get; private set; }
 
         #endregion
+
+        public string EncryptSourceConnectionStrings(string xml)
+        {
+            return StringTransform.TransformAllMatches(xml, new List<StringTransform> { _replacements["Source"] });
+        }
+
+        public string EncryptDsfFileWritePasswords(string xml)
+        {
+            return StringTransform.TransformAllMatches(xml, new List<StringTransform> { _replacements["DsfAbstractFileActivity"] });
+        }
+
+        public string EncryptPasswordsAndConnectionStrings(string xml)
+        {
+            return EncryptSourceConnectionStrings(
+                EncryptDsfFileWritePasswords(
+                xml)
+                );
+        }
+
+        class StringTransform
+        {
+            public Regex SearchRegex { get; set; }
+            public int[] GroupNumbers { get; set; }
+            public Func<string, string> TransformFunction { get; set; }
+
+            public static string TransformAllMatches(string initial, List<StringTransform> transforms)
+            {
+                StringBuilder result = new StringBuilder(initial);
+                foreach (StringTransform transform in transforms)
+                {
+                    Regex regex = transform.SearchRegex;
+                    int[] groupNumbers = transform.GroupNumbers;
+                    MatchCollection matches = regex.Matches(initial);
+                    if (matches.Count == 0) continue;
+                    StringBuilder encrypted = new StringBuilder();
+                    foreach (Match match in matches)
+                    {
+                        result.Remove(match.Index, match.Length);
+                        encrypted.Clear();
+                        encrypted.Append(match.Value);
+                        foreach (int groupNumber in groupNumbers)
+                        {
+                            Group group = match.Groups[groupNumber];
+                            int indexInMatch = group.Index - match.Index;
+                            encrypted.Remove(indexInMatch, group.Length);
+                            encrypted.Insert(indexInMatch, transform.TransformFunction(group.Value));
+                        }
+                        result.Insert(match.Index, encrypted.ToString());
+                    }
+                }
+                return result.ToString();
+            }
+        }
     }
 }

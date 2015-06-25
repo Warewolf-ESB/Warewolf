@@ -25,6 +25,7 @@ using Dev2.PathOperations;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Storage;
+using Dev2.Warewolf.Security.Encryption;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -60,7 +61,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject)
         {
-         
+
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
 
@@ -69,12 +70,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             // Process if no errors
 
-            if(dataObject.IsDebugMode())
+            if (dataObject.IsDebugMode())
             {
                 InitializeDebug(dataObject);
             }
 
-            if(!errors.HasErrors())
+            if (!errors.HasErrors())
             {
                 try
                 {
@@ -83,21 +84,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     allErrors.MergeErrors(errors);
 
-                    if(outputs.Count > 0)
+                    if (outputs.Count > 0)
                     {
-                        foreach(OutputTO output in outputs)
+                        foreach (OutputTO output in outputs)
                         {
-                            if(output.OutputStrings.Count > 0)
+                            if (output.OutputStrings.Count > 0)
                             {
-                                foreach(string value in output.OutputStrings)
+                                foreach (string value in output.OutputStrings)
                                 {
-                                    if(output.OutPutDescription == GlobalConstants.ErrorPayload)
+                                    if (output.OutPutDescription == GlobalConstants.ErrorPayload)
                                     {
                                         errors.AddError(value);
                                     }
                                     else
                                     {
-                                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
+                                        foreach (var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
                                         {
                                             dataObject.Environment.Assign(region, value);
                                         }
@@ -122,22 +123,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     allErrors.AddError(ex.Message);
                 }
                 finally
                 {
                     // Handle Errors
-                    if(allErrors.HasErrors())
+                    if (allErrors.HasErrors())
                     {
-                        foreach(var err in allErrors.FetchErrors())
+                        foreach (var err in allErrors.FetchErrors())
                         {
                             dataObject.Environment.Errors.Add(err);
                         }
                     }
 
-                    if(dataObject.IsDebugMode())
+                    if (dataObject.IsDebugMode())
                     {
                         DispatchDebugState(dataObject, StateType.Before);
                         DispatchDebugState(dataObject, StateType.After);
@@ -173,7 +174,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string Password
         {
             get { return _password; }
-            set { _password = value; }
+            set
+            {
+                if (!value.IsBase64())
+                {
+                    try
+                    {
+                        _password = DPAPIWrapper.Encrypt(value);
+                    }
+                    catch (Exception)
+                    {
+                        _password = value;
+                    }
+                }
+                else
+                {
+                    _password = value;
+                }
+            }
         }
 
         /// <summary>
@@ -215,7 +233,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList)
         {
-            foreach(IDebugItem debugInput in _debugInputs)
+            foreach (IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FetchResultsList();
             }
@@ -225,7 +243,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList)
         {
 
-            foreach(IDebugItem debugOutput in _debugOutputs)
+            foreach (IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }

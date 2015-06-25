@@ -12,9 +12,9 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Text;
-using Dev2.Runtime.Services.Security.Encryption.ExtensionMethods;
+using Dev2.Warewolf.Security.Extensions;
 
-namespace Dev2.Runtime.Services.Security.Encryption
+namespace Dev2.Warewolf.Security.Steganography
 {
     public class Steganography : ISteganography
     {

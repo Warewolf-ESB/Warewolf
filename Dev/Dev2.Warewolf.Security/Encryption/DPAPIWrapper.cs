@@ -2,11 +2,13 @@
 using System.Security;
 using System.Security.Cryptography;
 using System.Text;
+using Dev2.Warewolf.Security.Extensions;
 
-namespace Dev2.Runtime.Services.Security
+namespace Dev2.Warewolf.Security.Encryption
 {
     public static class DPAPIWrapper
     {
+
         /// <summary>
         /// Encrypts a given password and returns the encrypted data
         /// as a base64 string.
@@ -49,6 +51,8 @@ namespace Dev2.Runtime.Services.Security
         {
             if (cipher == null) throw new ArgumentNullException("cipher");
 
+            if (!cipher.IsBase64()) throw new ArgumentException("cipher must be base64 encoded");
+
             //parse base64 string
             byte[] data = Convert.FromBase64String(cipher);
 
@@ -56,5 +60,24 @@ namespace Dev2.Runtime.Services.Security
             byte[] decrypted = ProtectedData.Unprotect(data, null, DataProtectionScope.LocalMachine);
             return Encoding.Unicode.GetString(decrypted);
         }
+
+        public static bool IsBase64(this string base64String)
+        {
+            // Credit: oybek http://stackoverflow.com/users/794764/oybek
+            if (base64String == null || base64String.Length == 0 || base64String.Length % 4 != 0
+               || base64String.Contains(" ") || base64String.Contains("\t") || base64String.Contains("\r") || base64String.Contains("\n"))
+                return false;
+
+            try
+            {
+                Convert.FromBase64String(base64String);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
     }
 }

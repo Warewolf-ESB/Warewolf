@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.IO;
 
-namespace Dev2.Runtime.Services.Security.Encryption.ExtensionMethods
+namespace Dev2.Warewolf.Security.Extensions
 {
     public static class BitmapExtensions
     {

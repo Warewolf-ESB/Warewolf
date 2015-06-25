@@ -11,21 +11,14 @@
 
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading;
-using System.Drawing;
 using System.IO;
-using Dev2.Common.Interfaces.Security;
-using Dev2.Communication;
-using Dev2.Runtime.Services.Security.Encryption;
-using Dev2.Services.Security;
-using Microsoft.AspNet.SignalR.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using FluentAssertions;
-using Dev2.Runtime.Services.Security;
 
-namespace Dev2.Tests.Runtime.Security
+namespace Dev2.Warewolf.Security.Encryption
 {
     [TestClass]
     public class DPAPIWrapperTests
@@ -50,6 +43,35 @@ namespace Dev2.Tests.Runtime.Security
             DPAPIWrapper.Decrypt(encrypted).Should().Be(message);
         }
 
+        [TestMethod]
+        [Owner("Kerneels Roos")]
+        [TestCategory("EncryptDecrypt")]
+        public void EncryptDecryptFailsIfAlreadyPerformedTest()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            string encrypted = DPAPIWrapper.Encrypt(message);
+            char x = encrypted.Where(o => encrypted.Where(u => u == o).Count() > 1).First();  // find first char that appears more than once
+            char y = encrypted.Where(o => o != x).First();  // find the first char not equal to x
+            string tamperedEncrypted = encrypted.Replace(x, y);
+            try
+            {
+                string decrypted = DPAPIWrapper.Decrypt(tamperedEncrypted);
+            }
+            catch (Exception e)
+            {
+                e.GetType().Should().Be(typeof(System.Security.Cryptography.CryptographicException));
+            }
+            try
+            {
+                string decrypted = DPAPIWrapper.Decrypt(message);
+            }
+            catch (Exception e)
+            {
+                e.GetType().Should().Be(typeof(System.FormatException));
+            }
+        }
 
         // ReSharper restore InconsistentNaming
     }

@@ -11,6 +11,7 @@
 
 using System;
 using System.Text;
+using Dev2.Warewolf.Security.Encryption;
 
 namespace Dev2.PathOperations
 {
@@ -24,7 +25,7 @@ namespace Dev2.PathOperations
     public class Dev2ActivityIOPath : IActivityIOPath
     {
 
-        internal Dev2ActivityIOPath(enActivityIOPathType type, string path, string user, string pass,bool isNotCertVerifiable)
+        internal Dev2ActivityIOPath(enActivityIOPathType type, string path, string user, string pass, bool isNotCertVerifiable)
         {
             PathType = type;
             Path = path;
@@ -74,6 +75,14 @@ namespace Dev2.PathOperations
         {
             get;
             set;
+        }
+
+        public string DecryptedPassword
+        {
+            get
+            {
+                return string.IsNullOrEmpty(Password) ? Password : DPAPIWrapper.Decrypt(Password);
+            }
         }
 
         public bool IsNotCertVerifiable

@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.IO;
 
-namespace Dev2.Runtime.Services.Security.Encryption
+namespace Dev2.Warewolf.Security.Steganography
 {
     public interface ISteganography
     {

@@ -264,16 +264,10 @@
     <Compile Include="Compiler\ServiceModelCompiler.cs" />
     <Compile Include="ResourceUpgrades\BaseResourceUpgrader.cs" />
     <Compile Include="ResourceUpgrades\EncryptionResourceUpgrader.cs" />
-    <Compile Include="Security\AESThenHMAC.cs" />
-    <Compile Include="Security\DPAPIWrapper.cs" />
-    <Compile Include="Security\ExtensionMethods\BitmapExtensions.cs" />
-    <Compile Include="Security\ExtensionMethods\StringExtensions.cs" />
-    <Compile Include="Security\ISteganography.cs" />
     <Compile Include="Security\ServerAuthorizationService.cs" />
     <Compile Include="Security\ProcessHost.cs" />
     <Compile Include="Security\ServerSecurityService.cs" />
     <Compile Include="Security\SSLCertificateBuilder.cs" />
-    <Compile Include="Security\Steganography.cs" />
     <Compile Include="ServiceModel\Data\RecordsetList.cs" />
     <Compile Include="ServiceModel\Data\RecordsetListHelper.cs" />
     <Compile Include="ServiceModel\Data\WebPermission.cs" />
@@ -387,6 +381,10 @@
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Warewolf.Security\Dev2.Warewolf.Security.csproj">
+      <Project>{ca5e9373-46fe-41b9-ab2e-bd637f48b456}</Project>
+      <Name>Dev2.Warewolf.Security</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.ResourceManagement\Warewolf.ResourceManagement.csproj">
       <Project>{f36b2034-94bf-485c-b584-4e590ccc6dd3}</Project>

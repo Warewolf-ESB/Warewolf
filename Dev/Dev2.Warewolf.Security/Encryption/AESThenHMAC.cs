@@ -9,8 +9,9 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using Dev2.Warewolf.Security.Extensions;
 
-namespace Dev2.Runtime.Services.Security.Encryption
+namespace Dev2.Warewolf.Security.Encryption
 {
     public static class AESThenHMAC
     {

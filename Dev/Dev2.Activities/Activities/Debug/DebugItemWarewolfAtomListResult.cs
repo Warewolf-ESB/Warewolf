@@ -5,6 +5,7 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
+using WS = Warewolf.Storage;
 
 namespace Dev2.Activities.Debug
 {
@@ -86,7 +87,7 @@ namespace Dev2.Activities.Debug
             {
                 string groupName = null;
                 int grpIdx = 0;
-                if(_warewolfAtomListresult != null)
+                if (_warewolfAtomListresult != null)
                 {
                     foreach (var atomItem in _warewolfAtomListresult.Item)
                     {
@@ -98,11 +99,11 @@ namespace Dev2.Activities.Debug
                             grpIdx++;
                             string index = grpIdx.ToString(CultureInfo.InvariantCulture);
                             if (rawExpression.Contains(".WarewolfPositionColumn"))
-                            { 
+                            {
                                 index = item;
                                 item = "";
                             }
-                            groupName = rawExpression.Replace(".WarewolfPositionColumn","");
+                            groupName = rawExpression.Replace(".WarewolfPositionColumn", "");
                             // ReSharper disable EmptyStatement
                             displayExpression = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(_variable), DataListUtil.ExtractFieldNameFromValue(_variable), index)).Replace(".WarewolfPositionColumn", ""); ;
                             // ReSharper restore EmptyStatement
@@ -127,7 +128,7 @@ namespace Dev2.Activities.Debug
                         var debugType = DebugItemResultType.Value;
                         if (DataListUtil.IsEvaluated(displayExpression))
                         {
-                            debugOperator = String.IsNullOrEmpty(item)?"": "=";
+                            debugOperator = String.IsNullOrEmpty(item) ? "" : "=";
                             debugType = DebugItemResultType.Variable;
                         }
                         else
@@ -177,7 +178,7 @@ namespace Dev2.Activities.Debug
                                 Variable = DataListUtil.IsEvaluated(_assignedToVariableName) ? _assignedToVariableName : null,
                                 Operator = string.IsNullOrEmpty(_operand) ? "" : "=",
                                 GroupName = null,
-                                Value = Warewolf.Storage.ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item),
+                                Value = WS.ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item),
                                 GroupIndex = 0
                             });
                         }
@@ -233,7 +234,7 @@ namespace Dev2.Activities.Debug
                                     Variable = DataListUtil.IsEvaluated(displayExpression) ? displayExpression : null,
                                     Operator = debugOperator,
                                     GroupName = groupName,
-                                    Value = Warewolf.Storage.ExecutionEnvironment.WarewolfAtomToString(item),
+                                    Value = WS.ExecutionEnvironment.WarewolfAtomToString(item),
                                     GroupIndex = grpIdx
                                 };
                                 results.Add(debugItemResult);
@@ -315,7 +316,7 @@ namespace Dev2.Activities.Debug
                             Variable = DataListUtil.IsEvaluated(displayExpression) ? displayExpression : null,
                             Operator = debugOperator,
                             GroupName = groupName,
-                            Value = Warewolf.Storage.ExecutionEnvironment.WarewolfAtomToString(item),
+                            Value = WS.ExecutionEnvironment.WarewolfAtomToString(item),
                             GroupIndex = grpIdx
                         });
                     }

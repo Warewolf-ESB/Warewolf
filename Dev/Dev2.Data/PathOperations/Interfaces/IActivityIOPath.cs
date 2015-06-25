@@ -10,6 +10,8 @@
 */
 
 using Dev2.Data.PathOperations.Interfaces;
+using System;
+using System.Xml.Serialization;
 
 namespace Dev2.PathOperations
 {
@@ -37,5 +39,8 @@ namespace Dev2.PathOperations
         /// </summary>
         /// <returns></returns>
         string ToXML();
+
+        [XmlIgnore]
+        string DecryptedPassword { get; }
     }
 }

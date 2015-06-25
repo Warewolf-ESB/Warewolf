@@ -17,7 +17,7 @@ using System.Text.RegularExpressions;
 using Dev2.Runtime.ResourceUpgrades;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FluentAssertions;
-using Dev2.Runtime.Services.Security;
+using Dev2.Warewolf.Security.Encryption;
 
 namespace Dev2.Tests.Runtime.ResourceUpgraders
 {
@@ -43,20 +43,36 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
         // ReSharper disable InconsistentNaming
         public void EncryptionResourceUpgrader_Upgrade_HasMatchin_ExpectReplace()
         {
+            _matchAndReplaceWhereAppropriate(beforeContainingSource, beforeWithoutSource, connectionString);
+        }
+
+        [TestMethod]
+        [Owner("Kerneels Roos")]
+        [TestCategory("EncryptionResourceUpgrader_Upgrade")]
+        public void EncryptionResourceUpgrader_Upgrade_HasMatchin_DsfFileWrite()
+        {
+            _matchAndReplaceWhereAppropriate(
+                @"&gt;&lt;uaba:DsfFileWrite Compiler=""{x:Null}"" CurrentResult=""{x:Null}"" DataObject=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputMapping=""{x:Null}"" InputTransformation=""{x:Null}"" OnErrorVariable=""{x:Null}"" OnErrorWorkflow=""{x:Null}"" OnResumeKeepList=""{x:Null}"" OutputMapping=""{x:Null}"" ParentServiceID=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ScenarioID=""{x:Null}"" ScopingObject=""{x:Null}"" SimulationOutput=""{x:Null}"" Add=""False"" AmbientDataList=""[AmbientDataList]"" Append=""False"" AppendBottom=""False"" AppendTop=""False"" DatabindRecursive=""False"" DisplayName=""Write"" FileContents=""TestData"" HasError=""[HasError]"" sap:VirtualizedContainerService.HintSize=""200,120"" InstructionList=""[InstructionList]"" IsEndedOnError=""False"" IsNotCertVerifiable=""False"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""False"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" OutputPath=""C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\CreatedTestFile.txt"" Overwrite=""True"" Password=""ThePassword"" Result=""[[WriteFileRes]]"" SimulationMode=""OnDemand"" UniqueID=""72a21106-f694-4d1c-b07b-c227b0e828f3"" Username=""""&gt;",
+            @"&gt;&lt;uaba:NonDsfFileWrite Compiler=""{x:Null}"" CurrentResult=""{x:Null}"" DataObject=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputMapping=""{x:Null}"" InputTransformation=""{x:Null}"" OnErrorVariable=""{x:Null}"" OnErrorWorkflow=""{x:Null}"" OnResumeKeepList=""{x:Null}"" OutputMapping=""{x:Null}"" ParentServiceID=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ScenarioID=""{x:Null}"" ScopingObject=""{x:Null}"" SimulationOutput=""{x:Null}"" Add=""False"" AmbientDataList=""[AmbientDataList]"" Append=""False"" AppendBottom=""False"" AppendTop=""False"" DatabindRecursive=""False"" DisplayName=""Write"" FileContents=""TestData"" HasError=""[HasError]"" sap:VirtualizedContainerService.HintSize=""200,120"" InstructionList=""[InstructionList]"" IsEndedOnError=""False"" IsNotCertVerifiable=""False"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""False"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" OutputPath=""C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\CreatedTestFile.txt"" Overwrite=""True"" Password=""ThePassword"" Result=""[[WriteFileRes]]"" SimulationMode=""OnDemand"" UniqueID=""72a21106-f694-4d1c-b07b-c227b0e828f3"" Username=""""&gt;",
+            "ThePassword");
+        }
+
+        void _matchAndReplaceWhereAppropriate(string matchingString, string nonMatchingString, string pieceToReplace)
+        {
             //------------Setup for test--------------------------
             var upgrader = new EncryptionResourceUpgrader();
 
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            string output = upgrader.EncryptConnectionStrings(beforeContainingSource);
+            string output = upgrader.EncryptPasswordsAndConnectionStrings(matchingString);
             output.Should().NotBeNullOrEmpty();
-            output.Should().NotBe(beforeContainingSource);
-            output.Should().NotContain(connectionString);
+            output.Should().NotBe(matchingString);
+            output.Should().NotContain(pieceToReplace);
 
-            output = upgrader.EncryptConnectionStrings(beforeWithoutSource);
+            output = upgrader.EncryptPasswordsAndConnectionStrings(nonMatchingString);
             output.Should().NotBeNullOrEmpty();
-            output.Should().Be(beforeWithoutSource);
-            output.Should().Contain(connectionString);
+            output.Should().Be(nonMatchingString);
+            output.Should().Contain(pieceToReplace);
         }
 
 
@@ -73,7 +89,7 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
 
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            string output = upgrader.EncryptConnectionStrings(beforeContainingSource);
+            string output = upgrader.EncryptSourceConnectionStrings(beforeContainingSource);
             output.Should().NotBeNullOrEmpty();
             output.Should().NotBe(beforeContainingSource);
             output.Should().NotContain(connectionString);
@@ -83,12 +99,6 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
             m.Groups[1].Success.Should().BeTrue();
             string x = m.Groups[1].Value;
             DPAPIWrapper.Decrypt(x).Should().Be(connectionString);
-
-
-            output = upgrader.EncryptConnectionStrings(beforeWithoutSource);
-            output.Should().NotBeNullOrEmpty();
-            output.Should().Be(beforeWithoutSource);
-            output.Should().Contain(connectionString);
         }
 
         /*

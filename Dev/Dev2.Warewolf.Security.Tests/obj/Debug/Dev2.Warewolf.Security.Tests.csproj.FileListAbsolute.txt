@@ -1,0 +1,13 @@
+E:\git\rep1\warewolf-esb\Dev\Dev2.Warewolf.Security.Tests\obj\Debug\Dev2.Warewolf.Security.Tests.csprojResolveAssemblyReference.cache
+E:\git\rep1\warewolf-esb\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\Dev2.Warewolf.Security.Tests.dll
+E:\git\rep1\warewolf-esb\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\Dev2.Warewolf.Security.Tests.pdb
+E:\git\rep1\warewolf-esb\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\Dev2.Warewolf.Security.dll
+E:\git\rep1\warewolf-esb\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\FluentAssertions.Core.dll
+E:\git\rep1\warewolf-esb\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\FluentAssertions.dll
+E:\git\rep1\warewolf-esb\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\Dev2.Warewolf.Security.pdb
+E:\git\rep1\warewolf-esb\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\FluentAssertions.pdb
+E:\git\rep1\warewolf-esb\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\FluentAssertions.xml
+E:\git\rep1\warewolf-esb\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\FluentAssertions.Core.pdb
+E:\git\rep1\warewolf-esb\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\FluentAssertions.Core.xml
+E:\git\rep1\warewolf-esb\Dev\Dev2.Warewolf.Security.Tests\obj\Debug\Dev2.Warewolf.Security.Tests.dll
+E:\git\rep1\warewolf-esb\Dev\Dev2.Warewolf.Security.Tests\obj\Debug\Dev2.Warewolf.Security.Tests.pdb
