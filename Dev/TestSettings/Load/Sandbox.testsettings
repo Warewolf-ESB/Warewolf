@@ -1,21 +1,21 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<TestSettings name="Environment Pool Acceptance Run" id="7627FF19-3746-4D6A-AD03-AD30FFD0D7ED" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
-  <Description>These are default test settings for a remote acceptance test run.</Description>
-    <Deployment>
-      <!--Server and Studio under test-->
-		  <DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
-		  <DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
+<TestSettings name="Sandbox Acceptance Run" id="3A436CC5-3E26-4F99-8D07-F9C3B5ECDB1C" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Description>These are default test settings for a remote load test run.</Description>
+  <Deployment>
+    <!--Server and Studio under test-->
+    <DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
+    <DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
 
-      <!--Missing test assembly dependencies-->
-      <DeploymentItem filename="packages\FSharp.Core.3.0.0.2\lib\net40\FSharp.Core.dll" />
-      <DeploymentItem filename="packages\FSharp.Core.3.0.0.2\lib\net40\policy.2.3.FSharp.Core.dll" />
-    </Deployment>
+    <!--Missing test assembly dependencies-->
+    <DeploymentItem filename="packages\FSharp.Core.3.0.0.2\lib\net40\FSharp.Core.dll" />
+    <DeploymentItem filename="packages\FSharp.Core.3.0.0.2\lib\net40\policy.2.3.FSharp.Core.dll" />
+  </Deployment>
   <NamingScheme baseName="IntegrationTests" appendTimeStamp="false" useDefault="false" />
-    <Scripts setupScript="..\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\Dev\TestScripts\Acceptance\Cleanup.bat" />
+  <Scripts setupScript="..\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\Dev\TestScripts\Acceptance\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld" />
   <Execution location="Remote" hostProcessPlatform="MSIL">
-    <Timeouts testTimeout="180000" />
     <Buckets size="1" />
+    <Timeouts testTimeout="180000" />
     <TestTypeSpecific>
       <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
         <AssemblyResolution>
@@ -33,9 +33,9 @@
         </Browser>
       </WebTestRunConfiguration>
     </TestTypeSpecific>
-    <AgentRule name="Run in the Acceptance Testing Environment Pool">
+    <AgentRule name="Run in Sandbox">
       <SelectionCriteria>
-        <AgentProperty name="Pool" value="Acceptance Testing" />
+        <AgentProperty name="Pool" value="Sandbox" />
       </SelectionCriteria>
       <DataCollectors>
         <DataCollector uri="datacollector://microsoft/SystemInfo/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.SystemInfo.SystemInfoDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.SystemInfo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="System Information">
@@ -43,4 +43,5 @@
       </DataCollectors>
     </AgentRule>
   </Execution>
+  <Properties />
 </TestSettings>
