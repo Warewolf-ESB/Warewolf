@@ -190,6 +190,7 @@
     <Compile Include="ServiceModel\Helper\ServiceUtils.cs" />
     <Compile Include="ServiceModel\PluginSource.cs" />
     <Compile Include="ServiceModel\ResourceTypeConverter.cs" />
+    <Compile Include="ServiceModel\SharepointSource.cs" />
     <Compile Include="ServiceModel\WebRequestMethod.cs" />
     <Compile Include="ServiceModel\WebSource.cs" />
     <Compile Include="ServiceModel\EmailSource.cs" />
@@ -470,6 +471,10 @@
     <ProjectReference Include="..\Dev2.Warewolf.Security\Dev2.Warewolf.Security.csproj">
       <Project>{ca5e9373-46fe-41b9-ab2e-bd637f48b456}</Project>
       <Name>Dev2.Warewolf.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Sharepoint\Warewolf.Sharepoint.csproj">
+      <Project>{D7A04A3F-DDBD-497C-A311-EFD2016830DF}</Project>
+      <Name>Warewolf.Sharepoint</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
       <Project>{b3d070e0-11c1-4c1c-81a5-e680c1494945}</Project>
