@@ -1047,7 +1047,19 @@ namespace Dev2.Data.Util
 
         public static bool ShouldEncrypt(string value)
         {
-            return !value.IsBase64() && !IsFullyEvaluated(value);
+            if(string.IsNullOrEmpty(value))
+            {
+                return false;
+            }
+            if(IsFullyEvaluated(value))
+            {
+                return false;
+            }
+            if(value.CanBeDecrypted())
+            {
+                return false;
+            }
+            return true;
         }
 
         public static bool NotEncrypted(string value)

@@ -63,6 +63,40 @@ namespace Dev2.Warewolf.Security.Encryption
             return Encoding.Unicode.GetString(decrypted);
         }
 
+        /// <summary>
+        /// Decrypts a given string.
+        /// </summary>
+        /// <param name="cipher">A base64 encoded string that was created
+        /// through the <see cref="Encrypt(string)"/> or
+        /// <see cref="Encrypt(SecureString)"/> extension methods.</param>
+        /// <returns>The decrypted string.</returns>
+        /// <remarks>Keep in mind that the decrypted string remains in memory
+        /// and makes your application vulnerable per se. If runtime protection
+        /// is essential, <see cref="SecureString"/> should be used.</remarks>
+        /// <exception cref="ArgumentNullException">If <paramref name="cipher"/>
+        /// is a null reference.</exception>
+        public static bool CanBeDecrypted(this string cipher)
+        {
+            if(string.IsNullOrEmpty(cipher)) return false;
+
+            if(!cipher.IsBase64()) return false;
+
+            //parse base64 string
+            byte[] data = Convert.FromBase64String(cipher);
+
+            //decrypt data
+            try
+            {
+                ProtectedData.Unprotect(data, null, _dataProtectionScope);
+            }
+            catch(Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+
+
         public static bool IsBase64(this string base64String)
         {
             // Credit: oybek http://stackoverflow.com/users/794764/oybek
