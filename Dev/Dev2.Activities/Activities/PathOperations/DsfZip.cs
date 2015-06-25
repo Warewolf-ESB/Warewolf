@@ -11,14 +11,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Dev2.Activities;
 using Dev2.Activities.PathOperations;
 using Dev2.Common.Interfaces;
 using Dev2.Data;
 using Dev2.Data.PathOperations.Interfaces;
+using Dev2.Data.Util;
 using Dev2.PathOperations;
 using Dev2.Util;
+using Dev2.Warewolf.Security.Encryption;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Storage;
 
@@ -48,6 +51,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         IWarewolfIterator _archPassItr;
         IWarewolfIterator _compresItr;
         IWarewolfIterator _archNameItr;
+        string _archivePassword;
 
         #region Properties
         /// <summary>
@@ -55,7 +59,41 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary>      
         [Inputs("Archive Password")]
         [FindMissing]
-        public string ArchivePassword { get; set; }
+        public string ArchivePassword
+        {
+            get { return _archivePassword; }
+            set
+            {
+                if (DataListUtil.ShouldEncrypt(value))
+                {
+                    try
+                    {
+                        _archivePassword = DPAPIWrapper.Encrypt(value);
+                    }
+                    catch (Exception)
+                    {
+                        _archivePassword = value;
+                    }
+                }
+                else
+                {
+                    _archivePassword = value;
+                }
+            }
+        }
+
+
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        protected string DecryptedArchivePassword
+        {
+            get
+            {
+                return DataListUtil.NotEncrypted(ArchivePassword) ? ArchivePassword : DPAPIWrapper.Decrypt(ArchivePassword);
+            }
+        }
+
+        
 
         /// <summary>
         /// Gets or sets the name of the archive.
@@ -88,7 +126,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _archNameItr = new WarewolfIterator(environment.Eval(ArchiveName));
             ColItr.AddVariableToIterateOn(_archNameItr);
 
-            _archPassItr = new WarewolfIterator(environment.Eval(ArchivePassword));
+            _archPassItr = new WarewolfIterator(environment.Eval(DecryptedArchivePassword));
             ColItr.AddVariableToIterateOn(_archPassItr);
 
         }

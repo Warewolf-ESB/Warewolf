@@ -97,7 +97,7 @@ namespace Dev2.PathOperations
 
                     string user = ExtractUserName(path);
                     string domain = ExtractDomain(path);
-                    bool loginOk = LogonUser(user, domain, path.DecryptedPassword, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+                    bool loginOk = LogonUser(user, domain, path.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
 
 
                     if (loginOk)
@@ -166,7 +166,7 @@ namespace Dev2.PathOperations
                         {
                             // handle UNC path
                             SafeTokenHandle safeTokenHandle;
-                            bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.DecryptedPassword, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+                            bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
 
 
                             if (loginOk)
@@ -221,7 +221,7 @@ namespace Dev2.PathOperations
                 {
                     // handle UNC path
                     SafeTokenHandle safeTokenHandle;
-                    bool loginOk = LogonUser(ExtractUserName(src), ExtractDomain(src), src.DecryptedPassword, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+                    bool loginOk = LogonUser(ExtractUserName(src), ExtractDomain(src), src.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
 
                     if (loginOk)
                     {
@@ -284,7 +284,7 @@ namespace Dev2.PathOperations
                 {
                     // handle UNC path
                     SafeTokenHandle safeTokenHandle;
-                    bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.DecryptedPassword, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+                    bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
 
 
                     if (loginOk)
@@ -346,7 +346,7 @@ namespace Dev2.PathOperations
                     {
                         // handle UNC path
                         SafeTokenHandle safeTokenHandle;
-                        bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.DecryptedPassword, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+                        bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
 
 
                         if (loginOk)
@@ -398,7 +398,7 @@ namespace Dev2.PathOperations
                     {
                         // handle UNC path
                         SafeTokenHandle safeTokenHandle;
-                        bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.DecryptedPassword, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+                        bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
 
                         if (loginOk)
                         {
@@ -628,7 +628,7 @@ namespace Dev2.PathOperations
                 {
                     // handle UNC path
                     SafeTokenHandle safeTokenHandle;
-                    bool loginOk = LogonUser(ExtractUserName(src), ExtractDomain(src), src.DecryptedPassword, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+                    bool loginOk = LogonUser(ExtractUserName(src), ExtractDomain(src), src.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
 
                     if (loginOk)
                     {

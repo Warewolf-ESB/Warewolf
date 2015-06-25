@@ -12,6 +12,7 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
@@ -19,6 +20,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.PathOperations;
 using Dev2.Data.PathOperations.Interfaces;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.PathOperations;
@@ -155,6 +157,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // Do nothing ;)
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] 
+        protected string DecryptedPassword
+        {
+            get
+            {
+                return DataListUtil.NotEncrypted(Password) ? Password : DPAPIWrapper.Decrypt(Password);
+            }
+        }
+
         /// <summary>
         /// Status : New
         /// Purpose : To provide an overidable concrete method to execute an activity's logic through
@@ -176,7 +187,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             get { return _password; }
             set
             {
-                if (!value.IsBase64())
+                if (DataListUtil.ShouldEncrypt(value))
                 {
                     try
                     {

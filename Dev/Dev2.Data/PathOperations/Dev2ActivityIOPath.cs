@@ -11,7 +11,6 @@
 
 using System;
 using System.Text;
-using Dev2.Warewolf.Security.Encryption;
 
 namespace Dev2.PathOperations
 {
@@ -77,14 +76,7 @@ namespace Dev2.PathOperations
             set;
         }
 
-        public string DecryptedPassword
-        {
-            get
-            {
-                return string.IsNullOrEmpty(Password) ? Password : DPAPIWrapper.Decrypt(Password);
-            }
-        }
-
+       
         public bool IsNotCertVerifiable
         {
             get;

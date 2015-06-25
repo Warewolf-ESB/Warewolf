@@ -11,3 +11,16 @@ E:\git\rep1\warewolf-esb\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\FluentAssert
 E:\git\rep1\warewolf-esb\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\FluentAssertions.Core.xml
 E:\git\rep1\warewolf-esb\Dev\Dev2.Warewolf.Security.Tests\obj\Debug\Dev2.Warewolf.Security.Tests.dll
 E:\git\rep1\warewolf-esb\Dev\Dev2.Warewolf.Security.Tests\obj\Debug\Dev2.Warewolf.Security.Tests.pdb
+C:\Repos\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\Dev2.Warewolf.Security.Tests.dll
+C:\Repos\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\Dev2.Warewolf.Security.Tests.pdb
+C:\Repos\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\Dev2.Warewolf.Security.dll
+C:\Repos\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\FluentAssertions.Core.dll
+C:\Repos\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\FluentAssertions.dll
+C:\Repos\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\Dev2.Warewolf.Security.pdb
+C:\Repos\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\FluentAssertions.pdb
+C:\Repos\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\FluentAssertions.xml
+C:\Repos\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\FluentAssertions.Core.pdb
+C:\Repos\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\bin\Debug\FluentAssertions.Core.xml
+C:\Repos\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\obj\Debug\Dev2.Warewolf.Security.Tests.csprojResolveAssemblyReference.cache
+C:\Repos\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\obj\Debug\Dev2.Warewolf.Security.Tests.dll
+C:\Repos\Warewolf-ESB\Dev\Dev2.Warewolf.Security.Tests\obj\Debug\Dev2.Warewolf.Security.Tests.pdb

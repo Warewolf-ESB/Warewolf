@@ -22,6 +22,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Warewolf.Security.Encryption;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 
@@ -1042,8 +1043,18 @@ namespace Dev2.Data.Util
             bool result = payload != null && payload.IndexOf(OpeningSquareBrackets, StringComparison.Ordinal) >= 0 && payload.IndexOf(ClosingSquareBrackets, StringComparison.Ordinal) >= 0;
 
             return result;
-        }      
-        
+        }
+
+        public static bool ShouldEncrypt(string value)
+        {
+            return !value.IsBase64() && !IsFullyEvaluated(value);
+        }
+
+        public static bool NotEncrypted(string value)
+        {
+            return string.IsNullOrEmpty(value) || IsFullyEvaluated(value);
+        }
+
         /// <summary>
         /// Is the expression evaluated
         /// </summary>  

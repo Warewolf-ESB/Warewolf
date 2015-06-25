@@ -58,7 +58,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var unameItr = new WarewolfIterator(dataObject.Environment.Eval(Username));
             colItr.AddVariableToIterateOn(unameItr);
 
-            var passItr = new WarewolfIterator(dataObject.Environment.Eval(Password));
+            var passItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedPassword));
             colItr.AddVariableToIterateOn(passItr);
 
 
