@@ -17,6 +17,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Services.Sql;
 using MySql.Data.MySqlClient;
+using Dev2.Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql
 {
@@ -29,7 +30,7 @@ namespace Dev2.Services.Sql
         {
             VerifyArgument.IsNotNull("connectionString", connectionString);
 
-            return new SqlConnection(connectionString);
+            return new SqlConnection(DPAPIWrapper.Decrypt(connectionString));
         }
 
         public IDbCommand CreateCommand(IDbConnection connection, CommandType commandType, string commandText)
@@ -37,14 +38,14 @@ namespace Dev2.Services.Sql
             return new SqlCommand(commandText, connection as SqlConnection)
             {
                 CommandType = commandType,
-                CommandTimeout = (int) GlobalConstants.TransactionTimeout.TotalSeconds,
+                CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds,
             };
         }
 
         public DataTable GetSchema(IDbConnection connection, string collectionName)
         {
 
-                    return GetSqlServerSchema(connection, collectionName);
+            return GetSqlServerSchema(connection, collectionName);
 
         }
 
@@ -54,19 +55,19 @@ namespace Dev2.Services.Sql
         //        throw new Exception("Invalid Mqsql Connection");
 
         //    return ((MySqlConnection)connection).GetSchema();
-            
+
         //}
 
         static DataTable GetSqlServerSchema(IDbConnection connection, string collectionName)
         {
             var sqlConnection = connection as SqlConnection;
-            if(sqlConnection != null)
+            if (sqlConnection != null)
             {
                 return sqlConnection.GetSchema(collectionName);
             }
-                // ReSharper disable RedundantIfElseBlock
+            // ReSharper disable RedundantIfElseBlock
             else
-                // ReSharper restore RedundantIfElseBlock
+            // ReSharper restore RedundantIfElseBlock
             {
                 throw new Exception("Invalid SqlConnection");
             }
