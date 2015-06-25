@@ -8,6 +8,8 @@ namespace Dev2.Warewolf.Security.Encryption
 {
     public static class DPAPIWrapper
     {
+        static DataProtectionScope _dataProtectionScope = DataProtectionScope.LocalMachine;
+
 
         /// <summary>
         /// Encrypts a given password and returns the encrypted data
@@ -29,7 +31,7 @@ namespace Dev2.Warewolf.Security.Encryption
 
             //encrypt data
             var data = Encoding.Unicode.GetBytes(plainText);
-            byte[] encrypted = ProtectedData.Protect(data, null, DataProtectionScope.LocalMachine);
+            byte[] encrypted = ProtectedData.Protect(data, null, _dataProtectionScope);
 
             //return as base64 string
             return Convert.ToBase64String(encrypted);
@@ -57,7 +59,7 @@ namespace Dev2.Warewolf.Security.Encryption
             byte[] data = Convert.FromBase64String(cipher);
 
             //decrypt data
-            byte[] decrypted = ProtectedData.Unprotect(data, null, DataProtectionScope.LocalMachine);
+            byte[] decrypted = ProtectedData.Unprotect(data, null, _dataProtectionScope);
             return Encoding.Unicode.GetString(decrypted);
         }
 

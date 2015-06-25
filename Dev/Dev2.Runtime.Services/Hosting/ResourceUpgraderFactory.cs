@@ -36,7 +36,7 @@ namespace Dev2.Runtime.Hosting
                     new UpgradePath(
                     upgradesFrom: new Version(), 
                     upgradesTo: new Version(0, 4, 20, 27001), 
-                    upgrade: new BaseResourceUpgrader()
+                    upgrade: new EncryptionResourceUpgrader()
                     )
             };
             return upgrades;
