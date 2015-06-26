@@ -1,5 +1,5 @@
 
-<Service ID="feef40ed-49fa-487d-bb85-2ac146e60f5b" Version="1.0" Name="FetchPlayers" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+<Service ID="feef40ed-49fa-487d-bb85-2ac146e60f5b" Version="1.0" Name="FetchPlayers" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.5.5655.12591">
   <Actions>
     <Action Name="dbo_FetchPeople" Type="InvokeStoredProc" SourceID="563f2eed-21a1-4921-9dc5-61ebcb1b92cd" SourceName="DemoDB" SourceMethod="dbo.FetchPeople">
       <Inputs>
@@ -40,9 +40,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>l52A+2FpOljwOmIHtpFlpNnilIU=</DigestValue>
+        <DigestValue>s5s8NEmCXAi3AKTndMSdvdZuMDQ=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>MhKQpCHPhV1rR7WOVpcOXjWsTL7i6PjnGiZxDlOIGj8xcbDvWOaDNsIEKxumFT7LIvGNzQiuN5s8DX6q5K+kCK6lC7ErGaxJxNWctIlwGHfieAjJ2nnkqrGqlAfPdj/QF8VWP4DPNM65hgp6934SJoMl5k19kSXBnMqRb3Q6msE=</SignatureValue>
+    <SignatureValue>splVQI+tg4V1LFB8W+Q4GsiwlPRtB7JgotxY5NJNr8dYLmUwAJdvVc4iAZ6bfepRNxREn0ttFTj5sTM8xM5U7tJIhBpPJpijLk0RR6v/7DigMIqCa7NylxKSA+EAJ2Yf6FtpUk9ybh3VqQbaY/EK3Ysa7I+ymu6WehMyWHyaQr8=</SignatureValue>
   </Signature>
 </Service>

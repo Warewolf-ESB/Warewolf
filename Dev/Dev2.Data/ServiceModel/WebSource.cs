@@ -74,8 +74,9 @@ namespace Dev2.Runtime.ServiceModel.Data
                 { "Password", string.Empty }
             };
 
-            ParseProperties(DPAPIWrapper.Decrypt(xml.AttributeSafe("ConnectionString")), properties);
-
+            var conString = xml.AttributeSafe("ConnectionString");
+            var connectionString = conString.CanBeDecrypted() ? DPAPIWrapper.Decrypt(conString) : conString;
+            ParseProperties(connectionString, properties);
             Address = properties["Address"];
             DefaultQuery = properties["DefaultQuery"];
             UserName = properties["UserName"];

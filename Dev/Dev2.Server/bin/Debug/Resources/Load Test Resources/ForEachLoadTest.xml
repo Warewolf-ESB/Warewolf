@@ -1,5 +1,5 @@
 
-<Service ID="21f1a350-ccf1-4710-beec-e3a9407180d4" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ForEachLoadTest" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
+<Service ID="21f1a350-ccf1-4710-beec-e3a9407180d4" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ForEachLoadTest" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.5.5655.12591">
   <DisplayName>ForEachLoadTest</DisplayName>
   <Category>Load Test Resources\ForEachLoadTest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -40,9 +40,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>CQpL6QXmQ0e1vRUkhVl48p4aj0A=</DigestValue>
+        <DigestValue>/I6PVnGdWNLb11VVZ3qKK4sc340=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>VwT3FlR9FCt0MuGJzys5v2ZoBvJTaluzTwL1F0ORXT/4tEAJIskCu5PoR2sCJN17uZ6l7qyFXDdaiz5+gw5T2ybUJ3EXGdlPegX+3FKV0Uh79j+F+lnNNCmyQ/6lZxYvWBMjRrwIj67hQcb0jZZa/LOJVFnaz7eC4b6NRWoubV0=</SignatureValue>
+    <SignatureValue>pbdBgJXPLGWmoN8tBhyK+tC5rrGFo938NfCBEbkFGVp4x13dQqOUxLLhgpsPeyhNIC7AAVUI3Y2zMSKEJFJPJi8wPPpAU+wAkb2kisfKRwuUbYvZmcxzSDDTQTtvc24JDgUeyz+bhp0TVMQ40kcxU2+2OGnYKd8Mt64d/IQL61M=</SignatureValue>
   </Signature>
 </Service>

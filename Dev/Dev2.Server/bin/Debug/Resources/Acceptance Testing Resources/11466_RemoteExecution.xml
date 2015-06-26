@@ -1,5 +1,5 @@
 
-<Service ID="a2b445f8-ab69-423c-97cc-8e56f380ea10" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="11466_RemoteExecution" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
+<Service ID="a2b445f8-ab69-423c-97cc-8e56f380ea10" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="11466_RemoteExecution" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.5.5655.12024">
   <DisplayName>11466_RemoteExecution</DisplayName>
   <Category>Acceptance Testing Resources\11466_RemoteExecution</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -37,9 +37,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>L5sawjZVux1cwjmveedh9d9gKdg=</DigestValue>
+        <DigestValue>YiAz52octsFdR0kvBmRQ0RGkbKw=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>V5abEPMO6uezZaSZSvYZOGDQ9JGOUwbftkGnM9jXy8MISXp0GJ6JeX+XhkvJzxPHj3Fl7E24LkoSchlj1n2zNjyiTkWL6QTUvac0K8qeghArgYO6JKdTPMNg4GL87WxSoTFjRGfV6PrnRbGqwlwu5mZlhnm0cgXiy4dpY0S6mBo=</SignatureValue>
+    <SignatureValue>fjzMCTZh8CybKTME+xXgSA5HeP7i18tbQ7cxL0LiWNrGSUt/XxbgdA3UipvuA3/3S7QjOEdUW+ZPPcGpt7gXs5GVgDzY1zamsKdSNdrmvp8E1Dqub1yl8Wn/IYnItKA4Oce/WbX9f9a9EUJFY9AXzKT4dQPTY7rav7JYL1MIWqQ=</SignatureValue>
   </Signature>
 </Service>

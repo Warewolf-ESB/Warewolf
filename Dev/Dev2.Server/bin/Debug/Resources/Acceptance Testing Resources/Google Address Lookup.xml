@@ -1,5 +1,5 @@
 
-<Source ID="a00626a4-ec09-46ad-8c97-ea6c44bbc582" Version="1.0" Name="Google Address Lookup" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://maps.googleapis.com;DefaultQuery=/maps/api/geocode/json?sensor=true&amp;address=[[address]];AuthenticationType=Anonymous" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+<Source ID="a00626a4-ec09-46ad-8c97-ea6c44bbc582" Version="1.0" Name="Google Address Lookup" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAhlgEVBjDoE6uHRHcjdb2RwQAAAACAAAAAAADZgAAwAAAABAAAACoDCv8o1Q46htpwewBz841AAAAAASAAACgAAAAEAAAAK0m1s04oMmGcld3OU1G994QAQAAEQvLDeC3g0EzG2zDUn552mb9Swesi1AORx9ZQnxT/WPgCCUlDd00LDcdys6DFwytNunSpUptE0pUz2MmHxZtiUSNR/mnD/m7wl9rni9iV3pkNKoAn9oxB+C3udf8JXmhY63W0pb5/FG/EDLndysgEjGUz8Y8emn8o7t4jRhML33zZk2lLEL9mkHVKSqrnCUKzMDzXJgQqLG6czptcUkA4uZSVS1K2Yt/jK34lLIEvEC8+d28QiNYqPCwhDYtfj1QzwBTdxg5e827Unpp1kzQZiGaxWX3MPimkYk25zwnVZv6XFXtCyxxn0fTKIpymPlJpRYhj5z3QjeQcaD5ufoozuVzyUJO8zWzsI8Ug8s2SmIUAAAA/iMu34w9IHHYpmFtUNWkTzXJzA8=" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.5.5655.12591">
   <DisplayName>Google Address Lookup</DisplayName>
   <Category>Acceptance Testing Resources\Google Address Lookup</Category>
   <AuthorRoles>
@@ -16,9 +16,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>npuZDIc2TeQrhCbDP5rpNDRn3h4=</DigestValue>
+        <DigestValue>q7NIuwyl0lZeFO/0MAdxJxMqXKg=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>codbUUQF5/GvYKef9Pvbq7N6ojngOhxa5d0H4txAiSBOTYtvDmwEl9QGhaHLij8CNljqcr6c1gssELer1D/x9SUSNEW00s1iI3YeRGCYpfcvbLsik9hMI2cN7MTtDo0hXmWrEowmSglBipggA/jIXfsSGLifMU3OW+73QZ2aVY8=</SignatureValue>
+    <SignatureValue>JFBqAAQRSXRx4tzooggIdp9bAbzxvdxaWSB7piBqdEDKXBH66UdhpDVnV5qcykmsgHYJeOhIT0EwfWRduQMKWC/+6oY4Wo3ObUUNig5GeZ2tYp/HGyBAEAt72nm2bf/XuksJrAhff/zyNINl288r5VOrAv5RPZeCt0+s2mqekDE=</SignatureValue>
   </Signature>
 </Source>

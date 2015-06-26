@@ -89,7 +89,9 @@ namespace Dev2.Runtime.ServiceModel.Data
                 { "Timeout", string.Empty },
             };
 
-            ParseProperties(DPAPIWrapper.Decrypt(xml.AttributeSafe("ConnectionString")), properties);
+            var conString = xml.AttributeSafe("ConnectionString");
+            var connectionString = conString.CanBeDecrypted() ? DPAPIWrapper.Decrypt(conString) : conString;
+            ParseProperties(connectionString, properties);
 
             Host = properties["Host"];
             UserName = properties["UserName"];

@@ -1,5 +1,5 @@
 
-<Service ID="3f9e7c68-b7f8-415e-88a2-d71cc6e70232" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Service Output To Multiple Recordsets" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
+<Service ID="3f9e7c68-b7f8-415e-88a2-d71cc6e70232" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Service Output To Multiple Recordsets" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.5.5655.12591">
   <DisplayName>Service Output To Multiple Recordsets</DisplayName>
   <Category>Acceptance Testing Resources\Service Output To Multiple Recordsets</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -136,9 +136,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>BatYNALrfjcdBBueUxjdFi4wnaY=</DigestValue>
+        <DigestValue>lIx143XmUq22jre/NPC3XM8tkls=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>lFPIMkfJc9H8HDs0ZingxhYBEuuw3Qcx1gdj75GGuH+07V4kBfl3CuF1M+Fkaw8unA8gfpJ7MpsTJ7TdQryOHQ3mQlFY1QqLBcH2+mHD9bIVpr6fFRwySOyxsfUvqhuqFP0H622klDsXpHP/uytREk/cXpRbBWzQrjdw/AcOzBk=</SignatureValue>
+    <SignatureValue>pAJR75oy+idOYDy2TscZziWdZWzhSTD9DqVRfnGrzCoK3xGJ9cdZnf19NgDh2zToQp4cO0qR1HD0I/YBzhxQAXdYA7w0wl+HAqSKiPe5xncKDN2Ujm87VyCIks/VF51S61p272cimz43CP3DvmUfss5n56/8AJN65WmktV5+/N4=</SignatureValue>
   </Signature>
 </Service>

@@ -21,14 +21,14 @@ namespace Dev2.Runtime.ResourceUpgrades
 {
     public class EncryptionResourceUpgrader : IResourceUpgrade
     {
-        Dictionary<string, StringTransform> _replacements = new Dictionary<string, StringTransform>();
+        readonly Dictionary<string, StringTransform> _replacements = new Dictionary<string, StringTransform>();
 
         void BuildReplacements()
         {
             _replacements.Add("Source", new StringTransform
             {
                 SearchRegex = new Regex(@"<Source ID=""[a-e0-9\-]+"" .*ConnectionString=""([^""]+)"" .*>"),
-                GroupNumbers = new int[] { 1 },
+                GroupNumbers = new[] { 1 },
                 TransformFunction = DPAPIWrapper.Encrypt
             }
                 );
@@ -36,7 +36,23 @@ namespace Dev2.Runtime.ResourceUpgrades
             "DsfAbstractFileActivity", new StringTransform
             {
                 SearchRegex = new Regex(@"&lt;([a-zA-Z0-9]+:)?(DsfFileWrite|DsfFileRead|DsfFolderRead|DsfPathCopy|DsfPathCreate|DsfPathDelete|DsfPathMove|DsfPathRename|DsfZip|DsfUnzip) .*?Password=""([^""]+)"" .*?&gt;"),
-                GroupNumbers = new int[] { 3 },
+                GroupNumbers = new[] { 3 },
+                TransformFunction = DPAPIWrapper.Encrypt
+            }
+            );
+            _replacements.Add(
+            "DsfAbstractMultipleFilesActivity", new StringTransform
+            {
+                SearchRegex = new Regex(@"&lt;([a-zA-Z0-9]+:)?(DsfPathCopy|DsfPathMove|DsfPathRename|DsfZip|DsfUnzip) .*?DestinationPassword=""([^""]+)"" .*?&gt;"),
+                GroupNumbers = new[] { 3 },
+                TransformFunction = DPAPIWrapper.Encrypt
+            }
+            );
+            _replacements.Add(
+            "Zip", new StringTransform
+            {
+                SearchRegex = new Regex(@"&lt;([a-zA-Z0-9]+:)?(DsfZip|DsfUnzip) .*?ArchivePassword=""([^""]+)"" .*?&gt;"),
+                GroupNumbers = new[] { 3 },
                 TransformFunction = DPAPIWrapper.Encrypt
             }
             );
@@ -80,10 +96,11 @@ namespace Dev2.Runtime.ResourceUpgrades
 
         class StringTransform
         {
-            public Regex SearchRegex { get; set; }
-            public int[] GroupNumbers { get; set; }
-            public Func<string, string> TransformFunction { get; set; }
+            public Regex SearchRegex { private get; set; }
+            public int[] GroupNumbers { private get; set; }
+            public Func<string, string> TransformFunction { private get; set; }
 
+            // ReSharper disable once ParameterTypeCanBeEnumerable.Local
             public static string TransformAllMatches(string initial, List<StringTransform> transforms)
             {
                 StringBuilder result = new StringBuilder(initial);

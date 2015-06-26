@@ -1,5 +1,5 @@
 
-<Service ID="df24117f-8831-40bc-85de-2040d3140f43" Version="1.0" Name="OnError Webservice" ResourceType="WebService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+<Service ID="df24117f-8831-40bc-85de-2040d3140f43" Version="1.0" Name="OnError Webservice" ResourceType="WebService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.5.5655.12591">
   <Actions>
     <Action Name="OnError Webservice" Type="InvokeWebService" SourceID="cb95b41d-b5f8-4507-8f7c-bb718b168dcf" SourceName="Dev2 Testing Web Src Faulty" SourceMethod="" RequestUrl="/GetCitiesByCountry?CountryName=[[CountryName]]" RequestMethod="Get">
       <RequestHeaders><![CDATA[]]></RequestHeaders>
@@ -38,9 +38,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>am8rwguOsBVNsXWenqCR2HTfS20=</DigestValue>
+        <DigestValue>jI2VlrJ8cVhw+MFDoLa1W+8tMKw=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>mSQGzitqRlCPfjMeqKXedsY+a7hgemmEi0CKs1Av5AOjIyb77IQ8UawJiTEUrWn0BcbVQaiNpXpR8sDojKNfURFhX3Xmcdhxp7xKwvgnHYm0xgM2Q/KxfzhUQQdzGtT6SyaHvfjOLt0xeX59emgO8hMmBl3uYmTxUORi4D94SlI=</SignatureValue>
+    <SignatureValue>m7wzxMTbUctgpO91fzUPvB2HfJYq3n0TEnI0QrOZaOzDI+dEslQxYUA4dpsSMrHGnV7sMOdJ4+FzAJdQJFjn2gOoEwr0DuYiCqK1xTpIzAfE7TELmkbOMcdOz9Yjy3vkx9HApEs8iN0+Lv7IF0RIY4CczSNaD/cRW25VO5HQjlY=</SignatureValue>
   </Signature>
 </Service>

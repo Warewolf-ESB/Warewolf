@@ -1,5 +1,5 @@
 
-<Service ID="25c3cfc9-8f3a-4b19-bafa-32a7efa1851e" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MultiAssignUsingBlankIntegrationTest" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
+<Service ID="25c3cfc9-8f3a-4b19-bafa-32a7efa1851e" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MultiAssignUsingBlankIntegrationTest" ResourceType="WorkflowService" ServerVersion="0.5.5655.12591">
   <DisplayName>MultiAssignUsingBlankIntegrationTest</DisplayName>
   <Category>Acceptance Testing Resources\MultiAssignUsingBlankIntegrationTest</Category>
   <AuthorRoles>
@@ -158,9 +158,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>msmj47mkL3ei7M11aPcpsPIAZps=</DigestValue>
+        <DigestValue>PoOwXwiAnR3//M/+7ktxz+OOgFE=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>LZ1i/Ho3c0/V86rIe0k8NWdNRBpKawCeREWR2q/hNVzubFnfElT3JaaR2ooPhWLcdmTMWJnG9/AKIs5ZseeqKa1ERDEJwE6sFT9O4ZgYtSKivusGL5NDZCGMSW0xG9HtuwqLNe3TW1OGxmZp+RUKJlp/4zrFfPRXUsrjqu0i8Mg=</SignatureValue>
+    <SignatureValue>JnfoTmWIaxyO0FrcH0OEVI+uPdgublIzpomEl7hCKIK/pgoKTCM1J4v7Fxrhq7F9Upt2eraQkjExvgdPYUO/Lu4CZuS7jebIv4bOud4C8KwvgCe8CM09UbFbx6986ohQn0+whuTjrM2Hr1ZIz0OoyCQ4Qt2gheuilzqMJWl0iMw=</SignatureValue>
   </Signature>
 </Service>

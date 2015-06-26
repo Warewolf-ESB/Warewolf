@@ -57,7 +57,8 @@ namespace Dev2.Data.ServiceModel
          {
             ResourceType = Common.Interfaces.Data.ResourceType.Server;
 
-            var connectionString = DPAPIWrapper.Decrypt(xml.AttributeSafe("ConnectionString"));
+            var conString = xml.AttributeSafe("ConnectionString");
+            var connectionString = conString.CanBeDecrypted() ? DPAPIWrapper.Decrypt(conString):conString;
             var props = connectionString.Split(';');
             foreach(var p in props.Select(prop => prop.Split('=')).Where(p => p.Length >= 1))
             {

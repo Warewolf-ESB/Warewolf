@@ -1,5 +1,5 @@
 
-<Service Name="LargeDataTest" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="3319db80-b89b-4220-bfb2-7505de62874e" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
+<Service Name="LargeDataTest" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="3319db80-b89b-4220-bfb2-7505de62874e" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.5.5655.12591">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap sads" x:Class="LargeDataTest"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
@@ -179,9 +179,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>ZeFUuWHZoGGy2uZqVFuu/5akF0M=</DigestValue>
+        <DigestValue>5Bo+ySG/81OXSHwkJGWbryG5iD8=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>G8gBTVfAVAO2g4G1I/9oqFHn8UujQSXfr7g/x+FE19A6dQPdSyCzYerwX/SRSGf0sR5cKGCH15haAFgyVcLNgxIdci2r+S55TLCnGQ2jchGRUI35GorHFzQw5Z4lxf6ny4PndBRB1BLnZzY06VUrSRhQSj54jCThiPgMy9FNRXI=</SignatureValue>
+    <SignatureValue>T8CkilTVgp+uk8MyTKdqefv1Ut51+6FxSQmStuQ44PL44O5j5XGRwNHy5NEvVVMb0LbEA9NbGwFaTDBZ2tfvsU8Apb0uTmA2xHyg9ek0nyRRe0ciYau3vBAxZ8kOYhiJgRFFpzX6OKcnNoolxZ4zjNnB0hJzQO4UNUlv9jEgEvw=</SignatureValue>
   </Signature>
 </Service>

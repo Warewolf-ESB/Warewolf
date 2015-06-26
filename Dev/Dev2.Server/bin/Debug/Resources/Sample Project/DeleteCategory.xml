@@ -1,5 +1,5 @@
 
-<Service ID="b3295313-6490-4fc7-af61-5202f0b7bd4d" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DeleteCategory" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
+<Service ID="b3295313-6490-4fc7-af61-5202f0b7bd4d" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DeleteCategory" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.5.5655.12591">
   <DisplayName>DeleteCategory</DisplayName>
   <Category>Sample Project\DeleteCategory</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -43,9 +43,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>W0B80s3gRCU3rNTIQx91GP6IGJs=</DigestValue>
+        <DigestValue>xQnJLMiCUcxUQ0d2MUT0UGcPE00=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>ZSxuzX6j5fgiIQPy4RrGwFSkvDrRAvHQ3+NNTn3QQLw6pnT++JMs+mYpjT87IZOWJ1Nwnx1wU6y6OWz00vQZ4vjBir/itW5d/0LTZYlaQzxq/gz1ly/P4paNuc/2AWCDmaxKrZfNxugalXrvPQQxSq5kSW92qiktusiEYCXG0E0=</SignatureValue>
+    <SignatureValue>MSCozr1AADksGt5E15Oo9Ll/y6fFP9g/rzWuH49OWuOHQhPXQDs1rZYnoYSf7Av4WzFG/OK63SPEqTZTtVrSlZ0M97Q6B6KBz5hNTAUPq51inDl/CiOVbFfhD+ahpJuLc4QmJjs2FGsCdZwr4DByUBHp74gHKAYb56GHivk9/5c=</SignatureValue>
   </Signature>
 </Service>
