@@ -6,7 +6,7 @@ Feature: Zip
 
 Scenario Outline: Zip file at location
 	Given I have a source path '<source>' with value '<sourceLocation>'
-	And source credentials as '<username>' and '<password>'
+	And source credentials as '<username>' and '<password>' for zip tests
 	And I have a destination path '<destination>' with value '<destinationLocation>'
 	And destination credentials as '<destUsername>' and '<destPassword>'
 	And overwrite is '<selected>'
@@ -52,7 +52,7 @@ Scenario Outline: Zip file at location
 
 		Scenario Outline: Zip file at location is compressed at ratio
 	Given I have a source path '<source>' with value '<sourceLocation>'
-	And source credentials as '<username>' and '<password>'
+	And source credentials as '<username>' and '<password>' for zip tests
 	And I have a destination path '<destination>' with value '<destinationLocation>'
 	And destination credentials as '<destUsername>' and '<destPassword>'
 	And overwrite is '<selected>'
