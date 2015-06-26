@@ -11,12 +11,9 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
-using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Services.Sql;
-using MySql.Data.MySqlClient;
 using Dev2.Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql
@@ -29,8 +26,11 @@ namespace Dev2.Services.Sql
         public IDbConnection CreateConnection(string connectionString)
         {
             VerifyArgument.IsNotNull("connectionString", connectionString);
-
-            return new SqlConnection(DpapiWrapper.Decrypt(connectionString));
+            if(connectionString.CanBeDecrypted())
+            {
+                connectionString = DpapiWrapper.Decrypt(connectionString);
+            }
+            return new SqlConnection(connectionString);
         }
 
         public IDbCommand CreateCommand(IDbConnection connection, CommandType commandType, string commandText)

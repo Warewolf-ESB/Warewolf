@@ -1,5 +1,6 @@
 ﻿using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
+using Dev2.Warewolf.Security.Encryption;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Runtime.ServiceModel
@@ -55,13 +56,13 @@ namespace Dev2.Tests.Runtime.ServiceModel
             //------------Execute Test---------------------------
             var outxml = oauthSource.ToXml();
             //------------Assert Results-------------------------
-            Assert.AreEqual(outxml.ToString(), @"<Source ID=""00000000-0000-0000-0000-000000000000"" Name="""" ResourceType=""OauthSource"" IsValid=""false"" ConnectionString=""Secret=secret;Key=key"" Type=""OauthSource"">
-  <DisplayName></DisplayName>
-  <Category></Category>
-  <AuthorRoles></AuthorRoles>
-  <ErrorMessages />
-  <TypeOf>OauthSource</TypeOf>
-</Source>");
+            var readOauthSource = new OauthSource(outxml);
+            readOauthSource.Key = "key";
+            readOauthSource.Secret = "secret";
+            
+            var conStringAttr = outxml.Attribute("ConnectionString");
+            Assert.IsNotNull(conStringAttr);
+            Assert.IsTrue(conStringAttr.Value.IsBase64());            
         }
 
     }
