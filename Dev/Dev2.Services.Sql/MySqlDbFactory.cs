@@ -17,8 +17,11 @@ namespace Dev2.Services.Sql
         public IDbConnection CreateConnection(string connectionString)
         {
             VerifyArgument.IsNotNull("connectionString", connectionString);
-
-            return new MySqlConnection(DpapiWrapper.Decrypt(connectionString));
+            if (connectionString.CanBeDecrypted())
+            {
+                connectionString = DpapiWrapper.Decrypt(connectionString);
+            }
+            return new MySqlConnection(connectionString);
         }
 
         public IDbCommand CreateCommand(IDbConnection connection, CommandType commandType, string commandText)
