@@ -98,7 +98,7 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
             m.Groups.Count.Should().BeGreaterOrEqualTo(1);
             m.Groups[1].Success.Should().BeTrue();
             string x = m.Groups[1].Value;
-            DPAPIWrapper.Decrypt(x).Should().Be(connectionString);
+            DpapiWrapper.Decrypt(x).Should().Be(connectionString);
         }
 
         /*

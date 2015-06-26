@@ -30,7 +30,7 @@ namespace Dev2.Services.Sql
         {
             VerifyArgument.IsNotNull("connectionString", connectionString);
 
-            return new SqlConnection(DPAPIWrapper.Decrypt(connectionString));
+            return new SqlConnection(DpapiWrapper.Decrypt(connectionString));
         }
 
         public IDbCommand CreateCommand(IDbConnection connection, CommandType commandType, string commandText)

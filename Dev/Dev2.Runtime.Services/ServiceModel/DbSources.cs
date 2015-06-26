@@ -33,7 +33,7 @@ namespace Dev2.Runtime.ServiceModel
         public DbSource Get(string resourceId, Guid workspaceId, Guid dataListId)
         {
             var result = new DbSource { ResourceID = Guid.Empty, ResourceType = ResourceType.DbSource, AuthenticationType = AuthenticationType.Windows };
-            result.ConnectionString = string.IsNullOrEmpty(result.ConnectionString) ? result.ConnectionString : DPAPIWrapper.Decrypt(result.ConnectionString);
+            result.ConnectionString = string.IsNullOrEmpty(result.ConnectionString) ? result.ConnectionString : DpapiWrapper.Decrypt(result.ConnectionString);
 
             try
             {
@@ -62,7 +62,7 @@ namespace Dev2.Runtime.ServiceModel
             {
                 var databaseSourceDetails = JsonConvert.DeserializeObject<DbSource>(args);
 
-                databaseSourceDetails.ConnectionString = string.IsNullOrEmpty(databaseSourceDetails.ConnectionString) ? databaseSourceDetails.ConnectionString : DPAPIWrapper.Encrypt(databaseSourceDetails.ConnectionString);
+                databaseSourceDetails.ConnectionString = string.IsNullOrEmpty(databaseSourceDetails.ConnectionString) ? databaseSourceDetails.ConnectionString : DpapiWrapper.Encrypt(databaseSourceDetails.ConnectionString);
 
                 // Setup ports using default
                 switch (databaseSourceDetails.ServerType)

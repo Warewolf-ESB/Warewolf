@@ -43,7 +43,7 @@ namespace Dev2.Data.ServiceModel
             };
 
             var conString = xml.AttributeSafe("ConnectionString");
-            var connectionString = conString.CanBeDecrypted() ? DPAPIWrapper.Decrypt(conString) : conString;
+            var connectionString = conString.CanBeDecrypted() ? DpapiWrapper.Decrypt(conString) : conString;
             ParseProperties(connectionString, properties);
             Server = properties["Server"];
             UserName = properties["UserName"];
@@ -77,7 +77,7 @@ namespace Dev2.Data.ServiceModel
             }
 
             result.Add(
-                new XAttribute("ConnectionString", DPAPIWrapper.Encrypt(connectionString)),
+                new XAttribute("ConnectionString", DpapiWrapper.Encrypt(connectionString)),
                 new XAttribute("Type", ResourceType),
                 new XElement("TypeOf", ResourceType)
                 );

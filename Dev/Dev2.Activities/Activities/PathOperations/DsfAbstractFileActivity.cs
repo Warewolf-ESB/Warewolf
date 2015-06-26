@@ -162,7 +162,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             get
             {
-                return DataListUtil.NotEncrypted(Password) ? Password : DPAPIWrapper.Decrypt(Password);
+                return DataListUtil.NotEncrypted(Password) ? Password : DpapiWrapper.Decrypt(Password);
             }
         }
 
@@ -191,7 +191,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     try
                     {
-                        _password = DPAPIWrapper.Encrypt(value);
+                        _password = DpapiWrapper.Encrypt(value);
                     }
                     catch (Exception)
                     {

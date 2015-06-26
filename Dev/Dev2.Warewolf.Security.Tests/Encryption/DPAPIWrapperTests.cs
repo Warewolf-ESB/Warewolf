@@ -35,12 +35,12 @@ namespace Dev2.Warewolf.Security.Encryption
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            string encrypted = DPAPIWrapper.Encrypt(message);
+            string encrypted = DpapiWrapper.Encrypt(message);
             encrypted.Should().NotBeNullOrEmpty();
             encrypted.Should().NotBeNullOrWhiteSpace();
             encrypted.Should().NotBeSameAs(message);
             encrypted.Should().NotContain(message);
-            DPAPIWrapper.Decrypt(encrypted).Should().Be(message);
+            DpapiWrapper.Decrypt(encrypted).Should().Be(message);
         }
 
         [TestMethod]
@@ -51,13 +51,13 @@ namespace Dev2.Warewolf.Security.Encryption
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            string encrypted = DPAPIWrapper.Encrypt(message);
+            string encrypted = DpapiWrapper.Encrypt(message);
             char x = encrypted.Where(o => encrypted.Where(u => u == o).Count() > 1).First();  // find first char that appears more than once
             char y = encrypted.Where(o => o != x).First();  // find the first char not equal to x
             string tamperedEncrypted = encrypted.Replace(x, y);
             try
             {
-                string decrypted = DPAPIWrapper.Decrypt(tamperedEncrypted);
+                string decrypted = DpapiWrapper.Decrypt(tamperedEncrypted);
             }
             catch (Exception e)
             {
@@ -65,7 +65,7 @@ namespace Dev2.Warewolf.Security.Encryption
             }
             try
             {
-                string decrypted = DPAPIWrapper.Decrypt(message);
+                string decrypted = DpapiWrapper.Decrypt(message);
             }
             catch (Exception e)
             {

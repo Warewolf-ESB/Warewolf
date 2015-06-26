@@ -29,7 +29,7 @@ namespace Dev2.Runtime.ResourceUpgrades
             {
                 SearchRegex = new Regex(@"<Source ID=""[a-e0-9\-]+"" .*ConnectionString=""([^""]+)"" .*>"),
                 GroupNumbers = new[] { 1 },
-                TransformFunction = DPAPIWrapper.Encrypt
+                TransformFunction = DpapiWrapper.Encrypt
             }
                 );
             _replacements.Add(
@@ -37,7 +37,7 @@ namespace Dev2.Runtime.ResourceUpgrades
             {
                 SearchRegex = new Regex(@"&lt;([a-zA-Z0-9]+:)?(DsfFileWrite|DsfFileRead|DsfFolderRead|DsfPathCopy|DsfPathCreate|DsfPathDelete|DsfPathMove|DsfPathRename|DsfZip|DsfUnzip) .*?Password=""([^""]+)"" .*?&gt;"),
                 GroupNumbers = new[] { 3 },
-                TransformFunction = DPAPIWrapper.Encrypt
+                TransformFunction = DpapiWrapper.Encrypt
             }
             );
             _replacements.Add(
@@ -45,7 +45,7 @@ namespace Dev2.Runtime.ResourceUpgrades
             {
                 SearchRegex = new Regex(@"&lt;([a-zA-Z0-9]+:)?(DsfPathCopy|DsfPathMove|DsfPathRename|DsfZip|DsfUnzip) .*?DestinationPassword=""([^""]+)"" .*?&gt;"),
                 GroupNumbers = new[] { 3 },
-                TransformFunction = DPAPIWrapper.Encrypt
+                TransformFunction = DpapiWrapper.Encrypt
             }
             );
             _replacements.Add(
@@ -53,7 +53,7 @@ namespace Dev2.Runtime.ResourceUpgrades
             {
                 SearchRegex = new Regex(@"&lt;([a-zA-Z0-9]+:)?(DsfZip|DsfUnzip) .*?ArchivePassword=""([^""]+)"" .*?&gt;"),
                 GroupNumbers = new[] { 3 },
-                TransformFunction = DPAPIWrapper.Encrypt
+                TransformFunction = DpapiWrapper.Encrypt
             }
             );
         }

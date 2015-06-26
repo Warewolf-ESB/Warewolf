@@ -2,13 +2,12 @@
 using System.Security;
 using System.Security.Cryptography;
 using System.Text;
-using Dev2.Warewolf.Security.Extensions;
 
 namespace Dev2.Warewolf.Security.Encryption
 {
-    public static class DPAPIWrapper
+    public static class DpapiWrapper
     {
-        static DataProtectionScope _dataProtectionScope = DataProtectionScope.LocalMachine;
+        const DataProtectionScope DataProtectionScope = System.Security.Cryptography.DataProtectionScope.LocalMachine;
 
         public static string DecryptIfEncrypted(string input)
         {
@@ -41,7 +40,7 @@ namespace Dev2.Warewolf.Security.Encryption
 
             //encrypt data
             var data = Encoding.Unicode.GetBytes(plainText);
-            byte[] encrypted = ProtectedData.Protect(data, null, _dataProtectionScope);
+            byte[] encrypted = ProtectedData.Protect(data, null, DataProtectionScope);
 
             //return as base64 string
             return Convert.ToBase64String(encrypted);
@@ -52,7 +51,7 @@ namespace Dev2.Warewolf.Security.Encryption
         /// </summary>
         /// <param name="cipher">A base64 encoded string that was created
         /// through the <see cref="Encrypt(string)"/> or
-        /// <see cref="Encrypt(SecureString)"/> extension methods.</param>
+        /// <see cref="Encrypt(string)"/> extension methods.</param>
         /// <returns>The decrypted string.</returns>
         /// <remarks>Keep in mind that the decrypted string remains in memory
         /// and makes your application vulnerable per se. If runtime protection
@@ -69,7 +68,7 @@ namespace Dev2.Warewolf.Security.Encryption
             byte[] data = Convert.FromBase64String(cipher);
 
             //decrypt data
-            byte[] decrypted = ProtectedData.Unprotect(data, null, _dataProtectionScope);
+            byte[] decrypted = ProtectedData.Unprotect(data, null, DataProtectionScope);
             return Encoding.Unicode.GetString(decrypted);
         }
 
@@ -78,7 +77,7 @@ namespace Dev2.Warewolf.Security.Encryption
         /// </summary>
         /// <param name="cipher">A base64 encoded string that was created
         /// through the <see cref="Encrypt(string)"/> or
-        /// <see cref="Encrypt(SecureString)"/> extension methods.</param>
+        /// <see cref="Encrypt(string)"/> extension methods.</param>
         /// <returns>The decrypted string.</returns>
         /// <remarks>Keep in mind that the decrypted string remains in memory
         /// and makes your application vulnerable per se. If runtime protection
@@ -97,7 +96,7 @@ namespace Dev2.Warewolf.Security.Encryption
             //decrypt data
             try
             {
-                ProtectedData.Unprotect(data, null, _dataProtectionScope);
+                ProtectedData.Unprotect(data, null, DataProtectionScope);
             }
             catch(Exception)
             {
@@ -110,12 +109,13 @@ namespace Dev2.Warewolf.Security.Encryption
         public static bool IsBase64(this string base64String)
         {
             // Credit: oybek http://stackoverflow.com/users/794764/oybek
-            if (base64String == null || base64String.Length == 0 || base64String.Length % 4 != 0
+            if (string.IsNullOrEmpty(base64String) || base64String.Length % 4 != 0
                || base64String.Contains(" ") || base64String.Contains("\t") || base64String.Contains("\r") || base64String.Contains("\n"))
                 return false;
 
             try
             {
+                // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
                 Convert.FromBase64String(base64String);
                 return true;
             }

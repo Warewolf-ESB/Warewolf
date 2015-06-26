@@ -68,7 +68,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     try
                     {
-                        _archivePassword = DPAPIWrapper.Encrypt(value);
+                        _archivePassword = DpapiWrapper.Encrypt(value);
                     }
                     catch (Exception)
                     {
@@ -89,7 +89,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             get
             {
-                return DataListUtil.NotEncrypted(ArchivePassword) ? ArchivePassword : DPAPIWrapper.Decrypt(ArchivePassword);
+                return DataListUtil.NotEncrypted(ArchivePassword) ? ArchivePassword : DpapiWrapper.Decrypt(ArchivePassword);
             }
         }
 

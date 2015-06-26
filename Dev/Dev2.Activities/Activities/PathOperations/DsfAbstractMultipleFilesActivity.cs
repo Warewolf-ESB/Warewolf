@@ -207,7 +207,7 @@ namespace Dev2.Activities.PathOperations
                 {
                     try
                     {
-                        _destPassword = DPAPIWrapper.Encrypt(value);
+                        _destPassword = DpapiWrapper.Encrypt(value);
                     }
                     catch (Exception)
                     {
@@ -226,7 +226,7 @@ namespace Dev2.Activities.PathOperations
         {
             get
             {
-                return DataListUtil.NotEncrypted(DestinationPassword) ? DestinationPassword : DPAPIWrapper.Decrypt(DestinationPassword);
+                return DataListUtil.NotEncrypted(DestinationPassword) ? DestinationPassword : DpapiWrapper.Decrypt(DestinationPassword);
             }
         }
 
