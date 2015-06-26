@@ -521,18 +521,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Composition\WorkflowExecution.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>WorkflowExecution2.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Explorer\Explorer.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Explorer.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Permissions\Settings Permissions.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Settings Permissions1.feature.cs</LastGenOutput>
-    </None>
+    <None Include="Composition\WorkflowExecution.feature"><Generator>SpecFlowSingleFileGenerator</Generator><LastGenOutput>WorkflowExecution2.feature.cs</LastGenOutput></None><None Include="Explorer\Explorer.feature"><Generator>SpecFlowSingleFileGenerator</Generator><LastGenOutput>Explorer.feature.cs</LastGenOutput></None><None Include="Permissions\Settings Permissions.feature"><Generator>SpecFlowSingleFileGenerator</Generator><LastGenOutput>Settings Permissions1.feature.cs</LastGenOutput></None>
     <None Include="Language Parser\Language Parser.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Language Parser.feature.cs</LastGenOutput>
