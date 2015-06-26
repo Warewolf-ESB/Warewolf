@@ -39,11 +39,11 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.SignalR.Wrappers;
-using Dev2.SignalR.Wrappers.New;
 using Dev2.SignalR.Wrappers.Old;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 using ServiceStack.Messaging.Rcon;
+using Dev2.SignalR.Wrappers.New;
 
 namespace Dev2.Network
 {

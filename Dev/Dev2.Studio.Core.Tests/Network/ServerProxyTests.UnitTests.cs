@@ -16,6 +16,7 @@ using Dev2.Core.Tests.Utils;
 using Dev2.Explorer;
 using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.SignalR.Wrappers;
 using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -310,12 +311,12 @@ namespace Dev2.Core.Tests.Network
 
         }
 
-        public void CallHubConnectionChanged(StateChange stateChange)
+        public void CallHubConnectionChanged(IStateChangeWrapped stateChange)
         {
             HubConnectionStateChanged(stateChange);
         }
 
-        public void SetEsbProxy(IHubProxy hubProxy)
+        public void SetEsbProxy(IHubProxyWrapper hubProxy)
         {
             EsbProxy = hubProxy;
         }

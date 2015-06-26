@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR.Client;
 
@@ -72,7 +73,8 @@ namespace Dev2.SignalR.Wrappers.New
 
         public IDisposable On<T>(string eventName, Action<T> onData)
         {
-            return (_hubProxy).On(eventName, onData);
+            return _hubProxy.On( eventName, onData);
+
         }
 
         #endregion
@@ -113,6 +115,6 @@ namespace Dev2.SignalR.Wrappers.New
 
 
     }
-    public class HttpClientExceptionWrappedOld : HttpClientException { }
+    public class HttpClientExceptionWrappedOld: HttpClientException  { }
 
 }

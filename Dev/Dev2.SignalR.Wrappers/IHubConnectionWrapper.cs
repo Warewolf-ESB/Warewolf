@@ -6,9 +6,8 @@ namespace Dev2.SignalR.Wrappers
 {
     public interface IHubConnectionWrapper 
     {
+
         
-
-
         IHubProxyWrapper CreateHubProxy(string hubName);
         event Action<Exception> Error;
         event Action Closed;

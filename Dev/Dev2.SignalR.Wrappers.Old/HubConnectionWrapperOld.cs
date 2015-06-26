@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using Dev2.SignalR.Wrappers.New;
@@ -9,23 +10,40 @@ namespace Dev2.SignalR.Wrappers.Old
     public class HubConnectionWrapperOld : IHubConnectionWrapper
     {
         ConnectionStateWrapped _state;
-        HubConnection _wrapped;
+       HubConnection _wrapped;
         ICredentials _credentials;
 
         #region Implementation of IHubConnectionWrapper
 
-        public HubConnectionWrapperOld(HubConnection wrapped)
+        public HubConnectionWrapperOld(string uri)
         {
-            _wrapped = wrapped;
-            _wrapped.Error += exception => Error(exception);
-            _wrapped.Closed += delegate { Closed(); };
-            _wrapped.StateChanged += change => StateChanged( new StateChangeWrappedOld(change));
+     
+
+            _wrapped = new HubConnection(uri);
+            _wrapped.Error += exception => {
+                                               if(Error != null)
+                                               {
+                                                   Error(exception);
+                                               }
+            };
+            _wrapped.Closed += delegate {
+                                            if(Closed != null)
+                                            {
+                                                Closed();
+                                            }
+            };
+            _wrapped.StateChanged += change => {
+                                                   if(StateChanged != null)
+                                                   {
+                                                       StateChanged(new StateChangeWrappedOld(change));
+                                                   }
+            };
         }
         public IHubProxyWrapper CreateHubProxy(string hubName)
         {
             return new HubProxyWrapperOld(_wrapped.CreateHubProxy(hubName));
         }
-        public HubConnectionWrapperOld(string uriString):this(new HubConnection(uriString)){}
+       
 
         public event Action<Exception> Error;
         public event Action Closed;
