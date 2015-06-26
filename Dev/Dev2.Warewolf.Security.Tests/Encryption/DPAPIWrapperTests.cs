@@ -65,11 +65,11 @@ namespace Dev2.Warewolf.Security.Encryption
             }
             try
             {
-                string decrypted = DpapiWrapper.Decrypt(message);
+                DpapiWrapper.Decrypt(message);
             }
             catch (Exception e)
             {
-                e.GetType().Should().Be(typeof(System.FormatException));
+                e.GetType().Should().Be(typeof(ArgumentException));
             }
         }
 
