@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace Dev2.SignalR.Wrappers
 {
@@ -47,6 +49,13 @@ namespace Dev2.SignalR.Wrappers
         object Object();
 
         IDisposable On<T>(string eventName, Action<T> onData);
+
+        ISubscriptionWrapper Subscribe(string sendmemo);
+    }
+
+    public interface ISubscriptionWrapper
+    {
+         event Action<IList<JToken>> Received;
     }
 
 

@@ -288,6 +288,8 @@
     <Compile Include="Messages\DeleteFolderMessage.cs" />
     <Compile Include="Messages\DisplayMessageBoxMessage.cs" />
     <Compile Include="Models\ServerExplorerVersionProxy.cs" />
+    <Compile Include="Network\ServerProxyWithChunking.cs" />
+    <Compile Include="Network\ServerProxyWithoutChunking.cs" />
     <Compile Include="ResolveExampleResourceNames.Designer.cs">
       <DependentUpon>ResolveExampleResourceNames.resx</DependentUpon>
       <AutoGen>True</AutoGen>

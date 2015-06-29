@@ -20,9 +20,10 @@ namespace Dev2.SignalR.Wrappers.New
             _wrapped.StateChanged += change => StateChanged(new StateChangeWrapped(change));
         }
 
-        public HubConnectionWrapper(string uriString) : this(new HubConnection(uriString))
+        public HubConnectionWrapper(string uriString)
+            : this(new HubConnection(uriString))
         {
-           
+
         }
 
         public IHubProxyWrapper CreateHubProxy(string hubName)

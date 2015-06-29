@@ -1,7 +1,11 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNet.SignalR.Client;
+
+using Microsoft.AspNet.SignalR.Client.Old;
+using Microsoft.AspNet.SignalR.Client.Old.Hubs;
+using Newtonsoft.Json.Linq;
 
 namespace Dev2.SignalR.Wrappers.New
 {
@@ -77,9 +81,35 @@ namespace Dev2.SignalR.Wrappers.New
 
         }
 
+        public ISubscriptionWrapper Subscribe(string sendmemo)
+        {
+            Subscription s = _hubProxy.Subscribe(sendmemo);
+            return new SubscriptionWrapperOld(s);
+
+        }
+
         #endregion
     }
 
+
+    public class SubscriptionWrapperOld : ISubscriptionWrapper
+    {
+        public SubscriptionWrapperOld(Subscription s)
+        {
+            Wrapped = s;
+            Wrapped.Received += WrappedReceived;
+        }
+
+        void WrappedReceived(IList<JToken> obj)
+        {
+            if(Received!= null)
+            {
+                Received(obj);
+            }
+        }
+        public event Action<IList<JToken>> Received;
+        public Subscription Wrapped { get; private set; }
+    }
 
     public class StateChangeWrappedOld : IStateChangeWrapped
     {
