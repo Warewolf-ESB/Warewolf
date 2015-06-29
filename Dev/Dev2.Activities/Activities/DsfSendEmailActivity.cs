@@ -41,6 +41,7 @@ namespace Dev2.Activities
         IEmailSender _emailSender;
         IDSFDataObject _dataObject;
         string _password;
+        EmailSource _selectedEmailSource;
 
         #endregion
 
@@ -49,7 +50,21 @@ namespace Dev2.Activities
         /// </summary>
 
         // ReSharper disable MemberCanBePrivate.Global
-        public EmailSource SelectedEmailSource { get; set; }
+        public EmailSource SelectedEmailSource
+        {
+            get
+            {
+                return _selectedEmailSource;
+            }
+            set
+            {
+                _selectedEmailSource = value;
+                var resourceID = _selectedEmailSource.ResourceID;
+                _selectedEmailSource = null;
+                _selectedEmailSource = new EmailSource();
+                _selectedEmailSource.ResourceID = resourceID;
+            }
+        }
         // ReSharper restore MemberCanBePrivate.Global
         [FindMissing]
         public string FromAccount { get; set; }
