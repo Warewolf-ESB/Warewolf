@@ -144,12 +144,7 @@ namespace Dev2.Runtime.ESB.Execution
         public void Eval(Guid resourceID, IDSFDataObject dataObject)
         {
             IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID);
-            var next = resource.Execute(dataObject);
-            while(next!= null)
-            {
-                next = next.Execute(dataObject);
-   
-            }
+            EvalInner(dataObject, resource);
            
         }
         
@@ -198,7 +193,16 @@ namespace Dev2.Runtime.ESB.Execution
         {
             IDev2Activity resource = new ActivityParser().Parse(flowchartProcess);
 
-            resource.Execute(dsfDataObject);
+            EvalInner(dsfDataObject, resource);
+        }
+
+        static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource)
+        {
+            var next = resource.Execute(dsfDataObject);
+            while(next != null)
+            {
+                next = next.Execute(dsfDataObject);
+            }
         }
     }
 }
