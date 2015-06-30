@@ -65,7 +65,9 @@ namespace Dev2.Activities
             return new Dev2Decision { Cols1 = col1, Cols2 = col2, Cols3 = col3, EvaluationFn = decision.EvaluationFn };
         }
 
-        protected override void ExecuteTool(IDSFDataObject dataObject)
+        #region Overrides of DsfNativeActivity<string>
+
+        public override IDev2Activity Execute(IDSFDataObject dataObject)
         {
             ErrorResultTO allErrors = new ErrorResultTO();
             try
@@ -81,9 +83,9 @@ namespace Dev2.Activities
                 var factory = Dev2DecisionFactory.Instance();
                 var res = stack.SelectMany(a =>
                 {
-                    if(a.EvaluationFn == enDecisionType.IsError)
+                    if (a.EvaluationFn == enDecisionType.IsError)
                     {
-                        return new []{dataObject.Environment.Errors.Count > 0};
+                        return new[] { dataObject.Environment.Errors.Count > 0 };
                     }
                     if (a.EvaluationFn == enDecisionType.IsNotError)
                     {
@@ -118,10 +120,7 @@ namespace Dev2.Activities
                     if (TrueArm != null)
                     {
                         var activity = TrueArm.FirstOrDefault();
-                        if (activity != null)
-                        {
-                            activity.Execute(dataObject);
-                        }
+                        return activity;
                     }
                 }
                 else
@@ -129,10 +128,7 @@ namespace Dev2.Activities
                     if (FalseArm != null)
                     {
                         var activity = FalseArm.FirstOrDefault();
-                        if (activity != null)
-                        {
-                            activity.Execute(dataObject);
-                        }
+                        return activity;
                     }
                 }
             }
@@ -159,6 +155,14 @@ namespace Dev2.Activities
                     //DispatchDebugState(dataObject, StateType.After);
                 }
             }
+            return null;
+        }
+
+        #endregion
+
+        protected override void ExecuteTool(IDSFDataObject dataObject)
+        {
+           
         }
 
         #region Overrides of DsfNativeActivity<string>

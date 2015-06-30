@@ -12,6 +12,7 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Linq;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
@@ -142,9 +143,9 @@ namespace Dev2.Runtime.ESB.Execution
 
         public void Eval(Guid resourceID, IDSFDataObject dataObject)
         {
-            IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID,resourceID);
-
-            resource.Execute(dataObject);
+            IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID);
+            EvalInner(dataObject, resource);
+           
         }
         
 
@@ -192,7 +193,16 @@ namespace Dev2.Runtime.ESB.Execution
         {
             IDev2Activity resource = new ActivityParser().Parse(flowchartProcess);
 
-            resource.Execute(dsfDataObject);
+            EvalInner(dsfDataObject, resource);
+        }
+
+        static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource)
+        {
+            var next = resource.Execute(dsfDataObject);
+            while(next != null)
+            {
+                next = next.Execute(dsfDataObject);
+            }
         }
     }
 }
