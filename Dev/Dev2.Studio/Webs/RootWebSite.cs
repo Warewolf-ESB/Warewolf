@@ -14,6 +14,7 @@ using System.Web;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -347,6 +348,11 @@ namespace Dev2.Webs
         public static void ShowNewOAuthsourceSaveDialog(IContextualResourceModel resourceModel, IEnvironmentModel model, string token, string key)
         {
             ShowSaveDialog(resourceModel, new DropBoxSourceSourceCallbackHandler(EnvironmentRepository.Instance,token??"",key??""), "OauthSource", HttpUtility.UrlEncode("New Dropbox source"));
+        }
+        
+        public static void ShowNewSharepointServerSourceSaveDialog(IContextualResourceModel resourceModel, IEnvironmentModel model,string server,string userName,string password,AuthenticationType authenticationType)
+        {
+            ShowSaveDialog(resourceModel, new SharepointServerSourceCallbackHandler(EnvironmentRepository.Instance,server,userName,password,authenticationType), "SharepointServerSource", HttpUtility.UrlEncode("New Sharepoint Server Source"));
         }
 
         static void ShowSaveDialog(IContextualResourceModel resourceModel, WebsiteCallbackHandler callbackHandler, string type, string title, string resourceId = null)

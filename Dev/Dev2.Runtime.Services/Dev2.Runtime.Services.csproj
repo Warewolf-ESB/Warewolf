@@ -171,7 +171,9 @@
     <Compile Include="ESB\Management\Services\DeleteVersion.cs" />
     <Compile Include="ESB\Management\Services\GetDirectoriesRelativeToServer.cs" />
     <Compile Include="ESB\Management\Services\FetchExplorerItems.cs" />
+    <Compile Include="ESB\Management\Services\GetSharepointListFields.cs" />
     <Compile Include="ESB\Management\Services\GetServerVersion.cs" />
+    <Compile Include="ESB\Management\Services\GetSharepointListService.cs" />
     <Compile Include="ESB\Management\Services\GetVersion.cs" />
     <Compile Include="ESB\Management\Services\GetVersions.cs" />
     <Compile Include="ESB\Management\Services\LoggingSettingsRead.cs" />
@@ -213,6 +215,7 @@
     <Compile Include="ESB\Management\Services\SecurityWrite.cs" />
     <Compile Include="ESB\Management\Services\SettingsRead.cs" />
     <Compile Include="ESB\Management\Services\SettingsWrite.cs" />
+    <Compile Include="ESB\Management\Services\TestSharepointServerService.cs" />
     <Compile Include="Execution\ExecutionToken.cs" />
     <Compile Include="Hosting\CompileMessageRepo.cs" />
     <Compile Include="Hosting\ExplorerItemFactory.cs" />

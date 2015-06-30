@@ -26,6 +26,7 @@
             <sadt:ToolboxCategory CategoryName="File and Folder" />
             <sadt:ToolboxCategory CategoryName="Scripting" />
             <sadt:ToolboxCategory CategoryName="Connectors" />
+            <sadt:ToolboxCategory CategoryName="SharePoint" />
         </sadt:ToolboxControl> 
     </Grid>
 </UserControl>

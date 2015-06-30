@@ -371,7 +371,9 @@ namespace Dev2.Runtime.Hosting
                 case enSourceType.OauthSource:
                     result = BuildDropboxList(resources);
                     break;
-
+                case enSourceType.SharepointServerSource:
+                    result = BuildSharepointSourceList(resources);
+                    break;
                 default:
                     result = null;
                     break;
@@ -1048,6 +1050,10 @@ namespace Dev2.Runtime.Hosting
         private IEnumerable BuildDropboxList(IEnumerable<IResource> resources)
         {
             return resources.Select(ToPayload).Select(payload => payload.ToXElement()).Select(xe => new OauthSource(xe)).ToList();
+        }
+        private IEnumerable BuildSharepointSourceList(IEnumerable<IResource> resources)
+        {
+            return resources.Select(ToPayload).Select(payload => payload.ToXElement()).Select(xe => new SharepointSource(xe)).ToList();
         }
         private IEnumerable BuildSqlServerList(IEnumerable<IResource> resources)
         {
