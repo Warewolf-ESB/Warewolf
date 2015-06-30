@@ -753,7 +753,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             
             if(NextNodes != null && NextNodes.Count()>0)
             {
-                    NextNodes.First().Execute(data);
+              
                     return NextNodes.First();
              }
             return null;

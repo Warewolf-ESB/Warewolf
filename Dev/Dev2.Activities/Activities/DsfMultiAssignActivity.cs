@@ -103,16 +103,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Overrides of DsfNativeActivity<string>
 
-        public override IDev2Activity Execute(IDSFDataObject data)
-        {
-            ExecuteTool(data);
-            if(NextNodes != null && NextNodes.Count()>0)
-            {
-                NextNodes.First().Execute(data);
-                return NextNodes.First();
-            }
-            return null;
-        }
+        //public override IDev2Activity Execute(IDSFDataObject data)
+        //{
+        //    ExecuteTool(data);
+        //    if(NextNodes != null && NextNodes.Count()>0)
+        //    {
+        //        NextNodes.First().Execute(data);
+        //        return NextNodes.First();
+        //    }
+        //    return null;
+        //}
 
         #endregion
 

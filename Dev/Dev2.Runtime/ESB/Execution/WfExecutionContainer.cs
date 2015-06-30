@@ -12,6 +12,7 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Linq;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
@@ -142,9 +143,14 @@ namespace Dev2.Runtime.ESB.Execution
 
         public void Eval(Guid resourceID, IDSFDataObject dataObject)
         {
-            IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID,resourceID);
-
-            resource.Execute(dataObject);
+            IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID);
+            var next = resource.Execute(dataObject);
+            while(next!= null)
+            {
+                next = next.Execute(dataObject);
+   
+            }
+           
         }
         
 
