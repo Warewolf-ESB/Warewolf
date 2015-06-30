@@ -17,6 +17,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Input;
 using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
@@ -508,7 +509,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 string val = item.Value;
                 if(item.Value != null && item.Value.IsXml())
                 {
-                    val = string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(val)));
+                    val = string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(Encoding.UTF8.GetBytes(val)));
                 }
                 if(item.IsRecordset && !string.IsNullOrEmpty(item.Value))
                 {

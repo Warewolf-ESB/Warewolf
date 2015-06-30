@@ -11,6 +11,7 @@
 
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
@@ -377,6 +378,28 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
 
             return string.Empty;
+        }
+
+        static string CleanupXml(string baseStr)
+        {
+            if (baseStr.Contains("?"))
+            {
+                NameValueCollection args = HttpUtility.ParseQueryString(baseStr.Substring(baseStr.IndexOf("?")));
+                var url = baseStr.Substring(0, baseStr.IndexOf("?") + 1);
+                List<string> results = new List<string>();
+                foreach (var arg in args.AllKeys)
+                {
+
+                    if (args[arg].IsXml())
+                    {
+                        var txt = args[arg];
+                        results.Add(arg + "=" + string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(txt))));
+                    }
+                }
+
+                return url + string.Join("&", results);
+            }
+            return baseStr;
         }
 
         static string ExtractKeyValuePairs(NameValueCollection pairs, NameValueCollection boundVariables)
