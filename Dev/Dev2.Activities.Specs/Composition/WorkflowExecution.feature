@@ -4108,7 +4108,7 @@ Examples:
 	  | [[Result]] = Pass |
 
 Scenario: Executing Asynchrounous testing workflow error
-	  Given I have a workflow "Testing - Async Test Master Teste"
+	  Given I have a workflow "Testing - Async Test Master Testc"
 	  And "Testing - Async Test Master Teste" contains "Async Must Not Bubble Up Error" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
 	  When "Testing - Async Test Master Testc" is executed
