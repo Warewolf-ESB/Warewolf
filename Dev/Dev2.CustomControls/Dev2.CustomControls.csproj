@@ -190,6 +190,8 @@
     <Compile Include="Trigger\KeyPressedTrigger.cs" />
     <Compile Include="Trigger\DelayTextChangedEventTrigger.cs" />
     <Compile Include="Utils\WatermarkSential.cs" />
+    <Compile Include="WatermarkAdorner.cs" />
+    <Compile Include="WatermarkTextBox.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -22,9 +22,11 @@ using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
 using Dev2.ConnectionHelpers;
@@ -1029,7 +1031,28 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         }
 
         #endregion
+        public List<SharepointListTo> GetSharepointLists(SharepointSource source)
+        {
+            var comController = new CommunicationController { ServiceName = "GetSharepointListService" };
 
+            comController.AddPayloadArgument("SharepointServer", _serializer.Serialize(source));
+
+            var lists = comController.ExecuteCommand<List<SharepointListTo>>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
+
+            return lists;
+        }
+
+        public List<ISharepointFieldTo> GetSharepointListFields(ISharepointSource source, SharepointListTo list,bool onlyEditableFields)
+        {
+            var comController = new CommunicationController { ServiceName = "GetSharepointListFields" };
+            comController.AddPayloadArgument("SharepointServer", _serializer.Serialize(source));
+            comController.AddPayloadArgument("ListName", _serializer.Serialize(list.FullName));
+            comController.AddPayloadArgument("OnlyEditable", _serializer.Serialize(onlyEditableFields));
+
+            var fields = comController.ExecuteCommand<List<ISharepointFieldTo>>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
+
+            return fields;
+        }
         #region FindResourcesByID
 
         public bool DoesResourceExistInRepo(IResourceModel resource)

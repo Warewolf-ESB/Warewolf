@@ -257,7 +257,7 @@ Scenario: Execute a Sequence with Assign, Data Merge and Data Split
       | [[rec(2).b]] | nothing  |
       | [[rec(3).a]] | warewolf |
       | [[rec(4).b]] | nothing  |
-	  And "Test" contains Data Merge "Data Merge" into "[[result]]" as	
+      And "Test" contains Data Merge "Data Merge" into "[[result]]" as	
 	  | Variable     | Type  | Using | Padding | Alignment |
 	  | [[rec(1).a]] | Index | 4      |         | Left       |
 	  | [[rec(3).a]]  | Index | 8      |         | Left       |
