@@ -15,10 +15,10 @@ using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.WF;
@@ -153,7 +153,7 @@ namespace Dev2.Runtime.ESB.Execution
             return null;
         }
 
-        public List<DebugItem> GetDebugInputs(IList<IDev2Definition> inputs, IBinaryDataList dataList, ErrorResultTO errors)
+        public List<DebugItem> GetDebugInputs(IList<IDev2Definition> inputs,  ErrorResultTO errors)
         {
             if(errors == null)
             {

@@ -95,7 +95,7 @@ namespace Dev2.Tests.Runtime.Services
                                                "</CommsEngineResponseViewModels>";
             //exe
             ErrorResultTO errors;
-            webServiceMock.MockExecuteImpl(null,out errors);
+            webServiceMock.MockExecuteImpl(out errors);
             Assert.IsFalse(errors.HasErrors(),"Error while parsing crazy xml");
 
             //assert

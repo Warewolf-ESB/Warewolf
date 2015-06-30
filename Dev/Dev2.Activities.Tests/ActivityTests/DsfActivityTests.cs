@@ -16,8 +16,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Principal;
 using ActivityUnitTests;
-using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
@@ -122,7 +120,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             act.AuthorizationService = mockAutorizationService.Object;
 
             //------------Execute Test---------------------------
-            ErrorResultTO errors;
             TestStartNode = new FlowStep
             {
                 Action = act
@@ -131,8 +128,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             TestData = "<DataList></DataList>";
             CurrentDl = "<DataList></DataList>";
             User = new Mock<IPrincipal>().Object;
-            Compiler = DataListFactory.CreateDataListCompiler();
-            ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl.ToStringBuilder(), out errors);
             var result = ExecuteProcess(null, true, null, false, true, false, environmentID);
 
             // ReSharper disable PossibleNullReferenceException

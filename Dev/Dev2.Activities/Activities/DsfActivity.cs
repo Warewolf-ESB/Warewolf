@@ -22,11 +22,8 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Data.Decision;
-using Dev2.Data.Storage;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
@@ -419,17 +416,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if(DataObject != null)
             {
-                Dev2DataListDecisionHandler.Instance.RemoveEnvironment(DataObject.DataListID);
             }
         }
 
         protected virtual Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors)
         {
-            Dev2Logger.Log.Info("PRE-SUB_EXECUTE SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb().ToString("####.####") + " MBs ]");
-
+ 
             esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors);
-            Dev2Logger.Log.Info("POST-SUB_EXECUTE SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb().ToString("####.####") + " MBs ]");
-            return Guid.NewGuid();
+                   return Guid.NewGuid();
         }
 
         public override IList<DsfForEachItem> GetForEachInputs()
@@ -522,25 +516,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         throw new Exception("FATAL ERROR : Null ESB channel!!");
                     }
-                    else
-                    {
-                        // NEW EXECUTION MODEL ;)
-                        // PBI 7913
+                    // NEW EXECUTION MODEL ;)
+                    // PBI 7913
          
 
-                            dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
-                            dataObject.ResourceID = ResourceID.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
-                            BeforeExecutionStart(dataObject, allErrors);
-                            allErrors.MergeErrors(tmpErrors);
-                            // Execute Request
-                            ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors);
+                    dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
+                    dataObject.ResourceID = ResourceID.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
+                    BeforeExecutionStart(dataObject, allErrors);
+                    allErrors.MergeErrors(tmpErrors);
+                    // Execute Request
+                    ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors);
 
-                            allErrors.MergeErrors(tmpErrors);
+                    allErrors.MergeErrors(tmpErrors);
 
-                            AfterExecutionCompleted(tmpErrors);
-                            allErrors.MergeErrors(tmpErrors);
-                            dataObject.ServiceName = ServiceName;
-                    }
+                    AfterExecutionCompleted(tmpErrors);
+                    allErrors.MergeErrors(tmpErrors);
+                    dataObject.ServiceName = ServiceName;
                 }
             }
                 catch(Exception err)
@@ -591,66 +582,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion
 
         #region Overridden ActivityAbstact Methods
-
-        public override IBinaryDataList GetInputs()
-        {
-            IBinaryDataList result;
-            ErrorResultTO errors;
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            var inputDlString = compiler.GenerateWizardDataListFromDefs(InputMapping, enDev2ArgumentType.Input, false, out errors, true);
-            var inputDlShape = compiler.GenerateWizardDataListFromDefs(InputMapping, enDev2ArgumentType.Input, false, out errors);
-            if(!errors.HasErrors())
-            {
-                Guid dlId = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), inputDlString, inputDlShape, out errors);
-                if(!errors.HasErrors())
-                {
-                    result = compiler.FetchBinaryDataList(dlId, out errors);
-                }
-                else
-                {
-                    string errorString = string.Join(",", errors.FetchErrors());
-                    throw new Exception(errorString);
-                }
-            }
-            else
-            {
-                string errorString = string.Join(",", errors.FetchErrors());
-                throw new Exception(errorString);
-            }
-
-            return result;
-        }
-
-        public override IBinaryDataList GetOutputs()
-        {
-            IBinaryDataList result;
-            ErrorResultTO errors;
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            var outputDlString = compiler.GenerateWizardDataListFromDefs(OutputMapping, enDev2ArgumentType.Output, false, out errors, true);
-            var outputDlShape = compiler.GenerateWizardDataListFromDefs(OutputMapping, enDev2ArgumentType.Output, false, out errors);
-            if(!errors.HasErrors())
-            {
-                Guid dlId = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), outputDlString, outputDlShape, out errors);
-                if(!errors.HasErrors())
-                {
-                    result = compiler.FetchBinaryDataList(dlId, out errors);
-                }
-                else
-                {
-                    string errorString = string.Join(",", errors.FetchErrors());
-                    throw new Exception(errorString);
-                }
-            }
-            else
-            {
-                string errorString = string.Join(",", errors.FetchErrors());
-                throw new Exception(errorString);
-            }
-
-            return result;
-        }
 
         #endregion Overridden ActivityAbstact Methods
 

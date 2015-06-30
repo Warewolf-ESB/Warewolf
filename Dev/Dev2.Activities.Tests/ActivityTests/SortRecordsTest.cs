@@ -14,7 +14,6 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
-using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -227,7 +226,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             TestData = ActivityStrings.SortDataList;
             IDSFDataObject result = ExecuteProcess();
 
-            var res = Compiler.HasErrors(result.DataListID);
+            var res = result.Environment.HasErrors();
 
             // remove test datalist ;)
 
@@ -236,37 +235,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #endregion Negative Test Cases
 
-        #region Get Input/Output Tests
-
-        [TestMethod]
-        public void SortRecords_GetInputs_Expected_Two_Input()
-        {
-            DsfSortRecordsActivity testAct = new DsfSortRecordsActivity();
-
-            IBinaryDataList inputs = testAct.GetInputs();
-
-            var res = inputs.FetchAllEntries().Count;
-
-            // remove test datalist ;)
-
-            Assert.AreEqual(2, res);
-        }
-
-        [TestMethod]
-        public void SortRecords_GetOutputs_Expected_Zero_Output()
-        {
-            DsfSortRecordsActivity testAct = new DsfSortRecordsActivity();
-
-            IBinaryDataList outputs = testAct.GetOutputs();
-
-            var res = outputs.FetchAllEntries().Count;
-
-            // remove test datalist ;)
-
-            Assert.AreEqual(0, res);
-        }
-
-        #endregion Get Input/Output Tests
+        
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

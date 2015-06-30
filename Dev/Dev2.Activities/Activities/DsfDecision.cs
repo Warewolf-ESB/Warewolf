@@ -242,23 +242,22 @@ namespace Dev2.Activities
         #endregion
 
         // Travis.Frisinger - 28.01.2013 : Amended for Debug
-        public List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, string _theResult)
+        public List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, string theResult)
         {
             var result = new List<DebugItem>();
-            string resultString = _theResult;
+            string resultString = theResult;
             DebugItem itemToAdd = new DebugItem();
-            IDataListCompiler c = DataListFactory.CreateDataListCompiler();
             var dds = Conditions;
 
             try
             {
 
 
-                if (_theResult == "True")
+                if (theResult == "True")
                 {
                     resultString = dds.TrueArmText;
                 }
-                else if (_theResult == "False")
+                else if (theResult == "False")
                 {
                     resultString = dds.FalseArmText;
                 }

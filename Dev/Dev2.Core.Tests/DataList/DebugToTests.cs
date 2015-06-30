@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Data;
 using Dev2.Session;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -10,31 +10,7 @@ namespace Dev2.Tests.DataList
     [TestClass]
     public class DebugToTests
     {
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DebugTO_Cleanup")]
-        public void DebugTO_Cleanup_DisposeExpectsClear()
-        {
-            // bootstrap
-            var dto = new Mock<DebugTO>();
-            var dl = new Mock<IBinaryDataList>();
-            bool disposed = false;
-            dto.CallBase = true;
-            DebugTO to = dto.Object;
-            string rootFolder = Path.GetTempPath() + Guid.NewGuid();
-            to.RememberInputs = true;
-            to.BaseSaveDirectory = rootFolder;
-            to.DataList = "<DataList><scalar1 ColumnIODirection=\"Input\"/><persistantscalar ColumnIODirection=\"Input\"/><rs><f1 ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><field1/><field2/></recset></DataList>";
-            to.XmlData = "<DataList><scalar1>s1</scalar1><persistantscalar>SomeValue</persistantscalar><rs><f1>f1Value</f1><f2>f2Value</f2></rs><recset><field1>somedata</field1><field2>moredata</field2></recset><recset><field1></field1><field2></field2></recset></DataList>";
-            to.ServiceName = "DummyService";
-            to.WorkflowID = "DummyService";
-            to.BinaryDataList = dl.Object;
-            dl.Setup(a => a.Dispose()).Callback(() => disposed = true);
-            to.CleanUp();
-
-            Assert.IsTrue(disposed);
-
-        }
+       
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DebugTO_Cleanup")]
@@ -42,7 +18,7 @@ namespace Dev2.Tests.DataList
         {
             // bootstrap
             var dto = new Mock<DebugTO>();
-            var dl = new Mock<IBinaryDataList>();
+            var dl = new Mock<IDataListModel>();
   
             dto.CallBase = true;
             DebugTO to = dto.Object;

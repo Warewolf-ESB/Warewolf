@@ -12,9 +12,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -157,11 +156,10 @@ namespace Dev2.DataList
                         else
                         {
                             var datalist = activity.ResourceModel.DataList;
-                            var compiler = DataListFactory.CreateDataListCompiler();
 
-                            inputs = compiler.GenerateSerializableDefsFromDataList(datalist,
+                            inputs = DataListUtil.GenerateSerializableDefsFromDataList(datalist,
                                                                                    enDev2ColumnArgumentDirection.Input);
-                            outputs = compiler.GenerateSerializableDefsFromDataList(datalist,
+                            outputs = DataListUtil.GenerateSerializableDefsFromDataList(datalist,
                                                                                     enDev2ColumnArgumentDirection.Output);
                         }
                     }
@@ -484,27 +482,26 @@ namespace Dev2.DataList
 
             if (!string.IsNullOrEmpty(DataList))
             {
-                var compiler = DataListFactory.CreateDataListCompiler();
 
-                ErrorResultTO invokeErrors;
-                var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty.ToStringBuilder(), DataList.ToStringBuilder(), out invokeErrors);
-                var dl = compiler.FetchBinaryDataList(dlID, out invokeErrors);
+                var dataListModel = new DataListModel();
+                dataListModel.Create(DataList,DataList);
                 IDictionary<Tuple<string, string>, string> tmp = new Dictionary<Tuple<string, string>, string>();
 
-                if (dl != null)
-                {
-                    foreach (var rs in dl.FetchRecordsetEntries())
+                    foreach (var rs in dataListModel.RecordSets)
                     {
                         // build map for each column in a recordset ;)
                         foreach (var col in rs.Columns)
                         {
-                            if (!tmp.Keys.Any(a => a.Item2 == col.ColumnName && a.Item1 == rs.Namespace))
+                            foreach(var scalar in col.Value)
                             {
-                                tmp[new Tuple<string, string>(rs.Namespace, col.ColumnName)] = rs.Namespace;
+                                if (!tmp.Keys.Any(a => a.Item2 == scalar.Name && a.Item1 == rs.Name))
+                                {
+                                    tmp[new Tuple<string, string>(rs.Name, scalar.Name)] = rs.Name;
+                                }
                             }
+                            
                         }
                     }
-                }
 
                 result = new FuzzyMatchVo(tmp);
 

@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
 
@@ -10,11 +10,12 @@ namespace Dev2.Data
 {
     public class DataListTO
     {
-        public DataListTO(string dataList,bool ignoreColumnDirection = false)
+        public DataListTO(string dataList, bool ignoreColumnDirection = false)
         {
+            var fixedDataList = dataList.Replace(GlobalConstants.SerializableResourceQuote, "\"").Replace(GlobalConstants.SerializableResourceSingleQuote, "\'");
             Inputs = new List<string>();
             Outputs = new List<string>();
-            using (var stringReader = new StringReader(dataList))
+            using (var stringReader = new StringReader(fixedDataList))
             {
                 var xDoc = XDocument.Load(stringReader);
 
@@ -38,7 +39,7 @@ namespace Dev2.Data
 
         void MapForInputOutput(XElement rootEl)
         {
-            if(rootEl == null)
+            if (rootEl == null)
             {
                 return;
             }
@@ -70,9 +71,9 @@ namespace Dev2.Data
                 var include = xAttribute != null &&
                               (xAttribute.Value == enDev2ColumnArgumentDirection.Input.ToString() ||
                                xAttribute.Value == enDev2ColumnArgumentDirection.Both.ToString());
-                if(include)
+                if (include)
                 {
-                    if(element.Parent != null)
+                    if (element.Parent != null)
                     {
                         return DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(element.Parent.Name.ToString(), element.Name.ToString(), "*"));
                     }
@@ -86,9 +87,9 @@ namespace Dev2.Data
                 var include = xAttribute != null &&
                               (xAttribute.Value == enDev2ColumnArgumentDirection.Output.ToString() ||
                                xAttribute.Value == enDev2ColumnArgumentDirection.Both.ToString());
-                if(include)
+                if (include)
                 {
-                    if(element.Parent != null)
+                    if (element.Parent != null)
                     {
                         return DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(element.Parent.Name.ToString(), element.Name.ToString(), "*"));
                     }
@@ -96,10 +97,10 @@ namespace Dev2.Data
                 return "";
             }));
         }
-        
+
         void Map(XElement rootEl)
         {
-            if(rootEl == null)
+            if (rootEl == null)
             {
                 return;
             }

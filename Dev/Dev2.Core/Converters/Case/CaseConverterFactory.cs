@@ -22,13 +22,5 @@ namespace Dev2
         {
             return new CaseConvertTO(stringToConvert, convertType, result, indexNumber);
         }
-
-        /// <summary>
-        ///     Instantiates a concreate implementation of the ICaseConverter
-        /// </summary>
-        public static ICaseConverter CreateCaseConverter()
-        {
-            return new CaseConverter();
-        }
     }
 }

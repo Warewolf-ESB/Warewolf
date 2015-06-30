@@ -11,12 +11,9 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
-using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Services.Sql;
-using MySql.Data.MySqlClient;
 
 namespace Dev2.Services.Sql
 {

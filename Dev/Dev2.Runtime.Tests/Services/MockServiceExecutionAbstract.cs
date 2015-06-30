@@ -59,9 +59,9 @@ namespace Dev2.Services.Execution
 
         #endregion
 
-        public void MockExecuteImpl(IDataListCompiler compiler, out ErrorResultTO errors)
+        public void MockExecuteImpl(out ErrorResultTO errors)
         {
-            ExecuteImpl(compiler, out errors);
+            ExecuteImpl(out errors);
         }
 
         #endregion

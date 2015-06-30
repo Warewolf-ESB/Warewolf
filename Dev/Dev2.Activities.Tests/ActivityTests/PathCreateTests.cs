@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
-using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -35,34 +34,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public TestContext TestContext { get; set; }
 
 
-        #region Get Input/Output Tests
-
-        [TestMethod]
-
-        public void PathCreateActivity_GetInputs_Expected_Five_Input()
-        {
-            DsfPathCreate testAct = new DsfPathCreate();
-
-            IBinaryDataList inputs = testAct.GetInputs();
-
-            // remove test datalist ;)
-
-            Assert.AreEqual(5, inputs.FetchAllEntries().Count);
-        }
-
-        [TestMethod]
-        public void PathCreateActivity_GetOutputs_Expected_One_Output()
-        {
-            DsfPathCreate testAct = new DsfPathCreate();
-
-            IBinaryDataList outputs = testAct.GetOutputs();
-
-            // remove test datalist ;)
-
-            Assert.AreEqual(1, outputs.FetchAllEntries().Count);
-        }
-
-        #endregion Get Input/Output Tests
+        
 
 
         [TestMethod]
